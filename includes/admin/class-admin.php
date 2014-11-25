@@ -1,0 +1,914 @@
+<?php
+/**
+ * Awesome Support Admin.
+ *
+ * @package   Awesome_Support_Admin
+ * @author    Julien Liabeuf <julien@liabeuf.fr>
+ * @license   GPL-2.0+
+ * @link      http://themeavenue.net
+ * @copyright 2014 ThemeAvenue
+ */
+
+class Awesome_Support_Admin {
+
+	/**
+	 * Instance of this class.
+	 *
+	 * @since    1.0.0
+	 * @var      object
+	 */
+	protected static $instance = null;
+
+	/**
+	 * Slug of the plugin screen.
+	 *
+	 * @since    1.0.0
+	 * @var      string
+	 */
+	protected $plugin_screen_hook_suffix = null;
+
+	/**
+	 * Name of the nonce used to secure custom fields.
+	 *
+	 * @var      object
+	 * @since 3.0.0
+	 */
+	public static $nonce_name = 'wpas_cf';
+
+	/**
+	 * Action of the custom nonce.
+	 *
+	 * @var      object
+	 * @since 3.0.0
+	 */
+	public static $nonce_action = 'wpas_update_cf';
+
+	/**
+	 * Initialize the plugin by loading admin scripts & styles and adding a
+	 * settings page and menu.
+	 *
+	 * @since     1.0.0
+	 */
+	private function __construct() {
+
+		add_action( 'wp_ajax_wpas_edit_reply',      'wpas_edit_reply_ajax' ); // Edit a reply from the backend
+		add_action( 'wp_ajax_wpas_mark_reply_read', 'wpas_mark_reply_read_ajax' ); // Edit a reply from the backend
+
+		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+
+			/* Load admin functions files */
+			require_once( WPAS_PATH . 'includes/admin/functions-admin.php' );
+			require_once( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
+			require_once( WPAS_PATH . 'includes/admin/class-admin-user.php' );
+			require_once( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
+			require_once( WPAS_PATH . 'includes/admin/class-admin-help.php' );
+
+			/* Load settings files */
+			require_once( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
+			require_once( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
+			require_once( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
+			require_once( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
+			require_once( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
+			require_once( WPAS_PATH . 'includes/admin/settings/settings-file-upload.php' );
+
+			/* Handle possible redirections first of all. */
+			if ( isset( $_SESSION['wpas_redirect'] ) ) {
+				$redirect = esc_url( $_SESSION['wpas_redirect'] );
+				unset( $_SESSION['wpas_redirect'] );
+				wp_redirect( $redirect );
+				exit;
+			}
+
+			/* Execute custom actions */
+			if ( isset( $_GET['wpas-do'] ) ) {
+				add_action( 'init', array( $this, 'custom_actions' ) );
+			}
+
+			/* Instantiate secondary classes */
+			add_action( 'plugins_loaded',            array( 'WPAS_Tickets_List', 'get_instance' ), 11, 0 );
+			add_action( 'plugins_loaded',            array( 'WPAS_User',         'get_instance' ), 11, 0 );
+			add_action( 'plugins_loaded',            array( 'WPAS_Titan',        'get_instance' ), 11, 0 );
+			add_action( 'plugins_loaded',            array( 'WPAS_Help',         'get_instance' ), 11, 0 );
+
+			/* Do Actions. */
+			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_styles' ) );              // Load plugin styles
+			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_scripts' ) );             // Load plugin scripts
+			add_action( 'admin_menu',                array( $this, 'register_submenu_items' ) );            // Register all the submenus
+			add_action( 'admin_notices',             array( $this, 'wpas_admin_notices' ) );                // Display custom admin notices
+			add_action( 'add_meta_boxes',            array( $this, 'metaboxes' ) );                         // Register the metaboxes
+			add_action( 'save_post_' . WPAS_PT_SLUG, array( $this, 'save_ticket' ) );                       // Save all custom fields
+			add_action( 'wpas_add_reply_after',      array( $this, 'mark_replies_read' ), 10, 2 );          // Mark a ticket replies as read
+			add_action( 'before_delete_post',        array( $this, 'delete_ticket_dependencies' ), 10, 1 ); // Delete all ticket dependencies (replies, history...)
+
+			/* Apply Filters. */
+			add_filter( 'plugin_action_links_' . plugin_basename( trailingslashit( plugin_dir_path( __DIR__ ) ) . 'awesome-support.php' ), array( $this, 'add_action_links' ) ); // Add link to settings in the plugins list
+			add_filter( 'post_row_actions',                       array( $this, 'ticket_action_row' ), 10, 2 );    // Add custom actions in each ticket row
+			add_filter( 'postbox_classes_ticket_wpas-mb-details', array( $this, 'add_metabox_details_classes' ) ); // Customizedetails metabox classes
+			add_filter( 'wp_insert_post_data',                    array( $this, 'filter_ticket_data' ), 99, 2 );   // Filter ticket data before insertion in DB
+
+			/**
+			 * Plugin setup.
+			 *
+			 * If the plugin has just been installed we need to set a couple of things.
+			 * We will automatically create the "special" pages: tickets list and 
+			 * ticket submission.
+			 */
+			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
+				add_action( 'admin_init', array( $this, 'create_pages' ), 11, 0 );
+				add_action( 'admin_init', array( $this, 'flush_rewrite_rules' ), 11, 0 );
+			}
+
+			/**
+			 * Redirect to about page.
+			 *
+			 * We don't use the 'was_setup' option for the redirection as
+			 * if the install fails the first time this will create a redirect loop
+			 * on the about page.
+			 */
+			if ( true === boolval( get_option( 'wpas_redirect_about', false ) ) ) {
+				add_action( 'admin_init', array( $this, 'redirect_to_about' ), 12, 0 );
+			}
+
+			/**
+			 * Ask for products support.
+			 *
+			 * Still part of the installation process. Ask the user
+			 * if he is going to support multiple products or only one.
+			 * It is important to use the built-in taxonomy for multiple products
+			 * support as it is used by multiple addons.
+			 *
+			 * However, if the products support is already enabled, it means that this is not
+			 * the first activation of the plugin and products support was previously enabled
+			 * (products support is disabled by default). In this case we don't ask again.
+			 */
+			if ( 'pending' === get_option( 'wpas_support_products', false ) && ( !isset( $_GET['page'] ) || 'wpas-about' !== $_GET['page'] ) ) {
+				
+				$products = boolval( wpas_get_option( 'support_products' ) );
+				
+				if ( true === $products ) {
+					delete_option( 'wpas_support_products' );
+				} else {
+					add_action( 'admin_notices', array( $this, 'ask_support_products' ) );
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Return an instance of this class.
+	 *
+	 * @since     1.0.0
+	 * @return    object    A single instance of this class.
+	 */
+	public static function get_instance() {
+
+		// If the single instance hasn't been set, set it now.
+		if ( null == self::$instance ) {
+			self::$instance = new self;
+		}
+
+		return self::$instance;
+	}
+
+	/**
+	 * Register and enqueue admin-specific style sheet.
+	 *
+	 * @since     1.0.0
+	 * @return    null    Return early if no settings page is registered.
+	 */
+	public function enqueue_admin_styles() {
+
+		if ( wpas_is_plugin_page() ) {
+		
+			wp_enqueue_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array(), WPAS_VERSION );
+
+		}
+
+	}
+
+	/**
+	 * Register and enqueue admin-specific JavaScript.
+	 *
+	 * @since     1.0.0
+	 * @return    null    Return early if no settings page is registered.
+	 */
+	public function enqueue_admin_scripts() {
+
+		if ( !wpas_is_plugin_page() ) {
+			return;
+		}
+
+		if ( WPAS_PT_SLUG == get_post_type() ) {
+			wp_dequeue_script( 'autosave' );
+		}
+
+		if ( isset( $_GET['page'] ) && 'wpas-about' === $_GET['page'] ) {
+			add_thickbox();
+			wp_enqueue_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
+		}
+
+		wp_enqueue_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery' ), WPAS_VERSION );
+		wp_localize_script( 'wpas-admin-script', 'wpasL10n', array( 'alertDelete' => __( 'Are you sure you want to delete this reply?', 'wpas' ) ) );
+		wp_enqueue_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
+
+	}
+
+	/**
+	 * Create the mandatory pages.
+	 *
+	 * Create the mandatory for the user in order to avoid
+	 * issues with people thinking the plugin isn't working.
+	 *
+	 * @since  2.0.0
+	 * @return void
+	 */
+	public function create_pages() {
+
+		$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+		$update = false;
+
+		if ( empty( $options['ticket_list'] ) ) {
+
+			$list_args = array(
+				'post_content'   => '[tickets]',
+				'post_title'     => wp_strip_all_tags( __( 'My Tickets', 'wpas' ) ),
+				'post_name'      => sanitize_title( __( 'My Tickets', 'wpas' ) ),
+				'post_type'      => 'page',
+				'post_status'    => 'publish',
+				'ping_status'    => 'closed',
+				'comment_status' => 'closed'
+			);
+
+			$list = wp_insert_post( $list_args, true );
+
+			if ( !is_wp_error( $list ) && is_int( $list ) ) {
+				$options['ticket_list'] = $list;
+				$update                 = true;
+			}
+		}
+
+		if ( empty( $options['ticket_submit'] ) ) {
+
+			$submit_args = array(
+				'post_content'   => '[ticket-submit]',
+				'post_title'     => wp_strip_all_tags( __( 'Submit Ticket', 'wpas' ) ),
+				'post_name'      => sanitize_title( __( 'Submit Ticket', 'wpas' ) ),
+				'post_type'      => 'page',
+				'post_status'    => 'publish',
+				'ping_status'    => 'closed',
+				'comment_status' => 'closed'
+			);
+		
+			$submit = wp_insert_post( $submit_args, true );
+
+			if ( !is_wp_error( $submit ) && is_int( $submit ) ) {
+				$options['ticket_submit'] = $submit;
+				$update                   = true;
+			}
+
+		}
+
+		if ( $update ) {
+			update_option( 'wpas_options', serialize( $options ) );
+		}
+
+		if ( !empty( $options['ticket_submit'] ) && !empty( $options['ticket_list'] ) ) {
+			delete_option( 'wpas_setup' );
+		}
+	}
+
+	/**
+	 * Flush rewrite rules.
+	 *
+	 * This is to avoid getting 404 errors
+	 * when trying to view a ticket. We need ot update
+	 * the permalinks with our new custom post type.
+	 *
+	 * @since  3.0.0
+	 * @return void
+	 */
+	public function flush_rewrite_rules() {
+		flush_rewrite_rules();
+	}
+
+	/**
+	 * Redirect to about page.
+	 *
+	 * Redirect the user to the about page after plugin activation.
+	 * 
+	 * @return void
+	 */
+	public function redirect_to_about() {
+		delete_option( 'wpas_redirect_about' );
+		wp_redirect( add_query_arg( array( 'post_type' => WPAS_PT_SLUG, 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
+		exit;
+	}
+
+	/**
+	 * Add settings action link to the plugins page.
+	 *
+	 * @since    1.0.0
+	 */
+	public function add_action_links( $links ) {
+
+		return array_merge(
+			array(
+				'settings' => '<a href="' . add_query_arg( array( 'post_type' => WPAS_PT_SLUG, 'page' => 'edit.php?post_type=ticket-settings' ), admin_url( 'edit.php' ) ) . '">' . __( 'Settings', 'wpas' ) . '</a>'
+			),
+			$links
+		);
+
+	}
+
+	/**
+	 * Add items in action row.
+	 *
+	 * Add a quick option to open or close a ticket
+	 * directly from the tickets list.
+	 *
+	 * @since  3.0.0
+	 * @param  array $actions  List of existing options
+	 * @param  object $post    Current post object
+	 * @return array           List of options with ours added
+	 */
+	public function ticket_action_row( $actions, $post ) {
+
+		if ( WPAS_PT_SLUG === $post->post_type ) {
+
+			$status = wpas_get_ticket_status( $post->ID );
+
+			if ( 'open' === $status ) {
+				$actions['close'] = '<a href="' . wpas_get_close_ticket_url( $post->ID ) . '">' . __( 'Close', 'wpas' ) . '</a>';
+			} elseif( 'closed' === $status ) {
+				$actions['open'] = '<a href="' . wpas_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'wpas' ) . '</a>';
+			}
+			
+		}
+
+		return $actions;
+	}
+
+	/**
+	 * Display custom admin notices.
+	 *
+	 * Custom admin notices are usually triggered by custom actions.
+	 *
+	 * @since  3.0.0
+	 * @return void
+	 */
+	public function wpas_admin_notices() {
+
+		if ( isset( $_GET['message'] ) ) {
+
+			switch( $_GET['message'] ) {
+
+				case 'wpas-opened':
+					?>
+					<div class="updated">
+						<p><?php printf( __( 'The ticket #%s has been (re)opened.', 'wpas' ), intval( $_GET['post'] ) ); ?></p>
+					</div>
+					<?php
+				break;
+
+				case 'wpas-closed':
+					?>
+					<div class="updated">
+						<p><?php printf( __( 'The ticket #%s has been closed.', 'wpas' ), intval( $_GET['post'] ) ); ?></p>
+					</div>
+					<?php
+				break;
+
+			}
+
+		}
+	}
+
+	/**
+	 * Multiple products support.
+	 *
+	 * Ask the user to choose if the support site will manage
+	 * multiple products or not.
+	 *
+	 * @since  3.0.0
+	 * @return void
+	 */
+	public function ask_support_products() {
+
+		global $pagenow;
+
+		$get = $_GET;
+
+		if ( !isset( $get ) || !is_array( $get ) ) {
+			$get = array();
+		}
+
+		$get['wpas-nonce']       = wp_create_nonce( 'wpas_custom_action' );
+		$get_single              = $get_multiple = $get;
+		$get_single['wpas-do']   = 'single-product';
+		$get_multiple['wpas-do'] = 'multiple-products';
+
+		$single_url   = add_query_arg( $get_single, admin_url( $pagenow ) );
+		$multiple_url = add_query_arg( $get_multiple, admin_url( $pagenow ) );
+		?>
+		<div class="updated">
+			<p><?php _e( 'Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>', 'wpas' ); ?></p>
+			<p>
+				<a href="<?php echo esc_url( $single_url ); ?>" class="button-secondary"><?php _e( 'Single Product', 'wpas' ); ?></a> 
+				<a href="<?php echo esc_url( $multiple_url ); ?>" class="button-secondary"><?php _e( 'Multiple Products', 'wpas' ); ?></a>
+			</p>
+		</div>
+	<?php }
+
+	/**
+	 * Filter ticket data before insertion.
+	 *
+	 * Before inserting a new ticket in the database,
+	 * we check the post status and possibly overwrite it
+	 * with one of the registered custom status.
+	 *
+	 * @since  3.0.0
+	 * @param  array $data    Post data
+	 * @param  array $postarr Original post data
+	 * @return array          Modified post data for insertion
+	 */
+	public function filter_ticket_data( $data, $postarr ) {
+
+		if ( isset( $data['post_type'] ) && WPAS_PT_SLUG === $data['post_type'] && isset( $_POST['post_status_override'] ) && !empty( $_POST['post_status_override'] ) ) {
+
+			$status = wpas_get_post_status();
+
+			if ( array_key_exists( $_POST['post_status_override'], $status ) ) {
+
+				$data['post_status'] = $_POST['post_status_override'];
+
+				if ( $postarr['original_post_status'] !== $_POST['post_status_override'] && isset( $_POST['wpas_post_parent'] ) ) {
+					wpas_log( intval( $_POST['wpas_post_parent'] ), sprintf( __( 'Ticket state changed to %s'), '&laquo;' . $status[$_POST['post_status_override']] . '&raquo;' ) );
+				}
+			}
+
+		}
+		
+		return $data;
+	}
+
+	/**
+	 * Register all submenu items.
+	 *
+	 * @since  3.0.0
+	 * @return void
+	 */
+	public function register_submenu_items() {
+		add_submenu_page( 'edit.php?post_type=' . WPAS_PT_SLUG, __( 'System Status', 'wpas' ), __( 'System Status', 'wpas' ), 'administrator', 'wpas-status', array( $this, 'display_status_page' ) );
+		add_submenu_page( 'edit.php?post_type=' . WPAS_PT_SLUG, __( 'About Awesome Support', 'wpas' ), __( 'About', 'wpas' ), 'edit_posts', 'wpas-about', array( $this, 'display_about_page' ) );
+	}
+
+	/**
+	 * Render the about page for this plugin.
+	 *
+	 * @since    3.0.0
+	 */
+	public function display_about_page() {
+		include_once( WPAS_PATH . 'includes/admin/views/about.php' );
+	}
+
+	/**
+	 * Render the system status.
+	 *
+	 * @since    3.0.0
+	 */
+	public function display_status_page() {
+		include_once( WPAS_PATH . 'includes/admin/views/status.php' );
+	}
+
+	/**
+	 * Execute plugin custom actions.
+	 *
+	 * Any custom actions the plugin can trigger through a URL variable
+	 * will be executed here. It is all triggered by the var wpas-do.
+	 *
+	 * @since 3.0.0
+	 */
+	public function custom_actions() {
+
+		/* Make sure we have a trigger */
+		if( !isset( $_GET['wpas-do'] ) )
+			return;
+
+		/* Validate the nonce */
+		if( !isset( $_GET['wpas-nonce'] ) || !wp_verify_nonce( $_GET['wpas-nonce'], 'wpas_custom_action' ) )
+			return;
+
+		global $wpas_log;
+
+		$log    = array();
+		$action = sanitize_text_field( $_GET['wpas-do'] );
+
+		switch( $action ):
+
+			case 'close':
+
+				if( isset( $_GET['post'] ) && WPAS_PT_SLUG == get_post_type( intval( $_GET['post'] ) ) ) {
+
+					update_post_meta( intval( $_GET['post'] ), '_wpas_status', 'closed' );
+
+					$url = add_query_arg( array( 'post' => $_GET['post'], 'action' => 'edit', 'message' => 'wpas-closed' ), admin_url( 'post.php' ) );
+
+					wpas_log( $_GET['post'], __( 'The ticket was closed.', 'wpas' ) );
+					do_action( 'wpas_after_close_ticket', intval( $_GET['post'] ) );
+
+				}
+
+			break;
+
+			case 'open':
+
+				if( isset( $_GET['post'] ) && WPAS_PT_SLUG == get_post_type( intval( $_GET['post'] ) ) ) {
+
+					update_post_meta( intval( $_GET['post'] ), '_wpas_status', 'open' );
+
+					$url = add_query_arg( array( 'post' => $_GET['post'], 'action' => 'edit', 'message' => 'wpas-opened' ), admin_url( 'post.php' ) );
+
+					wpas_log( $_GET['post'], __( 'The ticket was re-opened.', 'wpas' ) );
+				}
+
+			break;
+
+			case 'trash_reply':
+
+				if( isset( $_GET['del_id'] ) && current_user_can( 'delete_reply' ) ) {
+
+					$del_id = intval( $_GET['del_id'] );
+
+					/* Trash the post */
+					wp_trash_post( $del_id, false );
+
+					/* Redirect with clean URL */
+					$url = esc_url( add_query_arg( array( 'post' => $_GET['post'], 'action' => 'edit' ), admin_url( 'post.php' ) . "#wpas-post-$del_id" ) );
+
+					wp_redirect( $url );
+					exit;
+
+				}
+
+			break;
+
+			case 'multiple-products':
+
+				$options = maybe_unserialize( get_option( 'wpas_options' ) );
+				$options['support_products'] = '1';
+
+				update_option( 'wpas_options', serialize( $options ) );
+				delete_option( 'wpas_support_products' );
+
+				wp_redirect( add_query_arg( array( 'taxonomy' => WPAS_PRODUCT_SLUG, 'post_type' => WPAS_PT_SLUG ), admin_url( 'edit-tags.php' ) ) );
+				exit;
+
+			break;
+
+			case 'single-product':
+				delete_option( 'wpas_support_products' );
+				wp_redirect( remove_query_arg( array( 'wpas-nonce', 'wpas-do' ), wpas_get_current_admin_url() ) );
+				exit;
+			break;
+
+		endswitch;
+
+		/**
+		 * wpas_custom_actions hook
+		 */
+		do_action( 'wpas_execute_custom_action', $action );
+
+		/* Log the action */
+		if ( !empty( $log ) ) {
+			wpas_log( $_GET['post'], $log );
+		}
+
+		/* Get URL vars */
+		$args = $_GET;
+
+		/* Remove custom action and nonce */
+		unset( $_GET['wpas-do'] );
+		unset( $_GET['wpas-nonce'] );
+
+		/* Read-only redirect */
+		wp_redirect( $url );
+		exit;
+
+	}
+
+	/**
+	 * Register the metaboxes.
+	 *
+	 * The function below registers all the metaboxes used
+	 * in the ticket edit screen.
+	 *
+	 * @since 3.0.0
+	 */
+	public function metaboxes() {
+
+		/* Remove the publishing metabox */
+		remove_meta_box( 'submitdiv', WPAS_PT_SLUG, 'side' );
+
+		/**
+		 * Register the metaboxes.
+		 */
+		/* Issue details, only available for existing tickets */
+		if( isset( $_GET['post'] ) ) {
+			add_meta_box( 'wpas-mb-message', __( 'Ticket', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'normal', 'high', array( 'template' => 'message' ) );
+		}
+
+		add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'normal', 'high', array( 'template' => 'replies' ) );
+
+		/* Ticket details */
+		add_meta_box( 'wpas-mb-details', __( 'Details', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'side', 'high', array( 'template' => 'details' ) );
+
+		/* Contacts involved in the ticket */
+		add_meta_box( 'wpas-mb-contacts', __( 'Stakeholders', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'side', 'high', array( 'template' => 'stakeholders' ) );
+
+		/* Custom fields */
+		global $wpas_cf;
+
+		if ( $wpas_cf->have_custom_fields() ) {	
+			add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'side', 'default', array( 'template' => 'custom-fields' ) );
+		}
+
+	}
+
+	/**
+	 * Add new class to the details metabox.
+	 * 
+	 * @param array $classes Current metabox classes
+	 */
+	public function add_metabox_details_classes( $classes ) {
+		array_push( $classes, 'submitdiv' );
+		return $classes;
+	}
+
+	/**
+	 * Metabox callback function.
+	 *
+	 * The below function is used to call the metaboxes content.
+	 * A template name is given to the function. If the template
+	 * does exist, the metabox is loaded. If not, nothing happens.
+	 * 
+	 * @param  (interer) $post     Post ID
+	 * @param  (string)  $template Metabox content template
+	 * @return (mixed)             False if template doesn't exist, null otherwise
+	 * @since  3.0.0
+	 */
+	public function metabox_callback( $post, $args ) {
+
+		if( !is_array( $args ) || !isset( $args['args']['template'] ) )
+			_e( 'An error occured while registering this metabox. Please contact the support.', 'wpas' );
+
+		$template = $args['args']['template'];
+
+		if( !file_exists( WPAS_PATH . "includes/admin/metaboxes/$template.php" ) )
+			_e( 'An error occured while loading this metabox. Please contact the support.', 'wpas' );
+
+		/* Include the metabox content */
+		include_once( WPAS_PATH . "includes/admin/metaboxes/$template.php" );
+
+	}
+
+	/**
+	 * Save ticket custom fields.
+	 *
+	 * This function will save all custom fields associated
+	 * to the ticket post type. Be it core custom fields
+	 * or user added custom fields.
+	 * 
+	 * @param  (int) $post_id Current post ID
+	 * @since  3.0.0
+	 */
+	public function save_ticket( $post_id ) {
+
+		/* We should already being avoiding Ajax, but let's make sure */
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || wp_is_post_revision( $post_id ) )
+			return;
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+			return;
+
+		/* Now we check the nonce */
+		if ( !isset( $_POST[Awesome_Support_Admin::$nonce_name] ) || !wp_verify_nonce( $_POST[Awesome_Support_Admin::$nonce_name], Awesome_Support_Admin::$nonce_action ) )
+			return;
+
+		/* Does the current user has permission? */
+		if ( !current_user_can( 'edit_ticket', $post_id ) ) {
+			return;
+		}
+
+		global $current_user;
+
+		/**
+		 * Store possible notifications
+		 */
+		$notifications = array();
+
+		/**
+		 * Store possible logs
+		 */
+		$log = array();
+
+		/* First thing, set the ticket as open */
+		if ( '' === $original_status = get_post_meta( $post_id, '_wpas_status', true ) ) {
+			add_post_meta( $post_id, '_wpas_status', 'open', true );
+		}
+
+		/* Save the possible ticket reply */
+		if ( isset( $_POST['wpas_reply'] ) && isset( $_POST['wpas_reply_ticket'] ) && '' != $_POST['wpas_reply'] ) {
+
+			/* Check for the nonce */
+			if ( wp_verify_nonce( $_POST['wpas_reply_ticket'], 'reply_ticket' ) ) {
+
+				$user_id = $current_user->ID;
+				$content = wp_kses_post( $_POST['wpas_reply'] );
+
+				$data = array(
+					'post_content'   => $content,
+					'post_status'    => 'read',
+					'post_type'      => 'ticket_reply',
+					'post_author'    => $user_id,
+					'post_parent'    => $post_id,
+					'ping_status'    => 'closed',
+					'comment_status' => 'closed',
+				);
+
+				/**
+				 * Remove the save_post hook now as we're going to trigger
+				 * a new one by inserting the reply (and logging the history later).
+				 */
+				remove_action( 'save_post', array( $this, 'save_ticket' ) );
+
+				/**
+				 * wpas_save_reply_before hook
+				 */
+				do_action( 'wpas_save_reply_before' );
+
+				/* Insert the reply in DB */
+				$reply = wpas_add_reply( $data, $post_id );
+
+				/* In case the insertion failed... */
+				if ( is_wp_error( $reply ) ) {
+
+					/**
+					 * wpas_save_reply_after_error hook
+					 */
+					do_action( 'wpas_save_reply_after_error', $reply );
+
+					/* Set the redirection */
+					$_SESSION['wpas_redirect'] = add_query_arg( array( 'message' => 'wpas_reply_error' ), get_permalink( $post_id ) );
+
+				} else {
+
+					/**
+					 * Delete the activity transient.
+					 */
+					delete_transient( "wpas_activity_meta_post_$post_id" );
+
+					/**
+					 * wpas_save_reply_after hook
+					 */
+					do_action( 'wpas_save_reply_after', $reply, $data );
+
+					/* E-Mail the client */
+					$new_reply = new WPAS_Email_Notification( $post_id, array( 'reply_id' => $reply, 'action' => 'reply_agent' ) );
+
+					/* The agent wants to close the ticket */
+					if ( isset( $_POST['wpas_do'] ) &&  'reply_close' == $_POST['wpas_do'] ) {
+
+						/* Confirm the post type and close */
+						if( WPAS_PT_SLUG == get_post_type( $post_id ) ) {
+
+							/**
+							 * wpas_ticket_before_close_by_agent hook
+							 */
+							do_action( 'wpas_ticket_before_close_by_agent', $post_id );
+
+							/* Close */
+							update_post_meta( $post_id, '_wpas_status', 'closed' );
+
+							/* Log the action */
+							$log[] = array(
+								'action'   => 'updated',
+								'label'    => __( 'Status', 'wpas' ),
+								'value'    => 'closed',
+								'field_id' => 'status'
+							);
+
+
+							/* E-Mail the client */
+							$ticket_closed = new WPAS_Email_Notification( $post_id, array( 'action' => 'closed' ) );
+
+							/**
+							 * wpas_ticket_closed_by_agent hook
+							 */
+							do_action( 'wpas_ticket_closed_by_agent', $post_id );
+						}
+
+					}
+
+				}
+
+			}
+
+		}
+
+		/**
+		 * wpas_save_custom_fields_before hook
+		 *
+		 * @since  3.0.0
+		 */
+		do_action( 'wpas_save_custom_fields_before', $post_id );
+
+		/* Now we can instantiate the save class and save */
+		$wpas_save = new WPAS_Save_Fields();
+		$saved = $wpas_save->save( $post_id );
+
+		/**
+		 * wpas_save_custom_fields_before hook
+		 *
+		 * @since  3.0.0
+		 */
+		do_action( 'wpas_save_custom_fields_after', $post_id );
+
+		/* Log the action */
+		if ( !empty( $log ) ) {
+			wpas_log( $post_id, $log );
+		}
+
+		/* If this was a ticket update, we need to know where to go now... */
+		if ( '' !== $original_status ) {
+
+			/* Go back to the tickets list */
+			if ( isset( $_POST['wpas_back_to_list'] ) && true === boolval( $_POST['wpas_back_to_list'] ) || isset( $_POST['where_after'] ) && 'back_to_list' === $_POST['where_after'] ) {
+				$_SESSION['wpas_redirect'] = add_query_arg( array( 'post_type' => WPAS_PT_SLUG ), admin_url( 'edit.php' ) );
+			}
+
+		}
+
+	}
+
+	/**
+	 * Mark replies as read.
+	 *
+	 * When an agent replies to a ticket, we mark all previous replies
+	 * as readas we suppose it's all been read when the agent replies.
+	 * This allows for keeping replies unread until an agent replies
+	 * or manually marks the last reply as read.
+	 *
+	 * @since  3.0.0
+	 * @return [type] [description]
+	 */
+	public function mark_replies_read( $reply_id, $data ) {
+
+		$replies = wpas_get_replies( intval( $data['post_parent'] ), 'unread' );
+
+		foreach ( $replies as $reply ) {
+			wpas_mark_reply_read( $reply->ID );
+		}
+
+	}
+
+	/**
+	 * Delete ticket dependencies.
+	 *
+	 * Delete all ticket dependencies when a ticket is deleted. This includes
+	 * ticket replies and ticket history. Ticket attachments are deleted by
+	 * WPAS_File_Upload::delete_attachments()
+	 * 
+	 * @param  integer $post_id ID of the post to be deleted
+	 * @return void
+	 */
+	public function delete_ticket_dependencies( $post_id ) {
+
+		/* First of all we remove this action to avoid creating a loop */
+		remove_action( 'before_delete_post', array( $this, 'delete_ticket_replies' ), 10, 1 );
+
+		$args = array(
+			'post_parent'            => $post_id,
+			'post_type'              => apply_filters( 'wpas_replies_post_type', array( 'ticket_history', 'ticket_reply' ) ),
+			'post_status'            => 'any',
+			'posts_per_page'         => -1,
+			'no_found_rows'          => true,
+			'cache_results'          => false,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);		
+		
+		$posts = new WP_Query( $args );
+
+		foreach ( $posts->posts as $id => $post ) {
+
+			do_action( 'wpas_before_delete_dependency', $post->ID, $post );
+
+			wp_delete_post( $post->ID, true );
+
+			do_action( 'wpas_after_delete_dependency', $post->ID, $post );
+		}
+
+	}
+
+}

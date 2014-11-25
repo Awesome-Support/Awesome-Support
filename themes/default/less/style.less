@@ -1,0 +1,333 @@
+/*
+
+1) Import
+2) Variables
+3) Mixins
+4) General Scaffolding
+5) Forms + Buttons + Labels
+6) Tables
+7) Pages
+
+*/
+
+
+/*
+==========================================================================
+Import
+==========================================================================
+*/
+
+@import '../../../assets/public/less/public.less';
+@import 'preboot.less';
+
+/*
+==========================================================================
+Variables
+==========================================================================
+*/
+
+@font-size-base:          14px;
+@font-size-large:         @font-size-base * 1.25; // ~18px
+@font-size-small:         @font-size-base * 0.85; // ~12px
+@font-size-mini:          @font-size-base * 0.75; // ~11px
+
+@spacing:                 15px;
+
+@grid-columns:            12;
+@grid-column-padding:     @spacing;
+@grid-float-breakpoint:   768px;
+
+/*
+==========================================================================
+Mixins
+==========================================================================
+*/
+
+.wpas-sr-only() {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0,0,0,0);
+	border: 0;
+}
+
+/*
+==========================================================================
+General Scaffolding
+==========================================================================
+*/
+
+.wpas {
+	*, *:before, *:after {
+		box-sizing: border-box;
+	}
+}
+
+/*
+==========================================================================
+Forms + Buttons + Labels
+==========================================================================
+*/
+
+/* Forms */
+.wpas-form-group,
+.wpas-checkbox {
+	margin-bottom: @spacing;
+}
+.wpas-form-group {
+	label {
+		display: inline-block;
+		max-width: 100%;
+		margin-bottom: @spacing/3;
+		font-weight: 700;
+	}
+}
+.wpas-form-control {
+	display: block;
+	width: 100%;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: @font-size-base;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+textarea.wpas-form-control {
+	height: auto;
+}
+.wpas-help-block {
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	color: #737373;
+}
+
+/* Buttons */
+.wpas-btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: @font-size-base;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+}
+.wpas-btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+.wpas-btn-default:hover,
+.wpas-btn-default:focus,
+.wpas-btn-default.focus,
+.wpas-btn-default:active,
+.wpas-btn-default.active {
+	color: #333;
+	background-color: #e6e6e6;
+	border-color: #adadad;
+}
+
+/* Labels */
+.wpas-label {
+	display: inline;
+	padding: .2em .6em .3em;
+	font-size: 75%;
+	font-weight: 700;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25em;
+}
+
+/*
+==========================================================================
+Tables
+==========================================================================
+*/
+
+.wpas-table {
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: 20px;
+	background-color: transparent;
+	border-spacing: 0;
+	border-collapse: collapse;
+	border: none;
+}
+.wpas-table>caption+thead>tr:first-child>th,
+.wpas-table>colgroup+thead>tr:first-child>th,
+.wpas-table>thead:first-child>tr:first-child>th,
+.wpas-table>caption+thead>tr:first-child>td,
+.wpas-table>colgroup+thead>tr:first-child>td,
+.wpas-table>thead:first-child>tr:first-child>td {
+	border-top: 0;
+}
+.wpas-table>thead>tr>th {
+	vertical-align: bottom;
+	border-bottom: 2px solid #ddd;
+	text-align: left;
+}
+.wpas-table>thead>tr>th,
+.wpas-table>tbody>tr>th,
+.wpas-table>tfoot>tr>th,
+.wpas-table>thead>tr>td,
+.wpas-table>tbody>tr>td,
+.wpas-table>tfoot>tr>td {
+	padding: 8px;
+	line-height: 1.42857143;
+	vertical-align: top;
+	border: none;
+	border-top: 1px solid #ddd;
+}
+
+/*
+==========================================================================
+Pages
+==========================================================================
+*/
+
+/* Login & Register Form */
+.wpas-login-register {
+	.make-row();
+	.wpas-form {
+		.make-column(6);
+
+		h3 {
+			margin-bottom: @spacing;
+			line-height: 1;
+		}
+	}
+	.wpas-form-group {
+		label {
+			.wpas-sr-only;
+		}
+	}
+}
+
+/* Submit Ticket */
+.wpas-submit-ticket {}
+.wpas-submit-ticket-wysiwyg,
+.wpas-wysiwyg-textarea {
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+}
+
+/* Ticket List */
+#wpas_ticketlist_filter {
+	.wpas-form-group;
+
+	text-align: left;
+	max-width: 300px;
+
+	input {
+		.wpas-form-control;
+		margin-left: 0px;
+	}
+}
+
+/* Ticket Details */
+.wpas-ticket-details-header {
+	margin-bottom: 0px;
+}
+.wpas-ticket-replies {
+	>tbody>tr>td {
+		padding: 25px 0;
+		border-bottom: 1px solid #ddd;
+	}
+	>tbody>tr>td:last-child {
+		padding-left: 25px;
+	}
+}
+.wpas-reply-meta {
+	.make-row();
+	margin-bottom: @spacing;
+
+	.wpas-reply-user,
+	.wpas-reply-time {
+		.make-column(6);
+	}
+	.wpas-reply-time {
+		text-align: right;
+	}
+	.wpas-timestamp {
+		font-style: italic;
+		span {
+			white-space: nowrap;
+		}
+	}
+	.wpas-human-date {
+		font-style: normal;
+		opacity: 0;
+		transition: opacity .25s ease;
+	}
+}
+.wpas-reply-content {
+	p:first-child {
+		margin-top: 0;
+	}
+	p:last-child {
+		margin-bottom: 0;
+	}
+}
+.wpas-reply-single:hover {
+	.wpas-human-date {
+		opacity: 1;
+	}
+}
+.wpas-user-profile {
+	height: 64px;
+	width: 64px;
+	position: relative;
+
+	img {
+		border-radius: 5px;
+		transition: opacity .25s ease;
+		margin: 0;
+		padding: 0;
+
+		&:hover {
+			opacity: 0.6;
+		}
+	}
+}
+.wpas-reply-attachements {
+	background-color: #efefef;;
+	padding: @spacing;
+	margin-top: @spacing;
+	border-top-color: #ddd;
+
+	strong {
+		display: inline-block;
+		border-bottom: 2px solid #ddd;
+		margin-bottom: @spacing/3;
+	}
+
+	ul, ol, ul li, ol li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+}

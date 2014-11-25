@@ -1,0 +1,5 @@
+{
+    "require": {
+        "gambitph/titan-framework": "1.6.*"
+    }
+}

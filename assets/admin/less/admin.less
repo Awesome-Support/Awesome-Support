@@ -1,0 +1,267 @@
+@charset 'UTF-8';
+
+.clearfix() {
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+/*
+==========================================================================
+General Scaffolding
+==========================================================================
+*/
+
+.wpas-label {
+	display: inline-block;
+	padding: 2px 8px;
+	font-weight: bold;
+	color: #fff;
+	white-space: nowrap;
+	vertical-align: baseline;
+	background-color: #999;
+	border-radius: 3px;
+}
+.wpas-lead {
+	font-size: 16px;
+}
+.wpas-alert-danger {
+	color: red;
+}
+.wpas-alert-success {
+	color: green;
+}
+
+/*
+==========================================================================
+Ticket List
+==========================================================================
+*/
+
+.column-status {
+	width: 70px !important;
+	overflow: hidden
+}
+.wpas-activity {
+	ul, li {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+/*
+==========================================================================
+System Status
+==========================================================================
+*/
+
+#wpas-system-status-output {
+	width: 100%;
+	padding: 1em;
+}
+.wpas-system-status,
+.wpas-system-status-table {
+	margin-bottom: 2em;
+}
+.wpas-system-status-table {
+	.row-title {
+		width: 20%;
+	}
+}
+
+/*
+==========================================================================
+Ticket Replies
+==========================================================================
+*/
+
+.wpas-table-replies {
+	tr > td {
+		vertical-align: top;
+		padding-top: 2.25em;
+		padding-bottom: 2.25em;
+		position: relative;
+	}
+	tr.wpas-ticket-history > td,
+	tr.wpas-ticket-history p {
+		font-size: 13px;
+	}
+	tr.wpas-ticket-history > td {
+		padding-top: 0.75em;
+		padding-bottom: 0.75em;
+		text-align: center;
+		border: 1px solid;
+
+		/* Same color as WP Editor */
+		color: #555;
+		background-color: #f5f5f5;
+		border-color: #dedede;
+	}
+	tr.wpas-trash > td {
+		color: #a94442;
+		background-color: #f2dede;
+		border-color: #ebccd1;
+	}
+	tr.wpas-editor > td {
+		background-color: #d9edf7;
+	}
+	.avatar-64 {
+		border-radius: 3px;
+	}
+
+	/* Reset & Restore styles for replies */
+	h1, h2, h3, h4, h5, h6 {
+		border: none;
+		margin: 0 0 10px 0;
+		padding: 0;
+	}
+	ul { 
+		list-style-type: disc; 
+		list-style-position: inside; 
+	}
+	ol { 
+		list-style-type: decimal; 
+		list-style-position: inside; 
+	}
+	ul ul,
+	ol ul { 
+		list-style-type: circle; 
+		list-style-position: inside; 
+		margin-left: 15px; 
+	}
+	ol ol,
+	td ul ol { 
+		list-style-type: lower-latin; 
+		list-style-position: inside; 
+		margin-left: 15px; 
+	}
+}
+.wpas-ticket-controls,
+.wpas-profilerole,
+.wpas-human-date {
+	opacity: 0;
+	transition: opacity .25s ease;
+}
+.wpas-table-row {
+	border-top: 1px solid #ddd;
+
+	&:hover {
+		.wpas-ticket-controls,
+		.wpas-profilerole,
+		.wpas-human-date,
+		.wpas-unread-badge {
+			opacity: 1;
+		}
+	}
+}
+.wpas-ticket-controls {
+	position: absolute;
+	top: 50px;
+	right: 0;
+
+	.wpas-delete:first-child {
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
+		border-right: none;
+	}
+	.wpas-edit:last-child {
+		border-top-left-radius: 0px;
+		border-bottom-left-radius: 0px;
+	}
+}
+.wpas-reply-meta {
+	.clearfix();
+	padding-bottom: 0.75em;
+
+	.wpas-reply-user {
+		float: left;
+	}
+	.wpas-reply-time {
+		float: right;
+	}
+}
+.wpas-action-details {
+	ul, li, p {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	li, p {
+		margin-top: 4px;
+	}
+}
+.wpas-time {
+	white-space: nowrap;
+	background-color: #fff;
+	border: 1px solid #ddd;
+	padding: 1px 5px;
+	border-radius: 3px;
+}
+.wpas-unread-badge {
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: #0074a2;
+	color: white;
+	padding: 4px 8px;
+	font-size: 12px;
+	opacity: 0.5;
+}
+.wpas-reply-attachements {
+	margin-top: 2em;
+	background-color: #f1f1f1;
+	border: 1px solid #ddd;
+	padding: 1.5em;
+
+	ul, li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+}
+.wpas-attachment-container {
+	background-color: #FFFFED;
+	padding: 1.5em;
+	margin: 1.5em 0;
+	border: 1px solid #ddd;
+
+	label {
+		display: block;
+	}
+	p {
+		margin: 0;
+	}
+}
+
+@media screen and (max-width: 782px) {
+	.wpas-table-replies {
+		tr > td.col1 {
+			display: none;
+		}
+		tr.wpas-ticket-history > td {
+			line-height: 1.6;
+		}
+	}
+	.wpas-reply-meta {
+		.wpas-reply-user,
+		.wpas-reply-time {
+			float: none;
+			clear: both;
+		}
+	}
+	.wpas-ticket-controls,
+	.wpas-profilerole,
+	.wpas-human-date {
+		opacity: 1;
+	}
+	.wpas-ticket-controls {
+		position: static;
+		top: 0;
+		text-align: right;
+	}
+}

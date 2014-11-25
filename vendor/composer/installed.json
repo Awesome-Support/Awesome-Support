@@ -1,0 +1,41 @@
+[
+    {
+        "name": "gambitph/titan-framework",
+        "version": "v1.6.1",
+        "version_normalized": "1.6.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/gambitph/Titan-Framework.git",
+            "reference": "84f281c6f73fa7cc53d5a71afca1293e3efd491d"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/84f281c6f73fa7cc53d5a71afca1293e3efd491d",
+            "reference": "84f281c6f73fa7cc53d5a71afca1293e3efd491d",
+            "shasum": ""
+        },
+        "time": "2014-10-10 03:54:40",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "titan-framework.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPLv2+"
+        ],
+        "authors": [
+            {
+                "name": "Gambit Technologies",
+                "email": "info@gambit.ph"
+            }
+        ],
+        "description": "Titan Framework allows theme and plugin developers to create a admin pages, options, meta boxes, and theme customizer options with just a few simple lines of code.",
+        "keywords": [
+            "Titan Framework",
+            "wordpress"
+        ]
+    }
+]
