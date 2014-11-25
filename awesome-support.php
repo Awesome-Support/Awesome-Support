@@ -59,6 +59,7 @@ define( 'WPAS_FIELDS_DESC', apply_filters( 'wpas_fields_descriptions', true ) );
  * Shared Functionalities
  *----------------------------------------------------------------------------*/
 
+require_once( WPAS_PATH . 'includes/functions-fallback.php' );
 require_once( plugin_dir_path( __FILE__ ) . 'class-awesome-support.php' );
 
 /**
