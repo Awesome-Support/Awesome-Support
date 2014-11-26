@@ -267,3 +267,41 @@ function wpas_get_current_admin_url() {
 	return esc_url( add_query_arg( $get, admin_url( $pagenow ) ) );
 
 }
+
+/**
+ * Redirect to another page.
+ *
+ * The function will redirect to another page by using
+ * wp_redirect if headers haven't been sent already. Otherwise
+ * it uses a meta refresh tag.
+ *
+ * @since  3.0.0
+ * @param  string  $case     Redirect case used for filtering
+ * @param  string  $location URL to redirect to
+ * @param  mixed   $post_id  The ID of the post to redirect to (or null if none specified)
+ * @return integer           Returns false if location is not provided, true otherwise
+ */
+function wpas_redirect( $case, $location = null, $post_id = null ) {
+
+	if ( is_null( $location ) ) {
+		return false;
+	}
+
+	/**
+	 * Filter the redirect URL.
+	 *
+	 * @param  string URL to redirect to
+	 * @param  mixed  ID of the post to redirect to or null if none specified
+	 */
+	$location = apply_filters( "wpas_redirect_$case", $location, $post_id );
+	$location = wp_sanitize_redirect( $location );
+
+	if ( !headers_sent() ) {
+		wp_redirect( $location, 302 );
+	} else {
+		echo "<meta http-equiv='refresh' content='0; url=$location'>";
+	}
+
+	return true;
+
+}
