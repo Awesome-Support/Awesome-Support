@@ -54,7 +54,7 @@ foreach( $wp_roles->roles as $role => $data ) {
 }
 ?>
 <div id="wpas-stakeholders">
-	<label for="wpas-issuer"><strong><?php _e( 'Issuer', 'wpas' ); ?></strong></label> 
+	<label for="wpas-issuer"><strong><?php _e( 'Ticket Creator', 'wpas' ); ?></strong></label> 
 	<p>
 
 		<?php if ( current_user_can( 'create_ticket' ) ):
@@ -113,7 +113,7 @@ foreach( $wp_roles->roles as $role => $data ) {
 	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'This ticket has been raised by the user hereinabove.', 'wpas' ), '#' ); ?></p><?php endif; ?>
 	<hr>
 
-	<label for="wpas-assignee"><strong><?php _e( 'Assignee', 'wpas' ); ?></strong></label>
+	<label for="wpas-assignee"><strong><?php _e( 'Support Staff', 'wpas' ); ?></strong></label>
 	<p>
 		<select name="wpas_assignee" id="wpas-assignee" <?php if( !current_user_can( 'assign_ticket' ) ) { echo 'disabled'; } ?>>
 			<?php
