@@ -23,6 +23,7 @@ class WPAS_Tickets_List {
 		add_action( 'manage_' . WPAS_PT_SLUG . '_posts_columns',        array( $this, 'add_core_custom_columns' ), 16, 1 );
 		add_action( 'manage_' . WPAS_PT_SLUG . '_posts_custom_column' , array( $this, 'core_custom_columns_content' ), 10, 2 );
 		add_action( 'restrict_manage_posts',                            array( $this, 'unreplied_filter' ), 9, 0 );
+		add_action( 'admin_menu',                                       array( $this, 'hide_closed_tickets' ) );
 		add_filter( 'the_excerpt',                                      array( $this, 'remove_excerpt' ) );
 		// add_filter( 'update_user_metadata',                             array( $this, 'set_list_mode' ), 10, 5 );
 		// add_filter( 'parse_query',                                      array( $this, 'filter_by_replies' ), 10, 1 );
@@ -215,6 +216,34 @@ class WPAS_Tickets_List {
 		$dropdown        .= '</select>';
 
 		echo $dropdown;
+
+	}
+
+	/**
+	 * Hide closed tickets.
+	 *
+	 * If the plugin is set to hide closed tickets,
+	 * we modify the "All Tickets" link in the post type menu
+	 * and append the status filter with the "open" value.
+	 *
+	 * @since  3.0.0
+	 * @return void
+	 */
+	public function hide_closed_tickets() {
+
+		$hide = boolval( wpas_get_option( 'hide_closed' ) );
+
+		if ( true !== $hide ) {
+			return false;
+		}
+
+		global $submenu;
+
+		if ( is_array( $submenu ) && array_key_exists( "edit.php?post_type=" . WPAS_PT_SLUG, $submenu ) ) {
+			$submenu["edit.php?post_type=" . WPAS_PT_SLUG][5][2] = $submenu["edit.php?post_type=" . WPAS_PT_SLUG][5][2] . '&amp;wpas_status=open';
+		}
+
+		return true;
 
 	}
 

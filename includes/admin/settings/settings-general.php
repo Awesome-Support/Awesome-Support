@@ -46,6 +46,13 @@ function wpas_core_settings_general( $def ) {
 					'default' => 'ASC'
 				),
 				array(
+					'name'    => __( 'Hide Closed', 'wpas' ),
+					'id'      => 'hide_closed',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Only show open tickets when clicking the "All Tickets" link.', 'wpas' ),
+					'default' => true
+				),
+				array(
 					'name'    => __( 'Old Tickets', 'wpas' ),
 					'id'      => 'old_ticket',
 					'type'    => 'text',
