@@ -1,14 +1,11 @@
 <?php
-class WPAS_Tickets_Tests extends WP_UnitTestCase {
+class WPAS_Test_Functions_Post extends WP_UnitTestCase {
 
 	private $plugin;
  
     function setUp() {
          
         parent::setUp();
-       
-        $this->ticket_id = null;
-        $this->reply_id = null;
 
         $this->ticket_data = array(
             'post_title'   => 'Test Ticket',
@@ -50,6 +47,12 @@ class WPAS_Tickets_Tests extends WP_UnitTestCase {
         $this->assertInternalType( 'int', $reply_id );
     }
 
+    function test_wpas_insert_reply_fail() {
+        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
+        $reply_id  = wpas_insert_reply( $this->reply_data );
+        $this->assertFalse( $reply_id );
+    }
+
     function test_wpas_edit_reply() {
         $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
         $reply_id  = wpas_insert_reply( $this->reply_data, $ticket_id );
@@ -70,6 +73,7 @@ class WPAS_Tickets_Tests extends WP_UnitTestCase {
         $reply_id_2 = wpas_insert_reply( $this->reply_data, $ticket_id );
         $replies    = wpas_get_replies( $ticket_id );
         $this->assertNotEmpty( $replies );
+        $this->assertCount( 2, $replies );
     }
 
     function test_wpas_find_agent() {

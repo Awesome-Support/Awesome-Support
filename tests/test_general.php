@@ -1,5 +1,5 @@
 <?php
-class WPAS_Functions_General extends WP_UnitTestCase {
+class WPAS_Test_Functions_General extends WP_UnitTestCase {
 
 	private $plugin;
  
