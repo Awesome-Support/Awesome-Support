@@ -146,7 +146,7 @@ class Awesome_Support {
 				/**
 				 * Redirect to the newly created ticket
 				 */
-				wp_redirect( add_query_arg( array( 'message' => 6 ), get_permalink( $submit ) ) );
+				wpas_redirect( 'ticket_added_failed', add_query_arg( array( 'message' => 6 ), get_permalink( $submit ) ), $submit );
 				exit;
 
 			}
@@ -163,7 +163,7 @@ class Awesome_Support {
 				/**
 				 * Redirect to the newly created ticket
 				 */
-				wp_redirect( get_permalink( $ticket_id ) );
+				wpas_redirect(, 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
 				exit;
 				
 			}
@@ -196,7 +196,7 @@ class Awesome_Support {
 			}
 
 			if ( false === $reply_id ) {
-				wp_redirect( add_query_arg( array( 'message' => '7' ), get_permalink( $parent_id ) ) );
+				wpas_redirect( 'reply_added_failed', add_query_arg( array( 'message' => '7' ), get_permalink( $parent_id ) ) );
 				exit;
 			} else {
 
@@ -205,7 +205,7 @@ class Awesome_Support {
 				 */
 				delete_transient( "wpas_activity_meta_post_$parent_id" );
 
-				wp_redirect( add_query_arg( array( 'message' => '8' ), get_permalink( $parent_id ) ) . "#reply-$reply_id" );
+				wpas_redirect( 'reply_added', add_query_arg( array( 'message' => '8' ), get_permalink( $parent_id ) ) . "#reply-$reply_id", $parent_id );
 				exit;
 			}
 		}
@@ -238,7 +238,7 @@ class Awesome_Support {
 					wpas_log( intval( $_GET['ticket_id'] ), __( 'The ticket was re-opened.', 'wpas' ) );
 				}
 
-				wp_redirect( add_query_arg( array( 'message' => '9' ), get_permalink( intval( $_GET['ticket_id'] ) ) ) );
+				wpas_redirect( 'ticket_reopen', add_query_arg( array( 'message' => '9' ), get_permalink( intval( $_GET['ticket_id'] ) ) ), intval( $_GET['ticket_id'] ) );
 				exit;
 
 			break;
@@ -632,7 +632,7 @@ class Awesome_Support {
 	public function redirect_archive() {
 
 		if ( is_post_type_archive( WPAS_PT_SLUG ) ) {
-			wp_redirect( get_permalink( wpas_get_option( 'ticket_list' ) ) );
+			wpas_redirect( 'archive_redirect', get_permalink( wpas_get_option( 'ticket_list' ) ) );
 		}
 
 	}
