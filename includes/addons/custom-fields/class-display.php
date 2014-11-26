@@ -146,9 +146,27 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 function wpas_cf_display_status( $name, $post_id ) {
 
 	$status = wpas_get_ticket_status( $post_id );
-	$label  = ucwords( $status );
-	$color  = wpas_get_option( "color_$status", '#d6d6d6' );
-	$tag    = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+
+	if ( 'closed' === $status ) {
+		$label  = ucwords( $status );
+		$color  = wpas_get_option( "color_$status", '#eeeeee' );
+		$tag    = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+	} else {
+
+		$post          = get_post( $post_id );
+		$post_status   = $post->post_status;
+		$custom_status = wpas_get_post_status();
+
+		if ( !array_key_exists( $post_status, $custom_status ) ) {
+			$label  = ucwords( $status );
+			$color  = wpas_get_option( "color_$status", '#eeeeee' );
+			$tag    = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+		} else {
+			$label = $custom_status[$post_status];
+			$color = wpas_get_option( "color_$post_status", '#eeeeee' );
+			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+		}
+	}
 
 	echo $tag;
 

@@ -60,6 +60,20 @@ function wpas_core_settings_style( $def ) {
 		),
 	);
 
+	$status = wpas_get_post_status();
+
+	foreach ( $status as $id => $label ) {
+
+		$option = array(
+			'name'    => $label,
+			'id'      => 'color_' . $id,
+			'type'    => 'color',
+			'default' => '#eeeeee',
+		);
+
+		array_push( $settings['style']['options'], $option );
+	}
+
 	return array_merge( $def, $settings );
 
 }
