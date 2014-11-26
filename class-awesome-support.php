@@ -163,7 +163,7 @@ class Awesome_Support {
 				/**
 				 * Redirect to the newly created ticket
 				 */
-				wpas_redirect(, 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
+				wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
 				exit;
 				
 			}
@@ -178,7 +178,20 @@ class Awesome_Support {
 		 *
 		 * @since 3.0.0
 		 */
-		if ( isset( $_POST['wpas_user_reply'] ) && !empty( $_POST['wpas_user_reply'] ) ) {
+		if ( isset( $_POST['wpas_user_reply'] ) ) {
+
+			/**
+			 * Define if the reply can be submitted empty or not.
+			 *
+			 * @since  3.0.0
+			 * @var boolean
+			 */
+			$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', false );
+
+			if ( empty( $_POST['wpas_user_reply'] ) && false === $can_submit_empty ) {
+				wpas_redirect( 'reply_not_added', add_query_arg( array( 'message' => wpas_create_notification( __( 'You cannot submit an empty reply.', 'wpas' ) ) ), get_permalink( $parent_id ) ), $parent_id );
+				exit;
+			}
 
 			$parent_id = intval( $_POST['ticket_id'] );
 
