@@ -171,7 +171,7 @@ class WPAS_Tickets_List {
 				 * Add tags
 				 */
 				if ( true === wpas_is_reply_needed( $post_id, $latest ) ) {
-					array_push( $tags, "<span class='wpas-label' style='background-color:#0074a2;'>" . __( 'Awaiting Reply', 'wpas' ) . "</span>" );
+					array_push( $tags, "<span class='wpas-label' style='background-color:#0074a2;'>" . __( 'Awaiting Support Reply', 'wpas' ) . "</span>" );
 				}
 				
 
