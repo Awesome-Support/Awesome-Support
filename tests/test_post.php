@@ -53,6 +53,18 @@ class WPAS_Test_Functions_Post extends WP_UnitTestCase {
         $this->assertFalse( $reply_id );
     }
 
+    function test_wpas_update_ticket_status() {
+        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
+        $updated   = wpas_update_ticket_status( $ticket_id, 'processing' );
+        $this->assertEquals( 1, $updated );
+    }
+
+    function test_wpas_update_ticket_status_fail() {
+        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
+        $updated   = wpas_update_ticket_status( $ticket_id, 'unknown' );
+        $this->assertEquals( 0, $updated );
+    }
+
     function test_wpas_edit_reply() {
         $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
         $reply_id  = wpas_insert_reply( $this->reply_data, $ticket_id );
