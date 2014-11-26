@@ -338,7 +338,40 @@ class WPAS_File_Upload {
 			} else {
 				$id = media_handle_upload( $this->index, $this->post_id );
 			}
+
+			if ( is_wp_error( $id ) ) {
+
+				$this->error_message = $id->get_error_message();
+				add_filter( 'wpas_redirect_reply_added', array( $this, 'redirect_error' ), 10, 2 );
+
+				return false;
+
+			} else {
+				return true;
+			}
+
 		}
+	}
+
+	/**
+	 * Change the redirection URL.
+	 *
+	 * In case the upload fails we want to notify the user.
+	 * We change the redirection URL and integrate a custom message
+	 * encoded in base64 that will be interpreted by the notification class.
+	 *
+	 * @since  3.0.0
+	 * @param  string  $location Original redirection URL
+	 * @param  integer $post_id  ID of the post to redirect to
+	 * @return string            New redirection URL
+	 */
+	public function redirect_error( $location, $post_id ) {
+
+		$url      = remove_query_arg( 'message', $location );
+		$message  = wpas_create_notification( sprintf( __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'wpas' ), $this->error_message ) );
+		$location = add_query_arg( array( 'message' => $message ), $url );
+
+		return $location;
 	}
 
 	/**
