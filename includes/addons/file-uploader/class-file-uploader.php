@@ -388,7 +388,7 @@ class WPAS_File_Upload {
 	public function limit_upload( $file ) {
 
 		$filetypes = explode( ',', $this->get_allowed_filetypes() );
-		$ext       = pathinfo( $file['name'], PATHINFO_EXTENSION );
+		$ext       = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
 
 		if ( !in_array( $ext, $filetypes ) ) {
 			$file['error'] = sprintf( __( 'You are not allowed to upload files of this type (%s)', 'wpas' ), $ext );
