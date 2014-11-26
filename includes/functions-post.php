@@ -301,7 +301,16 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 		$defaults['post_author'] = $current_user->ID;
 	}
 
-	return wpas_insert_reply( $data, $parent_id );
+	$insert = wpas_insert_reply( $data, $parent_id );
+
+	if ( $insert && user_can( $defaults['post_author'], 'edit_ticket' ) ) {
+		$replies = wpas_get_replies( $parent_id );
+		if ( 1 === count( $replies ) ) {
+			wpas_update_ticket_status( $parent_id, 'processing' );
+		}
+	}
+
+	return $insert;
 
 }
 
@@ -429,6 +438,20 @@ function wpas_edit_reply_ajax() {
 	die();
 }
 
+/**
+ * Insert a new reply.
+ *
+ * The function is basically a wrapper for wp_insert_post
+ * with some additional checks and new default arguments
+ * adapted to the needs of the ticket_reply post type.
+ * If also gives some useful hooks at different steps of
+ * the process.
+ *
+ * @since  3.0.0
+ * @param  array  $data     Array of arguments for this reply
+ * @param  boolean $post_id ID of the parent post
+ * @return mixed            The reply ID on success or false on failure
+ */
 function wpas_insert_reply( $data, $post_id = false ) {
 
 	if ( false === $post_id ) {
@@ -643,5 +666,42 @@ function wpas_randomize_uers_query( $query ) {
 	if ( 'wpas_random' == $query->query_vars['orderby'] ) {
 		$query->query_orderby = 'ORDER BY RAND()';
     }
+
+}
+
+/**
+ * Update ticket status.
+ *
+ * Update the post_status of a ticket
+ * using one of the custom status registered by the plugin
+ * or its addons.
+ * 
+ * @param  [type] $post_id [description]
+ * @param  [type] $status  [description]
+ * @return [type]          [description]
+ */
+function wpas_update_ticket_status( $post_id, $status ) {
+
+	$custom_status = wpas_get_post_status();
+
+	if ( !array_key_exists( $status, $custom_status ) ) {
+		return false;
+	}
+
+	global $wpdb;
+
+	$updated = $wpdb->query(
+		$wpdb->prepare(
+			"UPDATE $wpdb->posts SET post_status = '%s' WHERE ID = '%d'",
+			$status,
+			$post_id
+		)
+	);
+
+	if ( true === boolval( $updated ) ) {
+		wpas_log( $post_id, sprintf( __( 'Ticket state changed to &laquo;%s&raquo;', 'wpas' ), $custom_status[$status] ) );
+	}
+
+	return $updated;
 
 }
