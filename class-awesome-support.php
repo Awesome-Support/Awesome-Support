@@ -180,11 +180,13 @@ class Awesome_Support {
 		 */
 		if ( isset( $_POST['wpas_user_reply'] ) && !empty( $_POST['wpas_user_reply'] ) ) {
 
+			$parent_id = intval( $_POST['ticket_id'] );
+
 			/* Sanitize the data */
 			$data = array( 'post_content' => wp_kses( $_POST['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
 
 			/* Add the reply */
-			$reply_id = wpas_add_reply( $data, intval( $_POST['ticket_id'] ) );
+			$reply_id = wpas_add_reply( $data, $parent_id );
 
 			/* Possibly close the ticket */
 			if ( isset( $_POST['wpas_close_ticket'] ) && false !== $reply_id ) {
