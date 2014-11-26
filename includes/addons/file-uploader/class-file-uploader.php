@@ -275,7 +275,7 @@ class WPAS_File_Upload {
 					$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
 					$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
 					?>
-					<li><a href="<?php echo $attachment['url']; ?>"><?php echo $name; ?></a> <?php echo $filesize; ?></li>
+					<li><a href="<?php echo $attachment['url']; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>
