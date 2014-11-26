@@ -73,6 +73,12 @@ function wpas_single_ticket( $content ) {
 	}
 
 	/**
+	 * wpas_frontend_plugin_page_top is executed at the top
+	 * of every plugin page on the front end.
+	 */
+	do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
+
+	/**
 	 * Get the custom template.
 	 */
 	wpas_get_template( 'details' );

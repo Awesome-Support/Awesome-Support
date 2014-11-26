@@ -18,6 +18,12 @@ function wpas_sc_submit_form() {
 		 */
 		do_action( 'wpas_before_ticket_submit' );
 
+		/**
+		 * wpas_frontend_plugin_page_top is executed at the top
+		 * of every plugin page on the front end.
+		 */
+		do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
+
 		if ( isset( $_GET['message'] ) ) {
 			wpas_notification( 'decode', $_GET['message'] );
 		}

@@ -37,13 +37,10 @@ function wpas_sc_client_account() {
 	ob_start();
 
 	/**
-	 * wpas_before_all_templates hook.
-	 *
-	 * This hook is called at the top of every template
-	 * used for the plugin front-end. This allows for adding actions
-	 * (like notifications for instance) on all plugin related pages.
+	 * wpas_frontend_plugin_page_top is executed at the top
+	 * of every plugin page on the front end.
 	 */
-	do_action( 'wpas_before_all_templates' );
+	do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
 
 	/**
 	 * wpas_before_tickets_list hook
