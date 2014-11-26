@@ -53,9 +53,9 @@ class WPAS_Notification {
 			 * If the case is decode, it means the message has been passed base64 encoded.
 			 * We need to decode and sanitize it before displaying the notice.
 			 */
-			if ( 'decode' === $case ) {
+			if ( 'decode' === $case && false !== $decoded = base64_decode( (string)$message ) ) {
 				$this->message = false !== $message ? $message : $_REQUEST['message'];
-				$this->message = esc_attr( json_decode( base64_decode( (string)$message ) ) );
+				$this->message = esc_attr( json_decode( $decoded ) );
 				$this->case    = 'failure'; // Set the case as a failure by default
 			} else {
 
@@ -95,10 +95,16 @@ class WPAS_Notification {
 		 * This can only mean that we have a predefined message
 		 * where the case can be retrieved from within the class.
 		 */
-		elseif ( false === $case && $message && $this->predefined_exists( $message ) ) {
-			$predefined    = $this->get_predefined_messages();
-			$this->case    = esc_attr( $predefined[$message]['case'] );
-			$this->message = esc_attr( $predefined[$message]['message'] );
+		elseif ( false === $case && $message ) {
+
+			if ( $this->predefined_exists( $message ) ) {
+				$predefined    = $this->get_predefined_messages();
+				$this->case    = esc_attr( $predefined[$message]['case'] );
+				$this->message = esc_attr( $predefined[$message]['message'] );
+			} elseif( false !== $decoded = base64_decode( (string)$message ) ) {
+				$this->message = esc_attr( json_decode( $decoded ) );
+				$this->case    = 'failure'; // Set the case as a failure by default
+			}
 		}
 
 	}
