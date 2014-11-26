@@ -38,11 +38,6 @@ class Awesome_Support {
 		 */
 		$this->slug = WPAS_PT_SLUG;
 
-		require_once( WPAS_PATH . 'includes/functions-templating.php' );         // Templating function
-		require_once( WPAS_PATH . 'includes/class-post-type.php' );              // Register post types and related functions
-		require_once( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
-		require_once( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcodes
-
 		add_action( 'plugins_loaded',        array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
 		add_action( 'pre_user_query',        'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
 		add_action( 'wp',                    array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies

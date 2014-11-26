@@ -89,20 +89,22 @@ require_once( WPAS_PATH . 'includes/addons/file-uploader/class-file-uploader.php
  * by the backend or the frontend are loaded
  * by their respective classes.
  */
-require_once( WPAS_PATH . 'includes/functions-post.php' ); // All the functions related to opening a ticket and submitting replies
-require_once( WPAS_PATH . 'includes/functions-user.php' ); // Everything related to user login, registration and capabilities
-
-// NEED CLEANING
-require_once( WPAS_PATH . 'includes/class-log-history.php' );                        // Logging class
-require_once( WPAS_PATH . 'includes/class-email-notifications.php' );                // E-mail notification class
-require_once( WPAS_PATH . 'includes/functions-general.php' );                        // Functions that are used both in back-end and front-end
-require_once( WPAS_PATH . 'includes/functions-custom-fields.php' ); // Submission form related functions
+require_once( WPAS_PATH . 'includes/functions-post.php' );            // All the functions related to opening a ticket and submitting replies
+require_once( WPAS_PATH . 'includes/functions-user.php' );            // Everything related to user login, registration and capabilities
+require_once( WPAS_PATH . 'includes/class-log-history.php' );         // Logging class
+require_once( WPAS_PATH . 'includes/class-email-notifications.php' ); // E-mail notification class
+require_once( WPAS_PATH . 'includes/functions-general.php' );         // Functions that are used both in back-end and front-end
+require_once( WPAS_PATH . 'includes/functions-custom-fields.php' );   // Submission form related functions
+require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
+require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Only Functionality
  *----------------------------------------------------------------------------*/
 if( !is_admin() ) {
-	require_once( WPAS_PATH . 'includes/class-notification.php' );                  // Load notifications class
+	require_once( WPAS_PATH . 'includes/class-notification.php' ); // Load notifications class
+	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
+	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
 }
 
 /*----------------------------------------------------------------------------*
