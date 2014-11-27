@@ -20,7 +20,7 @@ class WPAS_Ticket_Post_Type {
 	protected static $instance = null;
 
 	public function __construct() {
-		add_action( 'init',                  array( $this, 'post_type' ),            10, 0 );
+		add_action( 'after_setup_theme',     array( $this, 'post_type' ),            10, 0 );
 		add_action( 'init',                  array( $this, 'secondary_post_type' ),  10, 0 );
 		add_action( 'init',                  array( $this, 'register_post_status' ), 10, 0 );
 		add_action( 'post_updated_messages', array( $this, 'updated_messages' ),     10, 1 );    // Update the "post updated" messages for main post type

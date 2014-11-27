@@ -328,9 +328,17 @@ function wpas_get_reply_form( $args = array() ) {
 					/**
 					 * Otherwise just load a textarea
 					 */
-					else { ?>
-						<label for="reply-textarea" class="sr-only"></label>
-						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'wpas' ); ?>"></textarea>
+					else {
+
+						/**
+						 * Define if the reply can be submitted empty or not.
+						 *
+						 * @since  3.0.0
+						 * @var boolean
+						 */
+						$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', false );
+						?>
+						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'wpas' ); ?>" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
 					<?php }
 				
 				echo $textarea_after; ?>
@@ -469,12 +477,21 @@ function wpas_get_message_textarea( $editor_args = array() ) {
 		) );
 
 		?><div class="wpas-submit-ticket-wysiwyg"><?php
-			wp_editor( '', 'wpas-ticket-message', apply_filters( 'wpas_reply_wysiwyg_args', $editor_defaults ) );
+			wp_editor( wpas_get_field_value( 'wpas_message' ), 'wpas-ticket-message', apply_filters( 'wpas_reply_wysiwyg_args', $editor_defaults ) );
 		?></div><?php
 
-	} else { ?>
+	} else {
+
+		/**
+		 * Define if the body can be submitted empty or not.
+		 *
+		 * @since  3.0.0
+		 * @var boolean
+		 */
+		$can_submit_empty = apply_filters( 'wpas_can_message_be_empty', false );
+		?>
 		<div class="wpas-submit-ticket-wysiwyg">
-			<textarea <?php wpas_get_field_class( 'wpas_message', $textarea_class ); ?> id="wpas-ticket-message" name="wpas_message" placeholder="<?php echo apply_filters( 'wpas_form_field_placeholder_wpas_message', __( 'Describe your problem as accurately as possible', 'wpas' ) ); ?>" rows="10" required><?php echo wpas_get_field_value( 'wpas_message' ); ?></textarea>
+			<textarea <?php wpas_get_field_class( 'wpas_message', $textarea_class ); ?> id="wpas-ticket-message" name="wpas_message" placeholder="<?php echo apply_filters( 'wpas_form_field_placeholder_wpas_message', __( 'Describe your problem as accurately as possible', 'wpas' ) ); ?>" rows="10" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>><?php echo wpas_get_field_value( 'wpas_message' ); ?></textarea>
 		</div>
 	<?php }
 

@@ -324,7 +324,12 @@ class WPAS_File_Upload {
 	 */
 	public function process_upload() {
 		
+		/* We have a submission with a $_FILES var set */
 		if ( $_POST && $_FILES && isset( $_FILES[$this->index] ) ) {
+
+			if ( empty( $_FILES[$this->index]['name'][0] ) ) {
+				return false;
+			}
 
 			$max = wpas_get_option( 'attachments_max' );
 			

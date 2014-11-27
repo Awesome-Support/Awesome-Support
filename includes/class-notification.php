@@ -147,7 +147,7 @@ class WPAS_Notification {
 			'7' 		=> array( 'case' => 'failure', 'message' => __( 'Your reply could not be submitted for an unknown reason.', 'wpas' ) ),
 			'8' 		=> array( 'case' => 'success', 'message' => __( 'Your reply has been submitted. Your agent will reply ASAP.', 'wpas' ) ),
 			'9' 		=> array( 'case' => 'success', 'message' => __( 'The ticket has been successfully re-opened.', 'wpas' ) ),
-			'10' 		=> array( 'case' => 'success', 'message' => __( 'It is mandatory to provide a description for your issue.', 'wpas' ) ),
+			'10' 		=> array( 'case' => 'failure', 'message' => __( 'It is mandatory to provide a description for your issue.', 'wpas' ) ),
 			'11' 		=> array( 'case' => 'failure', 'message' => __( 'You do not have the capacity to open a new ticket.', 'wpas' ) ),
 			'12' 		=> array( 'case' => 'failure', 'message' => __( 'Registrations are currently not allowed.', 'wpas' ) ),
 			'13' 		=> array( 'case' => 'failure', 'message' => __( 'You are not allowed to view this ticket.', 'wpas' ) ),
