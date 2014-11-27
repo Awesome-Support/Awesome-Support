@@ -194,6 +194,8 @@ class Awesome_Support_Admin {
 	 */
 	public function enqueue_admin_scripts() {
 
+		global $pagenow;
+
 		if ( !wpas_is_plugin_page() ) {
 			return;
 		}
@@ -205,6 +207,10 @@ class Awesome_Support_Admin {
 		if ( isset( $_GET['page'] ) && 'wpas-about' === $_GET['page'] ) {
 			add_thickbox();
 			wp_enqueue_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
+		}
+
+		if ( WPAS_PT_SLUG == get_post_type() && 'edit.php' === $pagenow ) {
+			wp_enqueue_script( 'wpas-admin-edit', WPAS_URL . 'assets/admin/js/admin-edit.js', array( 'jquery' ), WPAS_VERSION, true );
 		}
 
 		wp_enqueue_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery' ), WPAS_VERSION );
@@ -615,9 +621,13 @@ class Awesome_Support_Admin {
 		/* Issue details, only available for existing tickets */
 		if( isset( $_GET['post'] ) ) {
 			add_meta_box( 'wpas-mb-message', __( 'Ticket', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'normal', 'high', array( 'template' => 'message' ) );
-		}
 
-		add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'normal', 'high', array( 'template' => 'replies' ) );
+			$status = get_post_meta( intval( $_GET['post'] ), '_wpas_status', true );
+
+			if ( '' !== $status ) {
+				add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'normal', 'high', array( 'template' => 'replies' ) );
+			}
+		}
 
 		/* Ticket details */
 		add_meta_box( 'wpas-mb-details', __( 'Details', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'side', 'high', array( 'template' => 'details' ) );
