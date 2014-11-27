@@ -387,11 +387,21 @@ class WPAS_File_Upload {
 	 */
 	public function limit_upload( $file ) {
 
-		$filetypes = explode( ',', $this->get_allowed_filetypes() );
-		$ext       = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
+		$filetypes      = explode( ',', $this->get_allowed_filetypes() );
+		$ext            = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
+		$max_size       = wpas_get_option( 'filesize_max', 1 );
+		$max_size_bytes = $max_size * 1024 * 1024;
 
 		if ( !in_array( $ext, $filetypes ) ) {
 			$file['error'] = sprintf( __( 'You are not allowed to upload files of this type (%s)', 'wpas' ), $ext );
+		}
+
+		if ( $file['size'] <= 0 ) {
+			$file['error'] = __( 'You cannot upload empty attachments. You attachments weights 0 bytes', 'wpas' );
+		}
+
+		if ( $file['size'] > $max_size_bytes ) {
+			$file['error'] = sprintf( __( 'Your attachment is too big. You are allowed to attach files up to %s', 'wpas' ), "$max_size Mo" );
 		}
 		
 		return $file;

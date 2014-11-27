@@ -27,6 +27,13 @@ function wpas_core_settings_file_upload( $def ) {
 					'desc'    => __( 'How many files can a user attach to a ticket or a reply?', 'wpas' )
 				),
 				array(
+					'name'    => __( 'Maximum File Size', 'wpas' ),
+					'id'      => 'filesize_max',
+					'type'    => 'text',
+					'default' => 2,
+					'desc'    => sprintf( __( 'What is the maximum size allowed for one file (in <code>Mo</code>)? Your server allows up to %s', 'wpas' ), ini_get('upload_max_filesize') )
+				),
+				array(
 					'name'    => __( 'Allowed Files Types', 'wpas' ),
 					'id'      => 'attachments_filetypes',
 					'type'    => 'textarea',
