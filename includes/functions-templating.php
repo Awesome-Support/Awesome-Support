@@ -328,9 +328,17 @@ function wpas_get_reply_form( $args = array() ) {
 					/**
 					 * Otherwise just load a textarea
 					 */
-					else { ?>
-						<label for="reply-textarea" class="sr-only"></label>
-						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'wpas' ); ?>"></textarea>
+					else {
+
+						/**
+						 * Define if the reply can be submitted empty or not.
+						 *
+						 * @since  3.0.0
+						 * @var boolean
+						 */
+						$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', false );
+						?>
+						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'wpas' ); ?>" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
 					<?php }
 				
 				echo $textarea_after; ?>
