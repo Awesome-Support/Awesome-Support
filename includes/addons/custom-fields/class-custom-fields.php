@@ -713,7 +713,7 @@ function wpas_register_core_fields() {
 		return;
 	}
 
-	$wpas_cf->add_field( 'assignee',   array( 'core' => true, 'show_column' => false, 'log' => true ) );
+	$wpas_cf->add_field( 'assignee',   array( 'core' => true, 'show_column' => false, 'log' => true, 'title' => __( 'Support Staff', 'wpas' ) ) );
 	// $wpas_cf->add_field( 'ccs',        array( 'core' => true, 'show_column' => false, 'log' => true ) );
 	$wpas_cf->add_field( 'status',     array( 'core' => true, 'show_column' => true, 'log' => false, 'callback' => false, 'column_callback' => 'wpas_cf_display_status', 'save_callback' => null ) );
 	$wpas_cf->add_field( 'ticket-tag', array(
