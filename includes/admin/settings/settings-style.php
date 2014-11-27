@@ -1,5 +1,5 @@
 <?php
-add_filter( 'wpas_plugin_settings', 'wpas_core_settings_style' );
+add_filter( 'wpas_plugin_settings', 'wpas_core_settings_style', 5, 1 );
 /**
  * Add plugin style settings.
  * 

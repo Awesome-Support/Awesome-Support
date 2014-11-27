@@ -1,5 +1,5 @@
 <?php
-add_filter( 'wpas_plugin_settings', 'wpas_core_settings_notifications' );
+add_filter( 'wpas_plugin_settings', 'wpas_core_settings_notifications', 5, 1 );
 /**
  * Add plugin notifications settings.
  * 
