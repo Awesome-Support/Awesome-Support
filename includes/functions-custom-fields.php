@@ -25,14 +25,14 @@ function wpas_get_field_value( $field_name ) {
 	$meta = get_post_meta( get_the_ID(), '_' . WPAS_SLUG . "_$field_name", true );
 
 	if ( isset( $_SESSION['wpas_submission_form'] ) && is_array( $_SESSION['wpas_submission_form'] ) && array_key_exists( $field_name, $_SESSION['wpas_submission_form'] ) ) {
-		$value = esc_attr( $_SESSION['wpas_submission_form'][$field_name] );
+		$value = $_SESSION['wpas_submission_form'][$field_name];
 	} elseif ( !empty( $meta ) ) {
-		$value = esc_attr( $meta );
+		$value = $meta;
 	} else {
 		$value = '';
 	}
 
-	return apply_filters( 'wpas_get_field_value', $value, $field_name );
+	return apply_filters( 'wpas_get_field_value', esc_attr( wp_unslash( $value ) ), $field_name );
 
 }
 
