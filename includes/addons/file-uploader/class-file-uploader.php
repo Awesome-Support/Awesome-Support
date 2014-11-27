@@ -30,6 +30,11 @@ class WPAS_File_Upload {
 
 	public function __construct() {
 
+		/**
+		 * Load the addon settings
+		 */
+		require_once( WPAS_PATH . 'includes/addons/file-uploader/settings-file-upload.php' );
+
 		if ( !$this->can_attach_files() ) {
 			return;
 		}

@@ -1,12 +1,12 @@
 <?php
-add_filter( 'wpas_plugin_settings', 'wpas_core_settings_file_upload' );
+add_filter( 'wpas_plugin_settings', 'wpas_addon_settings_file_upload', 10, 1 );
 /**
  * Add plugin file upload settings.
  * 
  * @param  (array) $def Array of existing settings
  * @return (array)      Updated settings
  */
-function wpas_core_settings_file_upload( $def ) {
+function wpas_addon_settings_file_upload( $def ) {
 
 	$settings = array(
 		'file_upload' => array(
