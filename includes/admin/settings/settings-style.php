@@ -68,7 +68,7 @@ function wpas_core_settings_style( $def ) {
 			'name'    => $label,
 			'id'      => 'color_' . $id,
 			'type'    => 'color',
-			'default' => '#eeeeee',
+			'default' => '#7a7a7a',
 		);
 
 		array_push( $settings['style']['options'], $option );
