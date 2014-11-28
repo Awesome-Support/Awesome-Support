@@ -419,8 +419,8 @@ class Awesome_Support_Admin {
 		<div class="updated">
 			<p><?php _e( 'Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>', 'wpas' ); ?></p>
 			<p>
-				<a href="<?php echo esc_url( $single_url ); ?>" class="button-secondary"><?php _e( 'Single Product', 'wpas' ); ?></a> 
-				<a href="<?php echo esc_url( $multiple_url ); ?>" class="button-secondary"><?php _e( 'Multiple Products', 'wpas' ); ?></a>
+				<a href="<?php echo wp_sanitize_redirect( $single_url ); ?>" class="button-secondary"><?php _e( 'Single Product', 'wpas' ); ?></a> 
+				<a href="<?php echo wp_sanitize_redirect( $multiple_url ); ?>" class="button-secondary"><?php _e( 'Multiple Products', 'wpas' ); ?></a>
 			</p>
 		</div>
 	<?php }
@@ -551,7 +551,7 @@ class Awesome_Support_Admin {
 					/* Redirect with clean URL */
 					$url = esc_url( add_query_arg( array( 'post' => $_GET['post'], 'action' => 'edit' ), admin_url( 'post.php' ) . "#wpas-post-$del_id" ) );
 
-					wp_redirect( $url );
+					wpas_redirect( 'trashed_reply', $url );
 					exit;
 
 				}
@@ -566,14 +566,14 @@ class Awesome_Support_Admin {
 				update_option( 'wpas_options', serialize( $options ) );
 				delete_option( 'wpas_support_products' );
 
-				wp_redirect( add_query_arg( array( 'taxonomy' => WPAS_PRODUCT_SLUG, 'post_type' => WPAS_PT_SLUG ), admin_url( 'edit-tags.php' ) ) );
+				wpas_redirect( 'enable_multiple_products', add_query_arg( array( 'taxonomy' => WPAS_PRODUCT_SLUG, 'post_type' => WPAS_PT_SLUG ), admin_url( 'edit-tags.php' ) ) );
 				exit;
 
 			break;
 
 			case 'single-product':
 				delete_option( 'wpas_support_products' );
-				wp_redirect( remove_query_arg( array( 'wpas-nonce', 'wpas-do' ), wpas_get_current_admin_url() ) );
+				wpas_redirect( 'enable_single_product', remove_query_arg( array( 'wpas-nonce', 'wpas-do' ), wpas_get_current_admin_url() ) );
 				exit;
 			break;
 
@@ -597,7 +597,7 @@ class Awesome_Support_Admin {
 		unset( $_GET['wpas-nonce'] );
 
 		/* Read-only redirect */
-		wp_redirect( $url );
+		wpas_redirect( 'read_only', $url );
 		exit;
 
 	}
