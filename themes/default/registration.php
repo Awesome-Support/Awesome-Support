@@ -92,7 +92,7 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 			 */
 			do_action( 'wpas_after_registration_fields' );
 
-			if( wpas_get_option( 'terms', false ) ): ?>
+			if( wpas_get_option( 'terms_conditions', false ) ): ?>
 				<div class="wpas-checkbox">
 					<label><input type="checkbox" name="terms" required> <?php printf(__('I accept the %sterms and conditions%s', 'wpas'), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ); ?></label>
 				</div>
