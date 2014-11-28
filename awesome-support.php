@@ -1,11 +1,6 @@
 <?php
 /**
- * The WordPress Plugin Boilerplate.
- *
- * A foundation off of which to build well-documented WordPress plugins that
- * also follow WordPress Coding Standards and PHP best practices.
- *
- * @package   Awesome_Support
+ * @package   Awesome Support
  * @author    ThemeAvenue <web@themeavenue.net>
  * @license   GPL-2.0+
  * @link      http://themeavenue.net
@@ -22,7 +17,6 @@
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
- * WordPress-Plugin-Boilerplate: v2.6.1
  */
 
 // If this file is called directly, abort.
