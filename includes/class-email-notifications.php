@@ -88,7 +88,7 @@ class WPAS_Email_Notification {
 
 		}
 
-		if ( !$enable || false === $enable ) {
+		if ( !isset( $enable ) || false === $enable ) {
 			return;
 		}
 
