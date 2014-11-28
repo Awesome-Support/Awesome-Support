@@ -157,7 +157,7 @@ function wpas_is_plugin_page() {
 			return true;
 		}
 
-		if ( in_array( $post->ID, $pages ) ) {
+		if ( isset( $post ) && is_object( $post ) && in_array( $post->ID, $pages ) ) {
 			return true;
 		}
 
