@@ -90,6 +90,7 @@ class Awesome_Support_Admin {
 			add_action( 'plugins_loaded',            array( 'WPAS_Help',         'get_instance' ), 11, 0 );
 
 			/* Do Actions. */
+			add_action( 'pre_get_posts',             array( $this, 'hide_others_tickets' ), 10, 1 );
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_styles' ) );              // Load plugin styles
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_scripts' ) );             // Load plugin scripts
 			add_action( 'admin_menu',                array( $this, 'register_submenu_items' ) );            // Register all the submenus
@@ -168,6 +169,53 @@ class Awesome_Support_Admin {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Hide tickets not assigned to current user.
+	 *
+	 * Admins and agents can be set to only see their own tickets.
+	 * In this case, we modify the main query to only get the tickets
+	 * the current user is assigned to.
+	 *
+	 * @since  3.0.0
+	 * @param  object $query WordPress main query
+	 * @return boolean       True if the main query was modified, false otherwise
+	 */
+	public function hide_others_tickets( $query ) {
+
+		/* Make sure this is the main query */
+		if ( !$query->is_main_query() ) {
+			return false;
+		}
+
+		/* Make sure this is the admin screen */
+		if ( !is_admin() ) {
+			return false;
+		}
+
+		/* If admins can see all tickets do nothing */
+		if ( current_user_can( 'administrator' ) && true === boolval( wpas_get_option( 'admin_see_all' ) ) ) {
+			return false;
+		}
+
+		/* If agents can see all tickets do nothing */
+		if ( current_user_can( 'edit_ticket' ) && !current_user_can( 'administrator' ) && true === boolval( wpas_get_option( 'agent_see_all' ) ) ) {
+			return false;
+		}
+
+		global $current_user;
+
+		$query->set( 'meta_query', array(
+			array(
+				'key'     => '_wpas_assignee',
+				'value'   => $current_user->ID,
+				'compare' => '=',
+			) )
+		);
+
+		return true;
+
 	}
 
 	/**
