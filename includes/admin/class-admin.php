@@ -69,6 +69,7 @@ class Awesome_Support_Admin {
 			require_once( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
 			require_once( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
 			require_once( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
+			require_once( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
 
 			/* Handle possible redirections first of all. */
 			if ( isset( $_SESSION['wpas_redirect'] ) ) {
