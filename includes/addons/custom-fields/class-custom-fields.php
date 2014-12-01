@@ -49,11 +49,11 @@ class WPAS_Custom_Fields {
 			/**
 			 * Add custom columns
 			 */
-			add_action( 'manage_' . WPAS_PT_SLUG . '_posts_columns',          array( $this, 'add_custom_column' ), 10, 1 );
-			add_action( 'manage_' . WPAS_PT_SLUG . '_posts_columns',          array( $this, 'move_status_first' ), 15, 1 );
-			add_action( 'manage_' . WPAS_PT_SLUG . '_posts_custom_column' ,   array( $this, 'custom_columns_content' ), 10, 2 );
-			add_filter( 'manage_edit-' . WPAS_PT_SLUG . '_sortable_columns' , array( $this, 'custom_columns_sortable' ), 10, 1 );
-			add_action( 'pre_get_posts',                                      array( $this, 'custom_column_orderby' ) );
+			add_action( 'manage_ticket_posts_columns',          array( $this, 'add_custom_column' ), 10, 1 );
+			add_action( 'manage_ticket_posts_columns',          array( $this, 'move_status_first' ), 15, 1 );
+			add_action( 'manage_ticket_posts_custom_column' ,   array( $this, 'custom_columns_content' ), 10, 2 );
+			add_filter( 'manage_edit-ticket_sortable_columns' , array( $this, 'custom_columns_sortable' ), 10, 1 );
+			add_action( 'pre_get_posts',                        array( $this, 'custom_column_orderby' ) );
 			
 			/**
 			 * Add the taxonomies filters
@@ -206,7 +206,7 @@ class WPAS_Custom_Fields {
 					$args['update_count_callback'] = $option['args']['update_count_callback'];
 				}
 
-				register_taxonomy( $option['name'], array( WPAS_PT_SLUG ), $args );
+				register_taxonomy( $option['name'], array( 'ticket' ), $args );
 
 				if( false === $option['args']['taxo_std'] )
 					array_push( $this->remove_mb, $option['name'] );
@@ -232,7 +232,7 @@ class WPAS_Custom_Fields {
 	public function remove_taxonomy_metabox() {
 
 		foreach( $this->remove_mb as $key => $mb )
-			remove_meta_box( $mb . 'div', WPAS_PT_SLUG, 'side' );
+			remove_meta_box( $mb . 'div', 'ticket', 'side' );
 	}
 
 	/**
@@ -483,7 +483,7 @@ class WPAS_Custom_Fields {
 
 		global $typenow;
 
-		if ( WPAS_PT_SLUG != $typenow ) {
+		if ( 'ticket' != $typenow ) {
 			return;
 		}
 
@@ -538,7 +538,7 @@ class WPAS_Custom_Fields {
 
 		global $typenow;
 
-		if ( WPAS_PT_SLUG != $typenow ) {
+		if ( 'ticket' != $typenow ) {
 			return;
 		}
 
@@ -571,7 +571,7 @@ class WPAS_Custom_Fields {
 		global $pagenow;
 
 		/* Check if we are in the correct post type */
-		if( is_admin() && 'edit.php' == $pagenow && isset( $_GET['post_type'] ) && WPAS_PT_SLUG == $_GET['post_type'] && $query->is_main_query() ) {
+		if( is_admin() && 'edit.php' == $pagenow && isset( $_GET['post_type'] ) && 'ticket' == $_GET['post_type'] && $query->is_main_query() ) {
 
 			/* Get the current query */
 			$qv = &$query->query_vars;
@@ -615,7 +615,7 @@ class WPAS_Custom_Fields {
 		if ( is_admin()
 			&& 'edit.php' == $pagenow
 			&& isset( $_GET['post_type'] )
-			&& WPAS_PT_SLUG == $_GET['post_type']
+			&& 'ticket' == $_GET['post_type']
 			&& isset( $_GET['wpas_status'] )
 			&& !empty( $_GET['wpas_status'] )
 			&& $query->is_main_query() ) {

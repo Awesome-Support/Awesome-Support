@@ -36,7 +36,7 @@ class Awesome_Support {
 		 * @since 1.0.0
 		 * @var   string
 		 */
-		$this->slug = WPAS_PT_SLUG;
+		$this->slug = 'ticket';
 
 		add_action( 'plugins_loaded',        array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
 		add_action( 'pre_user_query',        'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
@@ -574,7 +574,7 @@ class Awesome_Support {
 
 		global $wp_query, $wpas_replies;
 
-		if ( isset( $wp_query->post ) && WPAS_PT_SLUG === $wp_query->post->post_type ) {
+		if ( isset( $wp_query->post ) && 'ticket' === $wp_query->post->post_type ) {
 
 			$args = array(
 				'post_parent'            => $wp_query->post->ID,
@@ -639,7 +639,7 @@ class Awesome_Support {
 	 */
 	public function redirect_archive() {
 
-		if ( is_post_type_archive( WPAS_PT_SLUG ) ) {
+		if ( is_post_type_archive( 'ticket' ) ) {
 			wpas_redirect( 'archive_redirect', get_permalink( wpas_get_option( 'ticket_list' ) ) );
 		}
 
@@ -660,7 +660,7 @@ class Awesome_Support {
 	 */
 	public function template_include( $template ) {
 
-		if ( !is_singular( WPAS_PT_SLUG ) ) {
+		if ( !is_singular( 'ticket' ) ) {
 			return $template;
 		}
 

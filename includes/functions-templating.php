@@ -34,7 +34,7 @@ function wpas_single_ticket( $content ) {
 	/* Remove the filter to avoid infinite loops. */
 	remove_filter( 'the_content', 'wpas_single_ticket' );
 
-	$slug = WPAS_PT_SLUG;
+	$slug = 'ticket';
 
 	/* Don't touch the admin */
 	if ( is_admin() ) {

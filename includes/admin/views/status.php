@@ -116,7 +116,7 @@
 			</tr>
 			<tr>
 				<td class="row-title"><?php _e( 'Tickets Slug', 'wpas' ); ?></td>
-				<td><code><?php echo WPAS_PT_SLUG; ?></code></td>
+				<td><code><?php echo defined( 'WPAS_SLUG' ) ? sanitize_title( WPAS_SLUG ) : 'ticket'; ?></code></td>
 			</tr>
 			<tr class="alt">
 				<td class="row-title"><?php _e( 'Products Slug', 'wpas' ); ?></td>

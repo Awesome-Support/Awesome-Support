@@ -130,7 +130,7 @@ class WPAS_File_Upload {
 		if ( is_admin() ) {
 
 			/* Are we in the right post type? */
-			if ( !isset( $_POST['post_type'] ) || WPAS_PT_SLUG !== $_POST['post_type'] )
+			if ( !isset( $_POST['post_type'] ) || 'ticket' !== $_POST['post_type'] )
 				return $upload;
 
 			if ( !isset( $_POST['wpas_reply'] ) )
@@ -306,7 +306,7 @@ class WPAS_File_Upload {
 
 	public function add_form_enctype( $post ) {
 
-		if ( WPAS_PT_SLUG !== $post->post_type ) {
+		if ( 'ticket' !== $post->post_type ) {
 			return;
 		}
 
@@ -509,7 +509,7 @@ class WPAS_File_Upload {
 	public function new_reply_backend_attachment( $reply_id, $data ) {
 
 		/* Are we in the right post type? */
-		if ( !isset( $_POST['post_type'] ) || WPAS_PT_SLUG !== $_POST['post_type'] )
+		if ( !isset( $_POST['post_type'] ) || 'ticket' !== $_POST['post_type'] )
 			return;
 
 		if ( !$this->can_attach_files() )
@@ -533,7 +533,7 @@ class WPAS_File_Upload {
 
 		global $post_type;
 
-		if ( WPAS_PT_SLUG !== $post_type ) {
+		if ( 'ticket' !== $post_type ) {
 			return;
 		}
 

@@ -23,8 +23,8 @@ class WPAS_Tickets_List {
 		// add_action( 'quick_edit_custom_box',                            array( $this, 'custom_quickedit_options' ), 10, 2 );
 		// add_action( 'bulk_edit_custom_box',                             array( $this, 'custom_quickedit_options' ), 10, 2 );
 		// add_action( 'wp_ajax_save_bulk_edit_book',                      array( $this, 'save_bulk_edit_ticket' ), 10, 0 );
-		add_action( 'manage_' . WPAS_PT_SLUG . '_posts_columns',        array( $this, 'add_core_custom_columns' ), 16, 1 );
-		add_action( 'manage_' . WPAS_PT_SLUG . '_posts_custom_column' , array( $this, 'core_custom_columns_content' ), 10, 2 );
+		add_action( 'manage_ticket_posts_columns',        array( $this, 'add_core_custom_columns' ), 16, 1 );
+		add_action( 'manage_ticket_posts_custom_column' , array( $this, 'core_custom_columns_content' ), 10, 2 );
 		add_action( 'restrict_manage_posts',                            array( $this, 'unreplied_filter' ), 9, 0 );
 		add_action( 'admin_menu',                                       array( $this, 'hide_closed_tickets' ) );
 		add_filter( 'the_excerpt',                                      array( $this, 'remove_excerpt' ) );
@@ -225,7 +225,7 @@ class WPAS_Tickets_List {
 	 */
 	public function custom_quickedit_options( $column_name, $post_type ) {
 
-		if ( WPAS_PT_SLUG !== $post_type ) {
+		if ( 'ticket' !== $post_type ) {
 			return false;
 		}
 
@@ -300,7 +300,7 @@ class WPAS_Tickets_List {
 
 		global $typenow;
 
-		if ( WPAS_PT_SLUG != $typenow ) {
+		if ( 'ticket' != $typenow ) {
 			return;
 		}
 
@@ -338,8 +338,8 @@ class WPAS_Tickets_List {
 
 		global $submenu;
 
-		if ( is_array( $submenu ) && array_key_exists( "edit.php?post_type=" . WPAS_PT_SLUG, $submenu ) ) {
-			$submenu["edit.php?post_type=" . WPAS_PT_SLUG][5][2] = $submenu["edit.php?post_type=" . WPAS_PT_SLUG][5][2] . '&amp;wpas_status=open';
+		if ( is_array( $submenu ) && array_key_exists( 'edit.php?post_type=ticket', $submenu ) ) {
+			$submenu["edit.php?post_type=ticket"][5][2] = $submenu["edit.php?post_type=ticket"][5][2] . '&amp;wpas_status=open';
 		}
 
 		return true;
@@ -363,7 +363,7 @@ class WPAS_Tickets_List {
 		if ( is_admin()
 			&& 'edit.php' == $pagenow
 			&& isset( $_GET['post_type'] )
-			&& WPAS_PT_SLUG == $_GET['post_type']
+			&& 'ticket' == $_GET['post_type']
 			&& isset( $_GET['wpas_replied'] )
 			&& !empty( $_GET['wpas_replied'] )
 			&& $query->is_main_query() ) {
@@ -389,7 +389,7 @@ class WPAS_Tickets_List {
 
 		global $mode;
 
-		if ( !is_admin() ||! isset( $_GET['post_type'] ) || WPAS_PT_SLUG !== $_GET['post_type'] ) {
+		if ( !is_admin() ||! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
 			return $content;
 		}
 
@@ -414,7 +414,7 @@ class WPAS_Tickets_List {
 	 */
 	public function set_list_mode( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 
-		if ( isset( $_GET['post_type'] ) && WPAS_PT_SLUG === $_GET['post_type'] ) {
+		if ( isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] ) {
 
 			if ( 'wp_user-settings' === $meta_key ) {
 				
@@ -446,7 +446,7 @@ class WPAS_Tickets_List {
 
 		// 	$mode = $_REQUEST['mode'];
 
-		// 	if ( isset( $_GET['post_type'] ) && WPAS_PT_SLUG === $_GET['post_type'] ) {
+		// 	if ( isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] ) {
 
 		// 		if ( 'excerpt' === $mode ) {
 		// 			$mode = 'details';

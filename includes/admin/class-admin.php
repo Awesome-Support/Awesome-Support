@@ -96,7 +96,7 @@ class Awesome_Support_Admin {
 			add_action( 'admin_menu',                array( $this, 'register_submenu_items' ) );            // Register all the submenus
 			add_action( 'admin_notices',             array( $this, 'wpas_admin_notices' ) );                // Display custom admin notices
 			add_action( 'add_meta_boxes',            array( $this, 'metaboxes' ) );                         // Register the metaboxes
-			add_action( 'save_post_' . WPAS_PT_SLUG, array( $this, 'save_ticket' ) );                       // Save all custom fields
+			add_action( 'save_post_ticket',          array( $this, 'save_ticket' ) );                       // Save all custom fields
 			add_action( 'wpas_add_reply_after',      array( $this, 'mark_replies_read' ), 10, 2 );          // Mark a ticket replies as read
 			add_action( 'before_delete_post',        array( $this, 'delete_ticket_dependencies' ), 10, 1 ); // Delete all ticket dependencies (replies, history...)
 
@@ -248,7 +248,7 @@ class Awesome_Support_Admin {
 			return;
 		}
 
-		if ( WPAS_PT_SLUG == get_post_type() ) {
+		if ( 'ticket' == get_post_type() ) {
 			wp_dequeue_script( 'autosave' );
 		}
 
@@ -257,7 +257,7 @@ class Awesome_Support_Admin {
 			wp_enqueue_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
 		}
 
-		if ( WPAS_PT_SLUG == get_post_type() && 'edit.php' === $pagenow ) {
+		if ( 'ticket' == get_post_type() && 'edit.php' === $pagenow ) {
 			wp_enqueue_script( 'wpas-admin-edit', WPAS_URL . 'assets/admin/js/admin-edit.js', array( 'jquery' ), WPAS_VERSION, true );
 		}
 
@@ -354,7 +354,7 @@ class Awesome_Support_Admin {
 	 */
 	public function redirect_to_about() {
 		delete_option( 'wpas_redirect_about' );
-		wp_redirect( add_query_arg( array( 'post_type' => WPAS_PT_SLUG, 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
+		wp_redirect( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
 		exit;
 	}
 
@@ -367,7 +367,7 @@ class Awesome_Support_Admin {
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . add_query_arg( array( 'post_type' => WPAS_PT_SLUG, 'page' => 'edit.php?post_type=ticket-settings' ), admin_url( 'edit.php' ) ) . '">' . __( 'Settings', 'wpas' ) . '</a>'
+				'settings' => '<a href="' . add_query_arg( array( 'post_type' => 'ticket', 'page' => 'edit.php?post_type=ticket-settings' ), admin_url( 'edit.php' ) ) . '">' . __( 'Settings', 'wpas' ) . '</a>'
 			),
 			$links
 		);
@@ -387,7 +387,7 @@ class Awesome_Support_Admin {
 	 */
 	public function ticket_action_row( $actions, $post ) {
 
-		if ( WPAS_PT_SLUG === $post->post_type ) {
+		if ( 'ticket' === $post->post_type ) {
 
 			$status = wpas_get_ticket_status( $post->ID );
 
@@ -487,7 +487,7 @@ class Awesome_Support_Admin {
 	 */
 	public function filter_ticket_data( $data, $postarr ) {
 
-		if ( isset( $data['post_type'] ) && WPAS_PT_SLUG === $data['post_type'] && isset( $_POST['post_status_override'] ) && !empty( $_POST['post_status_override'] ) ) {
+		if ( isset( $data['post_type'] ) && 'ticket' === $data['post_type'] && isset( $_POST['post_status_override'] ) && !empty( $_POST['post_status_override'] ) ) {
 
 			$status = wpas_get_post_status();
 
@@ -512,8 +512,8 @@ class Awesome_Support_Admin {
 	 * @return void
 	 */
 	public function register_submenu_items() {
-		add_submenu_page( 'edit.php?post_type=' . WPAS_PT_SLUG, __( 'System Status', 'wpas' ), __( 'System Status', 'wpas' ), 'administrator', 'wpas-status', array( $this, 'display_status_page' ) );
-		add_submenu_page( 'edit.php?post_type=' . WPAS_PT_SLUG, __( 'About Awesome Support', 'wpas' ), __( 'About', 'wpas' ), 'edit_posts', 'wpas-about', array( $this, 'display_about_page' ) );
+		add_submenu_page( 'edit.php?post_type=ticket', __( 'System Status', 'wpas' ), __( 'System Status', 'wpas' ), 'administrator', 'wpas-status', array( $this, 'display_status_page' ) );
+		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'wpas' ), __( 'About', 'wpas' ), 'edit_posts', 'wpas-about', array( $this, 'display_about_page' ) );
 	}
 
 	/**
@@ -561,7 +561,7 @@ class Awesome_Support_Admin {
 
 			case 'close':
 
-				if( isset( $_GET['post'] ) && WPAS_PT_SLUG == get_post_type( intval( $_GET['post'] ) ) ) {
+				if( isset( $_GET['post'] ) && 'ticket' == get_post_type( intval( $_GET['post'] ) ) ) {
 
 					update_post_meta( intval( $_GET['post'] ), '_wpas_status', 'closed' );
 
@@ -576,7 +576,7 @@ class Awesome_Support_Admin {
 
 			case 'open':
 
-				if( isset( $_GET['post'] ) && WPAS_PT_SLUG == get_post_type( intval( $_GET['post'] ) ) ) {
+				if( isset( $_GET['post'] ) && 'ticket' == get_post_type( intval( $_GET['post'] ) ) ) {
 
 					update_post_meta( intval( $_GET['post'] ), '_wpas_status', 'open' );
 
@@ -614,7 +614,7 @@ class Awesome_Support_Admin {
 				update_option( 'wpas_options', serialize( $options ) );
 				delete_option( 'wpas_support_products' );
 
-				wpas_redirect( 'enable_multiple_products', add_query_arg( array( 'taxonomy' => WPAS_PRODUCT_SLUG, 'post_type' => WPAS_PT_SLUG ), admin_url( 'edit-tags.php' ) ) );
+				wpas_redirect( 'enable_multiple_products', add_query_arg( array( 'taxonomy' => WPAS_PRODUCT_SLUG, 'post_type' => 'ticket' ), admin_url( 'edit-tags.php' ) ) );
 				exit;
 
 			break;
@@ -661,33 +661,33 @@ class Awesome_Support_Admin {
 	public function metaboxes() {
 
 		/* Remove the publishing metabox */
-		remove_meta_box( 'submitdiv', WPAS_PT_SLUG, 'side' );
+		remove_meta_box( 'submitdiv', 'ticket', 'side' );
 
 		/**
 		 * Register the metaboxes.
 		 */
 		/* Issue details, only available for existing tickets */
 		if( isset( $_GET['post'] ) ) {
-			add_meta_box( 'wpas-mb-message', __( 'Ticket', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'normal', 'high', array( 'template' => 'message' ) );
+			add_meta_box( 'wpas-mb-message', __( 'Ticket', 'wpas' ), array( $this, 'metabox_callback' ), 'ticket', 'normal', 'high', array( 'template' => 'message' ) );
 
 			$status = get_post_meta( intval( $_GET['post'] ), '_wpas_status', true );
 
 			if ( '' !== $status ) {
-				add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'normal', 'high', array( 'template' => 'replies' ) );
+				add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'wpas' ), array( $this, 'metabox_callback' ), 'ticket', 'normal', 'high', array( 'template' => 'replies' ) );
 			}
 		}
 
 		/* Ticket details */
-		add_meta_box( 'wpas-mb-details', __( 'Details', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'side', 'high', array( 'template' => 'details' ) );
+		add_meta_box( 'wpas-mb-details', __( 'Details', 'wpas' ), array( $this, 'metabox_callback' ), 'ticket', 'side', 'high', array( 'template' => 'details' ) );
 
 		/* Contacts involved in the ticket */
-		add_meta_box( 'wpas-mb-contacts', __( 'Stakeholders', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'side', 'high', array( 'template' => 'stakeholders' ) );
+		add_meta_box( 'wpas-mb-contacts', __( 'Stakeholders', 'wpas' ), array( $this, 'metabox_callback' ), 'ticket', 'side', 'high', array( 'template' => 'stakeholders' ) );
 
 		/* Custom fields */
 		global $wpas_cf;
 
 		if ( $wpas_cf->have_custom_fields() ) {	
-			add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'wpas' ), array( $this, 'metabox_callback' ), WPAS_PT_SLUG, 'side', 'default', array( 'template' => 'custom-fields' ) );
+			add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'wpas' ), array( $this, 'metabox_callback' ), 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
 		}
 
 	}
@@ -837,7 +837,7 @@ class Awesome_Support_Admin {
 					if ( isset( $_POST['wpas_do'] ) &&  'reply_close' == $_POST['wpas_do'] ) {
 
 						/* Confirm the post type and close */
-						if( WPAS_PT_SLUG == get_post_type( $post_id ) ) {
+						if( 'ticket' == get_post_type( $post_id ) ) {
 
 							/**
 							 * wpas_ticket_before_close_by_agent hook
@@ -901,7 +901,7 @@ class Awesome_Support_Admin {
 
 			/* Go back to the tickets list */
 			if ( isset( $_POST['wpas_back_to_list'] ) && true === boolval( $_POST['wpas_back_to_list'] ) || isset( $_POST['where_after'] ) && 'back_to_list' === $_POST['where_after'] ) {
-				$_SESSION['wpas_redirect'] = add_query_arg( array( 'post_type' => WPAS_PT_SLUG ), admin_url( 'edit.php' ) );
+				$_SESSION['wpas_redirect'] = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
 			}
 
 		}

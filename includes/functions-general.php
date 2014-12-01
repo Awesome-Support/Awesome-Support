@@ -136,11 +136,11 @@ function wpas_is_plugin_page() {
 
 		);
 
-		if ( isset( $post ) && isset( $post->post_type ) && WPAS_PT_SLUG === $post->post_type ) {
+		if ( isset( $post ) && isset( $post->post_type ) && 'ticket' === $post->post_type ) {
 			return true;
 		}
 
-		if ( isset( $_GET['post_type'] ) && WPAS_PT_SLUG === $_GET['post_type'] ) {
+		if ( isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] ) {
 			return true;
 		}
 
@@ -153,7 +153,7 @@ function wpas_is_plugin_page() {
 
 		$pages = array( wpas_get_option( 'ticket_list' ), wpas_get_option( 'ticket_submit' ) );
 
-		if ( is_singular( WPAS_PT_SLUG ) ) {
+		if ( is_singular( 'ticket' ) ) {
 			return true;
 		}
 

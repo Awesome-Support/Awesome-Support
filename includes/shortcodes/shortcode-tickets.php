@@ -19,7 +19,7 @@ function wpas_sc_client_account() {
 
 	$args = array(
 		'author'                 => $author,
-		'post_type'              => WPAS_PT_SLUG,
+		'post_type'              => 'ticket',
 		'post_status'            => 'any',
 		'order'                  => 'DESC',
 		'orderby'                => 'date',

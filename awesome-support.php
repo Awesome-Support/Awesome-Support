@@ -40,7 +40,6 @@ define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) .
  *----------------------------------------------------------------------------*/
 
 define( 'WPAS_SLUG',         'wpas' );
-define( 'WPAS_PT_SLUG',      apply_filters( 'wpas_ticket_post_type_slug', 'ticket' ) );
 define( 'WPAS_PRODUCT_SLUG', apply_filters( 'wpas_product_taxonomy_slug', 'product' ) );
 
 /*----------------------------------------------------------------------------*

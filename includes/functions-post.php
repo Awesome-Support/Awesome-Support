@@ -133,7 +133,7 @@ function wpas_open_ticket( $data ) {
 		'post_name'      => $title,
 		'post_title'     => $title,
 		'post_status'    => 'queued',
-		'post_type'      => WPAS_PT_SLUG,
+		'post_type'      => 'ticket',
 		'post_author'    => $user_id,
 		'ping_status'    => 'closed',
 		'comment_status' => 'closed',
@@ -167,7 +167,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		'post_name'      => '',
 		'post_title'     => '',
 		'post_status'    => 'queued',
-		'post_type'      => WPAS_PT_SLUG,
+		'post_type'      => 'ticket',
 		'post_author'    => '',
 		'ping_status'    => 'closed',
 		'comment_status' => 'closed',
@@ -577,7 +577,7 @@ function wpas_find_agent( $ticket_id = false ) {
 		if ( array_key_exists( 'edit_ticket', $user->allcaps ) ) {
 
 			$posts_args = array(
-				'post_type'              => WPAS_PT_SLUG,
+				'post_type'              => 'ticket',
 				'post_status'            => 'any',
 				'posts_per_page'         => -1,
 				'no_found_rows'          => true,
