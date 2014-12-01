@@ -226,7 +226,7 @@ class WPAS_Ticket_Post_Type {
 	public static function get_post_status() {
 
 		$status = array(
-			'queued'     => _x( 'Queued', 'Ticket status', 'wpas' ),
+			'queued'     => _x( 'New', 'Ticket status', 'wpas' ),
 			'processing' => _x( 'In Progress', 'Ticket status', 'wpas' ),
 			'hold'       => _x( 'On Hold', 'Ticket status', 'wpas' ),
 		);
