@@ -21,6 +21,20 @@ function wpas_core_settings_advanced( $def ) {
 					'options' => wpas_list_pages()
 				),
 				array(
+					'name'    => __( 'Admins See All', 'wpas' ),
+					'id'      => 'admin_see_all',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Administrators can see all tickets in the tickets list. If unchecked admins will only see tickets assigned to them.', 'wpas' ),
+					'default' => true
+				),
+				array(
+					'name'    => __( 'Agent See All', 'wpas' ),
+					'id'      => 'agent_see_all',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Agents can see all tickets in the tickets list. If unchecked agents will only see tickets assigned to them.', 'wpas' ),
+					'default' => false
+				),
+				array(
 					'name' => __( 'Danger Zone', 'wpas' ),
 					'type' => 'heading',
 				),
