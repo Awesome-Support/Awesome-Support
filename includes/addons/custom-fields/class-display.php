@@ -25,20 +25,13 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 
 				$title    = !empty( $field['args']['title'] ) ? $field['args']['title'] : wpas_get_title_from_id( $name );
 				$callback = !empty( $field['args']['callback'] ) ? $field['args']['callback'] : 'text';
-				?>
 
-
-					<?php
-					if ( method_exists( 'WPAS_Custom_Fields_Display', $callback ) ) {
-						call_user_func( array( 'WPAS_Custom_Fields_Display', $callback ), $field );
-					} else {
-						WPAS_Custom_Fields_Display::text( $field );
-					}
-					?>
-
-					
-
-			<?php }
+				if ( method_exists( 'WPAS_Custom_Fields_Display', $callback ) ) {
+					call_user_func( array( 'WPAS_Custom_Fields_Display', $callback ), $field );
+				} else {
+					WPAS_Custom_Fields_Display::text( $field );
+				}
+			}
 
 		}
 
@@ -67,12 +60,12 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 			<label for="<?php echo $field_id; ?>"><strong><?php echo $label; ?></strong></label>
 
 			<?php if ( !is_admin() || current_user_can( $field['args']['capability'] ) ): ?>
-				<p><input type="text" id="<?php echo $field_id; ?>" <?php wpas_get_field_class( $field_id, $field_class ); ?> name="<?php echo $field_id; ?>" value="<?php echo $value; ?>" <?php if ( true === $field['args']['required'] ): ?>required<?php endif; ?>></p>
+				<input type="text" id="<?php echo $field_id; ?>" <?php wpas_get_field_class( $field_id, $field_class ); ?> name="<?php echo $field_id; ?>" value="<?php echo $value; ?>" <?php if ( true === $field['args']['required'] ): ?>required<?php endif; ?>>
 			<?php else: ?>
 				<p id="<?php echo $field_id; ?>"><?php echo $value; ?></p>
 			<?php endif;
 
-			if( isset( $field['args']['desc'] ) && '' != $field['args']['desc'] && WPAS_FIELDS_DESC ): ?><p class="description"><?php echo sanitize_text_field( $field['args']['desc'] ); ?></p><?php endif; ?>
+			if( isset( $field['args']['desc'] ) && '' != $field['args']['desc'] && WPAS_FIELDS_DESC ): ?><p class="<?php echo is_admin() ? 'description' : 'wpas-help-block'; ?>"><?php echo wp_kses( $field['args']['desc'] ); ?></p><?php endif; ?>
 		</div>
 
 	<?php }
@@ -112,7 +105,7 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 
 			<?php if ( !is_admin() || current_user_can( $field['args']['capability'] ) ): ?>
 
-				<p><select name="<?php echo $field_id; ?>" id="<?php echo $field_id; ?>" <?php wpas_get_field_class( $field_id ); ?> style="width:100%">
+				<select name="<?php echo $field_id; ?>" id="<?php echo $field_id; ?>" <?php wpas_get_field_class( $field_id ); ?> style="width:100%">
 					<option value=""><?php _e( 'Please select', 'wpas' ); ?></option>
 
 					<?php
@@ -120,13 +113,13 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 						<option value="<?php echo $term->slug; ?>" <?php if( $term->slug == $value ) { echo 'selected="selected"'; } ?>><?php echo $term->name; ?></option>
 					<?php } ?>
 
-				</select></p>
+				</select>
 
 			<?php else: ?>
 				<p id="<?php echo $field_id; ?>"><?php echo $value; ?></p>
 			<?php endif;
 
-			if( isset( $field['args']['desc'] ) && '' != $field['args']['desc'] && WPAS_FIELDS_DESC ): ?><p class="description"><?php echo sanitize_text_field( $field['args']['desc'] ); ?></p><?php endif; ?>
+			if( isset( $field['args']['desc'] ) && '' != $field['args']['desc'] && WPAS_FIELDS_DESC ): ?><p class="<?php echo is_admin() ? 'description' : 'wpas-help-block'; ?>"><?php echo wp_kses( $field['args']['desc'] ); ?></p><?php endif; ?>
 		</div>
 
 	<?php }
