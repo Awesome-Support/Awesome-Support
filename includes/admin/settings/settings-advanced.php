@@ -16,7 +16,7 @@ function wpas_core_settings_advanced( $def ) {
 					'name'    => __( 'Custom Login / Registration Page', 'wpas' ),
 					'id'      => 'login_page',
 					'type'    => 'select',
-					'desc'    => __( 'Only use this option if you know how to create your own registration page, otherwise you might create an infinite redirect.', 'wpas' ),
+					'desc'    => sprintf( __( 'Only use this option if you know how to create your own registration page, otherwise you might create an infinite redirect. If you need help on creating a registration page you should <a href="%s" target="_blank">start by reading this guide</a>.', 'wpas' ), esc_url( 'http://codex.wordpress.org/Customizing_the_Registration_Form' ) ),
 					'default' => '',
 					'options' => wpas_list_pages()
 				),
