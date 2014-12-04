@@ -123,15 +123,15 @@ function wpas_get_template( $name, $args = array() ) {
 	$template = wpas_locate_template( $name );
 
 	if ( ! file_exists( $template ) )
-		return;
+		return false;
 
 	$template = apply_filters( 'wpas_get_template', $template, $name, $args );
 
-	do_action( 'wpas_before_template', $template_name, $template, $args );
+	do_action( 'wpas_before_template', $name, $template, $args );
 
 	include( $template );
 
-	do_action( 'wpas_after_template', $template_name, $template, $args );
+	do_action( 'wpas_after_template', $name, $template, $args );
 
 }
 
@@ -149,7 +149,6 @@ function wpas_locate_template( $name ) {
 
 	$theme                 = wpas_get_theme();
 	$filename              = "$name.php";
-	$default_directory     = WPAS_PATH . "themes/$theme/";
 
 	$template = locate_template(
 		array(
