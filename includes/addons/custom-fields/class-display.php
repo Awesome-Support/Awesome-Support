@@ -1,4 +1,14 @@
 <?php
+/**
+ * Display custom fields.
+ *
+ * @package   Awesome Support/Custom Fields
+ * @author    ThemeAvenue <web@themeavenue.net>
+ * @license   GPL-2.0+
+ * @link      http://themeavenue.net
+ * @copyright 2014 ThemeAvenue
+ * @since     3.0.0
+ */
 class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 
 	/**

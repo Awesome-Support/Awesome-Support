@@ -2,7 +2,7 @@
 /**
  * Awesome Support.
  *
- * @package   Awesome_Support_Admin
+ * @package   Awesome Support/Custom Fields
  * @author    ThemeAvenue <web@themeavenue.net>
  * @license   GPL-2.0+
  * @link      http://themeavenue.net

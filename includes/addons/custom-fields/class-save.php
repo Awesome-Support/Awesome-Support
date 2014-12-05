@@ -1,8 +1,8 @@
 <?php
 /**
- * Awesome Support.
+ * Save custom fields.
  *
- * @package   Awesome_Support_Admin
+ * @package   Awesome Support/Custom Fields
  * @author    ThemeAvenue <web@themeavenue.net>
  * @license   GPL-2.0+
  * @link      http://themeavenue.net
@@ -20,7 +20,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 	 * and prefixing options.
 	 */
 	public function __construct() {
-
+		
 	}
 
 	/**
