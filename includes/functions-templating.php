@@ -107,13 +107,15 @@ function wpas_get_theme() {
 /**
  * Get plugin template.
  *
- * The function will check for the template and load it
- * from the child theme, if no child theme from the theme,
- * and if no template in the theme it will load the default
- * template stored in the plugin's /templates directory.
- * 
- * @param  string $name            Name of the template to include
- * @param  array $args             Pass variables to the template
+ * The function takes a template file name and loads it
+ * from whatever location the template is found first.
+ * The template is beeing searched for (in order) in
+ * the child theme, the theme and the default templates
+ * folder within the plugin.
+ *
+ * @since  3.0.0
+ * @param  string $name  Name of the template to include
+ * @param  array  $args  Pass variables to the template
  */
 function wpas_get_template( $name, $args = array() ) {
 
@@ -142,8 +144,9 @@ function wpas_get_template( $name, $args = array() ) {
  * from the child theme, if no child theme from the theme,
  * and if no template in the theme it will load the default
  * template stored in the plugin's /templates directory.
- * 
- * @param  string $name            Name of the template to locate
+ *
+ * @since  3.0.0
+ * @param  string $name  Name of the template to locate
  */
 function wpas_locate_template( $name ) {
 
@@ -159,7 +162,7 @@ function wpas_locate_template( $name ) {
 	if ( ! $template )
 		$template = WPAS_PATH . "themes/$theme/" . $filename;
 
-	return apply_filters('wpas_locate_template', $template, $name);
+	return apply_filters( 'wpas_locate_template', $template, $name );
 
 }
 
