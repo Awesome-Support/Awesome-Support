@@ -17,6 +17,11 @@ function wpas_register_account() {
 		exit;
 	}
 
+	if ( wpas_get_option( 'terms_conditions', false ) && !isset( $_POST['terms'] ) ) {
+		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'You did not accept the terms and conditions.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
+		exit;
+	}
+
 	$email    = isset( $_POST['email'] ) && !empty( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : false;
 	$username = isset( $_POST['username'] ) && !empty( $_POST['username'] ) ? sanitize_text_field( $_POST['username'] ) : $email;
 	$pwd      = isset( $_POST['pwd'] ) && !empty( $_POST['pwd'] ) ? $_POST['pwd'] : false;

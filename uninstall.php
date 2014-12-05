@@ -67,7 +67,7 @@ function wpas_uninstall() {
 	 * that the plugin created.
 	 */
 	$args = array(
-		'post_type'              => array( WPAS_PT_SLUG, 'ticket_reply', 'ticket_history', 'ticket_log' ),
+		'post_type'              => array( 'ticket', 'ticket_reply', 'ticket_history', 'ticket_log' ),
 		'post_status'            => 'any',
 		'posts_per_page'         => -1,
 		'no_found_rows'          => true,

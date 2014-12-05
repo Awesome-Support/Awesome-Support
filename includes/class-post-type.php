@@ -49,6 +49,8 @@ class WPAS_Ticket_Post_Type {
 	 */
 	public function post_type() {
 
+		$slug = defined( 'WPAS_SLUG' ) ? sanitize_title( WPAS_SLUG ) : 'ticket';
+
 		/* Supported components */
 		$supports = array( 'title' );
 
@@ -105,7 +107,7 @@ class WPAS_Ticket_Post_Type {
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'query_var'           => true,
-			'rewrite'             => array( 'slug' => apply_filters( 'wpas_rewrite_slug', WPAS_PT_SLUG ), 'with_front' => false ),
+			'rewrite'             => array( 'slug' => apply_filters( 'wpas_rewrite_slug', $slug ), 'with_front' => false ),
 			'capability_type'     => 'view_ticket',
 			'capabilities'        => $cap,
 			'has_archive'         => true,
@@ -115,7 +117,7 @@ class WPAS_Ticket_Post_Type {
 			'supports'            => $supports
 		);
 
-		register_post_type( WPAS_PT_SLUG, $args );
+		register_post_type( 'ticket', $args );
 
 	}
 
@@ -132,7 +134,7 @@ class WPAS_Ticket_Post_Type {
 		$post_type        = get_post_type( $post );
 		$post_type_object = get_post_type_object( $post_type );
 
-		if ( WPAS_PT_SLUG !== $post_type ) {
+		if ( 'ticket' !== $post_type ) {
 			return $messages;
 		}
 
@@ -226,7 +228,7 @@ class WPAS_Ticket_Post_Type {
 	public static function get_post_status() {
 
 		$status = array(
-			'queued'     => _x( 'Queued', 'Ticket status', 'wpas' ),
+			'queued'     => _x( 'New', 'Ticket status', 'wpas' ),
 			'processing' => _x( 'In Progress', 'Ticket status', 'wpas' ),
 			'hold'       => _x( 'On Hold', 'Ticket status', 'wpas' ),
 		);

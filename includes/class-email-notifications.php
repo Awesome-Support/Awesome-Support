@@ -88,7 +88,7 @@ class WPAS_Email_Notification {
 
 		}
 
-		if ( false === $enable ) {
+		if ( !isset( $enable ) || false === $enable ) {
 			return;
 		}
 
@@ -153,7 +153,7 @@ class WPAS_Email_Notification {
 		if ( isset( $this->post ) && is_object( $this->post ) ) {
 
 			$ticket_id    = $this->ticket_id;
-			$agent        = get_user_by( 'id', intval( get_post_meta( $ticket_id, '_assigned_agent' ) ) );
+			$agent        = get_user_by( 'id', intval( get_post_meta( $ticket_id, '_wpas_assignee' ) ) );
 			$agent_name   = $agent->user_nicename;
 			$agent_email  = $agent->user_email;
 			$client       = get_user_by( 'id', $this->post->post_author );

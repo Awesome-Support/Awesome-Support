@@ -20,8 +20,11 @@ class WPAS_Tickets_List {
 	protected static $instance = null;
 
 	public function __construct() {
-		add_action( 'manage_' . WPAS_PT_SLUG . '_posts_columns',        array( $this, 'add_core_custom_columns' ), 16, 1 );
-		add_action( 'manage_' . WPAS_PT_SLUG . '_posts_custom_column' , array( $this, 'core_custom_columns_content' ), 10, 2 );
+		// add_action( 'quick_edit_custom_box',                            array( $this, 'custom_quickedit_options' ), 10, 2 );
+		// add_action( 'bulk_edit_custom_box',                             array( $this, 'custom_quickedit_options' ), 10, 2 );
+		// add_action( 'wp_ajax_save_bulk_edit_book',                      array( $this, 'save_bulk_edit_ticket' ), 10, 0 );
+		add_action( 'manage_ticket_posts_columns',        array( $this, 'add_core_custom_columns' ), 16, 1 );
+		add_action( 'manage_ticket_posts_custom_column' , array( $this, 'core_custom_columns_content' ), 10, 2 );
 		add_action( 'restrict_manage_posts',                            array( $this, 'unreplied_filter' ), 9, 0 );
 		add_action( 'admin_menu',                                       array( $this, 'hide_closed_tickets' ) );
 		add_filter( 'the_excerpt',                                      array( $this, 'remove_excerpt' ) );
@@ -67,6 +70,16 @@ class WPAS_Tickets_List {
 			if ( 'date' !== $col_id ) {
 				$new[$col_id] = $col_label;
 			} else {
+				/* If agents can see all tickets do nothing */
+				if (
+					current_user_can( 'administrator' )
+					&& true === boolval( wpas_get_option( 'admin_see_all' ) )
+					|| current_user_can( 'edit_ticket' )
+					&& !current_user_can( 'administrator' )
+					&& true === boolval( wpas_get_option( 'agent_see_all' ) ) ) {
+						$new = array_merge( $new, array( 'wpas-assignee' => __( 'Support Staff', 'wpas' ) ) );
+				}
+
 				/* Add the activity column */
 				$new = array_merge( $new, array( 'wpas-activity' => __( 'Activity', 'wpas' ) ) );
 			}
@@ -88,6 +101,14 @@ class WPAS_Tickets_List {
 		$mode = get_user_setting( 'tickets_list_mode', 'details' );
 
 		switch ( $column ) {
+
+			case 'wpas-assignee':
+
+				$assignee = get_post_meta( $post_id, '_wpas_assignee', true );
+				$agent    = get_user_by( 'id', $assignee );
+				echo $agent->data->user_nicename;
+
+			break;
 
 			case 'wpas-activity':
 
@@ -193,6 +214,84 @@ class WPAS_Tickets_List {
 	}
 
 	/**
+	 * Add quick ticket actions.
+	 *
+	 * Add options to change ticket state and status in the quick edit box.
+	 *
+	 * @since  3.0.0
+	 * @param  [type] $column_name [description]
+	 * @param  [type] $post_type   [description]
+	 * @return [type]              [description]
+	 */
+	public function custom_quickedit_options( $column_name, $post_type ) {
+
+		if ( 'ticket' !== $post_type ) {
+			return false;
+		}
+
+		if ( 'status' === $column_name ):
+
+			$custom_status = wpas_get_post_status();
+			$status        = wpas_get_ticket_status(); ?>
+
+			<fieldset class="inline-edit-col-right inline-edit-ticket">
+				<div class="inline-edit-col column-<?php echo $column_name ?>">
+					<div class="inline-edit-group">
+						<label class="inline-edit-group">
+							<span class="title"><?php _e( 'Ticket Status', 'wpas' ); ?></span>
+							<select name="_wpas_status">
+								<option value="open"><?php _e( 'Open', 'wpas' ); ?></option>
+								<option value="closed"><?php _e( 'Closed', 'wpas' ); ?></option>
+							</select>
+						</label>
+					</div>
+					<div class="inline-edit-group">
+						<label class="inline-edit-group">
+							<span class="title"><?php _e( 'Ticket State', 'wpas' ); ?></span>
+							<select name="_wpas_state">
+								<?php
+								foreach ( $custom_status as $status_id => $status_label ) {
+									?><option value="<?php echo $status_id; ?>"><?php echo $status_label; ?></option><?php
+								}
+								?>
+							</select>
+						</label>
+					</div>
+				</div>
+			</fieldset>
+
+		<?php endif;
+	}
+
+	public function save_bulk_edit_ticket() { print_r( $_POST ); exit;
+
+		// TODO perform nonce checking
+		// get our variables
+		$post_ids = ( ! empty( $_POST[ 'post_ids' ] ) ) ? $_POST[ 'post_ids' ] : array();
+		$status   = ( ! empty( $_POST[ '_wpas_status' ] ) ) ? $_POST[ '_wpas_status' ] : null;
+		$state    = ( ! empty( $_POST[ '_wpas_state' ] ) ) ? $_POST[ '_wpas_state' ] : null;
+
+		wpas_debug_display( $post_ids );
+		wpas_debug_display( $status );
+		wpas_debug_display( $state );
+		exit;
+
+		// if everything is in order
+		if ( ! empty( $post_ids ) && is_array( $post_ids ) ) {
+			foreach( $post_ids as $post_id ) {
+
+				wpas_update_ticket_status( $post_id, $state );
+
+				if ( in_array( $status, array( 'open', 'closed' ) ) ) {
+					update_post_meta( $post_id, '_wpas_status', $status );
+				}
+			}
+		}
+
+		die();
+	}
+
+	/**
 	 * Add status dropdown in the filters bar.
 	 *
 	 * @since  2.0.0
@@ -201,7 +300,7 @@ class WPAS_Tickets_List {
 
 		global $typenow;
 
-		if ( WPAS_PT_SLUG != $typenow ) {
+		if ( 'ticket' != $typenow ) {
 			return;
 		}
 
@@ -239,8 +338,8 @@ class WPAS_Tickets_List {
 
 		global $submenu;
 
-		if ( is_array( $submenu ) && array_key_exists( "edit.php?post_type=" . WPAS_PT_SLUG, $submenu ) ) {
-			$submenu["edit.php?post_type=" . WPAS_PT_SLUG][5][2] = $submenu["edit.php?post_type=" . WPAS_PT_SLUG][5][2] . '&amp;wpas_status=open';
+		if ( is_array( $submenu ) && array_key_exists( 'edit.php?post_type=ticket', $submenu ) ) {
+			$submenu["edit.php?post_type=ticket"][5][2] = $submenu["edit.php?post_type=ticket"][5][2] . '&amp;wpas_status=open';
 		}
 
 		return true;
@@ -264,7 +363,7 @@ class WPAS_Tickets_List {
 		if ( is_admin()
 			&& 'edit.php' == $pagenow
 			&& isset( $_GET['post_type'] )
-			&& WPAS_PT_SLUG == $_GET['post_type']
+			&& 'ticket' == $_GET['post_type']
 			&& isset( $_GET['wpas_replied'] )
 			&& !empty( $_GET['wpas_replied'] )
 			&& $query->is_main_query() ) {
@@ -290,7 +389,7 @@ class WPAS_Tickets_List {
 
 		global $mode;
 
-		if ( !is_admin() ||! isset( $_GET['post_type'] ) || WPAS_PT_SLUG !== $_GET['post_type'] ) {
+		if ( !is_admin() ||! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
 			return $content;
 		}
 
@@ -315,7 +414,7 @@ class WPAS_Tickets_List {
 	 */
 	public function set_list_mode( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
 
-		if ( isset( $_GET['post_type'] ) && WPAS_PT_SLUG === $_GET['post_type'] ) {
+		if ( isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] ) {
 
 			if ( 'wp_user-settings' === $meta_key ) {
 				
@@ -347,7 +446,7 @@ class WPAS_Tickets_List {
 
 		// 	$mode = $_REQUEST['mode'];
 
-		// 	if ( isset( $_GET['post_type'] ) && WPAS_PT_SLUG === $_GET['post_type'] ) {
+		// 	if ( isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] ) {
 
 		// 		if ( 'excerpt' === $mode ) {
 		// 			$mode = 'details';

@@ -106,7 +106,7 @@ function wpas_sc_submit_form() {
 					 * will not be tracked.
 					 */
 
-						wpas_notification( 'info', sprintf( __( 'Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href="%s">click here to open a new ticket</a>.', 'wpas' ), add_query_arg( array( 'post_type' => WPAS_PT_SLUG ), admin_url( 'post-new.php' ) ) ) );
+						wpas_notification( 'info', sprintf( __( 'Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href="%s">click here to open a new ticket</a>.', 'wpas' ), add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'post-new.php' ) ) ) );
 
 					/**
 					 * If the user is authorized to post a ticket, we display the submit form

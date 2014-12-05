@@ -79,6 +79,18 @@ function wpas_core_settings_general( $def ) {
 					'options' => wpas_list_pages(),
 					'default' => ''
 				),
+				array(
+					'name' => __( 'Terms & Conditions', 'wpas' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'     => __( 'Content', 'wpas' ),
+					'id'       => 'terms_conditions',
+					'type'     => 'editor',
+					'default'  => '',
+					'desc'     => __( 'Terms & conditions are not mendatory. If you add terms, a mendatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'wpas' ),
+					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
+				),
 			)
 		),
 	);

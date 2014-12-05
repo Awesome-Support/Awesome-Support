@@ -1,11 +1,6 @@
 <?php
 /**
- * The WordPress Plugin Boilerplate.
- *
- * A foundation off of which to build well-documented WordPress plugins that
- * also follow WordPress Coding Standards and PHP best practices.
- *
- * @package   Awesome_Support
+ * @package   Awesome Support
  * @author    ThemeAvenue <web@themeavenue.net>
  * @license   GPL-2.0+
  * @link      http://themeavenue.net
@@ -22,7 +17,6 @@
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
- * WordPress-Plugin-Boilerplate: v2.6.1
  */
 
 // If this file is called directly, abort.
@@ -38,6 +32,7 @@ define( 'WPAS_VERSION',           '3.0.0-beta-1' );
 define( 'WPAS_DB_VERSION',        '1' );
 define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
+define( 'WPAS_TEMPLATE_PATH',     'awesome-support/' );
 define( 'WPAS_ADMIN_ASSETS_URL',  trailingslashit( plugin_dir_url( __FILE__ ) . 'assets/admin/' ) );
 define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) . 'assets/admin/' ) );
 
@@ -46,7 +41,6 @@ define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) .
  *----------------------------------------------------------------------------*/
 
 define( 'WPAS_SLUG',         'wpas' );
-define( 'WPAS_PT_SLUG',      apply_filters( 'wpas_ticket_post_type_slug', 'ticket' ) );
 define( 'WPAS_PRODUCT_SLUG', apply_filters( 'wpas_product_taxonomy_slug', 'product' ) );
 
 /*----------------------------------------------------------------------------*

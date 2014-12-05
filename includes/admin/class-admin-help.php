@@ -49,7 +49,7 @@ class WPAS_Help {
 	 */
 	public function settings_general_contextual_help() {
 
-		if( !isset( $_GET['post_type'] ) || WPAS_PT_SLUG !== $_GET['post_type'] || isset( $_GET['tab'] ) && 'general' !== $_GET['tab'] ) {
+		if( !isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] || isset( $_GET['tab'] ) && 'general' !== $_GET['tab'] ) {
 			return;
 		}
 		
@@ -82,7 +82,7 @@ class WPAS_Help {
 	 */
 	public function settings_notifications_contextual_help() {
 
-		if( !isset( $_GET['post_type'] ) || WPAS_PT_SLUG !== $_GET['post_type'] || !isset( $_GET['tab'] ) || 'email' !== $_GET['tab'] ) {
+		if( !isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] || !isset( $_GET['tab'] ) || 'email' !== $_GET['tab'] ) {
 			return;
 		}
 
@@ -123,7 +123,7 @@ class WPAS_Help {
 	 */
 	public function settings_advanced_contextual_help() {
 
-		if( !isset( $_GET['post_type'] ) || WPAS_PT_SLUG !== $_GET['post_type'] || !isset( $_GET['tab'] ) || 'advanced' !== $_GET['tab'] ) {
+		if( !isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] || !isset( $_GET['tab'] ) || 'advanced' !== $_GET['tab'] ) {
 			return;
 		}
 		
