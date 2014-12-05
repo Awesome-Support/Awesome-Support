@@ -108,49 +108,58 @@ function wpas_get_theme() {
  * Get plugin template.
  *
  * The function will check for the template and load it
- * from the child theme, if no chilf theme from the theme,
+ * from the child theme, if no child theme from the theme,
  * and if no template in the theme it will load the default
  * template stored in the plugin's /templates directory.
  * 
  * @param  string $name            Name of the template to include
- * @param  boolean $priority_child Set the child theme as a priority directory to check
+ * @param  array $args             Pass variables to the template
  */
-function wpas_get_template( $name, $priority_child = true ) {
+function wpas_get_template( $name, $args = array() ) {
+
+	if ( $args && is_array( $args ) )
+		extract( $args );
+
+	$template = wpas_locate_template( $name );
+
+	if ( ! file_exists( $template ) )
+		return false;
+
+	$template = apply_filters( 'wpas_get_template', $template, $name, $args );
+
+	do_action( 'wpas_before_template', $name, $template, $args );
+
+	include( $template );
+
+	do_action( 'wpas_after_template', $name, $template, $args );
+
+}
+
+/**
+ * Locate plugin template.
+ *
+ * The function will locate the template and return the path
+ * from the child theme, if no child theme from the theme,
+ * and if no template in the theme it will load the default
+ * template stored in the plugin's /templates directory.
+ * 
+ * @param  string $name            Name of the template to locate
+ */
+function wpas_locate_template( $name ) {
 
 	$theme                 = wpas_get_theme();
 	$filename              = "$name.php";
-	$default_directory     = WPAS_PATH . "themes/$theme/";
-	$theme_directory       = trailingslashit( get_template_directory() ) . 'awesome-support';
-	$child_theme_directory = trailingslashit( get_stylesheet_directory() ) . 'awesome-support';
 
-	/**
-	 * Set the theme check order
-	 */
-	$first  = ( true === $priority_child ) ? $child_theme_directory : $theme_directory;
-	$second = ( true === $priority_child ) ? $theme_directory : $child_theme_directory;
+	$template = locate_template(
+		array(
+			WPAS_TEMPLATE_PATH . $filename
+		)
+	);
 
-	/* Check the first directory */
-	if ( file_exists( $first . $filename ) ) {
-		require_once( $first . $filename );
-	}
+	if ( ! $template )
+		$template = WPAS_PATH . "themes/$theme/" . $filename;
 
-	/* Check the second directory */
-	elseif ( file_exists( $second . $filename ) ) {
-		require_once( $first . $filename );
-	}
-
-	/* Load from the plugin */
-	else {
-
-		if ( file_exists( $default_directory . $filename ) ) {
-			require_once( $default_directory . $filename );
-		}
-
-		else {
-			return false;
-		}
-
-	}
+	return apply_filters('wpas_locate_template', $template, $name);
 
 }
 
