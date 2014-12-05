@@ -1,7 +1,7 @@
 <?php
 global $post;
 
-$status = get_post_meta( $post->ID, '_' . WPAS_SLUG . '_status', true );
+$status = get_post_meta( $post->ID, '_wpas_status', true );
 ?>
 
 <table class="form-table wpas-table-replies">

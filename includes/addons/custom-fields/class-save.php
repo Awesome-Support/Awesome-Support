@@ -301,7 +301,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 		foreach ( $fields as $field ) {
 
 			/* Prepare the field name as used in the form */
-			$field_name = WPAS_SLUG . '_' . $field['name'];
+			$field_name = 'wpas_' . $field['name'];
 
 			if ( 'taxonomy' !== $field['args']['callback'] ) {
 
@@ -412,7 +412,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 		foreach ( $fields as $field ) {
 
 			/* Prepare the field name as used in the form */
-			$field_name = WPAS_SLUG . '_' . $field['name'];
+			$field_name = 'wpas_' . $field['name'];
 
 			if ( true === $field['args']['required'] && false === $field['args']['core'] ) {
 
