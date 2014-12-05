@@ -50,7 +50,7 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 			$post_id = false;
 		}
 
-		$field_id    = WPAS_SLUG . '_' . $field['name'];
+		$field_id    = 'wpas_' . $field['name'];
 		$value       = wpas_get_cf_value( $field_id, $post_id );
 		$label       = wpas_get_field_title( $field );
 		$field_class = isset( $field['args']['field_class'] ) ? $field['args']['field_class'] : ''; ?>
@@ -80,7 +80,7 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 
 		global $post;
 
-		$field_id = WPAS_SLUG . '_' . $field['name'];
+		$field_id = 'wpas_' . $field['name'];
 		$label    = wpas_get_field_title( $field );
 		$current  = get_the_terms( $post->ID, sanitize_text_field( $field['name'] ) );
 		$terms    = get_terms( sanitize_text_field( $field['name'] ), array( 'hide_empty' => 0 ) );

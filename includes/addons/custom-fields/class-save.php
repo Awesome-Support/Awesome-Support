@@ -21,11 +21,6 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 	 */
 	public function __construct() {
 
-		/**
-		 * Plugin slug.
-		 */
-		$this->plugin_slug = WPAS_SLUG;
-
 	}
 
 	/**
