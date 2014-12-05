@@ -1,6 +1,6 @@
 @charset 'UTF-8';
 
-.clearfix() {
+.wpas-cf {
 	&:before,
 	&:after {
 		content: " ";
@@ -9,6 +9,12 @@
 	&:after {
 		clear: both;
 	}
+}
+.wpas-pl {
+	float: left;
+}
+.wpas-pr {
+	float: right;
 }
 
 /*
@@ -175,7 +181,7 @@ Ticket Replies
 	}
 }
 .wpas-reply-meta {
-	.clearfix();
+	.wpas-cf;
 	padding-bottom: 0.75em;
 
 	.wpas-reply-user {
