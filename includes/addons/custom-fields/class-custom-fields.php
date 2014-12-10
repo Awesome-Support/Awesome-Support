@@ -11,23 +11,11 @@
 
 class WPAS_Custom_Fields {
 
-	/**
-	 * Global plugin class
-	 * 
-	 * @var string
-	 */
-	protected $plugin_slug = null;
-
 	public function __construct() {
 
-		// Load custom fields dependencies
+		/* Load custom fields dependencies */
 		require_once( WPAS_PATH . 'includes/addons/custom-fields/class-save.php' );
 		require_once( WPAS_PATH . 'includes/addons/custom-fields/class-display.php' );
-
-		/**
-		 * Define the plugin slug.
-		 */
-		$this->plugin_slug = 'wpas';
 
 		/**
 		 * Array where all custom fields will be stored.
@@ -668,33 +656,47 @@ function wpas_cf_value( $name, $post_id, $default = '' ) {
 
 /**
  * Add a new custom field.
- * 
- * @param  [type] $name [description]
- * @param  array  $args [description]
- * @return [type]       [description]
+ *
+ * @since  3.0.0
+ * @param  string  $name  The ID of the custom field to add
+ * @param  array   $args  Additional arguments for the custom field
+ * @return boolean        Returns true on success or false on failure
  */
 function wpas_add_custom_field( $name, $args = array() ) {
 
 	global $wpas_cf;
 
 	if( !isset( $wpas_cf ) || !class_exists( 'WPAS_Custom_Fields' ) )
-		return;
+		return false;
 
 	$wpas_cf->add_field( $name, $args );
+
+	return true;
 
 }
 
 /**
  * Add a new custom taxonomy.
- * 
- * @return [type] [description]
+ *
+ * @since  3.0.0
+ * @param  string  $name  The ID of the custom field to add
+ * @param  array   $args  Additional arguments for the custom field
+ * @return boolean        Returns true on success or false on failure
  */
 function wpas_add_custom_taxonomy( $name, $args = array() ) {
 
 	global $wpas_cf;
 
 	if( !isset( $wpas_cf ) || !class_exists( 'WPAS_Custom_Fields' ) )
-		return;
+		return false;
+
+	/* Force the custom fields type to be a taxonomy. */
+	$args['callback'] = 'taxonomy';
+
+	/* Add the taxonomy. */
+	$wpas_cf->add_field( $name, $args );
+
+	return true;
 
 }
 
