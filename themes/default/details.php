@@ -31,7 +31,7 @@ $author = get_user_by( 'id', $post->post_author );
 	<table class="wpas-table wpas-ticket-replies">
 		<tbody>
 			<tr class="wpas-reply-single" valign="top">
-				<td>
+				<td style="width: 64px;">
 					<div class="wpas-user-profile">
 						<?php echo get_avatar( $post->post_author, '64', get_option( 'avatar_default' ) ); ?>
 					</div>
@@ -98,7 +98,7 @@ $author = get_user_by( 'id', $post->post_author );
 						
 						<?php continue; } ?>
 
-						<td>
+						<td style="width: 64px;">
 							<div class="wpas-user-profile">
 								<?php echo get_avatar( get_the_author_meta( 'user_email' ), 64, get_option( 'avatar_default' ) ); ?>
 							</div>
