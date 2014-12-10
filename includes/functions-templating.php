@@ -584,11 +584,8 @@ function wpas_get_tickets_list_column_content( $column_id, $column ) {
 		break;
 
 		case 'date':
-
 			$offset = wpas_get_offset_html5();
-
-			$time_ago = human_time_diff( get_the_date( 'U' ), current_time( 'timestamp' ) );
-			?><time datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . $offset ?>"><?php printf( __( '%s ago', 'wpas' ), $time_ago ); ?></time><?php
+			?><time datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . $offset ?>"><?php echo get_the_date( get_option( 'date_format' ) ) . ' ' . get_the_date( get_option( 'time_format' ) ); ?></time><?php
 		break;
 
 		case 'taxonomy':
