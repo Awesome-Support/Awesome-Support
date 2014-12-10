@@ -93,7 +93,7 @@ class Awesome_Support {
 		/**
 		 * Register a new account.
 		 *
-		 * If a username is passed we trigger the account registration function.
+		 * If wpas_registration is passed we trigger the account registration function.
 		 * The registration function will do a certain number of checks and if all of them
 		 * are successful, a new user is created using the WordPress core functions.
 		 *
@@ -102,7 +102,7 @@ class Awesome_Support {
 		 *
 		 * @since 3.0.0
 		 */
-		if ( isset( $_POST['username'] ) ) {
+		if ( isset( $_POST['wpas_registration'] ) ) {
 			add_action( 'wp', 'wpas_register_account' );
 		}
 

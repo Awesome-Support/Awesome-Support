@@ -22,13 +22,14 @@ function wpas_register_account() {
 		exit;
 	}
 
-	$email    = isset( $_POST['email'] ) && !empty( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : false;
-	$username = isset( $_POST['username'] ) && !empty( $_POST['username'] ) ? sanitize_text_field( $_POST['username'] ) : $email;
-	$pwd      = isset( $_POST['pwd'] ) && !empty( $_POST['pwd'] ) ? $_POST['pwd'] : false;
-	$pwd2     = isset( $_POST['pwd-validate'] ) && !empty( $_POST['pwd-validate'] ) ? $_POST['pwd-validate'] : false;
+	$email      = isset( $_POST['email'] ) && !empty( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : false;
+	$first_name = isset( $_POST['first_name'] ) && !empty( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : false;
+	$last_name  = isset( $_POST['last_name'] ) && !empty( $_POST['last_name'] ) ? sanitize_text_field( $_POST['last_name'] ) : false;
+	$pwd        = isset( $_POST['pwd'] ) && !empty( $_POST['pwd'] ) ? $_POST['pwd'] : false;
+	$pwd2       = isset( $_POST['pwd-validate'] ) && !empty( $_POST['pwd-validate'] ) ? $_POST['pwd-validate'] : false;
 
 	/* Make sure we have all the necessary data. */
-	if ( false === ( $email || $username || $pwd || $pwd2 ) ) {
+	if ( false === ( $email || $first_name || $last_name || $pwd || $pwd2 ) ) {
 		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'You didn\'t correctly fill all the fields.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
 		exit;
 	}
@@ -39,10 +40,26 @@ function wpas_register_account() {
 		exit;
 	}
 
+	$username = strtolower( $first_name ) . strtolower( $last_name );
+	$user     = get_user_by( 'login', $username );
+
+	/* Check for existing username */
+	if ( is_a( $user, 'WP_User' ) ) {
+		$suffix = 1;
+		do {
+			$alt_username = $username . $suffix;
+			$user = get_user_by( 'login', $alt_username );
+			$suffix++;
+		} while( is_a( $user, 'WP_User' )  );
+		$username = $alt_username;
+	}
+
 	$args = array(
 		'user_login'   => $username,
 		'user_email'   => $email,
-		'display_name' => $username,
+		'first_name'   => $first_name,
+		'last_name'    => $last_name,
+		'display_name' => "$first_name $last_name",
 		'user_pass'    => $pwd,
 		'role'         => 'wpas_user'
 	);
