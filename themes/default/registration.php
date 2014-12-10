@@ -60,20 +60,24 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 		</div>
 
 		<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>">
-		<?php wpas_make_button( __( 'Login', 'wpas' ) ); ?>
+		<?php wpas_make_button( __( 'Login', 'wpas' ), array( 'onsubmit' => __( 'Logging In...', 'wpas' ) ) ); ?>
 	</form>
 	<?php
 	if ( true === $registration ): ?> 
 
 		<form class="wpas-form" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
 			<h3><?php _e( 'Register' ); ?></h3>
+			<div <?php wpas_get_field_container_class( 'first_name' ); ?>>
+				<label><?php _e( 'First Name', 'wpas' ); ?></label>
+				<input <?php wpas_get_field_class( 'first_name' ); ?> type="text" placeholder="<?php _e( 'First Name', 'wpas' ); ?>" name="first_name" required>
+			</div>
+			<div <?php wpas_get_field_container_class( 'last_name' ); ?>>
+				<label><?php _e( 'Last Name', 'wpas' ); ?></label>
+				<input <?php wpas_get_field_class( 'last_name' ); ?> type="text" placeholder="<?php _e( 'Last Name', 'wpas' ); ?>" name="last_name" required>
+			</div>
 			<div <?php wpas_get_field_container_class( 'email' ); ?>>
 				<label><?php _e( 'Email' ); ?></label>
 				<input <?php wpas_get_field_class( 'email' ); ?> type="email" placeholder="<?php _e( 'Email' ); ?>" name="email" required>
-			</div>
-			<div <?php wpas_get_field_container_class( 'username' ); ?>>
-				<label><?php _e( 'Username' ); ?></label>
-				<input <?php wpas_get_field_class( 'username' ); ?> type="text" placeholder="<?php _e( 'Username' ); ?>" name="username" required>
 			</div>
 			<div <?php wpas_get_field_container_class( 'pwd' ); ?>>
 				<label><?php _e( 'Enter a password', 'wpas' ); ?></label>
@@ -100,7 +104,7 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 			<input type="hidden" name="wpas_registration" value="true">
 			<?php
 			wp_nonce_field( 'register', 'user_registration', false, true );
-			wpas_make_button( __( 'Create Account', 'wpas' ) );
+			wpas_make_button( __( 'Create Account', 'wpas' ), array( 'onsubmit' => __( 'Creating Account...', 'wpas' ) ) );
 			?>
 		</form>
 	<?php endif; ?>
