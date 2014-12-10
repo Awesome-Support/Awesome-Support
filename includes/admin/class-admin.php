@@ -615,7 +615,7 @@ class Awesome_Support_Admin {
 				update_option( 'wpas_options', serialize( $options ) );
 				delete_option( 'wpas_support_products' );
 
-				wpas_redirect( 'enable_multiple_products', add_query_arg( array( 'taxonomy' => WPAS_PRODUCT_SLUG, 'post_type' => 'ticket' ), admin_url( 'edit-tags.php' ) ) );
+				wpas_redirect( 'enable_multiple_products', add_query_arg( array( 'taxonomy' => 'product', 'post_type' => 'ticket' ), admin_url( 'edit-tags.php' ) ) );
 				exit;
 
 			break;
