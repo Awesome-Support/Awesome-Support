@@ -738,7 +738,9 @@ function wpas_register_core_fields() {
 
 	if ( isset( $options['support_products'] ) && true === boolval( $options['support_products'] ) ) {
 
-		$wpas_cf->add_field( WPAS_PRODUCT_SLUG, array(
+		$slug = defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : 'product';
+
+		$wpas_cf->add_field( 'product', array(
 			'core'                  => false,
 			'show_column'           => true,
 			'log'                   => true,
@@ -749,7 +751,8 @@ function wpas_register_core_fields() {
 			'name'                  => __( 'Product', 'wpas' ),
 			'label_plural'          => __( 'Products', 'wpas' ),
 			'taxo_hierarchical'     => true,
-			'update_count_callback' => 'wpas_update_ticket_tag_terms_count'
+			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'rewrite'               => array( 'slug' => $slug )
 			)
 		);
 

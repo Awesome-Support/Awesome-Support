@@ -120,7 +120,7 @@
 			</tr>
 			<tr class="alt">
 				<td class="row-title"><?php _e( 'Products Slug', 'wpas' ); ?></td>
-				<td><code><?php echo WPAS_PRODUCT_SLUG; ?></code></td>
+				<td><code><?php echo defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : 'product'; ?></code></td>
 			</tr>
 			<tr>
 				<td class="row-title"><?php _e( 'Multiple Products', 'wpas' ); ?></td>

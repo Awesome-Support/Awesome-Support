@@ -37,12 +37,6 @@ define( 'WPAS_ADMIN_ASSETS_URL',  trailingslashit( plugin_dir_url( __FILE__ ) . 
 define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) . 'assets/admin/' ) );
 
 /*----------------------------------------------------------------------------*
- * Plugin slug
- *----------------------------------------------------------------------------*/
-
-define( 'WPAS_PRODUCT_SLUG', apply_filters( 'wpas_product_taxonomy_slug', 'product' ) );
-
-/*----------------------------------------------------------------------------*
  * Settings
  *----------------------------------------------------------------------------*/
 
