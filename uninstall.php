@@ -72,11 +72,17 @@ function wpas_uninstall() {
 
 		$posts = new WP_Query( $args );
 
+		/* Delete all post types and attachments */
 		foreach ( $posts->posts as $post ) {
-			if ( 'attachment' === $post->post_type ) {
-				wp_delete_attachment( $post->ID, true );
-			} else {
-				wp_delete_post( $post->ID, true );
+
+			wpas_delete_attachments( $post->ID );
+			wp_delete_post( $post->ID, true );
+
+			$upload_dir = wp_upload_dir();
+			$dirpath    = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post->ID";
+
+			if ( is_dir( $dirpath ) ) {
+				rmdir( $dirpath );
 			}
 		}
 
@@ -123,5 +129,36 @@ function wpas_delete_taxonomy( $taxonomy ) {
     foreach ( $terms as $term ) {
         wp_delete_term( $term->term_id, $taxonomy );
     }
+
+}
+
+/**
+ * Delete attachments.
+ *
+ * Delete all tickets and replies attachments.
+ *
+ * @since  3.0.0
+ * @param  integer $post_id ID of the post to delete attachments from
+ * @return void
+ */
+function wpas_delete_attachments( $post_id ) {
+
+	$args = array(
+		'post_type'              => 'attachment',
+		'post_status'            => 'any',
+		'posts_per_page'         => -1,
+		'post_parent'            => $post_id,
+		'no_found_rows'          => true,
+		'cache_results'          => false,
+		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+		
+	);
+
+	$posts = new WP_Query( $args );
+
+	foreach ( $posts->posts as $post ) {
+		wp_delete_attachment( $post->ID, true );
+	}
 
 }
