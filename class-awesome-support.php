@@ -556,7 +556,7 @@ class Awesome_Support {
 	 */
 	public function enqueue_scripts() {
 		if ( !is_admin() && wpas_is_plugin_page() ) {
-			wp_enqueue_script( 'wpas-plugin-script', WPAS_URL . 'assets/public/js/public.js', array( 'jquery' ), WPAS_VERSION, true );
+			wp_enqueue_script( 'wpas-plugin-script', WPAS_URL . 'assets/public/js/public-dist.js', array( 'jquery' ), WPAS_VERSION, true );
 		}
 	}
 

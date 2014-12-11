@@ -1,9 +1,14 @@
+//@prepros-prepend ../vendor/featherlight/featherlight.min.js
+
 (function ($) {
 	"use strict";
 
 	$(function () {
 
-		/* http://codeblow.com/questions/method-to-check-whether-tinymce-is-active-in-wordpress/ */
+		/*
+		Check if TinyMCE is empty
+		http://codeblow.com/questions/method-to-check-whether-tinymce-is-active-in-wordpress/
+		 */
 		if (typeof tinyMCE != "undefined") {
 
 			$('.wpas-form').submit(function (event) {
@@ -35,6 +40,11 @@
 			});
 
 		}
+
+		/*
+		Modal used on registration form (terms and conditions)
+		 */
+		$('.wpas-modal-trigger').featherlight();
 
 	});
 
