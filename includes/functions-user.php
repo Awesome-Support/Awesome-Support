@@ -105,10 +105,24 @@ function wpas_register_account() {
 
 }
 
+/**
+ * Get temporary user data.
+ *
+ * If the user registration fails some of the user data is saved
+ * (all except the password) and can be used to pre-populate the registration
+ * form after the page reloads. This function returns the desired field value
+ * if any.
+ *
+ * @since  3.0.0
+ * @param  string $field Name of the field to get the value for
+ * @return string        The sanitized field value if any, an empty string otherwise
+ */
 function wpas_get_registration_field_value( $field ) {
 
 	if ( isset( $_SESSION) && isset( $_SESSION['wpas_registration_form'][$field] ) ) {
 		return sanitize_text_field( $_SESSION['wpas_registration_form'][$field] );
+	} else {
+		return '';
 	}
 
 }
