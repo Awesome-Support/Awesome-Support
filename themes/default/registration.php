@@ -92,15 +92,10 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 			/**
 			 * wpas_after_registration_fields hook
 			 * 
-			 * @WPAS_Tickets_Submission::addCaptcha()
+			 * @Awesome_Support::terms_and_conditions_checkbox()
 			 */
 			do_action( 'wpas_after_registration_fields' );
-
-			if( wpas_get_option( 'terms_conditions', false ) ): ?>
-				<div class="wpas-checkbox">
-					<label><input type="checkbox" name="terms" required> <?php printf(__('I accept the %sterms and conditions%s', 'wpas'), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ); ?></label>
-				</div>
-			<?php endif; ?>
+			?>
 			<input type="hidden" name="wpas_registration" value="true">
 			<?php
 			wp_nonce_field( 'register', 'user_registration', false, true );

@@ -38,17 +38,18 @@ class Awesome_Support {
 		 */
 		$this->slug = 'ticket';
 
-		add_action( 'plugins_loaded',        array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
-		add_action( 'pre_user_query',        'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
-		add_action( 'wp',                    array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
-		add_action( 'wpmu_new_blog',         array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added
-		add_action( 'init',                  array( $this, 'load_plugin_textdomain' ) );     // Load the plugin textdomain
-		add_action( 'init',                  array( $this, 'init' ), 10, 0 );                // Register main post type
-		add_action( 'wp_print_styles',       array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
-		add_action( 'wp_print_scripts',      array( $this, 'enqueue_scripts' ) );            // Load public-facing JavaScripts
-		add_action( 'template_redirect',     array( $this, 'redirect_archive' ) );
-		add_action( 'wpas_after_template',   array( $this, 'terms_and_conditions' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
-		add_filter( 'template_include',      array( $this, 'template_include' ), 10, 1 );
+		add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
+		add_action( 'pre_user_query',                 'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
+		add_action( 'wp',                             array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
+		add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added
+		add_action( 'init',                           array( $this, 'load_plugin_textdomain' ) );     // Load the plugin textdomain
+		add_action( 'init',                           array( $this, 'init' ), 10, 0 );                // Register main post type
+		add_action( 'wp_print_styles',                array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
+		add_action( 'wp_print_scripts',               array( $this, 'enqueue_scripts' ) );            // Load public-facing JavaScripts
+		add_action( 'template_redirect',              array( $this, 'redirect_archive' ) );
+		add_action( 'wpas_after_registration_fields', array( $this, 'terms_and_conditions_checkbox' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
+		add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
+		add_filter( 'template_include',               array( $this, 'template_include' ), 10, 1 );
 
 		/* Hook all e-mail notifications */
 		add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
@@ -690,7 +691,7 @@ class Awesome_Support {
 	 * @param  array   $args     Extra arguments passed when loading the template
 	 * @return boolean           True if the modal is loaded, false otherwise
 	 */
-	public function terms_and_conditions( $name, $template, $args ) {
+	public function terms_and_conditions_modal( $name, $template, $args ) {
 
 		if ( 'registration' !== $name ) {
 			return false;
@@ -708,6 +709,23 @@ class Awesome_Support {
 
 		return true;
 
+	}
+
+	/**
+	 * Add the terms and conditions checkbox.
+	 *
+	 * Adds a checkbox to the registration form if there are
+	 * terms and conditions set in the plugin settings.
+	 *
+	 * @since  3.0.0
+	 * @return void
+	 */
+	public function terms_and_conditions_checkbox() {
+		if ( wpas_get_option( 'terms_conditions', false ) ): ?>
+			<div class="wpas-checkbox">
+				<label><input type="checkbox" name="terms" required> <?php printf( __( 'I accept the %sterms and conditions%s', 'wpas' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ); ?></label>
+			</div>
+		<?php endif;
 	}
 
 }
