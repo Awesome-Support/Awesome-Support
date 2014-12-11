@@ -47,6 +47,7 @@ class Awesome_Support {
 		add_action( 'wp_print_styles',       array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
 		add_action( 'wp_print_scripts',      array( $this, 'enqueue_scripts' ) );            // Load public-facing JavaScripts
 		add_action( 'template_redirect',     array( $this, 'redirect_archive' ) );
+		add_action( 'wpas_after_template',   array( $this, 'terms_and_conditions' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
 		add_filter( 'template_include',      array( $this, 'template_include' ), 10, 1 );
 
 		/* Hook all e-mail notifications */
@@ -674,6 +675,38 @@ class Awesome_Support {
 		} else {
 			return $template;
 		}
+
+	}
+
+	/**
+	 * Load terms and conditions.
+	 *
+	 * Load the terms and conditions if any and if the user
+	 * is on the submission page.
+	 *
+	 * @since  3.0.0
+	 * @param  string  $name     Template name
+	 * @param  string  $template Path to the template that was loaded
+	 * @param  array   $args     Extra arguments passed when loading the template
+	 * @return boolean           True if the modal is loaded, false otherwise
+	 */
+	public function terms_and_conditions( $name, $template, $args ) {
+
+		if ( 'registration' !== $name ) {
+			return false;
+		}
+
+		global $post;
+
+		$terms = wpas_get_option( 'terms_conditions', '' );
+
+		if ( empty( $terms ) ) {
+			return false;
+		}
+
+		echo '<div id="wpas-modalterms" style="display: none;">' . wp_kses_post( $terms ) . '</div>';
+
+		return true;
 
 	}
 
