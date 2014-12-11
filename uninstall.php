@@ -81,8 +81,15 @@ function wpas_uninstall() {
 			$upload_dir = wp_upload_dir();
 			$dirpath    = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post->ID";
 
-			if ( is_dir( $dirpath ) ) {
-				rmdir( $dirpath );
+			if ( $post->post_parent == 0 ) {
+
+				/* Delete the uploads folder */
+				if ( is_dir( $dirpath ) ) {
+					rmdir( $dirpath );
+				}
+
+				/* Remove transients */
+				delete_transient( "wpas_activity_meta_post_$post->ID" );
 			}
 		}
 
