@@ -204,7 +204,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 			elseif ( 'taxonomy' == $option_args['callback'] ):
 
 				/* Check if this taxonomy has to be handled as a select */
-				if ( false !== $option_args['mb_callback'] )
+				if ( true === $option_args['taxo_std'] )
 					continue;
 
 				/* If no value is submitted we delete the term relationship */
@@ -225,8 +225,11 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 					continue;
 				}
 
+				/* Clean the taxonomy name */
+				$taxonomy = substr( $option_name, 5 );
+
 				/* Get all the terms for this ticket / taxo (we should have only one term) */
-				$terms = get_the_terms( $post_id, $option_name );
+				$terms = get_the_terms( $post_id, $taxonomy );
 
 				/**
 				 * As the taxonomy is handled like a select, we should have only one value. At least
@@ -238,9 +241,9 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 				}
 
 				/* Finally we save the new terms if changed */
-				if ( $the_term != $value ) {
+				if ( $the_term !== $value ) {
 
-					wp_set_object_terms( $post_id, $value, $option_name, false );
+					wp_set_object_terms( $post_id, $value, $taxonomy, false );
 
 					/* Log the action */
 					if ( true === $option_args['log'] ) {
