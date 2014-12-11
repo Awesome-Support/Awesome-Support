@@ -65,7 +65,7 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 		$label       = wpas_get_field_title( $field );
 		$field_class = isset( $field['args']['field_class'] ) ? $field['args']['field_class'] : ''; ?>
 
-		<div id="<?php echo $field_id; ?>_container" <?php wpas_get_field_container_class( $field_id ); ?>>
+		<div <?php wpas_get_field_container_class( $field_id ); ?> id="<?php echo $field_id; ?>_container">
 			
 			<label for="<?php echo $field_id; ?>"><strong><?php echo $label; ?></strong></label>
 
