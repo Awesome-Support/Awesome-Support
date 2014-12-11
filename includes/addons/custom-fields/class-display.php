@@ -75,7 +75,7 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 				<p id="<?php echo $field_id; ?>"><?php echo $value; ?></p>
 			<?php endif;
 
-			if( isset( $field['args']['desc'] ) && '' != $field['args']['desc'] && WPAS_FIELDS_DESC ): ?><p class="<?php echo is_admin() ? 'description' : 'wpas-help-block'; ?>"><?php echo wp_kses( $field['args']['desc'] ); ?></p><?php endif; ?>
+			if( isset( $field['args']['desc'] ) && '' != $field['args']['desc'] && WPAS_FIELDS_DESC ): ?><p class="<?php echo is_admin() ? 'description' : 'wpas-help-block'; ?>"><?php echo wp_kses_post( $field['args']['desc'] ); ?></p><?php endif; ?>
 		</div>
 
 	<?php }
