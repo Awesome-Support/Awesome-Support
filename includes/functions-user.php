@@ -71,7 +71,7 @@ function wpas_register_account() {
 		'role'         => 'wpas_user'
 	);
 
-	$user_id = wp_insert_user( $args );
+	$user_id = wp_insert_user( apply_filters( 'wpas_user_registration_data', $args ) );
 
 	if ( is_wp_error( $user_id ) ) {
 
