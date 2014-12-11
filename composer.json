@@ -1,5 +1,5 @@
 {
     "require": {
-        "gambitph/titan-framework": "1.6.*"
+        "gambitph/titan-framework": "1.7.*"
     }
 }

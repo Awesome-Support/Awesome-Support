@@ -4,20 +4,20 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0dea8f583f9124e588a17915ac1a5b98",
+    "hash": "bb3300f09748604a88c18604db2778ad",
     "packages": [
         {
             "name": "gambitph/titan-framework",
-            "version": "v1.6.1",
+            "version": "v1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gambitph/Titan-Framework.git",
-                "reference": "84f281c6f73fa7cc53d5a71afca1293e3efd491d"
+                "reference": "89f24c9fc7131791630edc60a4e0efe6934b8883"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/84f281c6f73fa7cc53d5a71afca1293e3efd491d",
-                "reference": "84f281c6f73fa7cc53d5a71afca1293e3efd491d",
+                "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/89f24c9fc7131791630edc60a4e0efe6934b8883",
+                "reference": "89f24c9fc7131791630edc60a4e0efe6934b8883",
                 "shasum": ""
             },
             "type": "library",
@@ -33,15 +33,18 @@
             "authors": [
                 {
                     "name": "Gambit Technologies",
-                    "email": "info@gambit.ph"
+                    "email": "info@gambit.ph",
+                    "homepage": "http://www.titanframework.net/",
+                    "role": "Developer"
                 }
             ],
-            "description": "Titan Framework allows theme and plugin developers to create a admin pages, options, meta boxes, and theme customizer options with just a few simple lines of code.",
+            "description": "Titan Framework allows theme and plugin developers to create admin pages, options, meta boxes, and theme customizer options with just a few simple lines of code.",
+            "homepage": "https://github.com/gambitph/Titan-Framework",
             "keywords": [
                 "Titan Framework",
                 "wordpress"
             ],
-            "time": "2014-10-10 03:54:40"
+            "time": "2014-12-11 05:11:34"
         }
     ],
     "packages-dev": [],
