@@ -265,23 +265,19 @@ Pages
 	.make-row();
 	margin-bottom: @spacing;
 
-	.wpas-reply-user,
-	.wpas-reply-time {
-		.make-column(6);
+	.wpas-reply-user {
+		.make-column(4);
 	}
 	.wpas-reply-time {
+		.make-column(8);
 		text-align: right;
 	}
 	.wpas-timestamp {
 		font-style: italic;
-		span {
-			white-space: nowrap;
-		}
 	}
 	.wpas-human-date {
 		font-style: normal;
-		opacity: 0;
-		transition: opacity .25s ease;
+		display: none;
 	}
 }
 .wpas-reply-content {
@@ -294,7 +290,10 @@ Pages
 }
 .wpas-reply-single:hover {
 	.wpas-human-date {
-		opacity: 1;
+		display: block;
+	}
+	.wpas-date-ago {
+		display: none;
 	}
 }
 .wpas-user-profile {

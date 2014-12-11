@@ -45,7 +45,7 @@ $author = get_user_by( 'id', $post->post_author );
 						<div class="wpas-reply-time">
 							<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>">
 								<span class="wpas-human-date">
-									<?php echo date( get_option( 'date_format' ), strtotime( $post->post_date ) ) . ' ' . date( get_option( 'time_format' ) ); ?> | 
+									<?php echo date( get_option( 'date_format' ), strtotime( $post->post_date ) ) . ' ' . date( get_option( 'time_format' ) ); ?>
 								</span>
 								<?php printf( __( '%s ago', 'wpas' ), human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) ) ); ?></time>
 						</div>
@@ -114,7 +114,7 @@ $author = get_user_by( 'id', $post->post_author );
 									<strong class="wpas-profilename"><?php echo get_the_author_meta( 'user_nicename' ); ?></strong>
 								</div>
 								<div class="wpas-reply-time">
-									<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>"><span class="wpas-human-date"><?php echo date( get_option( 'date_format' ), strtotime( get_the_date() ) ); ?> | </span><span class="wpas-date-ago"><?php printf( __( '%s ago', 'wpas' ), $time_ago ); ?></span></time>
+									<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>"><span class="wpas-human-date"><?php echo date( get_option( 'date_format' ), strtotime( get_the_date() ) ); ?></span><span class="wpas-date-ago"><?php printf( __( '%s ago', 'wpas' ), $time_ago ); ?></span></time>
 								</div>
 							</div>
 
