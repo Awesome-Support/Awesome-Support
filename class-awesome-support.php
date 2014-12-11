@@ -704,7 +704,7 @@ class Awesome_Support {
 			return false;
 		}
 
-		echo '<div id="wpas-modalterms" style="display: none;">' . wp_kses_post( $terms ) . '</div>';
+		echo '<div style="display: none;"><div id="wpas-modalterms">' . wp_kses_post( $terms ) . '</div></div>';
 
 		return true;
 
