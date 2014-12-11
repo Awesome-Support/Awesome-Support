@@ -17,16 +17,23 @@ function wpas_register_account() {
 		exit;
 	}
 
-	if ( wpas_get_option( 'terms_conditions', false ) && !isset( $_POST['terms'] ) ) {
-		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'You did not accept the terms and conditions.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
-		exit;
-	}
-
 	$email      = isset( $_POST['email'] ) && !empty( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : false;
 	$first_name = isset( $_POST['first_name'] ) && !empty( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : false;
 	$last_name  = isset( $_POST['last_name'] ) && !empty( $_POST['last_name'] ) ? sanitize_text_field( $_POST['last_name'] ) : false;
 	$pwd        = isset( $_POST['pwd'] ) && !empty( $_POST['pwd'] ) ? $_POST['pwd'] : false;
 	$pwd2       = isset( $_POST['pwd-validate'] ) && !empty( $_POST['pwd-validate'] ) ? $_POST['pwd-validate'] : false;
+
+	/* Save the user information in session to pre populate the form in case of error. */
+	$_SESSION['wpas_registration_form'] = array(
+		'first_name' => $first_name,
+		'last_name'  => $last_name,
+		'email'      => $email,
+	);
+
+	if ( wpas_get_option( 'terms_conditions', false ) && !isset( $_POST['terms'] ) ) {
+		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'You did not accept the terms and conditions.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
+		exit;
+	}
 
 	/* Make sure we have all the necessary data. */
 	if ( false === ( $email || $first_name || $last_name || $pwd || $pwd2 ) ) {
@@ -74,6 +81,9 @@ function wpas_register_account() {
 
 	} else {
 
+		/* Delete the user information data from session. */
+		unset( $_SESSION['wpas_registration_form'] );
+
 		wp_new_user_notification( $user_id, $pwd );
 
 		if ( headers_sent() ) {
@@ -91,6 +101,14 @@ function wpas_register_account() {
 			exit;
 		}
 
+	}
+
+}
+
+function wpas_get_registration_field_value( $field ) {
+
+	if ( isset( $_SESSION) && isset( $_SESSION['wpas_registration_form'][$field] ) ) {
+		return sanitize_text_field( $_SESSION['wpas_registration_form'][$field] );
 	}
 
 }

@@ -69,15 +69,15 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 			<h3><?php _e( 'Register' ); ?></h3>
 			<div <?php wpas_get_field_container_class( 'email' ); ?>>
 				<label><?php _e( 'Email' ); ?></label>
-				<input <?php wpas_get_field_class( 'email' ); ?> type="email" placeholder="<?php _e( 'Email' ); ?>" name="email" required>
+				<input <?php wpas_get_field_class( 'email' ); ?> type="email" placeholder="<?php _e( 'Email' ); ?>" name="email" value="<?php echo wpas_get_registration_field_value( 'email' ); ?>" required>
 			</div>
 			<div <?php wpas_get_field_container_class( 'first_name' ); ?>>
 				<label><?php _e( 'First Name', 'wpas' ); ?></label>
-				<input <?php wpas_get_field_class( 'first_name' ); ?> type="text" placeholder="<?php _e( 'First Name', 'wpas' ); ?>" name="first_name" required>
+				<input <?php wpas_get_field_class( 'first_name' ); ?> type="text" placeholder="<?php _e( 'First Name', 'wpas' ); ?>" name="first_name" value="<?php echo wpas_get_registration_field_value( 'first_name' ); ?>" required>
 			</div>
 			<div <?php wpas_get_field_container_class( 'last_name' ); ?>>
 				<label><?php _e( 'Last Name', 'wpas' ); ?></label>
-				<input <?php wpas_get_field_class( 'last_name' ); ?> type="text" placeholder="<?php _e( 'Last Name', 'wpas' ); ?>" name="last_name" required>
+				<input <?php wpas_get_field_class( 'last_name' ); ?> type="text" placeholder="<?php _e( 'Last Name', 'wpas' ); ?>" name="last_name" value="<?php echo wpas_get_registration_field_value( 'last_name' ); ?>" required>
 			</div>
 			<div <?php wpas_get_field_container_class( 'pwd' ); ?>>
 				<label><?php _e( 'Enter a password', 'wpas' ); ?></label>
