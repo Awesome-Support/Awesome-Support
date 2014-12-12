@@ -41,6 +41,7 @@ if ( isset( $message ) ) {
 	echo "<div class='updated below-h2'><p>$message</p></div>";
 }
 ?>
+<p><?php _e( 'These tool are intended for advanced users or for use on the support staff request. Be aware that some of these tools can definitively erase data.', 'wpas' ); ?></p>
 <table class="widefat wpas-system-tools-table" id="wpas-system-tools">
 	<thead>
 		<tr>
