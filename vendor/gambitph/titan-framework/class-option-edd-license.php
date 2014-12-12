@@ -33,6 +33,67 @@ if ( class_exists( 'TitanFrameworkOption' ) ) {
 		);
 
 		/**
+		 * Constructor
+		 *
+		 * @return	void
+		 * @since	1.7.1
+		 */
+		function __construct( $settings, $owner ) {
+			parent::__construct( $settings, $owner );
+
+			add_action( 'admin_init',                                      array( $this, 'checkUpdates' ), 10, 0 );
+			add_action( 'tf_create_option_' . $this->getOptionNamespace(), array( $this, "activateLicense" ) );
+		}
+
+		/**
+		 * Activated the given EDD license.
+		 *
+		 * @return	void
+		 * @since	1.7.1
+		 */
+		public function activateLicense( $option ) {
+			if ( $this->settings['id'] != $option->settings['id'] ) {
+				return;
+			}
+
+			/* Get the license */
+			$license = esc_attr( $this->getValue() );
+
+			/* License ID */
+			$key = substr( md5( $license ), 0, 10 );
+
+			/* If the license is set we can handle activation. */
+			if ( strlen( $license ) > 0 ) {
+
+				/* First of all we check if the user requested a manual activation */
+				if ( isset( $_GET['eddactivate'] ) && '1' == $_GET['eddactivate'] ) {
+
+					global $pagenow;
+
+					if ( isset( $_GET ) ) {
+						$get = (array) $_GET;
+					}
+
+					if ( isset( $get['eddactivate'] ) ) {
+						unset( $get['eddactivate'] );
+					}
+
+					$status = $this->check( $license, 'activate_license' );
+
+					/* Redirect to the settings page without the eddactivate parameter (otherwise it's used in all tabs links) */
+					wp_redirect( wp_sanitize_redirect( add_query_arg( $get, admin_url( $pagenow ) ) ) );
+				}
+
+				/* First activation of the license. */
+				if ( false === get_transient( "tf_edd_license_try_$key" ) ) {
+					$status = $this->check( $license, 'activate_license' );
+				}
+
+			}
+			
+		}
+
+		/**
 		 * Display for options and meta
 		 */
 		public function display() {
@@ -54,15 +115,9 @@ if ( class_exists( 'TitanFrameworkOption' ) ) {
 
 			/* If the license is set, we display its status and check it if necessary. */
 			if ( strlen( $license ) > 0 ) {
-				/* First activation of the license. */
-				if ( false === get_transient( "tf_edd_license_try_$key" ) ) {
-					$status = $this->check( $license, 'activate_license' );
-				}
 
-				/* Otherwise try to get the license activation status from DB. */
-				else {
-					$status = get_transient( "tf_edd_license_status_$key" );
-				}
+				/* Get the license activation status */
+				$status = get_transient( "tf_edd_license_status_$key" );
 
 				/* If no transient is found or it is expired to check the license again. */
 				if ( false === $status ) {
@@ -80,7 +135,19 @@ if ( class_exists( 'TitanFrameworkOption' ) ) {
 					break;
 
 					case 'inactive':
-						?><p class="description"><?php printf( __( 'Your license is valid but inactive. <a href="%s">Click here to activate it</a>.', TF_I18NDOMAIN ), '' ); ?></p><?php
+
+						global $pagenow;
+
+						if ( isset( $_GET ) ) {
+							$get = (array) $_GET;
+						}
+
+						$get['eddactivate'] = true;
+						$url                = esc_url( add_query_arg( $get, admin_url( $pagenow ) ) );
+						?>
+						<a href="<?php echo $url; ?>" class="button-secondary"><?php _e( 'Activate', TF_I18NDOMAIN ); ?></a>
+						<p class="description"><?php _e( 'Your license is valid but inactive. Click the button above to activate it.', TF_I18NDOMAIN ); ?></p><?php
+
 					break;
 
 					case 'no_response':
@@ -159,25 +226,166 @@ if ( class_exists( 'TitanFrameworkOption' ) ) {
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 			/* If the remote server didn't return a valid response we just return an error and don't set any transients so that activation will be tried again next time the option is saved */
-			if ( !is_object( $license_data ) || empty( $license_data ) ) {
+			if ( !is_object( $license_data ) || empty( $license_data ) || !isset( $license_data->license ) ) {
 				return 'no_response';
 			}
 
 			/* License ID */
 			$key = substr( md5( $license ), 0, 10 );
 
-			/* Set the status transient. */
-			set_transient( "tf_edd_license_status_$key", $license_data->license, $status_lifetime );
-
 			if ( 'activate_license' == $action ) {
 
-				/* Set the activation transient */
-				set_transient( "tf_edd_license_try_$key", true, $activation_lifetime );
+				/**
+				 * If the license is invalid we can set all transients right away.
+				 * The user will need to modify its license anyways so there is no risk
+				 * of preventing further activation attempts.
+				 */
+				if ( 'invalid' === $license_data->license ) {
+					set_transient( "tf_edd_license_status_$key", 'invalid', $status_lifetime );
+					set_transient( "tf_edd_license_try_$key", true, $activation_lifetime );
+					return 'invalid';
+				}
+
+				/**
+				 * Because sometimes EDD returns a "success" status even though the license hasn't been activated,
+				 * we need to check the license status after activating it. Only then we can safely set the
+				 * transients and avoid further activation attempts issues.
+				 *
+				 * @link https://github.com/gambitph/Titan-Framework/issues/203
+				 */
+				$status = $this->check( $license );
+
+				if ( in_array( $status, array( 'valid', 'inactive' ) ) ) {
+					
+					/* We set the "try" transient only as the status will be set by the second instance of this method when we check the license status */
+					set_transient( "tf_edd_license_try_$key", true, $activation_lifetime );
+
+				}
+
+			} else {
+
+				/* Set the status transient. */
+				set_transient( "tf_edd_license_status_$key", $license_data->license, $status_lifetime );
 
 			}
 
 			/* Return the license status. */
 			return $license_data->license;
+
+		}
+
+		/**
+		 * Check for plugin updates.
+		 *
+		 * This method is called throughout the entire WordPress admin
+		 * and uses the EDD plugin updater class to check for new updates.
+		 *
+		 * @since  1.7.2
+		 * @return boolean True if an update check was done, false otherwise
+		 */
+		public function checkUpdates() {
+
+			/* Check if we have all the required parameters. */
+			if ( !isset( $this->settings['server'] ) || !isset( $this->settings['name'] ) || !isset( $this->settings['file'] ) ) {
+				return false;
+			}
+
+			/* Make sure the file actually exists. */
+			if ( !file_exists( $this->settings['file'] ) ) {
+				return false;
+			}
+
+			/* Check what type of item the file is */
+			$item_is = $this->item_is( $this->settings['file'] );
+
+			/* Item name */
+			$item_name = sanitize_text_field( $this->settings['name'] );
+
+			/* Retrieve license key */
+			$license_key = trim( esc_attr( $this->getValue() ) );
+
+			/* Prepare updater arguments */
+			$args = array( 
+				'license'   => $license_key, // Item license key
+				'item_name' => $item_name,   // Item name (exactly the same as the item on the remote server)
+			);
+
+			/* Load the plugin updater class and add required parameters. */
+			if( 'plugin' === $item_is ) {
+
+				if ( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+					include( TF_PATH . 'inc/edd-licensing/EDD_SL_Plugin_Updater.php' );
+				}
+
+				$plugin          = get_plugin_data( $this->settings['file'] );
+				$args['version'] = $plugin['Version'];
+				$args['author']  = $plugin['Author'];
+
+			}
+
+			/* Load the theme updater class and add required parameters. */
+			elseif ( in_array( $item_is, array( 'theme-parent', 'theme-child' ) ) ) {
+				// Load the class
+			}
+
+			/* What the hell is this?? */
+			else {
+				return false;
+			}			
+
+			/* Update server URL */
+			$endpoint = esc_url( $this->settings['server'] );
+
+			/* Setup updater */
+			if( 'plugin' === $item_is ) {
+				$edd_updater = new EDD_SL_Plugin_Updater( $endpoint, $this->settings['file'], $args );
+			} else {
+				// Instanciate the theme updater
+			}
+
+			return true;
+
+		}
+
+		/**
+		 * Check if $file is a theme or a plugin.
+		 *
+		 * @since  1.7.2
+		 * @param  string $file Path to the file to check
+		 * @return string       What type of file this is (parent theme, child theme or plugin)
+		 */
+		public function item_is( $file ) {
+
+			$parentTheme = trailingslashit( get_template_directory() );
+			$childTheme  = trailingslashit( get_stylesheet_directory() );
+
+			/**
+			 * Windows sometimes mixes up forward and back slashes, ensure forward slash for
+			 * correct URL output.
+			 *
+			 * @see  TitanFramework::getURL()
+			 */
+			$parentTheme = str_replace( '\\', '/', $parentTheme );
+			$childTheme  = str_replace( '\\', '/', $childTheme );
+			$file        = str_replace( '\\', '/', $file );
+
+			/* Make sure the file exists. */
+			if ( !file_exists( $file ) ) {
+				return false;
+			}
+
+			/* The $file is in a parent theme */
+			if ( stripos( $file, $parentTheme ) !== false ) {
+				return 'theme-parent';
+			}
+			/* The $file is in a child theme */
+			else if ( stripos( $file, $childTheme ) !== false ) {
+				return 'theme-child';
+			}
+			/* The $file is in a plugin */
+			else {
+				return 'plugin';
+			}
 
 		}
 
