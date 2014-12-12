@@ -58,6 +58,7 @@ class Awesome_Support_Admin {
 
 			/* Load admin functions files */
 			require_once( WPAS_PATH . 'includes/admin/functions-admin.php' );
+			require_once( WPAS_PATH . 'includes/admin/functions-tools.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
@@ -92,6 +93,7 @@ class Awesome_Support_Admin {
 
 			/* Do Actions. */
 			add_action( 'pre_get_posts',             array( $this, 'hide_others_tickets' ), 10, 1 );
+			add_action( 'admin_init',                array( $this, 'system_tools' ), 10, 0 );
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_styles' ) );              // Load plugin styles
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_scripts' ) );             // Load plugin scripts
 			add_action( 'admin_menu',                array( $this, 'register_submenu_items' ) );            // Register all the submenus
@@ -966,6 +968,43 @@ class Awesome_Support_Admin {
 
 			do_action( 'wpas_after_delete_dependency', $post->ID, $post );
 		}
+
+	}
+
+	public function system_tools() {
+
+		if ( !isset( $_GET['tool'] ) || !isset( $_GET['_nonce'] ) ) {
+			return false;
+		}
+
+		if ( !wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
+			return false;
+		}
+
+		switch( sanitize_text_field( $_GET['tool'] ) ) {
+
+			/* Clear all tickets metas */
+			case 'tickets_metas';
+				wpas_clear_tickets_metas();
+				break;
+
+			case 'clear_taxonomies':
+				wpas_clear_taxonomies();
+				break;
+
+		}
+
+		/* Redirect in "read-only" mode */
+		$url  = add_query_arg( array(
+			'post_type' => 'ticket',
+			'page'      => 'wpas-status',
+			'tab'       => 'tools',
+			'done'      => sanitize_text_field( $_GET['tool'] )
+			), admin_url( 'edit.php' )
+		);
+
+		wp_redirect( wp_sanitize_redirect( $url ) );
+		exit;
 
 	}
 
