@@ -44,6 +44,7 @@ class Awesome_Support {
 		add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added
 		add_action( 'init',                           array( $this, 'load_plugin_textdomain' ) );     // Load the plugin textdomain
 		add_action( 'init',                           array( $this, 'init' ), 10, 0 );                // Register main post type
+		add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ), 999 );  // Add a link to agent's tickets in the toolbar
 		add_action( 'wp_print_styles',                array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
 		add_action( 'wp_print_scripts',               array( $this, 'enqueue_scripts' ) );            // Load public-facing JavaScripts
 		add_action( 'template_redirect',              array( $this, 'redirect_archive' ) );
@@ -726,6 +727,36 @@ class Awesome_Support {
 				<label><input type="checkbox" name="terms" required> <?php printf( __( 'I accept the %sterms and conditions%s', 'wpas' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ); ?></label>
 			</div>
 		<?php endif;
+	}
+
+	/**
+	 * Add link to agent's tickets.
+	 *
+	 * @since  3.0.0
+	 * @param  object $wp_admin_bar The WordPress toolbar object
+	 * @return void
+	 */
+	public function toolbar_tickets_link( $wp_admin_bar ) {
+
+		if ( !current_user_can( 'edit_ticket' ) ) {
+			return;
+		}
+
+		$hide = boolval( wpas_get_option( 'hide_closed' ) );
+		$args = array( 'post_type' => 'ticket' );
+
+		if ( true === $hide ) {
+			$args['wpas_status'] = 'open';
+		} 
+
+		$args = array(
+			'id'    => 'wpas_tickets',
+			'title' => __( 'My Tickets', 'wpas' ),
+			'href'  => add_query_arg( $args, admin_url( 'edit.php' ) ),
+			'meta'  => array( 'class' => 'wpas-my-tickets' )
+		);
+		
+		$wp_admin_bar->add_node( $args );
 	}
 
 }
