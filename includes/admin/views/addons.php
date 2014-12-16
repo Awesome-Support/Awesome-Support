@@ -28,12 +28,26 @@ if ( false === $items ) {
 	}
 }
 ?>
+
+<style type="text/css">
+.wpas-addon-img {
+	box-shadow: 0px 0px 25px rgba(0,0,0,0.25);
+}
+.wpas-addon-item-pricing {
+	background: white;
+	padding: 5px 10px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+}
+</style>
+
 <div class="wrap about-wrap">
-	<h1><?php _e( 'Addons', 'wpas' ); ?></h1>
+	<h1>Addons</h1>
+	<div class="about-text">Even though Awesome Support has a lot of built-in features, it is impossible to make everyone happy. This is why we have lots of addons to help you tailor your support system.</div>
 
 	<?php
 	if ( false === $items ):
-		?><p><?php printf( __( 'To check out all our addons please visit <a href="%s" target="_blank">http://getawesomesupport.com</a>', 'wpas' ), esc_url( 'http://getawesomesupport.com/addons' ) ); ?></p><?php
+		?><p>To check out all our addons please visit <a href="http://getawesomesupport.com/addons" target="_blank">http://getawesomesupport.com/addons</a></p><?php
 	else:
 		// wpas_debug_display( $items );
 		foreach ( $items as $key => $item ):
@@ -43,22 +57,26 @@ if ( false === $items ) {
 
 			/* This item has a fixed price */
 			if ( isset( $item->pricing->amount ) ) {
-				$price = money_format( '%(#10n', number_format( $item->pricing->amount, 0 ) );
+				$price = number_format( $item->pricing->amount, 0 );
 			}
 
 			/* This item has variable pricing */
 			else {
 				if ( isset( $item->pricing->singlesite ) ) {
-					$price = money_format( '%(#10n', number_format( $item->pricing->singlesite, 0 ) );
+					$price = number_format( $item->pricing->singlesite, 0 );
 				}
 			} ?>
-			<div class="wpas-addon-item" id="wpas-addon-item-<?php echo intval( $item->info->id ); ?>">
-				<h2><?php echo esc_attr( $item->info->title ); ?></h2>
-				<?php if ( !empty( $item->info->thumbnail ) ): ?><img src="<?php echo esc_url( $item->info->thumbnail ); ?>"><?php endif; ?>
-				<?php if ( !empty( $item->info->excerpt ) ): echo wpautop( $item->info->excerpt ); endif; ?>
-				<?php if ( false !== $price ): ?><div class="wpas_addon_item_pricing"><?php echo $price; ?></div><?php endif; ?>
-				<a href="<?php echo esc_url( $item->info->link ); ?>" target="_blank"><?php _e( 'Buy', 'wpas' ); ?></a>
+			<div class="feature-section col two-col wpas-addon-item" id="wpas-addon-item-<?php echo intval( $item->info->id ); ?>">
+				<div class="col-1">
+					<?php if ( !empty( $item->info->thumbnail ) ): ?><img class="wpas-addon-img" src="<?php echo esc_url( $item->info->thumbnail ); ?>"><?php endif; ?>
+				</div>
+				<div class="col-2 last-feature">
+					<h3><?php echo esc_attr( $item->info->title ); ?> <small class="wpas-addon-item-pricing">from <?php if ( false !== $price ): ?><strong>$<?php echo $price; ?></strong><?php endif; ?></small></h3>
+					<p><?php if ( !empty( $item->info->excerpt ) ): echo wpautop( $item->info->excerpt ); endif; ?></p>
+					<a class="button-primary" href="<?php echo esc_url( $item->info->link ); ?>" target="_blank">View details</a>
+				</div>
 			</div>
+			<hr>
 		<?php endforeach;
 
 	endif; ?>
