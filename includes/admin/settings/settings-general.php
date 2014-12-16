@@ -53,6 +53,13 @@ function wpas_core_settings_general( $def ) {
 					'default' => true
 				),
 				array(
+					'name'    => __( 'Show Count', 'wpas' ),
+					'id'      => 'show_count',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Display the number of open tickets in the admin menu.', 'wpas' ),
+					'default' => true
+				),
+				array(
 					'name'    => __( 'Old Tickets', 'wpas' ),
 					'id'      => 'old_ticket',
 					'type'    => 'text',

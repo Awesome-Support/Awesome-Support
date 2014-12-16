@@ -97,6 +97,7 @@ class Awesome_Support_Admin {
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_styles' ) );              // Load plugin styles
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_scripts' ) );             // Load plugin scripts
 			add_action( 'admin_menu',                array( $this, 'register_submenu_items' ) );            // Register all the submenus
+			add_action( 'admin_menu',                array( $this, 'tickets_count' ) );                     // Add the tickets count
 			add_action( 'admin_notices',             array( $this, 'wpas_admin_notices' ) );                // Display custom admin notices
 			add_action( 'add_meta_boxes',            array( $this, 'metaboxes' ) );                         // Register the metaboxes
 			add_action( 'save_post_ticket',          array( $this, 'save_ticket' ) );                       // Save all custom fields
@@ -518,6 +519,47 @@ class Awesome_Support_Admin {
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'System Status', 'wpas' ), __( 'System Status', 'wpas' ), 'administrator', 'wpas-status', array( $this, 'display_status_page' ) );
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Awesome Support Addons', 'wpas' ), __( 'Addons', 'wpas' ), 'edit_posts', 'wpas-addons', array( $this, 'display_addons_page' ) );
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'wpas' ), __( 'About', 'wpas' ), 'edit_posts', 'wpas-about', array( $this, 'display_about_page' ) );
+	}
+
+	/**
+	 * Add ticket count in admin menu item.
+	 *
+	 * @since  1.0.0
+	 * @return void
+	 */
+	public function tickets_count() {
+
+		if ( false === boolval( wpas_get_option( 'show_count' ) ) ) {
+			return false;
+		}
+
+		global $menu, $current_user;
+
+		$args = array();
+
+		if ( current_user_can( 'administrator' )
+			&& false === boolval( wpas_get_option( 'admin_see_all' ) )
+			|| !current_user_can( 'administrator' )
+			&& current_user_can( 'edit_ticket' )
+			&& false === boolval( wpas_get_option( 'agent_see_all' ) ) ) {
+			$args['meta_query'][] = array(
+				'key'     => '_wpas_assignee',
+				'value'   => $current_user->ID,
+				'compare' => '=',
+			);
+		}
+
+		$count = count( get_tickets( 'open', $args ) );
+
+		if ( 0 === $count ) {
+			return false;
+		}
+
+		foreach ( $menu as $key => $value ) {
+			if ( $menu[$key][2] == 'edit.php?post_type=ticket' ) {
+				$menu[$key][0] .= ' <span class="awaiting-mod count-' . $count . '"><span class="pending-count">' . $count . '</span></span>';
+			}
+		}
 	}
 
 	/**
