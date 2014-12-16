@@ -516,6 +516,7 @@ class Awesome_Support_Admin {
 	 */
 	public function register_submenu_items() {
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'System Status', 'wpas' ), __( 'System Status', 'wpas' ), 'administrator', 'wpas-status', array( $this, 'display_status_page' ) );
+		add_submenu_page( 'edit.php?post_type=ticket', __( 'Awesome Support Addons', 'wpas' ), __( 'Addons', 'wpas' ), 'edit_posts', 'wpas-addons', array( $this, 'display_addons_page' ) );
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'wpas' ), __( 'About', 'wpas' ), 'edit_posts', 'wpas-about', array( $this, 'display_about_page' ) );
 	}
 
@@ -526,6 +527,15 @@ class Awesome_Support_Admin {
 	 */
 	public function display_about_page() {
 		include_once( WPAS_PATH . 'includes/admin/views/about.php' );
+	}
+
+	/**
+	 * Render the addons page for this plugin.
+	 *
+	 * @since    3.0.0
+	 */
+	public function display_addons_page() {
+		include_once( WPAS_PATH . 'includes/admin/views/addons.php' );
 	}
 
 	/**
