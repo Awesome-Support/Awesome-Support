@@ -30,6 +30,9 @@ if ( false === $items ) {
 ?>
 
 <style type="text/css">
+.wpas-addon-img {
+	box-shadow: 0px 0px 25px rgba(0,0,0,0.25);
+}
 .wpas-addon-item-pricing {
 	background: white;
 	padding: 5px 10px;
@@ -65,7 +68,7 @@ if ( false === $items ) {
 			} ?>
 			<div class="feature-section col two-col wpas-addon-item" id="wpas-addon-item-<?php echo intval( $item->info->id ); ?>">
 				<div class="col-1">
-					<?php if ( !empty( $item->info->thumbnail ) ): ?><img src="<?php echo esc_url( $item->info->thumbnail ); ?>"><?php endif; ?>
+					<?php if ( !empty( $item->info->thumbnail ) ): ?><img class="wpas-addon-img" src="<?php echo esc_url( $item->info->thumbnail ); ?>"><?php endif; ?>
 				</div>
 				<div class="col-2 last-feature">
 					<h3><?php echo esc_attr( $item->info->title ); ?> <small class="wpas-addon-item-pricing">from <?php if ( false !== $price ): ?><strong>$<?php echo $price; ?></strong><?php endif; ?></small></h3>
