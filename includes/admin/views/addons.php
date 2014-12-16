@@ -43,13 +43,13 @@ if ( false === $items ) {
 
 			/* This item has a fixed price */
 			if ( isset( $item->pricing->amount ) ) {
-				$price = money_format( '%(#10n', number_format( $item->pricing->amount, 0 ) );
+				$price = number_format( $item->pricing->amount, 0 );
 			}
 
 			/* This item has variable pricing */
 			else {
 				if ( isset( $item->pricing->singlesite ) ) {
-					$price = money_format( '%(#10n', number_format( $item->pricing->singlesite, 0 ) );
+					$price = number_format( $item->pricing->singlesite, 0 );
 				}
 			} ?>
 			<div class="wpas-addon-item" id="wpas-addon-item-<?php echo intval( $item->info->id ); ?>">
