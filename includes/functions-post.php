@@ -248,6 +248,51 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 }
 
 /**
+ * Get tickets.
+ *
+ * Get a list of tickets matching the arguments passed.
+ * This function is basically a wrapper for WP_Query with
+ * the addition of the ticket status.
+ *
+ * @since  3.0.0
+ * @param  string $status Ticket status (open or closed)
+ * @param  array  $args   Additional arguments (see WP_Query)
+ * @return array          Array of tickets, empty array if no tickets found
+ */
+function get_tickets( $status = 'open', $args = array() ) {
+
+	$defaults = array(
+		'post_type'              => 'ticket',
+		'post_status'            => 'any',
+		'posts_per_page'         => -1,
+		'no_found_rows'          => false,
+		'cache_results'          => true,
+		'update_post_term_cache' => true,
+		'update_post_meta_cache' => true,
+	);
+
+	$args  = wp_parse_args( $args, $defaults );
+
+	if ( in_array( $status, array( 'open', 'closed' ) ) ) {
+		$args['meta_query'][] = array(
+			'key' => '_wpas_status',
+			'value' => $status,
+			'compare' => '='
+		);
+	}
+
+	$query = new WP_Query( $args );
+
+	if ( empty( $query->posts ) ) {
+		return array();
+	} else {
+		return $query->posts;
+	}
+	
+
+}
+
+/**
  * Add a new reply to a ticket.
  * 
  * @return void
