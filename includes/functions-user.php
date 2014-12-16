@@ -47,14 +47,14 @@ function wpas_register_account() {
 		exit;
 	}
 
-	$username = strtolower( $first_name ) . strtolower( $last_name );
+	$username = sanitize_user( strtolower( $first_name ) . strtolower( $last_name ) );
 	$user     = get_user_by( 'login', $username );
 
 	/* Check for existing username */
 	if ( is_a( $user, 'WP_User' ) ) {
 		$suffix = 1;
 		do {
-			$alt_username = $username . $suffix;
+			$alt_username = sanitize_user( $username . $suffix );
 			$user = get_user_by( 'login', $alt_username );
 			$suffix++;
 		} while( is_a( $user, 'WP_User' )  );
