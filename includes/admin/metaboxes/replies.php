@@ -27,7 +27,7 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 				'order'          =>	wpas_get_option( 'replies_order', 'ASC' ),
 				'post_type'      =>	apply_filters( 'wpas_replies_post_type', array( 'ticket_history', 'ticket_reply' ) ),
 				'post_parent'    =>	$post->ID,
-				'post_status'    =>	apply_filters( 'wpas_replies_post_type', array( 'publish', 'inherit', 'private', 'trash', 'read', 'unread' ) )
+				'post_status'    =>	apply_filters( 'wpas_replies_post_status', array( 'publish', 'inherit', 'private', 'trash', 'read', 'unread' ) )
 			);
 
 			$history = new WP_Query( $replies_args );
