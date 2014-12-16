@@ -84,7 +84,7 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 
 							if( 'trash' != $row->post_status ): ?>
 
-								<td class="col1">
+								<td class="col1" style="width: 64px;">
 
 									<?php
 									/* Display avatar only for replies */
