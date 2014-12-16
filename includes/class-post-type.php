@@ -240,7 +240,7 @@ class WPAS_Ticket_Post_Type {
 }
 
 /**
- * Get available ticket status helper function.
+ * Get available ticket status wrapper function.
  *
  * @since  3.0.0
  * @return array List of filtered statuses
