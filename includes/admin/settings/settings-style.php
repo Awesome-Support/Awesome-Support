@@ -55,12 +55,25 @@ function wpas_core_settings_style( $def ) {
 					'id'      => 'color_old',
 					'type'    => 'color',
 					'default' => '#dd9933',
-				)
+				),
+				array(
+					'name'    => __( 'Awaiting Reply', 'wpas' ),
+					'id'      => 'color_awaiting_reply',
+					'type'    => 'color',
+					'default' => '#0074a2',
+				),
 			)
 		),
 	);
 
-	$status = wpas_get_post_status();
+	$status   = wpas_get_post_status();
+
+	$defaults = apply_filters( 'wpas_labels_default_colors', array(
+		'queued'     => '#1e73be',
+		'processing' => '#a01497',
+		'hold'       => '#b56629',
+		'unknown'    => '#169baa'
+	) );
 
 	foreach ( $status as $id => $label ) {
 
@@ -68,7 +81,7 @@ function wpas_core_settings_style( $def ) {
 			'name'    => $label,
 			'id'      => 'color_' . $id,
 			'type'    => 'color',
-			'default' => '#7a7a7a',
+			'default' => isset( $defaults[$id] ) ? $defaults[$id] : $defaults['unknown'],
 		);
 
 		array_push( $settings['style']['options'], $option );
