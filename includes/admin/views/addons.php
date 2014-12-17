@@ -42,6 +42,11 @@ if ( false === $items ) {
 .wpas-addon-all .last-feature {
 	padding-top: 40px;
 }
+.wpas-addon-img-wrap {
+	width: 100%;
+	min-height: 311px;
+	background: #ddd url('<?php echo admin_url(); ?>/images/wpspin_light-2x.gif') no-repeat 50% 50%;
+}
 .wpas-addon-img {
 	box-shadow: 0px 0px 25px rgba(0,0,0,0.25);
 }
@@ -81,7 +86,7 @@ if ( false === $items ) {
 				} ?>
 				<div class="feature-section col two-col wpas-addon-item" id="wpas-addon-item-<?php echo intval( $item->info->id ); ?>">
 					<div class="col-1">
-						<?php if ( !empty( $item->info->thumbnail ) ): ?><img class="wpas-addon-img" src="<?php echo esc_url( $item->info->thumbnail ); ?>"><?php endif; ?>
+						<div class="wpas-addon-img-wrap"><?php if ( !empty( $item->info->thumbnail ) ): ?><img class="wpas-addon-img" src="<?php echo esc_url( $item->info->thumbnail ); ?>"><?php endif; ?></div>
 					</div>
 					<div class="col-2 last-feature">
 						<h3><?php echo esc_attr( $item->info->title ); ?> <small class="wpas-addon-item-pricing">from <?php if ( false !== $price ): ?><strong>$<?php echo $price; ?></strong><?php endif; ?></small></h3>
