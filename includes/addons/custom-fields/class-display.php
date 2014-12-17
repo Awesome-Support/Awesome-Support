@@ -152,7 +152,7 @@ function wpas_cf_display_status( $name, $post_id ) {
 
 	if ( 'closed' === $status ) {
 		$label  = ucwords( $status );
-		$color  = wpas_get_option( "color_$status", '#eeeeee' );
+		$color  = wpas_get_option( "color_$status", '#dd3333' );
 		$tag    = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 	} else {
 
@@ -162,12 +162,26 @@ function wpas_cf_display_status( $name, $post_id ) {
 
 		if ( !array_key_exists( $post_status, $custom_status ) ) {
 			$label  = ucwords( $status );
-			$color  = wpas_get_option( "color_$status", '#eeeeee' );
+			$color  = wpas_get_option( "color_$status", '#169baa' );
 			$tag    = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 		} else {
+			$defaults = array(
+				'queued'     => '#1e73be',
+				'processing' => '#a01497',
+				'hold'       => '#b56629'
+			);
 			$label = $custom_status[$post_status];
-			$color = wpas_get_option( "color_$post_status", '#eeeeee' );
-			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+			$color = wpas_get_option( "color_$post_status", false );
+
+			if ( false === $color ) {
+				if ( isset( $defaults[$post_status] ) ) {
+					$color = $defaults[$post_status];
+				} else {
+					$color = '#169baa';
+				}
+			}
+
+			$tag = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 		}
 	}
 
