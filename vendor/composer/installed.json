@@ -1,20 +1,20 @@
 [
     {
         "name": "gambitph/titan-framework",
-        "version": "v1.7.1",
-        "version_normalized": "1.7.1.0",
+        "version": "v1.7.2",
+        "version_normalized": "1.7.2.0",
         "source": {
             "type": "git",
             "url": "https://github.com/gambitph/Titan-Framework.git",
-            "reference": "e7ba79b322fb6cf0017f38caba01dc0137b24d4f"
+            "reference": "068875e28369e4066d1e5d181c8b48a2c8c8038b"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/e7ba79b322fb6cf0017f38caba01dc0137b24d4f",
-            "reference": "e7ba79b322fb6cf0017f38caba01dc0137b24d4f",
+            "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/068875e28369e4066d1e5d181c8b48a2c8c8038b",
+            "reference": "068875e28369e4066d1e5d181c8b48a2c8c8038b",
             "shasum": ""
         },
-        "time": "2014-12-11 12:19:32",
+        "time": "2014-12-18 06:48:11",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
