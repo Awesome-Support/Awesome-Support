@@ -63,6 +63,7 @@ class Awesome_Support_Admin {
 			require_once( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-help.php' );
+			require_once( WPAS_PATH . 'includes/class-remote-notification-client.php' );
 
 			/* Load settings files */
 			require_once( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
@@ -94,6 +95,7 @@ class Awesome_Support_Admin {
 			/* Do Actions. */
 			add_action( 'pre_get_posts',             array( $this, 'hide_others_tickets' ), 10, 1 );
 			add_action( 'admin_init',                array( $this, 'system_tools' ), 10, 0 );
+			add_action( 'admin_init',                array( $this, 'remote_notifications' ), 10, 0 );
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_styles' ) );              // Load plugin styles
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_scripts' ) );             // Load plugin scripts
 			add_action( 'admin_menu',                array( $this, 'register_submenu_items' ) );            // Register all the submenus
@@ -1058,6 +1060,21 @@ class Awesome_Support_Admin {
 		wp_redirect( wp_sanitize_redirect( $url ) );
 		exit;
 
+	}
+
+	/**
+	 * Check for remote notifications.
+	 *
+	 * Use the Remote Dashboard Notifications plugin
+	 * to check for possiblt notifications from
+	 * http://getawesomesupport.com
+	 *
+	 * @since  3.0.0
+	 * @link   https://wordpress.org/plugins/remote-dashboard-notifications/
+	 * @return void
+	 */
+	public function remote_notifications() {
+		$notification = new TAV_Remote_Notification_Client( 32, '00a09b8b272a37fb', 'http://getawesomesupport.com?post_type=notification' );
 	}
 
 }
