@@ -5,7 +5,7 @@
  * @since  1.0.0
  * @return void
  */
-function wpas_register_account() {
+function wpas_register_account( $data = false ) {
 
 	global $post;
 
@@ -17,11 +17,15 @@ function wpas_register_account() {
 		exit;
 	}
 
-	$email      = isset( $_POST['email'] ) && !empty( $_POST['email'] ) ? sanitize_email( $_POST['email'] ) : false;
-	$first_name = isset( $_POST['first_name'] ) && !empty( $_POST['first_name'] ) ? sanitize_text_field( $_POST['first_name'] ) : false;
-	$last_name  = isset( $_POST['last_name'] ) && !empty( $_POST['last_name'] ) ? sanitize_text_field( $_POST['last_name'] ) : false;
-	$pwd        = isset( $_POST['pwd'] ) && !empty( $_POST['pwd'] ) ? $_POST['pwd'] : false;
-	$pwd2       = isset( $_POST['pwd-validate'] ) && !empty( $_POST['pwd-validate'] ) ? $_POST['pwd-validate'] : false;
+	if ( false === $data ) {
+		$data = $_POST;
+	}
+
+	$email      = isset( $data['email'] ) && !empty( $data['email'] ) ? sanitize_email( $data['email'] ) : false;
+	$first_name = isset( $data['first_name'] ) && !empty( $data['first_name'] ) ? sanitize_text_field( $data['first_name'] ) : false;
+	$last_name  = isset( $data['last_name'] ) && !empty( $data['last_name'] ) ? sanitize_text_field( $data['last_name'] ) : false;
+	$pwd        = isset( $data['pwd'] ) && !empty( $data['pwd'] ) ? $data['pwd'] : false;
+	$pwd2       = isset( $data['pwd-validate'] ) && !empty( $data['pwd-validate'] ) ? $data['pwd-validate'] : false;
 
 	/* Save the user information in session to pre populate the form in case of error. */
 	$_SESSION['wpas_registration_form'] = array(

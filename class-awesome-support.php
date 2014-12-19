@@ -98,7 +98,7 @@ class Awesome_Support {
 		 * @since 3.0.0
 		 */
 		if ( isset( $_POST['wpas_registration'] ) ) {
-			add_action( 'wp', 'wpas_register_account' );
+			add_action( 'wp', 'wpas_register_account', 10, 0 );
 		}
 
 		/**
