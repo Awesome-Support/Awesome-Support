@@ -24,10 +24,6 @@ function wpas_sc_submit_form() {
 		 */
 		do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
 
-		if ( isset( $_GET['message'] ) ) {
-			wpas_notification( 'decode', $_GET['message'] );
-		}
-
 		/* If user is not logged in we display the register form */
 		if( !is_user_logged_in() ):
 
