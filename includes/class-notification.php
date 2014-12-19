@@ -116,9 +116,13 @@ class WPAS_Notification {
 
 		if ( is_null( $this->message ) || false === $this->case ) {
 			return false;
-		} 
+		}
 
-		return $this->template();
+		ob_start();
+		$this->template();
+		$notification = ob_get_clean();
+		
+		return $notification;
 
 	}
 
