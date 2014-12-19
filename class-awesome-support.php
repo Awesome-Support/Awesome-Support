@@ -30,14 +30,6 @@ class Awesome_Support {
 	 */
 	private function __construct() {
 
-		/**
-		 * Ticket post type slug.
-		 *
-		 * @since 1.0.0
-		 * @var   string
-		 */
-		$this->slug = 'ticket';
-
 		add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
 		add_action( 'pre_user_query',                 'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
 		add_action( 'wp',                             array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
