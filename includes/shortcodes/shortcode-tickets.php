@@ -5,7 +5,7 @@ add_shortcode( 'tickets', 'wpas_sc_client_account' );
  */
 function wpas_sc_client_account() {
 
-	global $wpas_tickets, $current_user;
+	global $wpas_tickets, $current_user, $post;
 
 	/**
 	 * For some reason when the user ID is set to 0
