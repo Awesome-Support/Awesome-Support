@@ -12,14 +12,9 @@ function wpas_get_option( $option, $default = false ) {
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
 
 	/* Return option value if exists */
-	if ( isset( $options[$option] ) ) {
-		return apply_filters( 'wpas_option_' . $option, $options[$option] );
-	}
+	$value = isset( $options[$option] ) ? $options[$option] : $default;
 
-	/* Otherwise return $default value */
-	else {
-		return $default;
-	}
+	return apply_filters( 'wpas_option_' . $option, $value );
 
 }
 
