@@ -34,7 +34,17 @@ function wpas_register_account( $data = false ) {
 		'email'      => $email,
 	);
 
-	if ( wpas_get_option( 'terms_conditions', false ) && !isset( $_POST['terms'] ) ) {
+	/**
+	 * wpas_pre_register_account hook
+	 *
+	 * This hook is triggered all the time
+	 * even if the checks don't pass.
+	 *
+	 * @since  3.0.1
+	 */
+	do_action( 'wpas_pre_register_account', $data );
+
+	if ( wpas_get_option( 'terms_conditions', false ) && !isset( $data['terms'] ) ) {
 		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'You did not accept the terms and conditions.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
 		exit;
 	}
@@ -75,15 +85,40 @@ function wpas_register_account( $data = false ) {
 		'role'         => 'wpas_user'
 	);
 
+	/**
+	 * wpas_register_account_before hook
+	 *
+	 * Fired right before the user is added to the database.
+	 */
+	do_action( 'wpas_register_account_before', $args );
+
 	$user_id = wp_insert_user( apply_filters( 'wpas_user_registration_data', $args ) );
 
 	if ( is_wp_error( $user_id ) ) {
+
+		/**
+		 * wpas_register_account_before hook
+		 *
+		 * Fired right after a failed attempt to register a user.
+		 *
+		 * @since  3.0.1
+		 */
+		do_action( 'wpas_register_account_failed', $user_id, $args );
 
 		$error = $user_id->get_error_message();
 		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( $error ), get_permalink( $post->ID ) ) ) );
 		exit;
 
 	} else {
+
+		/**
+		 * wpas_register_account_before hook
+		 *
+		 * Fired right after the user is successfully added to the database.
+		 *
+		 * @since  3.0.1
+		 */
+		do_action( 'wpas_register_account_after', $user_id, $args );
 
 		/* Delete the user information data from session. */
 		unset( $_SESSION['wpas_registration_form'] );
