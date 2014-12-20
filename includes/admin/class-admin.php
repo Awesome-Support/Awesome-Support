@@ -63,7 +63,10 @@ class Awesome_Support_Admin {
 			require_once( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-help.php' );
-			require_once( WPAS_PATH . 'includes/class-remote-notification-client.php' );
+			
+			if ( !class_exists( 'TAV_Remote_Notification_Client' ) ) {
+				require_once( WPAS_PATH . 'includes/class-remote-notification-client.php' );
+			}
 
 			/* Load settings files */
 			require_once( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
