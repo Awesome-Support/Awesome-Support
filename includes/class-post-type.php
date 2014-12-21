@@ -45,7 +45,7 @@ class WPAS_Ticket_Post_Type {
 	/**
 	 * Register the ticket post type.
 	 *
-	 * @since 1.0.0
+	 * @since 1.0.2
 	 */
 	public function post_type() {
 
@@ -63,7 +63,7 @@ class WPAS_Ticket_Post_Type {
 		$icon = version_compare( get_bloginfo( 'version' ), '3.8', '>=') ? 'dashicons-sos' : WPAS_ADMIN_ASSETS_URL . 'images/icon-tickets.png';
 
 		/* Post type labels */
-		$labels = array(
+		$labels = apply_filters( 'wpas_ticket_type_labels', array(
 			'name'               => _x( 'Tickets', 'post type general name', 'wpas' ),
 			'singular_name'      => _x( 'Ticket', 'post type singular name', 'wpas' ),
 			'menu_name'          => _x( 'Tickets', 'admin menu', 'wpas' ),
@@ -78,10 +78,10 @@ class WPAS_Ticket_Post_Type {
 			'parent_item_colon'  => __( 'Parent Ticket:', 'wpas' ),
 			'not_found'          => __( 'No tickets found.', 'wpas' ),
 			'not_found_in_trash' => __( 'No tickets found in Trash.', 'wpas' ),
-		);
+		) );
 
 		/* Post type capabilities */
-		$cap = array(
+		$cap = apply_filters( 'wpas_ticket_type_cap', array(
 			'read'					 => 'view_ticket',
 			'read_post'				 => 'view_ticket',
 			'read_private_posts' 	 => 'view_private_ticket',
@@ -96,10 +96,10 @@ class WPAS_Ticket_Post_Type {
 			'delete_private_posts' 	 => 'delete_private_ticket',
 			'delete_published_posts' => 'delete_ticket',
 			'delete_others_posts' 	 => 'delete_other_ticket'
-		);
+		) );
 
 		/* Post type arguments */
-		$args = array(
+		$args = apply_filters( 'wpas_ticket_type_args', array(
 			'labels'              => $labels,
 			'public'              => true,
 			'exclude_from_search' => true,
@@ -115,7 +115,7 @@ class WPAS_Ticket_Post_Type {
 			'menu_position'       => null,
 			'menu_icon'           => $icon,
 			'supports'            => $supports
-		);
+		) );
 
 		register_post_type( 'ticket', $args );
 
