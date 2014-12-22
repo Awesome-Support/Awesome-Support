@@ -4,14 +4,14 @@ Plugin Name: Titan Framework
 Plugin URI: http://www.titanframework.net/
 Description: Titan Framework allows theme and plugin developers to create a admin pages, options, meta boxes, and theme customizer options with just a few simple lines of code.
 Author: Benjamin Intal, Gambit
-Version: 1.7.2
+Version: 1.7.3
 Author URI: http://gambit.ph
 */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // Used for tracking the version used
-defined( 'TF_VERSION' ) or define( 'TF_VERSION', '1.7.2' );
+defined( 'TF_VERSION' ) or define( 'TF_VERSION', '1.7.3' );
 // Used for text domains
 defined( 'TF_I18NDOMAIN' ) or define( 'TF_I18NDOMAIN', 'titan-framework' );
 // Used for general naming, e.g. nonces
@@ -79,6 +79,11 @@ class TitanFrameworkPlugin {
 		add_action( 'plugins_loaded', array( $this, 'loadTextDomain' ) );
 		add_action( 'plugins_loaded', array( $this, 'forceLoadFirst' ), 10, 1 );
 		add_filter( 'plugin_row_meta', array( $this, 'pluginLinks' ), 10, 2 );
+
+		// Initialize options, but do not really create them yet
+		add_action( 'after_setup_theme', array( $this, 'triggerOptionCreation' ), 5 );
+
+		// Create the options
 		add_action( 'init', array( $this, 'triggerOptionCreation' ), 11 );
 	}
 
@@ -91,7 +96,14 @@ class TitanFrameworkPlugin {
 	 * @since	1.6
 	 */
 	public function triggerOptionCreation() {
+		// The after_setup_theme is the initialization stage
+		if ( current_filter() == 'after_setup_theme' ) {
+			TitanFramework::$initializing = true;
+		}
+
 		do_action( 'tf_create_options' );
+
+		TitanFramework::$initializing = false;
 	}
 
 
