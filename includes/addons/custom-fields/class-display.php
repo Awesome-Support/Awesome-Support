@@ -36,9 +36,18 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 				$title    = !empty( $field['args']['title'] ) ? $field['args']['title'] : wpas_get_title_from_id( $name );
 				$callback = !empty( $field['args']['callback'] ) ? $field['args']['callback'] : 'text';
 
-				if ( method_exists( 'WPAS_Custom_Fields_Display', $callback ) ) {
+				/* Check for a custom function */
+				if ( function_exists( $callback ) ) {
+					call_user_func( $callback, $field );
+				}
+
+				/* Check for a matching method in the custom fields display class */
+				elseif ( method_exists( 'WPAS_Custom_Fields_Display', $callback ) ) {
 					call_user_func( array( 'WPAS_Custom_Fields_Display', $callback ), $field );
-				} else {
+				}
+
+				/* Fallback on a standard text field */
+				else {
 					WPAS_Custom_Fields_Display::text( $field );
 				}
 			}
