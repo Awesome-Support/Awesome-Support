@@ -12,7 +12,6 @@
  * @copyright 2014 ThemeAvenue
  */
 
-add_filter( 'the_content', 'wpas_single_ticket' );
 /**
  * Alter page content for single ticket.
  *
