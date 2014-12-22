@@ -4,7 +4,7 @@
  *
  * This metabox is used to display all parties involved in the ticket resolution.
  *
- * @since 3.0.0
+ * @since 3.0.2
  */
 
 // If this file is called directly, abort.
@@ -85,13 +85,12 @@ foreach( $wp_roles->roles as $role => $data ) {
 				foreach ( $all_users as $user ) {
 
 					/* Exclude agents */
-					if ( !$user->has_cap( 'create_ticket' ) ) {
+					if ( $user->has_cap( 'create_ticket' ) && ! $user->has_cap( 'edit_ticket' ) ) {
 
 						$user_id   = $user->ID;
 						$user_name = $user->data->user_nicename;
 
-						if( $user_id == $post->post_author )
-							$selected  = "selected='selected'";
+						$selected = ( $user_id == $post->post_author ) ? "selected='selected'" : '';
 
 						/* Output the option */
 						echo "<option value='$user_id' $selected>$user_name</option>";
