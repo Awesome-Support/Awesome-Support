@@ -14,7 +14,8 @@
  * @author    ThemeAvenue <web@themeavenue.net>
  * @license   GPL-2.0+
  * @link      http://themeavenue.net
- * @link 	  http://themeavenue.net/plugin-url
+ * @link      http://wordpress.org/plugins/remote-dashboard-notifications/
+ * @link 	  https://github.com/ThemeAvenue/Remote-Dashboard-Notifications
  * @copyright 2014 ThemeAvenue
  */
 
@@ -32,27 +33,32 @@ class TAV_Remote_Notification_Client {
 	 *
 	 * @var      string
 	 */
-	protected static $version = '0.1.0';
+	protected static $version = '0.1.2';
 
-	public function __construct( $channel_id = false, $channel_key = false, $server = false ) {
+	public function __construct( $channel_id = false, $channel_key = false, $server = false, $debug = false ) {
 
 		/* Don't continue during Ajax process */
-		if( !is_admin() || defined( 'DOING_AJAX' ) && DOING_AJAX )
+		if ( !is_admin() || defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return;
+		}
 
-		$this->id  	  = intval( $channel_id );
-		$this->key 	  = sanitize_key( $channel_key );
+		$this->id     = intval( $channel_id );
+		$this->key    = sanitize_key( $channel_key );
 		$this->server = esc_url( $server );
 		$this->notice = false;
 		$this->cache  = apply_filters( 'rn_notice_caching_time', 6 );
+		$this->debug  = $debug;
+		$this->error  = null;
 
 		/* The plugin can't work without those 2 parameters */
-		if( false === ( $this->id || $this->key || $this->server ) )
+		if ( false === ( $this->id || $this->key || $this->server ) ) {
 			return;
+		}
 
 		/* Call the dismiss method before testing for Ajax */
-		if( isset( $_GET['rn'] ) && isset( $_GET['notification'] ) )
+		if ( isset( $_GET['rn'] ) && isset( $_GET['notification'] ) ) {
 			add_action( 'init', array( $this, 'dismiss' ) );
+		}
 
 		add_action( 'init', array( $this, 'request_server' ) );
 
@@ -68,33 +74,43 @@ class TAV_Remote_Notification_Client {
 	 */
 	public function request_server() {
 
+		/* Current channel ID */
+		$channel_id = $this->id;
+
+		/* Current channel key */
+		$channel_key = $this->key;
+
+		/* Generate a unique identifyer used for the transient */
+		$uniqid = $channel_id . substr( $channel_key, 0, 5 );
+
+		/* Prepare the payload to send to server */
+		$payload = base64_encode( json_encode( array( 'channel' => $channel_id, 'key' => $channel_key ) ) );
+
+		/* Get the endpoint URL ready */
+		$url = add_query_arg( array( 'payload' => $payload ), $this->server );
+
 		/* Content is false at first */
-		$content = get_transient( 'rn_last_notification' );
+		$content = get_transient( "rn_last_notification_$uniqid" );
 
 		/* Set the request response to null */
 		$request = null;
 
 		/* If no notice is present in DB we query the server */
-		if( false === $content || defined( 'RDN_DEV' ) && RDN_DEV ) {
-
-			/* Prepare the payload to send to server */
-			$payload = base64_encode( json_encode( array( 'channel' => $this->id, 'key' => $this->key ) ) );
-
-			/* Get the endpoint URL ready */
-			$url = add_query_arg( array( 'payload' => $payload ), $this->server );
+		if ( false === $content || defined( 'RDN_DEV' ) && RDN_DEV ) {
 
 			/* Query the server */
 			$request = wp_remote_get( $url, array( 'timeout' => apply_filters( 'rn_http_request_timeout', 5 ) ) );
 
 			/* If we have a WP_Error object we abort */
-			if( is_wp_error( $request ) )
+			if ( is_wp_error( $request ) ) {
 				return;
+			}
 
 			/* Check if we have a valid response */
-			if( is_array( $request ) && isset( $request['response']['code'] ) && 200 === intval( $request['response']['code'] ) ) {
+			if ( is_array( $request ) && isset( $request['response']['code'] ) && 200 === intval( $request['response']['code'] ) ) {
 
 				/* Get the response body */
-				if( isset( $request['body'] ) ) {
+				if ( isset( $request['body'] ) ) {
 
 					/**
 					 * Decode the response JSON string
@@ -104,11 +120,21 @@ class TAV_Remote_Notification_Client {
 					/**
 					 * Check if the payload is in a usable JSON format
 					 */
-					if( json_last_error() != JSON_ERROR_NONE ) {
-						return false;
+					if ( version_compare( phpversion(), '5.3.0', '>=' ) ) {
+
+						if ( ! ( json_last_error() == JSON_ERROR_NONE ) ) {
+							return false;
+						}
+
+					} else {
+
+						if ( $content == NULL ) {
+							return false;
+						}
+
 					}
 
-					set_transient( 'rn_last_notification', $content, $this->cache*60*60 );
+					set_transient( "rn_last_notification_$uniqid", $content, $this->cache*60*60 );
 
 				}			
 
@@ -119,10 +145,25 @@ class TAV_Remote_Notification_Client {
 		/**
 		 * If the JSON string has been decoded we can go ahead
 		 */
-		if( is_object( $content ) ) {
+		if ( is_object( $content ) ) {
 
-			if( isset( $content->error ) )
+			if ( isset( $content->error ) ) {
+
+				/* Display debug info in the admin footer */
+				if ( true === $this->debug ) {
+
+					/* Save the error message */
+					$this->error = $content->error;
+
+					/* Display it commented in the footer */
+					add_action( 'admin_footer', array( $this, 'debug_info' ) );
+
+				}
+
+				/* Stop */
 				return;
+
+			}
 
 			$this->notice = $content;
 
@@ -131,8 +172,9 @@ class TAV_Remote_Notification_Client {
 			 */
 			$dismissed = get_option( '_rn_dismissed' );
 
-			if( is_array( $dismissed ) && in_array( $content->slug, $dismissed ) )
+			if ( is_array( $dismissed ) && in_array( $content->slug, $dismissed ) ) {
 				return;
+			}
 
 			/**
 			 * Add the notice style
@@ -167,11 +209,12 @@ class TAV_Remote_Notification_Client {
 		$content = $this->notice;
 
 		/* If there is no content we abort */
-		if( false === $content )
+		if ( false === $content ) {
 			return;
+		}
 
 		/* If the type array isn't empty we have a limitation */
-		if( isset( $content->type ) && is_array( $content->type ) && !empty( $content->type ) ) {
+		if ( isset( $content->type ) && is_array( $content->type ) && !empty( $content->type ) ) {
 
 			/* Get current post type */
 			$pt = get_post_type();
@@ -181,22 +224,26 @@ class TAV_Remote_Notification_Client {
 			 * or if it's not in the allowed post types,
 			 * then we don't display the admin notice.
 			 */
-			if( false === $pt || !in_array( $pt, $content->type ) )
+			if ( false === $pt || !in_array( $pt, $content->type ) ) {
 				return;
+			}
 
 		}
 
 		/* Prepare alert class */
 		$style = isset( $content->style ) ? $content->style : 'updated';
 
-		if( 'updated' == $style )
+		if ( 'updated' == $style ) {
 			$class = $style;
+		}
 
-		elseif( 'error' == $style )
+		elseif ( 'error' == $style ) {
 			$class = 'updated error';
+		}
 
-		else
+		else {
 			$class = "updated rn-alert rn-alert-$style";
+		}
 
 		/**
 		 * Prepare the dismiss URL
@@ -218,13 +265,13 @@ class TAV_Remote_Notification_Client {
 		}
 
 		$args = implode( '&', $args );
-		$url = "?$args";
+		$url  = "?$args";
 		?>
 
 		<div class="<?php echo $class; ?>">
-			<?php if( !in_array( $style, array( 'updated', 'error' ) ) ): ?><a href="<?php echo $url; ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php _e( 'Dismiss notification', 'remote-notifications' ); ?>">&times;</a><?php endif; ?>
+			<?php if ( !in_array( $style, array( 'updated', 'error' ) ) ): ?><a href="<?php echo $url; ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php _e( 'Dismiss notification', 'remote-notifications' ); ?>">&times;</a><?php endif; ?>
 			<p><?php echo html_entity_decode( $content->message ); ?></p>
-			<?php if( in_array( $style, array( 'updated', 'error' ) ) ): ?><p><a href="<?php echo $url; ?>" id="rn-dismiss" class="rn-dismiss-button button-secondary"><?php _e( 'Dismiss', 'remote-notifications' ); ?></a></p><?php endif; ?>
+			<?php if ( in_array( $style, array( 'updated', 'error' ) ) ): ?><p><a href="<?php echo $url; ?>" id="rn-dismiss" class="rn-dismiss-button button-secondary"><?php _e( 'Dismiss', 'remote-notifications' ); ?></a></p><?php endif; ?>
 		</div>
 		<?php
 
@@ -243,19 +290,22 @@ class TAV_Remote_Notification_Client {
 	public function dismiss() {
 
 		/* Check if we have all the vars */
-		if( !isset( $_GET['rn'] ) || !isset( $_GET['notification'] ) )
+		if ( !isset( $_GET['rn'] ) || !isset( $_GET['notification'] ) ) {
 			return;
+		}
 
 		/* Validate nonce */
-		if( !wp_verify_nonce( sanitize_key( $_GET['rn'] ), 'rn-dismiss' ) )
+		if ( !wp_verify_nonce( sanitize_key( $_GET['rn'] ), 'rn-dismiss' ) ) {
 			return;
+		}
 
 		/* Get dismissed list */
 		$dismissed = get_option( '_rn_dismissed', array() );
 
 		/* Add the current notice to the list if needed */
-		if( is_array( $dismissed ) && !in_array( $_GET['notification'], $dismissed ) )
+		if ( is_array( $dismissed ) && !in_array( $_GET['notification'], $dismissed ) ) {
 			array_push( $dismissed, $_GET['notification'] );
+		}
 
 		/* Update option */
 		update_option( '_rn_dismissed', $dismissed );
@@ -266,7 +316,7 @@ class TAV_Remote_Notification_Client {
 		/* Get URL args */
 		foreach( $_GET as $key => $value ) {
 
-			if( in_array( $key, array( 'rn', 'notification' ) ) )
+			if ( in_array( $key, array( 'rn', 'notification' ) ) )
 				continue;
 
 			array_push( $args, "$key=$value" );
@@ -274,7 +324,7 @@ class TAV_Remote_Notification_Client {
 		}
 
 		$args = implode( '&', $args );
-		$url = "?$args";
+		$url  = "?$args";
 
 		/* Redirect */
 		wp_redirect( $url );
@@ -325,6 +375,21 @@ class TAV_Remote_Notification_Client {
 		</script>
 
 		<?php
+
+	}
+
+	/**
+	 * Debug info.
+	 *
+	 * Display an error message commented in the admin footer.
+	 *
+	 * @since  0.1.2
+	 */
+	public function debug_info() {
+
+		$error = $this->error;
+
+		echo "<!-- RDN Debug Info: $error -->";
 
 	}
 
