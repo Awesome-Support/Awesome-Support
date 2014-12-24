@@ -739,10 +739,12 @@ function wpas_update_ticket_status( $post_id, $status ) {
 		return false;
 	}
 
-	$updated = wp_update_post( array(
-		'ID'			=> $post_id,
-		'post_status'	=> $status
-	) );
+	$my_post = array(
+		'ID'          => $post_id,
+		'post_status' => $status
+	);
+
+	$updated = wp_update_post( $my_post );
 
 	if ( 0 !== intval( $updated ) ) {
 		wpas_log( $post_id, sprintf( __( 'Ticket state changed to &laquo;%s&raquo;', 'wpas' ), $custom_status[$status] ) );
