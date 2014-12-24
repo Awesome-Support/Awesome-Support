@@ -50,13 +50,13 @@ class Awesome_Support {
 		add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ), 10, 1 );
 
 		/**
-		 * Modify the ticket single page content.
+		 * Loads the ticket single page template.
 		 *
-		 * wpas_single_ticket() is located in includes/functions-templating.php
+		 * wpas_single_ticket_template() is located in includes/functions-templating.php
 		 *
 		 * @since  3.0.0
 		 */
-		add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
+		add_filter( 'single_template', 'wpas_single_ticket_template' );
 	}
 
 	/**
