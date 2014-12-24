@@ -69,14 +69,14 @@ function wpas_sc_submit_form() {
 			 * Check if the current user is logged in
 			 */
 			if ( false === is_user_logged_in() ) {
-				wpas_notification( 'failure', sprintf( __( 'You need to <a href="%s">log-in</a> to veiw this ticket.', 'wpas' ), esc_url( '' ) ) );
+				wpas_notification( 'failure', sprintf( __( 'You need to <a href="%s">log-in</a> to submit a ticket.', 'wpas' ), esc_url( '' ) ) );
 			} else {
 
 				/**
 				 * Make sure the current user can submit a ticket.
 				 */
 				if ( false === wpas_can_submit_ticket( $post->ID ) ) {
-					wpas_notification( 'failure', __( 'You are not allowed to view this ticket.', 'wpas' ) );
+					wpas_notification( 'failure', __( 'You are not allowed to submit a ticket.', 'wpas' ) );
 				}
 
 				/**
