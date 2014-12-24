@@ -54,3 +54,6 @@ composer.phar
 
 ### Prepros ###
 prepros.cfg
+
+### Custom ###
+/logs

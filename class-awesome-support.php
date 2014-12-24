@@ -43,6 +43,7 @@ class Awesome_Support {
 		add_action( 'wpas_after_registration_fields', array( $this, 'terms_and_conditions_checkbox' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
 		add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
 		add_filter( 'template_include',               array( $this, 'template_include' ), 10, 1 );
+		add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ), 10, 1 );
 
 		/* Hook all e-mail notifications */
 		add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
@@ -758,6 +759,18 @@ class Awesome_Support {
 		);
 		
 		$wp_admin_bar->add_node( $args );
+	}
+
+	/**
+	 * Register default logs handles.
+	 *
+	 * @since  3.0.2
+	 * @param  array $handles Array of registered log handles
+	 * @return array          Array of registered handles with the default ones added
+	 */
+	public function default_log_handles( $handles ) {
+		array_push( $handles, 'error' );
+		return $handles;
 	}
 
 }

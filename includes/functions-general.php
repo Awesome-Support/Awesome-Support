@@ -300,3 +300,20 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
 	return true;
 
 }
+
+/**
+ * Write log file.
+ *
+ * Wrapper function for WPAS_Logger. The function
+ * will open (or create if needed) a log file
+ * and write the $message at the end of it.
+ *
+ * @since  3.0.2
+ * @param  string $handle  The log file handle
+ * @param  string $message The message to write
+ * @return void
+ */
+function wpas_write_log( $handle, $message ) {
+	$log = new WPAS_Logger( $handle );
+	$log->add( $message );
+}
