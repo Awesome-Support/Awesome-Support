@@ -47,7 +47,8 @@ define( 'WPAS_FIELDS_DESC', apply_filters( 'wpas_fields_descriptions', true ) );
  *----------------------------------------------------------------------------*/
 
 require_once( WPAS_PATH . 'includes/functions-fallback.php' );
-require_once( plugin_dir_path( __FILE__ ) . 'class-awesome-support.php' );
+require_once( WPAS_PATH . 'includes/class-logger.php' );
+require_once( WPAS_PATH . 'class-awesome-support.php' );
 
 /**
  * Register hooks that are fired when the plugin is activated or deactivated.
