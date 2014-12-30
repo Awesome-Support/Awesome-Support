@@ -745,7 +745,7 @@ function wpas_register_core_fields() {
 			'show_column'           => true,
 			'log'                   => true,
 			'callback'              => 'taxonomy',
-			'taxo_std'              => true,
+			'taxo_std'              => false,
 			'save_callback'         => null,
 			'label'                 => __( 'Product', 'wpas' ),
 			'name'                  => __( 'Product', 'wpas' ),
