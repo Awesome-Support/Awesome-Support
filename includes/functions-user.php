@@ -189,7 +189,7 @@ function wpas_try_login() {
 			$error = $login->get_error_message();
 			wp_redirect( add_query_arg( array( 'message' => urlencode( base64_encode( json_encode( $error ) ) ) ), get_permalink( $post->ID ) ) );
 			exit;
-		} elseif( is_a( $login, 'WP_User' ) ) { var_dump( $post->ID );
+		} elseif( is_a( $login, 'WP_User' ) ) {
 			wp_redirect( get_permalink( $post->ID ) );
 			exit;
 		} else {
