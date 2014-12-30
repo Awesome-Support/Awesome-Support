@@ -341,7 +341,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 					 * If no value is set for this custom field and it exists in the database
 					 * we delete it to avoid DB overload.
 					 */
-					if ( !empty( $old ) && 'status' !== $field['name'] ) {
+					if ( !empty( $old ) && 'status' !== $field['name'] && 'assignee' !== $field['name'] ) {
 						delete_post_meta( $post_id, "_$field_name", $old );
 					}
 
