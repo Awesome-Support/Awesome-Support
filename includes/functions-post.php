@@ -720,10 +720,11 @@ function wpas_randomize_uers_query( $query ) {
  * Update the post_status of a ticket
  * using one of the custom status registered by the plugin
  * or its addons.
- * 
- * @param  [type] $post_id [description]
- * @param  [type] $status  [description]
- * @return [type]          [description]
+ *
+ * @since  3.0.0
+ * @param  integer $post_id ID of the ticket being updated
+ * @param  string  $status  New status to attribute
+ * @return boolean          True if the query was successfully executed
  */
 function wpas_update_ticket_status( $post_id, $status ) {
 
