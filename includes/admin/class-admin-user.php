@@ -77,7 +77,7 @@ class WPAS_User {
 	 * @param  integer $user_id ID of the user to modify
 	 * @return void
 	 */
-	public function save_user_custom_fields( $user_id ) {
+	public function save_user_custom_fields( $user_id ) { wpas_debug_display( $_POST ); exit;
 
 		if ( !current_user_can( 'edit_user', $user_id ) ) {
 			return false;
