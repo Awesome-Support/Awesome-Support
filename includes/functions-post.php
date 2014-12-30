@@ -747,6 +747,13 @@ function wpas_update_ticket_status( $post_id, $status ) {
 		wpas_log( $post_id, sprintf( __( 'Ticket state changed to &laquo;%s&raquo;', 'wpas' ), $custom_status[$status] ) );
 	}
 
+	/**
+	 * wpas_ticket_status_updated hook
+	 *
+	 * @since  3.0.2
+	 */
+	do_action( 'wpas_ticket_status_updated', $post_id, $status, $updated );
+
 	return $updated;
 
 }
