@@ -194,9 +194,7 @@ class Awesome_Support {
 
 			/* Possibly close the ticket */
 			if ( isset( $_POST['wpas_close_ticket'] ) && false !== $reply_id ) {
-				update_post_meta( intval( $_POST['ticket_id'] ), '_wpas_status', 'closed', 'open' );
-				wpas_log( intval( $_POST['ticket_id'] ), __( 'The ticket was closed.', 'wpas' ) );
-				do_action( 'wpas_after_close_ticket', intval( $_POST['ticket_id'] ) );
+				wpas_close_ticket( intval( $_POST['ticket_id'] ) );
 			}
 
 			if ( false === $reply_id ) {
@@ -238,8 +236,7 @@ class Awesome_Support {
 			case 'reopen':
 
 				if ( isset( $_GET['ticket_id'] ) ) {
-					update_post_meta( intval( $_GET['ticket_id'] ), '_wpas_status', 'open', 'closed' );
-					wpas_log( intval( $_GET['ticket_id'] ), __( 'The ticket was re-opened.', 'wpas' ) );
+					wpas_reopen_ticket( $_GET['ticket_id'] );
 				}
 
 				wpas_redirect( 'ticket_reopen', add_query_arg( array( 'message' => '9' ), get_permalink( intval( $_GET['ticket_id'] ) ) ), intval( $_GET['ticket_id'] ) );

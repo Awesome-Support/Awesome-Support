@@ -623,12 +623,9 @@ class Awesome_Support_Admin {
 
 				if( isset( $_GET['post'] ) && 'ticket' == get_post_type( intval( $_GET['post'] ) ) ) {
 
-					update_post_meta( intval( $_GET['post'] ), '_wpas_status', 'closed' );
-
 					$url = add_query_arg( array( 'post' => $_GET['post'], 'action' => 'edit', 'wpas-message' => 'closed' ), admin_url( 'post.php' ) );
 
-					wpas_log( $_GET['post'], __( 'The ticket was closed.', 'wpas' ) );
-					do_action( 'wpas_after_close_ticket', intval( $_GET['post'] ) );
+					wpas_close_ticket( $_GET['post'] );
 
 				}
 
@@ -638,11 +635,10 @@ class Awesome_Support_Admin {
 
 				if( isset( $_GET['post'] ) && 'ticket' == get_post_type( intval( $_GET['post'] ) ) ) {
 
-					update_post_meta( intval( $_GET['post'] ), '_wpas_status', 'open' );
-
 					$url = add_query_arg( array( 'post' => $_GET['post'], 'action' => 'edit', 'wpas-message' => 'opened' ), admin_url( 'post.php' ) );
 
-					wpas_log( $_GET['post'], __( 'The ticket was re-opened.', 'wpas' ) );
+					wpas_reopen_ticket( $_GET['post'] );
+
 				}
 
 			break;

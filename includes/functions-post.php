@@ -758,3 +758,65 @@ function wpas_update_ticket_status( $post_id, $status ) {
 	return $updated;
 
 }
+
+/**
+ * Change a ticket status to closed.
+ *
+ * @since  3.0.2
+ * @param  integer         $ticket_id ID of the ticket to close
+ * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
+ */
+function wpas_close_ticket( $ticket_id ) {
+
+	if ( 'ticket' == get_post_type( $ticket_id ) ) {
+
+		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'closed' );
+
+		/* Log the action */
+		wpas_log( $ticket_id, __( 'The ticket was closed.', 'wpas' ) );
+
+		/**
+		 * wpas_after_close_ticket hook
+		 *
+		 * @since  3.0.0
+		 */
+		do_action( 'wpas_after_close_ticket', intval( $ticket_id ), $update );
+
+		return $update;
+
+	} else {
+		return false;
+	}
+
+}
+
+/**
+ * Change a ticket status to open.
+ *
+ * @since  3.0.2
+ * @param  integer         $ticket_id ID of the ticket to re-open
+ * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
+ */
+function wpas_reopen_ticket( $ticket_id ) {
+
+	if ( 'ticket' == get_post_type( $ticket_id ) ) {
+
+		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
+
+		/* Log the action */
+		wpas_log( $ticket_id, __( 'The ticket was re-opened.', 'wpas' ) );
+
+		/**
+		 * wpas_after_reopen_ticket hook
+		 *
+		 * @since  3.0.2
+		 */
+		do_action( 'wpas_after_reopen_ticket', intval( $ticket_id ), $update );
+
+		return $update;
+
+	} else {
+		return false;
+	}
+
+}
