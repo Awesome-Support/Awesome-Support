@@ -55,10 +55,12 @@ class WPAS_Email_Notification {
 
 			case 'agent_reply':
 
+				$ticket         = get_post( $this->ticket_id );
+				$author_id      = $ticket->post_author;
 				$enable         = boolval( wpas_get_option( 'enable_reply_agent', true ) );
 				$this->subject  = wpas_get_option( 'subject_reply_agent' );
 				$this->contents = wpas_get_option( 'content_reply_agent' );
-				$user           = get_user_by( 'id', $this->post->post_author );
+				$user           = get_user_by( 'id', $author_id );
 				$this->to_name  = $user->data->user_nicename;
 				$this->to_email = $user->data->user_email;
 
@@ -153,10 +155,11 @@ class WPAS_Email_Notification {
 		if ( isset( $this->post ) && is_object( $this->post ) ) {
 
 			$ticket_id    = $this->ticket_id;
+			$ticket       = $ticket_id === $this->post_id ? $this->post : get_post( $ticket_id );
 			$agent        = get_user_by( 'id', intval( get_post_meta( $ticket_id, '_wpas_assignee' ) ) );
 			$agent_name   = $agent->user_nicename;
 			$agent_email  = $agent->user_email;
-			$client       = get_user_by( 'id', $this->post->post_author );
+			$client       = get_user_by( 'id', $ticket->post_author );
 			$client_name  = $client->user_nicename;
 			$client_email = $client->user_email;
 
