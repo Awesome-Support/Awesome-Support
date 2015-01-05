@@ -82,6 +82,12 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 
 			}
 
+			/* Process the agent (re)attribution differently */
+			if ( 'assignee' === $option['name'] ) {
+				wpas_assign_ticket( $post_id, $_POST["_$option_name"], $option_args['log'] );
+				continue;
+			}
+
 			/* We handle different option types differently */
 			if ( 'taxonomy' != $option_args['callback'] ):
 

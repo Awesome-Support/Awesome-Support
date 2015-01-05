@@ -236,7 +236,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	}
 
 	/* Assign an agent to the ticket */
-	add_post_meta( $ticket_id, '_wpas_assignee', $agent_id, true );
+	wpas_assign_ticket( $ticket_id, $agent_id, false );
 
 	/**
 	 * Fire wpas_after_open_ticket just after the post is successfully submitted.
@@ -663,6 +663,65 @@ function wpas_find_agent( $ticket_id = false ) {
 	}
 
 	return apply_filters( 'wpas_find_available_agent', $agent['user_id'], $ticket_id );
+
+}
+
+/**
+ * Assign an agent to a ticket.
+ *
+ * Assign the given agent to a ticket or find an available
+ * agent if no agent ID is given.
+ *
+ * @since  3.0.2
+ * @param  integer  $ticket_id    ID of the post in need of a new agent
+ * @param  integer  $agent_id     ID of the agent to assign the ticket to
+ * @param  boolean  $log          Shall the assignment be logged or not
+ * @return object|boolean|integer WP_Error in case of problem, true if no change is required or the post meta ID if the agent was changed
+ */
+function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
+
+	if ( 'ticket' !== get_post_type( $ticket_id ) ) {
+		return new WP_Error( 'incorrect_post_type', __( 'The given post ID is not a ticket', 'wpas' ) );
+	}
+
+	if ( is_null( $agent_id ) ) {
+		$agent_id = wpas_find_agent( $ticket_id );
+	}
+
+	if ( !user_can( $agent_id, 'edit_ticket' ) ) {
+		return new WP_Error( 'incorrect_agent', __( 'The chosen agent does not have the sufficient capapbilities to be assigned a ticket', 'wpas' ) );
+	}
+
+	/* Get the current agent if any */
+	$current = get_post_meta( $ticket_id, '_wpas_assignee', true );
+
+	if ( $current === $agent_id ) {
+		return true;
+	}
+
+	$update = update_post_meta( $ticket_id, '_wpas_assignee', $agent_id, $current );
+
+	/* Log the action */
+	if ( true === $log ) {
+		$log = array();
+		$log[] = array(
+			'action'   => 'updated',
+			'label'    => __( 'Support staff', 'wpas' ),
+			'value'    => $current,
+			'field_id' => 'assignee'
+			);
+	}
+
+	wpas_log( $ticket_id, $log );
+
+	/**
+	 * wpas_ticket_assigned hook
+	 *
+	 * since 3.0.2
+	 */
+	do_action( 'wpas_ticket_assigned', $ticket_id, $agent_id );
+
+	return $update;
 
 }
 
