@@ -707,9 +707,9 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 		$log[] = array(
 			'action'   => 'updated',
 			'label'    => __( 'Support staff', 'wpas' ),
-			'value'    => $current,
+			'value'    => $agent_id,
 			'field_id' => 'assignee'
-			);
+		);
 	}
 
 	wpas_log( $ticket_id, $log );
