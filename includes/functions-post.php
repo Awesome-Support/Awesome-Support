@@ -793,17 +793,20 @@ function wpas_update_ticket_status( $post_id, $status ) {
 		return false;
 	}
 
-	global $wpdb;
+	$post = get_post( $post_id );
 
-	$updated = $wpdb->query(
-		$wpdb->prepare(
-			"UPDATE $wpdb->posts SET post_status = '%s' WHERE ID = '%d'",
-			$status,
-			$post_id
-		)
+	if( !$post || $post->post_status === $status ) {
+		return false;
+	}
+
+	$my_post = array(
+		'ID'          => $post_id,
+		'post_status' => $status
 	);
 
-	if ( true === boolval( $updated ) ) {
+	$updated = wp_update_post( $my_post );
+
+	if ( 0 !== intval( $updated ) ) {
 		wpas_log( $post_id, sprintf( __( 'Ticket state changed to &laquo;%s&raquo;', 'wpas' ), $custom_status[$status] ) );
 	}
 
