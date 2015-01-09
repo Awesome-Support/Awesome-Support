@@ -1,5 +1,8 @@
 {
     "require": {
         "gambitph/titan-framework": "1.7.*"
+    },
+    "archive": {
+    	"exclude": [".gitignore", "apigen.neon", "composer.json", "composer.lock", "/tests"]
     }
 }
