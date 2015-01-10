@@ -89,8 +89,7 @@ class WPAS_Help {
 		/**
 		 * Gather the list of e-mail template tags and their description
 		 */
-		$emails = new WPAS_Email_Notification( false );
-		$list_tags = $emails->get_tags();
+		$list_tags = WPAS_Email_Notification::get_tags();
 
 		$tags = '<table class="widefat"><thead><th class="row-title">' . __( 'Tag', 'wpas' ) . '</th><th>' . __( 'Description', 'wpas' ) . '</th></thead><tbody>';
 
