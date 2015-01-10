@@ -35,7 +35,7 @@ class Awesome_Support {
 		add_action( 'wp',                             array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
 		add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added
 		add_action( 'init',                           array( $this, 'load_plugin_textdomain' ) );     // Load the plugin textdomain
-		add_action( 'init',                           array( $this, 'init' ), 10, 0 );                // Register main post type
+		add_action( 'init',                           array( $this, 'init' ), 11, 0 );                // Register main post type
 		add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ), 999 );  // Add a link to agent's tickets in the toolbar
 		add_action( 'wp_print_styles',                array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
 		add_action( 'wp_print_scripts',               array( $this, 'enqueue_scripts' ) );            // Load public-facing JavaScripts
@@ -611,8 +611,7 @@ class Awesome_Support {
 	 * @return void
 	 */
 	public function notify_confirmation( $ticket_id, $data ) {
-		new WPAS_Email_Notification( $ticket_id, 'submission_confirmation' );
-		new WPAS_Email_Notification( $ticket_id, 'new_ticket_assigned' );
+		wpas_email_notify( $ticket_id, array( 'submission_confirmation', 'new_ticket_assigned' ) );
 	}
 
 	public function notify_reply( $reply_id, $data ) {
