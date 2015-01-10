@@ -521,7 +521,7 @@ class WPAS_Email_Notification {
 
 			case 'new_ticket_assigned':
 			case 'client_reply':
-				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_assigned_agent' ) ) );
+				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee' ) ) );
 				break;
 		}
 
