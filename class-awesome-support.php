@@ -622,11 +622,11 @@ class Awesome_Support {
 		}
 
 		$case = current_user_can( 'edit_ticket' ) ? 'agent_reply' : 'client_reply';
-		new WPAS_Email_Notification( $reply_id, $case );
+		wpas_email_notify( $reply_id, $case );
 	}
 
 	public function notify_close( $ticket_id ) {
-		new WPAS_Email_Notification( $ticket_id, 'ticket_closed' );
+		wpas_email_notify( $ticket_id, 'ticket_closed' );
 	}
 
 	/**
