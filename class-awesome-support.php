@@ -621,7 +621,7 @@ class Awesome_Support {
 			return;
 		}
 
-		$case = current_user_can( 'edit_ticket' ) ? 'agent_reply' : 'client_reply';
+		$case = user_can( $data['post_author'], 'edit_ticket' ) ? 'agent_reply' : 'client_reply';
 		wpas_email_notify( $reply_id, $case );
 	}
 
