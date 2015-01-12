@@ -432,7 +432,7 @@ class WPAS_Email_Notification {
 	 * @return string E-mail subject
 	 */
 	private function get_subject( $case ) {
-		return $this->get_content( 'subject', $case );
+		return apply_filters( 'wpas_email_notifications_subject', $this->get_content( 'subject', $case ), $this->post_id );
 	}
 
 	/**
@@ -442,7 +442,7 @@ class WPAS_Email_Notification {
 	 * @return string E-mail body
 	 */
 	private function get_body( $case ) {
-		return $this->get_content( 'content', $case );
+		return apply_filters( 'wpas_email_notifications_body', $this->get_content( 'content', $case ), $this->post_id );
 	}
 
 	/**
@@ -488,7 +488,7 @@ class WPAS_Email_Notification {
 
 		}
 
-		return $this->fetch( $value );
+		return $this->fetch( apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id ) );
 
 	}
 
