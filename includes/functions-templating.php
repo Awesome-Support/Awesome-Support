@@ -13,21 +13,93 @@
  */
 
 /**
- * Loads a custom template file for the single-template
+ * Alter page content for single ticket.
+ *
+ * In order to ensure maximum complatibility with all themes,
+ * we hook onto the_content instead of changing the entire template
+ * for ticket single.
+ *
+ * However, if the theme author has customized the single ticket template
+ * we do not apply those modifications as the custom template will do the job.
  *
  * @since  3.0.0
  * @param  string $content Post content
  * @return string          Ticket single
  */
-function wpas_single_ticket_template( $single_template ) {
+function wpas_single_ticket( $content ) {
 
 	global $post;
 
-	if ( $post->post_type !== 'ticket' ) {
-		return $single_template;
+	$slug = 'ticket';
+
+	/* Don't touch the admin */
+	if ( is_admin() ) {
+		return $content;
 	}
 
-	return wpas_locate_template( 'single-ticket' );
+	/* Only apply this on the ticket single. */
+	if ( $slug !== $post->post_type ) {
+		return $content;
+	}
+
+	/* Only apply this on the main query. */
+	if( ! is_main_query() ) {
+		return $content;
+	}
+
+	/* Only apply this if it's inside of a loop. */
+	if( ! in_the_loop() ) {
+		return $content;
+	}
+
+	/* Remove the filter to avoid infinite loops. */
+	remove_filter( 'the_content', 'wpas_single_ticket' );
+
+	/* Check if the current user can view the ticket */
+	if ( !wpas_can_view_ticket( $post->ID ) ) {
+		return wpas_notification( false, 13, false );
+	}
+
+	/* Get template name */
+	$template_path = get_page_template();
+	$template      = explode( '/', $template_path );
+	$count         = count( $template );
+	$template      = $template[$count-1];
+
+	/* Don't apply the modifications on a custom template */
+	if ( "single-$slug.php" === $template ) {
+		return $content;
+	}
+
+	/* Get the ticket content */
+	ob_start();
+
+	/**
+	 * Display possible messages to the visitor.
+	 */
+	if ( isset( $_GET['message'] ) ) {
+		wpas_notification( false, $_GET['message'] );
+	}
+
+	/**
+	 * wpas_frontend_plugin_page_top is executed at the top
+	 * of every plugin page on the front end.
+	 */
+	do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
+
+	/**
+	 * Get the custom template.
+	 */
+	wpas_get_template( 'details' );
+
+	/**
+	 * Finally get the buffer content and return.
+	 * 
+	 * @var string
+	 */
+	$content = ob_get_clean();
+
+	return $content;
 
 }
 
