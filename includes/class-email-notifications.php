@@ -208,12 +208,12 @@ class WPAS_Email_Notification {
 		}
 
 		$data = array(
-			'from_name'  => wpas_get_option( 'sender_name', get_bloginfo( 'name' ) ),
-			'from_email' => wpas_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ),
+			'from_name'   => wpas_get_option( 'sender_name', get_bloginfo( 'name' ) ),
+			'from_email'  => wpas_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ),
+			'reply_email' => wpas_get_option( 'reply_email', get_bloginfo( 'admin_email' ) ),
 		);
 
 		$data['reply_name']  = $data['from_name'];
-		$data['reply_email'] = $data['from_email'];
 
 		$this->data = apply_filters( 'wpas_email_notifications_sender_data', $data );
 

@@ -28,6 +28,12 @@ function wpas_core_settings_notifications( $def ) {
 					'type'    => 'text',
 					'default' => get_bloginfo( 'admin_email' )
 				),
+				array(
+					'name'    => __( 'Reply-To E-Mail', 'wpas' ),
+					'id'      => 'reply_email',
+					'type'    => 'text',
+					'default' => get_bloginfo( 'admin_email' )
+				),
 				/* Submission confirmation */
 				array(
 					'name' => __( 'Submission Confirmation', 'wpas' ),
