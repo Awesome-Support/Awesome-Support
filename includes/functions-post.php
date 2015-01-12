@@ -340,10 +340,10 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 	$data = wp_parse_args( $data, $defaults );
 
 	if ( false !== $author_id ) {
-		$defaults['post_author'] = $author_id;
+		$data['post_author'] = $author_id;
 	} else {
 		global $current_user;
-		$defaults['post_author'] = $current_user->ID;
+		$data['post_author'] = $current_user->ID;
 	}
 
 	$insert = wpas_insert_reply( $data, $parent_id );
