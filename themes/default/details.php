@@ -40,7 +40,7 @@ $author = get_user_by( 'id', $post->post_author );
 				<td>
 					<div class="wpas-reply-meta">
 						<div class="wpas-reply-user">
-							<strong class="wpas-profilename"><?php echo $author->data->user_nicename; ?></strong>
+							<strong class="wpas-profilename"><?php echo $author->data->display_name; ?></strong>
 						</div>
 						<div class="wpas-reply-time">
 							<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>">
@@ -83,9 +83,10 @@ $author = get_user_by( 'id', $post->post_author );
 				while ( $wpas_replies->have_posts() ):
 
 					$wpas_replies->the_post();
+					$user      = get_userdata( $post->post_author );
 					$user_role = get_the_author_meta( 'roles' );
 					$user_role = $user_role[0];
-					$time_ago  = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) );  ?>
+					$time_ago  = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) ); ?>
 
 					<tr id="reply-<?php echo the_ID(); ?>" class="wpas-reply-single wpas-status-<?php echo get_post_status(); ?>" valign="top">
 
@@ -110,7 +111,7 @@ $author = get_user_by( 'id', $post->post_author );
 						<td>
 							<div class="wpas-reply-meta">
 								<div class="wpas-reply-user">
-									<strong class="wpas-profilename"><?php echo get_the_author_meta( 'user_nicename' ); ?></strong>
+									<strong class="wpas-profilename"><?php echo $user->data->display_name; ?></strong>
 								</div>
 								<div class="wpas-reply-time">
 									<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>">
