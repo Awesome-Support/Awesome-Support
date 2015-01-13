@@ -26,6 +26,14 @@ class WPAS_Product_Sync {
 	 * @var    string
 	 */
 	protected $post_type;
+
+	/**
+	 * The name of the taxonomy to synchronize.
+	 *
+	 * @since  3.0.2
+	 * @var string
+	 */
+	protected $taxonomy;
 	
 	/**
 	 * Constructor method.
@@ -33,9 +41,10 @@ class WPAS_Product_Sync {
 	 * @since  3.0.2
 	 * @param  string $post_type Name of the post type that should be used to populate the product taxonomy
 	 */
-	public function __construct( $post_type = '' ) {
+	public function __construct( $post_type = '', $taxonomy = '' ) {
 
 		$this->post_type = sanitize_title( $post_type );
+		$this->taxonomy  = empty( $taxonomy ) ? $this->post_type : sanitize_title( $taxonomy );
 
 		/* Only hack into the taxonomies functions if multiple products is enabled and the provided post type exists */
 		if ( $this->is_multiple_products() && post_type_exists( $post_type ) ) {
@@ -73,7 +82,7 @@ class WPAS_Product_Sync {
 	 * @return boolean           True if this is our taxonomy, false otherwise
 	 */
 	protected function is_product_tax( $taxonomy ) {
-		return 'product' === $taxonomy ? true : false;
+		return $this->taxonomy === $taxonomy ? true : false;
 	}
 
 	/**
@@ -257,7 +266,7 @@ class WPAS_Product_Sync {
 			'slug'             => $post->post_name,
 			'term_group'       => 0,
 			'term_taxonomy_id' => $term_taxonomy_id,
-			'taxonomy'         => 'product',
+			'taxonomy'         => $this->taxonomy,
 			'description'      => wp_trim_words( $post->post_content, 55, '[...]' ),
 			'parent'           => $post->post_parent,
 			'count'            => 0,
@@ -290,7 +299,7 @@ class WPAS_Product_Sync {
 		 * 
 		 * @var array|WP_Error
 		 */
-		$term = wp_insert_term( $post->ID, 'product' );
+		$term = wp_insert_term( $post->ID, $this->taxonomy );
 
 		$this->unprotect_insert( $post->ID );
 
