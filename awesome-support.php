@@ -85,6 +85,7 @@ require_once( WPAS_PATH . 'includes/functions-general.php' );         // Functio
 require_once( WPAS_PATH . 'includes/functions-custom-fields.php' );   // Submission form related functions
 require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
 require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
+require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Only Functionality
@@ -109,6 +110,14 @@ if ( is_admin() ) {
 	add_action( 'plugins_loaded', array( 'Awesome_Support_Admin', 'get_instance' ) );
 
 }
+
+/*----------------------------------------------------------------------------*
+ * Integrations
+ *----------------------------------------------------------------------------*/
+
+/* WooCommerce */
+require_once( WPAS_PATH . 'includes/integrations/class-product-woocommerce.php' );
+add_action( 'init', array( 'WPAS_Product_WooCommerce', 'get_instance' ), 11, 0 );
 
 /**
  * Start the session if needed.
