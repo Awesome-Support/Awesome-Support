@@ -49,8 +49,6 @@ class WPAS_Product_Sync {
 		/* Only hack into the taxonomies functions if multiple products is enabled and the provided post type exists */
 		if ( $this->is_multiple_products() && post_type_exists( $post_type ) ) {
 			add_filter( 'get_terms',           array( $this, 'get_terms' ),             1, 3 );
-			// add_filter( 'wp_get_object_terms', array( $this, 'wp_get_object_terms' ),   1, 4 );
-			// add_filter( 'get_terms_args',      array( $this, 'adjust_get_terms_args' ), 1, 2 );
 		}
 
 	}
@@ -428,13 +426,5 @@ class WPAS_Product_Sync {
 		return $terms;
 
 	}
-
-	public function wp_get_object_terms() {
-
-	}
-
-	public function adjust_get_terms_args() {
-
-	}	
 
 }
