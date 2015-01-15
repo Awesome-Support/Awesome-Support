@@ -474,7 +474,7 @@ class WPAS_Product_Sync {
 
 		/* Set the new values */
 		$new_term['name']        = $post->post_title;
-		$new_term['slug']        = $post->post_title;
+		$new_term['slug']        = $post->post_name;
 		$new_term['description'] = wp_trim_words( $post->post_content, 55, ' [...]' );
 
 		return (object) $new_term;
