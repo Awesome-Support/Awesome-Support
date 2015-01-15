@@ -1,4 +1,5 @@
 //@prepros-prepend ../vendor/featherlight/featherlight.min.js
+//@prepros-prepend ../vendor/hideShowPassword/hideShowPassword.js
 
 (function ($) {
 	"use strict";
@@ -8,6 +9,7 @@
 		/*
 		Check if TinyMCE is empty
 		http://codeblow.com/questions/method-to-check-whether-tinymce-is-active-in-wordpress/
+		http://stackoverflow.com/a/8749616
 		 */
 		if (typeof tinyMCE != "undefined") {
 
@@ -42,9 +44,18 @@
 		}
 
 		/*
-		Modal used on registration form (terms and conditions)
+		Registration form: terms and conditions modal
+		https://github.com/noelboss/featherlight/
 		 */
 		$('.wpas-modal-trigger').featherlight();
+
+		/*
+		Registration form: toggle password visibility
+		https://github.com/cloudfour/hideShowPassword
+		 */
+		$('#pwdshow').change(function () {
+			$('#password').hideShowPassword($(this).prop('checked'));
+		});
 
 	});
 

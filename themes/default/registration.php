@@ -83,9 +83,8 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 				<label><?php _e( 'Enter a password', 'wpas' ); ?></label>
 				<input <?php wpas_get_field_class( 'pwd', 'wpas-pwd' ); ?> type="password" placeholder="<?php _e( 'Enter a password', 'wpas' ); ?>" id="password" name="pwd" required>
 			</div>
-			<div <?php wpas_get_field_container_class( 'pwd-validate' ); ?>>
-				<label><?php _e( 'Repeat password', 'wpas' ); ?></label>
-				<input <?php wpas_get_field_class( 'pwd-validate', 'wpas-checkpwd' ); ?> type="password" placeholder="<?php _e( 'Repeat password', 'wpas' ); ?>" id="passwordconf" name="pwd-validate" data-validation="<?php _e( 'The two passwords must match.', 'wpas' ); ?>" required>
+			<div class="wpas-checkbox">
+				<label><input type="checkbox" name="pwdshow" id="pwdshow" class="wpas-form-control-checkbox"> <?php echo _x( 'Show Password', 'Login form', 'wpas' ); ?></label>
 			</div>
 
 			<?php
