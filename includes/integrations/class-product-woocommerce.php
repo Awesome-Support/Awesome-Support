@@ -26,7 +26,7 @@ class WPAS_Product_WooCommerce {
 	public function __construct() {
 
 		if ( $this->is_woocommerce_enabled() ) {
-			$sync = new WPAS_Product_Sync( 'product' );
+			$sync = new WPAS_Product_Sync( 'product', '', true );
 		}
 
 	}
