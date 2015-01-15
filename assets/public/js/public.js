@@ -53,9 +53,34 @@
 		Registration form: toggle password visibility
 		https://github.com/cloudfour/hideShowPassword
 		 */
-		$('#pwdshow').change(function () {
+		$('input[name="pwdshow"]').change(function () {
 			$('#password').hideShowPassword($(this).prop('checked'));
 		});
+
+		/*
+		Registration form: email validation by MailGun
+		http://www.mailgun.com/email-validation
+		http://documentation.mailgun.com/api-email-validation.html
+		 */
+		if (typeof wpas !== 'undefined' && wpas.emailCheck) {
+			var emailInput = $('input[name="email"]'),
+				emailCheck = $('#email-validation');
+
+			emailInput.change(function () {
+				var data = {
+					'action': 'email_validation',
+					'email': emailInput.val()
+				};
+				$.post(wpas.ajaxurl, data, function (response) {
+					emailCheck.html(response).show();
+				});
+			});
+
+			emailCheck.on('click', 'strong', function () {
+				emailInput.val($(this).html());
+				emailCheck.hide();
+			});
+		}
 
 	});
 

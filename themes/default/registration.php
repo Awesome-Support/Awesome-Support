@@ -78,6 +78,7 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 			<div <?php wpas_get_field_container_class( 'email' ); ?>>
 				<label><?php _e( 'Email' ); ?></label>
 				<input <?php wpas_get_field_class( 'email' ); ?> type="email" placeholder="<?php _e( 'Email' ); ?>" name="email" value="<?php echo wpas_get_registration_field_value( 'email' ); ?>" required>
+				<small class="wpas-help-block" id="email-validation" style="display: none;">Example block-level help text here.</small>
 			</div>
 			<div <?php wpas_get_field_container_class( 'pwd' ); ?>>
 				<label><?php _e( 'Enter a password', 'wpas' ); ?></label>
