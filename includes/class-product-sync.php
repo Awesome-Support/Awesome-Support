@@ -48,7 +48,10 @@ class WPAS_Product_Sync {
 
 		/* Only hack into the taxonomies functions if multiple products is enabled and the provided post type exists */
 		if ( $this->is_multiple_products() && post_type_exists( $post_type ) ) {
-			add_filter( 'get_terms',           array( $this, 'get_terms' ),             1, 3 );
+			add_filter( 'get_terms',    array( $this, 'get_terms' ),    1, 3 );
+			add_filter( 'get_term',     array( $this, 'get_term' ),     1, 2 );
+			add_action( 'trashed_post', array( $this, 'unsync_term' ), 10, 1 );
+			add_action( 'delete_post',  array( $this, 'unsync_term' ), 10, 1 );
 		}
 
 	}
@@ -265,7 +268,7 @@ class WPAS_Product_Sync {
 			'term_group'       => 0,
 			'term_taxonomy_id' => $term_taxonomy_id,
 			'taxonomy'         => $this->taxonomy,
-			'description'      => wp_trim_words( $post->post_content, 55, '[...]' ),
+			'description'      => wp_trim_words( $post->post_content, 55, ' [...]' ),
 			'parent'           => $post->post_parent,
 			'count'            => 0,
 		);
@@ -361,6 +364,18 @@ class WPAS_Product_Sync {
 		return true;
 	}
 
+	/**
+	 * Get taxonomy terms.
+	 *
+	 * Hooked on the get_terms() function and returns the post type
+	 * posts instead of the actual taxonomy terms.
+	 *
+	 * @since  3.0.2
+	 * @param  array         $terms      Taxonomy terms
+	 * @param  array|string  $taxonomies Taxonomies for wich to retrieve the terms
+	 * @param  array         $args       Additional arguments
+	 * @return array                     Array of term objects
+	 */
 	public function get_terms( $terms, $taxonomies, $args ) {
 
 		/* If taxonomy name is string, convert to array */
@@ -424,6 +439,72 @@ class WPAS_Product_Sync {
 		}
 
 		return $terms;
+
+	}
+
+	/**
+	 * Get a taxonomy term.
+	 *
+	 * Filters the term returned by get_term() and modifies it
+	 * if it belongs to the taxonomy we're keeping in sync.
+	 * 
+	 * @param  int|object $term     A term object
+	 * @param  string     $taxonomy The taxonomy this term belongs to
+	 * @return object               The original term object if the taxonomy it belongs to isn't ours, an updated object otherwise
+	 */
+	public function get_term( $term, $taxonomy ) {
+
+		if ( $taxonomy !== $this->taxonomy ) {
+			return $term;
+		}
+
+		/* Get the post ID */
+		$post_id = intval( $term->name );
+
+		/* Check that the post exists and that it is of the required post type */
+		if ( get_post_type( $post_id ) !== $this->post_type ) {
+			return $term;
+		}
+
+		/* Get the post data */
+		$post = get_post( $post_id );
+
+		/* Set the new term array */
+		$new_term = (array) $term;
+
+		/* Set the new values */
+		$new_term['name']        = $post->post_title;
+		$new_term['slug']        = $post->post_title;
+		$new_term['description'] = wp_trim_words( $post->post_content, 55, ' [...]' );
+
+		return (object) $new_term;
+
+	}
+
+	/**
+	 * Delete a placeholder term.
+	 *
+	 * This function is used to delete a placeholder taxonomy term.
+	 * It is hooked on the delete_post action in order to keep the post type
+	 * and the taxonomy in sync.
+	 * 
+	 * @param  integer        $post_id ID of the post that's being deleted
+	 * @return boolean|object          True if term was deleted, false is nothing happened and WP_Error if an error occured
+	 */
+	public function unsync_term( $post_id ) {
+
+		if ( get_post_type( $post_id ) === $this->post_type ) {
+
+			/* Get the term data from the post meta */
+			$term = get_post_meta( $post_id, '_wpas_product_term', true );
+
+			/* Delete the term */
+			$delete = wp_delete_term( intval( $term['term_id'] ), $this->taxonomy, $args );
+
+			return $delete;
+		}
+
+		return false;
 
 	}
 
