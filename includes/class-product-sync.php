@@ -48,12 +48,12 @@ class WPAS_Product_Sync {
 
 		/* Only hack into the taxonomies functions if multiple products is enabled and the provided post type exists */
 		if ( $this->is_multiple_products() && post_type_exists( $post_type ) ) {
-			add_filter( 'get_terms',    array( $this, 'get_terms' ),    1, 3 );
-			add_filter( 'get_term',     array( $this, 'get_term' ),     1, 2 );
-			add_action( 'init',         array( $this, 'lock_taxonomy' ), 12, 0 );
+			add_filter( 'get_terms',     array( $this, 'get_terms' ),          1, 3 );
+			add_filter( 'get_term',      array( $this, 'get_term' ),           1, 2 );
+			add_action( 'init',          array( $this, 'lock_taxonomy' ),     12, 0 );
 			add_action( 'admin_notices', array( $this, 'notice_locked_tax' ), 10, 0 );
-			add_action( 'trashed_post', array( $this, 'unsync_term' ), 10, 1 );
-			add_action( 'delete_post',  array( $this, 'unsync_term' ), 10, 1 );
+			add_action( 'trashed_post',  array( $this, 'unsync_term' ),       10, 1 );
+			add_action( 'delete_post',   array( $this, 'unsync_term' ),       10, 1 );
 		}
 
 	}
