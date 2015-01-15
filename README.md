@@ -9,3 +9,7 @@ Awesome Support is the most advanced ticketing system for WordPress. It is the r
 
 - WordPress 3.5.1+
 - PHP 5.2+
+
+Below are some info from the plugin's repository on [WordPress.org](https://wordpress.org/plugins/awesome-support/).
+
+![Wordpress plugin](https://img.shields.io/wordpress/plugin/v/Awesome-Support.svg?style=flat) ![Tested WordPress version](https://img.shields.io/wordpress/v/Awesome-Support.svg?style=flat) ![WordPress.org rating](https://img.shields.io/wordpress/plugin/r/Awesome-Support.svg?style=flat)
