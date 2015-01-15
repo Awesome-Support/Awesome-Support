@@ -34,6 +34,15 @@ class WPAS_Product_Sync {
 	 * @var string
 	 */
 	protected $taxonomy;
+
+	/**
+	 * Defines if this class completely replaces the taxonomy terms
+	 * or just appens new ones to it.
+	 *
+	 * @since  3.0.2
+	 * @var boolean
+	 */
+	protected $append;
 	
 	/**
 	 * Constructor method.
@@ -41,10 +50,11 @@ class WPAS_Product_Sync {
 	 * @since  3.0.2
 	 * @param  string $post_type Name of the post type that should be used to populate the product taxonomy
 	 */
-	public function __construct( $post_type = '', $taxonomy = '' ) {
+	public function __construct( $post_type = '', $taxonomy = '', $append = false ) {
 
 		$this->post_type = sanitize_title( $post_type );
 		$this->taxonomy  = empty( $taxonomy ) ? $this->post_type : sanitize_title( $taxonomy );
+		$this->append    = $append;
 
 		/* Only hack into the taxonomies functions if multiple products is enabled and the provided post type exists */
 		if ( $this->is_multiple_products() && post_type_exists( $post_type ) ) {
@@ -412,7 +422,7 @@ class WPAS_Product_Sync {
 			$query      = new WP_Query( $query_args );
 
 			if ( isset( $query_args['wpas_get_post_count'] ) && $query_args['wpas_get_post_count'] ) {
-				return $query->post_count;
+				return $this->append ? $query->post_count + count( $terms ) : $query->post_count;
 			}
 
 			if ( empty( $query->posts ) ) {
@@ -420,7 +430,15 @@ class WPAS_Product_Sync {
 			}
 
 			/* This is the terms object array */
-			$terms = array();
+			$new_terms = array();
+
+			if ( $this->append ) {
+				foreach ( $terms as $term ) {
+					if ( !$this->is_synced_term( $term->term_id ) ) {
+						$new_terms[] = $term;
+					}
+				}
+			}
 
 			/* Create the term object for each post */
 			foreach ( $query->posts as $key => $post ) {
@@ -433,10 +451,10 @@ class WPAS_Product_Sync {
 					continue;
 				}
 
-				$terms[] = $term;
+				$new_terms[] = $term;
 			}
 
-			return $terms;
+			return $new_terms;
 
 		}
 
@@ -458,6 +476,10 @@ class WPAS_Product_Sync {
 	public function get_term( $term, $taxonomy ) {
 
 		if ( $taxonomy !== $this->taxonomy ) {
+			return $term;
+		}
+
+		if ( !$this->is_synced_term( $term->term_id ) ) {
 			return $term;
 		}
 
@@ -607,7 +629,7 @@ class WPAS_Product_Sync {
 
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'wpas' ), "<code>$this->post_type</code>" ) );
 
-		if ( $this->is_tax_screen() ) { ?>
+		if ( $this->is_tax_screen() && $this->is_synced_term() ) { ?>
 			<div class="error">
 				<p><?php echo $message; ?></p>
 			</div>
