@@ -50,6 +50,8 @@ class WPAS_Product_Sync {
 		if ( $this->is_multiple_products() && post_type_exists( $post_type ) ) {
 			add_filter( 'get_terms',    array( $this, 'get_terms' ),    1, 3 );
 			add_filter( 'get_term',     array( $this, 'get_term' ),     1, 2 );
+			add_action( 'init',         array( $this, 'lock_taxonomy' ), 12, 0 );
+			add_action( 'admin_notices', array( $this, 'notice_locked_tax' ), 10, 0 );
 			add_action( 'trashed_post', array( $this, 'unsync_term' ), 10, 1 );
 			add_action( 'delete_post',  array( $this, 'unsync_term' ), 10, 1 );
 		}
@@ -506,6 +508,127 @@ class WPAS_Product_Sync {
 		}
 
 		return false;
+
+	}
+
+	/**
+	 * Check if the current screen displays a term belonging to our taxonomy.
+	 *
+	 * @since  3.0.2
+	 * @return boolean True if the term belong to our tax, false otherwise
+	 */
+	public function is_tax_screen() {
+
+		global $pagenow, $wpdb;
+
+		if ( 'edit-tags.php' !== $pagenow ) {
+			return false;
+		}
+
+		if ( !isset( $_GET['tag_ID'] ) ) {
+			return false;
+		}
+
+		$taxonomy      = '';
+		$term_id       = intval( $_GET['tag_ID'] );
+		$query         = $wpdb->prepare( "SELECT * FROM $wpdb->term_taxonomy WHERE term_id = '%d'", $term_id );
+		$term_taxonomy = $wpdb->get_col( $query, 2 );
+
+		if ( !is_array( $term_taxonomy ) || !isset( $term_taxonomy[0] ) ) {
+			return false;
+		}
+
+		$taxonomy_name = $term_taxonomy[0];
+
+		if ( $taxonomy_name !== $this->taxonomy ) {
+			return true;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check if a given term is a placeholder for a post.
+	 *
+	 * @since  3.0.2
+	 * @param  string  $term_id ID of the term to check
+	 * @return boolean          True if this is a placeholder term, false otherwise
+	 */
+	public function is_synced_term( $term_id = '' ) {
+
+		global $wpdb;
+
+		if ( empty( $term_id ) ) {
+			if ( isset( $_GET['tag_ID'] ) ) {
+				$term_id = intval( $_GET['tag_ID'] );
+			} else {
+				return false;
+			}
+		}
+
+		/* We use a SQL query because get_term() would give us a filtered result */
+		$query     = $wpdb->prepare( "SELECT * FROM $wpdb->terms WHERE term_id = '%d'", $term_id );
+		$term_name = $wpdb->get_col( $query, 1 );
+
+		if ( !is_array( $term_name ) || !isset( $term_name[0] ) ) {
+			return false;
+		}
+
+		$term_name = $term_name[0];
+
+		if ( !is_numeric( $term_name ) ) {
+			return false;
+		}
+
+		$post_id = intval( $term_name );
+
+		if ( get_post_type( $post_id ) !== $this->post_type ) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	/**
+	 * Display a notice on the edit tag screen.
+	 *
+	 * This notice explains to the user why he can't modify it, because
+	 * it is not a real term and the post should be modified instead.
+	 * This is used as a fallback. Normally the screen won't even load
+	 * because lock_taxonomy() will prevent it.
+	 *
+	 * @since  3.0.2
+	 * @return void
+	 */
+	public function notice_locked_tax() {
+
+		global $pagenow;
+
+		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'wpas' ), "<code>$this->post_type</code>" ) );
+
+		if ( $this->is_tax_screen() ) { ?>
+			<div class="error">
+				<p><?php echo $message; ?></p>
+			</div>
+		<?php }
+
+	}
+
+	/**
+	 * Lock the term edit screen.
+	 *
+	 * 
+	 * @since  3.0.2
+	 * @return void
+	 */
+	public function lock_taxonomy() {
+
+		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'wpas' ), "<code>$this->post_type</code>" ) );
+
+		if ( $this->is_tax_screen() && $this->is_synced_term() ) {
+			wp_die( $message, __( 'Term Locked', 'wpas' ), array( 'back_link' => true ) );
+		}
 
 	}
 
