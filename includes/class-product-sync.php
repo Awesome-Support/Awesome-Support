@@ -447,7 +447,8 @@ class WPAS_Product_Sync {
 	 *
 	 * Filters the term returned by get_term() and modifies it
 	 * if it belongs to the taxonomy we're keeping in sync.
-	 * 
+	 *
+	 * @since  3.0.2
 	 * @param  int|object $term     A term object
 	 * @param  string     $taxonomy The taxonomy this term belongs to
 	 * @return object               The original term object if the taxonomy it belongs to isn't ours, an updated object otherwise
@@ -487,7 +488,7 @@ class WPAS_Product_Sync {
 	 * This function is used to delete a placeholder taxonomy term.
 	 * It is hooked on the delete_post action in order to keep the post type
 	 * and the taxonomy in sync.
-	 * 
+	 * @since  3.0.2
 	 * @param  integer        $post_id ID of the post that's being deleted
 	 * @return boolean|object          True if term was deleted, false is nothing happened and WP_Error if an error occured
 	 */
