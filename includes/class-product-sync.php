@@ -618,6 +618,9 @@ class WPAS_Product_Sync {
 	/**
 	 * Lock the term edit screen.
 	 *
+	 * Display a wp_die() screen if the user is trying to edit
+	 * a term that is in sync with a post. This is because all modifications
+	 * should be done in the post directly.
 	 * 
 	 * @since  3.0.2
 	 * @return void
