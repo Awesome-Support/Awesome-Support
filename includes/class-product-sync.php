@@ -7,7 +7,19 @@
  * a site that uses an e-commerce plugin such as WooCommerce
  * or Easy Digital Downloads.
  *
- * This class was largely inspired by the codebase of CPT-onomies
+ * Two synchronization modes are available: replace or append.
+ * When nothing is specified, the "replace" mode is used and all
+ * possibly existing terms in the synced taxonomy will be replaced
+ * by the post type posts.
+ *
+ * If the append mode is used, existing terms of the synced taxonomy
+ * will be displayed along the post type posts.
+ *
+ * In both cases, only the actual yaxonomy terms (not the synced posts)
+ * can be edited through the term edit screen. Synced terms will trigger
+ * a wp_die() asking the user to modify the post directly.
+ *
+ * This class was inspired by the codebase of CPT-onomies
  * (https://wordpress.org/plugins/cpt-onomies/) by Rachel Carden.
  *
  * @package   Awesome Support
@@ -48,7 +60,9 @@ class WPAS_Product_Sync {
 	 * Constructor method.
 	 *
 	 * @since  3.0.2
-	 * @param  string $post_type Name of the post type that should be used to populate the product taxonomy
+	 * @param  string  $post_type Name of the post type that should be used to populate the product taxonomy
+	 * @param  string  $taxonomy  The name of the taxonomy to keep in sync with the $post_type
+	 * @param  boolean $append    Defines if the taxonomy terms should be replaced or if synced terms should just be appened to existing terms
 	 */
 	public function __construct( $post_type = '', $taxonomy = '', $append = false ) {
 
