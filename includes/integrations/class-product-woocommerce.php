@@ -59,7 +59,16 @@ class WPAS_Product_WooCommerce {
 			return false;
 		}
 
-		return true;
+		$plugins = get_option( 'active_plugins', array() );
+		$active  = false;
+
+		foreach ( $plugins as $plugin ) {
+			if ( strpos( $plugin, 'woocommerce.php' ) !== false) {
+				$active = true;
+			}
+		}
+
+		return $active;
 	}
 
 }
