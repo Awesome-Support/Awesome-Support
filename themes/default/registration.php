@@ -40,8 +40,8 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 		?>
 		
 		<div <?php wpas_get_field_container_class( 'log' ); ?>>			
-			<label><?php _e( 'Username' ); ?></label>
-			<input type="text" name="log" <?php wpas_get_field_class( 'log' ); ?> placeholder="<?php _e( 'Username' ); ?>" required>
+			<label><?php _e( 'E-mail or username' ); ?></label>
+			<input type="text" name="log" <?php wpas_get_field_class( 'log' ); ?> placeholder="<?php _e( 'E-mail or username' ); ?>" required>
 		</div>
 		<div <?php wpas_get_field_container_class( 'pwd' ); ?>>
 			<label><?php _e( 'Password' ); ?></label>
