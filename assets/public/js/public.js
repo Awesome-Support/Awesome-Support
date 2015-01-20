@@ -4,6 +4,14 @@
 (function ($) {
 	"use strict";
 
+	/*
+	Convert string to Boolean
+	http://stackoverflow.com/a/21445227
+	 */
+	function stringToBool(val) {
+		return (val + '').toLowerCase() === 'true';
+	}
+
 	$(function () {
 
 		/*
@@ -62,7 +70,7 @@
 		http://www.mailgun.com/email-validation
 		http://documentation.mailgun.com/api-email-validation.html
 		 */
-		if (typeof wpas !== 'undefined' && wpas.emailCheck) {
+		if (typeof wpas !== 'undefined' && stringToBool(wpas.emailCheck)) {
 			var emailInput = $('input[name="email"]'),
 				emailCheck = $('#email-validation');
 
