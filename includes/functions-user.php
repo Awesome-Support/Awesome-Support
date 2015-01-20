@@ -25,7 +25,6 @@ function wpas_register_account( $data = false ) {
 	$first_name = isset( $data['first_name'] ) && !empty( $data['first_name'] ) ? sanitize_text_field( $data['first_name'] ) : false;
 	$last_name  = isset( $data['last_name'] ) && !empty( $data['last_name'] ) ? sanitize_text_field( $data['last_name'] ) : false;
 	$pwd        = isset( $data['pwd'] ) && !empty( $data['pwd'] ) ? $data['pwd'] : false;
-	$pwd2       = isset( $data['pwd-validate'] ) && !empty( $data['pwd-validate'] ) ? $data['pwd-validate'] : false;
 
 	/* Save the user information in session to pre populate the form in case of error. */
 	$_SESSION['wpas_registration_form'] = array(
@@ -50,14 +49,8 @@ function wpas_register_account( $data = false ) {
 	}
 
 	/* Make sure we have all the necessary data. */
-	if ( false === ( $email || $first_name || $last_name || $pwd || $pwd2 ) ) {
+	if ( false === ( $email || $first_name || $last_name || $pwd ) ) {
 		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'You didn\'t correctly fill all the fields.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
-		exit;
-	}
-
-	/* Check passwords */
-	if ( $pwd !== $pwd2 ) {
-		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'The password confirmation does not match the password.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
 		exit;
 	}
 

@@ -30,34 +30,42 @@ class Awesome_Support {
 	 */
 	private function __construct() {
 
-		add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
-		add_action( 'pre_user_query',                 'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
-		add_action( 'wp',                             array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
-		add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added
-		add_action( 'init',                           array( $this, 'load_plugin_textdomain' ) );     // Load the plugin textdomain
-		add_action( 'init',                           array( $this, 'init' ), 11, 0 );                // Register main post type
-		add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ), 999 );  // Add a link to agent's tickets in the toolbar
-		add_action( 'wp_print_styles',                array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
-		add_action( 'wp_print_scripts',               array( $this, 'enqueue_scripts' ) );            // Load public-facing JavaScripts
-		add_action( 'template_redirect',              array( $this, 'redirect_archive' ) );
-		add_action( 'wpas_after_registration_fields', array( $this, 'terms_and_conditions_checkbox' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
-		add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
-		add_filter( 'template_include',               array( $this, 'template_include' ), 10, 1 );
-		add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ), 10, 1 );
+		/* Ajax actions */
+		add_action( 'wp_ajax_nopriv_email_validation', array( $this, 'mailgun_check' ) );
 
-		/* Hook all e-mail notifications */
-		add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
-		add_action( 'wpas_add_reply_after',    array( $this, 'notify_reply' ), 10, 2 );
-		add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ), 10, 1 );
+		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
-		/**
-		 * Modify the ticket single page content.
-		 *
-		 * wpas_single_ticket() is located in includes/functions-templating.php
-		 *
-		 * @since  3.0.0
-		 */
-		add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
+			add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
+			add_action( 'pre_user_query',                 'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
+			add_action( 'wp',                             array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
+			add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added
+			add_action( 'init',                           array( $this, 'load_plugin_textdomain' ) );     // Load the plugin textdomain
+			add_action( 'init',                           array( $this, 'init' ), 11, 0 );                // Register main post type
+			add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ), 999 );  // Add a link to agent's tickets in the toolbar
+			add_action( 'wp_print_styles',                array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
+			add_action( 'wp_print_scripts',               array( $this, 'enqueue_scripts' ) );            // Load public-facing JavaScripts
+			add_action( 'template_redirect',              array( $this, 'redirect_archive' ) );
+			add_action( 'wpas_after_registration_fields', array( $this, 'terms_and_conditions_checkbox' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
+			add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
+			add_filter( 'template_include',               array( $this, 'template_include' ), 10, 1 );
+			add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ), 10, 1 );
+			add_filter( 'authenticate',                   array( $this, 'email_signon' ), 20, 3 );
+
+			/* Hook all e-mail notifications */
+			add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
+			add_action( 'wpas_add_reply_after',    array( $this, 'notify_reply' ), 10, 2 );
+			add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ), 10, 1 );
+
+			/**
+			 * Modify the ticket single page content.
+			 *
+			 * wpas_single_ticket() is located in includes/functions-templating.php
+			 *
+			 * @since  3.0.0
+			 */
+			add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
+
+		}
 	}
 
 	/**
@@ -227,6 +235,61 @@ class Awesome_Support {
 				exit;
 			}
 		}
+
+	}
+
+	/**
+	 * Allow e-mail to be used as the login.
+	 *
+	 * @since  3.0.2
+	 * @param  null|WP_User $user     User to authenticate.
+	 * @param  string       $username User login
+	 * @param  string       $password User password
+	 * @return object                 WP_User if authentication succeed, WP_Error on failure
+	 */
+	public function email_signon( $user, $username, $password ) {
+
+		/* Authentication was successful, we don't touch it */
+		if ( is_object( $user ) && is_a( $user, 'WP_User' ) ) {
+			return $user;
+		}
+
+		/**
+		 * If the $user isn't a WP_User object nor a WP_Error
+		 * we don' touch it and let WordPress handle it.
+		 */
+		if ( !is_wp_error( $user ) ) {
+			return $user;
+		}
+
+		/**
+		 * We only wanna alter the authentication process if the username was rejected.
+		 * If the error is different lwe let WordPress handle it.
+		 */
+		if ( 'invalid_username' !== $user->get_error_code() ) {
+			return $user;
+		}
+
+		/**
+		 * If the username is not an e-mail there is nothing else we can do,
+		 * the error is probably legitimate.
+		 */
+		if ( !is_email( $username ) ) {
+			return $user;
+		}
+
+		/* Try to get the user with this e-mail address */
+		$user_data = get_user_by( 'email', $username );
+
+		/**
+		 * If there is no user with this e-mail the error is legitimate
+		 * so let's just return it.
+		 */
+		if ( false === $user_data || !is_a( $user_data, 'WP_User' ) ) {
+			return $user;
+		}
+
+		return wp_authenticate_username_password( null, $user_data->data->user_login, $password );
 
 	}
 
@@ -576,6 +639,28 @@ class Awesome_Support {
 			wp_enqueue_script( 'wpas-plugin-script' );
 		}
 
+		wp_localize_script( 'wpas-plugin-script', 'wpas', $this->get_javascript_object() );
+
+	}
+
+	/**
+	 * JavaScript object.
+	 *
+	 * The plugin uses a couple of JS variables that we pass
+	 * to the main script through a "wpas" object.
+	 *
+	 * @since  3.0.2
+	 * @return array The JavaScript object
+	 */
+	protected function get_javascript_object() {
+
+		$object = array(
+			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+			'emailCheck' => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
+		);
+
+		return $object;
+
 	}
 
 	/**
@@ -783,6 +868,40 @@ class Awesome_Support {
 	public function default_log_handles( $handles ) {
 		array_push( $handles, 'error' );
 		return $handles;
+	}
+
+	public function mailgun_check( $data = '' ) {
+
+		if ( empty( $data ) ) {
+			if ( isset( $_POST ) ) {
+				$data = $_POST;
+			} else {
+				echo '';
+				die();
+			}
+		}
+
+		if ( !isset( $data['email'] ) ) {
+			echo '';
+			die();
+		}
+
+		$mailgun = new WPAS_MailGun_EMail_Check();
+		$check   = $mailgun->check_email( $data );
+
+		if ( !is_wp_error( $check ) ) {
+
+			$check = json_decode( $check );
+
+			if ( is_object( $check ) && isset( $check->did_you_mean ) && !is_null( $check->did_you_mean ) ) {
+				printf( __( 'Did you mean %s', 'wpas' ), "<strong>{$check->did_you_mean}</strong>" );
+				die();
+			}
+
+		}
+
+		die();
+
 	}
 
 }
