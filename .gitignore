@@ -57,3 +57,4 @@ prepros.cfg
 
 ### Custom ###
 /logs
+/node_modules
