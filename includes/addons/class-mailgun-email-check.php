@@ -36,7 +36,7 @@ class WPAS_MailGun_EMail_Check {
 		);
 
 		array_push( $settings['general']['options'], array(
-				'desc' => sprintf( __( 'You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href="%s">Email validation API</a> and requires a (free) MailGun account.', 'wpas' ), esc_url( 'http://www.mailgun.com/email-validation' ) ),
+				'desc' => sprintf( __( 'You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href="%s">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups.', 'wpas' ), esc_url( 'http://www.mailgun.com/email-validation' ) ),
 				'type' => 'note',
 			)
 		);
