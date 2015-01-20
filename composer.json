@@ -17,6 +17,7 @@
     	]
     },
     "scripts": {
+    	"post-install-cmd": "npm install",
     	"pre-archive-cmd": "composer update"
     }
 }
