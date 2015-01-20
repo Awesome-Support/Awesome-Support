@@ -874,9 +874,17 @@ class Awesome_Support {
 		$check   = $mailgun->check_email( $data );
 
 		if ( !is_wp_error( $check ) ) {
-			echo $check;
-			die();
+
+			$check = json_decode( $check );
+
+			if ( is_object( $check ) && isset( $check->did_you_mean ) && !is_null( $check->did_you_mean ) ) {
+				printf( __( 'Did you mean %s', 'wpas' ), "<strong>{$check->did_you_mean}</strong>" );
+				die();
+			}
+
 		}
+
+		die();
 
 	}
 
