@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bb3300f09748604a88c18604db2778ad",
+    "hash": "48b0b58acbbdf96f03d82b3f5472bd40",
     "packages": [
         {
             "name": "gambitph/titan-framework",
@@ -52,6 +52,7 @@
     "minimum-stability": "stable",
     "stability-flags": [],
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
 }
