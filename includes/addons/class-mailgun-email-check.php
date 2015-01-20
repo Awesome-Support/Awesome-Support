@@ -45,7 +45,7 @@ class WPAS_MailGun_EMail_Check {
 				'name'    => __( 'Enable E-Mail Checking', 'wpas' ),
 				'id'      => 'enable_mail_check',
 				'type'    => 'checkbox',
-				'default' => true,
+				'default' => false,
 				'desc'    => __( 'Do you want to check e-mail addresses on new registrations?', 'wpas' )
 				)
 		);
