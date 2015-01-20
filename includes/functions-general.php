@@ -317,3 +317,19 @@ function wpas_write_log( $handle, $message ) {
 	$log = new WPAS_Logger( $handle );
 	$log->add( $message );
 }
+
+/**
+ * Show a warning if dependencies aren't loaded.
+ *
+ * If the dependencies aren't present in the plugin folder
+ * we display a warning to the user and explain him how to 
+ * fix the issue.
+ *
+ * @since  3.0.2
+ * @return void
+ */
+function wpas_missing_dependencied() { ?>
+	<div class="error">
+        <p><?php printf( __( 'Awesome Support dependencies are missing. The plugin can&#39;t be loaded properly. Please run %s before anything else. If you don&#39;t know what this is you should <a href="%s">download and use the production version</a> of this plugin instead.', 'wpas' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( 'http://downloads.wordpress.org/plugin/awesome-support.latest-stable.zip' ) ); ?></p>
+    </div>
+<?php }

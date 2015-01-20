@@ -61,6 +61,22 @@ class Awesome_Support {
 	}
 
 	/**
+	 * Check if plugin dependencies are present.
+	 *
+	 * @since  3.0.2
+	 * @return boolean True of dependencies are here, false otherwise
+	 */
+	public static function dependencies_loaded() {
+
+		if ( !is_dir( WPAS_PATH . 'vendor' ) ) {
+			return false;
+		}
+
+		return true;
+
+	}
+
+	/**
 	 * Actions run on plugin initialization.
 	 *
 	 * A certain number of things can possibly run after

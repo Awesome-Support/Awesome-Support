@@ -86,10 +86,28 @@ require_once( WPAS_PATH . 'includes/functions-custom-fields.php' );   // Submiss
 require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
 require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
 
+/**
+ * Check if dependencies are loaded.
+ *
+ * The plugin uses a certain number of dependencies managed through Composer.
+ * If those dependencies are not loaded the plugin won't work.
+ *
+ * In order to avoid errors we check if dependencies are present. If not we simply
+ * don't load the plugin.
+ *
+ * This problem won't happen with the production version as we have scripts
+ * doing all the work, but on the development verison this can be a problem.
+ *
+ * @since  3.0.2
+ */
+if ( !Awesome_Support::dependencies_loaded() ) {
+	add_action( 'admin_notices', 'wpas_missing_dependencied' );
+}
+
 /*----------------------------------------------------------------------------*
  * Public-Facing Only Functionality
  *----------------------------------------------------------------------------*/
-if( !is_admin() ) {
+if( !is_admin() && Awesome_Support::dependencies_loaded() ) {
 	require_once( WPAS_PATH . 'includes/class-notification.php' ); // Load notifications class
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
@@ -102,7 +120,7 @@ if( !is_admin() ) {
 /**
  * The code below is intended to to give the lightest footprint possible.
  */
-if ( is_admin() ) {
+if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
 
 	/* Load main admin class */
 	require_once( WPAS_PATH . 'includes/admin/class-admin.php' );
