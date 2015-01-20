@@ -44,7 +44,7 @@ if ( false === $items ) {
 }
 .wpas-addon-img-wrap {
 	width: 100%;
-	min-height: 311px;
+	min-height: 302px;
 	background: #ddd url('<?php echo admin_url(); ?>/images/wpspin_light-2x.gif') no-repeat 50% 50%;
 }
 .wpas-addon-img {
