@@ -30,35 +30,42 @@ class Awesome_Support {
 	 */
 	private function __construct() {
 
-		add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
-		add_action( 'pre_user_query',                 'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
-		add_action( 'wp',                             array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
-		add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added
-		add_action( 'init',                           array( $this, 'load_plugin_textdomain' ) );     // Load the plugin textdomain
-		add_action( 'init',                           array( $this, 'init' ), 11, 0 );                // Register main post type
-		add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ), 999 );  // Add a link to agent's tickets in the toolbar
-		add_action( 'wp_print_styles',                array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
-		add_action( 'wp_print_scripts',               array( $this, 'enqueue_scripts' ) );            // Load public-facing JavaScripts
-		add_action( 'template_redirect',              array( $this, 'redirect_archive' ) );
-		add_action( 'wpas_after_registration_fields', array( $this, 'terms_and_conditions_checkbox' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
-		add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
-		add_filter( 'template_include',               array( $this, 'template_include' ), 10, 1 );
-		add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ), 10, 1 );
-		add_filter( 'authenticate',                   array( $this, 'email_signon' ), 20, 3 );
+		/* Ajax actions */
+		add_action( 'wp_ajax_nopriv_email_validation', array( $this, 'mailgun_check' ) );
 
-		/* Hook all e-mail notifications */
-		add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
-		add_action( 'wpas_add_reply_after',    array( $this, 'notify_reply' ), 10, 2 );
-		add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ), 10, 1 );
+		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
-		/**
-		 * Modify the ticket single page content.
-		 *
-		 * wpas_single_ticket() is located in includes/functions-templating.php
-		 *
-		 * @since  3.0.0
-		 */
-		add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
+			add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
+			add_action( 'pre_user_query',                 'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
+			add_action( 'wp',                             array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
+			add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added
+			add_action( 'init',                           array( $this, 'load_plugin_textdomain' ) );     // Load the plugin textdomain
+			add_action( 'init',                           array( $this, 'init' ), 11, 0 );                // Register main post type
+			add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ), 999 );  // Add a link to agent's tickets in the toolbar
+			add_action( 'wp_print_styles',                array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
+			add_action( 'wp_print_scripts',               array( $this, 'enqueue_scripts' ) );            // Load public-facing JavaScripts
+			add_action( 'template_redirect',              array( $this, 'redirect_archive' ) );
+			add_action( 'wpas_after_registration_fields', array( $this, 'terms_and_conditions_checkbox' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
+			add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
+			add_filter( 'template_include',               array( $this, 'template_include' ), 10, 1 );
+			add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ), 10, 1 );
+			add_filter( 'authenticate',                   array( $this, 'email_signon' ), 20, 3 );
+
+			/* Hook all e-mail notifications */
+			add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
+			add_action( 'wpas_add_reply_after',    array( $this, 'notify_reply' ), 10, 2 );
+			add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ), 10, 1 );
+
+			/**
+			 * Modify the ticket single page content.
+			 *
+			 * wpas_single_ticket() is located in includes/functions-templating.php
+			 *
+			 * @since  3.0.0
+			 */
+			add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
+
+		}
 	}
 
 	/**
@@ -633,7 +640,7 @@ class Awesome_Support {
 
 		$object = array(
 			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
-			'emailCheck' => '',
+			'emailCheck' => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
 		);
 
 		return $object;
@@ -845,6 +852,35 @@ class Awesome_Support {
 	public function default_log_handles( $handles ) {
 		array_push( $handles, 'error' );
 		return $handles;
+	}
+
+	public function mailgun_check( $data = '' ) {
+
+		if ( empty( $data ) ) {
+			if ( isset( $_POST ) ) {
+				$data = $_POST;
+			} else {
+				echo 'no_data';
+				die();
+			}
+		}
+
+		if ( !isset( $data['email'] ) ) {
+			echo 'no_mail';
+			die();
+		}
+
+		$mailgun = new WPAS_MailGun_EMail_Check();
+		$check   = $mailgun->check_email( $data );
+
+		if ( is_wp_error( $check ) ) {
+			echo $check->get_error_message();
+			die();
+		}
+
+		echo $check;
+		die();
+
 	}
 
 }
