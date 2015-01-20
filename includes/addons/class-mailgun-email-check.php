@@ -63,10 +63,22 @@ class WPAS_MailGun_EMail_Check {
 
 	}
 
-	public function check_email( $email ) {
+	public function check_email( $data = '' ) {
 
-		if ( empty( $this->api_key ) ) {
+		if ( empty( $this->public_key ) ) {
 			return new WP_Error( 'no_api_key', __( 'No API key was provided', 'wpas' ) );
+		}
+
+		if ( empty( $data ) ) {
+			if ( isset( $_POST ) ) {
+				$data = $_POST;
+			} else {
+				return new WP_Error( 'no_data', __( 'No data to check', 'wpas' ) );
+			}
+		}
+
+		if ( !isset( $data['email'] ) ) {
+			return new WP_Error( 'no_email', __( 'No e-mail to check', 'wpas' ) );
 		}
 
 		global $wp_version;
@@ -77,15 +89,30 @@ class WPAS_MailGun_EMail_Check {
 			'httpversion' => '1.0',
 			'user-agent'  => 'WordPress/' . $wp_version . '; ' . get_bloginfo( 'url' ),
 			'blocking'    => true,
-			'headers'     => array( 'Authorization' => 'Basic ' . base64_encode( 'api:' . YOUR_PASSWORD ) ),
+			'headers'     => array( 'Authorization' => 'Basic ' . base64_encode( 'api:' . $this->public_key ) ),
 			'cookies'     => array(),
-			'body'        => null,
+			'body'        => array( 'address' => $data['email'] ),
 			'compress'    => false,
 			'decompress'  => true,
 			'sslverify'   => true,
 			'stream'      => false,
 			'filename'    => null
 		);
+
+		$response      = wp_remote_get( esc_url( $this->endpoint ), $args );
+		$response_code = wp_remote_retrieve_response_code( $response );
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		if ( 200 != $response_code ) {
+			return new WP_Error( $response_code, wp_remote_retrieve_response_message( $response ) );
+		}
+
+		$body = wp_remote_retrieve_body( $response );
+
+		return $body;
 
 	}
 
