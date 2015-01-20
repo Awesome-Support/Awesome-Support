@@ -86,6 +86,7 @@ require_once( WPAS_PATH . 'includes/functions-general.php' );         // Functio
 require_once( WPAS_PATH . 'includes/functions-custom-fields.php' );   // Submission form related functions
 require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
 require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
+require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
 
 /**
  * Check if dependencies are loaded.
@@ -131,6 +132,14 @@ if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
 	add_filter( 'wpas_plugin_settings', array( 'WPAS_MailGun_EMail_Check', 'settings' ), 10, 1 );
 
 }
+
+/*----------------------------------------------------------------------------*
+ * Integrations
+ *----------------------------------------------------------------------------*/
+
+/* WooCommerce */
+require_once( WPAS_PATH . 'includes/integrations/class-product-woocommerce.php' );
+add_action( 'init', array( 'WPAS_Product_WooCommerce', 'get_instance' ), 11, 0 );
 
 /**
  * Start the session if needed.
