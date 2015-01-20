@@ -860,26 +860,23 @@ class Awesome_Support {
 			if ( isset( $_POST ) ) {
 				$data = $_POST;
 			} else {
-				echo 'no_data';
+				echo '';
 				die();
 			}
 		}
 
 		if ( !isset( $data['email'] ) ) {
-			echo 'no_mail';
+			echo '';
 			die();
 		}
 
 		$mailgun = new WPAS_MailGun_EMail_Check();
 		$check   = $mailgun->check_email( $data );
 
-		if ( is_wp_error( $check ) ) {
-			echo $check->get_error_message();
+		if ( !is_wp_error( $check ) ) {
+			echo $check;
 			die();
 		}
-
-		echo $check;
-		die();
 
 	}
 
