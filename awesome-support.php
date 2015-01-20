@@ -70,6 +70,7 @@ add_action( 'plugins_loaded', array( 'Awesome_Support', 'get_instance' ) );
  */
 require_once( WPAS_PATH . 'includes/addons/custom-fields/class-custom-fields.php' );
 require_once( WPAS_PATH . 'includes/addons/file-uploader/class-file-uploader.php' );
+require_once( WPAS_PATH . 'includes/addons/class-mailgun-email-check.php' );
 
 /**
  * Call all classes and functions files that are shared
@@ -107,6 +108,9 @@ if ( is_admin() ) {
 	/* Load main admin class */
 	require_once( WPAS_PATH . 'includes/admin/class-admin.php' );
 	add_action( 'plugins_loaded', array( 'Awesome_Support_Admin', 'get_instance' ) );
+
+	/* Load the MailGun e-mail check settings */
+	add_filter( 'wpas_plugin_settings', array( 'WPAS_MailGun_EMail_Check', 'settings' ), 10, 1 );
 
 }
 
