@@ -894,7 +894,7 @@ class Awesome_Support {
 			$check = json_decode( $check );
 
 			if ( is_object( $check ) && isset( $check->did_you_mean ) && !is_null( $check->did_you_mean ) ) {
-				printf( __( 'Did you mean %s', 'wpas' ), "<strong>{$check->did_you_mean}</strong>" );
+				printf( __( 'Did you mean %s', 'wpas' ), "<strong>{$check->did_you_mean}</strong>?" );
 				die();
 			}
 
