@@ -21,7 +21,7 @@ module.exports = function (grunt) {
 				separator: ';',
 			},
 			dist: {
-				src: ['assets/public/vendor/featherlight/featherlight.min.js', 'assets/public/js/public.js'],
+				src: ['assets/public/vendor/*/*.js', 'assets/public/js/public.js'],
 				dest: 'assets/public/js/public-dist.js',
 			},
 		},
