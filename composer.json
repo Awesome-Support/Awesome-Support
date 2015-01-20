@@ -15,5 +15,8 @@
     		"*.sublime-workspace",
     		"*.sublime-project"
     	]
+    },
+    "scripts": {
+    	"pre-archive-cmd": "composer update"
     }
 }
