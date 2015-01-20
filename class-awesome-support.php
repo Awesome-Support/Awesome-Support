@@ -44,7 +44,7 @@ class Awesome_Support {
 		add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
 		add_filter( 'template_include',               array( $this, 'template_include' ), 10, 1 );
 		add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ), 10, 1 );
-		add_filter('authenticate',                    array( $this, 'email_signon' ), 20, 3 );
+		add_filter( 'authenticate',                   array( $this, 'email_signon' ), 20, 3 );
 
 		/* Hook all e-mail notifications */
 		add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
@@ -615,6 +615,28 @@ class Awesome_Support {
 		if ( ! is_admin() && wpas_is_plugin_page() ) {
 			wp_enqueue_script( 'wpas-plugin-script' );
 		}
+
+		wp_localize_script( 'wpas-plugin-script', 'wpas', $this->get_javascript_object() );
+
+	}
+
+	/**
+	 * JavaScript object.
+	 *
+	 * The plugin uses a couple of JS variables that we pass
+	 * to the main script through a "wpas" object.
+	 *
+	 * @since  3.0.2
+	 * @return array The JavaScript object
+	 */
+	protected function get_javascript_object() {
+
+		$object = array(
+			'ajaxurl'    => admin_url( 'admin-ajax.php' ),
+			'emailCheck' => '',
+		);
+
+		return $object;
 
 	}
 
