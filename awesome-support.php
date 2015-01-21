@@ -136,14 +136,7 @@ if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
 /*----------------------------------------------------------------------------*
  * Integrations
  *----------------------------------------------------------------------------*/
-
-/* WooCommerce */
-require_once( WPAS_PATH . 'includes/integrations/class-product-woocommerce.php' );
-add_action( 'init', array( 'WPAS_Product_WooCommerce', 'get_instance' ), 11, 0 );
-
-/* Easy Digital Downloads */
-require_once( WPAS_PATH . 'includes/integrations/class-product-edd.php' );
-add_action( 'init', array( 'WPAS_Product_EDD', 'get_instance' ), 11, 0 );
+require_once( WPAS_PATH . 'includes/integrations/loader.php' );
 
 /**
  * Start the session if needed.
