@@ -84,6 +84,12 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 
 			/* Process the agent (re)attribution differently */
 			if ( 'assignee' === $option['name'] ) {
+
+				/* Don't od anything if the agent didn't change */
+				if ( $_POST[$option_name] == get_post_meta( $post_id, '_wpas_assignee', true ) ) {
+					continue;
+				}
+
 				wpas_assign_ticket( $post_id, $_POST["_$option_name"], $option_args['log'] );
 				continue;
 			}
