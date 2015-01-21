@@ -348,7 +348,7 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 
 	$insert = wpas_insert_reply( $data, $parent_id );
 
-	if ( $insert && user_can( $defaults['post_author'], 'edit_ticket' ) ) {
+	if ( $insert && user_can( $data['post_author'], 'edit_ticket' ) ) {
 		$replies = wpas_get_replies( $parent_id );
 		if ( 1 === count( $replies ) ) {
 			wpas_update_ticket_status( $parent_id, 'processing' );
