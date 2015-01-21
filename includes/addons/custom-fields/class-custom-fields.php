@@ -740,6 +740,14 @@ function wpas_register_core_fields() {
 
 		$slug = defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : 'product';
 
+		/* Filter the taxonomy labels */
+		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
+			'label'        => __( 'Product', 'wpas' ),
+			'name'         => __( 'Product', 'wpas' ),
+			'label_plural' => __( 'Products', 'wpas' )
+			)
+		);
+
 		$wpas_cf->add_field( 'product', array(
 			'core'                  => false,
 			'show_column'           => true,
@@ -747,9 +755,9 @@ function wpas_register_core_fields() {
 			'callback'              => 'taxonomy',
 			'taxo_std'              => false,
 			'save_callback'         => null,
-			'label'                 => __( 'Product', 'wpas' ),
-			'name'                  => __( 'Product', 'wpas' ),
-			'label_plural'          => __( 'Products', 'wpas' ),
+			'label'                 => $labels['label'],
+			'name'                  => $labels['name'],
+			'label_plural'          => $labels['label_plural'],
 			'taxo_hierarchical'     => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug )
