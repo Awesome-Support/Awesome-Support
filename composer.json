@@ -3,21 +3,23 @@
         "gambitph/titan-framework": "1.7.*"
     },
     "archive": {
-    	"exclude": [
-    		".gitignore",
-    		"apigen.neon",
-    		"composer.json",
-    		"composer.lock",
-    		"/tests",
-    		"README.md",
-    		"Gruntfile.js",
-    		"package.json",
-    		"*.sublime-workspace",
-    		"*.sublime-project"
-    	]
+        "exclude": [
+            ".gitignore",
+            "*.sublime-workspace",
+            "*.sublime-project",
+            "apigen.neon",
+            "composer.json",
+            "composer.lock",
+            "README.md",
+            "Gruntfile.js",
+            "package.json",
+            "/node_modules",
+            "/tests",
+            "!/vendor"
+        ]
     },
     "scripts": {
-    	"post-install-cmd": "npm install",
-    	"pre-archive-cmd": "composer update"
+        "post-install-cmd": "npm install",
+        "pre-archive-cmd": "composer update"
     }
 }
