@@ -43,6 +43,6 @@ composer install
 
 This command will do a few things for you:
 
-1. Install Grunt
-2. Install all required Grunt modules
-3. Install the plugin dependencies
+1. Install the plugin dependencies (via Composer)
+2. Install Grunt & all Grunt modules (via `npm install`)
+3. You should now be able to launch the default Grunt task with `grunt`
