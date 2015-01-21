@@ -56,7 +56,7 @@ class WPAS_Test_Functions_Post extends WP_UnitTestCase {
     function test_wpas_update_ticket_status() {
         $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
         $updated   = wpas_update_ticket_status( $ticket_id, 'processing' );
-        $this->assertEquals( 1, $updated );
+        $this->assertInternalType( 'int', $updated );
     }
 
     function test_wpas_update_ticket_status_fail() {
