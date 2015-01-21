@@ -1,6 +1,6 @@
 /* globals module, require */
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
 	'use strict';
 
@@ -18,12 +18,12 @@ module.exports = function (grunt) {
 		 */
 		concat: {
 			options: {
-				separator: ';',
+				separator: ';'
 			},
 			dist: {
 				src: ['assets/public/vendor/*/*.js', 'assets/public/js/public.js'],
-				dest: 'assets/public/js/public-dist.js',
-			},
+				dest: 'assets/public/js/public-dist.js'
+			}
 		},
 
 		uglify: {
@@ -72,7 +72,7 @@ module.exports = function (grunt) {
 			new_filename: {
 				options: {
 					expand: false,
-					beautify: false,
+					beautify: false
 				},
 				src: 'assets/public/css/public.css',
 				dest: 'assets/public/css/public.css'
@@ -87,12 +87,44 @@ module.exports = function (grunt) {
 			minify: {
 				files: {
 					'assets/public/css/public.css': 'assets/public/css/public.css',
-					'assets/admin/css/admin.css': 'assets/admin/css/admin.css',
+					'assets/admin/css/admin.css': 'assets/admin/css/admin.css'
 				},
 				options: {
 					report: 'min',
 					keepSpecialComments: 0
 				}
+			}
+		},
+
+		/**
+		Creates a clean zip archive for production
+		@author https://github.com/gruntjs/grunt-contrib-compress
+		 */
+		compress: {
+			main: {
+				options: {
+					archive: 'awesome-support-<%= pkg.version %>.zip',
+					mode: 'zip'
+				},
+				files: [{
+					src: [
+						'*',
+						'**',
+						'!node_modules/**',
+						'!tests/**',
+						'!.gitignore',
+						'!apigen.neon',
+						'!composer.json',
+						'!composer.lock',
+						'!tests/**',
+						'!README.md',
+						'!Gruntfile.js',
+						'!package.json',
+						'!*.sublime-workspace',
+						'!*.sublime-project',
+						'!awesome-support-<%= pkg.version %>.zip'
+					]
+				}]
 			}
 		},
 
