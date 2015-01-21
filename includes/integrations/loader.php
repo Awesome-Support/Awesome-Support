@@ -18,3 +18,7 @@ add_action( 'init', array( 'WPAS_Product_Exchange', 'get_instance' ), 11, 0 );
 /* WP eCommerce */
 require_once( WPAS_PATH . 'includes/integrations/class-product-wp-ecommerce.php' );
 add_action( 'init', array( 'WPAS_Product_WP_Ecommerce', 'get_instance' ), 11, 0 );
+
+/* Jigoshop */
+require_once( WPAS_PATH . 'includes/integrations/class-product-jigoshop.php' );
+add_action( 'init', array( 'WPAS_Product_Jigoshop', 'get_instance' ), 11, 0 );
