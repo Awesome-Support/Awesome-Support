@@ -363,7 +363,7 @@ class WPAS_Email_Notification {
 
 				/* Name of the agent assigned to this ticket */
 				case 'agent_name':
-					$tag['value'] = $agent->user_nicename;
+					$tag['value'] = $agent->display_name;
 					break;
 
 				/* E-mail of the agent assigned to this ticket */
@@ -372,7 +372,7 @@ class WPAS_Email_Notification {
 					break;
 
 				case 'client_name':
-					$tag['value'] = $client->user_nicename;
+					$tag['value'] = $client->display_name;
 					break;
 
 				case 'client_email':
