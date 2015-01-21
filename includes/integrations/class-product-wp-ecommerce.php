@@ -25,7 +25,7 @@ class WPAS_Product_WP_Ecommerce {
 
 	public function __construct() {
 
-		if ( $this->is_edd_enabled() ) {
+		if ( $this->is_enabled() ) {
 			$sync = new WPAS_Product_Sync( 'wpsc-product', 'product', true );
 			add_filter( 'wpas_taxonomy_locked_msg', array( $this, 'locked_message' ) );
 		}
@@ -54,7 +54,7 @@ class WPAS_Product_WP_Ecommerce {
 	 * @since  3.0.2
 	 * @return boolean True if WP eCommerce is in use, false otherwise
 	 */
-	protected function is_edd_enabled() {
+	protected function is_enabled() {
 
 		if ( !class_exists( 'WP_eCommerce' ) ) {
 			return false;

@@ -25,7 +25,7 @@ class WPAS_Product_EDD {
 
 	public function __construct() {
 
-		if ( $this->is_edd_enabled() ) {
+		if ( $this->is_enabled() ) {
 			$sync = new WPAS_Product_Sync( 'download', 'product', true );
 			add_filter( 'wpas_taxonomy_locked_msg', array( $this, 'locked_message' ) );
 		}
@@ -54,7 +54,7 @@ class WPAS_Product_EDD {
 	 * @since  3.0.2
 	 * @return boolean True if EDD is in use, false otherwise
 	 */
-	protected function is_edd_enabled() {
+	protected function is_enabled() {
 
 		if ( !class_exists( 'Easy_Digital_Downloads' ) ) {
 			return false;
