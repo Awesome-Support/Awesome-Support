@@ -766,7 +766,14 @@ class Awesome_Support {
 			return $template;
 		}
 
-		$filename = explode( '/', $template );
+		$filename      = explode( '/', $template );
+		$template_name = $filename[count($filename)-1];
+		
+		/* Don't change the template if it's already a custom one */
+		if ( 'single-ticket.php' === $template_name ) {
+			return $template;
+		}
+
 		unset( $filename[count($filename)-1] ); // Remove the template name
 		$filename = implode( '/', $filename );
 		$filename = $filename . '/page.php';
