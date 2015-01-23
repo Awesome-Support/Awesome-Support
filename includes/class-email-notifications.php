@@ -48,6 +48,9 @@ class WPAS_Email_Notification {
 			return new WP_Error( 'incorrect_post_type', __( 'The post ID provided does not match any of the plugin post types', 'wpas' ) );
 		}
 
+		/* Set the e-mail content type to HTML */
+		add_filter( 'wp_mail_content_type', array( $this, 'set_html_mime_type' ) );
+
 		/* Set the post ID */
 		$this->post_id = $post_id;
 		
@@ -493,6 +496,28 @@ class WPAS_Email_Notification {
 	}
 
 	/**
+	 * Set the e-mail content type to HTML.
+	 *
+	 * @since  3.1.1
+	 * @param  string $content_type Current e-mail content type
+	 * @return string               HTML content type
+	 */
+	function set_html_mime_type( $content_type ){
+		return 'text/html';
+	}
+
+	/**
+	 * Set the e-mail content type to plain text.
+	 * 
+	 * @since  3.1.1
+	 * @param  string $content_type Current e-mail content type
+	 * @return string               Text content type
+	 */
+	function set_text_mime_type( $content_type ){
+		return 'text/plain';
+	}
+
+	/**
 	 * Send out the e-mail notification.
 	 *
 	 * @since  3.0.2
@@ -574,7 +599,17 @@ class WPAS_Email_Notification {
 			)
 		);
 
-		return wp_mail( $email['recipient_email'], $email['subject'], $email['body'], implode( "\r\n", $email['headers'] ) );
+		$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], implode( "\r\n", $email['headers'] ) );
+
+		/**
+		 * Reset the e-mail content type to text as recommended by WordPress
+		 *
+		 * @since  3.1.1
+		 * @link   http://codex.wordpress.org/Function_Reference/wp_mail
+		 */
+		add_filter( 'wp_mail_content_type', array( $this, 'set_text_mime_type' ) );
+
+		return $mail;
 
 	}
 
