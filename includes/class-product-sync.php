@@ -263,6 +263,11 @@ class WPAS_Product_Sync {
 	 */
 	protected function create_term_object( $post ) {
 
+		/* If the $post is not an object we return false to avoid triggering PHP errors */
+		if ( !is_object( $post ) ) {
+			return false;
+		}
+
 		/* Try to get the term data from the post meta */
 		$term_data = get_post_meta( $post->ID, '_wpas_product_term', true );
 
@@ -448,7 +453,7 @@ class WPAS_Product_Sync {
 
 			if ( $this->append ) {
 				foreach ( $terms as $term ) {
-					if ( !$this->is_synced_term( $term->term_id ) ) {
+					if ( is_object( $term ) && !$this->is_synced_term( $term->term_id ) ) {
 						$new_terms[] = $term;
 					}
 				}
