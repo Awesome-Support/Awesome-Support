@@ -594,7 +594,7 @@ class WPAS_Email_Notification {
 			'recipient_email' => $user->user_email,
 			'subject'         => $subject,
 			'body'            => $body,
-			'header'          => $headers,
+			'headers'         => $headers,
 			'attachments'     => ''
 			)
 		);
