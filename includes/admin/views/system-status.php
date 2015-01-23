@@ -211,6 +211,24 @@
 	</thead>
 	<tbody>
 		<tr>
+			<td class="row-title"><?php _e( 'Sender Name', 'wpas' ); ?></td>
+			<td>
+				<?php echo wpas_get_option( 'sender_name', get_bloginfo( 'name' ) ); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><?php _e( 'Sender E-Mail', 'wpas' ); ?></td>
+			<td>
+				<?php echo wpas_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ); ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><?php _e( 'Reply-To E-Mail', 'wpas' ); ?></td>
+			<td>
+				<?php echo wpas_get_option( 'reply_email', get_bloginfo( 'admin_email' ) ); ?>
+			</td>
+		</tr>
+		<tr>
 			<td class="row-title"><?php _e( 'Submission Confirmation', 'wpas' ); ?></td>
 			<td>
 				<?php echo true === boolval( wpas_get_option( 'enable_confirmation' ) ) ? '<span class="wpas-alert-success">' . __( 'Enabled', 'wpas' ) . '</span>' : '<span class="wpas-alert-danger">' . __( 'Disabled', 'wpas' ) . '</span>'; ?>
