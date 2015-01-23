@@ -462,6 +462,10 @@ class WPAS_Product_Sync {
 			/* Create the term object for each post */
 			foreach ( $query->posts as $key => $post ) {
 
+				if ( !is_a( $post, 'WP_Post' ) ) {
+					continue;
+				}
+
 				/* Create the term object */
 				$term = $this->create_term_object( $post );
 
