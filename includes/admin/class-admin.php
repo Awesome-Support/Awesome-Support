@@ -496,7 +496,25 @@ class Awesome_Support_Admin {
 	 */
 	public function filter_ticket_data( $data, $postarr ) {
 
-		if ( isset( $data['post_type'] ) && 'ticket' === $data['post_type'] && isset( $_POST['post_status_override'] ) && !empty( $_POST['post_status_override'] ) ) {
+		global $current_user;
+
+		if ( !isset( $data['post_type'] ) || 'ticket' !== $data['post_type'] ) {
+			return $data;
+		}
+
+		/**
+		 * Automatically set the ticket as processing if this is the first reply.
+		 */
+		if ( user_can( $current_user->ID, 'edit_ticket' ) && isset( $postarr['ID'] ) ) {
+			$replies = wpas_get_replies( intval( $postarr['ID'] ) );
+			if ( 0 === count( $replies ) ) {
+				if ( !isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
+					$_POST['post_status_override'] = 'processing';
+				}
+			}
+		}
+
+		if ( isset( $_POST['post_status_override'] ) && !empty( $_POST['post_status_override'] ) ) {
 
 			$status = wpas_get_post_status();
 
@@ -930,16 +948,6 @@ class Awesome_Support_Admin {
 		 * @since  3.0.0
 		 */
 		do_action( 'wpas_save_custom_fields_after', $post_id );
-
-		/**
-		 * Automatically set the ticket as processing if this is the first reply.
-		 */
-		if ( user_can( $data['post_author'], 'edit_ticket' ) ) {
-			$replies = wpas_get_replies( $post_id );
-			if ( 1 === count( $replies ) ) {
-				wpas_update_ticket_status( $post_id, 'processing' );
-			}
-		}
 
 		/* Log the action */
 		if ( !empty( $log ) ) {
