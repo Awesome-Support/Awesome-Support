@@ -853,7 +853,7 @@ class Awesome_Support_Admin {
 				 * Remove the save_post hook now as we're going to trigger
 				 * a new one by inserting the reply (and logging the history later).
 				 */
-				remove_action( 'save_post', array( $this, 'save_ticket' ) );
+				remove_action( 'save_post_ticket', array( $this, 'save_ticket' ) );
 
 				/* Insert the reply in DB */
 				$reply = wpas_add_reply( $data, $post_id );
