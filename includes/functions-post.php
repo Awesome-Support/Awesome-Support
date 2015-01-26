@@ -348,13 +348,6 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 
 	$insert = wpas_insert_reply( $data, $parent_id );
 
-	if ( $insert && user_can( $data['post_author'], 'edit_ticket' ) ) {
-		$replies = wpas_get_replies( $parent_id );
-		if ( 1 === count( $replies ) ) {
-			wpas_update_ticket_status( $parent_id, 'processing' );
-		}
-	}
-
 	return $insert;
 
 }
@@ -493,9 +486,9 @@ function wpas_edit_reply_ajax() {
  * the process.
  *
  * @since  3.0.0
- * @param  array  $data     Array of arguments for this reply
- * @param  boolean $post_id ID of the parent post
- * @return mixed            The reply ID on success or false on failure
+ * @param  array            $data     Array of arguments for this reply
+ * @param  boolean          $post_id  ID of the parent post
+ * @return integer|WP_Error           The reply ID on success or WP_Error on failure
  */
 function wpas_insert_reply( $data, $post_id = false ) {
 
@@ -540,19 +533,102 @@ function wpas_insert_reply( $data, $post_id = false ) {
 
 	/**
 	 * Fire wpas_add_reply_before before the reply is added to the database.
+	 * This hook is fired both on the back-end and the front-end.
+	 *
+	 * @param  $data    The data to be inserted to the database
+	 * @param  $post_id ID of the parent post
 	 */
 	do_action( 'wpas_add_reply_before', $data, $post_id );
 
-	$reply_id = wp_insert_post( $data, false );
+	if ( is_admin() ) {
 
-	if ( false === $reply_id ) {
+		/**
+		 * Fired right before the data is added to the database on the back-end only.
+		 *
+		 * @since  3.1.2
+		 * @param  $data    The data to be inserted to the database
+		 * @param  $post_id ID of the parent post
+		 */
+		do_action( 'wpas_add_reply_admin_before', $data, $post_id );
+
+		/**
+		 * wpas_save_reply_before
+		 *
+		 * This hook is now deprecated but stays in the code for backward compatibility.
+		 * Instead of wpas_save_reply_before you should now use wpas_add_reply_admin_before
+		 *
+		 * @deprecated 3.1.2
+		 */
+		do_action( 'wpas_save_reply_before' );
+
+	} else {
+
+		/**
+		 * Fired right before the data is added to the database on the front-end only.
+		 *
+		 * @since  3.1.2
+		 * @param  $data    The data to be inserted to the database
+		 * @param  $post_id ID of the parent post
+		 */
+		do_action( 'wpas_add_reply_public_before', $data, $post_id );
+
+	}
+
+	/* This is where we actually insert the post */
+	$reply_id = wp_insert_post( $data, true );
+
+	if ( is_wp_error( $reply_id ) ) {
 
 		/**
 		 * Fire wpas_add_reply_failed if the reply couldn't be inserted.
+		 * This hook will be fired both in the admin and in the front-end.
+		 *
+		 * @param  array   $data     The data we tried to add to the database
+		 * @param  integer $post_id  ID of the parent post
+		 * @param  object  $reply_id WP_Error object
 		 */
-		do_action( 'wpas_add_reply_failed', $data, $post_id );
+		do_action( 'wpas_add_reply_failed', $data, $post_id, $reply_id );
 
-		return false;
+		if ( is_admin() ) {
+
+			/**
+			 * Fired if the reply instertion failed.
+			 * This hook will only be fired in the admin.
+			 *
+			 * @since  3.1.2
+			 * @param  array   $data     The data we tried to add to the database
+			 * @param  integer $post_id  ID of the parent post
+			 * @param  object  $reply_id WP_Error object
+			 */
+			do_action( 'wpas_add_reply_admin_failed', $data, $post_id, $reply_id );
+
+			/**
+			 * wpas_save_reply_after_error hook
+			 *
+			 * This hook is deprecated but stays in the code for backward compatibility.
+			 * You should now use wpas_add_reply_admin_failed instead.
+			 *
+			 * @deprecated  3.1.2
+			 * @param      $reply WP_Error object
+			 */
+			do_action( 'wpas_save_reply_after_error', $reply_id );
+
+		} else {
+
+			/**
+			 * Fired if the reply instertion failed.
+			 * This hook will only be fired in the frontèend.
+			 *
+			 * @since  3.1.2
+			 * @param  array   $data     The data we tried to add to the database
+			 * @param  integer $post_id  ID of the parent post
+			 * @param  object  $reply_id WP_Error object
+			 */
+			do_action( 'wpas_add_reply_public_failed', $data, $post_id, $reply_id );
+
+		}
+
+		return $reply_id;
 
 	}
 
@@ -560,6 +636,42 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	 * Fire wpas_add_reply_after after the reply was successfully added.
 	 */
 	do_action( 'wpas_add_reply_after', $reply_id, $data );
+
+	if ( is_admin() ) {
+
+		/**
+		 * Fired right after the data is added to the database on the back-end only.
+		 *
+		 * @since  3.1.2
+		 * @param  $reply_id ID of the reply added to the database
+		 * @param  $data     Data inserted to the database
+		 */
+		do_action( 'wpas_add_reply_admin_after', $reply_id, $data );
+
+		/**
+		 * wpas_save_reply_after hook
+		 *
+		 * This hook is deprecated but stays in the code for backward compatibility.
+		 * You should now use wpas_add_reply_admin_after instead.
+		 *
+		 * @deprecated  3.1.2
+		 * @param  $reply Reply ID
+		 * @param  $data  Data used to add the reply
+		 */
+		do_action( 'wpas_save_reply_after', $reply_id, $data );
+
+	} else {
+
+		/**
+		 * Fired right after the data is added to the database on the front-end only.
+		 *
+		 * @since  3.1.2
+		 * @param  $reply_id ID of the reply added to the database
+		 * @param  $data     Data inserted to the database
+		 */
+		do_action( 'wpas_add_reply_public_after', $reply_id, $data );
+
+	}
 
 	return $reply_id;
 

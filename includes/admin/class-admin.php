@@ -855,21 +855,11 @@ class Awesome_Support_Admin {
 				 */
 				remove_action( 'save_post', array( $this, 'save_ticket' ) );
 
-				/**
-				 * wpas_save_reply_before hook
-				 */
-				do_action( 'wpas_save_reply_before' );
-
 				/* Insert the reply in DB */
 				$reply = wpas_add_reply( $data, $post_id );
 
 				/* In case the insertion failed... */
 				if ( is_wp_error( $reply ) ) {
-
-					/**
-					 * wpas_save_reply_after_error hook
-					 */
-					do_action( 'wpas_save_reply_after_error', $reply );
 
 					/* Set the redirection */
 					$_SESSION['wpas_redirect'] = add_query_arg( array( 'wpas-message' => 'wpas_reply_error' ), get_permalink( $post_id ) );
@@ -880,11 +870,6 @@ class Awesome_Support_Admin {
 					 * Delete the activity transient.
 					 */
 					delete_transient( "wpas_activity_meta_post_$post_id" );
-
-					/**
-					 * wpas_save_reply_after hook
-					 */
-					do_action( 'wpas_save_reply_after', $reply, $data );
 
 					/* E-Mail the client */
 					$new_reply = new WPAS_Email_Notification( $post_id, array( 'reply_id' => $reply, 'action' => 'reply_agent' ) );
@@ -910,7 +895,6 @@ class Awesome_Support_Admin {
 								'value'    => 'closed',
 								'field_id' => 'status'
 							);
-
 
 							/* E-Mail the client */
 							$ticket_closed = new WPAS_Email_Notification( $post_id, array( 'action' => 'closed' ) );
@@ -946,6 +930,16 @@ class Awesome_Support_Admin {
 		 * @since  3.0.0
 		 */
 		do_action( 'wpas_save_custom_fields_after', $post_id );
+
+		/**
+		 * Automatically set the ticket as processing if this is the first reply.
+		 */
+		if ( user_can( $data['post_author'], 'edit_ticket' ) ) {
+			$replies = wpas_get_replies( $post_id );
+			if ( 1 === count( $replies ) ) {
+				wpas_update_ticket_status( $post_id, 'processing' );
+			}
+		}
 
 		/* Log the action */
 		if ( !empty( $log ) ) {
