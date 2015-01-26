@@ -66,6 +66,18 @@ class WPAS_Email_Notification {
 
 	}
 
+	public function __destruct() {
+
+		/**
+		 * Reset the e-mail content type to text as recommended by WordPress
+		 *
+		 * @since  3.1.1
+		 * @link   http://codex.wordpress.org/Function_Reference/wp_mail
+		 */
+		add_filter( 'wp_mail_content_type', array( $this, 'set_text_mime_type' ) );
+
+	}
+
 	/**
 	 * Ge the post object for the reply.
 	 *
@@ -600,14 +612,6 @@ class WPAS_Email_Notification {
 		);
 
 		$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], implode( "\r\n", $email['headers'] ) );
-
-		/**
-		 * Reset the e-mail content type to text as recommended by WordPress
-		 *
-		 * @since  3.1.1
-		 * @link   http://codex.wordpress.org/Function_Reference/wp_mail
-		 */
-		add_filter( 'wp_mail_content_type', array( $this, 'set_text_mime_type' ) );
 
 		return $mail;
 
