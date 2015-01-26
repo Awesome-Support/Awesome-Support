@@ -942,6 +942,10 @@ function wpas_update_ticket_status( $post_id, $status ) {
  */
 function wpas_close_ticket( $ticket_id ) {
 
+	global $current_user;
+
+	$ticket_id = intval( $ticket_id );
+
 	if ( 'ticket' == get_post_type( $ticket_id ) ) {
 
 		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'closed' );
@@ -954,7 +958,33 @@ function wpas_close_ticket( $ticket_id ) {
 		 *
 		 * @since  3.0.0
 		 */
-		do_action( 'wpas_after_close_ticket', intval( $ticket_id ), $update );
+		do_action( 'wpas_after_close_ticket', $ticket_id, $update );
+
+		if ( is_admin() ) {
+
+			/**
+			 * Fires after the ticket was closed in the admin only.
+			 *
+			 * @since  3.1.2
+			 * @param integer $ticket_id ID of the ticket we just closed
+			 * @param integer $user_id   ID of the user who did the action
+			 * @param boolean $update    True on success, false on fialure
+			 */
+			do_action( 'wpas_after_close_ticket_admin', $ticket_id, $current_user->ID, $update );
+
+		} else {
+
+			/**
+			 * Fires after the ticket was closed in the front-end only.
+			 * 
+			 * @since  3.1.2
+			 * @param integer $ticket_id ID of the ticket we just closed
+			 * @param integer $user_id   ID of the user who did the action
+			 * @param boolean $update    True on success, false on fialure
+			 */
+			do_action( 'wpas_after_close_ticket_public', $ticket_id, $current_user->ID, $update );
+
+		}
 
 		return $update;
 

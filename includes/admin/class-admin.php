@@ -904,7 +904,7 @@ class Awesome_Support_Admin {
 							do_action( 'wpas_ticket_before_close_by_agent', $post_id );
 
 							/* Close */
-							update_post_meta( $post_id, '_wpas_status', 'closed' );
+							$closed = wpas_close_ticket( $post_id );
 
 							/* Log the action */
 							$log[] = array(
