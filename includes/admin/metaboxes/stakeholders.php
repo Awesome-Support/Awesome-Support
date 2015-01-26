@@ -88,7 +88,7 @@ foreach( $wp_roles->roles as $role => $data ) {
 					if ( $user->has_cap( 'create_ticket' ) && ! $user->has_cap( 'edit_ticket' ) ) {
 
 						$user_id   = $user->ID;
-						$user_name = $user->data->user_nicename;
+						$user_name = $user->data->display_name;
 
 						$selected = ( $user_id == $post->post_author ) ? "selected='selected'" : '';
 
