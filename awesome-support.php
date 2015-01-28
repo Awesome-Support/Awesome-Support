@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        http://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           3.1.1
+ * Version:           3.1.2
  * Author:            ThemeAvenue
  * Author URI:        http://themeavenue.net
  * Text Domain:       wpas
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Shortcuts
  *----------------------------------------------------------------------------*/
 
-define( 'WPAS_VERSION',           '3.1.1' );
+define( 'WPAS_VERSION',           '3.1.2' );
 define( 'WPAS_DB_VERSION',        '1' );
 define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
