@@ -117,6 +117,7 @@ module.exports = function(grunt) {
 						'!composer.json',
 						'!composer.lock',
 						'!tests/**',
+						'!logs/**',
 						'!README.md',
 						'!Gruntfile.js',
 						'!package.json',
