@@ -183,7 +183,7 @@ class WPAS_Ticket_Post_Type {
 	 * @since  3.0.0
 	 */
 	public function secondary_post_type() {
-		register_post_type( 'ticket_reply', array( 'public' => false, 'exclude_from_search' => true ) );
+		register_post_type( 'ticket_reply', array( 'public' => false, 'exclude_from_search' => true, 'supports' => array( 'editor' ) ) );
 		register_post_type( 'ticket_history', array( 'public' => false, 'exclude_from_search' => true ) );
 		register_post_type( 'ticket_log', array( 'public' => false, 'exclude_from_search' => true ) );
 	}
