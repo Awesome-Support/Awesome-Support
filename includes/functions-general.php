@@ -333,3 +333,219 @@ function wpas_missing_dependencied() { ?>
         <p><?php printf( __( 'Awesome Support dependencies are missing. The plugin can&#39;t be loaded properly. Please run %s before anything else. If you don&#39;t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'wpas' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
     </div>
 <?php }
+
+/**
+ * Wrap element into lis.
+ *
+ * Takes a string and wraps it into a pair
+ * or <li> tags.
+ *
+ * @since  3.1.3
+ * @param  string $entry  The entry to wrap
+ * @return string         The wrapped element
+ */
+function wpas_wrap_li( $entry ) {
+
+	if ( is_array( $entry ) ) {
+		$entry = wpas_array_to_ul( $entry );
+	}
+
+	$entry = htmlentities( $entry );
+
+	return "<li>$entry</li>";
+}
+
+/**
+ * Convert array into an unordered list.
+ *
+ * @since  3.1.3
+ * @param  array $array Array to convert
+ * @return string       Unordered list
+ */
+function wpas_array_to_ul( $array ) {
+	$wrapped = array_map( 'wpas_wrap_li', $array );
+	return '<ul>' . implode( '', $wrapped ) . '</ul>';
+}
+
+/**
+ * Creates a dropdown list of users.
+ *
+ * @since  3.1.2
+ * @param  array  $args Agruments
+ * @return string       Users dropdown
+ */
+function wpas_users_dropdown( $args = array() ) {
+
+	global $current_user, $post;
+
+	$defaults = array(
+		'name'           => 'wpas_user',
+		'id'             => '',
+		'class'          => '',
+		'exclude'        => array(),
+		'selected'       => '',
+		'cap'            => '',
+		'cap_exclude'    => '',
+		'agent_fallback' => false,
+		'please_select'  => false
+	);
+
+	extract( wp_parse_args( $args, $defaults ) );
+
+	/* List all users */
+	$all_users = get_users();
+
+	/**
+	 * We use a marker to keep track of when a user was selected.
+	 * This allows for adding a fallback if nobody was selected.
+	 * 
+	 * @var boolean
+	 */
+	$marker = false;
+
+	/* Start the buffer */
+	ob_start(); ?>
+
+	<select name="<?php echo $name; ?>" <?php if ( !empty( $class ) ) echo "class='$class'"; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?>>
+		<?php
+		$current_id   = $current_user->ID;
+		$current_name = $current_user->data->user_nicename;
+		$current_sel  = ( $current_id == $post->post_author ) ? "selected='selected'" : '';
+
+		if ( $please_select ) {
+			echo '<option value="">' . __( 'Please select', 'wpas' ) . '</option>';
+		}
+
+		/* The ticket is being created, use the current user by default */
+		if ( !isset( $_GET['post'] ) ) {
+			echo "<option value='$current_id'>$current_name</option>";
+		}
+
+		foreach ( $all_users as $user ) {
+
+			/* Check for required capability */
+			if ( !empty( $cap ) ) {
+				if ( ! $user->has_cap( $cap ) ) {
+					continue;
+				}
+			}
+
+			/* Check for excluded capability */
+			if ( !empty( $cap_exclude ) ) {
+				if ( $user->has_cap( $cap_exclude ) ) {
+					continue;
+				}
+			}
+
+			/* Maybe exclude this user from the list */
+			if ( in_array( $user->ID, (array) $exclude ) ) {
+				continue;
+			}
+
+			$user_id       = $user->ID;
+			$user_name     = $user->data->display_name;
+			$selected_attr = '';
+
+			if ( false === $marker ) {
+				if ( false !== $selected ) {
+					if ( !empty( $selected ) ) {
+						if ( $selected === $user_id ) {
+							$selected_attr = 'selected="selected"';
+						}
+					} else {
+						if ( isset( $post ) && $user_id == $post->post_author ) {
+							$selected_attr = 'selected="selected"';
+						}
+					}
+				}
+			}
+
+			/* Set the marker as true to avoid selecting more than one user */
+			if ( !empty( $selected_attr ) ) {
+				$marker = true;
+			}
+
+			/* Output the option */
+			echo "<option value='$user_id' $selected_attr>$user_name</option>";
+
+		}
+
+		/* In case there is no selected user yet we add the post author, or the currently logged user (most likely an admin) */
+		if ( false === $marker && true === $agent_fallback ) {
+
+			if ( isset( $post ) ) {
+				$fallback = get_user_by( 'id', $post->post_author );
+			} else {
+				$fallback = $current_user;
+			}
+
+			echo "<option value='{$fallback->ID}' selected='selected'>{$fallback->data->display_name}</option>";
+
+		}
+		?>
+	</select>
+
+	<?php
+	/* Get the buffer contents */
+	$contents = ob_get_contents();
+
+	/* Clean the buffer */
+	ob_end_clean();
+
+	return $contents;
+
+}
+
+/**
+ * Display a dropdown of the support users.
+ *
+ * Wrapper function for wpas_users_dropdown where
+ * the cap_exclude is set to exclude all users with
+ * the capability to edit a ticket.
+ *
+ * @since  3.1.3
+ * @param  array  $args Arguments
+ * @return string       HTML dropdown
+ */
+function wpas_support_users_dropdown( $args = array() ) {
+	$args['cap_exclude'] = 'edit_ticket';
+	echo wpas_users_dropdown( $args );
+}
+
+function wpas_tickets_dropdown( $args = array(), $status = '' ) {
+
+	$defaults = array(
+		'name'           => 'wpas_tickets',
+		'id'             => '',
+		'class'          => '',
+		'exclude'        => array(),
+		'selected'       => '',
+	);
+
+	extract( wp_parse_args( $args, $defaults ) );
+
+	/* List all tickets */
+	$tickets = get_tickets( $status );
+
+	/**
+	 * We use a marker to keep track of when a user was selected.
+	 * This allows for adding a fallback if nobody was selected.
+	 * 
+	 * @var boolean
+	 */
+	$marker = false;
+
+	/* Start the buffer */
+	ob_start(); ?>
+
+	<select name="<?php echo $name; ?>" <?php if ( !empty( $class ) ) echo "class='$class'"; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?>>
+
+		<?php
+		foreach ( $tickets as $ticket ) {
+			echo "<option value='$ticket->ID'>$ticket->post_title</option>";
+		}
+		?>
+
+	</select>
+
+<?php }
