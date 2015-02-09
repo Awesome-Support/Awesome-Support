@@ -565,22 +565,19 @@ class WPAS_Custom_Fields {
 			$qv = &$query->query_vars;
 
 			/* Get all custom fields */
-			$fields = $this->get_custom_fields();
+			$fields = $this->get_custom_fields;
 
 			/* Filter custom fields that are taxonomies */
-			foreach( $fields as $id => $field ) {
+			foreach ( $qv as $arg => $value ) {
+				if ( array_key_exists( $arg, $fields ) && 'taxonomy' === $fields[$arg]['args']['callback'] ) {
 
-				if( 'taxonomy' == $field['args']['callback'] && true === $field['args']['filterable'] ) {
+					$term = get_term_by( 'slug', $value, $arg );
 
-					if( isset( $qv[$id] ) && !empty( $qv[$id] ) ) {
-
-						$term    = get_term_by( 'id', $qv[$id], $id );
-						$qv[$id] = $term->slug;
-
+					if ( false !== $term ) {
+						$qv[$arg] = $term->term_id;
 					}
 
 				}
-
 			}
 
 		}
