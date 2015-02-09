@@ -503,6 +503,13 @@ class Awesome_Support_Admin {
 		}
 
 		/**
+		 * If the ticket is being trashed we don't do anything.
+		 */
+		if ( 'trash' === $data['post_status'] ) {
+			return $data;
+		}
+
+		/**
 		 * Automatically set the ticket as processing if this is the first reply.
 		 */
 		if ( user_can( $current_user->ID, 'edit_ticket' ) && isset( $postarr['ID'] ) ) {
