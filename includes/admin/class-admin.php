@@ -235,9 +235,10 @@ class Awesome_Support_Admin {
 	 */
 	public function enqueue_admin_styles() {
 
-		if ( wpas_is_plugin_page() ) {
-		
-			wp_enqueue_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array(), WPAS_VERSION );
+		if ( wpas_is_plugin_page() ) {		
+
+			wp_enqueue_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2.min.css', null, '3.5.2', 'all' );
+			wp_enqueue_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
 
 		}
 
@@ -270,7 +271,8 @@ class Awesome_Support_Admin {
 			wp_enqueue_script( 'wpas-admin-edit', WPAS_URL . 'assets/admin/js/admin-edit.js', array( 'jquery' ), WPAS_VERSION, true );
 		}
 
-		wp_enqueue_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery' ), WPAS_VERSION );
+		wp_enqueue_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2.min.js', array( 'jquery' ), '3.5.2', true );
+		wp_enqueue_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
 		wp_localize_script( 'wpas-admin-script', 'wpasL10n', array( 'alertDelete' => __( 'Are you sure you want to delete this reply?', 'wpas' ) ) );
 		wp_enqueue_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
 
