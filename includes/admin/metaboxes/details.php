@@ -53,19 +53,21 @@ if ( isset( $post ) ) {
 		<?php endif; ?>
 	</p>
 	<?php if ( isset( $post ) ): ?><p><strong><?php _e( 'Opened:', 'wpas' ); ?></strong> <em><?php printf( __( '%s ago', 'wpas' ), $date ); ?></em></p><?php endif; ?>
-	<labef for="wpas-post-status"><strong><?php _e( 'Current state:', 'wpas' ); ?></strong></label>
-	<p>
-		<select id="wpas-post-status" name="post_status_override" style="width: 100%">
-			<?php foreach ( $statuses as $status => $label ):
-				$selected = ( $post_status === $status ) ? 'selected="selected"' : '';
-				if ( 'auto-draft' === $post_status && 'processing' === $status ) { $selected = 'selected="selected"'; } ?>
-				<option value="<?php echo $status; ?>" <?php echo $selected; ?>><?php echo $label; ?></option>
-			<?php endforeach; ?>
-		</select>
-		<?php if ( isset( $_GET['post'] ) ): ?>
-			<input type="hidden" name="wpas_post_parent" value="<?php echo $_GET['post']; ?>">
-		<?php endif; ?>
-	</p>
+	<?php if ( 'open' === get_post_meta( $post->ID, '_wpas_status', true ) ): ?>
+		<label for="wpas-post-status"><strong><?php _e( 'Current state:', 'wpas' ); ?></strong></label>
+		<p>
+			<select id="wpas-post-status" name="post_status_override" style="width: 100%">
+				<?php foreach ( $statuses as $status => $label ):
+					$selected = ( $post_status === $status ) ? 'selected="selected"' : '';
+					if ( 'auto-draft' === $post_status && 'processing' === $status ) { $selected = 'selected="selected"'; } ?>
+					<option value="<?php echo $status; ?>" <?php echo $selected; ?>><?php echo $label; ?></option>
+				<?php endforeach; ?>
+			</select>
+			<?php if ( isset( $_GET['post'] ) ): ?>
+				<input type="hidden" name="wpas_post_parent" value="<?php echo $_GET['post']; ?>">
+			<?php endif; ?>
+		</p>
+	<?php endif; ?>
 	
 	<div id="major-publishing-actions">
 		<?php if ( current_user_can( "delete_ticket", $post->ID ) ): ?>
