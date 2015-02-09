@@ -1,6 +1,6 @@
 /* globals module, require */
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
 	'use strict';
 
@@ -136,11 +136,11 @@ module.exports = function(grunt) {
 				}
 			},
 			js: {
-				files: ['js/*.js'],
+				files: ['assets/**/*.js'],
 				tasks: ['concat', 'uglify']
 			},
 			css: {
-				files: ['style.less'],
+				files: ['assets/**/*.less', 'assets/**/*.css'],
 				tasks: ['less', 'autoprefixer', 'combine_mq', 'cssmin']
 			}
 		}
@@ -149,7 +149,6 @@ module.exports = function(grunt) {
 
 	require('load-grunt-tasks')(grunt);
 
-	grunt.registerTask('serve');
 	grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
 	grunt.registerTask('build', ['jshint', 'concat', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin']);
 
