@@ -131,7 +131,7 @@ function wpas_is_plugin_page() {
 
 		);
 
-		if ( isset( $post ) && isset( $post->post_type ) && 'ticket' === $post->post_type ) {
+		if ( isset( $post ) && isset( $post->post_type ) && in_array( $post->post_type, array( 'ticket', 'wpas_unassigned_mail' ) ) ) {
 			return true;
 		}
 
@@ -368,6 +368,56 @@ function wpas_array_to_ul( $array ) {
 }
 
 /**
+ * Create dropdown of things.
+ *
+ * @since  3.1.3
+ * @param  array $args     Dropdown settings
+ * @param  string $options Dropdown options
+ * @return string          Dropdown with custom options
+ */
+function wpas_dropdown( $args, $options ) {
+
+	$defaults = array(
+		'name'           => 'wpas_user',
+		'id'             => '',
+		'class'          => '',
+		'please_select'  => false,
+		'select2'        => false,
+	);
+
+	extract( wp_parse_args( $args, $defaults ) );
+
+	$class = (array) $class;
+
+	if ( true === $select2 ) {
+		array_push( $class, 'wpas-select2' );
+	}
+
+	/* Start the buffer */
+	ob_start(); ?>
+
+	<select name="<?php echo $name; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?>>
+		<?php
+		if ( $please_select ) {
+			echo '<option value="">' . __( 'Please select', 'wpas' ) . '</option>';
+		}
+
+		echo $options;
+		?>
+	</select>
+
+	<?php
+	/* Get the buffer contents */
+	$contents = ob_get_contents();
+
+	/* Clean the buffer */
+	ob_end_clean();
+
+	return $contents;
+
+}
+
+/**
  * Creates a dropdown list of users.
  *
  * @since  3.1.2
@@ -387,7 +437,8 @@ function wpas_users_dropdown( $args = array() ) {
 		'cap'            => '',
 		'cap_exclude'    => '',
 		'agent_fallback' => false,
-		'please_select'  => false
+		'please_select'  => false,
+		'select2'        => false,
 	);
 
 	extract( wp_parse_args( $args, $defaults ) );
@@ -403,94 +454,79 @@ function wpas_users_dropdown( $args = array() ) {
 	 */
 	$marker = false;
 
-	/* Start the buffer */
-	ob_start(); ?>
+	$options      = '';
+	$current_id   = $current_user->ID;
+	$current_name = $current_user->data->user_nicename;
+	$current_sel  = ( $current_id == $post->post_author ) ? "selected='selected'" : '';
 
-	<select name="<?php echo $name; ?>" <?php if ( !empty( $class ) ) echo "class='$class'"; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?>>
-		<?php
-		$current_id   = $current_user->ID;
-		$current_name = $current_user->data->user_nicename;
-		$current_sel  = ( $current_id == $post->post_author ) ? "selected='selected'" : '';
+	/* The ticket is being created, use the current user by default */
+	if ( !isset( $_GET['post'] ) ) {
+		$options .= "<option value='$current_id'>$current_name</option>";
+	}
 
-		if ( $please_select ) {
-			echo '<option value="">' . __( 'Please select', 'wpas' ) . '</option>';
-		}
+	foreach ( $all_users as $user ) {
 
-		/* The ticket is being created, use the current user by default */
-		if ( !isset( $_GET['post'] ) ) {
-			echo "<option value='$current_id'>$current_name</option>";
-		}
-
-		foreach ( $all_users as $user ) {
-
-			/* Check for required capability */
-			if ( !empty( $cap ) ) {
-				if ( ! $user->has_cap( $cap ) ) {
-					continue;
-				}
-			}
-
-			/* Check for excluded capability */
-			if ( !empty( $cap_exclude ) ) {
-				if ( $user->has_cap( $cap_exclude ) ) {
-					continue;
-				}
-			}
-
-			/* Maybe exclude this user from the list */
-			if ( in_array( $user->ID, (array) $exclude ) ) {
+		/* Check for required capability */
+		if ( !empty( $cap ) ) {
+			if ( ! $user->has_cap( $cap ) ) {
 				continue;
 			}
+		}
 
-			$user_id       = $user->ID;
-			$user_name     = $user->data->display_name;
-			$selected_attr = '';
+		/* Check for excluded capability */
+		if ( !empty( $cap_exclude ) ) {
+			if ( $user->has_cap( $cap_exclude ) ) {
+				continue;
+			}
+		}
 
-			if ( false === $marker ) {
-				if ( false !== $selected ) {
-					if ( !empty( $selected ) ) {
-						if ( $selected === $user_id ) {
-							$selected_attr = 'selected="selected"';
-						}
-					} else {
-						if ( isset( $post ) && $user_id == $post->post_author ) {
-							$selected_attr = 'selected="selected"';
-						}
+		/* Maybe exclude this user from the list */
+		if ( in_array( $user->ID, (array) $exclude ) ) {
+			continue;
+		}
+
+		$user_id       = $user->ID;
+		$user_name     = $user->data->display_name;
+		$selected_attr = '';
+
+		if ( false === $marker ) {
+			if ( false !== $selected ) {
+				if ( !empty( $selected ) ) {
+					if ( $selected === $user_id ) {
+						$selected_attr = 'selected="selected"';
+					}
+				} else {
+					if ( isset( $post ) && $user_id == $post->post_author ) {
+						$selected_attr = 'selected="selected"';
 					}
 				}
 			}
-
-			/* Set the marker as true to avoid selecting more than one user */
-			if ( !empty( $selected_attr ) ) {
-				$marker = true;
-			}
-
-			/* Output the option */
-			echo "<option value='$user_id' $selected_attr>$user_name</option>";
-
 		}
 
-		/* In case there is no selected user yet we add the post author, or the currently logged user (most likely an admin) */
-		if ( false === $marker && true === $agent_fallback ) {
-
-			if ( isset( $post ) ) {
-				$fallback = get_user_by( 'id', $post->post_author );
-			} else {
-				$fallback = $current_user;
-			}
-
-			echo "<option value='{$fallback->ID}' selected='selected'>{$fallback->data->display_name}</option>";
-
+		/* Set the marker as true to avoid selecting more than one user */
+		if ( !empty( $selected_attr ) ) {
+			$marker = true;
 		}
-		?>
-	</select>
 
-	<?php
-	/* Get the buffer contents */
-	$contents = ob_get_contents();
+		/* Output the option */
+		$options .= "<option value='$user_id' $selected_attr>$user_name</option>";
 
-	/* Clean the buffer */
-	ob_end_clean();
+	}
+
+	/* In case there is no selected user yet we add the post author, or the currently logged user (most likely an admin) */
+	if ( false === $marker && true === $agent_fallback ) {
+
+		if ( isset( $post ) ) {
+			$fallback = get_user_by( 'id', $post->post_author );
+		} else {
+			$fallback = $current_user;
+		}
+
+		$options .= "<option value='{$fallback->ID}' selected='selected'>{$fallback->data->display_name}</option>";
+
+	}
+
+	$contents = wpas_dropdown( wp_parse_args( $args, $defaults ), $options ); 
 
 	return $contents;
 
@@ -515,17 +551,20 @@ function wpas_support_users_dropdown( $args = array() ) {
 function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 
 	$defaults = array(
-		'name'           => 'wpas_tickets',
-		'id'             => '',
-		'class'          => '',
-		'exclude'        => array(),
-		'selected'       => '',
+		'name'          => 'wpas_tickets',
+		'id'            => '',
+		'class'         => '',
+		'exclude'       => array(),
+		'selected'      => '',
+		'select2'       => true,
+		'please_select' => false
 	);
 
 	extract( wp_parse_args( $args, $defaults ) );
 
 	/* List all tickets */
 	$tickets = get_tickets( $status );
+	$options = '';
 
 	/**
 	 * We use a marker to keep track of when a user was selected.
@@ -535,17 +574,10 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	 */
 	$marker = false;
 
-	/* Start the buffer */
-	ob_start(); ?>
+	foreach ( $tickets as $ticket ) {
+		$options .= "<option value='$ticket->ID'>$ticket->post_title</option>";
+	}
 
-	<select name="<?php echo $name; ?>" <?php if ( !empty( $class ) ) echo "class='$class'"; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?>>
+	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
 
-		<?php
-		foreach ( $tickets as $ticket ) {
-			echo "<option value='$ticket->ID'>$ticket->post_title</option>";
-		}
-		?>
-
-	</select>
-
-<?php }
+}
