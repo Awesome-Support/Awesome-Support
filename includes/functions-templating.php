@@ -682,23 +682,25 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 
 	if ( ! is_array( $terms ) ) {
 		echo '';
-	}
+	} else {
 
-	foreach ( $terms as $term ) {
+		foreach ( $terms as $term ) {
 
-		if ( is_admin() ) {
-			$get         = (array) $_GET;
-			$get[$field] = $term->term_id;
-			$url         = add_query_arg( $get, admin_url( 'edit.php' ) );
-			$item        = "<a href='$url'>{$term->name}</a>";
-		} else {
-			$item = $term->name;
+			if ( is_admin() ) {
+				$get         = (array) $_GET;
+				$get[$field] = $term->term_id;
+				$url         = add_query_arg( $get, admin_url( 'edit.php' ) );
+				$item        = "<a href='$url'>{$term->name}</a>";
+			} else {
+				$item = $term->name;
+			}
+
+			array_push( $list, $item );
+
 		}
 
-		array_push( $list, $item );
+		echo implode( $separator, $list );
 
 	}
-
-	echo implode( $separator, $list );
 
 }
