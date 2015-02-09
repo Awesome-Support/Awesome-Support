@@ -559,22 +559,19 @@ class WPAS_Custom_Fields {
 		global $pagenow;
 
 		/* Check if we are in the correct post type */
-		if( is_admin() && 'edit.php' == $pagenow && isset( $_GET['post_type'] ) && 'ticket' == $_GET['post_type'] && $query->is_main_query() ) {
-
-			/* Get the current query */
-			$qv = &$query->query_vars;
+		if ( is_admin() && 'edit.php' == $pagenow && isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && $query->is_main_query() ) {
 
 			/* Get all custom fields */
-			$fields = $this->get_custom_fields;
+			$fields = $this->get_custom_fields();
 
 			/* Filter custom fields that are taxonomies */
-			foreach ( $qv as $arg => $value ) {
-				if ( array_key_exists( $arg, $fields ) && 'taxonomy' === $fields[$arg]['args']['callback'] ) {
+			foreach ( $query->query_vars as $arg => $value ) {
+				if ( array_key_exists( $arg, $fields ) && 'taxonomy' === $fields[$arg]['args']['callback'] && true === $fields[$arg]['args']['filterable'] ) {
 
-					$term = get_term_by( 'slug', $value, $arg );
+					$term = get_term_by( 'id', $value, $arg );
 
 					if ( false !== $term ) {
-						$qv[$arg] = $term->term_id;
+						$query->query_vars[$arg] = $term->slug;
 					}
 
 				}
