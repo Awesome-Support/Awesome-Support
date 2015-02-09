@@ -663,3 +663,42 @@ function wpas_get_offset_html5() {
 	return $offset;
 
 }
+
+/**
+ * Display taxonomy terms.
+ *
+ * This function is used to display a taxonomy's terms
+ * and is necessary for non standard taxonomies (such as product).
+ *
+ * @since  3.1.3
+ * @param  string $field    ID of the field to display
+ * @param  integer $post_id ID of the current post
+ * @return void
+ */
+function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
+
+	$terms = get_the_terms( $post_id, $field );
+	$list  = array();
+
+	if ( ! is_array( $terms ) ) {
+		echo '';
+	}
+
+	foreach ( $terms as $term ) {
+
+		if ( is_admin() ) {
+			$get         = (array) $_GET;
+			$get[$field] = $term->term_id;
+			$url         = add_query_arg( $get, admin_url( 'edit.php' ) );
+			$item        = "<a href='$url'>{$term->name}</a>";
+		} else {
+			$item = $term->name;
+		}
+
+		array_push( $list, $item );
+
+	}
+
+	echo implode( $separator, $list );
+
+}

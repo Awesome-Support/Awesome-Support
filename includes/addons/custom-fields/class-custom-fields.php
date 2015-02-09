@@ -754,7 +754,7 @@ function wpas_register_core_fields() {
 			'log'                   => true,
 			'callback'              => 'taxonomy',
 			'taxo_std'              => false,
-			'save_callback'         => null,
+			'column_callback'       => 'wpas_show_taxonomy_column',
 			'label'                 => $labels['label'],
 			'name'                  => $labels['name'],
 			'label_plural'          => $labels['label_plural'],
