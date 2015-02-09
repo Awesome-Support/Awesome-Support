@@ -263,7 +263,7 @@ function get_tickets( $status = 'open', $args = array() ) {
 
 	$defaults = array(
 		'post_type'              => 'ticket',
-		'post_status'            => 'any',
+		'post_status'            => wpas_get_post_status(),
 		'posts_per_page'         => -1,
 		'no_found_rows'          => false,
 		'cache_results'          => true,
