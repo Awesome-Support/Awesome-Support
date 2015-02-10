@@ -97,6 +97,7 @@ class Awesome_Support_Admin {
 
 			/* Do Actions. */
 			add_action( 'pre_get_posts',             array( $this, 'hide_others_tickets' ), 10, 1 );
+			add_action( 'pre_get_posts',             array( $this, 'limit_open' ), 10, 1 );
 			add_action( 'admin_init',                array( $this, 'system_tools' ), 10, 0 );
 			add_action( 'plugins_loaded',            array( $this, 'remote_notifications' ), 15, 0 );
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_styles' ) );              // Load plugin styles
@@ -203,6 +204,11 @@ class Awesome_Support_Admin {
 			return false;
 		}
 
+		/* Make sure we only alter our post type */
+		if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+			return false;
+		}
+
 		/* If admins can see all tickets do nothing */
 		if ( current_user_can( 'administrator' ) && true === boolval( wpas_get_option( 'admin_see_all' ) ) ) {
 			return false;
@@ -219,6 +225,49 @@ class Awesome_Support_Admin {
 			array(
 				'key'     => '_wpas_assignee',
 				'value'   => $current_user->ID,
+				'compare' => '=',
+			) )
+		);
+
+		return true;
+
+	}
+
+	/**
+	 * Limit the list of tickets to open.
+	 *
+	 * When tickets are filtered by post status it makes no sense
+	 * to display tickets that are already closed. We hereby limit
+	 * the list to open tickets.
+	 *
+	 * @since  3.1.3
+	 * @param object WordPress main query
+	 */
+	public function limit_open( $query ) {
+
+		/* Make sure this is the main query */
+		if ( ! $query->is_main_query() ) {
+			return false;
+		}
+
+		/* Make sure this is the admin screen */
+		if ( ! is_admin() ) {
+			return false;
+		}
+
+		/* Make sure we only alter our post type */
+		if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+			return false;
+		}
+
+		if ( ! isset( $_GET['post_status'] ) || ! array_key_exists( $_GET['post_status'], wpas_get_post_status() ) ) {
+			return false;
+		}
+
+		$query->set( 'meta_query', array(
+			array(
+				'key'     => '_wpas_status',
+				'value'   => 'open',
 				'compare' => '=',
 			) )
 		);

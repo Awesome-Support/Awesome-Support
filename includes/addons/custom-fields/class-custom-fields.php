@@ -530,6 +530,10 @@ class WPAS_Custom_Fields {
 			return;
 		}
 
+		if ( isset( $_GET['post_status'] ) ) {
+			return false;
+		}
+
 		$this_sort       = isset( $_GET['wpas_status'] ) ? $_GET['wpas_status'] : '';
 		$all_selected    = ( '' === $this_sort ) ? 'selected="selected"' : '';
 		$open_selected   = ( 'open' === $this_sort ) ? 'selected="selected"' : '';
