@@ -267,10 +267,6 @@ class Awesome_Support_Admin {
 			wp_enqueue_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
 		}
 
-		if ( 'ticket' == get_post_type() && 'edit.php' === $pagenow ) {
-			wp_enqueue_script( 'wpas-admin-edit', WPAS_URL . 'assets/admin/js/admin-edit.js', array( 'jquery' ), WPAS_VERSION, true );
-		}
-
 		wp_enqueue_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2.min.js', array( 'jquery' ), '3.5.2', true );
 		wp_enqueue_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
 		wp_localize_script( 'wpas-admin-script', 'wpasL10n', array( 'alertDelete' => __( 'Are you sure you want to delete this reply?', 'wpas' ) ) );
