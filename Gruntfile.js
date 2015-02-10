@@ -45,7 +45,8 @@ module.exports = function (grunt) {
 				},
 				files: {
 					'assets/public/css/public.css': 'assets/public/less/public.less',
-					'assets/admin/css/admin.css': 'assets/admin/less/admin.less'
+					'assets/admin/css/admin.css': 'assets/admin/less/admin.less',
+					'themes/default/css/style.css': 'themes/default/less/style.less'
 				}
 			}
 		},
@@ -55,11 +56,14 @@ module.exports = function (grunt) {
 		@author: https://github.com/nDmitry/grunt-autoprefixer
 		 */
 		autoprefixer: {
-			single_file: {
-				options: {
-					cascade: false
-				},
+			options: {
+				cascade: false
+			},
+			publicCSS: {
 				src: 'assets/public/css/public.css'
+			},
+			themeCSS: {
+				src: 'themes/default/css/style.css'
 			}
 		},
 
@@ -69,13 +73,17 @@ module.exports = function (grunt) {
 		@example: base file has 70 @media while output has only 12
 		 */
 		combine_mq: {
-			new_filename: {
-				options: {
-					expand: false,
-					beautify: false
-				},
+			options: {
+				expand: false,
+				beautify: false
+			},
+			publicCSS: {
 				src: 'assets/public/css/public.css',
 				dest: 'assets/public/css/public.css'
+			},
+			themeCSS: {
+				src: 'themes/default/css/style.css',
+				dest: 'themes/default/css/style.css'
 			}
 		},
 
@@ -87,7 +95,8 @@ module.exports = function (grunt) {
 			minify: {
 				files: {
 					'assets/public/css/public.css': 'assets/public/css/public.css',
-					'assets/admin/css/admin.css': 'assets/admin/css/admin.css'
+					'assets/admin/css/admin.css': 'assets/admin/css/admin.css',
+					'themes/default/css/style.css': 'themes/default/css/style.css'
 				},
 				options: {
 					report: 'min',
@@ -140,7 +149,7 @@ module.exports = function (grunt) {
 				tasks: ['concat', 'uglify']
 			},
 			css: {
-				files: ['assets/**/*.less', 'assets/**/*.css'],
+				files: ['assets/**/*.less', 'assets/**/*.css', 'themes/**/*.less'],
 				tasks: ['less', 'autoprefixer', 'combine_mq', 'cssmin']
 			}
 		}
