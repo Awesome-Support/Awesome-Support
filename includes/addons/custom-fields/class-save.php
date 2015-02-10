@@ -219,26 +219,32 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 				if ( true === $option_args['taxo_std'] )
 					continue;
 
+				/* Clean the taxonomy name */
+				$taxonomy = substr( $option_name, 5 );
+
 				/* If no value is submitted we delete the term relationship */
-				if ( !isset( $_POST[$option_name] ) ) {
+				if ( ! isset( $_POST[$option_name] ) || empty( $_POST[$option_name] ) ) {
 
-					wp_delete_object_term_relationships( $post_id, $option_name );
+					$terms = wp_get_post_terms( $post_id, $taxonomy );
 
-					/* Log the action */
-					if ( true === $option_args['log'] ) {
-						$log[] = array(
-							'action'   => 'deleted',
-							'label'    => wpas_get_field_title( $option ),
-							'value'    => $current,
-							'field_id' => $option['name']
-						);
+					if ( ! empty( $terms ) ) {
+
+						wp_delete_object_term_relationships( $post_id, $option_name );
+
+						/* Log the action */
+						if ( true === $option_args['log'] ) {
+							$log[] = array(
+								'action'   => 'deleted',
+								'label'    => wpas_get_field_title( $option ),
+								'value'    => $current,
+								'field_id' => $option['name']
+							);
+						}
+
 					}
 
 					continue;
 				}
-
-				/* Clean the taxonomy name */
-				$taxonomy = substr( $option_name, 5 );
 
 				/* Get all the terms for this ticket / taxo (we should have only one term) */
 				$terms = get_the_terms( $post_id, $taxonomy );
