@@ -54,6 +54,7 @@ class Awesome_Support {
 
 			/* Hook all e-mail notifications */
 			add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
+			add_action( 'wpas_ticket_assigned',    array( $this, 'notify_assignment' ), 10, 2 );
 			add_action( 'wpas_add_reply_after',    array( $this, 'notify_reply' ), 10, 2 );
 			add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ), 10, 1 );
 
@@ -701,19 +702,31 @@ class Awesome_Support {
 	}
 
 	/**
-	 * Send e-mail confirmations.
+	 * Send e-mail confirmation.
 	 *
-	 * Sends an e-mail confirmation to the client
-	 * and warns the agent that a new ticket has been assigned.
+	 * Sends an e-mail confirmation to the client.
 	 *
 	 * @since  3.0.0
 	 * @param  integer $ticket_id ID of the new ticket
-	 * @param  integer $agent_id  ID of the agent who's assigned
-	 * @param  array $data        Ticket data
+	 * @param  array   $data      Ticket data
 	 * @return void
 	 */
 	public function notify_confirmation( $ticket_id, $data ) {
-		wpas_email_notify( $ticket_id, array( 'submission_confirmation', 'new_ticket_assigned' ) );
+		wpas_email_notify( $ticket_id, 'submission_confirmation' );
+	}
+
+	/**
+	 * Send e-mail assignment notification.
+	 *
+	 * Sends an e-mail to the agent that a new ticket has been assigned.
+	 *
+	 * @since  3.1.3
+	 * @param  integer $ticket_id ID of the new ticket
+	 * @param  integer $agent_id  ID of the agent who's assigned
+	 * @return void
+	 */
+	public function notify_assignment( $ticket_id, $agent_id ) {
+		wpas_email_notify( $ticket_id, 'new_ticket_assigned' );
 	}
 
 	public function notify_reply( $reply_id, $data ) {
