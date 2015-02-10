@@ -462,8 +462,12 @@ function wpas_users_dropdown( $args = array() ) {
 	$current_sel  = ( $current_id == $post->post_author ) ? "selected='selected'" : '';
 
 	/* The ticket is being created, use the current user by default */
-	if ( !isset( $_GET['post'] ) ) {
-		$options .= "<option value='$current_id'>$current_name</option>";
+	if ( !empty( $selected ) ) {
+		$user = get_user_by( 'id', intval( $selected ) );
+		if ( false !== $user && ! is_wp_error( $user ) ) {
+			$marker  = true;
+			$options .= "<option value='{$user->ID}' selected='selected'>{$user->data->display_name}</option>";
+		}
 	}
 
 	foreach ( $all_users as $user ) {
@@ -484,6 +488,11 @@ function wpas_users_dropdown( $args = array() ) {
 
 		/* Maybe exclude this user from the list */
 		if ( in_array( $user->ID, (array) $exclude ) ) {
+			continue;
+		}
+
+		/* This user was already added, skip it */
+		if ( ! empty( $selected ) && $user->ID === intval( $selected ) ) {
 			continue;
 		}
 
@@ -516,16 +525,10 @@ function wpas_users_dropdown( $args = array() ) {
 	}
 
 	/* In case there is no selected user yet we add the post author, or the currently logged user (most likely an admin) */
-	if ( false === $marker && true === $agent_fallback ) {
-
-		if ( isset( $post ) ) {
-			$fallback = get_user_by( 'id', $post->post_author );
-		} else {
-			$fallback = $current_user;
-		}
-
-		$options .= "<option value='{$fallback->ID}' selected='selected'>{$fallback->data->display_name}</option>";
-
+	if ( true === $agent_fallback && false === $marker ) {
+		$fallback    = $current_user;
+		$fb_selected = false === $marker ? 'selected="selected"' : '';
+		$options     .= "<option value='{$fallback->ID}' $fb_selected>{$fallback->data->display_name}</option>";
 	}
 
 	$contents = wpas_dropdown( wp_parse_args( $args, $defaults ), $options ); 
