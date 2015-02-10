@@ -378,11 +378,12 @@ function wpas_array_to_ul( $array ) {
 function wpas_dropdown( $args, $options ) {
 
 	$defaults = array(
-		'name'           => 'wpas_user',
-		'id'             => '',
-		'class'          => '',
-		'please_select'  => false,
-		'select2'        => false,
+		'name'          => 'wpas_user',
+		'id'            => '',
+		'class'         => '',
+		'please_select' => false,
+		'select2'       => false,
+		'disabled'      => false,
 	);
 
 	extract( wp_parse_args( $args, $defaults ) );
@@ -396,7 +397,7 @@ function wpas_dropdown( $args, $options ) {
 	/* Start the buffer */
 	ob_start(); ?>
 
-	<select name="<?php echo $name; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?>>
+	<select name="<?php echo $name; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if( true === $disabled ) { echo 'disabled'; } ?>>
 		<?php
 		if ( $please_select ) {
 			echo '<option value="">' . __( 'Please select', 'wpas' ) . '</option>';
@@ -439,6 +440,7 @@ function wpas_users_dropdown( $args = array() ) {
 		'agent_fallback' => false,
 		'please_select'  => false,
 		'select2'        => false,
+		'disabled'       => false,
 	);
 
 	extract( wp_parse_args( $args, $defaults ) );
