@@ -616,10 +616,10 @@ class Awesome_Support {
 
 		if ( ! is_admin() && wpas_is_plugin_page() ) {
 
+			wp_enqueue_style( 'wpas-plugin-styles' );
+
 			if ( file_exists( WPAS_PATH . "themes/$theme/css/style.css" ) && true === boolval( wpas_get_option( 'theme_stylesheet' ) ) ) {
 				wp_enqueue_style( 'wpas-theme-styles' );
-			} else {
-				wp_enqueue_style( 'wpas-plugin-styles' );
 			}
 			
 		}
