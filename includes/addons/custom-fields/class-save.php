@@ -90,7 +90,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 					continue;
 				}
 
-				wpas_assign_ticket( $post_id, $_POST["_$option_name"], $option_args['log'] );
+				wpas_assign_ticket( $post_id, $_POST[$option_name], $option_args['log'] );
 				continue;
 			}
 
