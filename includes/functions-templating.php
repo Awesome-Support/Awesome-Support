@@ -56,8 +56,22 @@ function wpas_single_ticket( $content ) {
 	remove_filter( 'the_content', 'wpas_single_ticket' );
 
 	/* Check if the current user can view the ticket */
-	if ( !wpas_can_view_ticket( $post->ID ) ) {
-		return wpas_notification( false, 13, false );
+	if ( ! wpas_can_view_ticket( $post->ID ) ) {
+
+		if ( is_user_logged_in() ) {
+			return wpas_notification( false, 13, false );
+		} else {
+
+			$output = '';
+			$output .= wpas_notification( false, 13, false );
+
+			ob_start();
+			wpas_get_template( 'registration' );
+			$output .= ob_get_clean();
+
+			return $output;
+
+		}
 	}
 
 	/* Get template name */
