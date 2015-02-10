@@ -352,7 +352,7 @@ class WPAS_Email_Notification {
 		$new = array();
 
 		/* Get the involved users' information */
-		$agent  = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee' ) ) );
+		$agent  = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
 		$client = get_user_by( 'id', $this->get_ticket()->post_author );
 
 		/* Get the ticket links */
@@ -558,7 +558,7 @@ class WPAS_Email_Notification {
 
 			case 'new_ticket_assigned':
 			case 'client_reply':
-				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee' ) ) );
+				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
 				break;
 		}
 
