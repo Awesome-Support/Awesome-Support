@@ -60,6 +60,7 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 		</div>
 
 		<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>">
+		<input type="hidden" name="wpas_login" value="1">
 		<?php wpas_make_button( __( 'Login', 'wpas' ), array( 'onsubmit' => __( 'Logging In...', 'wpas' ) ) ); ?>
 	</form>
 	<?php

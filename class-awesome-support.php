@@ -106,7 +106,7 @@ class Awesome_Support {
 		 *
 		 * @since 3.0.0
 		 */
-		if ( isset( $_POST['log'] ) ) {
+		if ( isset( $_POST['wpas_login'] ) ) {
 			add_action( 'wp', 'wpas_try_login' );
 		}
 
