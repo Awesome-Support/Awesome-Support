@@ -306,3 +306,138 @@ function wpas_can_submit_ticket() {
 	return apply_filters( 'wpas_can_submit_ticket', $can );
 
 }
+
+/**
+ * Creates a dropdown list of users.
+ *
+ * @since  3.1.2
+ * @param  array  $args Agruments
+ * @return string       Users dropdown
+ */
+function wpas_users_dropdown( $args = array() ) {
+
+	global $current_user, $post;
+
+	$defaults = array(
+		'name'           => 'wpas_user',
+		'id'             => '',
+		'class'          => '',
+		'exclude'        => array(),
+		'selected'       => '',
+		'cap'            => '',
+		'cap_exclude'    => '',
+		'agent_fallback' => false,
+		'please_select'  => false,
+		'select2'        => false,
+		'disabled'       => false,
+	);
+
+	extract( wp_parse_args( $args, $defaults ) );
+
+	/* List all users */
+	$all_users = get_users();
+
+	/**
+	 * We use a marker to keep track of when a user was selected.
+	 * This allows for adding a fallback if nobody was selected.
+	 * 
+	 * @var boolean
+	 */
+	$marker = false;
+
+	$options      = '';
+	$current_id   = $current_user->ID;
+	$current_name = $current_user->data->user_nicename;
+	$current_sel  = ( $current_id == $post->post_author ) ? "selected='selected'" : '';
+
+	/* The ticket is being created, use the current user by default */
+	if ( !empty( $selected ) ) {
+		$user = get_user_by( 'id', intval( $selected ) );
+		if ( false !== $user && ! is_wp_error( $user ) ) {
+			$marker  = true;
+			$options .= "<option value='{$user->ID}' selected='selected'>{$user->data->display_name}</option>";
+		}
+	}
+
+	foreach ( $all_users as $user ) {
+
+		/* Check for required capability */
+		if ( !empty( $cap ) ) {
+			if ( ! $user->has_cap( $cap ) ) {
+				continue;
+			}
+		}
+
+		/* Check for excluded capability */
+		if ( !empty( $cap_exclude ) ) {
+			if ( $user->has_cap( $cap_exclude ) ) {
+				continue;
+			}
+		}
+
+		/* Maybe exclude this user from the list */
+		if ( in_array( $user->ID, (array) $exclude ) ) {
+			continue;
+		}
+
+		/* This user was already added, skip it */
+		if ( ! empty( $selected ) && $user->ID === intval( $selected ) ) {
+			continue;
+		}
+
+		$user_id       = $user->ID;
+		$user_name     = $user->data->display_name;
+		$selected_attr = '';
+
+		if ( false === $marker ) {
+			if ( false !== $selected ) {
+				if ( !empty( $selected ) ) {
+					if ( $selected === $user_id ) {
+						$selected_attr = 'selected="selected"';
+					}
+				} else {
+					if ( isset( $post ) && $user_id == $post->post_author ) {
+						$selected_attr = 'selected="selected"';
+					}
+				}
+			}
+		}
+
+		/* Set the marker as true to avoid selecting more than one user */
+		if ( !empty( $selected_attr ) ) {
+			$marker = true;
+		}
+
+		/* Output the option */
+		$options .= "<option value='$user_id' $selected_attr>$user_name</option>";
+
+	}
+
+	/* In case there is no selected user yet we add the post author, or the currently logged user (most likely an admin) */
+	if ( true === $agent_fallback && false === $marker ) {
+		$fallback    = $current_user;
+		$fb_selected = false === $marker ? 'selected="selected"' : '';
+		$options     .= "<option value='{$fallback->ID}' $fb_selected>{$fallback->data->display_name}</option>";
+	}
+
+	$contents = wpas_dropdown( wp_parse_args( $args, $defaults ), $options ); 
+
+	return $contents;
+
+}
+
+/**
+ * Display a dropdown of the support users.
+ *
+ * Wrapper function for wpas_users_dropdown where
+ * the cap_exclude is set to exclude all users with
+ * the capability to edit a ticket.
+ *
+ * @since  3.1.3
+ * @param  array  $args Arguments
+ * @return string       HTML dropdown
+ */
+function wpas_support_users_dropdown( $args = array() ) {
+	$args['cap_exclude'] = 'edit_ticket';
+	echo wpas_users_dropdown( $args );
+}
