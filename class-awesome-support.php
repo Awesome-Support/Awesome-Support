@@ -47,6 +47,7 @@ class Awesome_Support {
 			add_action( 'template_redirect',              array( $this, 'redirect_archive' ) );
 			add_action( 'wpas_after_registration_fields', array( $this, 'terms_and_conditions_checkbox' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
 			add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ), 10, 3 );// Load the terms and conditions in a hidden div in the footer
+			add_action( 'wpas_after_template',            array( $this, 'credit' ), 10, 3 );
 			add_filter( 'template_include',               array( $this, 'template_include' ), 10, 1 );
 			add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ), 10, 1 );
 			add_filter( 'authenticate',                   array( $this, 'email_signon' ), 20, 3 );
@@ -909,6 +910,16 @@ class Awesome_Support {
 
 		die();
 
+	}
+
+	/**
+	 * Display a link to the plugin page.
+	 *
+	 * @since  3.1.3
+	 * @return void
+	 */
+	public function credit( $name, $template, $args ) {
+		echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
 	}
 
 }
