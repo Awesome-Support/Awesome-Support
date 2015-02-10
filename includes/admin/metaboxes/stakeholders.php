@@ -59,53 +59,15 @@ foreach( $wp_roles->roles as $role => $data ) {
 
 		<?php if ( current_user_can( 'create_ticket' ) ):
 
-			/* List all users */
-			$all_users = get_users();
+			$users_atts = array( 'agent_fallback' => true, 'select2' => true, 'name' => 'post_author_override', 'id' => 'wpas-issuer' );
 
-			/* Set $selected as false so that we can use it as a marker in case the issuer is an agent */
-			/**
-			 * @todo there is an issue with $selected. if the selected user is in the middle of the list, the other users will have the selected attribute too. alos, there is currently no link between the current user selected state and the regular list $selected
-			 */
-			$selected = false; ?>
+			if ( isset( $post ) ) {
+				$users_atts['selected'] = $post->post_author;
+			}
 
-			<select name="post_author_override" id="wpas-issuer">
-				<?php
-				/* First of all let's add the current user */
-				global $current_user;
+			wpas_support_users_dropdown( $users_atts );
 
-				$current_id   = $current_user->ID;
-				$current_name = $current_user->data->user_nicename;
-				$current_sel  = ( $current_id == $post->post_author ) ? "selected='selected'" : '';
-
-				/* The ticket is being created, use the current user by default */
-				if ( !isset( $_GET['post'] ) ) {
-					echo "<option value='$current_id'>$current_name</option>";
-				}
-
-				foreach ( $all_users as $user ) {
-
-					/* Exclude agents */
-					if ( $user->has_cap( 'create_ticket' ) && ! $user->has_cap( 'edit_ticket' ) ) {
-
-						$user_id   = $user->ID;
-						$user_name = $user->data->display_name;
-
-						$selected = ( $user_id == $post->post_author ) ? "selected='selected'" : '';
-
-						/* Output the option */
-						echo "<option value='$user_id' $selected>$user_name</option>";
-					}
-
-				}
-
-				/* In case there is no selected user yet we add the post author (most likely an admin) */
-				if ( false === $selected ) {
-					echo "<option value='$issuer_id'>$issuer_name</option>";
-				}
-				?>
-			</select>
-
-		<?php else: ?>
+		else: ?>
 			<a id="wpas-issuer" href="<?php echo $issuer_tickets; ?>"><?php echo $issuer_name; ?></a></p>
 		<?php endif; ?>
 
@@ -114,13 +76,17 @@ foreach( $wp_roles->roles as $role => $data ) {
 
 	<label for="wpas-assignee"><strong><?php _e( 'Support Staff', 'wpas' ); ?></strong></label>
 	<p>
-		<select name="wpas_assignee" id="wpas-assignee" <?php if( !current_user_can( 'assign_ticket' ) ) { echo 'disabled'; } ?>>
-			<?php
-			foreach( $users as $usr => $data ) {
-				?><option value="<?php echo $data->ID; ?>" <?php if( $data->ID == $assignee || '' == $assignee && $current_user->data->ID == $data->ID ) { echo 'selected="selected"'; } ?>><?php echo $data->data->display_name; ?></option><?php
-			}
-			?>
-		</select>
+		<?php
+		$staff_atts = array(
+			'cap'      => 'edit_ticket',
+			'name'     => 'wpas_assignee',
+			'id'       => 'wpas-assignee',
+			'disabled' => ! current_user_can( 'assign_ticket' ) ? true : false,
+			'select2'  => true
+		);
+
+		echo wpas_users_dropdown( $staff_atts );
+		?>
 	</p>
 	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'The above agent is currently responsible for this ticket.', 'wpas' ), '#' ); ?></p><?php endif; ?>
 	
