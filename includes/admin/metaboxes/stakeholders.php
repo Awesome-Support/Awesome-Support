@@ -85,6 +85,10 @@ foreach( $wp_roles->roles as $role => $data ) {
 			'select2'  => true
 		);
 
+		if ( isset( $post ) ) {
+			$staff_atts['selected'] = get_post_meta( $post->ID, '_wpas_assignee', true );
+		}
+
 		echo wpas_users_dropdown( $staff_atts );
 		?>
 	</p>
