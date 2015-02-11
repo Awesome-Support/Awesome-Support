@@ -103,8 +103,8 @@ class WPAS_Gist {
 			$url = $url . '?file=' . $file;
 		}
 
-		$noembed = sprintf( __( 'View the code on <a href="%s">Gist</a>.', 'wpas' ), esc_url( $url ) );
-		$embed   = sprintf( '<div class="oembed-gist"><script src="%s"></script><noscript>%s</noscript></div>', $url, $noscript );
+		$noscript = sprintf( __( 'View the code on <a href="%s">Gist</a>.', 'wpas' ), esc_url( $url ) );
+		$embed = sprintf( '<div class="oembed-gist"><script src="%s"></script><noscript>%s</noscript></div>', $url, $noscript );
 
 		return apply_filters( 'embed_gist', $embed, $matches, $attr, $url, $rawattr );
 
