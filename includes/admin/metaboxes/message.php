@@ -1,4 +1,4 @@
-<div id="wpas-ticket-message">
+<div id="wpas-ticket-message" class="wpas-ticket-content">
 	<?php
 	/**
 	 * wpas_frontend_ticket_content_before hook

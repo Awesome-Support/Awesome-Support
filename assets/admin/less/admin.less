@@ -10,6 +10,14 @@
 		clear: both;
 	}
 }
+.force-wrap() {
+	-ms-word-break: break-all;
+	word-break: break-all;
+	word-break: break-word;
+	-webkit-hyphens: auto;
+	-moz-hyphens: auto;
+	hyphens: auto;
+}
 .wpas-pl {
 	float: left;
 }
@@ -251,6 +259,10 @@ Ticket Replies
 	p {
 		margin: 0;
 	}
+}
+.wpas-ticket-content,
+.wpas-reply-content {
+	.force-wrap();
 }
 
 @media screen and (max-width: 782px) {
