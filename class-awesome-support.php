@@ -36,6 +36,7 @@ class Awesome_Support {
 		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
 			add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ), 11 );
+			add_action( 'plugins_loaded',                 array( 'WPAS_Gist',             'get_instance' ), 11 );
 			add_action( 'pre_user_query',                 'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
 			add_action( 'wp',                             array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
 			add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added

@@ -87,6 +87,7 @@ require_once( WPAS_PATH . 'includes/functions-custom-fields.php' );   // Submiss
 require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
 require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
 require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
+require_once( WPAS_PATH . 'includes/class-gist.php' );                // Add oEmbed support for Gists
 
 /**
  * Check if dependencies are loaded.
