@@ -90,6 +90,39 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 	<?php }
 
 	/**
+	 * URL field.
+	 */
+	public static function url( $field ) {
+
+		if ( isset( $post ) ) {
+			$post_id = $post->ID;
+		} elseif ( isset( $_GET['post'] ) ) {
+			$post_id = intval( $_GET['post'] );
+		} else {
+			$post_id = false;
+		}
+
+		$field_id    = 'wpas_' . $field['name'];
+		$value       = wpas_get_cf_value( $field_id, $post_id );
+		$label       = wpas_get_field_title( $field );
+		$field_class = isset( $field['args']['field_class'] ) ? $field['args']['field_class'] : ''; ?>
+
+		<div <?php wpas_get_field_container_class( $field_id ); ?> id="<?php echo $field_id; ?>_container">
+			
+			<label for="<?php echo $field_id; ?>"><strong><?php echo $label; ?></strong></label>
+
+			<?php if ( !is_admin() || current_user_can( $field['args']['capability'] ) ): ?>
+				<input type="url" id="<?php echo $field_id; ?>" <?php wpas_get_field_class( $field_id, $field_class ); ?> name="<?php echo $field_id; ?>" value="<?php echo $value; ?>" <?php if ( true === $field['args']['required'] ): ?>required<?php endif; ?>>
+			<?php else: ?>
+				<p id="<?php echo $field_id; ?>"><?php echo $value; ?></p>
+			<?php endif;
+
+			if( isset( $field['args']['desc'] ) && '' != $field['args']['desc'] && WPAS_FIELDS_DESC ): ?><p class="<?php echo is_admin() ? 'description' : 'wpas-help-block'; ?>"><?php echo wp_kses_post( $field['args']['desc'] ); ?></p><?php endif; ?>
+		</div>
+
+	<?php }
+
+	/**
 	 * "Fake" taxonomy select.
 	 * 
 	 * @param  array $field Field options
