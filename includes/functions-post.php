@@ -726,7 +726,7 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array() ) {
  */
 function wpas_find_agent( $ticket_id = false ) {
 
-	if ( defined( WPAS_DISABLE_AUTO_ASSIGN ) && true === WPAS_DISABLE_AUTO_ASSIGN ) {
+	if ( defined( 'WPAS_DISABLE_AUTO_ASSIGN' ) && true === WPAS_DISABLE_AUTO_ASSIGN ) {
 		return apply_filters( 'wpas_find_available_agent', wpas_get_option( 'assignee_default' ), $ticket_id );
 	}
 
