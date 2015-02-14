@@ -121,21 +121,34 @@ function wpas_get_safe_tags() {
  * @return boolean ether or not the current page belongs to the plugin
  * @since  3.0.0
  */
-function wpas_is_plugin_page() {
+function wpas_is_plugin_page( $slug = '' ) {
 
 	global $post;
 
+	$plugin_post_types   = apply_filters( 'wpas_plugin_post_types',   array( 'ticket' ) );
+	$plugin_admin_pages  = apply_filters( 'wpas_plugin_admin_pages',  array( 'wpas-status', 'wpas-addons' ) );
+	$plugin_public_pages = apply_filters( 'wpas_plugin_public_pages', array() );
+
+	/* Check for plugin pages in the admin */
 	if ( is_admin() ) {
 
-		$pages = array(
-
-		);
-
-		if ( isset( $post ) && isset( $post->post_type ) && in_array( $post->post_type, array( 'ticket', 'wpas_unassigned_mail' ) ) ) {
+		/* First of all let's check if there is a specific slug given */
+		if ( ! empty( $slug ) && in_array( $slug, $plugin_admin_pages ) ) {
 			return true;
 		}
 
-		if ( isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] ) {
+		/* If the current post if of one of our post types */
+		if ( isset( $post ) && isset( $post->post_type ) && in_array( $post->post_type, $plugin_post_types ) ) {
+			return true;
+		}
+
+		/* If the page we're in relates to one of our post types */
+		if ( isset( $_GET['post_type'] ) && in_array( $_GET['post_type'], $plugin_post_types ) ) {
+			return true;
+		}
+
+		/* If the page belongs to the plugin */
+		if ( isset( $_GET['page'] ) && in_array( $_GET['page'], $plugin_admin_pages ) ) {
 			return true;
 		}
 
