@@ -160,5 +160,6 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
 	grunt.registerTask('build', ['jshint', 'concat', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin']);
+	grunt.registerTask('zip', ['composer:update', 'compress']);
 
 };
