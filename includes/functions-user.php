@@ -68,7 +68,13 @@ function wpas_register_account( $data = false ) {
 		$username = $alt_username;
 	}
 
-	$args = array(
+	/**
+	 * wpas_insert_user_data filter
+	 *
+	 * @since  3.1.5
+	 * @var    array User account arguments
+	 */
+	$args = apply_filters( 'wpas_insert_user_data', array(
 		'user_login'   => $username,
 		'user_email'   => $email,
 		'first_name'   => $first_name,
@@ -76,7 +82,7 @@ function wpas_register_account( $data = false ) {
 		'display_name' => "$first_name $last_name",
 		'user_pass'    => $pwd,
 		'role'         => 'wpas_user'
-	);
+	) );
 
 	/**
 	 * wpas_register_account_before hook
