@@ -244,7 +244,17 @@ if( 'open' == $status ):
 
 	if( current_user_can( 'reply_ticket' ) ): ?>
 
-		<h2><?php printf( __( 'Write a reply to &laquo;%s&raquo;', 'wpas' ), get_the_title( $post->ID ) ); ?></h2>
+		<h2>
+			<?php
+			/**
+			 * wpas_write_reply_title_admin filter
+			 *
+			 * @since  3.1.5
+			 * @param  string  Title to display
+			 * @param  WP_Post Current post object
+			 */
+			echo apply_filters( 'wpas_write_reply_title_admin', sprintf( __( 'Write a reply to &laquo;%s&raquo;', 'wpas' ), get_the_title( $post->ID ) ), $post ); ?>
+		</h2>
 		<div>
 			<?php
 			/**
