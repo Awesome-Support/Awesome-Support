@@ -60,7 +60,7 @@ function wpas_list_users( $cap = 'all' ) {
 		if( 'all' == $cap || ( 'all' != $cap && $user->has_cap( $cap ) ) ) {
 
 			$user_id        = $user->ID;
-			$user_name      = $user->data->user_nicename;
+			$user_name      = $user->data->display_name;
 			$list[$user_id] = $user_name;
 
 		}
