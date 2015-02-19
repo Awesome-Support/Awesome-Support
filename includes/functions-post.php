@@ -753,7 +753,7 @@ function wpas_find_agent( $ticket_id = false ) {
 						'compare' => '='
 					),
 					array(
-						'key'     => '_assigned_agent',
+						'key'     => '_wpas_assignee',
 						'value'   => $user->ID,
 						'type'    => 'NUMERIC',
 						'compare' => '='
