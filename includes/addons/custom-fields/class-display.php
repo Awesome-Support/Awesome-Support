@@ -199,7 +199,7 @@ function wpas_cf_display_status( $name, $post_id ) {
 	$status = wpas_get_ticket_status( $post_id );
 
 	if ( 'closed' === $status ) {
-		$label  = ucwords( $status );
+		$label  = __( 'Closed', 'wpas' );
 		$color  = wpas_get_option( "color_$status", '#dd3333' );
 		$tag    = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 	} else {
@@ -209,7 +209,7 @@ function wpas_cf_display_status( $name, $post_id ) {
 		$custom_status = wpas_get_post_status();
 
 		if ( !array_key_exists( $post_status, $custom_status ) ) {
-			$label  = ucwords( $status );
+			$label  = __( 'Open', 'wpas' );
 			$color  = wpas_get_option( "color_$status", '#169baa' );
 			$tag    = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 		} else {
