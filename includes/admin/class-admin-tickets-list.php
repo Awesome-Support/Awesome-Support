@@ -106,7 +106,7 @@ class WPAS_Tickets_List {
 
 				$assignee = get_post_meta( $post_id, '_wpas_assignee', true );
 				$agent    = get_user_by( 'id', $assignee );
-				echo $agent->data->user_nicename;
+				echo $agent->data->display_name;
 
 			break;
 
