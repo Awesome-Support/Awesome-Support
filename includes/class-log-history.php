@@ -69,7 +69,7 @@ class WPAS_Log_History {
 				if( 'assignee' == $update['field_id'] ) {
 
 					$assignee = get_user_by( 'id', $value );
-					$value    = $assignee->user_nicename;
+					$value    = $assignee->display_name;
 
 				}
 
