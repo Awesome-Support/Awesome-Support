@@ -601,7 +601,37 @@ class Awesome_Support {
 	 * @since    1.0.0
 	 */
 	public function load_plugin_textdomain() {
+
+		global $locale;
+
+		/**
+		 * Custom locale.
+		 *
+		 * The custom locale defined by the URL var $wpas_locale
+		 * is used for debugging purpose. It makes testing language
+		 * files easily without changing the site main language.
+		 * It can also be useful when doing support on a site that's
+		 * not in English.
+		 *
+		 * @since  3.1.5
+		 * @var    string
+		 */
+		$wpas_locale = filter_input( INPUT_GET, 'wpas_locale', FILTER_SANITIZE_STRING );
+
+		if ( ! empty( $wpas_locale ) ) {
+			$backup = $locale;
+			$locale = $wpas_locale;
+		}
+
 		load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+
+		/**
+		 * Reset the $locale after loading our language file
+		 */
+		if ( ! empty( $wpas_locale ) ) {
+			$locale = $backup;
+		}
+
 	}
 
 	/**
