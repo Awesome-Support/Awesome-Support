@@ -86,6 +86,8 @@ class WPAS_Titan {
 
 		$settings = $titan->createAdminPanel( array(
 				'name'       => __( 'Settings', 'wpas' ),
+				'title'      => __( 'Awesome Support Settings', 'wpas' ),
+				'id'         => 'settings',
 				'parent'     => 'edit.php?post_type=ticket',
 				'capability' => 'settings_tickets'
 			)
