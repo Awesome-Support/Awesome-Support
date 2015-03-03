@@ -40,7 +40,7 @@ class Awesome_Support {
 			add_action( 'pre_user_query',                 'wpas_randomize_uers_query' );                  // Alter the user query to randomize the results
 			add_action( 'wp',                             array( $this, 'get_replies_object' ) );         // Generate the object used for the custom loop for displaying ticket replies
 			add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ) );          // Activate plugin when new blog is added
-			add_action( 'init',                           array( $this, 'load_plugin_textdomain' ) );     // Load the plugin textdomain
+			add_action( 'plugins_loaded',                 array( $this, 'load_plugin_textdomain' ), 9, 0 );     // Load the plugin textdomain
 			add_action( 'init',                           array( $this, 'init' ), 11, 0 );                // Register main post type
 			add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ), 999 );  // Add a link to agent's tickets in the toolbar
 			add_action( 'wp_print_styles',                array( $this, 'enqueue_styles' ) );             // Load public-facing style sheets
