@@ -586,20 +586,6 @@ class WPAS_Email_Notification {
 		$body = $this->get_body( $case );
 
 		/**
-		 * Prepare e-mail headers
-		 * 
-		 * @var array
-		 */
-		$headers = array(
-			"MIME-Version: 1.0",
-			"Content-type: text/html; charset=utf-8",
-			"From: {$from_name} <{$from_email}>",
-			"Reply-To: {$reply_name} <{$reply_email}>",
-			"Subject: {$subject}",
-			"X-Mailer: Awesome Support/" . WPAS_VERSION,
-		);
-
-		/**
 		 * Merge all the e-mail variables and apply the wpas_email_notifications_email filter.
 		 */
 		$email = apply_filters( 'wpas_email_notifications_email', array(
@@ -611,7 +597,21 @@ class WPAS_Email_Notification {
 			)
 		);
 
-		$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], implode( "\r\n", $email['headers'] ) );
+		/**
+		 * Prepare e-mail headers
+		 * 
+		 * @var array
+		 */
+		$headers = array(
+			"MIME-Version: 1.0",
+			"Content-type: text/html; charset=utf-8",
+			"From: $from_name <$from_email>",
+			"Reply-To: $reply_name <$reply_email>",
+			"Subject: {$email['subject']}",
+			"X-Mailer: Awesome Support/" . WPAS_VERSION,
+		);
+
+		$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'] );
 
 		return $mail;
 
