@@ -78,22 +78,16 @@ class WPAS_Log_History {
 				switch( $action ):
 
 					case 'updated':
-
-						$content .= "$action $label to $value";
-
-					break;
+						$content .= sprintf( _x( 'updated %s to %s', 'Custom field value was updated', 'wpas' ), $label, $value );
+						break;
 
 					case 'deleted':
-
-						$content .= "$action $label";
-
-					break;
+						$content .= sprintf( _x( 'deleted %s', 'Custom field value was deleted', 'wpas' ), $label );
+						break;
 
 					case 'added':
-
-						$content .= "$action $value to $label";
-
-					break;
+						$content .= sprintf( _x( 'added %s to %s', 'Custom field value was added', 'wpas' ), $value, $label );
+						break;
 
 				endswitch;
 
