@@ -584,7 +584,7 @@ class Awesome_Support_Admin {
 				$data['post_status'] = $_POST['post_status_override'];
 
 				if ( $postarr['original_post_status'] !== $_POST['post_status_override'] && isset( $_POST['wpas_post_parent'] ) ) {
-					wpas_log( intval( $_POST['wpas_post_parent'] ), sprintf( __( 'Ticket state changed to %s'), '&laquo;' . $status[$_POST['post_status_override']] . '&raquo;' ) );
+					wpas_log( intval( $_POST['wpas_post_parent'] ), sprintf( __( 'Ticket state changed to %s', 'wpas' ), '&laquo;' . $status[$_POST['post_status_override']] . '&raquo;' ) );
 				}
 			}
 
