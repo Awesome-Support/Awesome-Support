@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-03-02 11:25+0700\n"
-"PO-Revision-Date: 2015-03-02 11:26+0700\n"
+"POT-Creation-Date: 2015-03-03 14:26+0700\n"
+"PO-Revision-Date: 2015-03-03 14:26+0700\n"
 "Last-Translator: Julien Liabeuf <julien@liabeuf.fr>\n"
 "Language-Team: ThemeAvenue <support@themeavenue.net>\n"
 "Language: en\n"
@@ -47,17 +47,17 @@ msgstr ""
 msgid "Support User"
 msgstr ""
 
-#: ../class-awesome-support.php:848
+#: ../class-awesome-support.php:878
 #, php-format
 msgid "I accept the %sterms and conditions%s"
 msgstr ""
 
-#: ../class-awesome-support.php:875 ../includes/admin/class-admin.php:344
+#: ../class-awesome-support.php:905 ../includes/admin/class-admin.php:344
 #: ../includes/admin/class-admin.php:345
 msgid "My Tickets"
 msgstr ""
 
-#: ../class-awesome-support.php:919
+#: ../class-awesome-support.php:949
 #, php-format
 msgid "Did you mean %s"
 msgstr ""
@@ -443,6 +443,10 @@ msgstr ""
 #: ../includes/admin/views/system-status.php:100
 #: ../includes/admin/views/system.php:110
 msgid "Settings"
+msgstr ""
+
+#: ../includes/admin/class-admin-titan.php:89
+msgid "Awesome Support Settings"
 msgstr ""
 
 #: ../includes/admin/class-admin-user.php:52
@@ -1565,6 +1569,24 @@ msgstr ""
 #: ../includes/class-gist.php:106
 #, php-format
 msgid "View the code on <a href=\"%s\">Gist</a>."
+msgstr ""
+
+#: ../includes/class-log-history.php:81
+#, php-format
+msgctxt "Custom field value was updated"
+msgid "updated %s to %s"
+msgstr ""
+
+#: ../includes/class-log-history.php:85
+#, php-format
+msgctxt "Custom field value was deleted"
+msgid "deleted %s"
+msgstr ""
+
+#: ../includes/class-log-history.php:89
+#, php-format
+msgctxt "Custom field value was added"
+msgid "added %s to %s"
 msgstr ""
 
 #: ../includes/class-notification.php:143
