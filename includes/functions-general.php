@@ -262,6 +262,46 @@ function wpas_get_ticket_status( $post_id = null ) {
 
 }
 
+/**
+ * Get the ticket state.
+ *
+ * Gets the ticket status. If the ticket is closed nothing fancy.
+ * If not, we return the ticket state instead of the "Open" status.
+ *
+ * @since  3.1.5
+ * @param  integer $post_id Post ID
+ * @return string           Ticket status / state
+ */
+function wpas_get_ticket_status_state( $post_id ) {
+
+	$status = wpas_get_ticket_status( $post_id );
+
+	if ( 'closed' === $status ) {
+		$output = __( 'Closed', 'wpas' );
+	} else {
+
+		$post          = get_post( $post_id );
+		$post_status   = $post->post_status;
+		$custom_status = wpas_get_post_status();
+
+		if ( ! array_key_exists( $post_status, $custom_status ) ) {
+			$output = __( 'Open', 'wpas' );
+		} else {
+
+			$defaults = array(
+				'queued'     => '#1e73be',
+				'processing' => '#a01497',
+				'hold'       => '#b56629'
+			);
+
+			$output = $custom_status[$post_status];
+		}
+	}
+
+	return $output;
+
+}
+
 function wpas_get_current_admin_url() {
 
 	global $pagenow;
