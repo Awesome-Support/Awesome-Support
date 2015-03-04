@@ -254,14 +254,34 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 				 * that's what we want. Hence, we loop through the possible multiple terms (which
 				 * shouldn't happen) and only keep the last one.
 				 */
-				foreach ( $terms as $term ) {
-					$the_term = $term->slug;
+				if ( is_array( $terms ) ) {
+					foreach ( $terms as $term ) {
+						$the_term = $term->slug;
+					}
+				} else {
+					$the_term = '';
 				}
 
 				/* Finally we save the new terms if changed */
 				if ( $the_term !== $value ) {
 
-					wp_set_object_terms( $post_id, $value, $taxonomy, false );
+					$terms  = get_terms( $taxonomy );
+					$exists = false;
+
+					/**
+					 * This is not pretty but a necessary workaround to issue #93
+					 *
+					 * @link https://github.com/ThemeAvenue/Awesome-Support/issues/93
+					 */
+					foreach ( $terms as $key => $term ) {
+						if ( $term->slug === $value ) {
+							$exists = $term->term_id;
+						}
+					}
+
+					if ( false !== $exists ) {
+						wp_set_object_terms( $post_id, $exists, $taxonomy, false );
+					}
 
 					/* Log the action */
 					if ( true === $option_args['log'] ) {
