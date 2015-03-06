@@ -512,3 +512,27 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
 
 }
+
+add_filter( 'locale','wpas_change_locale', 10, 1 );
+/**
+ * Change the site's locale.
+ *
+ * This is used for debugging purpose. This function
+ * allows for changing the locale during WordPress
+ * initialization. This will only affect the current user.
+ *
+ * @since  3.1.5
+ * @param  string $locale Site locale
+ * @return string         Possibly modified locale
+ */
+function wpas_change_locale( $locale ) {
+
+   $wpas_locale = filter_input( INPUT_GET, 'wpas_lang', FILTER_SANITIZE_STRING );
+
+	if ( ! empty( $wpas_locale ) ) {
+		$backup = $locale;
+		$locale = $wpas_locale;
+	}
+
+	return $locale;
+}
