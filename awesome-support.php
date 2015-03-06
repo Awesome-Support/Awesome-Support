@@ -132,6 +132,11 @@ if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
 	/* Load the MailGun e-mail check settings */
 	add_filter( 'wpas_plugin_settings', array( 'WPAS_MailGun_EMail_Check', 'settings' ), 10, 1 );
 
+	/**
+	 * Add link ot settings tab
+	 */
+	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( 'Awesome_Support_Admin', 'settings_page_link' ) );
+
 }
 
 /*----------------------------------------------------------------------------*

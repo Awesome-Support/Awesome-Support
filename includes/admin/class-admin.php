@@ -182,6 +182,22 @@ class Awesome_Support_Admin {
 	}
 
 	/**
+	 * Add a link to the settings page.
+	 *
+	 * @since  3.1.5
+	 * @param  array $links Plugin links
+	 * @return array        Links with the settings
+	 */
+	public static function settings_page_link( $links ) {
+
+		$link    = add_query_arg( array( 'post_type' => 'ticket', 'page' => 'settings' ), admin_url( 'edit.php' ) );
+		$links[] = "<a href='$link'>" . __( 'Settings', 'wpas' ) . "</a>";
+
+		return $links;
+
+	}
+
+	/**
 	 * Hide tickets not assigned to current user.
 	 *
 	 * Admins and agents can be set to only see their own tickets.
