@@ -43,6 +43,18 @@ define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) .
 define( 'WPAS_FIELDS_DESC', apply_filters( 'wpas_fields_descriptions', true ) );
 
 /*----------------------------------------------------------------------------*
+ * Addons
+ *----------------------------------------------------------------------------*/
+
+/**
+ * Array of addons to load.
+ *
+ * @since  3.1.5
+ * @var    array
+ */
+$wpas_addons = array();
+
+/*----------------------------------------------------------------------------*
  * Shared Functionalities
  *----------------------------------------------------------------------------*/
 
@@ -80,6 +92,7 @@ require_once( WPAS_PATH . 'includes/addons/class-mailgun-email-check.php' );
  */
 require_once( WPAS_PATH . 'includes/functions-post.php' );            // All the functions related to opening a ticket and submitting replies
 require_once( WPAS_PATH . 'includes/functions-user.php' );            // Everything related to user login, registration and capabilities
+require_once( WPAS_PATH . 'includes/functions-addons.php' );          // Addons functions and autoloader
 require_once( WPAS_PATH . 'includes/class-log-history.php' );         // Logging class
 require_once( WPAS_PATH . 'includes/class-email-notifications.php' ); // E-mail notification class
 require_once( WPAS_PATH . 'includes/functions-general.php' );         // Functions that are used both in back-end and front-end
