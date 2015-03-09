@@ -59,6 +59,7 @@ class Awesome_Support_Admin {
 			/* Load admin functions files */
 			require_once( WPAS_PATH . 'includes/admin/functions-admin.php' );
 			require_once( WPAS_PATH . 'includes/admin/functions-tools.php' );
+			require_once( WPAS_PATH . 'includes/admin/functions-notices.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
