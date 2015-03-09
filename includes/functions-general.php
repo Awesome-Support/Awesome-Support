@@ -33,6 +33,17 @@ function wpas_nonce_url( $url ) {
 }
 
 /**
+ * Check a custom action nonce.
+ *
+ * @since  3.1.5
+ * @param  string $nonce  Nonce to be checked
+ * @return boolean        Nonce validity
+ */
+function wpas_check_nonce( $nonce ) {
+	return wp_verify_nonce( $nonce, 'wpas_custom_action' );
+}
+
+/**
  * Add custom action and nonce to URL.
  *
  * The function adds a custom action trigger using the wpas-do
