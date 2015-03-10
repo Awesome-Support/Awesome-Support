@@ -547,3 +547,23 @@ function wpas_change_locale( $locale ) {
 
 	return $locale;
 }
+
+/**
+ * Get plugin settings page URL.
+ *
+ * @since  3.1.5
+ * @param  string $tab Tab ID
+ * @return string      URL to the required settings page
+ */
+function wpas_get_settings_page_url( $tab = '' ) {
+
+	$admin_url  = admin_url( 'edit.php' );
+	$query_args = array( 'post_type' => 'ticket', 'page' => 'settings' );
+
+	if ( ! empty( $tab ) ) {
+		$query_args['tab'] = sanitize_text_field( $tab );
+	}
+
+	return add_query_arg( $query_args, $admin_url );
+
+}
