@@ -440,12 +440,34 @@ class WPAS_File_Upload {
 		$submission = (int) wpas_get_option( 'ticket_submit' );
 		$post_type  = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
 
-		if ( ! is_admin() && ( 'ticket' !== $post->post_type && $submission !== $post->ID ) ) {
-			return $file;
+		/**
+		 * On the front-end we only want to limit upload size
+		 * on the submission page or on a ticket details page.
+		 */
+		if ( ! is_admin() ) {
+			if ( 'ticket' !== $post->post_type && $submission !== $post->ID ) {
+				return $file;
+			}
 		}
 
-		if ( is_admin() && ( ( isset( $post ) && 'ticket' !== $post->post_type ) || ( ! empty( $post_type ) && 'ticket' !== $post_type ) || empty( $post_type ) ) ) {
-			return $file;
+		/**
+		 * In the admin we only want to limit upload size on the ticket creation screen
+		 * or on the ticket edit screen.
+		 */
+		if ( is_admin() ) {
+
+			if ( ! isset( $post ) && empty( $post_type ) ) {
+				return $file;
+			}
+
+			if ( isset( $post ) && 'ticket' !== $post->post_type ) {
+				return $file;
+			}
+
+			if ( ! empty( $post_type ) && 'ticket' !== $post_type ) {
+				return $file;
+			}
+
 		}
 
 		$filetypes      = explode( ',', $this->get_allowed_filetypes() );
