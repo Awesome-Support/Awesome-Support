@@ -51,7 +51,7 @@ class WPAS_File_Upload {
 			require_once( ABSPATH . 'wp-admin/includes/template.php' );
 
 			add_action( 'wpas_open_ticket_after',                    array( $this, 'new_ticket_attachment' ), 10, 2 ); // Save attachments after user opened a new ticket
-			add_action( 'wpas_add_reply_after',                      array( $this, 'new_reply_attachment' ), 10, 2 );  // Save attachments after user submitted a new reply
+			add_action( 'wpas_add_reply_public_after',               array( $this, 'new_reply_attachment' ), 10, 2 );  // Save attachments after user submitted a new reply
 			add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'upload_field' ) );                  // Load the dropzone after description textarea
 			add_action( 'wpas_ticket_details_reply_textarea_after',  array( $this, 'upload_field' ) );                  // Load dropzone after reply textarea
 			add_action( 'wpas_frontend_ticket_content_after',        array( $this, 'show_attachments' ), 10, 1 );
@@ -60,7 +60,7 @@ class WPAS_File_Upload {
 		}
 
 		if ( is_admin() ) {
-			add_action( 'wpas_save_reply_after',             array( $this, 'new_reply_backend_attachment' ), 10, 2 );
+			add_action( 'wpas_add_reply_admin_after',        array( $this, 'new_reply_backend_attachment' ), 10, 2 );
 			add_action( 'post_edit_form_tag',                array( $this, 'add_form_enctype' ), 10, 1 );
 			add_action( 'wpas_admin_after_wysiwyg',          array( $this, 'upload_field' ), 10, 0 );
 			add_action( 'before_delete_post',                array( $this, 'delete_attachments' ), 10, 1 );
@@ -263,25 +263,63 @@ class WPAS_File_Upload {
 		$attachments = $this->get_attachments( $post_id );
 
 		if ( empty( $attachments ) ) {
-			return;
+			return false;
 		} ?>
 
 		<div class="wpas-reply-attachements">
 			<strong><?php _e( 'Attachements:', 'wpas' ); ?></strong>
 			<ul>
-				<?php foreach ( $attachments as $attachment ):
+				<?php
+				foreach ( $attachments as $attachment_id => $attachment ):
 
 					/**
-					 * Get filename.
+					 * Get attachment metadata.
+					 * 
+					 * @var array
 					 */
-					$filename   = explode( '/', $attachment['url'] );
-					$filename   = $name = $filename[count($filename)-1];
-					$upload_dir = wp_upload_dir();
-					$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
-					$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
-					?>
-					<li><a href="<?php echo $attachment['url']; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li>
-				<?php endforeach; ?>
+					$metadata = wp_get_attachment_metadata( $attachment_id );
+
+					/**
+					 * This is the default case where an attachment was uploaded by the WordPress uploader.
+					 * In this case we get the media from the ticket's attachments directory.
+					 */
+					if ( ! isset( $metadata['wpas_upload_source'] ) || 'wordpress' === $metadata['wpas_upload_source'] ) {
+
+						/**
+						 * Get filename.
+						 */
+						$filename   = explode( '/', $attachment['url'] );
+						$filename   = $name = $filename[count($filename)-1];
+						$upload_dir = wp_upload_dir();
+						$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
+						$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
+
+						?><li><a href="<?php echo $attachment['url']; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
+
+					}
+
+					/**
+					 * Now if we have a different upload source we delegate the computing
+					 * to whatever will hook on wpas_attachment_display_$source
+					 */
+					else {
+
+						$source = sanitize_text_field( $metadata['wpas_upload_source'] );
+
+						/**
+						 * wpas_attachment_display_$source fires if the current attachment
+						 * was uploaded by an unknown source.
+						 *
+						 * @since  3.1.5
+						 * @param  integer $attachment_id ID of this attachment
+						 * @param  array   $attachment    The attachment array
+						 * @param  integer $post_id       ID of the post we're displaying attachments for
+						 */
+						do_action( 'wpas_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id );
+
+					}
+					
+				endforeach; ?>
 			</ul>
 		</div>
 	<?php }
