@@ -435,6 +435,19 @@ class WPAS_File_Upload {
 	 */
 	public function limit_upload( $file ) {
 
+		global $post;
+
+		$submission = (int) wpas_get_option( 'ticket_submit' );
+		$post_type  = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+
+		if ( ! is_admin() && ( 'ticket' !== $post->post_type && $submission !== $post->ID ) ) {
+			return $file;
+		}
+
+		if ( is_admin() && ( ( isset( $post ) && 'ticket' !== $post->post_type ) || ( ! empty( $post_type ) && 'ticket' !== $post_type ) || empty( $post_type ) ) ) {
+			return $file;
+		}
+
 		$filetypes      = explode( ',', $this->get_allowed_filetypes() );
 		$ext            = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
 		$max_size       = wpas_get_option( 'filesize_max', 1 );
