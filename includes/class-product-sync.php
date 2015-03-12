@@ -74,6 +74,7 @@ class WPAS_Product_Sync {
 		if ( $this->is_multiple_products() && post_type_exists( $post_type ) ) {
 			add_filter( 'get_terms',     array( $this, 'get_terms' ),          1, 3 );
 			add_filter( 'get_term',      array( $this, 'get_term' ),           1, 2 );
+			add_filter( 'get_the_terms', array( $this, 'get_the_terms' ),      1, 3 );
 			add_action( 'init',          array( $this, 'lock_taxonomy' ),     12, 0 );
 			add_action( 'admin_notices', array( $this, 'notice_locked_tax' ), 10, 0 );
 			add_action( 'trashed_post',  array( $this, 'unsync_term' ),       10, 1 );
@@ -527,6 +528,34 @@ class WPAS_Product_Sync {
 
 		return (object) $new_term;
 
+	}
+
+	/**
+	 * Retrieve the terms of the taxonomy that are attached to the post.
+	 *
+	 * Hooked on get_the_terms this function will convert the placeholder terms
+	 * into their actual values.
+	 * 
+	 * @param  array   $terms    Terms attached to this post
+	 * @param  integer $post_id  Post ID
+	 * @param  string  $taxonomy Taxonomy ID
+	 * @return array             Updated terms
+	 */
+	public function get_the_terms( $terms, $post_id, $taxonomy ) {
+
+		if ( ! $this->is_product_tax( $taxonomy ) ) {
+			return $terms;
+		}
+
+		foreach ( $terms as $key => $term ) {
+
+			if ( $this->is_synced_term( $term->term_id ) ) {
+				$terms[$key] = get_term( $term, $taxonomy );
+			}
+
+		}
+
+		return $terms;
 	}
 
 	/**
