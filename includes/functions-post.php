@@ -1038,15 +1038,22 @@ add_action( 'wp_ajax_wpas_edit_reply_editor', 'wpas_edit_reply_editor_ajax' );
  */
 function wpas_edit_reply_editor_ajax() {
 
-	$reply_id       = filter_input( INPUT_POST, 'reply_id',       FILTER_SANITIZE_NUMBER_INT );
-	$editor_content = filter_input( INPUT_POST, 'editor_content', FILTER_SANITIZE_STRING );
+	$reply_id = filter_input( INPUT_POST, 'reply_id', FILTER_SANITIZE_NUMBER_INT );
 
-	if ( empty( $reply_id ) || empty( $editor_content ) ) {
+	if ( empty( $reply_id ) ) {
 		echo '';
 		die();
 	}
 
-	$editor_id = "wpas-editreply-$reply_id";
+	$post = get_post( $reply_id );
+
+	if ( 'ticket_reply' !== $post->post_type ) {
+		echo '';
+		die();
+	}
+
+	$editor_id      = "wpas-editreply-$reply_id";
+	$editor_content = apply_filters( 'the_content', $post->post_content );
 
 	$settings = array(
 		'media_buttons' => false,
