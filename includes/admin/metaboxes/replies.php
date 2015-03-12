@@ -205,7 +205,7 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 								<div class="wpas-editwrap" id="wpas-editwrap-<?php echo $row->ID; ?>">
 									<?php
 									/* The edition textarea */
-									wp_editor( apply_filters( 'the_editor_content', $row->post_content ), 'wpas-editreply-' . $row->ID, array(
+									wp_editor( apply_filters( 'the_editor_content', apply_filters( 'the_content', $row->post_content ) ), 'wpas-editreply-' . $row->ID, array(
 										'media_buttons' => false,
 										'teeny' 		=> true,
 										'quicktags' 	=> false,
