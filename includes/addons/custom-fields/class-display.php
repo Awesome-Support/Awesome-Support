@@ -318,7 +318,7 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 	$option .= $term->name;
 	?>
 
-	<option value="<?php echo $term->slug; ?>" <?php if( $term->slug == $value ) { echo 'selected="selected"'; } ?>><?php echo $option; ?></option>
+	<option value="<?php echo $term->term_id; ?>" <?php if( (int) $value === $term->term_id || $value === $term->slug  ) { echo 'selected="selected"'; } ?>><?php echo $option; ?></option>
 
 	<?php if ( isset( $term->children ) && !empty( $term->children ) ) {
 		++$level;

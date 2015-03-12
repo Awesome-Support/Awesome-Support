@@ -265,30 +265,27 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 				/* Finally we save the new terms if changed */
 				if ( $the_term !== $value ) {
 
-					$terms  = get_terms( $taxonomy );
-					$exists = false;
+					$term = get_term_by( 'id', (int) $value, $taxonomy );
+
+					if ( false === $term ) {
+						continue;
+					}
 
 					/**
-					 * This is not pretty but a necessary workaround to issue #93
-					 *
-					 * @link https://github.com/ThemeAvenue/Awesome-Support/issues/93
+					 * Apply the get_term filters.
+					 * 
+					 * @var object
 					 */
-					foreach ( $terms as $key => $term ) {
-						if ( $term->slug === $value ) {
-							$exists = $term->term_id;
-						}
-					}
+					$term = get_term( $term, $taxonomy );
 
-					if ( false !== $exists ) {
-						wp_set_object_terms( $post_id, $exists, $taxonomy, false );
-					}
+					wp_set_object_terms( $post_id, (int) $value, $taxonomy, false );
 
 					/* Log the action */
 					if ( true === $option_args['log'] ) {
 						$log[] = array(
 							'action'   => 'updated',
 							'label'    => wpas_get_field_title( $option ),
-							'value'    => $value,
+							'value'    => $term->name,
 							'field_id' => $option['name']
 						);
 					}
@@ -409,7 +406,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 					}
 
 					foreach ( $terms as $term ) {
-						if ( $term->slug === $_POST[$field_name] ) {
+						if ( $term->term_id === (int) $_POST[$field_name] ) {
 							$term_id = $term->term_id;
 						}
 					}
@@ -419,7 +416,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 						continue;
 					}
 
-					wp_set_object_terms( $post_id, $value, $field['name'], false );
+					wp_set_object_terms( $post_id, (int) $value, $field['name'], false );
 
 				}
 
