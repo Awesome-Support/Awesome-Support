@@ -665,6 +665,38 @@ class WPAS_Product_Sync {
 	}
 
 	/**
+	 * Retrieve a synced term by its slug.
+	 *
+	 * @since  3.1.5
+	 * @param  string $slug Term slug
+	 * @return object       Term object
+	 */
+	public function get_synced_term_by_slug( $slug ) {
+
+		$args = array(
+			'name'                   => $slug,
+			'post_type'              => $this->post_type,
+			'post_status'            => 'publish',
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'cache_results'          => false,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);
+		
+		$query = new WP_Query( $args );
+		
+		if ( ! empty( $query->post ) ) {
+			$term = (object) $this->create_term_object( $query->post );
+		} else {
+			$term = false;
+		}
+
+		return $term;
+
+	}
+
+	/**
 	 * Display a notice on the edit tag screen.
 	 *
 	 * This notice explains to the user why he can't modify it, because
