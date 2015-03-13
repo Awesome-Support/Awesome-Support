@@ -984,14 +984,6 @@ class Awesome_Support_Admin {
 							/* Close */
 							$closed = wpas_close_ticket( $post_id );
 
-							/* Log the action */
-							$log[] = array(
-								'action'   => 'updated',
-								'label'    => __( 'Status', 'wpas' ),
-								'value'    => 'closed',
-								'field_id' => 'status'
-							);
-
 							/* E-Mail the client */
 							$ticket_closed = new WPAS_Email_Notification( $post_id, array( 'action' => 'closed' ) );
 
