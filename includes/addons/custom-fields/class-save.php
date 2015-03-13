@@ -256,14 +256,14 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 				 */
 				if ( is_array( $terms ) ) {
 					foreach ( $terms as $term ) {
-						$the_term = $term->slug;
+						$the_term = $term->term_id;
 					}
 				} else {
 					$the_term = '';
 				}
 
 				/* Finally we save the new terms if changed */
-				if ( $the_term !== $value ) {
+				if ( $the_term !== (int) $value ) {
 
 					$term = get_term_by( 'id', (int) $value, $taxonomy );
 
