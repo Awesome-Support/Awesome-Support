@@ -15,12 +15,28 @@
  * If the append mode is used, existing terms of the synced taxonomy
  * will be displayed along the post type posts.
  *
- * In both cases, only the actual yaxonomy terms (not the synced posts)
+ * In both cases, only the actual taxonomy terms (not the synced posts)
  * can be edited through the term edit screen. Synced terms will trigger
  * a wp_die() asking the user to modify the post directly.
  *
  * This class was inspired by the codebase of CPT-onomies
  * (https://wordpress.org/plugins/cpt-onomies/) by Rachel Carden.
+ *
+ * ---------------------------------------------------
+ * Known issues
+ * ---------------------------------------------------
+ *
+ * get_term_by()
+ * -------------
+ * This class will work with get_term_by() only if the $field used is the term ID.
+ * In all other cases, get_term_by() queries the database directly and there is no filter
+ * to alter the results.
+ *
+ * get_the_terms()
+ * ---------------
+ * When using get_the_terms() the synchronized terms returned are raw, meaning that the term
+ * name and slug are the post type ID. It is mandatory to run the terms returned by get_the_terms()
+ * through get_term() in order to correctly apply the filters to the synced terms.
  *
  * @package   Awesome Support
  * @author    ThemeAvenue <web@themeavenue.net>
@@ -74,6 +90,7 @@ class WPAS_Product_Sync {
 		if ( $this->is_multiple_products() && post_type_exists( $post_type ) ) {
 			add_filter( 'get_terms',     array( $this, 'get_terms' ),          1, 3 );
 			add_filter( 'get_term',      array( $this, 'get_term' ),           1, 2 );
+			add_filter( 'get_the_terms', array( $this, 'get_the_terms' ),      1, 3 );
 			add_action( 'init',          array( $this, 'lock_taxonomy' ),     12, 0 );
 			add_action( 'admin_notices', array( $this, 'notice_locked_tax' ), 10, 0 );
 			add_action( 'trashed_post',  array( $this, 'unsync_term' ),       10, 1 );
@@ -530,6 +547,34 @@ class WPAS_Product_Sync {
 	}
 
 	/**
+	 * Retrieve the terms of the taxonomy that are attached to the post.
+	 *
+	 * Hooked on get_the_terms this function will convert the placeholder terms
+	 * into their actual values.
+	 * 
+	 * @param  array   $terms    Terms attached to this post
+	 * @param  integer $post_id  Post ID
+	 * @param  string  $taxonomy Taxonomy ID
+	 * @return array             Updated terms
+	 */
+	public function get_the_terms( $terms, $post_id, $taxonomy ) {
+
+		if ( ! $this->is_product_tax( $taxonomy ) ) {
+			return $terms;
+		}
+
+		foreach ( $terms as $key => $term ) {
+
+			if ( $this->is_synced_term( $term->term_id ) ) {
+				$terms[$key] = get_term( $term, $taxonomy );
+			}
+
+		}
+
+		return $terms;
+	}
+
+	/**
 	 * Delete a placeholder term.
 	 *
 	 * This function is used to delete a placeholder taxonomy term.
@@ -632,6 +677,38 @@ class WPAS_Product_Sync {
 		}
 
 		return true;
+
+	}
+
+	/**
+	 * Retrieve a synced term by its slug.
+	 *
+	 * @since  3.1.5
+	 * @param  string $slug Term slug
+	 * @return object       Term object
+	 */
+	public function get_synced_term_by_slug( $slug ) {
+
+		$args = array(
+			'name'                   => $slug,
+			'post_type'              => $this->post_type,
+			'post_status'            => 'publish',
+			'posts_per_page'         => 1,
+			'no_found_rows'          => true,
+			'cache_results'          => false,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);
+		
+		$query = new WP_Query( $args );
+		
+		if ( ! empty( $query->post ) ) {
+			$term = (object) $this->create_term_object( $query->post );
+		} else {
+			$term = false;
+		}
+
+		return $term;
 
 	}
 
