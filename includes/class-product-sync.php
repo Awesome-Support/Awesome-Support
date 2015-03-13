@@ -15,12 +15,28 @@
  * If the append mode is used, existing terms of the synced taxonomy
  * will be displayed along the post type posts.
  *
- * In both cases, only the actual yaxonomy terms (not the synced posts)
+ * In both cases, only the actual taxonomy terms (not the synced posts)
  * can be edited through the term edit screen. Synced terms will trigger
  * a wp_die() asking the user to modify the post directly.
  *
  * This class was inspired by the codebase of CPT-onomies
  * (https://wordpress.org/plugins/cpt-onomies/) by Rachel Carden.
+ *
+ * ---------------------------------------------------
+ * Known issues
+ * ---------------------------------------------------
+ *
+ * get_term_by()
+ * -------------
+ * This class will work with get_term_by() only if the $field used is the term ID.
+ * In all other cases, get_term_by() queries the database directly and there is no filter
+ * to alter the results.
+ *
+ * get_the_terms()
+ * ---------------
+ * When using get_the_terms() the synchronized terms returned are raw, meaning that the term
+ * name and slug are the post type ID. It is mandatory to run the terms returned by get_the_terms()
+ * through get_term() in order to correctly apply the filters to the synced terms.
  *
  * @package   Awesome Support
  * @author    ThemeAvenue <web@themeavenue.net>
