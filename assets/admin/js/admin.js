@@ -209,7 +209,7 @@
 			select.find('option[value=""]').remove();
 			select.prepend('<option></option>');
 			select.select2({
-				placehreplyOriginaler: 'Please Select'
+				placeholder: 'Please Select'
 			});
 		}
 
