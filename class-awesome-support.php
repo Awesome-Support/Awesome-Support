@@ -712,7 +712,7 @@ class Awesome_Support {
 
 		if ( isset( $wp_query->post ) && 'ticket' === $wp_query->post->post_type ) {
 
-			$args = array(
+			$args = apply_filters( 'wpas_replies_object_args', array(
 				'post_parent'            => $wp_query->post->ID,
 				'post_type'              => 'ticket_reply',
 				'post_status'            => array( 'read', 'unread' ),
@@ -724,7 +724,7 @@ class Awesome_Support {
 				'update_post_term_cache' => false,
 				'update_post_meta_cache' => false,
 				
-			);
+			) );
 
 			$wpas_replies = new WP_Query( $args );
 
