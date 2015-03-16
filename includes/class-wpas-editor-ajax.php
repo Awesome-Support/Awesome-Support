@@ -191,8 +191,8 @@ class WPAS_Editor_Ajax {
 	 * @return string            Unmodified settings
 	 */
 	public function get_quicktags_settings( $qtInit, $editor_id ) {
-		$this->qt_settings = $qtInit;
-		return $qtInit;
+		$this->qt_settings = apply_filters( 'wpas_ajax_editor_quicktags_settings', $qtInit );
+		return apply_filters( 'wpas_ajax_editor_quicktags_settings', $qtInit );
 	}
 
 	/**
@@ -207,8 +207,8 @@ class WPAS_Editor_Ajax {
 	 * @return string            Unmodified settings
 	 */
 	public function get_tinymce_settings( $mceInit, $editor_id ) {
-		$this->mce_settings = $mceInit;
-		return $mceInit;
+		$this->mce_settings = apply_filters( 'wpas_ajax_editor_tinymce_settings', $mceInit );
+		return apply_filters( 'wpas_ajax_editor_tinymce_settings', $mceInit );
 	}
 
 	/**
