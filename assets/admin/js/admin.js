@@ -3,7 +3,7 @@
 
 	$(function () {
 
-		var data, btnEdit, btnDelete, btnCancel, btnSave, editorRow, replyId, editorId, reply;
+		var data, btnEdit, btnDelete, btnCancel, btnSave, editorRow, replyId, editorId, reply, controls;
 
 		btnEdit = $('.wpas-edit');
 		btnDelete = $('.wpas-delete');
@@ -23,13 +23,14 @@
 				event.preventDefault();
 
 				btnEdit = $(this);
+				controls = $(this).parents('.wpas-ticket-controls');
 				replyId = $(this).data('replyid');
 				editorId = $(this).data('wysiwygid');
 				reply = $($(this).data('origin'));
 				btnSave = $('#wpas-edit-submit-' + replyId);
 
 				// Update the UI
-				btnEdit.text('Loading editor...').prop('disabled', true).blur();
+				controls.hide();
 				reply.hide();
 
 				/*
@@ -51,9 +52,6 @@
 
 					// AJAX request
 					$.post(ajaxurl, data, function (response) {
-						// Hide the Edit button
-						btnEdit.text('Editor is active');
-
 						// Append editor to DOM
 						$('.wpas-editwrap-' + replyId).addClass('wp_editor_active').show();
 						$('.wpas-editwrap-' + replyId + ' .wpas-wp-editor').html(response);
@@ -75,7 +73,7 @@
 					e.preventDefault();
 
 					// Update the UI
-					btnEdit.text('Edit');
+					controls.show();
 					btnSave.prop('disabled', true).val('Saving...');
 
 					var tinyMCEContent = tinyMCE.get(editorId).getContent();
@@ -103,19 +101,19 @@
 				btnCancel.on('click', function (e) {
 					e.preventDefault();
 
-					// Restore the original wp_editor content					
 					var data = {
 						'action': 'wp_editor_content_ajax',
 						'post_id': replyId
 					};
 					$.post(ajaxurl, data, function (response) {
+						// Restore the original wp_editor content
 						tinyMCE.get(editorId).setContent(response);
-					});
 
-					// Update the UI
-					reply.show();
-					editorRow.hide();
-					btnEdit.text('Edit');
+						// Update the UI
+						reply.show();
+						editorRow.hide();
+						controls.show();
+					});
 				});
 			});
 
