@@ -284,13 +284,16 @@ class WPAS_Editor_Ajax {
 
 	/**
 	 * Add an init callback to the TinyMCE settings.
+	 * http://stackoverflow.com/a/17934723/1414881
 	 *
 	 * @since  3.1.5
 	 * @param  array $settings Original TinyCME settings
 	 * @return array           Settings containing our init callback
 	 */
 	public function add_instance_callback( $settings ) {
-		$settings['init_instance_callback'] = 'getEditorContent';
+		$settings['setup'] = 'function(ed) {
+			ed.on("init", getEditorContent(ed));
+		}';
 		return $settings;
 	}
 
