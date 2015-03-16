@@ -3,13 +3,12 @@
 
 	$(function () {
 
-		var data, wpasBtnEdit, wpasBtnDelete, wpasBtnCancel, wpasBtnSave, wpasEditorRow, wpasReplyID, wpasReply, wpasWisywigID, wpasOrigin, btnSave, originalContent;
+		var data, btnEdit, btnDelete, btnCancel, btnSave, editorRow, replyId, editorId, reply, replyOriginal;
 
-		wpasBtnEdit = $('.wpas-edit');
-		wpasBtnDelete = $('.wpas-delete');
-		wpasBtnCancel = $('.wpas-editcancel');
-		wpasBtnSave = $('.wpas-btn-save-reply');
-		wpasEditorRow = $('.wpas-editor');
+		btnEdit = $('.wpas-edit');
+		btnDelete = $('.wpas-delete');
+		btnCancel = $('.wpas-editcancel');
+		editorRow = $('.wpas-editor');
 
 		////////////////////////////////////
 		// Edit / Delete Ticket TinyMCE //
@@ -20,46 +19,43 @@
 
 		} else {
 
-			wpasBtnEdit.on('click', function (event) {
+			btnEdit.on('click', function (event) {
 				event.preventDefault();
 
-				wpasReplyID = $(this).data('replyid');
-				wpasReply = $(this).data('reply');
-				wpasWisywigID = $(this).data('wysiwygid');
-				wpasOrigin = $($(this).data('origin'));
-				btnSave = $('#wpas-edit-submit-' + wpasReplyID);
+				replyId = $(this).data('replyid');
+				editorId = $(this).data('wysiwygid');
+				reply = $($(this).data('origin'));
+				btnSave = $('#wpas-edit-submit-' + replyId);
 
 				// Update the UI
-				wpasBtnEdit.text('Loading editor...').prop('disabled', true).blur();
-				wpasOrigin.hide();
+				btnEdit.text('Loading editor...').prop('disabled', true).blur();
+				reply.hide();
 
 				/*
 				Check if wp_editor has already been created
 				Only do AJAX if necessary
 				 */
-				if ($('.wpas-editwrap-' + wpasReplyID).hasClass('wp_editor_active')) {
+				if ($('.wpas-editwrap-' + replyId).hasClass('wp_editor_active')) {
 
-					$('.wpas-editwrap-' + wpasReplyID).show();
+					$('.wpas-editwrap-' + replyId).show();
 
 				} else {
 
 					// AJAX data
 					data = {
 						'action': 'wp_editor_ajax',
-						'post_id': wpasReplyID,
-						'editor_id': wpasWisywigID
+						'post_id': replyId,
+						'editor_id': editorId
 					};
 
 					// AJAX request
 					$.post(ajaxurl, data, function (response) {
 						// Hide the Edit button
-						wpasBtnEdit.text('Editor is active');
-
-						console.log(response);
+						btnEdit.text('Editor is active');
 
 						// Append editor to DOM
-						$('.wpas-editwrap-' + wpasReplyID).addClass('wp_editor_active').show();
-						$('.wpas-editwrap-' + wpasReplyID + ' .wpas-wp-editor').html(response);
+						$('.wpas-editwrap-' + replyId).addClass('wp_editor_active').show();
+						$('.wpas-editwrap-' + replyId + ' .wpas-wp-editor').html(response);
 
 						// Init TinyMCE
 						tinyMCE.init(tinyMCEPreInit.mceInit[data.editor_id]);
@@ -70,9 +66,9 @@
 							quicktags(tinyMCEPreInit.qtInit[data.editor_id]);
 						} catch (e) {}
 
-						// Get TinyMCE content
+						// Get TinyMCE content (would be better with callback function)
 						setTimeout(function () {
-							originalContent = tinyMCE.get(wpasWisywigID).getContent();
+							replyOriginal = tinyMCE.get(editorId).getContent();
 						}, 100);
 					});
 
@@ -83,13 +79,13 @@
 					e.preventDefault();
 
 					// Update the UI
-					wpasBtnEdit.text('Edit');
+					btnEdit.text('Edit');
 					btnSave.prop('disabled', true).val('Saving...');
 
-					var tinyMCEContent = tinyMCE.get(wpasWisywigID).getContent();
+					var tinyMCEContent = tinyMCE.get(editorId).getContent();
 					var data = {
 						'action': 'wpas_edit_reply',
-						'reply_id': wpasReplyID,
+						'reply_id': replyId,
 						'reply_content': tinyMCEContent
 					};
 
@@ -99,8 +95,8 @@
 
 							// Revert to save button
 							btnSave.prop('disabled', false).val('Save changes');
-							wpasOrigin.html(tinyMCEContent).show();
-							wpasEditorRow.hide();
+							reply.html(tinyMCEContent).show();
+							editorRow.hide();
 						} else {
 							alert(response);
 						}
@@ -108,22 +104,22 @@
 				});
 
 				// Cancel
-				wpasBtnCancel.on('click', function (e) {
+				btnCancel.on('click', function (e) {
 					e.preventDefault();
 
 					// Restore the original wp_editor content
-					tinyMCE.get(wpasWisywigID).setContent(originalContent);
+					tinyMCE.get(editorId).setContent(replyOriginal);
 
 					// Update the UI
-					wpasOrigin.show();
-					wpasEditorRow.hide();
-					wpasBtnEdit.text('Edit');
+					reply.show();
+					editorRow.hide();
+					btnEdit.text('Edit');
 				});
 			});
 
 		}
 
-		wpasBtnDelete.click(function (e) {
+		btnDelete.click(function (e) {
 			if (confirm(wpasL10n.alertDelete)) {
 				return true;
 			} else {
@@ -211,7 +207,7 @@
 			select.find('option[value=""]').remove();
 			select.prepend('<option></option>');
 			select.select2({
-				placehoriginalContenter: 'Please Select'
+				placehreplyOriginaler: 'Please Select'
 			});
 		}
 
