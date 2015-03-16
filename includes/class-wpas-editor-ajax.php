@@ -61,8 +61,9 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Ajax calls to load the editor.
 		 */
-		add_action( 'wp_ajax_wp_editor_ajax',        array( $this, 'editor_html' ), 10, 0 );
-		add_action( 'wp_ajax_nopriv_wp_editor_ajax', array( $this, 'editor_html' ), 10, 0 );
+		add_action( 'wp_ajax_wp_editor_ajax',         array( $this, 'editor_html' ), 10, 0 );
+		add_action( 'wp_ajax_nopriv_wp_editor_ajax',  array( $this, 'editor_html' ), 10, 0 );
+		add_action( 'wp_ajax_wp_editor_content_ajax', array( $this, 'get_content' ), 10, 0 );
 
 	}
 
@@ -149,6 +150,32 @@ class WPAS_Editor_Ajax {
 		</script>
 
 		<?php die();
+	}
+
+	/**
+	 * Get the content of a post.
+	 *
+	 * @since  3.1.5
+	 * @return void
+	 */
+	public function get_content() {
+
+		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
+
+		if ( empty( $post_id ) ) {
+			echo '';
+			die();
+		}
+
+		$post = get_post( $post_id );
+
+		if ( empty( $post ) ) {
+			echo '';
+			die();
+		}
+
+		echo apply_filters( 'the_content', $post->post_content );
+		die();
 	}
 
 	/**
