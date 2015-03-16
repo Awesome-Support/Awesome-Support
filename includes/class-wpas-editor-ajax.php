@@ -56,7 +56,7 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Add new settings
 		 */
-		add_filter( 'wpas_ajax_editor_tinymce_settings', array( $this, 'add_instance_callback' ), 10, 1 );
+		// add_filter( 'wpas_ajax_editor_tinymce_settings', array( $this, 'add_instance_callback' ), 10, 1 );
 
 		/**
 		 * Ajax calls to load the editor.
