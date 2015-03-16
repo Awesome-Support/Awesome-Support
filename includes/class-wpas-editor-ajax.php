@@ -54,6 +54,11 @@ class WPAS_Editor_Ajax {
 		add_filter( 'quicktags_settings',   array( $this, 'get_quicktags_settings' ), 10, 2 );
 
 		/**
+		 * Add new settings
+		 */
+		add_filter( 'wpas_ajax_editor_tinymce_settings', array( $this, 'add_instance_callback' ), 10, 1 );
+
+		/**
 		 * Ajax calls to load the editor.
 		 */
 		add_action( 'wp_ajax_wp_editor_ajax',        array( $this, 'editor_html' ), 10, 0 );
@@ -275,6 +280,18 @@ class WPAS_Editor_Ajax {
 
 		return '{' . trim( $options, ' ,' ) . '}';
 
+	}
+
+	/**
+	 * Add an init callback to the TinyMCE settings.
+	 *
+	 * @since  3.1.5
+	 * @param  array $settings Original TinyCME settings
+	 * @return array           Settings containing our init callback
+	 */
+	public function add_instance_callback( $settings ) {
+		$settings['init_instance_callback'] = 'getEditorContent';
+		return $settings;
 	}
 
 }
