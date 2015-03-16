@@ -202,25 +202,10 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 
 						<tr class="wpas-editor wpas-editwrap-<?php echo $row->ID; ?>" style="display:none;">
 							<td colspan="2">
-								<div class="wpas-editwrap" id="wpas-editwrap-<?php echo $row->ID; ?>">
-									<?php
-									/* The edition textarea */
-									wp_editor( apply_filters( 'the_editor_content', apply_filters( 'the_content', $row->post_content ) ), 'wpas-editreply-' . $row->ID, array(
-										'media_buttons' => false,
-										'teeny' 		=> true,
-										'quicktags' 	=> false,
-										'editor_class' 	=> 'wpas-edittextarea',
-										'textarea_name' => 'wpas_edit_reply[' . $row->ID . ']',
-										'textarea_rows' => 20
-										)
-									);
-									?>
-
-									<br>
-									<input id="wpas-edited-reply-<?php echo $row->ID; ?>" type="hidden" name="edited_reply">
-									<input type="submit" class="button-primary wpas-btn-save-edit" value="<?php _e( 'Save changes', 'wpas' ); ?>"> 
-									<input type="button" class="wpas-editcancel button-secondary" data-origin="#wpas-reply-<?php echo $row->ID; ?>" data-replyid="<?php echo $row->ID; ?>" data-reply="wpas-editwrap-<?php echo $row->ID; ?>" data-wysiwygid="wpas-editreply-<?php echo $row->ID; ?>" value="<?php _e( 'Cancel', 'wpas' ); ?>">
-								</div>
+								<div class="wpas-wp-editor" style="margin-bottom: 1em;"></div>
+								<input id="wpas-edited-reply-<?php echo $row->ID; ?>" type="hidden" name="edited_reply">
+								<input type="submit" id="wpas-edit-submit-<?php echo $row->ID; ?>" class="button-primary wpas-btn-save-edit" value="<?php _e( 'Save changes', 'wpas' ); ?>"> 
+								<input type="button" class="wpas-editcancel button-secondary" data-origin="#wpas-reply-<?php echo $row->ID; ?>" data-replyid="<?php echo $row->ID; ?>" data-reply="wpas-editwrap-<?php echo $row->ID; ?>" data-wysiwygid="wpas-editreply-<?php echo $row->ID; ?>" value="<?php _e( 'Cancel', 'wpas' ); ?>">
 							</td>
 						</tr>
 
