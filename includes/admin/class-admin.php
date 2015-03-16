@@ -921,9 +921,25 @@ class Awesome_Support_Admin {
 		 */
 		$log = array();
 
-		/* First thing, set the ticket as open */
+		/**
+		 * If no ticket status is found we are in the situation where
+		 * the agent is creating a ticket on behalf of the user. There are
+		 * a couple of things that we need to do then.
+		 */
 		if ( '' === $original_status = get_post_meta( $post_id, '_wpas_status', true ) ) {
+
+			/**
+			 * First of all, set the ticket as open. This is very important.
+			 */
 			add_post_meta( $post_id, '_wpas_status', 'open', true );
+
+			/**
+			 * Send the confirmation e-mail to the user.
+			 *
+			 * @since  3.1.5
+			 */
+			wpas_email_notify( $post_id, 'submission_confirmation' );
+
 		}
 
 		/* Save the possible ticket reply */
