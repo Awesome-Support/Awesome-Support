@@ -33,11 +33,23 @@ class Awesome_Support {
 		/* Ajax actions */
 		add_action( 'wp_ajax_nopriv_email_validation', array( $this, 'mailgun_check' ) );
 
+		/**
+		 * Load the WP Editor Ajax class.
+		 */
+		add_action( 'plugins_loaded', array( 'WPAS_Editor_Ajax', 'get_instance' ), 11, 0 );
+
 		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
+			/**
+			 * Load external classes.
+			 */
 			add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ),  11, 0 );
 			add_action( 'plugins_loaded',                 array( 'WPAS_Gist',             'get_instance' ),  11, 0 );
 			add_action( 'pre_user_query',                 'wpas_randomize_uers_query',                       10, 1 ); // Alter the user query to randomize the results
+
+			/**
+			 * Load internal methods.
+			 */
 			add_action( 'wp',                             array( $this, 'get_replies_object' ),              10, 0 ); // Generate the object used for the custom loop for displaying ticket replies
 			add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ),               10, 0 ); // Activate plugin when new blog is added
 			add_action( 'plugins_loaded',                 array( $this, 'load_plugin_textdomain' ),           9, 0 ); // Load the plugin textdomain

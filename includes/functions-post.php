@@ -1028,3 +1028,45 @@ function wpas_reopen_ticket( $ticket_id ) {
 	}
 
 }
+
+add_action( 'wp_ajax_wpas_edit_reply_editor', 'wpas_edit_reply_editor_ajax' );
+/**
+ * Load TinyMCE via Ajax request to edit a reply.
+ *
+ * @since  3.1.5
+ * @return string Editor markup
+ */
+function wpas_edit_reply_editor_ajax() {
+
+	$reply_id = filter_input( INPUT_POST, 'reply_id', FILTER_SANITIZE_NUMBER_INT );
+
+	if ( empty( $reply_id ) ) {
+		echo '';
+		die();
+	}
+
+	$post = get_post( $reply_id );
+
+	if ( 'ticket_reply' !== $post->post_type ) {
+		echo '';
+		die();
+	}
+
+	$editor_id      = "wpas-editreply-$reply_id";
+	$editor_content = apply_filters( 'the_content', $post->post_content );
+
+	$settings = array(
+		'media_buttons' => false,
+		'teeny' 		=> true,
+		'quicktags' 	=> false,
+		'editor_class' 	=> 'wpas-edittextarea',
+		'textarea_name' => 'wpas_edit_reply[' . $reply_id . ']',
+		'textarea_rows' => 20
+	);
+
+	$editor = wp_editor( $editor_content, $editor_id, $settings );
+
+	echo $editor;
+	die();
+
+}

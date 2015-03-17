@@ -101,6 +101,7 @@ require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templat
 require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
 require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
 require_once( WPAS_PATH . 'includes/class-gist.php' );                // Add oEmbed support for Gists
+require_once( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper class to load a wp_editor instance via Ajax
 
 /**
  * Check if dependencies are loaded.
