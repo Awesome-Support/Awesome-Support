@@ -328,7 +328,11 @@ class Awesome_Support_Admin {
 			wp_dequeue_script( 'autosave' );
 		}
 
-		if ( isset( $_GET['page'] ) && 'wpas-about' === $_GET['page'] ) {
+		$page    = filter_input( INPUT_GET, 'page',   FILTER_SANITIZE_STRING );
+		$action  = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
+		$post_id = filter_input( INPUT_GET, 'post',   FILTER_SANITIZE_NUMBER_INT );
+
+		if ( 'wpas-about' === $page ) {
 			add_thickbox();
 			wp_enqueue_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
 		}
@@ -337,6 +341,10 @@ class Awesome_Support_Admin {
 		wp_enqueue_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
 		wp_localize_script( 'wpas-admin-script', 'wpasL10n', array( 'alertDelete' => __( 'Are you sure you want to delete this reply?', 'wpas' ) ) );
 		wp_enqueue_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
+
+		if ( 'edit' === $action && 'ticket' == get_post_type() ) {
+			wp_enqueue_script( 'wpas-admin-reply', WPAS_URL . 'assets/admin/js/admin-reply.js', array( 'jquery' ), WPAS_VERSION );
+		}
 
 	}
 
