@@ -1,8 +1,9 @@
-(function($) {
+(function ($) {
 	"use strict";
 
-	$(function() {
+	$(function () {
 
+		var wpEditor = (typeof tinyMCE != "undefined") && tinyMCE.activeEditor && !tinyMCE.activeEditor.isHidden();
 		var data, btnEdit, btnDelete, btnCancel, btnSave, editorRow, replyId, editorId, reply, controls;
 
 		btnEdit = $('.wpas-edit');
@@ -10,16 +11,10 @@
 		btnCancel = $('.wpas-editcancel');
 		editorRow = $('.wpas-editor');
 
-		////////////////////////////////////
-		// Edit / Delete Ticket TinyMCE //
-		////////////////////////////////////
-		if (typeof tinyMCE == 'undefined' && typeof tinyMCEPreInit == 'undefined' && tinymce.editors.length) {
+		if (wpEditor) {
 
-			alert('No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor');
-
-		} else {
-
-			btnEdit.on('click', function(event) {
+			// There is an instance of wp_editor
+			btnEdit.on('click', function (event) {
 				event.preventDefault();
 
 				btnEdit = $(this);
@@ -51,7 +46,7 @@
 					};
 
 					// AJAX request
-					$.post(ajaxurl, data, function(response) {
+					$.post(ajaxurl, data, function (response) {
 						// Append editor to DOM
 						$('.wpas-editwrap-' + replyId).addClass('wp_editor_active').show();
 						$('.wpas-editwrap-' + replyId + ' .wpas-wp-editor').html(response);
@@ -69,7 +64,7 @@
 				}
 
 				// Save the reply
-				btnSave.on('click', function(e) {
+				btnSave.on('click', function (e) {
 					e.preventDefault();
 
 					// Update the UI
@@ -83,7 +78,7 @@
 						'reply_content': tinyMCEContent
 					};
 
-					$.post(ajaxurl, data, function(response) {
+					$.post(ajaxurl, data, function (response) {
 						// check if the response is an integer
 						if (Math.floor(response) == response && $.isNumeric(response)) {
 
@@ -98,14 +93,14 @@
 				});
 
 				// Cancel
-				btnCancel.on('click', function(e) {
+				btnCancel.on('click', function (e) {
 					e.preventDefault();
 
 					var data = {
 						'action': 'wp_editor_content_ajax',
 						'post_id': replyId
 					};
-					$.post(ajaxurl, data, function(response) {
+					$.post(ajaxurl, data, function (response) {
 						// Restore the original wp_editor content
 						tinyMCE.get(editorId).setContent(response);
 
@@ -117,15 +112,18 @@
 				});
 			});
 
-		}
+			btnDelete.click(function (e) {
+				if (confirm(wpasL10n.alertDelete)) {
+					return true;
+				} else {
+					return false;
+				}
+			});
 
-		btnDelete.click(function(e) {
-			if (confirm(wpasL10n.alertDelete)) {
-				return true;
-			} else {
-				return false;
-			}
-		});
+		} else {
+			// There is NO instance of wp_editor
+			alert('No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor');
+		}
 
 	});
 
