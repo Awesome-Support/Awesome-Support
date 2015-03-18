@@ -3,7 +3,6 @@
 
 	$(function () {
 
-		var wpEditor = (typeof tinyMCE != "undefined") && tinyMCE.activeEditor && !tinyMCE.activeEditor.isHidden();
 		var data, btnEdit, btnDelete, btnCancel, btnSave, editorRow, replyId, editorId, reply, controls;
 
 		btnEdit = $('.wpas-edit');
@@ -11,7 +10,18 @@
 		btnCancel = $('.wpas-editcancel');
 		editorRow = $('.wpas-editor');
 
-		if (wpEditor) {
+		/*
+		Check if TinyMCE is active in WordPress
+		http://stackoverflow.com/a/1180199/1414881
+		 */
+		var is_tinyMCE_active = false;
+		if (typeof (tinyMCE) != "undefined") {
+			if (tinyMCE.activeEditor === null || tinyMCE.activeEditor.isHidden() !== false) {
+				is_tinyMCE_active = true;
+			}
+		}
+
+		if (is_tinyMCE_active) {
 
 			// There is an instance of wp_editor
 			btnEdit.on('click', function (event) {
@@ -122,7 +132,10 @@
 
 		} else {
 			// There is NO instance of wp_editor
-			alert(wpasL10n.alertNoTinyMCE);
+			btnEdit.on('click', function (event) {
+				event.preventDefault();
+				alert(wpasL10n.alertNoTinyMCE);
+			});
 		}
 
 	});
