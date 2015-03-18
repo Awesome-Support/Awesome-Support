@@ -190,6 +190,58 @@ function wpas_locate_template( $name ) {
 }
 
 /**
+ * Get the plugin's theme stylesheet path.
+ *
+ * @since  3.1.6
+ * @return string Stylesheet path
+ */
+function wpas_get_theme_stylesheet() {
+
+	$theme = wpas_get_theme();
+
+	$template = locate_template(
+		array(
+			WPAS_TEMPLATE_PATH . 'style.css',
+			WPAS_TEMPLATE_PATH . 'css/style.css',
+		)
+	);
+
+	if ( ! $template ) {
+		$template =  WPAS_PATH . "themes/$theme/css/style.css";
+	}
+
+	return apply_filters( 'wpas_get_theme_stylesheet', $template ); 
+
+}
+
+/**
+ * Get plugin's theme stylesheet URI.
+ *
+ * @since  3.1.6
+ * @return string Stylesheet URI
+ */
+function wpas_get_theme_stylesheet_uri() {
+
+	$theme = wpas_get_theme();
+
+	$template = locate_template(
+		array(
+			WPAS_TEMPLATE_PATH . 'style.css',
+			WPAS_TEMPLATE_PATH . 'css/style.css',
+		)
+	);
+
+	if ( ! $template ) {
+		$template =  WPAS_PATH . "themes/$theme/css/style.css";
+	}
+
+	$uri = str_replace( ABSPATH, trailingslashit( home_url() ), $template );
+
+	return apply_filters( 'wpas_get_theme_stylesheet_uri', $uri ); 
+
+}
+
+/**
  * Get the ticket header.
  *
  * @since  3.0.0

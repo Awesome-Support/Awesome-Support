@@ -653,17 +653,16 @@ class Awesome_Support {
 	 */
 	public function enqueue_styles() {
 
-		/* Load the theme stylesheet */
-		$theme = wpas_get_theme();
-
-		wp_register_style( 'wpas-theme-styles', WPAS_URL . "themes/$theme/css/style.css", array(), WPAS_VERSION );
 		wp_register_style( 'wpas-plugin-styles', WPAS_URL . 'assets/public/css/public.css', array(), WPAS_VERSION );
 
 		if ( ! is_admin() && wpas_is_plugin_page() ) {
 
 			wp_enqueue_style( 'wpas-plugin-styles' );
 
-			if ( file_exists( WPAS_PATH . "themes/$theme/css/style.css" ) && true === boolval( wpas_get_option( 'theme_stylesheet' ) ) ) {
+			$stylesheet = wpas_get_theme_stylesheet();
+
+			if ( file_exists( $stylesheet ) && true === boolval( wpas_get_option( 'theme_stylesheet' ) ) ) {
+				wp_register_style( 'wpas-theme-styles', wpas_get_theme_stylesheet_uri(), array(), WPAS_VERSION );
 				wp_enqueue_style( 'wpas-theme-styles' );
 			}
 			
