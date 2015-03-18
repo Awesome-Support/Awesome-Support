@@ -757,7 +757,7 @@ class Awesome_Support_Admin {
 					wp_trash_post( $del_id, false );
 
 					/* Redirect with clean URL */
-					$url = esc_url( add_query_arg( array( 'post' => $_GET['post'], 'action' => 'edit' ), admin_url( 'post.php' ) . "#wpas-post-$del_id" ) );
+					$url = wp_sanitize_redirect( add_query_arg( array( 'post' => $_GET['post'], 'action' => 'edit' ), admin_url( 'post.php' ) . "#wpas-post-$del_id" ) );
 
 					wpas_redirect( 'trashed_reply', $url );
 					exit;
