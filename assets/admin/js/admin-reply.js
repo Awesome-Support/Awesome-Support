@@ -122,7 +122,7 @@
 
 		} else {
 			// There is NO instance of wp_editor
-			alert('No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor');
+			alert(wpasL10n.alertNoTinyMCE);
 		}
 
 	});
