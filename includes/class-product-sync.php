@@ -462,7 +462,7 @@ class WPAS_Product_Sync {
 			}
 
 			if ( empty( $query->posts ) ) {
-				return array();
+				return $terms;
 			}
 
 			/* This is the terms object array */
