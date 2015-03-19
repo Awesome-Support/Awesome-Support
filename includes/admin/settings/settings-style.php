@@ -18,7 +18,7 @@ function wpas_core_settings_style( $def ) {
 					'type'    => 'select',
 					'desc'    => __( 'Which theme to use for the front-end.', 'wpas' ),
 					'options' => wpas_list_themes(),
-					'default' => ''
+					'default' => 'default'
 				),
 				array(
 					'name'    => __( 'Theme Stylesheet', 'wpas' ),
