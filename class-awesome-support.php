@@ -868,7 +868,7 @@ class Awesome_Support {
 			return false;
 		}
 
-		echo '<div style="display: none;"><div id="wpas-modalterms">' . wp_autop( wp_kses_post( $terms ) ) . '</div></div>';
+		echo '<div style="display: none;"><div id="wpas-modalterms">' . wpautop( wp_kses_post( $terms ) ) . '</div></div>';
 
 		return true;
 
