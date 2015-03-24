@@ -191,12 +191,12 @@ class WPAS_Custom_Fields_Display extends WPAS_Custom_Fields {
 		wpas_sort_terms_hierarchicaly( $terms, $ordered_terms );
 		?>
 
-		<div id="<?php echo $field_id; ?>_container" <?php wpas_get_field_container_class( $field_id ); ?>>
+		<div <?php wpas_get_field_container_class( $field_id ); ?> id="<?php echo $field_id; ?>_container">
 			<label for="<?php echo $field_id; ?>"><strong><?php echo $label; ?></strong></label>
 
 			<?php if ( !is_admin() || current_user_can( $field['args']['capability'] ) ): ?>
 
-				<select name="<?php echo $field_id; ?>" id="<?php echo $field_id; ?>" <?php wpas_get_field_class( $field_id ); ?> style="width:100%">
+				<select name="<?php echo $field_id; ?>" id="<?php echo $field_id; ?>" <?php wpas_get_field_class( $field_id ); ?>>
 					<option value=""><?php _e( 'Please select', 'wpas' ); ?></option>
 
 					<?php
