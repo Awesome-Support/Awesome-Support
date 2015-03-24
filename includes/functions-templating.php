@@ -437,15 +437,18 @@ function wpas_get_reply_form( $args = array() ) {
 			 *
 			 * @since  3.0.0
 			 */
-			do_action( 'wpas_ticket_details_reply_textarea_after' ); ?>
+			do_action( 'wpas_ticket_details_reply_textarea_after' );
 
-			<div class="checkbox">
-				<label for="close_ticket" data-toggle="tooltip" data-placement="right" title="" data-original-title="<?php _e( 'No reply is required to close', 'wpas' ); ?>">
-					<input type="checkbox" name="wpas_close_ticket" id="close_ticket" value="true"> <?php _e( 'Close this ticket', 'wpas' ); ?>
-				</label>
-			</div>
+			if ( current_user_can( 'close_ticket' ) ): ?>
 
-			<?php
+				<div class="checkbox">
+					<label for="close_ticket" data-toggle="tooltip" data-placement="right" title="" data-original-title="<?php _e( 'No reply is required to close', 'wpas' ); ?>">
+						<input type="checkbox" name="wpas_close_ticket" id="close_ticket" value="true"> <?php _e( 'Close this ticket', 'wpas' ); ?>
+					</label>
+				</div>
+
+			<?php endif;
+			
 			/**
 			 * wpas_ticket_details_reply_close_checkbox_after hook
 			 *

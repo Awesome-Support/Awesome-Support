@@ -948,6 +948,10 @@ function wpas_close_ticket( $ticket_id ) {
 
 	global $current_user;
 
+	if ( ! current_user_can( 'close_ticket' ) ) {
+		wp_die( __( 'You do not have the capacity to close this ticket', 'wpas' ), __( 'Can&#39;t closr ticket', 'wpas' ), array( 'back_link' => true ) );
+	}
+
 	$ticket_id = intval( $ticket_id );
 
 	if ( 'ticket' == get_post_type( $ticket_id ) ) {
