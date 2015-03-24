@@ -25,6 +25,13 @@ endif;
 $registration  = boolval( wpas_get_option( 'allow_registrations', true ) ); // Make sure registrations are open
 $redirect_to   = get_permalink( $post->ID );
 $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-register';
+
+/* Catch Messages */
+if (isset($_GET['message']) && $_GET['message'] !== '') {
+	$error = urldecode( base64_decode($_GET['message']));
+} else {
+	$error = false;
+}
 ?>
 
 <div class="wpas <?php echo $wrapper_class; ?>">
@@ -36,6 +43,10 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 		/* Registrations are not allowed. */
 		if ( false === $registration ) {
 			wpas_notification( 'failure', __( 'Registrations are currently not allowed.', 'wpas' ) );
+		}
+                /* Show message */
+                if ( false !== $error ) {
+			wpas_notification( 'failure', __( $error ) );
 		}
 		?>
 		
