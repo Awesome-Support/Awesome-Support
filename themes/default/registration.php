@@ -46,7 +46,7 @@ if (isset($_GET['message']) && $_GET['message'] !== '') {
 		}
                 /* Show message */
                 if ( false !== $error ) {
-			wpas_notification( 'failure', __( $error ) );
+			wpas_notification( 'failure', $error );
 		}
 		?>
 		

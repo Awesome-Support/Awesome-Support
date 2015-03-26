@@ -28,7 +28,7 @@ if ($issuer !== false) {
     $issuer_name = $issuer->data->display_name;
 } else {
     $issuer_id = 0;
-    $issuer_name = 'deleted user';
+    $issuer_name = __( 'User was deleted', 'wpas' );
 }
 
 /* Issuer tickets link */
