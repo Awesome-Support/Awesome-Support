@@ -349,22 +349,21 @@ class WPAS_Tickets_List {
 	 * @since  3.0.0
 	 * @return void
 	 */
-	public function hide_closed_tickets() {
+	public function hide_closed_tickets() 
+        {
+            $hide = boolval( wpas_get_option( 'hide_closed' ) );
 
-		$hide = boolval( wpas_get_option( 'hide_closed' ) );
+            if ( true !== $hide ) {
+                    return false;
+            }
 
-		if ( true !== $hide ) {
-			return false;
-		}
+            global $submenu;
 
-		global $submenu;
+            if ( is_array( $submenu ) && array_key_exists( 'edit.php?post_type=ticket', $submenu ) && isset($submenu[5])) {
+                    $submenu["edit.php?post_type=ticket"][5][2] = $submenu["edit.php?post_type=ticket"][5][2] . '&amp;wpas_status=open';
+            }
 
-		if ( is_array( $submenu ) && array_key_exists( 'edit.php?post_type=ticket', $submenu ) ) {
-			$submenu["edit.php?post_type=ticket"][5][2] = $submenu["edit.php?post_type=ticket"][5][2] . '&amp;wpas_status=open';
-		}
-
-		return true;
-
+            return true;
 	}
 
 	/**
