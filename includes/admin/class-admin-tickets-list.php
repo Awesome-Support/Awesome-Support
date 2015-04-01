@@ -19,9 +19,8 @@ class WPAS_Tickets_List {
 	 */
 	protected static $instance = null;
 
-	public function __construct() 
-        {
-             add_action( 'quick_edit_custom_box',                            array( $this, 'custom_quickedit_options' ), 10, 2 );
+	public function __construct() {
+            // add_action( 'quick_edit_custom_box',                            array( $this, 'custom_quickedit_options' ), 10, 2 );
             // add_action( 'bulk_edit_custom_box',                             array( $this, 'custom_quickedit_options' ), 10, 2 );
             // add_action( 'wp_ajax_save_bulk_edit_book',                      array( $this, 'save_bulk_edit_ticket' ), 10, 0 );
             add_action( 'manage_ticket_posts_columns',        array( $this, 'add_core_custom_columns' ), 16, 1 );
@@ -58,8 +57,7 @@ class WPAS_Tickets_List {
 	 * @param   array   $actions    An array of row action links.
          * @return  array               Updated array of row action links
          */
-        public function remove_quick_edit( $actions ) 
-        {
+        public function remove_quick_edit( $actions ) {
             global $post;
 
             if( $post->post_type === 'ticket' ) {
@@ -349,8 +347,7 @@ class WPAS_Tickets_List {
 	 * @since  3.0.0
 	 * @return void
 	 */
-	public function hide_closed_tickets() 
-        {
+	public function hide_closed_tickets() {
             $hide = boolval( wpas_get_option( 'hide_closed' ) );
 
             if ( true !== $hide ) {
