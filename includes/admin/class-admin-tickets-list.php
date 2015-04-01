@@ -20,17 +20,18 @@ class WPAS_Tickets_List {
 	protected static $instance = null;
 
 	public function __construct() {
-		// add_action( 'quick_edit_custom_box',                            array( $this, 'custom_quickedit_options' ), 10, 2 );
-		// add_action( 'bulk_edit_custom_box',                             array( $this, 'custom_quickedit_options' ), 10, 2 );
-		// add_action( 'wp_ajax_save_bulk_edit_book',                      array( $this, 'save_bulk_edit_ticket' ), 10, 0 );
-		add_action( 'manage_ticket_posts_columns',        array( $this, 'add_core_custom_columns' ), 16, 1 );
-		add_action( 'manage_ticket_posts_custom_column' , array( $this, 'core_custom_columns_content' ), 10, 2 );
-		add_action( 'restrict_manage_posts',                            array( $this, 'unreplied_filter' ), 9, 0 );
-		add_action( 'admin_menu',                                       array( $this, 'hide_closed_tickets' ) );
-		add_filter( 'the_excerpt',                                      array( $this, 'remove_excerpt' ) );
-		// add_filter( 'update_user_metadata',                             array( $this, 'set_list_mode' ), 10, 5 );
-		// add_filter( 'parse_query',                                      array( $this, 'filter_by_replies' ), 10, 1 );
-	}
+            // add_action( 'quick_edit_custom_box',                            array( $this, 'custom_quickedit_options' ), 10, 2 );
+            // add_action( 'bulk_edit_custom_box',                             array( $this, 'custom_quickedit_options' ), 10, 2 );
+            // add_action( 'wp_ajax_save_bulk_edit_book',                      array( $this, 'save_bulk_edit_ticket' ), 10, 0 );
+            add_action( 'manage_ticket_posts_columns',        array( $this, 'add_core_custom_columns' ), 16, 1 );
+            add_action( 'manage_ticket_posts_custom_column' , array( $this, 'core_custom_columns_content' ), 10, 2 );
+            add_action( 'restrict_manage_posts',                            array( $this, 'unreplied_filter' ), 9, 0 );
+            add_action( 'admin_menu',                                       array( $this, 'hide_closed_tickets' ) );
+            add_filter( 'the_excerpt',                                      array( $this, 'remove_excerpt' ) );
+            // add_filter( 'update_user_metadata',                             array( $this, 'set_list_mode' ), 10, 5 );
+            // add_filter( 'parse_query',                                      array( $this, 'filter_by_replies' ), 10, 1 );
+            add_filter( 'post_row_actions',                    array( $this, 'remove_quick_edit'), 10, 2 );
+        }
 
 	/**
 	 * Return an instance of this class.
@@ -47,7 +48,24 @@ class WPAS_Tickets_List {
 
 		return self::$instance;
 	}
+        
+        /**
+         * Remove Quick Edit action
+         * 
+         * @since   3.1.6
+         * @global  object  $post
+	 * @param   array   $actions    An array of row action links.
+         * @return  array               Updated array of row action links
+         */
+        public function remove_quick_edit( $actions ) {
+            global $post;
 
+            if( $post->post_type === 'ticket' ) {
+                unset($actions['inline hide-if-no-js']);
+            }
+            return $actions;
+        }
+        
 	/**
 	 * Add age custom column.
 	 *
@@ -340,21 +358,19 @@ class WPAS_Tickets_List {
 	 * @return void
 	 */
 	public function hide_closed_tickets() {
+            $hide = boolval( wpas_get_option( 'hide_closed' ) );
 
-		$hide = boolval( wpas_get_option( 'hide_closed' ) );
+            if ( true !== $hide ) {
+                    return false;
+            }
 
-		if ( true !== $hide ) {
-			return false;
-		}
+            global $submenu;
 
-		global $submenu;
+            if ( is_array( $submenu ) && array_key_exists( 'edit.php?post_type=ticket', $submenu ) && isset($submenu[5])) {
+                    $submenu["edit.php?post_type=ticket"][5][2] = $submenu["edit.php?post_type=ticket"][5][2] . '&amp;wpas_status=open';
+            }
 
-		if ( is_array( $submenu ) && array_key_exists( 'edit.php?post_type=ticket', $submenu ) ) {
-			$submenu["edit.php?post_type=ticket"][5][2] = $submenu["edit.php?post_type=ticket"][5][2] . '&amp;wpas_status=open';
-		}
-
-		return true;
-
+            return true;
 	}
 
 	/**

@@ -61,3 +61,5 @@ prepros.cfg
 /node_modules
 
 .idea
+### NetBeans ###
+/nbproject/private/
