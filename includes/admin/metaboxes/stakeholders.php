@@ -22,10 +22,14 @@ wp_nonce_field( Awesome_Support_Admin::$nonce_action, Awesome_Support_Admin::$no
 $issuer = get_userdata( $post->post_author );
 
 /* Issuer ID */
-$issuer_id = $issuer->data->ID;
-
 /* Issuer name */
-$issuer_name = $issuer->data->display_name;
+if ($issuer !== false) {
+    $issuer_id = $issuer->data->ID;
+    $issuer_name = $issuer->data->display_name;
+} else {
+    $issuer_id = 0;
+    $issuer_name = __( 'User was deleted', 'wpas' );
+}
 
 /* Issuer tickets link */
 $issuer_tickets = admin_url( add_query_arg( array( 'post_type' => 'ticket', 'author' => $issuer_id ), 'edit.php' ) );

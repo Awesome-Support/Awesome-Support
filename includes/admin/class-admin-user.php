@@ -83,7 +83,7 @@ class WPAS_User {
 			return false;
 		}
 
-		update_usermeta( $user_id, 'wpas_after_reply', $_POST['wpas_after_reply'] );
+		update_user_meta( $user_id, 'wpas_after_reply', $_POST['wpas_after_reply'] );
 
 	}
 
