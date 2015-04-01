@@ -66,6 +66,10 @@ class WPAS_Tickets_List {
 		 */
 		foreach ( $columns as $col_id => $col_label ) {
 
+			if ( 'title' === $col_id ) {
+				$new['ticket_id'] = '#';
+			}
+
 			/* Remove the date column that's replaced by the activity column */
 			if ( 'date' !== $col_id ) {
 				$new[$col_id] = $col_label;
@@ -101,6 +105,13 @@ class WPAS_Tickets_List {
 		$mode = get_user_setting( 'tickets_list_mode', 'details' );
 
 		switch ( $column ) {
+
+			case 'ticket_id':
+				
+				$link = add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) );
+				echo "<a href='$link'>#$post_id</a>";
+
+				break;
 
 			case 'wpas-assignee':
 
