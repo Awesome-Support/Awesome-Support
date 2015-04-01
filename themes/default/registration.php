@@ -16,11 +16,9 @@ $submit = get_permalink( wpas_get_option( 'ticket_list' ) );
 /**
  * If there is a message to display we show a bootstrap info box
  */
-if ( isset( $param ) && $param['msg'] && $param['type'] ):
-
-	$wpas_notification->notification( $param['type'], $param['msg'] );
-
-endif;
+if ( isset( $_GET['message'] ) && ! empty( $_GET['message'] ) ) {
+	wpas_notification( 'decode' );
+}
 
 $registration  = boolval( wpas_get_option( 'allow_registrations', true ) ); // Make sure registrations are open
 $redirect_to   = get_permalink( $post->ID );
