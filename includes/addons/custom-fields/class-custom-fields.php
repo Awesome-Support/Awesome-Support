@@ -689,7 +689,8 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
 		return false;
 
 	/* Force the custom fields type to be a taxonomy. */
-	$args['callback'] = 'taxonomy';
+	$args['callback']        = 'taxonomy';
+	$args['column_callback'] = 'wpas_show_taxonomy_column';
 
 	/* Add the taxonomy. */
 	$wpas_cf->add_field( $name, $args );
