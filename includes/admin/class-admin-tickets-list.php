@@ -200,7 +200,9 @@ class WPAS_Tickets_List {
 							'post_parent'            => $post_id,
 							'post_type'              => 'ticket_reply',
 							'post_status'            => array( 'unread', 'read' ),
-							'posts_per_page'         => -1,
+							'posts_per_page'         => - 1,
+							'orderby'                => 'date',
+							'order'                  => 'DESC',
 							'no_found_rows'          => true,
 							'cache_results'          => false,
 							'update_post_term_cache' => false,
@@ -211,7 +213,7 @@ class WPAS_Tickets_List {
 						$role  = true === user_can( $activity_meta['user_id'], 'edit_ticket' ) ? _x( 'agent', 'User role', 'wpas' ) : _x( 'client', 'User role', 'wpas' );
 
 						?><li><?php echo _x( sprintf( _n( '%s reply.', '%s replies.', $query->post_count, 'wpas' ), $query->post_count ), 'Number of replies to a ticket', 'wpas' ); ?></li><?php
-						?><li><?php printf( _x( 'Last replied %s ago by %s (%s).', 'Last reply ago', 'wpas' ), human_time_diff( strtotime( $activity_meta['reply_date'] ), current_time( 'timestamp' ) ), '<a href="' . $activity_meta['user_link'] . '">' . $activity_meta['user_nicename'] . '</a>', $role ); ?></li><?php
+						?><li><?php printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'wpas' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) . '#wpas-post-' . $query->posts[0]->ID, human_time_diff( strtotime( $activity_meta['reply_date'] ), current_time( 'timestamp' ) ), '<a href="' . $activity_meta['user_link'] . '">' . $activity_meta['user_nicename'] . '</a>', $role ); ?></li><?php
 						?><li><?php //printf( _x( 'Last replied by %s.', 'Last reply author', 'wpas' ), '<a href="' . $activity_meta['user_link'] . '">' . $activity_meta['user_nicename'] . '</a>' ); ?></li><?php
 					}
 
