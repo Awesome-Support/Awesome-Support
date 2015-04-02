@@ -188,7 +188,7 @@ class WPAS_File_Upload {
 			$this->protect_upload_dir( $dir );
 		}
 
-		return $make
+		return $make;
 
 	}
 
