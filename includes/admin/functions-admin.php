@@ -130,7 +130,7 @@ function wpas_is_reply_needed( $post_id, $latest = null ) {
  * Checks for templates overrides.
  *
  * Check if any of the plugin templates is being
- * overritten by the child theme or the theme.
+ * overwritten by the child theme or the theme.
  *
  * @since  3.0.0
  * @param  string $dir Directory to check

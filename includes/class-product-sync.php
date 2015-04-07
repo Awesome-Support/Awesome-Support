@@ -364,18 +364,18 @@ class WPAS_Product_Sync {
 	}
 
 	/**
-	 * Prevent a term from being insterted.
+	 * Prevent a term from being inserted.
 	 *
 	 * The wp_insert_term() function calls get_terms()
 	 * which created an infinite loop. To prevent this,
-	 * we add a transient while a term is begin insterted
+	 * we add a transient while a term is begin inserted
 	 * and remove it after the term was inserted.
 	 *
 	 * If this transient is present while a new instance of get_posts()
 	 * is running we do not trigger the term insertion method.
 	 *
 	 * @since  3.0.2
-	 * @param  integer $post_id ID of the post for wich a placeholder term is being insterted
+	 * @param  integer $post_id ID of the post for which a placeholder term is being inserted
 	 * @return void
 	 */
 	public function protect_insert( $post_id ) {
@@ -386,7 +386,7 @@ class WPAS_Product_Sync {
 	 * Remove the protection transient.
 	 *
 	 * @since  3.0.2
-	 * @param  integer $post_id ID of the post for wich a placeholder term was insterted
+	 * @param  integer $post_id ID of the post for which a placeholder term was inserted
 	 * @return void
 	 */
 	public function unprotect_insert( $post_id ) {
@@ -400,7 +400,7 @@ class WPAS_Product_Sync {
 	 * protected for nested insertion.
 	 *
 	 * @since  3.0.2
-	 * @param  integer  $post_id ID of the post for wich a placeholder term is being insterted
+	 * @param  integer  $post_id ID of the post for which a placeholder term is being inserted
 	 * @return boolean           True if the term is protected, false otherwise
 	 */
 	public function is_insert_protected( $post_id ) {
@@ -420,7 +420,7 @@ class WPAS_Product_Sync {
 	 *
 	 * @since  3.0.2
 	 * @param  array         $terms      Taxonomy terms
-	 * @param  array|string  $taxonomies Taxonomies for wich to retrieve the terms
+	 * @param  array|string  $taxonomies Taxonomies for which to retrieve the terms
 	 * @param  array         $args       Additional arguments
 	 * @return array                     Array of term objects
 	 */
@@ -582,7 +582,7 @@ class WPAS_Product_Sync {
 	 * and the taxonomy in sync.
 	 * @since  3.0.2
 	 * @param  integer        $post_id ID of the post that's being deleted
-	 * @return boolean|object          True if term was deleted, false is nothing happened and WP_Error if an error occured
+	 * @return boolean|object          True if term was deleted, false is nothing happened and WP_Error if an error occurred
 	 */
 	public function unsync_term( $post_id ) {
 

@@ -36,7 +36,7 @@ do_action( 'wpas_before_original_post' ); ?>
 
 					<?php
 					/**
-					 * If the plugin is set to show Gravatars, we use a 96px Gravatar with the mistery man as a fallback
+					 * If the plugin is set to show Gravatars, we use a 96px Gravatar with the mystery man as a fallback
 					 */
 					if ( wpas_get_option( 'gravatar_on_front', 'yes' ) == 'yes' ) {
 						echo get_avatar( $post->post_author, '96', get_option( 'avatar_default' ) );

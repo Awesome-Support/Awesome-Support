@@ -416,7 +416,7 @@ class Awesome_Support_Admin {
 	 * Flush rewrite rules.
 	 *
 	 * This is to avoid getting 404 errors
-	 * when trying to view a ticket. We need ot update
+	 * when trying to view a ticket. We need to update
 	 * the permalinks with our new custom post type.
 	 *
 	 * @since  3.0.0
@@ -869,7 +869,7 @@ class Awesome_Support_Admin {
 	 * A template name is given to the function. If the template
 	 * does exist, the metabox is loaded. If not, nothing happens.
 	 * 
-	 * @param  (interer) $post     Post ID
+	 * @param  (integer) $post     Post ID
 	 * @param  (string)  $template Metabox content template
 	 * @return (mixed)             False if template doesn't exist, null otherwise
 	 * @since  3.0.0
@@ -1064,7 +1064,7 @@ class Awesome_Support_Admin {
 	 * Mark replies as read.
 	 *
 	 * When an agent replies to a ticket, we mark all previous replies
-	 * as readas we suppose it's all been read when the agent replies.
+	 * as read. We suppose it's all been read when the agent replies.
 	 * This allows for keeping replies unread until an agent replies
 	 * or manually marks the last reply as read.
 	 *
@@ -1161,7 +1161,7 @@ class Awesome_Support_Admin {
 	 * Check for remote notifications.
 	 *
 	 * Use the Remote Dashboard Notifications plugin
-	 * to check for possiblt notifications from
+	 * to check for possible notifications from
 	 * http://getawesomesupport.com
 	 *
 	 * @since  3.0.0

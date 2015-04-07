@@ -113,7 +113,7 @@ require_once( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper 
  * don't load the plugin.
  *
  * This problem won't happen with the production version as we have scripts
- * doing all the work, but on the development verison this can be a problem.
+ * doing all the work, but on the development version this can be a problem.
  *
  * @since  3.0.2
  */

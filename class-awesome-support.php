@@ -116,7 +116,7 @@ class Awesome_Support {
 		 *
 		 * If we have a login in the post data we try to log the user in.
 		 * The login process relies on the WordPress core functions. If the login
-		 * is successfull the user is redirected to the page he was requesting,
+		 * is successful, the user is redirected to the page he was requesting,
 		 * otherwise the standard WordPress error messages are returned.
 		 *
 		 * @since 3.0.0
@@ -279,7 +279,7 @@ class Awesome_Support {
 
 		/**
 		 * We only wanna alter the authentication process if the username was rejected.
-		 * If the error is different lwe let WordPress handle it.
+		 * If the error is different, we let WordPress handle it.
 		 */
 		if ( 'invalid_username' !== $user->get_error_code() ) {
 			return $user;
