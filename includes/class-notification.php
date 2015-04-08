@@ -5,7 +5,7 @@
  * This class is a helper that will generate a notification
  * message for the user, including the message and markup.
  *
- * The notificaiton message can be passed in 3 different ways:
+ * The notification message can be passed in 3 different ways:
  * using the pre-defined messages, by passing the message directly to this class,
  * or by using a base64 encoded message (useful for passing it as a URL var).
  *

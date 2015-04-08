@@ -625,7 +625,7 @@ class WPAS_Email_Notification {
  * @since  3.0.2
  * @param  integer         $post_id ID of the post to notify about
  * @param  string|array    $cases   The case(s) to notify for
- * @return boolean|object           True if the notificaiton was sent, WP_Error or false otherwise
+ * @return boolean|object           True if the notification was sent, WP_Error or false otherwise
  */
 function wpas_email_notify( $post_id, $cases ) {
 

@@ -15,7 +15,7 @@
 /**
  * Alter page content for single ticket.
  *
- * In order to ensure maximum complatibility with all themes,
+ * In order to ensure maximum compatibility with all themes,
  * we hook onto the_content instead of changing the entire template
  * for ticket single.
  *
@@ -132,7 +132,7 @@ function wpas_get_theme() {
  *
  * The function takes a template file name and loads it
  * from whatever location the template is found first.
- * The template is beeing searched for (in order) in
+ * The template is being searched for (in order) in
  * the child theme, the theme and the default templates
  * folder within the plugin.
  *
@@ -352,7 +352,7 @@ function wpas_get_reply_form( $args = array() ) {
 	/**
 	 * Filter the form class.
 	 *
-	 * This can be usesul for addons doing something on the reply form,
+	 * This can be useful for addons doing something on the reply form,
 	 * like adding an upload feature for instance.
 	 *
 	 * @since  3.0.0
