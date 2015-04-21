@@ -1169,7 +1169,7 @@ class Awesome_Support_Admin {
 	 * @return void
 	 */
 	public function remote_notifications() {
-		$notification = new TAV_Remote_Notification_Client( 32, '00a09b8b272a37fb', 'http://getawesomesupport.com?post_type=notification' );
+		$notification = new TAV_Remote_Notification_Client( 76, '7f613a5dc7754971', 'http://getawesomesupport.com?post_type=notification' );
 	}
 
 }
