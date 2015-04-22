@@ -111,7 +111,7 @@ function wpas_uninstall() {
 /**
  * Delete all terms of the given taxonomy.
  *
- * As the get_terms function is not availabel during uninstall
+ * As the get_terms function is not available during uninstall
  * (because the taxonomies are not registered), we need to work
  * directly with the $wpdb class. The function gets all taxonomy terms
  * and deletes them one by one.

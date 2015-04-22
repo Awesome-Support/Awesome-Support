@@ -46,7 +46,7 @@ global $post;
 			<?php
 			/**
 			 * The wpas_get_message_textarea will generate the textarea
-			 * used to submit the ticket descritpion. It will either generate
+			 * used to submit the ticket description. It will either generate
 			 * a simple textarea or a WYSIWYG editor based on the plugin settings.
 			 *
 			 * @since  3.0.0

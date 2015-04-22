@@ -14,7 +14,7 @@
  * ---------------------------------------------------------
  *
  * QuickTags, even though correctly loaded in the JS object, can't be used
- * because of a bug in WordPress core. For that reason, QUickTags is deactivated
+ * because of a bug in WordPress core. For that reason, QuickTags is deactivated
  * all together in wp_editor().
  *
  * @link https://core.trac.wordpress.org/ticket/26183
@@ -127,9 +127,9 @@ class WPAS_Editor_Ajax {
 		$settings['quicktags'] = false;
 
 		/**
-		 * Make sure we have a textare name
+		 * Make sure we have a textarea name
 		 */
-		if ( ! isset( $settings['textare_name'] ) || empty( $settings['textare_name'] ) ) {
+		if ( ! isset( $settings['textarea_name'] ) || empty( $settings['textarea_name'] ) ) {
 			$settings['textarea_name'] = ! empty( $name ) ? $name : $editor_id;
 		}
 

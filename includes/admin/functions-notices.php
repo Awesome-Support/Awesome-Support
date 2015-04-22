@@ -16,7 +16,7 @@ function wpas_dismissed_notices() {
 }
 
 /**
- * Check if a speicfic notice has been dismissed.
+ * Check if a specific notice has been dismissed.
  *
  * @since  3.1.5
  * @param  string $notice Notice to check
@@ -82,7 +82,7 @@ function wpas_restore_notice( $notice ) {
 
 add_action( 'admin_init', 'wpas_grab_notice_dismiss', 10, 0 );
 /**
- * Check if there is a notice to dimsiss.
+ * Check if there is a notice to dismiss.
  *
  * @since  3.1.5
  * @return void

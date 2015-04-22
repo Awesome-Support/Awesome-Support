@@ -1,6 +1,6 @@
 <?php
 /**
- * Awesome Support File Uplaoder.
+ * Awesome Support File Uploader.
  *
  * @package   Awesome_Support
  * @author    Julien Liabeuf <julien@liabeuf.fr>

@@ -28,7 +28,7 @@ class WPAS_Custom_Fields {
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
 		/**
-		 * Instanciate the class that handles saving the custom fields.
+		 * Instantiate the class that handles saving the custom fields.
 		 */
 		$wpas_save = new WPAS_Save_Fields();
 
@@ -238,7 +238,7 @@ class WPAS_Custom_Fields {
 	 *
 	 * If there are registered custom fields, the method returns true.
 	 * Core fields are not considered registered custom fields by default
-	 * but that can be overrided with the $core parameter.
+	 * but that can be overridden with the $core parameter.
 	 *
 	 * @since  3.0.0
 	 * @param  boolean $core True if core fields should be counted as registered custom fields.

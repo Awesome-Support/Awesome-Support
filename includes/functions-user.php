@@ -317,7 +317,7 @@ function wpas_can_submit_ticket() {
  * Creates a dropdown list of users.
  *
  * @since  3.1.2
- * @param  array  $args Agruments
+ * @param  array  $args Arguments
  * @return string       Users dropdown
  */
 function wpas_users_dropdown( $args = array() ) {

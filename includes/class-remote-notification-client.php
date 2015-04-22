@@ -1,6 +1,6 @@
 <?php
 /**
- * Remote Dashobard Notifications.
+ * Remote Dashboard Notifications.
  *
  * This class is part of the Remote Dashboard Notifications plugin.
  * This plugin allows you to send notifications to your client's
@@ -282,7 +282,7 @@ class TAV_Remote_Notification_Client {
 	 *
 	 * When the user dismisses a notice, its slug
 	 * is added to the _rn_dismissed entry in the DB options table.
-	 * This entry is then used to check if a notie has been dismissed
+	 * This entry is then used to check if a notice has been dismissed
 	 * before displaying it on the dashboard.
 	 *
 	 * @since 0.1.0

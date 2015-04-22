@@ -17,7 +17,7 @@
  * When a submission is valid, the session is destroyed.
  * 
  * @param  string $field_name The name of the field to get the value for
- * @return strgin             The temporary value for this field
+ * @return string             The temporary value for this field
  * @since  3.0.0
  */
 function wpas_get_field_value( $field_name ) {
@@ -93,7 +93,7 @@ function wpas_get_field_class( $field_name = false, $extra = '', $echo = true ) 
  *
  * @since  3.0.0
  * @param  array  $terms    List of terms attached to the post
- * @param  object $taxonomy Taxonomy ot update
+ * @param  object $taxonomy Taxonomy of update
  * @return void
  */
 function wpas_update_ticket_tag_terms_count( $terms, $taxonomy ) {

@@ -51,7 +51,7 @@ function wpas_check_nonce( $nonce ) {
  *  
  * @param  (string) $url    URL to customize
  * @param  (string) $action Custom action to add
- * @return (string)         CUstomized URL
+ * @return (string)         Customized URL
  * @since  3.0.0
  */
 function wpas_url_add_custom_action( $url, $action ) {
