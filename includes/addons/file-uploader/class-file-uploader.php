@@ -319,7 +319,7 @@ class WPAS_File_Upload {
 		} ?>
 
 		<div class="wpas-reply-attachements">
-			<strong><?php _e( 'Attachements:', 'wpas' ); ?></strong>
+			<strong><?php _e( 'Attachments:', 'wpas' ); ?></strong>
 			<ul>
 				<?php
 				foreach ( $attachments as $attachment_id => $attachment ):
