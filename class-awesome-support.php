@@ -548,7 +548,7 @@ class Awesome_Support {
 		$admin      = get_role( 'administrator' );
 
 		/* Add the new roles */
-		$manager = add_role( 'wpas_manager',         __( 'Support Superviser', 'wpas' ), $editor->capabilities );     // Has full capabilities for the plugin in addition to editor capabilities
+		$manager = add_role( 'wpas_manager',         __( 'Support Supervisor', 'wpas' ), $editor->capabilities );     // Has full capabilities for the plugin in addition to editor capabilities
 		$tech    = add_role( 'wpas_support_manager', __( 'Support Manager', 'wpas' ),    $subscriber->capabilities ); // Has full capabilities for the plugin only
 		$agent   = add_role( 'wpas_agent',           __( 'Support Agent', 'wpas' ),      $author->capabilities );     // Has limited capabilities for the plugin in addition to author's capabilities
 		$client  = add_role( 'wpas_user',            __( 'Support User', 'wpas' ),       $subscriber->capabilities ); // Has posting & replying capapbilities for the plugin in addition to subscriber's capabilities
