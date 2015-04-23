@@ -167,11 +167,11 @@ class WPAS_Custom_Fields {
 					'search_items'      => sprintf( __( 'Search %s', 'wpas' ), $plural ),
 					'all_items'         => sprintf( __( 'All %s', 'wpas' ), $plural ),
 					'parent_item'       => sprintf( __( 'Parent %s', 'wpas' ), $name ),
-					'parent_item_colon' => sprintf( __( 'Parent %s:', 'wpas' ), $name ),
+					'parent_item_colon' => sprintf( _x( 'Parent %s:', 'Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. "book")', 'wpas' ), $name ),
 					'edit_item'         => sprintf( __( 'Edit %s', 'wpas' ), $name ),
 					'update_item'       => sprintf( __( 'Update %s', 'wpas' ), $name ),
 					'add_new_item'      => sprintf( __( 'Add New %s', 'wpas' ), $name ),
-					'new_item_name'     => sprintf( __( 'New %s Name', 'wpas' ), $name ),
+					'new_item_name'     => sprintf( _x( 'New %s Name', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'wpas' ), $name ),
 					'menu_name'         => $plural,
 				);
 
