@@ -176,7 +176,7 @@ class Awesome_Support {
 				exit;
 			}
 
-			$ticket_id = wpas_open_ticket( $_POST );
+			$ticket_id = wpas_open_ticket( array( 'title' => $_POST['wpas_title'], 'message' => $_POST['wpas_message'] ) );
 
 			/* Submission failure */
 			if( false === $ticket_id ) {

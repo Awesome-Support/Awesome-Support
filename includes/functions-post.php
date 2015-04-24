@@ -8,8 +8,8 @@
  */
 function wpas_open_ticket( $data ) {
 
-	$title   = isset( $data['wpas_title'] ) ? wp_strip_all_tags( $data['wpas_title'] ) : false;
-	$content = isset( $data['wpas_message'] ) ? wp_kses( $data['wpas_message'], wp_kses_allowed_html( 'post' ) ) : false;
+	$title   = isset( $data['title'] ) ? wp_strip_all_tags( $data['title'] ) : false;
+	$content = isset( $data['message'] ) ? wp_kses( $data['message'], wp_kses_allowed_html( 'post' ) ) : false;
 
 	/**
 	 * Prepare vars
