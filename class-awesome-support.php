@@ -165,6 +165,17 @@ class Awesome_Support {
 		 */
 		if ( isset( $_POST['wpas_title'] ) ) {
 
+			// Verify the nonce first
+			if ( ! isset( $_POST['wpas_nonce'] ) || ! wp_verify_nonce( $_POST['wpas_nonce'], 'new_ticket' ) ) {
+
+				/* Save the input */
+				wpas_save_values();
+
+				// Redirect to submit page
+				wp_redirect( add_query_arg( array( 'message' => 4 ), get_permalink( wpas_get_option( 'ticket_submit' ) ) ) );
+				exit;
+			}
+
 			$ticket_id = wpas_open_ticket( $_POST );
 
 			/* Submission failure */
@@ -189,13 +200,13 @@ class Awesome_Support {
 				 */
 				unset( $_SESSION['wpas_submission_form'] );
 				unset( $_SESSION['wpas_submission_error'] );
-				
+
 				/**
 				 * Redirect to the newly created ticket
 				 */
 				wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
 				exit;
-				
+
 			}
 		}
 

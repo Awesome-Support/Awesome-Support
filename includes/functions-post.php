@@ -19,19 +19,6 @@ function wpas_open_ticket( $data ) {
 	$missing = array();                            // Missing fields in the form
 	$submit  = wpas_get_option( 'ticket_submit' ); // ID of the submission page
 
-	// Verify the nonce first
-	if ( !isset( $data['wpas_nonce'] ) || !wp_verify_nonce( $data['wpas_nonce'], 'new_ticket' ) ) {
-
-		// Save the input
-		wpas_save_values();
-
-		// Redirect to submit page
-		wp_redirect( add_query_arg( array( 'message' => 4 ), get_permalink( $submit ) ) );
-
-		// Break
-		exit;
-	}
-
 	// Verify user capability
 	if ( !current_user_can( 'create_ticket' ) ) {
 
