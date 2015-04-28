@@ -22,9 +22,8 @@ class WPAS_Test_Functions_Post extends WP_UnitTestCase {
 
     function test_wpas_open_ticket() {
         $data = array(
-            'wpas_nonce' => wp_create_nonce( 'new_ticket' ),
-            'wpas_title'   => 'Test Ticket',
-            'wpas_message' => 'In hac habitasse platea dictumst. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Nullam cursus lacinia erat. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Donec vitae orci sed dolor rutrum auctor.'
+            'title'   => 'Test Ticket',
+            'message' => 'In hac habitasse platea dictumst. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Nullam cursus lacinia erat. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Donec vitae orci sed dolor rutrum auctor.'
         );
         $ticket_id = wpas_open_ticket( $data );
         $this->assertInternalType( 'int', $ticket_id );
