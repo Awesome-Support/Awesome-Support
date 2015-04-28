@@ -20,18 +20,30 @@ class WPAS_Tickets_List {
 	protected static $instance = null;
 
 	public function __construct() {
-            // add_action( 'quick_edit_custom_box',                            array( $this, 'custom_quickedit_options' ), 10, 2 );
-            // add_action( 'bulk_edit_custom_box',                             array( $this, 'custom_quickedit_options' ), 10, 2 );
-            // add_action( 'wp_ajax_save_bulk_edit_book',                      array( $this, 'save_bulk_edit_ticket' ), 10, 0 );
-            add_action( 'manage_ticket_posts_columns',        array( $this, 'add_core_custom_columns' ), 16, 1 );
-            add_action( 'manage_ticket_posts_custom_column' , array( $this, 'core_custom_columns_content' ), 10, 2 );
-            add_action( 'restrict_manage_posts',                            array( $this, 'unreplied_filter' ), 9, 0 );
-            add_action( 'admin_menu',                                       array( $this, 'hide_closed_tickets' ) );
-            add_filter( 'the_excerpt',                                      array( $this, 'remove_excerpt' ) );
-            // add_filter( 'update_user_metadata',                             array( $this, 'set_list_mode' ), 10, 5 );
-            // add_filter( 'parse_query',                                      array( $this, 'filter_by_replies' ), 10, 1 );
-            add_filter( 'post_row_actions',                    array( $this, 'remove_quick_edit'), 10, 2 );
-        }
+		add_action( 'manage_ticket_posts_columns',       array( $this, 'add_core_custom_columns' ),     16, 1 );
+		add_action( 'manage_ticket_posts_custom_column', array( $this, 'core_custom_columns_content' ), 10, 2 );
+		add_action( 'restrict_manage_posts',             array( $this, 'unreplied_filter' ),             9, 0 );
+		add_action( 'admin_menu',                        array( $this, 'hide_closed_tickets' ),         10, 0 );
+		add_filter( 'the_excerpt',                       array( $this, 'remove_excerpt' ),              10, 1 );
+		add_filter( 'post_row_actions',                  array( $this, 'remove_quick_edit' ),           10, 2 );
+		// add_filter( 'views_edit-ticket',                                array( $this, 'test' ),                        10, 1 );
+		// add_action( 'quick_edit_custom_box',                            array( $this, 'custom_quickedit_options' ), 10, 2 );
+		// add_action( 'bulk_edit_custom_box',                             array( $this, 'custom_quickedit_options' ), 10, 2 );
+		// add_action( 'wp_ajax_save_bulk_edit_book',                      array( $this, 'save_bulk_edit_ticket' ), 10, 0 );
+		// add_filter( 'update_user_metadata',                             array( $this, 'set_list_mode' ), 10, 5 );
+		// add_filter( 'parse_query',                                      array( $this, 'filter_by_replies' ), 10, 1 );
+	}
+
+	public function test( $views ) {
+
+		global $wp_query;
+
+		print_r( wp_count_posts( 'ticket' ) );
+
+//		print_r( $wp_query );
+
+		return $views;
+	}
 
 	/**
 	 * Return an instance of this class.
