@@ -6,10 +6,18 @@ language: php
 # PHP version used in first build configuration.
 php:
     - "5.5"
+    - "5.4"
+    - "5.3"
+    - "5.2"
 
 # WordPress version used in first build configuration.
 env:
     - WP_VERSION=master
+    - WP_VERSION=4.2
+    - WP_VERSION=4.1
+    - WP_VERSION=4.0
+    - WP_VERSION=3.9
+    - WP_VERSION=3.8
 
 # Next we define our matrix of additional build configurations to test against.
 # The versions listed above will automatically create our first configuration,
@@ -27,27 +35,31 @@ env:
 matrix:
   include:
     - php: "5.3"
-      env: WP_VERSION=master
-    - php: "5.4"
-      env: WP_VERSION=3.8
-    - php: "5.2"
-      env: WP_VERSION=3.8
+      env: WP_VERSION=master WP_ALLOW_MULTISITE=1
 
 # Clones WordPress and configures our testing environment.
 before_script:
     - export PLUGIN_SLUG=$(basename $(pwd))
-    - git clone https://github.com/tierra/wordpress.git /tmp/wordpress
-# - git clone . "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
+    - git clone https://github.com/WordPress/WordPress.git /tmp/wordpress
     - cd ..
-    - mv $PLUGIN_SLUG "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
+    - mv $PLUGIN_SLUG "/tmp/wordpress/wp-content/plugins/$PLUGIN_SLUG"
     - cd /tmp/wordpress
     - git checkout $WP_VERSION
     - mysql -e "CREATE DATABASE wordpress_tests;" -uroot
-    - cp wp-tests-config-sample.php wp-tests-config.php
-    - sed -i "s/youremptytestdbnamehere/wordpress_tests/" wp-tests-config.php
-    - sed -i "s/yourusernamehere/travis/" wp-tests-config.php
-    - sed -i "s/yourpasswordhere//" wp-tests-config.php
-    - cd "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
+    - cd "/tmp/wordpress/wp-content/plugins/$PLUGIN_SLUG/tests"
+    - cp unittests-config-sample.php unittests-config.php
+    - sed -i "s/path-to-WP\//\/tmp\/wordpress\//" unittests-config.php
+    - sed -i "s/trunk_test/wordpress_tests/" unittests-config.php
+    - sed -i "s/user/root/" unittests-config.php
+    - sed -i "s/password//" unittests-config.php
+    - cd "/tmp/wordpress/wp-content/plugins/$PLUGIN_SLUG"
+    - phpenv global 5.3
     - composer install
+    - phpenv global "$TRAVIS_PHP_VERSION"
+    - cd "/tmp/wordpress/wp-content/plugins/$PLUGIN_SLUG/tests"
 
-script: phpunit
+script: phpunit all
+
+notifications:
+    slack:
+        secure: SPZ2/D30Q/GYcTOXuhoN2sNT+q/KLKbYW4FTOmunPfVtNwoaWCn4eqpL18X2AmYLxcmtg65UvTiA5qqxJFG7dWIJL9QUZR1txjsJOKdJxtqMSPnKJMyV9IOtvp7HqRgt+Zk/xPxoBs3uhDfhJIfNehFrleBynHqEcVR+9SIBfg0=
