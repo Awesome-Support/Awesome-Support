@@ -122,6 +122,7 @@ module.exports = function (grunt) {
 						'!node_modules/**',
 						'!tests/**',
 						'!.gitignore',
+						'!.travis.yml',
 						'!apigen.neon',
 						'!composer.json',
 						'!composer.lock',
