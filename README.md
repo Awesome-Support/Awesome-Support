@@ -1,7 +1,7 @@
 Awesome Support
 ==================
 
-[![Build Status](https://travis-ci.org/ThemeAvenue/Awesome-Support.svg?branch=master)](https://travis-ci.org/ThemeAvenue/Awesome-Support) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ThemeAvenue/Awesome-Support/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ThemeAvenue/Awesome-Support/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/ThemeAvenue/Awesome-Support/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ThemeAvenue/Awesome-Support/?branch=master) [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ThemeAvenue/Awesome-Support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://travis-ci.org/ThemeAvenue/Awesome-Support.svg?branch=master)](https://travis-ci.org/ThemeAvenue/Awesome-Support) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ThemeAvenue/Awesome-Support/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ThemeAvenue/Awesome-Support/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/ThemeAvenue/Awesome-Support/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ThemeAvenue/Awesome-Support/?branch=master)
 
 Awesome Support is the most advanced ticketing system for WordPress. It is the result of two years of work, research and improvement. Most of its features are an answer to users requests and that's what makes it the best support plugin for WordPress.
 
@@ -46,3 +46,9 @@ This command will do a few things for you:
 1. Install the plugin dependencies (via Composer)
 2. Install Grunt & all Grunt modules (via `npm install`)
 3. You should now be able to launch the default Grunt task with `grunt`
+
+## Contributing
+
+If you want to contribute to the plugin or just follow the development, all chats will be held on the Gitter channel.
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ThemeAvenue/Awesome-Support?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
