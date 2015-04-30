@@ -235,7 +235,16 @@ function wpas_get_theme_stylesheet_uri() {
 		$template =  WPAS_PATH . "themes/$theme/css/style.css";
 	}
 
-	$uri = str_replace( ABSPATH, trailingslashit( home_url() ), $template );
+	/* Remove the root path and replace backslashes by slashes */
+	$truncate = str_replace('\\', '/', str_replace( untrailingslashit( ABSPATH ), '', $template ) );
+
+	/* Make sure the truncated string doesn't start with a slash because we trailing slash the home URL) */
+	if ( '/' === substr( $truncate, 0, 1 ) ) {
+		$truncate = substr( $truncate, 1 );
+	}
+
+	/* Build the final URL to the resource */
+	$uri = trailingslashit( home_url() ) . $truncate;
 
 	return apply_filters( 'wpas_get_theme_stylesheet_uri', $uri ); 
 
