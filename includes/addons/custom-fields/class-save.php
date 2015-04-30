@@ -397,17 +397,17 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 					}
 
 					/* Get all the terms for this ticket / taxo (we should have only one term) */
-					$terms      = get_terms( $field['name'], array( 'hide_empty' => false ) );
-					$term_id    = false;
+					$terms   = get_terms( $field['name'], array( 'hide_empty' => false ) );
+					$term_id = false;
 
 					/* If no terms are registered for this taxonomy or the taxonomy doesn't exist we can't save a value */
-					if ( !is_array( $terms ) || empty( $terms ) ) {
+					if ( ! is_array( $terms ) || empty( $terms ) ) {
 						continue;
 					}
 
 					foreach ( $terms as $term ) {
-						if ( $term->term_id === (int) $_POST[$field_name] ) {
-							$term_id = $term->term_id;
+						if ( (int) $term->term_id === (int) $_POST[$field_name] ) {
+							$term_id = (int) $term->term_id;
 						}
 					}
 
