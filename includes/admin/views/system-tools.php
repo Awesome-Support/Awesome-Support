@@ -76,5 +76,6 @@ if ( isset( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Clear all terms from all custom taxonomies.', 'wpas' ); ?></span>
 			</td>
 		</tr>
+		<?php do_action( 'wpas_system_tools_table_after' ); ?>
 	</tbody>
 </table>
