@@ -95,8 +95,24 @@ class WPAS_Product_Sync {
 			add_action( 'admin_notices', array( $this, 'notice_locked_tax' ), 10, 0 );
 			add_action( 'trashed_post',  array( $this, 'unsync_term' ),       10, 1 );
 			add_action( 'delete_post',   array( $this, 'unsync_term' ),       10, 1 );
+			add_action( 'wpas_system_tools_table_after', array( $this, 'add_resync_tool' ), 10, 0 );
+			add_action( 'wpas_system_tools_table_after', array( $this, 'add_delete_tool' ), 10, 0 );
+
 		}
 
+	}
+
+	/**
+	 * Set the post type after instantiating the class.
+	 *
+	 * @param $post_type string Post type ID to set
+	 *
+	 * @since 3.1.7
+	 */
+	public function set_post_type( $post_type ) {
+		if ( post_type_exists( $post_type ) ) {
+			$this->post_type = $post_type;
+		}
 	}
 
 	/**
@@ -756,5 +772,49 @@ class WPAS_Product_Sync {
 		}
 
 	}
+
+	/**
+	 * Runs the initial synchronization of products.
+	 *
+	 * @since 3.1.7
+	 */
+	protected function run_initial_sync() {
+		$this->get_terms( array(), 'product', array() );
+		add_option( "wpas_sync_$this->post_type", 'done' );
+	}
+
+	/**
+	 * Adds a button to re-sync the products in the system tools.
+	 *
+	 * @since 3.1.7
+	 */
+	public function add_resync_tool() { ?>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Re-Synchronize Products', 'wpas' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'resync_products', array( 'pt' => $this->post_type ) ); ?>"
+				   class="button-secondary"><?php _e( 'Resync', 'wpas' ); ?></a>
+				<span
+					class="wpas-system-tools-desc"><?php _e( 'Re-synchronize all products from your e-commerce plugin.', 'wpas' ); ?></span>
+			</td>
+		</tr>
+	<?php }
+
+	/**
+	 * Adds a button to delete the products in the system tools.
+	 *
+	 * @since 3.1.7
+	 */
+	public function add_delete_tool() { ?>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Delete Products', 'wpas' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'delete_products', array( 'pt' => $this->post_type ) ); ?>"
+				   class="button-secondary"><?php _e( 'Delete', 'wpas' ); ?></a>
+				<span
+					class="wpas-system-tools-desc"><?php _e( 'Delete all products synchronized from your e-commerce plugin.', 'wpas' ); ?></span>
+			</td>
+		</tr>
+	<?php }
 
 }

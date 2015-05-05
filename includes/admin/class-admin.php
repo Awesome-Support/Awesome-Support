@@ -1140,7 +1140,14 @@ class Awesome_Support_Admin {
 			case 'clear_taxonomies':
 				wpas_clear_taxonomies();
 				break;
+			
+			case 'resync_products':
+				wpas_delete_synced_products( true );
+				break;
 
+			case 'delete_products':
+				wpas_delete_synced_products();
+				break;
 		}
 
 		/* Redirect in "read-only" mode */

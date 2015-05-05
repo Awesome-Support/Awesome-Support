@@ -38,6 +38,13 @@ if ( isset( $_GET['done'] ) ) {
 			$message = __( 'All custom taxonomies terms were cleared', 'wpas' );
 			break;
 
+		case 'resync_products':
+			$message = __( 'All products have been re-synchronized', 'wpas' );
+			break;
+
+		case 'delete_products':
+			$message = __( 'All products have been deleted', 'wpas' );
+			break;
 	}
 
 }
