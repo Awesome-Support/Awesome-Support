@@ -115,7 +115,7 @@ class WPAS_Custom_Fields {
 		/* Field with args */
 		$option = array( 'name' => $name, 'args' => $arguments );
 
-		$this->options[$name] = $option;
+		$this->options[$name] = apply_filters( 'wpas_add_field', $option );
 
 	}
 
