@@ -88,6 +88,19 @@ class WPAS_Product_Sync {
 
 		/* Only hack into the taxonomies functions if multiple products is enabled and the provided post type exists */
 		if ( $this->is_multiple_products() && post_type_exists( $post_type ) ) {
+
+			/**
+			 * We need to run an initial synchronization of products
+			 * for large products lists. The get_terms used in the taxonomy page
+			 * only queries 10 terms per page, which means that only hte first 10 items
+			 * will be synced
+			 */
+			$sync_init = get_option( "wpas_sync_$this->post_type" );
+
+			if ( false === $sync_init ) {
+				$this->run_initial_sync();
+			}
+
 			add_filter( 'get_terms',     array( $this, 'get_terms' ),          1, 3 );
 			add_filter( 'get_term',      array( $this, 'get_term' ),           1, 2 );
 			add_filter( 'get_the_terms', array( $this, 'get_the_terms' ),      1, 3 );
