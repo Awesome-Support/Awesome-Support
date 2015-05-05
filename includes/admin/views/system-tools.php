@@ -15,10 +15,15 @@
  *
  * @since  3.0.0
  * @param  string $tool Tool to trigger
+ * @param  array  $args Arbitrary arguments
  * @return string       URL that triggers the tool function
  */
-function wpas_tool_link( $tool ) {
-	return esc_url( add_query_arg( array( 'tool' => $tool, '_nonce' => wp_create_nonce( 'system_tool' ) ), admin_url( 'edit.php' ) ) );
+function wpas_tool_link( $tool, $args = array() ) {
+
+	$args['tool']   = $tool;
+	$args['_nonce'] = wp_create_nonce( 'system_tool' );
+
+	return esc_url( add_query_arg( $args, admin_url( 'edit.php' ) ) );
 }
 
 if ( isset( $_GET['done'] ) ) {
