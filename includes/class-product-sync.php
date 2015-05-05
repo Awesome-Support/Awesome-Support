@@ -65,7 +65,7 @@ class WPAS_Product_Sync {
 
 	/**
 	 * Defines if this class completely replaces the taxonomy terms
-	 * or just appens new ones to it.
+	 * or just appends new ones to it.
 	 *
 	 * @since  3.0.2
 	 * @var boolean
@@ -310,7 +310,7 @@ class WPAS_Product_Sync {
 	protected function create_term_object( $post ) {
 
 		/* If the $post is not an object we return false to avoid triggering PHP errors */
-		if ( !is_object( $post ) ) {
+		if ( ! is_object( $post ) ) {
 			return false;
 		}
 
@@ -327,7 +327,7 @@ class WPAS_Product_Sync {
 
 			$term_data = $this->insert_term( $post );
 
-			/* If the term couldn't be insterted we return false, which will result in skipping this post */
+			/* If the term couldn't be inserted we return false, which will result in skipping this post */
 			if ( false === $term_data ) {
 				return false;
 			}
@@ -462,11 +462,11 @@ class WPAS_Product_Sync {
 
 		foreach ( $taxonomies as $taxonomy ) {
 
-			if ( !$this->is_product_tax( $taxonomy ) ) {
+			if ( ! $this->is_product_tax( $taxonomy ) ) {
 				return $terms;
 			}
 
-			/* Map the tax arge to the WP_Query args */
+			/* Map the tax args to the WP_Query args */
 			$query_args = $this->map_args( $args );
 
 			$query_defaults = array(
@@ -499,7 +499,7 @@ class WPAS_Product_Sync {
 
 			if ( $this->append ) {
 				foreach ( $terms as $term ) {
-					if ( is_object( $term ) && !$this->is_synced_term( $term->term_id ) ) {
+					if ( is_object( $term ) && ! $this->is_synced_term( $term->term_id ) ) {
 						$new_terms[] = $term;
 					}
 				}
@@ -508,14 +508,14 @@ class WPAS_Product_Sync {
 			/* Create the term object for each post */
 			foreach ( $query->posts as $key => $post ) {
 
-				if ( !is_a( $post, 'WP_Post' ) ) {
+				if ( ! is_a( $post, 'WP_Post' ) ) {
 					continue;
 				}
 
 				/* Create the term object */
 				$term = $this->create_term_object( $post );
 
-				/* If an error occured during the insertion of the placeholder term we do not display this one */
+				/* If an error occurred during the insertion of the placeholder term we do not display this one */
 				if ( false === $term ) {
 					continue;
 				}
@@ -548,7 +548,7 @@ class WPAS_Product_Sync {
 			return $term;
 		}
 
-		if ( !$this->is_synced_term( $term->term_id ) ) {
+		if ( ! $this->is_synced_term( $term->term_id ) ) {
 			return $term;
 		}
 
@@ -621,7 +621,11 @@ class WPAS_Product_Sync {
 			$term = get_post_meta( $post_id, '_wpas_product_term', true );
 
 			/* Delete the term */
-			$delete = wp_delete_term( intval( $term['term_id'] ), $this->taxonomy, $args );
+			$delete = wp_delete_term( (int) $term['term_id'], $this->taxonomy );
+
+			if ( true === $delete ) {
+				delete_post_meta( $post_id, '_wpas_product_term' );
+			}
 
 			return $delete;
 		}
@@ -644,7 +648,7 @@ class WPAS_Product_Sync {
 			return false;
 		}
 
-		if ( !isset( $_GET['tag_ID'] ) ) {
+		if ( ! isset( $_GET['tag_ID'] ) ) {
 			return false;
 		}
 
@@ -653,7 +657,7 @@ class WPAS_Product_Sync {
 		$query         = $wpdb->prepare( "SELECT * FROM $wpdb->term_taxonomy WHERE term_id = '%d'", $term_id );
 		$term_taxonomy = $wpdb->get_col( $query, 2 );
 
-		if ( !is_array( $term_taxonomy ) || !isset( $term_taxonomy[0] ) ) {
+		if ( ! is_array( $term_taxonomy ) || ! isset( $term_taxonomy[0] ) ) {
 			return false;
 		}
 
@@ -689,13 +693,13 @@ class WPAS_Product_Sync {
 		$query     = $wpdb->prepare( "SELECT * FROM $wpdb->terms WHERE term_id = '%d'", $term_id );
 		$term_name = $wpdb->get_col( $query, 1 );
 
-		if ( !is_array( $term_name ) || !isset( $term_name[0] ) ) {
+		if ( ! is_array( $term_name ) || ! isset( $term_name[0] ) ) {
 			return false;
 		}
 
 		$term_name = $term_name[0];
 
-		if ( !is_numeric( $term_name ) ) {
+		if ( ! is_numeric( $term_name ) ) {
 			return false;
 		}
 
