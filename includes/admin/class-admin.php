@@ -627,7 +627,8 @@ class Awesome_Support_Admin {
 	public function register_submenu_items() {
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'System Status', 'wpas' ), __( 'System Status', 'wpas' ), 'administrator', 'wpas-status', array( $this, 'display_status_page' ) );
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Awesome Support Addons', 'wpas' ), '<span style="color:#f39c12;">' . __( 'Addons', 'wpas' ) . '</span>', 'edit_posts', 'wpas-addons', array( $this, 'display_addons_page' ) );
-		add_submenu_page( 'options.php', __( 'About Awesome Support', 'wpas' ), __( 'About', 'wpas' ), 'edit_posts', 'wpas-about', array( $this, 'display_about_page' ) );
+		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'wpas' ), __( 'About', 'wpas' ), 'edit_posts', 'wpas-about', array( $this, 'display_about_page' ) );
+		remove_submenu_page( 'edit.php?post_type=ticket', 'wpas-about' );
 	}
 
 	/**
