@@ -794,10 +794,49 @@ class WPAS_Product_Sync {
 	 * Runs the initial synchronization of products.
 	 *
 	 * @since 3.1.7
+	 * @return integer The number of terms synchronized
 	 */
-	protected function run_initial_sync() {
-		$this->get_terms( array(), 'product', array() );
-		add_option( "wpas_sync_$this->post_type", 'done' );
+	public function run_initial_sync() {
+
+		$args = array(
+			'post_type'              => $this->post_type,
+			'post_status'            => 'any',
+			'order'                  => 'ASC',
+			'orderby'                => 'title',
+			'ignore_sticky_posts'    => false,
+			'posts_per_page'         => -1,
+			'perm'                   => 'readable',
+			'no_found_rows'          => false,
+			'cache_results'          => true,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);
+
+		$query = new WP_Query( $args );
+		var_dump( "Init sync for $query->post_count" );
+		$count = 0;
+
+		/* Create the term object for each post */
+		foreach ( $query->posts as $key => $post ) {
+
+			if ( ! is_a( $post, 'WP_Post' ) ) {
+				continue;
+			}
+
+			/* Create the term object */
+			$term = $this->create_term_object( $post );
+
+			/* If the term was successfully created we increment our counter */
+			if ( false !== $term ) {
+				++$count;
+			}
+
+		}
+
+		add_option( "wpas_sync_$this->post_type", $count );
+
+		return $count;
+
 	}
 
 	/**
