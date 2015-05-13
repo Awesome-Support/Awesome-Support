@@ -813,7 +813,6 @@ class WPAS_Product_Sync {
 		);
 
 		$query = new WP_Query( $args );
-		var_dump( "Init sync for $query->post_count" );
 		$count = 0;
 
 		/* Create the term object for each post */
