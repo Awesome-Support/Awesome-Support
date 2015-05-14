@@ -169,12 +169,15 @@ function wpas_get_template( $name, $args = array() ) {
  * template stored in the plugin's /templates directory.
  *
  * @since  3.0.0
- * @param  string $name  Name of the template to locate
+ *
+ * @param  string $name Name of the template to locate
+ *
+ * @return string Template path
  */
 function wpas_locate_template( $name ) {
 
-	$theme                 = wpas_get_theme();
-	$filename              = "$name.php";
+	$theme    = wpas_get_theme();
+	$filename = "$name.php";
 
 	$template = locate_template(
 		array(
@@ -182,8 +185,9 @@ function wpas_locate_template( $name ) {
 		)
 	);
 
-	if ( ! $template )
+	if ( ! $template ) {
 		$template = WPAS_PATH . "themes/$theme/" . $filename;
+	}
 
 	return apply_filters( 'wpas_locate_template', $template, $name );
 

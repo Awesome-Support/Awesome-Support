@@ -193,11 +193,7 @@ class WPAS_Replies_Filter extends WP_Query {
                 ) sl ON $wpdb->posts.ID = sl.post_parent
                 LEFT JOIN $wpdb->posts wp1 on sl.child_ID = wp1.ID";
 
-	                return $sql;
-
-		// $sql = $sql . "LEFT JOIN bite=cul";
 		return $sql;
-		var_dump( $sql );
 
 	}
 

@@ -304,8 +304,10 @@ class WPAS_Product_Sync {
 	 * taxonomy term object.
 	 *
 	 * @since  3.0.2
+	 *
 	 * @param  object $post Post
-	 * @return object       Taxonomy term object
+	 *
+	 * @return boolean|object Taxonomy term object
 	 */
 	protected function create_term_object( $post ) {
 
