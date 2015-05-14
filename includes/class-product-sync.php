@@ -486,6 +486,10 @@ class WPAS_Product_Sync {
 			$query_args = wp_parse_args( $query_args, $query_defaults );
 			$query      = new WP_Query( $query_args );
 
+			if ( false === get_option( "wpas_sync_$this->post_type", false ) ) {
+				$initial_sync = $this->run_initial_sync();
+			}
+
 			if ( isset( $query_args['wpas_get_post_count'] ) && $query_args['wpas_get_post_count'] ) {
 				return $this->append ? $query->post_count + count( $terms ) : $query->post_count;
 			}
