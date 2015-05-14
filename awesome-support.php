@@ -117,14 +117,14 @@ require_once( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper 
  *
  * @since  3.0.2
  */
-if ( !Awesome_Support::dependencies_loaded() ) {
+if ( ! Awesome_Support::dependencies_loaded() ) {
 	add_action( 'admin_notices', 'wpas_missing_dependencied' );
 }
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Only Functionality
  *----------------------------------------------------------------------------*/
-if( !is_admin() && Awesome_Support::dependencies_loaded() ) {
+if ( ! is_admin() && Awesome_Support::dependencies_loaded() ) {
 	require_once( WPAS_PATH . 'includes/class-notification.php' ); // Load notifications class
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
@@ -153,14 +153,9 @@ if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
 
 }
 
-/*----------------------------------------------------------------------------*
- * Integrations
- *----------------------------------------------------------------------------*/
-require_once( WPAS_PATH . 'includes/integrations/loader.php' );
-
 /**
  * Start the session if needed.
  */
-if ( !session_id() && !headers_sent() ) {
-    session_start();
+if ( ! session_id() && ! headers_sent() ) {
+	session_start();
 }

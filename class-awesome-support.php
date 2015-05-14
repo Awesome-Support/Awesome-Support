@@ -38,6 +38,11 @@ class Awesome_Support {
 		 */
 		add_action( 'plugins_loaded', array( 'WPAS_Editor_Ajax', 'get_instance' ), 11, 0 );
 
+		/**
+		 * Load plugin integrations
+		 */
+		require_once( WPAS_PATH . 'includes/integrations/loader.php' );
+
 		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
 			/**
