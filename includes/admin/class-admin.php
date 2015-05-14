@@ -280,19 +280,22 @@ class Awesome_Support_Admin {
 			return false;
 		}
 
-		if ( ! isset( $_GET['post_status'] ) || ! array_key_exists( $_GET['post_status'], wpas_get_post_status() ) ) {
+		if ( isset( $_GET['post_status'] ) && array_key_exists( $_GET['post_status'], wpas_get_post_status() ) || ! isset( $_GET['post_status'] ) && true === (bool) wpas_get_option( 'hide_closed', false ) ) {
+
+			$query->set( 'meta_query', array(
+					array(
+						'key'     => '_wpas_status',
+						'value'   => 'open',
+						'compare' => '=',
+					)
+				)
+			);
+
+			return true;
+
+		} else {
 			return false;
 		}
-
-		$query->set( 'meta_query', array(
-			array(
-				'key'     => '_wpas_status',
-				'value'   => 'open',
-				'compare' => '=',
-			) )
-		);
-
-		return true;
 
 	}
 
