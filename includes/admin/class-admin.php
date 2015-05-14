@@ -258,7 +258,10 @@ class Awesome_Support_Admin {
 	 * the list to open tickets.
 	 *
 	 * @since  3.1.3
+	 *
 	 * @param object WordPress main query
+	 *
+	 * @return boolean True if the tickets were filtered, false otherwise
 	 */
 	public function limit_open( $query ) {
 
