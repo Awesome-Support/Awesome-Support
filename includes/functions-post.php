@@ -248,9 +248,16 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
  */
 function get_tickets( $status = 'open', $args = array() ) {
 
+	$post_status       = wpas_get_post_status();
+	$post_status_clean = array();
+
+	foreach ( $post_status as $status_id => $status_label ) {
+		$post_status_clean[] = $status_id;
+	}
+
 	$defaults = array(
 		'post_type'              => 'ticket',
-		'post_status'            => wpas_get_post_status(),
+		'post_status'            => $post_status_clean,
 		'posts_per_page'         => -1,
 		'no_found_rows'          => false,
 		'cache_results'          => true,
