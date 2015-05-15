@@ -721,10 +721,12 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array() ) {
  * with the less tickets currently open.
  *
  * @since  3.0.0
- * @param  integer $ticket_id The ticket that needs an agent
+ *
+ * @param  boolean|integer $ticket_id The ticket that needs an agent
+ *
  * @return integer         ID of the best agent for the job
  */
-function wpas_find_agent( $ticket_id ) {
+function wpas_find_agent( $ticket_id = false ) {
 
 	if ( defined( 'WPAS_DISABLE_AUTO_ASSIGN' ) && true === WPAS_DISABLE_AUTO_ASSIGN ) {
 		return apply_filters( 'wpas_find_available_agent', wpas_get_option( 'assignee_default' ), $ticket_id );
