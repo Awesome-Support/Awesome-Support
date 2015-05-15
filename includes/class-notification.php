@@ -71,8 +71,8 @@ class WPAS_Notification {
 					 */
 					if ( is_numeric( $message ) && $this->predefined_exists( $message ) ) {
 						$predefined    = $this->get_predefined_messages();
-						$this->case    = esc_atts( $predefined[$message]['case'] );
-						$this->message = esc_atts( $predefined[$message]['message'] );
+						$this->case    = esc_attr( $predefined[$message]['case'] );
+						$this->message = esc_attr( $predefined[$message]['message'] );
 					} 
 
 					/**
