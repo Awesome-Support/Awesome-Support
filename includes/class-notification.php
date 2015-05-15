@@ -167,7 +167,7 @@ class WPAS_Notification {
 	public function template() {
 
 		$case    = $this->case;
-		$message = htmlspecialchars_decode( $this->message );
+		$message = wp_kses_post( htmlspecialchars_decode( $this->message ) );
 
 		switch( $case ):
 
