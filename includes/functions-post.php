@@ -169,8 +169,12 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	$data = wp_parse_args( $data, $defaults );
 
 	/* Sanitize the data */
-	if ( isset( $data['post_title'] ) && !empty( $data['post_title'] ) ) {
+	if ( isset( $data['post_title'] ) && ! empty( $data['post_title'] ) ) {
 		$data['post_title'] = wp_strip_all_tags( $data['post_title'] );
+	}
+
+	if ( ! empty( $data['post_content'] ) ) {
+		$data['post_content'] = strip_shortcodes( $data['post_content'] );
 	}
 
 	/**
@@ -517,11 +521,15 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	$data = apply_filters( 'wpas_add_reply_data', $data, $post_id );
 
 	/* Sanitize the data */
-	if ( isset( $data['post_title'] ) && !empty( $data['post_title'] ) ) {
+	if ( isset( $data['post_title'] ) && ! empty( $data['post_title'] ) ) {
 		$data['post_title'] = wp_strip_all_tags( $data['post_title'] );
 	}
 
-	if ( isset( $data['post_name'] ) && !empty( $data['post_name'] ) ) {
+	if ( ! empty( $data['post_content'] ) ) {
+		$data['post_content'] = strip_shortcodes( $data['post_content'] );
+	}
+
+	if ( isset( $data['post_name'] ) && ! empty( $data['post_name'] ) ) {
 		$data['post_name'] = sanitize_title( $data['post_name'] );
 	}
 
