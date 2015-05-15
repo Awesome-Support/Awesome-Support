@@ -14,9 +14,6 @@ function wpas_open_ticket( $data ) {
 	/**
 	 * Prepare vars
 	 */
-	$errors  = array();                            // Error messages to display
-	$notify  = array();                            // Notifications to trigger
-	$missing = array();                            // Missing fields in the form
 	$submit  = wpas_get_option( 'ticket_submit' ); // ID of the submission page
 
 	// Verify user capability
@@ -89,12 +86,11 @@ function wpas_open_ticket( $data ) {
 	/**
 	 * Gather current user info
 	 */
-	if( is_user_logged_in() ) {
+	if ( is_user_logged_in() ) {
 
 		global $current_user;
 
-		$user_id	= $current_user->ID;
-		$user_name 	= $current_user->data->user_nicename;
+		$user_id = $current_user->ID;
 
 	} else {
 
@@ -132,7 +128,7 @@ function wpas_open_ticket( $data ) {
 
 function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false ) {
 
-	if ( !current_user_can( 'create_ticket' ) ) {
+	if ( ! current_user_can( 'create_ticket' ) ) {
 		return false;
 	}
 
@@ -292,12 +288,14 @@ function get_tickets( $status = 'open', $args = array() ) {
 
 /**
  * Add a new reply to a ticket.
- * 
- * @return void
+ *
+ * @param array           $data      The reply data to insert
+ * @param boolean|integer $parent_id ID of the parent ticket (post)
+ * @param boolean|integer $author_id The ID of the reply author (false if none)
+ *
+ * @return boolean|integer False on failure or reply ID on success
  */
 function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
-
-	global $current_user;
 
 	if ( false === $parent_id ) {
 
@@ -537,8 +535,8 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	 * Fire wpas_add_reply_before before the reply is added to the database.
 	 * This hook is fired both on the back-end and the front-end.
 	 *
-	 * @param  $data    The data to be inserted to the database
-	 * @param  $post_id ID of the parent post
+	 * @param  array   $data    The data to be inserted to the database
+	 * @param  integer $post_id ID of the parent post
 	 */
 	do_action( 'wpas_add_reply_before', $data, $post_id );
 
@@ -548,8 +546,8 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		 * Fired right before the data is added to the database on the back-end only.
 		 *
 		 * @since  3.1.2
-		 * @param  $data    The data to be inserted to the database
-		 * @param  $post_id ID of the parent post
+		 * @param  array   $data    The data to be inserted to the database
+		 * @param  integer $post_id ID of the parent post
 		 */
 		do_action( 'wpas_add_reply_admin_before', $data, $post_id );
 
@@ -569,8 +567,8 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		 * Fired right before the data is added to the database on the front-end only.
 		 *
 		 * @since  3.1.2
-		 * @param  $data    The data to be inserted to the database
-		 * @param  $post_id ID of the parent post
+		 * @param  array   $data    The data to be inserted to the database
+		 * @param  integer $post_id ID of the parent post
 		 */
 		do_action( 'wpas_add_reply_public_before', $data, $post_id );
 
@@ -645,8 +643,8 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		 * Fired right after the data is added to the database on the back-end only.
 		 *
 		 * @since  3.1.2
-		 * @param  $reply_id ID of the reply added to the database
-		 * @param  $data     Data inserted to the database
+		 * @param  integer $reply_id ID of the reply added to the database
+		 * @param  array   $data     Data inserted to the database
 		 */
 		do_action( 'wpas_add_reply_admin_after', $reply_id, $data );
 
@@ -657,8 +655,8 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		 * You should now use wpas_add_reply_admin_after instead.
 		 *
 		 * @deprecated  3.1.2
-		 * @param  $reply Reply ID
-		 * @param  $data  Data used to add the reply
+		 * @param  integer $reply Reply ID
+		 * @param  array   $data  Data used to add the reply
 		 */
 		do_action( 'wpas_save_reply_after', $reply_id, $data );
 
@@ -668,8 +666,8 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		 * Fired right after the data is added to the database on the front-end only.
 		 *
 		 * @since  3.1.2
-		 * @param  $reply_id ID of the reply added to the database
-		 * @param  $data     Data inserted to the database
+		 * @param  integer $reply_id ID of the reply added to the database
+		 * @param  array   $data     Data inserted to the database
 		 */
 		do_action( 'wpas_add_reply_public_after', $reply_id, $data );
 
@@ -723,10 +721,10 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array() ) {
  * with the less tickets currently open.
  *
  * @since  3.0.0
- * @param  integer $ticket The ticket that needs an agent
+ * @param  integer $ticket_id The ticket that needs an agent
  * @return integer         ID of the best agent for the job
  */
-function wpas_find_agent( $ticket_id = false ) {
+function wpas_find_agent( $ticket_id ) {
 
 	if ( defined( 'WPAS_DISABLE_AUTO_ASSIGN' ) && true === WPAS_DISABLE_AUTO_ASSIGN ) {
 		return apply_filters( 'wpas_find_available_agent', wpas_get_option( 'assignee_default' ), $ticket_id );
