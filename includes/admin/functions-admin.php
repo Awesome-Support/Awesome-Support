@@ -53,9 +53,7 @@ function wpas_is_ticket_old( $post_id, $latest = null ) {
 
 	}
 
-	$old_after    = wpas_get_option( 'old_ticket' );
-	$old_color    = wpas_get_option( 'color_old' );
-	$post         = get_post( $post_id );
+	$old_after = wpas_get_option( 'old_ticket' );
 
 	if ( strtotime( "$date_created +$old_after days" ) < strtotime( 'now' ) ) {
 		return true;
@@ -199,4 +197,4 @@ class WPAS_Replies_Filter extends WP_Query {
 
 }
 
-new WPAS_Replies_Filter();
+//new WPAS_Replies_Filter();
