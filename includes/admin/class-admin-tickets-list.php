@@ -396,7 +396,7 @@ class WPAS_Tickets_List {
 	 * @since  3.0.0
 	 * @param  object $query WordPress current main query
 	 */
-	function filter_by_replies( $query ) {
+	public function filter_by_replies( $query ) {
 
 		global $pagenow;
 

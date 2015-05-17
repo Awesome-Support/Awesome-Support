@@ -28,7 +28,7 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 <div class="wpas <?php echo $wrapper_class; ?>">
 
 	<form class="wpas-form" method="post" role="form" action="<?php echo wpas_get_login_url(); ?>">
-		<h3><?php _e( 'Login' ); ?></h3>
+		<h3><?php _e( 'Log in' ); ?></h3>
 
 		<?php
 		/* Registrations are not allowed. */
@@ -42,8 +42,8 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 			<input type="text" name="log" <?php wpas_get_field_class( 'log' ); ?> placeholder="<?php _e( 'E-mail or username', 'wpas' ); ?>" required>
 		</div>
 		<div <?php wpas_get_field_container_class( 'pwd' ); ?>>
-			<label><?php _e( 'Password', 'wpas' ); ?></label>
-			<input type="password" name="pwd" <?php wpas_get_field_class( 'pwd' ); ?> placeholder="<?php _e( 'Password', 'wpas' ); ?>" required>
+			<label><?php _e( 'Password' ); ?></label>
+			<input type="password" name="pwd" <?php wpas_get_field_class( 'pwd' ); ?> placeholder="<?php _e( 'Password' ); ?>" required>
 		</div>
 
 		<?php
@@ -54,18 +54,18 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 		?>
 
 		<div class="wpas-checkbox">
-			<label><input type="checkbox" name="rememberme" class="wpas-form-control-checkbox"> <?php echo _x( 'Remember me', 'Login form', 'wpas' ); ?></label>
+			<label><input type="checkbox" name="rememberme" class="wpas-form-control-checkbox"> <?php echo _e( 'Remember Me' ); ?></label>
 		</div>
 
 		<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>">
 		<input type="hidden" name="wpas_login" value="1">
-		<?php wpas_make_button( __( 'Login', 'wpas' ), array( 'onsubmit' => __( 'Logging In...', 'wpas' ) ) ); ?>
+		<?php wpas_make_button( __( 'Log in' ), array( 'onsubmit' => __( 'Logging In...', 'wpas' ) ) ); ?>
 	</form>
 	<?php
 	if ( true === $registration ): ?> 
 
 		<form class="wpas-form" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
-			<h3><?php _e( 'Register', 'wpas' ); ?></h3>
+			<h3><?php _e( 'Register' ); ?></h3>
 			<div <?php wpas_get_field_container_class( 'first_name' ); ?>>
 				<label><?php _e( 'First Name', 'wpas' ); ?></label>
 				<input <?php wpas_get_field_class( 'first_name' ); ?> type="text" placeholder="<?php _e( 'First Name', 'wpas' ); ?>" name="first_name" value="<?php echo wpas_get_registration_field_value( 'first_name' ); ?>" required>
@@ -75,13 +75,13 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 				<input <?php wpas_get_field_class( 'last_name' ); ?> type="text" placeholder="<?php _e( 'Last Name', 'wpas' ); ?>" name="last_name" value="<?php echo wpas_get_registration_field_value( 'last_name' ); ?>" required>
 			</div>
 			<div <?php wpas_get_field_container_class( 'email' ); ?>>
-				<label><?php _e( 'Email', 'wpas' ); ?></label>
-				<input <?php wpas_get_field_class( 'email' ); ?> type="email" placeholder="<?php _e( 'Email', 'wpas' ); ?>" name="email" value="<?php echo wpas_get_registration_field_value( 'email' ); ?>" required>
+				<label><?php _e( 'Email' ); ?></label>
+				<input <?php wpas_get_field_class( 'email' ); ?> type="email" placeholder="<?php _e( 'Email' ); ?>" name="email" value="<?php echo wpas_get_registration_field_value( 'email' ); ?>" required>
 				<small class="wpas-help-block" id="email-validation" style="display: none;"></small>
 			</div>
 			<div <?php wpas_get_field_container_class( 'pwd' ); ?>>
 				<label><?php _e( 'Enter a password', 'wpas' ); ?></label>
-				<input <?php wpas_get_field_class( 'pwd', 'wpas-pwd' ); ?> type="password" placeholder="<?php _e( 'Password', 'wpas' ); ?>" id="password" name="pwd" required>
+				<input <?php wpas_get_field_class( 'pwd', 'wpas-pwd' ); ?> type="password" placeholder="<?php _e( 'Password' ); ?>" id="password" name="pwd" required>
 			</div>
 			<div class="wpas-checkbox">
 				<label><input type="checkbox" name="pwdshow" id="pwdshow" class="wpas-form-control-checkbox"> <?php echo _x( 'Show Password', 'Login form', 'wpas' ); ?></label>

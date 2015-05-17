@@ -64,8 +64,8 @@ class Awesome_Support_Admin {
 			require_once( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-help.php' );
-			
-			if ( !class_exists( 'TAV_Remote_Notification_Client' ) ) {
+
+			if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
 				require_once( WPAS_PATH . 'includes/class-remote-notification-client.php' );
 			}
 
@@ -258,7 +258,10 @@ class Awesome_Support_Admin {
 	 * the list to open tickets.
 	 *
 	 * @since  3.1.3
-	 * @param object WordPress main query
+	 *
+	 * @param object $query WordPress main query
+	 *
+	 * @return boolean True if the tickets were filtered, false otherwise
 	 */
 	public function limit_open( $query ) {
 
@@ -277,19 +280,22 @@ class Awesome_Support_Admin {
 			return false;
 		}
 
-		if ( ! isset( $_GET['post_status'] ) || ! array_key_exists( $_GET['post_status'], wpas_get_post_status() ) ) {
+		if ( isset( $_GET['post_status'] ) && array_key_exists( $_GET['post_status'], wpas_get_post_status() ) || ! isset( $_GET['post_status'] ) && true === (bool) wpas_get_option( 'hide_closed', false ) ) {
+
+			$query->set( 'meta_query', array(
+					array(
+						'key'     => '_wpas_status',
+						'value'   => 'open',
+						'compare' => '=',
+					)
+				)
+			);
+
+			return true;
+
+		} else {
 			return false;
 		}
-
-		$query->set( 'meta_query', array(
-			array(
-				'key'     => '_wpas_status',
-				'value'   => 'open',
-				'compare' => '=',
-			) )
-		);
-
-		return true;
 
 	}
 
@@ -318,9 +324,7 @@ class Awesome_Support_Admin {
 	 */
 	public function enqueue_admin_scripts() {
 
-		global $pagenow;
-
-		if ( !wpas_is_plugin_page() ) {
+		if ( ! wpas_is_plugin_page() ) {
 			return;
 		}
 
@@ -328,9 +332,8 @@ class Awesome_Support_Admin {
 			wp_dequeue_script( 'autosave' );
 		}
 
-		$page    = filter_input( INPUT_GET, 'page',   FILTER_SANITIZE_STRING );
-		$action  = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
-		$post_id = filter_input( INPUT_GET, 'post',   FILTER_SANITIZE_NUMBER_INT );
+		$page   = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
+		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
 
 		if ( 'wpas-about' === $page ) {
 			add_thickbox();
@@ -442,6 +445,9 @@ class Awesome_Support_Admin {
 	/**
 	 * Add settings action link to the plugins page.
 	 *
+	 * @param array $links Plugin action links
+	 *
+	 * @return array Updated action links including the one to the settings page
 	 * @since    1.0.0
 	 */
 	public function add_action_links( $links ) {
@@ -625,20 +631,21 @@ class Awesome_Support_Admin {
 	 * @return void
 	 */
 	public function register_submenu_items() {
-		add_submenu_page( 'edit.php?post_type=ticket', __( 'System Status', 'wpas' ), __( 'System Status', 'wpas' ), 'administrator', 'wpas-status', array( $this, 'display_status_page' ) );
+		add_submenu_page( 'edit.php?post_type=ticket', __( 'Debugging Tools', 'wpas' ), __( 'Tools', 'wpas' ), 'administrator', 'wpas-status', array( $this, 'display_status_page' ) );
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Awesome Support Addons', 'wpas' ), '<span style="color:#f39c12;">' . __( 'Addons', 'wpas' ) . '</span>', 'edit_posts', 'wpas-addons', array( $this, 'display_addons_page' ) );
-		add_submenu_page( 'options.php', __( 'About Awesome Support', 'wpas' ), __( 'About', 'wpas' ), 'edit_posts', 'wpas-about', array( $this, 'display_about_page' ) );
+		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'wpas' ), __( 'About', 'wpas' ), 'edit_posts', 'wpas-about', array( $this, 'display_about_page' ) );
+		remove_submenu_page( 'edit.php?post_type=ticket', 'wpas-about' );
 	}
 
 	/**
 	 * Add ticket count in admin menu item.
 	 *
+	 * @return boolean True if the ticket count was added, false otherwise
 	 * @since  1.0.0
-	 * @return void
 	 */
 	public function tickets_count() {
 
-		if ( false === boolval( wpas_get_option( 'show_count' ) ) ) {
+		if ( false === (bool) wpas_get_option( 'show_count' ) ) {
 			return false;
 		}
 
@@ -669,6 +676,8 @@ class Awesome_Support_Admin {
 				$menu[$key][0] .= ' <span class="awaiting-mod count-' . $count . '"><span class="pending-count">' . $count . '</span></span>';
 			}
 		}
+
+		return true;
 	}
 
 	/**
@@ -709,19 +718,19 @@ class Awesome_Support_Admin {
 	public function custom_actions() {
 
 		/* Make sure we have a trigger */
-		if( !isset( $_GET['wpas-do'] ) )
+		if ( ! isset( $_GET['wpas-do'] ) ) {
 			return;
+		}
 
 		/* Validate the nonce */
-		if( !isset( $_GET['wpas-nonce'] ) || !wp_verify_nonce( $_GET['wpas-nonce'], 'wpas_custom_action' ) )
+		if ( ! isset( $_GET['wpas-nonce'] ) || ! wp_verify_nonce( $_GET['wpas-nonce'], 'wpas_custom_action' ) ) {
 			return;
-
-		global $wpas_log;
+		}
 
 		$log    = array();
 		$action = sanitize_text_field( $_GET['wpas-do'] );
 
-		switch( $action ):
+		switch ( $action ):
 
 			case 'close':
 
@@ -789,11 +798,17 @@ class Awesome_Support_Admin {
 
 		/**
 		 * wpas_custom_actions hook
+		 *
+		 * Fired right after the action is executed. It is important to note that
+		 * some of the action are triggering a redirect after they're done and
+		 * that in this case this hook won't be triggered.
+		 *
+		 * @param string $action The action that's being executed
 		 */
 		do_action( 'wpas_execute_custom_action', $action );
 
 		/* Log the action */
-		if ( !empty( $log ) ) {
+		if ( ! empty( $log ) ) {
 			wpas_log( $_GET['post'], $log );
 		}
 
@@ -854,8 +869,10 @@ class Awesome_Support_Admin {
 
 	/**
 	 * Add new class to the details metabox.
-	 * 
+	 *
 	 * @param array $classes Current metabox classes
+	 *
+	 * @return array The updated list of classes
 	 */
 	public function add_metabox_details_classes( $classes ) {
 		array_push( $classes, 'submitdiv' );
@@ -868,21 +885,24 @@ class Awesome_Support_Admin {
 	 * The below function is used to call the metaboxes content.
 	 * A template name is given to the function. If the template
 	 * does exist, the metabox is loaded. If not, nothing happens.
-	 * 
+	 *
 	 * @param  (integer) $post     Post ID
 	 * @param  (string)  $template Metabox content template
-	 * @return (mixed)             False if template doesn't exist, null otherwise
+	 *
+	 * @return void
 	 * @since  3.0.0
 	 */
 	public function metabox_callback( $post, $args ) {
 
-		if( !is_array( $args ) || !isset( $args['args']['template'] ) )
-			_e( 'An error occured while registering this metabox. Please contact the support.', 'wpas' );
+		if ( ! is_array( $args ) || ! isset( $args['args']['template'] ) ) {
+			_e( 'An error occurred while registering this metabox. Please contact the support.', 'wpas' );
+		}
 
 		$template = $args['args']['template'];
 
-		if( !file_exists( WPAS_PATH . "includes/admin/metaboxes/$template.php" ) )
+		if ( ! file_exists( WPAS_PATH . "includes/admin/metaboxes/$template.php" ) ) {
 			_e( 'An error occured while loading this metabox. Please contact the support.', 'wpas' );
+		}
 
 		/* Include the metabox content */
 		include_once( WPAS_PATH . "includes/admin/metaboxes/$template.php" );
@@ -902,15 +922,18 @@ class Awesome_Support_Admin {
 	public function save_ticket( $post_id ) {
 
 		/* We should already being avoiding Ajax, but let's make sure */
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || wp_is_post_revision( $post_id ) )
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || wp_is_post_revision( $post_id ) ) {
 			return;
+		}
 
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
 			return;
+		}
 
 		/* Now we check the nonce */
-		if ( !isset( $_POST[Awesome_Support_Admin::$nonce_name] ) || !wp_verify_nonce( $_POST[Awesome_Support_Admin::$nonce_name], Awesome_Support_Admin::$nonce_action ) )
+		if ( ! isset( $_POST[ Awesome_Support_Admin::$nonce_name ] ) || ! wp_verify_nonce( $_POST[ Awesome_Support_Admin::$nonce_name ], Awesome_Support_Admin::$nonce_action ) ) {
 			return;
+		}
 
 		/* Does the current user has permission? */
 		if ( !current_user_can( 'edit_ticket', $post_id ) ) {
@@ -918,11 +941,6 @@ class Awesome_Support_Admin {
 		}
 
 		global $current_user;
-
-		/**
-		 * Store possible notifications
-		 */
-		$notifications = array();
 
 		/**
 		 * Store possible logs
@@ -1009,7 +1027,7 @@ class Awesome_Support_Admin {
 							$closed = wpas_close_ticket( $post_id );
 
 							/* E-Mail the client */
-							$ticket_closed = new WPAS_Email_Notification( $post_id, array( 'action' => 'closed' ) );
+							new WPAS_Email_Notification( $post_id, array( 'action' => 'closed' ) );
 
 							/**
 							 * wpas_ticket_closed_by_agent hook
@@ -1069,7 +1087,7 @@ class Awesome_Support_Admin {
 	 * or manually marks the last reply as read.
 	 *
 	 * @since  3.0.0
-	 * @return [type] [description]
+	 * @return void
 	 */
 	public function mark_replies_read( $reply_id, $data ) {
 

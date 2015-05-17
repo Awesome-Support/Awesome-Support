@@ -41,7 +41,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Replies Order', 'wpas' ),
 					'id'      => 'replies_order',
 					'type'    => 'radio',
-					'desc'    => __( 'In which order should the replie be displayed (for both client and admin side)?', 'wpas' ),
+					'desc'    => __( 'In which order should the replies be displayed (for both client and admin side)?', 'wpas' ),
 					'options' => array( 'ASC' => __( 'Old to New', 'wpas' ), 'DESC' => __( 'New to Old', 'wpas' ) ),
 					'default' => 'ASC'
 				),

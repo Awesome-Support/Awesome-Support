@@ -71,8 +71,8 @@ class WPAS_Notification {
 					 */
 					if ( is_numeric( $message ) && $this->predefined_exists( $message ) ) {
 						$predefined    = $this->get_predefined_messages();
-						$this->case    = esc_atts( $predefined[$message]['case'] );
-						$this->message = esc_atts( $predefined[$message]['message'] );
+						$this->case    = esc_attr( $predefined[$message]['case'] );
+						$this->message = esc_attr( $predefined[$message]['message'] );
 					} 
 
 					/**
@@ -167,7 +167,7 @@ class WPAS_Notification {
 	public function template() {
 
 		$case    = $this->case;
-		$message = htmlspecialchars_decode( $this->message );
+		$message = wp_kses_post( htmlspecialchars_decode( $this->message ) );
 
 		switch( $case ):
 
@@ -229,15 +229,16 @@ class WPAS_Notification {
  *
  * This function returns a notification either
  * predefined or customized by the user.
- * 
- * @param  (string)  $case    Type of notification
- * @param  (string)  $message Message to display
- * @param  (boolean) $echo    Wether to echo or return the notification
- * @return (string)           Notification (with markup)
+ *
+ * @param  string  $case    Type of notification
+ * @param  string  $message Message to display
+ * @param  boolean $echo    Whether to echo or return the notification
+ *
+ * @return void|string           Notification (with markup)
  * @see    WPAS_Notification
  * @since  3.0.0
  */
-function wpas_notification( $case = false, $message = false, $echo = true ) {
+function wpas_notification( $case, $message, $echo = true ) {
 
 	$notification = new WPAS_Notification( $case, $message );
 

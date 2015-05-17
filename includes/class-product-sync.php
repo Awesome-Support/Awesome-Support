@@ -304,8 +304,10 @@ class WPAS_Product_Sync {
 	 * taxonomy term object.
 	 *
 	 * @since  3.0.2
+	 *
 	 * @param  object $post Post
-	 * @return object       Taxonomy term object
+	 *
+	 * @return boolean|object Taxonomy term object
 	 */
 	protected function create_term_object( $post ) {
 
@@ -485,6 +487,10 @@ class WPAS_Product_Sync {
 
 			$query_args = wp_parse_args( $query_args, $query_defaults );
 			$query      = new WP_Query( $query_args );
+
+			if ( false === get_option( "wpas_sync_$this->post_type", false ) ) {
+				$this->run_initial_sync();
+			}
 
 			if ( isset( $query_args['wpas_get_post_count'] ) && $query_args['wpas_get_post_count'] ) {
 				return $this->append ? $query->post_count + count( $terms ) : $query->post_count;
@@ -794,10 +800,48 @@ class WPAS_Product_Sync {
 	 * Runs the initial synchronization of products.
 	 *
 	 * @since 3.1.7
+	 * @return integer The number of terms synchronized
 	 */
-	protected function run_initial_sync() {
-		$this->get_terms( array(), 'product', array() );
-		add_option( "wpas_sync_$this->post_type", 'done' );
+	public function run_initial_sync() {
+
+		$args = array(
+			'post_type'              => $this->post_type,
+			'post_status'            => 'any',
+			'order'                  => 'ASC',
+			'orderby'                => 'title',
+			'ignore_sticky_posts'    => false,
+			'posts_per_page'         => -1,
+			'perm'                   => 'readable',
+			'no_found_rows'          => false,
+			'cache_results'          => true,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);
+
+		$query = new WP_Query( $args );
+		$count = 0;
+
+		/* Create the term object for each post */
+		foreach ( $query->posts as $key => $post ) {
+
+			if ( ! is_a( $post, 'WP_Post' ) ) {
+				continue;
+			}
+
+			/* Create the term object */
+			$term = $this->create_term_object( $post );
+
+			/* If the term was successfully created we increment our counter */
+			if ( false !== $term ) {
+				++$count;
+			}
+
+		}
+
+		add_option( "wpas_sync_$this->post_type", $count );
+
+		return $count;
+
 	}
 
 	/**

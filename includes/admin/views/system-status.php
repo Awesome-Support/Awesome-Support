@@ -8,41 +8,41 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-wordpress">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title"><?php _e( 'WordPress', 'wpas' ); ?></th>
+			<th data-override="key" class="row-title">WordPress</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title"><label for="tablecell"><?php _e( 'Site URL', 'wpas' ); ?></label></td>
+			<td class="row-title"><label for="tablecell">Site URL</label></td>
 			<td><?php echo site_url(); ?></td>
 		</tr>
 		<tr class="alternate">
-			<td class="row-title"><label for="tablecell"><?php _e( 'Home URL', 'wpas' ); ?></label></td>
+			<td class="row-title"><label for="tablecell">Home URL</label></td>
 			<td><?php echo home_url(); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'WP Version', 'wpas' ); ?></td>
+			<td class="row-title">WP Version</td>
 			<td><?php bloginfo('version'); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'WP Multisite', 'wpas' ); ?></td>
+			<td class="row-title">WP Multisite</td>
 			<td><?php if ( is_multisite() ) echo __( 'Yes', 'wpas' ); else echo __( 'No', 'wpas' ); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'WP Language', 'wpas' ); ?></td>
+			<td class="row-title">WP Language</td>
 			<td><?php echo get_locale(); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'WP Debug Mode', 'wpas' ); ?></td>
+			<td class="row-title">WP Debug Mode</td>
 			<td><?php if ( defined('WP_DEBUG') && WP_DEBUG ) _e( 'Yes', 'wpas' ); else _e( 'No', 'wpas' ); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'WP Active Plugins', 'wpas' ); ?></td>
+			<td class="row-title">WP Active Plugins</td>
 			<td><?php echo count( (array) get_option( 'active_plugins' ) ); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'WP Max Upload Size', 'wpas' ); ?></td>
+			<td class="row-title">WP Max Upload Size</td>
 			<td>
 				<?php
 				$wp_upload_max     = wp_max_upload_size();
@@ -57,11 +57,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'WP Memory Limit', 'wpas' ); ?></td>
+			<td class="row-title">WP Memory Limit</td>
 			<td><?php echo WP_MEMORY_LIMIT; ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'WP Timezone', 'wpas' ); ?></td>
+			<td class="row-title">WP Timezone</td>
 			<td>
 				<?php
 				$timezone = get_option( 'timezone_string' );
@@ -79,17 +79,17 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-server">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title"><?php _e( 'Server', 'wpas' ); ?></th>
+			<th data-override="key" class="row-title">Server</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title"><?php _e( 'PHP Version', 'wpas' ); ?></td>
+			<td class="row-title">PHP Version</td>
 			<td><?php if ( function_exists( 'phpversion' ) ) echo esc_html( phpversion() ); ?></td>
 		</tr>
 		<tr class="alternate">
-			<td class="row-title"><?php _e( 'Software', 'wpas' ); ?></td>
+			<td class="row-title">Software</td>
 			<td><?php echo esc_html( $_SERVER['SERVER_SOFTWARE'] ); ?></td>
 		</tr>
 	</tbody>
@@ -97,37 +97,37 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-settings">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title"><?php _e( 'Settings', 'wpas' ); ?></th>
+			<th data-override="key" class="row-title">Settings</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title"><?php _e( 'Version', 'wpas' ); ?></td>
+			<td class="row-title">Version</td>
 			<td><?php echo WPAS_VERSION; ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'DB Version', 'wpas' ); ?></td>
+			<td class="row-title">DB Version</td>
 			<td><?php echo WPAS_DB_VERSION; ?></td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Tickets Slug', 'wpas' ); ?></td>
+			<td class="row-title">Tickets Slug</td>
 			<td><code><?php echo defined( 'WPAS_SLUG' ) ? sanitize_title( WPAS_SLUG ) : 'ticket'; ?></code></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'Products Slug', 'wpas' ); ?></td>
+			<td class="row-title">Products Slug</td>
 			<td><code><?php echo defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : 'product'; ?></code></td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Multiple Products', 'wpas' ); ?></td>
+			<td class="row-title">Multiple Products</td>
 			<td><?php true === boolval( wpas_get_option( 'support_products' ) ) ? _e( 'Enabled', 'wpas' ) : _e( 'Disabled', 'wpas '); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'Registration Status', 'wpas' ); ?></td>
+			<td class="row-title">Registration Status</td>
 			<td><?php true === boolval( wpas_get_option( 'allow_registrations' ) ) ? _e( 'Open', 'wpas' ) : _e( 'Closed', 'wpas '); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Registration Page', 'wpas' ); ?></td>
+			<td class="row-title">Registration Page</td>
 			<td>
 				<?php
 				$login_page = wpas_get_option( 'login_page' );
@@ -140,7 +140,7 @@
 			</td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'Uploads Folder', 'wpas' ); ?></td>
+			<td class="row-title">Uploads Folder</td>
 			<td>
 				<?php
 				if ( !is_dir( ABSPATH . 'wp-content/uploads/awesome-support' ) ) {
@@ -160,7 +160,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Allowed File Types', 'wpas' ); ?></td>
+			<td class="row-title">Allowed File Types</td>
 			<td>
 				<?php
 				$filetypes = apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) );
@@ -177,7 +177,7 @@
 			</td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'WYSIWYG On Front', 'wpas' ); ?></td>
+			<td class="row-title">WYSIWYG On Front</td>
 			<td><?php true === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ? _e( 'Yes', 'wpas' ) : _e( 'No', 'wpas '); ?></td>
 		</tr>
 	</tbody>
@@ -185,77 +185,77 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-pages">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title"><?php _e( 'Plugin Pages', 'wpas' ); ?></th>
+			<th data-override="key" class="row-title">Plugin Pages</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title"><?php _e( 'Ticket Submission', 'wpas' ); ?></td>
+			<td class="row-title">Ticket Submission</td>
 			<?php $page_submit = wpas_get_option( 'ticket_submit' ); ?>
-			<td><?php echo empty( $page_submit ) ? '<span class="wpas-alert-danger">' . __( 'Not set', 'wpas' ) . '</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_submit ) . " (#$page_submit)</span>"; ?></td>
+			<td><?php echo empty( $page_submit ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_submit ) . " (#$page_submit)</span>"; ?></td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Tickets List', 'wpas' ); ?></td>
+			<td class="row-title">Tickets List</td>
 			<?php $page_list = wpas_get_option( 'ticket_list' ); ?>
-			<td><?php echo empty( $page_list ) ? '<span class="wpas-alert-danger">' . __( 'Not set', 'wpas' ) . '</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_list ) . " (#$page_list)</span>"; ?></td>
+			<td><?php echo empty( $page_list ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_list ) . " (#$page_list)</span>"; ?></td>
 		</tr>
 	</tbody>
 </table>
 <table class="widefat wpas-system-status-table" id="wpas-system-status-email-notifications">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title"><?php _e( 'E-Mail Notifications', 'wpas' ); ?></th>
+			<th data-override="key" class="row-title">E-Mail Notifications</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title"><?php _e( 'Sender Name', 'wpas' ); ?></td>
+			<td class="row-title">Sender Name</td>
 			<td>
 				<?php echo wpas_get_option( 'sender_name', get_bloginfo( 'name' ) ); ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Sender E-Mail', 'wpas' ); ?></td>
+			<td class="row-title">Sender E-Mail</td>
 			<td>
 				<?php echo wpas_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ); ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Reply-To E-Mail', 'wpas' ); ?></td>
+			<td class="row-title">Reply-To E-Mail</td>
 			<td>
 				<?php echo wpas_get_option( 'reply_email', get_bloginfo( 'admin_email' ) ); ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Submission Confirmation', 'wpas' ); ?></td>
+			<td class="row-title">Submission Confirmation</td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_confirmation' ) ) ? '<span class="wpas-alert-success">' . __( 'Enabled', 'wpas' ) . '</span>' : '<span class="wpas-alert-danger">' . __( 'Disabled', 'wpas' ) . '</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_confirmation' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
 			</td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'New Assignment', 'wpas' ); ?></td>
+			<td class="row-title">New Assignment</td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_assignment' ) ) ? '<span class="wpas-alert-success">' . __( 'Enabled', 'wpas' ) . '</span>' : '<span class="wpas-alert-danger">' . __( 'Disabled', 'wpas' ) . '</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_assignment' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'New Agent Reply', 'wpas' ); ?></td>
+			<td class="row-title">New Agent Reply</td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_reply_agent' ) ) ? '<span class="wpas-alert-success">' . __( 'Enabled', 'wpas' ) . '</span>' : '<span class="wpas-alert-danger">' . __( 'Disabled', 'wpas' ) . '</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_reply_agent' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
 			</td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'New Client Reply', 'wpas' ); ?></td>
+			<td class="row-title">New Client Reply</td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_reply_client' ) ) ? '<span class="wpas-alert-success">' . __( 'Enabled', 'wpas' ) . '</span>' : '<span class="wpas-alert-danger">' . __( 'Disabled', 'wpas' ) . '</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_reply_client' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Ticket Closed', 'wpas' ); ?></td>
+			<td class="row-title">Ticket Closed</td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_closed' ) ) ? '<span class="wpas-alert-success">' . __( 'Enabled', 'wpas' ) . '</span>' : '<span class="wpas-alert-danger">' . __( 'Disabled', 'wpas' ) . '</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_closed' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
 			</td>
 		</tr>
 	</tbody>
@@ -263,7 +263,7 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-custom-fields">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title"><?php _e( 'Custom Fields', 'wpas' ); ?></th>
+			<th data-override="key" class="row-title">Custom Fields</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
@@ -274,7 +274,7 @@
 		$fields = $wpas_cf->get_custom_fields();
 
 		if ( empty( $fields ) ) { ?>
-			<td colspan="2"><?php _e( 'None', 'wpas' ); ?></td>	
+			<td colspan="2">None</td>	
 		<?php } else {
 
 			$cf_tr_class = 'alt';
@@ -318,13 +318,13 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-plugins">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title"><?php _e( 'Plugins', 'wpas' ); ?></th>
+			<th data-override="key" class="row-title">Plugins</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title"><?php _e( 'Installed', 'wpas' ); ?></td>
+			<td class="row-title">Installed</td>
 			<td>
 				<?php
 				$active_plugins = (array) get_option( 'active_plugins', array() );
@@ -345,10 +345,10 @@
 					// link the plugin name to the plugin url if available
 						$plugin_name = $plugin_data['Name'];
 						if ( ! empty( $plugin_data['PluginURI'] ) ) {
-							$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="' . __( 'Visit plugin homepage' , 'wpas' ) . '">' . $plugin_name . '</a>';
+							$plugin_name = '<a href="' . esc_url( $plugin_data['PluginURI'] ) . '" title="Visit plugin homepage">' . $plugin_name . '</a>';
 						}
 
-						$wp_plugins[] = $plugin_name . ' ' . __( 'by', 'wpas' ) . ' ' . $plugin_data['Author'] . ' ' . __( 'version', 'wpas' ) . ' ' . $plugin_data['Version'] . $version_string;
+						$wp_plugins[] = $plugin_name . ' by ' . $plugin_data['Author'] . ' version ' . $plugin_data['Version'] . $version_string;
 
 					}
 				}
@@ -365,32 +365,32 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-theme">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title"><?php _e( 'Theme', 'wpas' ); ?></th>
+			<th data-override="key" class="row-title">Theme</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title"><?php _e( 'Theme Name', 'wpas' ); ?>:</td>
+			<td class="row-title">Theme Name:</td>
 			<td><?php
 				$active_theme = wp_get_theme();
 				echo $active_theme->Name;
 			?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'Theme Version', 'wpas' ); ?>:</td>
+			<td class="row-title">Theme Version:</td>
 			<td><?php
 				echo $active_theme->Version;
 			?></td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Theme Author URL', 'wpas' ); ?>:</td>
+			<td class="row-title">Theme Author URL:</td>
 			<td><?php
 				echo $active_theme->{'Author URI'};
 			?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'Is Child Theme', 'wpas' ); ?>:</td>
+			<td class="row-title">Is Child Theme:</td>
 			<td><?php echo is_child_theme() ? __( 'Yes', 'wpas' ) : __( 'No', 'wpas' ); ?></td>
 		</tr>
 		<?php
@@ -398,15 +398,15 @@
 			$parent_theme = wp_get_theme( $active_theme->Template );
 		?>
 		<tr>
-			<td class="row-title"><?php _e( 'Parent Theme Name', 'wpas' ); ?>:</td>
+			<td class="row-title">Parent Theme Name:</td>
 			<td><?php echo $parent_theme->Name; ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title"><?php _e( 'Parent Theme Version', 'wpas' ); ?>:</td>
+			<td class="row-title">Parent Theme Version:</td>
 			<td><?php echo  $parent_theme->Version; ?></td>
 		</tr>
 		<tr>
-			<td class="row-title"><?php _e( 'Parent Theme Author URL', 'wpas' ); ?>:</td>
+			<td class="row-title">Parent Theme Author URL:</td>
 			<td><?php
 				echo $parent_theme->{'Author URI'};
 			?></td>
@@ -417,13 +417,13 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-templates">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title"><?php _e( 'Templates', 'wpas' ); ?></th>
+			<th data-override="key" class="row-title">Templates</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title"><?php _e( 'Overrides', 'wpas' ); ?>:</td>
+			<td class="row-title">Overrides:</td>
 			<td>
 				<?php
 				$theme_directory       = trailingslashit( get_template_directory() ) . 'awesome-support';
@@ -446,7 +446,7 @@
 						}
 						echo '</ul>';
 					} else {
-						_e( 'There is no template override', 'wpas' );
+						echo 'There is no template override';
 					}
 
 				} elseif ( is_dir( $theme_directory ) ) {
@@ -460,11 +460,11 @@
 						}
 						echo '</ul>';
 					} else {
-						_e( 'There is no template override', 'wpas' );
+						echo 'There is no template override';
 					}
 
 				} else {
-					_e( 'There is no template override', 'wpas' );
+					echo 'There is no template override';
 				}
 				?>
 			</td>

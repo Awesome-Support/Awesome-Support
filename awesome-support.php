@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        http://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           3.1.6
+ * Version:           3.1.7
  * Author:            ThemeAvenue
  * Author URI:        http://themeavenue.net
  * Text Domain:       wpas
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Shortcuts
  *----------------------------------------------------------------------------*/
 
-define( 'WPAS_VERSION',           '3.1.6' );
+define( 'WPAS_VERSION',           '3.1.7' );
 define( 'WPAS_DB_VERSION',        '1' );
 define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -117,14 +117,14 @@ require_once( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper 
  *
  * @since  3.0.2
  */
-if ( !Awesome_Support::dependencies_loaded() ) {
+if ( ! Awesome_Support::dependencies_loaded() ) {
 	add_action( 'admin_notices', 'wpas_missing_dependencied' );
 }
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Only Functionality
  *----------------------------------------------------------------------------*/
-if( !is_admin() && Awesome_Support::dependencies_loaded() ) {
+if ( ! is_admin() && Awesome_Support::dependencies_loaded() ) {
 	require_once( WPAS_PATH . 'includes/class-notification.php' ); // Load notifications class
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
@@ -153,14 +153,9 @@ if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
 
 }
 
-/*----------------------------------------------------------------------------*
- * Integrations
- *----------------------------------------------------------------------------*/
-require_once( WPAS_PATH . 'includes/integrations/loader.php' );
-
 /**
  * Start the session if needed.
  */
-if ( !session_id() && !headers_sent() ) {
-    session_start();
+if ( ! session_id() && ! headers_sent() ) {
+	session_start();
 }

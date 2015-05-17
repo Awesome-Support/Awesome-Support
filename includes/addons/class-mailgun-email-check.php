@@ -7,6 +7,13 @@ class WPAS_MailGun_EMail_Check {
 	 * @var string
 	 */
 	protected $public_key;
+
+	/**
+	 * MailGun endpoint
+	 *
+	 * @var string
+	 */
+	protected $endpoint;
 	
 	public function __construct() {
 		$this->endpoint   = 'https://api.mailgun.net/v2/address/validate';
@@ -20,8 +27,8 @@ class WPAS_MailGun_EMail_Check {
 	/**
 	 * Add MailGun settings.
 	 * 
-	 * @param  (array) $def Array of existing settings
-	 * @return (array)      Updated settings
+	 * @param  (array) $settings Array of existing settings
+	 * @return (array)           Updated settings
 	 */
 	public static function settings( $settings ) {
 
