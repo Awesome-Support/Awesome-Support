@@ -238,7 +238,7 @@ class WPAS_Notification {
  * @see    WPAS_Notification
  * @since  3.0.0
  */
-function wpas_notification( $case, $message = false, $echo = true ) {
+function wpas_notification( $case, $message = '', $echo = true ) {
 
 	$notification = new WPAS_Notification( $case, $message );
 
