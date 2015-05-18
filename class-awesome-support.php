@@ -994,3 +994,13 @@ class Awesome_Support {
 	}
 
 }
+
+/**
+ * Main Awesome Support instance.
+ * @var Awesome_Support $awesome_support - instance of awesome support
+ * @since 3.1.7
+ */
+global $awesome_support;
+if ( ! $awesome_support ) {
+	$awesome_support = Awesome_Support::get_instance();
+}
