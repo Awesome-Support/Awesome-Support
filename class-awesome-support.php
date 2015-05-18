@@ -192,6 +192,7 @@ class Awesome_Support {
 				/**
 				 * Redirect to the newly created ticket
 				 */
+				$submit = wpas_get_option( 'ticket_submit' );
 				wpas_redirect( 'ticket_added_failed', add_query_arg( array( 'message' => 6 ), get_permalink( $submit ) ), $submit );
 				exit;
 
@@ -234,12 +235,15 @@ class Awesome_Support {
 			 */
 			$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', false );
 
+			/**
+			 * Get the parent ticket ID.
+			 */
+			$parent_id = intval( $_POST['ticket_id'] );
+
 			if ( empty( $_POST['wpas_user_reply'] ) && false === $can_submit_empty ) {
 				wpas_redirect( 'reply_not_added', add_query_arg( array( 'message' => wpas_create_notification( __( 'You cannot submit an empty reply.', 'wpas' ) ) ), get_permalink( $parent_id ) ), $parent_id );
 				exit;
 			}
-
-			$parent_id = intval( $_POST['ticket_id'] );
 
 			/* Sanitize the data */
 			$data = array( 'post_content' => wp_kses( $_POST['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
@@ -273,10 +277,12 @@ class Awesome_Support {
 	 * Allow e-mail to be used as the login.
 	 *
 	 * @since  3.0.2
-	 * @param  null|WP_User $user     User to authenticate.
-	 * @param  string       $username User login
-	 * @param  string       $password User password
-	 * @return object                 WP_User if authentication succeed, WP_Error on failure
+	 *
+	 * @param  WP_User|WP_Error|null $user     User to authenticate.
+	 * @param  string                $username User login
+	 * @param  string                $password User password
+	 *
+	 * @return object                          WP_User if authentication succeed, WP_Error on failure
 	 */
 	public function email_signon( $user, $username, $password ) {
 
@@ -289,7 +295,7 @@ class Awesome_Support {
 		 * If the $user isn't a WP_User object nor a WP_Error
 		 * we don' touch it and let WordPress handle it.
 		 */
-		if ( !is_wp_error( $user ) ) {
+		if ( ! is_wp_error( $user ) ) {
 			return $user;
 		}
 
@@ -305,7 +311,7 @@ class Awesome_Support {
 		 * If the username is not an e-mail there is nothing else we can do,
 		 * the error is probably legitimate.
 		 */
-		if ( !is_email( $username ) ) {
+		if ( ! is_email( $username ) ) {
 			return $user;
 		}
 
@@ -316,7 +322,7 @@ class Awesome_Support {
 		 * If there is no user with this e-mail the error is legitimate
 		 * so let's just return it.
 		 */
-		if ( false === $user_data || !is_a( $user_data, 'WP_User' ) ) {
+		if ( false === $user_data || ! is_a( $user_data, 'WP_User' ) ) {
 			return $user;
 		}
 
@@ -865,18 +871,16 @@ class Awesome_Support {
 	 * is on the submission page.
 	 *
 	 * @since  3.0.0
-	 * @param  string  $name     Template name
-	 * @param  string  $template Path to the template that was loaded
-	 * @param  array   $args     Extra arguments passed when loading the template
+	 *
+	 * @param  string $name Template name
+	 *
 	 * @return boolean           True if the modal is loaded, false otherwise
 	 */
-	public function terms_and_conditions_modal( $name, $template, $args ) {
+	public function terms_and_conditions_modal( $name ) {
 
 		if ( 'registration' !== $name ) {
 			return false;
 		}
-
-		global $post;
 
 		$terms = wpas_get_option( 'terms_conditions', '' );
 
@@ -989,7 +993,7 @@ class Awesome_Support {
 	 * @since  3.1.3
 	 * @return void
 	 */
-	public function credit( $name, $template, $args ) {
+	public function credit() {
 		echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
 	}
 
