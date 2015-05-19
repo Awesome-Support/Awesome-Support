@@ -212,12 +212,12 @@ class Awesome_Support_Admin {
 	public function hide_others_tickets( $query ) {
 
 		/* Make sure this is the main query */
-		if ( !$query->is_main_query() ) {
+		if ( ! $query->is_main_query() ) {
 			return false;
 		}
 
 		/* Make sure this is the admin screen */
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 			return false;
 		}
 
@@ -227,24 +227,19 @@ class Awesome_Support_Admin {
 		}
 
 		/* If admins can see all tickets do nothing */
-		if ( current_user_can( 'administrator' ) && true === boolval( wpas_get_option( 'admin_see_all' ) ) ) {
+		if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
 			return false;
 		}
 
 		/* If agents can see all tickets do nothing */
-		if ( current_user_can( 'edit_ticket' ) && !current_user_can( 'administrator' ) && true === boolval( wpas_get_option( 'agent_see_all' ) ) ) {
+		if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
 			return false;
 		}
 
 		global $current_user;
 
-		$query->set( 'meta_query', array(
-			array(
-				'key'     => '_wpas_assignee',
-				'value'   => $current_user->ID,
-				'compare' => '=',
-			) )
-		);
+		$query->set( 'meta_key', '_wpas_assignee' );
+		$query->set( 'meta_value', (int) $current_user->ID );
 
 		return true;
 
