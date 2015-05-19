@@ -60,8 +60,8 @@ class Awesome_Support {
 			add_action( 'plugins_loaded',                 array( $this, 'load_plugin_textdomain' ),          11, 0 ); // Load the plugin textdomain
 			add_action( 'init',                           array( $this, 'init' ),                            11, 0 ); // Register main post type
 			add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ),           999, 1 ); // Add a link to agent's tickets in the toolbar
-			add_action( 'wp_print_styles',                array( $this, 'enqueue_styles' ),                  10, 0 ); // Load public-facing style sheets
-			add_action( 'wp_print_scripts',               array( $this, 'enqueue_scripts' ),                 10, 0 ); // Load public-facing JavaScripts
+			add_action( 'wp_enqueue_scripts',             array( $this, 'enqueue_styles' ),                  10, 0 ); // Load public-facing style sheets
+			add_action( 'wp_enqueue_scripts',             array( $this, 'enqueue_scripts' ),                 10, 0 ); // Load public-facing JavaScripts
 			add_action( 'template_redirect',              array( $this, 'redirect_archive' ),                10, 0 );
 			add_action( 'wpas_after_registration_fields', array( $this, 'terms_and_conditions_checkbox' ),   10, 3 ); // Add terms & conditions checkbox
 			add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ),      10, 3 ); // Load the terms and conditions in a hidden div in the footer
