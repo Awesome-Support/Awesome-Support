@@ -732,7 +732,13 @@ function wpas_find_agent( $ticket_id = false ) {
 		return apply_filters( 'wpas_find_available_agent', wpas_get_option( 'assignee_default' ), $ticket_id );
 	}
 
-	$users = get_users( array( 'orderby' => 'wpas_random' ) ); // We use a unique and non-existing orderby parameter so that we can identify the query in pre_user_query
+	$users = get_transient( 'wpas_list_agents' );
+
+	if ( false === $users ) {
+		$users = get_users( array( 'orderby' => 'wpas_random' ) ); // We use a unique and non-existing orderby parameter so that we can identify the query in pre_user_query
+		set_transient( 'wpas_list_agents', $users, 24 * 60 * 60 );
+	}
+
 	$agent = array();
 
 	foreach ( $users as $user ) {
@@ -775,7 +781,7 @@ function wpas_find_agent( $ticket_id = false ) {
 				}
 
 			}
-			
+
 		}
 
 	}
