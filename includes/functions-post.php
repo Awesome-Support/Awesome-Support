@@ -807,7 +807,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 	}
 
 	if ( !user_can( $agent_id, 'edit_ticket' ) ) {
-		return new WP_Error( 'incorrect_agent', __( 'The chosen agent does not have the sufficient capapbilities to be assigned a ticket', 'wpas' ) );
+		return new WP_Error( 'incorrect_agent', __( 'The chosen agent does not have the sufficient capabilities to be assigned a ticket', 'wpas' ) );
 	}
 
 	/* Get the current agent if any */
