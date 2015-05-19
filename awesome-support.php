@@ -67,7 +67,6 @@ require_once( WPAS_PATH . 'class-awesome-support.php' );
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
 register_activation_hook( __FILE__, array( 'Awesome_Support', 'activate' ) );
-register_deactivation_hook( __FILE__, array( 'Awesome_Support', 'deactivate' ) );
 
 /**
  * Get an instance of the plugin
