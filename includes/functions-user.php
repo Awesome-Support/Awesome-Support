@@ -2,6 +2,8 @@
 /**
  * Register user account.
  *
+ * @param array|bool $data User data
+ *
  * @since  1.0.0
  * @return void
  */
@@ -13,7 +15,10 @@ function wpas_register_account( $data = false ) {
 	$registration = boolval( wpas_get_option( 'allow_registrations', true ) );
 
 	if ( true !== $registration ) {
-		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'Registrations are currently not allowed.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
+		wp_redirect( add_query_arg( array(
+			'message' => wpas_create_notification( __( 'Registrations are currently not allowed.', 'wpas' ) ),
+			get_permalink( $post->ID )
+		) ) );
 		exit;
 	}
 
@@ -21,10 +26,10 @@ function wpas_register_account( $data = false ) {
 		$data = $_POST;
 	}
 
-	$email      = isset( $data['email'] ) && !empty( $data['email'] ) ? sanitize_email( $data['email'] ) : false;
-	$first_name = isset( $data['first_name'] ) && !empty( $data['first_name'] ) ? sanitize_text_field( $data['first_name'] ) : false;
-	$last_name  = isset( $data['last_name'] ) && !empty( $data['last_name'] ) ? sanitize_text_field( $data['last_name'] ) : false;
-	$pwd        = isset( $data['pwd'] ) && !empty( $data['pwd'] ) ? $data['pwd'] : false;
+	$email      = isset( $data['email'] ) && ! empty( $data['email'] ) ? sanitize_email( $data['email'] ) : false;
+	$first_name = isset( $data['first_name'] ) && ! empty( $data['first_name'] ) ? sanitize_text_field( $data['first_name'] ) : false;
+	$last_name  = isset( $data['last_name'] ) && ! empty( $data['last_name'] ) ? sanitize_text_field( $data['last_name'] ) : false;
+	$pwd        = isset( $data['pwd'] ) && ! empty( $data['pwd'] ) ? $data['pwd'] : false;
 
 	/* Save the user information in session to pre populate the form in case of error. */
 	$_SESSION['wpas_registration_form'] = array(
@@ -43,14 +48,20 @@ function wpas_register_account( $data = false ) {
 	 */
 	do_action( 'wpas_pre_register_account', $data );
 
-	if ( wpas_get_option( 'terms_conditions', false ) && !isset( $data['terms'] ) ) {
-		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'You did not accept the terms and conditions.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
+	if ( wpas_get_option( 'terms_conditions', false ) && ! isset( $data['terms'] ) ) {
+		wp_redirect( add_query_arg( array(
+			'message' => wpas_create_notification( __( 'You did not accept the terms and conditions.', 'wpas' ) ),
+			get_permalink( $post->ID )
+		) ) );
 		exit;
 	}
 
 	/* Make sure we have all the necessary data. */
 	if ( false === ( $email || $first_name || $last_name || $pwd ) ) {
-		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'You didn\'t correctly fill all the fields.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
+		wp_redirect( add_query_arg( array(
+			'message' => wpas_create_notification( __( 'You didn\'t correctly fill all the fields.', 'wpas' ) ),
+			get_permalink( $post->ID )
+		) ) );
 		exit;
 	}
 
@@ -62,9 +73,9 @@ function wpas_register_account( $data = false ) {
 		$suffix = 1;
 		do {
 			$alt_username = sanitize_user( $username . $suffix );
-			$user = get_user_by( 'login', $alt_username );
-			$suffix++;
-		} while( is_a( $user, 'WP_User' )  );
+			$user         = get_user_by( 'login', $alt_username );
+			$suffix ++;
+		} while ( is_a( $user, 'WP_User' ) );
 		$username = $alt_username;
 	}
 
@@ -105,7 +116,10 @@ function wpas_register_account( $data = false ) {
 		do_action( 'wpas_register_account_failed', $user_id, $args );
 
 		$error = $user_id->get_error_message();
-		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( $error ), get_permalink( $post->ID ) ) ) );
+		wp_redirect( add_query_arg( array(
+			'message' => wpas_create_notification( $error ),
+			get_permalink( $post->ID )
+		) ) );
 		exit;
 
 	} else {
@@ -125,16 +139,19 @@ function wpas_register_account( $data = false ) {
 		wp_new_user_notification( $user_id, $pwd );
 
 		if ( headers_sent() ) {
-			wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( __( 'Your account has been created. Please log-in.', 'wpas' ) ), get_permalink( $post->ID ) ) ) );
+			wp_redirect( add_query_arg( array(
+				'message' => wpas_create_notification( __( 'Your account has been created. Please log-in.', 'wpas' ) ),
+				get_permalink( $post->ID )
+			) ) );
 			exit;
 		}
 
-		if ( !is_user_logged_in() ) {
+		if ( ! is_user_logged_in() ) {
 
 			/* Automatically log the user in */
 			wp_set_current_user( $user_id, $email );
 			wp_set_auth_cookie( $user_id );
-			
+
 			wp_redirect( get_permalink( $post->ID ) );
 			exit;
 		}
@@ -152,13 +169,15 @@ function wpas_register_account( $data = false ) {
  * if any.
  *
  * @since  3.0.0
+ *
  * @param  string $field Name of the field to get the value for
+ *
  * @return string        The sanitized field value if any, an empty string otherwise
  */
 function wpas_get_registration_field_value( $field ) {
 
-	if ( isset( $_SESSION) && isset( $_SESSION['wpas_registration_form'][$field] ) ) {
-		return sanitize_text_field( $_SESSION['wpas_registration_form'][$field] );
+	if ( isset( $_SESSION ) && isset( $_SESSION['wpas_registration_form'][ $field ] ) ) {
+		return sanitize_text_field( $_SESSION['wpas_registration_form'][ $field ] );
 	} else {
 		return '';
 	}
@@ -180,15 +199,13 @@ function wpas_try_login() {
 	 */
 	if ( isset( $_POST['log'] ) ) {
 
-		$login = $_POST['log'];
-		$pwd   = isset( $_POST['pwd'] ) ? $_POST['pwd'] : '';
 		$login = wp_signon();
 
 		if ( is_wp_error( $login ) ) {
 			$error = $login->get_error_message();
 			wp_redirect( add_query_arg( array( 'message' => urlencode( base64_encode( json_encode( $error ) ) ) ), get_permalink( $post->ID ) ) );
 			exit;
-		} elseif( is_a( $login, 'WP_User' ) ) {
+		} elseif ( is_a( $login, 'WP_User' ) ) {
 			wp_redirect( get_permalink( $post->ID ) );
 			exit;
 		} else {
@@ -204,17 +221,19 @@ function wpas_try_login() {
  * Checks if a user can view a ticket.
  *
  * @since  2.0.0
+ *
  * @param  integer $post_id ID of the post to display
+ *
  * @return boolean
  */
 function wpas_can_view_ticket( $post_id ) {
 
 	/* Only logged in users can view */
-	if ( !is_user_logged_in() ) {
+	if ( ! is_user_logged_in() ) {
 		return false;
 	}
 
-	if ( !current_user_can( 'view_ticket' ) ) {
+	if ( ! current_user_can( 'view_ticket' ) ) {
 		return false;
 	}
 
@@ -237,8 +256,10 @@ function wpas_can_view_ticket( $post_id ) {
  * Check if the current user can reply from the frontend.
  *
  * @since  2.0.0
+ *
  * @param  boolean $admins_allowed Shall admins/agents be allowed to reply from the frontend
  * @param  integer $post_id        ID of the ticket to check
+ *
  * @return boolean                 True if the user can reply
  */
 function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
@@ -248,28 +269,26 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
 		$post_id = $post->ID;
 	}
 
-	$admins_allowed = apply_filters( 'wpas_can_agent_reply_frontend', false ); /* Allow admins to post through front-end. The filter overwrites the function parameter. */
+	$admins_allowed = apply_filters( 'wpas_can_agent_reply_frontend', $admins_allowed ); /* Allow admins to post through front-end. The filter overwrites the function parameter. */
 	$post           = get_post( $post_id );
 	$author_id      = $post->post_author;
-	$reply          = wpas_get_option( 'ticket_can_reply', 'author' );
 
 	if ( is_user_logged_in() ) {
 
 		global $current_user;
 
-		if ( !current_user_can( 'reply_ticket' ) ) {
+		if ( ! current_user_can( 'reply_ticket' ) ) {
 			return false;
 		}
 
-		$usr_mail = $current_user->data->user_email;
-		$user_id  = $current_user->data->ID;
+		$user_id = $current_user->data->ID;
 
 		/* If the current user is the author then yes */
-		if( $user_id == $author_id ) {
+		if ( $user_id == $author_id ) {
 			return true;
 		} else {
 
-			if ( current_user_can( 'edit_ticket' ) && true === $admins_allowed  ) {
+			if ( current_user_can( 'edit_ticket' ) && true === $admins_allowed ) {
 				return true;
 			} else {
 				return false;
@@ -287,7 +306,9 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
  * Get user role nicely formatted.
  *
  * @since  3.0.0
+ *
  * @param  string $role User role
+ *
  * @return string       Nicely formatted user role
  */
 function wpas_get_user_nice_role( $role ) {
@@ -300,7 +321,6 @@ function wpas_get_user_nice_role( $role ) {
 	/* Remove separators */
 	$role = str_replace( array( '-', '_' ), ' ', $role );
 
-	/* Uppercase each first letter */
 	return ucwords( $role );
 
 }
@@ -391,6 +411,7 @@ function wpas_get_users( $args = array() ) {
  * users are returned.
  *
  * @param  string $cap Minimum capability the user must have to be added to the list
+ *
  * @return array       A list of users
  * @since  3.0.0
  */
@@ -452,8 +473,8 @@ function wpas_users_dropdown( $args = array() ) {
 	$options = '';
 
 	/* The ticket is being created, use the current user by default */
-	if ( ! empty( $selected ) ) {
-		$user = get_user_by( 'id', intval( $selected ) );
+	if ( ! empty( $args['selected'] ) ) {
+		$user = get_user_by( 'id', intval( $args['selected'] ) );
 		if ( false !== $user && ! is_wp_error( $user ) ) {
 			$marker = true;
 			$options .= "<option value='{$user->ID}' selected='selected'>{$user->data->display_name}</option>";
@@ -463,7 +484,7 @@ function wpas_users_dropdown( $args = array() ) {
 	foreach ( $all_users as $user ) {
 
 		/* This user was already added, skip it */
-		if ( ! empty( $selected ) && $user->ID === intval( $selected ) ) {
+		if ( ! empty( $args['selected'] ) && $user->ID === intval( $args['selected'] ) ) {
 			continue;
 		}
 
@@ -472,9 +493,9 @@ function wpas_users_dropdown( $args = array() ) {
 		$selected_attr = '';
 
 		if ( false === $marker ) {
-			if ( false !== $selected ) {
-				if ( ! empty( $selected ) ) {
-					if ( $selected === $user_id ) {
+			if ( false !== $args['selected'] ) {
+				if ( ! empty( $args['selected'] ) ) {
+					if ( $args['selected'] === $user_id ) {
 						$selected_attr = 'selected="selected"';
 					}
 				} else {
