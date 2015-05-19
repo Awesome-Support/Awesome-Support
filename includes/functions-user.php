@@ -314,6 +314,104 @@ function wpas_can_submit_ticket() {
 }
 
 /**
+ * Get a list of users that belong to the plugin.
+ *
+ * @param array $args Arguments used to filter the users
+ *
+ * @return array An array of users objects
+ * @since 3.1.8
+ */
+function wpas_get_users( $args = array() ) {
+
+	$defaults = array(
+		'exclude'     => array(),
+		'cap'         => '',
+		'cap_exclude' => '',
+	);
+
+	/* The array where we save all users we want to keep. */
+	$list = array();
+
+	/* Merge arguments. */
+	$args = wp_parse_args( $args, $defaults );
+
+	/* Get the hash of the arguments that's used for caching the result. */
+	$hash = md5( serialize( $args ) );
+
+	/* Check if we have a result already cached. */
+	$result = get_transient( "wpas_list_users_$hash" );
+
+	/* If there is a cached result we return it and don't run the expensive query. */
+	if ( false !== $result ) {
+		return apply_filters( 'wpas_get_users', $result );
+	}
+
+	/* Get all WordPress users */
+	$all_users = get_users();
+
+	/* Loop through the users list and filter them */
+	foreach ( $all_users as $user ) {
+
+		/* Check for required capability */
+		if ( ! empty( $cap ) ) {
+			if ( ! $user->has_cap( $args['cap'] ) ) {
+				continue;
+			}
+		}
+
+		/* Check for excluded capability */
+		if ( ! empty( $cap_exclude ) ) {
+			if ( $user->has_cap( $args['cap_exclude'] ) ) {
+				continue;
+			}
+		}
+
+		/* Maybe exclude this user from the list */
+		if ( in_array( $user->ID, (array) $args['exclude'] ) ) {
+			continue;
+		}
+
+		/* Now we add this user to our final list. */
+		array_push( $list, $user );
+
+	}
+
+	/* Let's cache the result so that we can avoid running this query too many times. */
+	set_transient( "wpas_list_users_$hash", $list, apply_filters( 'wpas_list_users_cache_expiration', 60 * 60 * 24 ) );
+
+	return apply_filters( 'wpas_get_users', $list );
+
+}
+
+/**
+ * List users.
+ *
+ * Returns a list of users based on the required
+ * capability. If the capability is "all", all site
+ * users are returned.
+ *
+ * @param  string $cap Minimum capability the user must have to be added to the list
+ * @return array       A list of users
+ * @since  3.0.0
+ */
+function wpas_list_users( $cap = 'all' ) {
+
+	$list = array();
+
+	/* List all users */
+	$all_users = wpas_get_users( array( 'cap' => $cap ) );
+
+	foreach ( $all_users as $user ) {
+		$user_id          = $user->ID;
+		$user_name        = $user->data->display_name;
+		$list[ $user_id ] = $user_name;
+	}
+
+	return apply_filters( 'wpas_users_list', $list );
+
+}
+
+/**
  * Creates a dropdown list of users.
  *
  * @since  3.1.2
@@ -338,10 +436,10 @@ function wpas_users_dropdown( $args = array() ) {
 		'disabled'       => false,
 	);
 
-	extract( wp_parse_args( $args, $defaults ) );
+	$args = wp_parse_args( $args, $defaults );
 
 	/* List all users */
-	$all_users = get_users();
+	$all_users = wpas_get_users( array( 'cap' => $args['cap'], 'cap_exclude' => $args['cap_exclude'], 'exclude' => $args['exclude'] ) );
 
 	/**
 	 * We use a marker to keep track of when a user was selected.
@@ -351,40 +449,18 @@ function wpas_users_dropdown( $args = array() ) {
 	 */
 	$marker = false;
 
-	$options      = '';
-	$current_id   = $current_user->ID;
-	$current_name = $current_user->data->user_nicename;
-	$current_sel  = ( $current_id == $post->post_author ) ? "selected='selected'" : '';
+	$options = '';
 
 	/* The ticket is being created, use the current user by default */
-	if ( !empty( $selected ) ) {
+	if ( ! empty( $selected ) ) {
 		$user = get_user_by( 'id', intval( $selected ) );
 		if ( false !== $user && ! is_wp_error( $user ) ) {
-			$marker  = true;
+			$marker = true;
 			$options .= "<option value='{$user->ID}' selected='selected'>{$user->data->display_name}</option>";
 		}
 	}
 
 	foreach ( $all_users as $user ) {
-
-		/* Check for required capability */
-		if ( !empty( $cap ) ) {
-			if ( ! $user->has_cap( $cap ) ) {
-				continue;
-			}
-		}
-
-		/* Check for excluded capability */
-		if ( !empty( $cap_exclude ) ) {
-			if ( $user->has_cap( $cap_exclude ) ) {
-				continue;
-			}
-		}
-
-		/* Maybe exclude this user from the list */
-		if ( in_array( $user->ID, (array) $exclude ) ) {
-			continue;
-		}
 
 		/* This user was already added, skip it */
 		if ( ! empty( $selected ) && $user->ID === intval( $selected ) ) {
@@ -397,7 +473,7 @@ function wpas_users_dropdown( $args = array() ) {
 
 		if ( false === $marker ) {
 			if ( false !== $selected ) {
-				if ( !empty( $selected ) ) {
+				if ( ! empty( $selected ) ) {
 					if ( $selected === $user_id ) {
 						$selected_attr = 'selected="selected"';
 					}
@@ -410,7 +486,7 @@ function wpas_users_dropdown( $args = array() ) {
 		}
 
 		/* Set the marker as true to avoid selecting more than one user */
-		if ( !empty( $selected_attr ) ) {
+		if ( ! empty( $selected_attr ) ) {
 			$marker = true;
 		}
 
@@ -420,13 +496,13 @@ function wpas_users_dropdown( $args = array() ) {
 	}
 
 	/* In case there is no selected user yet we add the post author, or the currently logged user (most likely an admin) */
-	if ( true === $agent_fallback && false === $marker ) {
+	if ( true === $args['agent_fallback'] && false === $marker ) {
 		$fallback    = $current_user;
 		$fb_selected = false === $marker ? 'selected="selected"' : '';
-		$options     .= "<option value='{$fallback->ID}' $fb_selected>{$fallback->data->display_name}</option>";
+		$options .= "<option value='{$fallback->ID}' $fb_selected>{$fallback->data->display_name}</option>";
 	}
 
-	$contents = wpas_dropdown( wp_parse_args( $args, $defaults ), $options ); 
+	$contents = wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
 
 	return $contents;
 

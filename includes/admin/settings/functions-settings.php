@@ -37,41 +37,6 @@ function wpas_list_pages() {
 }
 
 /**
- * List users.
- *
- * Returns a list of users based on the required
- * capability. If the capability is "all", all site
- * users are returned.
- * 
- * @param  string $cap Minimum capability the user must have to be added to the list
- * @return array       A list of users
- * @since  3.0.0
- */
-function wpas_list_users( $cap = 'all' ) {
-
-	$list = array();
-
-	/* List all users */
-	$all_users = get_users();
-
-	foreach( $all_users as $user ) {
-
-		/* Exclude agents */
-		if( 'all' == $cap || ( 'all' != $cap && $user->has_cap( $cap ) ) ) {
-
-			$user_id        = $user->ID;
-			$user_name      = $user->data->display_name;
-			$list[$user_id] = $user_name;
-
-		}
-
-	}
-
-	return apply_filters( 'wpas_users_list', $list );
-
-}
-
-/**
  * Get themes list.
  * 
  * @return [type] [description]
