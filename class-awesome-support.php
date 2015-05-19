@@ -621,15 +621,6 @@ class Awesome_Support {
 	}
 
 	/**
-	 * Fired for each blog when the plugin is deactivated.
-	 *
-	 * @since    1.0.0
-	 */
-	private static function single_deactivate() {
-		// @TODO: Define deactivation functionality here
-	}
-
-	/**
 	 * Load the plugin text domain for translation.
 	 *
 	 * @since    1.0.0
