@@ -623,6 +623,7 @@ class Awesome_Support {
 	/**
 	 * Load the plugin text domain for translation.
 	 *
+	 * @return boolean True if the language file was loaded, false otherwise
 	 * @since    1.0.0
 	 */
 	public function load_plugin_textdomain() {
@@ -648,7 +649,7 @@ class Awesome_Support {
 			$locale = $wpas_locale;
 		}
 
-		load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+		$language = load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 		/**
 		 * Reset the $locale after loading our language file
@@ -656,6 +657,8 @@ class Awesome_Support {
 		if ( ! empty( $wpas_locale ) ) {
 			$locale = $backup;
 		}
+
+		return $language;
 
 	}
 
