@@ -27,7 +27,7 @@ function wpas_core_settings_general( $def ) {
 					'id'      => 'assignee_default',
 					'type'    => 'select',
 					'desc'    => __( 'Who to assign tickets to by default (if auto-assignment is enabled, this will only be used in case an assignment rule is incorrect).', 'wpas' ),
-					'options' => wpas_list_users( 'edit_ticket' ),
+					'options' => isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && isset( $_GET['page'] ) && 'settings' === $_GET['page'] ? wpas_list_users( 'edit_ticket' ) : array(),
 					'default' => ''
 				),
 				array(
