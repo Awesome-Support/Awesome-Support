@@ -732,54 +732,44 @@ function wpas_find_agent( $ticket_id = false ) {
 		return apply_filters( 'wpas_find_available_agent', wpas_get_option( 'assignee_default' ), $ticket_id );
 	}
 
-	$users = get_transient( 'wpas_list_agents' );
-
-	if ( false === $users ) {
-		$users = get_users( array( 'orderby' => 'wpas_random' ) ); // We use a unique and non-existing orderby parameter so that we can identify the query in pre_user_query
-		set_transient( 'wpas_list_agents', $users, 24 * 60 * 60 );
-	}
-
+	$users = wpas_get_users( array( 'cap' => 'edit_ticket', 'randomize' => true ) );
 	$agent = array();
 
 	foreach ( $users as $user ) {
 
-		if ( array_key_exists( 'edit_ticket', $user->allcaps ) ) {
+		$posts_args = array(
+			'post_type'              => 'ticket',
+			'post_status'            => 'any',
+			'posts_per_page'         => - 1,
+			'no_found_rows'          => true,
+			'cache_results'          => false,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+			'meta_query'             => array(
+				array(
+					'key'     => '_wpas_status',
+					'value'   => 'open',
+					'type'    => 'CHAR',
+					'compare' => '='
+				),
+				array(
+					'key'     => '_wpas_assignee',
+					'value'   => $user->ID,
+					'type'    => 'NUMERIC',
+					'compare' => '='
+				),
+			)
+		);
 
-			$posts_args = array(
-				'post_type'              => 'ticket',
-				'post_status'            => 'any',
-				'posts_per_page'         => -1,
-				'no_found_rows'          => true,
-				'cache_results'          => false,
-				'update_post_term_cache' => false,
-				'update_post_meta_cache' => false,
-				'meta_query'             => array(
-					array(
-						'key'     => '_wpas_status',
-						'value'   => 'open',
-						'type'    => 'CHAR',
-						'compare' => '='
-					),
-					array(
-						'key'     => '_wpas_assignee',
-						'value'   => $user->ID,
-						'type'    => 'NUMERIC',
-						'compare' => '='
-					),
-				)
-			);
+		$open_tickets = new WP_Query( $posts_args );
+		$count        = count( $open_tickets->posts ); // Total number of open tickets for this agent
 
-			$open_tickets = new WP_Query( $posts_args );
-			$count        = count( $open_tickets->posts ); // Total number of open tickets for this agent
+		if ( empty( $agent ) ) {
+			$agent = array( 'tickets' => $count, 'user_id' => $user->ID );
+		} else {
 
-			if ( empty( $agent ) ) {
+			if ( $count < $agent['tickets'] ) {
 				$agent = array( 'tickets' => $count, 'user_id' => $user->ID );
-			} else {
-
-				if ( $count < $agent['tickets'] ) {
-					$agent = array( 'tickets' => $count, 'user_id' => $user->ID );
-				}
-
 			}
 
 		}
