@@ -951,7 +951,9 @@ class Awesome_Support {
 	 * @return void
 	 */
 	public function credit() {
-		echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
+		if ( true === (bool) wpas_get_option( 'credit_link' ) ) {
+			echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
+		}
 	}
 
 }

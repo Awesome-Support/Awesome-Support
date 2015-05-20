@@ -98,6 +98,17 @@ function wpas_core_settings_general( $def ) {
 					'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mendatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'wpas' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
+				array(
+					'name' => __( 'Credit', 'wpas' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Show Credit', 'wpas' ),
+					'id'      => 'credit_link',
+					'type'    => 'checkbox',
+					'desc'    => __( 'You like the plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page.', 'wpas' ),
+					'default' => false
+				),
 			)
 		),
 	);
