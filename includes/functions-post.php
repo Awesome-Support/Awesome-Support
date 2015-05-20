@@ -1066,9 +1066,8 @@ function wpas_edit_reply_editor_ajax() {
 		'textarea_rows' => 20
 	);
 
-	$editor = wp_editor( $editor_content, $editor_id, $settings );
-
-	echo $editor;
+	wp_editor( $editor_content, $editor_id, $settings );
+	
 	die();
 
 }
