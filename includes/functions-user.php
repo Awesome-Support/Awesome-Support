@@ -356,32 +356,48 @@ function wpas_get_users( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 
 	/* Get the hash of the arguments that's used for caching the result. */
-	$hash = md5( serialize( $args ) );
+	$hash = substr( md5( serialize( $args ) ), 0, 10 ); // Limit the length of the hash in order to avoid issues with option_name being too long in the database (https://core.trac.wordpress.org/ticket/15058)
 
 	/* Check if we have a result already cached. */
 	$result = get_transient( "wpas_list_users_$hash" );
 
 	/* If there is a cached result we return it and don't run the expensive query. */
 	if ( false !== $result ) {
-		return apply_filters( 'wpas_get_users', $result );
+		if ( is_object( $result[0] ) && is_a( $result[0], 'WP_User' ) ) {
+			delete_transient( "wpas_list_users_$hash" ); // Invalidate the previous cache
+		} else {
+			return apply_filters( 'wpas_get_users', get_users( array( 'include' => (array) $result ) ) );
+		}
 	}
 
 	/* Get all WordPress users */
 	$all_users = get_users();
 
+	/**
+	 * Store the selected user IDs for caching.
+	 *
+	 * On database with a lot of users, storing the entire WP_User
+	 * object causes issues (eg. "Got a packet bigger than ‘max_allowed_packet’ bytes").
+	 * In order to avoid that we only store the user IDs and then get the users list
+	 * later on only including those IDs.
+	 *
+	 * @since 3.1.10
+	 */
+	$users_ids = array();
+
 	/* Loop through the users list and filter them */
 	foreach ( $all_users as $user ) {
 
 		/* Check for required capability */
-		if ( ! empty( $cap ) ) {
-			if ( ! $user->has_cap( $args['cap'] ) ) {
+		if ( ! empty( $args['cap'] ) ) {
+			if ( ! array_key_exists( $args['cap'], $user->allcaps ) ) {
 				continue;
 			}
 		}
 
 		/* Check for excluded capability */
-		if ( ! empty( $cap_exclude ) ) {
-			if ( $user->has_cap( $args['cap_exclude'] ) ) {
+		if ( ! empty( $args['cap_exclude'] ) ) {
+			if ( array_key_exists( $args['cap_exclude'], $user->allcaps ) ) {
 				continue;
 			}
 		}
@@ -393,11 +409,12 @@ function wpas_get_users( $args = array() ) {
 
 		/* Now we add this user to our final list. */
 		array_push( $list, $user );
+		array_push( $users_ids, $user->ID );
 
 	}
 
 	/* Let's cache the result so that we can avoid running this query too many times. */
-	set_transient( "wpas_list_users_$hash", $list, apply_filters( 'wpas_list_users_cache_expiration', 60 * 60 * 24 ) );
+	set_transient( "wpas_list_users_$hash", $users_ids, apply_filters( 'wpas_list_users_cache_expiration', 60 * 60 * 24 ) );
 
 	return apply_filters( 'wpas_get_users', $list );
 
@@ -542,5 +559,6 @@ function wpas_users_dropdown( $args = array() ) {
  */
 function wpas_support_users_dropdown( $args = array() ) {
 	$args['cap_exclude'] = 'edit_ticket';
+	$args['cap']         = 'create_ticket';
 	echo wpas_users_dropdown( $args );
 }
