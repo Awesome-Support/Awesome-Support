@@ -363,7 +363,7 @@ function wpas_get_users( $args = array() ) {
 
 	/* If there is a cached result we return it and don't run the expensive query. */
 	if ( false !== $result ) {
-		if ( is_object( $result[0] ) && is_a( $result[0], 'WP_User' ) ) {
+		if ( is_array( $result ) && isset( $result[0] ) && is_object( $result[0] ) && is_a( $result[0], 'WP_User' ) ) {
 			delete_transient( "wpas_list_users_$hash" ); // Invalidate the previous cache
 		} else {
 			return apply_filters( 'wpas_get_users', get_users( array( 'include' => (array) $result ) ) );
