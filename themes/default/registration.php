@@ -11,15 +11,7 @@
  */
 global $post, $wpas_notification;
 
-$submit = get_permalink( wpas_get_option( 'ticket_list' ) );
-
-/**
- * If there is a message to display we show a bootstrap info box
- */
-if ( isset( $_GET['message'] ) && ! empty( $_GET['message'] ) ) {
-	wpas_notification( 'decode' );
-}
-
+$submit        = get_permalink( wpas_get_option( 'ticket_list' ) );
 $registration  = boolval( wpas_get_option( 'allow_registrations', true ) ); // Make sure registrations are open
 $redirect_to   = get_permalink( $post->ID );
 $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-register';

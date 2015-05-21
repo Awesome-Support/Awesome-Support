@@ -137,18 +137,23 @@ function wpas_get_theme() {
  * folder within the plugin.
  *
  * @since  3.0.0
- * @param  string $name  Name of the template to include
- * @param  array  $args  Pass variables to the template
+ *
+ * @param  string $name Name of the template to include
+ * @param  array  $args Pass variables to the template
+ *
+ * @return boolean True if a template is loaded, false otherwise
  */
 function wpas_get_template( $name, $args = array() ) {
 
-	if ( $args && is_array( $args ) )
+	if ( $args && is_array( $args ) ) {
 		extract( $args );
+	}
 
 	$template = wpas_locate_template( $name );
 
-	if ( ! file_exists( $template ) )
+	if ( ! file_exists( $template ) ) {
 		return false;
+	}
 
 	$template = apply_filters( 'wpas_get_template', $template, $name, $args );
 
@@ -157,6 +162,8 @@ function wpas_get_template( $name, $args = array() ) {
 	include( $template );
 
 	do_action( 'wpas_after_template', $name, $template, $args );
+
+	return true;
 
 }
 

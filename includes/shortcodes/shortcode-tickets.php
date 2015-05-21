@@ -47,18 +47,6 @@ function wpas_sc_client_account() {
 	 */
 	do_action( 'wpas_before_tickets_list' );
 
-	/**
-	 * Display possible messages to the visitor.
-	 */
-	if ( isset( $_GET['message'] ) ) {
-
-		if ( is_numeric( $_GET['message'] ) ) {
-			wpas_notification( false, $_GET['message'] );
-		} else {
-			wpas_notification( 'decode', $_GET['message'] );
-		}
-	}
-
 	/* If user is not logged in we display the register form */
 	if ( !is_user_logged_in() ):
 
