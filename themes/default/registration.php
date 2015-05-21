@@ -46,7 +46,7 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 		?>
 
 		<div class="wpas-checkbox">
-			<label><input type="checkbox" name="rememberme" class="wpas-form-control-checkbox"> <?php echo _e( 'Remember Me' ); ?></label>
+			<label><input type="checkbox" name="rememberme" class="wpas-form-control-checkbox"> <?php _e( 'Remember Me' ); ?></label>
 		</div>
 
 		<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>">
