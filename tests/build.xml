@@ -12,7 +12,7 @@
 			<formatter todir="build/logs" type="xml" outfile="junit.xml" />
 			<batchtest>
 				<fileset dir=".">
-					<include name="test_*.php" />
+					<include name="test-*.php" />
 				</fileset>
 			</batchtest>
 		</phpunit>
