@@ -40,7 +40,7 @@ class WPAS_Notification {
 
 	public function __construct( $case = false, $message = false ) {
 
-		if ( false === $message && isset( $_REQUEST['message'] ) ) {
+		if ( empty( $message ) && isset( $_REQUEST['message'] ) ) {
 			$message = $_REQUEST['message'];
 		}
 
@@ -73,7 +73,7 @@ class WPAS_Notification {
 						$predefined    = $this->get_predefined_messages();
 						$this->case    = esc_attr( $predefined[$message]['case'] );
 						$this->message = esc_attr( $predefined[$message]['message'] );
-					} 
+					}
 
 					/**
 					 * If the $message var is a string we assume it is the actual message.
