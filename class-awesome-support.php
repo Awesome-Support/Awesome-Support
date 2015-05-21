@@ -961,7 +961,7 @@ class Awesome_Support {
 	 * Shows notifications at the top of any template file.
 	 *
 	 * @since 3.1.11
-	 * @return True if a notification was found, false otherwise
+	 * @return boolean True if a notification was found, false otherwise
 	 */
 	public function trigger_templates_notifications() {
 		/**
