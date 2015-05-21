@@ -234,7 +234,7 @@ class WPAS_Notification {
  * @param  boolean|string $message Message to display
  * @param  boolean        $echo    Whether to echo or return the notification
  *
- * @return void|string           Notification (with markup)
+ * @return string           Notification (with markup)
  * @see    WPAS_Notification
  * @since  3.0.0
  */
@@ -242,13 +242,11 @@ function wpas_notification( $case, $message = '', $echo = true ) {
 
 	$notification = new WPAS_Notification( $case, $message );
 
-	if( true === $echo ) {
+	if ( true === $echo ) {
 		echo $notification->notify();
 	}
 
-	else {
-		return $notification->notify();
-	}
+	return $notification->notify();
 
 }
 
