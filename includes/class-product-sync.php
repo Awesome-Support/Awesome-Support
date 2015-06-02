@@ -473,7 +473,7 @@ class WPAS_Product_Sync {
 
 			$query_defaults = array(
 				'post_type'              => $this->post_type,
-				'post_status'            => 'any',
+				'post_status'            => 'publish',
 				'order'                  => 'ASC',
 				'orderby'                => 'title',
 				'ignore_sticky_posts'    => false,
@@ -658,7 +658,6 @@ class WPAS_Product_Sync {
 			return false;
 		}
 
-		$taxonomy      = '';
 		$term_id       = intval( $_GET['tag_ID'] );
 		$query         = $wpdb->prepare( "SELECT * FROM $wpdb->term_taxonomy WHERE term_id = '%d'", $term_id );
 		$term_taxonomy = $wpdb->get_col( $query, 2 );
@@ -764,8 +763,6 @@ class WPAS_Product_Sync {
 	 */
 	public function notice_locked_tax() {
 
-		global $pagenow;
-
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'wpas' ), "<code>$this->post_type</code>" ) );
 
 		if ( $this->is_tax_screen() && $this->is_synced_term() ) { ?>
@@ -806,7 +803,7 @@ class WPAS_Product_Sync {
 
 		$args = array(
 			'post_type'              => $this->post_type,
-			'post_status'            => 'any',
+			'post_status'            => 'publish',
 			'order'                  => 'ASC',
 			'orderby'                => 'title',
 			'ignore_sticky_posts'    => false,
