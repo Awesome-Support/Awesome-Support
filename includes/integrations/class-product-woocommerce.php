@@ -26,7 +26,7 @@ class WPAS_Product_WooCommerce {
 	public function __construct() {
 
 		if ( $this->is_woocommerce_enabled() ) {
-			$sync = new WPAS_Product_Sync( 'product', '', true );
+			new WPAS_Product_Sync( 'product', '', true );
 			add_filter( 'wpas_taxonomy_locked_msg', array( $this, 'locked_message' ) );
 		}
 
@@ -72,7 +72,7 @@ class WPAS_Product_WooCommerce {
 		return $active;
 	}
 
-	public function locked_message( $message ) {
+	public function locked_message() {
 		return sprintf( __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'wpas' ), add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
 	}
 
