@@ -587,3 +587,28 @@ function shuffle_assoc( $list ) {
 	return $random;
 
 }
+
+if ( ! function_exists( 'wpas_get_admin_path_from_url' ) ) {
+	/**
+	 * Get the admin path based on the URL.
+	 *
+	 * @since 3.1.11
+	 * @return string Admin path
+	 */
+	function wpas_get_admin_path_from_url() {
+
+		$admin_url      = get_admin_url();
+		$site_url       = get_bloginfo( 'url' );
+		$admin_protocol = substr( $admin_url, 0, 5 );
+		$site_protocol  = substr( $site_url, 0, 5 );
+
+		if ( $site_protocol !== $admin_protocol ) {
+			if ( 'https' === $admin_protocol ) {
+				$site_url = 'https' . substr( $site_url, 4 );
+			}
+		}
+
+		return str_replace( trailingslashit( $site_url ), ABSPATH, get_admin_url() );
+
+	}
+}
