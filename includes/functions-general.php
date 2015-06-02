@@ -1,9 +1,10 @@
 <?php
 /**
  * Get plugin option.
- * 
- * @param  string $option  Option to look for
- * @param  string $default Value to return if the requested option doesn't exist
+ *
+ * @param  string      $option  Option to look for
+ * @param  bool|string $default Value to return if the requested option doesn't exist
+ *
  * @return mixed           Value for the requested option
  * @since  1.0.0
  */
@@ -12,7 +13,7 @@ function wpas_get_option( $option, $default = false ) {
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
 
 	/* Return option value if exists */
-	$value = isset( $options[$option] ) ? $options[$option] : $default;
+	$value = isset( $options[ $option ] ) ? $options[ $option ] : $default;
 
 	return apply_filters( 'wpas_option_' . $option, $value );
 
@@ -23,9 +24,10 @@ function wpas_get_option( $option, $default = false ) {
  *
  * The function adds a security nonce to URLs
  * with a trigger for plugin custom action.
- * 
- * @param  (string) $url URL to nonce
- * @return (string)      Nonced URL
+ *
+ * @param  string $url URL to nonce
+ *
+ * @return string)      Nonced URL
  * @since  3.0.0
  */
 function wpas_nonce_url( $url ) {
@@ -48,10 +50,11 @@ function wpas_check_nonce( $nonce ) {
  *
  * The function adds a custom action trigger using the wpas-do
  * URL parameter and adds a security nonce for plugin custom actions.
- *  
- * @param  (string) $url    URL to customize
- * @param  (string) $action Custom action to add
- * @return (string)         Customized URL
+ *
+ * @param  string $url    URL to customize
+ * @param  string $action Custom action to add
+ *
+ * @return string         Customized URL
  * @since  3.0.0
  */
 function wpas_url_add_custom_action( $url, $action ) {
@@ -128,7 +131,9 @@ function wpas_get_safe_tags() {
  * Checks if the current page belongs to the plugin or not.
  * This is usually used to decide if a resource must be loaded
  * or not, avoiding loading plugin resources on other pages.
- * 
+ *
+ * @param string $slug Optional page slug to check
+ *
  * @return boolean ether or not the current page belongs to the plugin
  * @since  3.0.0
  */
@@ -136,9 +141,8 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 	global $post;
 
-	$plugin_post_types   = apply_filters( 'wpas_plugin_post_types',   array( 'ticket' ) );
-	$plugin_admin_pages  = apply_filters( 'wpas_plugin_admin_pages',  array( 'wpas-status', 'wpas-addons' ) );
-	$plugin_public_pages = apply_filters( 'wpas_plugin_public_pages', array() );
+	$plugin_post_types  = apply_filters( 'wpas_plugin_post_types', array( 'ticket' ) );
+	$plugin_admin_pages = apply_filters( 'wpas_plugin_admin_pages', array( 'wpas-status', 'wpas-addons' ) );
 
 	/* Check for plugin pages in the admin */
 	if ( is_admin() ) {
@@ -164,6 +168,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 		}
 
 		/* In none of the previous conditions was true, return false by default. */
+
 		return false;
 
 	} else {
@@ -230,7 +235,7 @@ function wpas_debug_display( $thing ) {
 function wpas_make_button( $label = null, $args = array() ) {
 
 	if ( is_null( $label ) ) {
-		$label = __e( 'Submit', 'wpas' );
+		$label = __( 'Submit', 'wpas' );
 	}
 
 	$defaults = array(
@@ -242,12 +247,14 @@ function wpas_make_button( $label = null, $args = array() ) {
 		'onsubmit' => ''
 	);
 
+	$args = wp_parse_args( $args, $defaults );
+
 	extract( shortcode_atts( $defaults, $args ) );
 
-	if ( 'link' === $type && !empty( $link ) ) {
-		?><a href="<?php echo esc_url( $link ); ?>" class="<?php echo $class; ?>" <?php if ( !empty( $onsubmit ) ): echo "data-onsubmit='$onsubmit'"; endif; ?>><?php echo $label; ?></a><?php
+	if ( 'link' === $args['type'] && !empty( $args['link'] ) ) {
+		?><a href="<?php echo esc_url( $args['link'] ); ?>" class="<?php echo $args['class']; ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo $label; ?></a><?php
 	} else {
-		?><button type="submit" class="<?php echo $class; ?>" name="<?php echo $name; ?>" value="<?php echo $value; ?>" <?php if ( !empty( $onsubmit ) ): echo "data-onsubmit='$onsubmit'"; endif; ?>><?php echo $label; ?></button><?php
+		?><button type="submit" class="<?php echo $args['class']; ?>" name="<?php echo $args['name']; ?>" value="<?php echo $args['value']; ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo $label; ?></button><?php
 	}
 
 }
@@ -280,7 +287,9 @@ function wpas_get_ticket_status( $post_id = null ) {
  * If not, we return the ticket state instead of the "Open" status.
  *
  * @since  3.1.5
+ *
  * @param  integer $post_id Post ID
+ *
  * @return string           Ticket status / state
  */
 function wpas_get_ticket_status_state( $post_id ) {
@@ -298,14 +307,7 @@ function wpas_get_ticket_status_state( $post_id ) {
 		if ( ! array_key_exists( $post_status, $custom_status ) ) {
 			$output = __( 'Open', 'wpas' );
 		} else {
-
-			$defaults = array(
-				'queued'     => '#1e73be',
-				'processing' => '#a01497',
-				'hold'       => '#b56629'
-			);
-
-			$output = $custom_status[$post_status];
+			$output = $custom_status[ $post_status ];
 		}
 	}
 
@@ -450,20 +452,20 @@ function wpas_dropdown( $args, $options ) {
 		'disabled'      => false,
 	);
 
-	extract( wp_parse_args( $args, $defaults ) );
+	$args = wp_parse_args( $args, $defaults );
 
-	$class = (array) $class;
+	$class = (array) $args['class'];
 
-	if ( true === $select2 ) {
+	if ( true === $args['select2'] ) {
 		array_push( $class, 'wpas-select2' );
 	}
 
 	/* Start the buffer */
 	ob_start(); ?>
 
-	<select name="<?php echo $name; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if( true === $disabled ) { echo 'disabled'; } ?>>
+	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 		<?php
-		if ( $please_select ) {
+		if ( $args['please_select'] ) {
 			echo '<option value="">' . __( 'Please select', 'wpas' ) . '</option>';
 		}
 
@@ -502,19 +504,9 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 		'please_select' => false
 	);
 
-	extract( wp_parse_args( $args, $defaults ) );
-
 	/* List all tickets */
 	$tickets = get_tickets( $status );
 	$options = '';
-
-	/**
-	 * We use a marker to keep track of when a user was selected.
-	 * This allows for adding a fallback if nobody was selected.
-	 * 
-	 * @var boolean
-	 */
-	$marker = false;
 
 	foreach ( $tickets as $ticket ) {
 		$options .= "<option value='$ticket->ID'>$ticket->post_title</option>";
@@ -541,7 +533,6 @@ function wpas_change_locale( $locale ) {
    $wpas_locale = filter_input( INPUT_GET, 'wpas_lang', FILTER_SANITIZE_STRING );
 
 	if ( ! empty( $wpas_locale ) ) {
-		$backup = $locale;
 		$locale = $wpas_locale;
 	}
 
