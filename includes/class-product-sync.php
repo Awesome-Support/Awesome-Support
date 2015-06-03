@@ -202,7 +202,7 @@ class WPAS_Product_Sync {
 					break;
 
 				case 'number':
-					$clean_args['posts_per_page'] = $value;
+					$clean_args['posts_per_page'] = 0 === $value ? -1 : $value;
 					break;
 
 				case 'fields':
