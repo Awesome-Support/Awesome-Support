@@ -83,8 +83,11 @@ class WPAS_User {
 			return false;
 		}
 
-		update_user_meta( $user_id, 'wpas_after_reply', $_POST['wpas_after_reply'] );
+		$wpas_after_reply = filter_input( INPUT_POST, 'wpas_after_reply' );
 
+		if ( $wpas_after_reply ) {
+			update_user_meta( $user_id, 'wpas_after_reply', $wpas_after_reply );
+		}
 	}
 
 }
