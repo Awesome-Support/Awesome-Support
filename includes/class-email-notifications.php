@@ -453,11 +453,13 @@ class WPAS_Email_Notification {
 	/**
 	 * Get e-mail body.
 	 *
+	 * @param $case string The type of e-mail notification that's being sent
+	 *
 	 * @since  3.0.2
 	 * @return string E-mail body
 	 */
 	private function get_body( $case ) {
-		return apply_filters( 'wpas_email_notifications_body', $this->get_content( 'content', $case ), $this->post_id );
+		return apply_filters( 'wpas_email_notifications_body', stripcslashes ( $this->get_content( 'content', $case ) ), $this->post_id );
 	}
 
 	/**
