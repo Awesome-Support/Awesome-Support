@@ -443,6 +443,8 @@ class WPAS_Email_Notification {
 	/**
 	 * Get e-mail subject.
 	 *
+	 * @param $case string The type of e-mail notification that's being sent
+	 *
 	 * @since  3.0.2
 	 * @return string E-mail subject
 	 */
@@ -514,11 +516,9 @@ class WPAS_Email_Notification {
 	 *
 	 * @since  3.1.1
 	 *
-	 * @param  string $content_type Current e-mail content type
-	 *
 	 * @return string               HTML content type
 	 */
-	public function set_html_mime_type( $content_type ) {
+	public function set_html_mime_type() {
 		return 'text/html';
 	}
 
@@ -527,11 +527,9 @@ class WPAS_Email_Notification {
 	 *
 	 * @since  3.1.1
 	 *
-	 * @param  string $content_type Current e-mail content type
-	 *
 	 * @return string               Text content type
 	 */
-	public function set_text_mime_type( $content_type ) {
+	public function set_text_mime_type() {
 		return 'text/plain';
 	}
 
@@ -580,7 +578,7 @@ class WPAS_Email_Notification {
 		/**
 		 * Get e-mail subject
 		 *
-		 * @var  stirng
+		 * @var  string
 		 */
 		$subject = $this->get_subject( $case );
 
