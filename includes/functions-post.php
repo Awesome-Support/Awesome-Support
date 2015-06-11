@@ -1067,7 +1067,7 @@ function wpas_edit_reply_editor_ajax() {
 	);
 
 	wp_editor( $editor_content, $editor_id, $settings );
-	
+
 	die();
 
 }
