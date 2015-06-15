@@ -592,7 +592,6 @@ if ( ! function_exists( 'wpas_get_admin_path_from_url' ) ) {
 	/**
 	 * Get the admin path based on the URL.
 	 *
-	 * @since 3.1.11
 	 * @return string Admin path
 	 */
 	function wpas_get_admin_path_from_url() {
@@ -605,10 +604,14 @@ if ( ! function_exists( 'wpas_get_admin_path_from_url' ) ) {
 		if ( $site_protocol !== $admin_protocol ) {
 			if ( 'https' === $admin_protocol ) {
 				$site_url = 'https' . substr( $site_url, 4 );
+			} elseif( 'https' === $site_protocol ) {
+				$admin_url = 'https' . substr( $admin_url, 4 );
 			}
 		}
 
-		return str_replace( trailingslashit( $site_url ), ABSPATH, get_admin_url() );
+		$abspath = str_replace( '\\', '/', ABSPATH );
+
+		return str_replace( trailingslashit( $site_url ), $abspath, $admin_url );
 
 	}
 }
