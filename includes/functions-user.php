@@ -228,27 +228,24 @@ function wpas_try_login() {
  */
 function wpas_can_view_ticket( $post_id ) {
 
-	/* Only logged in users can view */
-	if ( ! is_user_logged_in() ) {
-		return false;
-	}
+	/**
+	 * Set the return value to false by default to avoid giving unwanted access.
+	 */
+	$can = false;
 
-	if ( ! current_user_can( 'view_ticket' ) ) {
-		return false;
-	}
-
+	/**
+	 * Get the post data.
+	 */
 	$post      = get_post( $post_id );
 	$author_id = intval( $post->post_author );
 
-	if ( get_current_user_id() === $author_id ) {
-		return true;
+	if ( is_user_logged_in() ) {
+		if ( get_current_user_id() === $author_id && current_user_can( 'view_ticket' ) || current_user_can( 'edit_ticket' ) ) {
+			$can = true;
+		}
 	}
 
-	if ( current_user_can( 'edit_ticket' ) ) {
-		return true;
-	}
-
-	return false;
+	return apply_filters( 'wpas_can_view_ticket', $can, $post_id, $author_id );
 
 }
 
