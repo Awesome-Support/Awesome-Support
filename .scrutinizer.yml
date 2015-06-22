@@ -2,6 +2,7 @@ filter:
     excluded_paths:
         - 'tests/*'
         - 'vendor/*'
+        - '*/vendor/*'
         - 'languages/*'
 
 before_commands:
