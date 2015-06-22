@@ -353,19 +353,19 @@ function wpas_get_users( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 
 	/* Get the hash of the arguments that's used for caching the result. */
-	$hash = substr( md5( serialize( $args ) ), 0, 10 ); // Limit the length of the hash in order to avoid issues with option_name being too long in the database (https://core.trac.wordpress.org/ticket/15058)
+	//$hash = substr( md5( serialize( $args ) ), 0, 10 ); // Limit the length of the hash in order to avoid issues with option_name being too long in the database (https://core.trac.wordpress.org/ticket/15058)
 
 	/* Check if we have a result already cached. */
-	$result = get_transient( "wpas_list_users_$hash" );
+	//$result = false;//get_transient( "wpas_list_users_$hash" );
 
 	/* If there is a cached result we return it and don't run the expensive query. */
-	if ( false !== $result ) {
+	/*if ( false !== $result ) {
 		if ( is_array( $result ) && isset( $result[0] ) && is_object( $result[0] ) && is_a( $result[0], 'WP_User' ) ) {
 			delete_transient( "wpas_list_users_$hash" ); // Invalidate the previous cache
 		} else {
 			return apply_filters( 'wpas_get_users', get_users( array( 'include' => (array) $result ) ) );
 		}
-	}
+	}*/
 
 	/* Get all WordPress users */
 	$all_users = get_users();
@@ -411,7 +411,7 @@ function wpas_get_users( $args = array() ) {
 	}
 
 	/* Let's cache the result so that we can avoid running this query too many times. */
-	set_transient( "wpas_list_users_$hash", $users_ids, apply_filters( 'wpas_list_users_cache_expiration', 60 * 60 * 24 ) );
+	//set_transient( "wpas_list_users_$hash", $users_ids, apply_filters( 'wpas_list_users_cache_expiration', 60 * 60 * 24 ) );
 
 	return apply_filters( 'wpas_get_users', $list );
 
