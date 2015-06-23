@@ -40,12 +40,15 @@ class WPAS_File_Upload {
 		 */
 		require_once( WPAS_PATH . 'includes/addons/file-uploader/settings-file-upload.php' );
 
-		if ( !$this->can_attach_files() ) {
+		if ( ! $this->can_attach_files() ) {
 			return;
 		}
 
 		add_filter( 'upload_dir',                 array( $this, 'set_upload_dir' ) );
-		add_filter( 'wp_handle_upload_prefilter', array( $this, 'limit_upload' ), 10, 1 );
+		add_filter( 'wp_handle_upload_prefilter', array( $this, 'limit_upload' ),         10, 1 );
+		add_action( 'pre_get_posts',              array( $this, 'attachment_query_var' ), 10, 1 );
+		add_action( 'init',                       array( $this, 'attachment_endpoint' ),  10, 1 );
+		add_action( 'template_redirect',          array( $this, 'view_attachment' ),      10, 0 );
 
 		if ( !is_admin() ) {
 
@@ -89,6 +92,93 @@ class WPAS_File_Upload {
 		}
 
 		return self::$instance;
+	}
+
+	/**
+	 * Add the attachment query var to the $query object.
+	 * This is used as a fallback for when pretty permalinks
+	 * are not enabled.
+	 *
+	 * @param WP_Query $query The WordPress main query
+	 *
+	 * @since 3.2.0
+	 * @return void
+	 */
+	public function attachment_query_var( $query ) {
+		if ( $query->is_main_query() && isset( $_GET['wpas-attachment'] ) ) {
+			$query->set( 'wpas-attachment', filter_input( INPUT_GET, 'wpas-attachment', FILTER_SANITIZE_NUMBER_INT ) );
+		}
+	}
+
+	/**
+	 * Add a new rewrite endpoint.
+	 *
+	 * @since 3.2.0
+	 * @return void
+	 */
+	public function attachment_endpoint() {
+		add_rewrite_endpoint( 'wpas-attachment', EP_PERMALINK );
+	}
+
+	/**
+	 * Display the attachment.
+	 *
+	 * Uses the new rewrite endpoint to get an attachment ID
+	 * and display the attachment if the currently logged in user
+	 * has the authorization to.
+	 *
+	 * @since 3.2.0
+	 * @return void
+	 */
+	public function view_attachment() {
+
+		$attachment_id = get_query_var( 'wpas-attachment' );
+
+		if ( ! empty( $attachment_id ) ) {
+
+			$attachment = get_post( $attachment_id );
+
+			/**
+			 * Return a 404 page if the attachment ID
+			 * does not match any attachment in the database.
+			 */
+			if ( empty( $attachment ) ) {
+
+				/**
+				 * @var WP_Query $wp_query WordPress main query
+				 */
+				global $wp_query;
+
+				$wp_query->set_404();
+
+				status_header( 404 );
+				include( get_query_template( '404' ) );
+
+				die();
+			}
+
+			if ( 'attachment' !== $attachment->post_type ) {
+				wp_die( __( 'The file you requested is not a valid attachment', 'wpas' ) );
+			}
+
+			if ( empty( $attachment->post_parent ) ) {
+				wp_die( __( 'The attachment you requested is not attached to any ticket', 'wpas' ) );
+			}
+
+			$parent    = get_post( $attachment->post_parent ); // Get the parent. It can be a ticket or a ticket reply
+			$parent_id = empty( $parent->post_parent ) ? $parent->ID : $parent->post_parent;
+
+			if ( true !== wpas_can_view_ticket( $parent_id ) ) {
+				wp_die( __( 'You are not allowed to view this attachment', 'wpas' ) );
+			}
+
+			header( "Content-Type: $attachment->post_mime_type" );
+			readfile( $attachment->guid );
+
+			die();
+
+		}
+
 	}
 
 	/**
@@ -276,7 +366,7 @@ class WPAS_File_Upload {
 		}
 
 		foreach ( $attachments->posts as $key => $attachment ) {
-			$list[$attachment->ID] = array( 'name' => $attachment->post_title, 'url' => $attachment->guid );
+			$list[$attachment->ID] = array( 'id' => $attachment->ID, 'name' => $attachment->post_title, 'url' => $attachment->guid );
 		}
 
 		return $list;
@@ -349,7 +439,12 @@ class WPAS_File_Upload {
 							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
 
-							?><li><a href="<?php echo $attachment['url']; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
+							/**
+							 * Prepare attachment link
+							 */
+							$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
+
+							?><li><a href="<?php echo $link; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
 
 						}
 
