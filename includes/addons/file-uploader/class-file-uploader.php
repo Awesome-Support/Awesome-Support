@@ -471,11 +471,12 @@ class WPAS_File_Upload {
 	 * encoded in base64 that will be interpreted by the notification class.
 	 *
 	 * @since  3.0.0
-	 * @param  string  $location Original redirection URL
-	 * @param  integer $post_id  ID of the post to redirect to
+	 *
+	 * @param  string $location Original redirection URL
+	 *
 	 * @return string            New redirection URL
 	 */
-	public function redirect_error( $location, $post_id ) {
+	public function redirect_error( $location ) {
 
 		$url      = remove_query_arg( 'message', $location );
 		$message  = wpas_create_notification( sprintf( __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'wpas' ), $this->error_message ) );
@@ -604,11 +605,10 @@ class WPAS_File_Upload {
 	 * @since  3.0.0
 	 *
 	 * @param  integer $ticket_id New ticket ID
-	 * @param  array   $data      The newly created ticket's data
 	 *
 	 * @return void
 	 */
-	public function new_ticket_attachment( $ticket_id, $data ) {
+	public function new_ticket_attachment( $ticket_id ) {
 
 		if ( isset( $_POST['wpas_title'] ) ) {
 			$this->post_id = intval( $ticket_id );
@@ -622,11 +622,10 @@ class WPAS_File_Upload {
 	 * @since  3.0.0
 	 *
 	 * @param  integer $reply_id New reply ID
-	 * @param  array   $data     The newly created reply data
 	 *
 	 * @return void
 	 */
-	public function new_reply_attachment( $reply_id, $data ) {
+	public function new_reply_attachment( $reply_id ) {
 
 		if ( ( isset( $_POST['wpas_nonce'] ) || isset( $_POST['client_reply'] ) ) || isset( $_POST['wpas_reply'] ) ) {
 			$this->post_id   = intval( $reply_id );
@@ -641,11 +640,10 @@ class WPAS_File_Upload {
 	 * @since  3.0.0
 	 *
 	 * @param  integer $reply_id New reply ID
-	 * @param  array   $data     The newly created reply data
 	 *
 	 * @return void
 	 */
-	public function new_reply_backend_attachment( $reply_id, $data ) {
+	public function new_reply_backend_attachment( $reply_id ) {
 
 		/* Are we in the right post type? */
 		if ( ! isset( $_POST['post_type'] ) || 'ticket' !== $_POST['post_type'] ) {
