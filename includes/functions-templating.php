@@ -89,13 +89,6 @@ function wpas_single_ticket( $content ) {
 	ob_start();
 
 	/**
-	 * Display possible messages to the visitor.
-	 */
-	if ( isset( $_GET['message'] ) ) {
-		wpas_notification( false, $_GET['message'] );
-	}
-
-	/**
 	 * wpas_frontend_plugin_page_top is executed at the top
 	 * of every plugin page on the front end.
 	 */
