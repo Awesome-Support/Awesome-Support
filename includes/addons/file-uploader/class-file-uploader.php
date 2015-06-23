@@ -28,6 +28,11 @@ class WPAS_File_Upload {
 	protected $parent_id = null;
 	protected $index = 'wpas_files';
 
+	/**
+	 * Store the potential error messages.
+	 */
+	protected $error_message;
+
 	public function __construct() {
 
 		/**
@@ -314,67 +319,66 @@ class WPAS_File_Upload {
 
 		$attachments = $this->get_attachments( $post_id );
 
-		if ( empty( $attachments ) ) {
-			return false;
-		} ?>
+		if ( ! empty( $attachments ) ): ?>
 
-		<div class="wpas-reply-attachements">
-			<strong><?php _e( 'Attachments:', 'wpas' ); ?></strong>
-			<ul>
-				<?php
-				foreach ( $attachments as $attachment_id => $attachment ):
-
-					/**
-					 * Get attachment metadata.
-					 * 
-					 * @var array
-					 */
-					$metadata = wp_get_attachment_metadata( $attachment_id );
-
-					/**
-					 * This is the default case where an attachment was uploaded by the WordPress uploader.
-					 * In this case we get the media from the ticket's attachments directory.
-					 */
-					if ( ! isset( $metadata['wpas_upload_source'] ) || 'wordpress' === $metadata['wpas_upload_source'] ) {
+			<div class="wpas-reply-attachements">
+				<strong><?php _e( 'Attachments:', 'wpas' ); ?></strong>
+				<ul>
+					<?php
+					foreach ( $attachments as $attachment_id => $attachment ):
 
 						/**
-						 * Get filename.
-						 */
-						$filename   = explode( '/', $attachment['url'] );
-						$filename   = $name = $filename[count($filename)-1];
-						$upload_dir = wp_upload_dir();
-						$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
-						$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
-
-						?><li><a href="<?php echo $attachment['url']; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
-
-					}
-
-					/**
-					 * Now if we have a different upload source we delegate the computing
-					 * to whatever will hook on wpas_attachment_display_$source
-					 */
-					else {
-
-						$source = sanitize_text_field( $metadata['wpas_upload_source'] );
-
-						/**
-						 * wpas_attachment_display_$source fires if the current attachment
-						 * was uploaded by an unknown source.
+						 * Get attachment metadata.
 						 *
-						 * @since  3.1.5
-						 * @param  integer $attachment_id ID of this attachment
-						 * @param  array   $attachment    The attachment array
-						 * @param  integer $post_id       ID of the post we're displaying attachments for
+						 * @var array
 						 */
-						do_action( 'wpas_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id );
+						$metadata = wp_get_attachment_metadata( $attachment_id );
 
-					}
-					
-				endforeach; ?>
-			</ul>
-		</div>
-	<?php }
+						/**
+						 * This is the default case where an attachment was uploaded by the WordPress uploader.
+						 * In this case we get the media from the ticket's attachments directory.
+						 */
+						if ( ! isset( $metadata['wpas_upload_source'] ) || 'wordpress' === $metadata['wpas_upload_source'] ) {
+
+							/**
+							 * Get filename.
+							 */
+							$filename   = explode( '/', $attachment['url'] );
+							$filename   = $name = $filename[count($filename)-1];
+							$upload_dir = wp_upload_dir();
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
+							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
+
+							?><li><a href="<?php echo $attachment['url']; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
+
+						}
+
+						/**
+						 * Now if we have a different upload source we delegate the computing
+						 * to whatever will hook on wpas_attachment_display_$source
+						 */
+						else {
+
+							$source = sanitize_text_field( $metadata['wpas_upload_source'] );
+
+							/**
+							 * wpas_attachment_display_$source fires if the current attachment
+							 * was uploaded by an unknown source.
+							 *
+							 * @since  3.1.5
+							 * @param  integer $attachment_id ID of this attachment
+							 * @param  array   $attachment    The attachment array
+							 * @param  integer $post_id       ID of the post we're displaying attachments for
+							 */
+							do_action( 'wpas_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id );
+
+						}
+
+					endforeach; ?>
+				</ul>
+			</div>
+		<?php endif;
+	}
 
 	/**
 	 * Human readable filesize.
@@ -383,15 +387,18 @@ class WPAS_File_Upload {
 	 * the size unit.
 	 *
 	 * @since  3.0.0
-	 * @param  integer  $bytes    Filesize in bytes
-	 * @param  integer  $decimals Number of decimals to show
+	 *
+	 * @param  integer $bytes    Filesize in bytes
+	 * @param  integer $decimals Number of decimals to show
+	 *
 	 * @return string             Human readable filesize
 	 * @link   http://php.net/manual/en/function.filesize.php#106569
 	 */
 	public function human_filesize( $bytes, $decimals = 2 ) {
-		$sz = 'BKMGTP';
-		$factor = floor((strlen($bytes) - 1) / 3);
-		return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+		$sz     = 'BKMGTP';
+		$factor = (int) floor( ( strlen( $bytes ) - 1 ) / 3 );
+
+		return sprintf( "%.{$decimals}f", $bytes / pow( 1024, $factor ) ) . @$sz[ $factor ];
 	}
 
 	public function add_form_enctype( $post ) {
@@ -410,25 +417,26 @@ class WPAS_File_Upload {
 	 * The only thing we do change is the upload path. For the rest it's all standard.
 	 *
 	 * @since  3.0.0
-	 * @return void
+	 * @return bool Whether or not the upload has been processed
 	 */
 	public function process_upload() {
-		
-		/* We have a submission with a $_FILES var set */
-		if ( $_POST && $_FILES && isset( $_FILES[$this->index] ) ) {
 
-			if ( empty( $_FILES[$this->index]['name'][0] ) ) {
+		/* We have a submission with a $_FILES var set */
+		if ( $_POST && $_FILES && isset( $_FILES[ $this->index ] ) ) {
+
+			if ( empty( $_FILES[ $this->index ]['name'][0] ) ) {
 				return false;
 			}
 
 			$max = wpas_get_option( 'attachments_max' );
-			
+			$id  = false; // Declare a default value ofr $id
+
 			if ( $this->individualize_files() ) {
 
-				for ( $i = 0; isset( $_FILES["{$this->index}_$i"] ); ++$i ) {
+				for ( $i = 0; isset( $_FILES["{$this->index}_$i"] ); ++ $i ) {
 
 					/* Limit the number of uploaded files */
-					if ( $i+1 > $max ) {
+					if ( $i + 1 > $max ) {
 						break;
 					}
 
@@ -450,6 +458,8 @@ class WPAS_File_Upload {
 				return true;
 			}
 
+		} else {
+			return false;
 		}
 	}
 
@@ -551,40 +561,38 @@ class WPAS_File_Upload {
 	 * process them one by one.
 	 *
 	 * @since  3.0.0
-	 * @return void
+	 * @return bool Whether or not files were individualized
 	 */
 	public function individualize_files() {
 
-		if ( !is_array( $_FILES[$this->index]['name'] ) ) {
+		if ( ! is_array( $_FILES[ $this->index ]['name'] ) ) {
 			return false;
 		}
 
-		foreach ( $_FILES[$this->index]['name'] as $id => $name ) {
-			$index = $this->index . '_' . $id;
-			$_FILES[$index]['name'] = $name;
+		foreach ( $_FILES[ $this->index ]['name'] as $id => $name ) {
+			$index                    = $this->index . '_' . $id;
+			$_FILES[ $index ]['name'] = $name;
 		}
 
-		foreach ( $_FILES[$this->index]['type'] as $id => $type ) {
-			$index = $this->index . '_' . $id;
-			$_FILES[$index]['type'] = $type;
+		foreach ( $_FILES[ $this->index ]['type'] as $id => $type ) {
+			$index                    = $this->index . '_' . $id;
+			$_FILES[ $index ]['type'] = $type;
 		}
 
-		foreach ( $_FILES[$this->index]['tmp_name'] as $id => $tmp_name ) {
-			$index = $this->index . '_' . $id;
-			$_FILES[$index]['tmp_name'] = $tmp_name;
+		foreach ( $_FILES[ $this->index ]['tmp_name'] as $id => $tmp_name ) {
+			$index                        = $this->index . '_' . $id;
+			$_FILES[ $index ]['tmp_name'] = $tmp_name;
 		}
 
-		foreach ( $_FILES[$this->index]['error'] as $id => $error ) {
-			$index = $this->index . '_' . $id;
-			$_FILES[$index]['error'] = $error;
+		foreach ( $_FILES[ $this->index ]['error'] as $id => $error ) {
+			$index                     = $this->index . '_' . $id;
+			$_FILES[ $index ]['error'] = $error;
 		}
 
-		foreach ( $_FILES[$this->index]['size'] as $id => $size ) {
-			$index = $this->index . '_' . $id;
-			$_FILES[$index]['size'] = $size;
+		foreach ( $_FILES[ $this->index ]['size'] as $id => $size ) {
+			$index                    = $this->index . '_' . $id;
+			$_FILES[ $index ]['size'] = $size;
 		}
-
-		// print_r( $_POST ); print_r( $_FILES ); exit;
 
 		return true;
 
@@ -594,8 +602,10 @@ class WPAS_File_Upload {
 	 * Process upload on new ticket creation.
 	 *
 	 * @since  3.0.0
+	 *
 	 * @param  integer $ticket_id New ticket ID
 	 * @param  array   $data      The newly created ticket's data
+	 *
 	 * @return void
 	 */
 	public function new_ticket_attachment( $ticket_id, $data ) {
@@ -610,8 +620,10 @@ class WPAS_File_Upload {
 	 * Process upload on new reply creation.
 	 *
 	 * @since  3.0.0
-	 * @param  integer $ticket_id New reply ID
-	 * @param  array   $data      The newly created reply's data
+	 *
+	 * @param  integer $reply_id New reply ID
+	 * @param  array   $data     The newly created reply data
+	 *
 	 * @return void
 	 */
 	public function new_reply_attachment( $reply_id, $data ) {
@@ -627,18 +639,22 @@ class WPAS_File_Upload {
 	 * Process upload on new reply creation.
 	 *
 	 * @since  3.0.0
-	 * @param  integer $ticket_id New reply ID
-	 * @param  array   $data      The newly created reply's data
+	 *
+	 * @param  integer $reply_id New reply ID
+	 * @param  array   $data     The newly created reply data
+	 *
 	 * @return void
 	 */
 	public function new_reply_backend_attachment( $reply_id, $data ) {
 
 		/* Are we in the right post type? */
-		if ( !isset( $_POST['post_type'] ) || 'ticket' !== $_POST['post_type'] )
+		if ( ! isset( $_POST['post_type'] ) || 'ticket' !== $_POST['post_type'] ) {
 			return;
+		}
 
-		if ( !$this->can_attach_files() )
+		if ( ! $this->can_attach_files() ) {
 			return;
+		}
 
 		$this->post_id   = intval( $reply_id );
 		$this->parent_id = intval( $_POST['wpas_post_parent'] );
