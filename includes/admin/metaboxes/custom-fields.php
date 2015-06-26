@@ -6,7 +6,8 @@
  * and change it in one click.
  *
  * For more details on how the ticket status is changed,
- * @see Awesome_Support_Admin::custom_actions()
+ *
+ * @see   Awesome_Support_Admin::custom_actions()
  *
  * @since 3.0.0
  */
@@ -24,28 +25,30 @@ if ( ! defined( 'WPINC' ) ) {
 	global $wpas_cf;
 	$options = $wpas_cf->get_custom_fields();
 
-	if( !empty( $options ) ) {
+	if ( ! empty( $options ) ) {
 
 		/**
 		 * wpas_mb_details_before_cfs hook
 		 */
 		do_action( 'wpas_mb_details_before_cfs' );
 
-		foreach( $options as $option ) {
+		foreach ( $options as $option ) {
 
 			$core = isset( $option['args']['core'] ) ? $option['args']['core'] : false;
 
 			/**
 			 * Don't display core fields
 			 */
-			if( $core )
+			if ( $core ) {
 				continue;
+			}
 
 			/**
 			 * In case we have a custom taxonomy that is handled the usual way
 			 */
-			if( 'taxonomy' == $option['args']['callback'] && true === $option['args']['taxo_std'] )
+			if ( 'taxonomy' == $option['args']['callback'] && true === $option['args']['taxo_std'] ) {
 				continue;
+			}
 
 			/**
 			 * Output the field
