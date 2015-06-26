@@ -50,8 +50,11 @@ if ( ! defined( 'WPINC' ) ) {
 			/**
 			 * Output the field
 			 */
-			if( method_exists( 'WPAS_Custom_Fields_Display', $option['args']['callback'] ) )
+			if ( method_exists( 'WPAS_Custom_Fields_Display', $option['args']['callback'] ) ) {
 				WPAS_Custom_Fields_Display::$option['args']['callback']( $option );
+			} elseif ( function_exists( $option['args']['callback'] ) ) {
+				call_user_func( $option['args']['callback'], $option );
+			}
 
 			/**
 			 * wpas_display_custom_fields hook
