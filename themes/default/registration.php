@@ -18,6 +18,7 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 ?>
 
 <div class="wpas <?php echo $wrapper_class; ?>">
+	<?php do_action('wpas_before_login_form'); ?>
 
 	<form class="wpas-form" method="post" role="form" action="<?php echo wpas_get_login_url(); ?>">
 		<h3><?php _e( 'Log in' ); ?></h3>
