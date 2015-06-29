@@ -14,8 +14,8 @@ class WPAS_Custom_Fields {
 	public function __construct() {
 
 		/* Load custom fields dependencies */
-		require_once( WPAS_PATH . 'includes/addons/custom-fields/class-save.php' );
-		require_once( WPAS_PATH . 'includes/addons/custom-fields/class-display.php' );
+		require_once( WPAS_PATH . 'includes/custom-fields/class-save.php' );
+		require_once( WPAS_PATH . 'includes/custom-fields/class-display.php' );
 
 		/**
 		 * Array where all custom fields will be stored.
