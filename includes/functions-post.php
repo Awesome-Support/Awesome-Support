@@ -223,7 +223,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	}
 
 	/* Assign an agent to the ticket */
-	wpas_assign_ticket( $ticket_id, $agent_id, false );
+	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
 	/**
 	 * Fire wpas_after_open_ticket just after the post is successfully submitted.
