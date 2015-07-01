@@ -15,7 +15,7 @@
  * Once the submission form reloads we can pre-popupate fields
  * and avoid the pain of re-typing everything for the user.
  * When a submission is valid, the session is destroyed.
- * 
+ *
  * @param  string $field_name The name of the field to get the value for
  * @return string             The temporary value for this field
  * @since  3.0.0
@@ -33,54 +33,6 @@ function wpas_get_field_value( $field_name ) {
 	}
 
 	return apply_filters( 'wpas_get_field_value', esc_attr( wp_unslash( $value ) ), $field_name );
-
-}
-
-/**
- * Get field container class.
- *
- * @since  3.0.0
- * @param  string $field_name Name of the field we're getting the container class for
- * @param  string $extra      Extra classes to pass to the function
- * @return string             The class tag with appropriate classes
- */
-function wpas_get_field_container_class( $field_name = false, $extra = '' ) {
-
-	$class = 'wpas-form-group';
-
-	if ( isset( $_SESSION['wpas_submission_error'] ) && is_array( $_SESSION['wpas_submission_error'] ) && in_array( $field_name, $_SESSION['wpas_submission_error'] ) ) {
-		$class .= ' has-error';
-	}
-
-	if ( '' != $extra ) {
-		$class .= " $extra";
-	}
-
-	echo "class='$class'";
-
-}
-
-/**
- * Get field class.
- *
- * @since  3.0.0
- * @param  string $field_name Name of the field we're getting the class for
- * @param  string $extra      Extra classes to pass to the function
- * @return string             The class tag with appropriate classes
- */
-function wpas_get_field_class( $field_name = false, $extra = '', $echo = true ) {
-
-	$class = 'wpas-form-control';
-
-	if ( '' != $extra ) {
-		$class .= " $extra";
-	}
-
-	if ( true === $echo ) {
-		echo "class='$class'";
-	} else {
-		return $class;
-	}
 
 }
 

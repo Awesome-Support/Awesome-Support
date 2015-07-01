@@ -786,3 +786,59 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 	}
 
 }
+
+/**
+ * Display the post status.
+ *
+ * Gets the ticket status and formats it according to the plugin settings.
+ *
+ * @since  3.0.0
+ *
+ * @param string   $name    Field / column name. This parameter is important as it is automatically passed by some
+ *                          filters
+ * @param  integer $post_id ID of the post being processed
+ *
+ * @return string           Formatted ticket status
+ */
+function wpas_cf_display_status( $name, $post_id ) {
+
+	$status = wpas_get_ticket_status( $post_id );
+
+	if ( 'closed' === $status ) {
+		$label = __( 'Closed', 'wpas' );
+		$color = wpas_get_option( "color_$status", '#dd3333' );
+		$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+	} else {
+
+		$post          = get_post( $post_id );
+		$post_status   = $post->post_status;
+		$custom_status = wpas_get_post_status();
+
+		if ( ! array_key_exists( $post_status, $custom_status ) ) {
+			$label = __( 'Open', 'wpas' );
+			$color = wpas_get_option( "color_$status", '#169baa' );
+			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+		} else {
+			$defaults = array(
+				'queued'     => '#1e73be',
+				'processing' => '#a01497',
+				'hold'       => '#b56629'
+			);
+			$label    = $custom_status[ $post_status ];
+			$color    = wpas_get_option( "color_$post_status", false );
+
+			if ( false === $color ) {
+				if ( isset( $defaults[ $post_status ] ) ) {
+					$color = $defaults[ $post_status ];
+				} else {
+					$color = '#169baa';
+				}
+			}
+
+			$tag = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+		}
+	}
+
+	echo $tag;
+
+}

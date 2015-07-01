@@ -60,7 +60,7 @@ $wpas_addons = array();
 
 require_once( WPAS_PATH . 'includes/functions-fallback.php' );
 require_once( WPAS_PATH . 'includes/class-logger.php' );
-require_once( WPAS_PATH . 'class-awesome-support.php' );
+require_once( WPAS_PATH . 'includes/class-awesome-support.php' );
 
 /**
  * Register hooks that are fired when the plugin is activated or deactivated.
@@ -79,9 +79,14 @@ add_action( 'plugins_loaded', array( 'Awesome_Support', 'get_instance' ) );
  * A couple of addons are built in the plugin.
  * We load them here.
  */
-require_once( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
 require_once( WPAS_PATH . 'includes/addons/file-uploader/class-file-uploader.php' );
 require_once( WPAS_PATH . 'includes/addons/class-mailgun-email-check.php' );
+
+/* Load custom fields dependencies */
+require_once( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
+require_once( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
+require_once( WPAS_PATH . 'includes/custom-fields/class-save.php' );
+require_once( WPAS_PATH . 'includes/custom-fields/class-display.php' );
 
 /**
  * Call all classes and functions files that are shared
@@ -92,6 +97,7 @@ require_once( WPAS_PATH . 'includes/addons/class-mailgun-email-check.php' );
 require_once( WPAS_PATH . 'includes/functions-post.php' );            // All the functions related to opening a ticket and submitting replies
 require_once( WPAS_PATH . 'includes/functions-user.php' );            // Everything related to user login, registration and capabilities
 require_once( WPAS_PATH . 'includes/functions-addons.php' );          // Addons functions and autoloader
+require_once( WPAS_PATH . 'includes/functions-deprecated.php' );      // Load deprecated functions
 require_once( WPAS_PATH . 'includes/class-log-history.php' );         // Logging class
 require_once( WPAS_PATH . 'includes/class-email-notifications.php' ); // E-mail notification class
 require_once( WPAS_PATH . 'includes/functions-general.php' );         // Functions that are used both in back-end and front-end
@@ -117,7 +123,7 @@ require_once( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper 
  * @since  3.0.2
  */
 if ( ! Awesome_Support::dependencies_loaded() ) {
-	add_action( 'admin_notices', 'wpas_missing_dependencied' );
+	add_action( 'admin_notices', 'wpas_missing_dependencies' );
 }
 
 /*----------------------------------------------------------------------------*
@@ -158,3 +164,18 @@ if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
 if ( ! session_id() && ! headers_sent() ) {
 	session_start();
 }
+
+/*----------------------------------------------------------------------------*
+ * Declare global variables
+ *----------------------------------------------------------------------------*/
+
+/**
+ * Instantiate the global $wpas_cf object containing all the custom fields.
+ * This object is used throughout the entire plugin so it is capital to be able
+ * to access it anytime and not to redeclare a second object when registering
+ * new custom fields.
+ *
+ * @since  3.0.0
+ * @var    $wpas_cf WPAS_Custom_Fields
+ */
+$wpas_cf = new WPAS_Custom_Fields;

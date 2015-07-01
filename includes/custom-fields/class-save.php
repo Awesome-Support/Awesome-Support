@@ -95,7 +95,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 			}
 
 			/* We handle different option types differently */
-			if ( 'taxonomy' != $option_args['callback'] ):
+			if ( 'taxonomy' != $option_args['field_type'] ):
 
 				/* Form the meta key */
 				$key = "_$option_name";
@@ -213,7 +213,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 					// Do nothing
 				}
 
-			elseif ( 'taxonomy' == $option_args['callback'] ):
+			elseif ( 'taxonomy' == $option_args['field_type'] ):
 
 				/* Check if this taxonomy has to be handled as a select */
 				if ( true === $option_args['taxo_std'] )
@@ -341,7 +341,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 			/* Prepare the field name as used in the form */
 			$field_name = 'wpas_' . $field['name'];
 
-			if ( 'taxonomy' !== $field['args']['callback'] ) {
+			if ( 'taxonomy' !== $field['args']['field_type'] ) {
 
 				/* Get the old value from database */
 				$old = get_post_meta( $post_id, "_$field_name", true );
@@ -384,7 +384,7 @@ class WPAS_Save_Fields extends WPAS_Custom_Fields {
 
 			}
 
-			elseif ( 'taxonomy' === $field['args']['callback'] ) {
+			elseif ( 'taxonomy' === $field['args']['field_type'] ) {
 
 				/* If no value is submitted we delete the term relationship */
 				if ( isset( $_POST[$field_name] ) && !empty( $_POST[$field_name] ) ) {

@@ -11,11 +11,12 @@
 
 class WPAS_Custom_Fields {
 
-	public function __construct() {
+	/**
+	 * List of metaboxes to remove.
+	 */
+	public $remove_mb;
 
-		/* Load custom fields dependencies */
-		require_once( WPAS_PATH . 'includes/custom-fields/class-save.php' );
-		require_once( WPAS_PATH . 'includes/custom-fields/class-display.php' );
+	public function __construct() {
 
 		/**
 		 * Array where all custom fields will be stored.
@@ -42,7 +43,7 @@ class WPAS_Custom_Fields {
 			add_action( 'manage_ticket_posts_custom_column' ,   array( $this, 'custom_columns_content' ), 10, 2 );
 			add_filter( 'manage_edit-ticket_sortable_columns' , array( $this, 'custom_columns_sortable' ), 10, 1 );
 			add_action( 'pre_get_posts',                        array( $this, 'custom_column_orderby' ) );
-			
+
 			/**
 			 * Add the taxonomies filters
 			 */
@@ -61,76 +62,83 @@ class WPAS_Custom_Fields {
 
 				/* Save the custom fields. */
 				add_action( 'wpas_open_ticket_after', array( $wpas_save, 'save_submission' ), 10, 2 );
-				
+
 			}
 
 			/* Display the custom fields on the submission form */
-			add_action( 'wpas_submission_form_inside_after_subject', array( 'WPAS_Custom_Fields_Display', 'submission_form_fields' ) );
+			add_action( 'wpas_submission_form_inside_after_subject', array( $this, 'submission_form_fields' ) );
 		}
-		
+
 	}
 
 	/**
 	 * Add a new custom field to the ticket.
-	 * 
-	 * @param (string) $name Option name
+	 *
+	 * @param string $name Option name
+	 * @param array  $args Field arguments
+	 *
+	 * @return bool Whether or not the field was added
+	 *
 	 * @since 3.0.0
 	 */
-	public function add_field( $name = false, $args = array() ) {
+	public function add_field( $name = '', $args = array() ) {
 
 		/* Option name is mandatory */
-		if ( !$name ) {
-			return;
+		if ( empty( $name ) ) {
+			return false;
 		}
 
 		$name = sanitize_text_field( $name );
 
 		/* Default arguments */
-		$defaults = array(
-			'callback'              => 'text',                // Field callback to display its content
-			'core'                  => false,                 // Is this a custom fields that belongs to the plugin core
-			'required'              => false,                 // Is this field required for front-end submission
-			'log'                   => false,                 // Should the content updates of this field be logged in the system
-			'capability'            => 'create_ticket',       // Required capability for this field
-			'sanitize'              => 'sanitize_text_field', // Sanitize callback for the field value
-			'save_callback'         => false,                 // Saving callback if a specific saving method is required
-			'show_column'           => false,                 // Show field content in the tickets list & in the admin
-			'column_callback'       => 'wpas_cf_value',       // Column callback function
-			'sortable_column'       => false,                 // Not compatible with taxonomies
-			'filterable'            => true,                  // Used for taxonomies only
-			'title'                 => '',                    // Nicely formatted title for this field
-			'placeholder'           => '',                    // Placeholder to display in the submission form
-			'desc'                  => '',                    // Helper description for the field
-			/* The following parameters are users for taxonomies only. */
-			'taxo_std'              => false,                 // For taxonomies, should it behave like a standard WordPress taxonomy
-			'label'                 => '',
-			'label_plural'          => '',
-			'taxo_hierarchical'     => true,
-			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
-		);
+		$defaults = WPAS_Custom_Field::get_field_defaults();
 
 		/* Merge args */
 		$arguments = wp_parse_args( $args, $defaults );
 
+		/* Convert the callback for backwards compatibility */
+		if ( ! empty( $arguments['callback'] ) ) {
+
+			switch ( $arguments['callback'] ) {
+
+				case 'taxonomy';
+					$arguments['field_type'] = 'taxonomy';
+					$arguments['callback'] = '';
+					break;
+
+				case 'text':
+					$arguments['field_type'] = 'text-field';
+					$arguments['callback'] = '';
+					break;
+
+			}
+		}
+
 		/* Field with args */
 		$option = array( 'name' => $name, 'args' => $arguments );
 
-		$this->options[$name] = apply_filters( 'wpas_add_field', $option );
+		$this->options[ $name ] = apply_filters( 'wpas_add_field', $option );
+
+		return true;
 
 	}
 
 	/**
 	 * Remove a custom field.
-	 * 
+	 *
 	 * @param  string $id ID of the field to remove
+	 *
+	 * @return void
+	 *
 	 * @since  3.0.0
 	 */
 	public function remove_field( $id ) {
 
 		$fields = $this->options;
 
-		if( isset( $fields[$id] ) )
-			unset( $fields[$id] );
+		if ( isset( $fields[ $id ] ) ) {
+			unset( $fields[ $id ] );
+		}
 
 		$this->options = $fields;
 
@@ -140,24 +148,19 @@ class WPAS_Custom_Fields {
 	 * Register all custom taxonomies.
 	 *
 	 * @since  3.0.0
+	 * @return void
 	 */
 	public function register_taxonomies() {
 
 		$options         = $this->options;
 		$this->remove_mb = array();
 
-		foreach( $options as $option ) {
+		foreach ( $options as $option ) {
 
-			/* Reset vars for safety */
-			$labels = array();
-			$args   = array();
-			$name   = '';
-			$plural = '';
+			if ( 'taxonomy' == $option['args']['field_type'] ) {
 
-			if( 'taxonomy' == $option['args']['callback'] ) {
-
-				$name         = !empty( $option['args']['label'] ) ? sanitize_text_field( $option['args']['label'] ) : ucwords( str_replace( array( '_', '-' ), ' ', $option['name'] ) );
-				$plural       = !empty( $option['args']['label_plural'] ) ? sanitize_text_field( $option['args']['label_plural'] ) : $name . 's';
+				$name         = ! empty( $option['args']['label'] ) ? sanitize_text_field( $option['args']['label'] ) : ucwords( str_replace( array( '_', '-' ), ' ', $option['name'] ) );
+				$plural       = ! empty( $option['args']['label_plural'] ) ? sanitize_text_field( $option['args']['label_plural'] ) : $name . 's';
 				$column       = true === $option['args']['taxo_std'] ? true : false;
 				$hierarchical = $option['args']['taxo_hierarchical'];
 
@@ -196,16 +199,18 @@ class WPAS_Custom_Fields {
 
 				register_taxonomy( $option['name'], array( 'ticket' ), $args );
 
-				if( false === $option['args']['taxo_std'] )
+				if ( false === $option['args']['taxo_std'] ) {
 					array_push( $this->remove_mb, $option['name'] );
+				}
 
 			}
 
 		}
 
 		/* Remove metaboxes that won't be used */
-		if( !empty( $this->remove_mb ) )
+		if ( ! empty( $this->remove_mb ) ) {
 			add_action( 'admin_menu', array( $this, 'remove_taxonomy_metabox' ) );
+		}
 
 	}
 
@@ -216,17 +221,20 @@ class WPAS_Custom_Fields {
 	 * Hence, we don't need the standard taxonomy metabox.
 	 *
 	 * @since  3.0.0
+	 * @return void
 	 */
 	public function remove_taxonomy_metabox() {
 
-		foreach( $this->remove_mb as $key => $mb )
+		foreach ( $this->remove_mb as $key => $mb ) {
 			remove_meta_box( $mb . 'div', 'ticket', 'side' );
+		}
+
 	}
 
 	/**
 	 * Return the list of fields
-	 * 
-	 * @return (array) List of custom fields
+	 *
+	 * @return array List of custom fields
 	 * @since 3.0.0
 	 */
 	public function get_custom_fields() {
@@ -241,16 +249,18 @@ class WPAS_Custom_Fields {
 	 * but that can be overridden with the $core parameter.
 	 *
 	 * @since  3.0.0
+	 *
 	 * @param  boolean $core True if core fields should be counted as registered custom fields.
+	 *
 	 * @return boolean       True if custom fields are present, false otherwise
 	 */
 	public function have_custom_fields( $core = false ) {
 		$fields = $this->get_custom_fields();
-		$have = false;
+		$have   = false;
 
 		foreach ( $fields as $key => $field ) {
 			if ( false === boolval( $field['args']['core'] ) || true === $core && true === boolval( $field['args']['core'] ) ) {
-				$have= true;
+				$have = true;
 			}
 		}
 
@@ -258,48 +268,10 @@ class WPAS_Custom_Fields {
 	}
 
 	/**
-	 * Retrieve post meta value.
-	 * 
-	 * @param  (string)   $name    Option name
-	 * @param  (integer)  $post_id Post ID
-	 * @param  (mixed)    $default Default value
-	 * @return (mixed)             Meta value
-	 * @since  3.0.0
-	 */
-	public static function get_value( $name, $post_id, $default = false, $echo = false ) {
-
-		if ( '_' !== substr( $name, 0, 1 ) ) {
-			if ( 'wpas' === substr( $name, 0, 4 ) ) {
-				$name = "_$name";
-			} else {
-				$name = "_wpas_$name";
-			}
-		} else {
-			if ( '_wpas' !== substr( $name, 0, 5) ) {
-				$name = "_wpas$name";
-			}
-		}
-
-		/* Get option */
-		$value = get_post_meta( $post_id, $name, true );
-
-		/* Return value */
-		if ( '' === $value ) {
-			$value = $default;
-		}
-
-		if ( true === $echo ) {
-			echo $value;
-		} else {
-			return $value;
-		}
-
-	}
-
-	/**
 	 * Add possible custom columns to tickets list.
-	 * 
+	 *
 	 * @param  array $columns List of default columns
+	 *
 	 * @return array          Updated list of columns
 	 * @since  3.0.0
 	 */
@@ -316,14 +288,14 @@ class WPAS_Custom_Fields {
 		foreach ( $fields as $field ) {
 
 			/* If CF is a regular taxonomy we don't handle it, WordPress does */
-			if( 'taxonomy' == $field['args']['callback'] && true === $field['args']['taxo_std'] ) {
+			if ( 'taxonomy' == $field['args']['field_type'] && true === $field['args']['taxo_std'] ) {
 				continue;
 			}
 
-			if( true === $field['args']['show_column'] ) {
-				$id          = $field['name'];
-				$title       = wpas_get_field_title( $field );
-				$custom[$id] = $title;
+			if ( true === $field['args']['show_column'] ) {
+				$id            = $field['name'];
+				$title         = wpas_get_field_title( $field );
+				$custom[ $id ] = $title;
 			}
 
 		}
@@ -331,14 +303,14 @@ class WPAS_Custom_Fields {
 		/**
 		 * Parse the old columns and add the new ones.
 		 */
-		foreach( $columns as $col_id => $col_label ) {
+		foreach ( $columns as $col_id => $col_label ) {
 
 			/* Merge all custom columns right before the date column */
-			if( 'date' == $col_id ) {
+			if ( 'date' == $col_id ) {
 				$new = array_merge( $new, $custom );
 			}
 
-			$new[$col_id] = $col_label;
+			$new[ $col_id ] = $col_label;
 
 		}
 
@@ -349,7 +321,9 @@ class WPAS_Custom_Fields {
 	 * Reorder the admin columns.
 	 *
 	 * @since  3.0.0
+	 *
 	 * @param  array $columns List of admin columns
+	 *
 	 * @return array          Re-ordered list
 	 */
 	public function move_status_first( $columns ) {
@@ -369,7 +343,7 @@ class WPAS_Custom_Fields {
 				$new['status'] = $status_content;
 			}
 
-			$new[$column] = $content;
+			$new[ $column ] = $content;
 
 		}
 
@@ -379,27 +353,30 @@ class WPAS_Custom_Fields {
 
 	/**
 	 * Manage custom columns content
-	 * 
-	 * @param  array   $column  Columns currently processed
+	 *
+	 * @param  string  $column  The name of the column to display
 	 * @param  integer $post_id ID of the post being processed
+	 *
+	 * @return void
+	 *
 	 * @since  3.0.0
 	 */
 	public function custom_columns_content( $column, $post_id ) {
 
 		$fields = $this->get_custom_fields();
 
-		if ( isset( $fields[$column] ) ) {
+		if ( isset( $fields[ $column ] ) ) {
 
-			if ( true === $fields[$column]['args']['show_column'] ) {
+			if ( true === $fields[ $column ]['args']['show_column'] ) {
 
 				/* In case a custom callback is specified we use it */
-				if ( function_exists( $fields[$column]['args']['column_callback'] ) ) {
-					call_user_func( $fields[$column]['args']['column_callback'], $fields[$column]['name'], $post_id );
+				if ( function_exists( $fields[ $column ]['args']['column_callback'] ) ) {
+					call_user_func( $fields[ $column ]['args']['column_callback'], $fields[ $column ]['name'], $post_id );
 				}
 
 				/* Otherwise we use the default rendering options */
 				else {
-					wpas_cf_value( $fields[$column]['name'], $post_id );
+					wpas_cf_value( $fields[ $column ]['name'], $post_id );
 				}
 
 			}
@@ -412,6 +389,7 @@ class WPAS_Custom_Fields {
 	 * Make custom columns sortable
 	 *
 	 * @param  array $columns Already sortable columns
+	 *
 	 * @return array          New sortable columns
 	 * @since  3.0.0
 	 */
@@ -423,15 +401,13 @@ class WPAS_Custom_Fields {
 		foreach ( $fields as $field ) {
 
 			/* If CF is a regular taxonomy we don't handle it, WordPress does */
-			if ( 'taxonomy' == $field['args']['callback'] && true === $field['args']['taxo_std'] ) {
+			if ( 'taxonomy' == $field['args']['field_type'] && true === $field['args']['taxo_std'] ) {
 				continue;
 			}
 
 			if ( true === $field['args']['show_column'] && true === $field['args']['sortable_column'] ) {
-
-				$id       = $field['name'];
-				$new[$id] = $id;
-
+				$id         = $field['name'];
+				$new[ $id ] = $id;
 			}
 
 		}
@@ -442,8 +418,11 @@ class WPAS_Custom_Fields {
 
 	/**
 	 * Reorder custom columns based on custom values.
-	 * 
+	 *
 	 * @param  object $query Main query
+	 *
+	 * @return void
+	 *
 	 * @since  3.0.0
 	 */
 	public function custom_column_orderby( $query ) {
@@ -451,9 +430,9 @@ class WPAS_Custom_Fields {
 		$fields  = $this->get_custom_fields();
 		$orderby = $query->get( 'orderby' );
 
-		if( array_key_exists( $orderby, $fields ) ) {
+		if ( array_key_exists( $orderby, $fields ) ) {
 
-			if( 'taxonomy' != $fields[$orderby]['args']['callback'] ) {
+			if ( 'taxonomy' != $fields[ $orderby ]['args']['field_type'] ) {
 				$query->set( 'meta_key', '_wpas_' . $orderby );
 				$query->set( 'orderby', 'meta_value' );
 			}
@@ -466,13 +445,14 @@ class WPAS_Custom_Fields {
 	 * Add filters for custom taxonomies
 	 *
 	 * @since  2.0.0
+	 * @return void
 	 */
 	public function custom_taxonomy_filter() {
 
 		global $typenow;
 
 		if ( 'ticket' != $typenow ) {
-			return;
+			echo '';
 		}
 
 		$post_types = get_post_types( array( '_builtin' => false ) );
@@ -486,11 +466,11 @@ class WPAS_Custom_Fields {
 
 			foreach ( $filters as $tax_slug ) {
 
-				if( !array_key_exists( $tax_slug, $fields ) ) {
+				if ( ! array_key_exists( $tax_slug, $fields ) ) {
 					continue;
 				}
 
-				if( true !== $fields[$tax_slug]['args']['filterable'] ) {
+				if ( true !== $fields[ $tax_slug ]['args']['filterable'] ) {
 					continue;
 				}
 
@@ -507,11 +487,12 @@ class WPAS_Custom_Fields {
 					'hide_if_empty'   => true,
 				);
 
-				if( isset( $_GET[$tax_slug] ) ) {
-					$args['selected'] = $_GET[$tax_slug];
+				if ( isset( $_GET[ $tax_slug ] ) ) {
+					$args['selected'] = $_GET[ $tax_slug ];
 				}
 
 				wp_dropdown_categories( $args );
+
 			}
 		}
 
@@ -521,17 +502,18 @@ class WPAS_Custom_Fields {
 	 * Add status dropdown in the filters bar.
 	 *
 	 * @since  2.0.0
+	 * @return void
 	 */
 	public function status_filter() {
 
 		global $typenow;
 
 		if ( 'ticket' != $typenow ) {
-			return;
+			echo '';
 		}
 
 		if ( isset( $_GET['post_status'] ) ) {
-			return false;
+			echo '';
 		}
 
 		$this_sort       = isset( $_GET['wpas_status'] ) ? $_GET['wpas_status'] : '';
@@ -553,8 +535,11 @@ class WPAS_Custom_Fields {
 	 *
 	 * When filtering, WordPress uses the ID by default in the query but
 	 * that doesn't work. We need to convert it to the taxonomy term.
-	 * 
+	 *
 	 * @param  object $query WordPress current main query
+	 *
+	 * @return void
+	 *
 	 * @since  2.0.0
 	 * @link   http://wordpress.stackexchange.com/questions/578/adding-a-taxonomy-filter-to-admin-list-for-a-custom-post-type
 	 */
@@ -570,15 +555,17 @@ class WPAS_Custom_Fields {
 
 			/* Filter custom fields that are taxonomies */
 			foreach ( $query->query_vars as $arg => $value ) {
-				if ( array_key_exists( $arg, $fields ) && 'taxonomy' === $fields[$arg]['args']['callback'] && true === $fields[$arg]['args']['filterable'] ) {
+
+				if ( array_key_exists( $arg, $fields ) && 'taxonomy' === $fields[ $arg ]['args']['field_type'] && true === $fields[ $arg ]['args']['filterable'] ) {
 
 					$term = get_term_by( 'id', $value, $arg );
 
 					if ( false !== $term ) {
-						$query->query_vars[$arg] = $term->slug;
+						$query->query_vars[ $arg ] = $term->slug;
 					}
 
 				}
+
 			}
 
 		}
@@ -591,7 +578,10 @@ class WPAS_Custom_Fields {
 	 * that doesn't work. We need to convert it to the taxonomy term.
 	 *
 	 * @since  3.0.0
+	 *
 	 * @param  object $query WordPress current main query
+	 *
+	 * @return void
 	 */
 	public function status_filter_by_status( $query ) {
 
@@ -599,13 +589,14 @@ class WPAS_Custom_Fields {
 
 		/* Check if we are in the correct post type */
 		if ( is_admin()
-			&& 'edit.php' == $pagenow
-			&& isset( $_GET['post_type'] )
-			&& 'ticket' == $_GET['post_type']
-			&& isset( $_GET['wpas_status'] )
-			&& !empty( $_GET['wpas_status'] )
-			&& $query->is_main_query() ) {
-			
+		     && 'edit.php' == $pagenow
+		     && isset( $_GET['post_type'] )
+		     && 'ticket' == $_GET['post_type']
+		     && isset( $_GET['wpas_status'] )
+		     && ! empty( $_GET['wpas_status'] )
+		     && $query->is_main_query()
+		) {
+
 			$query->query_vars['meta_key']     = '_wpas_status';
 			$query->query_vars['meta_value']   = sanitize_text_field( $_GET['wpas_status'] );
 			$query->query_vars['meta_compare'] = '=';
@@ -613,63 +604,92 @@ class WPAS_Custom_Fields {
 
 	}
 
+	/**
+	 * Display the custom fields on submission form.
+	 *
+	 * @since 3.2.0
+	 * @return void
+	 */
+	public function submission_form_fields() {
+
+		$fields = $this->get_custom_fields();
+
+		if ( ! empty( $fields ) ) {
+
+			foreach ( $fields as $name => $field ) {
+
+				/* Do not display core fields */
+				if ( true === $field['args']['core'] ) {
+					continue;
+				}
+
+				$this_field = new WPAS_Custom_Field( $name, $field );
+				$output     = $this_field->get_output();
+
+				echo $output;
+
+			}
+
+		}
+
+	}
+
 }
 
-/**
- * Instantiate the global $wpas_cf object containing all the custom fields.
- * This object is used throughout the entire plugin so it is capital to be able
- * to access it anytime and not to redeclare a second object when registering
- * new custom fields.
- *
- * @since  3.0.0
- * @var    object
- */
-$wpas_cf = new WPAS_Custom_Fields;
 
 /**
  * Return a custom field value.
  *
- * @param  (string)   $name    Option name
- * @param  (integer)  $post_id Post ID
- * @param  (mixed)    $default Default value
- * @return (mixed)             Meta value
+ * @param  string  $name    Option name
+ * @param  integer $post_id Post ID
+ * @param  mixed   $default Default value
+ *
+ * @return mixed)            Meta value
  * @since  3.0.0
  */
 function wpas_get_cf_value( $name, $post_id, $default = false ) {
-	return WPAS_Custom_Fields::get_value( $name, $post_id, $default = false );
+
+	$field = new WPAS_Custom_Field( $name );
+
+	return $field->get_field_value( $default, $post_id );
 }
 
 /**
- * Return a custom field value.
+ * Echo a custom field value.
  *
- * @param  (string)   $name    Option name
- * @param  (integer)  $post_id Post ID
- * @param  (mixed)    $default Default value
- * @return (mixed)             Meta value
+ * This function is just a wrapper function for wpas_get_cf_value()
+ * that echoes the result instead of returning it.
+ *
+ * @param  string  $name    Option name
+ * @param  integer $post_id Post ID
+ * @param  mixed   $default Default value
+ *
+ * @return mixed)            Meta value
  * @since  3.0.0
  */
-function wpas_cf_value( $name, $post_id, $default = '' ) {
-	return WPAS_Custom_Fields::get_value( $name, $post_id, $default, true );
+function wpas_cf_value( $name, $post_id, $default = false ) {
+	echo wpas_get_cf_value( $name, $post_id, $default );
 }
 
 /**
  * Add a new custom field.
  *
  * @since  3.0.0
- * @param  string  $name  The ID of the custom field to add
- * @param  array   $args  Additional arguments for the custom field
+ *
+ * @param  string $name The ID of the custom field to add
+ * @param  array  $args Additional arguments for the custom field
+ *
  * @return boolean        Returns true on success or false on failure
  */
 function wpas_add_custom_field( $name, $args = array() ) {
 
 	global $wpas_cf;
 
-	if( !isset( $wpas_cf ) || !class_exists( 'WPAS_Custom_Fields' ) )
+	if ( ! isset( $wpas_cf ) || ! class_exists( 'WPAS_Custom_Fields' ) ) {
 		return false;
+	}
 
-	$wpas_cf->add_field( $name, $args );
-
-	return true;
+	return $wpas_cf->add_field( $name, $args );
 
 }
 
@@ -677,19 +697,22 @@ function wpas_add_custom_field( $name, $args = array() ) {
  * Add a new custom taxonomy.
  *
  * @since  3.0.0
- * @param  string  $name  The ID of the custom field to add
- * @param  array   $args  Additional arguments for the custom field
+ *
+ * @param  string $name The ID of the custom field to add
+ * @param  array  $args Additional arguments for the custom field
+ *
  * @return boolean        Returns true on success or false on failure
  */
 function wpas_add_custom_taxonomy( $name, $args = array() ) {
 
 	global $wpas_cf;
 
-	if( !isset( $wpas_cf ) || !class_exists( 'WPAS_Custom_Fields' ) )
+	if ( ! isset( $wpas_cf ) || ! class_exists( 'WPAS_Custom_Fields' ) ) {
 		return false;
+	}
 
 	/* Force the custom fields type to be a taxonomy. */
-	$args['callback']        = 'taxonomy';
+	$args['field_type']      = 'taxonomy';
 	$args['column_callback'] = 'wpas_show_taxonomy_column';
 
 	/* Add the taxonomy. */
@@ -699,7 +722,7 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
 
 }
 
-wpas_register_core_fields();
+add_action( 'init', 'wpas_register_core_fields' );
 /**
  * Register the cure custom fields.
  *
@@ -710,18 +733,18 @@ function wpas_register_core_fields() {
 
 	global $wpas_cf;
 
-	if ( !isset( $wpas_cf ) ) {
+	if ( ! isset( $wpas_cf ) ) {
 		return;
 	}
 
 	$wpas_cf->add_field( 'assignee',   array( 'core' => true, 'show_column' => false, 'log' => true, 'title' => __( 'Support Staff', 'wpas' ) ) );
 	// $wpas_cf->add_field( 'ccs',        array( 'core' => true, 'show_column' => false, 'log' => true ) );
-	$wpas_cf->add_field( 'status',     array( 'core' => true, 'show_column' => true, 'log' => false, 'callback' => false, 'column_callback' => 'wpas_cf_display_status', 'save_callback' => null ) );
+	$wpas_cf->add_field( 'status',     array( 'core' => true, 'show_column' => true, 'log' => false, 'field_type' => false, 'column_callback' => 'wpas_cf_display_status', 'save_callback' => null ) );
 	$wpas_cf->add_field( 'ticket-tag', array(
 		'core'                  => true,
 		'show_column'           => true,
 		'log'                   => true,
-		'callback'              => 'taxonomy',
+		'field_type'            => 'taxonomy',
 		'taxo_std'              => true,
 		'column_callback'       => 'wpas_cf_display_status',
 		'save_callback'         => null,
@@ -748,18 +771,18 @@ function wpas_register_core_fields() {
 		);
 
 		$wpas_cf->add_field( 'product', array(
-			'core'                  => false,
-			'show_column'           => true,
-			'log'                   => true,
-			'callback'              => 'taxonomy',
-			'taxo_std'              => false,
-			'column_callback'       => 'wpas_show_taxonomy_column',
-			'label'                 => $labels['label'],
-			'name'                  => $labels['name'],
-			'label_plural'          => $labels['label_plural'],
-			'taxo_hierarchical'     => true,
-			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
-			'rewrite'               => array( 'slug' => $slug )
+				'core'                  => false,
+				'show_column'           => true,
+				'log'                   => true,
+				'field_type'            => 'taxonomy',
+				'taxo_std'              => false,
+				'column_callback'       => 'wpas_show_taxonomy_column',
+				'label'                 => $labels['label'],
+				'name'                  => $labels['name'],
+				'label_plural'          => $labels['label_plural'],
+				'taxo_hierarchical'     => true,
+				'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+				'rewrite'               => array( 'slug' => $slug )
 			)
 		);
 
