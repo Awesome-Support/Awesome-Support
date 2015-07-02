@@ -140,6 +140,28 @@ class WPAS_Custom_Field {
 	}
 
 	/**
+	 * Check if the field type class exists and loads it if possible.
+	 *
+	 * @since 3.2.0
+	 * @return bool Whether or not the class was loaded
+	 */
+	protected function require_field_type_class() {
+
+		$field_class_path = WPAS_PATH . "includes/custom-fields/field-types/class-cf-{$this->field['args']['field_type']}.php";
+
+		if ( file_exists( $field_class_path ) ) {
+
+			require_once( $field_class_path );
+
+			return true;
+
+		} else {
+			return false;
+		}
+
+	}
+
+	/**
 	 * Get the field ID.
 	 *
 	 * If the ID is require during the saving process, an underscore is added
@@ -516,11 +538,7 @@ class WPAS_Custom_Field {
 	 */
 	public function get_output() {
 
-		$field_class_path = WPAS_PATH . "includes/custom-fields/field-types/class-cf-{$this->field['args']['field_type']}.php";
-
-		if ( file_exists( $field_class_path ) ) {
-			require_once( $field_class_path );
-		}
+		$this->require_field_type_class();
 
 		$wrapper     = apply_filters( 'wpas_cf_wrapper_markup', $this->get_wrapper_markup(), $this->field );
 		$field       = $this->get_field_markup();
@@ -533,6 +551,141 @@ class WPAS_Custom_Field {
 		$this->output = str_replace( '{{field}}', $field, $wrapper );
 
 		return $this->output;
+
+	}
+
+	/**
+	 * Returns the field value sanitized with the appropriate callback.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param mixed $value Raw value to sanitize
+	 *
+	 * @return mixed Sanitized value
+	 */
+	public function get_sanitized_value( $value ) {
+		return function_exists( $this->field['args']['sanitize'] ) ? call_user_func( $this->field['args']['sanitize'], $value ) : sanitize_text_field( $value );
+	}
+
+	/**
+	 * Update the custom field value.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param mixed $value   The value to update the custom field with
+	 * @param int   $post_id ID of the post this custom field should be attached to
+	 *
+	 * @return bool Result
+	 */
+	public function update_value( $value, $post_id ) {
+
+		/**
+		 * This variable will contain the update result.
+		 * It is used for logging the action performed.
+		 * The result must be an int containing one
+		 * of those three options:
+		 *
+		 * - 0: nothing happened, no changes
+		 * - 1: if there was no old value and the new value is added
+		 * - 2: if the old value was updated with a new one
+		 * - 3: if the new value is empty and the old one deleted
+		 *
+		 * @var int $result
+		 */
+		$result = 0;
+
+		/**
+		 * Get the field ID for saving purpose.
+		 */
+		$field_id = $this->get_field_id( true );
+
+		/**
+		 * First of all let's sanitize the value.
+		 */
+		$value = $this->get_sanitized_value( $value );
+
+		/**
+		 * Check for a custom save callback function.
+		 */
+		if ( false !== $this->field['args']['save_callback'] && function_exists( $this->field['args']['save_callback'] ) ) {
+			$result = call_user_func( $this->field['args']['save_callback'], $value, $post_id, $field_id, $this->field );
+		}
+
+		/**
+		 * Use our built-in save function otherwise.
+		 */
+		else {
+
+			$class_name = $this->get_class_name();
+
+			/* Use a custom save function if any. */
+			if ( $this->require_field_type_class() && class_exists( $class_name ) && method_exists( $class_name, 'update' ) ) {
+
+				/* Instantiate the field type class */
+				$instance = new $class_name( $this->field_id, $this->field );
+
+				$result = $instance->update( $value, $post_id );
+
+			}
+
+			/* Default save function otherwise. */
+			else {
+
+				/**
+				 * Get the current field value.
+				 */
+				$current = get_post_meta( $post_id, $field_id, true );
+
+				/**
+				 * First case scenario
+				 *
+				 * The option exists in DB but the new value
+				 * is empty. This is often the case for checkboxes.
+				 *
+				 * Action: Delete option
+				 */
+				if ( ! empty( $current ) && empty( $value ) ) {
+					if ( delete_post_meta( $post_id, $field_id, $current ) ) {
+						$result = 3;
+					}
+				}
+
+				/**
+				 * Second case scenario
+				 *
+				 * The option exists in DB and the new value is not empty.
+				 *
+				 * Action: Update post meta OR delete it
+				 */
+				elseif ( ! empty( $current ) && ! empty( $value ) ) {
+
+					/* Make sure the old and new values aren't the same */
+					if ( $current !== $value ) {
+						if ( false !== update_post_meta( $post_id, $field_id, $value, $current ) ) {
+							$result = 2;
+						}
+					}
+
+				}
+
+				/**
+				 * Third case scenario
+				 *
+				 * The option doesn't exist in DB but a value was passed in the POST.
+				 *
+				 * Action: Add post meta
+				 */
+				elseif ( empty( $current ) && ! empty( $value ) ) {
+					if ( false !== add_post_meta( $post_id, $field_id, $value, true ) ) {
+						$result = 1;
+					}
+				}
+
+			}
+
+		}
+
+		return $result;
 
 	}
 
