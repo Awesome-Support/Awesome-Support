@@ -231,7 +231,8 @@ class WPAS_Custom_Field {
 		$class_name = $this->get_class_name();
 
 		if ( class_exists( $class_name ) && method_exists( $class_name, 'wrapper' ) ) {
-			$default = $class_name::wrapper();
+			$instance = new $class_name( $this->field_id, $this->field );
+			$default  = $instance->wrapper();
 		} else {
 			$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), $this->get_field_id() );
 		}
