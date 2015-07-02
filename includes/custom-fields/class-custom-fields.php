@@ -634,6 +634,170 @@ class WPAS_Custom_Fields {
 
 	}
 
+	/**
+	 * Save all custom fields given in $data to the database.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param int   $post_id ID of the post being saved
+	 * @param array $data    Array of data that might contain custom fields values.
+	 *
+	 * @return array Array of custom field / value saved to the database
+	 */
+	public function save_custom_fields( $post_id, $data = array() ) {
+
+		/* We store all the data to log in here */
+		$log = array();
+
+		/* Store all fields saved to DB and the value saved */
+		$saved = array();
+
+		$fields = $this->get_custom_fields();
+
+		/**
+		 * wpas_save_custom_fields_before hook
+		 *
+		 * @since  3.0.0
+		 */
+		do_action( 'wpas_save_custom_fields_before', $post_id );
+
+		foreach ( $fields as $field_id => $field ) {
+
+			/**
+			 * All name attributes are prefixed with wpas_
+			 * so we need to add it to get the real field ID.
+			 */
+			$field_form_id = "wpas_$field_id";
+
+			/* Process core fields differently. */
+			if ( true === $field['args']['core'] ) {
+
+				if ( isset( $data[ $field_form_id ] ) ) {
+					$this->save_core_field( $post_id, $field, $data[ $field_form_id ] );
+				}
+
+				continue;
+			}
+
+			/**
+			 * Get the custom field object.
+			 */
+			$custom_field = new WPAS_Custom_Field( $field_id, $field );
+
+			if ( isset( $data[ $field_form_id ] ) ) {
+
+				$value  = $custom_field->get_sanitized_value( $data[ $field_form_id ] );
+				$result = $custom_field->update_value( $value, $post_id );
+
+			} else {
+				/**
+				 * This is actually important as passing an empty value
+				 * for custom fields that aren't set in the form allows
+				 * for deleting values that aren't used from the database.
+				 * An unchecked checkbox for instance will not be set
+				 * in the form even though the value has to be deleted.
+				 */
+				$value  = '';
+				$result = $custom_field->update_value( $value, $post_id );
+			}
+
+			if ( 1 === $result || 2 === $result ) {
+				$saved[ $field['name'] ] = $value;
+			}
+
+			if ( true === $field['args']['log'] ) {
+
+				/**
+				 * If the custom field is a taxonomy we need to convert the term ID into its name.
+				 *
+				 * By checking if $result is different from 0 we make sure that the term actually exists.
+				 * If the term didn't exist the save function would have seen it and returned 0.
+				 */
+				if ( 'taxonomy' === $field['args']['field_type'] && 0 !== $result ) {
+					$term  = get_term( (int) $value, $field['name'] );
+					$value = $term->name;
+				}
+
+				$tmp = array(
+					'action'   => '',
+					'label'    => wpas_get_field_title( $field ),
+					'value'    => $value,
+					'field_id' => $field['name']
+				);
+
+				switch ( (int) $result ) {
+
+					case 1:
+						$tmp['action'] = 'added';
+						break;
+
+					case 2:
+						$tmp['action'] = 'updated';
+						break;
+
+					case 3:
+						$tmp['action'] = 'deleted';
+						break;
+
+				}
+
+				/* Only add this to the log if something was done to the field value */
+				if ( ! empty( $tmp['action'] ) ) {
+					$log[] = $tmp;
+				}
+
+			}
+
+		}
+
+		/**
+		 * Log the changes if any.
+		 */
+		if ( ! empty( $log ) ) {
+			wpas_log( $post_id, $log );
+		}
+
+		/**
+		 * wpas_save_custom_fields_before hook
+		 *
+		 * @since  3.0.0
+		 */
+		do_action( 'wpas_save_custom_fields_after', $post_id );
+
+		return $saved;
+
+	}
+
+	/**
+	 * Save the core fields.
+	 *
+	 * Core fields are processed differently and won't use the same
+	 * saving function as the standard custom fields of the same type.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param int   $post_id ID of the post being saved
+	 * @param array $field   Field array
+	 * @param mixed $value   Field new value
+	 *
+	 * @return void
+	 */
+	public function save_core_field( $post_id, $field, $value ) {
+
+		switch ( $field['name'] ) {
+
+			case 'assignee':
+
+				if ( $value !== get_post_meta( $post_id, '_wpas_assignee', true ) ) {
+					wpas_assign_ticket( $post_id, $value, $field['args']['log'] );
+				}
+
+				break;
+
+		}
+
+	}
+
 }
 
 

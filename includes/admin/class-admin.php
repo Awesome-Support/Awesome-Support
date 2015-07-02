@@ -935,7 +935,7 @@ class Awesome_Support_Admin {
 			return;
 		}
 
-		global $current_user;
+		global $current_user, $wpas_cf;
 
 		/**
 		 * Store possible logs
@@ -1038,26 +1038,11 @@ class Awesome_Support_Admin {
 
 		}
 
-		/**
-		 * wpas_save_custom_fields_before hook
-		 *
-		 * @since  3.0.0
-		 */
-		do_action( 'wpas_save_custom_fields_before', $post_id );
-
-		/* Now we can instantiate the save class and save */
-		$wpas_save = new WPAS_Save_Fields();
-		$saved = $wpas_save->save( $post_id );
-
-		/**
-		 * wpas_save_custom_fields_before hook
-		 *
-		 * @since  3.0.0
-		 */
-		do_action( 'wpas_save_custom_fields_after', $post_id );
+		/* Now we can save the custom fields */
+		$wpas_cf->save_custom_fields( $post_id, $_POST );
 
 		/* Log the action */
-		if ( !empty( $log ) ) {
+		if ( ! empty( $log ) ) {
 			wpas_log( $post_id, $log );
 		}
 
