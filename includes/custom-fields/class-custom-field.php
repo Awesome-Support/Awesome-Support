@@ -396,8 +396,9 @@ class WPAS_Custom_Field {
 
 		$class_name = $this->get_class_name();
 
-		if ( class_exists( $class_name ) && isset( $class_name::$default_wrapper_class ) ) {
-			array_push( $classes, $class_name::$default_wrapper_class );
+		if ( class_exists( $class_name ) && property_exists( $class_name, 'default_wrapper_class' ) ) {
+			$reflection = new ReflectionClass( $class_name ); // PHP 5.2 doesn't let us access the static property
+			array_push( $classes, $reflection->getStaticPropertyValue( 'default_wrapper_class', strval( $class_name ) ) );
 		}
 
 		/* Add the error class if needed */
@@ -464,8 +465,9 @@ class WPAS_Custom_Field {
 
 		$class_name = $this->get_class_name();
 
-		if ( class_exists( $class_name ) && isset( $class_name::$default_field_class ) ) {
-			array_push( $classes, $class_name::$default_field_class );
+		if ( class_exists( $class_name ) && property_exists( $class_name, 'default_field_class' ) ) {
+			$reflection = new ReflectionClass( $class_name ); // PHP 5.2 doesn't let us access the static property
+			array_push( $classes, $reflection->getStaticPropertyValue( 'default_field_class', strval( $class_name ) ) );
 		}
 
 		/* Filter the final list */
