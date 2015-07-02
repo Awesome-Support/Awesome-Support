@@ -131,7 +131,7 @@ class WPAS_Custom_Field {
 	public function get_class_name() {
 
 		if ( ! isset( $this->class_name ) ) {
-			$type             = str_replace( ' ', '_', ucwords( str_replace( array( '-' ), ' ', $this->field['args']['field_type'] ) ) );
+			$type             = str_replace( ' ', '_', ucwords( str_replace( array( '-', '_' ), ' ', $this->field_type ) ) );
 			$this->class_name = "WPAS_CF_$type";
 		}
 
