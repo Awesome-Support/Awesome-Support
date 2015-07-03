@@ -30,22 +30,20 @@ if ( false === $items ) {
 ?>
 
 <style type="text/css">
-.wpas-addon-all .wpas-addon-item {
-	margin-bottom: 40px;
-	padding-bottom: 40px;
-	border-bottom: 1px solid #ddd;
-}
-.wpas-addon-all .wpas-addon-item:last-child {
-	margin-bottom: 0px;
-	border-bottom: none;
-}
-.wpas-addon-all .last-feature {
+.wpas-addon-all {
 	padding-top: 40px;
 }
-.wpas-addon-img-wrap {
-	width: 100%;
-	min-height: 302px;
-	background: #ddd url('<?php echo admin_url(); ?>/images/wpspin_light-2x.gif') no-repeat 50% 50%;
+.wpas-addon-item + .wpas-addon-item {
+	margin-top: 40px;
+	padding-top: 40px;
+	border-top: 1px solid #ddd;	
+}
+.wpas-addon-item .inside {
+	padding-left: 30px;
+}
+.wpas-addon-item h3 {
+	margin-top: 0px;
+	padding-top: 0px;
 }
 .wpas-addon-img {
 	box-shadow: 0px 0px 25px rgba(0,0,0,0.25);
@@ -70,6 +68,8 @@ if ( false === $items ) {
 			// wpas_debug_display( $items );
 			foreach ( $items as $key => $item ):
 
+				$content = wp_trim_words( $item->info->content, $num_words = 70, $more = '…' );
+
 				/* Get the item price */
 				$price = false;
 
@@ -84,14 +84,17 @@ if ( false === $items ) {
 						$price = number_format( $item->pricing->singlesite, 0 );
 					}
 				} ?>
-				<div class="feature-section col two-col wpas-addon-item" id="wpas-addon-item-<?php echo intval( $item->info->id ); ?>">
-					<div class="col-1">
-						<div class="wpas-addon-img-wrap"><?php if ( !empty( $item->info->thumbnail ) ): ?><img class="wpas-addon-img" src="<?php echo esc_url( $item->info->thumbnail ); ?>"><?php endif; ?></div>
+
+				<div class="row wpas-addon-item" id="wpas-addon-item-<?php echo intval( $item->info->id ); ?>">
+					<div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 wpas-addon-img-wrap">
+						<?php if ( !empty( $item->info->thumbnail ) ): ?><img class="wpas-addon-img" src="<?php echo esc_url( $item->info->thumbnail ); ?>"><?php endif; ?>
 					</div>
-					<div class="col-2 last-feature">
-						<h3><?php echo esc_attr( $item->info->title ); ?> <small class="wpas-addon-item-pricing">from <?php if ( false !== $price ): ?><strong>$<?php echo $price; ?></strong><?php endif; ?></small></h3>
-						<p><?php if ( !empty( $item->info->excerpt ) ): echo wpautop( $item->info->excerpt ); endif; ?></p>
-						<a class="button-primary" href="<?php echo esc_url( $item->info->link ); ?>" target="_blank">View details</a>
+					<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
+						<div class="inside">
+							<h3><?php echo esc_attr( $item->info->title ); ?> <small class="wpas-addon-item-pricing">from <?php if ( false !== $price ): ?><strong>$<?php echo $price; ?></strong><?php endif; ?></small></h3>
+							<p><?php if ( !empty( $content ) ): echo wpautop( $content ); endif; ?></p>
+							<a class="button-primary" href="<?php echo esc_url( $item->info->link ); ?>" target="_blank">View details</a>
+						</div>
 					</div>
 				</div>
 			<?php endforeach;

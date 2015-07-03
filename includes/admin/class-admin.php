@@ -305,6 +305,7 @@ class Awesome_Support_Admin {
 		if ( wpas_is_plugin_page() ) {		
 
 			wp_enqueue_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2.min.css', null, '3.5.2', 'all' );
+			wp_enqueue_style( 'wpas-flexboxgrid', WPAS_URL . 'assets/admin/css/vendor/flexboxgrid.min.css', null, '6.2.0', 'all' );
 			wp_enqueue_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
 
 		}
