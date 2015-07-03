@@ -21,14 +21,11 @@ global $post;
 		 * @since  3.0.0
 		 */
 		do_action( 'wpas_submission_form_inside_before_subject' );
-		?>
 
-		<div class="wpas-form-group">
-			<label><?php _e( 'Subject', 'wpas' ); ?></label>
-			<input name="wpas_title" type="text" <?php wpas_get_field_class( 'wpas_title' ); ?> value="<?php echo wpas_get_field_value( 'wpas_title', true ); ?>" placeholder="<?php echo apply_filters( 'wpas_form_field_placeholder_wpas_title', __( 'What is this about?', 'wpas' ) ); ?>" required>
-		</div>
+		$subject = new WPAS_Custom_Field( 'title', array( 'name' => 'title', 'args' => array( 'required' => true, 'field_type' => 'text-field', 'label' => 'Subject' ) ) );
 
-		<?php
+		echo $subject->get_output();
+
 		/**
 		 * The wpas_submission_form_inside_after_subject hook has to be placed
 		 * right after the subject field.
