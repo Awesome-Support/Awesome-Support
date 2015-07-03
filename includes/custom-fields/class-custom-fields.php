@@ -28,11 +28,6 @@ class WPAS_Custom_Fields {
 		 */
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
-		/**
-		 * Instantiate the class that handles saving the custom fields.
-		 */
-		$wpas_save = new WPAS_Save_Fields();
-
 		if( is_admin() ) {
 
 			/**
@@ -54,19 +49,15 @@ class WPAS_Custom_Fields {
 
 		} else {
 
-			/* Now we can instantiate the save class and save */
-			if ( isset( $_POST['wpas_title'] ) && isset( $_POST['wpas_message'] ) ) {
+			/* Check for required fields and possibly block the submission. */
+			add_filter( 'wpas_before_submit_new_ticket_checks', array( $this, 'check_required_fields' ) );
 
-				/* Check for required fields and possibly block the submission. */
-				add_filter( 'wpas_before_submit_new_ticket_checks', array( $wpas_save, 'check_required_fields' ) );
-
-				/* Save the custom fields. */
-				add_action( 'wpas_open_ticket_after', array( $wpas_save, 'save_submission' ), 10, 2 );
-
-			}
+			/* Save the custom fields. */
+			add_action( 'wpas_open_ticket_after', array( $this, 'frontend_submission' ), 10, 2 );
 
 			/* Display the custom fields on the submission form */
 			add_action( 'wpas_submission_form_inside_after_subject', array( $this, 'submission_form_fields' ) );
+
 		}
 
 	}
@@ -635,16 +626,32 @@ class WPAS_Custom_Fields {
 	}
 
 	/**
+	 * Trigger the custom fields save function upon front-end submission of a new ticket.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param int $ticket_id ID of the ticket that's just been added
+	 *
+	 * @return void
+	 */
+	public function frontend_submission( $ticket_id ) {
+		$post = $_POST;
+		$this->save_custom_fields( $ticket_id, $post, false );
+	}
+
+	/**
 	 * Save all custom fields given in $data to the database.
 	 *
 	 * @since 3.2.0
 	 *
-	 * @param int   $post_id ID of the post being saved
-	 * @param array $data    Array of data that might contain custom fields values.
+	 * @param int   $post_id   ID of the post being saved
+	 * @param array $data      Array of data that might contain custom fields values.
+	 * @param bool  $allow_log Whether or not to allow logging actions. If this is set to false and the custom field is
+	 *                         set to true, $log has higher priority. I tis used to prevent logging on ticket creation.
 	 *
 	 * @return array Array of custom field / value saved to the database
 	 */
-	public function save_custom_fields( $post_id, $data = array() ) {
+	public function save_custom_fields( $post_id, $data = array(), $allow_log = true ) {
 
 		/* We store all the data to log in here */
 		$log = array();
@@ -705,7 +712,7 @@ class WPAS_Custom_Fields {
 				$saved[ $field['name'] ] = $value;
 			}
 
-			if ( true === $field['args']['log'] ) {
+			if ( true === $field['args']['log'] && true === $allow_log ) {
 
 				/**
 				 * If the custom field is a taxonomy we need to convert the term ID into its name.
@@ -795,6 +802,64 @@ class WPAS_Custom_Fields {
 				break;
 
 		}
+
+	}
+
+	/**
+	 * Checks required custom fields.
+	 *
+	 * This function is hooked on the filter wpas_before_submit_new_ticket_checks
+	 * through the parent class. It checks all required custom fields
+	 * and if they were correctly filled. If one or more required field(s) is/are
+	 * missing then the submission process is stopped and an error message is returned.
+	 *
+	 * @since  3.0.0
+	 *
+	 * @param array $data Array of data containing the custom fields to check for required attribute
+	 *
+	 * @return mixed True if no error or a WP_Error otherwise
+	 */
+	public function check_required_fields( $data = array() ) {
+
+		if ( empty( $data ) && ! empty( $_POST ) ) {
+			$data = $_POST;
+		}
+
+		$fields = $this->get_custom_fields();
+
+		/* Set the result as true by default, which is the "green light" value */
+		$result = false;
+
+		foreach ( $fields as $field_id => $field ) {
+
+			/**
+			 * Get the custom field object.
+			 */
+			$custom_field = new WPAS_Custom_Field( $field_id, $field );
+
+			/* Prepare the field name as used in the form */
+			$field_name = $custom_field->get_field_id();
+
+			if ( true === $field['args']['required'] && false === $field['args']['core'] ) {
+
+				if ( ! isset( $data[ $field_name ] ) || empty( $data[ $field_name ] ) ) {
+
+					/* Get field title */
+					$title = ! empty( $field['args']['title'] ) ? $field['args']['title'] : wpas_get_title_from_id( $field['name'] );
+
+					/* Add the error message for this field. */
+					if ( ! is_object( $result ) ) {
+						$result = new WP_Error( 'required_field_missing', sprintf( __( 'The field %s is required.', 'wpas' ), "<code>$title</code>", array( 'errors' => $field_name ) ) );
+					} else {
+						$result->add( 'required_field_missing', sprintf( __( 'The field %s is required.', 'wpas' ), "<code>$title</code>", array( 'errors' => $field_name ) ) );
+					}
+
+				}
+			}
+
+		}
+
+		return $result;
 
 	}
 

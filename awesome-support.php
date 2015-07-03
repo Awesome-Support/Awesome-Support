@@ -85,8 +85,6 @@ require_once( WPAS_PATH . 'includes/addons/class-mailgun-email-check.php' );
 /* Load custom fields dependencies */
 require_once( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
 require_once( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
-require_once( WPAS_PATH . 'includes/custom-fields/class-save.php' );
-require_once( WPAS_PATH . 'includes/custom-fields/class-display.php' );
 
 /**
  * Call all classes and functions files that are shared

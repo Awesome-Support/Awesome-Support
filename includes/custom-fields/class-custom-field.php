@@ -65,7 +65,7 @@ class WPAS_Custom_Field {
 		 * basically a fallback to avoid a PHP notice.
 		 */
 		if ( empty( $field ) ) {
-			$field = array( 'args' => $this->get_field_defaults() );
+			$field = array( 'name' => $field_id, 'args' => $this->get_field_defaults() );
 		}
 
 		$this->field      = $field;
@@ -214,6 +214,35 @@ class WPAS_Custom_Field {
 		}
 
 		return empty( $value ) ? $default : function_exists( $this->field['args']['sanitize'] ) ? call_user_func( $this->field['args']['sanitize'], $value ) : $value;
+
+	}
+
+	/**
+	 * This is used to pre-populate a field.
+	 *
+	 * The method checks for URL vars and values
+	 * possibly saved in session.
+	 *
+	 * @since 3.2.0
+	 * @return mixed Field value
+	 */
+	public function populate() {
+
+		$value = $this->get_field_value();
+
+		if ( empty( $value ) ) {
+
+			if ( isset( $_GET[$this->get_field_id()] ) ) {
+				$value = filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING );
+			}
+
+			if ( isset( $_SESSION['wpas_submission_form'] ) && is_array( $_SESSION['wpas_submission_form'] ) && array_key_exists( $this->get_field_id(), $_SESSION['wpas_submission_form'] ) ) {
+				$value = sanitize_text_field( $_SESSION['wpas_submission_form'][$this->get_field_id()] );
+			}
+
+		}
+
+		return $value;
 
 	}
 
