@@ -12,7 +12,7 @@ class WPAS_CF_Text_Field extends WPAS_Custom_Field {
 	 * @return string Field markup
 	 */
 	public function display() {
-		return sprintf( '<label {{label_atts}}>{{label}}</label><input type="text" value="%s" {{atts}}>', $this->get_field_value() );
+		return sprintf( '<label {{label_atts}}>{{label}}</label><input type="text" value="%s" {{atts}}>', $this->populate() );
 	}
 
 	/**

@@ -50,7 +50,7 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 		ob_start();
 
 		foreach ( $this->ordered_terms as $term ) {
-			wpas_hierarchical_taxonomy_dropdown_options( $term, $this->get_field_value() );
+			wpas_hierarchical_taxonomy_dropdown_options( $term, $this->populate() );
 		}
 
 		$options = ob_get_contents();
