@@ -819,7 +819,28 @@ class WPAS_Custom_Fields {
 	 *
 	 * @return mixed True if no error or a WP_Error otherwise
 	 */
-	public function check_required_fields( $data = array() ) {
+	public function check_required_fields( $go, $data = array() ) {
+
+		if ( empty( $data ) && ! empty( $_POST ) ) {
+			$data = $_POST;
+		}
+
+		$result = $this->is_field_missing( $data );
+
+		return false === $result ? true : $result;
+
+	}
+
+	/**
+	 * Makes sure no required custom field is missing from the data passed.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param array $data Array of data to check
+	 *
+	 * @return bool|WP_Error False if no field is missing, WP_Error with the list of missing fields otherwise
+	 */
+	public function is_field_missing( $data = array() ) {
 
 		if ( empty( $data ) && ! empty( $_POST ) ) {
 			$data = $_POST;
