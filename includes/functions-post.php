@@ -77,7 +77,7 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		/* Redirect to submit page */
-		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( $messages ), get_permalink( $submit ) ) ) );
+		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( $messages ) ), get_permalink( $submit ) ) );
 
 		exit;
 
