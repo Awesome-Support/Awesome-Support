@@ -972,9 +972,9 @@ class Awesome_Support {
 		}
 
 		if ( is_numeric( $_GET['message'] ) ) {
-			wpas_notification( false, $_GET['message'] );
+			wpas_notification( false, filter_input( INPUT_GET, 'message', FILTER_SANITIZE_NUMBER_INT ) );
 		} else {
-			wpas_notification( 'decode', $_GET['message'] );
+			wpas_notification( 'decode', filter_input( INPUT_GET, 'message', FILTER_SANITIZE_STRING ), true );
 		}
 
 		return true;
