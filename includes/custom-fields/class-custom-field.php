@@ -486,11 +486,11 @@ class WPAS_Custom_Field {
 	 *
 	 * @since  3.2.0
 	 *
-	 * @param  string $class Extra classes to pass to the function
+	 * @param  array $class Extra classes to pass to the function
 	 *
 	 * @return string             The class tag with appropriate classes
 	 */
-	function get_field_class( $class = '' ) {
+	function get_field_class( $class = array() ) {
 
 		/**
 		 * Set the classes array with the default class.
