@@ -8,35 +8,6 @@
  */
 
 /**
- * Get temporary field value.
- *
- * Once a form is submitted, all values are kept
- * in session in case the ticket submission fails.
- * Once the submission form reloads we can pre-popupate fields
- * and avoid the pain of re-typing everything for the user.
- * When a submission is valid, the session is destroyed.
- *
- * @param  string $field_name The name of the field to get the value for
- * @return string             The temporary value for this field
- * @since  3.0.0
- */
-function wpas_get_field_value( $field_name ) {
-
-	$meta = get_post_meta( get_the_ID(), '_wpas_' . $field_name, true );
-
-	if ( isset( $_SESSION['wpas_submission_form'] ) && is_array( $_SESSION['wpas_submission_form'] ) && array_key_exists( $field_name, $_SESSION['wpas_submission_form'] ) ) {
-		$value = $_SESSION['wpas_submission_form'][$field_name];
-	} elseif ( !empty( $meta ) ) {
-		$value = $meta;
-	} else {
-		$value = '';
-	}
-
-	return apply_filters( 'wpas_get_field_value', esc_attr( wp_unslash( $value ) ), $field_name );
-
-}
-
-/**
  * Custom callback for updating terms count.
  *
  * The function is based on the original WordPress function
