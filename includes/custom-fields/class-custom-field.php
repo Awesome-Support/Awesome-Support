@@ -18,6 +18,14 @@ class WPAS_Custom_Field {
 	public $field = array();
 
 	/**
+	 * The custom field arguments.
+	 *
+	 * @since 3.2.0
+	 * @var $field_args array
+	 */
+	public $field_args = array();
+
+	/**
 	 * Field type.
 	 *
 	 * @since 3.2.0
@@ -71,6 +79,7 @@ class WPAS_Custom_Field {
 		$this->field      = $field;
 		$this->field_id   = sanitize_text_field( $field_id );
 		$this->field_type = $this->field['args']['field_type'];
+		$this->field_args = $this->field['args'];
 
 		/* Set the legacy mode */
 		$this->legacy = ! empty( $field['args']['callback'] ) ? true : false;
@@ -621,10 +630,18 @@ class WPAS_Custom_Field {
 		 * - 1: if there was no old value and the new value is added
 		 * - 2: if the old value was updated with a new one
 		 * - 3: if the new value is empty and the old one deleted
+		 * - 4: the user doesn't have sufficient capability to edit this field
 		 *
 		 * @var int $result
 		 */
 		$result = 0;
+
+		/**
+		 * The first thing we do is make sure the current user has the required capability to save a new value for this custom field.
+		 */
+		if ( ! current_user_can( $this->field_args['capability'] ) ) {
+			return 4;
+		}
 
 		/**
 		 * Get the field ID for saving purpose.
