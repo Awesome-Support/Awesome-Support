@@ -1,13 +1,37 @@
 <?php
 $tests_dir = dirname( __FILE__ );
-$old_cwd = getcwd();
+$old_cwd   = getcwd();
+
 chdir( $tests_dir );
 
-for( $depth = 0; $depth <= 3; $depth++ ) {
-	foreach( glob( str_repeat( 'tests[_-]*/', $depth ) . 'test-*.php' ) as $test_file ) {
-		include_once $test_file;
-	}	
+function wpas_tests_load_recursively( $path ) {
+
+	foreach ( scandir( $path ) as $file ) {
+
+		if ( in_array( $file, array( '.', '..' ) ) ) {
+			continue;
+		}
+
+		$filepath = $path . DIRECTORY_SEPARATOR . $file;
+
+		if ( is_file( $filepath ) ) {
+			if ( 'test-' === substr( $file, 0, 5 ) ) {
+				include_once( $filepath );
+			}
+		}
+
+		elseif ( is_dir( $filepath ) ) {
+			wpas_tests_load_recursively( $filepath );
+		}
+
+	}
+
 }
+
+/**
+ * Load all test files.
+ */
+wpas_tests_load_recursively( $tests_dir );
 
 class all {
     public static function suite() {
