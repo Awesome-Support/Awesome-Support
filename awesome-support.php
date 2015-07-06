@@ -85,6 +85,7 @@ require_once( WPAS_PATH . 'includes/addons/class-mailgun-email-check.php' );
 /* Load custom fields dependencies */
 require_once( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
 require_once( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
+require_once( WPAS_PATH . 'includes/custom-fields/functions-custom-fields.php' );   // Submission form related functions
 
 /**
  * Call all classes and functions files that are shared
@@ -99,7 +100,6 @@ require_once( WPAS_PATH . 'includes/functions-deprecated.php' );      // Load de
 require_once( WPAS_PATH . 'includes/class-log-history.php' );         // Logging class
 require_once( WPAS_PATH . 'includes/class-email-notifications.php' ); // E-mail notification class
 require_once( WPAS_PATH . 'includes/functions-general.php' );         // Functions that are used both in back-end and front-end
-require_once( WPAS_PATH . 'includes/functions-custom-fields.php' );   // Submission form related functions
 require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
 require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
 require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products

@@ -69,3 +69,156 @@ function wpas_update_ticket_tag_terms_count( $terms, $taxonomy ) {
 	}
 
 }
+
+/**
+ * Return a custom field value.
+ *
+ * @param  string  $name    Option name
+ * @param  integer $post_id Post ID
+ * @param  mixed   $default Default value
+ *
+ * @return mixed)            Meta value
+ * @since  3.0.0
+ */
+function wpas_get_cf_value( $name, $post_id, $default = false ) {
+
+	$field = new WPAS_Custom_Field( $name );
+
+	return $field->get_field_value( $default, $post_id );
+}
+
+/**
+ * Echo a custom field value.
+ *
+ * This function is just a wrapper function for wpas_get_cf_value()
+ * that echoes the result instead of returning it.
+ *
+ * @param  string  $name    Option name
+ * @param  integer $post_id Post ID
+ * @param  mixed   $default Default value
+ *
+ * @return mixed)            Meta value
+ * @since  3.0.0
+ */
+function wpas_cf_value( $name, $post_id, $default = false ) {
+	echo wpas_get_cf_value( $name, $post_id, $default );
+}
+
+/**
+ * Add a new custom field.
+ *
+ * @since  3.0.0
+ *
+ * @param  string $name The ID of the custom field to add
+ * @param  array  $args Additional arguments for the custom field
+ *
+ * @return boolean        Returns true on success or false on failure
+ */
+function wpas_add_custom_field( $name, $args = array() ) {
+
+	global $wpas_cf;
+
+	if ( ! isset( $wpas_cf ) || ! class_exists( 'WPAS_Custom_Fields' ) ) {
+		return false;
+	}
+
+	return $wpas_cf->add_field( $name, $args );
+
+}
+
+/**
+ * Add a new custom taxonomy.
+ *
+ * @since  3.0.0
+ *
+ * @param  string $name The ID of the custom field to add
+ * @param  array  $args Additional arguments for the custom field
+ *
+ * @return boolean        Returns true on success or false on failure
+ */
+function wpas_add_custom_taxonomy( $name, $args = array() ) {
+
+	global $wpas_cf;
+
+	if ( ! isset( $wpas_cf ) || ! class_exists( 'WPAS_Custom_Fields' ) ) {
+		return false;
+	}
+
+	/* Force the custom fields type to be a taxonomy. */
+	$args['field_type']      = 'taxonomy';
+	$args['column_callback'] = 'wpas_show_taxonomy_column';
+
+	/* Add the taxonomy. */
+	$wpas_cf->add_field( $name, $args );
+
+	return true;
+
+}
+
+add_action( 'init', 'wpas_register_core_fields' );
+/**
+ * Register the cure custom fields.
+ *
+ * @since  3.0.0
+ * @return void
+ */
+function wpas_register_core_fields() {
+
+	global $wpas_cf;
+
+	if ( ! isset( $wpas_cf ) ) {
+		return;
+	}
+
+	$wpas_cf->add_field( 'assignee',   array( 'core' => true, 'show_column' => false, 'log' => true, 'title' => __( 'Support Staff', 'wpas' ) ) );
+	// $wpas_cf->add_field( 'ccs',        array( 'core' => true, 'show_column' => false, 'log' => true ) );
+	$wpas_cf->add_field( 'status',     array( 'core' => true, 'show_column' => true, 'log' => false, 'field_type' => false, 'column_callback' => 'wpas_cf_display_status', 'save_callback' => null ) );
+	$wpas_cf->add_field( 'ticket-tag', array(
+			'core'                  => true,
+			'show_column'           => true,
+			'log'                   => true,
+			'field_type'            => 'taxonomy',
+			'taxo_std'              => true,
+			'column_callback'       => 'wpas_cf_display_status',
+			'save_callback'         => null,
+			'label'                 => __( 'Tag', 'wpas' ),
+			'name'                  => __( 'Tag', 'wpas' ),
+			'label_plural'          => __( 'Tags', 'wpas' ),
+			'taxo_hierarchical'     => false,
+			'update_count_callback' => 'wpas_update_ticket_tag_terms_count'
+		)
+	);
+
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+
+	if ( isset( $options['support_products'] ) && true === boolval( $options['support_products'] ) ) {
+
+		$slug = defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : 'product';
+
+		/* Filter the taxonomy labels */
+		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
+				'label'        => __( 'Product', 'wpas' ),
+				'name'         => __( 'Product', 'wpas' ),
+				'label_plural' => __( 'Products', 'wpas' )
+			)
+		);
+
+		$wpas_cf->add_field( 'product', array(
+				'core'                  => false,
+				'show_column'           => true,
+				'log'                   => true,
+				'field_type'            => 'taxonomy',
+				'taxo_std'              => false,
+				'column_callback'       => 'wpas_show_taxonomy_column',
+				'label'                 => $labels['label'],
+				'name'                  => $labels['name'],
+				'label_plural'          => $labels['label_plural'],
+				'taxo_hierarchical'     => true,
+				'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+				'rewrite'               => array( 'slug' => $slug )
+			)
+		);
+
+	}
+
+}
