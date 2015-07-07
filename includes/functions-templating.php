@@ -544,63 +544,6 @@ function wpas_get_login_url() {
 }
 
 /**
- * Shows the message field.
- *
- * The function echoes the textarea where the user
- * may input the ticket description. The field can be
- * either a textarea or a WYSIWYG depending on the plugin settings.
- * The WYSIWYG editor uses TinyMCE with a minimal configuration.
- *
- * @since  3.0.0
- * @param  array  $editor_args Arguments used for TinyMCE
- * @return void
- */
-function wpas_get_message_textarea( $editor_args = array() ) {
-
-	/**
-	 * Check if the description field should use the WYSIWYG editor
-	 * 
-	 * @var string
-	 */
-	$textarea_class = ( true === ( $wysiwyg = boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ) ) ? 'wpas-wysiwyg' : 'wpas-textarea';
-
-	if ( true === $wysiwyg ) {
-
-		$editor_defaults = apply_filters( 'wpas_ticket_editor_args', array(
-			'media_buttons' => false,
-			'textarea_name' => 'wpas_message',
-			'textarea_rows' => 10,
-			'tabindex'      => 2,
-			'editor_class'  => wpas_get_field_class( 'wpas_message', $textarea_class, false ),
-			'quicktags'     => false,
-			'tinymce'       => array(
-				'toolbar1' => 'bold,italic,underline,strikethrough,hr,|,bullist,numlist,|,link,unlink',
-				'toolbar2' => ''
-			),
-		) );
-
-		?><div class="wpas-submit-ticket-wysiwyg"><?php
-			wp_editor( wpas_get_field_value( 'wpas_message' ), 'wpas-ticket-message', apply_filters( 'wpas_reply_wysiwyg_args', $editor_defaults ) );
-		?></div><?php
-
-	} else {
-
-		/**
-		 * Define if the body can be submitted empty or not.
-		 *
-		 * @since  3.0.0
-		 * @var boolean
-		 */
-		$can_submit_empty = apply_filters( 'wpas_can_message_be_empty', false );
-		?>
-		<div class="wpas-submit-ticket-wysiwyg">
-			<textarea <?php wpas_get_field_class( 'wpas_message', $textarea_class ); ?> id="wpas-ticket-message" name="wpas_message" placeholder="<?php echo apply_filters( 'wpas_form_field_placeholder_wpas_message', __( 'Describe your problem as accurately as possible', 'wpas' ) ); ?>" rows="10" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>><?php echo wpas_get_field_value( 'wpas_message' ); ?></textarea>
-		</div>
-	<?php }
-
-}
-
-/**
  * Get tickets list columns.
  *
  * Retrieve the columns to display on the list of tickets
