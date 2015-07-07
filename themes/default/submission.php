@@ -23,7 +23,6 @@ global $post;
 		do_action( 'wpas_submission_form_inside_before_subject' );
 
 		$subject = new WPAS_Custom_Field( 'title', array( 'name' => 'title', 'args' => array( 'required' => true, 'field_type' => 'text-field', 'label' => 'Subject' ) ) );
-
 		echo $subject->get_output();
 
 		/**
@@ -36,22 +35,10 @@ global $post;
 		 * @since  3.0.0
 		 */
 		do_action( 'wpas_submission_form_inside_after_subject' );
-		?>
 
-		<div class="wpas-form-group">
-			<label><?php _e( 'Description', 'wpas' ); ?></label>
-			<?php
-			/**
-			 * The wpas_get_message_textarea will generate the textarea
-			 * used to submit the ticket description. It will either generate
-			 * a simple textarea or a WYSIWYG editor based on the plugin settings.
-			 *
-			 * @since  3.0.0
-			 */
-			wpas_get_message_textarea(); ?>
-		</div>
+		$body = new WPAS_Custom_Field( 'message', array( 'name' => 'message', 'args' => array( 'required' => true, 'field_type' => 'wysiwyg', 'label' => 'Description' ) ) );
+		echo $body->get_output();
 
-		<?php
 		/**
 		 * The wpas_submission_form_inside_before hook has to be placed
 		 * right before the submission button.
