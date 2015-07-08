@@ -194,6 +194,28 @@ class WPAS_Custom_Field {
 	}
 
 	/**
+	 * Get the field title.
+	 *
+	 * Get the field title and sanitize it.
+	 *
+	 * @since 3.2.0
+	 * @return string Sanitized field title
+	 */
+	public function get_field_title() {
+
+		$title = '';
+
+		if ( isset( $this->field['args']['title'] ) ) {
+			$title = $this->field['args']['title'];
+		} elseif ( isset( $this->field['args']['label'] ) ) {
+			$title = $this->field['args']['label'];
+		}
+
+		return esc_attr( strip_tags( $title ) );
+
+	}
+
+	/**
 	 * Get the custom field value.
 	 *
 	 * @since 3.2.0
