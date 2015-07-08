@@ -627,7 +627,16 @@ class WPAS_Custom_Field {
 	 * @return mixed Sanitized value
 	 */
 	public function get_sanitized_value( $value ) {
-		return function_exists( $this->field['args']['sanitize'] ) ? call_user_func( $this->field['args']['sanitize'], $value ) : sanitize_text_field( $value );
+
+		$sanitize_function = function_exists( $this->field['args']['sanitize'] ) ? $this->field['args']['sanitize'] : 'sanitize_text_field';
+
+		if ( is_array( $value ) ) {
+			$sanitized_value = array_map( call_user_func( $sanitize_function, $value ), $value );
+		} else {
+			$sanitized_value = call_user_func( $sanitize_function, $value );
+		}
+
+		return $sanitized_value;
 	}
 
 	/**
