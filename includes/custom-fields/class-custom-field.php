@@ -264,11 +264,11 @@ class WPAS_Custom_Field {
 		if ( empty( $value ) ) {
 
 			if ( isset( $_GET[$this->get_field_id()] ) ) {
-				$value = filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING );
+				$value = is_array( $_GET[$this->get_field_id()] ) ? filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY ) : filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING );
 			}
 
 			if ( isset( $_SESSION['wpas_submission_form'] ) && is_array( $_SESSION['wpas_submission_form'] ) && array_key_exists( $this->get_field_id(), $_SESSION['wpas_submission_form'] ) ) {
-				$value = sanitize_text_field( $_SESSION['wpas_submission_form'][$this->get_field_id()] );
+				$value = $this->get_sanitized_value( $_SESSION['wpas_submission_form'][$this->get_field_id()] );
 			}
 
 		}
