@@ -244,7 +244,7 @@ class WPAS_Custom_Field {
 			$value = get_post_meta( $post_id, $this->get_field_id( true ), true );
 		}
 
-		return empty( $value ) ? $default : function_exists( $this->field['args']['sanitize'] ) ? call_user_func( $this->field['args']['sanitize'], $value ) : $value;
+		return $this->get_sanitized_value( $value );
 
 	}
 
