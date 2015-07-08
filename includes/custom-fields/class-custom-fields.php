@@ -687,6 +687,20 @@ class WPAS_Custom_Fields {
 			}
 
 			/**
+			 * Ignore fields in "no edit" mode.
+			 *
+			 * If we're on the admin and the custom field is set as
+			 * "no edit" (by restricting the capability), then the field
+			 * won't be passed in the $_POST, which as a result would have
+			 * the field deleted.
+			 *
+			 * If the no edit mode is enabled for the current field, we simply ignore it.
+			 */
+			if ( is_admin() && ! current_user_can( $field['args']['capability'] ) ) {
+				continue;
+			}
+
+			/**
 			 * Get the custom field object.
 			 */
 			$custom_field = new WPAS_Custom_Field( $field_id, $field );
