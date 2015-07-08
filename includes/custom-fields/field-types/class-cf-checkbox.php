@@ -19,7 +19,7 @@ class WPAS_CF_Checkbox extends WPAS_Custom_Field {
 			return '<!-- No options declared -->';
 		}
 
-		$output        = sprintf( '<legend class="wpas-label-checkbox">%s</legend>', $this->get_field_title() );
+		$output        = '<legend class="wpas-label-checkbox">{{label}}</legend>';
 		$name_attr     = $this->get_field_id() . '[]';
 		$this->options = $this->field_args['options'];
 		$values        = $this->populate();
