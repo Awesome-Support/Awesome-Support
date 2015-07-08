@@ -24,7 +24,7 @@ class WPAS_CF_Radio extends WPAS_Custom_Field {
 
 		foreach ( $this->options as $option_id => $option_label ) {
 			$selected = $option_id === $this->populate() ? 'checked' : '';
-			$output .= sprintf( "<div class='wpas-checkbox'><label><input type='radio' name='%s' value='%s' %s> %s</label></div>", $this->get_field_id(), $option_id, $selected, $option_label );
+			$output .= sprintf( "<div class='wpas-radio'><label><input type='radio' name='%s' value='%s' %s> %s</label></div>", $this->get_field_id(), $option_id, $selected, $option_label );
 		}
 
 		return $output;
