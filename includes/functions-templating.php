@@ -248,7 +248,7 @@ function wpas_get_theme_stylesheet_uri() {
 	}
 
 	/* Build the final URL to the resource */
-	$uri = trailingslashit( home_url() ) . $truncate;
+	$uri = trailingslashit( site_url() ) . $truncate;
 
 	return apply_filters( 'wpas_get_theme_stylesheet_uri', $uri ); 
 
