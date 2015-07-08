@@ -91,7 +91,7 @@ class WPAS_CF_Wysiwyg extends WPAS_Custom_Field {
 	 * doesn't have the capability to edit the field.
 	 */
 	public function display_no_edit() {
-		return sprintf( '<p id="%s-label">%s</p><p id="%s-value">%s</p>', $this->get_field_id(), $this->get_field_title(), $this->get_field_id(), $this->get_field_value() );
+		return sprintf( '<div class="wpas-cf-noedit-wrapper"><div id="%s-label" class="wpas-cf-label">%s</div><div id="%s-value" class="wpas-cf-value">%s</div></div>', $this->get_field_id(), $this->get_field_title(), $this->get_field_id(), $this->get_field_value() );
 	}
 
 }
