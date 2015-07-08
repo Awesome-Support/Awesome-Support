@@ -739,6 +739,11 @@ class WPAS_Custom_Fields {
 					$value = $term->name;
 				}
 
+				/* Make sure the value is readable */
+				if ( is_array( $value ) ) {
+					$value = implode( ', ', $value );
+				}
+
 				$tmp = array(
 					'action'   => '',
 					'label'    => wpas_get_field_title( $field ),
