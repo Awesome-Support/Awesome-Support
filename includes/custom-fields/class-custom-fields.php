@@ -739,9 +739,42 @@ class WPAS_Custom_Fields {
 					$value = $term->name;
 				}
 
-				/* Make sure the value is readable */
-				if ( is_array( $value ) ) {
-					$value = implode( ', ', $value );
+				/**
+				 * If the "options" parameter is set for this field, we assume it is because
+				 * the field type has multiple options. In order to make is more readable,
+				 * we try to replace the field value by the value label.
+				 *
+				 * This process is based on the fact that field types options always follow
+				 * the schema option_id => option_label.
+				 */
+				if ( isset( $field['args']['options'] ) && is_array( $field['args']['options'] ) ) {
+
+					/* Make sure arrays are still readable */
+					if ( is_array( $value ) ) {
+
+						$new_values = array();
+
+						foreach ( $value as $val ) {
+							if ( array_key_exists( $val, $field['args']['options'] ) ) {
+								array_push( $new_values, $field['args']['options'][ $val ] );
+							}
+						}
+
+						/* Only if all original values were replaced we update the $value var. */
+						if ( count( $new_values ) === count( $value ) ) {
+							$value = $new_values;
+						}
+
+						$value = implode( ', ', $value );
+
+					} else {
+
+						if ( array_key_exists( $value, $field['args']['options'] ) ) {
+							$value = $field['args']['options'][ $value ];
+						}
+
+					}
+
 				}
 
 				$tmp = array(
