@@ -244,7 +244,7 @@ class WPAS_Custom_Field {
 			$value = get_post_meta( $post_id, $this->get_field_id( true ), true );
 		}
 
-		return $this->get_sanitized_value( $value );
+		return ! empty( $value ) ? $this->get_sanitized_value( $value ) : $default;
 
 	}
 
@@ -631,7 +631,7 @@ class WPAS_Custom_Field {
 		$sanitize_function = function_exists( $this->field['args']['sanitize'] ) ? $this->field['args']['sanitize'] : 'sanitize_text_field';
 
 		if ( is_array( $value ) ) {
-			$sanitized_value = array_map( call_user_func( $sanitize_function, $value ), $value );
+			$sanitized_value = array_map( $sanitize_function, $value );
 		} else {
 			$sanitized_value = call_user_func( $sanitize_function, $value );
 		}
