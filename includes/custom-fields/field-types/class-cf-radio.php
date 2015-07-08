@@ -19,7 +19,7 @@ class WPAS_CF_Radio extends WPAS_Custom_Field {
 			return '<!-- No options declared -->';
 		}
 
-		$output = '';
+		$output        = sprintf( '<legend class="wpas-label-checkbox">%s</legend>', $this->get_field_title() );
 		$this->options = $this->field_args['options'];
 
 		foreach ( $this->options as $option_id => $option_label ) {
