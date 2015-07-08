@@ -32,7 +32,7 @@ class WPAS_CF_Text_Field extends WPAS_Custom_Field {
 	 * doesn't have the capability to edit the field.
 	 */
 	public function display_no_edit() {
-		return sprintf( '<p id="%s">%s</p>', $this->get_field_id(), $this->get_field_value() );
+		return sprintf( '<p id="%s-label">%s</p><p id="%s-value">%s</p>', $this->get_field_id(), $this->get_field_title(), $this->get_field_id(), $this->get_field_value() );
 	}
 
 }
