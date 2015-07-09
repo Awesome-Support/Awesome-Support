@@ -441,8 +441,8 @@ function wpas_get_reply_form( $args = array() ) {
 						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'wpas' ); ?>" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
 					<?php }
 				
-				echo $textarea_after; ?>
-			</<?php echo $container; ?>>
+				echo $args['textarea_after']; ?>
+			</<?php echo $args['container']; ?>>
 
 			<?php
 			/**
