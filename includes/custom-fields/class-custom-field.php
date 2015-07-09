@@ -653,7 +653,7 @@ class WPAS_Custom_Field {
 	 * @param mixed $value   The value to update the custom field with
 	 * @param int   $post_id ID of the post this custom field should be attached to
 	 *
-	 * @return bool Result
+	 * @return integer Result
 	 */
 	public function update_value( $value, $post_id ) {
 
