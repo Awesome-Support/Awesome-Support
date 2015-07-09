@@ -360,7 +360,7 @@ function wpas_get_reply_form( $args = array() ) {
 		'textarea_class'  => 'wpas-form-control wpas-wysiwyg',
 	);
 
-	extract( shortcode_atts( $defaults, $args ) );
+	$args = wp_parse_args( $args, $defaults );
 
 	/**
 	 * Filter the form class.
@@ -371,7 +371,7 @@ function wpas_get_reply_form( $args = array() ) {
 	 * @since  3.0.0
 	 * @var    string
 	 */
-	$form_class = apply_filters( 'wpas_frontend_reply_form_class', $form_class );
+	$form_class = apply_filters( 'wpas_frontend_reply_form_class', $args['form_class'] );
 
 	/**
 	 * wpas_ticket_details_reply_form_before hook
@@ -390,7 +390,7 @@ function wpas_get_reply_form( $args = array() ) {
 	 */
 	elseif( 'open' === $status && true === wpas_can_reply_ticket() ): ?>
 
-		<form id="<?php echo $form_id; ?>" class="<?php echo $form_class; ?>" method="post" action="<?php echo get_permalink( $post_id ); ?>" enctype="multipart/form-data">
+		<form id="<?php echo $args['form_id']; ?>" class="<?php echo $form_class; ?>" method="post" action="<?php echo get_permalink( $post_id ); ?>" enctype="multipart/form-data">
 
 			<?php
 			/**
@@ -400,8 +400,8 @@ function wpas_get_reply_form( $args = array() ) {
 			 */
 			do_action( 'wpas_ticket_details_reply_textarea_before' ); ?>
 
-			<<?php echo $container; ?> id="<?php echo $container_id; ?>" class="<?php echo $container_class; ?>">
-				<?php echo $textarea_before;
+			<<?php echo $args['container']; ?> id="<?php echo $args['container_id']; ?>" class="<?php echo $args['container_class']; ?>">
+				<?php echo $args['textarea_before'];
 
 					/**
 					 * Load the visual editor if enabled
@@ -413,7 +413,7 @@ function wpas_get_reply_form( $args = array() ) {
 							'textarea_name' => 'wpas_user_reply',
 							'textarea_rows' => 10,
 							'tabindex'      => 2,
-							'editor_class'  => wpas_get_field_class( 'wpas_reply', $textarea_class, false ),
+							'editor_class'  => $args['textarea_class'],
 							'quicktags'     => false,
 							'tinymce'       => array(
 								'toolbar1' => 'bold,italic,underline,strikethrough,hr,|,bullist,numlist,|,link,unlink',
