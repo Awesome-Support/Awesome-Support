@@ -58,6 +58,14 @@ class WPAS_Custom_Field {
 	protected $legacy;
 
 	/**
+	 * Name of the custom field type class.
+	 *
+	 * @since 3.2.0
+	 * @var $class_name string
+	 */
+	public $class_name;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param $field_id string The field ID
