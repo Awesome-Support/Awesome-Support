@@ -62,7 +62,7 @@ class WPAS_Test_Custom_Field extends WP_UnitTestCase {
 	}
 
 	public function test_get_class_name() {
-		$this->assertEquals( 'WPAS_CF_Text_Field', $this->text_field->get_class_name() );
+		$this->assertEquals( 'WPAS_CF_Text', $this->text_field->get_class_name() );
 	}
 
 	public function test_wpas_add_custom_field() {
