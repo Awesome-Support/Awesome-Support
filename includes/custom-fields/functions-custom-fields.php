@@ -77,7 +77,7 @@ function wpas_update_ticket_tag_terms_count( $terms, $taxonomy ) {
  * @param  integer $post_id Post ID
  * @param  mixed   $default Default value
  *
- * @return mixed)            Meta value
+ * @return mixed            Meta value
  * @since  3.0.0
  */
 function wpas_get_cf_value( $name, $post_id, $default = false ) {
@@ -97,7 +97,7 @@ function wpas_get_cf_value( $name, $post_id, $default = false ) {
  * @param  integer $post_id Post ID
  * @param  mixed   $default Default value
  *
- * @return mixed)            Meta value
+ * @return mixed            Meta value
  * @since  3.0.0
  */
 function wpas_cf_value( $name, $post_id, $default = false ) {
