@@ -142,13 +142,6 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 				return 0;
 			}
 
-			/**
-			 * Apply the get_term filters.
-			 *
-			 * @var object
-			 */
-			$term = get_term( $term, $this->field_id );
-
 			wp_set_object_terms( $post_id, (int) $value, $this->field_id, false );
 
 			return empty( $the_term ) ? 1 : 2;
