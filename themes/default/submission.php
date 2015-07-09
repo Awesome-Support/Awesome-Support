@@ -21,14 +21,10 @@ global $post;
 		 * @since  3.0.0
 		 */
 		do_action( 'wpas_submission_form_inside_before_subject' );
-		?>
 
-		<div <?php wpas_get_field_container_class( 'wpas_title' ); ?>>
-			<label><?php _e( 'Subject', 'wpas' ); ?></label>
-			<input name="wpas_title" type="text" <?php wpas_get_field_class( 'wpas_title' ); ?> value="<?php echo wpas_get_field_value( 'wpas_title', true ); ?>" placeholder="<?php echo apply_filters( 'wpas_form_field_placeholder_wpas_title', __( 'What is this about?', 'wpas' ) ); ?>" required>
-		</div>
+		$subject = new WPAS_Custom_Field( 'title', array( 'name' => 'title', 'args' => array( 'required' => true, 'field_type' => 'text', 'label' => 'Subject' ) ) );
+		echo $subject->get_output();
 
-		<?php
 		/**
 		 * The wpas_submission_form_inside_after_subject hook has to be placed
 		 * right after the subject field.
@@ -39,22 +35,10 @@ global $post;
 		 * @since  3.0.0
 		 */
 		do_action( 'wpas_submission_form_inside_after_subject' );
-		?>
 
-		<div <?php wpas_get_field_container_class( 'wpas_message' ); ?>>
-			<label><?php _e( 'Description', 'wpas' ); ?></label>
-			<?php
-			/**
-			 * The wpas_get_message_textarea will generate the textarea
-			 * used to submit the ticket description. It will either generate
-			 * a simple textarea or a WYSIWYG editor based on the plugin settings.
-			 *
-			 * @since  3.0.0
-			 */
-			wpas_get_message_textarea(); ?>
-		</div>
+		$body = new WPAS_Custom_Field( 'message', array( 'name' => 'message', 'args' => array( 'required' => true, 'field_type' => 'wysiwyg', 'label' => 'Description' ) ) );
+		echo $body->get_output();
 
-		<?php
 		/**
 		 * The wpas_submission_form_inside_before hook has to be placed
 		 * right before the submission button.

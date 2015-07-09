@@ -41,7 +41,7 @@ class WPAS_Notification {
 	public function __construct( $case = false, $message = false ) {
 
 		if ( empty( $message ) && isset( $_REQUEST['message'] ) ) {
-			$message = $_REQUEST['message'];
+			$message = (string) $_REQUEST['message'];
 		}
 
 		/**
@@ -53,9 +53,8 @@ class WPAS_Notification {
 			 * If the case is decode, it means the message has been passed base64 encoded.
 			 * We need to decode and sanitize it before displaying the notice.
 			 */
-			if ( 'decode' === $case && false !== $decoded = base64_decode( (string)$message ) ) {
-				$this->message = false !== $message ? $message : $_REQUEST['message'];
-				$this->message = esc_attr( json_decode( $decoded ) );
+			if ( 'decode' === $case && false !== $decoded = base64_decode( (string) $message ) ) {
+				$this->message = json_decode( $decoded );
 				$this->case    = 'failure'; // Set the case as a failure by default
 			} else {
 
@@ -167,7 +166,28 @@ class WPAS_Notification {
 	public function template() {
 
 		$case    = $this->case;
-		$message = wp_kses_post( htmlspecialchars_decode( $this->message ) );
+		$message = $this->message;
+
+		if ( is_array( $message ) ) {
+
+			if ( count( $message ) > 1 ) {
+
+				$contents = '<ul>';
+
+				foreach ( $message as $msg ) {
+					$contents .= "<li>$msg</li>";
+				}
+
+				$contents .= '</ul>';
+				$message = $contents;
+
+			} else {
+				$message = $message[0];
+			}
+
+		}
+
+		$message = wp_kses_post( htmlspecialchars_decode( $message ) );
 
 		switch( $case ):
 

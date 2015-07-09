@@ -95,13 +95,12 @@ function wpas_sc_submit_form() {
 					 * If you want to allow admins and agents to submit tickets through the
 					 * front-end, please use the filter wpas_agent_submit_front_end and set the value to (bool) true.
 					 */
-					if( is_user_logged_in() && current_user_can( 'edit_ticket' ) && ( false === apply_filters( 'wpas_agent_submit_front_end', false ) ) ):
+					if ( is_user_logged_in() && current_user_can( 'edit_ticket' ) && ( false === apply_filters( 'wpas_agent_submit_front_end', false ) ) ):
 
-					/**
-					 * Keep in mind that if you allow agents to open ticket through the front-end, actions
-					 * will not be tracked.
-					 */
-
+						/**
+						 * Keep in mind that if you allow agents to open ticket through the front-end, actions
+						 * will not be tracked.
+						 */
 						wpas_notification( 'info', sprintf( __( 'Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href="%s">click here to open a new ticket</a>.', 'wpas' ), add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'post-new.php' ) ) ) );
 
 					/**
@@ -117,38 +116,6 @@ function wpas_sc_submit_form() {
 						 * @since  3.0.0
 						 */
 						do_action( 'wpas_submission_form_before' );
-
-						if ( isset( $_GET['message'] ) ) {
-
-							/* This seems to be a predefined error message. */
-							if ( is_numeric( $_GET['message'] ) ) {
-								wpas_notification( false, $_GET['message'] );
-							}
-
-							/* Otherwise it should be a custom error message */
-							else {
-
-								$messages = json_decode( base64_decode( (string)$_GET['message'] ) );
-								$contents = '';
-
-								if ( is_array( $messages ) && count( $messages ) > 1 ) {
-
-									$contents = '<ul>';
-
-									foreach ( $messages as $message ) {
-										$contents .= "<li>$message</li>";
-									}
-
-									$contents .= '</ul>';
-								} elseif( is_array( $messages ) ) {
-									$contents = $messages[0];
-								}
-
-								wpas_notification( 'failure', $contents );
-
-							}
-
-						} 
 
 						wpas_get_template( 'submission' );
 

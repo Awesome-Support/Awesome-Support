@@ -360,7 +360,7 @@ function wpas_get_reply_form( $args = array() ) {
 		'textarea_class'  => 'wpas-form-control wpas-wysiwyg',
 	);
 
-	extract( shortcode_atts( $defaults, $args ) );
+	$args = wp_parse_args( $args, $defaults );
 
 	/**
 	 * Filter the form class.
@@ -371,7 +371,7 @@ function wpas_get_reply_form( $args = array() ) {
 	 * @since  3.0.0
 	 * @var    string
 	 */
-	$form_class = apply_filters( 'wpas_frontend_reply_form_class', $form_class );
+	$form_class = apply_filters( 'wpas_frontend_reply_form_class', $args['form_class'] );
 
 	/**
 	 * wpas_ticket_details_reply_form_before hook
@@ -390,7 +390,7 @@ function wpas_get_reply_form( $args = array() ) {
 	 */
 	elseif( 'open' === $status && true === wpas_can_reply_ticket() ): ?>
 
-		<form id="<?php echo $form_id; ?>" class="<?php echo $form_class; ?>" method="post" action="<?php echo get_permalink( $post_id ); ?>" enctype="multipart/form-data">
+		<form id="<?php echo $args['form_id']; ?>" class="<?php echo $form_class; ?>" method="post" action="<?php echo get_permalink( $post_id ); ?>" enctype="multipart/form-data">
 
 			<?php
 			/**
@@ -400,8 +400,8 @@ function wpas_get_reply_form( $args = array() ) {
 			 */
 			do_action( 'wpas_ticket_details_reply_textarea_before' ); ?>
 
-			<<?php echo $container; ?> id="<?php echo $container_id; ?>" class="<?php echo $container_class; ?>">
-				<?php echo $textarea_before;
+			<<?php echo $args['container']; ?> id="<?php echo $args['container_id']; ?>" class="<?php echo $args['container_class']; ?>">
+				<?php echo $args['textarea_before'];
 
 					/**
 					 * Load the visual editor if enabled
@@ -413,7 +413,7 @@ function wpas_get_reply_form( $args = array() ) {
 							'textarea_name' => 'wpas_user_reply',
 							'textarea_rows' => 10,
 							'tabindex'      => 2,
-							'editor_class'  => wpas_get_field_class( 'wpas_reply', $textarea_class, false ),
+							'editor_class'  => $args['textarea_class'],
 							'quicktags'     => false,
 							'tinymce'       => array(
 								'toolbar1' => 'bold,italic,underline,strikethrough,hr,|,bullist,numlist,|,link,unlink',
@@ -441,8 +441,8 @@ function wpas_get_reply_form( $args = array() ) {
 						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'wpas' ); ?>" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
 					<?php }
 				
-				echo $textarea_after; ?>
-			</<?php echo $container; ?>>
+				echo $args['textarea_after']; ?>
+			</<?php echo $args['container']; ?>>
 
 			<?php
 			/**
@@ -540,63 +540,6 @@ function wpas_get_login_url() {
 	global $post;
 
 	return get_permalink( $post->ID );
-
-}
-
-/**
- * Shows the message field.
- *
- * The function echoes the textarea where the user
- * may input the ticket description. The field can be
- * either a textarea or a WYSIWYG depending on the plugin settings.
- * The WYSIWYG editor uses TinyMCE with a minimal configuration.
- *
- * @since  3.0.0
- * @param  array  $editor_args Arguments used for TinyMCE
- * @return void
- */
-function wpas_get_message_textarea( $editor_args = array() ) {
-
-	/**
-	 * Check if the description field should use the WYSIWYG editor
-	 * 
-	 * @var string
-	 */
-	$textarea_class = ( true === ( $wysiwyg = boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ) ) ? 'wpas-wysiwyg' : 'wpas-textarea';
-
-	if ( true === $wysiwyg ) {
-
-		$editor_defaults = apply_filters( 'wpas_ticket_editor_args', array(
-			'media_buttons' => false,
-			'textarea_name' => 'wpas_message',
-			'textarea_rows' => 10,
-			'tabindex'      => 2,
-			'editor_class'  => wpas_get_field_class( 'wpas_message', $textarea_class, false ),
-			'quicktags'     => false,
-			'tinymce'       => array(
-				'toolbar1' => 'bold,italic,underline,strikethrough,hr,|,bullist,numlist,|,link,unlink',
-				'toolbar2' => ''
-			),
-		) );
-
-		?><div class="wpas-submit-ticket-wysiwyg"><?php
-			wp_editor( wpas_get_field_value( 'wpas_message' ), 'wpas-ticket-message', apply_filters( 'wpas_reply_wysiwyg_args', $editor_defaults ) );
-		?></div><?php
-
-	} else {
-
-		/**
-		 * Define if the body can be submitted empty or not.
-		 *
-		 * @since  3.0.0
-		 * @var boolean
-		 */
-		$can_submit_empty = apply_filters( 'wpas_can_message_be_empty', false );
-		?>
-		<div class="wpas-submit-ticket-wysiwyg">
-			<textarea <?php wpas_get_field_class( 'wpas_message', $textarea_class ); ?> id="wpas-ticket-message" name="wpas_message" placeholder="<?php echo apply_filters( 'wpas_form_field_placeholder_wpas_message', __( 'Describe your problem as accurately as possible', 'wpas' ) ); ?>" rows="10" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>><?php echo wpas_get_field_value( 'wpas_message' ); ?></textarea>
-		</div>
-	<?php }
 
 }
 
@@ -784,5 +727,61 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 		echo implode( $separator, $list );
 
 	}
+
+}
+
+/**
+ * Display the post status.
+ *
+ * Gets the ticket status and formats it according to the plugin settings.
+ *
+ * @since  3.0.0
+ *
+ * @param string   $name    Field / column name. This parameter is important as it is automatically passed by some
+ *                          filters
+ * @param  integer $post_id ID of the post being processed
+ *
+ * @return string           Formatted ticket status
+ */
+function wpas_cf_display_status( $name, $post_id ) {
+
+	$status = wpas_get_ticket_status( $post_id );
+
+	if ( 'closed' === $status ) {
+		$label = __( 'Closed', 'wpas' );
+		$color = wpas_get_option( "color_$status", '#dd3333' );
+		$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+	} else {
+
+		$post          = get_post( $post_id );
+		$post_status   = $post->post_status;
+		$custom_status = wpas_get_post_status();
+
+		if ( ! array_key_exists( $post_status, $custom_status ) ) {
+			$label = __( 'Open', 'wpas' );
+			$color = wpas_get_option( "color_$status", '#169baa' );
+			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+		} else {
+			$defaults = array(
+				'queued'     => '#1e73be',
+				'processing' => '#a01497',
+				'hold'       => '#b56629'
+			);
+			$label    = $custom_status[ $post_status ];
+			$color    = wpas_get_option( "color_$post_status", false );
+
+			if ( false === $color ) {
+				if ( isset( $defaults[ $post_status ] ) ) {
+					$color = $defaults[ $post_status ];
+				} else {
+					$color = '#169baa';
+				}
+			}
+
+			$tag = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+		}
+	}
+
+	echo $tag;
 
 }
