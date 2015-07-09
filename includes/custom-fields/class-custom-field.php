@@ -123,8 +123,6 @@ class WPAS_Custom_Field {
 			'label_plural'          => '',
 			'taxo_hierarchical'     => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
-			/* Deprecated */
-			// 'callback'              => '', // @deprecated 3.2.0
 		);
 
 		return $defaults;
