@@ -98,7 +98,7 @@ class WPAS_Custom_Fields {
 					break;
 
 				case 'text':
-					$arguments['field_type'] = 'text-field';
+					$arguments['field_type'] = 'text';
 					$arguments['callback'] = '';
 					break;
 

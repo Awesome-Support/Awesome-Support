@@ -101,7 +101,7 @@ class WPAS_Custom_Field {
 
 		/* Default arguments */
 		$defaults = array(
-			'field_type'            => 'text-field',          // Type of custom field to display
+			'field_type'            => 'text',          // Type of custom field to display
 			'core'                  => false,                 // Is this a custom fields that belongs to the plugin core
 			'required'              => false,                 // Is this field required for front-end submission
 			'log'                   => false,                 // Should the content updates of this field be logged in the system
@@ -322,7 +322,7 @@ class WPAS_Custom_Field {
 		 * If you're creating custom fields with version 3.2.0, you should
 		 * use the field_type argument instead.
 		 *
-		 * We need ot run this first because there will always be a fallback to text-field
+		 * We need ot run this first because there will always be a fallback to text
 		 * for the field_type argument.
 		 */
 		if ( ! empty( $callback ) && function_exists( $callback ) ) {

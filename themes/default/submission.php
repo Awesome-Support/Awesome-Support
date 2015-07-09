@@ -22,7 +22,7 @@ global $post;
 		 */
 		do_action( 'wpas_submission_form_inside_before_subject' );
 
-		$subject = new WPAS_Custom_Field( 'title', array( 'name' => 'title', 'args' => array( 'required' => true, 'field_type' => 'text-field', 'label' => 'Subject' ) ) );
+		$subject = new WPAS_Custom_Field( 'title', array( 'name' => 'title', 'args' => array( 'required' => true, 'field_type' => 'text', 'label' => 'Subject' ) ) );
 		echo $subject->get_output();
 
 		/**

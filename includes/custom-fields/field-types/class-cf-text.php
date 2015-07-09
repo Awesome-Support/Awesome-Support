@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WPAS_CF_Text_Field extends WPAS_Custom_Field {
+class WPAS_CF_Text extends WPAS_Custom_Field {
 
 	/**
 	 * Return the field markup for the front-end.

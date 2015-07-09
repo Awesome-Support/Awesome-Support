@@ -32,7 +32,7 @@ class WPAS_Test_Custom_Field extends WP_UnitTestCase {
 		 * Add a text field.
 		 */
 		wpas_add_custom_field( 'my_test_field', array(
-			'field_type'    => 'text-field',
+			'field_type'    => 'text',
 			'capability'    => 'create_ticket',
 			'sanitize'      => 'sanitize_text_field',
 			'title'         => 'Test Field',
