@@ -4,6 +4,7 @@ filter:
         - 'vendor/*'
         - '*/vendor/*'
         - 'languages/*'
+        - 'includes/functions-deprecated.php'
 
 before_commands:
     - 'composer install --dev --prefer-source'
