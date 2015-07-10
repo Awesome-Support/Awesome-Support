@@ -64,6 +64,7 @@ class Awesome_Support_Admin {
 			require_once( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
 			require_once( WPAS_PATH . 'includes/admin/class-admin-help.php' );
+			require_once( WPAS_PATH . 'includes/admin/upgrade/class-upgrade.php' );
 
 			if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
 				require_once( WPAS_PATH . 'includes/class-remote-notification-client.php' );
@@ -89,6 +90,9 @@ class Awesome_Support_Admin {
 			if ( isset( $_GET['wpas-do'] ) ) {
 				add_action( 'init', array( $this, 'custom_actions' ) );
 			}
+
+			/* Instantiate the upgrade class */
+			add_action( 'plugins_loaded', array( 'WPAS_Upgrade', 'get_instance' ), 11, 0 );
 
 			/* Instantiate secondary classes */
 			add_action( 'plugins_loaded',            array( 'WPAS_Tickets_List', 'get_instance' ), 11, 0 );
