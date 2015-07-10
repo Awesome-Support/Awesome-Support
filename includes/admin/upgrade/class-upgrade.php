@@ -45,9 +45,9 @@ class WPAS_Upgrade {
 
 	public function __construct() {
 
-		$this->db_verison      = get_option( 'wpas_version', '3.0.0' );
+		$this->db_version      = get_option( 'wpas_version', '3.0.0' );
 		$this->current_version = WPAS_VERSION;
-		$this->routine         = version_compare( $this->db_verison, $this->current_version, '<' ) ? 'upgrade' : 'downgrade';
+		$this->routine         = version_compare( $this->db_version, $this->current_version, '<' ) ? 'upgrade' : 'downgrade';
 
 		if ( $this->db_version !== $this->current_version ) {
 
@@ -99,7 +99,7 @@ class WPAS_Upgrade {
 	 */
 	protected function upgrade_from_to() {
 
-		$from          = str_replace( '.', '', $this->db_verison );
+		$from          = str_replace( '.', '', $this->db_version );
 		$to            = str_replace( '.', '', $this->current_version );
 		$function_name = "wpas_upgrade_{$from}_{$to}";
 
