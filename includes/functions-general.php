@@ -31,7 +31,7 @@ function wpas_get_option( $option, $default = false ) {
  */
 function wpas_update_option( $option, $value ) {
 
-	$options = $new = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
 
 	if ( ! array_key_exists( $option, $options ) ) {
 		return false;
