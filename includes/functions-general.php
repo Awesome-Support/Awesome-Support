@@ -20,6 +20,34 @@ function wpas_get_option( $option, $default = false ) {
 }
 
 /**
+ * Update a plugin option
+ *
+ * @since 3.2.0
+ *
+ * @param mixed $option The name of the option to update
+ * @param mixed $value  The new value for this option
+ *
+ * @return bool
+ */
+function wpas_update_option( $option, $value ) {
+
+	$options = $new = maybe_unserialize( get_option( 'wpas_options', array() ) );
+
+	if ( ! array_key_exists( $option, $options ) ) {
+		return false;
+	}
+
+	if ( $value === $options[ $option ] ) {
+		return false;
+	}
+
+	$options[ $option ] = $value;
+
+	return update_option( 'wpas_options', serialize( $options ) );
+
+}
+
+/**
  * Add a security nonce.
  *
  * The function adds a security nonce to URLs
