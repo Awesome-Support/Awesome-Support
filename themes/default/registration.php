@@ -12,7 +12,7 @@
 global $post, $wpas_notification;
 
 $submit        = get_permalink( wpas_get_option( 'ticket_list' ) );
-$registration  = boolval( wpas_get_option( 'allow_registrations', true ) ); // Make sure registrations are open
+$registration  = wpas_get_option( 'allow_registrations', 'allow' ); // Make sure registrations are open
 $redirect_to   = get_permalink( $post->ID );
 $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-register';
 ?>
@@ -25,7 +25,7 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 
 		<?php
 		/* Registrations are not allowed. */
-		if ( false === $registration ) {
+		if ( 'disallow' === $registration ) {
 			wpas_notification( 'failure', __( 'Registrations are currently not allowed.', 'wpas' ) );
 		}
 		?>
@@ -55,7 +55,7 @@ $wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-regist
 		<?php wpas_make_button( __( 'Log in' ), array( 'onsubmit' => __( 'Logging In...', 'wpas' ) ) ); ?>
 	</form>
 	<?php
-	if ( true === $registration ): ?> 
+	if ( 'allow' === $registration ): ?>
 
 		<form class="wpas-form" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
 			<h3><?php _e( 'Register' ); ?></h3>

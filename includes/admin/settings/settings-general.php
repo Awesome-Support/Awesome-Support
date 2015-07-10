@@ -33,9 +33,14 @@ function wpas_core_settings_general( $def ) {
 				array(
 					'name'    => __( 'Allow Registrations', 'wpas' ),
 					'id'      => 'allow_registrations',
-					'type'    => 'checkbox',
+					'type'    => 'radio',
 					'desc'    => sprintf( __( 'Allow users to register on the support. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress.', 'wpas' ),  "<strong>$registration_lbl</strong>" ),
-					'default' => true
+					'default' => 'allow',
+					'options' => array(
+						'allow'           => __( 'Allow registrations', 'wpas' ),
+						'disallow'        => __( 'Disallow registrations', 'wpas' ),
+						'disallow_silent' => __( 'Disallow registrations without notice (just show the login form)', 'wpas' ),
+					)
 				),
 				array(
 					'name'    => __( 'Replies Order', 'wpas' ),
