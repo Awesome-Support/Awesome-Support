@@ -22,7 +22,21 @@ global $post;
 		 */
 		do_action( 'wpas_submission_form_inside_before_subject' );
 
-		$subject = new WPAS_Custom_Field( 'title', array( 'name' => 'title', 'args' => array( 'required' => true, 'field_type' => 'text', 'label' => 'Subject' ) ) );
+		/**
+		 * Filter the subject field arguments
+		 *
+		 * @since 3.2.0
+		 */
+		$subject_args = apply_filters( 'wpas_subject_field_args', array(
+			'name' => 'title',
+			'args' => array(
+				'required'   => true,
+				'field_type' => 'text',
+				'label'      => 'Subject'
+			)
+		) );
+
+		$subject = new WPAS_Custom_Field( 'title', $subject_args );
 		echo $subject->get_output();
 
 		/**
@@ -36,7 +50,21 @@ global $post;
 		 */
 		do_action( 'wpas_submission_form_inside_after_subject' );
 
-		$body = new WPAS_Custom_Field( 'message', array( 'name' => 'message', 'args' => array( 'required' => true, 'field_type' => 'wysiwyg', 'label' => 'Description' ) ) );
+		/**
+		 * Filter the description field arguments
+		 *
+		 * @since 3.2.0
+		 */
+		$body_args = apply_filters( 'wpas_description_field_args', array(
+			'name' => 'message',
+			'args' => array(
+				'required'   => true,
+				'field_type' => 'wysiwyg',
+				'label'      => 'Description'
+			)
+		) );
+
+		$body = new WPAS_Custom_Field( 'message', $body_args );
 		echo $body->get_output();
 
 		/**
