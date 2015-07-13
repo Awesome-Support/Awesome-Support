@@ -303,7 +303,7 @@ class WPAS_Custom_Field {
 			$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), $this->get_field_id() );
 		}
 
-		return apply_filters( 'wpas_custom_field_wrapper', $default, $this->field );
+		return apply_filters( 'wpas_custom_field_wrapper_markup', $default, $this->field );
 
 	}
 
@@ -379,7 +379,7 @@ class WPAS_Custom_Field {
 			$error = true;
 		}
 
-		return false === $error ? $this->process_field_markup( apply_filters( 'wpas_cf_field_markup_' . $this->field_type, $field ) ) : $field;
+		return false === $error ? $this->process_field_markup( apply_filters( 'wpas_cf_field_markup', $field ) ) : $field;
 
 	}
 
