@@ -303,7 +303,7 @@ class WPAS_Custom_Field {
 			$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), $this->get_field_id() );
 		}
 
-		return apply_filters( 'wpas_cf_wrapper_markup', $default, $this->field );
+		return apply_filters( 'wpas_cf_wrapper_markup', $default, $this->field, $this->get_wrapper_class(), $this->get_field_id() );
 
 	}
 
