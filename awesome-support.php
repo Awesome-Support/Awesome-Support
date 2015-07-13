@@ -177,3 +177,8 @@ if ( ! session_id() && ! headers_sent() ) {
  * @var    $wpas_cf WPAS_Custom_Fields
  */
 $wpas_cf = new WPAS_Custom_Fields;
+
+/*----------------------------------------------------------------------------*
+ * Load theme's functions
+ *----------------------------------------------------------------------------*/
+wpas_get_template( 'functions' );
