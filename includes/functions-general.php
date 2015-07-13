@@ -269,7 +269,7 @@ function wpas_make_button( $label = null, $args = array() ) {
 	$defaults = array(
 		'type'     => 'button',
 		'link'     => '',
-		'class'    => wpas_get_option( 'buttons_class', 'wpas-btn wpas-btn-default' ),
+		'class'    => apply_filters( 'wpas_make_button_class', 'wpas-btn wpas-btn-default' ),
 		'name'     => 'submit',
 		'value'    => '',
 		'onsubmit' => ''
