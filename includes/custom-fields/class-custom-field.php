@@ -303,7 +303,7 @@ class WPAS_Custom_Field {
 			$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), $this->get_field_id() );
 		}
 
-		return apply_filters( 'wpas_custom_field_wrapper_markup', $default, $this->field );
+		return apply_filters( 'wpas_cf_wrapper_markup', $default, $this->field );
 
 	}
 
@@ -473,7 +473,7 @@ class WPAS_Custom_Field {
 		}
 
 		/* Filter the final list */
-		$classes = apply_filters( 'wpas_wrapper_class', $classes, $this->field );
+		$classes = apply_filters( 'wpas_cf_wrapper_class', $classes, $this->field );
 
 		/**
 		 * Possibly add the extra classes.
@@ -497,7 +497,7 @@ class WPAS_Custom_Field {
 			 *
 			 * @var $erase bool
 			 */
-			$erase = apply_filters( 'wpas_wrapper_class_force_erase_extra', false );
+			$erase = apply_filters( 'wpas_cf_wrapper_class_force_erase_extra', false );
 
 			if ( false === $erase ) {
 				$classes = array_merge( $classes, $class );
@@ -561,7 +561,7 @@ class WPAS_Custom_Field {
 			 *
 			 * @var $erase bool
 			 */
-			$erase = apply_filters( 'wpas_field_class_force_erase_extra', false );
+			$erase = apply_filters( 'wpas_cf_field_class_force_erase_extra', false );
 
 			if ( false === $erase ) {
 				$classes = array_merge( $classes, $class );
@@ -588,14 +588,14 @@ class WPAS_Custom_Field {
 		 *
 		 * @var $classes array
 		 */
-		$classes = apply_filters( 'wpas_field_description_class', array( 'backend'  => 'description', 'frontend' => 'wpas-help-block' ), $this->field );
+		$classes = apply_filters( 'wpas_cf_field_description_class', array( 'backend'  => 'description', 'frontend' => 'wpas-help-block' ), $this->field );
 
 		if ( isset( $this->field['args']['desc'] ) && ! empty( $this->field['args']['desc'] ) ) {
 			$class       = is_admin() ? $classes['backend'] : $classes['frontend'];
 			$description = sprintf( '<p class="%s">%s</p>', $class, wp_kses_post( $this->field['args']['desc'] ) );
 		}
 
-		return $description;
+		return apply_filters( 'wpas_cf_description_markup', $description );
 
 	}
 
@@ -609,9 +609,9 @@ class WPAS_Custom_Field {
 
 		$this->require_field_type_class();
 
-		$wrapper     = apply_filters( 'wpas_cf_wrapper_markup', $this->get_wrapper_markup(), $this->field );
+		$wrapper     = $this->get_wrapper_markup();
 		$field       = $this->get_field_markup();
-		$description = apply_filters( 'wpas_cf_description_markup', $this->get_field_description(), $this->field );
+		$description = $this->get_field_description();
 
 		if ( ! empty( $description ) ) {
 			$field .= $description;
