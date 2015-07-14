@@ -273,7 +273,7 @@ function wpas_ticket_header( $args = array() ) {
 		'table_class'     => 'wpas-table wpas-ticket-details-header',
 	);
 
-	extract( shortcode_atts( $default, $args ) );
+	$args = wp_parse_args( $args, $default );
 
 	$custom_fields = $wpas_cf->get_custom_fields();
 
@@ -308,9 +308,9 @@ function wpas_ticket_header( $args = array() ) {
 	$columns_callbacks = apply_filters( 'wpas_tickets_details_columns_callbacks', $columns_callbacks );
 	?>
 
-	<?php if ( !empty( $container ) ): ?><<?php echo $container; ?>><?php endif; ?>
+	<?php if ( ! empty( $args['container'] ) ): ?><<?php echo $args['container']; ?>><?php endif; ?>
 
-		<table id="<?php echo $table_id; ?>" class="<?php echo $table_class; ?>">
+		<table id="<?php echo $args['table_id']; ?>" class="<?php echo $args['table_class']; ?>">
 			<thead>
 				<tr>
 					<?php foreach ( $columns as $column => $label ): ?>
@@ -329,9 +329,7 @@ function wpas_ticket_header( $args = array() ) {
 			</tbody>
 		</table>
 
-	<?php if ( !empty( $container ) ): ?></<?php echo $container; ?>><?php endif; ?>
-
-	<?php
+	<?php if ( ! empty( $args['container'] ) ): ?></<?php echo $args['container']; ?>><?php endif;
 
 }
 
