@@ -299,7 +299,7 @@ function wpas_ticket_header( $args = array() ) {
 		/* Don't display fields that aren't specifically designed to */
 		if ( true === $field['args']['show_column'] ) {
 			$columns[$field['name']]           = !empty( $field['args']['title'] ) ? sanitize_text_field( $field['args']['title'] ) : wpas_get_title_from_id( $field['name'] );
-			$columns_callbacks[$field['name']] = ( 'taxonomy' === $field['args']['callback'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
+			$columns_callbacks[$field['name']] = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
 		}
 
 	}
