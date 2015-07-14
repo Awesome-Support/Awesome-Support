@@ -694,8 +694,11 @@ function wpas_get_offset_html5() {
  * and is necessary for non standard taxonomies (such as product).
  *
  * @since  3.1.3
+ *
  * @param  string $field    ID of the field to display
  * @param  integer $post_id ID of the current post
+ * @param string $separator Separator used to join the taxonomy values
+ *
  * @return void
  */
 function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
