@@ -192,7 +192,6 @@ class WPAS_Notification {
 	 */
 	public function template() {
 
-		$case    = $this->case;
 		$message = $this->message;
 
 		if ( is_array( $message ) ) {
