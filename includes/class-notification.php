@@ -116,12 +116,8 @@ class WPAS_Notification {
 		if ( is_null( $this->message ) || false === $this->case ) {
 			return false;
 		}
-
-		ob_start();
-		$this->template();
-		$notification = ob_get_clean();
 		
-		return $notification;
+		return $this->template();
 
 	}
 
@@ -161,11 +157,41 @@ class WPAS_Notification {
 	}
 
 	/**
+	 * Get the notification wrapper markup
+	 *
+	 * @since 3.2.0
+	 * @return string
+	 */
+	protected function get_wrapper() {
+		return apply_filters( 'wpas_notification_wrapper', sprintf( '<div class="%s">{{message}}</div>', $this->get_wrapper_class( $this->case ) ), $this->get_wrapper_class( $this->case ) );
+	}
+
+	/**
+	 * Get the notification wrapper class
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param string $case The type of notification
+	 *
+	 * @return array
+	 */
+	public function get_wrapper_class( $case ) {
+
+		$classes = apply_filters( 'wpas_notification_classes', array(
+			'success' => 'wpas-alert wpas-alert-success',
+			'failure' => 'wpas-alert wpas-alert-danger',
+			'info'    => 'wpas-alert wpas-alert-info',
+		) );
+
+		return array_key_exists( $case, $classes ) ? $classes[ $case ] : '';
+
+	}
+
+	/**
 	 * Available notification templates
 	 */
 	public function template() {
 
-		$case    = $this->case;
 		$message = $this->message;
 
 		if ( is_array( $message ) ) {
@@ -189,56 +215,7 @@ class WPAS_Notification {
 
 		$message = wp_kses_post( htmlspecialchars_decode( $message ) );
 
-		switch( $case ):
-
-			case 'success':
-
-				if( $message ) {
-
-					?>
-					<div class="wpas-alert wpas-alert-success">
-						<?php echo $message; ?>
-					</div>
-					<?php
-
-				}
-
-			break;
-
-			case 'failure':
-
-				if( $message ) {
-
-					?>
-					<div class="wpas-alert wpas-alert-danger">
-						<?php echo $message; ?>
-					</div>
-					<?php
-
-				}
-
-			break;
-
-			case 'info':
-
-				if( $message ) {
-
-					?>
-					<div class="wpas-alert wpas-alert-info">
-						<?php echo $message; ?>
-					</div>
-					<?php
-
-				}
-
-			break;
-
-		endswitch;
-
-		/**
-		 * wpas_notification_markup hook
-		 */
-		do_action( 'wpas_notification_markup', $case, $message );
+		return str_replace( '{{message}}', $message, $this->get_wrapper() );
 
 	}
 

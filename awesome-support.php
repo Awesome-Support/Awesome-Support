@@ -177,3 +177,17 @@ if ( ! session_id() && ! headers_sent() ) {
  * @var    $wpas_cf WPAS_Custom_Fields
  */
 $wpas_cf = new WPAS_Custom_Fields;
+
+/*----------------------------------------------------------------------------*
+ * Load theme's functions
+ *----------------------------------------------------------------------------*/
+add_action( 'init', 'wpas_load_theme_functions' );
+/**
+ * Load Awesome Support's theme functions if any
+ *
+ * @since 3.2.0
+ * @return void
+ */
+function wpas_load_theme_functions() {
+	wpas_get_template( 'functions' );
+}

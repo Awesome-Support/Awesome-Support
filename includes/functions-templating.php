@@ -273,7 +273,7 @@ function wpas_ticket_header( $args = array() ) {
 		'table_class'     => 'wpas-table wpas-ticket-details-header',
 	);
 
-	extract( shortcode_atts( $default, $args ) );
+	$args = wp_parse_args( $args, $default );
 
 	$custom_fields = $wpas_cf->get_custom_fields();
 
@@ -299,7 +299,7 @@ function wpas_ticket_header( $args = array() ) {
 		/* Don't display fields that aren't specifically designed to */
 		if ( true === $field['args']['show_column'] ) {
 			$columns[$field['name']]           = !empty( $field['args']['title'] ) ? sanitize_text_field( $field['args']['title'] ) : wpas_get_title_from_id( $field['name'] );
-			$columns_callbacks[$field['name']] = ( 'taxonomy' === $field['args']['callback'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
+			$columns_callbacks[$field['name']] = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
 		}
 
 	}
@@ -308,9 +308,9 @@ function wpas_ticket_header( $args = array() ) {
 	$columns_callbacks = apply_filters( 'wpas_tickets_details_columns_callbacks', $columns_callbacks );
 	?>
 
-	<?php if ( !empty( $container ) ): ?><<?php echo $container; ?>><?php endif; ?>
+	<?php if ( ! empty( $args['container'] ) ): ?><<?php echo $args['container']; ?>><?php endif; ?>
 
-		<table id="<?php echo $table_id; ?>" class="<?php echo $table_class; ?>">
+		<table id="<?php echo $args['table_id']; ?>" class="<?php echo $args['table_class']; ?>">
 			<thead>
 				<tr>
 					<?php foreach ( $columns as $column => $label ): ?>
@@ -329,9 +329,7 @@ function wpas_ticket_header( $args = array() ) {
 			</tbody>
 		</table>
 
-	<?php if ( !empty( $container ) ): ?></<?php echo $container; ?>><?php endif; ?>
-
-	<?php
+	<?php if ( ! empty( $args['container'] ) ): ?></<?php echo $args['container']; ?>><?php endif;
 
 }
 
@@ -696,8 +694,11 @@ function wpas_get_offset_html5() {
  * and is necessary for non standard taxonomies (such as product).
  *
  * @since  3.1.3
+ *
  * @param  string $field    ID of the field to display
  * @param  integer $post_id ID of the current post
+ * @param string $separator Separator used to join the taxonomy values
+ *
  * @return void
  */
 function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {

@@ -222,6 +222,22 @@ class WPAS_Custom_Field {
 	}
 
 	/**
+	 * Get the field label.
+	 *
+	 * @since 3.2.0
+	 * @return string The field label
+	 */
+	public function get_field_label() {
+
+		if ( isset( $this->field['args']['label'] ) && ! empty( $this->field['args']['label'] ) ) {
+			return esc_attr( strip_tags( $this->field['args']['label'] ) );
+		} else {
+			return $this->get_field_title();
+		}
+
+	}
+
+	/**
 	 * Get the custom field value.
 	 *
 	 * @since 3.2.0
@@ -434,7 +450,7 @@ class WPAS_Custom_Field {
 
 		$field = str_replace( '{{atts}}', implode( ' ', $atts ), $field );
 		$field = str_replace( '{{label_atts}}', implode( ' ', $label_atts ), $field );
-		$field = str_replace( '{{label}}', $this->field['args']['label'], $field );
+		$field = str_replace( '{{label}}', $this->get_field_label(), $field );
 
 		return apply_filters( 'wpas_cf_field_markup_processed', $field, $this->field );
 
