@@ -681,7 +681,7 @@ class Awesome_Support {
 		$object = array(
 			'ajaxurl'       => admin_url( 'admin-ajax.php' ),
 			'emailCheck'    => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
-			'fileUploadMax' => (int) get_option( 'attachments_max' ),
+			'fileUploadMax' => (int) wpas_get_option( 'attachments_max' ),
 		);
 
 		return $object;
