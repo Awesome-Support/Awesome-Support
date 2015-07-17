@@ -681,10 +681,10 @@ class Awesome_Support {
 		$upload_max = (int) wpas_get_option( 'attachments_max' );
 
 		$object = array(
-			'ajaxurl'         => admin_url( 'admin-ajax.php' ),
-			'emailCheck'      => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
-			'fileUploadMax'   => $upload_max,
-			'fileUploadError' => __( sprintf( 'You can only upload a maximum of %d files', $upload_max ), 'wpas' ),
+			'ajaxurl'            => admin_url( 'admin-ajax.php' ),
+			'emailCheck'         => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
+			'fileUploadMax'      => $upload_max,
+			'fileUploadMaxError' => __( sprintf( 'You can only upload a maximum of %d files', $upload_max ), 'wpas' ),
 		);
 
 		return $object;
