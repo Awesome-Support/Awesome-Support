@@ -101,7 +101,7 @@
 				event.preventDefault();
 				if (parseInt($fileUpload.get(0).files.length) > parseInt(wpas.fileUploadMax, 10)) {
 					// Warn the user
-					alert('You can only upload a maximum of ' + wpas.fileUploadMax + ' files');
+					alert(wpas.fileUploadMaxError);
 					// Clear the file input
 					$fileUpload.wrap('<form>').parent('form').trigger('reset');
 					$fileUpload.unwrap();
