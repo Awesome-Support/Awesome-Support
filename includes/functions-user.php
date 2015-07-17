@@ -39,6 +39,27 @@ function wpas_register_account( $data = false ) {
 	);
 
 	/**
+	 * Give a chance to third-parties to add new checks to the account registration process
+	 *
+	 * @since 3.2.0
+	 * @var bool|WP_Error
+	 */
+	$errors = apply_filters( 'wpas_register_account_errors', false, $first_name, $last_name, $email );
+
+	if ( false !== $errors ) {
+
+		$notice = implode( '\n\r', $errors->get_error_messages() );
+
+		wp_redirect( add_query_arg( array(
+			'message' => wpas_create_notification( $notice ),
+			get_permalink( $post->ID )
+		) ) );
+
+		exit;
+
+	}
+
+	/**
 	 * wpas_pre_register_account hook
 	 *
 	 * This hook is triggered all the time
@@ -198,6 +219,20 @@ function wpas_try_login() {
 	 * Try to log the user if credentials are submitted.
 	 */
 	if ( isset( $_POST['log'] ) ) {
+
+		/**
+		 * Give a chacnge to third-parties to add new checks to the login process
+		 *
+		 * @since 3.2.0
+		 * @var bool|WP_Error
+		 */
+		$login = apply_filters( 'wpas_try_login', false );
+
+		if ( is_wp_error( $login ) ) {
+			$error = $login->get_error_message();
+			wp_redirect( add_query_arg( array( 'message' => urlencode( base64_encode( json_encode( $error ) ) ) ), get_permalink( $post->ID ) ) );
+			exit;
+		}
 
 		$login = wp_signon();
 
