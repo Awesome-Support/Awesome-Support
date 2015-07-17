@@ -317,13 +317,20 @@ class WPAS_File_Upload {
 
 		$filetypes = $this->get_allowed_filetypes();
 		$filetypes = explode( ',', $filetypes );
-		foreach ( $filetypes as $key => $type ) { $filetypes[$key] = "<code>.$type</code>"; }
+		$accept    = array();
+
+		foreach ( $filetypes as $key => $type ) {
+			$filetypes[ $key ] = "<code>.$type</code>";
+			array_push( $accept, ".$type" );
+		}
+
 		$filetypes = implode( ', ', $filetypes );
+		$accept    = implode( ',', $accept );
 		?>
 
 		<div class="wpas-form-group wpas-attachment-container">
 			<label for="wpas-file-upload"><?php _e( 'Attachments', 'wpas' ); ?></label>
-			<input type="file" name="<?php echo $this->index; ?>[]" id="wpas-file-upload" class="wpas-form-control" multiple>
+			<input type="file" name="<?php echo $this->index; ?>[]" id="wpas-file-upload" class="wpas-form-control" accept="<?php echo $accept; ?>" multiple>
 			<p class="wpas-help-block"><?php printf( __( ' You can upload up to %s files of the following types: %s', 'wpas' ), wpas_get_option( 'attachments_max' ), apply_filters('wpas_attachments_filetypes_display', $filetypes ) ); ?></p>
 		</div>
 
