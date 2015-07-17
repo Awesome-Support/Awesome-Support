@@ -38,7 +38,7 @@ function wpas_single_ticket( $content ) {
 	}
 
 	/* Only apply this on the ticket single. */
-	if ( $slug !== $post->post_type ) {
+	if ( $post && $slug !== $post->post_type ) {
 		return $content;
 	}
 
