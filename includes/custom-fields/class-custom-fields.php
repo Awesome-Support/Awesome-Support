@@ -922,7 +922,7 @@ class WPAS_Custom_Fields {
 
 					/* Add the error message for this field. */
 					if ( ! is_object( $result ) ) {
-						$result = new WP_Error( 'required_field_missing', sprintf( __( 'The field %s is required.', 'wpas' ), "<code>$title</code>", array( 'errors' => $field_name ) ) );
+						$result = new WP_Error( 'required_field_missing', sprintf( __( 'The field %s is required.', 'wpas' ), "<a href='#$field_name'><code>$title</code></a>", array( 'errors' => $field_name ) ) );
 					} else {
 						$result->add( 'required_field_missing', sprintf( __( 'The field %s is required.', 'wpas' ), "<code>$title</code>", array( 'errors' => $field_name ) ) );
 					}
