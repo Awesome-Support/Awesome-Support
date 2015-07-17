@@ -71,8 +71,6 @@ if ( false === $items ) {
 			// wpas_debug_display( $items );
 			foreach ( $items as $key => $item ):
 
-				$content = wp_trim_words( $item->info->content, $num_words = 70, $more = '…' );
-
 				/* Get the item price */
 				$price = false;
 
@@ -95,7 +93,7 @@ if ( false === $items ) {
 					<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
 						<div class="inside">
 							<h3><?php echo esc_attr( $item->info->title ); ?> <small class="wpas-addon-item-pricing">from <?php if ( false !== $price ): ?><strong>$<?php echo $price; ?></strong><?php endif; ?></small></h3>
-							<p><?php if ( !empty( $content ) ): echo wpautop( $content ); endif; ?></p>
+							<p><?php if ( !empty( $item->info->excerpt ) ): echo wpautop( $item->info->excerpt ); endif; ?></p>
 							<div class="wpas-btn-group">
 								<span class="button-secondary"><?php if ( false !== $price ): ?>$<?php echo $price; ?><?php endif; ?></span><a class="button-primary" href="<?php echo esc_url( $item->info->link ); ?>&amp;utm_source=plugin&amp;utm_medium=addon_page&amp;utm_campaign=promote_addons" target="_blank">Details and Buy</a>
 							</div>
