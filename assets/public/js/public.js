@@ -90,6 +90,25 @@
 			});
 		}
 
+		/*
+		Limit maximum items on a multiple input
+		http://stackoverflow.com/a/10105631
+		http://stackoverflow.com/a/13351234
+		 */
+		if (typeof wpas !== 'undefined' && wpas.fileUploadMax) {
+			var $fileUpload = $('#wpas-file-upload');
+			$fileUpload.on('change', function (event) {
+				event.preventDefault();
+				if (parseInt($fileUpload.get(0).files.length) > parseInt(wpas.fileUploadMax, 10)) {
+					// Warn the user
+					alert('You can only upload a maximum of ' + wpas.fileUploadMax + ' files');
+					// Clear the file input
+					$fileUpload.wrap('<form>').parent('form').trigger('reset');
+					$fileUpload.unwrap();
+				}
+			});
+		}
+
 	});
 
 }(jQuery));
