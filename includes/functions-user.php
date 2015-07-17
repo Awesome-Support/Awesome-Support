@@ -413,6 +413,28 @@ function wpas_get_users( $args = array() ) {
 
 }
 
+add_action( 'user_register',  'wpas_clear_get_users_cache' );
+add_action( 'delete_user',    'wpas_clear_get_users_cache' );
+add_action( 'profile_update', 'wpas_clear_get_users_cache' );
+/**
+ * Clear all the users lists transients
+ *
+ * If a new admin / agent is added, deleted or edited while the users list transient
+ * is still valid then the user won't appear / disappear from the users lists
+ * until the transient expires. In order to avoid this issue we clear the transients
+ * when one of the above actions is executed.
+ *
+ * @since 3.2.0
+ * @return void
+ */
+function wpas_clear_get_users_cache() {
+
+	global $wpdb;
+
+	$wpdb->get_results( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE '%s'", '_transient_wpas_list_users_%' ) );
+
+}
+
 /**
  * List users.
  *
