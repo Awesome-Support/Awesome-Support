@@ -612,7 +612,8 @@ class WPAS_Email_Notification {
 			'body'            => $body,
 			'headers'         => $headers,
 			'attachments'     => ''
-			)
+			),
+			$case
 		);
 
 		$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'] );
