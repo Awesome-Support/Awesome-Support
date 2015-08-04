@@ -589,33 +589,35 @@ function wpas_get_settings_page_url( $tab = '' ) {
 
 }
 
-/**
- * Shuffle an associative array.
- *
- * @param array $list The array to shuffle
- *
- * @return array Shuffled array
- *
- * @link  http://php.net/manual/en/function.shuffle.php#99624
- * @since 3.1.10
- */
-function shuffle_assoc( $list ) {
+if ( ! function_exists( 'shuffle_assoc' ) ) {
+	/**
+	 * Shuffle an associative array.
+	 *
+	 * @param array $list The array to shuffle
+	 *
+	 * @return array Shuffled array
+	 *
+	 * @link  http://php.net/manual/en/function.shuffle.php#99624
+	 * @since 3.1.10
+	 */
+	function shuffle_assoc( $list ) {
 
-	if ( ! is_array( $list ) ) {
-		return $list;
+		if ( ! is_array( $list ) ) {
+			return $list;
+		}
+
+		$keys   = array_keys( $list );
+		$random = array();
+
+		shuffle( $keys );
+
+		foreach ( $keys as $key ) {
+			$random[ $key ] = $list[ $key ];
+		}
+
+		return $random;
+
 	}
-
-	$keys   = array_keys( $list );
-	$random = array();
-
-	shuffle( $keys );
-
-	foreach ( $keys as $key ) {
-		$random[ $key ] = $list[ $key ];
-	}
-
-	return $random;
-
 }
 
 if ( ! function_exists( 'wpas_get_admin_path_from_url' ) ) {
