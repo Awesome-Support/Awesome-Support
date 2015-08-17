@@ -690,7 +690,7 @@ class Awesome_Support {
 			'fileUploadMaxError'     => __( sprintf( 'You can only upload a maximum of %d files', $upload_max_files ), 'wpas' ),
 			'fileUploadMaxSizeError' => array(
 				__( 'The following file(s) are too big to be uploaded:', 'wpas' ),
-				sprintf( __( 'The maximum file size allowed for one file is %d Mb', 'wpas' ), $upload_max_size )
+				sprintf( __( 'The maximum file size allowed for one file is %d MB', 'wpas' ), $upload_max_size )
 			),
 		);
 

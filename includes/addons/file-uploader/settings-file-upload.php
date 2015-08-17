@@ -31,7 +31,7 @@ function wpas_addon_settings_file_upload( $def ) {
 					'id'      => 'filesize_max',
 					'type'    => 'text',
 					'default' => 2,
-					'desc'    => sprintf( __( 'What is the maximum size allowed for one file (in <code>Mb</code>)? Your server allows up to %s', 'wpas' ), ini_get('upload_max_filesize') )
+					'desc'    => sprintf( __( 'What is the maximum size allowed for one file (in <code>MB</code>)? Your server allows up to %s', 'wpas' ), ini_get('upload_max_filesize') )
 				),
 				array(
 					'name'    => __( 'Allowed Files Types', 'wpas' ),
