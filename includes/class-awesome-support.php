@@ -32,6 +32,7 @@ class Awesome_Support {
 
 		/* Ajax actions */
 		add_action( 'wp_ajax_nopriv_email_validation', array( $this, 'mailgun_check' ) );
+		add_filter( 'wp_link_query_args',              array( $this, 'remove_tinymce_links_internal' ),   10, 1 );
 
 		/**
 		 * Load the WP Editor Ajax class.
@@ -984,6 +985,32 @@ class Awesome_Support {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Filter the link query arguments to remove completely internal links from the list.
+	 *
+	 * @since 3.2.0
+	 *
+	 * @param array $query An array of WP_Query arguments.
+	 *
+	 * @return array $query
+	 */
+	public function remove_tinymce_links_internal( $query ) {
+
+		/**
+		 * Getting the post ID this way is quite dirty but it seems to be the only way
+		 * as we are in an Ajax query and the only given parameter is the $query
+		 */
+		$url     = wp_get_referer();
+		$post_id = url_to_postid( $url );
+
+		if ( $post_id === wpas_get_option( 'ticket_submit' ) ) {
+			$query['post_type'] = array( 'none' );
+		}
+
+		return $query;
+
 	}
 
 }
