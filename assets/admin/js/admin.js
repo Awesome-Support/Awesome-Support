@@ -46,10 +46,16 @@
 			});
 		});
 
-		$('#wpas-system-status-generate').click(function (event) {
+		$('#wpas-system-status-generate-json').click(function (event) {
 			/* Populate the textarea and select all its content */
 			/* http://stackoverflow.com/a/5797700 */
 			$('#wpas-system-status-output').html(JSON.stringify(tables)).fadeIn('fast').focus().select();
+		});
+
+		$('#wpas-system-status-generate-wporg').click(function (event) {
+			/* Populate the textarea and select all its content */
+			/* http://stackoverflow.com/a/5797700 */
+			$('#wpas-system-status-output').html('`' + JSON.stringify(tables) + '`').fadeIn('fast').focus().select();
 		});
 
 		////////////////////////////////

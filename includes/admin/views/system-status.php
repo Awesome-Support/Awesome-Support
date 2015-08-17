@@ -2,7 +2,8 @@
 
 <div class="wpas-system-status">
 	<textarea id="wpas-system-status-output" rows="10" style="display: none;"></textarea>
-	<button id="wpas-system-status-generate" class="button-secondary"><?php _e( 'Copy Report', 'wpas' ); ?></button>
+	<button id="wpas-system-status-generate-json" class="button-secondary"><?php _e( 'Copy Report', 'wpas' ); ?> - JSON</button>
+	<button id="wpas-system-status-generate-wporg" class="button-secondary"><?php _e( 'Copy Report', 'wpas' ); ?> - WordPress.org</button>
 </div>
 
 <table class="widefat wpas-system-status-table" id="wpas-system-status-wordpress">
