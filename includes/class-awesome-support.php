@@ -682,11 +682,15 @@ class Awesome_Support {
 		$upload_max_size  = (int) wpas_get_option( 'filesize_max' );
 
 		$object = array(
-			'ajaxurl'            => admin_url( 'admin-ajax.php' ),
-			'emailCheck'         => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
-			'fileUploadMax'      => $upload_max_files,
-			'fileUploadSize'     => $upload_max_size * 1048576, // We base our calculation on binary prefixes
-			'fileUploadMaxError' => __( sprintf( 'You can only upload a maximum of %d files', $upload_max_files ), 'wpas' ),
+			'ajaxurl'                => admin_url( 'admin-ajax.php' ),
+			'emailCheck'             => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
+			'fileUploadMax'          => $upload_max_files,
+			'fileUploadSize'         => $upload_max_size * 1048576, // We base our calculation on binary prefixes
+			'fileUploadMaxError'     => __( sprintf( 'You can only upload a maximum of %d files', $upload_max_files ), 'wpas' ),
+			'fileUploadMaxSizeError' => array(
+				__( 'The following file(s) are too big to be uploaded:', 'wpas' ),
+				sprintf( __( 'The maximum file size allowed for one file is %d Mb', 'wpas' ), $upload_max_size )
+			),
 		);
 
 		return $object;
