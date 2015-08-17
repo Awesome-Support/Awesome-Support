@@ -331,7 +331,7 @@ class WPAS_File_Upload {
 		<div class="wpas-form-group wpas-attachment-container">
 			<label for="wpas-file-upload"><?php _e( 'Attachments', 'wpas' ); ?></label>
 			<input type="file" name="<?php echo $this->index; ?>[]" id="wpas-file-upload" class="wpas-form-control" accept="<?php echo $accept; ?>" multiple>
-			<p class="wpas-help-block"><?php printf( __( ' You can upload up to %s files of the following types: %s', 'wpas' ), wpas_get_option( 'attachments_max' ), apply_filters('wpas_attachments_filetypes_display', $filetypes ) ); ?></p>
+			<p class="wpas-help-block"><?php printf( __( ' You can upload up to %d files (maximum %d Mo each) of the following types: %s', 'wpas' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters('wpas_attachments_filetypes_display', $filetypes ) ); ?></p>
 		</div>
 
 	<?php }
