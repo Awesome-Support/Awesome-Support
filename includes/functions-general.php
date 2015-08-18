@@ -169,8 +169,9 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 	global $post;
 
-	$plugin_post_types  = apply_filters( 'wpas_plugin_post_types', array( 'ticket' ) );
-	$plugin_admin_pages = apply_filters( 'wpas_plugin_admin_pages', array( 'wpas-status', 'wpas-addons' ) );
+	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket' ) );
+	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons' ) );
+	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array( wpas_get_option( 'ticket_list' ), wpas_get_option( 'ticket_submit' ) ) );
 
 	/* Check for plugin pages in the admin */
 	if ( is_admin() ) {
@@ -203,14 +204,22 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		global $post;
 
-		$pages = array( wpas_get_option( 'ticket_list' ), wpas_get_option( 'ticket_submit' ) );
-
 		if ( is_singular( 'ticket' ) ) {
 			return true;
 		}
 
-		if ( isset( $post ) && is_object( $post ) && in_array( $post->ID, $pages ) ) {
-			return true;
+		if ( isset( $post ) && is_object( $post ) && is_a( $post, 'WP_Post' ) ) {
+
+			// Check for post IDs
+			if ( in_array( $post->ID, $plugin_frontend_pages ) ) {
+				return true;
+			}
+
+			// Check for post types
+			if ( in_array( $post->post_type,$plugin_post_types  ) ) {
+				return true;
+			}
+
 		}
 
 		return false;
