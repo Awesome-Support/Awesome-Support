@@ -24,7 +24,7 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 		$value         = $this->populate();
 
 		foreach ( $this->options as $option_id => $option_label ) {
-			$selected = $option_id === $value ? 'selected' : '';
+			$selected = $option_id == $value ? 'selected' : '';
 			$output .= sprintf( "<option value='%s' %s>%s</option>", $option_id, $selected, $option_label );
 		}
 
