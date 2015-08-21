@@ -374,7 +374,7 @@ class WPAS_Custom_Field {
 					if ( ! current_user_can( $this->field['args']['capability'] ) && method_exists( $instance, 'display_no_edit' ) ) {
 						$field = $instance->display_no_edit();
 					} elseif ( current_user_can( $this->field['args']['capability'] ) && method_exists( $instance, 'display_admin' ) ) {
-						$field = $instance->display_admin();
+						$field = apply_filters( 'wpas_cf_display_admin_markup', $instance->display_admin(), $this->field, $this->populate() );
 					} else {
 						$field = $instance->display();
 					}
