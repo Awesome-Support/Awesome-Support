@@ -316,7 +316,7 @@ class WPAS_Custom_Field {
 			$instance = new $class_name( $this->field_id, $this->field );
 			$default  = $instance->wrapper();
 		} else {
-			$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), $this->get_field_id() );
+			$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), "{$this->get_field_id()}_wrapper" );
 		}
 
 		return apply_filters( 'wpas_cf_wrapper_markup', $default, $this->field, $this->get_wrapper_class(), $this->get_field_id() );
