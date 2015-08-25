@@ -150,7 +150,9 @@ function wpas_register_account( $data = false ) {
 		/* Delete the user information data from session. */
 		unset( $_SESSION['wpas_registration_form'] );
 
-		wp_new_user_notification( $user_id, $pwd );
+		if ( true === apply_filters( 'wpas_new_user_notification', true ) ) {
+			wp_new_user_notification( $user_id, $pwd );
+		}
 
 		if ( headers_sent() ) {
 			wp_redirect( add_query_arg( array(
