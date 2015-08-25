@@ -26,17 +26,10 @@ function wpas_register_account( $data = false ) {
 		$data = $_POST;
 	}
 
-	$email      = isset( $data['email'] ) && ! empty( $data['email'] ) ? sanitize_email( $data['email'] ) : false;
-	$first_name = isset( $data['first_name'] ) && ! empty( $data['first_name'] ) ? sanitize_text_field( $data['first_name'] ) : false;
-	$last_name  = isset( $data['last_name'] ) && ! empty( $data['last_name'] ) ? sanitize_text_field( $data['last_name'] ) : false;
-	$pwd        = isset( $data['pwd'] ) && ! empty( $data['pwd'] ) ? $data['pwd'] : false;
-
-	/* Save the user information in session to pre populate the form in case of error. */
-	$_SESSION['wpas_registration_form'] = array(
-		'first_name' => $first_name,
-		'last_name'  => $last_name,
-		'email'      => $email,
-	);
+	$email      = isset( $data['wpas_email'] ) && ! empty( $data['wpas_email'] ) ? sanitize_email( $data['wpas_email'] ) : false;
+	$first_name = isset( $data['wpas_first_name'] ) && ! empty( $data['wpas_first_name'] ) ? sanitize_text_field( $data['wpas_first_name'] ) : false;
+	$last_name  = isset( $data['wpas_last_name'] ) && ! empty( $data['wpas_last_name'] ) ? sanitize_text_field( $data['wpas_last_name'] ) : false;
+	$pwd        = isset( $data['wpas_pwd'] ) && ! empty( $data['wpas_pwd'] ) ? $data['wpas_pwd'] : false;
 
 	/**
 	 * Give a chance to third-parties to add new checks to the account registration process
@@ -182,30 +175,6 @@ function wpas_register_account( $data = false ) {
 }
 
 /**
- * Get temporary user data.
- *
- * If the user registration fails some of the user data is saved
- * (all except the password) and can be used to pre-populate the registration
- * form after the page reloads. This function returns the desired field value
- * if any.
- *
- * @since  3.0.0
- *
- * @param  string $field Name of the field to get the value for
- *
- * @return string        The sanitized field value if any, an empty string otherwise
- */
-function wpas_get_registration_field_value( $field ) {
-
-	if ( isset( $_SESSION ) && isset( $_SESSION['wpas_registration_form'][ $field ] ) ) {
-		return sanitize_text_field( $_SESSION['wpas_registration_form'][ $field ] );
-	} else {
-		return '';
-	}
-
-}
-
-/**
  * Try to log the user in.
  *
  * If credentials are passed through the POST data
@@ -218,10 +187,20 @@ function wpas_try_login() {
 	/**
 	 * Try to log the user if credentials are submitted.
 	 */
-	if ( isset( $_POST['log'] ) ) {
+	if ( isset( $_POST['wpas_log'] ) ) {
+
+		$credentials = array(
+			'user_login' => $_POST['wpas_log'],
+		);
+
+		if ( isset( $_POST['rememberme'] ) ) {
+			$credentials['remember'] = true;
+		}
+
+		$credentials['user_password'] = isset( $_POST['wpas_pwd'] ) ? $_POST['wpas_pwd'] : '';
 
 		/**
-		 * Give a chacnge to third-parties to add new checks to the login process
+		 * Give a chance to third-parties to add new checks to the login process
 		 *
 		 * @since 3.2.0
 		 * @var bool|WP_Error
@@ -234,7 +213,7 @@ function wpas_try_login() {
 			exit;
 		}
 
-		$login = wp_signon();
+		$login = wp_signon( $credentials );
 
 		if ( is_wp_error( $login ) ) {
 			$error = $login->get_error_message();

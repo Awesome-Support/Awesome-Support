@@ -61,8 +61,8 @@
 		Registration form: toggle password visibility
 		https://github.com/cloudfour/hideShowPassword
 		 */
-		$('input[name="pwdshow"]').change(function () {
-			$('#password').hideShowPassword($(this).prop('checked'));
+		$('input[name="wpas_pwdshow"]').change(function () {
+			$('#wpas_pwd').hideShowPassword($(this).prop('checked'));
 		});
 
 		/*
