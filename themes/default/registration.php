@@ -20,7 +20,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 <div class="wpas <?php echo $wrapper_class; ?>">
 	<?php do_action('wpas_before_login_form'); ?>
 
-	<form class="wpas-form" method="post" role="form" action="<?php echo wpas_get_login_url(); ?>">
+	<form class="wpas-form" id="wpas_form_login" method="post" role="form" action="<?php echo wpas_get_login_url(); ?>">
 		<h3><?php _e( 'Log in' ); ?></h3>
 
 		<?php
@@ -80,7 +80,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 	<?php
 	if ( 'allow' === $registration ): ?>
 
-		<form class="wpas-form" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
+		<form class="wpas-form" id="wpas_form_registration" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
 			<h3><?php _e( 'Register' ); ?></h3>
 
 			<?php
@@ -123,8 +123,8 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 
 			echo $email->get_output();
 
-			$pwd = new WPAS_Custom_Field( 'pwd', array(
-				'name' => 'pwd',
+			$pwd = new WPAS_Custom_Field( 'password', array(
+				'name' => 'password',
 				'args' => array(
 					'required'    => true,
 					'field_type'  => 'password',

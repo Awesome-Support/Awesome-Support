@@ -29,7 +29,7 @@ function wpas_register_account( $data = false ) {
 	$email      = isset( $data['wpas_email'] ) && ! empty( $data['wpas_email'] ) ? sanitize_email( $data['wpas_email'] ) : false;
 	$first_name = isset( $data['wpas_first_name'] ) && ! empty( $data['wpas_first_name'] ) ? sanitize_text_field( $data['wpas_first_name'] ) : false;
 	$last_name  = isset( $data['wpas_last_name'] ) && ! empty( $data['wpas_last_name'] ) ? sanitize_text_field( $data['wpas_last_name'] ) : false;
-	$pwd        = isset( $data['wpas_pwd'] ) && ! empty( $data['wpas_pwd'] ) ? $data['wpas_pwd'] : false;
+	$pwd        = isset( $data['wpas_password'] ) && ! empty( $data['wpas_password'] ) ? $data['wpas_password'] : false;
 
 	/**
 	 * Give a chance to third-parties to add new checks to the account registration process
