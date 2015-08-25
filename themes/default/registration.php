@@ -14,7 +14,7 @@ global $post, $wpas_notification;
 $submit        = get_permalink( wpas_get_option( 'ticket_list' ) );
 $registration  = wpas_get_option( 'allow_registrations', 'allow' ); // Make sure registrations are open
 $redirect_to   = get_permalink( $post->ID );
-$wrapper_class = true !== $registration ? 'wpas-login-only' : 'wpas-login-register';
+$wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-register';
 ?>
 
 <div class="wpas <?php echo $wrapper_class; ?>">
