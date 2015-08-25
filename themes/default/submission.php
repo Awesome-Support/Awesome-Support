@@ -32,7 +32,7 @@ global $post;
 			'args' => array(
 				'required'   => true,
 				'field_type' => 'text',
-				'label'      => 'Subject',
+				'label'      => __( 'Subject', 'wpas' ),
 				'sanitize'   => 'sanitize_text_field'
 			)
 		) );
@@ -61,7 +61,7 @@ global $post;
 			'args' => array(
 				'required'   => true,
 				'field_type' => 'wysiwyg',
-				'label'      => 'Description',
+				'label'      => __( 'Description', 'wpas' ),
 				'sanitize'   => 'sanitize_text_field'
 			)
 		) );
