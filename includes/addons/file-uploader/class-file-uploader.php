@@ -600,7 +600,8 @@ class WPAS_File_Upload {
 	public function redirect_error( $location ) {
 
 		$url      = remove_query_arg( 'message', $location );
-		$message  = wpas_create_notification( sprintf( __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'wpas' ), $this->error_message ) );
+		$error    = is_array( $this->error_message ) ? implode( ', ', $this->error_message ) : $this->error_message;
+		$message  = wpas_create_notification( sprintf( __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'wpas' ), $error ) );
 		$location = add_query_arg( array( 'message' => $message ), $url );
 
 		return $location;
@@ -687,32 +688,34 @@ class WPAS_File_Upload {
 	 */
 	public function individualize_files() {
 
-		if ( ! is_array( $_FILES[ $this->index ]['name'] ) ) {
+		$files_index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
+
+		if ( ! is_array( $_FILES[ $files_index ]['name'] ) ) {
 			return false;
 		}
 
-		foreach ( $_FILES[ $this->index ]['name'] as $id => $name ) {
-			$index                    = $this->index . '_' . $id;
+		foreach ( $_FILES[ $files_index ]['name'] as $id => $name ) {
+			$index                    = $files_index . '_' . $id;
 			$_FILES[ $index ]['name'] = $name;
 		}
 
-		foreach ( $_FILES[ $this->index ]['type'] as $id => $type ) {
-			$index                    = $this->index . '_' . $id;
+		foreach ( $_FILES[ $files_index ]['type'] as $id => $type ) {
+			$index                    = $files_index . '_' . $id;
 			$_FILES[ $index ]['type'] = $type;
 		}
 
-		foreach ( $_FILES[ $this->index ]['tmp_name'] as $id => $tmp_name ) {
-			$index                        = $this->index . '_' . $id;
+		foreach ( $_FILES[ $files_index ]['tmp_name'] as $id => $tmp_name ) {
+			$index                        = $files_index . '_' . $id;
 			$_FILES[ $index ]['tmp_name'] = $tmp_name;
 		}
 
-		foreach ( $_FILES[ $this->index ]['error'] as $id => $error ) {
-			$index                     = $this->index . '_' . $id;
+		foreach ( $_FILES[ $files_index ]['error'] as $id => $error ) {
+			$index                     = $files_index . '_' . $id;
 			$_FILES[ $index ]['error'] = $error;
 		}
 
-		foreach ( $_FILES[ $this->index ]['size'] as $id => $size ) {
-			$index                    = $this->index . '_' . $id;
+		foreach ( $_FILES[ $files_index ]['size'] as $id => $size ) {
+			$index                    = $files_index . '_' . $id;
 			$_FILES[ $index ]['size'] = $size;
 		}
 
