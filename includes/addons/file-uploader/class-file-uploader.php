@@ -26,7 +26,7 @@ class WPAS_File_Upload {
 
 	protected $post_id = null;
 	protected $parent_id = null;
-	protected $index = 'wpas_files';
+	protected $index = 'files';
 
 	/**
 	 * Store the potential error messages.
@@ -326,13 +326,30 @@ class WPAS_File_Upload {
 
 		$filetypes = implode( ', ', $filetypes );
 		$accept    = implode( ',', $accept );
+
+		/**
+		 * Output the upload field using a custom field
+		 */
+		$attachments_args = apply_filters( 'wpas_ticket_attachments_field_args', array(
+			'name' => $this->index,
+			'args' => array(
+				'required'   => false,
+				'field_type' => 'upload',
+				'multiple'   => true,
+				'label'      => __( 'Attachments', 'wpas' ),
+				'desc'       => sprintf( __( ' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'wpas' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) )
+			)
+		) );
+
+		$attachments = new WPAS_Custom_Field( $this->index, $attachments_args );
+		echo $attachments->get_output();
 		?>
 
-		<div class="wpas-form-group wpas-attachment-container">
-			<label for="wpas-file-upload"><?php _e( 'Attachments', 'wpas' ); ?></label>
-			<input type="file" name="<?php echo $this->index; ?>[]" id="wpas-file-upload" class="wpas-form-control" accept="<?php echo $accept; ?>" multiple>
-			<p class="wpas-help-block"><?php printf( __( ' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'wpas' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters('wpas_attachments_filetypes_display', $filetypes ) ); ?></p>
-		</div>
+<!--		<div class="wpas-form-group wpas-attachment-container">-->
+<!--			<label for="wpas-file-upload">--><?php //_e( 'Attachments', 'wpas' ); ?><!--</label>-->
+<!--			<input type="file" name="--><?php //echo $this->index; ?><!--[]" id="wpas-file-upload" class="wpas-form-control" accept="--><?php //echo $accept; ?><!--" multiple>-->
+<!--			<p class="wpas-help-block">--><?php //printf( __( ' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'wpas' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters('wpas_attachments_filetypes_display', $filetypes ) ); ?><!--</p>-->
+<!--		</div>-->
 
 	<?php }
 
@@ -523,30 +540,32 @@ class WPAS_File_Upload {
 	 */
 	public function process_upload() {
 
-		/* We have a submission with a $_FILES var set */
-		if ( $_POST && $_FILES && isset( $_FILES[ $this->index ] ) ) {
+		$index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
 
-			if ( empty( $_FILES[ $this->index ]['name'][0] ) ) {
+		/* We have a submission with a $_FILES var set */
+		if ( $_POST && $_FILES && isset( $_FILES[ $index ] ) ) {
+
+			if ( empty( $_FILES[ $index ]['name'][0] ) ) {
 				return false;
 			}
 
 			$max = wpas_get_option( 'attachments_max' );
-			$id  = false; // Declare a default value ofr $id
+			$id  = false; // Declare a default value for $id
 
 			if ( $this->individualize_files() ) {
 
-				for ( $i = 0; isset( $_FILES["{$this->index}_$i"] ); ++ $i ) {
+				for ( $i = 0; isset( $_FILES["{$index}_$i"] ); ++ $i ) {
 
 					/* Limit the number of uploaded files */
 					if ( $i + 1 > $max ) {
 						break;
 					}
 
-					$id = media_handle_upload( "{$this->index}_$i", $this->post_id );
+					$id = media_handle_upload( "{$index}_$i", $this->post_id );
 				}
 
 			} else {
-				$id = media_handle_upload( $this->index, $this->post_id );
+				$id = media_handle_upload( $index, $this->post_id );
 			}
 
 			if ( is_wp_error( $id ) ) {
