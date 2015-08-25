@@ -311,15 +311,16 @@ class WPAS_Custom_Field {
 	protected function get_wrapper_markup() {
 
 		$class_name = $this->get_class_name();
+		$wrapper_id = "{$this->get_field_id()}_wrapper";
 
 		if ( class_exists( $class_name ) && method_exists( $class_name, 'wrapper' ) ) {
 			$instance = new $class_name( $this->field_id, $this->field );
 			$default  = $instance->wrapper();
 		} else {
-			$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), $this->get_field_id() );
+			$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), $wrapper_id );
 		}
 
-		return apply_filters( 'wpas_cf_wrapper_markup', $default, $this->field, $this->get_wrapper_class(), $this->get_field_id() );
+		return apply_filters( 'wpas_cf_wrapper_markup', $default, $this->field, $this->get_wrapper_class(), $wrapper_id );
 
 	}
 
@@ -448,7 +449,7 @@ class WPAS_Custom_Field {
 			array_push( $atts, 'required' );
 		}
 
-		$field = str_replace( '{{atts}}', implode( ' ', $atts ), $field );
+		$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field ) ), $field );
 		$field = str_replace( '{{label_atts}}', implode( ' ', $label_atts ), $field );
 		$field = str_replace( '{{label}}', $this->get_field_label(), $field );
 
