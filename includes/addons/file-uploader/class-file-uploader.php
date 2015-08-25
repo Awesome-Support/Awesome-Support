@@ -334,6 +334,7 @@ class WPAS_File_Upload {
 			'name' => $this->index,
 			'args' => array(
 				'required'   => false,
+				'capability' => 'edit_ticket',
 				'field_type' => 'upload',
 				'multiple'   => true,
 				'label'      => __( 'Attachments', 'wpas' ),
