@@ -138,7 +138,7 @@ class WPAS_Notification {
 			'not_found' => array( 'case' => 'failure', 'message' => __( 'The ticket you requested could not be found.', 'wpas' ) ),
 			'0' 		=> array( 'case' => 'success', 'message' => __( 'Your account has been successfully created. You can now post tickets.', 'wpas' ) ),
 			'1' 		=> array( 'case' => 'success', 'message' => __( 'Your ticket has been successfully submitted. One of our agents will get in touch with you soon.', 'wpas' ) ),
-			'2' 		=> array( 'case' => 'success', 'message' => __( 'Your reply has been sent. Our agent will review it ASAP!', 'wpas' ) ),
+			'2' 		=> array( 'case' => 'success', 'message' => 'Your reply has been sent. Our agent will review it ASAP!' ),
 			'3' 		=> array( 'case' => 'failure', 'message' => __( 'It is mandatory to provide a title for your issue.', 'wpas' ) ),
 			'4' 		=> array( 'case' => 'failure', 'message' => __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'wpas' ) ),
 			'5' 		=> array( 'case' => 'failure', 'message' => __( 'Only registered accounts can submit a ticket. Please register first.', 'wpas' ) ),
