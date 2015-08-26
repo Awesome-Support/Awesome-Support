@@ -126,7 +126,7 @@ class WPAS_User {
 	 * @return void
 	 */
 	public function enable_assignment( $user_id ) {
-		if ( user_can( $user_id, 'edit_ticket' ) ) {
+		if ( user_can( $user_id, 'edit_ticket' ) && ! user_can( $user_id, 'administrator' ) ) {
 			update_user_meta( $user_id, 'wpas_can_be_assigned', 'yes' );
 		}
 	}
