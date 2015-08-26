@@ -624,6 +624,12 @@ class WPAS_File_Upload {
 
 		global $post;
 
+		if ( empty( $post ) ) {
+			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
+			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
+			$post     = get_post( $post_id );
+		}
+
 		$submission = (int) wpas_get_option( 'ticket_submit' );
 		$post_type  = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
 
