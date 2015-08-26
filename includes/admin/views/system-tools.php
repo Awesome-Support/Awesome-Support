@@ -34,6 +34,10 @@ if ( isset( $_GET['done'] ) ) {
 			$message = __( 'Tickets metas were cleared', 'wpas' );
 			break;
 
+		case 'agents_metas':
+			$message = __( 'Agents metas were cleared', 'wpas' );
+			break;
+
 		case 'clear_taxonomies':
 			$message = __( 'All custom taxonomies terms were cleared', 'wpas' );
 			break;
@@ -67,6 +71,13 @@ if ( isset( $message ) ) {
 			<td>
 				<a href="<?php echo wpas_tool_link( 'tickets_metas' ); ?>" class="button-secondary"><?php _e( 'Clear', 'wpas' ); ?></a> 
 				<span class="wpas-system-tools-desc"><?php _e( 'Clear all transients for all tickets.', 'wpas' ); ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Agents Metas', 'wpas' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'agents_metas' ); ?>" class="button-secondary"><?php _e( 'Clear', 'wpas' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Clear all agents metas.', 'wpas' ); ?></span>
 			</td>
 		</tr>
 		<tr>

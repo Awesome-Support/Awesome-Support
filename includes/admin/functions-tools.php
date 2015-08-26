@@ -179,3 +179,19 @@ function wpas_delete_synced_products( $resync = false ) {
 	return true;
 
 }
+
+/**
+ * Clear the agents metas that can be
+ *
+ * @since 3.2
+ * @return void
+ */
+function wpas_clear_agents_metas() {
+
+	$agents = wpas_get_users( array( 'cap' => 'edit_ticket' ) );
+
+	foreach ( $agents as $user ) {
+		delete_user_meta( $user->ID, 'wpas_open_tickets' ); // Delete the open tickets count
+	}
+
+}

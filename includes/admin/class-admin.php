@@ -1145,6 +1145,10 @@ class Awesome_Support_Admin {
 				wpas_clear_tickets_metas();
 				break;
 
+			case 'agents_metas':
+				wpas_clear_agents_metas();
+				break;
+
 			case 'clear_taxonomies':
 				wpas_clear_taxonomies();
 				break;
