@@ -20,12 +20,14 @@ class WPAS_User {
 	protected static $instance = null;
 
 	public function __construct() {
-		add_action( 'edit_user_profile',        array( $this, 'user_profile_custom_fields' ) ); // Add user preferences
-		add_action( 'show_user_profile',        array( $this, 'user_profile_custom_fields' ) ); // Add user preferences
-		add_action( 'personal_options_update',  array( $this, 'save_user_custom_fields' ) );    // Save the user preferences
-		add_action( 'edit_user_profile_update', array( $this, 'save_user_custom_fields' ) );    // Save the user preferences when modified by admins
-		add_action( 'user_register',            array( $this, 'enable_assignment' ), 10, 1 );   // Enable auto-assignment for new users
-//		add_action( 'profile_update',           array( $this, 'maybe_enable_assignment' ), 10, 2 );
+		add_action( 'edit_user_profile',          array( $this, 'user_profile_custom_fields' ) ); // Add user preferences
+		add_action( 'show_user_profile',          array( $this, 'user_profile_custom_fields' ) ); // Add user preferences
+		add_action( 'personal_options_update',    array( $this, 'save_user_custom_fields' ) );    // Save the user preferences
+		add_action( 'edit_user_profile_update',   array( $this, 'save_user_custom_fields' ) );    // Save the user preferences when modified by admins
+		add_action( 'user_register',              array( $this, 'enable_assignment' ), 10, 1 );   // Enable auto-assignment for new users
+//		add_action( 'profile_update',             array( $this, 'maybe_enable_assignment' ), 10, 2 );
+		add_filter( 'manage_users_columns',       array( $this, 'auto_assignment_user_column' ) );
+		add_filter( 'manage_users_custom_column', array( $this, 'auto_assignment_user_column_content' ), 10, 3 );
 	}
 
 	/**
@@ -121,7 +123,7 @@ class WPAS_User {
 	 *
 	 * @since 3.2
 	 *
-	 * @param $user_id
+	 * @param int $user_id
 	 *
 	 * @return void
 	 */
@@ -141,8 +143,8 @@ class WPAS_User {
 	 *
 	 * @since 3.2
 	 *
-	 * @param $user_id
-	 * @param $old_data
+	 * @param int   $user_id
+	 * @param array $old_data
 	 *
 	 * @return void
 	 */
@@ -150,6 +152,49 @@ class WPAS_User {
 		if ( user_can( $user_id, 'edit_ticket' ) ) {
 			$this->enable_assignment( $user_id );
 		}
+	}
+
+	/**
+	 * Add auto-assignment column in users table
+	 *
+	 * @since 3.2
+	 *
+	 * @param array $columns
+	 *
+	 * @return mixed
+	 */
+	public function auto_assignment_user_column( $columns ) {
+
+		$columns['wpas_auto_assignment'] = __( 'Auto-Assign', 'wpas' );
+
+		return $columns;
+	}
+
+	/**
+	 * Add auto-assignment user column content
+	 *
+	 * @since 3.2
+	 *
+	 * @param mixed  $value       Column value
+	 * @param string $column_name Column name
+	 * @param int    $user_id     Current user ID
+	 *
+	 * @return string
+	 */
+	public function auto_assignment_user_column_content( $value, $column_name, $user_id ) {
+
+		if ( 'wpas_auto_assignment' !== $column_name ) {
+			return $value;
+		}
+
+		$agent = new WPAS_Agent( $user_id );
+
+		if ( true !== $agent->is_agent() || false === $agent->can_be_assigned() ) {
+			return '&#10005;';
+		}
+
+		return '&#10003;';
+
 	}
 
 }
