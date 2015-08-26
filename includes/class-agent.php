@@ -72,7 +72,7 @@ class WPAS_Agent {
 	 */
 	public function can_be_assigned() {
 
-		$can = esc_attr( get_the_author_meta( 'wpas_can_be_assigned', $this->agent_id ) );
+		$can = esc_attr( get_user_meta( $this->agent_id, 'wpas_can_be_assigned', true ) );
 
 		return empty( $can ) ? false : true;
 	}
