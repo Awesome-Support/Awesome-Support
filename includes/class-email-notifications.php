@@ -277,31 +277,31 @@ class WPAS_Email_Notification {
 		$tags = array(
 			array(
 				'tag' 	=> '{ticket_id}',
-				'desc' 	=> __( 'Convert into ticket ID', 'wpas' )
+				'desc' 	=> __( 'Converts into ticket ID', 'wpas' )
 			),
 			array(
 				'tag' 	=> '{site_name}',
-				'desc' 	=> __( 'Convert into website name', 'wpas' )
+				'desc' 	=> __( 'Converts into website name', 'wpas' )
 			),
 			array(
 				'tag' 	=> '{agent_name}',
-				'desc' 	=> __( 'Convert into agent name', 'wpas' )
+				'desc' 	=> __( 'Converts into agent name', 'wpas' )
 			),
 			array(
 				'tag' 	=> '{agent_email}',
-				'desc' 	=> __( 'Convert into agent e-mail address', 'wpas' )
+				'desc' 	=> __( 'Converts into agent e-mail address', 'wpas' )
 			),
 			array(
 				'tag' 	=> '{client_name}',
-				'desc' 	=> __( 'Convert into client name', 'wpas' )
+				'desc' 	=> __( 'Converts into client name', 'wpas' )
 			),
 			array(
 				'tag' 	=> '{client_email}',
-				'desc' 	=> __( 'Convert into client e-mail address', 'wpas' )
+				'desc' 	=> __( 'Converts into client e-mail address', 'wpas' )
 			),
 			array(
 				'tag' 	=> '{ticket_title}',
-				'desc' 	=> __( 'Convert into current ticket title', 'wpas' )
+				'desc' 	=> __( 'Converts into current ticket title', 'wpas' )
 			),
 			array(
 				'tag' 	=> '{ticket_link}',
@@ -321,15 +321,15 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{date}',
-				'desc' 	=> __( 'Convert into current date', 'wpas' )
+				'desc' 	=> __( 'Converts into current date', 'wpas' )
 			),
 			array(
 				'tag' 	=> '{admin_email}',
-				'desc' 	=> sprintf( __( 'Convert into WordPress admin e-mail (<em>currently: %s</em>)', 'wpas' ), get_bloginfo( 'admin_email' ) )
+				'desc' 	=> sprintf( __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'wpas' ), get_bloginfo( 'admin_email' ) )
 			),
 			array(
 				'tag' 	=> '{message}',
-				'desc' 	=> __( 'Convert into ticket content or reply content', 'wpas' )
+				'desc' 	=> __( 'Converts into ticket content or reply content', 'wpas' )
 			)
 		);
 
