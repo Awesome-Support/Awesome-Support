@@ -24,6 +24,8 @@ class WPAS_User {
 		add_action( 'show_user_profile',        array( $this, 'user_profile_custom_fields' ) ); // Add user preferences
 		add_action( 'personal_options_update',  array( $this, 'save_user_custom_fields' ) );    // Save the user preferences
 		add_action( 'edit_user_profile_update', array( $this, 'save_user_custom_fields' ) );    // Save the user preferences when modified by admins
+		add_action( 'user_register',            array( $this, 'enable_assignment' ), 10, 1 );   // Enable auto-assignment for new users
+//		add_action( 'profile_update',           array( $this, 'maybe_enable_assignment' ), 10, 2 );
 	}
 
 	/**
@@ -95,7 +97,7 @@ class WPAS_User {
 	 *
 	 * @since  3.0.0
 	 * @param  integer $user_id ID of the user to modify
-	 * @return void
+	 * @return bool|void
 	 */
 	public function save_user_custom_fields( $user_id ) {
 
@@ -112,6 +114,42 @@ class WPAS_User {
 
 		update_user_meta( $user_id, 'wpas_can_be_assigned', $can_assign );
 
+	}
+
+	/**
+	 * Enable auto-assignment for new agents
+	 *
+	 * @since 3.2
+	 *
+	 * @param $user_id
+	 *
+	 * @return void
+	 */
+	public function enable_assignment( $user_id ) {
+		if ( user_can( $user_id, 'edit_ticket' ) ) {
+			update_user_meta( $user_id, 'wpas_can_be_assigned', 'yes' );
+		}
+	}
+
+	/**
+	 * Maybe enable auto assignment for this user
+	 *
+	 * Unfortunately there is no way to know what were the previous user capabilities
+	 * which makes it impossible to safely enable auto-assignment.
+	 * We are not able to differentiate a user being upgraded to support agent from a user
+	 * who already was an agent but deactivated auto assignment and updated his profile.
+	 *
+	 * @since 3.2
+	 *
+	 * @param $user_id
+	 * @param $old_data
+	 *
+	 * @return void
+	 */
+	public function maybe_enable_assignment( $user_id, $old_data ) {
+		if ( user_can( $user_id, 'edit_ticket' ) ) {
+			$this->enable_assignment( $user_id );
+		}
 	}
 
 }
