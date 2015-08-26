@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-08-26 15:25+0700\n"
+"POT-Creation-Date: 2015-08-26 16:22+0700\n"
 "PO-Revision-Date: 2015-05-12 15:12+0700\n"
 "Last-Translator: Julien Liabeuf <julien@liabeuf.fr>\n"
 "Language-Team: ThemeAvenue <support@themeavenue.net>\n"
@@ -256,6 +256,7 @@ msgstr ""
 #: includes/admin/class-admin-tickets-list.php:114
 #: includes/admin/metaboxes/stakeholders.php:81
 #: includes/custom-fields/functions-custom-fields.php:173
+#: includes/functions-post.php:816
 msgid "Support Staff"
 msgstr ""
 
@@ -437,7 +438,7 @@ msgstr ""
 msgid "Single Product"
 msgstr ""
 
-#: includes/admin/class-admin.php:618
+#: includes/admin/class-admin.php:618 includes/functions-post.php:917
 #, php-format
 msgid "Ticket state changed to %s"
 msgstr ""
@@ -1544,10 +1545,10 @@ msgstr ""
 #: includes/functions-general.php:444
 #, php-format
 msgid ""
-"Awesome Support dependencies are missing. The plugin can&#39;t be loaded "
-"properly. Please run %s before anything else. If you don&#39;t know what "
-"this is you should <a href=\"%s\" class=\"thickbox\">install the production "
-"version</a> of this plugin instead."
+"Awesome Support dependencies are missing. The plugin can’t be loaded "
+"properly. Please run %s before anything else. If you don’t know what this is "
+"you should <a href=\"%s\" class=\"thickbox\">install the production version</"
+"a> of this plugin instead."
 msgstr ""
 
 #: includes/functions-post.php:327 includes/functions-post.php:328
@@ -1566,21 +1567,12 @@ msgid ""
 "ticket"
 msgstr ""
 
-#: includes/functions-post.php:816
-msgid "Support staff"
-msgstr ""
-
-#: includes/functions-post.php:917
-#, php-format
-msgid "Ticket state changed to &laquo;%s&raquo;"
-msgstr ""
-
 #: includes/functions-post.php:945
 msgid "You do not have the capacity to close this ticket"
 msgstr ""
 
 #: includes/functions-post.php:945
-msgid "Can&#39;t closr ticket"
+msgid "Can’t close ticket"
 msgstr ""
 
 #: includes/functions-post.php:960
