@@ -129,7 +129,7 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 
 									<?php
 									/* Filter the content before we display it */
-									$content = apply_filters( 'the_content', $row->post_content );
+									$content = make_clickable( apply_filters( 'the_content', $row->post_content ) );
 
 									/* The content displayed to agents */
 									echo '<div class="wpas-reply-content" id="wpas-reply-' . $row->ID . '">';

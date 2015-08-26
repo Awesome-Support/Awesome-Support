@@ -61,7 +61,7 @@ $author = get_user_by( 'id', $post->post_author );
 					/**
 					 * Display the original ticket's content
 					 */
-					echo '<div class="wpas-reply-content">' . apply_filters( 'the_content', $post->post_content ) . '</div>';
+					echo '<div class="wpas-reply-content">' .  make_clickable( apply_filters( 'the_content', $post->post_content ) ) . '</div>';
 
 					/**
 					 * wpas_frontend_ticket_content_after hook
