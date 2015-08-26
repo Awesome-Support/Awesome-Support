@@ -85,6 +85,65 @@ class WPAS_Agent {
 	 */
 	public function open_tickets() {
 
+		$count = get_user_meta( $this->agent_id, 'wpas_open_tickets', true );
+
+		if ( empty( $count ) ) {
+			$count = count( $this->get_open_tickets() );
+			update_user_meta( $this->agent_id, 'wpas_open_tickets', $count );
+		}
+
+		return $count;
+
+	}
+
+	/**
+	 * Increment the number of open tickets
+	 *
+	 * @since 3.2
+	 *
+	 * @param int $num Number of tickets to increment
+	 *
+	 * @return int Number of open tickets
+	 */
+	public function ticket_plus( $num = 1 ) {
+
+		$count = (int) $this->open_tickets();
+		$count = $count + $num;
+
+		update_user_meta( $this->agent_id, 'wpas_open_tickets', $count );
+
+		return $count;
+
+	}
+
+	/**
+	 * Decrement the number of open tickets
+	 *
+	 * @since 3.2
+	 *
+	 * @param int $num Number of tickets to decrement
+	 *
+	 * @return int Number of open tickets
+	 */
+	public function ticket_minus( $num = 1 ) {
+
+		$count = (int) $this->open_tickets();
+		$count = $count - $num;
+
+		update_user_meta( $this->agent_id, 'wpas_open_tickets', $count );
+
+		return $count;
+
+	}
+
+	/**
+	 * Get all open tickets assigned to the agent
+	 *
+	 * @since 3.2
+	 * @return array
+	 */
+	public function get_open_tickets() {
+
 		$posts_args = array(
 			'post_type'              => 'ticket',
 			'post_status'            => 'any',
@@ -111,7 +170,7 @@ class WPAS_Agent {
 
 		$open_tickets = new WP_Query( $posts_args );
 
-		return count( $open_tickets->posts ); // Total number of open tickets for this agent
+		return $open_tickets->posts;
 
 	}
 

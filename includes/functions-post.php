@@ -773,10 +773,13 @@ function wpas_find_agent( $ticket_id = false ) {
  * agent if no agent ID is given.
  *
  * @since  3.0.2
- * @param  integer  $ticket_id    ID of the post in need of a new agent
- * @param  integer  $agent_id     ID of the agent to assign the ticket to
- * @param  boolean  $log          Shall the assignment be logged or not
- * @return object|boolean|integer WP_Error in case of problem, true if no change is required or the post meta ID if the agent was changed
+ *
+ * @param  integer $ticket_id ID of the post in need of a new agent
+ * @param  integer $agent_id  ID of the agent to assign the ticket to
+ * @param  boolean $log       Shall the assignment be logged or not
+ *
+ * @return object|boolean|integer WP_Error in case of problem, true if no change is required or the post meta ID if the
+ *                                agent was changed
  */
 function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 
@@ -788,7 +791,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 		$agent_id = wpas_find_agent( $ticket_id );
 	}
 
-	if ( !user_can( $agent_id, 'edit_ticket' ) ) {
+	if ( ! user_can( $agent_id, 'edit_ticket' ) ) {
 		return new WP_Error( 'incorrect_agent', __( 'The chosen agent does not have the sufficient capabilities to be assigned a ticket', 'wpas' ) );
 	}
 
@@ -801,9 +804,13 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 
 	$update = update_post_meta( $ticket_id, '_wpas_assignee', $agent_id, $current );
 
+	/* Increment the number of tickets open for this agent */
+	$agent = new WPAS_Agent( $agent_id );
+	$agent->ticket_plus();
+
 	/* Log the action */
 	if ( true === $log ) {
-		$log = array();
+		$log   = array();
 		$log[] = array(
 			'action'   => 'updated',
 			'label'    => __( 'Support staff', 'wpas' ),
@@ -925,7 +932,9 @@ function wpas_update_ticket_status( $post_id, $status ) {
  * Change a ticket status to closed.
  *
  * @since  3.0.2
- * @param  integer         $ticket_id ID of the ticket to close
+ *
+ * @param  integer $ticket_id ID of the ticket to close
+ *
  * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
  */
 function wpas_close_ticket( $ticket_id ) {
@@ -941,6 +950,11 @@ function wpas_close_ticket( $ticket_id ) {
 	if ( 'ticket' == get_post_type( $ticket_id ) ) {
 
 		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'closed' );
+
+		/* Decrement the number of tickets open for this agent */
+		$agent_id = get_post_meta( $ticket_id, '_wpas_assignee', true );
+		$agent    = new WPAS_Agent( $agent_id );
+		$agent->ticket_minus();
 
 		/* Log the action */
 		wpas_log( $ticket_id, __( 'The ticket was closed.', 'wpas' ) );
@@ -958,6 +972,7 @@ function wpas_close_ticket( $ticket_id ) {
 			 * Fires after the ticket was closed in the admin only.
 			 *
 			 * @since  3.1.2
+			 *
 			 * @param integer $ticket_id ID of the ticket we just closed
 			 * @param integer $user_id   ID of the user who did the action
 			 * @param boolean $update    True on success, false on fialure
@@ -968,8 +983,9 @@ function wpas_close_ticket( $ticket_id ) {
 
 			/**
 			 * Fires after the ticket was closed in the front-end only.
-			 * 
+			 *
 			 * @since  3.1.2
+			 *
 			 * @param integer $ticket_id ID of the ticket we just closed
 			 * @param integer $user_id   ID of the user who did the action
 			 * @param boolean $update    True on success, false on fialure
