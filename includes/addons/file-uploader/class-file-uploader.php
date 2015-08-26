@@ -46,6 +46,7 @@ class WPAS_File_Upload {
 
 		add_filter( 'upload_dir',                 array( $this, 'set_upload_dir' ) );
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'limit_upload' ),         10, 1 );
+		add_filter( 'upload_mimes',               array( $this, 'custom_mime_types' ),    10, 1 );
 		add_action( 'pre_get_posts',              array( $this, 'attachment_query_var' ), 10, 1 );
 		add_action( 'init',                       array( $this, 'attachment_endpoint' ),  10, 1 );
 		add_action( 'template_redirect',          array( $this, 'view_attachment' ),      10, 0 );
@@ -674,6 +675,38 @@ class WPAS_File_Upload {
 		}
 		
 		return $file;
+
+	}
+
+	/**
+	 * Add the custom file types to the WordPress whitelist
+	 *
+	 * @since 3.2
+	 *
+	 * @param array $mimes Allowed mime types
+	 *
+	 * @return array Our custom mime types list
+	 */
+	public function custom_mime_types( $mimes ) {
+
+		/* We don't want to allow those extra file types on other pages that the plugin ones */
+		if ( ! wpas_is_plugin_page() ) {
+			return $mimes;
+		}
+
+		$filetypes = explode( ',', $this->get_allowed_filetypes() );
+
+		if ( ! empty( $filetypes ) ) {
+
+			require_once( WPAS_PATH . 'includes/addons/file-uploader/mime-types.php' );
+
+			foreach ( $filetypes as $type ) {
+				$mimes[ $type ] = wpas_get_mime_type( $type );
+			}
+
+		}
+
+		return $mimes;
 
 	}
 
