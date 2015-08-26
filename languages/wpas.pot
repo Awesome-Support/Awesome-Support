@@ -1,10 +1,11 @@
 # Copyright (C) 2013 TODO
 # This file is distributed under the same license as the TODO package.
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2015-05-12 15:12+0700\n"
+"POT-Creation-Date: 2015-08-26 15:21+0700\n"
 "PO-Revision-Date: 2015-05-12 15:12+0700\n"
 "Last-Translator: Julien Liabeuf <julien@liabeuf.fr>\n"
 "Language-Team: ThemeAvenue <support@themeavenue.net>\n"
@@ -12,20 +13,21 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.6\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;"
 "esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
-"X-Poedit-Basepath: .\n"
+"X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPath-1: ..\n"
-"X-Poedit-SearchPathExcluded-0: ../node_modules\n"
-"X-Poedit-SearchPathExcluded-1: ../logs\n"
-"X-Poedit-SearchPathExcluded-2: ../tests\n"
-"X-Poedit-SearchPathExcluded-3: ../vendor\n"
+"X-Poedit-SearchPath-0: languages\n"
+"X-Poedit-SearchPath-1: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules\n"
+"X-Poedit-SearchPathExcluded-1: logs\n"
+"X-Poedit-SearchPathExcluded-2: tests\n"
+"X-Poedit-SearchPathExcluded-3: vendor\n"
+"X-Poedit-SearchPathExcluded-4: includes/admin/views/system-status.php\n"
 
 #: ../class-awesome-support.php:233
 msgid "You cannot submit an empty reply."
@@ -167,8 +169,7 @@ msgstr ""
 #: ../includes/admin/class-admin.php:478
 #: ../includes/admin/metaboxes/details.php:80
 #: ../includes/admin/views/system-status.php:127
-#: ../includes/admin/views/system.php:137
-#: ../includes/functions-general.php:299
+#: ../includes/admin/views/system.php:137 ../includes/functions-general.php:299
 msgid "Open"
 msgstr ""
 
@@ -176,8 +177,7 @@ msgstr ""
 #: ../includes/addons/custom-fields/class-display.php:235
 #: ../includes/admin/class-admin-tickets-list.php:287
 #: ../includes/admin/views/system-status.php:127
-#: ../includes/admin/views/system.php:137
-#: ../includes/functions-general.php:291
+#: ../includes/admin/views/system.php:137 ../includes/functions-general.php:291
 msgid "Closed"
 msgstr ""
 
@@ -569,8 +569,7 @@ msgstr ""
 msgid "Stakeholders"
 msgstr ""
 
-#: ../includes/admin/class-admin.php:850
-#: ../includes/admin/views/system.php:258
+#: ../includes/admin/class-admin.php:850 ../includes/admin/views/system.php:258
 msgid "Custom Fields"
 msgstr ""
 
@@ -599,8 +598,8 @@ msgstr ""
 
 #: ../includes/admin/metaboxes/details.php:55
 #: ../includes/admin/metaboxes/replies.php:105
-#: ../includes/admin/metaboxes/replies.php:185
-#: ../themes/default/details.php:48 ../themes/default/details.php:119
+#: ../includes/admin/metaboxes/replies.php:185 ../themes/default/details.php:48
+#: ../themes/default/details.php:119
 #: ../themes/default/partials/ticket-origin.php:55
 #, php-format
 msgid "%s ago"
@@ -1875,8 +1874,7 @@ msgstr ""
 msgid "Close this ticket"
 msgstr ""
 
-#: ../includes/functions-templating.php:472
-#: ../themes/default/submission.php:67
+#: ../includes/functions-templating.php:472 ../themes/default/submission.php:67
 msgid "Please Wait..."
 msgstr ""
 
