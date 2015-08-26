@@ -14,7 +14,7 @@ function wpas_core_settings_notifications( $def ) {
 			'options' => array(
 				array(
 					'type' => 'note',
-					'desc' => __( 'For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner ofthis screen.', 'wpas' )
+					'desc' => __( 'For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen.', 'wpas' )
 				),
 				array(
 					'name'    => __( 'Sender Name', 'wpas' ),
