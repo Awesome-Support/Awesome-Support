@@ -105,6 +105,7 @@ require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Registe
 require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
 require_once( WPAS_PATH . 'includes/class-gist.php' );                // Add oEmbed support for Gists
 require_once( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper class to load a wp_editor instance via Ajax
+require_once( WPAS_PATH . 'includes/class-agent.php' );               // Support agent class
 
 /**
  * Check if dependencies are loaded.

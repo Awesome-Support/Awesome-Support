@@ -737,32 +737,16 @@ function wpas_find_agent( $ticket_id = false ) {
 
 	foreach ( $users as $user ) {
 
-		$posts_args = array(
-			'post_type'              => 'ticket',
-			'post_status'            => 'any',
-			'posts_per_page'         => - 1,
-			'no_found_rows'          => true,
-			'cache_results'          => false,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'meta_query'             => array(
-				array(
-					'key'     => '_wpas_status',
-					'value'   => 'open',
-					'type'    => 'CHAR',
-					'compare' => '='
-				),
-				array(
-					'key'     => '_wpas_assignee',
-					'value'   => $user->ID,
-					'type'    => 'NUMERIC',
-					'compare' => '='
-				),
-			)
-		);
+		$wpas_agent = new WPAS_Agent( $user->ID );
 
-		$open_tickets = new WP_Query( $posts_args );
-		$count        = count( $open_tickets->posts ); // Total number of open tickets for this agent
+		/**
+		 * Make sure the user really is an agent and that he can currently be assigned
+		 */
+		if ( true !== $wpas_agent->is_agent() || false === $wpas_agent->can_be_assigned() ) {
+			continue;
+		}
+
+		$count = $wpas_agent->open_tickets(); // Total number of open tickets for this agent
 
 		if ( empty( $agent ) ) {
 			$agent = array( 'tickets' => $count, 'user_id' => $user->ID );
@@ -776,7 +760,9 @@ function wpas_find_agent( $ticket_id = false ) {
 
 	}
 
-	return apply_filters( 'wpas_find_available_agent', $agent['user_id'], $ticket_id );
+	$agent_id = ! empty( $agent ) ? $agent['user_id'] : wpas_get_option( 'assignee_default' );
+
+	return apply_filters( 'wpas_find_available_agent', $agent_id, $ticket_id );
 
 }
 

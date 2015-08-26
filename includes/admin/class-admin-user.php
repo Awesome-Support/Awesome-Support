@@ -20,6 +20,7 @@ class WPAS_User {
 	protected static $instance = null;
 
 	public function __construct() {
+		add_action( 'edit_user_profile',        array( $this, 'user_profile_custom_fields' ) ); // Add user preferences
 		add_action( 'show_user_profile',        array( $this, 'user_profile_custom_fields' ) ); // Add user preferences
 		add_action( 'personal_options_update',  array( $this, 'save_user_custom_fields' ) );    // Save the user preferences
 		add_action( 'edit_user_profile_update', array( $this, 'save_user_custom_fields' ) );    // Save the user preferences when modified by admins
@@ -45,14 +46,32 @@ class WPAS_User {
 	 * Add user preferences to the profile page.
 	 *
 	 * @since  3.0.0
-	 * @return void
+	 * @return bool|void
 	 */
-	public function user_profile_custom_fields( $user ) { ?>
+	public function user_profile_custom_fields( $user ) {
+
+		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
+			return false;
+		} ?>
 
 		<h3><?php _e( 'Awesome Support Preferences', 'wpas' ); ?></h3>
 
 		<table class="form-table">
 			<tbody>
+
+				<?php if ( current_user_can( 'administrator' ) ): ?>
+
+					<tr class="wpas-after-reply-wrap">
+						<th><label><?php _e( 'Can Be Assigned', 'wpas' ); ?></label></th>
+						<td>
+							<?php $can_assign = esc_attr( get_the_author_meta( 'wpas_can_be_assigned', $user->ID ) ); ?>
+							<label for="wpas_can_be_assigned"><input type="checkbox" name="wpas_can_be_assigned" id="wpas_can_be_assigned" value="yes" <?php if ( ! empty( $can_assign ) ) { echo 'checked'; } ?>> <?php _e( 'Yes', 'wpas' ); ?></label>
+							<p class="description"><?php _e( 'Can the system assign new tickets to this user?', 'wpas' ); ?></p>
+						</td>
+					</tr>
+
+				<?php endif; ?>
+
 				<tr class="wpas-after-reply-wrap">
 					<th><label for="wpas_after_reply"><?php echo _x( 'After Reply', 'Action after replying to a ticket', 'wpas' ); ?></label></th>
 					<td>
@@ -66,6 +85,7 @@ class WPAS_User {
 						<p class="description"><?php _e( 'Where do you want to go after replying to a ticket?', 'wpas' ); ?></p>
 					</td>
 				</tr>
+
 			</tbody>
 		</table>
 	<?php }
@@ -84,10 +104,14 @@ class WPAS_User {
 		}
 
 		$wpas_after_reply = filter_input( INPUT_POST, 'wpas_after_reply' );
+		$can_assign = filter_input( INPUT_POST, 'wpas_can_be_assigned' );
 
 		if ( $wpas_after_reply ) {
 			update_user_meta( $user_id, 'wpas_after_reply', $wpas_after_reply );
 		}
+
+		update_user_meta( $user_id, 'wpas_can_be_assigned', $can_assign );
+
 	}
 
 }
