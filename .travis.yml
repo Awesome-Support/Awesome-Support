@@ -14,6 +14,7 @@ php:
 # WordPress version used in first build configuration.
 env:
     - WP_VERSION=master
+    - WP_VERSION=4.3
     - WP_VERSION=4.2
     - WP_VERSION=4.1
     - WP_VERSION=4.0
