@@ -9,7 +9,6 @@ php:
     - "5.4"
     - "5.3"
     - "5.2"
-    - "7"
 
 # WordPress version used in first build configuration.
 env:
@@ -38,6 +37,8 @@ matrix:
   include:
     - php: "5.3"
       env: WP_VERSION=master WP_ALLOW_MULTISITE=1
+    - php: "7"
+      env: WP_VERSION=4.3
 
 # Clones WordPress and configures our testing environment.
 before_script:
