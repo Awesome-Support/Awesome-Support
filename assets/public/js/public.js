@@ -104,7 +104,7 @@
 		http://stackoverflow.com/a/10105631		
 		 */
 		if (typeof wpas !== 'undefined' && wpas.fileUploadMax) {
-			var $fileUpload = $('#wpas-file-upload');
+			var $fileUpload = $('#wpas_files');
 			$fileUpload.on('change', function (event) {
 				event.preventDefault();
 
