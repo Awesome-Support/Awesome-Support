@@ -3,6 +3,9 @@
 # Tell Travis CI we're using PHP
 language: php
 
+# Use the container-based infrastructure
+sudo: false
+
 # PHP version used in first build configuration.
 php:
     - "5.5"
