@@ -21,7 +21,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 	<?php do_action('wpas_before_login_form'); ?>
 
 	<form class="wpas-form" id="wpas_form_login" method="post" role="form" action="<?php echo wpas_get_login_url(); ?>">
-		<h3><?php _e( 'Log in' ); ?></h3>
+		<h3><?php _e( 'Log in', 'wpas' ); ?></h3>
 
 		<?php
 		/* Registrations are not allowed. */
@@ -66,7 +66,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 				'required'   => true,
 				'field_type' => 'checkbox',
 				'sanitize'   => 'sanitize_text_field',
-				'options'    => array( '1' => __( 'Remember Me' ) ),
+				'options'    => array( '1' => __( 'Remember Me', 'wpas' ) ),
 			)
 		) );
 
@@ -81,7 +81,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 	if ( 'allow' === $registration ): ?>
 
 		<form class="wpas-form" id="wpas_form_registration" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
-			<h3><?php _e( 'Register' ); ?></h3>
+			<h3><?php _e( 'Register', 'wpas' ); ?></h3>
 
 			<?php
 			$first_name = new WPAS_Custom_Field( 'first_name', array(
