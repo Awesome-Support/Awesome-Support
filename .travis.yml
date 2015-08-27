@@ -9,6 +9,7 @@ php:
     - "5.4"
     - "5.3"
     - "5.2"
+    - "7"
 
 # WordPress version used in first build configuration.
 env:
