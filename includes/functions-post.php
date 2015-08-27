@@ -813,7 +813,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 		$log   = array();
 		$log[] = array(
 			'action'   => 'updated',
-			'label'    => __( 'Support staff', 'wpas' ),
+			'label'    => __( 'Support Staff', 'wpas' ),
 			'value'    => $agent_id,
 			'field_id' => 'assignee'
 		);
@@ -914,7 +914,7 @@ function wpas_update_ticket_status( $post_id, $status ) {
 	$updated = wp_update_post( $my_post );
 
 	if ( 0 !== intval( $updated ) ) {
-		wpas_log( $post_id, sprintf( __( 'Ticket state changed to &laquo;%s&raquo;', 'wpas' ), $custom_status[$status] ) );
+		wpas_log( $post_id, sprintf( __( 'Ticket state changed to %s', 'wpas' ), $custom_status[$status] ) );
 	}
 
 	/**
@@ -942,7 +942,7 @@ function wpas_close_ticket( $ticket_id ) {
 	global $current_user;
 
 	if ( ! current_user_can( 'close_ticket' ) ) {
-		wp_die( __( 'You do not have the capacity to close this ticket', 'wpas' ), __( 'Can&#39;t closr ticket', 'wpas' ), array( 'back_link' => true ) );
+		wp_die( __( 'You do not have the capacity to close this ticket', 'wpas' ), __( 'Can’t close ticket', 'wpas' ), array( 'back_link' => true ) );
 	}
 
 	$ticket_id = intval( $ticket_id );
