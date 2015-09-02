@@ -169,9 +169,16 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 	global $post;
 
+	$ticket_list   = wpas_get_option( 'ticket_list' );
+	$ticket_submit = wpas_get_option( 'ticket_submit' );
+
+	/* Make sure these are arrays. Multiple selects were only used since 3.2, in earlier versions those options are strings */
+	if( ! is_array( $ticket_list ) ) { $ticket_list = (array) $ticket_list; }
+	if( ! is_array( $ticket_submit ) ) { $ticket_submit = (array) $ticket_submit; }
+
 	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket' ) );
 	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons' ) );
-	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array( wpas_get_option( 'ticket_list' ), wpas_get_option( 'ticket_submit' ) ) );
+	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
 	/* Check for plugin pages in the admin */
 	if ( is_admin() ) {
