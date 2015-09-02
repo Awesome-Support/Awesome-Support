@@ -55,8 +55,19 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 	 * @return string Field markup
 	 */
 	public function display() {
-		$multiple = true === $this->field_args['multiple'] ? 'multiple' : '';
-		return sprintf( '<label {{label_atts}}>{{label}}</label><input type="file" value="%s" {{atts}} %s>', $this->populate(), $multiple );
+
+		$multiple  = true === $this->field_args['multiple'] ? 'multiple' : '';
+		$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+		$accept    = array();
+
+		foreach ( $filetypes as $key => $type ) {
+			$filetypes[ $key ] = "<code>.$type</code>";
+			array_push( $accept, ".$type" );
+		}
+
+		$accept = implode( ',', $accept );
+
+		return sprintf( '<label {{label_atts}}>{{label}}</label><input type="file" value="%s" {{atts}} accept="%s" %s>', $this->populate(), $accept, $multiple );
 	}
 
 	/**
