@@ -100,6 +100,7 @@ require_once( WPAS_PATH . 'includes/functions-deprecated.php' );      // Load de
 require_once( WPAS_PATH . 'includes/class-log-history.php' );         // Logging class
 require_once( WPAS_PATH . 'includes/class-email-notifications.php' ); // E-mail notification class
 require_once( WPAS_PATH . 'includes/functions-general.php' );         // Functions that are used both in back-end and front-end
+require_once( WPAS_PATH . 'includes/functions-error.php' );           // Error handling
 require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
 require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
 require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
