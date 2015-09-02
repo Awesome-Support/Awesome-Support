@@ -786,3 +786,36 @@ function wpas_cf_display_status( $name, $post_id ) {
 	echo $tag;
 
 }
+
+/**
+ * Get the notification wrapper markup
+ *
+ * @since 3.2
+ *
+ * @param string $type Type of notification. Defines the wrapper class to use
+ * @param string $message Notification message
+ *
+ * @return string
+ */
+function wpas_get_notification_markup( $type = 'info', $message = '' ) {
+
+	if ( empty( $message ) ) {
+		return '';
+	}
+
+	$classes = apply_filters( 'wpas_notification_classes', array(
+		'success' => 'wpas-alert wpas-alert-success',
+		'failure' => 'wpas-alert wpas-alert-danger',
+		'info'    => 'wpas-alert wpas-alert-info',
+	) );
+
+	if ( ! array_key_exists( $type, $classes ) ) {
+		$type = 'info';
+	}
+
+	$markup = apply_filters( 'wpas_notification_wrapper', '<div class="%s">%s</div>' ); // Keep this filter for backwards compatibility
+	$markup = apply_filters( 'wpas_notification_markup', sprintf( $markup, $classes[$type], $message ), $type );
+
+	return $markup;
+
+}

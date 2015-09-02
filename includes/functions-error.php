@@ -124,3 +124,41 @@ function wpas_clean_error( $error_id ) {
 function wpas_clean_errors() {
 	wpas_set_errors();
 }
+
+/**
+ * Get all errors in a human readable format
+ *
+ * @since 3.2
+ * @return string
+ */
+function wpas_get_display_errors() {
+
+	$errors = wpas_get_errors();
+	$text   = '';
+
+	if ( count( $errors ) >= 2 ) {
+		$text = '<ul>';
+		foreach ( $errors as $id => $message ) {
+			$text .= "<li>$message</li>";
+		}
+		$text .= '</ul>';
+	} else {
+		foreach ( $errors as $id => $message ) {
+			$text = $message;
+		}
+	}
+
+	return wpas_get_notification_markup( 'error', $text );
+
+}
+
+add_action( 'wpas_before_template', 'wpas_display_errors', 10, 3 );
+/**
+ * Display all error messages
+ *
+ * @since 3.2
+ * @return string Readable errors
+ */
+function wpas_display_errors() {
+	echo wpas_get_display_errors();
+}
