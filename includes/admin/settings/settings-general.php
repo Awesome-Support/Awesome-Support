@@ -76,20 +76,22 @@ function wpas_core_settings_general( $def ) {
 					'type' => 'heading',
 				),
 				array(
-					'name'    => __( 'Ticket Submission', 'wpas' ),
-					'id'      => 'ticket_submit',
-					'type'    => 'select',
-					'desc'    => sprintf( __( 'The page used for ticket submission. This page should contain the shortcode %s', 'wpas' ), '<code>[ticket-submit]</code>' ),
-					'options' => wpas_list_pages(),
-					'default' => ''
+					'name'     => __( 'Ticket Submission', 'wpas' ),
+					'id'       => 'ticket_submit',
+					'type'     => 'select',
+					'multiple' => true,
+					'desc'     => sprintf( __( 'The page used for ticket submission. This page should contain the shortcode %s', 'wpas' ), '<code>[ticket-submit]</code>' ),
+					'options'  => wpas_list_pages(),
+					'default'  => ''
 				),
 				array(
-					'name'    => __( 'Tickets List', 'wpas' ),
-					'id'      => 'ticket_list',
-					'type'    => 'select',
-					'desc'    => sprintf( __( 'The page that will list all tickets for a client. This page should contain the shortcode %s', 'wpas' ), '<code>[tickets]</code>' ),
-					'options' => wpas_list_pages(),
-					'default' => ''
+					'name'     => __( 'Tickets List', 'wpas' ),
+					'id'       => 'ticket_list',
+					'type'     => 'select',
+					'multiple' => true,
+					'desc'     => sprintf( __( 'The page that will list all tickets for a client. This page should contain the shortcode %s', 'wpas' ), '<code>[tickets]</code>' ),
+					'options'  => wpas_list_pages(),
+					'default'  => ''
 				),
 				array(
 					'name' => __( 'Terms & Conditions', 'wpas' ),
