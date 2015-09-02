@@ -106,7 +106,7 @@ require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep th
 require_once( WPAS_PATH . 'includes/class-gist.php' );                // Add oEmbed support for Gists
 require_once( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper class to load a wp_editor instance via Ajax
 require_once( WPAS_PATH . 'includes/class-agent.php' );               // Support agent class
-require_once( WPAS_PATH . 'vendor/ericmann/wp-session-manager/wp-session-manager.php' );
+require_once( WPAS_PATH . 'includes/class-wpas-session.php' );
 
 /**
  * Check if dependencies are loaded.
@@ -158,13 +158,6 @@ if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
 
 }
 
-/**
- * Start the session if needed.
- */
-if ( ! session_id() && ! headers_sent() ) {
-	session_start();
-}
-
 /*----------------------------------------------------------------------------*
  * Declare global variables
  *----------------------------------------------------------------------------*/
@@ -179,6 +172,16 @@ if ( ! session_id() && ! headers_sent() ) {
  * @var    $wpas_cf WPAS_Custom_Fields
  */
 $wpas_cf = new WPAS_Custom_Fields;
+
+/**
+ * Awesome Support global session
+ *
+ * Uses PHP sessions if possible, Eric Mann's session manager otherwise
+ *
+ * @since 3.2
+ * @var WPAS_Session
+ */
+$wpas_session = new WPAS_Session();
 
 /*----------------------------------------------------------------------------*
  * Load theme's functions
