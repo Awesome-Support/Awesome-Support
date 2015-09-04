@@ -55,7 +55,7 @@ function wpas_sc_client_account() {
 		if ( false !== $registration && !empty( $registration ) && !is_null( get_post( intval( $registration ) ) ) ) {
 			/* As the headers are already sent we can't use wp_redirect. */
 			echo '<meta http-equiv="refresh" content="0; url=' . get_permalink( $registration ) . '" />';
-			wpas_notification( false, __( 'You are being redirected...', 'wpas' ) );
+			wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'wpas' ) );
 			exit;
 		}
 

@@ -9,7 +9,7 @@
 /**
  * Make the post data and the pre-form message global
  */
-global $post, $wpas_notification;
+global $post;
 
 $submit        = get_permalink( wpas_get_option( 'ticket_list' ) );
 $registration  = wpas_get_option( 'allow_registrations', 'allow' ); // Make sure registrations are open
@@ -26,7 +26,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 		<?php
 		/* Registrations are not allowed. */
 		if ( 'disallow' === $registration ) {
-			wpas_notification( 'failure', __( 'Registrations are currently not allowed.', 'wpas' ) );
+			echo wpas_get_notification_markup( 'failure', __( 'Registrations are currently not allowed.', 'wpas' ) );
 		}
 
 		$username = new WPAS_Custom_Field( 'log', array(

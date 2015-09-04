@@ -733,3 +733,30 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 	}
 
 }
+
+/**
+ * Get URL of a submission page
+ *
+ * As the plugin can handle multiple submission pages, we need to
+ * make sure that a give post ID is indeed a submission page, and if no
+ * post ID is provided we return the URL of the first submission page.
+ *
+ * @since 3.2
+ *
+ * @param bool|false $post_id ID of the submission page
+ *
+ * @return string
+ */
+function wpas_get_submission_page_url( $post_id = false ) {
+
+	$submission = wpas_get_option( 'ticket_submit' );
+
+	if ( is_int( $post_id ) && in_array( $post_id, $submission ) ) {
+		$url = get_permalink( (int) $post_id );
+	} else {
+		$url = get_permalink( (int) $submission[0] );
+	}
+
+	return esc_url( $url );
+
+}

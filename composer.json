@@ -1,6 +1,7 @@
 {
     "require": {
-        "gambitph/titan-framework": "1.7.*"
+        "gambitph/titan-framework": "1.7.*",
+        "ericmann/wp-session-manager": "dev-master"
     },
     "archive": {
         "exclude": [

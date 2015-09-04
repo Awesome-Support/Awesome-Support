@@ -59,11 +59,11 @@ function wpas_single_ticket( $content ) {
 	if ( ! wpas_can_view_ticket( $post->ID ) ) {
 
 		if ( is_user_logged_in() ) {
-			return wpas_notification( false, 13, false );
+			return wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'wpas' ) );
 		} else {
 
 			$output = '';
-			$output .= wpas_notification( false, 13, false );
+			$output .= wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'wpas' ) );
 
 			ob_start();
 			wpas_get_template( 'registration' );
@@ -380,7 +380,7 @@ function wpas_get_reply_form( $args = array() ) {
 
 	if( 'closed' === $status ):
 
-		wpas_notification( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'wpas' ), wpas_get_reopen_url() ) );
+		echo wpas_get_notification_markup( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'wpas' ), wpas_get_reopen_url() ) );
 
 	/**
 	 * Check if the ticket is currently open and if the current user
@@ -488,9 +488,9 @@ function wpas_get_reply_form( $args = array() ) {
 	 * This case is an agent viewing the ticket from the front-end. All actions are tracked in the back-end only, that's why we prevent agents from replying through the front-end.
 	 */
 	elseif( 'open' === $status && false === wpas_can_reply_ticket() ):
-		wpas_notification( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'wpas' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) ) );
+		echo wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'wpas' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) ) );
 	else:
-		wpas_notification( 'info', __( 'You are not allowed to reply to this ticket.', 'wpas' ) );
+		echo wpas_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'wpas' ) );
 	endif;
 
 	/**
@@ -784,5 +784,38 @@ function wpas_cf_display_status( $name, $post_id ) {
 	}
 
 	echo $tag;
+
+}
+
+/**
+ * Get the notification wrapper markup
+ *
+ * @since 3.2
+ *
+ * @param string $type Type of notification. Defines the wrapper class to use
+ * @param string $message Notification message
+ *
+ * @return string
+ */
+function wpas_get_notification_markup( $type = 'info', $message = '' ) {
+
+	if ( empty( $message ) ) {
+		return '';
+	}
+
+	$classes = apply_filters( 'wpas_notification_classes', array(
+		'success' => 'wpas-alert wpas-alert-success',
+		'failure' => 'wpas-alert wpas-alert-danger',
+		'info'    => 'wpas-alert wpas-alert-info',
+	) );
+
+	if ( ! array_key_exists( $type, $classes ) ) {
+		$type = 'info';
+	}
+
+	$markup = apply_filters( 'wpas_notification_wrapper', '<div class="%s">%s</div>' ); // Keep this filter for backwards compatibility
+	$markup = apply_filters( 'wpas_notification_markup', sprintf( $markup, $classes[$type], $message ), $type );
+
+	return $markup;
 
 }

@@ -14,7 +14,15 @@ function wpas_open_ticket( $data ) {
 	/**
 	 * Prepare vars
 	 */
-	$submit  = wpas_get_option( 'ticket_submit' ); // ID of the submission page
+	$referrer = $_POST['_wp_http_referer'];
+	$submit   = wp_sanitize_redirect( home_url( $referrer ) );
+
+	// Fallback in case the referrer failed
+	if ( empty( $submit ) ) {
+		$submission_pages = wpas_get_option( 'ticket_submit' );
+		$submit           = $submission_pages[0];
+		$submit           = wp_sanitize_redirect( get_permalink( $submit ) );
+	}
 
 	// Verify user capability
 	if ( !current_user_can( 'create_ticket' ) ) {
@@ -23,7 +31,8 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		// Redirect to submit page
-		wp_redirect( add_query_arg( array( 'message' => 11 ), get_permalink( $submit ) ) );
+		wpas_add_error( 'cannot_open_ticket', __( 'You do not have the capacity to open a new ticket.', 'wpas' ) );
+		wp_redirect( $submit );
 
 		// Break
 		exit;
@@ -36,7 +45,8 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		// Redirect to submit page
-		wp_redirect( add_query_arg( array( 'message' => 3 ), get_permalink( $submit ) ) );
+		wpas_add_error( 'missing_title', __( 'It is mandatory to provide a title for your issue.', 'wpas' ) );
+		wp_redirect( $submit );
 
 		// Break
 		exit;
@@ -48,7 +58,8 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		// Redirect to submit page
-		wp_redirect( add_query_arg( array( 'message' => 10 ), get_permalink( $submit ) ) );
+		wpas_add_error( 'missing_description', __( 'It is mandatory to provide a description for your issue.', 'wpas' ) );
+		wp_redirect( $submit );
 
 		// Break
 		exit;
@@ -77,7 +88,8 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		/* Redirect to submit page */
-		wp_redirect( add_query_arg( array( 'message' => wpas_create_notification( $messages ) ), get_permalink( $submit ) ) );
+		wpas_add_error( 'validation_issue', $messages );
+		wp_redirect( $submit );
 
 		exit;
 
@@ -98,9 +110,9 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		// Redirect to submit page
-		wp_redirect( add_query_arg( array( 'message' => 5 ), get_permalink( $submit ) ) );
+		wpas_add_error( 'unknown_user', __( 'Only registered accounts can submit a ticket. Please register first.', 'wpas' ) );
+		wp_redirect( $submit );
 
-		// Break
 		exit;
 
 	}
@@ -126,6 +138,18 @@ function wpas_open_ticket( $data ) {
 	
 }
 
+/**
+ * Insert a new ticket in the database
+ *
+ * This function is a wrapper function for wp_insert_post
+ * with additional checks specific to the ticketing system
+ *
+ * @param array    $data     Ticket (post) data
+ * @param bool|int $post_id  Post ID for an update
+ * @param bool|int $agent_id ID of the agent to assign ticket to
+ *
+ * @return bool|int|WP_Error
+ */
 function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false ) {
 
 	if ( ! current_user_can( 'create_ticket' ) ) {
@@ -844,17 +868,19 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
  */
 function wpas_save_values() {
 
-	if ( isset( $_SESSION['wpas_submission_form'] ) ) {
-		unset( $_SESSION['wpas_submission_form'] );
-	}
+	global $wpas_session;
+
+	$fields = array();
 
 	foreach ( $_POST as $key => $value ) {
 
 		if ( !empty( $value ) ) {
-			$_SESSION['wpas_submission_form'][$key] = $value;
+			$fields[$key] = $value;
 		}
 
 	}
+
+	$wpas_session->add( 'submission_form', $fields );
 
 }
 

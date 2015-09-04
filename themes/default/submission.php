@@ -77,7 +77,7 @@ global $post;
 		 */
 		do_action( 'wpas_submission_form_inside_before_submit' );
 
-		wp_nonce_field( 'new_ticket', 'wpas_nonce', false, true );
+		wp_nonce_field( 'new_ticket', 'wpas_nonce', true, true );
 		wpas_make_button( __( 'Submit ticket', 'wpas' ), array( 'name' => 'wpas-submit', 'onsubmit' => __( 'Please Wait...', 'wpas' ) ) );
 		
 		/**

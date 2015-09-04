@@ -100,12 +100,15 @@ require_once( WPAS_PATH . 'includes/functions-deprecated.php' );      // Load de
 require_once( WPAS_PATH . 'includes/class-log-history.php' );         // Logging class
 require_once( WPAS_PATH . 'includes/class-email-notifications.php' ); // E-mail notification class
 require_once( WPAS_PATH . 'includes/functions-general.php' );         // Functions that are used both in back-end and front-end
+require_once( WPAS_PATH . 'includes/functions-error.php' );           // Error handling
+require_once( WPAS_PATH . 'includes/functions-notification.php' );    // Notification handling
 require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
 require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
 require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
 require_once( WPAS_PATH . 'includes/class-gist.php' );                // Add oEmbed support for Gists
 require_once( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper class to load a wp_editor instance via Ajax
 require_once( WPAS_PATH . 'includes/class-agent.php' );               // Support agent class
+require_once( WPAS_PATH . 'includes/class-wpas-session.php' );
 
 /**
  * Check if dependencies are loaded.
@@ -129,7 +132,6 @@ if ( ! Awesome_Support::dependencies_loaded() ) {
  * Public-Facing Only Functionality
  *----------------------------------------------------------------------------*/
 if ( ! is_admin() && Awesome_Support::dependencies_loaded() ) {
-	require_once( WPAS_PATH . 'includes/class-notification.php' ); // Load notifications class
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
 }
@@ -157,13 +159,6 @@ if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
 
 }
 
-/**
- * Start the session if needed.
- */
-if ( ! session_id() && ! headers_sent() ) {
-	session_start();
-}
-
 /*----------------------------------------------------------------------------*
  * Declare global variables
  *----------------------------------------------------------------------------*/
@@ -178,6 +173,16 @@ if ( ! session_id() && ! headers_sent() ) {
  * @var    $wpas_cf WPAS_Custom_Fields
  */
 $wpas_cf = new WPAS_Custom_Fields;
+
+/**
+ * Awesome Support global session
+ *
+ * Uses PHP sessions if possible, Eric Mann's session manager otherwise
+ *
+ * @since 3.2
+ * @var WPAS_Session
+ */
+$wpas_session = new WPAS_Session();
 
 /*----------------------------------------------------------------------------*
  * Load theme's functions
