@@ -148,7 +148,7 @@ function wpas_get_display_errors() {
 		}
 	}
 
-	return wpas_get_notification_markup( 'error', $text );
+	return wpas_get_notification_markup( 'failure', $text );
 
 }
 
@@ -161,4 +161,5 @@ add_action( 'wpas_before_template', 'wpas_display_errors', 10, 3 );
  */
 function wpas_display_errors() {
 	echo wpas_get_display_errors();
+	wpas_clean_errors();
 }
