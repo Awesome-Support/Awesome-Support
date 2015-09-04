@@ -75,7 +75,7 @@ function wpas_sc_submit_form() {
 				/**
 				 * Make sure the current user can submit a ticket.
 				 */
-				if ( false === wpas_can_submit_ticket( $post->ID ) ) {
+				if ( false === wpas_can_submit_ticket() ) {
 					echo wpas_get_notification_markup( 'failure', __( 'You are not allowed to submit a ticket.', 'wpas' ) );
 				}
 
