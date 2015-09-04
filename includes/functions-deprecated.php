@@ -167,3 +167,40 @@ function wpas_get_registration_field_value( $field ) {
 	}
 
 }
+
+/**
+ * Display notification.
+ *
+ * This function returns a notification either
+ * predefined or customized by the user.
+ *
+ * @since      3.0.0
+ * @deprecated 3.2
+ *
+ * @param  string         $case    Type of notification
+ * @param  boolean|string $message Message to display
+ * @param  boolean        $echo    Whether to echo or return the notification
+ *
+ * @return string           Notification (with markup)
+ * @see        WPAS_Notification
+ */
+function wpas_notification( $case, $message = '', $echo = true ) {
+	_deprecated_function( __FUNCTION__, '3.2', 'wpas_get_notification_markup()' );
+}
+
+/**
+ * Create custom notification.
+ *
+ * Takes a custom message and encodes it so that it can be
+ * passed safely as a URL parameter.
+ *
+ * @since      3.0.0
+ * @deprecated 3.2
+ *
+ * @param  string $message Custom message
+ *
+ * @return string          Encoded message
+ */
+function wpas_create_notification( $message ) {
+	_deprecated_function( __FUNCTION__, '3.2' );
+}

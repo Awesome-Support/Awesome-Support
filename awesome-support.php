@@ -132,7 +132,6 @@ if ( ! Awesome_Support::dependencies_loaded() ) {
  * Public-Facing Only Functionality
  *----------------------------------------------------------------------------*/
 if ( ! is_admin() && Awesome_Support::dependencies_loaded() ) {
-	require_once( WPAS_PATH . 'includes/class-notification.php' ); // Load notifications class
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
 }

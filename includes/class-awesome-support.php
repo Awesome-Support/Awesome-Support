@@ -67,7 +67,6 @@ class Awesome_Support {
 			add_action( 'wpas_after_registration_fields', array( $this, 'terms_and_conditions_checkbox' ),   10, 3 ); // Add terms & conditions checkbox
 			add_action( 'wpas_after_template',            array( $this, 'terms_and_conditions_modal' ),      10, 3 ); // Load the terms and conditions in a hidden div in the footer
 			add_action( 'wpas_after_template',            array( $this, 'credit' ),                          10, 3 );
-			add_action( 'wpas_before_template',           array( $this, 'trigger_templates_notifications' ), 10, 3 ); // Shows the notifications at the top of template files
 			add_filter( 'template_include',               array( $this, 'template_include' ),                10, 1 );
 			add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ),             10, 1 );
 			add_filter( 'authenticate',                   array( $this, 'email_signon' ),                    20, 3 );
@@ -970,29 +969,6 @@ class Awesome_Support {
 		if ( true === (bool) wpas_get_option( 'credit_link' ) ) {
 			echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
 		}
-	}
-
-	/**
-	 * Shows notifications at the top of any template file.
-	 *
-	 * @since 3.1.11
-	 * @return boolean True if a notification was found, false otherwise
-	 */
-	public function trigger_templates_notifications() {
-		/**
-		 * Display possible messages to the visitor.
-		 */
-		if ( ! isset( $_GET['message'] ) ) {
-			return false;
-		}
-
-		if ( is_numeric( $_GET['message'] ) ) {
-			wpas_notification( false, filter_input( INPUT_GET, 'message', FILTER_SANITIZE_NUMBER_INT ) );
-		} else {
-			wpas_notification( 'decode', filter_input( INPUT_GET, 'message', FILTER_SANITIZE_STRING ), true );
-		}
-
-		return true;
 	}
 
 	/**
