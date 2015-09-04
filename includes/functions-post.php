@@ -868,17 +868,19 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
  */
 function wpas_save_values() {
 
-	if ( isset( $_SESSION['wpas_submission_form'] ) ) {
-		unset( $_SESSION['wpas_submission_form'] );
-	}
+	global $wpas_session;
+
+	$fields = array();
 
 	foreach ( $_POST as $key => $value ) {
 
 		if ( !empty( $value ) ) {
-			$_SESSION['wpas_submission_form'][$key] = $value;
+			$fields[$key] = $value;
 		}
 
 	}
+
+	$wpas_session->add( 'submission_form', $fields );
 
 }
 
