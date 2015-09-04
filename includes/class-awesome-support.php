@@ -179,7 +179,8 @@ class Awesome_Support {
 				wpas_save_values();
 
 				// Redirect to submit page
-				wp_redirect( add_query_arg( array( 'message' => 4 ), get_permalink( wpas_get_option( 'ticket_submit' ) ) ) );
+				wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'wpas' ) );
+				wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
 				exit;
 			}
 
@@ -194,8 +195,8 @@ class Awesome_Support {
 				/**
 				 * Redirect to the newly created ticket
 				 */
-				$submit = wpas_get_option( 'ticket_submit' );
-				wpas_redirect( 'ticket_added_failed', add_query_arg( array( 'message' => 6 ), get_permalink( $submit ) ), $submit );
+				wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'wpas' ) );
+				wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
 				exit;
 
 			}

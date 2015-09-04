@@ -222,7 +222,7 @@ class WPAS_Session {
 	 * @return void
 	 */
 	public function reset() {
-		
+
 		$this->session = array();
 
 		if ( $this->can_php_session() ) {
