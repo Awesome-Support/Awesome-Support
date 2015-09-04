@@ -14,8 +14,7 @@ function wpas_open_ticket( $data ) {
 	/**
 	 * Prepare vars
 	 */
-	$referrer = $_POST['_wp_http_referer'];
-	$submit   = wp_sanitize_redirect( home_url( $referrer ) );
+	$submit = isset( $_POST['_wp_http_referer'] ) ? wpas_get_submission_page_url( url_to_postid( $_POST['_wp_http_referer'] ) ) : wpas_get_submission_page_url();
 
 	// Fallback in case the referrer failed
 	if ( empty( $submit ) ) {
