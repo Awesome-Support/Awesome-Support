@@ -41,7 +41,8 @@ class WPAS_Session {
 
 		if ( $this->can_php_session() ) {
 
-			add_action( 'init',           array( $this, 'maybe_start_session' ), 1 );
+			$this->maybe_start_session();
+
 			add_action( 'plugins_loaded', array( $this, 'init' ) );
 
 		} else {
@@ -65,7 +66,16 @@ class WPAS_Session {
 	public function init() {
 
 		if ( $this->can_php_session() ) {
-			$this->session = $_SESSION[ 'wpas' . $this->prefix ];
+
+			$key = 'wpas' . $this->prefix;
+
+			// Set the session if necessary
+			if ( ! array_key_exists( $key, $_SESSION ) ) {
+				$_SESSION[ $key ] = array();
+			}
+
+			$this->session = $_SESSION[ $key ];
+
 		} else {
 			$this->session = WP_Session::get_instance();
 		}
@@ -86,6 +96,25 @@ class WPAS_Session {
 		} else {
 			return false;
 		}
+
+	}
+
+	/**
+	 * Update the PHP session when internal session changes
+	 *
+	 * @since 3.2
+	 * @return void
+	 */
+	protected function update_php_session() {
+
+		$key = 'wpas' . $this->prefix;
+
+		// Set the session if necessary
+		if ( ! array_key_exists( $key, $_SESSION ) ) {
+			$_SESSION[ $key ] = array();
+		}
+
+		$_SESSION[ $key ] = $this->session;
 
 	}
 
@@ -120,6 +149,10 @@ class WPAS_Session {
 			$this->session[ $key ] = $value;
 		}
 
+		if ( $this->can_php_session() ) {
+			$this->update_php_session();
+		}
+
 	}
 
 	/**
@@ -146,6 +179,16 @@ class WPAS_Session {
 	}
 
 	/**
+	 * Get current session superglobal
+	 *
+	 * @since 3.2
+	 * @return array
+	 */
+	public function get_session() {
+		return $this->session;
+	}
+
+	/**
 	 * Clean a session
 	 *
 	 * @since 3.2
@@ -164,6 +207,10 @@ class WPAS_Session {
 			$cleaned = true;
 		}
 
+		if ( $this->can_php_session() ) {
+			$this->update_php_session();
+		}
+
 		return $cleaned;
 
 	}
@@ -175,7 +222,13 @@ class WPAS_Session {
 	 * @return void
 	 */
 	public function reset() {
+		
 		$this->session = array();
+
+		if ( $this->can_php_session() ) {
+			$this->update_php_session();
+		}
+
 	}
 
 	/**
@@ -204,9 +257,6 @@ class WPAS_Session {
 	 * @return void
 	 */
 	public function maybe_start_session() {
-		/**
-		 * Start the session if needed.
-		 */
 		if ( ! session_id() && ! headers_sent() ) {
 			session_start();
 		}
