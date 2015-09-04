@@ -59,11 +59,11 @@ function wpas_single_ticket( $content ) {
 	if ( ! wpas_can_view_ticket( $post->ID ) ) {
 
 		if ( is_user_logged_in() ) {
-			return wpas_notification( false, 13, false );
+			return wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'wpas' ) );
 		} else {
 
 			$output = '';
-			$output .= wpas_notification( false, 13, false );
+			$output .= wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'wpas' ) );
 
 			ob_start();
 			wpas_get_template( 'registration' );
