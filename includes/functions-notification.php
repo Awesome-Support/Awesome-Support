@@ -152,19 +152,23 @@ function wpas_get_display_notifications( $group = 'notifications', $type = 'succ
 	$notifications = wpas_get_notifications( $group );
 	$text          = '';
 
-	if ( count( $notifications ) >= 2 ) {
-
-		$messages = array();
-
-		foreach ( $notifications as $id => $message ) {
-			array_push( $messages, wpas_readable_notification_message( $message ) );
-		}
-
-		$text = implode( '<br>', $messages );
-
+	if ( ! is_array( $notifications ) ) {
+		$text = $notifications;
 	} else {
-		foreach ( $notifications as $id => $message ) {
-			$text = wpas_readable_notification_message( $message );
+		if ( count( $notifications ) >= 2 ) {
+
+			$messages = array();
+
+			foreach ( $notifications as $id => $message ) {
+				array_push( $messages, wpas_readable_notification_message( $message ) );
+			}
+
+			$text = implode( '<br>', $messages );
+
+		} else {
+			foreach ( $notifications as $id => $message ) {
+				$text = wpas_readable_notification_message( $message );
+			}
 		}
 	}
 
