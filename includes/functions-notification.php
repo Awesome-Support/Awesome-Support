@@ -153,18 +153,47 @@ function wpas_get_display_notifications( $group = 'notifications', $type = 'succ
 	$text          = '';
 
 	if ( count( $notifications ) >= 2 ) {
-		$text = '<ul>';
+
+		$messages = array();
+
 		foreach ( $notifications as $id => $message ) {
-			$text .= "<li>$message</li>";
+			array_push( $messages, wpas_readable_notification_message( $message ) );
 		}
-		$text .= '</ul>';
+
+		$text = implode( '<br>', $messages );
+
 	} else {
 		foreach ( $notifications as $id => $message ) {
-			$text = $message;
+			$text = wpas_readable_notification_message( $message );
 		}
 	}
 
 	return wpas_get_notification_markup( $type, $text );
+
+}
+
+/**
+ * Maybe transform array message into a readable list
+ *
+ * @since 3.2
+ *
+ * @param array|string $message Message to display
+ *
+ * @return string Readable message
+ */
+function wpas_readable_notification_message( $message ) {
+
+	if ( ! is_array( $message ) ) {
+		return $message;
+	}
+
+	$messages = array();
+
+	foreach ( $message as $key => $value ) {
+		array_push( $messages, wpas_readable_notification_message( $value ) );
+	}
+
+	return implode( '<br>', $messages );
 
 }
 
