@@ -1188,7 +1188,9 @@ class Awesome_Support_Admin {
 	 * @return void
 	 */
 	public function remote_notifications() {
-		$notification = new TAV_Remote_Notification_Client( 76, '7f613a5dc7754971', 'http://getawesomesupport.com?post_type=notification' );
+		if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
+			new TAV_Remote_Notification_Client( 76, '7f613a5dc7754971', 'http://getawesomesupport.com?post_type=notification' );
+		}
 	}
 
 }
