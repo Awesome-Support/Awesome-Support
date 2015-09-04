@@ -380,7 +380,7 @@ function wpas_get_reply_form( $args = array() ) {
 
 	if( 'closed' === $status ):
 
-		wpas_notification( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'wpas' ), wpas_get_reopen_url() ) );
+		echo wpas_get_notification_markup( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'wpas' ), wpas_get_reopen_url() ) );
 
 	/**
 	 * Check if the ticket is currently open and if the current user
@@ -488,9 +488,9 @@ function wpas_get_reply_form( $args = array() ) {
 	 * This case is an agent viewing the ticket from the front-end. All actions are tracked in the back-end only, that's why we prevent agents from replying through the front-end.
 	 */
 	elseif( 'open' === $status && false === wpas_can_reply_ticket() ):
-		wpas_notification( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'wpas' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) ) );
+		echo wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'wpas' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) ) );
 	else:
-		wpas_notification( 'info', __( 'You are not allowed to reply to this ticket.', 'wpas' ) );
+		echo wpas_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'wpas' ) );
 	endif;
 
 	/**
