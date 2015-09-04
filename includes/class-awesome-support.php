@@ -244,7 +244,8 @@ class Awesome_Support {
 			$parent_id = intval( $_POST['ticket_id'] );
 
 			if ( empty( $_POST['wpas_user_reply'] ) && false === $can_submit_empty ) {
-				wpas_redirect( 'reply_not_added', add_query_arg( array( 'message' => wpas_create_notification( __( 'You cannot submit an empty reply.', 'wpas' ) ) ), get_permalink( $parent_id ) ), $parent_id );
+				wpas_add_error( 'reply_not_added', __( 'You cannot submit an empty reply.', 'wpas' ) );
+				wpas_redirect( 'reply_not_added', get_permalink( $parent_id ), $parent_id );
 				exit;
 			}
 
@@ -260,7 +261,8 @@ class Awesome_Support {
 			}
 
 			if ( false === $reply_id ) {
-				wpas_redirect( 'reply_added_failed', add_query_arg( array( 'message' => '7' ), get_permalink( $parent_id ) ) );
+				wpas_add_error( 'reply_added_failed', __( 'Your reply could not be submitted for an unknown reason.', 'wpas' ) );
+				wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
 				exit;
 			} else {
 
@@ -269,7 +271,8 @@ class Awesome_Support {
 				 */
 				delete_transient( "wpas_activity_meta_post_$parent_id" );
 
-				wpas_redirect( 'reply_added', add_query_arg( array( 'message' => '8' ), get_permalink( $parent_id ) ) . "#reply-$reply_id", $parent_id );
+				wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'wpas' ) );
+				wpas_redirect( 'reply_added', get_permalink( $parent_id ) . "#reply-$reply_id", $parent_id );
 				exit;
 			}
 		}
