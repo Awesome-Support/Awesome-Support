@@ -2,7 +2,8 @@
 /**
  * AS Errors
  *
- * A set of helper functions for handling errors
+ * These are wrapper functions for the notification helper functions
+ * with the error group and failure type predefined
  *
  * @since 3.2
  */
@@ -19,8 +20,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function wpas_set_errors() {
-	global $wpas_session;
-	$wpas_session->add( 'errors', array() );
+	wpas_set_notifications( 'errors' );
 }
 
 /**
@@ -34,21 +34,7 @@ function wpas_set_errors() {
  * @return void
  */
 function wpas_add_error( $error_id, $error_message ) {
-
-	global $wpas_session;
-
-	$errors        = $wpas_session->get( 'errors' );
-	$error_id      = sanitize_text_field( $error_id );
-	$error_message = wp_kses_post( $error_message );
-
-	if ( false === $errors ) {
-		wpas_set_errors();
-	}
-
-	$errors[ $error_id ] = $error_message;
-
-	$wpas_session->add( 'errors', $errors );
-
+	wpas_add_notification( $error_id, $error_message, 'errors' );
 }
 
 /**
@@ -62,19 +48,7 @@ function wpas_add_error( $error_id, $error_message ) {
  * @return mixed
  */
 function wpas_get_error( $error_id, $default = false ) {
-
-	global $wpas_session;
-
-	$value    = $default;
-	$errors   = $wpas_session->get( 'errors' );
-	$error_id = sanitize_text_field( $error_id );
-
-	if ( is_array( $errors ) && array_key_exists( $error_id, $errors ) ) {
-		$value = $errors[ $error_id ];
-	}
-
-	return $value;
-
+	return wpas_get_notification( $error_id, $default, 'errors' );
 }
 
 /**
@@ -84,10 +58,7 @@ function wpas_get_error( $error_id, $default = false ) {
  * @return array
  */
 function wpas_get_errors() {
-
-	global $wpas_session;
-
-	return $wpas_session->get( 'errors' );
+	return wpas_get_notifications( 'errors' );
 }
 
 /**
@@ -100,19 +71,7 @@ function wpas_get_errors() {
  * @return void
  */
 function wpas_clean_error( $error_id ) {
-
-	if ( false === wpas_get_error( $error_id ) ) {
-		return;
-	}
-
-	global $wpas_session;
-
-	$errors = wpas_get_errors();
-
-	unset( $errors[ $error_id ] );
-
-	$wpas_session->add( 'errors', $errors );
-
+	wpas_clean_notification( $error_id, 'errors' );
 }
 
 /**
@@ -122,7 +81,7 @@ function wpas_clean_error( $error_id ) {
  * @return void
  */
 function wpas_clean_errors() {
-	wpas_set_errors();
+	wpas_clean_notifications( 'errors' );
 }
 
 /**
@@ -132,24 +91,7 @@ function wpas_clean_errors() {
  * @return string
  */
 function wpas_get_display_errors() {
-
-	$errors = wpas_get_errors();
-	$text   = '';
-
-	if ( count( $errors ) >= 2 ) {
-		$text = '<ul>';
-		foreach ( $errors as $id => $message ) {
-			$text .= "<li>$message</li>";
-		}
-		$text .= '</ul>';
-	} else {
-		foreach ( $errors as $id => $message ) {
-			$text = $message;
-		}
-	}
-
-	return wpas_get_notification_markup( 'failure', $text );
-
+	return wpas_get_display_notifications( 'errors', 'failure' );
 }
 
 add_action( 'wpas_before_template', 'wpas_display_errors', 10, 3 );
