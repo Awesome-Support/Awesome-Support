@@ -717,7 +717,17 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array() ) {
 		'unread'
 	);
 
-	if ( ! in_array( $status, $allowed_status ) ) {
+	if ( ! is_array( $status ) ) {
+		$status = (array) $status;
+	}
+
+	foreach ( $status as $key => $reply_status ) {
+		if ( ! in_array( $reply_status, $allowed_status ) ) {
+			unset( $status[ $key ] );
+		}
+	}
+
+	if ( empty( $status ) ) {
 		$status = 'any';
 	}
 
