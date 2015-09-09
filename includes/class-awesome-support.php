@@ -270,8 +270,11 @@ class Awesome_Support {
 				delete_transient( "wpas_activity_meta_post_$parent_id" );
 
 				wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'wpas' ) );
-				wpas_redirect( 'reply_added', wpas_get_reply_link( $reply_id ) );
-				exit;
+
+				if ( false !== $link = wpas_get_reply_link( $reply_id ) ) {
+					wpas_redirect( 'reply_added', $link );
+					exit;
+				}
 			}
 		}
 
