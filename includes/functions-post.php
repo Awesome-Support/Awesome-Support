@@ -700,6 +700,15 @@ function wpas_insert_reply( $data, $post_id = false ) {
 
 }
 
+/**
+ * Get replies for a specific ticket
+ *
+ * @param integer $post_id ID of the post (ticket) to get the replies from
+ * @param string  $status  Status of the replies to get
+ * @param array   $args    Additional arguments (see WP_Query)
+ *
+ * @return array|WP_Query
+ */
 function wpas_get_replies( $post_id, $status = 'any', $args = array() ) {
 
 	$allowed_status = array(
