@@ -717,7 +717,7 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array() ) {
 		'unread'
 	);
 
-	if ( !in_array( $status, $allowed_status ) ) {
+	if ( ! in_array( $status, $allowed_status ) ) {
 		$status = 'any';
 	}
 
@@ -725,23 +725,23 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array() ) {
 		'post_parent'            => $post_id,
 		'post_type'              => 'ticket_reply',
 		'post_status'            => $status,
-		'order'                  => 'DESC',
+		'order'                  => wpas_get_option( 'replies_order', 'ASC' ),
 		'orderby'                => 'date',
-		'posts_per_page'         => -1,
+		'posts_per_page'         => - 1,
 		'no_found_rows'          => true,
 		'cache_results'          => false,
 		'update_post_term_cache' => false,
 		'update_post_meta_cache' => false,
-	);	
+	);
 
-	$args = wp_parse_args( $args, $defaults );	
-	
+	$args = wp_parse_args( $args, $defaults );
+
 	$replies = new WP_Query( $args );
 
 	if ( is_wp_error( $replies ) ) {
 		return $replies;
 	}
-	
+
 	return $replies->posts;
 
 }
