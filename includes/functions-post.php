@@ -709,7 +709,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
  *
  * @return array|WP_Query
  */
-function wpas_get_replies( $post_id, $status = 'any', $args = array() ) {
+function wpas_get_replies( $post_id, $status = 'any', $args = array(), $output = 'replies' ) {
 
 	$allowed_status = array(
 		'any',
@@ -752,7 +752,7 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array() ) {
 		return $replies;
 	}
 
-	return $replies->posts;
+	return 'wp_query' === $output ? $replies : $replies->posts;
 
 }
 
