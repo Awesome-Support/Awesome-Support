@@ -760,3 +760,52 @@ function wpas_get_submission_page_url( $post_id = false ) {
 	return esc_url( $url );
 
 }
+
+/**
+ * Get the link to a ticket reply
+ *
+ * @since 3.2
+ *
+ * @param int $reply_id ID of the reply to get the link to
+ *
+ * @return string|bool Reply link or false if the reply doesn't exist
+ */
+function wpas_get_reply_link( $reply_id ) {
+
+	$reply = get_post( $reply_id );
+
+	if ( empty( $reply ) ) {
+		return false;
+	}
+
+	if ( 'ticket_reply' !== $reply->post_type || 0 === (int) $reply->post_parent ) {
+		return false;
+	}
+
+	$replies = wpas_get_replies( $reply->post_parent, array( 'read', 'unread' ) );
+
+	if ( empty( $replies ) ) {
+		return false;
+	}
+
+	$position = 0;
+
+	foreach ( $replies as $key => $post ) {
+
+		if ( $reply_id === $post->ID ) {
+			$position = $key + 1;
+		}
+
+	}
+
+	if ( 0 === $position ) {
+		return false;
+	}
+
+	$page = ceil( $position / 10 );
+	$base = 1 !== (int) $page ? add_query_arg( 'as-page', $page, get_permalink( $reply->post_parent ) ) : get_permalink( $reply->post_parent );
+	$link = $base . "#reply-$reply_id";
+
+	return esc_url( $link );
+
+}
