@@ -51,6 +51,13 @@ function wpas_core_settings_general( $def ) {
 					'default' => 'ASC'
 				),
 				array(
+					'name'    => __( 'Replies Per Page', 'wpas' ),
+					'id'      => 'replies_per_page',
+					'type'    => 'text',
+					'default' => 10,
+					'desc'    => __( 'How many replies should be displayed per page on a ticket details screen?', 'wpas' )
+				),
+				array(
 					'name'    => __( 'Hide Closed', 'wpas' ),
 					'id'      => 'hide_closed',
 					'type'    => 'checkbox',
