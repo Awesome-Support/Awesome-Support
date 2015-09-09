@@ -13,7 +13,10 @@ if( !defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-global $wpas_replies, $post;
+/**
+ * @var $post WP_Post
+ */
+global $post;
 
 /* Get author meta */
 $author = get_user_by( 'id', $post->post_author );
@@ -79,16 +82,29 @@ $author = get_user_by( 'id', $post->post_author );
 			/**
 			 * Start the loop for the ticket replies.
 			 */
-			if ( $wpas_replies->have_posts() ):
-				while ( $wpas_replies->have_posts() ):
+			$current_page     = isset( $_GET['as-page'] ) ? filter_input( INPUT_GET, 'as-page', FILTER_SANITIZE_NUMBER_INT ) : 1;
+			$replies_per_page = wpas_get_option( 'replies_per_page', 10 );
 
-					$wpas_replies->the_post();
+			$args = array(
+				'posts_per_page' => $replies_per_page,
+				'paged'          => $current_page,
+				'no_found_rows'  => false,
+			);
+
+			$replies = wpas_get_replies( $post->ID, array( 'read', 'unread' ), $args, 'wp_query' );
+
+			if ( $replies->have_posts() ):
+
+				while ( $replies->have_posts() ):
+
+					$replies->the_post();
 					$user      = get_userdata( $post->post_author );
 					$user_role = get_the_author_meta( 'roles' );
 					$user_role = $user_role[0];
 					$time_ago  = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) ); ?>
 
-					<tr id="reply-<?php echo the_ID(); ?>" class="wpas-reply-single wpas-status-<?php echo get_post_status(); ?>" valign="top">
+					<tr id="reply-<?php echo the_ID(); ?>"
+					    class="wpas-reply-single wpas-status-<?php echo get_post_status(); ?>" valign="top">
 
 						<?php
 						/**
@@ -99,8 +115,9 @@ $author = get_user_by( 'id', $post->post_author );
 							<td colspan="2">
 								<?php printf( __( 'This reply has been deleted %s ago.', 'wpas' ), $time_ago ); ?>
 							</td>
-						
-						<?php continue; } ?>
+
+							<?php continue;
+						} ?>
 
 						<td style="width: 64px;">
 							<div class="wpas-user-profile">
@@ -114,9 +131,12 @@ $author = get_user_by( 'id', $post->post_author );
 									<strong class="wpas-profilename"><?php echo $user->data->display_name; ?></strong>
 								</div>
 								<div class="wpas-reply-time">
-									<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>">
-										<span class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
-										<span class="wpas-date-ago"><?php printf( __( '%s ago', 'wpas' ), $time_ago ); ?></span>
+									<time class="wpas-timestamp"
+									      datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>">
+										<span
+											class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
+										<span
+											class="wpas-date-ago"><?php printf( __( '%s ago', 'wpas' ), $time_ago ); ?></span>
 									</time>
 								</div>
 							</div>
@@ -144,11 +164,17 @@ $author = get_user_by( 'id', $post->post_author );
 					</tr>
 
 				<?php endwhile;
+
 			endif;
 
 			wp_reset_query(); ?>
 		</tbody>
 	</table>
+
+	<div class="wpas-pagi">
+		<span class="wpas-pagi-prev"><?php wpas_prev_page_link( '< ' . __( 'Older Replies', 'wpas' ) ); ?></span>
+		<span class="wpas-pagi-next"><?php wpas_next_page_link( __( 'Newer Replies', 'wpas' ) . ' >', $replies->found_posts ); ?></span>
+	</div>
 
 	<h3><?php _e( 'Write a reply', 'wpas' ); ?></h3>
 

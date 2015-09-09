@@ -612,7 +612,15 @@ function wpas_get_tickets_list_column_content( $column_id, $column ) {
 		break;
 
 		case 'title':
-			?><a href="<?php echo get_permalink( get_the_ID() ); ?>"><?php the_title(); ?></a><?php
+
+			// If the replies are displayed from the oldest to the newest we want to link directly to the latest reply in case there are multiple reply pages
+			if ( 'ASC' === wpas_get_option( 'replies_order', 'ASC' ) ) {
+				$last_reply = wpas_get_replies( get_the_ID(), array( 'read', 'unread' ), array( 'posts_per_page' => 1, 'order' => 'DESC' ) );
+				$link       = ! empty( $last_reply ) ? wpas_get_reply_link( $last_reply[0]->ID ) : get_permalink( get_the_ID() );
+			} else {
+				$link = get_permalink( get_the_ID() );
+			}
+			?><a href="<?php echo $link; ?>"><?php the_title(); ?></a><?php
 		break;
 
 		case 'date':
@@ -817,5 +825,121 @@ function wpas_get_notification_markup( $type = 'info', $message = '' ) {
 	$markup = apply_filters( 'wpas_notification_markup', sprintf( $markup, $classes[$type], $message ), $type );
 
 	return $markup;
+
+}
+
+/**
+ * Get pagination link
+ *
+ * This is used for pagination throughout Awesome Support.
+ * It is used for paginating ticket replies as well as tickets lists.
+ *
+ * @since 3.2
+ *
+ * @param string $direction Direction of the link (prev or next)
+ * @param int $posts Total number of pages
+ *
+ * @return string Link to the prev/next page
+ */
+function wpas_pagination_link( $direction = 'next', $posts = 0 ) {
+
+	global $post;
+
+	if ( ! isset( $post ) ) {
+		return '';
+	}
+
+	$current_page   = isset( $_GET['as-page'] ) ? filter_input( INPUT_GET, 'as-page', FILTER_SANITIZE_NUMBER_INT ) : 1;
+	$posts_per_page = (int) wpas_get_option( 'replies_per_page', 10 );
+	$link           = '';
+
+	switch ( $direction ) {
+
+		case 'prev':
+
+			if ( $current_page > 1 ) {
+				$page = $current_page - 1;
+				$link = get_permalink( $post->ID ) . '?as-page=' . $page;
+			}
+
+			break;
+
+		case 'next':
+
+			if ( 0 !== $posts && 0 !== $posts_per_page && $current_page < ceil( $posts / $posts_per_page ) ) {
+				$page = $current_page + 1;
+				$link = get_permalink( $post->ID ) . '?as-page=' . $page;
+			}
+
+			break;
+
+	}
+
+	return empty( $link ) ? $link : esc_url( $link );
+
+}
+
+/**
+ * Get previous page link
+ *
+ * @since 3.2
+ *
+ * @param string $label Link anchor
+ * @param bool|true $echo Whether to echo the link or just return it
+ *
+ * @return string
+ */
+function wpas_prev_page_link( $label = '', $echo = true ) {
+
+	if ( empty( $label ) ) {
+		$label = '< ' . __( 'Previous Page', 'wpas' );
+	}
+
+	$link = wpas_pagination_link( 'prev' );
+
+	if ( ! empty( $link ) ) {
+		$link = "<a href='$link'>$label</a>";
+	}
+
+	if ( true === $echo ) {
+		echo $link;
+	} else {
+		return $link;
+	}
+
+	return $link;
+
+}
+
+/**
+ * Get next page link
+ *
+ * @since 3.2
+ *
+ * @param string $label Link anchor
+ * @param int $posts Total number of posts
+ * @param bool|true $echo Whether to echo the link or just return it
+ *
+ * @return string
+ */
+function wpas_next_page_link( $label = '', $posts = 0, $echo = true ) {
+
+	if ( empty( $label ) ) {
+		$label = __( 'Next Page', 'wpas' ) . ' >';
+	}
+
+	$link = wpas_pagination_link( 'next', $posts );
+
+	if ( ! empty( $link ) ) {
+		$link = "<a href='$link'>$label</a>";
+	}
+
+	if ( true === $echo ) {
+		echo $link;
+	} else {
+		return $link;
+	}
+
+	return $link;
 
 }

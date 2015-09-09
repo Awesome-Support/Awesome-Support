@@ -56,7 +56,6 @@ class Awesome_Support {
 			/**
 			 * Load internal methods.
 			 */
-			add_action( 'wp',                             array( $this, 'get_replies_object' ),              10, 0 ); // Generate the object used for the custom loop for displaying ticket replies
 			add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ),               10, 0 ); // Activate plugin when new blog is added
 			add_action( 'plugins_loaded',                 array( $this, 'load_plugin_textdomain' ),          11, 0 ); // Load the plugin textdomain
 			add_action( 'init',                           array( $this, 'init' ),                            11, 0 ); // Register main post type
@@ -271,7 +270,7 @@ class Awesome_Support {
 				delete_transient( "wpas_activity_meta_post_$parent_id" );
 
 				wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'wpas' ) );
-				wpas_redirect( 'reply_added', get_permalink( $parent_id ) . "#reply-$reply_id", $parent_id );
+				wpas_redirect( 'reply_added', wpas_get_reply_link( $reply_id ) );
 				exit;
 			}
 		}
@@ -698,42 +697,6 @@ class Awesome_Support {
 		);
 
 		return $object;
-
-	}
-
-	/**
-	 * Construct the replies query.
-	 *
-	 * The replies query is used as a custom loop to display
-	 * a ticket's replies in a clean way. The resulting object
-	 * is made global as $wpas_replies.
-	 *
-	 * @since  3.0.0
-	 * @return void
-	 */
-	public function get_replies_object() {
-
-		global $wp_query, $wpas_replies;
-
-		if ( isset( $wp_query->post ) && 'ticket' === $wp_query->post->post_type ) {
-
-			$args = apply_filters( 'wpas_replies_object_args', array(
-				'post_parent'            => $wp_query->post->ID,
-				'post_type'              => 'ticket_reply',
-				'post_status'            => array( 'read', 'unread' ),
-				'order'                  => wpas_get_option( 'replies_order', 'ASC' ),
-				'orderby'                => 'date',
-				'posts_per_page'         => -1,
-				'no_found_rows'          => false,
-				'cache_results'          => false,
-				'update_post_term_cache' => false,
-				'update_post_meta_cache' => false,
-
-			) );
-
-			$wpas_replies = new WP_Query( $args );
-
-		}
 
 	}
 
