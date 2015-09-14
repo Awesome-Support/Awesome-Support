@@ -63,7 +63,7 @@
 					<h4>Translation Ready</h4>
 					<p>The plugin is fully localized. You can <a href="https://www.transifex.com/projects/p/awesome-support/" target="_blank">translate the plugin</a> in any language!</p>
 					<h4>Rate the plugin</h4>
-					<p>If you like the plugin, make sure to rate it on the WordPres extend. This is perhaps one of the best way to share the love for our plugin <a href="https://wordpress.org/support/view/plugin-reviews/awesome-support" target="_blank">Rate the plugin →</a></p>
+					<p>If you like the plugin, make sure to rate it on the WordPres extend. This is perhaps one of the best way to share the love for our plugin <a href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank">Rate the plugin →</a></p>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
