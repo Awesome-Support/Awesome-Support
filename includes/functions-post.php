@@ -1142,11 +1142,11 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
 
 	// Make the state an array
 	if ( ! is_array( $state ) ) {
-		$state = (array) $state;
+		$state = array_filter( (array) $state );
 	}
 
 	// Sanitize the status
-	if ( ! in_array( $status, array( 'open', 'closed' ) ) ) {
+	if ( ! in_array( $status, array( 'open', 'closed', 'any' ) ) ) {
 		$status = 'open';
 	}
 

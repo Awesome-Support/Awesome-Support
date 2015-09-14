@@ -227,14 +227,26 @@ function wpas_fix_tickets_count( $views ) {
 
 	global $wp_query;
 
-	// Our declared ticket status
-	$ticket_status = wpas_get_post_status();
+	$ticket_status = wpas_get_post_status(); // Our declared ticket status
+	$status        = 'open';
+
+	// Maybe apply filters
+	if ( isset( $_GET['wpas_status'] ) ) {
+		switch ( $_GET['wpas_status'] ) {
+			case 'closed':
+				$status = 'closed';
+				break;
+			case '':
+				$status = 'any';
+				break;
+		}
+	}
 
 	foreach ( $views as $view => $label ) {
 
 		if ( array_key_exists( $view, $ticket_status ) || 'all' === $view ) {
 
-			$count   = 'all' === $view ? wpas_get_ticket_count_by_status() : wpas_get_ticket_count_by_status( $view );
+			$count   = 'all' === $view ? wpas_get_ticket_count_by_status( '', $status ) : wpas_get_ticket_count_by_status( $view, $status );
 			$regex   = '.*?(\\(.*\\))';
 			$replace = '';
 
