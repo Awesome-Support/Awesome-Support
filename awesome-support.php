@@ -80,7 +80,7 @@ add_action( 'plugins_loaded', array( 'Awesome_Support', 'get_instance' ) );
  * We load them here.
  */
 require_once( WPAS_PATH . 'includes/addons/file-uploader/class-file-uploader.php' );
-require_once( WPAS_PATH . 'includes/addons/class-mailgun-email-check.php' );
+require_once( WPAS_PATH . 'includes/class-mailgun-email-check.php' );
 
 /* Load custom fields dependencies */
 require_once( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
