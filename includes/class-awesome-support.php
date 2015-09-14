@@ -168,7 +168,7 @@ class Awesome_Support {
 		 *
 		 * @since  3.0.0
 		 */
-		if ( isset( $_POST['wpas_title'] ) ) {
+		if ( ! is_admin() && isset( $_POST['wpas_title'] ) ) {
 
 			// Verify the nonce first
 			if ( ! isset( $_POST['wpas_nonce'] ) || ! wp_verify_nonce( $_POST['wpas_nonce'], 'new_ticket' ) ) {
