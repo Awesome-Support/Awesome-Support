@@ -1,79 +1,78 @@
 <div class="wrap about-wrap">
 
-	<h1>Welcome to Awesome Support&nbsp;3.0</h1>
+	<h1>Welcome to Awesome Support&nbsp;<?php echo WPAS_VERSION; ?></h1>
 
 	<div class="about-text">Trusted by over 1000+ Happy Customers, Awesome Support is the most versatile WordPress support plugin.</div>
 
 	<div class="changelog">
 
-		<div class="feature-section col two-col">
-			<div class="col-1">				
-				<a href="<?php echo WPAS_URL; ?>assets/admin/images/about01-big.png" rel="thickbox-gallery" class="thickbox"><img src="<?php echo WPAS_URL; ?>assets/admin/images/about01.jpg" alt=""></a>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="about-body">
+					<img src="<?php echo WPAS_URL; ?>assets/admin/images/about-cf.png" alt="Improved Custom Fields">
+					<h3>Improved Custom Fields</h3>
+					<p>This feature lets your tailor your support system to your needs, allowing you to <mark>add more fields to the ticket submission form</a>.</p>
+					<p>Since version 3.1.2, custom fields become much more powerful. They are simpler to use, and many more field types are available: checkbox, email, number, radio, text, and much more. Find all the available field types in <a href="https://getawesomesupport.com/documentation/awesome-support/custom-fields/" target="_blank">the documentation</a>.</p>
+				</div>
 			</div>
-			<div class="col-2 last-feature">
-				<h3>Probably the Best WordPress Support Plugin</h3>
-				<p>Awesome Support was created by <a href="http://themeavenue.net" target="_blank">ThemeAvenue</a> to make up for the lack of support plugins for WordPress. The SaaS world has some very good support apps, but we felt that WordPress didn't have a comprehensive solution... until now.</p>
-				<p>Since its first release as a commercial plugin 2 years ago, Awesome Support has gained quite a lot of traction. In 2014, we chose to change the way we distribute this plugin and in doing so, re-built it from scratch and have decided to release it for free to the WordPress community. Now anyone can have a powerful support site for free. No monthly costs or set-up fees - Awesome Support is yours to own forever.</p>
-			</div>
-		</div>
-
-		<hr>
-
-		<div class="feature-section col two-col">
-			<div class="col-1">
-				<h3>Seamless Integration</h3>
-				<p>Awesome Support is built in a way that makes it compatible with 99% of all existing themes, be it free or commercial.</p>
-				<p>This plugin is "plug &amp; play": all settings and templates are ready to work as soon as you clicked the "Activate" button.</p>
-				<p>Some theme authors took the integration one step further by using the built-in templating system to perfectly match their theme's style.</p>
-			</div>
-			<div class="col-2 last-feature">
-				<a href="<?php echo WPAS_URL; ?>assets/admin/images/about02-big.png" rel="thickbox-gallery" class="thickbox"><img src="<?php echo WPAS_URL; ?>assets/admin/images/about02.jpg" alt=""></a>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="about-body">
+					<img src="<?php echo WPAS_URL; ?>assets/admin/images/about-autoassign.png" alt="Auto-Assignment">
+					<h3>Auto-Assignment</h3>
+					<p>Awesome Support comes with an "intelligent" ticket assignment system. New tickets are automatically assigned to the agent with the least open tickets.</p>
+					<p>But you can also <mark>enable/disable the auto-assignation for specific users</mark> (for instance a site administrator).</p>
+				</div>
 			</div>
 		</div>
 
-		<hr>
+		<a class="wpas-bundle-link" href="https://getawesomesupport.com/addons/startup-bundle/" target="_blank">
+			<img src="https://cdn.getawesomesupport.com/wp-content/uploads/2015/08/bundle-1140x200.png" alt="Startup Bundle">
+		</a>
 
-		<div class="feature-section col two-col">
-			<div class="col-1">
-				<a href="<?php echo WPAS_URL; ?>assets/admin/images/about03-big.png" rel="thickbox-gallery" class="thickbox"><img src="<?php echo WPAS_URL; ?>assets/admin/images/about03.jpg" alt=""></a>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="about-body">
+					<img src="<?php echo WPAS_URL; ?>assets/admin/images/about-multipleforms.png" alt="Multiple Submission Forms">
+					<h3>Multiple Submission Forms</h3>
+					<p>You can now create multiple submission forms for your users and pre-set values for each field. Need a for for your technical support? Create a new one and link it with the correct URL parameter to pre-populate the "type" field. More in the documentation.</p>
+				</div>
 			</div>
-			<div class="col-2 last-feature">
-				<h3>Provide Awesome Support for Free</h3>
-				<p>The plugin gives you access to tools that web apps usually charge you a lot for. Everything you need is built-in: multiple support agents, unlimited tickets, auto-assignment of tickets to the first available agent, custmizable e-mail notifications, complete ticket history, files attachment...</p>
-				<p>If this is not enough, lots of addons are available to add new features for a fraction of what it would cost you with a web app, and you keep complete control over your data and your client's private information.</p>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+				<div class="about-body">
+					<img src="<?php echo WPAS_URL; ?>assets/admin/images/about-translations.png" alt="Translated in many languages">
+					<h3>Translated in many languages</h3>
+					<p>Thanks to our contributors, the plugin is available in several languages. Currently the plugin is <mark>available in nearly 10 languages</mark>.</p>
+					<p>To check out available translations, please visit <a href="https://www.transifex.com/projects/p/awesome-support/" target="_blank">our transifex project</a>.</p>
+				</div>
 			</div>
 		</div>
 
-		<hr>
-
-		<div class="feature-section col two-col">
-			<div class="col-1">
-				<h3 class="higher">Extending the Possibilities</h3>
-				<p>Even though Awesome Support has a lot of built-in features, it is impossible to make everyone happy. This is why we have lots of addons to help you tailor your support system.</p>
-				<a href="#TB_inline?width=630&amp;height=280&amp;inlineId=wpas-extensions-modal" class="button button-large button-primary thickbox" title="Extensions are coming soon">Browse extensions</a>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<div class="about-body">
+					<h3>Newsfeed</h3>
+					<div class="wpas-fbpage-feed">Loading...</div>
+					<p><a class="button button-large button-primary" href="https://www.facebook.com/awesomesupport" target="_blank">View more news</a></p>
+				</div>
 			</div>
-			<div class="col-2 last-feature">
-				<img src="<?php echo WPAS_URL; ?>assets/admin/images/about04.png" alt="">
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<div class="about-body">
+					<h3>Contributing</h3>
+					<h4>Open Source</h4>
+					<p>The code is open source and <a href="https://github.com/ThemeAvenue/Awesome-Support" target="_blank">available on GitHub</a> for anyone to contribute. Even you.</p>
+					<h4>Translation Ready</h4>
+					<p>The plugin is fully localized. You can <a href="https://www.transifex.com/projects/p/awesome-support/" target="_blank">translate the plugin</a> in any language!</p>
+					<h4>Rate the plugin</h4>
+					<p>If you like the plugin, make sure to rate it on the WordPres extend. This is perhaps one of the best way to share the love for our plugin <a href="https://wordpress.org/support/view/plugin-reviews/awesome-support" target="_blank">Rate the plugin →</a></p>
+				</div>
 			</div>
-		</div>
-	</div>
-
-	<hr>
-
-	<div class="changelog under-the-hood">
-		<h3>Under the Hood</h3>
-		<div class="feature-section col three-col">
-			<div>
-				<h4>Open Source</h4>
-				<p>The code is open source and <a href="https://github.com/ThemeAvenue/Awesome-Support" target="_blank">available on GitHub</a> for anyone to contribute. Even you.</p>
-			</div>
-			<div>
-				<h4>Translation Ready</h4>
-				<p>The plugin is fully localized. You can translate the plugin in any language!</p>
-			</div>
-			<div class="last-feature">
-				<h4>Custom Roles &amp; Capabilities</h4>
-				<p>The plugin uses custom roles and capabilites for better control. You can customize capabilities with any role management plugin.</p>
+			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+				<div class="about-body">
+					<h3>Extending the Possibilities</h3>
+					<p>Even though Awesome Support has a lot of built-in features, it is impossible to make everyone happy. This is why we have lots of addons to help you tailor your support system.</p>
+					<a href="<?php echo esc_url( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-addons' ), admin_url( 'edit.php' ) ) ); ?>" class="button button-large button-primary">Browse extensions</a>
+					<p>Please also make sure to check <a href="#" target="_blank">our roadmap</a>.</p>
+				</div>
 			</div>
 		</div>
 
@@ -81,17 +80,44 @@
 
 </div>
 
-<style type="text/css">.tb-close-icon{background-color: white;}</style>
-<div id="wpas-extensions-modal" style="display:none;">
-	<div id="wpas-extensions-modal-content" style="text-align: center; padding: 0 4em;">
-		<p class="wpas-lead"><strong>Awesome Support</strong> wouldn't be the most versatile WordPress support system without add-ons. We're currently working on multiple add-ons to fit everyone's needs.</p>
-		<p class="wpas-lead">Checkout <a href="https://trello.com/b/pHYdtkHc" target="_blank">our roadmap</a> to learn more about add-ons.</p>
-		<hr>
-		<h3>Signup to get notified when we release extensions:</h3>
-		<form id="wpas-extensions-form" action="//themeavenue.us4.list-manage.com/subscribe/post?u=46ccfe899f0d2648a8b74454a&amp;id=ad9db57f69" method="post">
-			<input class="regular-text" type="email" name="EMAIL" placeholder="Enter your email address" required>
-			<input type="checkbox" value="1" name="group[17637][1]" id="mce-group[17637]-17637-0" checked="checked" style="display: none;">
-			<button class="button-secondary" type="submit">Notify me</button>
-		</form>
-	</div>
-</div>
+<script type="text/javascript" src="<?php echo WPAS_URL; ?>assets/admin/js/vendor/linkify.min.js"></script>
+<script type="text/javascript" src="<?php echo WPAS_URL; ?>assets/admin/js/vendor/linkify-jquery.min.js"></script>
+<script type="text/javascript" src="<?php echo WPAS_URL; ?>assets/admin/js/vendor/moment.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function ($) {
+
+	/**
+	 * Get Page Newsfeed
+	 * https://developers.facebook.com/docs/graph-api/reference/v2.4/page/feed
+	 * https://developers.facebook.com/tools/accesstoken/
+	 */
+
+	 var pageId = '312003622332316',
+	 accessToken = '1059973257368113|x_ZhJSNE-sF4cWPH-iggQFeRa70',
+	 container = $('.wpas-fbpage-feed'),
+	 feedItems = '';
+
+	 if (sessionStorage.getItem('awesome_support_newsfeed')) {
+	 	renderNewsfeed();
+	 } else {
+	 	$.getJSON('https://graph.facebook.com/v2.2/' + pageId + '/posts?access_token=' + accessToken, function (json, textStatus) {
+	 		sessionStorage.setItem('awesome_support_newsfeed', JSON.stringify(json));
+	 		renderNewsfeed();
+	 	});
+	 }
+
+	 function renderNewsfeed() {
+	 	var json = $.parseJSON(sessionStorage.getItem('awesome_support_newsfeed'));
+
+	 	$.each(json.data, function (i, val) {
+	 		feedItems += '<p><strong>' + moment(val.created_time).fromNow() + '</strong><br>' + val.message + '</p>';
+	 		return i < 2;
+	 	});
+
+	 	container.html('').append(feedItems).linkify({
+	 		target: '_blank'
+	 	});
+	 }
+
+	});
+</script>
