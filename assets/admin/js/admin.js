@@ -3,9 +3,9 @@
 
 	$(function () {
 
-		////////////////////
-		// Mark as read //
-		////////////////////
+		/**
+		 * Mark as read
+		 */
 		$('.wpas-mark-read').on('click', function (event) {
 			event.preventDefault();
 
@@ -30,10 +30,9 @@
 
 		});
 
-		/////////////////////
-		// System Status //
-		/////////////////////
-
+		/**
+		 * System Status
+		 */
 		var table, tableID, tableData, tables = [];
 
 		$('.wpas-system-status-table').each(function (index, el) {
@@ -58,9 +57,9 @@
 			$('#wpas-system-status-output').html('`' + JSON.stringify(tables) + '`').fadeIn('fast').focus().select();
 		});
 
-		////////////////////////////////
-		// Check if editor is empty //
-		////////////////////////////////
+		/**
+		 * Check if editor is empty
+		 */
 		$('.wpas-reply-actions').on('click', 'button', function () {
 			var editorContent = tinyMCE.activeEditor.getContent();
 			if (editorContent === '' || editorContent === null) {
@@ -79,18 +78,12 @@
 			}
 		});
 
-		////////////////////////////////
-		// jQuery Select2 //
-		// http://select2.github.io/select2/
-		////////////////////////////////
+		/**
+		 * jQuery Select2
+		 * http://select2.github.io/select2/
+		 */
 		if (jQuery().select2 && $('select.wpas-select2').length) {
-			var select = $('select.wpas-select2');
-
-			select.find('option[value=""]').remove();
-			select.prepend('<option></option>');
-			select.select2({
-				placeholder: 'Please Select'
-			});
+			$('select.wpas-select2:visible').select2();
 		}
 
 	});
