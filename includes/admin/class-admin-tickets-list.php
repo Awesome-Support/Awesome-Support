@@ -31,7 +31,6 @@ class WPAS_Tickets_List {
 		// add_action( 'bulk_edit_custom_box',                             array( $this, 'custom_quickedit_options' ), 10, 2 );
 		// add_action( 'wp_ajax_save_bulk_edit_book',                      array( $this, 'save_bulk_edit_ticket' ), 10, 0 );
 		// add_filter( 'update_user_metadata',                             array( $this, 'set_list_mode' ), 10, 5 );
-		// add_filter( 'parse_query',                                      array( $this, 'filter_by_replies' ), 10, 1 );
 	}
 
 	public function test( $views ) {
@@ -385,36 +384,6 @@ class WPAS_Tickets_List {
             }
 
             return true;
-	}
-
-	/**
-	 * Filter tickets by status.
-	 *
-	 * When filtering, WordPress uses the ID by default in the query but
-	 * that doesn't work. We need to convert it to the taxonomy term.
-	 *
-	 * @since  3.0.0
-	 * @param  object $query WordPress current main query
-	 */
-	public function filter_by_replies( $query ) {
-
-		global $pagenow;
-
-		/* Check if we are in the correct post type */
-		if ( is_admin()
-			&& 'edit.php' == $pagenow
-			&& isset( $_GET['post_type'] )
-			&& 'ticket' == $_GET['post_type']
-			&& isset( $_GET['wpas_replied'] )
-			&& !empty( $_GET['wpas_replied'] )
-			&& $query->is_main_query() ) {
-
-			print_r( $query );
-			// $query->query_vars['meta_key']     = '_wpas_status';
-			// $query->query_vars['meta_value']   = sanitize_text_field( $_GET['wpas_status'] );
-			// $query->query_vars['meta_compare'] = '=';
-		}
-
 	}
 
 	/**
