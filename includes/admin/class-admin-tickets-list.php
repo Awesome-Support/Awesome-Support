@@ -26,22 +26,6 @@ class WPAS_Tickets_List {
 		add_action( 'admin_menu',                        array( $this, 'hide_closed_tickets' ),         10, 0 );
 		add_filter( 'the_excerpt',                       array( $this, 'remove_excerpt' ),              10, 1 );
 		add_filter( 'post_row_actions',                  array( $this, 'remove_quick_edit' ),           10, 2 );
-		// add_filter( 'views_edit-ticket',                                array( $this, 'test' ),                        10, 1 );
-		// add_action( 'quick_edit_custom_box',                            array( $this, 'custom_quickedit_options' ), 10, 2 );
-		// add_action( 'bulk_edit_custom_box',                             array( $this, 'custom_quickedit_options' ), 10, 2 );
-		// add_action( 'wp_ajax_save_bulk_edit_book',                      array( $this, 'save_bulk_edit_ticket' ), 10, 0 );
-		// add_filter( 'update_user_metadata',                             array( $this, 'set_list_mode' ), 10, 5 );
-	}
-
-	public function test( $views ) {
-
-		global $wp_query;
-
-		print_r( wp_count_posts( 'ticket' ) );
-
-//		print_r( $wp_query );
-
-		return $views;
 	}
 
 	/**
@@ -59,23 +43,26 @@ class WPAS_Tickets_List {
 
 		return self::$instance;
 	}
-        
-        /**
-         * Remove Quick Edit action
-         * 
-         * @since   3.1.6
-         * @global  object  $post
-	 * @param   array   $actions    An array of row action links.
-         * @return  array               Updated array of row action links
-         */
-        public function remove_quick_edit( $actions ) {
-            global $post;
 
-            if( $post->post_type === 'ticket' ) {
-                unset($actions['inline hide-if-no-js']);
-            }
-            return $actions;
-        }
+	/**
+	 * Remove Quick Edit action
+	 *
+	 * @since   3.1.6
+	 * @global  object $post
+	 *
+	 * @param   array  $actions An array of row action links.
+	 *
+	 * @return  array               Updated array of row action links
+	 */
+	public function remove_quick_edit( $actions ) {
+		global $post;
+
+		if ( $post->post_type === 'ticket' ) {
+			unset( $actions['inline hide-if-no-js'] );
+		}
+
+		return $actions;
+	}
         
 	/**
 	 * Add age custom column.
@@ -130,8 +117,6 @@ class WPAS_Tickets_List {
 	 * @param  integer $post_id ID of the post being processed
 	 */
 	public function core_custom_columns_content( $column, $post_id ) {
-
-		$mode = get_user_setting( 'tickets_list_mode', 'details' );
 
 		switch ( $column ) {
 
@@ -225,7 +210,6 @@ class WPAS_Tickets_List {
 
 						?><li><?php echo _x( sprintf( _n( '%s reply.', '%s replies.', $query->post_count, 'wpas' ), $query->post_count ), 'Number of replies to a ticket', 'wpas' ); ?></li><?php
 						?><li><?php printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'wpas' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) . '#wpas-post-' . $query->posts[0]->ID, human_time_diff( strtotime( $activity_meta['reply_date'] ), current_time( 'timestamp' ) ), '<a href="' . $activity_meta['user_link'] . '">' . $activity_meta['user_nicename'] . '</a>', $role ); ?></li><?php
-						?><li><?php //printf( _x( 'Last replied by %s.', 'Last reply author', 'wpas' ), '<a href="' . $activity_meta['user_link'] . '">' . $activity_meta['user_nicename'] . '</a>' ); ?></li><?php
 					}
 
 				endif;
@@ -254,83 +238,6 @@ class WPAS_Tickets_List {
 
 		}
 
-	}
-
-	/**
-	 * Add quick ticket actions.
-	 *
-	 * Add options to change ticket state and status in the quick edit box.
-	 *
-	 * @since  3.0.0
-	 * @param  array $column_name ID of the current column
-	 * @param  string $post_type  Post type
-	 * @return void
-	 */
-	public function custom_quickedit_options( $column_name, $post_type ) {
-
-		if ( 'ticket' !== $post_type ) {
-			return false;
-		}
-
-		if ( 'status' === $column_name ):
-
-			$custom_status = wpas_get_post_status(); ?>
-
-			<fieldset class="inline-edit-col-right inline-edit-ticket">
-				<div class="inline-edit-col column-<?php echo $column_name ?>">
-					<div class="inline-edit-group">
-						<label class="inline-edit-group">
-							<span class="title"><?php _e( 'Ticket Status', 'wpas' ); ?></span>
-							<select name="_wpas_status">
-								<option value="open"><?php _e( 'Open', 'wpas' ); ?></option>
-								<option value="closed"><?php _e( 'Closed', 'wpas' ); ?></option>
-							</select>
-						</label>
-					</div>
-					<div class="inline-edit-group">
-						<label class="inline-edit-group">
-							<span class="title"><?php _e( 'Ticket State', 'wpas' ); ?></span>
-							<select name="_wpas_state">
-								<?php
-								foreach ( $custom_status as $status_id => $status_label ) {
-									?><option value="<?php echo $status_id; ?>"><?php echo $status_label; ?></option><?php
-								}
-								?>
-							</select>
-						</label>
-					</div>
-				</div>
-			</fieldset>
-
-		<?php endif;
-	}
-
-	public function save_bulk_edit_ticket() {
-
-		// TODO perform nonce checking
-		// get our variables
-		$post_ids = ( ! empty( $_POST[ 'post_ids' ] ) ) ? $_POST[ 'post_ids' ] : array();
-		$status   = ( ! empty( $_POST[ '_wpas_status' ] ) ) ? $_POST[ '_wpas_status' ] : null;
-		$state    = ( ! empty( $_POST[ '_wpas_state' ] ) ) ? $_POST[ '_wpas_state' ] : null;
-
-		wpas_debug_display( $post_ids );
-		wpas_debug_display( $status );
-		wpas_debug_display( $state );
-		exit;
-
-		// if everything is in order
-		if ( ! empty( $post_ids ) && is_array( $post_ids ) ) {
-			foreach( $post_ids as $post_id ) {
-
-				wpas_update_ticket_status( $post_id, $state );
-
-				if ( in_array( $status, array( 'open', 'closed' ) ) ) {
-					update_post_meta( $post_id, '_wpas_status', $status );
-				}
-			}
-		}
-
-		die();
 	}
 
 	/**
@@ -368,22 +275,24 @@ class WPAS_Tickets_List {
 	 * and append the status filter with the "open" value.
 	 *
 	 * @since  3.0.0
-	 * @return void
+	 * @return bool True if the closed tickets were hiddne, false otherwise
 	 */
 	public function hide_closed_tickets() {
-            $hide = boolval( wpas_get_option( 'hide_closed' ) );
 
-            if ( true !== $hide ) {
-                    return false;
-            }
+		$hide = (bool) wpas_get_option( 'hide_closed' );
 
-            global $submenu;
+		if ( true !== $hide ) {
+			return false;
+		}
 
-            if ( is_array( $submenu ) && array_key_exists( 'edit.php?post_type=ticket', $submenu ) && isset($submenu[5])) {
-                    $submenu["edit.php?post_type=ticket"][5][2] = $submenu["edit.php?post_type=ticket"][5][2] . '&amp;wpas_status=open';
-            }
+		global $submenu;
 
-            return true;
+		if ( is_array( $submenu ) && array_key_exists( 'edit.php?post_type=ticket', $submenu ) && isset( $submenu[5] ) ) {
+			$submenu["edit.php?post_type=ticket"][5][2] = $submenu["edit.php?post_type=ticket"][5][2] . '&amp;wpas_status=open';
+		}
+
+		return true;
+
 	}
 
 	/**
@@ -410,72 +319,6 @@ class WPAS_Tickets_List {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Update tickets list view.
-	 * 
-	 * @param  [type] $check      [description]
-	 * @param  [type] $object_id  [description]
-	 * @param  [type] $meta_key   [description]
-	 * @param  [type] $meta_value [description]
-	 * @param  [type] $prev       [description]
-	 * @return [type]             [description]
-	 */
-	public function set_list_mode( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
-
-		if ( isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] ) {
-
-			if ( 'wp_user-settings' === $meta_key ) {
-				
-				parse_str( $meta_value, $values );
-
-				/* Check if the option being updated is the list view mode */
-				if ( array_key_exists( 'posts_list_mode', $values ) && isset( $_REQUEST['mode'] ) ) {
-
-					$val = 'excerpt' === $_REQUEST['mode'] ? 'details' : 'list';
-					remove_filter( 'update_user_metadata', 'wpas_set_list_mode', 10 );
-					set_user_setting( 'tickets_list_mode', $val );
-
-					return false;
-
-				}
-
-			}
-
-		}
-
-		return $check;
-
-		/**
-		 * Set the ticket list mode.
-		 */
-		// global $mode;
-
-		// if ( ! empty( $_REQUEST['mode'] ) ) {
-
-		// 	$mode = $_REQUEST['mode'];
-
-		// 	if ( isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] ) {
-
-		// 		if ( 'excerpt' === $mode ) {
-		// 			$mode = 'details';
-		// 			set_user_setting ( 'tickets_list_mode', $mode );
-		// 			delete_user_setting( 'posts_list_mode' );
-		// 		}
-
-		// 		if ( 'list' === $mode ) {
-		// 			set_user_setting ( 'tickets_list_mode', $mode );
-		// 		}
-
-		// 	}
-
-		// 	$mode = $_REQUEST['mode'] == 'excerpt' ? 'excerpt' : 'list';
-		// 	set_user_setting ( 'posts_list_mode', $mode );
-		// } else {
-		// 	$mode = get_user_setting ( 'posts_list_mode', 'list' );
-		// }
-
 	}
 
 }
