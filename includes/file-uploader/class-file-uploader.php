@@ -38,7 +38,7 @@ class WPAS_File_Upload {
 		/**
 		 * Load the addon settings
 		 */
-		require_once( WPAS_PATH . 'includes/addons/file-uploader/settings-file-upload.php' );
+		require_once( WPAS_PATH . 'includes/file-uploader/settings-file-upload.php' );
 
 		if ( ! $this->can_attach_files() ) {
 			return;
@@ -704,7 +704,7 @@ class WPAS_File_Upload {
 
 		if ( ! empty( $filetypes ) ) {
 
-			require_once( WPAS_PATH . 'includes/addons/file-uploader/mime-types.php' );
+			require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
 
 			foreach ( $filetypes as $type ) {
 				$mimes[ $type ] = wpas_get_mime_type( $type );
