@@ -22,7 +22,6 @@ class WPAS_Tickets_List {
 	public function __construct() {
 		add_action( 'manage_ticket_posts_columns',       array( $this, 'add_core_custom_columns' ),     16, 1 );
 		add_action( 'manage_ticket_posts_custom_column', array( $this, 'core_custom_columns_content' ), 10, 2 );
-		add_action( 'restrict_manage_posts',             array( $this, 'unreplied_filter' ),             9, 0 );
 		add_action( 'admin_menu',                        array( $this, 'hide_closed_tickets' ),         10, 0 );
 		add_filter( 'the_excerpt',                       array( $this, 'remove_excerpt' ),              10, 1 );
 		add_filter( 'post_row_actions',                  array( $this, 'remove_quick_edit' ),           10, 2 );
@@ -237,33 +236,6 @@ class WPAS_Tickets_List {
 				break;
 
 		}
-
-	}
-
-	/**
-	 * Add status dropdown in the filters bar.
-	 *
-	 * @since  2.0.0
-	 */
-	public function unreplied_filter() {
-
-		global $typenow;
-
-		if ( 'ticket' != $typenow ) {
-			return;
-		}
-
-		$this_sort       = isset( $_GET['wpas_replied'] ) ? $_GET['wpas_replied'] : '';
-		$all_selected    = ( '' === $this_sort ) ? 'selected="selected"' : '';
-		$replied_selected   = ( 'replied' === $this_sort ) ? 'selected="selected"' : '';
-		$unreplied_selected = ( 'unreplied' === $this_sort ) ? 'selected="selected"' : '';
-		$dropdown        = '<select id="wpas_status" name="wpas_replied">';
-		$dropdown        .= "<option value='' $all_selected>" . __( 'Any Reply Status', 'wpas' ) . "</option>";
-		$dropdown        .= "<option value='replied' $replied_selected>" . __( 'Replied', 'wpas' ) . "</option>";
-		$dropdown        .= "<option value='unreplied' $unreplied_selected>" . __( 'Unreplied', 'wpas' ) . "</option>";
-		$dropdown        .= '</select>';
-
-		echo $dropdown;
 
 	}
 
