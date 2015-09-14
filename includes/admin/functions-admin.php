@@ -198,3 +198,60 @@ class WPAS_Replies_Filter extends WP_Query {
 }
 
 //new WPAS_Replies_Filter();
+
+// Show only posts and media related to logged in author
+add_action('pre_get_posts', 'query_set_only_author' );
+function query_set_only_author( $wp_query ) {
+	global $current_user;
+	if( is_admin() && !current_user_can('edit_others_posts') ) {
+		$wp_query->set( 'author', $current_user->ID );
+
+		add_filter('views_upload', 'fix_media_counts');
+	}
+}
+
+add_filter( 'views_edit-ticket', 'wpas_fix_tickets_count' );
+/**
+ * Fix the ticket count in the ticket list screen
+ *
+ * The ticket count is wrong because it doesn't includes
+ * the possible restrictions on user roles.
+ *
+ * @since 3.2
+ *
+ * @param $views All available views in the ticket list screen
+ *
+ * @return array All views with accurate count
+ */
+function wpas_fix_tickets_count( $views ) {
+
+	global $wp_query;
+
+	// Our declared ticket status
+	$ticket_status = wpas_get_post_status();
+
+	foreach ( $views as $view => $label ) {
+
+		if ( array_key_exists( $view, $ticket_status ) || 'all' === $view ) {
+
+			$count   = 'all' === $view ? wpas_get_ticket_count_by_status() : wpas_get_ticket_count_by_status( $view );
+			$regex   = '.*?(\\(.*\\))';
+			$replace = '';
+
+			if ( $c = preg_match_all( "/" . $regex . "/is", $label, $matches ) ) {
+				$replace = $matches[1][0];
+			}
+
+			$label           = trim( strip_tags( str_replace( $replace, '', $label ) ) );
+			$class           = $wp_query->query_vars['post_status'] === $view || 'all' === $view && $wp_query->query_vars['post_status'] == null ? ' class="current"' : '';
+			$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
+			$link            = esc_url( add_query_arg( $link_query_args, admin_url( 'edit.php' ) ) );
+			$views[ $view ]  = sprintf( '<a href="%1$s"%2$s>%3$s <span class="count">(%4$d)</span></a>', $link, $class, $label, $count );
+
+		}
+
+	}
+
+	return $views;
+
+}

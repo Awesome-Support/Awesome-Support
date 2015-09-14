@@ -706,6 +706,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
  * @param integer      $post_id ID of the post (ticket) to get the replies from
  * @param string|array $status  Status of the replies to get
  * @param array        $args    Additional arguments (see WP_Query)
+ * @param string       $output  Type of data to return. wp_query for the WP_Query object, replies for the WP_Query posts
  *
  * @return array|WP_Query
  */
@@ -1115,5 +1116,67 @@ function wpas_edit_reply_editor_ajax() {
 	wp_editor( $editor_content, $editor_id, $settings );
 
 	die();
+
+}
+
+/**
+ * Get the tickets count by ticket status
+ *
+ * @since 3.2
+ *
+ * @param string $state
+ * @param string $status
+ *
+ * @return int Tickets count
+ */
+function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
+
+	$args        = array();
+	$post_status = wpas_get_post_status();
+
+	// Make the state an array
+	if ( ! is_array( $state ) ) {
+		$state = (array) $state;
+	}
+
+	// Sanitize the status
+	if ( ! in_array( $status, array( 'open', 'closed' ) ) ) {
+		$status = 'open';
+	}
+
+	// Restrict tickets to the specified status
+	if ( ! empty( $state ) ) {
+
+		// Force open status if a state is defined. Who cares about counting closed "In Progress" tickets.
+		$status = 'open';
+
+		// Make sure the requested ticket state is declared
+		foreach ( $state as $key => $s ) {
+			if ( ! array_key_exists( $s, $post_status ) ) {
+				unset( $state[ $key ] );
+			}
+		}
+
+		$args['post_status'] = $state;
+
+	}
+
+	// Maybe restrict the count to the current user only
+	if (
+		current_user_can( 'administrator' ) && false === (bool) wpas_get_option( 'admin_see_all' )
+		|| ! current_user_can( 'administrator' ) && current_user_can( 'edit_ticket' ) && false === (bool) wpas_get_option( 'agent_see_all' )
+	) {
+
+		global $current_user;
+
+		$args['meta_query'][] = array(
+			'key'     => '_wpas_assignee',
+			'value'   => $current_user->ID,
+			'compare' => '=',
+		);
+
+	}
+
+	return count( get_tickets( $status, $args ) );
 
 }
