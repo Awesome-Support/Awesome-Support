@@ -979,12 +979,18 @@ function wpas_update_ticket_status( $post_id, $status ) {
  * @since  3.0.2
  *
  * @param  integer $ticket_id ID of the ticket to close
+ * @param int      $user_id   ID of the user who closed the ticket
  *
  * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
  */
-function wpas_close_ticket( $ticket_id ) {
+function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
 
 	global $current_user;
+
+	// Set the user who closed the ticket to the current user if nothing is specified
+	if ( 0 === $user_id ) {
+		$user_id = $current_user->ID;
+	}
 
 	if ( ! current_user_can( 'close_ticket' ) ) {
 		wp_die( __( 'You do not have the capacity to close this ticket', 'wpas' ), __( 'Can’t close ticket', 'wpas' ), array( 'back_link' => true ) );
@@ -1009,7 +1015,7 @@ function wpas_close_ticket( $ticket_id ) {
 		 *
 		 * @since  3.0.0
 		 */
-		do_action( 'wpas_after_close_ticket', $ticket_id, $update );
+		do_action( 'wpas_after_close_ticket', $ticket_id, $update, $user_id );
 
 		if ( is_admin() ) {
 
@@ -1022,7 +1028,7 @@ function wpas_close_ticket( $ticket_id ) {
 			 * @param integer $user_id   ID of the user who did the action
 			 * @param boolean $update    True on success, false on fialure
 			 */
-			do_action( 'wpas_after_close_ticket_admin', $ticket_id, $current_user->ID, $update );
+			do_action( 'wpas_after_close_ticket_admin', $ticket_id, $user_id, $update );
 
 		} else {
 
@@ -1035,7 +1041,7 @@ function wpas_close_ticket( $ticket_id ) {
 			 * @param integer $user_id   ID of the user who did the action
 			 * @param boolean $update    True on success, false on fialure
 			 */
-			do_action( 'wpas_after_close_ticket_public', $ticket_id, $current_user->ID, $update );
+			do_action( 'wpas_after_close_ticket_public', $ticket_id, $user_id, $update );
 
 		}
 

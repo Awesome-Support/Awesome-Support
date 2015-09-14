@@ -186,6 +186,8 @@ class WPAS_Email_Notification {
 			'agent_reply',
 			'client_reply',
 			'ticket_closed',
+			'ticket_closed_agent',
+			'ticket_closed_client',
 		);
 
 		return apply_filters( 'wpas_email_notifications_cases', $cases );
@@ -502,6 +504,8 @@ class WPAS_Email_Notification {
 				break;
 
 			case 'ticket_closed':
+			case 'ticket_closed_agent':
+			case 'ticket_closed_client':
 				$value = wpas_get_option( "{$part}_closed", "" );
 				break;
 
@@ -546,7 +550,10 @@ class WPAS_Email_Notification {
 			return new WP_Error( 'unknown_notification', __( 'The requested notification does not exist', 'wpas' ) );
 		}
 
-		if ( !$this->is_active( $case ) ) {
+		// Only check the higher level 'ticket_closed' for both ticket_closed_agent and ticket_closed_client
+		$check = in_array( $case, array( 'ticket_closed_agent', 'ticket_closed_client' ) ) ? 'ticket_closed' : $case;
+
+		if ( !$this->is_active( $check ) ) {
 			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'wpas' ) );
 		}
 
@@ -557,11 +564,13 @@ class WPAS_Email_Notification {
 			case 'submission_confirmation':
 			case 'agent_reply':
 			case 'ticket_closed':
+			case 'ticket_closed_agent':
 				$user = get_user_by( 'id', $this->get_ticket()->post_author );
 				break;
 
 			case 'new_ticket_assigned':
 			case 'client_reply':
+			case 'ticket_closed_client':
 				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
 				break;
 		}

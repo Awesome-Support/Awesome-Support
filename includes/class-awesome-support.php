@@ -74,7 +74,7 @@ class Awesome_Support {
 			add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
 			add_action( 'wpas_ticket_assigned',    array( $this, 'notify_assignment' ),   10, 2 );
 			add_action( 'wpas_add_reply_after',    array( $this, 'notify_reply' ),        10, 2 );
-			add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ),        10, 1 );
+			add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ),        10, 3 );
 
 			/**
 			 * Modify the ticket single page content.
@@ -742,8 +742,18 @@ class Awesome_Support {
 		wpas_email_notify( $reply_id, $case );
 	}
 
-	public function notify_close( $ticket_id ) {
-		wpas_email_notify( $ticket_id, 'ticket_closed' );
+	public function notify_close( $ticket_id, $update, $user_id ) {
+
+		if ( user_can( $user_id, 'edit_ticket' ) ) {
+			$case = 'ticket_closed_agent';
+		} elseif ( user_can( $user_id, 'create_ticket' ) ) {
+			$case = 'ticket_closed_client';
+		} else {
+			$case = 'ticket_closed';
+		}
+
+		wpas_email_notify( $ticket_id, $case );
+
 	}
 
 	/**
