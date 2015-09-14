@@ -336,7 +336,9 @@ class Awesome_Support_Admin {
 		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
 
 		if ( 'wpas-about' === $page ) {
-			add_thickbox();
+			wp_enqueue_script( 'wpas-admin-about-linkify', WPAS_URL . 'assets/admin/js/vendor/linkify.min.js', array( 'jquery' ), WPAS_VERSION );
+			wp_enqueue_script( 'wpas-admin-about-linkify-jquery', WPAS_URL . 'assets/admin/js/vendor/linkify-jquery.min.js', array( 'jquery' ), WPAS_VERSION );
+			wp_enqueue_script( 'wpas-admin-about-moment', WPAS_URL . 'assets/admin/js/vendor/moment.min.js', array( 'jquery' ), WPAS_VERSION );
 			wp_enqueue_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
 		}
 
