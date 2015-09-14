@@ -84,13 +84,7 @@
 		// http://select2.github.io/select2/
 		////////////////////////////////
 		if (jQuery().select2 && $('select.wpas-select2').length) {
-			var select = $('select.wpas-select2');
-
-			select.find('option[value=""]').remove();
-			select.prepend('<option></option>');
-			select.select2({
-				placeholder: 'Please Select'
-			});
+			$('select.wpas-select2:visible').select2();
 		}
 
 	});
