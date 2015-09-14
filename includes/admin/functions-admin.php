@@ -238,7 +238,7 @@ function wpas_fix_tickets_count( $views ) {
 			$regex   = '.*?(\\(.*\\))';
 			$replace = '';
 
-			if ( $c = preg_match_all( "/" . $regex . "/is", $label, $matches ) ) {
+			if ( preg_match_all( "/" . $regex . "/is", $label, $matches ) ) {
 				$replace = $matches[1][0];
 			}
 
