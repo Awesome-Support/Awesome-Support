@@ -240,6 +240,6 @@ module.exports = function (grunt) {
 	grunt.registerTask('build', ['jshint', 'concat', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin']);
 	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
-	grunt.registerTask('zip', ['composer:update', 'txpull', 'translation', 'compress']);
+	grunt.registerTask('zip', ['composer:update', 'txpull', 'compress']);
 
 };
