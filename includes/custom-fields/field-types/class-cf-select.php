@@ -20,7 +20,7 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 
 		/* Change the field name if multiple upload is enabled */
 		if ( true === $this->field_args['multiple'] ) {
-			add_filter( 'wpas_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 2 );
+			add_filter( 'wpas_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 3 );
 		}
 
 	}
@@ -74,16 +74,21 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 	}
 
 	/**
-	 * Add the brackets to field name if select multiple is enabled
+	 * Add the brackets to field name if multiple select is enabled
 	 *
-	 * @param $atts  array Field attributes
-	 * @param $field string Field markup
+	 * @since  3.2
 	 *
-	 * @since 3.2
+	 * @param array  $atts   Field attributes
+	 * @param string $field  Field markup
+	 * @param array  $option The custom field attributes
 	 *
 	 * @return mixed
 	 */
-	public function edit_field_atts( $atts, $field ) {
+	public function edit_field_atts( $atts, $field, $option ) {
+
+		if ( $option['name'] !== $this->field_id ) {
+			return $atts;
+		}
 
 		if ( false === $this->field_args['multiple'] ) {
 			return $atts;
