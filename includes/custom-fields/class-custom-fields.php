@@ -90,6 +90,8 @@ class WPAS_Custom_Fields {
 		/* Convert the callback for backwards compatibility */
 		if ( ! empty( $arguments['callback'] ) ) {
 
+			_deprecated_argument( 'WPAS_Custom_Fields::add_field()', '3.2', sprintf( __( 'Please use %s to register your custom field type', 'wpas' ), '<code>field_type</code>' ) );
+
 			switch ( $arguments['callback'] ) {
 
 				case 'taxonomy';
@@ -479,7 +481,7 @@ class WPAS_Custom_Fields {
 				);
 
 				if ( isset( $_GET[ $tax_slug ] ) ) {
-					$args['selected'] = $_GET[ $tax_slug ];
+					$args['selected'] = filter_input( INPUT_GET, $tax_slug, FILTER_SANITIZE_STRING );
 				}
 
 				wp_dropdown_categories( $args );
