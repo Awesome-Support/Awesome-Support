@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "175fdbae191ac4686ecf457e213ceaaa",
+    "hash": "662fd02659ab5241f96b63d9b011a264",
     "packages": [
         {
             "name": "ericmann/wp-session-manager",
@@ -26,16 +26,16 @@
         },
         {
             "name": "gambitph/titan-framework",
-            "version": "v1.7.3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gambitph/Titan-Framework.git",
-                "reference": "c083fa441a2fe77c485385782b7eb606220e3cf5"
+                "reference": "3e43ef7475ba29c258ea1d19ef34b32fee7872f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/c083fa441a2fe77c485385782b7eb606220e3cf5",
-                "reference": "c083fa441a2fe77c485385782b7eb606220e3cf5",
+                "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/3e43ef7475ba29c258ea1d19ef34b32fee7872f2",
+                "reference": "3e43ef7475ba29c258ea1d19ef34b32fee7872f2",
                 "shasum": ""
             },
             "type": "library",
@@ -60,15 +60,19 @@
             "homepage": "https://github.com/gambitph/Titan-Framework",
             "keywords": [
                 "Titan Framework",
+                "framework",
+                "options",
+                "titan",
                 "wordpress"
             ],
-            "time": "2014-12-22 07:58:51"
+            "time": "2015-09-11 12:15:24"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "gambitph/titan-framework": 20,
         "ericmann/wp-session-manager": 20
     },
     "prefer-stable": false,
