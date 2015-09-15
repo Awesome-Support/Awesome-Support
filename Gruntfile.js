@@ -147,7 +147,7 @@ module.exports = function (grunt) {
 			target: {
 				options: {
 					domainPath: '/languages/',                   // Where to save the POT file.
-					exclude: ['assets/.*', 'node_modules/.*', 'vendor/.*'],                      // List of files or directories to ignore.
+					exclude: ['assets/.*', 'node_modules/.*', 'vendor/.*', 'tests/.*'],                      // List of files or directories to ignore.
 					mainFile: 'awesome-support.php',                     // Main project file.
 					potComments: 'N2Clic Limited',                  // The copyright at the beginning of the POT file.
 					potFilename: 'wpas.pot',                  // Name of the POT file.
@@ -183,6 +183,39 @@ module.exports = function (grunt) {
 			}
 		},
 
+		/**
+		 Convert PO files into MO files
+		 @author https://www.npmjs.com/package/grunt-potomo
+		 */
+		potomo: {
+			dist: {
+				options: {
+					poDel: true
+				},
+				files: [{
+					expand: true,
+					cwd: 'languages',
+					src: ['*.po'],
+					dest: 'languages',
+					ext: '.mo',
+					nonull: true
+				}]
+			}
+		},
+
+		/**
+		 Run shell commands
+		 @author https://github.com/jharding/grunt-exec
+		 */
+		exec: {
+			txpull: { // Pull Transifex translation - grunt exec:txpull
+				cmd: 'tx pull -a -f' // Change the percentage with --minimum-perc=yourvalue
+			},
+			txpush: { // Push pot to Transifex - grunt exec:txpush_s
+				cmd: 'tx push -s'
+			}
+		},
+
 		watch: {
 			options: {
 				livereload: {
@@ -205,6 +238,8 @@ module.exports = function (grunt) {
 
 	grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
 	grunt.registerTask('build', ['jshint', 'concat', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin']);
-	grunt.registerTask('zip', ['composer:update', 'compress']);
+	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
+	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
+	grunt.registerTask('zip', ['composer:update', 'txpull', 'translation', 'compress']);
 
 };
