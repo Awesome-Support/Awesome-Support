@@ -8,6 +8,23 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 
 	public $options = array();
 
+	public function __construct( $field_id, $field ) {
+
+		/* Call the parent constructor */
+		parent::__construct( $field_id, $field );
+
+		/* Set the additional parameters */
+		if ( ! isset( $this->field_args['multiple'] ) ) {
+			$this->field_args['multiple'] = false;
+		}
+
+		/* Change the field name if multiple upload is enabled */
+		if ( true === $this->field_args['multiple'] ) {
+			add_filter( 'wpas_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 2 );
+		}
+
+	}
+
 	/**
 	 * Return the field markup for the front-end.
 	 *
@@ -19,12 +36,13 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 			return '<!-- No options declared -->';
 		}
 
-		$output        = '<label {{label_atts}}>{{label}}</label><select {{atts}}>';
+		$multiple      = true === (bool) $this->field_args['multiple'] ? 'multiple' : '';
+		$output        = sprintf( '<label {{label_atts}}>{{label}}</label><select {{atts}} %s>', $multiple );
 		$this->options = $this->field_args['options'];
-		$value         = $this->populate();
+		$value         = array_filter( (array) $this->populate() );
 
 		foreach ( $this->options as $option_id => $option_label ) {
-			$selected = $option_id == $value ? 'selected' : '';
+			$selected = in_array( $option_id, $value ) ? 'selected' : '';
 			$output .= sprintf( "<option value='%s' %s>%s</option>", $option_id, $selected, $option_label );
 		}
 
@@ -53,6 +71,34 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 	 */
 	public function display_no_edit() {
 		return sprintf( '<div class="wpas-cf-noedit-wrapper"><div id="%s-label" class="wpas-cf-label">%s</div><div id="%s-value" class="wpas-cf-value">%s</div></div>', $this->get_field_id(), $this->get_field_title(), $this->get_field_id(), $this->get_field_value() );
+	}
+
+	/**
+	 * Add the brackets to field name if select multiple is enabled
+	 *
+	 * @param $atts  array Field attributes
+	 * @param $field string Field markup
+	 *
+	 * @since 3.2
+	 *
+	 * @return mixed
+	 */
+	public function edit_field_atts( $atts, $field ) {
+
+		if ( false === $this->field_args['multiple'] ) {
+			return $atts;
+		}
+
+		foreach ( $atts as $key => $att ) {
+			if ( 'name' === substr( $att, 0, 4 ) ) {
+				$att = substr( $att, 0, - 1 ); // Get rid of the last char (closing backtick)
+				$att .= '[]\''; // Add the brackets for handling multiple files
+				$atts[ $key ] = $att; // Update the array of attributes
+			}
+		}
+
+		return $atts;
+
 	}
 
 }
