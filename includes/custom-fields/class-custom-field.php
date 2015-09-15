@@ -459,7 +459,7 @@ class WPAS_Custom_Field {
 			array_push( $atts, 'required' );
 		}
 
-		$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field ) ), $field );
+		$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field, $this->field ) ), $field );
 		$field = str_replace( '{{label_atts}}', implode( ' ', $label_atts ), $field );
 		$field = str_replace( '{{label}}', $this->get_field_label(), $field );
 
