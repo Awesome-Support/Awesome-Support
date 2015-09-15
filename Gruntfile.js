@@ -139,6 +139,50 @@ module.exports = function (grunt) {
 			}
 		},
 
+		/**
+		 Updates the translation catalog
+		 @author https://www.npmjs.com/package/grunt-wp-i18n
+		 */
+		makepot: {
+			target: {
+				options: {
+					domainPath: '/languages/',                   // Where to save the POT file.
+					exclude: ['assets/.*', 'node_modules/.*', 'vendor/.*'],                      // List of files or directories to ignore.
+					mainFile: 'awesome-support.php',                     // Main project file.
+					potComments: 'N2Clic Limited',                  // The copyright at the beginning of the POT file.
+					potFilename: 'wpas.pot',                  // Name of the POT file.
+					potHeaders: {
+						poedit: true,                 // Includes common Poedit headers.
+						'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
+					},                                // Headers to add to the generated POT file.
+					processPot: function (pot, options) {
+						pot.headers['report-msgid-bugs-to'] = 'https://getawesomesupport.com.com/';
+						pot.headers['last-translator'] = 'ThemeAvenue (https://themeavenue.net/)';
+						pot.headers['language-team'] = 'ThemeAvenue <hello@themeavenue.net>';
+						pot.headers['language'] = 'en_US';
+						var translation, // Exclude meta data from pot.
+							excluded_meta = [
+								'Plugin Name of the plugin/theme',
+								'Plugin URI of the plugin/theme',
+								'Author of the plugin/theme',
+								'Author URI of the plugin/theme'
+							];
+						for (translation in pot.translations['']) {
+							if ('undefined' !== typeof pot.translations[''][translation].comments.extracted) {
+								if (excluded_meta.indexOf(pot.translations[''][translation].comments.extracted) >= 0) {
+									console.log('Excluded meta: ' + pot.translations[''][translation].comments.extracted);
+									delete pot.translations[''][translation];
+								}
+							}
+						}
+						return pot;
+					},
+					type: 'wp-plugin',                // Type of project (wp-plugin or wp-theme).
+					updateTimestamp: true             // Whether the POT-Creation-Date should be updated without other changes.
+				}
+			}
+		},
+
 		watch: {
 			options: {
 				livereload: {
