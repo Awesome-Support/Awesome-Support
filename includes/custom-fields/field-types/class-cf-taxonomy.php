@@ -22,7 +22,10 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 	 */
 	protected $ordered_terms;
 
-	public function __construct() {
+	public function __construct( $field_id, $field ) {
+
+		/* Call the parent constructor */
+		parent::__construct( $field_id, $field );
 
 		$args = func_get_args();
 
