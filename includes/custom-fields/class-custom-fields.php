@@ -524,10 +524,10 @@ class WPAS_Custom_Fields {
 	}
 
 	/**
-	 * Convert taxonomy ID into term.
+	 * Convert taxonomy term ID into term slug.
 	 *
-	 * When filtering, WordPress uses the ID by default in the query but
-	 * that doesn't work. We need to convert it to the taxonomy term.
+	 * When filtering, WordPress uses the term ID by default in the query but
+	 * that doesn't work. We need to convert it to the taxonomy term slug.
 	 *
 	 * @param  object $query WordPress current main query
 	 *
@@ -553,7 +553,12 @@ class WPAS_Custom_Fields {
 
 					$term = get_term_by( 'id', $value, $arg );
 
-					if ( false !== $term ) {
+					// Depending on where the filter was triggered (dropdown or click on a term) it uses either the term ID or slug. Let's see if this term slug exists
+					if ( is_null( $term ) ) {
+						$term = get_term_by( 'slug', $value, $arg );
+					}
+
+					if ( ! empty( $term ) ) {
 						$query->query_vars[ $arg ] = $term->slug;
 					}
 
