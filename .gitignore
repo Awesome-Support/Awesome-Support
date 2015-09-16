@@ -63,7 +63,3 @@ prepros.cfg
 .idea
 ### NetBeans ###
 /nbproject/private/
-
-### Translation Files ###
-/languages/*.po
-/languages/*.mo
