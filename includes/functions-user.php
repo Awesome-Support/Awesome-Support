@@ -211,7 +211,8 @@ function wpas_try_login() {
 
 		if ( is_wp_error( $login ) ) {
 			$error = $login->get_error_message();
-			wp_redirect( add_query_arg( array( 'message' => urlencode( base64_encode( json_encode( $error ) ) ) ), get_permalink( $post->ID ) ) );
+			wpas_add_error( 'login_failed', $error );
+			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 			exit;
 		}
 
@@ -219,13 +220,15 @@ function wpas_try_login() {
 
 		if ( is_wp_error( $login ) ) {
 			$error = $login->get_error_message();
-			wp_redirect( add_query_arg( array( 'message' => urlencode( base64_encode( json_encode( $error ) ) ) ), get_permalink( $post->ID ) ) );
+			wpas_add_error( 'login_failed', $error );
+			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 			exit;
 		} elseif ( is_a( $login, 'WP_User' ) ) {
 			wp_redirect( get_permalink( $post->ID ) );
 			exit;
 		} else {
-			wp_redirect( add_query_arg( array( 'message' => urlencode( base64_encode( json_encode( __( 'We were unable to log you in for an unknown reason.', 'wpas' ) ) ) ) ), get_permalink( $post->ID ) ) );
+			wpas_add_error( 'login_failed', __( 'We were unable to log you in for an unknown reason.', 'wpas' ) );
+			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 			exit;
 		}
 
