@@ -121,6 +121,7 @@ module.exports = function (grunt) {
 						'**',
 						'!node_modules/**',
 						'!tests/**',
+						'!.tx/**',
 						'!.gitignore',
 						'!.travis.yml',
 						'!apigen.neon',
