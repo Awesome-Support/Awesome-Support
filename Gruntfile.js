@@ -130,6 +130,7 @@ module.exports = function (grunt) {
 						'!tests/**',
 						'!logs/**',
 						'!README.md',
+						'!CONTRIBUTING.md',
 						'!Gruntfile.js',
 						'!package.json',
 						'!*.sublime-workspace',
