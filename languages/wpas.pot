@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 3.1.12\n"
 "Report-Msgid-Bugs-To: https://getawesomesupport.com.com/\n"
-"POT-Creation-Date: 2015-09-15 12:12:56+00:00\n"
+"POT-Creation-Date: 2015-09-16 04:11:24+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -147,14 +147,6 @@ msgid "Can Be Assigned"
 msgstr ""
 
 #: includes/admin/class-admin-user.php:72
-#: includes/admin/views/system-status.php:31
-#: includes/admin/views/system-status.php:39
-#: includes/admin/views/system-status.php:182
-#: includes/admin/views/system-status.php:288
-#: includes/admin/views/system-status.php:289
-#: includes/admin/views/system-status.php:290
-#: includes/admin/views/system-status.php:291
-#: includes/admin/views/system-status.php:395
 msgid "Yes"
 msgstr ""
 
@@ -163,7 +155,6 @@ msgid "Can the system assign new tickets to this user?"
 msgstr ""
 
 #: includes/admin/class-admin-user.php:84
-#: includes/admin/views/system-status.php:136
 msgid "Default"
 msgstr ""
 
@@ -212,7 +203,6 @@ msgid "Close"
 msgstr ""
 
 #: includes/admin/class-admin.php:486 includes/admin/metaboxes/details.php:80
-#: includes/admin/views/system-status.php:128
 #: includes/custom-fields/class-custom-fields.php:518
 #: includes/functions-general.php:358 includes/functions-templating.php:770
 msgid "Open"
@@ -784,106 +774,6 @@ msgstr ""
 msgid "Cleanup"
 msgstr ""
 
-#: includes/admin/views/system-status.php:1
-msgid ""
-"The system status is a built-in debugging tool. If you contacted the "
-"support and you're asked ot provide the system status, <strong>click the "
-"button below</strong> to copy your system report:"
-msgstr ""
-
-#: includes/admin/views/system-status.php:5
-#: includes/admin/views/system-status.php:6
-msgid "Copy Report"
-msgstr ""
-
-#: includes/admin/views/system-status.php:31
-#: includes/admin/views/system-status.php:39
-#: includes/admin/views/system-status.php:182
-#: includes/admin/views/system-status.php:288
-#: includes/admin/views/system-status.php:289
-#: includes/admin/views/system-status.php:290
-#: includes/admin/views/system-status.php:291
-#: includes/admin/views/system-status.php:300
-#: includes/admin/views/system-status.php:395
-msgid "No"
-msgstr ""
-
-#: includes/admin/views/system-status.php:55
-msgid "%s (The server only allows %s)"
-msgstr ""
-
-#: includes/admin/views/system-status.php:71
-msgid "The timezone hasn't been set"
-msgstr ""
-
-#: includes/admin/views/system-status.php:124
-msgid "Enabled"
-msgstr ""
-
-#: includes/admin/views/system-status.php:124
-msgid "Disabled"
-msgstr ""
-
-#: includes/admin/views/system-status.php:128
-#: includes/custom-fields/class-custom-fields.php:519
-#: includes/functions-general.php:350 includes/functions-templating.php:760
-msgid "Closed"
-msgstr ""
-
-#: includes/admin/views/system-status.php:149
-msgid "The upload folder doesn't exist and can't be created"
-msgstr ""
-
-#: includes/admin/views/system-status.php:151
-msgid "The upload folder doesn't exist but can be created"
-msgstr ""
-
-#: includes/admin/views/system-status.php:155
-msgid "The upload folder exists but isn't writable"
-msgstr ""
-
-#: includes/admin/views/system-status.php:157
-msgid "The upload folder exists and is writable"
-msgstr ""
-
-#: includes/admin/views/system-status.php:287
-msgid "Capability"
-msgstr ""
-
-#: includes/admin/views/system-status.php:288
-msgid "Core"
-msgstr ""
-
-#: includes/admin/views/system-status.php:289
-msgid "Required"
-msgstr ""
-
-#: includes/admin/views/system-status.php:290
-msgid "Logged"
-msgstr ""
-
-#: includes/admin/views/system-status.php:291
-msgid "Show Column"
-msgstr ""
-
-#: includes/admin/views/system-status.php:295
-#: includes/admin/views/system-status.php:297
-#: includes/admin/views/system-status.php:300
-msgid "Taxonomy"
-msgstr ""
-
-#: includes/admin/views/system-status.php:295
-msgid "Yes (standard)"
-msgstr ""
-
-#: includes/admin/views/system-status.php:297
-msgid "Yes (custom)"
-msgstr ""
-
-#: includes/admin/views/system-status.php:303
-msgid "Callback"
-msgstr ""
-
 #: includes/admin/views/system-tools.php:34
 msgid "Tickets metas were cleared"
 msgstr ""
@@ -1235,11 +1125,23 @@ msgstr ""
 msgid "Delete all products synchronized from your e-commerce plugin."
 msgstr ""
 
-#: includes/class-remote-notification-client.php:272
+#: includes/class-remote-notification-client.php:193
+msgid "The server response was invalid (code %s)"
+msgstr ""
+
+#: includes/class-remote-notification-client.php:199
+msgid "The server response is empty"
+msgstr ""
+
+#: includes/class-remote-notification-client.php:205
+msgid "Cannot decode the response content"
+msgstr ""
+
+#: includes/class-remote-notification-client.php:441
 msgid "Dismiss notification"
 msgstr ""
 
-#: includes/class-remote-notification-client.php:274
+#: includes/class-remote-notification-client.php:443
 msgid "Dismiss"
 msgstr ""
 
@@ -1285,6 +1187,11 @@ msgstr ""
 
 #: includes/custom-fields/class-custom-fields.php:517
 msgid "Any Status"
+msgstr ""
+
+#: includes/custom-fields/class-custom-fields.php:519
+#: includes/functions-general.php:350 includes/functions-templating.php:760
+msgid "Closed"
 msgstr ""
 
 #: includes/custom-fields/class-custom-fields.php:932
@@ -1728,11 +1635,6 @@ msgstr ""
 #: includes/admin/settings/settings-general.php:12
 msgctxt "User registration is not allowed"
 msgid "not allowed"
-msgstr ""
-
-#: includes/admin/views/system-status.php:170
-msgctxt "Allowed file types for attachments"
-msgid "None"
 msgstr ""
 
 #: includes/class-log-history.php:81

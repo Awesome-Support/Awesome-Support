@@ -147,7 +147,7 @@ module.exports = function (grunt) {
 			target: {
 				options: {
 					domainPath: '/languages/',                   // Where to save the POT file.
-					exclude: ['assets/.*', 'node_modules/.*', 'vendor/.*', 'tests/.*'],                      // List of files or directories to ignore.
+					exclude: ['assets/.*', 'node_modules/.*', 'vendor/.*', 'tests/.*', 'includes/admin/views/system-status.php'],                      // List of files or directories to ignore.
 					mainFile: 'awesome-support.php',                     // Main project file.
 					potComments: 'N2Clic Limited',                  // The copyright at the beginning of the POT file.
 					potFilename: 'wpas.pot',                  // Name of the POT file.
