@@ -69,6 +69,7 @@ class Awesome_Support {
 			add_filter( 'template_include',               array( $this, 'template_include' ),                10, 1 );
 			add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ),             10, 1 );
 			add_filter( 'authenticate',                   array( $this, 'email_signon' ),                    20, 3 );
+			add_filter( 'plugin_locale',                  array( $this, 'change_plugin_locale' ),            10, 2 );
 
 			/* Hook all e-mail notifications */
 			add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
@@ -598,14 +599,46 @@ class Awesome_Support {
 	 */
 	public function load_plugin_textdomain() {
 
-		global $locale;
+		$lang_dir  = WPAS_ROOT . 'languages/';
+		$land_path = WPAS_PATH . 'languages/';
+		$locale    = apply_filters( 'plugin_locale', get_locale(), 'wpas' );
+		$mofile    = "wpas-$locale.mo";
+
+		if ( file_exists( $land_path . $mofile ) ) {
+			$language = load_textdomain( 'wpas', $land_path . $mofile );
+		} else {
+			$language = load_plugin_textdomain( 'wpas', false, $lang_dir );
+		}
+
+		return $language;
+
+	}
+
+	/**
+	 * Change the plugin locale
+	 *
+	 * This is used to temporarily change the plugin locale on a site,
+	 * mainly for debugging purpose.
+	 *
+	 * @since 3.2.2
+	 *
+	 * @param string $locale Current plugin locale
+	 * @param string $domain Current plugin domain
+	 *
+	 * @return string
+	 */
+	public function change_plugin_locale( $locale, $domain ) {
+
+		if ( 'wpas' !== $domain ) {
+			return $locale;
+		}
 
 		/**
 		 * Custom locale.
 		 *
 		 * The custom locale defined by the URL var $wpas_locale
 		 * is used for debugging purpose. It makes testing language
-		 * files easily without changing the site main language.
+		 * files easy without changing the site main language.
 		 * It can also be useful when doing support on a site that's
 		 * not in English.
 		 *
@@ -615,20 +648,10 @@ class Awesome_Support {
 		$wpas_locale = filter_input( INPUT_GET, 'wpas_locale', FILTER_SANITIZE_STRING );
 
 		if ( ! empty( $wpas_locale ) ) {
-			$backup = $locale;
 			$locale = $wpas_locale;
 		}
 
-		$language = load_plugin_textdomain( 'wpas', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
-
-		/**
-		 * Reset the $locale after loading our language file
-		 */
-		if ( ! empty( $wpas_locale ) ) {
-			$locale = $backup;
-		}
-
-		return $language;
+		return $locale;
 
 	}
 
