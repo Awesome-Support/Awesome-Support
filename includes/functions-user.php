@@ -12,9 +12,9 @@ function wpas_register_account( $data = false ) {
 	global $post;
 
 	/* Make sure registrations are open */
-	$registration = boolval( wpas_get_option( 'allow_registrations', true ) );
+	$registration = wpas_get_option( 'allow_registrations', 'allow' );
 
-	if ( true !== $registration ) {
+	if ( 'allow' !== $registration ) {
 		wpas_add_error( 'registration_not_allowed', __( 'Registrations are currently not allowed.', 'wpas' ) );
 		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 		exit;
