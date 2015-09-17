@@ -15,10 +15,8 @@ function wpas_register_account( $data = false ) {
 	$registration = boolval( wpas_get_option( 'allow_registrations', true ) );
 
 	if ( true !== $registration ) {
-		wp_redirect( add_query_arg( array(
-			'message' => wpas_create_notification( __( 'Registrations are currently not allowed.', 'wpas' ) ),
-			get_permalink( $post->ID )
-		) ) );
+		wpas_add_error( 'registration_not_allowed', __( 'Registrations are currently not allowed.', 'wpas' ) );
+		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 		exit;
 	}
 
@@ -43,10 +41,8 @@ function wpas_register_account( $data = false ) {
 
 		$notice = implode( '\n\r', $errors->get_error_messages() );
 
-		wp_redirect( add_query_arg( array(
-			'message' => wpas_create_notification( $notice ),
-			get_permalink( $post->ID )
-		) ) );
+		wpas_add_error( 'registration_error', $notice );
+		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 
 		exit;
 
@@ -63,19 +59,15 @@ function wpas_register_account( $data = false ) {
 	do_action( 'wpas_pre_register_account', $data );
 
 	if ( wpas_get_option( 'terms_conditions', false ) && ! isset( $data['terms'] ) ) {
-		wp_redirect( add_query_arg( array(
-			'message' => wpas_create_notification( __( 'You did not accept the terms and conditions.', 'wpas' ) ),
-			get_permalink( $post->ID )
-		) ) );
+		wpas_add_error( 'accept_terms_conditions', __( 'You did not accept the terms and conditions.', 'wpas' ) );
+		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 		exit;
 	}
 
 	/* Make sure we have all the necessary data. */
 	if ( false === ( $email || $first_name || $last_name || $pwd ) ) {
-		wp_redirect( add_query_arg( array(
-			'message' => wpas_create_notification( __( 'You didn\'t correctly fill all the fields.', 'wpas' ) ),
-			get_permalink( $post->ID )
-		) ) );
+		wpas_add_error( 'missing_fields', __( 'You didn\'t correctly fill all the fields.', 'wpas' ) );
+		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 		exit;
 	}
 
@@ -130,10 +122,10 @@ function wpas_register_account( $data = false ) {
 		do_action( 'wpas_register_account_failed', $user_id, $args );
 
 		$error = $user_id->get_error_message();
-		wp_redirect( add_query_arg( array(
-			'message' => wpas_create_notification( $error ),
-			get_permalink( $post->ID )
-		) ) );
+
+		wpas_add_error( 'missing_fields', $error );
+		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+
 		exit;
 
 	} else {
@@ -155,10 +147,8 @@ function wpas_register_account( $data = false ) {
 		}
 
 		if ( headers_sent() ) {
-			wp_redirect( add_query_arg( array(
-				'message' => wpas_create_notification( __( 'Your account has been created. Please log-in.', 'wpas' ) ),
-				get_permalink( $post->ID )
-			) ) );
+			wpas_add_notification( 'account_created', __( 'Your account has been created. Please log-in.', 'wpas' ) );
+			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 			exit;
 		}
 

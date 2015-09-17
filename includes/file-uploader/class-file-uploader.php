@@ -603,8 +603,10 @@ class WPAS_File_Upload {
 
 		$url      = remove_query_arg( 'message', $location );
 		$error    = is_array( $this->error_message ) ? implode( ', ', $this->error_message ) : $this->error_message;
-		$message  = wpas_create_notification( sprintf( __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'wpas' ), $error ) );
-		$location = add_query_arg( array( 'message' => $message ), $url );
+
+		wpas_add_error( 'files_not_uploaded', sprintf( __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'wpas' ), $error ) );
+
+		$location = wp_sanitize_redirect( $url );
 
 		return $location;
 	}
