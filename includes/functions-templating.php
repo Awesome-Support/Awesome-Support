@@ -719,14 +719,16 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 	} else {
 
 		foreach ( $terms as $term ) {
+			
+			$term_title = apply_filters( 'wpas_taxonomy_name', $term->name, $post_id, $field );
 
 			if ( is_admin() ) {
 				$get         = (array) $_GET;
 				$get[$field] = $term->slug;
 				$url         = add_query_arg( $get, admin_url( 'edit.php' ) );
-				$item        = "<a href='$url'>{$term->name}</a>";
+				$item        = "<a href='$url'>{$term_title}</a>";
 			} else {
-				$item = $term->name;
+				$item = $term_title;
 			}
 
 			array_push( $list, $item );
