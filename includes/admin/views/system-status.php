@@ -1,4 +1,4 @@
-<p><?php _e( 'The system status is a built-in debugging tool. If you contacted the support and you\'re asked ot provide the system status, <strong>click the button below</strong> to copy your system report:', 'wpas' ); ?></p>
+<p><?php _e( 'The system status is a built-in debugging tool. If you contacted the support and you\'re asked to provide the system status, <strong>click the button below</strong> to copy your system report:', 'wpas' ); ?></p>
 
 <div class="wpas-system-status">
 	<textarea id="wpas-system-status-output" rows="10" style="display: none;"></textarea>
