@@ -32,6 +32,7 @@ define( 'WPAS_VERSION',           '3.2.1' );
 define( 'WPAS_DB_VERSION',        '1' );
 define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
+define( 'WPAS_ROOT',              trailingslashit( dirname( plugin_basename( __FILE__ ) ) ) );
 define( 'WPAS_TEMPLATE_PATH',     'awesome-support/' );
 define( 'WPAS_ADMIN_ASSETS_URL',  trailingslashit( plugin_dir_url( __FILE__ ) . 'assets/admin/' ) );
 define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) . 'assets/admin/' ) );
