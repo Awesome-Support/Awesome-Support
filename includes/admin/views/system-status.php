@@ -194,12 +194,12 @@
 		<tr>
 			<td class="row-title">Ticket Submission</td>
 			<?php $page_submit = wpas_get_option( 'ticket_submit' ); ?>
-			<td><?php echo empty( $page_submit ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_submit ) . " (#$page_submit)</span>"; ?></td>
+			<td><?php echo empty( $page_submit[0] ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_submit[0] ) . " (#$page_submit[0])</span>"; ?></td>
 		</tr>
 		<tr>
 			<td class="row-title">Tickets List</td>
 			<?php $page_list = wpas_get_option( 'ticket_list' ); ?>
-			<td><?php echo empty( $page_list ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_list ) . " (#$page_list)</span>"; ?></td>
+			<td><?php echo empty( $page_list[0] ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_list[0] ) . " (#$page_list[0])</span>"; ?></td>
 		</tr>
 	</tbody>
 </table>
