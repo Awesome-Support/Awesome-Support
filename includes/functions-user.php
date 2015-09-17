@@ -151,7 +151,7 @@ function wpas_register_account( $data = false ) {
 		unset( $_SESSION['wpas_registration_form'] );
 
 		if ( true === apply_filters( 'wpas_new_user_notification', true ) ) {
-			wp_new_user_notification( $user_id, $pwd );
+			wp_new_user_notification( $user_id );
 		}
 
 		if ( headers_sent() ) {
