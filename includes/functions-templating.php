@@ -720,7 +720,7 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 
 		foreach ( $terms as $term ) {
 			
-			$term_title = apply_filters( 'the_title', $term->name );
+			$term_title = apply_filters( 'wpas_taxonomy_name', $term->name, $post_id, $field );
 
 			if ( is_admin() ) {
 				$get         = (array) $_GET;
