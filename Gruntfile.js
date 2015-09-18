@@ -148,21 +148,21 @@ module.exports = function (grunt) {
 		makepot: {
 			target: {
 				options: {
-					domainPath: '/languages/',                   // Where to save the POT file.
-					exclude: ['assets/.*', 'node_modules/.*', 'vendor/.*', 'tests/.*', 'includes/admin/views/system-status.php'],                      // List of files or directories to ignore.
-					mainFile: 'awesome-support.php',                     // Main project file.
-					potComments: 'N2Clic Limited',                  // The copyright at the beginning of the POT file.
-					potFilename: 'wpas.pot',                  // Name of the POT file.
+					domainPath: '/languages/',
+					exclude: ['assets/.*', 'node_modules/.*', 'vendor/.*', 'tests/.*', 'includes/admin/views/system-status.php'],
+					mainFile: 'awesome-support.php',
+					potComments: 'N2Clic Limited',
+					potFilename: 'wpas.pot',
 					potHeaders: {
-						poedit: true,                 // Includes common Poedit headers.
-						'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
-					},                                // Headers to add to the generated POT file.
+						poedit: true,
+						'x-poedit-keywordslist': true
+					},
 					processPot: function (pot, options) {
 						pot.headers['report-msgid-bugs-to'] = 'https://getawesomesupport.com.com/';
 						pot.headers['last-translator'] = 'ThemeAvenue (https://themeavenue.net/)';
 						pot.headers['language-team'] = 'ThemeAvenue <hello@themeavenue.net>';
 						pot.headers['language'] = 'en_US';
-						var translation, // Exclude meta data from pot.
+						var translation,
 							excluded_meta = [
 								'Plugin Name of the plugin/theme',
 								'Plugin URI of the plugin/theme',
@@ -179,8 +179,8 @@ module.exports = function (grunt) {
 						}
 						return pot;
 					},
-					type: 'wp-plugin',                // Type of project (wp-plugin or wp-theme).
-					updateTimestamp: true             // Whether the POT-Creation-Date should be updated without other changes.
+					type: 'wp-plugin',
+					updateTimestamp: true
 				}
 			}
 		},
