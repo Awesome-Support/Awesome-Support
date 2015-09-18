@@ -70,6 +70,7 @@ class Awesome_Support {
 			add_filter( 'wpas_logs_handles',              array( $this, 'default_log_handles' ),             10, 1 );
 			add_filter( 'authenticate',                   array( $this, 'email_signon' ),                    20, 3 );
 			add_filter( 'plugin_locale',                  array( $this, 'change_plugin_locale' ),            10, 2 );
+			add_filter( 'the_content',                    array( $this, 'make_links_clickable' ),            10, 1 );
 
 			/* Hook all e-mail notifications */
 			add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
@@ -993,6 +994,36 @@ class Awesome_Support {
 		}
 
 		return $query;
+
+	}
+
+	/**
+	 * Make all tickets and replies URLs clickable
+	 *
+	 * @since 3.2.2
+	 *
+	 * @param string $content Post content
+	 *
+	 * @return string
+	 */
+	public function make_links_clickable( $content ) {
+
+		// We're not using $post_id here because we want to apply the filter to the entire "page", which includes ticket replies
+		if ( is_admin() && isset( $_GET['post'] ) && 'ticket' === get_post_type( filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT ) ) ) {
+			return make_clickable( $content );
+		}
+
+		global $post;
+
+		if ( ! isset( $post ) || empty( $post ) ) {
+			return $content;
+		}
+
+		if ( in_array( get_post_type( $post->ID ), array( 'ticket', 'ticket_reply' ) ) ) {
+			$content = make_clickable( $content );
+		}
+
+		return $content;
 
 	}
 
