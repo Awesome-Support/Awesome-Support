@@ -95,7 +95,7 @@ function wpas_core_settings_general( $def ) {
 					'name'     => __( 'Tickets List', 'wpas' ),
 					'id'       => 'ticket_list',
 					'type'     => 'select',
-					'multiple' => true,
+					'multiple' => false,
 					'desc'     => sprintf( __( 'The page that will list all tickets for a client. This page should contain the shortcode %s', 'wpas' ), '<code>[tickets]</code>' ),
 					'options'  => wpas_list_pages(),
 					'default'  => ''
