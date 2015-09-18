@@ -47,17 +47,17 @@
 			</div>
 		</div>
 
-		<div class="row">
+		<div class="row row-wpas-more">
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 				<div class="about-body">
-					<h3>Newsfeed</h3>
+					<h2>Newsfeed</h2>
 					<div class="wpas-fbpage-feed">Loading...</div>
 					<p><a class="button button-large button-primary" href="https://www.facebook.com/awesomesupport" target="_blank">View more news</a></p>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 				<div class="about-body">
-					<h3>Contributing</h3>
+					<h2>Contributing</h2>
 					<h4>Open Source</h4>
 					<p>The code is open source and <a href="https://github.com/ThemeAvenue/Awesome-Support" target="_blank">available on GitHub</a> for anyone to contribute. Even you.</p>
 					<h4>Translation Ready</h4>
@@ -68,7 +68,7 @@
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 				<div class="about-body">
-					<h3>Extending the Possibilities</h3>
+					<h2>Extending the Possibilities</h2>
 					<p>Even though Awesome Support has a lot of built-in features, it is impossible to make everyone happy. This is why we have lots of addons to help you tailor your support system.</p>
 					<a href="<?php echo esc_url( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-addons' ), admin_url( 'edit.php' ) ) ); ?>" class="button button-large button-primary">Browse extensions</a>
 					<p>Please also make sure to check <a href="#" target="_blank">our roadmap</a>.</p>
