@@ -751,6 +751,10 @@ function wpas_get_submission_page_url( $post_id = false ) {
 
 	$submission = wpas_get_option( 'ticket_submit' );
 
+	if ( ! is_array( $submission ) ) {
+		$submission = array_filter( (array) $submission );
+	}
+
 	if ( is_int( $post_id ) && in_array( $post_id, $submission ) ) {
 		$url = get_permalink( (int) $post_id );
 	} else {
