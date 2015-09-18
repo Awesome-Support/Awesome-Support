@@ -194,11 +194,38 @@
 		<tr>
 			<td class="row-title">Ticket Submission</td>
 			<?php $page_submit = wpas_get_option( 'ticket_submit' ); ?>
-			<td><?php echo empty( $page_submit ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_submit ) . " (#$page_submit)</span>"; ?></td>
+			<td>
+				<?php
+				if ( empty( $page_submit ) ) {
+					echo '<span class="wpas-alert-danger">Not set</span>';
+				} else {
+
+					$submission_pages = array();
+
+					if ( ! is_array( $page_submit ) ) {
+						$page_submit = (array) $page_submit;
+					}
+
+					foreach ( $page_submit as $page_submit_id ) {
+						$page_submit_url = wpas_get_submission_page_url( $page_submit_id );
+						array_push( $submission_pages, "<span class='wpas-alert-success'>" . esc_url( $page_submit_url ) . " (#$page_submit_id)</span>" );
+					}
+
+					echo implode( ', ', $submission_pages );
+
+				}
+				?>
+			</td>
 		</tr>
 		<tr>
 			<td class="row-title">Tickets List</td>
-			<?php $page_list = wpas_get_option( 'ticket_list' ); ?>
+			<?php
+			$page_list = wpas_get_option( 'ticket_list' );
+
+			if ( is_array( $page_list ) && ! empty( $page_list ) ) {
+				$page_list = $page_list[0];
+			}
+			?>
 			<td><?php echo empty( $page_list ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . get_permalink( $page_list ) . " (#$page_list)</span>"; ?></td>
 		</tr>
 	</tbody>
