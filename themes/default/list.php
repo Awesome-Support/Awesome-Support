@@ -49,7 +49,7 @@ if ( $wpas_tickets->have_posts() ):
 				wp_reset_query(); ?>
 			</tbody>
 		</table>
-		<?php wpas_make_button( __( 'Open a ticket', 'wpas' ), array( 'type' => 'link', 'link' => esc_url( get_permalink( wpas_get_option( 'ticket_submit' ) ) ), 'class' => 'wpas-btn wpas-btn-default' ) ); ?>
+		<?php wpas_make_button( __( 'Open a ticket', 'wpas' ), array( 'type' => 'link', 'link' => wpas_get_submission_page_url(), 'class' => 'wpas-btn wpas-btn-default' ) ); ?>
 	</div>
 <?php else:
 	echo wpas_get_notification_markup( 'info', sprintf( __( 'You haven\'t submitted a ticket yet. <a href="%s">Click here to submit your first ticket</a>.', 'wpas' ), wpas_get_submission_page_url() ) );

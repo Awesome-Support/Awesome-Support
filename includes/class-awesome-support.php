@@ -791,7 +791,7 @@ class Awesome_Support {
 	public function redirect_archive() {
 
 		if ( is_post_type_archive( 'ticket' ) ) {
-			wpas_redirect( 'archive_redirect', get_permalink( wpas_get_option( 'ticket_list' ) ) );
+			wpas_redirect( 'archive_redirect', wpas_get_tickets_list_page_url() );
 		}
 
 	}
