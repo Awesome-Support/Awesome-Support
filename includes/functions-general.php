@@ -755,6 +755,10 @@ function wpas_get_submission_page_url( $post_id = false ) {
 		$submission = array_filter( (array) $submission );
 	}
 
+	if ( empty( $submission ) ) {
+		return '';
+	}
+
 	if ( is_int( $post_id ) && in_array( $post_id, $submission ) ) {
 		$url = get_permalink( (int) $post_id );
 	} else {
@@ -775,6 +779,10 @@ function wpas_get_submission_page_url( $post_id = false ) {
 function wpas_get_tickets_list_page_url() {
 
 	$list = wpas_get_option( 'ticket_list' );
+
+	if ( empty( $list ) ) {
+		return '';
+	}
 
 	if ( is_array( $list ) && ! empty( $list ) ) {
 		$list = $list[0];
