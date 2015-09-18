@@ -761,7 +761,26 @@ function wpas_get_submission_page_url( $post_id = false ) {
 		$url = get_permalink( (int) $submission[0] );
 	}
 
-	return esc_url( $url );
+	return wp_sanitize_redirect( $url );
+
+}
+
+/**
+ * Get URL of the tickets list page
+ *
+ * @since 3.2.2
+ *
+ * @return string
+ */
+function wpas_get_tickets_list_page_url() {
+
+	$list = wpas_get_option( 'ticket_list' );
+
+	if ( is_array( $list ) && ! empty( $list ) ) {
+		$list = $list[0];
+	}
+
+	return wp_sanitize_redirect( get_permalink( (int) $list ) );
 
 }
 
