@@ -125,6 +125,8 @@ class WPAS_Custom_Field {
 			'desc'                  => '',                    // Helper description for the field
 		    /* Added in 3.2.0 */
 		    'html5_pattern'         => '',                    // Adds a validation pattern following the HTML5 standards
+		    /* @since 3.2.2 */
+		    'default'               => '',                    // Field default value
 			/* The following parameters are users for taxonomies only. */
 			'taxo_std'              => false,                 // For taxonomies, should it behave like a standard WordPress taxonomy
 			'label'                 => '',
@@ -301,6 +303,10 @@ class WPAS_Custom_Field {
 
 			if ( isset( $fields ) && is_array( $fields ) && array_key_exists( $this->get_field_id(), $fields ) ) {
 				$value = $this->get_sanitized_value( $fields[$this->get_field_id()] );
+			}
+
+			if ( ! empty( $this->field_args['default'] ) ) {
+				$value = $this->get_sanitized_value( $this->field_args['default'] );
 			}
 
 		}
