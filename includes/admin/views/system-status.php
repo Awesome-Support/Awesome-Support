@@ -125,7 +125,7 @@
 		</tr>
 		<tr class="alt">
 			<td class="row-title">Registration Status</td>
-			<td><?php true === boolval( wpas_get_option( 'allow_registrations' ) ) ? _e( 'Open', 'wpas' ) : _e( 'Closed', 'wpas '); ?></td>
+			<td><?php 'allow' === wpas_get_option( 'allow_registrations' ) ? _e( 'Open', 'wpas' ) : _e( 'Closed', 'wpas '); ?></td>
 		</tr>
 		<tr>
 			<td class="row-title">Registration Page</td>
