@@ -105,6 +105,34 @@ module.exports = function (grunt) {
 			}
 		},
 
+		/*
+		Bump version number
+		@author https://www.npmjs.com/package/grunt-version
+		 */
+		version: {
+			pluginVersion: {
+				options: {
+					prefix: 'Version:\\s+'
+				},
+				src: [
+					'awesome-support.php'
+				]
+			},
+			pluginConstant: {
+				options: {
+					prefix: 'define\\(\\s*\'WPAS_VERSION\',\\s*\''
+				},
+				src: [
+					'awesome-support.php'
+				]
+			},
+			packageJson: {
+				src: [
+					'package.json'
+				]
+			}
+		},
+
 		/**
 		Creates a clean zip archive for production
 		@author https://github.com/gruntjs/grunt-contrib-compress
