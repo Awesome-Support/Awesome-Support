@@ -265,22 +265,47 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
  * the addition of the ticket status.
  *
  * @since  3.0.0
- * @param  string $status Ticket status (open or closed)
- * @param  array  $args   Additional arguments (see WP_Query)
- * @return array          Array of tickets, empty array if no tickets found
+ *
+ * @param string       $ticket_status Ticket status (open or closed)
+ * @param array        $args          Additional arguments (see WP_Query)
+ * @param string|array $post_status   Ticket state
+ *
+ * @return array               Array of tickets, empty array if no tickets found
  */
-function wpas_get_tickets( $status = 'open', $args = array() ) {
+function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_status = 'any' ) {
 
-	$post_status       = wpas_get_post_status();
-	$post_status_clean = array();
+	$custom_post_status = wpas_get_post_status();
+	$post_status_clean  = array();
 
-	foreach ( $post_status as $status_id => $status_label ) {
-		$post_status_clean[] = $status_id;
+	if ( empty( $post_status ) ) {
+		$post_status = 'any';
+	}
+
+	if ( ! is_array( $post_status ) ) {
+		if ( 'any' === $post_status ) {
+
+			foreach ( $custom_post_status as $status_id => $status_label ) {
+				$post_status_clean[] = $status_id;
+			}
+
+			$post_status = $post_status_clean;
+
+		} else {
+			if ( ! array_key_exists( $post_status, $custom_post_status ) ) {
+				$post_status = ''; // This basically will return no result if the post status specified doesn't exist
+			}
+		}
+	} else {
+		foreach ( $post_status as $key => $status ) {
+			if ( ! array_key_exists( $status, $custom_post_status ) ) {
+				unset( $post_status[ $key ] );
+			}
+		}
 	}
 
 	$defaults = array(
 		'post_type'              => 'ticket',
-		'post_status'            => $post_status_clean,
+		'post_status'            => $post_status,
 		'posts_per_page'         => -1,
 		'no_found_rows'          => false,
 		'cache_results'          => true,
@@ -290,12 +315,14 @@ function wpas_get_tickets( $status = 'open', $args = array() ) {
 
 	$args  = wp_parse_args( $args, $defaults );
 
-	if ( in_array( $status, array( 'open', 'closed' ) ) ) {
-		$args['meta_query'][] = array(
-			'key' => '_wpas_status',
-			'value' => $status,
-			'compare' => '='
-		);
+	if ( 'any' !== $ticket_status ) {
+		if ( in_array( $ticket_status, array( 'open', 'closed' ) ) ) {
+			$args['meta_query'][] = array(
+				'key'     => '_wpas_status',
+				'value'   => $ticket_status,
+				'compare' => '='
+			);
+		}
 	}
 
 	$query = new WP_Query( $args );
