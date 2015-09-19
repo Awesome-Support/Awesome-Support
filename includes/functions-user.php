@@ -331,11 +331,37 @@ function wpas_get_user_nice_role( $role ) {
 
 }
 
-function wpas_can_submit_ticket() {
+/**
+ * Check if the current user has the permission to open a ticket
+ *
+ * If a ticket ID is given we make sure the ticket author is the current user.
+ * This is used for checking if a user can re-open a ticket.
+ *
+ * @param int $ticket_id
+ *
+ * @return bool
+ */
+function wpas_can_submit_ticket( $ticket_id = 0 ) {
 
-	$can = true;
+	if ( ! is_user_logged_in() ) {
+		return false;
+	}
 
-	return apply_filters( 'wpas_can_submit_ticket', $can );
+	if ( ! current_user_can( 'create_ticket' ) ) {
+		return false;
+	}
+
+	if ( 0 !== $ticket_id ) {
+
+		$ticket = get_post( $ticket_id );
+
+		if ( is_object( $ticket ) && is_a( $ticket, 'WP_Post' ) && get_current_user_id() !== (int) $ticket->post_author ) {
+			return false;
+		}
+
+	}
+
+	return apply_filters( 'wpas_can_submit_ticket', true );
 
 }
 
