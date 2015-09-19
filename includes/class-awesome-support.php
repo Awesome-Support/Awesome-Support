@@ -361,11 +361,21 @@ class Awesome_Support {
 			case 'reopen':
 
 				if ( isset( $_GET['ticket_id'] ) ) {
-					wpas_reopen_ticket( $_GET['ticket_id'] );
-				}
 
-				wpas_redirect( 'ticket_reopen', add_query_arg( array( 'message' => '9' ), get_permalink( intval( $_GET['ticket_id'] ) ) ), intval( $_GET['ticket_id'] ) );
-				exit;
+					$ticket_id = filter_input( INPUT_GET, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
+
+					if ( ! wpas_can_submit_ticket( $ticket_id ) && ! current_user_can( 'edit_ticket' ) ) {
+						wpas_add_error( 'cannot_reopen_ticket', __( 'You are not allowed to re-open this ticket', 'wpas' ) );
+						wpas_redirect( 'ticket_reopen', wpas_get_tickets_list_page_url() );
+						exit;
+					}
+
+					wpas_reopen_ticket( $ticket_id );
+					wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'wpas' ) );
+					wpas_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );
+					exit;
+
+				}
 
 			break;
 
