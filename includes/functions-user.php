@@ -618,13 +618,17 @@ function wpas_support_users_dropdown( $args = array() ) {
  *
  * This function is a wrapper for wpas_get_user_tickets() with the user ID preset
  *
- * @param        $user_id
+ * @param int    $user_id
  * @param string $ticket_status
  * @param string $post_status
  *
  * @return array
  */
-function wpas_get_user_tickets( $user_id, $ticket_status = 'open', $post_status = 'any' ) {
+function wpas_get_user_tickets( $user_id = 0, $ticket_status = 'open', $post_status = 'any' ) {
+
+	if ( 0 === $user_id ) {
+		$user_id = get_current_user_id();
+	}
 
 	$args = array(
 		'post_author' => $user_id,
