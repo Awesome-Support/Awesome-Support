@@ -1,4 +1,7 @@
 {
+    "name": "themeavenue/awesome-support",
+    "description": "Awesome Support WordPress Plugin",
+    "type": "wordpress-plugin",
     "require": {
         "gambitph/titan-framework": "dev-master",
         "ericmann/wp-session-manager": "dev-master"
