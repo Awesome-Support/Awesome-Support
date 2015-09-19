@@ -612,3 +612,26 @@ function wpas_support_users_dropdown( $args = array() ) {
 	$args['cap']         = 'create_ticket';
 	echo wpas_users_dropdown( $args );
 }
+
+/**
+ * Wrapper function to easily get a user tickets
+ *
+ * This function is a wrapper for wpas_get_user_tickets() with the user ID preset
+ *
+ * @param        $user_id
+ * @param string $ticket_status
+ * @param string $post_status
+ *
+ * @return array
+ */
+function wpas_get_user_tickets( $user_id, $ticket_status = 'open', $post_status = 'any' ) {
+
+	$args = array(
+		'post_author' => $user_id,
+	);
+
+	$tickets = wpas_get_tickets( $ticket_status, $args, $post_status );
+
+	return $tickets;
+
+}
