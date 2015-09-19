@@ -141,7 +141,7 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 									 */
 									do_action( 'wpas_backend_reply_content_before', $row->ID );
 
-									echo $content;
+									echo wp_kses( $content, wp_kses_allowed_html( 'post' ) );
 
 									/**
 									 * wpas_backend_reply_content_after hook
