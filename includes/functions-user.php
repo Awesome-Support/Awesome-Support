@@ -618,6 +618,8 @@ function wpas_support_users_dropdown( $args = array() ) {
  *
  * This function is a wrapper for wpas_get_user_tickets() with the user ID preset
  *
+ * @since 3.2.2
+ *
  * @param int    $user_id
  * @param string $ticket_status
  * @param string $post_status
