@@ -667,7 +667,7 @@ class Awesome_Support_Admin {
 			);
 		}
 
-		$count = count( get_tickets( 'open', $args ) );
+		$count = count( wpas_get_tickets( 'open', $args ) );
 
 		if ( 0 === $count ) {
 			return false;

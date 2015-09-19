@@ -269,7 +269,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
  * @param  array  $args   Additional arguments (see WP_Query)
  * @return array          Array of tickets, empty array if no tickets found
  */
-function get_tickets( $status = 'open', $args = array() ) {
+function wpas_get_tickets( $status = 'open', $args = array() ) {
 
 	$post_status       = wpas_get_post_status();
 	$post_status_clean = array();
@@ -1183,6 +1183,6 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
 
 	}
 
-	return count( get_tickets( $status, $args ) );
+	return count( wpas_get_tickets( $status, $args ) );
 
 }

@@ -557,7 +557,7 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	);
 
 	/* List all tickets */
-	$tickets = get_tickets( $status );
+	$tickets = wpas_get_tickets( $status );
 	$options = '';
 
 	foreach ( $tickets as $ticket ) {
