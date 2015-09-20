@@ -2,9 +2,10 @@
 add_filter( 'wpas_plugin_settings', 'wpas_core_settings_general', 5, 1 );
 /**
  * Add plugin core settings.
- * 
- * @param  (array) $def Array of existing settings
- * @return (array)      Updated settings
+ *
+ * @param  array $def Array of existing settings
+ *
+ * @return array      Updated settings
  */
 function wpas_core_settings_general( $def ) {
 
@@ -26,7 +27,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Default Assignee', 'wpas' ),
 					'id'      => 'assignee_default',
 					'type'    => 'select',
-					'desc'    => __( 'Who to assign tickets to by default (if auto-assignment is enabled, this will only be used in case an assignment rule is incorrect).', 'wpas' ),
+					'desc'    => __( 'Who to assign tickets to in case the auto-assignment would&#039;t work. This does NOT mean that all tickets will be assigned to this user. This is a fallback option. To enable/disable auto assignment for an agent, please do so in the user profile settings.', 'wpas' ),
 					'options' => isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && isset( $_GET['page'] ) && 'settings' === $_GET['page'] ? wpas_list_users( 'edit_ticket' ) : array(),
 					'default' => ''
 				),
