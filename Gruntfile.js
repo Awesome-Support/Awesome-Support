@@ -271,7 +271,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
 
-	grunt.registerTask('release', ['composer:update', 'txpull', 'compress']);
+	grunt.registerTask('release', ['composer:install', 'txpull', 'compress']);
 	grunt.registerTask('release_patch', ['version:patch', 'release']);
 	grunt.registerTask('release_minor', ['version:minor', 'release']);
 	grunt.registerTask('release_major', ['version:major', 'release']);
