@@ -1,8 +1,26 @@
 {
     "name": "themeavenue/awesome-support",
-    "description": "Awesome Support WordPress Plugin",
+    "description": "Awesome Support is the most versatile support plugin for WordPress",
     "type": "wordpress-plugin",
+    "keywords": ["help", "helpdesk", "support", "support staff", "ticketing", "tickets"],
+    "homepage": "https://getawesomesupport.com",
+    "license": "GNU GPL",
+    "authors": [
+        {
+            "name": "Julien Liabeuf",
+            "email": "julien@liabeuf.fr",
+            "homepage": "http://julienliabeuf.com",
+            "role": "Lead Developer"
+        },
+      {
+        "name": "Julien Vernet",
+        "email": "julien@vernet.me",
+        "homepage": "http://siamkreative.com",
+        "role": "Developer"
+      }
+    ],
     "require": {
+      "php": ">=5.3.0",
         "gambitph/titan-framework": "dev-master",
         "ericmann/wp-session-manager": "dev-master"
     },
