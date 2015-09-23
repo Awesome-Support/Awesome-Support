@@ -749,11 +749,7 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
  */
 function wpas_get_submission_page_url( $post_id = false ) {
 
-	$submission = wpas_get_option( 'ticket_submit' );
-
-	if ( ! is_array( $submission ) ) {
-		$submission = array_filter( (array) $submission );
-	}
+	$submission = wpas_get_submission_pages();
 
 	if ( empty( $submission ) ) {
 		return '';
@@ -766,6 +762,24 @@ function wpas_get_submission_page_url( $post_id = false ) {
 	}
 
 	return wp_sanitize_redirect( $url );
+
+}
+
+/**
+ * Get the submission pages IDs
+ *
+ * @since 3.2.3
+ * @return array
+ */
+function wpas_get_submission_pages() {
+
+	$submission = wpas_get_option( 'ticket_submit' );
+
+	if ( ! is_array( $submission ) ) {
+		$submission = array_filter( (array) $submission );
+	}
+
+	return $submission;
 
 }
 

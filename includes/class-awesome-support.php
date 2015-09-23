@@ -718,8 +718,17 @@ class Awesome_Support {
 	 */
 	protected function get_javascript_object() {
 
+		global $post;
+
 		$upload_max_files = (int) wpas_get_option( 'attachments_max' );
 		$upload_max_size  = (int) wpas_get_option( 'filesize_max' );
+
+		// Editors translations
+		if ( in_array( $post->ID, wpas_get_submission_pages() ) ) {
+			$empty_editor = _x( "You can't submit an empty ticket", 'JavaScript validation error message', 'wpas' );
+		} else {
+			$empty_editor = _x( "You can't submit an empty reply", 'JavaScript validation error message', 'wpas' );
+		}
 
 		$object = array(
 			'ajaxurl'                => admin_url( 'admin-ajax.php' ),
@@ -731,6 +740,10 @@ class Awesome_Support {
 				__( 'The following file(s) are too big to be uploaded:', 'wpas' ),
 				sprintf( __( 'The maximum file size allowed for one file is %d MB', 'wpas' ), $upload_max_size )
 			),
+			'translations' => array(
+				'emptyEditor' => $empty_editor,
+				'onSubmit'    => _x( 'Submitting...', 'ticket submission button text while submitting', 'wpas' ),
+			)
 		);
 
 		return $object;
