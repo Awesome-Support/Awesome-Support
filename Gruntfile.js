@@ -184,7 +184,7 @@ module.exports = function (grunt) {
 					potHeaders: {
 						poedit: true,
 						'x-poedit-keywordslist': true,
-						'report-msgid-bugs-to': 'https://getawesomesupport.com.com/',
+						'report-msgid-bugs-to': 'https://github.com/ThemeAvenue/Awesome-Support/issues',
 						'last-translator': 'ThemeAvenue (https://themeavenue.net/)',
 						'language-team': 'ThemeAvenue <hello@themeavenue.net>',
 						'language': 'en_US'
