@@ -230,53 +230,63 @@ class Awesome_Support {
 		 */
 		if ( isset( $_POST['wpas_user_reply'] ) ) {
 
-			/**
-			 * Define if the reply can be submitted empty or not.
-			 *
-			 * @since  3.0.0
-			 * @var boolean
-			 */
-			$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', false );
+			// Get parent ticket ID
+			$parent_id = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
 
-			/**
-			 * Get the parent ticket ID.
-			 */
-			$parent_id = intval( $_POST['ticket_id'] );
-
-			if ( empty( $_POST['wpas_user_reply'] ) && false === $can_submit_empty ) {
-				wpas_add_error( 'reply_not_added', __( 'You cannot submit an empty reply.', 'wpas' ) );
-				wpas_redirect( 'reply_not_added', get_permalink( $parent_id ), $parent_id );
-				exit;
-			}
-
-			/* Sanitize the data */
-			$data = array( 'post_content' => wp_kses( $_POST['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
-
-			/* Add the reply */
-			$reply_id = wpas_add_reply( $data, $parent_id );
-
-			/* Possibly close the ticket */
-			if ( isset( $_POST['wpas_close_ticket'] ) && false !== $reply_id ) {
-				wpas_close_ticket( intval( $_POST['ticket_id'] ) );
-			}
-
-			if ( false === $reply_id ) {
-				wpas_add_error( 'reply_added_failed', __( 'Your reply could not be submitted for an unknown reason.', 'wpas' ) );
+			if ( 'ticket' !== get_post_type( $parent_id ) ) {
+				wpas_add_error( 'reply_added_failed', __( 'Something went wrong. We couldn&#039;t identify your ticket. Please try again.', 'wpas' ) );
 				wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
 				exit;
-			} else {
+			}
 
-				/**
-				 * Delete the activity transient.
-				 */
-				delete_transient( "wpas_activity_meta_post_$parent_id" );
+			// Define if the ticket must be closed
+			$close = isset( $_POST['wpas_close_ticket'] ) ? true : false;
 
-				wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'wpas' ) );
+			if ( ! empty( $_POST['wpas_user_reply'] ) ) {
 
-				if ( false !== $link = wpas_get_reply_link( $reply_id ) ) {
-					wpas_redirect( 'reply_added', $link );
+				/* Sanitize the data */
+				$data = array( 'post_content' => wp_kses( $_POST['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
+
+				/* Add the reply */
+				$reply_id = wpas_add_reply( $data, $parent_id );
+
+			}
+
+			/* Possibly close the ticket */
+			if ( $close ) {
+
+				wpas_close_ticket( $parent_id );
+
+				// Redirect now if no reply was posted
+				if ( ! isset( $reply_id ) ) {
+					wpas_add_notification( 'ticket_closed', __( 'The ticket was successfully closed', 'wpas' ) );
+					wpas_redirect( 'ticket_closed', get_permalink( $parent_id ) );
 					exit;
 				}
+
+			}
+
+			if ( isset( $reply_id ) ) {
+
+				if ( false === $reply_id ) {
+					wpas_add_error( 'reply_added_failed', __( 'Your reply could not be submitted for an unknown reason.', 'wpas' ) );
+					wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
+					exit;
+				} else {
+
+					/**
+					 * Delete the activity transient.
+					 */
+					delete_transient( "wpas_activity_meta_post_$parent_id" );
+
+					wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'wpas' ) );
+
+					if ( false !== $link = wpas_get_reply_link( $reply_id ) ) {
+						wpas_redirect( 'reply_added', $link );
+						exit;
+					}
+				}
+
 			}
 		}
 
