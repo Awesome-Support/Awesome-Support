@@ -24,7 +24,7 @@
 			$('.wpas-form').submit(function (event) {
 				var submitBtn = $('[type="submit"]', $(this));
 				var editorContent = tinyMCE.activeEditor.getContent();
-				if (editorContent === '' || editorContent === null) {
+				if (!$('input[name="wpas_close_ticket"]:checked').length && (editorContent === '' || editorContent === null)) {
 
 					/* Highlight the active editor */
 					$(tinyMCE.activeEditor.getBody()).css('background-color', '#ffeeee');
