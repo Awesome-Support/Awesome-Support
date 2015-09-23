@@ -30,7 +30,9 @@
 					$(tinyMCE.activeEditor.getBody()).css('background-color', '#ffeeee');
 
 					/* Alert the user */
-					alert('You can\'t submit an empty ticket reply.');
+					alert(wpas.translations.emptyEditor);
+
+					/* Restore the editor background color */
 					$(tinyMCE.activeEditor.getBody()).css('background-color', '');
 
 					/* Focus on editor */
@@ -38,7 +40,7 @@
 
 					return false;
 				} else {
-					submitBtn.prop('disabled', true).text(submitBtn.data('onsubmit'));
+					submitBtn.prop('disabled', true).text(wpas.translations.onSubmit);
 				}
 			});
 
@@ -46,7 +48,7 @@
 
 			$('.wpas-form').submit(function (event) {
 				var submitBtn = $('[type="submit"]', $(this));
-				submitBtn.prop('disabled', true).text(submitBtn.data('onsubmit'));
+				submitBtn.prop('disabled', true).text(wpas.translations.onSubmit);
 			});
 
 		}
