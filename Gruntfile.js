@@ -183,13 +183,13 @@ module.exports = function (grunt) {
 					potFilename: 'wpas.pot',
 					potHeaders: {
 						poedit: true,
-						'x-poedit-keywordslist': true
+						'x-poedit-keywordslist': true,
+						'report-msgid-bugs-to': 'https://getawesomesupport.com.com/',
+						'last-translator': 'ThemeAvenue (https://themeavenue.net/)',
+						'language-team': 'ThemeAvenue <hello@themeavenue.net>',
+						'language': 'en_US'
 					},
 					processPot: function (pot, options) {
-						pot.headers['report-msgid-bugs-to'] = 'https://getawesomesupport.com.com/';
-						pot.headers['last-translator'] = 'ThemeAvenue (https://themeavenue.net/)';
-						pot.headers['language-team'] = 'ThemeAvenue <hello@themeavenue.net>';
-						pot.headers['language'] = 'en_US';
 						var translation,
 							excluded_meta = [
 								'Plugin Name of the plugin/theme',
