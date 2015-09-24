@@ -21,7 +21,7 @@
     ],
     "require": {
       "php": ">=5.3.0",
-        "gambitph/titan-framework": "dev-master",
+        "gambitph/titan-framework": "1.9.*",
         "ericmann/wp-session-manager": "dev-master"
     },
     "archive": {
