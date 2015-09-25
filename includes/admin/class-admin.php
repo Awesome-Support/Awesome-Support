@@ -103,6 +103,7 @@ class Awesome_Support_Admin {
 			/* Do Actions. */
 			add_action( 'pre_get_posts',             array( $this, 'hide_others_tickets' ), 10, 1 );
 			add_action( 'pre_get_posts',             array( $this, 'limit_open' ), 10, 1 );
+			add_action( 'pre_get_posts',             array( $this, 'maybe_remove_author' ), 10, 1 );
 			add_action( 'admin_init',                array( $this, 'system_tools' ), 10, 0 );
 			add_action( 'plugins_loaded',            array( $this, 'remote_notifications' ), 15, 0 );
 			add_action( 'admin_enqueue_scripts',     array( $this, 'enqueue_admin_styles' ) );              // Load plugin styles
@@ -295,6 +296,43 @@ class Awesome_Support_Admin {
 		} else {
 			return false;
 		}
+
+	}
+
+	/**
+	 * Maybe remove the author query var from the main query
+	 *
+	 * The ticket author is always the client, so if the author query var is set
+	 * agents will not be able to see tickets, even though they are assigned to them.
+	 *
+	 * @since 3.2.4
+	 *
+	 * @param WP_Query $query WordPress query
+	 *
+	 * @return bool
+	 */
+	public function maybe_remove_author( $query ) {
+
+		/* Make sure this is the main query */
+		if ( ! $query->is_main_query() ) {
+			return false;
+		}
+
+		/* Make sure this is the admin screen */
+		if ( ! is_admin() ) {
+			return false;
+		}
+
+		/* Make sure we only alter our post type */
+		if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+			return false;
+		}
+
+		if ( isset( $query->query_vars['author'] ) && ! empty( $query->query_vars['author'] ) ) {
+			$query->query_vars['author'] = '';
+		}
+
+		return $query;
 
 	}
 
@@ -1196,3 +1234,10 @@ class Awesome_Support_Admin {
 	}
 
 }
+//
+//add_action('pre_get_posts', 'test', 99, 1 );
+//function test( $query ) {
+//	if ( $query->is_main_query() ) {
+//		print_r( $query );
+//	}
+//}
