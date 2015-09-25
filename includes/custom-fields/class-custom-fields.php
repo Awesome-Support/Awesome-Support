@@ -511,7 +511,7 @@ class WPAS_Custom_Fields {
 
 		$this_sort       = isset( $_GET['wpas_status'] ) ? filter_input( INPUT_GET, 'wpas_status', FILTER_SANITIZE_STRING ) : '';
 		$all_selected    = ( '' === $this_sort ) ? 'selected="selected"' : '';
-		$open_selected   = ( ! isset( $_GET['wpas_status'] ) || 'open' === $this_sort ) ? 'selected="selected"' : '';
+		$open_selected   = ( ! isset( $_GET['wpas_status'] ) && true === (bool) wpas_get_option( 'hide_closed' ) || 'open' === $this_sort ) ? 'selected="selected"' : '';
 		$closed_selected = ( 'closed' === $this_sort ) ? 'selected="selected"' : '';
 		$dropdown        = '<select id="wpas_status" name="wpas_status">';
 		$dropdown        .= "<option value='' $all_selected>" . __( 'Any Status', 'wpas' ) . "</option>";
