@@ -27,7 +27,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Default Assignee', 'wpas' ),
 					'id'      => 'assignee_default',
 					'type'    => 'select',
-					'desc'    => __( 'Who to assign tickets to in case the auto-assignment would&#039;t work. This does NOT mean that all tickets will be assigned to this user. This is a fallback option. To enable/disable auto assignment for an agent, please do so in the user profile settings.', 'wpas' ),
+					'desc'    => __( 'Who to assign tickets to in the case that auto-assignment wouldn&#039;t work. This does NOT mean that all tickets will be assigned to this user. This is a fallback option. To enable/disable auto assignment for an agent, please do so in the user profile settings.', 'wpas' ),
 					'options' => isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && isset( $_GET['page'] ) && 'settings' === $_GET['page'] ? wpas_list_users( 'edit_ticket' ) : array(),
 					'default' => ''
 				),
@@ -35,7 +35,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Allow Registrations', 'wpas' ),
 					'id'      => 'allow_registrations',
 					'type'    => 'radio',
-					'desc'    => sprintf( __( 'Allow users to register on the support. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress.', 'wpas' ),  "<strong>$registration_lbl</strong>" ),
+					'desc'    => sprintf( __( 'Allow users to register on the support page. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress.', 'wpas' ),  "<strong>$registration_lbl</strong>" ),
 					'default' => 'allow',
 					'options' => array(
 						'allow'           => __( 'Allow registrations', 'wpas' ),
@@ -110,7 +110,7 @@ function wpas_core_settings_general( $def ) {
 					'id'       => 'terms_conditions',
 					'type'     => 'editor',
 					'default'  => '',
-					'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mendatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'wpas' ),
+					'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'wpas' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				array(
@@ -121,7 +121,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Show Credit', 'wpas' ),
 					'id'      => 'credit_link',
 					'type'    => 'checkbox',
-					'desc'    => __( 'You like the plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page.', 'wpas' ),
+					'desc'    => __( 'Do you like this plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page.', 'wpas' ),
 					'default' => false
 				),
 			)
