@@ -343,25 +343,27 @@ function wpas_get_user_nice_role( $role ) {
  */
 function wpas_can_submit_ticket( $ticket_id = 0 ) {
 
-	if ( ! is_user_logged_in() ) {
-		return false;
-	}
+	$can = false;
 
-	if ( ! current_user_can( 'create_ticket' ) ) {
-		return false;
-	}
+	if ( is_user_logged_in() ) {
 
-	if ( 0 !== $ticket_id ) {
+		if ( current_user_can( 'create_ticket' ) ) {
+			$can = true;
+		}
 
-		$ticket = get_post( $ticket_id );
+		if ( 0 !== $ticket_id ) {
 
-		if ( is_object( $ticket ) && is_a( $ticket, 'WP_Post' ) && get_current_user_id() !== (int) $ticket->post_author ) {
-			return false;
+			$ticket = get_post( $ticket_id );
+
+			if ( is_object( $ticket ) && is_a( $ticket, 'WP_Post' ) && get_current_user_id() !== (int) $ticket->post_author ) {
+				$can = false;
+			}
+
 		}
 
 	}
 
-	return apply_filters( 'wpas_can_submit_ticket', true );
+	return apply_filters( 'wpas_can_submit_ticket', $can );
 
 }
 
@@ -418,14 +420,14 @@ function wpas_get_users( $args = array() ) {
 
 		/* Check for required capability */
 		if ( ! empty( $args['cap'] ) ) {
-			if ( ! array_key_exists( $args['cap'], $user->allcaps ) ) {
+			if ( ! user_can( $user, $args['cap'] ) ) {
 				continue;
 			}
 		}
 
 		/* Check for excluded capability */
 		if ( ! empty( $args['cap_exclude'] ) ) {
-			if ( array_key_exists( $args['cap_exclude'], $user->allcaps ) ) {
+			if ( user_can( $user, $args['cap_exclude'] ) ) {
 				continue;
 			}
 		}
