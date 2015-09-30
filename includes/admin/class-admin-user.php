@@ -28,6 +28,12 @@ class WPAS_User {
 //		add_action( 'profile_update',             array( $this, 'maybe_enable_assignment' ), 10, 2 );
 		add_filter( 'manage_users_columns',       array( $this, 'auto_assignment_user_column' ) );
 		add_filter( 'manage_users_custom_column', array( $this, 'auto_assignment_user_column_content' ), 10, 3 );
+
+		/**
+		 * Custom profile fields
+		 */
+		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_user_can_be_assigned' ), 10, 1 );
+		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_after_reply' ), 10, 1 );
 	}
 
 	/**
@@ -50,6 +56,9 @@ class WPAS_User {
 	 * Add user preferences to the profile page.
 	 *
 	 * @since  3.0.0
+	 *
+	 * @param WP_User $user
+	 *
 	 * @return bool|void
 	 */
 	public function user_profile_custom_fields( $user ) {
@@ -62,36 +71,70 @@ class WPAS_User {
 
 		<table class="form-table">
 			<tbody>
-
-				<?php if ( current_user_can( 'administrator' ) ): ?>
-
-					<tr class="wpas-after-reply-wrap">
-						<th><label><?php _e( 'Can Be Assigned', 'wpas' ); ?></label></th>
-						<td>
-							<?php $can_assign = esc_attr( get_the_author_meta( 'wpas_can_be_assigned', $user->ID ) ); ?>
-							<label for="wpas_can_be_assigned"><input type="checkbox" name="wpas_can_be_assigned" id="wpas_can_be_assigned" value="yes" <?php if ( ! empty( $can_assign ) ) { echo 'checked'; } ?>> <?php _e( 'Yes', 'wpas' ); ?></label>
-							<p class="description"><?php _e( 'Can the system assign new tickets to this user?', 'wpas' ); ?></p>
-						</td>
-					</tr>
-
-				<?php endif; ?>
-
-				<tr class="wpas-after-reply-wrap">
-					<th><label for="wpas_after_reply"><?php echo _x( 'After Reply', 'Action after replying to a ticket', 'wpas' ); ?></label></th>
-					<td>
-						<?php $after_reply = esc_attr( get_the_author_meta( 'wpas_after_reply', $user->ID ) ); ?>
-						<select name="wpas_after_reply" id="wpas_after_reply">
-							<option value=""><?php _e( 'Default', 'wpas' ); ?></option>
-							<option value="stay" <?php if ( $after_reply === 'stay' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Stay on screen', 'wpas' ); ?></option>
-							<option value="back" <?php if ( $after_reply === 'back' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Back to list', 'wpas' ); ?></option>
-							<option value="ask" <?php if ( $after_reply === 'ask' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Always ask', 'wpas' ); ?></option>
-						</select>
-						<p class="description"><?php _e( 'Where do you want to go after replying to a ticket?', 'wpas' ); ?></p>
-					</td>
-				</tr>
-
+				<?php do_action( 'wpas_user_profile_fields', $user ); ?>
 			</tbody>
 		</table>
+	<?php }
+
+	/**
+	 * User profile field "after reply"
+	 *
+	 * @since 3.1.5
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return void
+	 */
+	public function profile_field_after_reply( $user ) {
+
+		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
+			return;
+		} ?>
+
+		<tr class="wpas-after-reply-wrap">
+			<th><label for="wpas_after_reply"><?php echo _x( 'After Reply', 'Action after replying to a ticket', 'wpas' ); ?></label></th>
+			<td>
+				<?php $after_reply = esc_attr( get_the_author_meta( 'wpas_after_reply', $user->ID ) ); ?>
+				<select name="wpas_after_reply" id="wpas_after_reply">
+					<option value=""><?php _e( 'Default', 'wpas' ); ?></option>
+					<option value="stay" <?php if ( $after_reply === 'stay' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Stay on screen', 'wpas' ); ?></option>
+					<option value="back" <?php if ( $after_reply === 'back' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Back to list', 'wpas' ); ?></option>
+					<option value="ask" <?php if ( $after_reply === 'ask' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Always ask', 'wpas' ); ?></option>
+				</select>
+				<p class="description"><?php _e( 'Where do you want to go after replying to a ticket?', 'wpas' ); ?></p>
+			</td>
+		</tr>
+
+	<?php }
+
+	/**
+	 * User profile field "can be assigned"
+	 *
+	 * @since 3.1.5
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return void
+	 */
+	public function profile_field_user_can_be_assigned( $user ) {
+
+		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'administrator' ) ) {
+			return;
+		} ?>
+
+		<tr class="wpas-after-reply-wrap">
+			<th><label><?php _e( 'Can Be Assigned', 'wpas' ); ?></label></th>
+			<td>
+				<?php $can_assign = esc_attr( get_the_author_meta( 'wpas_can_be_assigned', $user->ID ) ); ?>
+				<label for="wpas_can_be_assigned"><input type="checkbox" name="wpas_can_be_assigned" id="wpas_can_be_assigned" value="yes" <?php if ( ! empty( $can_assign ) ) { echo 'checked'; } ?>> <?php _e( 'Yes', 'wpas' ); ?></label>
+				<p class="description"><?php _e( 'Can the system assign new tickets to this user?', 'wpas' ); ?></p>
+			</td>
+		</tr>
+
 	<?php }
 
 	/**
