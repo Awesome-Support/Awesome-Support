@@ -802,7 +802,7 @@ function wpas_find_agent( $ticket_id = false ) {
 		return apply_filters( 'wpas_find_available_agent', wpas_get_option( 'assignee_default' ), $ticket_id );
 	}
 
-	$users = shuffle_assoc( wpas_get_users( array( 'cap' => 'edit_ticket' ) ) );
+	$users = shuffle_assoc( wpas_get_users( apply_filters( 'wpas_find_agent_get_users_args', array( 'cap' => 'edit_ticket' ) ) ) );
 	$agent = array();
 
 	foreach ( $users as $user ) {
