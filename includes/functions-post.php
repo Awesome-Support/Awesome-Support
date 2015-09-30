@@ -245,13 +245,13 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		$agent_id = wpas_find_agent( $ticket_id );
 	}
 
-	/* Assign an agent to the ticket */
-	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
-
 	/**
 	 * Fire wpas_after_open_ticket just after the post is successfully submitted.
 	 */
 	do_action( 'wpas_open_ticket_after', $ticket_id, $data );
+
+	/* Assign an agent to the ticket */
+	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
 	return $ticket_id;
 
