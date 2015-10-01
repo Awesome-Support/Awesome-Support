@@ -12,7 +12,7 @@
 /**
  * Plugin public class.
  */
-class Awesome_Support {
+class Awesome_Support_Old {
 
 	/**
 	 * Instance of this class.
