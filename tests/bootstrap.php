@@ -38,7 +38,7 @@ require dirname( __FILE__ ) . '/lib/exceptions.php';
 require dirname( __FILE__ ) . '/../awesome-support.php';
 
 // Install the plugin
-Awesome_Support::activate( WP_ALLOW_MULTISITE );
+Awesome_Support_Old::activate( WP_ALLOW_MULTISITE );
 
 $current_user = new WP_User(1);
 $current_user->set_role('administrator');
