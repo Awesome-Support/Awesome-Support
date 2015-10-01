@@ -67,12 +67,12 @@ require_once( WPAS_PATH . 'includes/class-awesome-support.php' );
  * Register hooks that are fired when the plugin is activated or deactivated.
  * When the plugin is deleted, the uninstall.php file is loaded.
  */
-register_activation_hook( __FILE__, array( 'Awesome_Support', 'activate' ) );
+register_activation_hook( __FILE__, array( 'Awesome_Support_Old', 'activate' ) );
 
 /**
  * Get an instance of the plugin
  */
-add_action( 'plugins_loaded', array( 'Awesome_Support', 'get_instance' ) );
+add_action( 'plugins_loaded', array( 'Awesome_Support_Old', 'get_instance' ) );
 
 /**
  * Load addons.
@@ -125,14 +125,14 @@ require_once( WPAS_PATH . 'includes/class-wpas-session.php' );
  *
  * @since  3.0.2
  */
-if ( ! Awesome_Support::dependencies_loaded() ) {
+if ( ! Awesome_Support_Old::dependencies_loaded() ) {
 	add_action( 'admin_notices', 'wpas_missing_dependencies' );
 }
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Only Functionality
  *----------------------------------------------------------------------------*/
-if ( ! is_admin() && Awesome_Support::dependencies_loaded() ) {
+if ( ! is_admin() && Awesome_Support_Old::dependencies_loaded() ) {
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
 	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
 }
@@ -144,7 +144,7 @@ if ( ! is_admin() && Awesome_Support::dependencies_loaded() ) {
 /**
  * The code below is intended to to give the lightest footprint possible.
  */
-if ( is_admin() && Awesome_Support::dependencies_loaded() ) {
+if ( is_admin() && Awesome_Support_Old::dependencies_loaded() ) {
 
 	/* Load main admin class */
 	require_once( WPAS_PATH . 'includes/admin/class-admin.php' );
@@ -198,3 +198,127 @@ add_action( 'init', 'wpas_load_theme_functions' );
 function wpas_load_theme_functions() {
 	wpas_get_template( 'functions' );
 }
+
+if ( ! class_exists( 'Awesome_Support' ) ):
+
+	/**
+	 * Main Awesome Support class
+	 *
+	 * This class is the one and only instance of the plugin. It is used
+	 * to load the core and all its components.
+	 *
+	 * @since 3.2.5
+	 */
+	final class Awesome_Support {
+
+		/**
+		 * @var Awesome_Support Holds the unique instance of Awesome Support
+		 * @since 3.2.5
+		 */
+		private static $instance;
+
+		/**
+		 * Admin Notices object
+		 *
+		 * @var object AS_Admin_Notices
+		 * @since 3.1.5
+		 */
+		public $admin_notices;
+
+		/**
+		 * Instantiate and return the unique Awesome Support object
+		 *
+		 * @since     3.2.5
+		 * @return object Awesome_Support Unique instance of Awesome Support
+		 */
+		public static function instance() {
+
+			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Awesome_Support ) ) {
+
+				self::$instance = new Awesome_Support;
+				self::$instance->setup_constants();
+				self::$instance->includes();
+
+				if ( is_admin() ) {
+					self::$instance->includes_admin();
+					self::$instance->admin_notices = new AS_Admin_Notices();
+				}
+
+			}
+
+			return self::$instance;
+
+		}
+
+		/**
+		 * Throw error on object clone
+		 *
+		 * The whole idea of the singleton design pattern is that there is a single
+		 * object therefore, we don't want the object to be cloned.
+		 *
+		 * @since 3.2.5
+		 * @return void
+		 */
+		public function __clone() {
+			// Cloning instances of the class is forbidden
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpas' ), '3.2.5' );
+		}
+		/**
+		 * Disable unserializing of the class
+		 *
+		 * @since 3.2.5
+		 * @return void
+		 */
+		public function __wakeup() {
+			// Unserializing instances of the class is forbidden
+			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpas' ), '3.2.5' );
+		}
+
+		/**
+		 * Setup all plugin constants
+		 *
+		 * @since 3.2.5
+		 * @return void
+		 */
+		private function setup_constants() {
+
+		}
+
+		/**
+		 * Include all files used sitewide
+		 *
+		 * @since 3.2.5
+		 * @return void
+		 */
+		private function includes() {
+
+		}
+
+		/**
+		 * Include all files used in admin only
+		 *
+		 * @since 3.2.5
+		 * @return void
+		 */
+		private function includes_admin() {
+			require( WPAS_PATH . 'includes/admin/functions-notices.php' );
+		}
+
+	}
+
+endif;
+
+/**
+ * The main function responsible for returning the unique Awesome Support instance
+ *
+ * Use this function like you would a global variable, except without needing
+ * to declare the global.
+ *
+ * @since 3.1.5
+ * @return object Awesome_Support
+ */
+function WPAS() {
+	return Awesome_Support::instance();
+}
+// Get Awesome Support Running
+WPAS();
