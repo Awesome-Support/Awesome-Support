@@ -61,20 +61,45 @@
 		 * Check if editor is empty
 		 */
 		$('.wpas-reply-actions').on('click', 'button', function () {
-			var editorContent = tinyMCE.activeEditor.getContent();
-			if (editorContent === '' || editorContent === null) {
 
-				/* Highlight the active editor */
-				$(tinyMCE.activeEditor.getBody()).css('background-color', '#ffeeee');
+			var textarea = $('textarea[name="wpas_reply"]');
 
-				/* Alert the user */
-				alert('You can\'t submit an empty ticket reply.');
-				$(tinyMCE.activeEditor.getBody()).css('background-color', '');
+			// Detect Visual and Text Mode in WordPress TinyMCE Editor
+			var is_tinymce_active = (typeof tinyMCE != "undefined") && editor && !editor.isHidden();
 
-				/* Focus on editor */
-				tinyMCE.activeEditor.focus();
+			// Visual Editor
+			if (is_tinymce_active) {
+				var editor = tinyMCE.activeEditor;
+				var editorContent = editor.getContent();
+				if (editorContent === '' || editorContent === null) {
 
-				return false;
+					/* Highlight the active editor */
+					$(editor.getBody()).css('background-color', '#ffeeee');
+
+					/* Alert the user */
+					alert('You can\'t submit an empty ticket reply.');
+					$(editor.getBody()).css('background-color', '');
+
+					/* Focus on editor */
+					editor.focus();
+
+					return false;
+				}
+
+			}
+
+			// Text Editor
+			else {
+				if (!textarea.val()) {
+
+					/* Alert the user */
+					alert('You can\'t submit an empty ticket reply.');
+
+					/* Focus on editor */
+					textarea.focus();
+
+					return false;
+				}
 			}
 		});
 
