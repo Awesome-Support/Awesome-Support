@@ -59,10 +59,9 @@
 
 		/**
 		 * Check if editor is empty
+		 * http://stackoverflow.com/a/1180199
 		 */
 		$('.wpas-reply-actions').on('click', 'button', function () {
-
-			var textarea = $('textarea[name="wpas_reply"]');
 
 			// Detect Visual and Text Mode in WordPress TinyMCE Editor
 			var is_tinymce_active = (typeof tinyMCE != "undefined") && editor && !editor.isHidden();
@@ -73,12 +72,8 @@
 				var editorContent = editor.getContent();
 				if (editorContent === '' || editorContent === null) {
 
-					/* Highlight the active editor */
-					$(editor.getBody()).css('background-color', '#ffeeee');
-
 					/* Alert the user */
 					alert(wpasL10n.alertNoContent);
-					$(editor.getBody()).css('background-color', '');
 
 					/* Focus on editor */
 					editor.focus();
@@ -90,6 +85,7 @@
 
 			// Text Editor
 			else {
+				var textarea = $('textarea[name="wpas_reply"]');
 				if (!textarea.val()) {
 
 					/* Alert the user */
