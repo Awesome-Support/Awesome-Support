@@ -33,28 +33,34 @@
 		/**
 		 * System Status
 		 */
-		var table, tableID, tableData, tables = [];
+		var table,
+			tableID,
+			tableData,
+			tables = [],
+			output = $('#wpas-system-status-output');
 
-		$('.wpas-system-status-table').each(function (index, el) {
-			tableID = $(el).attr('id').replace('wpas-system-status-', '');
-			tableData = $(el).tableToJSON();
-			table = tableData;
-			tables.push({
-				label: tableID,
-				data: tableData
+		function tableToJSON(table) {
+
+			$(table).each(function (index, el) {
+				tableID = $(el).attr('id').replace('wpas-system-status-', '');
+				tableData = $(el).tableToJSON();
+				table = tableData;
+				tables.push({
+					label: tableID,
+					data: tableData
+				});
 			});
-		});
+
+		}
 
 		$('#wpas-system-status-generate-json').click(function (event) {
-			/* Populate the textarea and select all its content */
-			/* http://stackoverflow.com/a/5797700 */
-			$('#wpas-system-status-output').html(JSON.stringify(tables)).fadeIn('fast').focus().select();
+			tableToJSON('.wpas-system-status-table');
+			output.html(JSON.stringify(tables)).fadeIn('fast').focus().select();
 		});
 
 		$('#wpas-system-status-generate-wporg').click(function (event) {
-			/* Populate the textarea and select all its content */
-			/* http://stackoverflow.com/a/5797700 */
-			$('#wpas-system-status-output').html('<pre>' + JSON.stringify(tables) + '</pre>').fadeIn('fast').focus().select();
+			tableToJSON('.wpas-system-status-table');
+			output.html('<pre>' + JSON.stringify(tables) + '</pre>').fadeIn('fast').focus().select();
 		});
 
 		/**
