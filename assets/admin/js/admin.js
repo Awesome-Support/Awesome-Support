@@ -77,7 +77,7 @@
 					$(editor.getBody()).css('background-color', '#ffeeee');
 
 					/* Alert the user */
-					alert('You can\'t submit an empty ticket reply.');
+					alert(wpasL10n.alertNoContent);
 					$(editor.getBody()).css('background-color', '');
 
 					/* Focus on editor */
@@ -93,7 +93,7 @@
 				if (!textarea.val()) {
 
 					/* Alert the user */
-					alert('You can\'t submit an empty ticket reply.');
+					alert(wpasL10n.alertNoContent);
 
 					/* Focus on editor */
 					textarea.focus();

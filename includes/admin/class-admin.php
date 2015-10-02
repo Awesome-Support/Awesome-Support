@@ -386,7 +386,7 @@ class Awesome_Support_Admin {
 
 		if ( 'edit' === $action && 'ticket' == get_post_type() ) {
 			wp_enqueue_script( 'wpas-admin-reply', WPAS_URL . 'assets/admin/js/admin-reply.js', array( 'jquery' ), WPAS_VERSION );
-			wp_localize_script( 'wpas-admin-reply', 'wpasL10n', array( 'alertDelete' => __( 'Are you sure you want to delete this reply?', 'wpas' ), 'alertNoTinyMCE' => __( 'No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor', 'wpas' ) ) );
+			wp_localize_script( 'wpas-admin-reply', 'wpasL10n', array( 'alertDelete' => __( 'Are you sure you want to delete this reply?', 'wpas' ), 'alertNoTinyMCE' => __( 'No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor', 'wpas' ), 'alertNoContent' => __( 'You can\'t submit an empty ticket reply.', 'wpas' ) ) );
 		}
 
 	}
