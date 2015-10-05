@@ -73,10 +73,10 @@ class Awesome_Support_Old {
 			add_filter( 'the_content',                    array( $this, 'make_links_clickable' ),            10, 1 );
 
 			/* Hook all e-mail notifications */
-			add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
-			add_action( 'wpas_ticket_assigned',    array( $this, 'notify_assignment' ),   10, 2 );
-			add_action( 'wpas_add_reply_after',    array( $this, 'notify_reply' ),        10, 2 );
-			add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ),        10, 3 );
+			add_action( 'wpas_open_ticket_after_assigned',  array( $this, 'notify_confirmation' ), 10, 2 );
+			add_action( 'wpas_ticket_assigned',             array( $this, 'notify_assignment' ),   10, 2 );
+			add_action( 'wpas_add_reply_after',             array( $this, 'notify_reply' ),        10, 2 );
+			add_action( 'wpas_after_close_ticket',          array( $this, 'notify_close' ),        10, 3 );
 
 			/**
 			 * Modify the ticket single page content.
