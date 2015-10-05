@@ -113,6 +113,14 @@
 			$('select.wpas-select2:visible').select2();
 		}
 
+		/**
+		 * Make ticket title required
+		 * http://wordpress.stackexchange.com/a/101260
+		 */
+		$('#publish').on('click', function () {
+			$('#titlediv > #titlewrap > #title').prop('required', true);
+		});
+
 	});
 
 }(jQuery));
