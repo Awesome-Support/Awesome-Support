@@ -89,7 +89,19 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 									<?php
 									/* Display avatar only for replies */
 									if( 'ticket_reply' == $row->post_type ) {
+
 										echo $user_avatar;
+
+										/**
+										 * Triggers an action right under the user avatar for ticket replies.
+										 *
+										 * @since 3.2.6
+										 *
+										 * @param int $row->ID The current reply ID
+										 * @param int $user_id The reply author user ID
+										 */
+										do_action( 'wpas_mb_replies_under_avatar', $row->ID, $user_id );
+
 									}
 									?>
 									
