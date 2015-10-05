@@ -1044,11 +1044,6 @@ class Awesome_Support_Admin {
 
 				} else {
 
-					/**
-					 * Delete the activity transient.
-					 */
-					delete_transient( "wpas_activity_meta_post_$post_id" );
-
 					/* E-Mail the client */
 					$new_reply = new WPAS_Email_Notification( $post_id, array( 'reply_id' => $reply, 'action' => 'reply_agent' ) );
 

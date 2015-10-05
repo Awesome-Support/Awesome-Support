@@ -690,6 +690,11 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	}
 
 	/**
+	 * Delete the activity transient.
+	 */
+	delete_transient( "wpas_activity_meta_post_$post_id" );
+
+	/**
 	 * Fire wpas_add_reply_after after the reply was successfully added.
 	 */
 	do_action( 'wpas_add_reply_after', $reply_id, $data );

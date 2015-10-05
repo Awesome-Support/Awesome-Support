@@ -274,11 +274,6 @@ class Awesome_Support_Old {
 					exit;
 				} else {
 
-					/**
-					 * Delete the activity transient.
-					 */
-					delete_transient( "wpas_activity_meta_post_$parent_id" );
-
 					wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'wpas' ) );
 
 					if ( false !== $link = wpas_get_reply_link( $reply_id ) ) {
