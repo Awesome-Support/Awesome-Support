@@ -12,7 +12,7 @@
 /**
  * Plugin public class.
  */
-class Awesome_Support {
+class Awesome_Support_Old {
 
 	/**
 	 * Instance of this class.
@@ -729,6 +729,10 @@ class Awesome_Support {
 	protected function get_javascript_object() {
 
 		global $post;
+
+		if ( ! isset( $post ) || ! is_object( $post ) || ! is_a( $post, 'WP_Post ' ) ) {
+			return;
+		}
 
 		$upload_max_files = (int) wpas_get_option( 'attachments_max' );
 		$upload_max_size  = (int) wpas_get_option( 'filesize_max' );

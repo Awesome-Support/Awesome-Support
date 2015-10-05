@@ -130,7 +130,10 @@ class WPAS_Tickets_List {
 
 				$assignee = get_post_meta( $post_id, '_wpas_assignee', true );
 				$agent    = get_user_by( 'id', $assignee );
-				echo $agent->data->display_name;
+
+				if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
+					echo $agent->data->display_name;
+				}
 
 				break;
 

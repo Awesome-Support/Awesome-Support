@@ -245,13 +245,13 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		$agent_id = wpas_find_agent( $ticket_id );
 	}
 
-	/* Assign an agent to the ticket */
-	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
-
 	/**
 	 * Fire wpas_after_open_ticket just after the post is successfully submitted.
 	 */
 	do_action( 'wpas_open_ticket_after', $ticket_id, $data );
+
+	/* Assign an agent to the ticket */
+	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
 	return $ticket_id;
 
@@ -802,7 +802,7 @@ function wpas_find_agent( $ticket_id = false ) {
 		return apply_filters( 'wpas_find_available_agent', wpas_get_option( 'assignee_default' ), $ticket_id );
 	}
 
-	$users = shuffle_assoc( wpas_get_users( array( 'cap' => 'edit_ticket' ) ) );
+	$users = shuffle_assoc( wpas_get_users( apply_filters( 'wpas_find_agent_get_users_args', array( 'cap' => 'edit_ticket' ) ) ) );
 	$agent = array();
 
 	foreach ( $users as $user ) {

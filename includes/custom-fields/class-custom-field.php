@@ -412,7 +412,7 @@ class WPAS_Custom_Field {
 			$error = true;
 		}
 
-		return false === $error ? $this->process_field_markup( apply_filters( 'wpas_cf_field_markup', $field, $this->populate() ) ) : $field;
+		return false === $error ? $this->process_field_markup( apply_filters( 'wpas_cf_field_markup', $field, $this->populate(), $this->field ) ) : $field;
 
 	}
 

@@ -33,48 +33,75 @@
 		/**
 		 * System Status
 		 */
-		var table, tableID, tableData, tables = [];
+		var table,
+			tableID,
+			tableData,
+			tables = [],
+			output = $('#wpas-system-status-output');
 
-		$('.wpas-system-status-table').each(function (index, el) {
-			tableID = $(el).attr('id').replace('wpas-system-status-', '');
-			tableData = $(el).tableToJSON();
-			table = tableData;
-			tables.push({
-				label: tableID,
-				data: tableData
+		function tableToJSON(table) {
+
+			$(table).each(function (index, el) {
+				tableID = $(el).attr('id').replace('wpas-system-status-', '');
+				tableData = $(el).tableToJSON();
+				table = tableData;
+				tables.push({
+					label: tableID,
+					data: tableData
+				});
 			});
-		});
+
+		}
 
 		$('#wpas-system-status-generate-json').click(function (event) {
-			/* Populate the textarea and select all its content */
-			/* http://stackoverflow.com/a/5797700 */
-			$('#wpas-system-status-output').html(JSON.stringify(tables)).fadeIn('fast').focus().select();
+			tableToJSON('.wpas-system-status-table');
+			output.html(JSON.stringify(tables)).fadeIn('fast').focus().select();
 		});
 
 		$('#wpas-system-status-generate-wporg').click(function (event) {
-			/* Populate the textarea and select all its content */
-			/* http://stackoverflow.com/a/5797700 */
-			$('#wpas-system-status-output').html('`' + JSON.stringify(tables) + '`').fadeIn('fast').focus().select();
+			tableToJSON('.wpas-system-status-table');
+			output.html('<pre>' + JSON.stringify(tables) + '</pre>').fadeIn('fast').focus().select();
 		});
 
 		/**
 		 * Check if editor is empty
+		 * http://stackoverflow.com/a/1180199
 		 */
 		$('.wpas-reply-actions').on('click', 'button', function () {
-			var editorContent = tinyMCE.activeEditor.getContent();
-			if (editorContent === '' || editorContent === null) {
 
-				/* Highlight the active editor */
-				$(tinyMCE.activeEditor.getBody()).css('background-color', '#ffeeee');
+			// Detect Visual and Text Mode in WordPress TinyMCE Editor
+			var is_tinymce_active = (typeof tinyMCE != "undefined") && editor && !editor.isHidden();
 
-				/* Alert the user */
-				alert('You can\'t submit an empty ticket reply.');
-				$(tinyMCE.activeEditor.getBody()).css('background-color', '');
+			// Visual Editor
+			if (is_tinymce_active) {
+				var editor = tinyMCE.activeEditor;
+				var editorContent = editor.getContent();
+				if (editorContent === '' || editorContent === null) {
 
-				/* Focus on editor */
-				tinyMCE.activeEditor.focus();
+					/* Alert the user */
+					alert(wpasL10n.alertNoContent);
 
-				return false;
+					/* Focus on editor */
+					editor.focus();
+
+					return false;
+				}
+
+			}
+
+			// Text Editor
+			else {
+				var textarea = $('textarea[name="wpas_reply"]');
+				if (!textarea.val()) {
+
+					/* Alert the user */
+					alert(wpasL10n.alertNoContent);
+
+					/* Focus on editor */
+					textarea.focus();
+
+					return false;
+				}
 			}
 		});
 
@@ -85,6 +112,14 @@
 		if (jQuery().select2 && $('select.wpas-select2').length) {
 			$('select.wpas-select2:visible').select2();
 		}
+
+		/**
+		 * Make ticket title required
+		 * http://wordpress.stackexchange.com/a/101260
+		 */
+		$('#publish').on('click', function () {
+			$('#titlediv > #titlewrap > #title').prop('required', true);
+		});
 
 	});
 

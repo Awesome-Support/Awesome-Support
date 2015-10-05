@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "29ee7f8da51c0ca37be4b6f92f199a72",
+    "hash": "8ddfed81b0cec0990fc283d1f7719f0c",
     "packages": [
         {
             "name": "ericmann/wp-session-manager",
@@ -26,16 +26,16 @@
         },
         {
             "name": "gambitph/titan-framework",
-            "version": "1.9",
+            "version": "1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/gambitph/Titan-Framework.git",
-                "reference": "01b58e4517965c895ee18ce2ad84665f0b4d597e"
+                "reference": "a406614e97e161f4723020dee0eded7666da781c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/01b58e4517965c895ee18ce2ad84665f0b4d597e",
-                "reference": "01b58e4517965c895ee18ce2ad84665f0b4d597e",
+                "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/a406614e97e161f4723020dee0eded7666da781c",
+                "reference": "a406614e97e161f4723020dee0eded7666da781c",
                 "shasum": ""
             },
             "type": "library",
@@ -65,7 +65,7 @@
                 "titan",
                 "wordpress"
             ],
-            "time": "2015-09-24 08:16:05"
+            "time": "2015-09-26 15:45:31"
         }
     ],
     "packages-dev": [],
