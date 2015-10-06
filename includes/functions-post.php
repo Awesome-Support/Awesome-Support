@@ -252,7 +252,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 * Fire wpas_after_open_ticket just after the post is successfully submitted.
 	 */
 	do_action( 'wpas_open_ticket_after', $ticket_id, $data );
-	
+
 	return $ticket_id;
 
 }
