@@ -245,11 +245,18 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		$agent_id = wpas_find_agent( $ticket_id );
 	}
 
+	/**
+	 * Fire wpas_open_ticket_before_assigned after the post is successfully submitted but before it has been assigned to an agent.
+	 *
+	 * @since 3.2.6
+	 */
+	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data );
+
 	/* Assign an agent to the ticket */
 	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
 	/**
-	 * Fire wpas_after_open_ticket just after the post is successfully submitted.
+	 * Fire wpas_after_open_ticket just after the post is successfully submitted and assigned.
 	 */
 	do_action( 'wpas_open_ticket_after', $ticket_id, $data );
 
