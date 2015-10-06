@@ -420,10 +420,14 @@ class WPAS_Custom_Fields {
 	 */
 	public function custom_column_orderby( $query ) {
 
+		if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+			return;
+		}
+
 		$fields  = $this->get_custom_fields();
 		$orderby = $query->get( 'orderby' );
 
-		if ( array_key_exists( $orderby, $fields ) ) {
+		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
 
 			if ( 'taxonomy' != $fields[ $orderby ]['args']['field_type'] ) {
 				$query->set( 'meta_key', '_wpas_' . $orderby );
