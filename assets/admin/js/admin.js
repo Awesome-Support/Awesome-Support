@@ -70,7 +70,7 @@
 		$('.wpas-reply-actions').on('click', 'button', function () {
 
 			// Detect Visual and Text Mode in WordPress TinyMCE Editor
-			var is_tinymce_active = (typeof tinyMCE != "undefined") && editor && !editor.isHidden();
+			var is_tinymce_active = (typeof tinyMCE != "undefined") && tinyMCE.activeEditor && !tinyMCE.activeEditor.isHidden();
 
 			// Visual Editor
 			if (is_tinymce_active) {
