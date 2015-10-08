@@ -936,10 +936,16 @@ class Awesome_Support_Old {
 		}
 
 		$args = array(
-			'id'    => 'wpas_tickets',
-			'title' => __( 'My Tickets', 'wpas' ),
-			'href'  => add_query_arg( $args, admin_url( 'edit.php' ) ),
-			'meta'  => array( 'class' => 'wpas-my-tickets' )
+			'id'     => 'wpas_tickets',
+			'parent' => null,
+			'group'  => null,
+			'title'  => '<span class="ab-icon"></span> ' . count( wpas_get_tickets( 'open', $args ) ),
+			'href'   => add_query_arg( $args, admin_url( 'edit.php' ) ),
+			'meta'   => array(
+				'target' => '_self',
+				'title'  => 'Open tickets assigned to you',
+				'class'  => 'wpas-my-tickets',
+			),
 		);
 
 		$wp_admin_bar->add_node( $args );
