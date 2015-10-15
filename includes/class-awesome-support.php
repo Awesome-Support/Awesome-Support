@@ -924,25 +924,46 @@ class Awesome_Support_Old {
 	 */
 	public function toolbar_tickets_link( $wp_admin_bar ) {
 
-		if ( !current_user_can( 'edit_ticket' ) ) {
+		if ( ! current_user_can( 'edit_ticket' ) ) {
 			return;
 		}
 
-		$hide = boolval( wpas_get_option( 'hide_closed' ) );
-		$args = array( 'post_type' => 'ticket' );
+		$hide          = (bool) wpas_get_option( 'hide_closed' );
+		$agent_see_all = (bool) wpas_get_option( 'agent_see_all' );
+		$admin_see_all = (bool) wpas_get_option( 'admin_see_all' );
+		$args          = array( 'post_type' => 'ticket' );
+		$tickets_count = 0;
+
+		// In case the current user can only see his own tickets
+		if ( current_user_can( 'administrator' ) && false === $admin_see_all || ! current_user_can( 'administrator' ) && false === $agent_see_all ) {
+
+			global $current_user;
+
+			$agent         = new WPAS_Agent( $current_user->ID );
+			$tickets_count = $agent->open_tickets();
+
+		} else {
+			$tickets_count = count( wpas_get_tickets( 'open', $args ) );
+		}
 
 		if ( true === $hide ) {
 			$args['wpas_status'] = 'open';
 		}
 
-		$args = array(
-			'id'    => 'wpas_tickets',
-			'title' => __( 'My Tickets', 'wpas' ),
-			'href'  => add_query_arg( $args, admin_url( 'edit.php' ) ),
-			'meta'  => array( 'class' => 'wpas-my-tickets' )
+		$node = array(
+			'id'     => 'wpas_tickets',
+			'parent' => null,
+			'group'  => null,
+			'title'  => '<span class="ab-icon"></span> ' . $tickets_count,
+			'href'   => add_query_arg( $args, admin_url( 'edit.php' ) ),
+			'meta'   => array(
+				'target' => '_self',
+				'title'  => 'Open tickets assigned to you',
+				'class'  => 'wpas-my-tickets',
+			),
 		);
 
-		$wp_admin_bar->add_node( $args );
+		$wp_admin_bar->add_node( $node );
 	}
 
 	/**
