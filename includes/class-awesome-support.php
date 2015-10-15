@@ -958,7 +958,7 @@ class Awesome_Support_Old {
 			'href'   => add_query_arg( $args, admin_url( 'edit.php' ) ),
 			'meta'   => array(
 				'target' => '_self',
-				'title'  => 'Open tickets assigned to you',
+				'title'  => esc_html__( 'Open tickets assigned to you', 'awesome-support' ),
 				'class'  => 'wpas-my-tickets',
 			),
 		);
