@@ -379,9 +379,10 @@ function wpas_get_reply_form( $args = array() ) {
 	do_action( 'wpas_ticket_details_reply_form_before' );
 
 	if( 'closed' === $status ):
-
-		echo wpas_get_notification_markup( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'wpas' ), wpas_get_reopen_url() ) );
-
+		if ( wpas_can_submit_ticket( $post_id ) || current_user_can( 'edit_ticket' ) ){
+			echo wpas_get_notification_markup( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'wpas' ), wpas_get_reopen_url() ) );
+		}
+		
 	/**
 	 * Check if the ticket is currently open and if the current user
 	 * is allowed to post a reply.
