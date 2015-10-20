@@ -1017,7 +1017,7 @@ class Awesome_Support_Admin {
 				$user_id = $current_user->ID;
 				$content = wp_kses_post( $_POST['wpas_reply'] );
 
-				$data = array(
+				$data = apply_filters( 'wpas_post_reply_admin_args', array(
 					'post_content'   => $content,
 					'post_status'    => 'read',
 					'post_type'      => 'ticket_reply',
@@ -1025,7 +1025,7 @@ class Awesome_Support_Admin {
 					'post_parent'    => $post_id,
 					'ping_status'    => 'closed',
 					'comment_status' => 'closed',
-				);
+				) );
 
 				/**
 				 * Remove the save_post hook now as we're going to trigger
@@ -1033,8 +1033,29 @@ class Awesome_Support_Admin {
 				 */
 				remove_action( 'save_post_ticket', array( $this, 'save_ticket' ) );
 
+				/**
+				 * Fires right before a ticket reply is submitted
+				 *
+				 * @since 3.2.6
+				 *
+				 * @param int   $post_id Ticket ID
+				 * @param array $data    Data to be inserted as the reply
+				 */
+				do_action( 'wpas_post_reply_admin_before', $post_id, $data );
+
 				/* Insert the reply in DB */
 				$reply = wpas_add_reply( $data, $post_id );
+
+				/**
+				 * Fires right after a ticket reply is submitted
+				 *
+				 * @since 3.2.6
+				 *
+				 * @param int      $post_id Ticket ID
+				 * @param array    $data    Data to be inserted as the reply
+				 * @param bool|int Reply    ID on success, false on failure
+				 */
+				do_action( 'wpas_post_reply_admin_after', $post_id, $data, $reply );
 
 				/* In case the insertion failed... */
 				if ( is_wp_error( $reply ) ) {
