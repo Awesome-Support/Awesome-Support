@@ -141,11 +141,13 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 										$controls = apply_filters( 'wpas_ticket_reply_controls', array(), $ticket_id, $row );
 
 										if ( ! empty( $controls ) ) {
+
 											$output = array();
+											
 											foreach ( $controls as $control_id => $control ) {
 												array_push( $output, $control );
-//												echo $control;
 											}
+
 											echo implode( ' | ', $output );
 										}
 
