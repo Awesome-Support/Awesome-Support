@@ -22,8 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return void
  */
 function wpas_set_notifications( $group = 'notifications' ) {
-	global $wpas_session;
-	$wpas_session->add( $group, array() );
+	WPAS()->session->add( $group, array() );
 }
 
 /**
@@ -38,9 +37,7 @@ function wpas_set_notifications( $group = 'notifications' ) {
  */
 function wpas_add_notification( $id, $message, $group = 'notifications' ) {
 
-	global $wpas_session;
-
-	$notifications = $wpas_session->get( $group );
+	$notifications = WPAS()->session->get( $group );
 	$id            = sanitize_text_field( $id );
 	$message       = wp_kses_post( $message );
 
@@ -50,7 +47,7 @@ function wpas_add_notification( $id, $message, $group = 'notifications' ) {
 
 	$notifications[ $id ] = $message;
 
-	$wpas_session->add( $group, $notifications );
+	WPAS()->session->add( $group, $notifications );
 
 }
 
@@ -67,10 +64,8 @@ function wpas_add_notification( $id, $message, $group = 'notifications' ) {
  */
 function wpas_get_notification( $id, $default = false, $group = 'notifications' ) {
 
-	global $wpas_session;
-
 	$value         = $default;
-	$notifications = $wpas_session->get( $group );
+	$notifications = WPAS()->session->get( $group );
 	$id            = sanitize_text_field( $id );
 
 	if ( is_array( $notifications ) && array_key_exists( $id, $notifications ) ) {
@@ -91,10 +86,7 @@ function wpas_get_notification( $id, $default = false, $group = 'notifications' 
  * @return array
  */
 function wpas_get_notifications( $group = 'notifications' ) {
-
-	global $wpas_session;
-
-	return $wpas_session->get( $group );
+	return WPAS()->session->get( $group );
 }
 
 /**
@@ -113,13 +105,11 @@ function wpas_clean_notification( $id, $group ) {
 		return;
 	}
 
-	global $wpas_session;
-
 	$notifications = wpas_get_notifications();
 
 	unset( $notifications[ $id ] );
 
-	$wpas_session->add( $group, $notifications );
+	WPAS()->session->add( $group, $notifications );
 
 }
 
@@ -133,8 +123,7 @@ function wpas_clean_notification( $id, $group ) {
  * @return void
  */
 function wpas_clean_notifications( $group = 'notifications' ) {
-	global $wpas_session;
-	$wpas_session->clean( $group );
+	WPAS()->session->clean( $group );
 }
 
 /**

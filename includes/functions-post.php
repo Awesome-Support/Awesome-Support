@@ -926,8 +926,6 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
  */
 function wpas_save_values() {
 
-	global $wpas_session;
-
 	$fields = array();
 
 	foreach ( $_POST as $key => $value ) {
@@ -938,7 +936,7 @@ function wpas_save_values() {
 
 	}
 
-	$wpas_session->add( 'submission_form', $fields );
+	WPAS()->session->add( 'submission_form', $fields );
 
 }
 

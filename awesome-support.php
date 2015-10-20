@@ -175,16 +175,6 @@ if ( is_admin() && Awesome_Support_Old::dependencies_loaded() ) {
  */
 $wpas_cf = new WPAS_Custom_Fields;
 
-/**
- * Awesome Support global session
- *
- * Uses PHP sessions if possible, Eric Mann's session manager otherwise
- *
- * @since 3.2
- * @var WPAS_Session
- */
-$wpas_session = new WPAS_Session();
-
 /*----------------------------------------------------------------------------*
  * Load theme's functions
  *----------------------------------------------------------------------------*/
@@ -225,6 +215,15 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		public $admin_notices;
 
+
+		/**
+		 * Session object
+		 *
+		 * @since 3.2.6
+		 * @var WPAS_Session $session
+		 */
+		public $session;
+
 		/**
 		 * Instantiate and return the unique Awesome Support object
 		 *
@@ -238,6 +237,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				self::$instance = new Awesome_Support;
 				self::$instance->setup_constants();
 				self::$instance->includes();
+				self::$instance->session = new WPAS_Session();
 
 				if ( is_admin() ) {
 					self::$instance->includes_admin();

@@ -293,13 +293,11 @@ class WPAS_Custom_Field {
 
 		if ( empty( $value ) ) {
 
-			global $wpas_session;
-
 			if ( isset( $_GET[$this->get_field_id()] ) ) {
 				$value = is_array( $_GET[$this->get_field_id()] ) ? filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY ) : filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING );
 			}
 
-			$fields = $wpas_session->get( 'submission_form' );
+			$fields = WPAS()->session->get( 'submission_form' );
 
 			if ( isset( $fields ) && is_array( $fields ) && array_key_exists( $this->get_field_id(), $fields ) ) {
 				$value = $this->get_sanitized_value( $fields[$this->get_field_id()] );

@@ -207,8 +207,7 @@ class Awesome_Support_Old {
 				/**
 				 * Empty the temporary sessions
 				 */
-				global $wpas_session;
-				$wpas_session->clean( 'submission_form' );
+				WPAS()->session->clean( 'submission_form' );
 
 				/**
 				 * Redirect to the newly created ticket
