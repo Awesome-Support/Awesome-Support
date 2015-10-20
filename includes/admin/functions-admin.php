@@ -267,3 +267,42 @@ function wpas_fix_tickets_count( $views ) {
 	return $views;
 
 }
+
+add_filter( 'wpas_ticket_reply_controls', 'wpas_ticket_reply_controls', 10, 3 );
+/**
+ * Add ticket reply controls
+ *
+ * @since 3.2.6
+ *
+ * @param array   $controls  List of existing controls
+ * @param int     $ticket_id ID of the ticket current reply belongs to
+ * @param WP_Post $reply     Reply post object
+ *
+ * @return array
+ */
+function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
+
+	if ( 0 !== $ticket_id && get_current_user_id() == $reply->post_author ) {
+
+		$_GET['del_id'] = $reply->ID;
+		$url            = add_query_arg( $_GET, admin_url( 'post.php' ) );
+		$url            = remove_query_arg( 'message', $url );
+		$delete         = wpas_url_add_custom_action( $url, 'trash_reply' );
+		$edit           = wp_nonce_url( add_query_arg( array(
+			'post'   => $ticket_id,
+			'rid'    => $reply->ID,
+			'action' => 'edit_reply'
+		), admin_url( 'post.php' ) ), 'delete_reply_' . $reply->ID );
+
+		$controls['delete_reply'] = sprintf( '<a class="%1$s" href="%2$s" title="%3$s">%3$s</a>', 'wpas-delete', esc_url( $delete ), esc_html_x( 'Delete', 'Link to delete a ticket reply', 'awesome-support' ) );
+		$controls['edit_reply']   = sprintf( '<a class="%1$s" href="%2$s" data-origin="%3$s" data-replyid="%4$d" data-reply="%5$s" data-wysiwygid="%6$s" title="%7$s">%7$s</a>', 'wpas-edit', '#', "#wpas-reply-$reply->ID", $reply->ID, "wpas-editwrap-$reply->ID", "wpas-editreply-$reply->ID", esc_html_x( 'Edit', 'Link ot edit a ticket reply', 'awesome-support' ) );
+
+	}
+
+	if ( get_current_user_id() !== $reply->post_author && 'unread' === $reply->post_status ) {
+		$controls['mark_read'] = sprintf( '<a class="%1$s" href="%2$s" data-replyid="%3$d" title="%4$s">%4$s</a>', 'wpas-mark-read', '#', $reply->ID, esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ) );
+	}
+
+	return $controls;
+
+}

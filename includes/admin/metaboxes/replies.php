@@ -120,22 +120,44 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 
 									<div class="wpas-ticket-controls">
 										<?php
-										if( isset( $_GET['post'] ) && is_numeric( $_GET['post'] ) && get_current_user_id() == $row->post_author ) {
 
-											$_GET['del_id'] = $row->ID;
-											$url            = add_query_arg( $_GET, admin_url( 'post.php' ) );
-											$url            = remove_query_arg( 'message', $url );
-											$delete         = wpas_url_add_custom_action( $url, 'trash_reply' );
-											$edit           = wp_nonce_url( add_query_arg( array( 'post' => $_GET['post'], 'rid' => $row->ID, 'action' => 'edit_reply' ), admin_url( 'post.php' ) ), 'delete_reply_' . $row->ID );
+										$ticket_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 
-											echo '<a class="button-secondary wpas-delete" href="' . esc_url( $delete ) . '"title="' . __( 'Delete', 'wpas' ) . '">' . __( 'Delete', 'wpas' ) . '</a>';
-											echo '<a class="button-secondary wpas-edit" href="#" data-origin="#wpas-reply-' . $row->ID . '" data-replyid="' . $row->ID . '" data-reply="wpas-editwrap-' . $row->ID . '" data-wysiwygid="wpas-editreply-' . $row->ID . '" title="' . __( 'Edit', 'wpas' ) . '">' . __( 'Edit', 'wpas' ) . '</a>';
+										/**
+										 * Fires before the ticket reply controls (mark as read, delete, edit...) are displayed
+										 *
+										 * @since 3.2.6
+										 *
+										 * @param int     $ticket_id ID of the current ticket
+										 * @param WP_Post $row       Current reply post object
+										 */
+										do_action( 'wpas_ticket_reply_controls_before', $ticket_id, $row );
 
+										/**
+										 * Ticket reply controls
+										 *
+										 * @since 3.2.6
+										 */
+										$controls = apply_filters( 'wpas_ticket_reply_controls', array(), $ticket_id, $row );
+
+										if ( ! empty( $controls ) ) {
+											$output = array();
+											foreach ( $controls as $control_id => $control ) {
+												array_push( $output, $control );
+//												echo $control;
+											}
+											echo implode( ' | ', $output );
 										}
 
-										if ( get_current_user_id() !== $row->post_author && 'unread' === $row->post_status ) {
-											echo '<a class="button-secondary wpas-mark-read" href="#" data-replyid="' . $row->ID . '" title="' . __( 'Mark as Read', 'wpas' ) . '">' . __( 'Mark as Read', 'wpas' ) . '</a>';
-										}
+										/**
+										 * Fires after the ticket reply controls (mark as read, delete, edit...) are displayed
+										 *
+										 * @since 3.2.6
+										 *
+										 * @param int     $ticket_id ID of the current ticket
+										 * @param WP_Post $row       Current reply post object
+										 */
+										do_action( 'wpas_ticket_reply_controls_after', $ticket_id, $row );
 										?>
 									</div>
 
