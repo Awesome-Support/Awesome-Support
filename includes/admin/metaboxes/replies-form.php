@@ -70,35 +70,39 @@ wp_nonce_field( 'reply_ticket', 'wpas_reply_ticket', false, true );
 		case '':
 		case 'back': ?>
 			<input type="hidden" name="wpas_back_to_list" value="1">
-			<button type="submit" name="wpas_do" class="button-primary"
-			        value="reply"><?php _e( 'Reply', 'awesome-support' ); ?></button>
+			<button type="submit" name="wpas_do" class="button-primary" value="reply"><?php _e( 'Reply', 'awesome-support' ); ?></button>
 			<?php break;
 
 			break;
 
 		case 'stay':
 			?>
-			<button type="submit" name="wpas_do" class="button-primary"
-			        value="reply"><?php _e( 'Reply', 'awesome-support' ); ?></button><?php
+			<button type="submit" name="wpas_do" class="button-primary" value="reply"><?php _e( 'Reply', 'awesome-support' ); ?></button><?php
 			break;
 
 		case 'ask': ?>
 			<fieldset>
 				<strong><?php _e( 'After Replying', 'awesome-support' ); ?></strong><br>
-				<label for="back_to_list"><input type="radio" id="back_to_list" name="where_after" value="back_to_list"
-				                                 checked="checked"> <?php _e( 'Back to list', 'awesome-support' ); ?></label>
-				<label for="stay_here"><input type="radio" id="stay_here" name="where_after"
-				                              value="stay_here"> <?php _e( 'Stay on ticket screen', 'awesome-support' ); ?></label>
+				<label for="back_to_list"><input type="radio" id="back_to_list" name="where_after" value="back_to_list" checked="checked"> <?php _e( 'Back to list', 'awesome-support' ); ?></label>
+				<label for="stay_here"><input type="radio" id="stay_here" name="where_after" value="stay_here"> <?php _e( 'Stay on ticket screen', 'awesome-support' ); ?></label>
 			</fieldset>
-			<button type="submit" name="wpas_do" class="button-primary"
-			        value="reply"><?php _e( 'Reply', 'awesome-support' ); ?></button>
+			<button type="submit" name="wpas_do" class="button-primary" value="reply"><?php _e( 'Reply', 'awesome-support' ); ?></button>
 			<?php break;
 
 	endswitch;
 	?>
 
 	<?php if ( current_user_can( 'close_ticket' ) ): ?>
-		<button type="submit" name="wpas_do" class="button-secondary"
-		        value="reply_close"><?php _e( 'Reply & Close', 'awesome-support' ); ?></button>
-	<?php endif; ?>
+		<button type="submit" name="wpas_do" class="button-secondary" value="reply_close"><?php _e( 'Reply & Close', 'awesome-support' ); ?></button>
+	<?php endif;
+
+	/**
+	 * Fired after all the submission form buttons were output
+	 *
+	 * @since 3.2.6
+	 *
+	 * @param int $post_id Ticket ID
+	 */
+	do_action( 'wpas_post_reply_buttons_after', $post->ID );
+	?>
 </div>
