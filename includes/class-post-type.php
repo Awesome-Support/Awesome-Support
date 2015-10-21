@@ -64,20 +64,20 @@ class WPAS_Ticket_Post_Type {
 
 		/* Post type labels */
 		$labels = apply_filters( 'wpas_ticket_type_labels', array(
-			'name'               => _x( 'Tickets', 'post type general name', 'wpas' ),
-			'singular_name'      => _x( 'Ticket', 'post type singular name', 'wpas' ),
-			'menu_name'          => _x( 'Tickets', 'admin menu', 'wpas' ),
-			'name_admin_bar'     => _x( 'Ticket', 'add new on admin bar', 'wpas' ),
-			'add_new'            => _x( 'Add New', 'book', 'wpas' ),
-			'add_new_item'       => __( 'Add New Ticket', 'wpas' ),
-			'new_item'           => __( 'New Ticket', 'wpas' ),
-			'edit_item'          => __( 'Edit Ticket', 'wpas' ),
-			'view_item'          => __( 'View Ticket', 'wpas' ),
-			'all_items'          => __( 'All Tickets', 'wpas' ),
-			'search_items'       => __( 'Search Tickets', 'wpas' ),
-			'parent_item_colon'  => __( 'Parent Ticket:', 'wpas' ),
-			'not_found'          => __( 'No tickets found.', 'wpas' ),
-			'not_found_in_trash' => __( 'No tickets found in Trash.', 'wpas' ),
+			'name'               => _x( 'Tickets', 'post type general name', 'awesome-support' ),
+			'singular_name'      => _x( 'Ticket', 'post type singular name', 'awesome-support' ),
+			'menu_name'          => _x( 'Tickets', 'admin menu', 'awesome-support' ),
+			'name_admin_bar'     => _x( 'Ticket', 'add new on admin bar', 'awesome-support' ),
+			'add_new'            => _x( 'Add New', 'book', 'awesome-support' ),
+			'add_new_item'       => __( 'Add New Ticket', 'awesome-support' ),
+			'new_item'           => __( 'New Ticket', 'awesome-support' ),
+			'edit_item'          => __( 'Edit Ticket', 'awesome-support' ),
+			'view_item'          => __( 'View Ticket', 'awesome-support' ),
+			'all_items'          => __( 'All Tickets', 'awesome-support' ),
+			'search_items'       => __( 'Search Tickets', 'awesome-support' ),
+			'parent_item_colon'  => __( 'Parent Ticket:', 'awesome-support' ),
+			'not_found'          => __( 'No tickets found.', 'awesome-support' ),
+			'not_found_in_trash' => __( 'No tickets found in Trash.', 'awesome-support' ),
 		) );
 
 		/* Post type capabilities */
@@ -140,33 +140,33 @@ class WPAS_Ticket_Post_Type {
 
 		$messages[$post_type] = array(
 			0  => '', // Unused. Messages start at index 1.
-			1  => __( 'Ticket updated.', 'wpas' ),
-			2  => __( 'Custom field updated.', 'wpas' ),
-			3  => __( 'Custom field deleted.', 'wpas' ),
-			4  => __( 'Ticket updated.', 'wpas' ),
+			1  => __( 'Ticket updated.', 'awesome-support' ),
+			2  => __( 'Custom field updated.', 'awesome-support' ),
+			3  => __( 'Custom field deleted.', 'awesome-support' ),
+			4  => __( 'Ticket updated.', 'awesome-support' ),
 			/* translators: %s: date and time of the revision */
-			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Ticket restored to revision from %s', 'wpas' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6  => __( 'Ticket published.', 'wpas' ),
-			7  => __( 'Ticket saved.', 'wpas' ),
-			8  => __( 'Ticket submitted.', 'wpas' ),
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Ticket restored to revision from %s', 'awesome-support' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6  => __( 'Ticket published.', 'awesome-support' ),
+			7  => __( 'Ticket saved.', 'awesome-support' ),
+			8  => __( 'Ticket submitted.', 'awesome-support' ),
 			9  => sprintf(
-				__( 'Ticket scheduled for: <strong>%1$s</strong>.', 'wpas' ),
+				__( 'Ticket scheduled for: <strong>%1$s</strong>.', 'awesome-support' ),
 				// translators: Publish box date format, see http://php.net/date
-				date_i18n( __( 'M j, Y @ G:i', 'wpas' ), strtotime( $post->post_date ) )
+				date_i18n( __( 'M j, Y @ G:i', 'awesome-support' ), strtotime( $post->post_date ) )
 			),
-			10 => __( 'Ticket draft updated.', 'wpas' )
+			10 => __( 'Ticket draft updated.', 'awesome-support' )
 		);
 
 		if ( $post_type_object->publicly_queryable ) {
 			$permalink = get_permalink( $post->ID );
 
-			$view_link = sprintf( ' <a href="%s">%s</a>', esc_url( $permalink ), __( 'View ticket', 'wpas' ) );
+			$view_link = sprintf( ' <a href="%s">%s</a>', esc_url( $permalink ), __( 'View ticket', 'awesome-support' ) );
 			$messages[ $post_type ][1] .= $view_link;
 			$messages[ $post_type ][6] .= $view_link;
 			$messages[ $post_type ][9] .= $view_link;
 
 			$preview_permalink = add_query_arg( 'preview', 'true', $permalink );
-			$preview_link = sprintf( ' <a target="_blank" href="%s">%s</a>', esc_url( $preview_permalink ), __( 'Preview ticket', 'wpas' ) );
+			$preview_link = sprintf( ' <a target="_blank" href="%s">%s</a>', esc_url( $preview_permalink ), __( 'Preview ticket', 'awesome-support' ) );
 			$messages[ $post_type ][8]  .= $preview_link;
 			$messages[ $post_type ][10] .= $preview_link;
 		}
@@ -206,7 +206,7 @@ class WPAS_Ticket_Post_Type {
 				'exclude_from_search'       => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
-				'label_count'               => _n_noop( "$custom_status <span class='count'>(%s)</span>", "$custom_status <span class='count'>(%s)</span>", 'wpas' ),
+				'label_count'               => _n_noop( "$custom_status <span class='count'>(%s)</span>", "$custom_status <span class='count'>(%s)</span>", 'awesome-support' ),
 			);
 
 			register_post_status( $id, $args );
@@ -215,8 +215,8 @@ class WPAS_Ticket_Post_Type {
 		/**
 		 * Hardcode the read and unread status used for replies.
 		 */
-		register_post_status( 'read',   array( 'label' => _x( 'Read', 'Reply status', 'wpas' ), 'public' => false ) );
-		register_post_status( 'unread', array( 'label' => _x( 'Unread', 'Reply status', 'wpas' ), 'public' => false ) );
+		register_post_status( 'read',   array( 'label' => _x( 'Read', 'Reply status', 'awesome-support' ), 'public' => false ) );
+		register_post_status( 'unread', array( 'label' => _x( 'Unread', 'Reply status', 'awesome-support' ), 'public' => false ) );
 	}
 
 	/**
@@ -228,9 +228,9 @@ class WPAS_Ticket_Post_Type {
 	public static function get_post_status() {
 
 		$status = array(
-			'queued'     => _x( 'New', 'Ticket status', 'wpas' ),
-			'processing' => _x( 'In Progress', 'Ticket status', 'wpas' ),
-			'hold'       => _x( 'On Hold', 'Ticket status', 'wpas' ),
+			'queued'     => _x( 'New', 'Ticket status', 'awesome-support' ),
+			'processing' => _x( 'In Progress', 'Ticket status', 'awesome-support' ),
+			'hold'       => _x( 'On Hold', 'Ticket status', 'awesome-support' ),
 		);
 
 		return apply_filters( 'wpas_ticket_statuses', $status );

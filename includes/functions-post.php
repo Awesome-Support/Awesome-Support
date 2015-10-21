@@ -30,7 +30,7 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		// Redirect to submit page
-		wpas_add_error( 'cannot_open_ticket', __( 'You do not have the capacity to open a new ticket.', 'wpas' ) );
+		wpas_add_error( 'cannot_open_ticket', __( 'You do not have the capacity to open a new ticket.', 'awesome-support' ) );
 		wp_redirect( $submit );
 
 		// Break
@@ -44,7 +44,7 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		// Redirect to submit page
-		wpas_add_error( 'missing_title', __( 'It is mandatory to provide a title for your issue.', 'wpas' ) );
+		wpas_add_error( 'missing_title', __( 'It is mandatory to provide a title for your issue.', 'awesome-support' ) );
 		wp_redirect( $submit );
 
 		// Break
@@ -57,7 +57,7 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		// Redirect to submit page
-		wpas_add_error( 'missing_description', __( 'It is mandatory to provide a description for your issue.', 'wpas' ) );
+		wpas_add_error( 'missing_description', __( 'It is mandatory to provide a description for your issue.', 'awesome-support' ) );
 		wp_redirect( $submit );
 
 		// Break
@@ -109,7 +109,7 @@ function wpas_open_ticket( $data ) {
 		wpas_save_values();
 
 		// Redirect to submit page
-		wpas_add_error( 'unknown_user', __( 'Only registered accounts can submit a ticket. Please register first.', 'wpas' ) );
+		wpas_add_error( 'unknown_user', __( 'Only registered accounts can submit a ticket. Please register first.', 'awesome-support' ) );
 		wp_redirect( $submit );
 
 		exit;
@@ -381,8 +381,8 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 	 */
 	$defaults = array(
 		'post_content'   => '',
-		'post_name'      => sprintf( __( 'Reply to ticket %s', 'wpas' ), "#$parent_id" ),
-		'post_title'     => sprintf( __( 'Reply to ticket %s', 'wpas' ), "#$parent_id" ),
+		'post_name'      => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$parent_id" ),
+		'post_title'     => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$parent_id" ),
 		'post_status'    => 'unread',
 		'post_type'      => 'ticket_reply',
 		'ping_status'    => 'closed',
@@ -554,8 +554,8 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	}
 
 	$defaults = array(
-		'post_name'      => sprintf( __( 'Reply to ticket %s', 'wpas' ), "#$post_id" ),
-		'post_title'     => sprintf( __( 'Reply to ticket %s', 'wpas' ), "#$post_id" ),
+		'post_name'      => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$post_id" ),
+		'post_title'     => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$post_id" ),
 		'post_content'   => '',
 		'post_status'    => 'unread',
 		'post_type'      => 'ticket_reply',
@@ -866,7 +866,7 @@ function wpas_find_agent( $ticket_id = false ) {
 function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 
 	if ( 'ticket' !== get_post_type( $ticket_id ) ) {
-		return new WP_Error( 'incorrect_post_type', __( 'The given post ID is not a ticket', 'wpas' ) );
+		return new WP_Error( 'incorrect_post_type', __( 'The given post ID is not a ticket', 'awesome-support' ) );
 	}
 
 	if ( is_null( $agent_id ) ) {
@@ -874,7 +874,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 	}
 
 	if ( ! user_can( $agent_id, 'edit_ticket' ) ) {
-		return new WP_Error( 'incorrect_agent', __( 'The chosen agent does not have the sufficient capabilities to be assigned a ticket', 'wpas' ) );
+		return new WP_Error( 'incorrect_agent', __( 'The chosen agent does not have the sufficient capabilities to be assigned a ticket', 'awesome-support' ) );
 	}
 
 	/* Get the current agent if any */
@@ -895,7 +895,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 		$log   = array();
 		$log[] = array(
 			'action'   => 'updated',
-			'label'    => __( 'Support Staff', 'wpas' ),
+			'label'    => __( 'Support Staff', 'awesome-support' ),
 			'value'    => $agent_id,
 			'field_id' => 'assignee'
 		);
@@ -996,7 +996,7 @@ function wpas_update_ticket_status( $post_id, $status ) {
 	$updated = wp_update_post( $my_post );
 
 	if ( 0 !== intval( $updated ) ) {
-		wpas_log( $post_id, sprintf( __( 'Ticket state changed to %s', 'wpas' ), $custom_status[$status] ) );
+		wpas_log( $post_id, sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), $custom_status[$status] ) );
 	}
 
 	/**
@@ -1030,7 +1030,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
 	}
 
 	if ( ! current_user_can( 'close_ticket' ) ) {
-		wp_die( __( 'You do not have the capacity to close this ticket', 'wpas' ), __( 'Can’t close ticket', 'wpas' ), array( 'back_link' => true ) );
+		wp_die( __( 'You do not have the capacity to close this ticket', 'awesome-support' ), __( 'Can’t close ticket', 'awesome-support' ), array( 'back_link' => true ) );
 	}
 
 	$ticket_id = intval( $ticket_id );
@@ -1045,7 +1045,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
 		$agent->ticket_minus();
 
 		/* Log the action */
-		wpas_log( $ticket_id, __( 'The ticket was closed.', 'wpas' ) );
+		wpas_log( $ticket_id, __( 'The ticket was closed.', 'awesome-support' ) );
 
 		/**
 		 * wpas_after_close_ticket hook
@@ -1104,7 +1104,7 @@ function wpas_reopen_ticket( $ticket_id ) {
 		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
 
 		/* Log the action */
-		wpas_log( $ticket_id, __( 'The ticket was re-opened.', 'wpas' ) );
+		wpas_log( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
 
 		/**
 		 * wpas_after_reopen_ticket hook

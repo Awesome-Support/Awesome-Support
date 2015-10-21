@@ -57,20 +57,20 @@ class WPAS_Help {
 
 		$screen->add_help_tab( array(
 			'id'      => 'multiple_products',
-			'title'   => __( 'Multiple Products', 'wpas' ),
-			'content' => __( '<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>', 'wpas' )
+			'title'   => __( 'Multiple Products', 'awesome-support' ),
+			'content' => __( '<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>', 'awesome-support' )
 		) );
 
 		$screen->add_help_tab( array(
 			'id'      => 'default_assignee',
-			'title'   => __( 'Default Assignee', 'wpas' ),
-			'content' => __( '<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agent, we need to know who to assign to in case we can\'t find a perfect fit for the new tickets.</p>', 'wpas' )
+			'title'   => __( 'Default Assignee', 'awesome-support' ),
+			'content' => __( '<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agent, we need to know who to assign to in case we can\'t find a perfect fit for the new tickets.</p>', 'awesome-support' )
 		) );
 
 		$screen->add_help_tab( array(
 			'id'      => 'allow_registrations',
-			'title'   => __( 'Allow Registrations', 'wpas' ),
-			'content' => __( '<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn\'t. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>', 'wpas' )
+			'title'   => __( 'Allow Registrations', 'awesome-support' ),
+			'content' => __( '<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn\'t. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>', 'awesome-support' )
 		) );
 	}
 
@@ -91,7 +91,7 @@ class WPAS_Help {
 		 */
 		$list_tags = WPAS_Email_Notification::get_tags();
 
-		$tags = '<table class="widefat"><thead><th class="row-title">' . __( 'Tag', 'wpas' ) . '</th><th>' . __( 'Description', 'wpas' ) . '</th></thead><tbody>';
+		$tags = '<table class="widefat"><thead><th class="row-title">' . __( 'Tag', 'awesome-support' ) . '</th><th>' . __( 'Description', 'awesome-support' ) . '</th></thead><tbody>';
 
 		foreach ( $list_tags as $the_tag ) {
 			$tags .= '<tr><td class="row-title"><strong>' . $the_tag['tag'] . '</strong></td><td>' . $the_tag['desc'] . '</td></tr>';
@@ -103,14 +103,14 @@ class WPAS_Help {
 
 		$screen->add_help_tab( array(
 			'id'      => 'general',
-			'title'   => __( 'General Settings', 'wpas' ),
-			'content' => __( '<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>', 'wpas' )
+			'title'   => __( 'General Settings', 'awesome-support' ),
+			'content' => __( '<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>', 'awesome-support' )
 		) );
 		
 		$screen->add_help_tab( array(
 			'id'      => 'template-tags',
-			'title'   => __( 'Email Template Tags', 'wpas' ),
-			'content' => sprintf( __( '<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s', 'wpas' ), $tags )
+			'title'   => __( 'Email Template Tags', 'awesome-support' ),
+			'content' => sprintf( __( '<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s', 'awesome-support' ), $tags )
 		) );
 	}
 
@@ -130,8 +130,8 @@ class WPAS_Help {
 
 		$screen->add_help_tab( array(
 			'id'      => 'custom_login',
-			'title'   => __( 'Custom Login Page', 'wpas' ),
-			'content' => __( '<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don\'t like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the "Custom Login / Registration Page" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>', 'wpas' )
+			'title'   => __( 'Custom Login Page', 'awesome-support' ),
+			'content' => __( '<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don\'t like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the "Custom Login / Registration Page" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>', 'awesome-support' )
 		) );
 
 	}

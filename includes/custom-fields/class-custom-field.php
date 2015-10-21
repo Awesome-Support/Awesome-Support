@@ -398,7 +398,7 @@ class WPAS_Custom_Field {
 				}
 
 			} else {
-				$field  = '<!-- ' . __( 'The custom field class does not contain the mandatory method "display"', 'wpas' ) . ' -->';
+				$field  = '<!-- ' . __( 'The custom field class does not contain the mandatory method "display"', 'awesome-support' ) . ' -->';
 				$error = true;
 			}
 
@@ -406,7 +406,7 @@ class WPAS_Custom_Field {
 
 		/* In case the field type / callback function does not exist */
 		else {
-			$field  = '<!-- ' . __( 'The type of custom field you are trying to use does not exist', 'wpas' ) . ' -->';
+			$field  = '<!-- ' . __( 'The type of custom field you are trying to use does not exist', 'awesome-support' ) . ' -->';
 			$error = true;
 		}
 

@@ -170,7 +170,7 @@ function wpas_register_core_fields() {
 		return;
 	}
 
-	$wpas_cf->add_field( 'assignee',   array( 'core' => true, 'show_column' => false, 'log' => true, 'title' => __( 'Support Staff', 'wpas' ) ) );
+	$wpas_cf->add_field( 'assignee',   array( 'core' => true, 'show_column' => false, 'log' => true, 'title' => __( 'Support Staff', 'awesome-support' ) ) );
 	// $wpas_cf->add_field( 'ccs',        array( 'core' => true, 'show_column' => false, 'log' => true ) );
 	$wpas_cf->add_field( 'status',     array( 'core' => true, 'show_column' => true, 'log' => false, 'field_type' => false, 'column_callback' => 'wpas_cf_display_status', 'save_callback' => null ) );
 	$wpas_cf->add_field( 'ticket-tag', array(
@@ -181,9 +181,9 @@ function wpas_register_core_fields() {
 			'taxo_std'              => true,
 			'column_callback'       => 'wpas_cf_display_status',
 			'save_callback'         => null,
-			'label'                 => __( 'Tag', 'wpas' ),
-			'name'                  => __( 'Tag', 'wpas' ),
-			'label_plural'          => __( 'Tags', 'wpas' ),
+			'label'                 => __( 'Tag', 'awesome-support' ),
+			'name'                  => __( 'Tag', 'awesome-support' ),
+			'label_plural'          => __( 'Tags', 'awesome-support' ),
 			'taxo_hierarchical'     => false,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count'
 		)
@@ -197,9 +197,9 @@ function wpas_register_core_fields() {
 
 		/* Filter the taxonomy labels */
 		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
-				'label'        => __( 'Product', 'wpas' ),
-				'name'         => __( 'Product', 'wpas' ),
-				'label_plural' => __( 'Products', 'wpas' )
+				'label'        => __( 'Product', 'awesome-support' ),
+				'name'         => __( 'Product', 'awesome-support' ),
+				'label_plural' => __( 'Products', 'awesome-support' )
 			)
 		);
 

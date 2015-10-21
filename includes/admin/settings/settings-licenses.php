@@ -16,7 +16,7 @@ function wpas_core_settings_licenses( $def ) {
 
 	$settings = array(
 		'licenses' => array(
-			'name'    => __( 'Licenses', 'wpas' ),
+			'name'    => __( 'Licenses', 'awesome-support' ),
 			'options' => $licenses
 		),
 	);

@@ -59,11 +59,11 @@ function wpas_single_ticket( $content ) {
 	if ( ! wpas_can_view_ticket( $post->ID ) ) {
 
 		if ( is_user_logged_in() ) {
-			return wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'wpas' ) );
+			return wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'awesome-support' ) );
 		} else {
 
 			$output = '';
-			$output .= wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'wpas' ) );
+			$output .= wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'awesome-support' ) );
 
 			ob_start();
 			wpas_get_template( 'registration' );
@@ -278,9 +278,9 @@ function wpas_ticket_header( $args = array() ) {
 	$custom_fields = $wpas_cf->get_custom_fields();
 
 	$columns = array(
-		'id'     => __( 'ID', 'wpas' ),
-		'status' => __( 'Status', 'wpas' ),
-		'date'   => __( 'Date', 'wpas' )
+		'id'     => __( 'ID', 'awesome-support' ),
+		'status' => __( 'Status', 'awesome-support' ),
+		'date'   => __( 'Date', 'awesome-support' )
 	);
 
 	$columns_callbacks = array(
@@ -380,7 +380,7 @@ function wpas_get_reply_form( $args = array() ) {
 
 	if( 'closed' === $status ):
 
-		echo wpas_get_notification_markup( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'wpas' ), wpas_get_reopen_url() ) );
+		echo wpas_get_notification_markup( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'awesome-support' ), wpas_get_reopen_url() ) );
 
 	/**
 	 * Check if the ticket is currently open and if the current user
@@ -436,7 +436,7 @@ function wpas_get_reply_form( $args = array() ) {
 						 */
 						$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', false );
 						?>
-						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'wpas' ); ?>" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
+						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'awesome-support' ); ?>" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
 					<?php }
 				
 				echo $args['textarea_after']; ?>
@@ -453,8 +453,8 @@ function wpas_get_reply_form( $args = array() ) {
 			if ( current_user_can( 'close_ticket' ) ): ?>
 
 				<div class="checkbox">
-					<label for="close_ticket" data-toggle="tooltip" data-placement="right" title="" data-original-title="<?php _e( 'No reply is required to close', 'wpas' ); ?>">
-						<input type="checkbox" name="wpas_close_ticket" id="close_ticket" value="true"> <?php _e( 'Close this ticket', 'wpas' ); ?>
+					<label for="close_ticket" data-toggle="tooltip" data-placement="right" title="" data-original-title="<?php _e( 'No reply is required to close', 'awesome-support' ); ?>">
+						<input type="checkbox" name="wpas_close_ticket" id="close_ticket" value="true"> <?php _e( 'Close this ticket', 'awesome-support' ); ?>
 					</label>
 				</div>
 
@@ -471,7 +471,7 @@ function wpas_get_reply_form( $args = array() ) {
 
 			<?php
 			wp_nonce_field( 'send_reply', 'client_reply', false, true );
-			wpas_make_button( __( 'Reply', 'wpas' ), array( 'name' => 'wpas-submit', 'onsubmit' => __( 'Please Wait...', 'wpas' ) ) );
+			wpas_make_button( __( 'Reply', 'awesome-support' ), array( 'name' => 'wpas-submit', 'onsubmit' => __( 'Please Wait...', 'awesome-support' ) ) );
 
 			/**
 			 * wpas_ticket_details_reply_close_checkbox_after hook
@@ -488,9 +488,9 @@ function wpas_get_reply_form( $args = array() ) {
 	 * This case is an agent viewing the ticket from the front-end. All actions are tracked in the back-end only, that's why we prevent agents from replying through the front-end.
 	 */
 	elseif( 'open' === $status && false === wpas_can_reply_ticket() ):
-		echo wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'wpas' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) ) );
+		echo wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) ) );
 	else:
-		echo wpas_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'wpas' ) );
+		echo wpas_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'awesome-support' ) );
 	endif;
 
 	/**
@@ -559,9 +559,9 @@ function wpas_get_tickets_list_columns() {
 	$custom_fields = $wpas_cf->get_custom_fields();
 
 	$columns = array(
-		'status' => array( 'title' => __( 'Status', 'wpas' ), 'callback' => 'wpas_cf_display_status' ),
-		'title'  => array( 'title' => __( 'Title', 'wpas' ), 'callback' => 'title' ),
-		'date'   => array( 'title' => __( 'Date', 'wpas' ), 'callback' => 'date' ),
+		'status' => array( 'title' => __( 'Status', 'awesome-support' ), 'callback' => 'wpas_cf_display_status' ),
+		'title'  => array( 'title' => __( 'Title', 'awesome-support' ), 'callback' => 'title' ),
+		'date'   => array( 'title' => __( 'Date', 'awesome-support' ), 'callback' => 'date' ),
 	);
 
 	foreach ( $custom_fields as $field ) {
@@ -759,7 +759,7 @@ function wpas_cf_display_status( $name, $post_id ) {
 	$status = wpas_get_ticket_status( $post_id );
 
 	if ( 'closed' === $status ) {
-		$label = __( 'Closed', 'wpas' );
+		$label = __( 'Closed', 'awesome-support' );
 		$color = wpas_get_option( "color_$status", '#dd3333' );
 		$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 	} else {
@@ -769,7 +769,7 @@ function wpas_cf_display_status( $name, $post_id ) {
 		$custom_status = wpas_get_post_status();
 
 		if ( ! array_key_exists( $post_status, $custom_status ) ) {
-			$label = __( 'Open', 'wpas' );
+			$label = __( 'Open', 'awesome-support' );
 			$color = wpas_get_option( "color_$status", '#169baa' );
 			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 		} else {
@@ -894,7 +894,7 @@ function wpas_pagination_link( $direction = 'next', $posts = 0 ) {
 function wpas_prev_page_link( $label = '', $echo = true ) {
 
 	if ( empty( $label ) ) {
-		$label = '< ' . __( 'Previous Page', 'wpas' );
+		$label = '< ' . __( 'Previous Page', 'awesome-support' );
 	}
 
 	$link = wpas_pagination_link( 'prev' );
@@ -927,7 +927,7 @@ function wpas_prev_page_link( $label = '', $echo = true ) {
 function wpas_next_page_link( $label = '', $posts = 0, $echo = true ) {
 
 	if ( empty( $label ) ) {
-		$label = __( 'Next Page', 'wpas' ) . ' >';
+		$label = __( 'Next Page', 'awesome-support' ) . ' >';
 	}
 
 	$link = wpas_pagination_link( 'next', $posts );

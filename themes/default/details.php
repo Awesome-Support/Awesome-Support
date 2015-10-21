@@ -48,7 +48,7 @@ $author = get_user_by( 'id', $post->post_author );
 						<div class="wpas-reply-time">
 							<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>">
 								<span class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
-								<span class="wpas-date-ago"><?php printf( __( '%s ago', 'wpas' ), human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) ) ); ?></span>
+								<span class="wpas-date-ago"><?php printf( __( '%s ago', 'awesome-support' ), human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) ) ); ?></span>
 							</time>
 						</div>
 					</div>
@@ -113,7 +113,7 @@ $author = get_user_by( 'id', $post->post_author );
 						if ( 'trash' === get_post_status() ) { ?>
 
 							<td colspan="2">
-								<?php printf( __( 'This reply has been deleted %s ago.', 'wpas' ), $time_ago ); ?>
+								<?php printf( __( 'This reply has been deleted %s ago.', 'awesome-support' ), $time_ago ); ?>
 							</td>
 
 							<?php continue;
@@ -136,7 +136,7 @@ $author = get_user_by( 'id', $post->post_author );
 										<span
 											class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
 										<span
-											class="wpas-date-ago"><?php printf( __( '%s ago', 'wpas' ), $time_ago ); ?></span>
+											class="wpas-date-ago"><?php printf( __( '%s ago', 'awesome-support' ), $time_ago ); ?></span>
 									</time>
 								</div>
 							</div>
@@ -172,11 +172,11 @@ $author = get_user_by( 'id', $post->post_author );
 	</table>
 
 	<div class="wpas-pagi">
-		<span class="wpas-pagi-prev"><?php wpas_prev_page_link( '< ' . __( 'Older Replies', 'wpas' ) ); ?></span>
-		<span class="wpas-pagi-next"><?php wpas_next_page_link( __( 'Newer Replies', 'wpas' ) . ' >', $replies->found_posts ); ?></span>
+		<span class="wpas-pagi-prev"><?php wpas_prev_page_link( '< ' . __( 'Older Replies', 'awesome-support' ) ); ?></span>
+		<span class="wpas-pagi-next"><?php wpas_next_page_link( __( 'Newer Replies', 'awesome-support' ) . ' >', $replies->found_posts ); ?></span>
 	</div>
 
-	<h3><?php _e( 'Write a reply', 'wpas' ); ?></h3>
+	<h3><?php _e( 'Write a reply', 'awesome-support' ); ?></h3>
 
 	<?php
 	/**

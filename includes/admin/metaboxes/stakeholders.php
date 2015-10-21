@@ -28,7 +28,7 @@ if ($issuer !== false) {
     $issuer_name = $issuer->data->display_name;
 } else {
     $issuer_id = 0;
-    $issuer_name = __( 'User was deleted', 'wpas' );
+    $issuer_name = __( 'User was deleted', 'awesome-support' );
 }
 
 /* Issuer tickets link */
@@ -58,7 +58,7 @@ foreach( $wp_roles->roles as $role => $data ) {
 }
 ?>
 <div id="wpas-stakeholders">
-	<label for="wpas-issuer"><strong><?php _e( 'Ticket Creator', 'wpas' ); ?></strong></label> 
+	<label for="wpas-issuer"><strong><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
 	<p>
 
 		<?php if ( current_user_can( 'create_ticket' ) ):
@@ -75,10 +75,10 @@ foreach( $wp_roles->roles as $role => $data ) {
 			<a id="wpas-issuer" href="<?php echo $issuer_tickets; ?>"><?php echo $issuer_name; ?></a></p>
 		<?php endif; ?>
 
-	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'This ticket has been raised by the user hereinabove.', 'wpas' ), '#' ); ?></p><?php endif; ?>
+	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'This ticket has been raised by the user hereinabove.', 'awesome-support' ), '#' ); ?></p><?php endif; ?>
 	<hr>
 
-	<label for="wpas-assignee"><strong><?php _e( 'Support Staff', 'wpas' ); ?></strong></label>
+	<label for="wpas-assignee"><strong><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php
 		$staff_atts = array(
@@ -96,11 +96,11 @@ foreach( $wp_roles->roles as $role => $data ) {
 		echo wpas_users_dropdown( $staff_atts );
 		?>
 	</p>
-	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'The above agent is currently responsible for this ticket.', 'wpas' ), '#' ); ?></p><?php endif; ?>
+	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'The above agent is currently responsible for this ticket.', 'awesome-support' ), '#' ); ?></p><?php endif; ?>
 	
 	<!-- <hr>
 
-	<label for="wpas-ccs"><strong><?php _e( 'CCs', 'wpas' ); ?></strong></label>
+	<label for="wpas-ccs"><strong><?php _e( 'CCs', 'awesome-support' ); ?></strong></label>
 	<p><input type="text" id="wpas-ccs" name="wpas_ccs" value="<?php echo $ccs; ?>" style="width:100%" /></p>
-	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'If you want to send a copy of the e-mails to another person, add the address(es) separated by a comma.', 'wpas' ), '#' ); ?></p><?php endif; ?> -->
+	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'If you want to send a copy of the e-mails to another person, add the address(es) separated by a comma.', 'awesome-support' ), '#' ); ?></p><?php endif; ?> -->
 </div>

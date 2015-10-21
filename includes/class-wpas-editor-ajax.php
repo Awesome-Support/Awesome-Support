@@ -99,7 +99,7 @@ class WPAS_Editor_Ajax {
 		$settings  = (array) filter_input( INPUT_POST, 'editor_settings', FILTER_UNSAFE_RAW);
 
 		if ( empty( $editor_id ) ) {
-			wpas_debug_display( __( 'An editor ID is mandatory to load a new instance of TinyMCE', 'wpas' ) );
+			wpas_debug_display( __( 'An editor ID is mandatory to load a new instance of TinyMCE', 'awesome-support' ) );
 			die;
 		}
 

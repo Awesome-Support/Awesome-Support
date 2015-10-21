@@ -30,6 +30,6 @@ $content = apply_filters( 'the_content', $row->post_content );
 do_action( 'wpas_backend_history_content_after', $row->ID ); ?>
 
 <td colspan="3">
-	<span class="wpas-action-author"><?php echo $user_name; ?>, <em class='wpas-time'><?php printf( __( '%s ago', 'wpas' ), $date ); ?></em></span>
+	<span class="wpas-action-author"><?php echo $user_name; ?>, <em class='wpas-time'><?php printf( __( '%s ago', 'awesome-support' ), $date ); ?></em></span>
 	<div class="wpas-action-details"><?php echo $content; ?></div>
 </td>

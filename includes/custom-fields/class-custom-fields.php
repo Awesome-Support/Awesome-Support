@@ -90,7 +90,7 @@ class WPAS_Custom_Fields {
 		/* Convert the callback for backwards compatibility */
 		if ( ! empty( $arguments['callback'] ) ) {
 
-			_deprecated_argument( 'WPAS_Custom_Fields::add_field()', '3.2', sprintf( __( 'Please use %s to register your custom field type', 'wpas' ), '<code>field_type</code>' ) );
+			_deprecated_argument( 'WPAS_Custom_Fields::add_field()', '3.2', sprintf( __( 'Please use %s to register your custom field type', 'awesome-support' ), '<code>field_type</code>' ) );
 
 			switch ( $arguments['callback'] ) {
 
@@ -160,14 +160,14 @@ class WPAS_Custom_Fields {
 				$labels = array(
 					'name'              => $plural,
 					'singular_name'     => $name,
-					'search_items'      => sprintf( __( 'Search %s', 'wpas' ), $plural ),
-					'all_items'         => sprintf( __( 'All %s', 'wpas' ), $plural ),
-					'parent_item'       => sprintf( __( 'Parent %s', 'wpas' ), $name ),
-					'parent_item_colon' => sprintf( _x( 'Parent %s:', 'Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. "book")', 'wpas' ), $name ),
-					'edit_item'         => sprintf( __( 'Edit %s', 'wpas' ), $name ),
-					'update_item'       => sprintf( __( 'Update %s', 'wpas' ), $name ),
-					'add_new_item'      => sprintf( __( 'Add New %s', 'wpas' ), $name ),
-					'new_item_name'     => sprintf( _x( 'New %s Name', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'wpas' ), $name ),
+					'search_items'      => sprintf( __( 'Search %s', 'awesome-support' ), $plural ),
+					'all_items'         => sprintf( __( 'All %s', 'awesome-support' ), $plural ),
+					'parent_item'       => sprintf( __( 'Parent %s', 'awesome-support' ), $name ),
+					'parent_item_colon' => sprintf( _x( 'Parent %s:', 'Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' ), $name ),
+					'edit_item'         => sprintf( __( 'Edit %s', 'awesome-support' ), $name ),
+					'update_item'       => sprintf( __( 'Update %s', 'awesome-support' ), $name ),
+					'add_new_item'      => sprintf( __( 'Add New %s', 'awesome-support' ), $name ),
+					'new_item_name'     => sprintf( _x( 'New %s Name', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' ), $name ),
 					'menu_name'         => $plural,
 				);
 
@@ -518,9 +518,9 @@ class WPAS_Custom_Fields {
 		$open_selected   = ( ! isset( $_GET['wpas_status'] ) && true === (bool) wpas_get_option( 'hide_closed' ) || 'open' === $this_sort ) ? 'selected="selected"' : '';
 		$closed_selected = ( 'closed' === $this_sort ) ? 'selected="selected"' : '';
 		$dropdown        = '<select id="wpas_status" name="wpas_status">';
-		$dropdown        .= "<option value='' $all_selected>" . __( 'Any Status', 'wpas' ) . "</option>";
-		$dropdown        .= "<option value='open' $open_selected>" . __( 'Open', 'wpas' ) . "</option>";
-		$dropdown        .= "<option value='closed' $closed_selected>" . __( 'Closed', 'wpas' ) . "</option>";
+		$dropdown        .= "<option value='' $all_selected>" . __( 'Any Status', 'awesome-support' ) . "</option>";
+		$dropdown        .= "<option value='open' $open_selected>" . __( 'Open', 'awesome-support' ) . "</option>";
+		$dropdown        .= "<option value='closed' $closed_selected>" . __( 'Closed', 'awesome-support' ) . "</option>";
 		$dropdown        .= '</select>';
 
 		echo $dropdown;
@@ -933,9 +933,9 @@ class WPAS_Custom_Fields {
 
 					/* Add the error message for this field. */
 					if ( ! is_object( $result ) ) {
-						$result = new WP_Error( 'required_field_missing', sprintf( __( 'The field %s is required.', 'wpas' ), "<a href='#$field_name'><code>$title</code></a>", array( 'errors' => $field_name ) ) );
+						$result = new WP_Error( 'required_field_missing', sprintf( __( 'The field %s is required.', 'awesome-support' ), "<a href='#$field_name'><code>$title</code></a>", array( 'errors' => $field_name ) ) );
 					} else {
-						$result->add( 'required_field_missing', sprintf( __( 'The field %s is required.', 'wpas' ), "<code>$title</code>", array( 'errors' => $field_name ) ) );
+						$result->add( 'required_field_missing', sprintf( __( 'The field %s is required.', 'awesome-support' ), "<code>$title</code>", array( 'errors' => $field_name ) ) );
 					}
 
 				}

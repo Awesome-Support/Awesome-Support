@@ -126,7 +126,7 @@ class AS_Admin_Notices {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'wpas' ), '3.2.5' );
+		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 	}
 
 	/**
@@ -213,7 +213,7 @@ class AS_Admin_Notices {
 			$args['wpas-dismiss'] = $notice_id;
 			$url                  = wpas_nonce_url( add_query_arg( $args, '' ) );
 
-			printf( '<div class="%s"><p>%s <a href="%s"><small>(%s)</small></a></p></div>', $notice[0], $notice[1], esc_url( $url ), _x( 'Dismiss', 'Dismiss link for admin notices', 'wpas' ) );
+			printf( '<div class="%s"><p>%s <a href="%s"><small>(%s)</small></a></p></div>', $notice[0], $notice[1], esc_url( $url ), _x( 'Dismiss', 'Dismiss link for admin notices', 'awesome-support' ) );
 
 		}
 

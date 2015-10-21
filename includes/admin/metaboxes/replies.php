@@ -12,8 +12,8 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 		if( '' == $status ): ?>
 
 			<div class="updated below-h2" style="margin-top: 2em;">
-				<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php _e( 'Create Ticket', 'wpas' ); ?></h2>
-				<p><?php _e( 'Please save this ticket to reveal all options.', 'wpas' ); ?></p>
+				<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php _e( 'Create Ticket', 'awesome-support' ); ?></h2>
+				<p><?php _e( 'Please save this ticket to reveal all options.', 'awesome-support' ); ?></p>
 			</div>
 
 		<?php
@@ -55,7 +55,7 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 
 					// In case the post author is unknown, we set this as an anonymous post
 					else {
-						$user_name = __( 'Anonymous', 'wpas' );
+						$user_name = __( 'Anonymous', 'awesome-support' );
 						$user_id   = 0;
 					}
 
@@ -116,8 +116,8 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 							<td colspan="2">
 								<div class="wpas-wp-editor" style="margin-bottom: 1em;"></div>
 								<input id="wpas-edited-reply-<?php echo $row->ID; ?>" type="hidden" name="edited_reply">
-								<input type="submit" id="wpas-edit-submit-<?php echo $row->ID; ?>" class="button-primary wpas-btn-save-edit" value="<?php _e( 'Save changes', 'wpas' ); ?>"> 
-								<input type="button" class="wpas-editcancel button-secondary" data-origin="#wpas-reply-<?php echo $row->ID; ?>" data-replyid="<?php echo $row->ID; ?>" data-reply="wpas-editwrap-<?php echo $row->ID; ?>" data-wysiwygid="wpas-editreply-<?php echo $row->ID; ?>" value="<?php _e( 'Cancel', 'wpas' ); ?>">
+								<input type="submit" id="wpas-edit-submit-<?php echo $row->ID; ?>" class="button-primary wpas-btn-save-edit" value="<?php _e( 'Save changes', 'awesome-support' ); ?>">
+								<input type="button" class="wpas-editcancel button-secondary" data-origin="#wpas-reply-<?php echo $row->ID; ?>" data-replyid="<?php echo $row->ID; ?>" data-reply="wpas-editwrap-<?php echo $row->ID; ?>" data-wysiwygid="wpas-editreply-<?php echo $row->ID; ?>" value="<?php _e( 'Cancel', 'awesome-support' ); ?>">
 							</td>
 						</tr>
 
@@ -143,7 +143,7 @@ if( 'open' == $status ):
 		require( WPAS_PATH . 'includes/admin/metaboxes/replies-form.php' );
 	else: ?>
 
-		<p><?php _e( 'Sorry, you don\'t have sufficient permissions to reply to tickets.', 'wpas' ); ?></p>
+		<p><?php _e( 'Sorry, you don\'t have sufficient permissions to reply to tickets.', 'awesome-support' ); ?></p>
 
 	<?php endif;
 
@@ -152,7 +152,7 @@ elseif( 'closed' == $status ): ?>
 
 	<div class="updated below-h2" style="margin-top: 2em;">
 		<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php _e('Ticket is closed', 'wpas'); ?></h2>
-		<p><?php printf( __( 'This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href="%s">re-open it first</a>.', 'wpas' ), wpas_get_open_ticket_url( $post->ID ) ); ?></p>
+		<p><?php printf( __( 'This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href="%s">re-open it first</a>.', 'awesome-support' ), wpas_get_open_ticket_url( $post->ID ) ); ?></p>
 	</div>
 
 <?php endif;

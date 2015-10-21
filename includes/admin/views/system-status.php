@@ -1,9 +1,9 @@
-<p><?php _e( 'The system status is a built-in debugging tool. If you contacted the support and you\'re asked to provide the system status, <strong>click the button below</strong> to copy your system report:', 'wpas' ); ?></p>
+<p><?php _e( 'The system status is a built-in debugging tool. If you contacted the support and you\'re asked to provide the system status, <strong>click the button below</strong> to copy your system report:', 'awesome-support' ); ?></p>
 
 <div class="wpas-system-status">
 	<textarea id="wpas-system-status-output" rows="10" style="display: none;"></textarea>
-	<button id="wpas-system-status-generate-json" class="button-secondary"><?php _e( 'Copy Report', 'wpas' ); ?> - JSON</button>
-	<button id="wpas-system-status-generate-wporg" class="button-secondary"><?php _e( 'Copy Report', 'wpas' ); ?> - WordPress.org</button>
+	<button id="wpas-system-status-generate-json" class="button-secondary"><?php _e( 'Copy Report', 'awesome-support' ); ?> - JSON</button>
+	<button id="wpas-system-status-generate-wporg" class="button-secondary"><?php _e( 'Copy Report', 'awesome-support' ); ?> - WordPress.org</button>
 </div>
 
 <table class="widefat wpas-system-status-table" id="wpas-system-status-wordpress">
@@ -28,7 +28,7 @@
 		</tr>
 		<tr class="alt">
 			<td class="row-title">WP Multisite</td>
-			<td><?php if ( is_multisite() ) echo __( 'Yes', 'wpas' ); else echo __( 'No', 'wpas' ); ?></td>
+			<td><?php if ( is_multisite() ) echo __( 'Yes', 'awesome-support' ); else echo __( 'No', 'awesome-support' ); ?></td>
 		</tr>
 		<tr>
 			<td class="row-title">WP Language</td>
@@ -36,7 +36,7 @@
 		</tr>
 		<tr class="alt">
 			<td class="row-title">WP Debug Mode</td>
-			<td><?php if ( defined('WP_DEBUG') && WP_DEBUG ) _e( 'Yes', 'wpas' ); else _e( 'No', 'wpas' ); ?></td>
+			<td><?php if ( defined('WP_DEBUG') && WP_DEBUG ) _e( 'Yes', 'awesome-support' ); else _e( 'No', 'awesome-support' ); ?></td>
 		</tr>
 		<tr>
 			<td class="row-title">WP Active Plugins</td>
@@ -52,7 +52,7 @@
 				if ( $wp_upload_max <= $server_upload_max ) {
 					echo size_format( $wp_upload_max );
 				} else {
-					echo '<span class="wpas-alert-danger">' . sprintf( __( '%s (The server only allows %s)', 'wpas' ), size_format( $wp_upload_max ), size_format( $server_upload_max ) ) . '</span>';
+					echo '<span class="wpas-alert-danger">' . sprintf( __( '%s (The server only allows %s)', 'awesome-support' ), size_format( $wp_upload_max ), size_format( $server_upload_max ) ) . '</span>';
 				}
 				?>
 			</td>
@@ -68,7 +68,7 @@
 				$timezone = get_option( 'timezone_string' );
 
 				if ( empty( $timezone ) ) {
-					echo '<span class="wpas-alert-danger">' . __( 'The timezone hasn\'t been set', 'wpas' ) . '</span>';
+					echo '<span class="wpas-alert-danger">' . __( 'The timezone hasn\'t been set', 'awesome-support' ) . '</span>';
 				} else {
 					echo $timezone . ' (UTC' . wpas_get_offset_html5() . ')';
 				}
@@ -121,11 +121,11 @@
 		</tr>
 		<tr>
 			<td class="row-title">Multiple Products</td>
-			<td><?php true === boolval( wpas_get_option( 'support_products' ) ) ? _e( 'Enabled', 'wpas' ) : _e( 'Disabled', 'wpas '); ?></td>
+			<td><?php true === boolval( wpas_get_option( 'support_products' ) ) ? _e( 'Enabled', 'awesome-support' ) : _e( 'Disabled', 'wpas '); ?></td>
 		</tr>
 		<tr class="alt">
 			<td class="row-title">Registration Status</td>
-			<td><?php 'allow' === wpas_get_option( 'allow_registrations' ) ? _e( 'Open', 'wpas' ) : _e( 'Closed', 'wpas '); ?></td>
+			<td><?php 'allow' === wpas_get_option( 'allow_registrations' ) ? _e( 'Open', 'awesome-support' ) : _e( 'Closed', 'wpas '); ?></td>
 		</tr>
 		<tr>
 			<td class="row-title">Registration Page</td>
@@ -133,7 +133,7 @@
 				<?php
 				$login_page = wpas_get_option( 'login_page' );
 				if ( empty( $login_page ) ) {
-					_e( 'Default', 'wpas' );
+					_e( 'Default', 'awesome-support' );
 				} else {
 					echo get_permalink( $login_page ) . " (#$login_page)";
 				}
@@ -146,15 +146,15 @@
 				<?php
 				if ( !is_dir( ABSPATH . 'wp-content/uploads/awesome-support' ) ) {
 					if ( !is_writable( ABSPATH . 'wp-content/uploads' ) ) {
-						echo '<span class="wpas-alert-danger">' . __( 'The upload folder doesn\'t exist and can\'t be created', 'wpas' ) . '</span>';
+						echo '<span class="wpas-alert-danger">' . __( 'The upload folder doesn\'t exist and can\'t be created', 'awesome-support' ) . '</span>';
 					} else {
-						echo '<span class="wpas-alert-success">' . __( 'The upload folder doesn\'t exist but can be created', 'wpas' ) . '</span>';
+						echo '<span class="wpas-alert-success">' . __( 'The upload folder doesn\'t exist but can be created', 'awesome-support' ) . '</span>';
 					}
 				} else {
 					if ( !is_writable( ABSPATH . 'wp-content/uploads/awesome-support' ) ) {
-						echo '<span class="wpas-alert-danger">' . __( 'The upload folder exists but isn\'t writable', 'wpas' ) . '</span>';
+						echo '<span class="wpas-alert-danger">' . __( 'The upload folder exists but isn\'t writable', 'awesome-support' ) . '</span>';
 					} else {
-						echo '<span class="wpas-alert-success">' . __( 'The upload folder exists and is writable', 'wpas' ) . '</span>';
+						echo '<span class="wpas-alert-success">' . __( 'The upload folder exists and is writable', 'awesome-support' ) . '</span>';
 					}
 				}
 				?>
@@ -167,7 +167,7 @@
 				$filetypes = apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) );
 
 				if ( empty( $filetypes ) ) {
-					echo '<span class="wpas-alert-danger">' . _x( 'None', 'Allowed file types for attachments', 'wpas' ) . '</span>';
+					echo '<span class="wpas-alert-danger">' . _x( 'None', 'Allowed file types for attachments', 'awesome-support' ) . '</span>';
 				} else {
 					$filetypes = explode( ',', $filetypes );
 					foreach ( $filetypes as $key => $type ) { $filetypes[$key] = "<code>.$type</code>"; }
@@ -179,7 +179,7 @@
 		</tr>
 		<tr class="alt">
 			<td class="row-title">WYSIWYG On Front</td>
-			<td><?php true === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ? _e( 'Yes', 'wpas' ) : _e( 'No', 'wpas '); ?></td>
+			<td><?php true === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ? _e( 'Yes', 'awesome-support' ) : _e( 'No', 'wpas '); ?></td>
 		</tr>
 	</tbody>
 </table>
@@ -311,20 +311,20 @@
 
 				$cf_tr_class                            = 'alt' === $cf_tr_class ? '' : 'alt';
 				$values                                 = array();
-				$attributes                             = array( __( 'Capability', 'wpas' ) => '<code>' . $field['args']['capability'] . '</code>' );
-				$attributes[__( 'Core', 'wpas')]        = true === boolval( $field['args']['core'] ) ? __( 'Yes', 'wpas' ) : __( 'No', 'wpas' );
-				$attributes[__( 'Required', 'wpas')]    = true === boolval( $field['args']['required'] ) ? __( 'Yes', 'wpas' ) : __( 'No', 'wpas' );
-				$attributes[__( 'Logged', 'wpas')]      = true === boolval( $field['args']['log'] ) ? __( 'Yes', 'wpas' ) : __( 'No', 'wpas' );
-				$attributes[__( 'Show Column', 'wpas')] = true === boolval( $field['args']['show_column'] ) ? __( 'Yes', 'wpas' ) : __( 'No', 'wpas' );
+				$attributes                             = array( __( 'Capability', 'awesome-support' ) => '<code>' . $field['args']['capability'] . '</code>' );
+				$attributes[__( 'Core', 'wpas')]        = true === boolval( $field['args']['core'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
+				$attributes[__( 'Required', 'wpas')]    = true === boolval( $field['args']['required'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
+				$attributes[__( 'Logged', 'wpas')]      = true === boolval( $field['args']['log'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
+				$attributes[__( 'Show Column', 'wpas')] = true === boolval( $field['args']['show_column'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
 
 				if ( 'taxonomy' === $field['args']['field_type'] ) {
 					if ( true === boolval( $field['args']['taxo_std'] ) ) {
-						$attributes[__( 'Taxonomy', 'wpas')] = __( 'Yes (standard)', 'wpas' );
+						$attributes[__( 'Taxonomy', 'wpas')] = __( 'Yes (standard)', 'awesome-support' );
 					} else {
-						$attributes[__( 'Taxonomy', 'wpas')] = __( 'Yes (custom)', 'wpas' );
+						$attributes[__( 'Taxonomy', 'wpas')] = __( 'Yes (custom)', 'awesome-support' );
 					}
 				} else {
-					$attributes[__( 'Taxonomy', 'wpas')] = __( 'No', 'wpas' );
+					$attributes[__( 'Taxonomy', 'wpas')] = __( 'No', 'awesome-support' );
 				}
 
 				$attributes[__( 'Callback', 'wpas')] = '<code>' . $field['args']['field_type'] . '</code>';
@@ -419,7 +419,7 @@
 		</tr>
 		<tr class="alt">
 			<td class="row-title">Is Child Theme:</td>
-			<td><?php echo is_child_theme() ? __( 'Yes', 'wpas' ) : __( 'No', 'wpas' ); ?></td>
+			<td><?php echo is_child_theme() ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' ); ?></td>
 		</tr>
 		<?php
 		if( is_child_theme() ) :

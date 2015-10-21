@@ -15,7 +15,7 @@ function wpas_register_account( $data = false ) {
 	$registration = wpas_get_option( 'allow_registrations', 'allow' );
 
 	if ( 'allow' !== $registration ) {
-		wpas_add_error( 'registration_not_allowed', __( 'Registrations are currently not allowed.', 'wpas' ) );
+		wpas_add_error( 'registration_not_allowed', __( 'Registrations are currently not allowed.', 'awesome-support' ) );
 		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 		exit;
 	}
@@ -59,14 +59,14 @@ function wpas_register_account( $data = false ) {
 	do_action( 'wpas_pre_register_account', $data );
 
 	if ( wpas_get_option( 'terms_conditions', false ) && ! isset( $data['terms'] ) ) {
-		wpas_add_error( 'accept_terms_conditions', __( 'You did not accept the terms and conditions.', 'wpas' ) );
+		wpas_add_error( 'accept_terms_conditions', __( 'You did not accept the terms and conditions.', 'awesome-support' ) );
 		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 		exit;
 	}
 
 	/* Make sure we have all the necessary data. */
 	if ( false === ( $email || $first_name || $last_name || $pwd ) ) {
-		wpas_add_error( 'missing_fields', __( 'You didn\'t correctly fill all the fields.', 'wpas' ) );
+		wpas_add_error( 'missing_fields', __( 'You didn\'t correctly fill all the fields.', 'awesome-support' ) );
 		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 		exit;
 	}
@@ -147,7 +147,7 @@ function wpas_register_account( $data = false ) {
 		}
 
 		if ( headers_sent() ) {
-			wpas_add_notification( 'account_created', __( 'Your account has been created. Please log-in.', 'wpas' ) );
+			wpas_add_notification( 'account_created', __( 'Your account has been created. Please log-in.', 'awesome-support' ) );
 			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 			exit;
 		}
@@ -217,7 +217,7 @@ function wpas_try_login() {
 			wp_redirect( get_permalink( $post->ID ) );
 			exit;
 		} else {
-			wpas_add_error( 'login_failed', __( 'We were unable to log you in for an unknown reason.', 'wpas' ) );
+			wpas_add_error( 'login_failed', __( 'We were unable to log you in for an unknown reason.', 'awesome-support' ) );
 			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
 			exit;
 		}

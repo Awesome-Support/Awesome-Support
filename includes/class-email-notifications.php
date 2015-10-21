@@ -45,7 +45,7 @@ class WPAS_Email_Notification {
 
 		/* Make sure the given post belongs to our plugin. */
 		if ( !in_array( get_post_type( $post_id ), array( 'ticket', 'ticket_reply' ) ) ) {
-			return new WP_Error( 'incorrect_post_type', __( 'The post ID provided does not match any of the plugin post types', 'wpas' ) );
+			return new WP_Error( 'incorrect_post_type', __( 'The post ID provided does not match any of the plugin post types', 'awesome-support' ) );
 		}
 
 		/* Set the e-mail content type to HTML */
@@ -279,59 +279,59 @@ class WPAS_Email_Notification {
 		$tags = array(
 			array(
 				'tag' 	=> '{ticket_id}',
-				'desc' 	=> __( 'Converts into ticket ID', 'wpas' )
+				'desc' 	=> __( 'Converts into ticket ID', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{site_name}',
-				'desc' 	=> __( 'Converts into website name', 'wpas' )
+				'desc' 	=> __( 'Converts into website name', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{agent_name}',
-				'desc' 	=> __( 'Converts into agent name', 'wpas' )
+				'desc' 	=> __( 'Converts into agent name', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{agent_email}',
-				'desc' 	=> __( 'Converts into agent e-mail address', 'wpas' )
+				'desc' 	=> __( 'Converts into agent e-mail address', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{client_name}',
-				'desc' 	=> __( 'Converts into client name', 'wpas' )
+				'desc' 	=> __( 'Converts into client name', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{client_email}',
-				'desc' 	=> __( 'Converts into client e-mail address', 'wpas' )
+				'desc' 	=> __( 'Converts into client e-mail address', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_title}',
-				'desc' 	=> __( 'Converts into current ticket title', 'wpas' )
+				'desc' 	=> __( 'Converts into current ticket title', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_link}',
-				'desc' 	=> __( 'Displays a link to public ticket', 'wpas' )
+				'desc' 	=> __( 'Displays a link to public ticket', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_url}',
-				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link link) to public ticket', 'wpas' )
+				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link link) to public ticket', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_admin_link}',
-				'desc' 	=> __( 'Displays a link to ticket details in admin (for agents)', 'wpas' )
+				'desc' 	=> __( 'Displays a link to ticket details in admin (for agents)', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_admin_url}',
-				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)', 'wpas' )
+				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{date}',
-				'desc' 	=> __( 'Converts into current date', 'wpas' )
+				'desc' 	=> __( 'Converts into current date', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{admin_email}',
-				'desc' 	=> sprintf( __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'wpas' ), get_bloginfo( 'admin_email' ) )
+				'desc' 	=> sprintf( __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'awesome-support' ), get_bloginfo( 'admin_email' ) )
 			),
 			array(
 				'tag' 	=> '{message}',
-				'desc' 	=> __( 'Converts into ticket content or reply content', 'wpas' )
+				'desc' 	=> __( 'Converts into ticket content or reply content', 'awesome-support' )
 			)
 		);
 
@@ -547,14 +547,14 @@ class WPAS_Email_Notification {
 	public function notify( $case ) {
 
 		if ( !$this->notification_exists( $case ) ) {
-			return new WP_Error( 'unknown_notification', __( 'The requested notification does not exist', 'wpas' ) );
+			return new WP_Error( 'unknown_notification', __( 'The requested notification does not exist', 'awesome-support' ) );
 		}
 
 		// Only check the higher level 'ticket_closed' for both ticket_closed_agent and ticket_closed_client
 		$check = in_array( $case, array( 'ticket_closed_agent', 'ticket_closed_client' ) ) ? 'ticket_closed' : $case;
 
 		if ( !$this->is_active( $check ) ) {
-			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'wpas' ) );
+			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'awesome-support' ) );
 		}
 
 		/**

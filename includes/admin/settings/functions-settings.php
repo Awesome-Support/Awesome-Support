@@ -7,7 +7,7 @@
  */
 function wpas_list_pages() {
 
-	$list = array( '' => __( 'None', 'wpas' ) );
+	$list = array( '' => __( 'None', 'awesome-support' ) );
 
 	$args = array(
 		'post_type'              => 'page',

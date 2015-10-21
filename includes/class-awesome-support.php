@@ -179,7 +179,7 @@ class Awesome_Support_Old {
 				wpas_save_values();
 
 				// Redirect to submit page
-				wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'wpas' ) );
+				wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'awesome-support' ) );
 				wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
 				exit;
 			}
@@ -195,7 +195,7 @@ class Awesome_Support_Old {
 				/**
 				 * Redirect to the newly created ticket
 				 */
-				wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'wpas' ) );
+				wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'awesome-support' ) );
 				wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
 				exit;
 
@@ -233,7 +233,7 @@ class Awesome_Support_Old {
 			$parent_id = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
 
 			if ( 'ticket' !== get_post_type( $parent_id ) ) {
-				wpas_add_error( 'reply_added_failed', __( 'Something went wrong. We couldn&#039;t identify your ticket. Please try again.', 'wpas' ) );
+				wpas_add_error( 'reply_added_failed', __( 'Something went wrong. We couldn&#039;t identify your ticket. Please try again.', 'awesome-support' ) );
 				wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
 				exit;
 			}
@@ -258,7 +258,7 @@ class Awesome_Support_Old {
 
 				// Redirect now if no reply was posted
 				if ( ! isset( $reply_id ) ) {
-					wpas_add_notification( 'ticket_closed', __( 'The ticket was successfully closed', 'wpas' ) );
+					wpas_add_notification( 'ticket_closed', __( 'The ticket was successfully closed', 'awesome-support' ) );
 					wpas_redirect( 'ticket_closed', get_permalink( $parent_id ) );
 					exit;
 				}
@@ -268,12 +268,12 @@ class Awesome_Support_Old {
 			if ( isset( $reply_id ) ) {
 
 				if ( false === $reply_id ) {
-					wpas_add_error( 'reply_added_failed', __( 'Your reply could not be submitted for an unknown reason.', 'wpas' ) );
+					wpas_add_error( 'reply_added_failed', __( 'Your reply could not be submitted for an unknown reason.', 'awesome-support' ) );
 					wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
 					exit;
 				} else {
 
-					wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'wpas' ) );
+					wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'awesome-support' ) );
 
 					if ( false !== $link = wpas_get_reply_link( $reply_id ) ) {
 						wpas_redirect( 'reply_added', $link );
@@ -369,13 +369,13 @@ class Awesome_Support_Old {
 					$ticket_id = filter_input( INPUT_GET, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
 
 					if ( ! wpas_can_submit_ticket( $ticket_id ) && ! current_user_can( 'edit_ticket' ) ) {
-						wpas_add_error( 'cannot_reopen_ticket', __( 'You are not allowed to re-open this ticket', 'wpas' ) );
+						wpas_add_error( 'cannot_reopen_ticket', __( 'You are not allowed to re-open this ticket', 'awesome-support' ) );
 						wpas_redirect( 'ticket_reopen', wpas_get_tickets_list_page_url() );
 						exit;
 					}
 
 					wpas_reopen_ticket( $ticket_id );
-					wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'wpas' ) );
+					wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'awesome-support' ) );
 					wpas_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );
 					exit;
 
@@ -556,10 +556,10 @@ class Awesome_Support_Old {
 		$admin      = get_role( 'administrator' );
 
 		/* Add the new roles */
-		$manager = add_role( 'wpas_manager',         __( 'Support Supervisor', 'wpas' ), $editor->capabilities );     // Has full capabilities for the plugin in addition to editor capabilities
-		$tech    = add_role( 'wpas_support_manager', __( 'Support Manager', 'wpas' ),    $subscriber->capabilities ); // Has full capabilities for the plugin only
-		$agent   = add_role( 'wpas_agent',           __( 'Support Agent', 'wpas' ),      $author->capabilities );     // Has limited capabilities for the plugin in addition to author's capabilities
-		$client  = add_role( 'wpas_user',            __( 'Support User', 'wpas' ),       $subscriber->capabilities ); // Has posting & replying capapbilities for the plugin in addition to subscriber's capabilities
+		$manager = add_role( 'wpas_manager',         __( 'Support Supervisor', 'awesome-support' ), $editor->capabilities );     // Has full capabilities for the plugin in addition to editor capabilities
+		$tech    = add_role( 'wpas_support_manager', __( 'Support Manager', 'awesome-support' ),    $subscriber->capabilities ); // Has full capabilities for the plugin only
+		$agent   = add_role( 'wpas_agent',           __( 'Support Agent', 'awesome-support' ),      $author->capabilities );     // Has limited capabilities for the plugin in addition to author's capabilities
+		$client  = add_role( 'wpas_user',            __( 'Support User', 'awesome-support' ),       $subscriber->capabilities ); // Has posting & replying capapbilities for the plugin in addition to subscriber's capabilities
 
 		/**
 		 * Add full capacities to admin roles
@@ -616,7 +616,7 @@ class Awesome_Support_Old {
 
 		$lang_dir  = WPAS_ROOT . 'languages/';
 		$land_path = WPAS_PATH . 'languages/';
-		$locale    = apply_filters( 'plugin_locale', get_locale(), 'wpas' );
+		$locale    = apply_filters( 'plugin_locale', get_locale(), 'awesome-support' );
 		$mofile    = "wpas-$locale.mo";
 
 		if ( file_exists( $land_path . $mofile ) ) {
@@ -733,9 +733,9 @@ class Awesome_Support_Old {
 
 		// Editors translations
 		if ( in_array( $post->ID, wpas_get_submission_pages() ) ) {
-			$empty_editor = _x( "You can't submit an empty ticket", 'JavaScript validation error message', 'wpas' );
+			$empty_editor = _x( "You can't submit an empty ticket", 'JavaScript validation error message', 'awesome-support' );
 		} else {
-			$empty_editor = _x( "You can't submit an empty reply", 'JavaScript validation error message', 'wpas' );
+			$empty_editor = _x( "You can't submit an empty reply", 'JavaScript validation error message', 'awesome-support' );
 		}
 
 		$object = array(
@@ -743,14 +743,14 @@ class Awesome_Support_Old {
 			'emailCheck'             => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
 			'fileUploadMax'          => $upload_max_files,
 			'fileUploadSize'         => $upload_max_size * 1048576, // We base our calculation on binary prefixes
-			'fileUploadMaxError'     => __( sprintf( 'You can only upload a maximum of %d files', $upload_max_files ), 'wpas' ),
+			'fileUploadMaxError'     => __( sprintf( 'You can only upload a maximum of %d files', $upload_max_files ), 'awesome-support' ),
 			'fileUploadMaxSizeError' => array(
-				__( 'The following file(s) are too big to be uploaded:', 'wpas' ),
-				sprintf( __( 'The maximum file size allowed for one file is %d MB', 'wpas' ), $upload_max_size )
+				__( 'The following file(s) are too big to be uploaded:', 'awesome-support' ),
+				sprintf( __( 'The maximum file size allowed for one file is %d MB', 'awesome-support' ), $upload_max_size )
 			),
 			'translations' => array(
 				'emptyEditor' => $empty_editor,
-				'onSubmit'    => _x( 'Submitting...', 'ticket submission button text while submitting', 'wpas' ),
+				'onSubmit'    => _x( 'Submitting...', 'ticket submission button text while submitting', 'awesome-support' ),
 			)
 		);
 
@@ -909,7 +909,7 @@ class Awesome_Support_Old {
 	public function terms_and_conditions_checkbox() {
 		if ( wpas_get_option( 'terms_conditions', false ) ): ?>
 			<div class="wpas-checkbox">
-				<label><input type="checkbox" name="terms" required> <?php printf( __( 'I accept the %sterms and conditions%s', 'wpas' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ); ?></label>
+				<label><input type="checkbox" name="terms" required> <?php printf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ); ?></label>
 			</div>
 		<?php endif;
 	}
@@ -1001,7 +1001,7 @@ class Awesome_Support_Old {
 			$check = json_decode( $check );
 
 			if ( is_object( $check ) && isset( $check->did_you_mean ) && !is_null( $check->did_you_mean ) ) {
-				printf( __( 'Did you mean %s', 'wpas' ), "<strong>{$check->did_you_mean}</strong>?" );
+				printf( __( 'Did you mean %s', 'awesome-support' ), "<strong>{$check->did_you_mean}</strong>?" );
 				die();
 			}
 

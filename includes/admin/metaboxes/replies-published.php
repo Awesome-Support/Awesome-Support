@@ -37,13 +37,13 @@ if ( ! defined( 'WPINC' ) ) {
 </td>
 <td class="col2">
 
-	<?php if ( 'unread' === $row->post_status ): ?><div id="wpas-unread-<?php echo $row->ID; ?>" class="wpas-unread-badge"><?php _e( 'Unread', 'wpas' ); ?></div><?php endif; ?>
+	<?php if ( 'unread' === $row->post_status ): ?><div id="wpas-unread-<?php echo $row->ID; ?>" class="wpas-unread-badge"><?php _e( 'Unread', 'awesome-support' ); ?></div><?php endif; ?>
 	<div class="wpas-reply-meta">
 		<div class="wpas-reply-user">
 			<strong class="wpas-profilename"><?php echo $user_name; ?></strong> <span class="wpas-profilerole">(<?php echo wpas_get_user_nice_role( $user_data->roles[0] ); ?>)</span>
 		</div>
 		<div class="wpas-reply-time">
-			<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>"><span class="wpas-human-date"><?php echo date( get_option( 'date_format' ), strtotime( $row->post_date ) ); ?> | </span><?php printf( __( '%s ago', 'wpas' ), $date ); ?></time>
+			<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>"><span class="wpas-human-date"><?php echo date( get_option( 'date_format' ), strtotime( $row->post_date ) ); ?> | </span><?php printf( __( '%s ago', 'awesome-support' ), $date ); ?></time>
 		</div>
 	</div>
 

@@ -37,32 +37,32 @@ class WPAS_MailGun_EMail_Check {
 		}
 
 		array_push( $settings['general']['options'], array(
-				'name' => __( 'E-Mail Checking', 'wpas' ),
+				'name' => __( 'E-Mail Checking', 'awesome-support' ),
 				'type' => 'heading',
 			)
 		);
 
 		array_push( $settings['general']['options'], array(
-				'desc' => sprintf( __( 'You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href="%s">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups.', 'wpas' ), esc_url( 'http://www.mailgun.com/email-validation' ) ),
+				'desc' => sprintf( __( 'You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href="%s">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups.', 'awesome-support' ), esc_url( 'http://www.mailgun.com/email-validation' ) ),
 				'type' => 'note',
 			)
 		);
 
 		array_push( $settings['general']['options'], array(
-				'name'    => __( 'Enable E-Mail Checking', 'wpas' ),
+				'name'    => __( 'Enable E-Mail Checking', 'awesome-support' ),
 				'id'      => 'enable_mail_check',
 				'type'    => 'checkbox',
 				'default' => false,
-				'desc'    => __( 'Do you want to check e-mail addresses on new registrations?', 'wpas' )
+				'desc'    => __( 'Do you want to check e-mail addresses on new registrations?', 'awesome-support' )
 				)
 		);
 
 		array_push( $settings['general']['options'], array(
-				'name'    => __( 'MailGun Public API Key', 'wpas' ),
+				'name'    => __( 'MailGun Public API Key', 'awesome-support' ),
 				'id'      => 'mailgun_api_key',
 				'type'    => 'text',
 				'default' => '',
-				'desc'    => sprintf( __( 'If you don&#39;t have a MailGun account you can <a href="%s" target="_blank">create one for free here</a>.', 'wpas' ), esc_url( 'https://mailgun.com/signup' ) )
+				'desc'    => sprintf( __( 'If you don&#39;t have a MailGun account you can <a href="%s" target="_blank">create one for free here</a>.', 'awesome-support' ), esc_url( 'https://mailgun.com/signup' ) )
 				)
 		);
 
@@ -73,19 +73,19 @@ class WPAS_MailGun_EMail_Check {
 	public function check_email( $data = '' ) {
 
 		if ( empty( $this->public_key ) ) {
-			return new WP_Error( 'no_api_key', __( 'No API key was provided', 'wpas' ) );
+			return new WP_Error( 'no_api_key', __( 'No API key was provided', 'awesome-support' ) );
 		}
 
 		if ( empty( $data ) ) {
 			if ( isset( $_POST ) ) {
 				$data = $_POST;
 			} else {
-				return new WP_Error( 'no_data', __( 'No data to check', 'wpas' ) );
+				return new WP_Error( 'no_data', __( 'No data to check', 'awesome-support' ) );
 			}
 		}
 
 		if ( !isset( $data['email'] ) ) {
-			return new WP_Error( 'no_email', __( 'No e-mail to check', 'wpas' ) );
+			return new WP_Error( 'no_email', __( 'No e-mail to check', 'awesome-support' ) );
 		}
 
 		global $wp_version;

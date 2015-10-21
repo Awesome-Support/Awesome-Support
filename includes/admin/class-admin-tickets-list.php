@@ -96,11 +96,11 @@ class WPAS_Tickets_List {
 					|| current_user_can( 'edit_ticket' )
 					&& !current_user_can( 'administrator' )
 					&& true === boolval( wpas_get_option( 'agent_see_all' ) ) ) {
-						$new = array_merge( $new, array( 'wpas-assignee' => __( 'Support Staff', 'wpas' ) ) );
+						$new = array_merge( $new, array( 'wpas-assignee' => __( 'Support Staff', 'awesome-support' ) ) );
 				}
 
 				/* Add the activity column */
-				$new = array_merge( $new, array( 'wpas-activity' => __( 'Activity', 'wpas' ) ) );
+				$new = array_merge( $new, array( 'wpas-activity' => __( 'Activity', 'awesome-support' ) ) );
 			}
 
 		}
@@ -181,7 +181,7 @@ class WPAS_Tickets_List {
 				// if ( isset( $mode ) && 'details' == $mode ):
 				if ( 1 === 1 ):
 
-					?><li><?php printf( _x( 'Created %s ago.', 'Ticket created on', 'wpas' ), human_time_diff( get_the_time( 'U', $post_id ), current_time( 'timestamp' ) ) ); ?></li><?php
+					?><li><?php printf( _x( 'Created %s ago.', 'Ticket created on', 'awesome-support' ), human_time_diff( get_the_time( 'U', $post_id ), current_time( 'timestamp' ) ) ); ?></li><?php
 
 					/**
 					 * We check when was the last reply (if there was a reply).
@@ -190,7 +190,7 @@ class WPAS_Tickets_List {
 					 */
 					if ( !isset( $activity_meta['reply_date'] ) ) {
 						echo '<li>';
-						echo _x( 'No reply yet.', 'No last reply', 'wpas' );
+						echo _x( 'No reply yet.', 'No last reply', 'awesome-support' );
 						echo '</li>';
 					} else {
 
@@ -208,10 +208,10 @@ class WPAS_Tickets_List {
 						);
 
 						$query = new WP_Query( $args );
-						$role  = true === user_can( $activity_meta['user_id'], 'edit_ticket' ) ? _x( 'agent', 'User role', 'wpas' ) : _x( 'client', 'User role', 'wpas' );
+						$role  = true === user_can( $activity_meta['user_id'], 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
 
-						?><li><?php echo _x( sprintf( _n( '%s reply.', '%s replies.', $query->post_count, 'wpas' ), $query->post_count ), 'Number of replies to a ticket', 'wpas' ); ?></li><?php
-						?><li><?php printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'wpas' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) . '#wpas-post-' . $query->posts[0]->ID, human_time_diff( strtotime( $activity_meta['reply_date'] ), current_time( 'timestamp' ) ), '<a href="' . $activity_meta['user_link'] . '">' . $activity_meta['user_nicename'] . '</a>', $role ); ?></li><?php
+						?><li><?php echo _x( sprintf( _n( '%s reply.', '%s replies.', $query->post_count, 'awesome-support' ), $query->post_count ), 'Number of replies to a ticket', 'awesome-support' ); ?></li><?php
+						?><li><?php printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) . '#wpas-post-' . $query->posts[0]->ID, human_time_diff( strtotime( $activity_meta['reply_date'] ), current_time( 'timestamp' ) ), '<a href="' . $activity_meta['user_link'] . '">' . $activity_meta['user_nicename'] . '</a>', $role ); ?></li><?php
 					}
 
 				endif;
@@ -221,13 +221,13 @@ class WPAS_Tickets_List {
 				 */
 				if ( true === wpas_is_reply_needed( $post_id, $latest ) ) {
 					$color = ( false !== ( $c = wpas_get_option( 'color_awaiting_reply', false ) ) ) ? $c : '#0074a2';
-					array_push( $tags, "<span class='wpas-label' style='background-color:$color;'>" . __( 'Awaiting Support Reply', 'wpas' ) . "</span>" );
+					array_push( $tags, "<span class='wpas-label' style='background-color:$color;'>" . __( 'Awaiting Support Reply', 'awesome-support' ) . "</span>" );
 				}
 
 
 				if ( true === wpas_is_ticket_old( $post_id, $latest ) ) {
 					$old_color = wpas_get_option( 'color_old' );
-					array_push( $tags, "<span class='wpas-label' style='background-color:$old_color;'>" . __( 'Old', 'wpas' ) . "</span>" );
+					array_push( $tags, "<span class='wpas-label' style='background-color:$old_color;'>" . __( 'Old', 'awesome-support' ) . "</span>" );
 				}
 
 				if ( !empty( $tags ) ) {

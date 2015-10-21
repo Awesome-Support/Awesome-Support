@@ -32,7 +32,7 @@ global $post;
 			'args' => array(
 				'required'   => true,
 				'field_type' => 'text',
-				'label'      => __( 'Subject', 'wpas' ),
+				'label'      => __( 'Subject', 'awesome-support' ),
 				'sanitize'   => 'sanitize_text_field'
 			)
 		) );
@@ -61,7 +61,7 @@ global $post;
 			'args' => array(
 				'required'   => true,
 				'field_type' => 'wysiwyg',
-				'label'      => __( 'Description', 'wpas' ),
+				'label'      => __( 'Description', 'awesome-support' ),
 				'sanitize'   => 'sanitize_text_field'
 			)
 		) );
@@ -78,7 +78,7 @@ global $post;
 		do_action( 'wpas_submission_form_inside_before_submit' );
 
 		wp_nonce_field( 'new_ticket', 'wpas_nonce', true, true );
-		wpas_make_button( __( 'Submit ticket', 'wpas' ), array( 'name' => 'wpas-submit' ) );
+		wpas_make_button( __( 'Submit ticket', 'awesome-support' ), array( 'name' => 'wpas-submit' ) );
 		
 		/**
 		 * The wpas_submission_form_inside_before hook has to be placed

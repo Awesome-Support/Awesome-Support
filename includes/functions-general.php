@@ -285,7 +285,7 @@ function wpas_debug_display( $thing ) {
 function wpas_make_button( $label = null, $args = array() ) {
 
 	if ( is_null( $label ) ) {
-		$label = __( 'Submit', 'wpas' );
+		$label = __( 'Submit', 'awesome-support' );
 	}
 
 	$defaults = array(
@@ -347,7 +347,7 @@ function wpas_get_ticket_status_state( $post_id ) {
 	$status = wpas_get_ticket_status( $post_id );
 
 	if ( 'closed' === $status ) {
-		$output = __( 'Closed', 'wpas' );
+		$output = __( 'Closed', 'awesome-support' );
 	} else {
 
 		$post          = get_post( $post_id );
@@ -355,7 +355,7 @@ function wpas_get_ticket_status_state( $post_id ) {
 		$custom_status = wpas_get_post_status();
 
 		if ( ! array_key_exists( $post_status, $custom_status ) ) {
-			$output = __( 'Open', 'wpas' );
+			$output = __( 'Open', 'awesome-support' );
 		} else {
 			$output = $custom_status[ $post_status ];
 		}
@@ -448,7 +448,7 @@ function wpas_write_log( $handle, $message ) {
  */
 function wpas_missing_dependencies() { ?>
 	<div class="error">
-        <p><?php printf( __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'wpas' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
+        <p><?php printf( __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
     </div>
 <?php }
 
@@ -518,7 +518,7 @@ function wpas_dropdown( $args, $options ) {
 	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 		<?php
 		if ( $args['please_select'] ) {
-			echo '<option value="">' . __( 'Please select', 'wpas' ) . '</option>';
+			echo '<option value="">' . __( 'Please select', 'awesome-support' ) . '</option>';
 		}
 
 		echo $options;

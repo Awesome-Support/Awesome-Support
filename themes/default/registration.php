@@ -21,12 +21,12 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 	<?php do_action('wpas_before_login_form'); ?>
 
 	<form class="wpas-form" id="wpas_form_login" method="post" role="form" action="<?php echo wpas_get_login_url(); ?>">
-		<h3><?php _e( 'Log in', 'wpas' ); ?></h3>
+		<h3><?php _e( 'Log in', 'awesome-support' ); ?></h3>
 
 		<?php
 		/* Registrations are not allowed. */
 		if ( 'disallow' === $registration ) {
-			echo wpas_get_notification_markup( 'failure', __( 'Registrations are currently not allowed.', 'wpas' ) );
+			echo wpas_get_notification_markup( 'failure', __( 'Registrations are currently not allowed.', 'awesome-support' ) );
 		}
 
 		$username = new WPAS_Custom_Field( 'log', array(
@@ -34,8 +34,8 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 			'args' => array(
 				'required'    => true,
 				'field_type'  => 'text',
-				'label'       => __( 'E-mail or username', 'wpas' ),
-				'placeholder' => __( 'E-mail or username', 'wpas' ),
+				'label'       => __( 'E-mail or username', 'awesome-support' ),
+				'placeholder' => __( 'E-mail or username', 'awesome-support' ),
 				'sanitize'    => 'sanitize_text_field'
 			)
 		) );
@@ -47,8 +47,8 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 			'args' => array(
 				'required'    => true,
 				'field_type'  => 'password',
-				'label'       => __( 'Password', 'wpas' ),
-				'placeholder' => __( 'Password', 'wpas' ),
+				'label'       => __( 'Password', 'awesome-support' ),
+				'placeholder' => __( 'Password', 'awesome-support' ),
 				'sanitize'    => 'sanitize_text_field'
 			)
 		) );
@@ -66,7 +66,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 				'required'   => true,
 				'field_type' => 'checkbox',
 				'sanitize'   => 'sanitize_text_field',
-				'options'    => array( '1' => __( 'Remember Me', 'wpas' ) ),
+				'options'    => array( '1' => __( 'Remember Me', 'awesome-support' ) ),
 			)
 		) );
 
@@ -75,13 +75,13 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 
 		<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>">
 		<input type="hidden" name="wpas_login" value="1">
-		<?php wpas_make_button( __( 'Log in' ), array( 'onsubmit' => __( 'Logging In...', 'wpas' ) ) ); ?>
+		<?php wpas_make_button( __( 'Log in' ), array( 'onsubmit' => __( 'Logging In...', 'awesome-support' ) ) ); ?>
 	</form>
 	<?php
 	if ( 'allow' === $registration ): ?>
 
 		<form class="wpas-form" id="wpas_form_registration" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
-			<h3><?php _e( 'Register', 'wpas' ); ?></h3>
+			<h3><?php _e( 'Register', 'awesome-support' ); ?></h3>
 
 			<?php
 			$first_name = new WPAS_Custom_Field( 'first_name', array(
@@ -89,8 +89,8 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 				'args' => array(
 					'required'    => true,
 					'field_type'  => 'text',
-					'label'       => __( 'First Name', 'wpas' ),
-					'placeholder' => __( 'First Name', 'wpas' ),
+					'label'       => __( 'First Name', 'awesome-support' ),
+					'placeholder' => __( 'First Name', 'awesome-support' ),
 					'sanitize'    => 'sanitize_text_field'
 				)
 			) );
@@ -102,8 +102,8 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 				'args' => array(
 					'required'    => true,
 					'field_type'  => 'text',
-					'label'       => __( 'Last Name', 'wpas' ),
-					'placeholder' => __( 'Last Name', 'wpas' ),
+					'label'       => __( 'Last Name', 'awesome-support' ),
+					'placeholder' => __( 'Last Name', 'awesome-support' ),
 					'sanitize'    => 'sanitize_text_field'
 				)
 			) );
@@ -115,8 +115,8 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 				'args' => array(
 					'required'    => true,
 					'field_type'  => 'email',
-					'label'       => __( 'Email', 'wpas' ),
-					'placeholder' => __( 'Email', 'wpas' ),
+					'label'       => __( 'Email', 'awesome-support' ),
+					'placeholder' => __( 'Email', 'awesome-support' ),
 					'sanitize'    => 'sanitize_text_field'
 				)
 			) );
@@ -128,8 +128,8 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 				'args' => array(
 					'required'    => true,
 					'field_type'  => 'password',
-					'label'       => __( 'Enter a password', 'wpas' ),
-					'placeholder' => __( 'Password', 'wpas' ),
+					'label'       => __( 'Enter a password', 'awesome-support' ),
+					'placeholder' => __( 'Password', 'awesome-support' ),
 					'sanitize'    => 'sanitize_text_field'
 				)
 			) );
@@ -142,7 +142,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 					'required'   => false,
 					'field_type' => 'checkbox',
 					'sanitize'   => 'sanitize_text_field',
-					'options'    => array( '1' => _x( 'Show Password', 'Login form', 'wpas' ) ),
+					'options'    => array( '1' => _x( 'Show Password', 'Login form', 'awesome-support' ) ),
 				)
 			) );
 
@@ -158,7 +158,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 			<input type="hidden" name="wpas_registration" value="true">
 			<?php
 			wp_nonce_field( 'register', 'user_registration', false, true );
-			wpas_make_button( __( 'Create Account', 'wpas' ), array( 'onsubmit' => __( 'Creating Account...', 'wpas' ) ) );
+			wpas_make_button( __( 'Create Account', 'awesome-support' ), array( 'onsubmit' => __( 'Creating Account...', 'awesome-support' ) ) );
 			?>
 		</form>
 	<?php endif; ?>

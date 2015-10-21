@@ -73,7 +73,7 @@ class WPAS_Product_EDD {
 	}
 
 	public function locked_message( $message ) {
-		return sprintf( __( 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.', 'wpas' ), add_query_arg( 'post_type', 'download', admin_url( 'edit.php' ) ) );
+		return sprintf( __( 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'download', admin_url( 'edit.php' ) ) );
 	}
 
 }

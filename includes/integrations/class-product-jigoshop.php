@@ -73,7 +73,7 @@ class WPAS_Product_Jigoshop {
 	}
 
 	public function locked_message( $message ) {
-		return sprintf( __( 'You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.', 'wpas' ), add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
+		return sprintf( __( 'You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
 	}
 
 }

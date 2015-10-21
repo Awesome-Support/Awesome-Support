@@ -53,11 +53,11 @@ class WPAS_Agent {
 	public function is_agent() {
 
 		if ( false === $this->exists() ) {
-			return new WP_Error( 'user_not_exists', sprintf( __( 'The user with ID %d does not exist', 'wpas' ), $this->agent_id ) );
+			return new WP_Error( 'user_not_exists', sprintf( __( 'The user with ID %d does not exist', 'awesome-support' ), $this->agent_id ) );
 		}
 
 		if ( false === $this->user->has_cap( 'edit_ticket' ) ) {
-			return new WP_Error( 'user_not_agent', __( 'The user exists but is not a support agent', 'wpas' ) );
+			return new WP_Error( 'user_not_agent', __( 'The user exists but is not a support agent', 'awesome-support' ) );
 		}
 
 		return true;

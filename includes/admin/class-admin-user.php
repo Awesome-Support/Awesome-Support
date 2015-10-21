@@ -67,7 +67,7 @@ class WPAS_User {
 			return false;
 		} ?>
 
-		<h3><?php _e( 'Awesome Support Preferences', 'wpas' ); ?></h3>
+		<h3><?php _e( 'Awesome Support Preferences', 'awesome-support' ); ?></h3>
 
 		<table class="form-table">
 			<tbody>
@@ -92,16 +92,16 @@ class WPAS_User {
 		} ?>
 
 		<tr class="wpas-after-reply-wrap">
-			<th><label for="wpas_after_reply"><?php echo _x( 'After Reply', 'Action after replying to a ticket', 'wpas' ); ?></label></th>
+			<th><label for="wpas_after_reply"><?php echo _x( 'After Reply', 'Action after replying to a ticket', 'awesome-support' ); ?></label></th>
 			<td>
 				<?php $after_reply = esc_attr( get_the_author_meta( 'wpas_after_reply', $user->ID ) ); ?>
 				<select name="wpas_after_reply" id="wpas_after_reply">
-					<option value=""><?php _e( 'Default', 'wpas' ); ?></option>
-					<option value="stay" <?php if ( $after_reply === 'stay' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Stay on screen', 'wpas' ); ?></option>
-					<option value="back" <?php if ( $after_reply === 'back' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Back to list', 'wpas' ); ?></option>
-					<option value="ask" <?php if ( $after_reply === 'ask' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Always ask', 'wpas' ); ?></option>
+					<option value=""><?php _e( 'Default', 'awesome-support' ); ?></option>
+					<option value="stay" <?php if ( $after_reply === 'stay' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Stay on screen', 'awesome-support' ); ?></option>
+					<option value="back" <?php if ( $after_reply === 'back' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Back to list', 'awesome-support' ); ?></option>
+					<option value="ask" <?php if ( $after_reply === 'ask' ): ?>selected="selected"<?php endif; ?>><?php _e( 'Always ask', 'awesome-support' ); ?></option>
 				</select>
-				<p class="description"><?php _e( 'Where do you want to go after replying to a ticket?', 'wpas' ); ?></p>
+				<p class="description"><?php _e( 'Where do you want to go after replying to a ticket?', 'awesome-support' ); ?></p>
 			</td>
 		</tr>
 
@@ -127,11 +127,11 @@ class WPAS_User {
 		} ?>
 
 		<tr class="wpas-after-reply-wrap">
-			<th><label><?php _e( 'Can Be Assigned', 'wpas' ); ?></label></th>
+			<th><label><?php _e( 'Can Be Assigned', 'awesome-support' ); ?></label></th>
 			<td>
 				<?php $can_assign = esc_attr( get_the_author_meta( 'wpas_can_be_assigned', $user->ID ) ); ?>
-				<label for="wpas_can_be_assigned"><input type="checkbox" name="wpas_can_be_assigned" id="wpas_can_be_assigned" value="yes" <?php if ( ! empty( $can_assign ) ) { echo 'checked'; } ?>> <?php _e( 'Yes', 'wpas' ); ?></label>
-				<p class="description"><?php _e( 'Can the system assign new tickets to this user?', 'wpas' ); ?></p>
+				<label for="wpas_can_be_assigned"><input type="checkbox" name="wpas_can_be_assigned" id="wpas_can_be_assigned" value="yes" <?php if ( ! empty( $can_assign ) ) { echo 'checked'; } ?>> <?php _e( 'Yes', 'awesome-support' ); ?></label>
+				<p class="description"><?php _e( 'Can the system assign new tickets to this user?', 'awesome-support' ); ?></p>
 			</td>
 		</tr>
 
@@ -208,7 +208,7 @@ class WPAS_User {
 	 */
 	public function auto_assignment_user_column( $columns ) {
 
-		$columns['wpas_auto_assignment'] = __( 'Auto-Assign', 'wpas' );
+		$columns['wpas_auto_assignment'] = __( 'Auto-Assign', 'awesome-support' );
 
 		return $columns;
 	}

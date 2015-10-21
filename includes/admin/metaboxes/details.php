@@ -44,17 +44,17 @@ if ( isset( $post ) ) {
 ?>
 <div class="wpas-ticket-status submitbox">
 	<p>
-		<strong><?php _e( 'Ticket status:', 'wpas' ); ?></strong> 
+		<strong><?php _e( 'Ticket status:', 'awesome-support' ); ?></strong>
 		<?php if ( 'post-new.php' != $pagenow ):
 			wpas_cf_display_status( '', $post->ID );
 			?>
 		<?php else: ?>
-			<span><?php _x( 'Creating...', 'Ticket creation', 'wpas' ); ?></span>
+			<span><?php _x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
 		<?php endif; ?>
 	</p>
-	<?php if ( isset( $post ) ): ?><p><strong><?php _e( 'Opened:', 'wpas' ); ?></strong> <em><?php printf( __( '%s ago', 'wpas' ), $date ); ?></em></p><?php endif; ?>
+	<?php if ( isset( $post ) ): ?><p><strong><?php _e( 'Opened:', 'awesome-support' ); ?></strong> <em><?php printf( __( '%s ago', 'awesome-support' ), $date ); ?></em></p><?php endif; ?>
 	<?php if ( 'open' === get_post_meta( $post->ID, '_wpas_status', true ) ): ?>
-		<label for="wpas-post-status"><strong><?php _e( 'Current state:', 'wpas' ); ?></strong></label>
+		<label for="wpas-post-status"><strong><?php _e( 'Current state:', 'awesome-support' ); ?></strong></label>
 		<p>
 			<select id="wpas-post-status" name="post_status_override" style="width: 100%">
 				<?php foreach ( $statuses as $status => $label ):
@@ -75,11 +75,11 @@ if ( isset( $post ) ) {
 				<a class="submitdelete deletion" href="<?php echo $action; ?>">
 					<?php
 					if ( 'closed' === $ticket_status ) {
-						_e( 'Re-open', 'wpas' );
+						_e( 'Re-open', 'awesome-support' );
 					} elseif( '' === $ticket_status ) {
-						_e( 'Open', 'wpas' );
+						_e( 'Open', 'awesome-support' );
 					} else {
-						_e( 'Close', 'wpas' );
+						_e( 'Close', 'awesome-support' );
 					}
 					?>
 				</a>
@@ -90,11 +90,11 @@ if ( isset( $post ) ) {
 			<div id="publishing-action">
 				<span class="spinner"></span>
 				<?php if ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) : ?>
-					<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Updating', 'wpas' ) ?>" />
+					<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Updating', 'awesome-support' ) ?>" />
 					<?php submit_button( __( 'Update Ticket' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'u' ) ); ?>
 				<?php else:
 					if ( current_user_can( 'create_ticket' ) ): ?>
-						<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Creating', 'wpas' ) ?>" />
+						<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Creating', 'awesome-support' ) ?>" />
 						<?php submit_button( __( 'Open Ticket' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'o' ) ); ?>
 						<?php endif;
 				endif; ?>

@@ -32,7 +32,7 @@ function wpas_sc_submit_form() {
 			if ( false !== $registration && !empty( $registration ) && !is_null( get_post( intval( $registration ) ) ) ) {
 				/* As the headers are already sent we can't use wp_redirect. */
 				echo '<meta http-equiv="refresh" content="0; url=' . get_permalink( $registration ) . '" />';
-				echo wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'wpas' ) );
+				echo wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'awesome-support' ) );
 				exit;
 			}
 
@@ -69,14 +69,14 @@ function wpas_sc_submit_form() {
 			 * Check if the current user is logged in
 			 */
 			if ( false === is_user_logged_in() ) {
-				echo wpas_get_notification_markup( 'failure', sprintf( __( 'You need to <a href="%s">log-in</a> to submit a ticket.', 'wpas' ), esc_url( '' ) ) );
+				echo wpas_get_notification_markup( 'failure', sprintf( __( 'You need to <a href="%s">log-in</a> to submit a ticket.', 'awesome-support' ), esc_url( '' ) ) );
 			} else {
 
 				/**
 				 * Make sure the current user can submit a ticket.
 				 */
 				if ( false === wpas_can_submit_ticket() ) {
-					echo wpas_get_notification_markup( 'failure', __( 'You are not allowed to submit a ticket.', 'wpas' ) );
+					echo wpas_get_notification_markup( 'failure', __( 'You are not allowed to submit a ticket.', 'awesome-support' ) );
 				}
 
 				/**
@@ -101,7 +101,7 @@ function wpas_sc_submit_form() {
 						 * Keep in mind that if you allow agents to open ticket through the front-end, actions
 						 * will not be tracked.
 						 */
-						echo wpas_get_notification_markup( 'info', sprintf( __( 'Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href="%s">click here to open a new ticket</a>.', 'wpas' ), add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'post-new.php' ) ) ) );
+						echo wpas_get_notification_markup( 'info', sprintf( __( 'Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href="%s">click here to open a new ticket</a>.', 'awesome-support' ), add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'post-new.php' ) ) ) );
 
 					/**
 					 * If the user is authorized to post a ticket, we display the submit form
