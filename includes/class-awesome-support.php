@@ -71,6 +71,8 @@ class Awesome_Support_Old {
 			add_filter( 'authenticate',                   array( $this, 'email_signon' ),                    20, 3 );
 			add_filter( 'plugin_locale',                  array( $this, 'change_plugin_locale' ),            10, 2 );
 			add_filter( 'the_content',                    array( $this, 'make_links_clickable' ),            10, 1 );
+			add_action( 'wp_head',                        array( $this, 'load_admin_bar_style' ) );
+			add_action( 'admin_head',                     array( $this, 'load_admin_bar_style' ) );
 
 			/* Hook all e-mail notifications */
 			add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
@@ -963,6 +965,22 @@ class Awesome_Support_Old {
 		);
 
 		$wp_admin_bar->add_node( $node );
+	}
+
+	/**
+	 * Load the one line style for the admin bar icon
+	 *
+	 * @since 3.2.6
+	 * @return void
+	 */
+	public function load_admin_bar_style() {
+
+		if ( ! is_user_logged_in() || ! current_user_can( 'edit_ticket' ) ) {
+			return;
+		}
+
+		echo '<style>#wpadminbar #wp-admin-bar-wpas_tickets .ab-icon:before { content: \'\\f468\'; top: 2px; }</style>';
+
 	}
 
 	/**
