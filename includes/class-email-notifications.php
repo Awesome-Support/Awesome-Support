@@ -354,7 +354,14 @@ class WPAS_Email_Notification {
 		$new = array();
 
 		/* Get the involved users' information */
-		$agent  = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
+		$agent_id = get_post_meta( $this->ticket_id, '_wpas_assignee', true );
+
+		// Fallback to the default assignee if for some reason there is no agent assigned
+		if ( empty( $agent_id ) ) {
+			$agent_id = wpas_get_option( 'assignee_default', 1 );
+		}
+
+		$agent  = get_user_by( 'id', (int) $agent_id  );
 		$client = get_user_by( 'id', $this->get_ticket()->post_author );
 
 		/* Get the ticket links */
