@@ -724,7 +724,7 @@ class Awesome_Support_Old {
 
 		global $post;
 
-		if ( ! isset( $post ) || ! is_object( $post ) || ! is_a( $post, 'WP_Post ' ) ) {
+		if ( ! isset( $post ) || ! is_object( $post ) || ! is_a( $post, 'WP_Post' ) ) {
 			return;
 		}
 
