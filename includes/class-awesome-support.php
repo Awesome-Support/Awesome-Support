@@ -275,7 +275,11 @@ class Awesome_Support_Old {
 					exit;
 				} else {
 
-					wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'awesome-support' ) );
+					if ( $close ) {
+						wpas_add_notification( 'reply_added_closed', __( 'Thanks for your reply. The ticket is now closed.', 'awesome-support' ) );
+					} else {
+						wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'awesome-support' ) );
+					}
 
 					if ( false !== $link = wpas_get_reply_link( $reply_id ) ) {
 						wpas_redirect( 'reply_added', $link );
