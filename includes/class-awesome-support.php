@@ -56,7 +56,7 @@ class Awesome_Support_Old {
 			/**
 			 * Load internal methods.
 			 */
-			add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ),               10, 0 ); // Activate plugin when new blog is added
+			add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ),               10, 6 ); // Activate plugin when new blog is added
 			add_action( 'plugins_loaded',                 array( $this, 'load_plugin_textdomain' ),          11, 0 ); // Load the plugin textdomain
 			add_action( 'init',                           array( $this, 'init' ),                            11, 0 ); // Register main post type
 			add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ),           999, 1 ); // Add a link to agent's tickets in the toolbar
