@@ -623,12 +623,12 @@ class Awesome_Support_Old {
 		$lang_dir  = WPAS_ROOT . 'languages/';
 		$land_path = WPAS_PATH . 'languages/';
 		$locale    = apply_filters( 'plugin_locale', get_locale(), 'awesome-support' );
-		$mofile    = "wpas-$locale.mo";
+		$mofile    = "awesome-support-$locale.mo";
 
 		if ( file_exists( $land_path . $mofile ) ) {
-			$language = load_textdomain( 'wpas', $land_path . $mofile );
+			$language = load_textdomain( 'awesome-support', $land_path . $mofile );
 		} else {
-			$language = load_plugin_textdomain( 'wpas', false, $lang_dir );
+			$language = load_plugin_textdomain( 'awesome-support', false, $lang_dir );
 		}
 
 		return $language;
