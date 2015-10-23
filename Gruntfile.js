@@ -180,7 +180,7 @@ module.exports = function (grunt) {
 					exclude: ['assets/.*', 'node_modules/.*', 'vendor/.*', 'tests/.*', 'includes/admin/views/system-status.php'],
 					mainFile: 'awesome-support.php',
 					potComments: 'N2Clic Limited',
-					potFilename: 'wpas.pot',
+					potFilename: 'awesome-support.pot',
 					potHeaders: {
 						poedit: true,
 						'x-poedit-keywordslist': true,

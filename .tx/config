@@ -2,8 +2,8 @@
 host = https://www.transifex.com
 
 [awesome-support.awesome-support]
-file_filter = languages/wpas-<lang>.po
-source_file = languages/wpas.pot
+file_filter = languages/awesome-support-<lang>.po
+source_file = languages/awesome-support.pot
 source_lang = en_US
 type = PO
 minimum_perc = 90
