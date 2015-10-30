@@ -21,7 +21,6 @@
 		 */
 		if (typeof tinyMCE != "undefined") {
 			
-
 			$('.wpas-form').submit(function (event) {
 				var submitBtn = $('[type="submit"]', $(this));
 				var editorContent = tinyMCE.activeEditor.getContent();
