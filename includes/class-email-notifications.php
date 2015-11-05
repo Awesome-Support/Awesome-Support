@@ -209,7 +209,7 @@ class WPAS_Email_Notification {
 		$cases['client_reply']            = 'enable_reply_client';
 		$cases['ticket_closed']           = 'enable_closed';
 
-		return apply_filters( 'wpas email_notifications_cases_active_option', $cases );
+		return apply_filters( 'wpas_email_notifications_cases_active_option', $cases );
 	}
 
 	/**
