@@ -20,7 +20,7 @@
 		http://stackoverflow.com/a/8749616
 		 */
 		if (typeof tinyMCE != "undefined") {
-
+			
 			$('.wpas-form').submit(function (event) {
 				var submitBtn = $('[type="submit"]', $(this));
 				var editorContent = tinyMCE.activeEditor.getContent();
@@ -48,7 +48,8 @@
 
 			$('.wpas-form').submit(function (event) {
 				var submitBtn = $('[type="submit"]', $(this));
-				submitBtn.prop('disabled', true).text(wpas.translations.onSubmit);
+				var submitText = submitBtn.attr('data-onsubmit') ? submitBtn.attr('data-onsubmit') : wpas.translations.onSubmit;
+				submitBtn.prop('disabled', true).text(submitText);
 			});
 
 		}
