@@ -601,7 +601,7 @@ function wpas_change_locale( $locale ) {
 function wpas_get_settings_page_url( $tab = '' ) {
 
 	$admin_url  = admin_url( 'edit.php' );
-	$query_args = array( 'post_type' => 'ticket', 'page' => 'settings' );
+	$query_args = array( 'post_type' => 'ticket', 'page' => 'wpas-settings' );
 
 	if ( ! empty( $tab ) ) {
 		$query_args['tab'] = sanitize_text_field( $tab );
