@@ -505,12 +505,8 @@ class WPAS_Custom_Fields {
 
 		global $typenow;
 
-		if ( 'ticket' != $typenow ) {
-			echo '';
-		}
-
-		if ( isset( $_GET['post_status'] ) ) {
-			echo '';
+		if ( ('ticket' != $typenow ) || isset( $_GET['post_status'] ) ) {
+			return;
 		}
 
 		$this_sort       = isset( $_GET['wpas_status'] ) ? filter_input( INPUT_GET, 'wpas_status', FILTER_SANITIZE_STRING ) : '';
