@@ -898,6 +898,9 @@ class Awesome_Support_Admin {
 		/* Contacts involved in the ticket */
 		add_meta_box( 'wpas-mb-contacts', __( 'Stakeholders', 'awesome-support' ), array( $this, 'metabox_callback' ), 'ticket', 'side', 'high', array( 'template' => 'stakeholders' ) );
 
+		/* User Profile */
+		add_meta_box( 'wpas-mb-userprofile', __( 'User Profile', 'awesome-support' ), array( $this, 'metabox_callback' ), 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
+
 		/* Custom fields */
 		global $wpas_cf;
 
