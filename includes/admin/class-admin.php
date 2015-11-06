@@ -1253,10 +1253,3 @@ class Awesome_Support_Admin {
 	}
 
 }
-//
-//add_action('pre_get_posts', 'test', 99, 1 );
-//function test( $query ) {
-//	if ( $query->is_main_query() ) {
-//		print_r( $query );
-//	}
-//}
