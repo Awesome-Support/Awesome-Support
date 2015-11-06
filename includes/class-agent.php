@@ -144,33 +144,17 @@ class WPAS_Agent {
 	 */
 	public function get_open_tickets() {
 
-		$posts_args = array(
-			'post_type'              => 'ticket',
-			'post_status'            => 'any',
-			'posts_per_page'         => - 1,
-			'no_found_rows'          => true,
-			'cache_results'          => false,
-			'update_post_term_cache' => false,
-			'update_post_meta_cache' => false,
-			'meta_query'             => array(
-				array(
-					'key'     => '_wpas_status',
-					'value'   => 'open',
-					'type'    => 'CHAR',
-					'compare' => '='
-				),
-				array(
-					'key'     => '_wpas_assignee',
-					'value'   => $this->agent_id,
-					'type'    => 'NUMERIC',
-					'compare' => '='
-				),
-			)
+		$args                 = array();
+		$args['meta_query'][] = array(
+				'key'     => '_wpas_assignee',
+				'value'   => $this->agent_id,
+				'compare' => '=',
+				'type'    => 'NUMERIC',
 		);
 
-		$open_tickets = new WP_Query( $posts_args );
+		$open_tickets = wpas_get_tickets( 'open', $args );
 
-		return $open_tickets->posts;
+		return $open_tickets;
 
 	}
 
