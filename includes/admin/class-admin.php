@@ -243,8 +243,21 @@ class Awesome_Support_Admin {
 
 		global $current_user;
 
-		$query->set( 'meta_key', '_wpas_assignee' );
-		$query->set( 'meta_value', (int) $current_user->ID );
+		// We need to update the original meta_query and not replace it to avoid filtering issues
+		$meta_query = $query->get( 'meta_query' );
+
+		if ( ! is_array( $meta_query ) ) {
+			$meta_query = array_filter( (array) $meta_query );
+		}
+
+		$meta_query[] = array(
+				'key'     => '_wpas_assignee',
+				'value'   => (int) $current_user->ID,
+				'compare' => '=',
+				'type'    => 'NUMERIC',
+		);
+
+		$query->set( 'meta_query', $meta_query );
 
 		return true;
 
