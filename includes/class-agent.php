@@ -9,6 +9,26 @@
  * @copyright 2014 ThemeAvenue
  */
 
+add_action( 'wpas_ticket_assignee_changed', 'wpas_update_ticket_count_on_transfer', 10, 2 );
+/**
+ * Update the open agent tickets count when a ticket is transferred from one agent to another
+ *
+ * We do not need to add a new ticket to the new agent because it is automatically done in wpas_assign_ticket()
+ *
+ * @since 3.2.8
+ *
+ * @param int $agent_id          ID of the current ticket assignee
+ * @param int $previous_agent_id ID of the previous assignee
+ *
+ * @return void
+ */
+function wpas_update_ticket_count_on_transfer( $agent_id, $previous_agent_id ) {
+
+	$agent_prev = new WPAS_Agent( $previous_agent_id );
+	$agent_prev->ticket_minus();
+
+}
+
 class WPAS_Agent {
 
 	/**
