@@ -28,7 +28,7 @@ function wpas_core_settings_general( $def ) {
 					'id'      => 'assignee_default',
 					'type'    => 'select',
 					'desc'    => __( 'Who to assign tickets to in the case that auto-assignment wouldn&#039;t work. This does NOT mean that all tickets will be assigned to this user. This is a fallback option. To enable/disable auto assignment for an agent, please do so in the user profile settings.', 'awesome-support' ),
-					'options' => isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && isset( $_GET['page'] ) && 'settings' === $_GET['page'] ? wpas_list_users( 'edit_ticket' ) : array(),
+					'options' => isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && isset( $_GET['page'] ) && 'wpas-settings' === $_GET['page'] ? wpas_list_users( 'edit_ticket' ) : array(),
 					'default' => ''
 				),
 				array(
