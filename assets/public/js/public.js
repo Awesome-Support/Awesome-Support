@@ -14,13 +14,23 @@
 
 	$(function () {
 
+		/**
+		 * Automatically Link URLs, Email Addresses, Phone Numbers, etc.
+		 * https://github.com/gregjacobs/Autolinker.js
+		 */
+		if ($('.wpas-reply-content').length) {
+			$('.wpas-reply-content').each(function (index, el) {
+				el.innerHTML = Autolinker.link(el.innerHTML);
+			});
+		}
+
 		/*
 		Check if TinyMCE is empty
 		http://codeblow.com/questions/method-to-check-whether-tinymce-is-active-in-wordpress/
 		http://stackoverflow.com/a/8749616
 		 */
 		if (typeof tinyMCE != "undefined") {
-			
+
 			$('.wpas-form').submit(function (event) {
 				var submitBtn = $('[type="submit"]', $(this));
 				var editorContent = tinyMCE.activeEditor.getContent();
