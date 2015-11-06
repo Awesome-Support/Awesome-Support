@@ -327,9 +327,10 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 	if ( 'any' !== $ticket_status ) {
 		if ( in_array( $ticket_status, array( 'open', 'closed' ) ) ) {
 			$args['meta_query'][] = array(
-				'key'     => '_wpas_status',
-				'value'   => $ticket_status,
-				'compare' => '='
+					'key'     => '_wpas_status',
+					'value'   => $ticket_status,
+					'compare' => '=',
+					'type'    => 'CHAR'
 			);
 		}
 	}
