@@ -38,3 +38,18 @@ function wpas_upgrade_321() {
 	}
 
 }
+
+/**
+ * Upgrade routine for 3.2.8
+ *
+ * @since 3.2.8
+ * @return void
+ */
+function wpas_upgrade_328() {
+
+	// Clear agents metas in order to apply the fix for incorrect open tickets counts
+	if ( function_exists( 'wpas_clear_agents_metas' ) ) {
+		wpas_clear_agents_metas();
+	}
+
+}
