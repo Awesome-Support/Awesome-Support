@@ -306,3 +306,23 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 	return $controls;
 
 }
+
+add_filter( 'admin_footer_text', 'wpas_admin_footer_text', 999, 1 );
+/**
+ * Add a custom admin footer text
+ *
+ * @since 3.2.8
+ *
+ * @param string $text Footer text
+ *
+ * @return string
+ */
+function wpas_admin_footer_text( $text ) {
+
+	if ( ! is_admin() || ! wpas_is_plugin_page() ) {
+		return $text;
+	}
+
+	return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from ThemeAvenue in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733' );
+
+}
