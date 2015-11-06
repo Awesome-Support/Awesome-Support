@@ -913,6 +913,21 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 	 */
 	do_action( 'wpas_ticket_assigned', $ticket_id, $agent_id );
 
+	// In case this is a ticket transfer from one agent to another, we fire a dedicated action
+	if ( ! empty( $current ) && user_can( (int) $current, 'edit_ticket' ) ) {
+
+		/**
+		 * Fired only if the current assignment is a ticket transfer
+		 *
+		 * @since 3.2.8
+		 *
+		 * @param int $agent_id ID of the new assignee
+		 * @param int $current  ID of the previous assignee
+		 */
+		do_action( 'wpas_ticket_assignee_changed', $agent_id, (int) $current );
+
+	}
+
 	return $update;
 
 }
