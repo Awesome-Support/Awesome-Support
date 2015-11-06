@@ -276,10 +276,11 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
  * @param string       $ticket_status Ticket status (open or closed)
  * @param array        $args          Additional arguments (see WP_Query)
  * @param string|array $post_status   Ticket state
+ * @param bool         $cache         Whether or not to cache the results
  *
  * @return array               Array of tickets, empty array if no tickets found
  */
-function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_status = 'any' ) {
+function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_status = 'any', $cache = false ) {
 
 	$custom_post_status = wpas_get_post_status();
 	$post_status_clean  = array();
@@ -313,11 +314,11 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 	$defaults = array(
 		'post_type'              => 'ticket',
 		'post_status'            => $post_status,
-		'posts_per_page'         => -1,
-		'no_found_rows'          => false,
-		'cache_results'          => true,
-		'update_post_term_cache' => true,
-		'update_post_meta_cache' => true,
+		'posts_per_page'         => - 1,
+		'no_found_rows'          => ! (bool) $cache,
+		'cache_results'          => (bool) $cache,
+		'update_post_term_cache' => (bool) $cache,
+		'update_post_meta_cache' => (bool) $cache,
 	);
 
 	$args  = wp_parse_args( $args, $defaults );
