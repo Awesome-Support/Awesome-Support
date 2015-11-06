@@ -4,6 +4,16 @@
 	$(function () {
 
 		/**
+		 * Automatically Link URLs, Email Addresses, Phone Numbers, etc.
+		 * https://github.com/gregjacobs/Autolinker.js
+		 */
+		if ($('.wpas-ticket-content').length && $('.wpas-reply-content').length) {
+			$('.wpas-ticket-content, .wpas-reply-content').each(function (index, el) {
+				el.innerHTML = Autolinker.link(el.innerHTML);
+			});
+		}
+
+		/**
 		 * Mark as read
 		 */
 		$('.wpas-mark-read').on('click', function (event) {
