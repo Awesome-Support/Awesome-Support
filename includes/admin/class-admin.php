@@ -313,9 +313,14 @@ class Awesome_Support_Admin {
 	 */
 	public function maybe_remove_author( $query ) {
 
-		/* Make sure this is the main query */
-		if ( ! $query->is_main_query() ) {
-			return false;
+		// First of all we check if the query is one of ours
+		if ( ! isset( $query->query_vars['wpas_query'] ) ) {
+
+			// If not, let's make sure we're in the main query
+			if ( ! $query->is_main_query() ) {
+				return false;
+			}
+
 		}
 
 		/* Make sure this is the admin screen */

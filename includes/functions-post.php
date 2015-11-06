@@ -319,6 +319,7 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 		'cache_results'          => (bool) $cache,
 		'update_post_term_cache' => (bool) $cache,
 		'update_post_meta_cache' => (bool) $cache,
+		'wpas_query'             => true, // We use this parameter to identify our own queries so that we can remove the author parameter
 	);
 
 	$args  = wp_parse_args( $args, $defaults );
