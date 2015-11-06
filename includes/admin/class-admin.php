@@ -696,21 +696,19 @@ class Awesome_Support_Admin {
 
 		global $menu, $current_user;
 
-		$args = array();
-
 		if ( current_user_can( 'administrator' )
-			&& false === boolval( wpas_get_option( 'admin_see_all' ) )
-			|| !current_user_can( 'administrator' )
-			&& current_user_can( 'edit_ticket' )
-			&& false === boolval( wpas_get_option( 'agent_see_all' ) ) ) {
-			$args['meta_query'][] = array(
-				'key'     => '_wpas_assignee',
-				'value'   => $current_user->ID,
-				'compare' => '=',
-			);
-		}
+		     && false === boolval( wpas_get_option( 'admin_see_all' ) )
+		     || ! current_user_can( 'administrator' )
+		        && current_user_can( 'edit_ticket' )
+		        && false === boolval( wpas_get_option( 'agent_see_all' ) )
+		) {
 
-		$count = count( wpas_get_tickets( 'open', $args ) );
+			$agent = new WPAS_Agent( $current_user->ID );
+			$count = $agent->open_tickets();
+
+		} else {
+			$count = count( wpas_get_tickets( 'open' ) );
+		}
 
 		if ( 0 === $count ) {
 			return false;
