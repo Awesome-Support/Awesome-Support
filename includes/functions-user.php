@@ -643,3 +643,101 @@ function wpas_get_user_tickets( $user_id = 0, $ticket_status = 'open', $post_sta
 	return $tickets;
 
 }
+
+add_filter( 'authenticate', 'wpas_email_signon', 20, 3 );
+/**
+ * Allow e-mail to be used as the login.
+ *
+ * @since  3.0.2
+ *
+ * @param  WP_User|WP_Error|null $user     User to authenticate.
+ * @param  string                $username User login
+ * @param  string                $password User password
+ *
+ * @return object                          WP_User if authentication succeed, WP_Error on failure
+ */
+function wpas_email_signon( $user, $username, $password ) {
+
+	/* Authentication was successful, we don't touch it */
+	if ( is_object( $user ) && is_a( $user, 'WP_User' ) ) {
+		return $user;
+	}
+
+	/**
+	 * If the $user isn't a WP_User object nor a WP_Error
+	 * we don' touch it and let WordPress handle it.
+	 */
+	if ( ! is_wp_error( $user ) ) {
+		return $user;
+	}
+
+	/**
+	 * We only wanna alter the authentication process if the username was rejected.
+	 * If the error is different, we let WordPress handle it.
+	 */
+	if ( 'invalid_username' !== $user->get_error_code() ) {
+		return $user;
+	}
+
+	/**
+	 * If the username is not an e-mail there is nothing else we can do,
+	 * the error is probably legitimate.
+	 */
+	if ( ! is_email( $username ) ) {
+		return $user;
+	}
+
+	/* Try to get the user with this e-mail address */
+	$user_data = get_user_by( 'email', $username );
+
+	/**
+	 * If there is no user with this e-mail the error is legitimate
+	 * so let's just return it.
+	 */
+	if ( false === $user_data || ! is_a( $user_data, 'WP_User' ) ) {
+		return $user;
+	}
+
+	return wp_authenticate_username_password( null, $user_data->data->user_login, $password );
+
+}
+
+add_action( 'wp_ajax_nopriv_email_validation', 'wpas_mailgun_check' );
+/**
+ * Check if an e-mail is valid during registration using the MailGun API
+ *
+ * @param string $data
+ */
+function wpas_mailgun_check( $data = '' ) {
+
+	if ( empty( $data ) ) {
+		if ( isset( $_POST ) ) {
+			$data = $_POST;
+		} else {
+			echo '';
+			die();
+		}
+	}
+
+	if ( ! isset( $data['email'] ) ) {
+		echo '';
+		die();
+	}
+
+	$mailgun = new WPAS_MailGun_EMail_Check();
+	$check   = $mailgun->check_email( $data );
+
+	if ( ! is_wp_error( $check ) ) {
+
+		$check = json_decode( $check );
+
+		if ( is_object( $check ) && isset( $check->did_you_mean ) && ! is_null( $check->did_you_mean ) ) {
+			printf( __( 'Did you mean %s', 'awesome-support' ), "<strong>{$check->did_you_mean}</strong>?" );
+			die();
+		}
+
+	}
+
+	die();
+
+}

@@ -15,6 +15,10 @@
  * @copyright 2014 ThemeAvenue
  * @since     3.1.3
  */
+
+// Register Gist support
+add_action( 'plugins_loaded', array( 'WPAS_Gist', 'get_instance' ), 11, 0 );
+
 class WPAS_Gist {
 
 	/**

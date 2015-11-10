@@ -19,6 +19,12 @@
  *
  * @link https://core.trac.wordpress.org/ticket/26183
  */
+
+/**
+ * Load the WP Editor Ajax class.
+ */
+add_action( 'plugins_loaded', array( 'WPAS_Editor_Ajax', 'get_instance' ), 11, 0 );
+
 class WPAS_Editor_Ajax {
 
 	/**

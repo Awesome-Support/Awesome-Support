@@ -958,6 +958,7 @@ function wpas_save_values() {
 
 }
 
+add_action( 'pre_user_query', 'wpas_randomize_uers_query', 10, 1 );
 /**
  * Randomize user query.
  *
@@ -968,7 +969,9 @@ function wpas_save_values() {
  * to new tickets.
  *
  * @since  3.0.0
+ *
  * @param  object $query User query
+ *
  * @return void
  */
 function wpas_randomize_uers_query( $query ) {
@@ -976,7 +979,7 @@ function wpas_randomize_uers_query( $query ) {
 	/* Make sure we only alter our own user query */
 	if ( 'wpas_random' == $query->query_vars['orderby'] ) {
 		$query->query_orderby = 'ORDER BY RAND()';
-    }
+	}
 
 }
 

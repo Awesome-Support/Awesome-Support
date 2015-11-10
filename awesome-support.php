@@ -25,12 +25,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Register hooks that are fired when the plugin is activated or deactivated.
- * When the plugin is deleted, the uninstall.php file is loaded.
- */
-register_activation_hook( __FILE__, array( 'Awesome_Support_Old', 'activate' ) );
-
-/**
  * Get an instance of the plugin
  */
 add_action( 'plugins_loaded', array( 'Awesome_Support_Old', 'get_instance' ) );
@@ -226,6 +220,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			define( 'WPAS_TEMPLATE_PATH',     'awesome-support/' );
 			define( 'WPAS_ADMIN_ASSETS_URL',  trailingslashit( plugin_dir_url( __FILE__ ) . 'assets/admin/' ) );
 			define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) . 'assets/admin/' ) );
+			define( 'WPAS_PLUGIN_FILE',       __FILE__ );
 		}
 
 		/**
@@ -355,12 +350,12 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/functions-fallback.php' );
 			require( WPAS_PATH . 'includes/class-logger.php' );
 			require( WPAS_PATH . 'includes/class-awesome-support.php' );
+			require( WPAS_PATH . 'includes/integrations/loader.php' );
+			require( WPAS_PATH . 'includes/scripts.php' );
 			require( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
 			require( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
 			require( WPAS_PATH . 'includes/file-uploader/class-file-uploader.php' );
 			require( WPAS_PATH . 'includes/class-mailgun-email-check.php' );
-
-			/* Load custom fields dependencies */
 			require( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
 			require( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
 			require( WPAS_PATH . 'includes/custom-fields/functions-custom-fields.php' );   // Submission form related functions
@@ -374,12 +369,13 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/functions-error.php' );           // Error handling
 			require( WPAS_PATH . 'includes/functions-notification.php' );    // Notification handling
 			require( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
-			require( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
+			require( WPAS_PATH . 'includes/functions-post-type.php' );           // Register post types and related functions
 			require( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
 			require( WPAS_PATH . 'includes/class-gist.php' );                // Add oEmbed support for Gists
 			require( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper class to load a wp_editor instance via Ajax
 			require( WPAS_PATH . 'includes/class-agent.php' );               // Support agent class
 			require( WPAS_PATH . 'includes/class-wpas-session.php' );
+			require( WPAS_PATH . 'includes/install.php' );
 
 		}
 

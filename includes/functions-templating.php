@@ -12,6 +12,7 @@
  * @copyright 2014 ThemeAvenue
  */
 
+add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 /**
  * Alter page content for single ticket.
  *
@@ -941,5 +942,94 @@ function wpas_next_page_link( $label = '', $posts = 0, $echo = true ) {
 	}
 
 	return $link;
+
+}
+
+add_filter( 'template_include', 'wpas_template_include', 10, 1 );
+/**
+ * Change ticket template.
+ *
+ * By default WordPress uses the single.php template
+ * to display the post type single page as a custom one doesn't exist.
+ * However we don't want all the meta that are usually displayed on a single.php
+ * template. For that reason we switch to the page.php template that usually
+ * doesn't contain all the post metas and author bio.
+ *
+ * @since  3.0.0
+ * @param  string $template Path to template
+ * @return string           Path to (possibly) new template
+ */
+function wpas_template_include( $template ) {
+
+	if ( ! is_singular( 'ticket' ) ) {
+		return $template;
+	}
+
+	$filename      = explode( '/', $template );
+	$template_name = $filename[count($filename)-1];
+
+	/* Don't change the template if it's already a custom one */
+	if ( 'single-ticket.php' === $template_name ) {
+		return $template;
+	}
+
+	unset( $filename[count($filename)-1] ); // Remove the template name
+	$filename = implode( '/', $filename );
+	$filename = $filename . '/page.php';
+
+	if ( file_exists( $filename ) ) {
+		return $filename;
+	} else {
+		return $template;
+	}
+
+}
+
+add_action( 'wpas_after_registration_fields', 'wpas_terms_and_conditions_checkbox', 10, 3 );
+/**
+ * Add the terms and conditions checkbox.
+ *
+ * Adds a checkbox to the registration form if there are
+ * terms and conditions set in the plugin settings.
+ *
+ * @since  3.0.0
+ * @return void
+ */
+function wpas_terms_and_conditions_checkbox() {
+	if ( wpas_get_option( 'terms_conditions', false ) ): ?>
+		<div class="wpas-checkbox">
+			<label><input type="checkbox" name="terms" required> <?php printf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ); ?></label>
+		</div>
+	<?php endif;
+}
+
+add_action( 'wpas_after_template', 'wpas_terms_and_conditions_modal', 10, 3 );
+/**
+ * Load terms and conditions.
+ *
+ * Load the terms and conditions if any and if the user
+ * is on the submission page.
+ *
+ * @since  3.0.0
+ *
+ * @param  string $name Template name
+ *
+ * @return boolean           True if the modal is loaded, false otherwise
+ */
+function wpas_terms_and_conditions_modal( $name ) {
+
+	if ( 'registration' !== $name ) {
+		return false;
+	}
+
+	$terms = wpas_get_option( 'terms_conditions', '' );
+
+	if ( empty( $terms ) ) {
+		return false;
+	}
+
+	echo '<div style="display: none;"><div id="wpas-modalterms">' . wpautop( wp_kses_post( $terms ) ) . '</div></div>';
+
+	return true;
 
 }
