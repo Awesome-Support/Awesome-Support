@@ -263,7 +263,7 @@ function wpas_get_theme_stylesheet_uri() {
  */
 function wpas_ticket_header( $args = array() ) {
 
-	global $wpas_cf, $post;
+	global $post;
 
 	$default = array(
 		'container'       => '',
@@ -275,7 +275,7 @@ function wpas_ticket_header( $args = array() ) {
 
 	$args = wp_parse_args( $args, $default );
 
-	$custom_fields = $wpas_cf->get_custom_fields();
+	$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
 	$columns = array(
 		'id'     => __( 'ID', 'awesome-support' ),
@@ -554,9 +554,7 @@ function wpas_get_login_url() {
  */
 function wpas_get_tickets_list_columns() {
 
-	global $wpas_cf;
-
-	$custom_fields = $wpas_cf->get_custom_fields();
+	$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
 	$columns = array(
 		'status' => array( 'title' => __( 'Status', 'awesome-support' ), 'callback' => 'wpas_cf_display_status' ),

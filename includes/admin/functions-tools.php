@@ -87,9 +87,7 @@ function wpas_clear_taxonomy( $taxonomy ) {
  */
 function wpas_clear_taxonomies() {
 
-	global $wpas_cf;
-
-	$taxonomies = (array) $wpas_cf->get_custom_fields();
+	$taxonomies = (array) WPAS()->custom_fields->get_custom_fields();
 	$deleted    = false;
 
 	if ( empty( $taxonomies ) ) {

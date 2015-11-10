@@ -57,7 +57,6 @@ class Awesome_Support_Old {
 			 * Load internal methods.
 			 */
 			add_action( 'wpmu_new_blog',                  array( $this, 'activate_new_site' ),               10, 6 ); // Activate plugin when new blog is added
-			add_action( 'plugins_loaded',                 array( $this, 'load_plugin_textdomain' ),          11, 0 ); // Load the plugin textdomain
 			add_action( 'init',                           array( $this, 'init' ),                            11, 0 ); // Register main post type
 			add_action( 'admin_bar_menu',                 array( $this, 'toolbar_tickets_link' ),           999, 1 ); // Add a link to agent's tickets in the toolbar
 			add_action( 'wp_enqueue_scripts',             array( $this, 'enqueue_styles' ),                  10, 0 ); // Load public-facing style sheets
@@ -89,22 +88,6 @@ class Awesome_Support_Old {
 			add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 
 		}
-	}
-
-	/**
-	 * Check if plugin dependencies are present.
-	 *
-	 * @since  3.0.2
-	 * @return boolean True of dependencies are here, false otherwise
-	 */
-	public static function dependencies_loaded() {
-
-		if ( !is_dir( WPAS_PATH . 'vendor' ) ) {
-			return false;
-		}
-
-		return true;
-
 	}
 
 	/**
@@ -608,29 +591,6 @@ class Awesome_Support_Old {
 		add_option( 'wpas_support_products', 'pending' );
 		add_option( 'wpas_db_version', WPAS_DB_VERSION );
 		update_option( 'wpas_version', WPAS_VERSION );
-
-	}
-
-	/**
-	 * Load the plugin text domain for translation.
-	 *
-	 * @return boolean True if the language file was loaded, false otherwise
-	 * @since    1.0.0
-	 */
-	public function load_plugin_textdomain() {
-
-		$lang_dir  = WPAS_ROOT . 'languages/';
-		$land_path = WPAS_PATH . 'languages/';
-		$locale    = apply_filters( 'plugin_locale', get_locale(), 'awesome-support' );
-		$mofile    = "awesome-support-$locale.mo";
-
-		if ( file_exists( $land_path . $mofile ) ) {
-			$language = load_textdomain( 'awesome-support', $land_path . $mofile );
-		} else {
-			$language = load_plugin_textdomain( 'awesome-support', false, $lang_dir );
-		}
-
-		return $language;
 
 	}
 

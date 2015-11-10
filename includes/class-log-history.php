@@ -30,14 +30,12 @@ class WPAS_Log_History {
 
 	public function create_log() {
 
-		global $wpas_cf;
-
 		$content = '';
 
 		if( !empty( $this->contents ) ) {
 
 			/* Get custom fields */
-			$fields = $wpas_cf->get_custom_fields();
+			$fields = WPAS()->custom_fields->get_custom_fields();
 
 			$content .= '<ul class="wpas-log-list">';
 

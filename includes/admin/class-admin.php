@@ -915,10 +915,7 @@ class Awesome_Support_Admin {
 		/* Contacts involved in the ticket */
 		add_meta_box( 'wpas-mb-contacts', __( 'Stakeholders', 'awesome-support' ), array( $this, 'metabox_callback' ), 'ticket', 'side', 'high', array( 'template' => 'stakeholders' ) );
 
-		/* Custom fields */
-		global $wpas_cf;
-
-		if ( $wpas_cf->have_custom_fields() ) {	
+		if ( WPAS()->custom_fields->have_custom_fields() ) {
 			add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'awesome-support' ), array( $this, 'metabox_callback' ), 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
 		}
 
@@ -997,7 +994,7 @@ class Awesome_Support_Admin {
 			return;
 		}
 
-		global $current_user, $wpas_cf;
+		global $current_user;
 
 		/**
 		 * Store possible logs
@@ -1117,7 +1114,7 @@ class Awesome_Support_Admin {
 		}
 
 		/* Now we can save the custom fields */
-		$wpas_cf->save_custom_fields( $post_id, $_POST );
+		WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
 
 		/* Log the action */
 		if ( ! empty( $log ) ) {

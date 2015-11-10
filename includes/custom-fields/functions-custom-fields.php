@@ -115,15 +115,7 @@ function wpas_cf_value( $name, $post_id, $default = false ) {
  * @return boolean        Returns true on success or false on failure
  */
 function wpas_add_custom_field( $name, $args = array() ) {
-
-	global $wpas_cf;
-
-	if ( ! isset( $wpas_cf ) || ! class_exists( 'WPAS_Custom_Fields' ) ) {
-		return false;
-	}
-
-	return $wpas_cf->add_field( $name, $args );
-
+	return WPAS()->custom_fields->add_field( $name, $args );
 }
 
 /**
@@ -138,18 +130,12 @@ function wpas_add_custom_field( $name, $args = array() ) {
  */
 function wpas_add_custom_taxonomy( $name, $args = array() ) {
 
-	global $wpas_cf;
-
-	if ( ! isset( $wpas_cf ) || ! class_exists( 'WPAS_Custom_Fields' ) ) {
-		return false;
-	}
-
 	/* Force the custom fields type to be a taxonomy. */
 	$args['field_type']      = 'taxonomy';
 	$args['column_callback'] = 'wpas_show_taxonomy_column';
 
 	/* Add the taxonomy. */
-	$wpas_cf->add_field( $name, $args );
+	WPAS()->custom_fields->add_field( $name, $args );
 
 	return true;
 
@@ -164,16 +150,9 @@ add_action( 'init', 'wpas_register_core_fields' );
  */
 function wpas_register_core_fields() {
 
-	global $wpas_cf;
-
-	if ( ! isset( $wpas_cf ) ) {
-		return;
-	}
-
-	$wpas_cf->add_field( 'assignee',   array( 'core' => true, 'show_column' => false, 'log' => true, 'title' => __( 'Support Staff', 'awesome-support' ) ) );
-	// $wpas_cf->add_field( 'ccs',        array( 'core' => true, 'show_column' => false, 'log' => true ) );
-	$wpas_cf->add_field( 'status',     array( 'core' => true, 'show_column' => true, 'log' => false, 'field_type' => false, 'column_callback' => 'wpas_cf_display_status', 'save_callback' => null ) );
-	$wpas_cf->add_field( 'ticket-tag', array(
+	WPAS()->custom_fields->add_field( 'assignee',   array( 'core' => true, 'show_column' => false, 'log' => true, 'title' => __( 'Support Staff', 'awesome-support' ) ) );
+	WPAS()->custom_fields->add_field( 'status',     array( 'core' => true, 'show_column' => true, 'log' => false, 'field_type' => false, 'column_callback' => 'wpas_cf_display_status', 'save_callback' => null ) );
+	WPAS()->custom_fields->add_field( 'ticket-tag', array(
 			'core'                  => true,
 			'show_column'           => true,
 			'log'                   => true,
@@ -203,7 +182,7 @@ function wpas_register_core_fields() {
 			)
 		);
 
-		$wpas_cf->add_field( 'product', array(
+		WPAS()->custom_fields->add_field( 'product', array(
 				'core'                  => false,
 				'show_column'           => true,
 				'log'                   => true,
