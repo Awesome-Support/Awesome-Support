@@ -1095,6 +1095,31 @@ class Awesome_Support_Admin {
 					/* E-Mail the client */
 					$new_reply = new WPAS_Email_Notification( $post_id, array( 'reply_id' => $reply, 'action' => 'reply_agent' ) );
 
+					/* The agent wants to close the ticket */
+					if ( isset( $_POST['wpas_do'] ) &&  'reply_close' == $_POST['wpas_do'] ) {
+
+						/* Confirm the post type and close */
+						if( 'ticket' == get_post_type( $post_id ) ) {
+
+							/**
+							 * wpas_ticket_before_close_by_agent hook
+							 */
+							do_action( 'wpas_ticket_before_close_by_agent', $post_id );
+
+							/* Close */
+							$closed = wpas_close_ticket( $post_id );
+
+							/* E-Mail the client */
+							new WPAS_Email_Notification( $post_id, array( 'action' => 'closed' ) );
+
+							/**
+							 * wpas_ticket_closed_by_agent hook
+							 */
+							do_action( 'wpas_ticket_closed_by_agent', $post_id );
+						}
+
+					}
+
 				}
 
 			}
@@ -1103,31 +1128,6 @@ class Awesome_Support_Admin {
 
 		/* Now we can save the custom fields */
 		$wpas_cf->save_custom_fields( $post_id, $_POST );
-
-		/* The agent wants to close the ticket */
-		if ( isset( $_POST['wpas_do'] ) &&  'reply_close' == $_POST['wpas_do'] ) {
-
-			/* Confirm the post type and close */
-			if( 'ticket' == get_post_type( $post_id ) ) {
-
-				/**
-				 * wpas_ticket_before_close_by_agent hook
-				 */
-				do_action( 'wpas_ticket_before_close_by_agent', $post_id );
-
-				/* Close */
-				$closed = wpas_close_ticket( $post_id );
-
-				/* E-Mail the client */
-				new WPAS_Email_Notification( $post_id, array( 'action' => 'closed' ) );
-
-				/**
-				 * wpas_ticket_closed_by_agent hook
-				 */
-				do_action( 'wpas_ticket_closed_by_agent', $post_id );
-			}
-
-		}
 
 		/* Log the action */
 		if ( ! empty( $log ) ) {
