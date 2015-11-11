@@ -82,7 +82,7 @@
 			var btn = $(event.target);
 
 			// Detect which button is clicked
-			if (btn.hasClass('wpas_btn_reply')) {
+			if (btn.hasClass('wpas_btn_reply') || btn.hasClass('wpas_btn_reply_close')) {
 
 				// Detect Visual and Text Mode in WordPress TinyMCE Editor
 				var is_tinymce_active = (typeof tinyMCE != "undefined") && tinyMCE.activeEditor && !tinyMCE.activeEditor.isHidden();
