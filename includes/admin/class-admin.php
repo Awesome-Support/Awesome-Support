@@ -333,28 +333,31 @@ class Awesome_Support_Admin {
 	 */
 	public function maybe_remove_author( $query ) {
 
-		// First of all we check if the query is one of ours
-		if ( ! isset( $query->query_vars['wpas_query'] ) ) {
-
-			// If not, let's make sure we're in the main query
-			if ( ! $query->is_main_query() ) {
-				return false;
-			}
-
-		}
-
-		/* Make sure this is the admin screen */
+		// We only want to alter the admin side of things
 		if ( ! is_admin() ) {
 			return false;
 		}
 
-		/* Make sure we only alter our post type */
-		if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
-			return false;
+		// If our custom query parameter is set we remove the author straight away
+		if ( isset( $query->query_vars['wpas_query'] ) ) {
+			$query->query_vars['author'] = '';
 		}
 
-		if ( isset( $query->query_vars['author'] ) && ! empty( $query->query_vars['author'] ) ) {
-			$query->query_vars['author'] = '';
+		$post_type = $query->get( 'post_type' );
+
+		if ( ! is_array( $post_type ) ) {
+			$post_type = (array) $post_type;
+		}
+
+		foreach ( $post_type as $pt ) {
+
+			if ( in_array( $pt, array( 'ticket', 'ticket_reply', 'ticket_history' ) ) ) {
+
+				$query->query_vars['author'] = '';
+				break;
+
+			}
+
 		}
 
 		return $query;
