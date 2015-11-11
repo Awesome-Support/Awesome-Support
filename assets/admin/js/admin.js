@@ -77,41 +77,48 @@
 		 * Check if editor is empty
 		 * http://stackoverflow.com/a/1180199
 		 */
-		$('.wpas-reply-actions').on('click', 'button', function () {
+		$('.wpas-reply-actions').on('click', 'button', function (event) {
 
-			// Detect Visual and Text Mode in WordPress TinyMCE Editor
-			var is_tinymce_active = (typeof tinyMCE != "undefined") && tinyMCE.activeEditor && !tinyMCE.activeEditor.isHidden();
+			var btn = $(event.target);
 
-			// Visual Editor
-			if (is_tinymce_active) {
-				var editor = tinyMCE.activeEditor;
-				var editorContent = editor.getContent();
-				if (editorContent === '' || editorContent === null) {
+			// Detect which button is clicked
+			if (btn.hasClass('wpas_btn_reply')) {
 
-					/* Alert the user */
-					alert(wpasL10n.alertNoContent);
+				// Detect Visual and Text Mode in WordPress TinyMCE Editor
+				var is_tinymce_active = (typeof tinyMCE != "undefined") && tinyMCE.activeEditor && !tinyMCE.activeEditor.isHidden();
 
-					/* Focus on editor */
-					editor.focus();
+				// Visual Editor
+				if (is_tinymce_active) {
+					var editor = tinyMCE.activeEditor;
+					var editorContent = editor.getContent();
+					if (editorContent === '' || editorContent === null) {
 
-					return false;
+						/* Alert the user */
+						alert(wpasL10n.alertNoContent);
+
+						/* Focus on editor */
+						editor.focus();
+
+						return false;
+					}
+
 				}
 
-			}
+				// Text Editor
+				else {
+					var textarea = $('textarea[name="wpas_reply"]');
+					if (!textarea.val()) {
 
-			// Text Editor
-			else {
-				var textarea = $('textarea[name="wpas_reply"]');
-				if (!textarea.val()) {
+						/* Alert the user */
+						alert(wpasL10n.alertNoContent);
 
-					/* Alert the user */
-					alert(wpasL10n.alertNoContent);
+						/* Focus on editor */
+						textarea.focus();
 
-					/* Focus on editor */
-					textarea.focus();
-
-					return false;
+						return false;
+					}
 				}
+
 			}
 		});
 
