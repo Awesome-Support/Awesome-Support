@@ -44,14 +44,20 @@ class Awesome_Support_Old {
 		 */
 		require_once( WPAS_PATH . 'includes/integrations/loader.php' );
 
-		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+		/**
+		 * Load external classes.
+		 */
+		add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ),  11, 0 );
+		add_action( 'plugins_loaded',                 array( 'WPAS_Gist',             'get_instance' ),  11, 0 );
+		add_action( 'pre_user_query',                 'wpas_randomize_uers_query',                       10, 1 ); // Alter the user query to randomize the results
 
-			/**
-			 * Load external classes.
-			 */
-			add_action( 'plugins_loaded',                 array( 'WPAS_Ticket_Post_Type', 'get_instance' ),  11, 0 );
-			add_action( 'plugins_loaded',                 array( 'WPAS_Gist',             'get_instance' ),  11, 0 );
-			add_action( 'pre_user_query',                 'wpas_randomize_uers_query',                       10, 1 ); // Alter the user query to randomize the results
+		/* Hook all e-mail notifications */
+		add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
+		add_action( 'wpas_ticket_assigned',    array( $this, 'notify_assignment' ),   10, 2 );
+		add_action( 'wpas_add_reply_after',    array( $this, 'notify_reply' ),        10, 2 );
+		add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ),        10, 3 );
+
+		if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
 			/**
 			 * Load internal methods.
@@ -72,12 +78,6 @@ class Awesome_Support_Old {
 			add_filter( 'plugin_locale',                  array( $this, 'change_plugin_locale' ),            10, 2 );
 			add_action( 'wp_head',                        array( $this, 'load_admin_bar_style' ) );
 			add_action( 'admin_head',                     array( $this, 'load_admin_bar_style' ) );
-
-			/* Hook all e-mail notifications */
-			add_action( 'wpas_open_ticket_after',  array( $this, 'notify_confirmation' ), 10, 2 );
-			add_action( 'wpas_ticket_assigned',    array( $this, 'notify_assignment' ),   10, 2 );
-			add_action( 'wpas_add_reply_after',    array( $this, 'notify_reply' ),        10, 2 );
-			add_action( 'wpas_after_close_ticket', array( $this, 'notify_close' ),        10, 3 );
 
 			/**
 			 * Modify the ticket single page content.
