@@ -75,7 +75,28 @@ class WPAS_File_Upload {
 			add_action( 'before_delete_post',                array( $this, 'delete_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_reply_content_after',  array( $this, 'show_attachments' ), 10, 1 );
+			add_filter( 'wpas_cf_wrapper_class',             array( $this, 'add_wrapper_class_admin' ), 10, 2 );
 		}
+	}
+
+	/**
+	 * Add a custom class to the upload field wrapper in the admin
+	 *
+	 * @since 3.2.10
+	 *
+	 * @param array $classes Field wrapper classes
+	 * @param array $field   Field parameters
+	 *
+	 * @return array
+	 */
+	public function add_wrapper_class_admin( $classes, $field ) {
+
+		if ( 'upload' === $field['args']['field_type'] ) {
+			array_push( $classes, 'wpas-under-reply-box' );
+		}
+
+		return $classes;
+
 	}
 
 	/**
