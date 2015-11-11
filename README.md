@@ -16,6 +16,11 @@ Below are some info from the plugin's repository on [WordPress.org](https://word
 
 ## Installation
 
+To get started right away:
+```
+git init && git remote add origin git@github.com:Awesome-Support/Awesome-Support.git && git pull origin master && composer install && npm install
+```
+
 ### Not a developer?
 
 If you're not a developer you're better off using the [production version available on WordPress.org](https://wordpress.org/plugins/awesome-support/).
