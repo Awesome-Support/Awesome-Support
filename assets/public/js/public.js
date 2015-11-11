@@ -25,6 +25,21 @@
 		}
 
 		/*
+		Closing Ticket Function
+		 */
+		var replyForm = $('#wpas-new-reply');
+		var replyInput = $('textarea[name="wpas_user_reply"]');
+		var replyClose = $('input[name="wpas_close_ticket"]');
+
+		replyForm.on('change', replyClose, function () {
+			if (replyClose.is(':checked')) {
+				replyInput.prop('required', false);
+			} else {
+				replyInput.prop('required', true);
+			}
+		});
+
+		/*
 		Check if TinyMCE is empty
 		http://codeblow.com/questions/method-to-check-whether-tinymce-is-active-in-wordpress/
 		http://stackoverflow.com/a/8749616
