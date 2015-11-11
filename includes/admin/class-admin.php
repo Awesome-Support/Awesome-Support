@@ -351,7 +351,7 @@ class Awesome_Support_Admin {
 
 		foreach ( $post_type as $pt ) {
 
-			if ( in_array( $pt, array( 'ticket', 'ticket_reply', 'ticket_history' ) ) ) {
+			if ( in_array( $pt, array( 'ticket', 'ticket_reply', 'ticket_history', 'ticket_log' ) ) ) {
 
 				$query->query_vars['author'] = '';
 				break;
