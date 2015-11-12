@@ -140,6 +140,28 @@ class WPAS_Custom_Field {
 	}
 
 	/**
+	 * Get the value of a field argument
+	 *
+	 * @since 3.2.10
+	 *
+	 * @param string $arg     Argument ID
+	 * @param mixed  $default Default value ot return
+	 *
+	 * @return mixed
+	 */
+	public function get_field_arg( $arg, $default = '' ) {
+
+		$value = $default;
+
+		if ( array_key_exists( $arg, $this->field_args ) ) {
+			$value = $this->field_args[ $arg ];
+		}
+
+		return $value;
+
+	}
+
+	/**
 	 * Get the field class name.
 	 *
 	 * @since 3.2.0
