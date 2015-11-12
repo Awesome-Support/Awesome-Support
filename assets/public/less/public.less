@@ -1,5 +1,16 @@
 @charset 'UTF-8';
 
+.wpas-cf {
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
 /*
 ==========================================================================
 General Scaffolding / Reset
