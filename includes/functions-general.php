@@ -468,7 +468,7 @@ function wpas_wrap_li( $entry ) {
 		$entry = wpas_array_to_ul( $entry );
 	}
 
-	$entry = htmlentities( $entry );
+	$entry = wp_kses_post( $entry );
 
 	return "<li>$entry</li>";
 }
