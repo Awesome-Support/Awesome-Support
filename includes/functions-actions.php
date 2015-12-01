@@ -74,14 +74,11 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 
 }
 
-function wpas_do_url( $url, $action ) {
+function wpas_do_url( $url, $action, $args = array() ) {
 
-	$args = array(
-			'wpas-do'       => $action,
-			'wpas-do-nonce' => wp_create_nonce( 'trigger_custom_action' ),
-	);
-
-	$url = esc_url( add_query_arg( $args, $url ) );
+	$args['wpas-do']       = $action;
+	$args['wpas-do-nonce'] = wp_create_nonce( 'trigger_custom_action' );
+	$url                   = esc_url( add_query_arg( $args, $url ) );
 
 	return $url;
 

@@ -519,7 +519,7 @@ function wpas_get_reopen_url( $ticket_id = null ) {
 		$ticket_id = intval( $wp_query->post->ID );
 	}
 
-	$url = add_query_arg( array( 'action' => 'reopen', 'ticket_id' => $ticket_id ), get_permalink( $ticket_id ) );
+	$url = wpas_do_url( get_permalink( $ticket_id ), 'reopen_ticket', array( 'ticket_id' => $ticket_id ) );
 
 	return apply_filters( 'wpas_reopen_url', esc_url( $url ), $ticket_id );
 

@@ -1258,7 +1258,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
  */
 function wpas_reopen_ticket( $ticket_id ) {
 
-	if ( 'ticket' == get_post_type( $ticket_id ) ) {
+	if ( 'ticket' === get_post_type( $ticket_id ) && wpas_can_submit_ticket( $ticket_id ) ) {
 
 		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
 
@@ -1276,6 +1276,39 @@ function wpas_reopen_ticket( $ticket_id ) {
 
 	} else {
 		return false;
+	}
+
+}
+
+add_action( 'wpas_do_reopen_ticket', 'wpas_reopen_ticket_trigger' );
+/**
+ * Trigger the re-open ticket function
+ *
+ * This is triggered by the wpas_do custom actions.
+ *
+ * @since 3.3
+ *
+ * @param array $data Superglobal data
+ *
+ * @return void
+ */
+function wpas_reopen_ticket_trigger( $data ) {
+
+	if ( isset( $data['ticket_id'] ) ) {
+
+		$ticket_id = (int) $data['ticket_id'];
+
+		if ( ! wpas_can_submit_ticket( $ticket_id ) && ! current_user_can( 'edit_ticket' ) ) {
+			wpas_add_error( 'cannot_reopen_ticket', __( 'You are not allowed to re-open this ticket', 'awesome-support' ) );
+			wpas_redirect( 'ticket_reopen', wpas_get_tickets_list_page_url() );
+			exit;
+		}
+
+		wpas_reopen_ticket( $ticket_id );
+		wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'awesome-support' ) );
+		wpas_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );
+		exit;
+
 	}
 
 }
