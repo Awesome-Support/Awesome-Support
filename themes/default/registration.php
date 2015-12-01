@@ -74,7 +74,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 		?>
 
 		<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>">
-		<input type="hidden" name="wpas_login" value="1">
+		<input type="hidden" name="wpas-do" value="login">
 		<?php wpas_make_button( __( 'Log in' ), array( 'onsubmit' => __( 'Logging In...', 'awesome-support' ) ) ); ?>
 	</form>
 	<?php
@@ -155,7 +155,8 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 			 */
 			do_action( 'wpas_after_registration_fields' );
 			?>
-			<input type="hidden" name="wpas_registration" value="true">
+			<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>">
+			<input type="hidden" name="wpas-do" value="register">
 			<?php
 			wp_nonce_field( 'register', 'user_registration', false, true );
 			wpas_make_button( __( 'Create Account', 'awesome-support' ), array( 'onsubmit' => __( 'Creating Account...', 'awesome-support' ) ) );

@@ -359,6 +359,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
 			require( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
 			require( WPAS_PATH . 'includes/custom-fields/functions-custom-fields.php' );   // Submission form related functions
+			require( WPAS_PATH . 'includes/functions-actions.php' );            // All the functions related to opening a ticket and submitting replies
 			require( WPAS_PATH . 'includes/functions-post.php' );            // All the functions related to opening a ticket and submitting replies
 			require( WPAS_PATH . 'includes/functions-user.php' );            // Everything related to user login, registration and capabilities
 			require( WPAS_PATH . 'includes/functions-addons.php' );          // Addons functions and autoloader

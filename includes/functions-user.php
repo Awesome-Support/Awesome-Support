@@ -1,27 +1,41 @@
 <?php
+add_action( 'wpas_do_register', 'wpas_register_account' );
 /**
  * Register user account.
  *
- * @param array|bool $data User data
+ * This function is hooked onto wpas_do_register so that the registration process can be triggered
+ * when the registration form is submitted.
+ *
+ * @param array $data User data
  *
  * @since  1.0.0
  * @return void
  */
-function wpas_register_account( $data = false ) {
+function wpas_register_account( $data ) {
 
-	global $post;
+	// Get the redirect URL
+	$redirect_to = home_url();
+
+	if ( isset( $data['redirect_to'] ) ) {
+		$redirect_to = wp_sanitize_redirect( $data['redirect_to'] ); // If a redirect URL is specified we use it
+	} else {
+
+		global $post;
+
+		// Otherwise we try to get the URL of the originating page
+		if ( isset( $post ) && $post instanceof WP_Post ) {
+			$redirect_to = wp_sanitize_redirect( get_permalink( $post->ID ) );
+		}
+
+	}
 
 	/* Make sure registrations are open */
 	$registration = wpas_get_option( 'allow_registrations', 'allow' );
 
 	if ( 'allow' !== $registration ) {
 		wpas_add_error( 'registration_not_allowed', __( 'Registrations are currently not allowed.', 'awesome-support' ) );
-		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+		wp_redirect( $redirect_to );
 		exit;
-	}
-
-	if ( false === $data ) {
-		$data = $_POST;
 	}
 
 	$email      = isset( $data['wpas_email'] ) && ! empty( $data['wpas_email'] ) ? sanitize_email( $data['wpas_email'] ) : false;
@@ -42,7 +56,7 @@ function wpas_register_account( $data = false ) {
 		$notice = implode( '\n\r', $errors->get_error_messages() );
 
 		wpas_add_error( 'registration_error', $notice );
-		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+		wp_redirect( $redirect_to );
 
 		exit;
 
@@ -60,14 +74,14 @@ function wpas_register_account( $data = false ) {
 
 	if ( wpas_get_option( 'terms_conditions', false ) && ! isset( $data['terms'] ) ) {
 		wpas_add_error( 'accept_terms_conditions', __( 'You did not accept the terms and conditions.', 'awesome-support' ) );
-		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+		wp_redirect( $redirect_to );
 		exit;
 	}
 
 	/* Make sure we have all the necessary data. */
 	if ( false === ( $email || $first_name || $last_name || $pwd ) ) {
 		wpas_add_error( 'missing_fields', __( 'You didn\'t correctly fill all the fields.', 'awesome-support' ) );
-		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+		wp_redirect( $redirect_to );
 		exit;
 	}
 
@@ -124,7 +138,7 @@ function wpas_register_account( $data = false ) {
 		$error = $user_id->get_error_message();
 
 		wpas_add_error( 'missing_fields', $error );
-		wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+		wp_redirect( $redirect_to );
 
 		exit;
 
@@ -148,7 +162,7 @@ function wpas_register_account( $data = false ) {
 
 		if ( headers_sent() ) {
 			wpas_add_notification( 'account_created', __( 'Your account has been created. Please log-in.', 'awesome-support' ) );
-			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+			wp_redirect( $redirect_to );
 			exit;
 		}
 
@@ -158,7 +172,7 @@ function wpas_register_account( $data = false ) {
 			wp_set_current_user( $user_id, $email );
 			wp_set_auth_cookie( $user_id );
 
-			wp_redirect( get_permalink( $post->ID ) );
+			wp_redirect( $redirect_to );
 			exit;
 		}
 
@@ -166,30 +180,51 @@ function wpas_register_account( $data = false ) {
 
 }
 
+add_action( 'wpas_do_login', 'wpas_try_login' );
 /**
  * Try to log the user in.
  *
- * If credentials are passed through the POST data
- * we try to log the user in.
+ * This function is hooked onto wpas_do_login so that the login process can be triggered
+ * when the login form is submitted.
+ *
+ * @since 2.0
+ *
+ * @param array $data Function arguments (the superglobal vars if the function is triggered by wpas_do_login)
+ *
+ * @return void
  */
-function wpas_try_login() {
+function wpas_try_login( $data ) {
 
-	global $post;
+	// Get the redirect URL
+	$redirect_to = home_url();
+
+	if ( isset( $data['redirect_to'] ) ) {
+		$redirect_to = wp_sanitize_redirect( $data['redirect_to'] ); // If a redirect URL is specified we use it
+	} else {
+
+		global $post;
+
+		// Otherwise we try to get the URL of the originating page
+		if ( isset( $post ) && $post instanceof WP_Post ) {
+			$redirect_to = wp_sanitize_redirect( get_permalink( $post->ID ) );
+		}
+
+	}
 
 	/**
 	 * Try to log the user if credentials are submitted.
 	 */
-	if ( isset( $_POST['wpas_log'] ) ) {
+	if ( isset( $data['wpas_log'] ) ) {
 
 		$credentials = array(
-			'user_login' => $_POST['wpas_log'],
+				'user_login' => $data['wpas_log'],
 		);
 
-		if ( isset( $_POST['rememberme'] ) ) {
+		if ( isset( $data['rememberme'] ) ) {
 			$credentials['remember'] = true;
 		}
 
-		$credentials['user_password'] = isset( $_POST['wpas_pwd'] ) ? $_POST['wpas_pwd'] : '';
+		$credentials['user_password'] = isset( $data['wpas_pwd'] ) ? $data['wpas_pwd'] : '';
 
 		/**
 		 * Give a chance to third-parties to add new checks to the login process
@@ -202,7 +237,7 @@ function wpas_try_login() {
 		if ( is_wp_error( $login ) ) {
 			$error = $login->get_error_message();
 			wpas_add_error( 'login_failed', $error );
-			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+			wp_redirect( $redirect_to );
 			exit;
 		}
 
@@ -211,14 +246,14 @@ function wpas_try_login() {
 		if ( is_wp_error( $login ) ) {
 			$error = $login->get_error_message();
 			wpas_add_error( 'login_failed', $error );
-			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+			wp_redirect( $redirect_to );
 			exit;
-		} elseif ( is_a( $login, 'WP_User' ) ) {
-			wp_redirect( get_permalink( $post->ID ) );
+		} elseif ( $login instanceof WP_User ) {
+			wp_redirect( $redirect_to );
 			exit;
 		} else {
 			wpas_add_error( 'login_failed', __( 'We were unable to log you in for an unknown reason.', 'awesome-support' ) );
-			wp_redirect( wp_sanitize_redirect( get_permalink( $post->ID ) ) );
+			wp_redirect( $redirect_to );
 			exit;
 		}
 

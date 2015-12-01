@@ -51,36 +51,6 @@ class Awesome_Support_Old {
 	public function init() {
 
 		/**
-		 * Log user in.
-		 *
-		 * If we have a login in the post data we try to log the user in.
-		 * The login process relies on the WordPress core functions. If the login
-		 * is successful, the user is redirected to the page he was requesting,
-		 * otherwise the standard WordPress error messages are returned.
-		 *
-		 * @since 3.0.0
-		 */
-		if ( isset( $_POST['wpas_login'] ) ) {
-			add_action( 'wp', 'wpas_try_login' );
-		}
-
-		/**
-		 * Register a new account.
-		 *
-		 * If wpas_registration is passed we trigger the account registration function.
-		 * The registration function will do a certain number of checks and if all of them
-		 * are successful, a new user is created using the WordPress core functions.
-		 *
-		 * The reason why we are not using a simpler process is to keep full control over
-		 * what's returned to the user and where the user is returned.
-		 *
-		 * @since 3.0.0
-		 */
-		if ( isset( $_POST['wpas_registration'] ) ) {
-			add_action( 'wp', 'wpas_register_account', 10, 0 );
-		}
-
-		/**
 		 * Run custom actions.
 		 *
 		 * The plugin can run a number of custom actions triggered by a URL parameter.
