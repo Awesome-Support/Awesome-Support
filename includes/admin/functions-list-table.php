@@ -109,14 +109,21 @@ function wpas_limit_open( $query ) {
 
 	if ( isset( $_GET['post_status'] ) && array_key_exists( $_GET['post_status'], wpas_get_post_status() ) || ! isset( $_GET['post_status'] ) && true === (bool) wpas_get_option( 'hide_closed', false ) ) {
 
-		$query->set( 'meta_query', array(
-				array(
-					'key'     => '_wpas_status',
-					'value'   => 'open',
-					'compare' => '=',
-				)
-			)
+		// We need to update the original meta_query and not replace it to avoid filtering issues
+		$meta_query = $query->get( 'meta_query' );
+
+		if ( ! is_array( $meta_query ) ) {
+			$meta_query = array_filter( (array) $meta_query );
+		}
+
+		$meta_query[] = array(
+				'key'     => '_wpas_status',
+				'value'   => 'open',
+				'compare' => '=',
+				'type'    => 'CHAR',
 		);
+
+		$query->set( 'meta_query', $meta_query );
 
 		return true;
 
