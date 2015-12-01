@@ -24,11 +24,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/**
- * Get an instance of the plugin
- */
-add_action( 'plugins_loaded', array( 'Awesome_Support_Old', 'get_instance' ) );
-
 /*----------------------------------------------------------------------------*
  * Load theme's functions
  *----------------------------------------------------------------------------*/
@@ -349,7 +344,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			require( WPAS_PATH . 'includes/functions-fallback.php' );
 			require( WPAS_PATH . 'includes/class-logger.php' );
-			require( WPAS_PATH . 'includes/class-awesome-support.php' );
 			require( WPAS_PATH . 'includes/integrations/loader.php' );
 			require( WPAS_PATH . 'includes/scripts.php' );
 			require( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
