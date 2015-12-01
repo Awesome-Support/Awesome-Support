@@ -74,6 +74,17 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 
 }
 
+/**
+ * Generate a wpas-do URL with a security nonce
+ *
+ * @since 3.3
+ *
+ * @param string $url    URL to action & nonce
+ * @param string $action Action trigger
+ * @param array  $args   Extra URL parameters to add
+ *
+ * @return string
+ */
 function wpas_do_url( $url, $action, $args = array() ) {
 
 	$args['wpas-do']       = $action;
