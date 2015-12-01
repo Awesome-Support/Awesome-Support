@@ -472,6 +472,7 @@ function wpas_get_reply_form( $args = array() ) {
 
 			<?php
 			wp_nonce_field( 'send_reply', 'client_reply', false, true );
+			wpas_do_field( 'submit_new_reply' );
 			wpas_make_button( __( 'Reply', 'awesome-support' ), array( 'name' => 'wpas-submit', 'onsubmit' => __( 'Please Wait...', 'awesome-support' ) ) );
 
 			/**

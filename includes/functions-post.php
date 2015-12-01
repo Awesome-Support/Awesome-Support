@@ -471,6 +471,81 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 
 }
 
+add_action( 'wpas_do_submit_new_reply', 'wpas_new_reply_submission' );
+/**
+ * Instantiate a new reply submission
+ *
+ * This helper function is used to trigger the creation of a new reply
+ * after the reply submission form is posted on the front-end.
+ *
+ * @since 3.3
+ *
+ * @param array $data Reply data required to open a new ticket
+ *
+ * @return void
+ */
+function wpas_new_reply_submission( $data ) {
+
+	// Get parent ticket ID
+	$parent_id = (int) $data['ticket_id'];
+
+	if ( 'ticket' !== get_post_type( $parent_id ) ) {
+		wpas_add_error( 'reply_added_failed', __( 'Something went wrong. We couldn&#039;t identify your ticket. Please try again.', 'awesome-support' ) );
+		wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
+		exit;
+	}
+
+	// Define if the ticket must be closed
+	$close = isset( $data['wpas_close_ticket'] ) ? true : false;
+
+	if ( ! empty( $data['wpas_user_reply'] ) ) {
+
+		/* Sanitize the data */
+		$data = array( 'post_content' => wp_kses( $data['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
+
+		/* Add the reply */
+		$reply_id = wpas_add_reply( $data, $parent_id );
+
+	}
+
+	/* Possibly close the ticket */
+	if ( $close ) {
+
+		wpas_close_ticket( $parent_id );
+
+		// Redirect now if no reply was posted
+		if ( ! isset( $reply_id ) ) {
+			wpas_add_notification( 'ticket_closed', __( 'The ticket was successfully closed', 'awesome-support' ) );
+			wpas_redirect( 'ticket_closed', get_permalink( $parent_id ) );
+			exit;
+		}
+
+	}
+
+	if ( isset( $reply_id ) ) {
+
+		if ( false === $reply_id ) {
+			wpas_add_error( 'reply_added_failed', __( 'Your reply could not be submitted for an unknown reason.', 'awesome-support' ) );
+			wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
+			exit;
+		} else {
+
+			if ( $close ) {
+				wpas_add_notification( 'reply_added_closed', __( 'Thanks for your reply. The ticket is now closed.', 'awesome-support' ) );
+			} else {
+				wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'awesome-support' ) );
+			}
+
+			if ( false !== $link = wpas_get_reply_link( $reply_id ) ) {
+				wpas_redirect( 'reply_added', $link );
+				exit;
+			}
+		}
+
+	}
+
+}
+
 function wpas_edit_reply( $reply_id = null, $content = '' ) {
 
 	if ( is_null( $reply_id ) ) {
