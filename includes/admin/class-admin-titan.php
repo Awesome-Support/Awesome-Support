@@ -99,7 +99,7 @@ class WPAS_Titan {
 		 * @var (array)
 		 * @see  admin/includes/settings.php
 		 */
-		$options = apply_filters( 'wpas_plugin_settings', array() );
+		$options = wpas_get_settings();
 
 		/* Parse options */
 		foreach ( $options as $tab => $content ) {
