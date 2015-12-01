@@ -181,7 +181,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					 * on the about page.
 					 */
 					if ( true === boolval( get_option( 'wpas_redirect_about', false ) ) ) {
-						self::$instance->redirect_to_about();
+						add_action( 'init', array( self::$instance, 'redirect_to_about' ) );
 					}
 
 					add_action( 'plugins_loaded', array( 'WPAS_Upgrade', 'get_instance' ), 11, 0 );
@@ -367,7 +367,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 *
 		 * @return void
 		 */
-		private function redirect_to_about() {
+		public function redirect_to_about() {
 			delete_option( 'wpas_redirect_about' );
 			wp_redirect( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
 			exit;
@@ -464,31 +464,25 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		private function maybe_setup() {
 
 			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
-
 				add_action( 'admin_init', 'wpas_create_pages', 11, 0 );
 				add_action( 'admin_init', 'wpas_flush_rewrite_rules', 11, 0 );
+			}
 
-				/**
-				 * Ask for products support.
-				 *
-				 * Still part of the installation process. Ask the user
-				 * if he is going to support multiple products or only one.
-				 * It is important to use the built-in taxonomy for multiple products
-				 * support as it is used by multiple addons.
-				 *
-				 * However, if the products support is already enabled, it means that this is not
-				 * the first activation of the plugin and products support was previously enabled
-				 * (products support is disabled by default). In this case we don't ask again.
-				 */
-				if ( ! isset( $_GET['page'] ) || 'wpas-about' !== $_GET['page'] ) {
-
-					$products = boolval( wpas_get_option( 'support_products' ) );
-
-					if ( true === $products ) {
-						delete_option( 'wpas_support_products' );
-					} else {
-						add_action( 'admin_notices', 'wpas_ask_support_products' );
-					}
+			/**
+			 * Ask for products support.
+			 *
+			 * Still part of the installation process. Ask the user
+			 * if he is going to support multiple products or only one.
+			 * It is important to use the built-in taxonomy for multiple products
+			 * support as it is used by multiple addons.
+			 *
+			 * However, if the products support is already enabled, it means that this is not
+			 * the first activation of the plugin and products support was previously enabled
+			 * (products support is disabled by default). In this case we don't ask again.
+			 */
+			if ( 'pending' === get_option( 'wpas_support_products' ) ) {
+				if ( ! isset( $_GET['page'] ) || isset( $_GET['page'] ) && 'wpas-about' !== $_GET['page'] ) {
+					add_action( 'admin_notices', 'wpas_ask_support_products' );
 				}
 
 			}

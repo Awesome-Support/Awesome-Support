@@ -346,25 +346,23 @@ function wpas_ask_support_products() {
 
 	global $pagenow;
 
-	$get = $_GET;
+	$args_single = $args_multiple = $_GET;
 
-	if ( !isset( $get ) || !is_array( $get ) ) {
+	if ( ! isset( $get ) || ! is_array( $get ) ) {
 		$get = array();
 	}
 
-	$get['wpas-nonce']       = wp_create_nonce( 'wpas_custom_action' );
-	$get_single              = $get_multiple = $get;
-	$get_single['wpas-do']   = 'single-product';
-	$get_multiple['wpas-do'] = 'multiple-products';
-
-	$single_url   = add_query_arg( $get_single, admin_url( $pagenow ) );
-	$multiple_url = add_query_arg( $get_multiple, admin_url( $pagenow ) );
+	$args_single['products']   = 'single';
+	$args_multiple['products'] = 'multiple';
 	?>
 	<div class="updated">
 		<p><?php _e( 'Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>', 'awesome-support' ); ?></p>
+
 		<p>
-			<a href="<?php echo wp_sanitize_redirect( $single_url ); ?>" class="button-secondary"><?php _e( 'Single Product', 'awesome-support' ); ?></a>
-			<a href="<?php echo wp_sanitize_redirect( $multiple_url ); ?>" class="button-secondary"><?php _e( 'Multiple Products', 'awesome-support' ); ?></a>
+			<a href="<?php echo wp_sanitize_redirect( wpas_do_url( admin_url( $pagenow ), 'admin_products_option', $args_single ) ); ?>"
+			   class="button-secondary"><?php _e( 'Single Product', 'awesome-support' ); ?></a>
+			<a href="<?php echo wp_sanitize_redirect( wpas_do_url( admin_url( $pagenow ), 'admin_products_option', $args_multiple ) ); ?>"
+			   class="button-secondary"><?php _e( 'Multiple Products', 'awesome-support' ); ?></a>
 		</p>
 	</div>
 <?php }
