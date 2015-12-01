@@ -137,7 +137,7 @@ function wpas_open_ticket( $data ) {
 	
 }
 
-add_action( 'wpas_do_submit_new', 'wpas_new_ticket_submission' );
+add_action( 'wpas_do_submit_new_ticket', 'wpas_new_ticket_submission' );
 /**
  * Instantiate a new ticket submission
  *

@@ -87,7 +87,7 @@ global $post;
 		 * @since  3.0.0
 		 */
 		do_action( 'wpas_submission_form_inside_after' );
-		wpas_do_field( 'submit_new' );
+		wpas_do_field( 'submit_new_ticket' );
 		?>
 	</form>
 </div>
