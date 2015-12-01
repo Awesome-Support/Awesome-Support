@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'init', 'wpas_process_actions' );
+add_action( 'init', 'wpas_process_actions', 50 );
 /**
  * Process actions that can be triggered by $_GET or $_POST vars
  *
