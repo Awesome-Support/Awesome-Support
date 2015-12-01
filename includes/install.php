@@ -12,43 +12,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-/**
- * Plugin setup.
- *
- * If the plugin has just been installed we need to set a couple of things.
- * We will automatically create the "special" pages: tickets list and
- * ticket submission.
- */
-if ( 'pending' === get_option( 'wpas_setup', false ) ) {
-
-	add_action( 'admin_init', 'wpas_create_pages', 11, 0 );
-	add_action( 'admin_init', 'wpas_flush_rewrite_rules', 11, 0 );
-
-	/**
-	 * Ask for products support.
-	 *
-	 * Still part of the installation process. Ask the user
-	 * if he is going to support multiple products or only one.
-	 * It is important to use the built-in taxonomy for multiple products
-	 * support as it is used by multiple addons.
-	 *
-	 * However, if the products support is already enabled, it means that this is not
-	 * the first activation of the plugin and products support was previously enabled
-	 * (products support is disabled by default). In this case we don't ask again.
-	 */
-	if ( ! isset( $_GET['page'] ) || 'wpas-about' !== $_GET['page'] ) {
-
-		$products = boolval( wpas_get_option( 'support_products' ) );
-
-		if ( true === $products ) {
-			delete_option( 'wpas_support_products' );
-		} else {
-			add_action( 'admin_notices', 'wpas_ask_support_products' );
-		}
-	}
-
-}
-
 register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
 /**
  * Fired when the plugin is activated.
@@ -225,6 +188,7 @@ function wpas_single_activate() {
 		}
 	}
 
+	add_option( 'wpas_options', serialize( get_settings_defaults() ) );
 	add_option( 'wpas_setup', 'pending' );
 	add_option( 'wpas_redirect_about', true );
 	add_option( 'wpas_support_products', 'pending' );
@@ -266,7 +230,7 @@ function wpas_get_blog_ids() {
  */
 function wpas_create_pages() {
 
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	$options = unserialize( get_option( 'wpas_options', array() ) );
 	$update  = false;
 
 	if ( empty( $options['ticket_list'] ) ) {
