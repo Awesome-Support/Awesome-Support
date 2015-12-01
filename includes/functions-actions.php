@@ -24,6 +24,18 @@ add_action( 'init', 'wpas_process_actions', 50 );
  */
 function wpas_process_actions() {
 
+	$nonce = false;
+
+	if ( isset( $_POST['wpas-do-nonce'] ) ) {
+		$nonce = $_POST['wpas-do-nonce'];
+	} elseif ( isset( $_GET['wpas-do-nonce'] ) ) {
+		$nonce = $_GET['wpas-do-nonce'];
+	}
+
+	if ( ! $nonce || ! wp_verify_nonce( $nonce, 'trigger_custom_action' ) ) {
+		return;
+	}
+
 	if ( isset( $_POST['wpas-do'] ) ) {
 		do_action( 'wpas_do_' . $_POST['wpas-do'], $_POST );
 	}
