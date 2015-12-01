@@ -1253,30 +1253,34 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
  * Change a ticket status to open.
  *
  * @since  3.0.2
- * @param  integer         $ticket_id ID of the ticket to re-open
+ *
+ * @param  integer $ticket_id ID of the ticket to re-open
+ *
  * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
  */
 function wpas_reopen_ticket( $ticket_id ) {
 
-	if ( 'ticket' === get_post_type( $ticket_id ) && wpas_can_submit_ticket( $ticket_id ) ) {
-
-		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
-
-		/* Log the action */
-		wpas_log( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
-
-		/**
-		 * wpas_after_reopen_ticket hook
-		 *
-		 * @since  3.0.2
-		 */
-		do_action( 'wpas_after_reopen_ticket', intval( $ticket_id ), $update );
-
-		return $update;
-
-	} else {
+	if ( 'ticket' !== get_post_type( $ticket_id ) ) {
 		return false;
 	}
+
+	if ( ! current_user_can( 'edit_ticket' ) && ! wpas_can_submit_ticket( $ticket_id ) ) {
+		return false;
+	}
+
+	$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
+
+	/* Log the action */
+	wpas_log( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
+
+	/**
+	 * wpas_after_reopen_ticket hook
+	 *
+	 * @since  3.0.2
+	 */
+	do_action( 'wpas_after_reopen_ticket', intval( $ticket_id ), $update );
+
+	return $update;
 
 }
 
