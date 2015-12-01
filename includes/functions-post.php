@@ -137,6 +137,69 @@ function wpas_open_ticket( $data ) {
 	
 }
 
+add_action( 'wpas_do_submit_new', 'wpas_new_ticket_submission' );
+/**
+ * Instantiate a new ticket submission
+ *
+ * This helper function is used to trigger the creation of a new ticket
+ * after the ticket submission form is posted on the front-end.
+ *
+ * @since 3.3
+ *
+ * @param array $data Ticket data required to open a new ticket
+ *
+ * @return void
+ */
+function wpas_new_ticket_submission( $data ) {
+
+	if ( ! is_admin() && isset( $data['wpas_title'] ) ) {
+
+		// Verify the nonce first
+		if ( ! isset( $data['wpas_nonce'] ) || ! wp_verify_nonce( $data['wpas_nonce'], 'new_ticket' ) ) {
+
+			/* Save the input */
+			wpas_save_values();
+
+			// Redirect to submit page
+			wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'awesome-support' ) );
+			wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
+			exit;
+		}
+
+		$ticket_id = wpas_open_ticket( array( 'title' => $data['wpas_title'], 'message' => $data['wpas_message'] ) );
+
+		/* Submission failure */
+		if ( false === $ticket_id ) {
+
+			/* Save the input */
+			wpas_save_values();
+
+			/**
+			 * Redirect to the newly created ticket
+			 */
+			wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'awesome-support' ) );
+			wp_redirect( wp_sanitize_redirect( home_url( $data['_wp_http_referer'] ) ) );
+			exit;
+
+		} /* Submission succeeded */
+		else {
+
+			/**
+			 * Empty the temporary sessions
+			 */
+			WPAS()->session->clean( 'submission_form' );
+
+			/**
+			 * Redirect to the newly created ticket
+			 */
+			wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
+			exit;
+
+		}
+	}
+
+}
+
 /**
  * Insert a new ticket in the database
  *

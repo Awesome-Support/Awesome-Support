@@ -63,64 +63,6 @@ class Awesome_Support_Old {
 		}
 
 		/**
-		 * Open a new ticket.
-		 *
-		 * If a ticket title is passed in the post we trigger the function that adds
-		 * new tickets. The function does a certain number of checks and has several
-		 * action hooks and filters. Post-insertion actions like adding post metas
-		 * and redirecting the user are run from here.
-		 *
-		 * @since  3.0.0
-		 */
-		if ( ! is_admin() && isset( $_POST['wpas_title'] ) ) {
-
-			// Verify the nonce first
-			if ( ! isset( $_POST['wpas_nonce'] ) || ! wp_verify_nonce( $_POST['wpas_nonce'], 'new_ticket' ) ) {
-
-				/* Save the input */
-				wpas_save_values();
-
-				// Redirect to submit page
-				wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'awesome-support' ) );
-				wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
-				exit;
-			}
-
-			$ticket_id = wpas_open_ticket( array( 'title' => $_POST['wpas_title'], 'message' => $_POST['wpas_message'] ) );
-
-			/* Submission failure */
-			if( false === $ticket_id ) {
-
-				/* Save the input */
-				wpas_save_values();
-
-				/**
-				 * Redirect to the newly created ticket
-				 */
-				wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'awesome-support' ) );
-				wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
-				exit;
-
-			}
-
-			/* Submission succeeded */
-			else {
-
-				/**
-				 * Empty the temporary sessions
-				 */
-				WPAS()->session->clean( 'submission_form' );
-
-				/**
-				 * Redirect to the newly created ticket
-				 */
-				wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
-				exit;
-
-			}
-		}
-
-		/**
 		 * Save a new reply.
 		 *
 		 * This adds a new reply to an existing ticket. The ticket
