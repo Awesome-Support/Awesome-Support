@@ -199,3 +199,61 @@ function wpas_ticket_action_row( $actions, $post ) {
 
 	return $actions;
 }
+
+add_filter( 'views_edit-ticket', 'wpas_fix_tickets_count' );
+/**
+ * Fix the ticket count in the ticket list screen
+ *
+ * The ticket count is wrong because it doesn't includes
+ * the possible restrictions on user roles.
+ *
+ * @since 3.2
+ *
+ * @param $views All available views in the ticket list screen
+ *
+ * @return array All views with accurate count
+ */
+function wpas_fix_tickets_count( $views ) {
+
+	global $wp_query;
+
+	$ticket_status = wpas_get_post_status(); // Our declared ticket status
+	$status        = 'open';
+
+	// Maybe apply filters
+	if ( isset( $_GET['wpas_status'] ) ) {
+		switch ( $_GET['wpas_status'] ) {
+			case 'closed':
+				$status = 'closed';
+				break;
+			case '':
+				$status = 'any';
+				break;
+		}
+	}
+
+	foreach ( $views as $view => $label ) {
+
+		if ( array_key_exists( $view, $ticket_status ) || 'all' === $view ) {
+
+			$count   = 'all' === $view ? wpas_get_ticket_count_by_status( '', $status ) : wpas_get_ticket_count_by_status( $view, $status );
+			$regex   = '.*?(\\(.*\\))';
+			$replace = '';
+
+			if ( preg_match_all( "/" . $regex . "/is", $label, $matches ) ) {
+				$replace = $matches[1][0];
+			}
+
+			$label           = trim( strip_tags( str_replace( $replace, '', $label ) ) );
+			$class           = isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view || isset( $wp_query->query_vars['post_status'] ) && 'all' === $view && $wp_query->query_vars['post_status'] == null ? ' class="current"' : '';
+			$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
+			$link            = esc_url( add_query_arg( $link_query_args, admin_url( 'edit.php' ) ) );
+			$views[ $view ]  = sprintf( '<a href="%1$s"%2$s>%3$s <span class="count">(%4$d)</span></a>', $link, $class, $label, $count );
+
+		}
+
+	}
+
+	return $views;
+
+}

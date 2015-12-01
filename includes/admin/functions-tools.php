@@ -242,3 +242,46 @@ function wpas_clear_agents_metas() {
 	}
 
 }
+
+/**
+ * Checks for templates overrides.
+ *
+ * Check if any of the plugin templates is being
+ * overwritten by the child theme or the theme.
+ *
+ * @since  3.0.0
+ * @param  string $dir Directory to check
+ * @return array       Array of overridden templates
+ */
+function wpas_check_templates_override( $dir ) {
+
+	$templates = array(
+			'details.php',
+			'list.php',
+			'registration.php',
+			'submission.php'
+	);
+
+	$overrides = array();
+
+	if ( is_dir( $dir ) ) {
+
+		$files = scandir( $dir );
+
+		if ( empty( $files ) ) {
+			return array();
+		}
+
+		foreach ( $files as $key => $file ) {
+			if ( !in_array( $file, $templates ) ) {
+				continue;
+			}
+
+			array_push( $overrides, $file );
+		}
+
+	}
+
+	return $overrides;
+
+}

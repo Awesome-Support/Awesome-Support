@@ -424,7 +424,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			// We don't need all this during Ajax processing
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
-				require( WPAS_PATH . 'includes/admin/functions-admin.php' );
 				require( WPAS_PATH . 'includes/admin/functions-menu.php' );
 				require( WPAS_PATH . 'includes/admin/functions-post.php' );
 				require( WPAS_PATH . 'includes/admin/functions-tools.php' );
