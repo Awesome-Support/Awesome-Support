@@ -45,3 +45,44 @@ function wpas_process_actions() {
 	}
 
 }
+
+/**
+ * Generate a wpas-do field with a security nonce
+ *
+ * @since 3.3
+ *
+ * @param string $action      Action trigger
+ * @param string $redirect_to Possible URL to redirect to after the action
+ * @param bool   $echo        Whether to echo or return the fields
+ *
+ * @return string
+ */
+function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
+
+	$field = sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'wpas-do', $action );
+	$field .= wp_nonce_field( 'trigger_custom_action', 'wpas-do-nonce', true, false );
+
+	if ( ! empty( $redirect_to ) ) {
+		$field .= sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'redirect_to', wp_sanitize_redirect( $redirect_to ) );
+	}
+
+	if ( $echo ) {
+		echo $field;
+	}
+
+	return $field;
+
+}
+
+function wpas_do_url( $url, $action ) {
+
+	$args = array(
+			'wpas-do'       => $action,
+			'wpas-do-nonce' => wp_create_nonce( 'trigger_custom_action' ),
+	);
+
+	$url = esc_url( add_query_arg( $args, $url ) );
+
+	return $url;
+
+}

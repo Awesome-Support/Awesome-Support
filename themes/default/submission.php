@@ -87,7 +87,7 @@ global $post;
 		 * @since  3.0.0
 		 */
 		do_action( 'wpas_submission_form_inside_after' );
+		wpas_do_field( 'submit_new' );
 		?>
-		<input type="hidden" name="wpas-do" value="submit_new">
 	</form>
 </div>
