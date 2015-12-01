@@ -12,6 +12,43 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+/**
+ * Plugin setup.
+ *
+ * If the plugin has just been installed we need to set a couple of things.
+ * We will automatically create the "special" pages: tickets list and
+ * ticket submission.
+ */
+if ( 'pending' === get_option( 'wpas_setup', false ) ) {
+
+	add_action( 'admin_init', 'wpas_create_pages', 11, 0 );
+	add_action( 'admin_init', 'wpas_flush_rewrite_rules', 11, 0 );
+
+	/**
+	 * Ask for products support.
+	 *
+	 * Still part of the installation process. Ask the user
+	 * if he is going to support multiple products or only one.
+	 * It is important to use the built-in taxonomy for multiple products
+	 * support as it is used by multiple addons.
+	 *
+	 * However, if the products support is already enabled, it means that this is not
+	 * the first activation of the plugin and products support was previously enabled
+	 * (products support is disabled by default). In this case we don't ask again.
+	 */
+	if ( ! isset( $_GET['page'] ) || 'wpas-about' !== $_GET['page'] ) {
+
+		$products = boolval( wpas_get_option( 'support_products' ) );
+
+		if ( true === $products ) {
+			delete_option( 'wpas_support_products' );
+		} else {
+			add_action( 'admin_notices', 'wpas_ask_support_products' );
+		}
+	}
+
+}
+
 register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
 /**
  * Fired when the plugin is activated.
@@ -217,3 +254,117 @@ function wpas_get_blog_ids() {
 	return $wpdb->get_col( $sql );
 
 }
+
+/**
+ * Create the mandatory pages.
+ *
+ * Create the mandatory for the user in order to avoid
+ * issues with people thinking the plugin isn't working.
+ *
+ * @since  2.0.0
+ * @return void
+ */
+function wpas_create_pages() {
+
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	$update  = false;
+
+	if ( empty( $options['ticket_list'] ) ) {
+
+		$list_args = array(
+				'post_content'   => '[tickets]',
+				'post_title'     => wp_strip_all_tags( __( 'My Tickets', 'awesome-support' ) ),
+				'post_name'      => sanitize_title( __( 'My Tickets', 'awesome-support' ) ),
+				'post_type'      => 'page',
+				'post_status'    => 'publish',
+				'ping_status'    => 'closed',
+				'comment_status' => 'closed'
+		);
+
+		$list = wp_insert_post( $list_args, true );
+
+		if ( ! is_wp_error( $list ) && is_int( $list ) ) {
+			$options['ticket_list'] = $list;
+			$update                 = true;
+		}
+	}
+
+	if ( empty( $options['ticket_submit'] ) ) {
+
+		$submit_args = array(
+				'post_content'   => '[ticket-submit]',
+				'post_title'     => wp_strip_all_tags( __( 'Submit Ticket', 'awesome-support' ) ),
+				'post_name'      => sanitize_title( __( 'Submit Ticket', 'awesome-support' ) ),
+				'post_type'      => 'page',
+				'post_status'    => 'publish',
+				'ping_status'    => 'closed',
+				'comment_status' => 'closed'
+		);
+
+		$submit = wp_insert_post( $submit_args, true );
+
+		if ( ! is_wp_error( $submit ) && is_int( $submit ) ) {
+			$options['ticket_submit'] = $submit;
+			$update                   = true;
+		}
+
+	}
+
+	if ( $update ) {
+		update_option( 'wpas_options', serialize( $options ) );
+	}
+
+	if ( ! empty( $options['ticket_submit'] ) && ! empty( $options['ticket_list'] ) ) {
+		delete_option( 'wpas_setup' );
+	}
+}
+
+/**
+ * Flush rewrite rules.
+ *
+ * This is to avoid getting 404 errors
+ * when trying to view a ticket. We need to update
+ * the permalinks with our new custom post type.
+ *
+ * @since  3.0.0
+ * @return void
+ */
+function wpas_flush_rewrite_rules() {
+	flush_rewrite_rules();
+}
+
+/**
+ * Multiple products support.
+ *
+ * Ask the user to choose if the support site will manage
+ * multiple products or not.
+ *
+ * @since  3.0.0
+ * @return void
+ */
+function wpas_ask_support_products() {
+
+	global $pagenow;
+
+	$get = $_GET;
+
+	if ( !isset( $get ) || !is_array( $get ) ) {
+		$get = array();
+	}
+
+	$get['wpas-nonce']       = wp_create_nonce( 'wpas_custom_action' );
+	$get_single              = $get_multiple = $get;
+	$get_single['wpas-do']   = 'single-product';
+	$get_multiple['wpas-do'] = 'multiple-products';
+
+	$single_url   = add_query_arg( $get_single, admin_url( $pagenow ) );
+	$multiple_url = add_query_arg( $get_multiple, admin_url( $pagenow ) );
+	?>
+	<div class="updated">
+		<p><?php _e( 'Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>', 'awesome-support' ); ?></p>
+		<p>
+			<a href="<?php echo wp_sanitize_redirect( $single_url ); ?>" class="button-secondary"><?php _e( 'Single Product', 'awesome-support' ); ?></a>
+			<a href="<?php echo wp_sanitize_redirect( $multiple_url ); ?>" class="button-secondary"><?php _e( 'Multiple Products', 'awesome-support' ); ?></a>
+		</p>
+	</div>
+<?php }

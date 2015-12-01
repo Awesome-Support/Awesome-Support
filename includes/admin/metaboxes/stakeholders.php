@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 global $wp_roles;
 
 /* Add nonce */
-wp_nonce_field( Awesome_Support_Admin::$nonce_action, Awesome_Support_Admin::$nonce_name, false, true );
+wp_nonce_field( 'wpas_update_cf', 'wpas_cf', false, true );
 
 /* Issuer metadata */
 $issuer = get_userdata( $post->post_author );

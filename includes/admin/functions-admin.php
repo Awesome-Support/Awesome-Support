@@ -287,7 +287,8 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 		$_GET['del_id'] = $reply->ID;
 		$url            = add_query_arg( $_GET, admin_url( 'post.php' ) );
 		$url            = remove_query_arg( 'message', $url );
-		$delete         = wpas_url_add_custom_action( $url, 'trash_reply' );
+//		$delete         = wpas_url_add_custom_action( $url, 'trash_reply' );
+		$delete         = wpas_do_url( admin_url( 'post.php' ), 'admin_trash_reply', array( 'post' => $ticket_id, 'action' => 'edit', 'reply_id' => $reply->ID ) );
 		$edit           = wp_nonce_url( add_query_arg( array(
 			'post'   => $ticket_id,
 			'rid'    => $reply->ID,

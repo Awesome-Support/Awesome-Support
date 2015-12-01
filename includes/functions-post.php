@@ -646,8 +646,14 @@ function wpas_mark_reply_read( $reply_id = null ) {
 
 }
 
+add_action( 'wp_ajax_wpas_mark_reply_read', 'wpas_mark_reply_read_ajax' );
+/**
+ * Mark a ticket reply as read with Ajax
+ *
+ * @return void
+ */
 function wpas_mark_reply_read_ajax() {
-	
+
 	$ID = wpas_mark_reply_read();
 
 	if ( false === $ID || is_wp_error( $ID ) ) {
@@ -658,8 +664,14 @@ function wpas_mark_reply_read_ajax() {
 	die();
 }
 
+add_action( 'wp_ajax_wpas_edit_reply', 'wpas_edit_reply_ajax' );
+/**
+ * Edit a reply with Ajax
+ *
+ * @return void
+ */
 function wpas_edit_reply_ajax() {
-	
+
 	$ID = wpas_edit_reply();
 
 	if ( false === $ID || is_wp_error( $ID ) ) {

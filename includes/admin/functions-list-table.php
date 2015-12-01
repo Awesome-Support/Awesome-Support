@@ -1,0 +1,201 @@
+<?php
+/**
+ * @package   Awesome Support/Admin/Functions/List Table
+ * @author    ThemeAvenue <web@themeavenue.net>
+ * @license   GPL-2.0+
+ * @link      http://themeavenue.net
+ * @copyright 2015 ThemeAvenue
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+add_action( 'pre_get_posts', 'wpas_hide_others_tickets', 10, 1 );
+/**
+ * Hide tickets not assigned to current user.
+ *
+ * Admins and agents can be set to only see their own tickets.
+ * In this case, we modify the main query to only get the tickets
+ * the current user is assigned to.
+ *
+ * @since  3.0.0
+ *
+ * @param  object $query WordPress main query
+ *
+ * @return boolean       True if the main query was modified, false otherwise
+ */
+function wpas_hide_others_tickets( $query ) {
+
+	/* Make sure this is the main query */
+	if ( ! $query->is_main_query() ) {
+		return false;
+	}
+
+	/* Make sure this is the admin screen */
+	if ( ! is_admin() ) {
+		return false;
+	}
+
+	/* Make sure we only alter our post type */
+	if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+		return false;
+	}
+
+	/* If admins can see all tickets do nothing */
+	if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
+		return false;
+	}
+
+	/* If agents can see all tickets do nothing */
+	if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
+		return false;
+	}
+
+	global $current_user;
+
+	// We need to update the original meta_query and not replace it to avoid filtering issues
+	$meta_query = $query->get( 'meta_query' );
+
+	if ( ! is_array( $meta_query ) ) {
+		$meta_query = array_filter( (array) $meta_query );
+	}
+
+	$meta_query[] = array(
+		'key'     => '_wpas_assignee',
+		'value'   => (int) $current_user->ID,
+		'compare' => '=',
+		'type'    => 'NUMERIC',
+	);
+
+	$query->set( 'meta_query', $meta_query );
+
+	return true;
+
+}
+
+
+add_action( 'pre_get_posts', 'wpas_limit_open', 10, 1 );
+/**
+ * Limit the list of tickets to open.
+ *
+ * When tickets are filtered by post status it makes no sense
+ * to display tickets that are already closed. We hereby limit
+ * the list to open tickets.
+ *
+ * @since  3.1.3
+ *
+ * @param object $query WordPress main query
+ *
+ * @return boolean True if the tickets were filtered, false otherwise
+ */
+function wpas_limit_open( $query ) {
+
+	/* Make sure this is the main query */
+	if ( ! $query->is_main_query() ) {
+		return false;
+	}
+
+	/* Make sure this is the admin screen */
+	if ( ! is_admin() ) {
+		return false;
+	}
+
+	/* Make sure we only alter our post type */
+	if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+		return false;
+	}
+
+	if ( isset( $_GET['post_status'] ) && array_key_exists( $_GET['post_status'], wpas_get_post_status() ) || ! isset( $_GET['post_status'] ) && true === (bool) wpas_get_option( 'hide_closed', false ) ) {
+
+		$query->set( 'meta_query', array(
+				array(
+					'key'     => '_wpas_status',
+					'value'   => 'open',
+					'compare' => '=',
+				)
+			)
+		);
+
+		return true;
+
+	} else {
+		return false;
+	}
+
+}
+
+add_action( 'pre_get_posts', 'wpas_maybe_remove_author', 10, 1 );
+/**
+ * Maybe remove the author query var from the main query
+ *
+ * The ticket author is always the client, so if the author query var is set
+ * agents will not be able to see tickets, even though they are assigned to them.
+ *
+ * @since 3.2.4
+ *
+ * @param WP_Query $query WordPress query
+ *
+ * @return bool
+ */
+function wpas_maybe_remove_author( $query ) {
+
+	// First of all we check if the query is one of ours
+	if ( ! isset( $query->query_vars['wpas_query'] ) ) {
+
+		// If not, let's make sure we're in the main query
+		if ( ! $query->is_main_query() ) {
+			return false;
+		}
+
+	}
+
+	/* Make sure this is the admin screen */
+	if ( ! is_admin() ) {
+		return false;
+	}
+
+	/* Make sure we only alter our post type */
+	if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+		return false;
+	}
+
+	if ( isset( $query->query_vars['author'] ) && ! empty( $query->query_vars['author'] ) ) {
+		$query->query_vars['author'] = '';
+	}
+
+	return $query;
+
+}
+
+add_filter( 'post_row_actions', 'wpas_ticket_action_row', 10, 2 );
+/**
+ * Add items in action row.
+ *
+ * Add a quick option to open or close a ticket
+ * directly from the tickets list.
+ *
+ * @since  3.0.0
+ *
+ * @param  array  $actions List of existing options
+ * @param  object $post    Current post object
+ *
+ * @return array           List of options with ours added
+ */
+function wpas_ticket_action_row( $actions, $post ) {
+
+	if ( 'ticket' === $post->post_type ) {
+
+		$status = wpas_get_ticket_status( $post->ID );
+
+		if ( 'open' === $status ) {
+			$actions['close'] = '<a href="' . wpas_get_close_ticket_url( $post->ID ) . '">' . __( 'Close', 'awesome-support' ) . '</a>';
+		} elseif ( 'closed' === $status ) {
+			$actions['open'] = '<a href="' . wpas_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'awesome-support' ) . '</a>';
+		}
+
+	}
+
+	return $actions;
+}

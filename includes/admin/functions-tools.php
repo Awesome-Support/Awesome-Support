@@ -1,4 +1,53 @@
 <?php
+add_action( 'admin_init', 'wpas_system_tools', 10, 0 );
+function wpas_system_tools() {
+
+	if ( ! isset( $_GET['tool'] ) || ! isset( $_GET['_nonce'] ) ) {
+		return false;
+	}
+
+	if ( ! wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
+		return false;
+	}
+
+	switch ( sanitize_text_field( $_GET['tool'] ) ) {
+
+		/* Clear all tickets metas */
+		case 'tickets_metas';
+			wpas_clear_tickets_metas();
+			break;
+
+		case 'agents_metas':
+			wpas_clear_agents_metas();
+			break;
+
+		case 'clear_taxonomies':
+			wpas_clear_taxonomies();
+			break;
+
+		case 'resync_products':
+			wpas_delete_synced_products( true );
+			break;
+
+		case 'delete_products':
+			wpas_delete_synced_products();
+			break;
+	}
+
+	/* Redirect in "read-only" mode */
+	$url = add_query_arg( array(
+			'post_type' => 'ticket',
+			'page'      => 'wpas-status',
+			'tab'       => 'tools',
+			'done'      => sanitize_text_field( $_GET['tool'] )
+	), admin_url( 'edit.php' )
+	);
+
+	wp_redirect( wp_sanitize_redirect( $url ) );
+	exit;
+
+}
+
 /**
  * Clear the activity meta for a given ticket.
  *

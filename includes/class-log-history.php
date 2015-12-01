@@ -145,8 +145,7 @@ class WPAS_Log_History {
 		 * a new one by inserting the reply (and logging the history later).
 		 */
 		if( is_admin() ) {
-			$admin = Awesome_Support_Admin::get_instance();
-			remove_action( 'save_post', array( $admin, 'save_ticket' ) );
+			remove_action( 'save_post', 'wpas_save_ticket' );
 		}
 
 		$log = wp_insert_post( $post, true );

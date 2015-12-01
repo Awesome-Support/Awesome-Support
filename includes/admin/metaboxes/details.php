@@ -27,7 +27,8 @@ $ticket_status = get_post_meta( get_the_ID(), '_wpas_status', true );
  * @var string
  * @see admin/class-awesome-support-admin.php
  */
-$action = ( in_array( $ticket_status, array( 'closed', '' ) ) ) ? wpas_get_open_ticket_url( $post->ID ) : wpas_get_close_ticket_url( $post->ID );
+$base_url = add_query_arg( array( 'action' => 'edit', 'post' => $post->ID ), admin_url( 'post.php' ) );
+$action = ( in_array( $ticket_status, array( 'closed', '' ) ) ) ? wpas_do_url( $base_url, 'admin_open_ticket' ) : wpas_do_url( $base_url, 'admin_close_ticket' );
 
 /**
  * Get available statuses.

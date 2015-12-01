@@ -164,10 +164,35 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			self::$instance->includes();
 			self::$instance->session = new WPAS_Session();
 			self::$instance->custom_fields = new WPAS_Custom_Fields;
+			self::$instance->maybe_setup();
 
 			if ( is_admin() ) {
+
 				self::$instance->includes_admin();
 				self::$instance->admin_notices = new AS_Admin_Notices();
+
+				if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+
+					/**
+					 * Redirect to about page.
+					 *
+					 * We don't use the 'was_setup' option for the redirection as
+					 * if the install fails the first time this will create a redirect loop
+					 * on the about page.
+					 */
+					if ( true === boolval( get_option( 'wpas_redirect_about', false ) ) ) {
+						self::$instance->redirect_to_about();
+					}
+
+					add_action( 'plugins_loaded', array( 'WPAS_Upgrade', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( 'WPAS_Tickets_List', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( 'WPAS_Titan', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( self::$instance, 'remote_notifications' ), 15, 0 );
+
+				}
+
 			}
 
 			add_action( 'plugins_loaded', array( self::$instance, 'load_plugin_textdomain' ) );
@@ -216,6 +241,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			define( 'WPAS_ADMIN_ASSETS_URL',  trailingslashit( plugin_dir_url( __FILE__ ) . 'assets/admin/' ) );
 			define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) . 'assets/admin/' ) );
 			define( 'WPAS_PLUGIN_FILE',       __FILE__ );
+			define( 'WPAS_PLUGIN_BASENAME',   plugin_basename( __FILE__ ) );
 		}
 
 		/**
@@ -335,6 +361,19 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		}
 
 		/**
+		 * Redirect to about page.
+		 *
+		 * Redirect the user to the about page after plugin activation.
+		 *
+		 * @return void
+		 */
+		private function redirect_to_about() {
+			delete_option( 'wpas_redirect_about' );
+			wp_redirect( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
+			exit;
+		}
+
+		/**
 		 * Include all files used sitewide
 		 *
 		 * @since 3.2.5
@@ -382,16 +421,78 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		private function includes_admin() {
 
-			require( WPAS_PATH . 'includes/admin/functions-notices.php' );
+			// We don't need all this during Ajax processing
+			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
-			/* Load main admin class */
-			require( WPAS_PATH . 'includes/admin/class-admin.php' );
-			add_action( 'plugins_loaded', array( 'Awesome_Support_Admin', 'get_instance' ) );
+				require( WPAS_PATH . 'includes/admin/functions-admin.php' );
+				require( WPAS_PATH . 'includes/admin/functions-menu.php' );
+				require( WPAS_PATH . 'includes/admin/functions-post.php' );
+				require( WPAS_PATH . 'includes/admin/functions-tools.php' );
+				require( WPAS_PATH . 'includes/admin/functions-list-table.php' );
+				require( WPAS_PATH . 'includes/admin/functions-metaboxes.php' );
+				require( WPAS_PATH . 'includes/admin/functions-admin-actions.php' );
+				require( WPAS_PATH . 'includes/admin/functions-misc.php' );
+				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
+				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
+				require( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
+				require( WPAS_PATH . 'includes/admin/class-admin-help.php' );
+				require( WPAS_PATH . 'includes/admin/upgrade/class-upgrade.php' );
 
-			/**
-			 * Add link ot settings tab
-			 */
-			add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( 'Awesome_Support_Admin', 'settings_page_link' ) );
+				if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
+					require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
+				}
+
+				/* Load settings files */
+				require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
+				require( WPAS_PATH . 'includes/admin/functions-notices.php' );
+
+			}
+
+		}
+
+		/**
+		 * Plugin setup.
+		 *
+		 * If the plugin has just been installed we need to set a couple of things.
+		 * We will automatically create the "special" pages: tickets list and
+		 * ticket submission.
+		 */
+		private function maybe_setup() {
+
+			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
+
+				add_action( 'admin_init', 'wpas_create_pages', 11, 0 );
+				add_action( 'admin_init', 'wpas_flush_rewrite_rules', 11, 0 );
+
+				/**
+				 * Ask for products support.
+				 *
+				 * Still part of the installation process. Ask the user
+				 * if he is going to support multiple products or only one.
+				 * It is important to use the built-in taxonomy for multiple products
+				 * support as it is used by multiple addons.
+				 *
+				 * However, if the products support is already enabled, it means that this is not
+				 * the first activation of the plugin and products support was previously enabled
+				 * (products support is disabled by default). In this case we don't ask again.
+				 */
+				if ( ! isset( $_GET['page'] ) || 'wpas-about' !== $_GET['page'] ) {
+
+					$products = boolval( wpas_get_option( 'support_products' ) );
+
+					if ( true === $products ) {
+						delete_option( 'wpas_support_products' );
+					} else {
+						add_action( 'admin_notices', 'wpas_ask_support_products' );
+					}
+				}
+
+			}
 
 		}
 
@@ -426,6 +527,23 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		public function load_theme_functions() {
 			wpas_get_template( 'functions' );
+		}
+
+		/**
+		 * Check for remote notifications.
+		 *
+		 * Use the Remote Dashboard Notifications plugin
+		 * to check for possible notifications from
+		 * http://getawesomesupport.com
+		 *
+		 * @since  3.0.0
+		 * @link   https://wordpress.org/plugins/remote-dashboard-notifications/
+		 * @return void
+		 */
+		public function remote_notifications() {
+			if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
+				new TAV_Remote_Notification_Client( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
+			}
 		}
 
 	}
