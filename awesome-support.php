@@ -422,6 +422,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		private function includes_admin() {
 
+			require( WPAS_PATH . 'includes/admin/functions-notices.php' );
+
 			// We don't need all this during Ajax processing
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
@@ -449,7 +451,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
-				require( WPAS_PATH . 'includes/admin/functions-notices.php' );
 
 			}
 

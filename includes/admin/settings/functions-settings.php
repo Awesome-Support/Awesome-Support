@@ -89,7 +89,7 @@ function wpas_get_settings() {
 	}
 
 	return apply_filters( 'wpas_plugin_settings', array() );
-	
+
 }
 
 /**
