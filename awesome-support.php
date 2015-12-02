@@ -402,6 +402,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/functions-general.php' );         // Functions that are used both in back-end and front-end
 			require( WPAS_PATH . 'includes/functions-error.php' );           // Error handling
 			require( WPAS_PATH . 'includes/functions-notification.php' );    // Notification handling
+			require( WPAS_PATH . 'includes/functions-email-notifications.php' );
 			require( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
 			require( WPAS_PATH . 'includes/functions-post-type.php' );           // Register post types and related functions
 			require( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
