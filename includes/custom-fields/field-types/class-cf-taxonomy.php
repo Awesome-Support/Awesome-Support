@@ -88,7 +88,7 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 	 * Save function.
 	 *
 	 * Taxonomies are saved differently as they are
-	 * not sotred as post metas but actual taxonomy terms.
+	 * not stored as post metas but actual taxonomy terms.
 	 *
 	 * @since 3.2.0
 	 *
@@ -111,7 +111,7 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 			if ( ! empty( $terms ) ) {
 
-				wp_delete_object_term_relationships( $post_id, $this->get_field_id() );
+				wp_delete_object_term_relationships( $post_id, $this->field_id );
 
 				return 3;
 
