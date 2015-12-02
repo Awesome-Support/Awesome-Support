@@ -82,7 +82,14 @@ function wpas_list_themes() {
  * @return array
  */
 function wpas_get_settings() {
+
+	// Load the file uploader settings if not already done (those settings are loaded on plugins_loaded only)
+	if ( ! function_exists( 'wpas_addon_settings_file_upload' ) ) {
+		require_once( WPAS_PATH . 'includes/file-uploader/settings-file-upload.php' );
+	}
+
 	return apply_filters( 'wpas_plugin_settings', array() );
+	
 }
 
 /**
