@@ -133,49 +133,6 @@ function wpas_limit_open( $query ) {
 
 }
 
-add_action( 'pre_get_posts', 'wpas_maybe_remove_author', 10, 1 );
-/**
- * Maybe remove the author query var from the main query
- *
- * The ticket author is always the client, so if the author query var is set
- * agents will not be able to see tickets, even though they are assigned to them.
- *
- * @since 3.2.4
- *
- * @param WP_Query $query WordPress query
- *
- * @return bool
- */
-function wpas_maybe_remove_author( $query ) {
-
-	// First of all we check if the query is one of ours
-	if ( ! isset( $query->query_vars['wpas_query'] ) ) {
-
-		// If not, let's make sure we're in the main query
-		if ( ! $query->is_main_query() ) {
-			return false;
-		}
-
-	}
-
-	/* Make sure this is the admin screen */
-	if ( ! is_admin() ) {
-		return false;
-	}
-
-	/* Make sure we only alter our post type */
-	if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
-		return false;
-	}
-
-	if ( isset( $query->query_vars['author'] ) && ! empty( $query->query_vars['author'] ) ) {
-		$query->query_vars['author'] = '';
-	}
-
-	return $query;
-
-}
-
 add_filter( 'post_row_actions', 'wpas_ticket_action_row', 10, 2 );
 /**
  * Add items in action row.
