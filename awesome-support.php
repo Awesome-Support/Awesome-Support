@@ -385,30 +385,30 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/class-logger.php' );
 			require( WPAS_PATH . 'includes/integrations/loader.php' );
 			require( WPAS_PATH . 'includes/scripts.php' );
-			require( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
-			require( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
+			require( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' );
+			require( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );
 			require( WPAS_PATH . 'includes/file-uploader/class-file-uploader.php' );
 			require( WPAS_PATH . 'includes/class-mailgun-email-check.php' );
 			require( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
 			require( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
-			require( WPAS_PATH . 'includes/custom-fields/functions-custom-fields.php' );   // Submission form related functions
-			require( WPAS_PATH . 'includes/functions-actions.php' );            // All the functions related to opening a ticket and submitting replies
-			require( WPAS_PATH . 'includes/functions-post.php' );            // All the functions related to opening a ticket and submitting replies
-			require( WPAS_PATH . 'includes/functions-user.php' );            // Everything related to user login, registration and capabilities
-			require( WPAS_PATH . 'includes/functions-addons.php' );          // Addons functions and autoloader
-			require( WPAS_PATH . 'includes/functions-deprecated.php' );      // Load deprecated functions
-			require( WPAS_PATH . 'includes/class-log-history.php' );         // Logging class
-			require( WPAS_PATH . 'includes/class-email-notifications.php' ); // E-mail notification class
-			require( WPAS_PATH . 'includes/functions-general.php' );         // Functions that are used both in back-end and front-end
-			require( WPAS_PATH . 'includes/functions-error.php' );           // Error handling
-			require( WPAS_PATH . 'includes/functions-notification.php' );    // Notification handling
+			require( WPAS_PATH . 'includes/custom-fields/functions-custom-fields.php' );
+			require( WPAS_PATH . 'includes/functions-actions.php' );
+			require( WPAS_PATH . 'includes/functions-post.php' );
+			require( WPAS_PATH . 'includes/functions-user.php' );
+			require( WPAS_PATH . 'includes/functions-addons.php' );
+			require( WPAS_PATH . 'includes/functions-deprecated.php' );
+			require( WPAS_PATH . 'includes/class-log-history.php' );
+			require( WPAS_PATH . 'includes/class-email-notifications.php' );
+			require( WPAS_PATH . 'includes/functions-general.php' );
+			require( WPAS_PATH . 'includes/functions-error.php' );
+			require( WPAS_PATH . 'includes/functions-notification.php' );
 			require( WPAS_PATH . 'includes/functions-email-notifications.php' );
-			require( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
-			require( WPAS_PATH . 'includes/functions-post-type.php' );           // Register post types and related functions
-			require( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
-			require( WPAS_PATH . 'includes/class-gist.php' );                // Add oEmbed support for Gists
-			require( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper class to load a wp_editor instance via Ajax
-			require( WPAS_PATH . 'includes/class-agent.php' );               // Support agent class
+			require( WPAS_PATH . 'includes/functions-templating.php' );
+			require( WPAS_PATH . 'includes/functions-post-type.php' );
+			require( WPAS_PATH . 'includes/class-product-sync.php' );
+			require( WPAS_PATH . 'includes/class-gist.php' );
+			require( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );
+			require( WPAS_PATH . 'includes/class-agent.php' );
 			require( WPAS_PATH . 'includes/class-wpas-session.php' );
 			require( WPAS_PATH . 'includes/install.php' );
 
