@@ -670,7 +670,7 @@ function wpas_get_user_tickets( $user_id = 0, $ticket_status = 'open', $post_sta
 	}
 
 	$args = array(
-		'post_author' => $user_id,
+		'author' => $user_id,
 	);
 
 	$tickets = wpas_get_tickets( $ticket_status, $args, $post_status );
