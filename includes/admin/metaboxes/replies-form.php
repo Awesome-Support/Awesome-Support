@@ -27,16 +27,13 @@ if ( ! defined( 'WPINC' ) ) {
 </h2>
 <div>
 	<?php
-	/**
-	 * Load the WordPress WYSIWYG with minimal options
-	 */
-	/* The edition textarea */
-	wp_editor( '', 'wpas_reply', array(
+	// Load the WordPress WYSIWYG with minimal options
+	wp_editor( '', 'wpas_reply', apply_filters( 'wpas_admin_reply_form_args', array(
 			'media_buttons' => false,
 			'teeny'         => true,
 			'quicktags'     => true,
 		)
-	);
+	) );
 	?>
 </div>
 <?php
