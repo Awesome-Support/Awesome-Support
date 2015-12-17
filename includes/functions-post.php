@@ -761,7 +761,7 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array(), $output =
 	);
 
 	if ( ! is_array( $status ) ) {
-		$status = (array) $status;
+		$status = explode(',', $status);
 	}
 
 	foreach ( $status as $key => $reply_status ) {
@@ -771,7 +771,9 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array(), $output =
 	}
 
 	if ( empty( $status ) ) {
-		$status = 'any';
+		$status[] = 'any';
+	} else if ( count($status) == 2 ) {
+		$status[] = 'inherit';
 	}
 
 	$defaults = array(
