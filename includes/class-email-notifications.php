@@ -629,7 +629,8 @@ class WPAS_Email_Notification {
 			'headers'         => $headers,
 			'attachments'     => ''
 			),
-			$case
+			$case,
+			$this->ticket_id
 		);
 
 		$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'] );
