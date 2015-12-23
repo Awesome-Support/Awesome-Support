@@ -84,13 +84,14 @@ class WPAS_Titan {
 		 */
 		$titan = TitanFramework::getInstance( 'wpas' );
 
-		$settings = $titan->createAdminPage( array(
-				'name'       => __( 'Settings', 'awesome-support' ),
-				'title'      => __( 'Awesome Support Settings', 'awesome-support' ),
-				'id'         => 'wpas-settings',
-				'parent'     => 'edit.php?post_type=ticket',
-				'capability' => 'settings_tickets'
-			)
+		$settings = $titan->createContainer( array(
+						'type'       => 'admin-page',
+						'name'       => __( 'Settings', 'awesome-support' ),
+						'title'      => __( 'Awesome Support Settings', 'awesome-support' ),
+						'id'         => 'wpas-settings',
+						'parent'     => 'edit.php?post_type=ticket',
+						'capability' => 'settings_tickets'
+				)
 		);
 
 		/**
