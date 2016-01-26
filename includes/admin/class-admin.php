@@ -126,7 +126,7 @@ class Awesome_Support_Admin {
 			 * Plugin setup.
 			 *
 			 * If the plugin has just been installed we need to set a couple of things.
-			 * We will automatically create the "special" pages: tickets list and 
+			 * We will automatically create the "special" pages: tickets list and
 			 * ticket submission.
 			 */
 			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
@@ -158,9 +158,9 @@ class Awesome_Support_Admin {
 			 * (products support is disabled by default). In this case we don't ask again.
 			 */
 			if ( 'pending' === get_option( 'wpas_support_products', false ) && ( !isset( $_GET['page'] ) || 'wpas-about' !== $_GET['page'] ) ) {
-				
+
 				$products = boolval( wpas_get_option( 'support_products' ) );
-				
+
 				if ( true === $products ) {
 					delete_option( 'wpas_support_products' );
 				} else {
@@ -196,7 +196,7 @@ class Awesome_Support_Admin {
 	 */
 	public static function settings_page_link( $links ) {
 
-		$link    = add_query_arg( array( 'post_type' => 'ticket', 'page' => 'settings' ), admin_url( 'edit.php' ) );
+		$link    = add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-settings' ), admin_url( 'edit.php' ) );
 		$links[] = "<a href='$link'>" . __( 'Settings', 'awesome-support' ) . "</a>";
 
 		return $links;
@@ -372,7 +372,7 @@ class Awesome_Support_Admin {
 	 */
 	public function enqueue_admin_styles() {
 
-		if ( wpas_is_plugin_page() ) {		
+		if ( wpas_is_plugin_page() ) {
 
 			wp_enqueue_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2.min.css', null, '3.5.2', 'all' );
 			wp_enqueue_style( 'wpas-flexboxgrid', WPAS_URL . 'assets/admin/css/vendor/flexboxgrid.min.css', null, '6.2.0', 'all' );
@@ -465,7 +465,7 @@ class Awesome_Support_Admin {
 				'ping_status'    => 'closed',
 				'comment_status' => 'closed'
 			);
-		
+
 			$submit = wp_insert_post( $submit_args, true );
 
 			if ( !is_wp_error( $submit ) && is_int( $submit ) ) {
@@ -502,7 +502,7 @@ class Awesome_Support_Admin {
 	 * Redirect to about page.
 	 *
 	 * Redirect the user to the about page after plugin activation.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function redirect_to_about() {
@@ -552,7 +552,7 @@ class Awesome_Support_Admin {
 			} elseif( 'closed' === $status ) {
 				$actions['open'] = '<a href="' . wpas_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'awesome-support' ) . '</a>';
 			}
-			
+
 		}
 
 		return $actions;
@@ -689,7 +689,7 @@ class Awesome_Support_Admin {
 			}
 
 		}
-		
+
 		return $data;
 	}
 
@@ -928,7 +928,7 @@ class Awesome_Support_Admin {
 		/* Custom fields */
 		global $wpas_cf;
 
-		if ( $wpas_cf->have_custom_fields() ) {	
+		if ( $wpas_cf->have_custom_fields() ) {
 			add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'awesome-support' ), array( $this, 'metabox_callback' ), 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
 		}
 
@@ -982,7 +982,7 @@ class Awesome_Support_Admin {
 	 * This function will save all custom fields associated
 	 * to the ticket post type. Be it core custom fields
 	 * or user added custom fields.
-	 * 
+	 *
 	 * @param  (int) $post_id Current post ID
 	 * @since  3.0.0
 	 */
@@ -1173,7 +1173,7 @@ class Awesome_Support_Admin {
 	 * Delete all ticket dependencies when a ticket is deleted. This includes
 	 * ticket replies and ticket history. Ticket attachments are deleted by
 	 * WPAS_File_Upload::delete_attachments()
-	 * 
+	 *
 	 * @param  integer $post_id ID of the post to be deleted
 	 * @return void
 	 */
@@ -1191,8 +1191,8 @@ class Awesome_Support_Admin {
 			'cache_results'          => false,
 			'update_post_term_cache' => false,
 			'update_post_meta_cache' => false,
-		);		
-		
+		);
+
 		$posts = new WP_Query( $args );
 
 		foreach ( $posts->posts as $id => $post ) {
