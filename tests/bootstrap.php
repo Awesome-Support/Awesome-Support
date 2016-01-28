@@ -37,11 +37,16 @@ require dirname( __FILE__ ) . '/lib/testcase.php';
 require dirname( __FILE__ ) . '/lib/exceptions.php';
 require dirname( __FILE__ ) . '/../awesome-support.php';
 
-// Install the plugin
 if ( ! function_exists( 'wpas_install' ) ) {
 	require dirname( __FILE__ ) . '/../includes/install.php';
-	wpas_install( false );
 }
+
+if ( ! function_exists( 'get_settings_defaults' ) ) {
+	require dirname( __FILE__ ) . '/../includes/admin/settings/functions-settings.php';
+}
+
+// Install the plugin
+wpas_install( false );
 
 $current_user = new WP_User(1);
 $current_user->set_role('administrator');
