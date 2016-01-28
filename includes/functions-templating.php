@@ -215,7 +215,7 @@ function wpas_get_theme_stylesheet() {
 		$template =  WPAS_PATH . "themes/$theme/css/style.css";
 	}
 
-	return apply_filters( 'wpas_get_theme_stylesheet', $template ); 
+	return apply_filters( 'wpas_get_theme_stylesheet', $template );
 
 }
 
@@ -227,18 +227,7 @@ function wpas_get_theme_stylesheet() {
  */
 function wpas_get_theme_stylesheet_uri() {
 
-	$theme = wpas_get_theme();
-
-	$template = locate_template(
-		array(
-			WPAS_TEMPLATE_PATH . 'style.css',
-			WPAS_TEMPLATE_PATH . 'css/style.css',
-		)
-	);
-
-	if ( ! $template ) {
-		$template =  WPAS_PATH . "themes/$theme/css/style.css";
-	}
+	$template = wpas_get_theme_stylesheet();
 
 	/* Remove the root path and replace backslashes by slashes */
 	$truncate = str_replace('\\', '/', str_replace( untrailingslashit( ABSPATH ), '', $template ) );
