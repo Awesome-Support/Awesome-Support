@@ -353,7 +353,20 @@ class WPAS_Custom_Field {
 			$instance = new $class_name( $this->field_id, $this->field );
 			$default  = $instance->wrapper();
 		} else {
-			$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), $wrapper_id );
+			$row_open = $this->get_field_arg( 'row_open' );
+			$row_close = $this->get_field_arg( 'row_close' );
+			$col_size = $this->get_field_arg( 'col_size' );
+
+			if ( !empty($col_size) && $row_open === true) {
+				// Open the row
+				$default = sprintf( '<div class="row"><div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class() . ' ' . $col_size, $wrapper_id );
+			} else if ( !empty($col_size) && $row_close === true) {
+				// Close the row
+				$default = sprintf( '<div class="%s" id="%s">{{field}}</div></div>', $this->get_wrapper_class() . ' ' . $col_size, $wrapper_id );
+			} else {
+				// Append column class
+				$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class() . ' ' . $col_size, $wrapper_id );
+			}
 		}
 
 		return apply_filters( 'wpas_cf_wrapper_markup', $default, $this->field, $this->get_wrapper_class(), $wrapper_id );
