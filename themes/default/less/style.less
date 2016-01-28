@@ -84,12 +84,12 @@ Forms + Buttons + Labels
 */
 
 /* Forms */
-.wpas-form-group,
-.wpas-checkbox {
+.wpas-form-group {
 	margin-bottom: @spacing;
 }
 .wpas-form-group {
-	label {
+	label,
+	.wpas-label-checkbox {
 		display: inline-block;
 		max-width: 100%;
 		margin-bottom: @spacing/3;
@@ -169,6 +169,13 @@ textarea.wpas-form-control {
 	white-space: nowrap;
 	vertical-align: baseline;
 	border-radius: .25em;
+}
+
+/* Checkboxes */
+.wpas-checkbox {
+	label {
+		font-weight: normal;
+	}
 }
 
 /*
