@@ -13,7 +13,7 @@
  * Version:           3.2.8
  * Author:            ThemeAvenue
  * Author URI:        http://themeavenue.net
- * Text Domain:       wpas
+ * Text Domain:       awesome-support
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
