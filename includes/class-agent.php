@@ -107,7 +107,7 @@ class WPAS_Agent {
 
 		$count = get_user_meta( $this->agent_id, 'wpas_open_tickets', true );
 
-		if ( empty( $count ) ) {
+		if ( false === $count ) {
 			$count = count( $this->get_open_tickets() );
 			update_user_meta( $this->agent_id, 'wpas_open_tickets', $count );
 		}
