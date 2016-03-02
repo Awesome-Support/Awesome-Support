@@ -107,6 +107,16 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		public $session;
 
 		/**
+		 * Products synchronization object
+		 *
+		 * Only used if there is a compatible e-commerce plugin active
+		 *
+		 * @since 3.3
+		 * @var null|WPAS_Product_Sync
+		 */
+		public $products_sync;
+
+		/**
 		 * Instantiate and return the unique Awesome Support object
 		 *
 		 * @since     3.2.5

@@ -16,14 +16,6 @@
 class WPAS_Product_WooCommerce {
 
 	/**
-	 * Global instance of the product sync object
-	 *
-	 * @since 3.3
-	 * @var WPAS_Product_Sync
-	 */
-	public $wpas_product_sync;
-
-	/**
 	 * Instance of this class.
 	 *
 	 * @since    1.0.0
@@ -34,10 +26,7 @@ class WPAS_Product_WooCommerce {
 	public function __construct() {
 
 		if ( $this->is_woocommerce_enabled() ) {
-
-			global $wpas_product_sync;
-
-			$wpas_product_sync = new WPAS_Product_Sync( 'product', '', true );
+			WPAS()->products_sync = new WPAS_Product_Sync( 'product', '', true );
 			add_filter( 'wpas_taxonomy_locked_msg', array( $this, 'locked_message' ) );
 		}
 
