@@ -720,7 +720,7 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 		$option .= '&angrt; ';
 	}
 
-	$option .= $term->name;
+	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
 	?>
 
 	<option value="<?php echo $term->term_id; ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug ) { echo 'selected="selected"'; } ?>><?php echo $option; ?></option>
