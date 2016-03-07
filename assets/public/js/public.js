@@ -99,12 +99,16 @@
 		http://www.mailgun.com/email-validation
 		http://documentation.mailgun.com/api-email-validation.html
 		 */
-		if (typeof wpas !== 'undefined' && stringToBool(wpas.emailCheck)) {
-			var emailInput = $('input[name="email"]'),
-				emailCheck = $('#email-validation');
+		if (typeof wpas !== 'undefined' && stringToBool(wpas.emailCheck) && $('#wpas_form_registration').length) {
 
-			emailInput.change(function () {
-				var data = {
+			var emailInput = $('#wpas_form_registration #wpas_email'),
+				emailCheck = $('<div class="wpas-help-block" id="wpas_emailvalidation"></div>'),
+				data;
+
+			emailCheck.appendTo($('#wpas_email_wrapper')).hide();
+
+			emailInput.on('change', function () {
+				data = {
 					'action': 'email_validation',
 					'email': emailInput.val()
 				};
