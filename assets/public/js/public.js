@@ -108,12 +108,14 @@
 			emailCheck.appendTo($('#wpas_email_wrapper')).hide();
 
 			emailInput.on('change', function () {
+				emailInput.addClass('wpas-form-control-loading');
 				data = {
 					'action': 'email_validation',
 					'email': emailInput.val()
 				};
 				$.post(wpas.ajaxurl, data, function (response) {
 					emailCheck.html(response).show();
+					emailInput.removeClass('wpas-form-control-loading');
 				});
 			});
 
