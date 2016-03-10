@@ -115,11 +115,18 @@ function wpas_enqueue_admin_styles() {
 	wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2.min.css', null, '3.5.2', 'all' );
 	wp_register_style( 'wpas-flexboxgrid', WPAS_URL . 'assets/admin/css/vendor/flexboxgrid.min.css', null, '6.2.0', 'all' );
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
+	wp_register_style( 'wpas-simple-hint', 'https://cdn.jsdelivr.net/simple-hint/2.1.1/simple-hint.min.css', null, '2.1.1' );
 
 	if ( wpas_is_plugin_page() ) {
+
 		wp_enqueue_style( 'wpas-select2' );
 		wp_enqueue_style( 'wpas-flexboxgrid' );
 		wp_enqueue_style( 'wpas-admin-styles' );
+
+		if ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) {
+			wp_enqueue_style( 'wpas-simple-hint' );
+		}
+
 	}
 
 }

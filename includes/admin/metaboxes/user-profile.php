@@ -1,4 +1,3 @@
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/simple-hint/2.1.1/simple-hint.min.css">
 <?php
 /**
  * User Profile.
