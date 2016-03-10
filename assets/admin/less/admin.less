@@ -55,6 +55,24 @@ General Scaffolding
 
 /*
 ==========================================================================
+Grid System
+https://github.com/chrisnager/ungrid
+==========================================================================
+*/
+
+@media (min-width: 30em) {
+	.wpas-row {
+		width: 100%;
+		display: table;
+		table-layout: fixed;
+	}
+	.wpas-col {
+		display: table-cell;
+	}
+}
+
+/*
+==========================================================================
 Ticket List
 ==========================================================================
 */
@@ -395,6 +413,55 @@ Metaboxes - Custom Fields
 	label {
 		display: block;
 		margin-bottom: .25em;
+	}
+}
+
+/*
+==========================================================================
+Metaboxes - User Profile
+==========================================================================
+*/
+.wpas-up-contact-details {
+	margin-top: .75em;
+}
+.wpas-up-contact-img {
+	float: left;
+	margin: 0 1.5em 0 0;
+	border-radius: 80px;
+}
+.wpas-up-contact-name {
+	font-size: 130%;
+}
+.wpas-up-contact-role {
+	margin: .5em 0;
+}
+.wpas-up-contact-replytime {
+	display: block;
+	margin: 1em auto 0 auto;
+	text-align: center;
+}
+.wpas-up-stats {
+	margin: 1em 0;
+	padding: 1em 0;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	text-align: center;
+
+	strong {
+		display: block;
+		font-size: 200%;
+		margin-bottom: .25em;
+	}
+	.wpas-col {
+		line-height: 1;
+	}
+}
+.wpas-up-tickets {
+	[data-hint] {
+		position: relative;
+		&:after {
+			font-size: 100%;
+		}
 	}
 }
 
