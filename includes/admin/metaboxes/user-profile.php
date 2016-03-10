@@ -1,50 +1,99 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/simple-hint/2.1.1/simple-hint.min.css">
+<?php
+/**
+ * User Profile.
+ *
+ * This metabox is used to display the user profile. It gives quick access to basic information about the client.
+ *
+ * @since 3.3
+ */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+global $post;
+
+// Get the user object
+$user = get_userdata( $post->post_author );
+
+// Get tickets
+$open   = wpas_get_tickets( 'open' );
+$closed = wpas_get_tickets( 'closed' );
+
+// Sort open tickets
+$by_status  = array();
+$all_status = wpas_get_post_status();
+
+foreach ( $open as $t ) {
+
+	if ( ! is_a( $t, 'WP_Post' ) ) {
+		continue;
+	}
+
+	if ( ! array_key_exists( $t->post_status, $all_status ) ) {
+		continue;
+	}
+
+	if ( ! array_key_exists( $t->post_status, $by_status ) ) {
+		$by_status[ $t->post_status ] = array();
+	}
+
+	$by_status[ $t->post_status ][] = $t;
+
+}
+
+// Add the closed tickets in the list
+$by_status['closed'] = $closed;
+?>
 <div id="wpas-up">
 
 	<div class="wpas-up-contact-details wpas-cf">
-		<a href="/wp-admin/user-edit.php?user_id=4">
-			<img class="wpas-up-contact-img" src="http://0.gravatar.com/avatar/f634817190acb57d0f3e61e7c68eabbb" alt="Julien Vernet" width="80" height="80">
+		<a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . $user->ID ) ); ?>">
+			<?php echo get_avatar( $user->ID, '80', 'mm', $user->data->user_nicename, array( 'class' => 'wpas-up-contact-img' ) ); ?>
 		</a>
-		<div class="wpas-up-contact-name">Julien Vernet</div>
-		<div class="wpas-up-contact-role">Support User since <strong>November 5, 2015</strong></div>
-		<div class="wpas-up-contact-email"><a href="mailto:julien.vernet@n2clic.com">julien.vernet@n2clic.com</a></div>
-		<em class="wpas-up-contact-replytime">Usually replies within 4 hours</em>
+		<div class="wpas-up-contact-name"><?php echo $user->data->user_nicename; ?></div>
+		<div class="wpas-up-contact-role"><?php echo wp_kses_post( sprintf( __( 'Support User since %s', 'awesome-support' ), '<strong>' . date( get_option( 'date_format' ), strtotime( $user->data->user_registered ) ) . '</strong>' ) ); ?></div>
+		<div class="wpas-up-contact-email"><a href="mailto:<?php echo $user->data->user_email; ?>"><?php echo $user->data->user_email; ?></a></div>
+		<!-- <em class="wpas-up-contact-replytime">Usually replies within 4 hours</em> -->
 	</div>
 	
 	<div class="wpas-row wpas-up-stats">
 		<div class="wpas-col wpas-up-stats-all">
-			<strong>7</strong>
-			Total
+			<strong><?php echo count( $open ) + count( $closed ); ?></strong>
+			<?php echo esc_html__( 'Total', 'awesome-support' ); ?>
 		</div>
 		<div class="wpas-col wpas-up-stats-open">
-			<strong>4</strong>
-			Open
+			<strong><?php echo count( $open ); ?></strong>
+			<?php echo esc_html__( 'Open', 'awesome-support' ); ?>
 		</div>
 		<div class="wpas-col wpas-up-stats-closed">
-			<strong>3</strong>
-			Closed
+			<strong><?php echo count( $closed ); ?></strong>
+			<?php echo esc_html__( 'Closed', 'awesome-support' ); ?>
 		</div>
 	</div>
-	
+
 	<div class="wpas-up-tickets">
-		<ul>
-			<li><span class="wpas-label" style="background-color:#1e73be;">New ▾</span></li>
-			<li data-hint="Created on November 5, 2015" class="hint-left hint-anim"><a href="#">Billing question</a></li>
-			<li data-hint="Created on November 5, 2015" class="hint-left hint-anim"><a href="#">License renewal failed</a></li>
-		</ul>
-		<ul>
-			<li><span class="wpas-label" style="background-color:#a01497;">In Progress ▾</span></li>
-			<li data-hint="Created on November 5, 2015" class="hint-left hint-anim"><a href="#">Not working! Please fix asap</a></li>
-			<li data-hint="Created on November 5, 2015" class="hint-left hint-anim"><a href="#">Feature suggestion for the email piping addon</a></li>
-		</ul>
-		<ul>
-			<li><span class="wpas-label" style="background-color:#dd3333;">Closed ▾</span></li>
-			<li data-hint="Created on November 5, 2015" class="hint-left hint-anim"><a href="#">PHP issue during plugin activation</a></li>
-			<li data-hint="Created on November 5, 2015" class="hint-left hint-anim"><a href="#">Plugin's page are 404</a></li>
-			<li data-hint="Created on November 5, 2015" class="hint-left hint-anim"><a href="#">Refund request for addon</a></li>
-		</ul>
-		<a href="/wp-admin/edit.php?post_type=ticket" class="button">View all tickets</a>
+		<?php
+		foreach ( $by_status as $status => $tickets ) {
+
+			$status_label = 'closed' === $status ? esc_html__( 'Closed', 'awesome-support' ) : $all_status[ $status ];
+			$lis = sprintf( '<li><span class="wpas-label" style="background-color:%1$s;">%2$s ▾</span></li>', wpas_get_option( "color_$status", '#dd3333' ), $status_label );
+
+			foreach ( $tickets as $t ) {
+				$created = sprintf( esc_html_x( 'Created on %s', 'Ticket date creation', 'awesome-support' ), date( get_option( 'date_format' ), strtotime( $t->post_date ) ) );
+				$title   = apply_filters( 'the_title', $t->post_title );
+				$link    = esc_url( admin_url( "post.php?post=$t->ID&action=edit" ) );
+				$lis .= sprintf( '<li data-hint="%1$s" class="hint-left hint-anim"><a href="%3$s">%2$s</a></li>', $created, $title, $link );
+			}
+
+			printf( '<ul>%s</ul>', $lis );
+
+		}
+		?>
+
+		<!-- @todo <a href="/wp-admin/edit.php?post_type=ticket" class="button">View all tickets</a> -->
 	</div>
 
 </div>
