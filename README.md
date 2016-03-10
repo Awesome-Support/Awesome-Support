@@ -18,7 +18,7 @@ Below are some info from the plugin's repository on [WordPress.org](https://word
 
 To get started right away:
 ```
-git init && git remote add origin git@github.com:Awesome-Support/Awesome-Support.git && git pull origin master && composer install && npm install
+git@github.com:Awesome-Support/Awesome-Support.git awesome-support && cd awesome-support && composer install && npm install
 ```
 
 ### Not a developer?
