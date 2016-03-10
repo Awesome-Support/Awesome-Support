@@ -711,7 +711,7 @@ class WPAS_Product_Sync {
 			return false;
 		}
 
-		return true;
+		return $post_id;
 
 	}
 

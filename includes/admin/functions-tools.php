@@ -1,4 +1,53 @@
 <?php
+add_action( 'admin_init', 'wpas_system_tools', 10, 0 );
+function wpas_system_tools() {
+
+	if ( ! isset( $_GET['tool'] ) || ! isset( $_GET['_nonce'] ) ) {
+		return false;
+	}
+
+	if ( ! wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
+		return false;
+	}
+
+	switch ( sanitize_text_field( $_GET['tool'] ) ) {
+
+		/* Clear all tickets metas */
+		case 'tickets_metas';
+			wpas_clear_tickets_metas();
+			break;
+
+		case 'agents_metas':
+			wpas_clear_agents_metas();
+			break;
+
+		case 'clear_taxonomies':
+			wpas_clear_taxonomies();
+			break;
+
+		case 'resync_products':
+			wpas_delete_synced_products( true );
+			break;
+
+		case 'delete_products':
+			wpas_delete_synced_products();
+			break;
+	}
+
+	/* Redirect in "read-only" mode */
+	$url = add_query_arg( array(
+			'post_type' => 'ticket',
+			'page'      => 'wpas-status',
+			'tab'       => 'tools',
+			'done'      => sanitize_text_field( $_GET['tool'] )
+	), admin_url( 'edit.php' )
+	);
+
+	wp_redirect( wp_sanitize_redirect( $url ) );
+	exit;
+
+}
+
 /**
  * Clear the activity meta for a given ticket.
  *
@@ -87,9 +136,7 @@ function wpas_clear_taxonomy( $taxonomy ) {
  */
 function wpas_clear_taxonomies() {
 
-	global $wpas_cf;
-
-	$taxonomies = (array) $wpas_cf->get_custom_fields();
+	$taxonomies = (array) WPAS()->custom_fields->get_custom_fields();
 	$deleted    = false;
 
 	if ( empty( $taxonomies ) ) {
@@ -193,5 +240,48 @@ function wpas_clear_agents_metas() {
 	foreach ( $agents as $user ) {
 		delete_user_meta( $user->ID, 'wpas_open_tickets' ); // Delete the open tickets count
 	}
+
+}
+
+/**
+ * Checks for templates overrides.
+ *
+ * Check if any of the plugin templates is being
+ * overwritten by the child theme or the theme.
+ *
+ * @since  3.0.0
+ * @param  string $dir Directory to check
+ * @return array       Array of overridden templates
+ */
+function wpas_check_templates_override( $dir ) {
+
+	$templates = array(
+			'details.php',
+			'list.php',
+			'registration.php',
+			'submission.php'
+	);
+
+	$overrides = array();
+
+	if ( is_dir( $dir ) ) {
+
+		$files = scandir( $dir );
+
+		if ( empty( $files ) ) {
+			return array();
+		}
+
+		foreach ( $files as $key => $file ) {
+			if ( !in_array( $file, $templates ) ) {
+				continue;
+			}
+
+			array_push( $overrides, $file );
+		}
+
+	}
+
+	return $overrides;
 
 }

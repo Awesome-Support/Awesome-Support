@@ -72,3 +72,88 @@ function wpas_list_themes() {
 
 
 }
+
+/**
+ * Get plugin settings list
+ *
+ * Get all plugin settings filtered.
+ *
+ * @since 3.3
+ * @return array
+ */
+function wpas_get_settings() {
+
+	// Load the file uploader settings if not already done (those settings are loaded on plugins_loaded only)
+	if ( ! function_exists( 'wpas_addon_settings_file_upload' ) ) {
+		require_once( WPAS_PATH . 'includes/file-uploader/settings-file-upload.php' );
+	}
+
+	return apply_filters( 'wpas_plugin_settings', array() );
+
+}
+
+/**
+ * Get the list of all options
+ *
+ * This function filters the settings to remove all the hierarchy and only returns
+ * an array of options.
+ *
+ * @since 3.3
+ * @return array
+ */
+function wpas_get_raw_settings() {
+
+	$settings = wpas_get_settings();
+
+	if ( empty( $settings ) ) {
+		return array();
+	}
+
+	$just_options = array();
+
+	foreach ( $settings as $tab => $contents ) {
+
+		if ( ! isset( $contents['options'] ) ) {
+			continue;
+		}
+
+		foreach ( $contents['options'] as $option ) {
+			if ( isset( $option['id'] ) && ! array_key_exists( $option['id'], $just_options ) ) {
+				$just_options[$option['id']] = $option;
+			}
+		}
+
+	}
+
+	return $just_options;
+
+}
+
+/**
+ * Get all default options
+ *
+ * @since 3.3
+ *
+ * @param string $option Optional option ID to get the default value for
+ *
+ * @return array
+ */
+function get_settings_defaults( $option = '' ) {
+
+	$options = wpas_get_raw_settings();
+
+	if ( ! empty( $option ) && array_key_exists( $option, $options ) ) {
+		return $options[ $option ]['default'];
+	}
+
+	$defaults = array();
+
+	foreach ( $options as $key => $option ) {
+		if ( isset( $options[ $key ]['default'] ) ) {
+			$defaults[ $key ] = $options[ $key ]['default'];
+		}
+	}
+
+	return $defaults;
+
+}

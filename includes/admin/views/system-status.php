@@ -297,9 +297,8 @@
 	</thead>
 	<tbody>
 		<?php
-		global $wpas_cf;
 
-		$fields = $wpas_cf->get_custom_fields();
+		$fields = WPAS()->custom_fields->get_custom_fields();
 
 		if ( empty( $fields ) ) { ?>
 			<td colspan="2">None</td>	

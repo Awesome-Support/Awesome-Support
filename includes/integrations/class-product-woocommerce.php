@@ -26,7 +26,7 @@ class WPAS_Product_WooCommerce {
 	public function __construct() {
 
 		if ( $this->is_woocommerce_enabled() ) {
-			new WPAS_Product_Sync( 'product', '', true );
+			WPAS()->products_sync = new WPAS_Product_Sync( 'product', '', true );
 			add_filter( 'wpas_taxonomy_locked_msg', array( $this, 'locked_message' ) );
 		}
 

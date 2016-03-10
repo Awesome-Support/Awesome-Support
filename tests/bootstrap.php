@@ -37,8 +37,16 @@ require dirname( __FILE__ ) . '/lib/testcase.php';
 require dirname( __FILE__ ) . '/lib/exceptions.php';
 require dirname( __FILE__ ) . '/../awesome-support.php';
 
+if ( ! function_exists( 'wpas_install' ) ) {
+	require dirname( __FILE__ ) . '/../includes/install.php';
+}
+
+if ( ! function_exists( 'get_settings_defaults' ) ) {
+	require dirname( __FILE__ ) . '/../includes/admin/settings/functions-settings.php';
+}
+
 // Install the plugin
-Awesome_Support_Old::activate( WP_ALLOW_MULTISITE );
+wpas_install( false );
 
 $current_user = new WP_User(1);
 $current_user->set_role('administrator');

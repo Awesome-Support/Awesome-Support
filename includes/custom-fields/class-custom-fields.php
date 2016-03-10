@@ -595,9 +595,22 @@ class WPAS_Custom_Fields {
 		     && $query->is_main_query()
 		) {
 
-			$query->query_vars['meta_key']     = '_wpas_status';
-			$query->query_vars['meta_value']   = sanitize_text_field( $_GET['wpas_status'] );
-			$query->query_vars['meta_compare'] = '=';
+			// We need to update the original meta_query and not replace it to avoid filtering issues
+			$meta_query = $query->get( 'meta_query' );
+
+			if ( ! is_array( $meta_query ) ) {
+				$meta_query = array_filter( (array) $meta_query );
+			}
+
+			$meta_query[] = array(
+					'key'     => '_wpas_status',
+					'value'   => sanitize_text_field( $_GET['wpas_status'] ),
+					'compare' => '=',
+					'type'    => 'CHAR',
+			);
+
+			$query->set( 'meta_query', $meta_query );
+
 		}
 
 	}

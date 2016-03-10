@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 global $wp_roles;
 
 /* Add nonce */
-wp_nonce_field( Awesome_Support_Admin::$nonce_action, Awesome_Support_Admin::$nonce_name, false, true );
+wp_nonce_field( 'wpas_update_cf', 'wpas_cf', false, true );
 
 /* Issuer metadata */
 $issuer = get_userdata( $post->post_author );
@@ -75,7 +75,7 @@ foreach( $wp_roles->roles as $role => $data ) {
 			<a id="wpas-issuer" href="<?php echo $issuer_tickets; ?>"><?php echo $issuer_name; ?></a></p>
 		<?php endif; ?>
 
-	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'This ticket has been raised by the user hereinabove.', 'awesome-support' ), '#' ); ?></p><?php endif; ?>
+	<p class="description"><?php printf( __( 'This ticket has been raised by the user hereinabove.', 'awesome-support' ), '#' ); ?></p>
 	<hr>
 
 	<label for="wpas-assignee"><strong><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
@@ -96,11 +96,6 @@ foreach( $wp_roles->roles as $role => $data ) {
 		echo wpas_users_dropdown( $staff_atts );
 		?>
 	</p>
-	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'The above agent is currently responsible for this ticket.', 'awesome-support' ), '#' ); ?></p><?php endif; ?>
-	
-	<!-- <hr>
+	<p class="description"><?php printf( __( 'The above agent is currently responsible for this ticket.', 'awesome-support' ), '#' ); ?></p>
 
-	<label for="wpas-ccs"><strong><?php _e( 'CCs', 'awesome-support' ); ?></strong></label>
-	<p><input type="text" id="wpas-ccs" name="wpas_ccs" value="<?php echo $ccs; ?>" style="width:100%" /></p>
-	<?php if( WPAS_FIELDS_DESC ): ?><p class="description"><?php printf( __( 'If you want to send a copy of the e-mails to another person, add the address(es) separated by a comma.', 'awesome-support' ), '#' ); ?></p><?php endif; ?> -->
 </div>

@@ -287,13 +287,7 @@ class WPAS_Custom_Field {
 			}
 
 		} else {
-
 			$value = get_post_meta( $post_id, $this->get_field_id( true ), true );
-
-			if ( is_array( $value ) ) {
-				$value = implode( ', ', $value );
-			}
-
 		}
 
 		return ! empty( $value ) ? $this->get_sanitized_value( $value ) : $default;

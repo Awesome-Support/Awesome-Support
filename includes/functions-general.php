@@ -720,7 +720,7 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 		$option .= '&angrt; ';
 	}
 
-	$option .= $term->name;
+	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
 	?>
 
 	<option value="<?php echo $term->term_id; ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug ) { echo 'selected="selected"'; } ?>><?php echo $option; ?></option>
@@ -852,5 +852,103 @@ function wpas_get_reply_link( $reply_id ) {
 	$link = $base . "#reply-$reply_id";
 
 	return esc_url( $link );
+
+}
+
+add_action( 'wpas_after_template', 'wpas_credit', 10, 3 );
+/**
+ * Display a link to the plugin page.
+ *
+ * @since  3.1.3
+ * @return void
+ */
+function wpas_credit() {
+	if ( true === (bool) wpas_get_option( 'credit_link' ) ) {
+		echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
+	}
+}
+
+add_filter( 'plugin_locale', 'wpas_change_plugin_locale', 10, 2 );
+/**
+ * Change the plugin locale
+ *
+ * This is used to temporarily change the plugin locale on a site,
+ * mainly for debugging purpose.
+ *
+ * @since 3.2.2
+ *
+ * @param string $locale Current plugin locale
+ * @param string $domain Current plugin domain
+ *
+ * @return string
+ */
+function wpas_change_plugin_locale( $locale, $domain ) {
+
+	if ( 'wpas' !== $domain ) {
+		return $locale;
+	}
+
+	/**
+	 * Custom locale.
+	 *
+	 * The custom locale defined by the URL var $wpas_locale
+	 * is used for debugging purpose. It makes testing language
+	 * files easy without changing the site main language.
+	 * It can also be useful when doing support on a site that's
+	 * not in English.
+	 *
+	 * @since  3.1.5
+	 * @var    string
+	 */
+	$wpas_locale = filter_input( INPUT_GET, 'wpas_locale', FILTER_SANITIZE_STRING );
+
+	if ( ! empty( $wpas_locale ) ) {
+		$locale = $wpas_locale;
+	}
+
+	return $locale;
+
+}
+
+add_filter( 'wpas_logs_handles', 'wpas_default_log_handles', 10, 1 );
+/**
+ * Register default logs handles.
+ *
+ * @since  3.0.2
+ *
+ * @param  array $handles Array of registered log handles
+ *
+ * @return array          Array of registered handles with the default ones added
+ */
+function wpas_default_log_handles( $handles ) {
+	array_push( $handles, 'error' );
+
+	return $handles;
+}
+
+add_filter( 'wp_link_query_args', 'wpas_remove_tinymce_links_internal', 10, 1 );
+/**
+ * Filter the link query arguments to remove completely internal links from the list.
+ *
+ * @since 3.2.0
+ *
+ * @param array $query An array of WP_Query arguments.
+ *
+ * @return array $query
+ */
+function wpas_remove_tinymce_links_internal( $query ) {
+
+	/**
+	 * Getting the post ID this way is quite dirty but it seems to be the only way
+	 * as we are in an Ajax query and the only given parameter is the $query
+	 */
+	$url     = wp_get_referer();
+	$post_id = url_to_postid( $url );
+
+	if ( $post_id === wpas_get_option( 'ticket_submit' ) ) {
+		$query['post_type'] = array( 'none' );
+	}
+
+	return $query;
 
 }

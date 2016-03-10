@@ -24,8 +24,6 @@ class WPAS_Test_Custom_Field extends WP_UnitTestCase {
 
 	function setUp() {
 
-		global $wpas_cf;
-
 		parent::setUp();
 
 		/**
@@ -52,7 +50,7 @@ class WPAS_Test_Custom_Field extends WP_UnitTestCase {
 		/**
 		 * Get all the custom fields.
 		 */
-		$this->fields = $wpas_cf->get_custom_fields();
+		$this->fields = WPAS()->custom_fields->get_custom_fields();
 
 		/**
 		 * Instantiate the custom fields objects.

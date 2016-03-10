@@ -71,11 +71,9 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 		) );
 
 		echo $rememberme->get_output();
-		?>
 
-		<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>">
-		<input type="hidden" name="wpas_login" value="1">
-		<?php wpas_make_button( __( 'Log in' ), array( 'onsubmit' => __( 'Logging In...', 'awesome-support' ) ) ); ?>
+		wpas_do_field( 'login', $redirect_to );
+		wpas_make_button( __( 'Log in' ), array( 'onsubmit' => __( 'Logging In...', 'awesome-support' ) ) ); ?>
 	</form>
 	<?php
 	if ( 'allow' === $registration ): ?>
@@ -154,9 +152,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 			 * @Awesome_Support::terms_and_conditions_checkbox()
 			 */
 			do_action( 'wpas_after_registration_fields' );
-			?>
-			<input type="hidden" name="wpas_registration" value="true">
-			<?php
+			wpas_do_field( 'register', $redirect_to );
 			wp_nonce_field( 'register', 'user_registration', false, true );
 			wpas_make_button( __( 'Create Account', 'awesome-support' ), array( 'onsubmit' => __( 'Creating Account...', 'awesome-support' ) ) );
 			?>

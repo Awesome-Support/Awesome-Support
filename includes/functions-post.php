@@ -137,6 +137,69 @@ function wpas_open_ticket( $data ) {
 	
 }
 
+add_action( 'wpas_do_submit_new_ticket', 'wpas_new_ticket_submission' );
+/**
+ * Instantiate a new ticket submission
+ *
+ * This helper function is used to trigger the creation of a new ticket
+ * after the ticket submission form is posted on the front-end.
+ *
+ * @since 3.3
+ *
+ * @param array $data Ticket data required to open a new ticket
+ *
+ * @return void
+ */
+function wpas_new_ticket_submission( $data ) {
+
+	if ( ! is_admin() && isset( $data['wpas_title'] ) ) {
+
+		// Verify the nonce first
+		if ( ! isset( $data['wpas_nonce'] ) || ! wp_verify_nonce( $data['wpas_nonce'], 'new_ticket' ) ) {
+
+			/* Save the input */
+			wpas_save_values();
+
+			// Redirect to submit page
+			wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'awesome-support' ) );
+			wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
+			exit;
+		}
+
+		$ticket_id = wpas_open_ticket( array( 'title' => $data['wpas_title'], 'message' => $data['wpas_message'] ) );
+
+		/* Submission failure */
+		if ( false === $ticket_id ) {
+
+			/* Save the input */
+			wpas_save_values();
+
+			/**
+			 * Redirect to the newly created ticket
+			 */
+			wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'awesome-support' ) );
+			wp_redirect( wp_sanitize_redirect( home_url( $data['_wp_http_referer'] ) ) );
+			exit;
+
+		} /* Submission succeeded */
+		else {
+
+			/**
+			 * Empty the temporary sessions
+			 */
+			WPAS()->session->clean( 'submission_form' );
+
+			/**
+			 * Redirect to the newly created ticket
+			 */
+			wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
+			exit;
+
+		}
+	}
+
+}
+
 /**
  * Insert a new ticket in the database
  *
@@ -408,6 +471,81 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 
 }
 
+add_action( 'wpas_do_submit_new_reply', 'wpas_new_reply_submission' );
+/**
+ * Instantiate a new reply submission
+ *
+ * This helper function is used to trigger the creation of a new reply
+ * after the reply submission form is posted on the front-end.
+ *
+ * @since 3.3
+ *
+ * @param array $data Reply data required to open a new ticket
+ *
+ * @return void
+ */
+function wpas_new_reply_submission( $data ) {
+
+	// Get parent ticket ID
+	$parent_id = (int) $data['ticket_id'];
+
+	if ( 'ticket' !== get_post_type( $parent_id ) ) {
+		wpas_add_error( 'reply_added_failed', __( 'Something went wrong. We couldn&#039;t identify your ticket. Please try again.', 'awesome-support' ) );
+		wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
+		exit;
+	}
+
+	// Define if the ticket must be closed
+	$close = isset( $data['wpas_close_ticket'] ) ? true : false;
+
+	if ( ! empty( $data['wpas_user_reply'] ) ) {
+
+		/* Sanitize the data */
+		$data = array( 'post_content' => wp_kses( $data['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
+
+		/* Add the reply */
+		$reply_id = wpas_add_reply( $data, $parent_id );
+
+	}
+
+	/* Possibly close the ticket */
+	if ( $close ) {
+
+		wpas_close_ticket( $parent_id );
+
+		// Redirect now if no reply was posted
+		if ( ! isset( $reply_id ) ) {
+			wpas_add_notification( 'ticket_closed', __( 'The ticket was successfully closed', 'awesome-support' ) );
+			wpas_redirect( 'ticket_closed', get_permalink( $parent_id ) );
+			exit;
+		}
+
+	}
+
+	if ( isset( $reply_id ) ) {
+
+		if ( false === $reply_id ) {
+			wpas_add_error( 'reply_added_failed', __( 'Your reply could not be submitted for an unknown reason.', 'awesome-support' ) );
+			wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
+			exit;
+		} else {
+
+			if ( $close ) {
+				wpas_add_notification( 'reply_added_closed', __( 'Thanks for your reply. The ticket is now closed.', 'awesome-support' ) );
+			} else {
+				wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'awesome-support' ) );
+			}
+
+			if ( false !== $link = wpas_get_reply_link( $reply_id ) ) {
+				wpas_redirect( 'reply_added', $link );
+				exit;
+			}
+		}
+
+	}
+
+}
+
 function wpas_edit_reply( $reply_id = null, $content = '' ) {
 
 	if ( is_null( $reply_id ) ) {
@@ -508,8 +646,14 @@ function wpas_mark_reply_read( $reply_id = null ) {
 
 }
 
+add_action( 'wp_ajax_wpas_mark_reply_read', 'wpas_mark_reply_read_ajax' );
+/**
+ * Mark a ticket reply as read with Ajax
+ *
+ * @return void
+ */
 function wpas_mark_reply_read_ajax() {
-	
+
 	$ID = wpas_mark_reply_read();
 
 	if ( false === $ID || is_wp_error( $ID ) ) {
@@ -520,8 +664,14 @@ function wpas_mark_reply_read_ajax() {
 	die();
 }
 
+add_action( 'wp_ajax_wpas_edit_reply', 'wpas_edit_reply_ajax' );
+/**
+ * Edit a reply with Ajax
+ *
+ * @return void
+ */
 function wpas_edit_reply_ajax() {
-	
+
 	$ID = wpas_edit_reply();
 
 	if ( false === $ID || is_wp_error( $ID ) ) {
@@ -958,6 +1108,7 @@ function wpas_save_values() {
 
 }
 
+add_action( 'pre_user_query', 'wpas_randomize_uers_query', 10, 1 );
 /**
  * Randomize user query.
  *
@@ -968,7 +1119,9 @@ function wpas_save_values() {
  * to new tickets.
  *
  * @since  3.0.0
+ *
  * @param  object $query User query
+ *
  * @return void
  */
 function wpas_randomize_uers_query( $query ) {
@@ -976,7 +1129,7 @@ function wpas_randomize_uers_query( $query ) {
 	/* Make sure we only alter our own user query */
 	if ( 'wpas_random' == $query->query_vars['orderby'] ) {
 		$query->query_orderby = 'ORDER BY RAND()';
-    }
+	}
 
 }
 
@@ -1112,29 +1265,66 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
  * Change a ticket status to open.
  *
  * @since  3.0.2
- * @param  integer         $ticket_id ID of the ticket to re-open
+ *
+ * @param  integer $ticket_id ID of the ticket to re-open
+ *
  * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
  */
 function wpas_reopen_ticket( $ticket_id ) {
 
-	if ( 'ticket' == get_post_type( $ticket_id ) ) {
-
-		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
-
-		/* Log the action */
-		wpas_log( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
-
-		/**
-		 * wpas_after_reopen_ticket hook
-		 *
-		 * @since  3.0.2
-		 */
-		do_action( 'wpas_after_reopen_ticket', intval( $ticket_id ), $update );
-
-		return $update;
-
-	} else {
+	if ( 'ticket' !== get_post_type( $ticket_id ) ) {
 		return false;
+	}
+
+	if ( ! current_user_can( 'edit_ticket' ) && ! wpas_can_submit_ticket( $ticket_id ) ) {
+		return false;
+	}
+
+	$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
+
+	/* Log the action */
+	wpas_log( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
+
+	/**
+	 * wpas_after_reopen_ticket hook
+	 *
+	 * @since  3.0.2
+	 */
+	do_action( 'wpas_after_reopen_ticket', intval( $ticket_id ), $update );
+
+	return $update;
+
+}
+
+add_action( 'wpas_do_reopen_ticket', 'wpas_reopen_ticket_trigger' );
+/**
+ * Trigger the re-open ticket function
+ *
+ * This is triggered by the wpas_do custom actions.
+ *
+ * @since 3.3
+ *
+ * @param array $data Superglobal data
+ *
+ * @return void
+ */
+function wpas_reopen_ticket_trigger( $data ) {
+
+	if ( isset( $data['ticket_id'] ) ) {
+
+		$ticket_id = (int) $data['ticket_id'];
+
+		if ( ! wpas_can_submit_ticket( $ticket_id ) && ! current_user_can( 'edit_ticket' ) ) {
+			wpas_add_error( 'cannot_reopen_ticket', __( 'You are not allowed to re-open this ticket', 'awesome-support' ) );
+			wpas_redirect( 'ticket_reopen', wpas_get_tickets_list_page_url() );
+			exit;
+		}
+
+		wpas_reopen_ticket( $ticket_id );
+		wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'awesome-support' ) );
+		wpas_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );
+		exit;
+
 	}
 
 }

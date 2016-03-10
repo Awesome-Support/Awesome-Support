@@ -8,12 +8,12 @@
  *
  * @wordpress-plugin
  * Plugin Name:       Awesome Support
- * Plugin URI:        http://getawesomesupport.com
+ * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
  * Version:           3.2.9
  * Author:            ThemeAvenue
  * Author URI:        http://themeavenue.net
- * Text Domain:       wpas
+ * Text Domain:       awesome-support
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
@@ -22,171 +22,6 @@
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
-}
-
-/*----------------------------------------------------------------------------*
- * Shortcuts
- *----------------------------------------------------------------------------*/
-
-define( 'WPAS_VERSION',           '3.2.9' );
-define( 'WPAS_DB_VERSION',        '1' );
-define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
-define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
-define( 'WPAS_ROOT',              trailingslashit( dirname( plugin_basename( __FILE__ ) ) ) );
-define( 'WPAS_TEMPLATE_PATH',     'awesome-support/' );
-define( 'WPAS_ADMIN_ASSETS_URL',  trailingslashit( plugin_dir_url( __FILE__ ) . 'assets/admin/' ) );
-define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) . 'assets/admin/' ) );
-
-/*----------------------------------------------------------------------------*
- * Settings
- *----------------------------------------------------------------------------*/
-
-define( 'WPAS_FIELDS_DESC', apply_filters( 'wpas_fields_descriptions', true ) );
-
-/*----------------------------------------------------------------------------*
- * Addons
- *----------------------------------------------------------------------------*/
-
-/**
- * Array of addons to load.
- *
- * @since  3.1.5
- * @var    array
- */
-$wpas_addons = array();
-
-/*----------------------------------------------------------------------------*
- * Shared Functionalities
- *----------------------------------------------------------------------------*/
-
-require_once( WPAS_PATH . 'includes/functions-fallback.php' );
-require_once( WPAS_PATH . 'includes/class-logger.php' );
-require_once( WPAS_PATH . 'includes/class-awesome-support.php' );
-
-/**
- * Register hooks that are fired when the plugin is activated or deactivated.
- * When the plugin is deleted, the uninstall.php file is loaded.
- */
-register_activation_hook( __FILE__, array( 'Awesome_Support_Old', 'activate' ) );
-
-/**
- * Get an instance of the plugin
- */
-add_action( 'plugins_loaded', array( 'Awesome_Support_Old', 'get_instance' ) );
-
-/**
- * Load addons.
- *
- * A couple of addons are built in the plugin.
- * We load them here.
- */
-require_once( WPAS_PATH . 'includes/file-uploader/class-file-uploader.php' );
-require_once( WPAS_PATH . 'includes/class-mailgun-email-check.php' );
-
-/* Load custom fields dependencies */
-require_once( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
-require_once( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
-require_once( WPAS_PATH . 'includes/custom-fields/functions-custom-fields.php' );   // Submission form related functions
-
-/**
- * Call all classes and functions files that are shared
- * through the backend and the frontend. The files only used
- * by the backend or the frontend are loaded
- * by their respective classes.
- */
-require_once( WPAS_PATH . 'includes/functions-post.php' );            // All the functions related to opening a ticket and submitting replies
-require_once( WPAS_PATH . 'includes/functions-user.php' );            // Everything related to user login, registration and capabilities
-require_once( WPAS_PATH . 'includes/functions-addons.php' );          // Addons functions and autoloader
-require_once( WPAS_PATH . 'includes/functions-deprecated.php' );      // Load deprecated functions
-require_once( WPAS_PATH . 'includes/class-log-history.php' );         // Logging class
-require_once( WPAS_PATH . 'includes/class-email-notifications.php' ); // E-mail notification class
-require_once( WPAS_PATH . 'includes/functions-general.php' );         // Functions that are used both in back-end and front-end
-require_once( WPAS_PATH . 'includes/functions-error.php' );           // Error handling
-require_once( WPAS_PATH . 'includes/functions-notification.php' );    // Notification handling
-require_once( WPAS_PATH . 'includes/functions-templating.php' );      // Templating function
-require_once( WPAS_PATH . 'includes/class-post-type.php' );           // Register post types and related functions
-require_once( WPAS_PATH . 'includes/class-product-sync.php' );        // Keep the product taxonomy in sync with e-commerce products
-require_once( WPAS_PATH . 'includes/class-gist.php' );                // Add oEmbed support for Gists
-require_once( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );    // Helper class to load a wp_editor instance via Ajax
-require_once( WPAS_PATH . 'includes/class-agent.php' );               // Support agent class
-require_once( WPAS_PATH . 'includes/class-wpas-session.php' );
-
-/**
- * Check if dependencies are loaded.
- *
- * The plugin uses a certain number of dependencies managed through Composer.
- * If those dependencies are not loaded the plugin won't work.
- *
- * In order to avoid errors we check if dependencies are present. If not we simply
- * don't load the plugin.
- *
- * This problem won't happen with the production version as we have scripts
- * doing all the work, but on the development version this can be a problem.
- *
- * @since  3.0.2
- */
-if ( ! Awesome_Support_Old::dependencies_loaded() ) {
-	add_action( 'admin_notices', 'wpas_missing_dependencies' );
-}
-
-/*----------------------------------------------------------------------------*
- * Public-Facing Only Functionality
- *----------------------------------------------------------------------------*/
-if ( ! is_admin() && Awesome_Support_Old::dependencies_loaded() ) {
-	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' ); // The plugin main shortcodes
-	require_once( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );  // The plugin main shortcode-submit
-}
-
-/*----------------------------------------------------------------------------*
- * Dashboard and Administrative Functionality
- *----------------------------------------------------------------------------*/
-
-/**
- * The code below is intended to to give the lightest footprint possible.
- */
-if ( is_admin() && Awesome_Support_Old::dependencies_loaded() ) {
-
-	/* Load main admin class */
-	require_once( WPAS_PATH . 'includes/admin/class-admin.php' );
-	add_action( 'plugins_loaded', array( 'Awesome_Support_Admin', 'get_instance' ) );
-
-	/* Load the MailGun e-mail check settings */
-	add_filter( 'wpas_plugin_settings', array( 'WPAS_MailGun_EMail_Check', 'settings' ), 10, 1 );
-
-	/**
-	 * Add link ot settings tab
-	 */
-	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( 'Awesome_Support_Admin', 'settings_page_link' ) );
-
-}
-
-/*----------------------------------------------------------------------------*
- * Declare global variables
- *----------------------------------------------------------------------------*/
-
-/**
- * Instantiate the global $wpas_cf object containing all the custom fields.
- * This object is used throughout the entire plugin so it is capital to be able
- * to access it anytime and not to redeclare a second object when registering
- * new custom fields.
- *
- * @since  3.0.0
- * @var    $wpas_cf WPAS_Custom_Fields
- */
-$wpas_cf = new WPAS_Custom_Fields;
-
-/*----------------------------------------------------------------------------*
- * Load theme's functions
- *----------------------------------------------------------------------------*/
-add_action( 'init', 'wpas_load_theme_functions' );
-/**
- * Load Awesome Support's theme functions if any
- *
- * @since 3.2.0
- * @return void
- */
-function wpas_load_theme_functions() {
-	wpas_get_template( 'functions' );
 }
 
 if ( ! class_exists( 'Awesome_Support' ) ):
@@ -208,13 +43,55 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		private static $instance;
 
 		/**
+		 * Possible error message.
+		 *
+		 * @since 3.3
+		 * @var null|WP_Error
+		 */
+		protected $error = null;
+
+		/**
+		 * Minimum version of WordPress required ot run the plugin
+		 *
+		 * @since 3.3
+		 * @var string
+		 */
+		public $wordpress_version_required = '3.8';
+
+		/**
+		 * Required version of PHP.
+		 *
+		 * Follow WordPress latest requirements and require
+		 * PHP version 5.2 at least.
+		 *
+		 * @since 3.3
+		 * @var string
+		 */
+		public $php_version_required = '5.2';
+
+		/**
+		 * Holds the WPAS_Custom_Fields instance
+		 *
+		 * @since 3.3
+		 * @var WPAS_Custom_Fields
+		 */
+		public $custom_fields;
+
+		/**
+		 * List of registered addons
+		 *
+		 * @since 3.3
+		 * @var array
+		 */
+		public $addons = array();
+
+		/**
 		 * Admin Notices object
 		 *
 		 * @var object AS_Admin_Notices
 		 * @since 3.1.5
 		 */
 		public $admin_notices;
-
 
 		/**
 		 * Session object
@@ -225,6 +102,16 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		public $session;
 
 		/**
+		 * Products synchronization object
+		 *
+		 * Only used if there is a compatible e-commerce plugin active
+		 *
+		 * @since 3.3
+		 * @var null|WPAS_Product_Sync
+		 */
+		public $products_sync;
+
+		/**
 		 * Instantiate and return the unique Awesome Support object
 		 *
 		 * @since     3.2.5
@@ -233,20 +120,88 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		public static function instance() {
 
 			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Awesome_Support ) ) {
-
 				self::$instance = new Awesome_Support;
-				self::$instance->setup_constants();
-				self::$instance->includes();
-				self::$instance->session = new WPAS_Session();
+				self::$instance->init();
+			}
 
-				if ( is_admin() ) {
-					self::$instance->includes_admin();
-					self::$instance->admin_notices = new AS_Admin_Notices();
+			return self::$instance;
+
+		}
+
+		/**
+		 * Instantiate the plugin
+		 *
+		 * @since 3.3
+		 * @return void
+		 */
+		private function init() {
+
+			// First of all we need the constants
+			self::$instance->setup_constants();
+
+			// Make sure the WordPress version is recent enough
+			if ( ! self::$instance->is_version_compatible() ) {
+				self::$instance->add_error( sprintf( __( 'Awesome Support requires WordPress version %s or above. Please update WordPress to run this plugin.', 'awesome-support' ), self::$instance->wordpress_version_required ) );
+			}
+
+			// Make sure we have a version of PHP that's not too old
+			if ( ! self::$instance->is_php_version_enough() ) {
+				self::$instance->add_error( sprintf( __( 'Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>.', 'awesome-support' ), self::$instance->wordpress_version_required, 'a href="http://www.wpupdatephp.com/update/" target="_blank"' ) );
+			}
+
+			// Check that the vendor directory is present
+			if ( ! self::$instance->dependencies_loaded() ) {
+				self::$instance->add_error( sprintf( __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array(
+						'tab'       => 'plugin-information',
+						'plugin'    => 'awesome-support',
+						'TB_iframe' => 'true',
+						'width'     => '772',
+						'height'    => '935'
+				), admin_url( 'plugin-install.php' ) ) ) ) );
+			}
+
+			// If we have any error, don't load the plugin
+			if ( is_a( self::$instance->error, 'WP_Error' ) ) {
+				add_action( 'admin_notices', array( self::$instance, 'display_error' ), 10, 0 );
+				return;
+			}
+
+			self::$instance->includes();
+			self::$instance->session = new WPAS_Session();
+			self::$instance->custom_fields = new WPAS_Custom_Fields;
+			self::$instance->maybe_setup();
+
+			if ( is_admin() ) {
+
+				self::$instance->includes_admin();
+				self::$instance->admin_notices = new AS_Admin_Notices();
+
+				if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+
+					/**
+					 * Redirect to about page.
+					 *
+					 * We don't use the 'was_setup' option for the redirection as
+					 * if the install fails the first time this will create a redirect loop
+					 * on the about page.
+					 */
+					if ( true === boolval( get_option( 'wpas_redirect_about', false ) ) ) {
+						add_action( 'init', array( self::$instance, 'redirect_to_about' ) );
+					}
+
+					add_action( 'plugins_loaded', array( 'WPAS_Upgrade', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( 'WPAS_Tickets_List', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( 'WPAS_Titan', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( self::$instance, 'remote_notifications' ), 15, 0 );
+
 				}
 
 			}
 
-			return self::$instance;
+			add_action( 'plugins_loaded', array( self::$instance, 'load_plugin_textdomain' ) );
+			add_action( 'init', array( self::$instance, 'load_theme_functions' ) );
 
 		}
 
@@ -263,6 +218,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			// Cloning instances of the class is forbidden
 			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 		}
+
 		/**
 		 * Disable unserializing of the class
 		 *
@@ -281,7 +237,145 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
+			define( 'WPAS_VERSION',           '3.2.8' );
+			define( 'WPAS_DB_VERSION',        '1' );
+			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
+			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
+			define( 'WPAS_ROOT',              trailingslashit( dirname( plugin_basename( __FILE__ ) ) ) );
+			define( 'WPAS_TEMPLATE_PATH',     'awesome-support/' );
+			define( 'WPAS_ADMIN_ASSETS_URL',  trailingslashit( plugin_dir_url( __FILE__ ) . 'assets/admin/' ) );
+			define( 'WPAS_ADMIN_ASSETS_PATH', trailingslashit( plugin_dir_path( __FILE__ ) . 'assets/admin/' ) );
+			define( 'WPAS_PLUGIN_FILE',       __FILE__ );
+			define( 'WPAS_PLUGIN_BASENAME',   plugin_basename( __FILE__ ) );
+		}
 
+		/**
+		 * Check if plugin dependencies are present.
+		 *
+		 * @since  3.0.2
+		 * @return boolean True of dependencies are here, false otherwise
+		 */
+		private function dependencies_loaded() {
+
+			if ( ! is_dir( WPAS_PATH . 'vendor' ) ) {
+				return false;
+			}
+
+			return true;
+
+		}
+
+		/**
+		 * Check if the core version is compatible with this addon.
+		 *
+		 * @since  3.3
+		 * @return boolean
+		 */
+		private function is_version_compatible() {
+
+			if ( empty( self::$instance->wordpress_version_required ) ) {
+				return true;
+			}
+
+			if ( version_compare( get_bloginfo( 'version' ), self::$instance->wordpress_version_required, '<' ) ) {
+				return false;
+			}
+
+			return true;
+
+		}
+
+		/**
+		 * Check if the version of PHP is compatible with this addon.
+		 *
+		 * @since  3.3
+		 * @return boolean
+		 */
+		private function is_php_version_enough() {
+
+			/**
+			 * No version set, we assume everything is fine.
+			 */
+			if ( empty( self::$instance->php_version_required ) ) {
+				return true;
+			}
+
+			if ( version_compare( phpversion(), self::$instance->php_version_required, '<' ) ) {
+				return false;
+			}
+
+			return true;
+
+		}
+
+		/**
+		 * Add error.
+		 *
+		 * Add a new error to the WP_Error object
+		 * and create the object if it doesn't exist yet.
+		 *
+		 * @since  3.3
+		 *
+		 * @param string $message Error message to add
+		 *
+		 * @return void
+		 */
+		private function add_error( $message ) {
+
+			if ( ! is_object( $this->error ) || ! is_a( $this->error, 'WP_Error' ) ) {
+				$this->error = new WP_Error();
+			}
+
+			$this->error->add( 'addon_error', $message );
+
+		}
+
+		/**
+		 * Display error.
+		 *
+		 * Get all the error messages and display them
+		 * in the admin notices.
+		 *
+		 * @since  3.3
+		 * @return void
+		 */
+		public function display_error() {
+
+			if ( ! is_a( $this->error, 'WP_Error' ) ) {
+				return;
+			}
+
+			$message = self::$instance->error->get_error_messages(); ?>
+
+			<div class="error">
+				<p>
+					<?php
+					if ( count( $message ) > 1 ) {
+						echo '<ul>';
+						foreach ( $message as $msg ) {
+							echo "<li>$msg</li>";
+						}
+						echo '</li>';
+					} else {
+						echo $message[0];
+					}
+					?>
+				</p>
+			</div>
+			<?php
+		}
+
+		/**
+		 * Redirect to about page.
+		 *
+		 * Redirect the user to the about page after plugin activation.
+		 *
+		 * @return void
+		 */
+		public function redirect_to_about() {
+			delete_option( 'wpas_redirect_about' );
+			wp_redirect( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
+			exit;
 		}
 
 		/**
@@ -292,6 +386,37 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		private function includes() {
 
+			require( WPAS_PATH . 'includes/functions-fallback.php' );
+			require( WPAS_PATH . 'includes/class-logger.php' );
+			require( WPAS_PATH . 'includes/integrations/loader.php' );
+			require( WPAS_PATH . 'includes/scripts.php' );
+			require( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' );
+			require( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );
+			require( WPAS_PATH . 'includes/file-uploader/class-file-uploader.php' );
+			require( WPAS_PATH . 'includes/class-mailgun-email-check.php' );
+			require( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
+			require( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
+			require( WPAS_PATH . 'includes/custom-fields/functions-custom-fields.php' );
+			require( WPAS_PATH . 'includes/functions-actions.php' );
+			require( WPAS_PATH . 'includes/functions-post.php' );
+			require( WPAS_PATH . 'includes/functions-user.php' );
+			require( WPAS_PATH . 'includes/functions-addons.php' );
+			require( WPAS_PATH . 'includes/functions-deprecated.php' );
+			require( WPAS_PATH . 'includes/class-log-history.php' );
+			require( WPAS_PATH . 'includes/class-email-notifications.php' );
+			require( WPAS_PATH . 'includes/functions-general.php' );
+			require( WPAS_PATH . 'includes/functions-error.php' );
+			require( WPAS_PATH . 'includes/functions-notification.php' );
+			require( WPAS_PATH . 'includes/functions-email-notifications.php' );
+			require( WPAS_PATH . 'includes/functions-templating.php' );
+			require( WPAS_PATH . 'includes/functions-post-type.php' );
+			require( WPAS_PATH . 'includes/class-product-sync.php' );
+			require( WPAS_PATH . 'includes/class-gist.php' );
+			require( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );
+			require( WPAS_PATH . 'includes/class-agent.php' );
+			require( WPAS_PATH . 'includes/class-wpas-session.php' );
+			require( WPAS_PATH . 'includes/install.php' );
+
 		}
 
 		/**
@@ -301,7 +426,124 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function includes_admin() {
+
 			require( WPAS_PATH . 'includes/admin/functions-notices.php' );
+
+			// We don't need all this during Ajax processing
+			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+
+				require( WPAS_PATH . 'includes/admin/functions-menu.php' );
+				require( WPAS_PATH . 'includes/admin/functions-post.php' );
+				require( WPAS_PATH . 'includes/admin/functions-tools.php' );
+				require( WPAS_PATH . 'includes/admin/functions-list-table.php' );
+				require( WPAS_PATH . 'includes/admin/functions-metaboxes.php' );
+				require( WPAS_PATH . 'includes/admin/functions-admin-actions.php' );
+				require( WPAS_PATH . 'includes/admin/functions-misc.php' );
+				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
+				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
+				require( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
+				require( WPAS_PATH . 'includes/admin/class-admin-help.php' );
+				require( WPAS_PATH . 'includes/admin/upgrade/class-upgrade.php' );
+
+				if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
+					require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
+				}
+
+				/* Load settings files */
+				require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
+
+			}
+
+		}
+
+		/**
+		 * Plugin setup.
+		 *
+		 * If the plugin has just been installed we need to set a couple of things.
+		 * We will automatically create the "special" pages: tickets list and
+		 * ticket submission.
+		 */
+		private function maybe_setup() {
+
+			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
+				add_action( 'admin_init', 'wpas_create_pages', 11, 0 );
+				add_action( 'admin_init', 'wpas_flush_rewrite_rules', 11, 0 );
+			}
+
+			/**
+			 * Ask for products support.
+			 *
+			 * Still part of the installation process. Ask the user
+			 * if he is going to support multiple products or only one.
+			 * It is important to use the built-in taxonomy for multiple products
+			 * support as it is used by multiple addons.
+			 *
+			 * However, if the products support is already enabled, it means that this is not
+			 * the first activation of the plugin and products support was previously enabled
+			 * (products support is disabled by default). In this case we don't ask again.
+			 */
+			if ( 'pending' === get_option( 'wpas_support_products' ) ) {
+				if ( ! isset( $_GET['page'] ) || isset( $_GET['page'] ) && 'wpas-about' !== $_GET['page'] ) {
+					add_action( 'admin_notices', 'wpas_ask_support_products' );
+				}
+
+			}
+
+		}
+
+		/**
+		 * Load the plugin text domain for translation.
+		 *
+		 * @return boolean True if the language file was loaded, false otherwise
+		 * @since    1.0.0
+		 */
+		public function load_plugin_textdomain() {
+
+			$lang_dir  = WPAS_ROOT . 'languages/';
+			$land_path = WPAS_PATH . 'languages/';
+			$locale    = apply_filters( 'plugin_locale', get_locale(), 'awesome-support' );
+			$mofile    = "awesome-support-$locale.mo";
+
+			if ( file_exists( $land_path . $mofile ) ) {
+				$language = load_textdomain( 'awesome-support', $land_path . $mofile );
+			} else {
+				$language = load_plugin_textdomain( 'awesome-support', false, $lang_dir );
+			}
+
+			return $language;
+
+		}
+
+		/**
+		 * Load Awesome Support's theme functions if any
+		 *
+		 * @since 3.2.0
+		 * @return void
+		 */
+		public function load_theme_functions() {
+			wpas_get_template( 'functions' );
+		}
+
+		/**
+		 * Check for remote notifications.
+		 *
+		 * Use the Remote Dashboard Notifications plugin
+		 * to check for possible notifications from
+		 * http://getawesomesupport.com
+		 *
+		 * @since  3.0.0
+		 * @link   https://wordpress.org/plugins/remote-dashboard-notifications/
+		 * @return void
+		 */
+		public function remote_notifications() {
+			if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
+				new TAV_Remote_Notification_Client( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
+			}
 		}
 
 	}
@@ -320,5 +562,6 @@ endif;
 function WPAS() {
 	return Awesome_Support::instance();
 }
+
 // Get Awesome Support Running
 WPAS();
