@@ -46,6 +46,9 @@ function wpas_metaboxes() {
 	/* Contacts involved in the ticket */
 	add_meta_box( 'wpas-mb-contacts', __( 'Stakeholders', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'stakeholders' ) );
 
+	/* Client profile */
+	add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
+
 	if ( WPAS()->custom_fields->have_custom_fields() ) {
 		add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
 	}
