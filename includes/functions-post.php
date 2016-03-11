@@ -1247,7 +1247,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
 			 *
 			 * @param integer $ticket_id ID of the ticket we just closed
 			 * @param integer $user_id   ID of the user who did the action
-			 * @param boolean $update    True on success, false on fialure
+			 * @param boolean $update    True on success, false on failure
 			 */
 			do_action( 'wpas_after_close_ticket_public', $ticket_id, $user_id, $update );
 
