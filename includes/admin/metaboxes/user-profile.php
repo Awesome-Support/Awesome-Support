@@ -77,6 +77,10 @@ $by_status['closed'] = $closed;
 		<?php
 		foreach ( $by_status as $status => $tickets ) {
 
+			if ( empty( $tickets ) ) {
+				continue;
+			}
+
 			$status_label = 'closed' === $status ? esc_html__( 'Closed', 'awesome-support' ) : $all_status[ $status ];
 			$lis = sprintf( '<li><span class="wpas-label" style="background-color:%1$s;">%2$s ▾</span></li>', wpas_get_option( "color_$status", '#dd3333' ), $status_label );
 
