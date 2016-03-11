@@ -38,17 +38,6 @@ if ( ! defined( 'WPINC' ) ) {
 </div>
 <?php
 /**
- * Load the WordPress WYSIWYG with minimal options
- */
-/* The edition textarea */
-wp_editor( '', 'wpas_reply', array(
-				'media_buttons' => false,
-				'teeny'         => true,
-				'quicktags'     => true,
-		)
-);
-
-/**
  * Add a hook after the WYSIWYG editor
  * for tickets reply.
  *
