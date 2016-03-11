@@ -18,8 +18,8 @@ global $post;
 $user = get_userdata( $post->post_author );
 
 // Get tickets
-$open   = wpas_get_tickets( 'open' );
-$closed = wpas_get_tickets( 'closed' );
+$open   = wpas_get_tickets( 'open', array( 'posts_per_page' => apply_filters( 'wpas_user_profile_tickets_open_limit', 10 ) ) );
+$closed = wpas_get_tickets( 'closed', array( 'posts_per_page' => apply_filters( 'wpas_user_profile_tickets_closed_limit', 5 ) ) );
 
 // Sort open tickets
 $by_status  = array();
@@ -50,9 +50,9 @@ $by_status['closed'] = $closed;
 
 	<div class="wpas-up-contact-details wpas-cf">
 		<a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . $user->ID ) ); ?>">
-			<?php echo get_avatar( $user->ID, '80', 'mm', $user->data->user_nicename, array( 'class' => 'wpas-up-contact-img' ) ); ?>
+			<?php echo get_avatar( $user->ID, '80', 'mm', $user->data->display_name, array( 'class' => 'wpas-up-contact-img' ) ); ?>
 		</a>
-		<div class="wpas-up-contact-name"><?php echo $user->data->user_nicename; ?></div>
+		<div class="wpas-up-contact-name"><?php echo $user->data->display_name; ?></div>
 		<div class="wpas-up-contact-role"><?php echo wp_kses_post( sprintf( __( 'Support User since %s', 'awesome-support' ), '<strong>' . date( get_option( 'date_format' ), strtotime( $user->data->user_registered ) ) . '</strong>' ) ); ?></div>
 		<div class="wpas-up-contact-email"><a href="mailto:<?php echo $user->data->user_email; ?>"><?php echo $user->data->user_email; ?></a></div>
 		<!-- <em class="wpas-up-contact-replytime">Usually replies within 4 hours</em> -->
