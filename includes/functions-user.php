@@ -38,10 +38,26 @@ function wpas_register_account( $data ) {
 		exit;
 	}
 
-	$email      = isset( $data['wpas_email'] ) && ! empty( $data['wpas_email'] ) ? sanitize_email( $data['wpas_email'] ) : false;
-	$first_name = isset( $data['wpas_first_name'] ) && ! empty( $data['wpas_first_name'] ) ? sanitize_text_field( $data['wpas_first_name'] ) : false;
-	$last_name  = isset( $data['wpas_last_name'] ) && ! empty( $data['wpas_last_name'] ) ? sanitize_text_field( $data['wpas_last_name'] ) : false;
-	$pwd        = isset( $data['wpas_password'] ) && ! empty( $data['wpas_password'] ) ? $data['wpas_password'] : false;
+	$user               = array();
+	$user['email']      = isset( $data['wpas_email'] ) && ! empty( $data['wpas_email'] ) ? sanitize_email( $data['wpas_email'] ) : false;
+	$user['first_name'] = isset( $data['wpas_first_name'] ) && ! empty( $data['wpas_first_name'] ) ? sanitize_text_field( $data['wpas_first_name'] ) : false;
+	$user['last_name']  = isset( $data['wpas_last_name'] ) && ! empty( $data['wpas_last_name'] ) ? sanitize_text_field( $data['wpas_last_name'] ) : false;
+	$user['pwd']        = isset( $data['wpas_password'] ) && ! empty( $data['wpas_password'] ) ? $data['wpas_password'] : false;
+	$error              = false;
+
+	foreach ( $user as $field => $value ) {
+
+		if ( empty( $value ) ) {
+
+			if ( false === $error ) {
+				$error = new WP_Error();
+			}
+
+			$error->add( 'missing_field_' . $field, sprintf( esc_html__( 'The %s field is mandatory for registering an account', 'awesome-support' ), ucwords( str_replace( '_', ' ', $field ) ) ) );
+
+		}
+
+	}
 
 	/**
 	 * Give a chance to third-parties to add new checks to the account registration process
@@ -49,11 +65,11 @@ function wpas_register_account( $data ) {
 	 * @since 3.2.0
 	 * @var bool|WP_Error
 	 */
-	$errors = apply_filters( 'wpas_register_account_errors', false, $first_name, $last_name, $email );
+	$errors = apply_filters( 'wpas_register_account_errors', $error, $user['first_name'], $user['last_name'], $user['email'] );
 
 	if ( false !== $errors ) {
 
-		$notice = implode( '\n\r', $errors->get_error_messages() );
+		$notice = implode( '<br>', $errors->get_error_messages() );
 
 		wpas_add_error( 'registration_error', $notice );
 		wp_redirect( $redirect_to );
@@ -78,14 +94,7 @@ function wpas_register_account( $data ) {
 		exit;
 	}
 
-	/* Make sure we have all the necessary data. */
-	if ( false === ( $email || $first_name || $last_name || $pwd ) ) {
-		wpas_add_error( 'missing_fields', __( 'You didn\'t correctly fill all the fields.', 'awesome-support' ) );
-		wp_redirect( $redirect_to );
-		exit;
-	}
-
-	$username = sanitize_user( strtolower( $first_name ) . strtolower( $last_name ) );
+	$username = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
 	$user     = get_user_by( 'login', $username );
 
 	/* Check for existing username */
@@ -107,11 +116,11 @@ function wpas_register_account( $data ) {
 	 */
 	$args = apply_filters( 'wpas_insert_user_data', array(
 		'user_login'   => $username,
-		'user_email'   => $email,
-		'first_name'   => $first_name,
-		'last_name'    => $last_name,
-		'display_name' => "$first_name $last_name",
-		'user_pass'    => $pwd,
+		'user_email'   => $user['email'],
+		'first_name'   => $user['first_name'],
+		'last_name'    => $user['last_name'],
+		'display_name' => "{$user['first_name']} {$user['last_name']}",
+		'user_pass'    => $user['pwd'],
 		'role'         => 'wpas_user'
 	) );
 
@@ -169,7 +178,7 @@ function wpas_register_account( $data ) {
 		if ( ! is_user_logged_in() ) {
 
 			/* Automatically log the user in */
-			wp_set_current_user( $user_id, $email );
+			wp_set_current_user( $user_id, $user['email'] );
 			wp_set_auth_cookie( $user_id );
 
 			wp_redirect( $redirect_to );
