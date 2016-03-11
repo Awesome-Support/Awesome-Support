@@ -122,7 +122,7 @@ function wpas_open_ticket( $data ) {
 	 * Now that all the verifications are passed
 	 * we can proceed to the actual ticket submission.
 	 */
-	$post = array(
+	$post = apply_filters( 'wpas_open_ticket_data', array(
 		'post_content'   => $content,
 		'post_name'      => $title,
 		'post_title'     => $title,
@@ -131,7 +131,7 @@ function wpas_open_ticket( $data ) {
 		'post_author'    => $user_id,
 		'ping_status'    => 'closed',
 		'comment_status' => 'closed',
-	);
+	) );
 
 	return wpas_insert_ticket( $post, false, false );
 	
