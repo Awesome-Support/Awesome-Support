@@ -70,7 +70,15 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 	 * doesn't have the capability to edit the field.
 	 */
 	public function display_no_edit() {
-		return sprintf( '<div class="wpas-cf-noedit-wrapper"><div id="%s-label" class="wpas-cf-label">%s</div><div id="%s-value" class="wpas-cf-value">%s</div></div>', $this->get_field_id(), $this->get_field_title(), $this->get_field_id(), $this->get_field_value() );
+
+		$value = $this->get_field_value();
+		$label = $value;
+
+		if ( array_key_exists( $value, $this->field_args['options'] ) ) {
+			$label = $this->field_args['options'][ $value ];
+		}
+
+		return sprintf( '<div class="wpas-cf-noedit-wrapper"><div id="%s-label" class="wpas-cf-label">%s</div><div id="%s-value" class="wpas-cf-value">%s</div></div>', $this->get_field_id(), $this->get_field_title(), $this->get_field_id(), $label );
 	}
 
 	/**
