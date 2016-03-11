@@ -141,7 +141,7 @@ function wpas_save_ticket( $post_id ) {
 	}
 
 	/* Save the possible ticket reply */
-	if ( isset( $_POST['wpas_reply'] ) && isset( $_POST['wpas_reply_ticket'] ) && '' != $_POST['wpas_reply'] ) {
+	if ( isset( $_POST['wpas_reply'] ) && isset( $_POST['wpas_reply_ticket'] ) && '' !== $_POST['wpas_reply'] ) {
 
 		/* Check for the nonce */
 		if ( wp_verify_nonce( $_POST['wpas_reply_ticket'], 'reply_ticket' ) ) {
