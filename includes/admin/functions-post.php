@@ -290,6 +290,12 @@ add_action( 'before_delete_post', 'wpas_delete_ticket_dependencies', 10, 1 );
  */
 function wpas_delete_ticket_dependencies( $post_id ) {
 
+	global $post_type;
+
+	if ( 'ticket' !== $post_type ) {
+		return;
+	}
+
 	/* First of all we remove this action to avoid creating a loop */
 	remove_action( 'before_delete_post', 'wpas_delete_ticket_dependencies', 10 );
 
