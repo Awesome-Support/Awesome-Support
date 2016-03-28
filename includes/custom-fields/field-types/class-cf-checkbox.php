@@ -41,7 +41,9 @@ class WPAS_CF_Checkbox extends WPAS_Custom_Field {
 			unset( $classes[ $key ] );
 		}
 
-		$classes[] = 'wpas-checkbox';
+		if ( ! in_array( 'wpas-checkbox', $classes ) ) {
+			$classes[] = 'wpas-checkbox';
+		}
 
 		return $classes;
 

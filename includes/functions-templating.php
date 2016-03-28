@@ -986,11 +986,23 @@ add_action( 'wpas_after_registration_fields', 'wpas_terms_and_conditions_checkbo
  * @return void
  */
 function wpas_terms_and_conditions_checkbox() {
-	if ( wpas_get_option( 'terms_conditions', false ) ): ?>
-		<div class="wpas-checkbox">
-			<label><input type="checkbox" name="terms" required> <?php printf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ); ?></label>
-		</div>
-	<?php endif;
+
+	if ( false === wpas_get_option( 'terms_conditions', false ) ) {
+		return;
+	}
+
+	$terms = new WPAS_Custom_Field( 'terms', array(
+		'name' => 'terms',
+		'args' => array(
+			'required'   => true,
+			'field_type' => 'checkbox',
+			'sanitize'   => 'sanitize_text_field',
+			'options'    => array( '1' => sprintf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ) ),
+		)
+	) );
+
+	echo $terms->get_output();
+
 }
 
 add_action( 'wpas_after_template', 'wpas_terms_and_conditions_modal', 10, 3 );
