@@ -94,17 +94,17 @@ function wpas_register_account( $data ) {
 		exit;
 	}
 
-	$username = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
-	$user     = get_user_by( 'login', $username );
+	$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
+	$user_check = get_user_by( 'login', $username );
 
 	/* Check for existing username */
-	if ( is_a( $user, 'WP_User' ) ) {
+	if ( is_a( $user_check, 'WP_User' ) ) {
 		$suffix = 1;
 		do {
 			$alt_username = sanitize_user( $username . $suffix );
-			$user         = get_user_by( 'login', $alt_username );
+			$user_check   = get_user_by( 'login', $alt_username );
 			$suffix ++;
-		} while ( is_a( $user, 'WP_User' ) );
+		} while ( is_a( $user_check, 'WP_User' ) );
 		$username = $alt_username;
 	}
 
