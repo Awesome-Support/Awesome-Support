@@ -24,44 +24,15 @@ add_action( 'wpas_ticket_assignee_changed', 'wpas_update_ticket_count_on_transfe
  */
 function wpas_update_ticket_count_on_transfer( $agent_id, $previous_agent_id ) {
 
-	$agent_prev = new WPAS_Agent( $previous_agent_id );
+	$agent_prev = new WPAS_Member_Agent( $previous_agent_id );
 	$agent_prev->ticket_minus();
 
 }
 
-class WPAS_Agent {
+class WPAS_Member_Agent extends WPAS_Member {
 
-	/**
-	 * ID of the agent
-	 *
-	 * @var integer
-	 */
-	public $agent_id;
-
-	/**
-	 * User object
-	 *
-	 * @var
-	 */
-	protected $user;
-
-	public function __construct( $agent_id ) {
-
-		$this->agent_id = (int) $agent_id;
-		$this->user     = new WP_User( $this->agent_id );
-
-	}
-
-	/**
-	 * Check if a user exists
-	 *
-	 * This function is just a wrapper for WP_User::exists()
-	 *
-	 * @since 3.2
-	 * @return bool
-	 */
-	public function exists() {
-		return $this->user->exists;
+	public function __construct( $user ) {
+		parent::__construct( $user );
 	}
 
 	/**
@@ -72,11 +43,11 @@ class WPAS_Agent {
 	 */
 	public function is_agent() {
 
-		if ( false === $this->exists() ) {
+		if ( false === $this->is_member() ) {
 			return new WP_Error( 'user_not_exists', sprintf( __( 'The user with ID %d does not exist', 'awesome-support' ), $this->agent_id ) );
 		}
 
-		if ( false === $this->user->has_cap( 'edit_ticket' ) ) {
+		if ( false === $this->has_cap( 'edit_ticket' ) ) {
 			return new WP_Error( 'user_not_agent', __( 'The user exists but is not a support agent', 'awesome-support' ) );
 		}
 
@@ -92,7 +63,7 @@ class WPAS_Agent {
 	 */
 	public function can_be_assigned() {
 
-		$can = esc_attr( get_user_meta( $this->agent_id, 'wpas_can_be_assigned', true ) );
+		$can = esc_attr( get_user_meta( $this->user_id, 'wpas_can_be_assigned', true ) );
 
 		return empty( $can ) ? false : true;
 	}
@@ -105,11 +76,11 @@ class WPAS_Agent {
 	 */
 	public function open_tickets() {
 
-		$count = get_user_meta( $this->agent_id, 'wpas_open_tickets', true );
+		$count = get_user_meta( $this->user_id, 'wpas_open_tickets', true );
 
 		if ( false === $count ) {
 			$count = count( $this->get_open_tickets() );
-			update_user_meta( $this->agent_id, 'wpas_open_tickets', $count );
+			update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
 		}
 
 		return $count;
@@ -130,7 +101,7 @@ class WPAS_Agent {
 		$count = (int) $this->open_tickets();
 		$count = $count + $num;
 
-		update_user_meta( $this->agent_id, 'wpas_open_tickets', $count );
+		update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
 
 		return $count;
 
@@ -150,7 +121,7 @@ class WPAS_Agent {
 		$count = (int) $this->open_tickets();
 		$count = $count - $num;
 
-		update_user_meta( $this->agent_id, 'wpas_open_tickets', $count );
+		update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
 
 		return $count;
 
@@ -167,7 +138,7 @@ class WPAS_Agent {
 		$args                 = array();
 		$args['meta_query'][] = array(
 				'key'     => '_wpas_assignee',
-				'value'   => $this->agent_id,
+				'value'   => $this->user_id,
 				'compare' => '=',
 				'type'    => 'NUMERIC',
 		);

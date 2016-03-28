@@ -972,7 +972,7 @@ function wpas_find_agent( $ticket_id = false ) {
 
 	foreach ( $users as $user ) {
 
-		$wpas_agent = new WPAS_Agent( $user->ID );
+		$wpas_agent = new WPAS_Member_Agent( $user );
 
 		/**
 		 * Make sure the user really is an agent and that he can currently be assigned
@@ -1040,7 +1040,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 	$update = update_post_meta( $ticket_id, '_wpas_assignee', $agent_id, $current );
 
 	/* Increment the number of tickets open for this agent */
-	$agent = new WPAS_Agent( $agent_id );
+	$agent = new WPAS_Member_Agent( $agent_id );
 	$agent->ticket_plus();
 
 	/* Log the action */
@@ -1212,7 +1212,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
 
 		/* Decrement the number of tickets open for this agent */
 		$agent_id = get_post_meta( $ticket_id, '_wpas_assignee', true );
-		$agent    = new WPAS_Agent( $agent_id );
+		$agent    = new WPAS_Member_Agent( $agent_id );
 		$agent->ticket_minus();
 
 		/* Log the action */

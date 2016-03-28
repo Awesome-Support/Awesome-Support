@@ -230,7 +230,7 @@ class WPAS_User {
 			return $value;
 		}
 
-		$agent = new WPAS_Agent( $user_id );
+		$agent = new WPAS_Member_Agent( $user_id );
 
 		if ( true !== $agent->is_agent() || false === $agent->can_be_assigned() ) {
 			return '&#10005;';

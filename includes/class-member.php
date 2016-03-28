@@ -189,7 +189,7 @@ class WPAS_Member {
 
 		$wp_roles = wp_roles();
 
-		//Build $allcaps from role caps, overlay user's $caps
+		// Build $allcaps from role caps, overlay user's $caps
 		$this->caps = array();
 
 		foreach ( (array) $this->roles as $role ) {

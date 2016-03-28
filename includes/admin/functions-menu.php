@@ -48,7 +48,7 @@ function wpas_tickets_count() {
 			&& false === boolval( wpas_get_option( 'agent_see_all' ) )
 	) {
 
-		$agent = new WPAS_Agent( $current_user->ID );
+		$agent = new WPAS_Member_Agent( $current_user->ID );
 		$count = $agent->open_tickets();
 
 	} else {

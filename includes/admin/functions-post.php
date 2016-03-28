@@ -326,7 +326,7 @@ function wpas_delete_ticket_dependencies( $post_id ) {
 
 	/* Decrement the number of tickets open for this agent */
 	$agent_id = get_post_meta( $post_id, '_wpas_assignee', true );
-	$agent    = new WPAS_Agent( $agent_id );
+	$agent    = new WPAS_Member_Agent( $agent_id );
 	$agent->ticket_minus();
 
 }

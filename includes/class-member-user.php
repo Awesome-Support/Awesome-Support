@@ -22,7 +22,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 3.3
  */
-class WPAS_Member_User extends WPAS_Member{
+class WPAS_Member_User extends WPAS_Member {
 
 	public function __construct( $user ) {
 		parent::__construct( $user );

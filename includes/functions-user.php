@@ -414,10 +414,11 @@ function wpas_can_submit_ticket( $ticket_id = 0 ) {
 /**
  * Get a list of users that belong to the plugin.
  *
+ * @since 3.1.8
+ *
  * @param array $args Arguments used to filter the users
  *
  * @return array An array of users objects
- * @since 3.1.8
  */
 function wpas_get_users( $args = array() ) {
 
@@ -441,11 +442,11 @@ function wpas_get_users( $args = array() ) {
 
 	/* If there is a cached result we return it and don't run the expensive query. */
 	if ( false !== $result ) {
-		return apply_filters( 'wpas_get_users', get_users( array( 'include' => (array) $result ) ) );
+		return apply_filters( 'wpas_get_users', wpas_get_members_by_id( (array) $result ) );
 	}
 
 	/* Get all WordPress users */
-	$all_users = get_users();
+	$all_users = wpas_get_members();
 
 	/**
 	 * Store the selected user IDs for caching.
@@ -462,28 +463,32 @@ function wpas_get_users( $args = array() ) {
 	/* Loop through the users list and filter them */
 	foreach ( $all_users as $user ) {
 
+		if ( ! is_subclass_of( $user, 'WPAS_Member' ) ) {
+			continue;
+		}
+
 		/* Check for required capability */
 		if ( ! empty( $args['cap'] ) ) {
-			if ( ! user_can( $user, $args['cap'] ) ) {
+			if ( ! $user->has_cap( $args['cap'] ) ) {
 				continue;
 			}
 		}
 
 		/* Check for excluded capability */
 		if ( ! empty( $args['cap_exclude'] ) ) {
-			if ( user_can( $user, $args['cap_exclude'] ) ) {
+			if ( $user->has_cap( $args['cap_exclude'] ) ) {
 				continue;
 			}
 		}
 
 		/* Maybe exclude this user from the list */
-		if ( in_array( $user->ID, (array) $args['exclude'] ) ) {
+		if ( in_array( $user->user_id, (array) $args['exclude'] ) ) {
 			continue;
 		}
 
 		/* Now we add this user to our final list. */
 		array_push( $list, $user );
-		array_push( $users_ids, $user->ID );
+		array_push( $users_ids, $user->user_id );
 
 	}
 
@@ -491,6 +496,143 @@ function wpas_get_users( $args = array() ) {
 	set_transient( "wpas_list_users_$hash", $users_ids, apply_filters( 'wpas_list_users_cache_expiration', 60 * 60 * 24 ) );
 
 	return apply_filters( 'wpas_get_users', $list );
+
+}
+
+/**
+ * Get all Awesome Support members
+ *
+ * @since 3.3
+ * @return array
+ */
+function wpas_get_members() {
+
+	global $wpdb;
+
+	$query = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE 1 LIMIT 0, 2000" );
+
+	if ( empty( $query ) ) {
+		return $query;
+	}
+
+	return wpas_users_sql_result_to_wpas_member( $query );
+
+}
+
+/**
+ * Get all Awesome Support members by their user ID
+ *
+ * @since 3.3
+ *
+ * @param $ids
+ *
+ * @return array
+ */
+function wpas_get_members_by_id( $ids ) {
+
+	if ( ! is_array( $ids ) ) {
+		$ids = (array) $ids;
+	}
+
+	// Prepare the IDs query var
+	$ids = implode( ',', $ids );
+
+	global $wpdb;
+
+	$query = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE ID IN ($ids)" );
+
+	if ( empty( $query ) ) {
+		return $query;
+	}
+
+	return wpas_users_sql_result_to_wpas_member( $query );
+
+}
+
+/**
+ * Transform a users SQL query into WPAS_Member_User objects
+ *
+ * @param array  $results SQL results
+ * @param string $class   The WPAS_Member subclass to use. Possible values are user and agent
+ *
+ * @return array
+ */
+function wpas_users_sql_result_to_wpas_member( $results, $class = 'user' ) {
+
+	$users      = array();
+	$class_name = '';
+
+	switch ( $class ) {
+
+		case 'user':
+			$class_name = 'WPAS_Member_User';
+			break;
+
+		case 'agent':
+			$class_name = 'WPAS_member_Agent';
+			break;
+
+	}
+
+	if ( empty( $class_name ) ) {
+		return array();
+	}
+
+	foreach ( $results as $user ) {
+
+		$usr = new $class_name( $user );
+
+		if ( true === $usr->is_member() ) {
+			$users[] = $usr;
+		}
+
+	}
+
+	return $users;
+
+}
+
+/**
+ * Count the total number of users in the database
+ *
+ * @since 3.3
+ * @return int
+ */
+function wpas_count_wp_users() {
+
+	$count = get_transient( 'wpas_wp_users_count' );
+
+	if ( false === $count ) {
+
+		global $wpdb;
+
+		$query = $wpdb->get_results( "SELECT ID FROM $wpdb->users WHERE 1" );
+		$count = count( $query );
+
+		set_transient( 'wpas_wp_users_count', $count, apply_filters( 'wpas_wp_users_count_transient_lifetime', 604800 ) ); // Default to 1 week
+
+	}
+
+	return $count;
+
+}
+
+/**
+ * Check if the WP database has too many users or not
+ *
+ * @since 3.3
+ * @return bool
+ */
+function wpas_has_too_many_users() {
+
+	// We consider 3000 users to be too many to query at once
+	$limit = apply_filters( 'wpas_has_too_many_users_limit', 3000 );
+
+	if ( wpas_count_wp_users() > $limit ) {
+		return true;
+	}
+
+	return false;
 
 }
 
@@ -597,12 +739,12 @@ function wpas_users_dropdown( $args = array() ) {
 	foreach ( $all_users as $user ) {
 
 		/* This user was already added, skip it */
-		if ( ! empty( $args['selected'] ) && $user->ID === intval( $args['selected'] ) ) {
+		if ( ! empty( $args['selected'] ) && $user->user_id === intval( $args['selected'] ) ) {
 			continue;
 		}
 
-		$user_id       = $user->ID;
-		$user_name     = $user->data->display_name;
+		$user_id       = $user->user_id;
+		$user_name     = $user->data['display_name'];
 		$selected_attr = '';
 
 		if ( false === $marker ) {
