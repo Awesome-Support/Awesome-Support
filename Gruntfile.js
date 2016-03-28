@@ -17,6 +17,9 @@ module.exports = function (grunt) {
 		 */
 		uglify: {
 			public: {
+				options: {
+					sourceMap: true
+				},
 				src: [
 					'assets/public/vendor/*/*.js',
 					'assets/public/js/*.js',
