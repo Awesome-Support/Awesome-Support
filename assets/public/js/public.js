@@ -32,10 +32,13 @@
 		var replyClose = $('input[name="wpas_close_ticket"]');
 
 		replyForm.on('change', replyClose, function () {
-			if (replyClose.is(':checked')) {
-				replyInput.prop('required', false);
-			} else {
-				replyInput.prop('required', true);
+			// Check if textarea is focusable
+			if (replyInput.is(':visible')) {
+				if (replyClose.is(':checked')) {
+					replyInput.prop('required', false);
+				} else {
+					replyInput.prop('required', true);
+				}
 			}
 		});
 
