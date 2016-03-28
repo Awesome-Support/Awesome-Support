@@ -34,11 +34,8 @@
 		replyForm.on('change', replyClose, function () {
 			// Check if textarea is focusable
 			if (replyInput.is(':visible')) {
-				if (replyClose.is(':checked')) {
-					replyInput.prop('required', false);
-				} else {
-					replyInput.prop('required', true);
-				}
+				// If "Close this ticket" checkbox is checked, add required attribute to textarea 
+				replyInput.prop('required', replyClose.is(':checked'));
 			}
 		});
 
