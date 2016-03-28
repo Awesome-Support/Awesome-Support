@@ -13,24 +13,15 @@ module.exports = function (grunt) {
 
 		/*
 		Concatenate & Minify Javascript files
-		@author: https://github.com/gruntjs/grunt-contrib-concat
 		@author: https://github.com/gruntjs/grunt-contrib-uglify
 		 */
-		concat: {
-			options: {
-				separator: ';'
-			},
-			dist: {
-				src: ['assets/public/vendor/*/*.js', 'assets/public/js/public.js'],
-				dest: 'assets/public/js/public-dist.js'
-			}
-		},
-
 		uglify: {
 			global: {
-				files: {
-					'assets/public/js/public-dist.js': ['assets/public/js/public-dist.js']
-				}
+				src: [
+					'assets/public/vendor/*/*.js',
+					'assets/public/js/public.js'
+				],
+				dest: 'assets/public/js/public-dist.js'
 			}
 		},
 
@@ -254,7 +245,7 @@ module.exports = function (grunt) {
 			},
 			js: {
 				files: ['assets/**/*.js'],
-				tasks: ['concat', 'uglify']
+				tasks: ['uglify']
 			},
 			css: {
 				files: ['assets/**/*.less', 'assets/**/*.css', 'themes/**/*.less'],
@@ -266,8 +257,8 @@ module.exports = function (grunt) {
 
 	require('load-grunt-tasks')(grunt);
 
-	grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
-	grunt.registerTask('build', ['jshint', 'concat', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin']);
+	grunt.registerTask('default', ['jshint', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
+	grunt.registerTask('build', ['jshint', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin']);
 	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
 
