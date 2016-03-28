@@ -16,10 +16,11 @@ module.exports = function (grunt) {
 		@author: https://github.com/gruntjs/grunt-contrib-uglify
 		 */
 		uglify: {
-			global: {
+			public: {
 				src: [
 					'assets/public/vendor/*/*.js',
-					'assets/public/js/public.js'
+					'assets/public/js/*.js',
+					'!assets/public/js/public-dist.js'
 				],
 				dest: 'assets/public/js/public-dist.js'
 			}
