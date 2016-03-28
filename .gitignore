@@ -63,3 +63,8 @@ prepros.cfg
 .idea
 ### NetBeans ###
 /nbproject/private/
+
+
+### Ignore dist files ###
+assets/public/js/public-dist.js
+assets/public/js/public-dist.js.map
