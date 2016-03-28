@@ -84,9 +84,14 @@ Forms + Buttons + Labels
 */
 
 /* Forms */
-.wpas-form-group,
-.wpas-checkbox {
+.wpas-form-group {
 	margin-bottom: @spacing;
+}
+.wpas-checkbox + .wpas-checkbox {
+	margin-bottom: @spacing;
+	label {
+		font-weight: normal;
+	}
 }
 .wpas-form-group {
 	label {
