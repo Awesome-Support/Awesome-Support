@@ -91,6 +91,14 @@ class WPAS_Member_Query {
 	public $fields = '*';
 
 	/**
+	 * Search term
+	 *
+	 * @since 3.3
+	 * @var array
+	 */
+	public $search = array();
+
+	/**
 	 * WPAS_Members_Query constructor.
 	 *
 	 * @since 3.3
@@ -105,6 +113,7 @@ class WPAS_Member_Query {
 		$this->ids         = isset( $args['ids'] ) ? (array) $args['ids'] : array();
 		$this->fields      = isset( $args['fields'] ) ? $this->sanitize_fields( (array) $args['fields'] ) : '*';
 		$this->output      = isset( $args['output'] ) ? $this->sanitize_output_format( $args['output'] ) : 'stdClass';
+		$this->search      = isset( $args['search'] ) ? $args['search'] : array();
 
 		// Run the whole process
 		$this->get_members();
@@ -346,8 +355,26 @@ class WPAS_Member_Query {
 
 		}
 
+		// Include search parameter
+		if ( ! empty( $this->search ) && isset( $this->search['query'] ) && isset( $this->search['fields'] ) ) {
+
+			if ( ! isset( $this->search['relation'] ) ) {
+				$this->search['relation'] = 'OR';
+			}
+
+			$search_query = '';
+
+			foreach ( $this->search['fields'] as $field ) {
+				$operator = empty( $search_query ) ? 'AND' : $this->search['relation'];
+				$search_query .= " $operator {$wpdb->users}.{$field} LIKE '%{$this->search['query']}%'";
+			}
+
+			$sql .= $search_query;
+
+		}
+
 		// Order users by login
-		$sql .= " ORDER BY ID ASC";
+		$sql .= " ORDER BY {$wpdb->users}.ID ASC";
 
 		$this->members = $wpdb->get_results( $sql );
 
