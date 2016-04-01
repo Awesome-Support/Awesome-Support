@@ -19,13 +19,19 @@ jQuery(document).ready(function ($) {
 							q: params.term
 						};
 					},
-					processResults: function (data) {
-						console.log(data);
+					processResults: function (data, params) {
+						console.log(data, params);
 						return {
-							results: data.items
+							results: $.map(data, function (obj) {
+								return {
+									id: obj.user_id,
+									text: obj.user_name
+								};
+							})
 						};
 					}
-				}
+				},
+				minimumInputLength: 3
 			});
 		}
 	});
