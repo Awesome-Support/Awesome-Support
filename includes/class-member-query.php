@@ -310,6 +310,9 @@ class WPAS_Member_Query {
 		$prefix = $wpdb->get_blog_prefix();
 		$roles  = $this->get_roles();
 
+		// Set the base SQL query
+		$sql = "SELECT $this->fields FROM $wpdb->users";
+
 		if ( ! empty( $roles ) ) {
 
 			$like = array();
@@ -320,17 +323,11 @@ class WPAS_Member_Query {
 
 			$like = implode( ' OR ', $like );
 
-		}
-
-		// Set the base SQL query
-		$sql = "SELECT $this->fields FROM $wpdb->users";
-
-		// Add the role parameter
-		if ( ! empty( $roles ) ) {
 			$sql .= " INNER JOIN $wpdb->usermeta ON ( $wpdb->users.ID = $wpdb->usermeta.user_id ) 
 			WHERE 1=1 
 			AND ( ( ( $wpdb->usermeta.meta_key = '{$prefix}capabilities' 
 			AND ( $like ) ) ) )";
+
 		}
 
 		// Exclude user IDs
