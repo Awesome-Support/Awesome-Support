@@ -710,6 +710,7 @@ function wpas_users_dropdown( $args = array() ) {
 		'please_select'  => false,
 		'select2'        => false,
 		'disabled'       => false,
+		'data_attr'      => array()
 	);
 
 	$args = wp_parse_args( $args, $defaults );

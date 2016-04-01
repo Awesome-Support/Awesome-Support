@@ -489,8 +489,10 @@ function wpas_array_to_ul( $array ) {
  * Create dropdown of things.
  *
  * @since  3.1.3
- * @param  array $args     Dropdown settings
+ *
+ * @param  array  $args    Dropdown settings
  * @param  string $options Dropdown options
+ *
  * @return string          Dropdown with custom options
  */
 function wpas_dropdown( $args, $options ) {
@@ -502,20 +504,33 @@ function wpas_dropdown( $args, $options ) {
 		'please_select' => false,
 		'select2'       => false,
 		'disabled'      => false,
+		'data_attr'     => array()
 	);
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$class = (array) $args['class'];
+	$class           = (array) $args['class'];
+	$data_attributes = array();
 
 	if ( true === $args['select2'] ) {
 		array_push( $class, 'wpas-select2' );
 	}
 
+	// If there are some data attributes we prepare them
+	if ( ! empty( $args['data_attr'] ) ) {
+
+		foreach ( $args['data_attr'] as $attr => $value ) {
+			$data_attributes[] = "data-$attr='$value'";
+		}
+
+		$data_attributes = implode( ' ', $data_attributes );
+
+	}
+
 	/* Start the buffer */
 	ob_start(); ?>
 
-	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 		<?php
 		if ( $args['please_select'] ) {
 			echo '<option value="">' . __( 'Please select', 'awesome-support' ) . '</option>';
