@@ -539,7 +539,7 @@ function wpas_get_members_by_id( $ids ) {
 
 	global $wpdb;
 
-	$query = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE ID IN ($ids)" );
+	$query = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE ID IN ('$ids')" );
 
 	if ( empty( $query ) ) {
 		return $query;
