@@ -413,6 +413,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/class-product-sync.php' );
 			require( WPAS_PATH . 'includes/class-gist.php' );
 			require( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );
+			require( WPAS_PATH . 'includes/class-member-query.php' );
 			require( WPAS_PATH . 'includes/class-member.php' );
 			require( WPAS_PATH . 'includes/class-member-agent.php' );
 			require( WPAS_PATH . 'includes/class-member-user.php' );
