@@ -149,6 +149,7 @@ function wpas_enqueue_admin_scripts() {
 	wp_register_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-reply', WPAS_URL . 'assets/admin/js/admin-reply.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-autolinker', WPAS_URL . 'assets/public/vendor/Autolinker/Autolinker.min.js', null, '0.19.0', true );
+	wp_register_script( 'wpas-users', WPAS_URL . 'assets/admin/js/admin-users.js', null, WPAS_VERSION, true );
 
 	if ( ! wpas_is_plugin_page() ) {
 		return;
@@ -175,6 +176,7 @@ function wpas_enqueue_admin_scripts() {
 	if ( 'edit' === $action && 'ticket' == get_post_type() ) {
 		wp_enqueue_script( 'wpas-admin-reply' );
 		wp_enqueue_script( 'wpas-autolinker' );
+		wp_enqueue_script( 'wpas-users' );
 		wp_localize_script( 'wpas-admin-reply', 'wpasL10n', array(
 				'alertDelete'    => __( 'Are you sure you want to delete this reply?', 'awesome-support' ),
 				'alertNoTinyMCE' => __( 'No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor', 'awesome-support' ),
