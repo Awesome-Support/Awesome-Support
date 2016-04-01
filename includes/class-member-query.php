@@ -103,8 +103,8 @@ class WPAS_Member_Query {
 		$this->cap_exclude = isset( $args['cap_exclude'] ) ? (array) $args['cap_exclude'] : array();
 		$this->exclude     = isset( $args['exclude'] ) ? (array) $args['exclude'] : array();
 		$this->ids         = isset( $args['ids'] ) ? (array) $args['ids'] : array();
-		$this->fields      = isset( $args['fields'] ) ? $this->sanitize_fields( (array) $args['fields'] ) : array();
-		$this->output      = isset( $args['convert'] ) ? $this->sanitize_output_format( $args['convert'] ) : 'stdClass';
+		$this->fields      = isset( $args['fields'] ) ? $this->sanitize_fields( (array) $args['fields'] ) : '*';
+		$this->output      = isset( $args['output'] ) ? $this->sanitize_output_format( $args['output'] ) : 'stdClass';
 
 		// Run the whole process
 		$this->get_members();
@@ -153,7 +153,7 @@ class WPAS_Member_Query {
 			}
 		}
 
-		return $fields;
+		return ! empty( $fields ) ? implode( ',', $fields ) : '*';
 
 	}
 
@@ -313,11 +313,8 @@ class WPAS_Member_Query {
 
 		}
 
-		// What to select?
-		$select = implode( ',', $this->fields );
-
 		// Set the base SQL query
-		$sql = "SELECT $select FROM $wpdb->users";
+		$sql = "SELECT $this->fields FROM $wpdb->users";
 
 		// Add the role parameter
 		if ( ! empty( $roles ) ) {
