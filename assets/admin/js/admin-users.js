@@ -11,6 +11,7 @@ jQuery(document).ready(function ($) {
 				ajax: {
 					url: ajaxurl,
 					dataType: 'json',
+					type: "POST",
 					delay: 250,
 					data: function (params) {
 						return {
