@@ -63,7 +63,7 @@ foreach( $wp_roles->roles as $role => $data ) {
 
 		<?php if ( current_user_can( 'create_ticket' ) ):
 
-			$users_atts = array( 'agent_fallback' => true, 'select2' => true, 'name' => 'post_author_override', 'id' => 'wpas-issuer' );
+			$users_atts = array( 'agent_fallback' => true, 'select2' => true, 'name' => 'post_author_override', 'id' => 'wpas-issuer', 'data_attr' => array( 'capability' => 'create_ticket' ) );
 
 			if ( isset( $post ) ) {
 				$users_atts['selected'] = $post->post_author;
@@ -82,11 +82,12 @@ foreach( $wp_roles->roles as $role => $data ) {
 	<p>
 		<?php
 		$staff_atts = array(
-			'cap'      => 'edit_ticket',
-			'name'     => 'wpas_assignee',
-			'id'       => 'wpas-assignee',
-			'disabled' => ! current_user_can( 'assign_ticket' ) ? true : false,
-			'select2'  => true
+			'cap'       => 'edit_ticket',
+			'name'      => 'wpas_assignee',
+			'id'        => 'wpas-assignee',
+			'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
+			'select2'   => true,
+			'data_attr' => array( 'capability' => 'edit_ticket' )
 		);
 
 		if ( isset( $post ) ) {
