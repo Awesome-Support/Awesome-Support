@@ -965,6 +965,9 @@ function wpas_get_users_ajax( $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
+	/**
+	 * @var WPAS_Member_Query $users
+	 */
 	$users = wpas_get_users(
 		array(
 			'cap'         => $args['cap'],
