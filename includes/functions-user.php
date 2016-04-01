@@ -970,9 +970,9 @@ function wpas_get_users_ajax( $args = array() ) {
 	 */
 	$users = wpas_get_users(
 		array(
-			'cap'         => array_map( 'sanitize_text_field', (array) $args['cap'] ),
-			'cap_exclude' => array_map( 'sanitize_text_field', (array) $args['cap_exclude'] ),
-			'exclude'     => array_map( 'intval', (array) $args['exclude'] ),
+			'cap'         => array_map( 'sanitize_text_field', array_filter( (array) $args['cap'] ) ),
+			'cap_exclude' => array_map( 'sanitize_text_field', array_filter( (array) $args['cap_exclude'] ) ),
+			'exclude'     => array_map( 'intval', array_filter( (array) $args['exclude'] ) ),
 			'search'      => array(
 				'query'    => sanitize_text_field( $args['q'] ),
 				'fields'   => array( 'user_nicename', 'display_name' ),
