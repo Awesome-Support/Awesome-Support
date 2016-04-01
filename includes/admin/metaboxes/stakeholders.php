@@ -69,7 +69,7 @@ foreach( $wp_roles->roles as $role => $data ) {
 				$users_atts['selected'] = $post->post_author;
 			}
 
-			wpas_support_users_dropdown( $users_atts );
+			echo wpas_dropdown( $users_atts, '' );
 
 		else: ?>
 			<a id="wpas-issuer" href="<?php echo $issuer_tickets; ?>"><?php echo $issuer_name; ?></a></p>
@@ -82,7 +82,6 @@ foreach( $wp_roles->roles as $role => $data ) {
 	<p>
 		<?php
 		$staff_atts = array(
-			'cap'       => 'edit_ticket',
 			'name'      => 'wpas_assignee',
 			'id'        => 'wpas-assignee',
 			'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
@@ -94,7 +93,7 @@ foreach( $wp_roles->roles as $role => $data ) {
 			$staff_atts['selected'] = get_post_meta( $post->ID, '_wpas_assignee', true );
 		}
 
-		echo wpas_users_dropdown( $staff_atts );
+		echo wpas_dropdown( $staff_atts, '' );
 		?>
 	</p>
 	<p class="description"><?php printf( __( 'The above agent is currently responsible for this ticket.', 'awesome-support' ), '#' ); ?></p>
