@@ -34,28 +34,11 @@ if ($issuer !== false) {
 /* Issuer tickets link */
 $issuer_tickets = admin_url( add_query_arg( array( 'post_type' => 'ticket', 'author' => $issuer_id ), 'edit.php' ) );
 
-/* Prepare the empty users list */
-$users = array();
-
 /* Get fields values */
 $ccs = wpas_get_cf_value( 'ccs', get_the_ID() );
 
 /* Get ticket assignee */
 $assignee = wpas_get_cf_value( 'assignee', get_the_ID() );
-
-/* List available agents */
-foreach( $wp_roles->roles as $role => $data ) {
-
-	/* Check if current role can edit tickets */
-	if( array_key_exists( 'edit_ticket', $data['capabilities'] ) ) {
-
-		/* Get users with current role */
-		$usrs = new WP_User_Query( array( 'role' => $role ) );
-
-		/* Save users in global array */
-		$users = array_merge( $users, $usrs->get_results() );
-	}
-}
 ?>
 <div id="wpas-stakeholders">
 	<label for="wpas-issuer"><strong><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
