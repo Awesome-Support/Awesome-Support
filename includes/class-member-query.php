@@ -359,14 +359,16 @@ class WPAS_Member_Query {
 				$this->search['relation'] = 'OR';
 			}
 
-			$search_query = '';
+			$search_query = array();
+			$operator     = empty( $search_query ) ? 'OR' : $this->search['relation'];
 
 			foreach ( $this->search['fields'] as $field ) {
-				$operator = empty( $search_query ) ? 'AND' : $this->search['relation'];
-				$search_query .= " $operator {$wpdb->users}.{$field} LIKE '%{$this->search['query']}%'";
+				$search_query[] = "{$wpdb->users}.{$field} LIKE '%{$this->search['query']}%'";
 			}
 
-			$sql .= $search_query;
+			$search_query = implode( " $operator ", $search_query );
+
+			$sql .= " AND ($search_query)";
 
 		}
 
