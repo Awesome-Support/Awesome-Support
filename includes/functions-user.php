@@ -434,6 +434,12 @@ function wpas_get_users( $args = array() ) {
 	/* Merge arguments. */
 	$args = wp_parse_args( $args, $defaults );
 
+	// @TODO
+	// Temporarily use the WPAS_Member_Query in a dirty way
+	// WPAS_Member_Query still needs improvements before we can use it clean
+	$users = new WPAS_Member_Query( $args );
+	return $users;
+
 	/* Get the hash of the arguments that's used for caching the result. */
 	$hash = substr( md5( serialize( $args ) ), 0, 10 ); // Limit the length of the hash in order to avoid issues with option_name being too long in the database (https://core.trac.wordpress.org/ticket/15058)
 
@@ -967,13 +973,13 @@ function wpas_get_users_ajax( $args = array() ) {
 
 	$result = array();
 
-	foreach ( $users as $user ) {
+	foreach ( $users->members as $user ) {
 
 		$result[] = array(
-			'user_id'     => $user->user_id,
-			'user_name'   => $user->data['display_name'],
-			'user_email'  => $user->data['display_email'],
-			'user_avatar' => get_avatar_url( $user->user_id, array( 'size' => 32, 'default' => 'mm' ) ),
+			'user_id'     => $user->ID,
+			'user_name'   => $user->display_name,
+			'user_email'  => $user->user_email,
+			'user_avatar' => get_avatar_url( $user->ID, array( 'size' => 32, 'default' => 'mm' ) ),
 		);
 
 	}
