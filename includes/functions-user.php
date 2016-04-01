@@ -928,3 +928,57 @@ function wpas_mailgun_check( $data = '' ) {
 	die();
 
 }
+
+add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax' );
+/**
+ * Get AS users using Ajax
+ *
+ * @since 3.3
+ *
+ * @param array $args Query parameters
+ *
+ * @return void
+ */
+function wpas_get_users_ajax( $args = array() ) {
+
+	$defaults = array(
+		'cap'         => '',
+		'cap_exclude' => '',
+		'exclude'     => '',
+	);
+
+	if ( empty( $args ) ) {
+		foreach ( $defaults as $key => $value ) {
+			if ( isset( $_POST[ $key ] ) ) {
+				$args[ $key ] = $_POST[ $key ];
+			}
+		}
+	}
+
+	$args = wp_parse_args( $args, $defaults );
+
+	$users = wpas_get_users(
+		array(
+			'cap'         => $args['cap'],
+			'cap_exclude' => $args['cap_exclude'],
+			'exclude'     => $args['exclude']
+		)
+	);
+
+	$result = array();
+
+	foreach ( $users as $user ) {
+
+		$result[] = array(
+			'user_id'     => $user->user_id,
+			'user_name'   => $user->data['display_name'],
+			'user_email'  => $user->data['display_email'],
+			'user_avatar' => get_avatar_url( $user->user_id, array( 'size' => 32, 'default' => 'mm' ) ),
+		);
+
+	}
+
+	echo json_encode( $result );
+	die();
+
+}
