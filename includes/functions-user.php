@@ -426,6 +426,7 @@ function wpas_get_users( $args = array() ) {
 		'exclude'     => array(),
 		'cap'         => '',
 		'cap_exclude' => '',
+		'search'      => array(),
 	);
 
 	/* The array where we save all users we want to keep. */
@@ -948,9 +949,10 @@ add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax' );
 function wpas_get_users_ajax( $args = array() ) {
 
 	$defaults = array(
-		'cap'         => '',
+		'cap'         => 'edit_ticket',
 		'cap_exclude' => '',
 		'exclude'     => '',
+		'q'           => '', // The search query
 	);
 
 	if ( empty( $args ) ) {
@@ -967,7 +969,12 @@ function wpas_get_users_ajax( $args = array() ) {
 		array(
 			'cap'         => $args['cap'],
 			'cap_exclude' => $args['cap_exclude'],
-			'exclude'     => $args['exclude']
+			'exclude'     => $args['exclude'],
+			'search'      => array(
+				'query'    => $args['q'],
+				'fields'   => array( 'user_login', 'display_name' ),
+				'relation' => 'OR'
+			)
 		)
 	);
 
