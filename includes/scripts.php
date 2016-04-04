@@ -172,11 +172,11 @@ function wpas_enqueue_admin_scripts() {
 	wp_enqueue_script( 'wpas-select2' );
 	wp_enqueue_script( 'wpas-admin-script' );
 	wp_enqueue_script( 'wpas-admin-tabletojson' );
+	wp_enqueue_script( 'wpas-users' );
 
 	if ( 'edit' === $action && 'ticket' == get_post_type() ) {
 		wp_enqueue_script( 'wpas-admin-reply' );
 		wp_enqueue_script( 'wpas-autolinker' );
-		wp_enqueue_script( 'wpas-users' );
 		wp_localize_script( 'wpas-admin-reply', 'wpasL10n', array(
 				'alertDelete'    => __( 'Are you sure you want to delete this reply?', 'awesome-support' ),
 				'alertNoTinyMCE' => __( 'No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor', 'awesome-support' ),
