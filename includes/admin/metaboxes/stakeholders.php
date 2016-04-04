@@ -37,16 +37,16 @@ if ( isset( $post ) && is_a( $post, 'WP_Post' ) && 'auto-draft' !== $post->post_
 	$staff_id = get_current_user_id();
 
 	// Client
-	$client_id   = 0;
-	$client_name = '';
-	$client_link = '';
+	$client_id     = 0;
+	$client_name   = '';
+	$client_link   = '';
+	$client_option = '';
 
 }
 
 // Set post-independent vars
 $staff         = get_user_by( 'ID', $staff_id );
 $staff_name    = $staff->data->display_name;
-$client_option = "<option value='$client_id' selected='selected'>$client_name</option>";
 ?>
 <div id="wpas-stakeholders">
 	<label for="wpas-issuer"><strong><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
