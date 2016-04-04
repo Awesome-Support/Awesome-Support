@@ -23,6 +23,8 @@ add_action( 'add_meta_boxes', 'wpas_metaboxes' );
  */
 function wpas_metaboxes() {
 
+	global $pagenow;
+
 	/* Remove the publishing metabox */
 	remove_meta_box( 'submitdiv', 'ticket', 'side' );
 
@@ -47,7 +49,9 @@ function wpas_metaboxes() {
 	add_meta_box( 'wpas-mb-contacts', __( 'Stakeholders', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'stakeholders' ) );
 
 	/* Client profile */
-	add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
+	if ( 'post-new.php' !== $pagenow ) {
+		add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
+	}
 
 	if ( WPAS()->custom_fields->have_custom_fields() ) {
 		add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
