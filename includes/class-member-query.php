@@ -124,7 +124,7 @@ class WPAS_Member_Query {
 		$this->fields      = isset( $args['fields'] ) ? $this->sanitize_fields( (array) $args['fields'] ) : '*';
 		$this->output      = isset( $args['output'] ) ? $this->sanitize_output_format( $args['output'] ) : 'stdClass';
 		$this->search      = isset( $args['search'] ) ? $args['search'] : array();
-		$this->hash        = md5( $args );
+		$this->hash        = md5( serialize( $args ) );
 
 		// Run the whole process
 		$this->get_members();

@@ -74,7 +74,7 @@ class WPAS_Test_Functions_User extends WP_UnitTestCase {
 			'search'      => array(),
 		);
 
-		$hash  = md5( $args );
+		$hash  = md5( serialize( $args ) );
 		$users = wpas_get_users( $args );
 		$cache = wp_cache_get( 'users_' . $hash, 'wpas' );
 
