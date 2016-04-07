@@ -91,6 +91,16 @@ class WPAS_Member_Query {
 	public $fields = '*';
 
 	/**
+	 * The hash of this instance settings
+	 *
+	 * Used for caching the results.
+	 *
+	 * @since 3.3
+	 * @var string
+	 */
+	public $hash;
+
+	/**
 	 * Search term
 	 *
 	 * @since 3.3
@@ -114,6 +124,7 @@ class WPAS_Member_Query {
 		$this->fields      = isset( $args['fields'] ) ? $this->sanitize_fields( (array) $args['fields'] ) : '*';
 		$this->output      = isset( $args['output'] ) ? $this->sanitize_output_format( $args['output'] ) : 'stdClass';
 		$this->search      = isset( $args['search'] ) ? $args['search'] : array();
+		$this->hash        = md5( $args );
 
 		// Run the whole process
 		$this->get_members();
@@ -288,8 +299,12 @@ class WPAS_Member_Query {
 	 * @return void
 	 */
 	public function get_members() {
-		
-		$this->query();
+
+		$this->members = wp_cache_get( 'users_' . $this->hash, 'wpas' );
+
+		if ( false === $this->members ) {
+			$this->query();
+		}
 
 		if ( 'wpas_member' === $this->output ) {
 			$this->convert_sql_result();
@@ -376,6 +391,9 @@ class WPAS_Member_Query {
 		$sql .= " ORDER BY {$wpdb->users}.ID ASC";
 
 		$this->members = $wpdb->get_results( $sql );
+
+		// Cache the results
+		wp_cache_add( 'users_' . $this->hash, $this->members, 'wpas' );
 
 		return $this->members;
 
