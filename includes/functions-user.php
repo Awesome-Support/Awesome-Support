@@ -618,9 +618,9 @@ function wpas_list_users( $cap = 'all' ) {
 	/* List all users */
 	$all_users = wpas_get_users( array( 'cap' => $cap ) );
 
-	foreach ( $all_users as $user ) {
+	foreach ( $all_users->members as $user ) {
 		$user_id          = $user->ID;
-		$user_name        = $user->data->display_name;
+		$user_name        = $user->display_name;
 		$list[ $user_id ] = $user_name;
 	}
 

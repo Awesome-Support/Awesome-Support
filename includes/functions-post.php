@@ -970,7 +970,7 @@ function wpas_find_agent( $ticket_id = false ) {
 	$users = shuffle_assoc( wpas_get_users( apply_filters( 'wpas_find_agent_get_users_args', array( 'cap' => 'edit_ticket' ) ) ) );
 	$agent = array();
 
-	foreach ( $users as $user ) {
+	foreach ( $users->members as $user ) {
 
 		$wpas_agent = new WPAS_Member_Agent( $user );
 
@@ -997,7 +997,7 @@ function wpas_find_agent( $ticket_id = false ) {
 
 	$agent_id = ! empty( $agent ) ? $agent['user_id'] : wpas_get_option( 'assignee_default' );
 
-	return apply_filters( 'wpas_find_available_agent', $agent_id, $ticket_id );
+	return apply_filters( 'wpas_find_available_agent', (int) $agent_id, $ticket_id );
 
 }
 
