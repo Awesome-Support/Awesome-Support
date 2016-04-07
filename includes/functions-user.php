@@ -433,76 +433,10 @@ function wpas_get_users( $args = array() ) {
 	$list = array();
 
 	/* Merge arguments. */
-	$args = wp_parse_args( $args, $defaults );
-
-	// @TODO
-	// Temporarily use the WPAS_Member_Query in a dirty way
-	// WPAS_Member_Query still needs improvements before we can use it clean
+	$args  = wp_parse_args( $args, $defaults );
 	$users = new WPAS_Member_Query( $args );
-	return $users;
 
-	/* Get the hash of the arguments that's used for caching the result. */
-	$hash = substr( md5( serialize( $args ) ), 0, 10 ); // Limit the length of the hash in order to avoid issues with option_name being too long in the database (https://core.trac.wordpress.org/ticket/15058)
-
-	/* Check if we have a result already cached. */
-	$result = get_transient( "wpas_list_users_$hash" );
-
-	/* If there is a cached result we return it and don't run the expensive query. */
-	if ( false !== $result ) {
-		return apply_filters( 'wpas_get_users', wpas_get_members_by_id( (array) $result ) );
-	}
-
-	/* Get all WordPress users */
-	$all_users = wpas_get_members();
-
-	/**
-	 * Store the selected user IDs for caching.
-	 *
-	 * On database with a lot of users, storing the entire WP_User
-	 * object causes issues (eg. "Got a packet bigger than ‘max_allowed_packet’ bytes").
-	 * In order to avoid that we only store the user IDs and then get the users list
-	 * later on only including those IDs.
-	 *
-	 * @since 3.1.10
-	 */
-	$users_ids = array();
-
-	/* Loop through the users list and filter them */
-	foreach ( $all_users as $user ) {
-
-		if ( ! is_subclass_of( $user, 'WPAS_Member' ) ) {
-			continue;
-		}
-
-		/* Check for required capability */
-		if ( ! empty( $args['cap'] ) ) {
-			if ( ! $user->has_cap( $args['cap'] ) ) {
-				continue;
-			}
-		}
-
-		/* Check for excluded capability */
-		if ( ! empty( $args['cap_exclude'] ) ) {
-			if ( $user->has_cap( $args['cap_exclude'] ) ) {
-				continue;
-			}
-		}
-
-		/* Maybe exclude this user from the list */
-		if ( in_array( $user->user_id, (array) $args['exclude'] ) ) {
-			continue;
-		}
-
-		/* Now we add this user to our final list. */
-		array_push( $list, $user );
-		array_push( $users_ids, $user->user_id );
-
-	}
-
-	/* Let's cache the result so that we can avoid running this query too many times. */
-	set_transient( "wpas_list_users_$hash", $users_ids, apply_filters( 'wpas_list_users_cache_expiration', 60 * 60 * 24 ) );
-
-	return apply_filters( 'wpas_get_users', $list );
+	return apply_filters( 'wpas_get_users', $users );
 
 }
 
