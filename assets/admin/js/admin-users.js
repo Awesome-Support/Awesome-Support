@@ -21,7 +21,6 @@ jQuery(document).ready(function ($) {
 						};
 					},
 					processResults: function (data, params) {
-						console.log(data, params);
 						return {
 							results: $.map(data, function (obj) {
 								return {
