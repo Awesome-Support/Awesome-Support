@@ -3,6 +3,10 @@ Awesome Support
 
 [![Build Status](https://travis-ci.org/Awesome-Support/Awesome-Support.svg?branch=master)](https://travis-ci.org/Awesome-Support/Awesome-Support) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Awesome-Support/Awesome-Support/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Awesome-Support/Awesome-Support/?branch=master) [![Code Coverage](https://scrutinizer-ci.com/g/Awesome-Support/Awesome-Support/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Awesome-Support/Awesome-Support/?branch=master)
 
+### Develop Stats
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Awesome-Support/Awesome-Support/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/Awesome-Support/Awesome-Support/?branch=develop) [![Code Coverage](https://scrutinizer-ci.com/g/Awesome-Support/Awesome-Support/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/Awesome-Support/Awesome-Support/?branch=develop)
+
 Awesome Support is the most advanced ticketing system for WordPress. It is the result of two years of work, research and improvement. Most of its features are an answer to users requests and that's what makes it the best support plugin for WordPress.
 
 ## Requirements
