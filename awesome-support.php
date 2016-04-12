@@ -440,6 +440,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/functions-tools.php' );
 				require( WPAS_PATH . 'includes/admin/functions-list-table.php' );
 				require( WPAS_PATH . 'includes/admin/functions-metaboxes.php' );
+				require( WPAS_PATH . 'includes/admin/functions-user-profile.php' );
 				require( WPAS_PATH . 'includes/admin/functions-admin-actions.php' );
 				require( WPAS_PATH . 'includes/admin/functions-misc.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );

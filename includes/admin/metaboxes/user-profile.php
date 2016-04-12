@@ -48,15 +48,40 @@ $by_status['closed'] = $closed;
 ?>
 <div id="wpas-up">
 
+	<?php
+	/**
+	 * Fires before anything is processed in the user profile metabox
+	 *
+	 * @since 3.3
+	 * @var WP_User $user The user object
+	 * @var WP_Post $post Post object of the current ticket
+	 */
+	do_action( 'wpas_user_profile_metabox_before', $user, $post ); ?>
+
 	<div class="wpas-up-contact-details wpas-cf">
 		<a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . $user->ID ) ); ?>">
 			<?php echo get_avatar( $user->ID, '80', 'mm', $user->data->display_name, array( 'class' => 'wpas-up-contact-img' ) ); ?>
 		</a>
-		<div class="wpas-up-contact-name"><?php echo $user->data->display_name; ?></div>
-		<div class="wpas-up-contact-role"><?php echo wp_kses_post( sprintf( __( 'Support User since %s', 'awesome-support' ), '<strong>' . date( get_option( 'date_format' ), strtotime( $user->data->user_registered ) ) . '</strong>' ) ); ?></div>
-		<div class="wpas-up-contact-email"><a href="mailto:<?php echo $user->data->user_email; ?>"><?php echo $user->data->user_email; ?></a></div>
-		<!-- <em class="wpas-up-contact-replytime">Usually replies within 4 hours</em> -->
+		<?php
+		$contact_fields = wpas_user_profile_get_contact_info( $post->ID );
+
+		foreach ( $contact_fields as $contact_field ) {
+			printf( '<div class="wpas-up-contact-%1$s">', $contact_field );
+			wpas_user_profile_contact_info_contents( $contact_field, $user, $post->ID );
+			echo '</div>';
+		}
+		?>
 	</div>
+
+	<?php
+	/**
+	 * Fires after the contact information fields
+	 *
+	 * @since 3.3
+	 * @var WP_User $user The user object
+	 * @var WP_Post $post Post object of the current ticket
+	 */
+	do_action( 'wpas_user_profile_metabox_after_contact_info', $user, $post ); ?>
 	
 	<div class="wpas-row wpas-up-stats">
 		<div class="wpas-col wpas-up-stats-all">
@@ -73,6 +98,16 @@ $by_status['closed'] = $closed;
 		</div>
 	</div>
 
+	<?php
+	/**
+	 * Fires after the user stats
+	 *
+	 * @since 3.3
+	 * @var WP_User $user The user object
+	 * @var WP_Post $post Post object of the current ticket
+	 */
+	do_action( 'wpas_user_profile_metabox_after_stats', $user, $post ); ?>
+
 	<div class="wpas-up-tickets">
 		<?php
 		foreach ( $by_status as $status => $tickets ) {
@@ -88,7 +123,12 @@ $by_status['closed'] = $closed;
 				$created = sprintf( esc_html_x( 'Created on %s', 'Ticket date creation', 'awesome-support' ), date( get_option( 'date_format' ), strtotime( $t->post_date ) ) );
 				$title   = apply_filters( 'the_title', $t->post_title );
 				$link    = esc_url( admin_url( "post.php?post=$t->ID&action=edit" ) );
-				$lis .= sprintf( '<li data-hint="%1$s" class="hint-left hint-anim"><a href="%3$s">%2$s</a></li>', $created, $title, $link );
+
+				if ( $t->ID !== (int) $post->ID ) {
+					$lis .= sprintf( '<li data-hint="%1$s" class="hint-left hint-anim"><a href="%3$s">%2$s</a></li>', $created, $title, $link );
+				} else {
+					$lis .= sprintf( '<li data-hint="%1$s" class="hint-left hint-anim">%2$s (%3$s)</li>', $created, $title, esc_html_x( 'current', 'Identifies the ticket in a list as being the ticket displayed on the current screen', 'awesome-support' ) );
+				}
 			}
 
 			printf( '<ul>%s</ul>', $lis );
@@ -98,5 +138,15 @@ $by_status['closed'] = $closed;
 
 		<!-- @todo <a href="/wp-admin/edit.php?post_type=ticket" class="button">View all tickets</a> -->
 	</div>
+
+	<?php
+	/**
+	 * Fires after everything else is processed in the user profile metabox
+	 *
+	 * @since 3.3
+	 * @var WP_User $user The user object
+	 * @var WP_Post $post Post object of the current ticket
+	 */
+	do_action( 'wpas_user_profile_metabox_after', $user, $post ); ?>
 
 </div>
