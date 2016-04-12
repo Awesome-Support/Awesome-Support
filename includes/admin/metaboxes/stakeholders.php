@@ -49,7 +49,7 @@ $staff         = get_user_by( 'ID', $staff_id );
 $staff_name    = $staff->data->display_name;
 ?>
 <div id="wpas-stakeholders">
-	<label for="wpas-issuer"><strong data-hint="<?php esc_html_e( 'This ticket has been raised by the user hereinabove', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
+	<label for="wpas-issuer"><strong data-hint="<?php esc_html_e( 'This user who raised this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php if ( current_user_can( 'create_ticket' ) ):
 
@@ -65,7 +65,7 @@ $staff_name    = $staff->data->display_name;
 			<a id="wpas-issuer" href="<?php echo $client_link; ?>"><?php echo $client_name; ?></a>
 		<?php endif; ?>
 	</p>
-	<label for="wpas-assignee"><strong data-hint="<?php esc_html_e( 'The above agent is currently responsible for this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
+	<label for="wpas-assignee"><strong data-hint="<?php esc_html_e( 'The agent currently responsible for this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php
 		$staff_atts = array(
