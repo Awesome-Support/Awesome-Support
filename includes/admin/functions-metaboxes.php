@@ -43,10 +43,7 @@ function wpas_metaboxes() {
 	}
 
 	/* Ticket details */
-	add_meta_box( 'wpas-mb-details', __( 'Details', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
-
-	/* Contacts involved in the ticket */
-	add_meta_box( 'wpas-mb-contacts', __( 'Stakeholders', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'stakeholders' ) );
+	add_meta_box( 'wpas-mb-details', __( 'Ticket Details', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
 
 	/* Client profile */
 	if ( 'post-new.php' !== $pagenow ) {

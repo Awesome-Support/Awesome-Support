@@ -54,6 +54,7 @@ if ( isset( $post ) ) {
 		<?php endif; ?>
 	</p>
 	<?php if ( isset( $post ) ): ?><p><strong><?php _e( 'Opened:', 'awesome-support' ); ?></strong> <em><?php printf( __( '%s ago', 'awesome-support' ), $date ); ?></em></p><?php endif; ?>
+	<?php require( WPAS_PATH . 'includes/admin/metaboxes/stakeholders.php' ); ?>
 	<?php if ( 'open' === get_post_meta( $post->ID, '_wpas_status', true ) ): ?>
 		<label for="wpas-post-status"><strong><?php _e( 'Current state:', 'awesome-support' ); ?></strong></label>
 		<p>

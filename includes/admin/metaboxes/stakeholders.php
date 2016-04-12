@@ -49,7 +49,7 @@ $staff         = get_user_by( 'ID', $staff_id );
 $staff_name    = $staff->data->display_name;
 ?>
 <div id="wpas-stakeholders">
-	<label for="wpas-issuer"><strong><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
+	<label for="wpas-issuer"><strong data-hint="<?php esc_html_e( 'This ticket has been raised by the user hereinabove', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
 	<p>
 
 		<?php if ( current_user_can( 'create_ticket' ) ):
@@ -63,13 +63,10 @@ $staff_name    = $staff->data->display_name;
 			echo wpas_dropdown( $users_atts, $client_option );
 
 		else: ?>
-			<a id="wpas-issuer" href="<?php echo $client_link; ?>"><?php echo $client_name; ?></a></p>
+			<a id="wpas-issuer" href="<?php echo $client_link; ?>"><?php echo $client_name; ?></a>
 		<?php endif; ?>
-
-	<p class="description"><?php printf( __( 'This ticket has been raised by the user hereinabove.', 'awesome-support' ), '#' ); ?></p>
-	<hr>
-
-	<label for="wpas-assignee"><strong><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
+</p>
+	<label for="wpas-assignee"><strong data-hint="<?php esc_html_e( 'The above agent is currently responsible for this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php
 		$staff_atts = array(
@@ -83,6 +80,4 @@ $staff_name    = $staff->data->display_name;
 		echo wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );
 		?>
 	</p>
-	<p class="description"><?php printf( __( 'The above agent is currently responsible for this ticket.', 'awesome-support' ), '#' ); ?></p>
-
 </div>
