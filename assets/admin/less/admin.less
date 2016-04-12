@@ -456,11 +456,42 @@ Metaboxes - User Profile
 		line-height: 1;
 	}
 }
-.wpas-up-tickets {
+
+/*
+==========================================================================
+Metaboxes - Ticket Details
+==========================================================================
+*/
+.postbox {
 	[data-hint] {
 		position: relative;
 		&:after {
 			font-size: 100%;
+		}
+	}	
+}
+
+#wpas-mb-details {
+	p {
+		margin: 5px 0 10px 0;
+	}
+}
+
+#wpas-statusdate {
+	margin-top: -6px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #eee;
+
+	.wpas-col {
+		padding: 20px 10px;
+		text-align: center;
+
+		&:last-child {
+			border-left: 1px solid #eee;
+		}
+		strong {
+			display: block;
+			margin-bottom: 5px;
 		}
 	}
 }
