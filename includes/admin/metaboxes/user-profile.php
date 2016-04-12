@@ -123,7 +123,12 @@ $by_status['closed'] = $closed;
 				$created = sprintf( esc_html_x( 'Created on %s', 'Ticket date creation', 'awesome-support' ), date( get_option( 'date_format' ), strtotime( $t->post_date ) ) );
 				$title   = apply_filters( 'the_title', $t->post_title );
 				$link    = esc_url( admin_url( "post.php?post=$t->ID&action=edit" ) );
-				$lis .= sprintf( '<li data-hint="%1$s" class="hint-left hint-anim"><a href="%3$s">%2$s</a></li>', $created, $title, $link );
+
+				if ( $t->ID !== (int) $post->ID ) {
+					$lis .= sprintf( '<li data-hint="%1$s" class="hint-left hint-anim"><a href="%3$s">%2$s</a></li>', $created, $title, $link );
+				} else {
+					$lis .= sprintf( '<li data-hint="%1$s" class="hint-left hint-anim">%2$s (%3$s)</li>', $created, $title, esc_html_x( 'current', 'Identifies the ticket in a list as being the ticket displayed on the current screen', 'awesome-support' ) );
+				}
 			}
 
 			printf( '<ul>%s</ul>', $lis );
