@@ -204,3 +204,57 @@ function wpas_notification( $case, $message = '', $echo = true ) {
 function wpas_create_notification( $message ) {
 	_deprecated_function( __FUNCTION__, '3.2' );
 }
+
+/**
+ * Add custom action and nonce to URL.
+ *
+ * The function adds a custom action trigger using the wpas-do
+ * URL parameter and adds a security nonce for plugin custom actions.
+ *
+ * @param  string $url    URL to customize
+ * @param  string $action Custom action to add
+ *
+ * @return string         Customized URL
+ * @since      3.0.0
+ * @deprecated 3.3
+ */
+function wpas_url_add_custom_action( $url, $action ) {
+
+	_deprecated_function( 'wpas_url_add_custom_action', '3.3', 'wpas_do_url' );
+
+	return wpas_do_url( $url, sanitize_text_field( $action ) );
+}
+
+/**
+ * Check a custom action nonce.
+ *
+ * @since      3.1.5
+ *
+ * @param  string $nonce Nonce to be checked
+ *
+ * @return boolean        Nonce validity
+ * @deprecated 3.3
+ */
+function wpas_check_nonce( $nonce ) {
+	_deprecated_function( 'wpas_check_nonce', '3.3', 'wpas_do_url' );
+	return wp_verify_nonce( $nonce, 'wpas_custom_action' );
+}
+
+/**
+ * Add a security nonce.
+ *
+ * The function adds a security nonce to URLs
+ * with a trigger for plugin custom action.
+ *
+ * @param  string $url URL to nonce
+ *
+ * @return string      Nonced URL
+ * @since      3.0.0
+ * @deprecated 3.3
+ */
+function wpas_nonce_url( $url ) {
+
+	_deprecated_function( 'wpas_nonce_url', '3.3', 'wpas_do_url' );
+
+	return add_query_arg( array( 'wpas-nonce' => wp_create_nonce( 'wpas_custom_action' ) ), $url );
+}

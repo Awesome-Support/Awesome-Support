@@ -48,67 +48,43 @@ function wpas_update_option( $option, $value ) {
 }
 
 /**
- * Add a security nonce.
+ * Get link to (re)open a ticket
  *
- * The function adds a security nonce to URLs
- * with a trigger for plugin custom action.
+ * @param int $ticket_id ID of the ticket ot open
  *
- * @param  string $url URL to nonce
- *
- * @return string)      Nonced URL
- * @since  3.0.0
+ * @return string
  */
-function wpas_nonce_url( $url ) {
-	return add_query_arg( array( 'wpas-nonce' => wp_create_nonce( 'wpas_custom_action' ) ), $url );
-}
-
-/**
- * Check a custom action nonce.
- *
- * @since  3.1.5
- * @param  string $nonce  Nonce to be checked
- * @return boolean        Nonce validity
- */
-function wpas_check_nonce( $nonce ) {
-	return wp_verify_nonce( $nonce, 'wpas_custom_action' );
-}
-
-/**
- * Add custom action and nonce to URL.
- *
- * The function adds a custom action trigger using the wpas-do
- * URL parameter and adds a security nonce for plugin custom actions.
- *
- * @param  string $url    URL to customize
- * @param  string $action Custom action to add
- *
- * @return string         Customized URL
- * @since  3.0.0
- */
-function wpas_url_add_custom_action( $url, $action ) {
-	return wpas_nonce_url( add_query_arg( array( 'wpas-do' => sanitize_text_field( $action ) ), $url ) );
-}
-
-function wpas_get_open_ticket_url( $ticket_id, $action = 'open' ) {
+function wpas_get_open_ticket_url( $ticket_id ) {
 
 	$remove = array( 'post', 'message' );
 	$args   = $_GET;
 
 	foreach ( $remove as $key ) {
 
-		if ( isset( $args[$key] ) ) {
-			unset( $args[$key] );
+		if ( isset( $args[ $key ] ) ) {
+			unset( $args[ $key ] );
 		}
 
 	}
 
 	$args['post'] = intval( $ticket_id );
 
-	return wpas_url_add_custom_action( add_query_arg( $args, admin_url( 'post.php' ) ), $action );
+	return wpas_do_url( add_query_arg( $args, admin_url( 'post.php' ) ), 'admin_open_ticket', array( 'post' => (int) $ticket_id ) );
+
 }
 
+/**
+ * Get link to close a ticket
+ *
+ * @param int $ticket_id
+ *
+ * @return string
+ */
 function wpas_get_close_ticket_url( $ticket_id ) {
-	return wpas_get_open_ticket_url( $ticket_id, 'close' );
+
+	$url = add_query_arg( 'post_type', 'ticket', admin_url( 'edit.php' ) );
+
+	return wpas_do_url( $url, 'admin_close_ticket', array( 'post' => $ticket_id ) );
 }
 
 /**
