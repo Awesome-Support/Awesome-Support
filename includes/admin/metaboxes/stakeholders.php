@@ -51,7 +51,6 @@ $staff_name    = $staff->data->display_name;
 <div id="wpas-stakeholders">
 	<label for="wpas-issuer"><strong data-hint="<?php esc_html_e( 'This ticket has been raised by the user hereinabove', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
 	<p>
-
 		<?php if ( current_user_can( 'create_ticket' ) ):
 
 			$users_atts = array( 'agent_fallback' => true, 'select2' => true, 'name' => 'post_author_override', 'id' => 'wpas-issuer', 'data_attr' => array( 'capability' => 'create_ticket' ) );
@@ -65,7 +64,7 @@ $staff_name    = $staff->data->display_name;
 		else: ?>
 			<a id="wpas-issuer" href="<?php echo $client_link; ?>"><?php echo $client_name; ?></a>
 		<?php endif; ?>
-</p>
+	</p>
 	<label for="wpas-assignee"><strong data-hint="<?php esc_html_e( 'The above agent is currently responsible for this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php
