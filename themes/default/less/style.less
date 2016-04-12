@@ -273,6 +273,26 @@ Pages
 }
 
 /* Ticket Details */
+.wpas-ticket-buttons-top {
+	clear: both;
+	margin-bottom: 2em;
+
+	.wpas-link-logout {
+		float: right;
+		&:after {
+			display: inline-block;
+			content: '';
+			height: 14px;
+			width: 14px;
+			vertical-align: middle;
+			margin-left: 7px;
+			opacity: .5;
+			background-size: contain;
+			background-image: data-uri('image/svg+xml;charset=UTF-8', '../images/logout.svg');
+		}
+	}
+}
+
 .wpas-ticket-details-header {
 	margin-bottom: 0px;
 }
