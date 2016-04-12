@@ -7,6 +7,9 @@ if ( $wpas_tickets->have_posts() ):
 	$columns = wpas_get_tickets_list_columns();
 	?>
 	<div class="wpas wpas-ticket-list">
+
+		<?php wpas_get_template( 'partials/ticket-navigation' ); ?>
+
 		<table id="wpas_ticketlist" class="wpas-table wpas-table-hover">
 			<thead>
 				<tr>
@@ -49,7 +52,6 @@ if ( $wpas_tickets->have_posts() ):
 				wp_reset_query(); ?>
 			</tbody>
 		</table>
-		<?php wpas_make_button( __( 'Open a ticket', 'awesome-support' ), array( 'type' => 'link', 'link' => wpas_get_submission_page_url(), 'class' => 'wpas-btn wpas-btn-default' ) ); ?>
 	</div>
 <?php else:
 	echo wpas_get_notification_markup( 'info', sprintf( __( 'You haven\'t submitted a ticket yet. <a href="%s">Click here to submit your first ticket</a>.', 'awesome-support' ), wpas_get_submission_page_url() ) );
