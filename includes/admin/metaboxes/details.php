@@ -38,25 +38,36 @@ $statuses = wpas_get_post_status();
 /* Get post status */
 $post_status = isset( $post ) ? $post->post_status : '';
 
+/* Get the date */
+$date_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+$date        = get_the_date( $date_format );
+
 /* Get time */
 if ( isset( $post ) ) {
-	$date = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) );
+	$dateago = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) );
 }
 ?>
 <div class="wpas-ticket-status submitbox">
-	<p>
-		<strong><?php _e( 'Ticket status:', 'awesome-support' ); ?></strong>
-		<?php if ( 'post-new.php' != $pagenow ):
-			wpas_cf_display_status( '', $post->ID );
+	<div class="wpas-row" id="wpas-statusdate">
+		<div class="wpas-col">
+			<strong><?php _e( 'Status', 'awesome-support' ); ?></strong>
+			<?php if ( 'post-new.php' != $pagenow ):
+				wpas_cf_display_status( '', $post->ID );
 			?>
-		<?php else: ?>
-			<span><?php _x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
-		<?php endif; ?>
-	</p>
-	<?php if ( isset( $post ) ): ?><p><strong><?php _e( 'Opened:', 'awesome-support' ); ?></strong> <em><?php printf( __( '%s ago', 'awesome-support' ), $date ); ?></em></p><?php endif; ?>
+			<?php else: ?>
+				<span><?php _x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
+			<?php endif; ?>
+		</div>
+		<div class="wpas-col">
+			<?php if ( isset( $post ) ): ?>
+				<strong><?php echo $date; ?></strong>
+				<em><?php printf( __( '%s ago', 'awesome-support' ), $dateago ); ?></em>
+			<?php endif; ?>
+		</div>
+	</div>
 	<?php require( WPAS_PATH . 'includes/admin/metaboxes/stakeholders.php' ); ?>
 	<?php if ( 'open' === get_post_meta( $post->ID, '_wpas_status', true ) ): ?>
-		<label for="wpas-post-status"><strong><?php _e( 'Current state:', 'awesome-support' ); ?></strong></label>
+		<label for="wpas-post-status"><strong><?php _e( 'Current Status', 'awesome-support' ); ?></strong></label>
 		<p>
 			<select id="wpas-post-status" name="post_status_override" style="width: 100%">
 				<?php foreach ( $statuses as $status => $label ):
