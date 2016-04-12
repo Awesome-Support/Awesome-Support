@@ -80,23 +80,25 @@ function wpas_restore_notice( $notice ) {
 
 }
 
-add_action( 'admin_init', 'wpas_grab_notice_dismiss', 10, 0 );
+add_action( 'wpas_do_dismiss_notice', 'wpas_grab_notice_dismiss' );
 /**
  * Check if there is a notice to dismiss.
  *
  * @since  3.1.5
+ *
+ * @param array $data Contains the notice ID
+ *
  * @return void
  */
-function wpas_grab_notice_dismiss() {
+function wpas_grab_notice_dismiss( $data ) {
 
-	$dismiss = filter_input( INPUT_GET, 'wpas-dismiss', FILTER_SANITIZE_STRING );
-	$nonce   = filter_input( INPUT_GET, 'wpas-nonce',   FILTER_SANITIZE_STRING );
+	$notice_id = isset( $data['notice_id'] ) ? $data['notice_id'] : false;
 
-	if ( ! empty( $dismiss ) && ! empty( $nonce ) ) {
-		if ( wpas_check_nonce( $nonce ) ) {
-			wpas_dismiss_notice( $dismiss );
-		}
+	if ( false === $notice_id ) {
+		return;
 	}
+
+	wpas_dismiss_notice( $notice_id );
 
 }
 
@@ -209,9 +211,7 @@ class AS_Admin_Notices {
 				continue;
 			}
 
-			$args                 = $_GET;
-			$args['wpas-dismiss'] = $notice_id;
-			$url                  = wpas_nonce_url( add_query_arg( $args, '' ) );
+			$url = wpas_do_url( add_query_arg( $_GET, '' ), 'dismiss_notice', array( 'notice_id' => $notice_id ) );
 
 			printf( '<div class="%s"><p>%s <a href="%s"><small>(%s)</small></a></p></div>', $notice[0], $notice[1], esc_url( $url ), _x( 'Dismiss', 'Dismiss link for admin notices', 'awesome-support' ) );
 
