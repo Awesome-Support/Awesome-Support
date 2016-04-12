@@ -851,12 +851,19 @@ add_action( 'wpas_after_template', 'wpas_credit', 10, 3 );
  * Display a link to the plugin page.
  *
  * @since  3.1.3
+ * @var string $name Template name
  * @return void
  */
-function wpas_credit() {
+function wpas_credit( $name ) {
+
+	if ( ! in_array( $name, array( 'details', 'registration', 'submission', 'list' ) ) ) {
+		return;
+	}
+
 	if ( true === (bool) wpas_get_option( 'credit_link' ) ) {
 		echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
 	}
+
 }
 
 add_filter( 'plugin_locale', 'wpas_change_plugin_locale', 10, 2 );
