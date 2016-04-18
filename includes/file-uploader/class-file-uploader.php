@@ -100,7 +100,6 @@ class WPAS_File_Upload {
 		$action = isset( $_POST['action'] ) ? $_POST['action'] : '';
 
 		// Make sure the query is for the media library
-		// @todo: make sure this action is used for the media library query ONLY
 		if ( 'query-attachments' !== $action ) {
 			return $clauses;
 		}
@@ -119,10 +118,6 @@ class WPAS_File_Upload {
 		if ( 'attachment' !== $wp_query->query_vars['post_type'] ) {
 			return $clauses;
 		}
-
-		var_dump( $_SERVER );
-		var_dump( $_POST );
-		var_dump( $_GET );
 
 		$clauses['join'] .= " LEFT OUTER JOIN $wpdb->posts daddy ON daddy.ID = $wpdb->posts.post_parent";
 		$clauses['where'] .= " AND daddy.post_type NOT IN ( 'ticket', 'ticket_reply' )";
