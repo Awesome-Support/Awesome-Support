@@ -387,3 +387,33 @@ Pages
 		padding: 0;
 	}
 }
+
+/*
+==========================================================================
+Pagination for ticket replies
+==========================================================================
+*/
+.wpas-pagi {
+	text-align: center;
+
+	p {
+		margin-bottom: 0;
+	}
+}
+.wpas-pagi-loading {
+	.wpas-pagi-text {
+		display: none;
+	}
+	.wpas-pagi-loader {
+		display: block;
+	}
+}
+.wpas-pagi-loader {
+	display: none;
+	text-indent: -9999em;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url('../images/loading-spin.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+}

@@ -173,9 +173,15 @@ $author = get_user_by( 'id', $post->post_author );
 		</tbody>
 	</table>
 
-	<div class="wpas-pagi">
-		<span class="wpas-pagi-prev"><?php wpas_prev_page_link( '< ' . __( 'Older Replies', 'awesome-support' ) ); ?></span>
-		<span class="wpas-pagi-next"><?php wpas_next_page_link( __( 'Newer Replies', 'awesome-support' ) . ' >', $replies->found_posts ); ?></span>
+	<?php
+	// Demo only
+	$current = 10;
+	$total   = 28;
+	?>
+	
+	<div class="wpas-alert wpas-alert-info wpas-pagi">
+		<div class="wpas-pagi-loader"><?php _e( 'Loading...', 'awesome-support' ); ?></div>
+		<p class="wpas-pagi-text"><?php echo wp_kses_post( sprintf( _x( 'Showing %s replies of %s.', 'Showing X replies out of a total of X replies', 'awesome-support' ), "<span class='wpas-replies-current'>$current</span>", "<span class='wpas-replies-total'>$total</span>" ) ); ?> <a href="#" class="wpas-pagi-loadmore"><?php _e( 'Load newer replies', 'awesome-support' ); ?></a></p>
 	</div>
 
 	<h3><?php _e( 'Write a reply', 'awesome-support' ); ?></h3>
