@@ -116,9 +116,12 @@ Forms + Buttons + Labels
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .wpas-form-control-loading {
-	background-image: url('../ajax-loader.gif');
+	/* from https://github.com/jxnblk/loading */
+	background-image: url('../images/loading-spin.svg');
+	/* position the element 10px from the right */
+	background-position: right 10px center;
+	background-size: 16px 16px;
 	background-repeat: no-repeat;
-	background-position: 95% 50%;
 }
 textarea.wpas-form-control {
 	height: auto;
