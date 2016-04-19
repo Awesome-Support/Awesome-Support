@@ -103,69 +103,11 @@ $author = get_user_by( 'id', $post->post_author );
 					$user      = get_userdata( $post->post_author );
 					$user_role = get_the_author_meta( 'roles' );
 					$user_role = $user_role[0];
-					$time_ago  = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) ); ?>
+					$time_ago  = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) );
 
-					<tr id="reply-<?php echo the_ID(); ?>"
-					    class="wpas-reply-single wpas-status-<?php echo get_post_status(); ?>" valign="top">
+					wpas_get_template( 'partials/ticket-reply', array( 'time_ago' => $time_ago, 'user' => $user, 'post' => $post ) );
 
-						<?php
-						/**
-						 * Make sure the reply hasn't been deleted.
-						 */
-						if ( 'trash' === get_post_status() ) { ?>
-
-							<td colspan="2">
-								<?php printf( __( 'This reply has been deleted %s ago.', 'awesome-support' ), $time_ago ); ?>
-							</td>
-
-							<?php continue;
-						} ?>
-
-						<td style="width: 64px;">
-							<div class="wpas-user-profile">
-								<?php echo get_avatar( get_the_author_meta( 'user_email' ), 64, get_option( 'avatar_default' ) ); ?>
-							</div>
-						</td>
-
-						<td>
-							<div class="wpas-reply-meta">
-								<div class="wpas-reply-user">
-									<strong class="wpas-profilename"><?php echo $user->data->display_name; ?></strong>
-								</div>
-								<div class="wpas-reply-time">
-									<time class="wpas-timestamp"
-									      datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>">
-										<span
-											class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
-										<span
-											class="wpas-date-ago"><?php printf( __( '%s ago', 'awesome-support' ), $time_ago ); ?></span>
-									</time>
-								</div>
-							</div>
-
-							<?php
-							/**
-							 * wpas_frontend_reply_content_before hook
-							 *
-							 * @since  3.0.0
-							 */
-							do_action( 'wpas_frontend_reply_content_before', get_the_ID() );
-							?>
-
-							<div class="wpas-reply-content"><?php the_content(); ?></div>
-
-							<?php
-							/**
-							 * wpas_frontend_reply_content_after hook
-							 *
-							 * @since  3.0.0
-							 */
-							do_action( 'wpas_frontend_reply_content_after', get_the_ID() ); ?>
-						</td>
-
-					</tr>
-
-				<?php endwhile;
+				endwhile;
 
 			endif;
 
