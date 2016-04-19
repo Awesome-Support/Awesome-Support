@@ -678,15 +678,15 @@ function wpas_users_dropdown( $args = array() ) {
 		}
 	}
 
-	foreach ( $all_users as $user ) {
+	foreach ( $all_users->members as $user ) {
 
 		/* This user was already added, skip it */
 		if ( ! empty( $args['selected'] ) && $user->user_id === intval( $args['selected'] ) ) {
 			continue;
 		}
 
-		$user_id       = $user->user_id;
-		$user_name     = $user->data['display_name'];
+		$user_id       = $user->ID;
+		$user_name     = $user->display_name;
 		$selected_attr = '';
 
 		if ( false === $marker ) {
