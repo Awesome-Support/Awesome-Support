@@ -834,8 +834,9 @@ function wpas_get_reply_link( $reply_id ) {
 
 	}
 
-	if ( 0 === $position ) {
-		return false;
+	// We have more replies that what's displayed on one page, so let's set a session var to force displaying all replies
+	if ( $position > wpas_get_option( 'replies_per_page', 10 ) ) {
+		WPAS()->session->add( 'force_all_replies', true );
 	}
 
 	$link = get_permalink( $reply->post_parent ) . "#reply-$reply_id";
