@@ -70,7 +70,7 @@ function wpas_get_javascript_object() {
 	global $post;
 
 	if ( ! isset( $post ) || ! is_object( $post ) || ! is_a( $post, 'WP_Post' ) ) {
-		return;
+		return array();
 	}
 
 	$upload_max_files = (int) wpas_get_option( 'attachments_max' );
@@ -98,6 +98,10 @@ function wpas_get_javascript_object() {
 			'onSubmit'    => _x( 'Submitting...', 'ticket submission button text while submitting', 'awesome-support' ),
 		)
 	);
+
+	if ( 'ticket' === $post->post_type ) {
+		$object['ticket_id'] = $post->ID;
+	}
 
 	return $object;
 

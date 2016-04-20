@@ -1431,3 +1431,84 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
 	return count( wpas_get_tickets( $status, $args ) );
 
 }
+
+add_action( 'wp_ajax_wpas_load_replies', 'wpas_get_ticket_replies_ajax' );
+add_action( 'wp_ajax_nopriv_wpas_load_replies', 'wpas_get_ticket_replies_ajax' );
+/**
+ * Ajax function that returns a number of ticket replies
+ *
+ * @since 3.3
+ * @return void
+ */
+function wpas_get_ticket_replies_ajax() {
+
+	// Make sure we have a ticket ID to work with
+	if ( ! isset( $_POST['ticket_id'] ) ) {
+		echo json_encode( array( 'error' => esc_html__( 'No ticket ID given', 'awesome-support' ) ) );
+		die();
+	}
+
+	$ticket_id = (int) $_POST['ticket_id'];
+	$offset    = isset( $_POST['ticket_replies_total'] ) ? (int) $_POST['ticket_replies_total'] : 0;
+	$ticket    = get_post( $ticket_id );
+
+	// Make sure the ID exists
+	if ( ! is_object( $ticket ) || ! is_a( $ticket, 'WP_Post' ) ) {
+		echo json_encode( array( 'error' => esc_html__( 'Invalid ticket ID', 'awesome-support' ) ) );
+		die();
+	}
+
+	// Make sure the post is actually a ticket
+	if ( 'ticket' !== $ticket->post_type ) {
+		echo json_encode( array( 'error' => esc_html__( 'Given ID is not a ticket', 'awesome-support' ) ) );
+		die();
+	}
+
+	$number_replies = apply_filters( 'wpas_get_ticket_replies_ajax_replies', wpas_get_option( 'replies_per_page', 10 ) );
+	$replies        = wpas_get_replies( $ticket_id, 'any', array(
+		'posts_per_page' => $number_replies,
+		'no_found_rows'  => false,
+		'offset'         => $offset
+	), 'wp_query' );
+
+	if ( empty( $replies->posts ) ) {
+		echo json_encode( array() );
+		die();
+	}
+
+	$output = array(
+		'total'   => (int) $replies->found_posts,
+		'current' => $offset + (int) $replies->post_count,
+		'html'    => '',
+	);
+
+	$html = array();
+
+	while ( $replies->have_posts() ) {
+
+		$replies->the_post();
+		$user     = get_userdata( $replies->post->post_author );
+		$time_ago = human_time_diff( get_the_time( 'U', $replies->post->ID ), current_time( 'timestamp' ) );
+
+		ob_start();
+
+		wpas_get_template( 'partials/ticket-reply', array(
+			'time_ago' => $time_ago,
+			'user'     => $user,
+			'post'     => $replies->post
+		) );
+
+		$reply = ob_get_contents();
+
+		ob_end_clean();
+
+		$html[] = $reply;
+
+	}
+
+	$output['html'] = implode( '', $html );
+
+	echo json_encode( $output );
+	die();
+
+}
