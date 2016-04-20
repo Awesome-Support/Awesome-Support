@@ -45,6 +45,11 @@
 					current.text(response.current);
 					total.text(response.total);
 
+					// Hide link if all replies are shown
+					if (response.current == response.total) {
+						button.hide();
+					}
+
 					// Add newer replies HTML
 					container.append(response.html);
 				});
