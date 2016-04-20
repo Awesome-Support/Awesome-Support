@@ -50,6 +50,7 @@ class WPAS_File_Upload {
 		add_action( 'pre_get_posts',              array( $this, 'attachment_query_var' ), 10, 1 );
 		add_action( 'init',                       array( $this, 'attachment_endpoint' ),  10, 1 );
 		add_action( 'template_redirect',          array( $this, 'view_attachment' ),      10, 0 );
+		add_action( 'posts_clauses',              array( $this, 'filter_attachments_out' ), 10, 2 );
 
 		if ( !is_admin() ) {
 
@@ -79,6 +80,52 @@ class WPAS_File_Upload {
 		}
 	}
 
+	/**
+	 * Filter out tickets and ticket replies attachments
+	 *
+	 * Tickets attachments don't have their place in the media library. The library can quickly become a huge mess and
+	 * it becomes impossible to work with actual post attachments.
+	 *
+	 * @since 3.3
+	 *
+	 * @param array    $clauses  SQL query clauses
+	 * @param WP_Query $wp_query WordPress query object
+	 *
+	 * @return array
+	 */
+	public function filter_attachments_out( $clauses, $wp_query ) {
+
+		global $pagenow, $wpdb;
+
+		$action = isset( $_POST['action'] ) ? $_POST['action'] : '';
+
+		// Make sure the query is for the media library
+		if ( 'query-attachments' !== $action ) {
+			return $clauses;
+		}
+
+		// We only want to alter queries in the admin
+		if ( ! $wp_query->is_admin ) {
+			return $clauses;
+		}
+
+		// Make sure this request is done through Ajax as this is how the media library does it
+		if ( 'admin-ajax.php' !== $pagenow ) {
+			return $clauses;
+		}
+
+		// Is this query for attachments?
+		if ( 'attachment' !== $wp_query->query_vars['post_type'] ) {
+			return $clauses;
+		}
+
+		$clauses['join'] .= " LEFT OUTER JOIN $wpdb->posts daddy ON daddy.ID = $wpdb->posts.post_parent";
+		$clauses['where'] .= " AND daddy.post_type NOT IN ( 'ticket', 'ticket_reply' )";
+
+		return $clauses;
+
+	}
+	
 	/**
 	 * Add a custom class to the upload field wrapper in the admin
 	 *
