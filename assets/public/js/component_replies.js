@@ -38,6 +38,9 @@
 				pagination.addClass('wpas-pagi-loading');
 
 				$.post(wpas.ajaxurl, data, function (response) {
+					// Parse JSON
+					response = $.parseJSON(response);
+
 					// Update pagination notice UI
 					pagination.removeClass('wpas-pagi-loading');
 					current.text(response.current);
