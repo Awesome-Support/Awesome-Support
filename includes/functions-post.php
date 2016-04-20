@@ -1464,7 +1464,7 @@ function wpas_get_ticket_replies_ajax() {
 		die();
 	}
 
-	$number_replies = apply_filters( 'wpas_get_ticket_replies_ajax_replies', 10 );
+	$number_replies = apply_filters( 'wpas_get_ticket_replies_ajax_replies', wpas_get_option( 'replies_per_page', 10 ) );
 	$replies        = wpas_get_replies( $ticket_id, 'any', array(
 		'posts_per_page' => $number_replies,
 		'no_found_rows'  => false,
