@@ -54,7 +54,11 @@
 					}
 
 					// Add newer replies HTML
-					container.append(response.html);
+					$(response.html)
+						.appendTo(container)
+						.addClass('wpas-reply-single-added').delay(900).queue(function () {
+							$(this).removeClass('wpas-reply-single-added').dequeue();
+						});
 				});
 			});
 		}

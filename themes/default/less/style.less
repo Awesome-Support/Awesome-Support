@@ -345,12 +345,22 @@ Pages
 		margin-bottom: 0;
 	}
 }
-.wpas-reply-single:hover {
-	.wpas-human-date {
-		display: block;
+.wpas-reply-single {
+	&:hover {
+		.wpas-human-date {
+			display: block;
+		}
+		.wpas-date-ago {
+			display: none;
+		}
 	}
-	.wpas-date-ago {
-		display: none;
+	td {
+		transition: background 0.2s linear;
+	}
+}
+.wpas-reply-single-added {
+	td {
+		background-color: #FFFFED;
 	}
 }
 .wpas-user-profile {
