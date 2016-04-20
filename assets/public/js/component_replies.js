@@ -10,18 +10,17 @@
 		if (typeof wpas !== 'undefined' && $('.wpas-ticket-replies').length && $('.wpas-pagi').length) {
 
 			// Cache selectors
-			var container = $('.wpas-ticket-replies'),
+			var container = $('.wpas-ticket-replies tbody'),
 				pagination = $('.wpas-pagi'),
 				button = $('.wpas-pagi-loadmore'),
 				current = $('.wpas-replies-current'),
-				total = $('.wpas-replies-total'),
-				totalCount = container.find('tbody tr.wpas-reply-single').length;
+				total = $('.wpas-replies-total');
 
 			// AJAX data
 			var data = {
 				'action': 'wpas_load_replies',
 				'ticket_id': wpas.ticket_id,
-				'ticket_replies_total': totalCount
+				'ticket_replies_total': container.find('tr.wpas-reply-single').length
 			};
 
 			// Size the loading spinner
