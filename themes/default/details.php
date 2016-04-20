@@ -117,8 +117,8 @@ $author = get_user_by( 'id', $post->post_author );
 
 	<?php
 	// Demo only
-	$current = 10;
-	$total   = 28;
+	$current = $replies_per_page;
+	$total   = (int) $replies->found_posts;
 	?>
 	
 	<div class="wpas-alert wpas-alert-info wpas-pagi">
