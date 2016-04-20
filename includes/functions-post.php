@@ -1477,8 +1477,8 @@ function wpas_get_ticket_replies_ajax() {
 	}
 
 	$output = array(
-		'total'   => $replies->found_posts,
-		'current' => $offset + $replies->post_count,
+		'total'   => (int) $replies->found_posts,
+		'current' => (int) $offset + $replies->post_count,
 		'html'    => '',
 	);
 
