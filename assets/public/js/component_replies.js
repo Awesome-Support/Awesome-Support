@@ -20,7 +20,7 @@
 			var data = {
 				'action': 'wpas_load_replies',
 				'ticket_id': wpas.ticket_id,
-				'ticket_replies_total': container.find('tr.wpas-reply-single').length
+				'ticket_replies_total': container.find('tr.wpas-reply-single').length - 1
 			};
 
 			// Size the loading spinner
