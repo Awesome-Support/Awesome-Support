@@ -20,7 +20,7 @@
 			var data = {
 				'action': 'wpas_load_replies',
 				'ticket_id': wpas.ticket_id,
-				'ticket_replies_total': container.find('tr.wpas-reply-single').length - 1
+				'ticket_replies_total': 0
 			};
 
 			// Size the loading spinner
@@ -32,6 +32,9 @@
 
 			button.on('click', function (event) {
 				event.preventDefault();
+
+				// Update variable
+				data.ticket_replies_total = container.find('tr.wpas-reply-single').length - 1;
 
 				// Show loading spinner
 				pagination.addClass('wpas-pagi-loading');
