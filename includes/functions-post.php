@@ -1487,15 +1487,15 @@ function wpas_get_ticket_replies_ajax() {
 	while ( $replies->have_posts() ) {
 
 		$replies->the_post();
-		$user     = get_userdata( $ticket->post_author );
-		$time_ago = human_time_diff( get_the_time( 'U', $ticket->ID ), current_time( 'timestamp' ) );
+		$user     = get_userdata( $replies->post->post_author );
+		$time_ago = human_time_diff( get_the_time( 'U', $replies->post->ID ), current_time( 'timestamp' ) );
 
 		ob_start();
 
 		wpas_get_template( 'partials/ticket-reply', array(
 			'time_ago' => $time_ago,
 			'user'     => $user,
-			'post'     => $ticket
+			'post'     => $replies->post
 		) );
 
 		$reply = ob_get_contents();
