@@ -838,9 +838,7 @@ function wpas_get_reply_link( $reply_id ) {
 		return false;
 	}
 
-	$page = ceil( $position / 10 );
-	$base = 1 !== (int) $page ? add_query_arg( 'as-page', $page, get_permalink( $reply->post_parent ) ) : get_permalink( $reply->post_parent );
-	$link = $base . "#reply-$reply_id";
+	$link = get_permalink( $reply->post_parent ) . "#reply-$reply_id";
 
 	return esc_url( $link );
 

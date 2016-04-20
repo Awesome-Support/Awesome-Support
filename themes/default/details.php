@@ -84,12 +84,10 @@ $author = get_user_by( 'id', $post->post_author );
 			/**
 			 * Start the loop for the ticket replies.
 			 */
-			$current_page     = isset( $_GET['as-page'] ) ? filter_input( INPUT_GET, 'as-page', FILTER_SANITIZE_NUMBER_INT ) : 1;
 			$replies_per_page = wpas_get_option( 'replies_per_page', 10 );
 
 			$args = array(
 				'posts_per_page' => $replies_per_page,
-				'paged'          => $current_page,
 				'no_found_rows'  => false,
 			);
 
