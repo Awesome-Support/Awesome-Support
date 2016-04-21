@@ -24,7 +24,7 @@ if ( $wpas_tickets->have_posts() ):
 
 					$wpas_tickets->the_post();
 
-					echo '<tr class="wpas-status-' . wpas_get_ticket_status( $wpas_tickets->post->ID ) . '">';
+					echo '<tr class="wpas-status-' . wpas_get_ticket_status( $wpas_tickets->post->ID ) . '" id="wpas_ticket_' . $wpas_tickets->post->ID . '">';
 
 					foreach ( $columns as $column_id => $column ) {
 
