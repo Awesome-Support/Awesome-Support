@@ -154,6 +154,8 @@ function wpas_enqueue_admin_scripts() {
 	wp_register_script( 'wpas-admin-reply', WPAS_URL . 'assets/admin/js/admin-reply.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-autolinker', WPAS_URL . 'assets/public/vendor/Autolinker/Autolinker.min.js', null, '0.19.0', true );
 	wp_register_script( 'wpas-users', WPAS_URL . 'assets/admin/js/admin-users.js', null, WPAS_VERSION, true );
+	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
+	wp_register_script( 'wpas-admin-upload', WPAS_URL . 'assets/public/js/component_upload.js', array( 'jquery' ), WPAS_VERSION );
 
 	if ( ! wpas_is_plugin_page() ) {
 		return;
@@ -177,6 +179,11 @@ function wpas_enqueue_admin_scripts() {
 	wp_enqueue_script( 'wpas-admin-script' );
 	wp_enqueue_script( 'wpas-admin-tabletojson' );
 	wp_enqueue_script( 'wpas-users' );
+	wp_enqueue_script( 'wpas-admin-helpers_functions' );
+	wp_enqueue_script( 'wpas-admin-upload' );
+
+	// Load the JS object
+	wp_localize_script( 'wpas-admin-script', 'wpas', wpas_get_javascript_object() );
 
 	if ( 'edit' === $action && 'ticket' == get_post_type() ) {
 		wp_enqueue_script( 'wpas-admin-reply' );
