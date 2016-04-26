@@ -549,7 +549,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		public function remote_notifications() {
-			if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
+			if ( is_admin() && ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) ) {
 				new TAV_Remote_Notification_Client( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
 			}
 		}
