@@ -119,17 +119,20 @@ $author = get_user_by( 'id', $post->post_author );
 	</table>
 
 	<?php
-	// Demo only
-	$current = $replies_per_page !== -1 ? $replies_per_page : (int) $replies->found_posts;
-	$total   = (int) $replies->found_posts;
-	?>
-	
-	<div class="wpas-alert wpas-alert-info wpas-pagi">
-		<div class="wpas-pagi-loader"><?php _e( 'Loading...', 'awesome-support' ); ?></div>
-		<p class="wpas-pagi-text"><?php echo wp_kses_post( sprintf( _x( 'Showing %s replies of %s.', 'Showing X replies out of a total of X replies', 'awesome-support' ), "<span class='wpas-replies-current'>$current</span>", "<span class='wpas-replies-total'>$total</span>" ) ); ?>
-			<?php if ( -1 !== $replies_per_page ): ?><a href="#" class="wpas-pagi-loadmore"><?php _e( 'Load newer replies', 'awesome-support' ); ?></a><?php endif; ?>
-		</p>
-	</div>
+	if ( $replies_per_page !== -1 && (int) $replies->found_posts > $replies_per_page ):
+
+		$current = $replies->post_count;
+		$total   = (int) $replies->found_posts;
+		?>
+
+		<div class="wpas-alert wpas-alert-info wpas-pagi">
+			<div class="wpas-pagi-loader"><?php _e( 'Loading...', 'awesome-support' ); ?></div>
+			<p class="wpas-pagi-text"><?php echo wp_kses_post( sprintf( _x( 'Showing %s replies of %s.', 'Showing X replies out of a total of X replies', 'awesome-support' ), "<span class='wpas-replies-current'>$current</span>", "<span class='wpas-replies-total'>$total</span>" ) ); ?>
+				<?php if ( -1 !== $replies_per_page ): ?><a href="#" class="wpas-pagi-loadmore"><?php _e( 'Load newer replies', 'awesome-support' ); ?></a><?php endif; ?>
+			</p>
+		</div>
+
+	<?php endif; ?>
 
 	<h3><?php _e( 'Write a reply', 'awesome-support' ); ?></h3>
 
