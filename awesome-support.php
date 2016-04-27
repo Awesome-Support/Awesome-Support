@@ -199,6 +199,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			}
 
+			add_action( 'plugins_loaded', array( 'WPAS_File_Upload', 'get_instance' ), 11, 0 );
 			add_action( 'plugins_loaded', array( self::$instance, 'load_plugin_textdomain' ) );
 			add_action( 'init', array( self::$instance, 'load_theme_functions' ) );
 			add_action( 'plugins_loaded', array( self::$instance, 'remote_notifications' ), 15, 0 );

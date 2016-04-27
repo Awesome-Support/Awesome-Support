@@ -9,11 +9,6 @@
  * @copyright 2014 ThemeAvenue
  */
 
-/**
- * Instantiate the file upload class.
- */
-add_action( 'plugins_loaded', array( 'WPAS_File_Upload', 'get_instance' ) );
-
 class WPAS_File_Upload {
 
 	/**
