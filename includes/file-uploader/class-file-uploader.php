@@ -47,7 +47,7 @@ class WPAS_File_Upload {
 		add_action( 'template_redirect',          array( $this, 'view_attachment' ),      10, 0 );
 		add_action( 'posts_clauses',              array( $this, 'filter_attachments_out' ), 10, 2 );
 
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 
 			/* Load media uploader related files. */
 			require_once( ABSPATH . 'wp-admin/includes/image.php' );
@@ -59,12 +59,15 @@ class WPAS_File_Upload {
 			add_action( 'wpas_add_reply_public_after',               array( $this, 'new_reply_attachment' ), 10, 2 );  // Save attachments after user submitted a new reply
 			add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'upload_field' ) );                  // Load the dropzone after description textarea
 			add_action( 'wpas_ticket_details_reply_textarea_after',  array( $this, 'upload_field' ) );                  // Load dropzone after reply textarea
-			add_action( 'wpas_frontend_ticket_content_after',        array( $this, 'show_attachments' ), 10, 1 );
-			add_action( 'wpas_frontend_reply_content_after',         array( $this, 'show_attachments' ), 10, 1 );
 
 		}
 
+		// We need those during Ajax requests and admin-ajax.php is considered to be part of the admin
+		add_action( 'wpas_frontend_ticket_content_after',        array( $this, 'show_attachments' ), 10, 1 );
+		add_action( 'wpas_frontend_reply_content_after',         array( $this, 'show_attachments' ), 10, 1 );
+
 		if ( is_admin() ) {
+
 			add_action( 'wpas_add_reply_admin_after',        array( $this, 'new_reply_backend_attachment' ), 10, 2 );
 			add_action( 'post_edit_form_tag',                array( $this, 'add_form_enctype' ), 10, 1 );
 			add_action( 'wpas_admin_after_wysiwyg',          array( $this, 'upload_field' ), 10, 0 );
@@ -72,6 +75,7 @@ class WPAS_File_Upload {
 			add_action( 'wpas_backend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_reply_content_after',  array( $this, 'show_attachments' ), 10, 1 );
 			add_filter( 'wpas_cf_wrapper_class',             array( $this, 'add_wrapper_class_admin' ), 10, 2 );
+
 		}
 	}
 
