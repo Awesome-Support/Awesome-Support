@@ -10,7 +10,22 @@ if ( $wpas_tickets->have_posts() ):
 
 		<?php wpas_get_template( 'partials/ticket-navigation' ); ?>
 
-		<table id="wpas_ticketlist" class="wpas-table wpas-table-hover">
+		<!-- Filters & Search tickets -->
+		<div class="wpas-row" id="wpas_ticketlist_filters">
+			<div class="wpas-one-third">
+				<select class="wpas-form-control wpas-filter-status">
+					<option value=""><?php esc_html_e('All', 'awesome-support'); ?></option>
+				</select>
+			</div>
+			<div class="wpas-one-third"></div>
+			<div class="wpas-one-third" id="wpas_filter_wrap">
+				<input class="wpas-form-control" id="wpas_filter" type="text" placeholder="<?php esc_html_e('Search tickets...', 'awesome-support'); ?>">
+				<span class="wpas-clear-filter" title="<?php esc_html_e('Clear Filter', 'awesome-support'); ?>"></span>
+			</div>
+		</div>
+
+		<!-- List of tickets -->
+		<table id="wpas_ticketlist" class="wpas-table wpas-table-hover" data-filter="#wpas_filter" data-filter-text-only="true">
 			<thead>
 				<tr>
 					<?php foreach ( $columns as $column_id => $column ) {
