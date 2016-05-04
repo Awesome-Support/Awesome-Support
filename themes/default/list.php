@@ -76,7 +76,7 @@ if ( $wpas_tickets->have_posts() ):
 			</tbody>
 			<tfoot>
 				<tr>
-					<td colspan="4">
+					<td colspan="<?php echo count($columns); ?>">
 						<ul class="wpas_table_pagination"></ul>
 					</td>
 				</tr>
