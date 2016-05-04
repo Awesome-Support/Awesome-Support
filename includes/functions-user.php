@@ -204,26 +204,26 @@ add_action( 'wpas_do_login', 'wpas_try_login' );
  */
 function wpas_try_login( $data ) {
 
-	// Get the redirect URL
-	$redirect_to = home_url();
-
-	if ( isset( $data['redirect_to'] ) ) {
-		$redirect_to = wp_sanitize_redirect( $data['redirect_to'] ); // If a redirect URL is specified we use it
-	} else {
-
-		global $post;
-
-		// Otherwise we try to get the URL of the originating page
-		if ( isset( $post ) && $post instanceof WP_Post ) {
-			$redirect_to = wp_sanitize_redirect( get_permalink( $post->ID ) );
-		}
-
-	}
-
 	/**
 	 * Try to log the user if credentials are submitted.
 	 */
 	if ( isset( $data['wpas_log'] ) ) {
+
+		// Get the redirect URL
+		$redirect_to = home_url();
+
+		if ( isset( $data['redirect_to'] ) ) {
+			$redirect_to = wp_sanitize_redirect( $data['redirect_to'] ); // If a redirect URL is specified we use it
+		} else {
+
+			global $post;
+
+			// Otherwise we try to get the URL of the originating page
+			if ( isset( $post ) && $post instanceof WP_Post ) {
+				$redirect_to = wp_sanitize_redirect( get_permalink( $post->ID ) );
+			}
+
+		}
 
 		$credentials = array(
 				'user_login' => $data['wpas_log'],
