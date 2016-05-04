@@ -28,12 +28,24 @@
 				}
 			});
 
-			// Attach status filter to table
+			// Create the status dropdown
+			var statusesArr = [];
+			var statusesOptions = '';
+			rows.each(function (index, el) {
+				var status = $(el).find('.wpas-label').text();
+				if (statusesArr.indexOf(status) == -1) {
+					statusesArr.push(status);
+					statusesOptions += '<option value="' + status + '">' + status + '</option>';
+				}
+			});
+			statusDropdown.append(statusesOptions);
+
+			// Filter the table using footable_filter
 			statusDropdown.change(function (e) {
 				e.preventDefault();
-				var status = statusDropdown.val();
-				rows.show();
-				$('tr.' + status).hide();
+				selector.trigger('footable_filter', {
+					filter: $('#wpas_filter').val()
+				});
 			});
 
 			// Clear status dropdown and search box
