@@ -38,7 +38,13 @@
 					statusesOptions += '<option value="' + status + '">' + status + '</option>';
 				}
 			});
-			statusDropdown.append(statusesOptions);
+
+			// Show and populate the dropdown
+			if (statusesArr.length > 1) {
+				statusDropdown.append(statusesOptions);
+			} else {
+				statusDropdown.hide();
+			}
 
 			// Filter the table using footable_filter
 			statusDropdown.change(function (e) {
