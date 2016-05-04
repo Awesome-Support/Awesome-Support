@@ -29,7 +29,16 @@ if ( $wpas_tickets->have_posts() ):
 			<thead>
 				<tr>
 					<?php foreach ( $columns as $column_id => $column ) {
-						echo "<th id='wpas-ticket-$column_id'>" . $column['title'] . "</th>";
+
+						$data_attributes = '';
+
+						// Add the data attributes if any
+						if ( isset( $column['column_attributes']['head'] ) && is_array( $column['column_attributes']['head'] ) ) {
+							$data_attributes = wpas_array_to_data_attributes( $column['column_attributes']['head'] );
+						}
+
+						printf( '<th id="wpas-ticket-%1$s" %3$s>%2$s</th>', $column_id, $column['title'], $data_attributes );
+
 					} ?>
 				</tr>
 			</thead>
@@ -43,15 +52,14 @@ if ( $wpas_tickets->have_posts() ):
 
 					foreach ( $columns as $column_id => $column ) {
 
-						echo '<td';
+						$data_attributes = '';
 
-						/* If current column is the date we add the date attribute for sorting purpose */
-						if ( 'date' === $column_id ) {
-							echo ' data-order="' . strtotime( get_the_time() ) . '"';
+						// Add the data attributes if any
+						if ( isset( $column['column_attributes']['body'] ) && is_array( $column['column_attributes']['body'] ) ) {
+							$data_attributes = wpas_array_to_data_attributes( $column['column_attributes']['body'], true );
 						}
 
-						/* We don't forget to close the <td> tag */
-						echo '>';
+						printf( '<td %s>', $data_attributes );
 
 						/* Display the content for this column */
 						wpas_get_tickets_list_column_content( $column_id, $column );
