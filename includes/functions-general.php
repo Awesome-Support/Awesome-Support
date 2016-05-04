@@ -341,6 +341,41 @@ function wpas_get_ticket_status_state( $post_id ) {
 
 }
 
+/**
+ * Get the ticket state slug.
+ *
+ * Gets the ticket status. If the ticket is closed nothing fancy.
+ * If not, we return the ticket state instead of the "Open" status.
+ *
+ * The difference with wpas_get_ticket_status_state() is that only slugs are returned. No translation or capitalized
+ * terms.
+ *
+ * @since  3.3
+ *
+ * @param  integer $post_id Post ID
+ *
+ * @return string           Ticket status / state
+ */
+function wpas_get_ticket_status_state_slug( $post_id ) {
+
+	$status = wpas_get_ticket_status( $post_id );
+
+	if ( 'closed' === $status ) {
+		return $status;
+	}
+
+	$post          = get_post( $post_id );
+	$post_status   = $post->post_status;
+	$custom_status = wpas_get_post_status();
+
+	if ( ! array_key_exists( $post_status, $custom_status ) ) {
+		return 'open';
+	}
+
+	return $post->post_status;
+
+}
+
 function wpas_get_current_admin_url() {
 
 	global $pagenow;
