@@ -342,6 +342,7 @@ class WPAS_Product_Sync {
 
 		$term = array(
 			'term_id'          => $term_id,
+			'post_id'          => $post->ID, // Could be handy to still have access to the post ID
 			'name'             => $post->post_title,
 			'slug'             => $post->post_name,
 			'term_group'       => 0,
@@ -462,10 +463,13 @@ class WPAS_Product_Sync {
 			$taxonomies = array( $taxonomies );
 		}
 
+		// Declare the new terms array
+		$new_terms = array();
+
 		foreach ( $taxonomies as $taxonomy ) {
 
 			if ( ! $this->is_product_tax( $taxonomy ) ) {
-				return $terms;
+				continue;
 			}
 
 			/* Map the tax args to the WP_Query args */
@@ -497,7 +501,7 @@ class WPAS_Product_Sync {
 			}
 
 			if ( empty( $query->posts ) ) {
-				return $terms;
+				continue;
 			}
 
 			/* This is the terms object array */
@@ -526,14 +530,13 @@ class WPAS_Product_Sync {
 					continue;
 				}
 
-				$new_terms[] = $term;
-			}
+				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $taxonomy );
 
-			return $new_terms;
+			}
 
 		}
 
-		return $terms;
+		return apply_filters( 'wpas_get_terms', $new_terms );
 
 	}
 
