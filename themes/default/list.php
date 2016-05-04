@@ -25,7 +25,7 @@ if ( $wpas_tickets->have_posts() ):
 		</div>
 
 		<!-- List of tickets -->
-		<table id="wpas_ticketlist" class="wpas-table wpas-table-hover" data-filter="#wpas_filter" data-filter-text-only="true">
+		<table id="wpas_ticketlist" class="wpas-table wpas-table-hover" data-filter="#wpas_filter" data-filter-text-only="true" data-page-navigation=".wpas_table_pagination" data-page-size="5">
 			<thead>
 				<tr>
 					<?php foreach ( $columns as $column_id => $column ) {
@@ -74,6 +74,13 @@ if ( $wpas_tickets->have_posts() ):
 
 				wp_reset_query(); ?>
 			</tbody>
+			<tfoot>
+				<tr>
+					<td colspan="4">
+						<ul class="wpas_table_pagination"></ul>
+					</td>
+				</tr>
+			</tfoot>
 		</table>
 	</div>
 <?php else:
