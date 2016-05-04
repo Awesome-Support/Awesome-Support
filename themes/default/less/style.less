@@ -201,6 +201,7 @@ Tables
 	border-spacing: 0;
 	border-collapse: collapse;
 	border: none;
+	table-layout: auto;
 }
 .wpas-table>caption+thead>tr:first-child>th,
 .wpas-table>colgroup+thead>tr:first-child>th,
@@ -426,4 +427,62 @@ Pagination for ticket replies
 	background-image: url('../images/loading-spin.svg');
 	background-size: contain;
 	background-repeat: no-repeat;
+}
+
+/*
+==========================================================================
+Ticket List
+https://github.com/Awesome-Support/Awesome-Support/issues/302
+==========================================================================
+*/
+.footable-sort-indicator {
+	display: inline-block;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	font-size: 60%;
+	opacity: .5;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+	padding-left: 5px;
+	&:hover {
+		cursor: pointer;
+	}
+}
+.footable-sorted {
+	.footable-sort-indicator {
+		&:before {
+			content: '▲';
+		}
+	}
+}
+.footable-sorted-desc {
+	.footable-sort-indicator {
+		&:before {
+			content: '▼';
+		}
+	}
+}
+
+#wpas_filter_wrap {
+	position: relative;
+
+	.wpas-clear-filter {
+		position: absolute;
+		top: 50%;
+		margin-top: -(14px/2);
+		right: 10px + 14px;
+		width: 14px;
+		height: 14px;
+		background: url('../images/close.svg') no-repeat;
+		background-size: contain;
+		opacity: .25;
+		cursor: pointer;
+		transition: opacity .3s ease;
+
+		&:hover {
+			opacity: .5;
+		}
+	}
 }
