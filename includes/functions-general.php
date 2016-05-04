@@ -984,3 +984,97 @@ function wpas_remove_tinymce_links_internal( $query ) {
 	return $query;
 
 }
+
+/**
+ * Convert an array to a string of key/value pairs
+ *
+ * This function does not work with multidimensional arrays.
+ *
+ * @since 3.3
+ *
+ * @param array $array The array to convert
+ *
+ * @return string
+ */
+function wpas_array_to_key_value_string( $array ) {
+
+	$pairs = array();
+
+	foreach ( $array as $key => $value ) {
+
+		// Convert boolean values to string
+		if ( is_bool( $value ) ) {
+			$value = $value ? 'true' : false;
+		}
+
+		$pairs[] = "$key='$value'";
+	}
+
+	return implode( ' ', $pairs );
+
+}
+
+/**
+ * Convert an associative array into a key/value pairs string
+ *
+ * The function also takes care of prefixing the attributes with data- if needed.
+ *
+ * @since 3.3
+ *
+ * @param array $array      The array to convert
+ * @param bool  $user_funct Whether or not to check if the value passed is in fact a function to use for getting the
+ *                          actual value
+ *
+ * @return array
+ */
+function wpas_array_to_data_attributes( $array, $user_funct = false ) {
+
+	$clean = array();
+
+	foreach ( $array as $key => $value ) {
+
+		if ( 'data-' !== substr( $key, 0, 5 ) ) {
+			$key = "data-$key";
+		}
+
+		if ( true === $user_funct ) {
+
+			$function = is_array( $value ) ? $value[0] : $value;
+			$args     = array();
+
+			if ( is_array( $value ) ) {
+				$args = $value;
+				unset( $args[0] ); // Remove the function name from the args
+			}
+
+			if ( function_exists( $function ) ) {
+				$value = call_user_func( $function, array_values( $args ) );
+			}
+
+		}
+
+		// This function does not work with multidimensional arrays
+		if ( is_array( $value ) ) {
+			continue;
+		}
+
+		$clean[ $key ] = $value;
+
+	}
+
+	return wpas_array_to_key_value_string( $clean );
+
+}
+
+/**
+ * Dumb wrapper for get_the_time() that passes the desired format for getting a Unix timestamp
+ *
+ * This function is used as a user callback when preparing the front-end tickets list table.
+ *
+ * @see   wpas_get_tickets_list_columns()
+ * @since 3.3
+ * @return string
+ */
+function wpas_get_the_time_timestamp() {
+	return get_the_time( 'U' );
+}
