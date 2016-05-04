@@ -21,7 +21,7 @@ module.exports = function (grunt) {
 					sourceMap: true
 				},
 				src: [
-					'assets/public/vendor/*/*.js',
+					'assets/public/vendor/**/*.js',
 					'assets/public/js/*.js',
 					'!assets/public/js/public-dist.js'
 				],
