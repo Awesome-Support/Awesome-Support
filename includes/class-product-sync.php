@@ -529,13 +529,13 @@ class WPAS_Product_Sync {
 					continue;
 				}
 
-				$new_terms[] = $term;
+				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $taxonomy );
 
 			}
 
 		}
 
-		return $new_terms;
+		return apply_filters( 'wpas_get_terms', $new_terms );
 
 	}
 
