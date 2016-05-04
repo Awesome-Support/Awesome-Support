@@ -14,7 +14,7 @@ if ( $wpas_tickets->have_posts() ):
 		<div class="wpas-row" id="wpas_ticketlist_filters">
 			<div class="wpas-one-third">
 				<select class="wpas-form-control wpas-filter-status">
-					<option value=""><?php esc_html_e('All', 'awesome-support'); ?></option>
+					<option value=""><?php esc_html_e('Any status', 'awesome-support'); ?></option>
 				</select>
 			</div>
 			<div class="wpas-one-third"></div>
