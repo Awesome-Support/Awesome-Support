@@ -253,10 +253,19 @@ function wpas_try_login( $data ) {
 		$login = wp_signon( $credentials );
 
 		if ( is_wp_error( $login ) ) {
+
+			$code = $login->get_error_code();
 			$error = $login->get_error_message();
+
+			// Pre-populate the user login if the problem is with the password
+			if ( 'incorrect_password' === $code ) {
+				$redirect_to = add_query_arg( 'wpas_log', $credentials['user_login'], $redirect_to );
+			}
+
 			wpas_add_error( 'login_failed', $error );
 			wp_redirect( $redirect_to );
 			exit;
+
 		} elseif ( $login instanceof WP_User ) {
 			wp_redirect( $redirect_to );
 			exit;
