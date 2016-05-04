@@ -24,6 +24,8 @@ add_action( 'wpas_do_admin_close_ticket', 'wpas_admin_action_close_ticket' );
  */
 function wpas_admin_action_close_ticket( $data ) {
 
+	global $pagenow;
+
 	if ( ! is_admin() ) {
 		return;
 	}
@@ -37,11 +39,19 @@ function wpas_admin_action_close_ticket( $data ) {
 	wpas_close_ticket( $post_id );
 
 	// Read-only redirect
-	$redirect_to = add_query_arg( array(
-		'action'       => 'edit',
-		'post'         => $post_id,
-		'wpas-message' => 'closed'
-	), admin_url( 'post.php' ) );
+	if ( 'post.php' === $pagenow ) {
+		$redirect_to = add_query_arg( array(
+			'action'       => 'edit',
+			'post'         => $post_id,
+			'wpas-message' => 'closed'
+		), admin_url( 'post.php' ) );
+	} else {
+		$redirect_to = add_query_arg( array(
+			'post_type'    => 'ticket',
+			'post'         => $post_id,
+			'wpas-message' => 'closed'
+		), admin_url( 'edit.php' ) );
+	}
 
 	wp_redirect( wp_sanitize_redirect( $redirect_to ) );
 	exit;
