@@ -462,10 +462,13 @@ class WPAS_Product_Sync {
 			$taxonomies = array( $taxonomies );
 		}
 
+		// Declare the new terms array
+		$new_terms = array();
+
 		foreach ( $taxonomies as $taxonomy ) {
 
 			if ( ! $this->is_product_tax( $taxonomy ) ) {
-				return $terms;
+				continue;
 			}
 
 			/* Map the tax args to the WP_Query args */
@@ -497,7 +500,7 @@ class WPAS_Product_Sync {
 			}
 
 			if ( empty( $query->posts ) ) {
-				return $terms;
+				continue;
 			}
 
 			/* This is the terms object array */
@@ -527,13 +530,12 @@ class WPAS_Product_Sync {
 				}
 
 				$new_terms[] = $term;
-			}
 
-			return $new_terms;
+			}
 
 		}
 
-		return $terms;
+		return $new_terms;
 
 	}
 
