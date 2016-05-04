@@ -342,6 +342,7 @@ class WPAS_Product_Sync {
 
 		$term = array(
 			'term_id'          => $term_id,
+			'post_id'          => $post->ID, // Could be handy to still have access to the post ID
 			'name'             => $post->post_title,
 			'slug'             => $post->post_name,
 			'term_group'       => 0,
