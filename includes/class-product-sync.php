@@ -472,6 +472,10 @@ class WPAS_Product_Sync {
 				continue;
 			}
 
+			$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
+			$include = array_filter( wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+			$exclude = array_filter( wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) );
+
 			/* Map the tax args to the WP_Query args */
 			$query_args = $this->map_args( $args );
 
@@ -490,7 +494,16 @@ class WPAS_Product_Sync {
 			);
 
 			$query_args = wp_parse_args( $query_args, $query_defaults );
-			$query      = new WP_Query( $query_args );
+
+			if ( ! empty( $include ) ) {
+				$query_args['post__in'] = $include;
+			}
+
+			if ( ! empty( $exclude ) ) {
+				$query_args['post__not_in'] = $exclude;
+			}
+
+			$query = new WP_Query( $query_args );
 
 			if ( false === get_option( "wpas_sync_$this->post_type", false ) ) {
 				$this->run_initial_sync();
