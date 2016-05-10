@@ -1,16 +1,19 @@
 <?php
 /**
  * List all site pages.
- * 
+ *
  * @return array List of pages in an array of the form page_id => page_title
+ *
+ * @param string $post_type The post type to query
+ *
  * @since  3.0.0
  */
-function wpas_list_pages() {
+function wpas_list_pages( $post_type = 'page' ) {
 
 	$list = array( '' => __( 'None', 'awesome-support' ) );
 
 	$args = array(
-		'post_type'              => 'page',
+		'post_type'              => $post_type,
 		'post_status'            => 'publish',
 		'order'                  => 'DESC',
 		'orderby'                => 'page_title',
@@ -39,7 +42,7 @@ function wpas_list_pages() {
 /**
  * Get themes list.
  * 
- * @return [type] [description]
+ * @return array
  * @since  3.0.0
  */
 function wpas_list_themes() {
