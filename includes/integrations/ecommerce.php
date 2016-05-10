@@ -33,6 +33,13 @@ final class WPAS_eCommerce_Integration {
 	protected $plugins = array();
 
 	/**
+	 * Slug of the plugin products are synced with
+	 *
+	 * @var string
+	 */
+	public $plugin;
+
+	/**
 	 * Message to display when a taxonomy is locked
 	 *
 	 * @since 3.3
@@ -41,14 +48,12 @@ final class WPAS_eCommerce_Integration {
 	public $locked_msg = '';
 
 	/**
-	 * Slug of the plugin products are synced with
-	 *
-	 * This variable will only be available after the init hook on priority 12+. Before that it will return null.
+	 * Whether or not the synchronization is enabled for this e-commerce plugin
 	 *
 	 * @since 3.3
-	 * @var null|string
+	 * @var bool
 	 */
-	public $synced;
+	public $synced = false;
 
 	protected function __construct() {
 
@@ -123,7 +128,7 @@ final class WPAS_eCommerce_Integration {
 
 		// Check if e-commerce products sync is enabled
 		if ( true === $sync ) {
-			add_action( 'plugins_loaded', array( $this, 'register' ) );
+			add_action( 'plugins_loaded', array( $this, 'find_plugin' ) );
 			add_action( 'init', array( $this, 'init_sync' ), 11 );
 			add_filter( 'wpas_taxonomy_locked_msg', array( $this, 'locked_message' ) );
 		}
@@ -152,21 +157,17 @@ final class WPAS_eCommerce_Integration {
 	}
 
 	/**
-	 * Register all available integrations
+	 * Find if there is an e-commerce plugin that we integrate with
+	 *
+	 * Because we only integrate with one plugin at the time, we stop searching after finding the first compatible
+	 * plugin.
 	 *
 	 * @since 3.3
 	 * @return void
 	 */
-	public function register() {
+	public function find_plugin() {
 
 		foreach ( $this->plugins as $slug => $plugin ) {
-
-			$current = apply_filters( 'wpas_ecommerce_integrations_' . $slug, true );
-
-			// Check if the plugin has sync enabled
-			if ( false === $current ) {
-				continue;
-			}
 
 			if ( empty( $plugin['class'] ) ) {
 				continue;
@@ -176,21 +177,35 @@ final class WPAS_eCommerce_Integration {
 				continue;
 			}
 
-			$plugin = wp_parse_args( $plugin, $this->integration_defaults() );
-
-			if ( isset( $plugin['locked_taxo_msg'] ) ) {
-				$this->locked_msg = wp_kses_post( $plugin['locked_taxo_msg'] );
-			}
-
-			// Instantiate the product sync class
-//			WPAS()->products_sync = new WPAS_Product_Sync( $plugin['post_type'], $plugin['taxonomy'], $plugin['append'] );
-
-			// Set the slug of the synced e-commerce plugin
-			$this->synced = $slug;
+			$this->register( $slug, $plugin );
 
 			// We only want one integration
 			break;
 
+		}
+
+	}
+
+	/**
+	 * Register the plugin found
+	 *
+	 * @since 3.3
+	 *
+	 * @param string $slug   E-commerce plugin slug
+	 * @param array  $plugin E-commerce plugin integration settings
+	 *
+	 * @return void
+	 */
+	protected function register( $slug, $plugin ) {
+
+		$this->plugin = $slug;
+		$current      = (bool) wpas_get_option( 'support_products_' . $slug, true );
+		$plugin       = wp_parse_args( $plugin, $this->integration_defaults() );
+
+		// Check if the plugin has sync enabled
+		if ( true === $current ) {
+			$this->synced     = true;
+			$this->locked_msg = wp_kses_post( $plugin['locked_taxo_msg'] );
 		}
 
 	}
@@ -203,11 +218,11 @@ final class WPAS_eCommerce_Integration {
 	 */
 	public function init_sync() {
 
-		if ( is_null( $this->synced ) || ! isset( $this->plugins[ $this->synced ] ) ) {
+		if ( is_null( $this->plugin ) || ! isset( $this->plugins[ $this->plugin ] ) || false === $this->synced ) {
 			return false;
 		}
 
-		$plugin = wp_parse_args( $this->plugins[ $this->synced ], $this->integration_defaults() );
+		$plugin = wp_parse_args( $this->plugins[ $this->plugin ], $this->integration_defaults() );
 
 		// Instantiate the product sync class
 		WPAS()->products_sync = new WPAS_Product_Sync( $plugin['post_type'], $plugin['taxonomy'], $plugin['append'] );
