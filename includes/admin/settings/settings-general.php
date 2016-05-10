@@ -17,11 +17,8 @@ function wpas_core_settings_general( $def ) {
 			'name'    => __( 'General', 'awesome-support' ),
 			'options' => array(
 				array(
-					'name'    => __( 'Multiple Products', 'awesome-support' ),
-					'id'      => 'support_products',
-					'type'    => 'checkbox',
-					'desc'    => __( 'If you need to provide support for multiple products, please enable this option. You will then be able to add your products.', 'awesome-support' ),
-					'default' => false
+					'name' => __( 'Misc', 'awesome-support' ),
+					'type' => 'heading',
 				),
 				array(
 					'name'    => __( 'Default Assignee', 'awesome-support' ),
@@ -80,6 +77,11 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'After how many days should a ticket be considered &laquo;old&raquo;?', 'awesome-support' )
 				),
 				array(
+					'name' => __( 'Products Management', 'awesome-support' ),
+					'type' => 'heading',
+					'options' => wpas_get_products_options()
+				),
+				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
 					'type' => 'heading',
 				),
@@ -129,5 +131,66 @@ function wpas_core_settings_general( $def ) {
 	);
 
 	return array_merge( $def, $settings );
+
+}
+
+/**
+ * Prepare the available options for the products
+ *
+ * @since 3.3
+ * @return array
+ */
+function wpas_get_products_options() {
+
+	$products = array(
+		array(
+			'name'    => __( 'Multiple Products', 'awesome-support' ),
+			'id'      => 'support_products',
+			'type'    => 'checkbox',
+			'desc'    => __( 'If you need to provide support for multiple products, please enable this option. You will then be able to add your products.', 'awesome-support' ),
+			'default' => false
+		),
+	);
+
+	$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->synced;
+
+	if ( ! is_null( $ecommerce_synced ) ) {
+
+		$plugin_name = ucwords( str_replace( array( '-', '_' ), ' ', $ecommerce_synced ) );
+
+		$products[] = array(
+			'name'    => sprintf( esc_html__( 'Synchronize %s Products', 'awesome-support' ), $plugin_name ),
+			'id'      => 'support_products_' . $ecommerce_synced,
+			'type'    => 'checkbox',
+			'desc'    => sprintf( esc_html__( 'We have detected that you are using the e-commerce plugin %s. Would you like to automatically synchronize your e-commerce products with Awesome Support?', 'awesome-support' ), $plugin_name ),
+			'default' => true
+		);
+
+		$registered = WPAS_eCommerce_Integration::get_instance()->get_plugins();
+		$post_type  = $registered[ $ecommerce_synced ]['post_type'];
+
+		$products[] = array(
+			'name'     => __( 'Include Products', 'awesome-support' ),
+			'id'       => 'support_products_' . $ecommerce_synced . '_include',
+			'type'     => 'select',
+			'multiple' => true,
+			'desc'     => esc_html__( 'Which products do you want to synchronize with Awesome Support (leave blank for all products)', 'awesome-support' ),
+			'options'  => wpas_list_pages( $post_type ),
+			'default'  => ''
+		);
+
+		$products[] = array(
+			'name'     => __( 'Exclude Products', 'awesome-support' ),
+			'id'       => 'support_products_' . $ecommerce_synced . '_exclude',
+			'type'     => 'select',
+			'multiple' => true,
+			'desc'     => esc_html__( 'Which products do you want to exclude from synchronization with Awesome Support (leave blank for no exclusion)', 'awesome-support' ),
+			'options'  => wpas_list_pages( $post_type ),
+			'default'  => ''
+		);
+
+	}
+
+	return $products;
 
 }
