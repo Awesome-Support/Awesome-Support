@@ -204,6 +204,11 @@ function wpas_get_products_options() {
 			'default'  => ''
 		);
 
+		$products[] = array(
+			'type' => 'note',
+			'desc' => esc_html__( 'You cannot use the include and exclude options at the same time. Please use one or the other. You should use the option where you need to select the least amount of products.', 'awesome-support' )
+		);
+
 	}
 
 	return $products;
