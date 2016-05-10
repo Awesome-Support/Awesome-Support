@@ -123,7 +123,6 @@ final class WPAS_eCommerce_Integration {
 
 		// Check if e-commerce products sync is enabled
 		if ( true === $sync ) {
-//			$this->register();
 			add_action( 'plugins_loaded', array( $this, 'register' ) );
 			add_action( 'init', array( $this, 'init_sync' ), 11 );
 			add_filter( 'wpas_taxonomy_locked_msg', array( $this, 'locked_message' ) );
@@ -249,6 +248,16 @@ final class WPAS_eCommerce_Integration {
 			unset( $this->plugins[ $slug ] );
 		}
 
+	}
+
+	/**
+	 * Get the list of registered e-commerce plugins
+	 *
+	 * @since 3.3
+	 * @return array
+	 */
+	public function get_plugins() {
+		return $this->plugins;
 	}
 
 	/**
