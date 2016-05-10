@@ -152,7 +152,7 @@ function wpas_get_products_options() {
 		),
 	);
 
-	$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->synced;
+	$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->plugin;
 
 	if ( ! is_null( $ecommerce_synced ) ) {
 
