@@ -78,7 +78,7 @@ class WPAS_Product_Sync {
 	 * @since  3.0.2
 	 * @param  string  $post_type Name of the post type that should be used to populate the product taxonomy
 	 * @param  string  $taxonomy  The name of the taxonomy to keep in sync with the $post_type
-	 * @param  boolean $append    Defines if the taxonomy terms should be replaced or if synced terms should just be appened to existing terms
+	 * @param  boolean $append    Defines if the taxonomy terms should be replaced or if synced terms should just be append to existing terms
 	 */
 	public function __construct( $post_type = '', $taxonomy = '', $append = false ) {
 
@@ -650,7 +650,7 @@ class WPAS_Product_Sync {
 
 		global $pagenow, $wpdb;
 
-		if ( 'edit-tags.php' !== $pagenow ) {
+		if ( 'term.php' !== $pagenow ) {
 			return false;
 		}
 
