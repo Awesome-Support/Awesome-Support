@@ -115,7 +115,18 @@ class WPAS_Titan {
 
 			/* Add all options to current tab */
 			foreach( $content['options'] as $option ) {
+
 				$tab->createOption( $option );
+
+				if ( isset( $option['type'] ) && 'heading' === $option['type'] && isset( $option['options'] ) && is_array( $option['options'] ) ) {
+
+					foreach ( $option['options'] as $opt ) {
+						$tab->createOption( $opt );
+					}
+
+				}
+
+
 			}
 
 			$tab->createOption( array( 'type' => 'save', ) );
