@@ -53,3 +53,18 @@ function wpas_upgrade_328() {
 	}
 
 }
+
+/**
+ * Upgrade routine for 3.3.0
+ *
+ * @since 3.3.0
+ * @return void
+ */
+function wpas_upgrade_330() {
+
+	// Add default values for e-mail template when client closes own ticket
+	wpas_update_option( 'enable_closed_client', get_settings_defaults( 'enable_closed_client' ) );
+	wpas_update_option( 'subject_closed_client', get_settings_defaults( 'subject_closed_client' ) );
+	wpas_update_option( 'content_closed_client', get_settings_defaults( 'content_closed_client' ) );
+
+}
