@@ -512,8 +512,11 @@ class WPAS_Email_Notification {
 
 			case 'ticket_closed':
 			case 'ticket_closed_agent':
-			case 'ticket_closed_client':
 				$value = wpas_get_option( "{$part}_closed", "" );
+				break;
+
+			case 'ticket_closed_client':
+				$value = wpas_get_option( "{$part}_closed_client", "" );
 				break;
 
 		}
