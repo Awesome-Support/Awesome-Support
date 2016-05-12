@@ -240,6 +240,7 @@ class WPAS_File_Upload {
 				wp_die( __( 'You are not allowed to view this attachment', 'awesome-support' ) );
 			}
 
+			ini_set( 'user_agent', 'Awesome Support/' . WPAS_VERSION . '; ' . get_bloginfo( 'url' ) );
 			header( "Content-Type: $attachment->post_mime_type" );
 			readfile( $attachment->guid );
 
