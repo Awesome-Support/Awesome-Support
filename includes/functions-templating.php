@@ -548,9 +548,17 @@ function wpas_get_tickets_list_columns() {
 	$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
 	$columns = array(
-		'status' => array( 'title' => __( 'Status', 'awesome-support' ), 'callback' => 'wpas_cf_display_status' ),
+		'status' => array(
+			'title'             => __( 'Status', 'awesome-support' ),
+			'callback'          => 'wpas_cf_display_status',
+			'column_attributes' => array( 'head' => array( 'sort-ignore' => true ) )
+		),
 		'title'  => array( 'title' => __( 'Title', 'awesome-support' ), 'callback' => 'title' ),
-		'date'   => array( 'title' => __( 'Date', 'awesome-support' ), 'callback' => 'date' ),
+		'date'   => array(
+			'title'             => __( 'Date', 'awesome-support' ),
+			'callback'          => 'date',
+			'column_attributes' => array( 'head' => array( 'type' => 'numeric', 'sort-initial' => 'descending' ), 'body' => array( 'value' => 'wpas_get_the_time_timestamp' ) )
+		),
 	);
 
 	foreach ( $custom_fields as $field ) {
@@ -562,9 +570,15 @@ function wpas_get_tickets_list_columns() {
 
 		/* Don't display fields that aren't specifically designed to */
 		if ( true === $field['args']['show_column'] ) {
-			$column_title            = !empty( $field['args']['title'] ) ? sanitize_text_field( $field['args']['title'] ) : wpas_get_title_from_id( $field['name'] );
-			$column_callback         = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
-			$columns[$field['name']] = array( 'title' => $column_title, 'callback' => $column_callback );
+
+			$column_title              = ! empty( $field['args']['title'] ) ? sanitize_text_field( $field['args']['title'] ) : wpas_get_title_from_id( $field['name'] );
+			$column_callback           = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
+			$columns[ $field['name'] ] = array( 'title' => $column_title, 'callback' => $column_callback );
+
+			if ( ! empty( $field['args']['column_attributes'] ) && is_array( $field['args']['column_attributes'] ) ) {
+				$columns[ $field['name'] ] = $field['args']['column_attributes'];
+			}
+
 		}
 
 	}
