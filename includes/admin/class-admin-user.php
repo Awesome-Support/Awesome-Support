@@ -34,6 +34,7 @@ class WPAS_User {
 		 */
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_user_can_be_assigned' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_after_reply' ), 10, 1 );
+//		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_agent_department' ), 10, 1 );
 	}
 
 	/**
@@ -138,26 +139,79 @@ class WPAS_User {
 	<?php }
 
 	/**
+	 * User profile field "departments"
+	 *
+	 * @since 3.3
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return void
+	 */
+	public function profile_field_agent_department( $user ) {
+
+		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'administrator' ) ) {
+			return;
+		}
+
+		if ( false === wpas_get_option( 'departments', false ) ) {
+			return;
+		}
+
+		$departments = get_terms( array(
+			'taxonomy'   => 'department',
+			'hide_empty' => false,
+		) );
+
+		if ( empty( $departments ) ) {
+			return;
+		}
+
+		$current = get_the_author_meta( 'wpas_department', $user->ID ); ?>
+
+		<tr class="wpas-after-reply-wrap">
+			<th><label><?php _e( 'Department(s)', 'awesome-support' ); ?></label></th>
+			<td>
+				<?php
+				foreach ( $departments as $department ) {
+					$checked = in_array( $department->term_id, $current ) ? 'checked="checked"' : '';
+					printf( '<label for="wpas_department_%1$s"><input type="checkbox" name="%3$s" id="wpas_department_%1$s" value="%2$d" %5$s> %4$s</label><br>', $department->slug, $department->term_id, 'wpas_department[]', $department->name, $checked );
+				}
+				?>
+				<p class="description"><?php esc_html_e( 'Which department(s) does this agent belong to?', 'awesome-support' ); ?></p>
+			</td>
+		</tr>
+
+	<?php }
+
+	/**
 	 * Save the user preferences.
 	 *
 	 * @since  3.0.0
+	 *
 	 * @param  integer $user_id ID of the user to modify
-	 * @return bool|void
+	 *
+	 * @return void
 	 */
 	public function save_user_custom_fields( $user_id ) {
 
-		if ( !current_user_can( 'edit_user', $user_id ) ) {
-			return false;
+		if ( ! current_user_can( 'edit_user', $user_id ) ) {
+			return;
 		}
 
 		$wpas_after_reply = filter_input( INPUT_POST, 'wpas_after_reply' );
-		$can_assign = filter_input( INPUT_POST, 'wpas_can_be_assigned' );
+		$can_assign       = filter_input( INPUT_POST, 'wpas_can_be_assigned' );
+		$department       = isset( $_POST['wpas_department'] ) ? array_map( 'intval', $_POST['wpas_department'] ) : array();
 
 		if ( $wpas_after_reply ) {
 			update_user_meta( $user_id, 'wpas_after_reply', $wpas_after_reply );
 		}
 
 		update_user_meta( $user_id, 'wpas_can_be_assigned', $can_assign );
+		update_user_meta( $user_id, 'wpas_department', $department );
 
 	}
 

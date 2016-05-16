@@ -200,4 +200,34 @@ function wpas_register_core_fields() {
 
 	}
 
+	if ( isset( $options['departments'] ) && true === boolval( $options['departments'] ) ) {
+
+		$slug = defined( 'WPAS_DEPARTMENT_SLUG' ) ? WPAS_DEPARTMENT_SLUG : 'department';
+
+		/* Filter the taxonomy labels */
+		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
+				'label'        => __( 'Department', 'awesome-support' ),
+				'name'         => __( 'Department', 'awesome-support' ),
+				'label_plural' => __( 'Departments', 'awesome-support' )
+			)
+		);
+
+		WPAS()->custom_fields->add_field( 'department', array(
+				'core'                  => false,
+				'show_column'           => true,
+				'log'                   => true,
+				'field_type'            => 'taxonomy',
+				'taxo_std'              => false,
+				'column_callback'       => 'wpas_show_taxonomy_column',
+				'label'                 => $labels['label'],
+				'name'                  => $labels['name'],
+				'label_plural'          => $labels['label_plural'],
+				'taxo_hierarchical'     => true,
+				'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+				'rewrite'               => array( 'slug' => $slug )
+			)
+		);
+
+	}
+
 }

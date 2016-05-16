@@ -77,6 +77,13 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'After how many days should a ticket be considered &laquo;old&raquo;?', 'awesome-support' )
 				),
 				array(
+					'name'    => __( 'Departments', 'awesome-support' ),
+					'id'      => 'departments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Enable departments management.', 'awesome-support' ),
+					'default' => false
+				),
+				array(
 					'name' => __( 'Products Management', 'awesome-support' ),
 					'type' => 'heading',
 					'options' => wpas_get_products_options()
