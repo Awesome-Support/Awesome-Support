@@ -31,6 +31,14 @@ function wpas_update_ticket_count_on_transfer( $agent_id, $previous_agent_id ) {
 
 class WPAS_Member_Agent extends WPAS_Member {
 
+	/**
+	 * Agent's departments
+	 *
+	 * @since 3.3
+	 * @var array|bool
+	 */
+	protected $department;
+
 	public function __construct( $user ) {
 		parent::__construct( $user );
 	}
@@ -146,6 +154,51 @@ class WPAS_Member_Agent extends WPAS_Member {
 		$open_tickets = wpas_get_tickets( 'open', $args );
 
 		return $open_tickets;
+
+	}
+
+	/**
+	 * Get the agent's departments
+	 *
+	 * @since 3.3
+	 * @return bool|array
+	 */
+	public function in_department() {
+
+		if ( false === wpas_get_option( 'departments', false ) ) {
+			return false;
+		}
+
+		if ( is_null( $this->department ) ) {
+
+			$this->department = get_the_author_meta( 'wpas_department', $this->user_id );
+
+			if ( empty( $this->department ) ) {
+				$this->department = array();
+			}
+
+		}
+
+		return apply_filters( 'wpas_agent_department', $this->department, $this->user_id );
+
+	}
+
+	/**
+	 * Check if the agent belongs to a given department
+	 *
+	 * @since 3.3
+	 *
+	 * @param int $term_id ID of the department taxonomy term
+	 *
+	 * @return bool
+	 */
+	public function belongs_department( $term_id ) {
+
+		if ( false === $this->in_department() ) {
+			return false;
+		}
+
+		return in_array( $term_id, $this->in_department() ) ? true : false;
 
 	}
 
