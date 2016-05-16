@@ -53,12 +53,25 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 	 * Automatically set the ticket as processing if this is the first reply.
 	 */
 	if ( user_can( $current_user->ID, 'edit_ticket' ) && isset( $postarr['ID'] ) ) {
-		$replies = wpas_get_replies( intval( $postarr['ID'] ) );
-		if ( 0 === count( $replies ) ) {
-			if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
-				$_POST['post_status_override'] = 'processing';
+
+		$replies       = wpas_get_replies( intval( $postarr['ID'] ) );
+		$agent_replied = false;
+
+		if ( 0 !== count( $replies ) ) {
+
+			foreach ( $replies as $reply ) {
+				if ( user_can( $reply->post_author, 'edit_ticket' ) ) {
+					$agent_replied = true;
+					break;
+				}
 			}
+
 		}
+
+		if ( false === $agent_replied && ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) ) {
+			$_POST['post_status_override'] = 'processing';
+		}
+
 	}
 
 	if ( isset( $_POST['post_status_override'] ) && ! empty( $_POST['post_status_override'] ) ) {
