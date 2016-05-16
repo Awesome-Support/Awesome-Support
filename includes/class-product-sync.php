@@ -466,6 +466,15 @@ class WPAS_Product_Sync {
 		// Declare the new terms array
 		$new_terms = array();
 
+		// Add the non-synced terms to the terms array first
+		if ( $this->append ) {
+			foreach ( $terms as $term ) {
+				if ( is_object( $term ) && ! $this->is_synced_term( $term->term_id ) ) {
+					$new_terms[] = $term;
+				}
+			}
+		}
+
 		foreach ( $taxonomies as $taxonomy ) {
 
 			if ( ! $this->is_product_tax( $taxonomy ) ) {
@@ -515,17 +524,6 @@ class WPAS_Product_Sync {
 
 			if ( empty( $query->posts ) ) {
 				continue;
-			}
-
-			/* This is the terms object array */
-			$new_terms = array();
-
-			if ( $this->append ) {
-				foreach ( $terms as $term ) {
-					if ( is_object( $term ) && ! $this->is_synced_term( $term->term_id ) ) {
-						$new_terms[] = $term;
-					}
-				}
 			}
 
 			/* Create the term object for each post */
