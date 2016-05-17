@@ -83,31 +83,37 @@ class WPAS_Tickets_List {
 		 */
 		foreach ( $columns as $col_id => $col_label ) {
 
-			/* Remove the date column that's replaced by the activity column */
-			if ( 'date' !== $col_id ) {
-				$new[$col_id] = $col_label;
-			} else {
+			// We add all our columns where the date was and move the date column to the end
+			if ( 'date' === $col_id ) {
+
+				// Add the client column
+				$new['wpas-client'] = esc_html__( 'Created By', 'awesome-support' );
+
 				// If agents can see all tickets do nothing
 				if (
 					current_user_can( 'administrator' )
 					&& true === boolval( wpas_get_option( 'admin_see_all' ) )
 					|| current_user_can( 'edit_ticket' )
-					&& !current_user_can( 'administrator' )
-					&& true === boolval( wpas_get_option( 'agent_see_all' ) ) ) {
-						$new['wpas-assignee'] = esc_html__( 'Support Staff', 'awesome-support' );
+					   && ! current_user_can( 'administrator' )
+					   && true === boolval( wpas_get_option( 'agent_see_all' ) )
+				) {
+					$new['wpas-assignee'] = esc_html__( 'Assigned To', 'awesome-support' );
 				}
 
-				// Add the client column
-				$new['wpas-client'] = esc_html__( 'Client', 'awesome-support' );
-
-				// Add the activity column
-				$new['wpas-activity'] = esc_html__( 'Activity', 'awesome-support' );
-
+			} else {
+				$new[ $col_id ] = $col_label;
 			}
 
 		}
 
+		// Finally we re-add the date
+		$new['date'] = $columns['date'];
+
+		// Add the activity column
+		$new['wpas-activity'] = esc_html__( 'Activity', 'awesome-support' );
+
 		return $new;
+
 	}
 
 	/**
@@ -211,102 +217,46 @@ class WPAS_Tickets_List {
 
 			case 'wpas-activity':
 
-				$latest        = null;
-				$tags          = array();
-				$activity_meta = get_transient( "wpas_activity_meta_post_$post_id" );
-
-				if ( false === $activity_meta ) {
-
-					$post                         = get_post( $post_id );
-					$activity_meta                = array();
-					$activity_meta['ticket_date'] = $post->post_date;
-
-					/* Get the last reply if any */
-					$latest = new WP_Query(  array(
-						'posts_per_page'         =>	1,
-						'orderby'                =>	'post_date',
-						'order'                  =>	'DESC',
-						'post_type'              =>	'ticket_reply',
-						'post_parent'            =>	$post_id,
-						'post_status'            =>	array( 'unread', 'read' ),
-						'no_found_rows'          => true,
-						'cache_results'          => false,
-						'update_post_term_cache' => false,
-						'update_post_meta_cache' => false,
-						)
-					);
-
-					if ( !empty( $latest->posts ) ) {
-						$user_data                      = get_user_by( 'id', $latest->post->post_author );
-						$activity_meta['user_link']     = add_query_arg( array( 'user_id' => $latest->post->post_author ), admin_url( 'user-edit.php' ) );
-						$activity_meta['user_id']       = $latest->post->post_author;
-						$activity_meta['user_nicename'] = $user_data->user_nicename;
-						$activity_meta['reply_date']    = $latest->post->post_date;
-					}
-
-					set_transient( "wpas_activity_meta_post_$post_id", $activity_meta, apply_filters( 'wpas_activity_meta_transient_lifetime', 60*60*1 ) ); // Set to 1 hour by default
-
-				}
-
-				echo '<ul>';
-
-				// if ( isset( $mode ) && 'details' == $mode ):
-				if ( 1 === 1 ):
-
-					?><li><?php printf( _x( 'Created %s ago.', 'Ticket created on', 'awesome-support' ), human_time_diff( get_the_time( 'U', $post_id ), current_time( 'timestamp' ) ) ); ?></li><?php
-
-					/**
-					 * We check when was the last reply (if there was a reply).
-					 * Then, we compute the ticket age and if it is considered as
-					 * old, we display an informational tag.
-					 */
-					if ( !isset( $activity_meta['reply_date'] ) ) {
-						echo '<li>';
-						echo _x( 'No reply yet.', 'No last reply', 'awesome-support' );
-						echo '</li>';
-					} else {
-
-						$args = array(
-							'post_parent'            => $post_id,
-							'post_type'              => 'ticket_reply',
-							'post_status'            => array( 'unread', 'read' ),
-							'posts_per_page'         => - 1,
-							'orderby'                => 'date',
-							'order'                  => 'DESC',
-							'no_found_rows'          => true,
-							'cache_results'          => false,
-							'update_post_term_cache' => false,
-							'update_post_meta_cache' => false,
-						);
-
-						$query = new WP_Query( $args );
-						$role  = true === user_can( $activity_meta['user_id'], 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
-
-						?><li><?php echo _x( sprintf( _n( '%s reply.', '%s replies.', $query->post_count, 'awesome-support' ), $query->post_count ), 'Number of replies to a ticket', 'awesome-support' ); ?></li><?php
-						?><li><?php printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) . '#wpas-post-' . $query->posts[0]->ID, human_time_diff( strtotime( $activity_meta['reply_date'] ), current_time( 'timestamp' ) ), '<a href="' . $activity_meta['user_link'] . '">' . $activity_meta['user_nicename'] . '</a>', $role ); ?></li><?php
-					}
-
-				endif;
+				$tags    = array();
+				$replies = $this->get_replies_query( $post_id );
 
 				/**
-				 * Add tags
+				 * We check when was the last reply (if there was a reply).
+				 * Then, we compute the ticket age and if it is considered as
+				 * old, we display an informational tag.
 				 */
-				if ( true === wpas_is_reply_needed( $post_id, $latest ) ) {
+				if ( 0 === $replies->post_count ) {
+					echo _x( 'No reply yet.', 'No last reply', 'awesome-support' );
+				} else {
+
+					$last_reply     = $replies->posts[ $replies->post_count - 1 ];
+					$last_user_link = add_query_arg( array( 'user_id' => $last_reply->post_author ), admin_url( 'user-edit.php' ) );
+					$last_user      = get_user_by( 'id', $last_reply->post_author );
+					$role           = true === user_can( $last_reply->post_author, 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
+
+					echo _x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' );
+					echo '<br>';
+					printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
+							'post'   => $post_id,
+							'action' => 'edit'
+						), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
+				}
+
+				// Maybe add the "Awaiting Support Response" tag
+				if ( true === wpas_is_reply_needed( $post_id, $replies ) ) {
 					$color = ( false !== ( $c = wpas_get_option( 'color_awaiting_reply', false ) ) ) ? $c : '#0074a2';
 					array_push( $tags, "<span class='wpas-label' style='background-color:$color;'>" . __( 'Awaiting Support Reply', 'awesome-support' ) . "</span>" );
 				}
 
-
-				if ( true === wpas_is_ticket_old( $post_id, $latest ) ) {
+				// Maybe add the "Old" tag
+				if ( true === wpas_is_ticket_old( $post_id, $replies ) ) {
 					$old_color = wpas_get_option( 'color_old' );
 					array_push( $tags, "<span class='wpas-label' style='background-color:$old_color;'>" . __( 'Old', 'awesome-support' ) . "</span>" );
 				}
 
-				if ( !empty( $tags ) ) {
-					echo '<li>' . implode( ' ', $tags ) . '</li>';
+				if ( ! empty( $tags ) ) {
+					echo '<br>' . implode( ' ', $tags );
 				}
-
-				echo '</ul>';
 
 				break;
 
