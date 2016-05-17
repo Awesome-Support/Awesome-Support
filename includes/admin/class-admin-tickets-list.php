@@ -96,8 +96,12 @@ class WPAS_Tickets_List {
 						$new = array_merge( $new, array( 'wpas-assignee' => __( 'Support Staff', 'awesome-support' ) ) );
 				}
 
+				// Add the client column
+				$new['wpas-client'] = esc_html__( 'Client', 'awesome-support' );
+
 				/* Add the activity column */
 				$new = array_merge( $new, array( 'wpas-activity' => __( 'Activity', 'awesome-support' ) ) );
+
 			}
 
 		}
@@ -149,6 +153,16 @@ class WPAS_Tickets_List {
 				if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
 					echo $agent->data->display_name;
 				}
+
+				break;
+
+			case 'wpas-client':
+
+				$name = get_the_author();
+				$id   = get_the_author_meta( 'ID' );
+				$link = add_query_arg( array( 'post_type' => 'ticket', 'author' => $id ), admin_url( 'edit.php' ) );
+
+				echo "<a href='$link'>$name</a>";
 
 				break;
 
