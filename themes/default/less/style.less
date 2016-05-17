@@ -316,19 +316,27 @@ Pages
 	margin-bottom: 0px;
 }
 .wpas-ticket-replies {
-	// Highlight the agent replies
-	>tbody>tr.wpas_user_administrator>td,
-	>tbody>tr.wpas_user_wpas_manager>td,
-	>tbody>tr.wpas_user_wpas_support_manager>td,
-	>tbody>tr.wpas_user_wpas_agent>td {
-		background-color: #f5f5f5;
-	}
-	>tbody>tr>td {
-		padding: 25px 0;
-		border-bottom: 1px solid #ddd;
-	}
-	>tbody>tr>td:last-child {
-		padding-left: 25px;
+	> tbody {
+		> tr {
+			> td {
+				padding: 25px 0;
+				border-bottom: 1px solid #ddd;
+
+				&:last-child {
+					padding-left: 25px;
+				}
+			}
+
+			// Highlight the agent replies
+			&.wpas_user_administrator,
+			&.wpas_user_wpas_manager,
+			&.wpas_user_wpas_support_manager,
+			&.wpas_user_wpas_agent {
+				> td {
+					background-color: #f5f5f5;
+				}
+			}
+		}
 	}
 }
 .wpas-reply-meta {
