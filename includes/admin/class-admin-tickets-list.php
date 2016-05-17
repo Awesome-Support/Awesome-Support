@@ -25,6 +25,7 @@ class WPAS_Tickets_List {
 		add_action( 'admin_menu',                        array( $this, 'hide_closed_tickets' ),         10, 0 );
 		add_filter( 'the_excerpt',                       array( $this, 'remove_excerpt' ),              10, 1 );
 		add_filter( 'post_row_actions',                  array( $this, 'remove_quick_edit' ),           10, 2 );
+		add_filter( 'the_title',                         array( $this, 'add_ticket_id_title' ) );
 	}
 
 	/**
@@ -81,10 +82,6 @@ class WPAS_Tickets_List {
 		 */
 		foreach ( $columns as $col_id => $col_label ) {
 
-			if ( 'title' === $col_id ) {
-				$new['ticket_id'] = '#';
-			}
-
 			/* Remove the date column that's replaced by the activity column */
 			if ( 'date' !== $col_id ) {
 				$new[$col_id] = $col_label;
@@ -109,6 +106,31 @@ class WPAS_Tickets_List {
 	}
 
 	/**
+	 * Add ticket ID to the ticket title in admin list screen
+	 *
+	 * @since 3.3
+	 *
+	 * @param string $title Original title
+	 *
+	 * @return string
+	 */
+	public function add_ticket_id_title( $title ) {
+
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow || ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+			return $title;
+		}
+
+		$id = get_the_ID();
+
+		$title = "#$id - $title";
+
+		return $title;
+
+	}
+
+	/**
 	 * Manage core column content.
 	 *
 	 * @since  3.0.0
@@ -118,13 +140,6 @@ class WPAS_Tickets_List {
 	public function core_custom_columns_content( $column, $post_id ) {
 
 		switch ( $column ) {
-
-			case 'ticket_id':
-
-				$link = add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) );
-				echo "<a href='$link'>#$post_id</a>";
-
-				break;
 
 			case 'wpas-assignee':
 
