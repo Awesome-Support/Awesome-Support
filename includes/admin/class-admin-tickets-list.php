@@ -86,21 +86,21 @@ class WPAS_Tickets_List {
 			if ( 'date' !== $col_id ) {
 				$new[$col_id] = $col_label;
 			} else {
-				/* If agents can see all tickets do nothing */
+				// If agents can see all tickets do nothing
 				if (
 					current_user_can( 'administrator' )
 					&& true === boolval( wpas_get_option( 'admin_see_all' ) )
 					|| current_user_can( 'edit_ticket' )
 					&& !current_user_can( 'administrator' )
 					&& true === boolval( wpas_get_option( 'agent_see_all' ) ) ) {
-						$new = array_merge( $new, array( 'wpas-assignee' => __( 'Support Staff', 'awesome-support' ) ) );
+						$new['wpas-assignee'] = esc_html__( 'Support Staff', 'awesome-support' );
 				}
 
 				// Add the client column
 				$new['wpas-client'] = esc_html__( 'Client', 'awesome-support' );
 
-				/* Add the activity column */
-				$new = array_merge( $new, array( 'wpas-activity' => __( 'Activity', 'awesome-support' ) ) );
+				// Add the activity column
+				$new['wpas-activity'] = esc_html__( 'Activity', 'awesome-support' );
 
 			}
 
