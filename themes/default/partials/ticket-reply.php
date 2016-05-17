@@ -18,9 +18,13 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+/* Get the user role */
+$user_role = get_the_author_meta( 'roles' );
+$user_role = $user_role[0];
 ?>
 
-<tr id="reply-<?php echo the_ID(); ?>" class="wpas-reply-single wpas-status-<?php echo get_post_status(); ?>" valign="top">
+<tr id="reply-<?php echo the_ID(); ?>" class="wpas-reply-single wpas-status-<?php echo get_post_status(); ?> wpas_user_<?php echo $user_role; ?>" valign="top">
 
 	<?php
 	/**
