@@ -129,7 +129,7 @@ class WPAS_Tickets_List {
 
 		$id = get_the_ID();
 
-		$title = "#$id - $title";
+		$title = "$title (#$id)";
 
 		return $title;
 
