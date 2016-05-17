@@ -26,6 +26,7 @@ class WPAS_Tickets_List {
 		add_filter( 'the_excerpt',                       array( $this, 'remove_excerpt' ),              10, 1 );
 		add_filter( 'post_row_actions',                  array( $this, 'remove_quick_edit' ),           10, 2 );
 		add_filter( 'the_title',                         array( $this, 'add_ticket_id_title' ) );
+		add_action( 'pre_get_posts',                     array( $this, 'filter_staff' ) );
 	}
 
 	/**
@@ -147,11 +148,12 @@ class WPAS_Tickets_List {
 
 			case 'wpas-assignee':
 
-				$assignee = get_post_meta( $post_id, '_wpas_assignee', true );
+				$assignee = (int) get_post_meta( $post_id, '_wpas_assignee', true );
 				$agent    = get_user_by( 'id', $assignee );
+				$link     = add_query_arg( array( 'post_type' => 'ticket', 'staff' => $assignee ), admin_url( 'edit.php' ) );
 
 				if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
-					echo $agent->data->display_name;
+					echo "<a href='$link'>{$agent->data->display_name}</a>";
 				}
 
 				break;
@@ -323,6 +325,58 @@ class WPAS_Tickets_List {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Filter tickets by assigned staff
+	 *
+	 * @since 3.3
+	 *
+	 * @param WP_Query $wp_query
+	 *
+	 * @return void
+	 */
+	public function filter_staff( $wp_query ) {
+
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow || ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+			return;
+		}
+
+		if ( ! $wp_query->is_main_query() ) {
+			return;
+		}
+
+		if ( ! isset( $_GET['staff'] ) ) {
+			return;
+		}
+
+		$staff_id = (int) $_GET['staff'];
+		$agent    = new WPAS_Member_Agent( $staff_id );
+
+		if ( ! $agent->is_agent() ) {
+			return;
+		}
+
+		$meta_query = $wp_query->get( 'meta_query' );
+
+		if ( ! is_array( $meta_query ) ) {
+			$meta_query = (array) $meta_query;
+		}
+
+		$meta_query[] = array(
+			'key'     => '_wpas_assignee',
+			'value'   => $staff_id,
+			'compare' => '='
+		);
+
+		if ( ! isset( $meta_query['relation'] ) ) {
+			$meta_query['relation'] = 'AND';
+		}
+
+		$wp_query->set( 'meta_query', $meta_query );
+
 	}
 
 }
