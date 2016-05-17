@@ -136,6 +136,47 @@ class WPAS_Tickets_List {
 	}
 
 	/**
+	 * Get all ticket replies
+	 *
+	 * Try to get the replies from cache and if not possible, run the query and cache the result.
+	 *
+	 * @since 3.3
+	 *
+	 * @param int $ticket_id ID of the ticket we want to get the replies for
+	 *
+	 * @return WP_Query
+	 */
+	protected function get_replies_query( $ticket_id ) {
+
+		$q = wp_cache_get( 'replies_query_' . $ticket_id, 'wpas' );
+
+		if ( false === $q ) {
+
+			$args = array(
+				'post_parent'            => $ticket_id,
+				'post_type'              => 'ticket_reply',
+				'post_status'            => array( 'unread', 'read' ),
+				'posts_per_page'         => - 1,
+				'orderby'                => 'date',
+				'order'                  => 'DESC',
+				'no_found_rows'          => true,
+				'cache_results'          => false,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+			);
+
+			$q = new WP_Query( $args );
+
+			// Cache the result
+			wp_cache_add( 'replies_query_' . $ticket_id, $q, 'wpas' );
+
+		}
+
+		return $q;
+
+	}
+
+	/**
 	 * Manage core column content.
 	 *
 	 * @since  3.0.0
