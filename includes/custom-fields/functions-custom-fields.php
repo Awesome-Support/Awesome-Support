@@ -150,24 +150,37 @@ add_action( 'init', 'wpas_register_core_fields' );
  */
 function wpas_register_core_fields() {
 
-	WPAS()->custom_fields->add_field( 'assignee',   array( 'core' => true, 'show_column' => false, 'log' => true, 'title' => __( 'Support Staff', 'awesome-support' ) ) );
-	WPAS()->custom_fields->add_field( 'status',     array( 'core' => true, 'show_column' => true, 'log' => false, 'field_type' => false, 'column_callback' => 'wpas_cf_display_status', 'save_callback' => null ) );
-	WPAS()->custom_fields->add_field( 'ticket-tag', array(
-			'core'                  => true,
-			'show_column'           => true,
-			'log'                   => true,
-			'field_type'            => 'taxonomy',
-			'taxo_std'              => true,
-			'column_callback'       => 'wpas_cf_display_status',
-			'save_callback'         => null,
-			'label'                 => __( 'Tag', 'awesome-support' ),
-			'name'                  => __( 'Tag', 'awesome-support' ),
-			'label_plural'          => __( 'Tags', 'awesome-support' ),
-			'taxo_hierarchical'     => false,
-			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
-			'select2'               => false
-		)
-	);
+	wpas_add_custom_field( 'assignee', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => true,
+		'title'       => __( 'Support Staff', 'awesome-support' )
+	) );
+
+	wpas_add_custom_field( 'status', array(
+		'core'            => true,
+		'show_column'     => true,
+		'log'             => false,
+		'field_type'      => false,
+		'column_callback' => 'wpas_cf_display_status',
+		'save_callback'   => null
+	) );
+
+	wpas_add_custom_field( 'ticket-tag', array(
+		'core'                  => true,
+		'show_column'           => true,
+		'log'                   => true,
+		'field_type'            => 'taxonomy',
+		'taxo_std'              => true,
+		'column_callback'       => 'wpas_cf_display_status',
+		'save_callback'         => null,
+		'label'                 => __( 'Tag', 'awesome-support' ),
+		'name'                  => __( 'Tag', 'awesome-support' ),
+		'label_plural'          => __( 'Tags', 'awesome-support' ),
+		'taxo_hierarchical'     => false,
+		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+		'select2'               => false
+	) );
 
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
 
@@ -183,22 +196,21 @@ function wpas_register_core_fields() {
 			)
 		);
 
-		WPAS()->custom_fields->add_field( 'product', array(
-				'core'                  => false,
-				'show_column'           => true,
-				'log'                   => true,
-				'field_type'            => 'taxonomy',
-				'taxo_std'              => false,
-				'column_callback'       => 'wpas_show_taxonomy_column',
-				'label'                 => $labels['label'],
-				'name'                  => $labels['name'],
-				'label_plural'          => $labels['label_plural'],
-				'taxo_hierarchical'     => true,
-				'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
-				'rewrite'               => array( 'slug' => $slug ),
-				'select2'               => false
-			)
-		);
+		wpas_add_custom_field( 'product', array(
+			'core'                  => false,
+			'show_column'           => true,
+			'log'                   => true,
+			'field_type'            => 'taxonomy',
+			'taxo_std'              => false,
+			'column_callback'       => 'wpas_show_taxonomy_column',
+			'label'                 => $labels['label'],
+			'name'                  => $labels['name'],
+			'label_plural'          => $labels['label_plural'],
+			'taxo_hierarchical'     => true,
+			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'rewrite'               => array( 'slug' => $slug ),
+			'select2'               => false
+		) );
 
 	}
 
@@ -214,22 +226,21 @@ function wpas_register_core_fields() {
 			)
 		);
 
-		WPAS()->custom_fields->add_field( 'department', array(
-				'core'                  => false,
-				'show_column'           => true,
-				'log'                   => true,
-				'field_type'            => 'taxonomy',
-				'taxo_std'              => false,
-				'column_callback'       => 'wpas_show_taxonomy_column',
-				'label'                 => $labels['label'],
-				'name'                  => $labels['name'],
-				'label_plural'          => $labels['label_plural'],
-				'taxo_hierarchical'     => true,
-				'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
-				'rewrite'               => array( 'slug' => $slug ),
-				'select2'               => false
-			)
-		);
+		wpas_add_custom_field( 'department', array(
+			'core'                  => false,
+			'show_column'           => true,
+			'log'                   => true,
+			'field_type'            => 'taxonomy',
+			'taxo_std'              => false,
+			'column_callback'       => 'wpas_show_taxonomy_column',
+			'label'                 => $labels['label'],
+			'name'                  => $labels['name'],
+			'label_plural'          => $labels['label_plural'],
+			'taxo_hierarchical'     => true,
+			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'rewrite'               => array( 'slug' => $slug ),
+			'select2'               => false
+		) );
 
 	}
 
