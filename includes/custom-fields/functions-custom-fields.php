@@ -164,7 +164,8 @@ function wpas_register_core_fields() {
 			'name'                  => __( 'Tag', 'awesome-support' ),
 			'label_plural'          => __( 'Tags', 'awesome-support' ),
 			'taxo_hierarchical'     => false,
-			'update_count_callback' => 'wpas_update_ticket_tag_terms_count'
+			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'select2'               => false
 		)
 	);
 
@@ -195,7 +196,7 @@ function wpas_register_core_fields() {
 				'taxo_hierarchical'     => true,
 				'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 				'rewrite'               => array( 'slug' => $slug ),
-				'select2' => true
+				'select2'               => false
 			)
 		);
 
@@ -225,7 +226,8 @@ function wpas_register_core_fields() {
 				'label_plural'          => $labels['label_plural'],
 				'taxo_hierarchical'     => true,
 				'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
-				'rewrite'               => array( 'slug' => $slug )
+				'rewrite'               => array( 'slug' => $slug ),
+				'select2'               => false
 			)
 		);
 
