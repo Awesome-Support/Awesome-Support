@@ -22,6 +22,10 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 			add_filter( 'wpas_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 3 );
 		}
 
+		if ( true === $this->field_args['select2'] ) {
+			add_filter( 'wpas_cf_field_class', array( $this, 'add_select2_class' ), 10, 2 );
+		}
+
 	}
 
 	/**
@@ -110,6 +114,32 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 		}
 
 		return $atts;
+
+	}
+
+	/**
+	 * Add the select2 class to the input
+	 *
+	 * @since 3.3
+	 *
+	 * @param array $classes Input classes
+	 * @param array $field   Array of params of the field being processed
+	 *
+	 * @return array
+	 */
+	public function add_select2_class( $classes, $field ) {
+
+		if ( $field['name'] !== $this->field_id ) {
+			return $classes;
+		}
+
+		if ( true !== $this->field_args['select2'] ) {
+			return $classes;
+		}
+
+		$classes[] = 'wpas-select2';
+
+		return $classes;
 
 	}
 
