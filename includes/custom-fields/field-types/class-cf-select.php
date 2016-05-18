@@ -13,10 +13,9 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 		/* Call the parent constructor */
 		parent::__construct( $field_id, $field );
 
-		/* Set the additional parameters */
-		if ( ! isset( $this->field_args['multiple'] ) ) {
-			$this->field_args['multiple'] = false;
-		}
+		// Set the additional parameters
+		$this->field_args['multiple'] = isset( $this->field_args['multiple'] ) ? (bool) $this->field_args['multiple'] : false;
+		$this->field_args['select2']  = isset( $this->field_args['select2'] ) ? (bool) $this->field_args['select2'] : false;
 
 		/* Change the field name if multiple upload is enabled */
 		if ( true === $this->field_args['multiple'] ) {
