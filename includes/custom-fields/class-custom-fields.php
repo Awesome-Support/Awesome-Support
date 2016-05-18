@@ -77,6 +77,7 @@ class WPAS_Custom_Fields {
 
 		wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2.min.css', null, '3.5.2', 'all' );
 		wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2.min.js', array( 'jquery' ), '4.0.0', true );
+		wp_register_script( 'wpas-select2-component', WPAS_URL . 'assets/public/js/component_select2.js', array( 'wpas-select2' ), '4.0.0', true );
 
 		$ticket_submit = wpas_get_option( 'ticket_submit' );
 
@@ -94,6 +95,10 @@ class WPAS_Custom_Fields {
 
 		if ( false === wp_script_is( 'wpas-select2', 'enqueued' ) ) {
 			wp_enqueue_script( 'wpas-select2' );
+		}
+
+		if ( false === wp_script_is( 'wpas-select2-component', 'enqueued' ) ) {
+			wp_enqueue_script( 'wpas-select2-component' );
 		}
 
 	}
