@@ -223,7 +223,22 @@ add_action( 'template_redirect', 'wpas_redirect_ticket_archive', 10, 0 );
 function wpas_redirect_ticket_archive() {
 
 	if ( is_post_type_archive( 'ticket' ) ) {
-		wpas_redirect( 'archive_redirect', wpas_get_tickets_list_page_url() );
+
+		// Redirect to the tickets list page
+		$redirect_to = wpas_get_tickets_list_page_url();
+
+		// Fallback to the ticket submission page
+		if ( empty( $redirect_to ) ) {
+			$redirect_to = wpas_get_submission_page_url();
+		}
+
+		// Fallback to the site homepage
+		if ( empty( $redirect_to ) ) {
+			$redirect_to = home_url();
+		}
+
+		wpas_redirect( 'archive_redirect', $redirect_to );
+
 	}
 
 }
