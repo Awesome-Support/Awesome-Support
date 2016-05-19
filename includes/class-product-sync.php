@@ -469,7 +469,7 @@ class WPAS_Product_Sync {
 		// Add the non-synced terms to the terms array first
 		if ( $this->append ) {
 			foreach ( $terms as $term ) {
-				if ( is_object( $term ) && ! $this->is_synced_term( $term->term_id ) ) {
+				if ( is_object( $term ) && false === $this->is_synced_term( $term->term_id ) ) {
 					$new_terms[] = $term;
 				}
 			}
@@ -568,7 +568,7 @@ class WPAS_Product_Sync {
 			return $term;
 		}
 
-		if ( ! $this->is_synced_term( $term->term_id ) ) {
+		if ( false === $this->is_synced_term( $term->term_id ) ) {
 			return $term;
 		}
 
@@ -611,7 +611,7 @@ class WPAS_Product_Sync {
 
 		foreach ( $terms as $key => $term ) {
 
-			if ( $this->is_synced_term( $term->term_id ) ) {
+			if ( true === $this->is_synced_term( $term->term_id ) ) {
 				$terms[$key] = get_term( $term, $taxonomy );
 			}
 
@@ -776,7 +776,7 @@ class WPAS_Product_Sync {
 
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
 
-		if ( $this->is_tax_screen() && $this->is_synced_term() ) { ?>
+		if ( $this->is_tax_screen() && true === $this->is_synced_term() ) { ?>
 			<div class="error">
 				<p><?php echo $message; ?></p>
 			</div>
@@ -798,7 +798,7 @@ class WPAS_Product_Sync {
 
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
 
-		if ( $this->is_tax_screen() && $this->is_synced_term() ) {
+		if ( $this->is_tax_screen() && true === $this->is_synced_term() ) {
 			wp_die( $message, __( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );
 		}
 
