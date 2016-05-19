@@ -225,7 +225,7 @@ class WPAS_Member_Query {
 	 *
 	 * @param stdClass $user
 	 *
-	 * @return WPAS_Member|WPAS_Member_Agent|WPAS_Member_User
+	 * @return WPAS_Member|WPAS_Member_Agent|WPAS_Member_User|array
 	 */
 	protected function create_member_object( $user ) {
 
