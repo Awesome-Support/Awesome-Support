@@ -208,11 +208,10 @@ class WPAS_Tickets_List {
 
 			case 'wpas-client':
 
-				$name = get_the_author();
-				$id   = get_the_author_meta( 'ID' );
-				$link = add_query_arg( array( 'post_type' => 'ticket', 'author' => $id ), admin_url( 'edit.php' ) );
+				$client = get_user_by( 'id', get_the_author_meta( 'ID' ) );
+				$link   = add_query_arg( array( 'post_type' => 'ticket', 'author' => $client->ID ), admin_url( 'edit.php' ) );
 
-				echo "<a href='$link'>$name</a>";
+				echo "<a href='$link'>$client->display_name</a><br>$client->user_email";
 
 				break;
 
