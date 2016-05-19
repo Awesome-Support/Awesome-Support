@@ -86,6 +86,11 @@ table.wp-list-table {
 			padding: 0;
 		}
 	}
+	/* Prevent line break on column titles and labels */
+	thead tr th,
+	.wpas-label {
+		white-space: nowrap;
+	}
 }
 @media screen and (max-width: 782px) {
 	.column-taxonomy-ticket-tag,
