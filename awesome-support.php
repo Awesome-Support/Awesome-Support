@@ -411,6 +411,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/functions-email-notifications.php' );
 			require( WPAS_PATH . 'includes/functions-templating.php' );
 			require( WPAS_PATH . 'includes/functions-post-type.php' );
+			require( WPAS_PATH . 'includes/functions-support-button.php' );
 			require( WPAS_PATH . 'includes/class-product-sync.php' );
 			require( WPAS_PATH . 'includes/class-gist.php' );
 			require( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );

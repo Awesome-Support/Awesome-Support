@@ -35,6 +35,53 @@ function wpas_core_settings_style( $def ) {
 					'default' => true
 				),
 				array(
+					'name' => __( 'Support Button', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Show button', 'awesome-support' ),
+					'id'      => 'support_btn_enable',
+					'type' => 'enable',
+					'default' => false,
+				),
+				array(
+					'name'    => __( 'Show button to logged-in users only', 'awesome-support' ),
+					'id'      => 'support_btn_logged_in',
+					'type' => 'enable',
+					'default' => false,
+				),
+				array(
+					'name'    => __( 'Button Label', 'awesome-support' ),
+					'id'      => 'support_btn_label',
+					'type'    => 'text',
+					'default' => 'Get Help →',
+				),
+				array(
+					'name'    => __( 'Button Text Color', 'awesome-support' ),
+					'id'      => 'support_btn_color_text',
+					'type'    => 'color',
+					'default' => '#ffffff',
+				),
+				array(
+					'name'    => __( 'Button Background Color', 'awesome-support' ),
+					'id'      => 'support_btn_color_background',
+					'type'    => 'color',
+					'default' => '#d35400',
+				),
+				array(
+					'name'    => __( 'Button Position', 'awesome-support' ),
+					'id'      => 'support_btn_position',
+					'type' => 'select',
+					'desc' => __( 'Where do you want the button to appear?', 'awesome-support' ),
+					'options' => array(
+						'wpas_support_btn_top_left' => 'Top Left',
+						'wpas_support_btn_top_right' => 'Top Right',
+						'wpas_support_btn_bottom_left' => 'Bottom Left',
+						'wpas_support_btn_bottom_right' => 'Bottom Right',
+					),
+					'default' => 'wpas_support_btn_middle_right',
+				),
+				array(
 					'name' => __( 'Colors', 'awesome-support' ),
 					'type' => 'heading',
 				),

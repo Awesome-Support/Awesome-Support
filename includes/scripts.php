@@ -99,6 +99,9 @@ function wpas_assets_front_end() {
 
 	}
 
+	// Add stylesheet for support button everywhere
+	wp_enqueue_style( 'wpas-support-button', WPAS_URL . 'assets/public/css/button.css', null, WPAS_VERSION, 'all' );
+
 }
 
 add_action( 'admin_enqueue_scripts', 'wpas_enqueue_assets_back_end', 10 );
