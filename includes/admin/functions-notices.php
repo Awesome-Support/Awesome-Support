@@ -201,11 +201,11 @@ class AS_Admin_Notices {
 
 		$notices = $this->get_notices();
 
-		if ( empty( $notices ) ) {
+		if ( empty( $notices ) || is_null( $notices ) ) {
 			return;
 		}
 
-		foreach ( $this->get_notices() as $notice_id => $notice ) {
+		foreach ( $notices as $notice_id => $notice ) {
 
 			if ( wpas_is_notice_dismissed( $notice_id ) ) {
 				continue;
