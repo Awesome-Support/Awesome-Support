@@ -59,10 +59,10 @@ class WPAS_Member_Query {
 	protected $ids = array();
 
 	/**
-	 * Wether or not to convert the results into WPAS_Member (sub)objects
+	 * Whether or not to convert the results into WPAS_Member (sub)objects
 	 *
 	 * @since 3.3
-	 * @var bool
+	 * @var string
 	 */
 	protected $output = 'stdClass';
 
