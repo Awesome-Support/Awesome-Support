@@ -286,7 +286,11 @@ class WPAS_User {
 
 		$agent = new WPAS_Member_Agent( $user_id );
 
-		if ( true !== $agent->is_agent() || false === $agent->can_be_assigned() ) {
+		if ( true !== $agent->is_agent() ) {
+			return 'N/A';
+		}
+
+		if ( false === $agent->can_be_assigned() ) {
 			return '&#10005;';
 		}
 
