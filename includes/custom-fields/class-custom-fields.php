@@ -366,6 +366,12 @@ class WPAS_Custom_Fields {
 	 */
 	public function move_status_first( $columns ) {
 
+		// Don't change columns order on mobiles as it breaks the layout. WordPress expects the title column to be the second one.
+		// @link https://github.com/Awesome-Support/Awesome-Support/issues/306
+		if ( wp_is_mobile() ) {
+			return $columns;
+		}
+
 		if ( isset( $columns['status'] ) ) {
 			$status_content = $columns['status'];
 			unset( $columns['status'] );
