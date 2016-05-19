@@ -86,22 +86,18 @@ table.wp-list-table {
 			padding: 0;
 		}
 	}
+
 	/* Prevent line break on column titles and labels */
-	thead tr th,
-	.wpas-label {
+	thead tr th, .wpas-label {
 		white-space: nowrap;
 	}
+
 	/* Set max width of ticket title */
 	td.column-title {
 		max-width: 400px;
 	}
 }
-@media screen and (max-width: 782px) {
-	.column-taxonomy-ticket-tag,
-	.column-taxonomy-product,
-	.column-wpas-activity {
-		display: none;
-	}
+@media screen and (max-width:782px) {
 	td.column-title {
 		max-width: inherit;
 	}
