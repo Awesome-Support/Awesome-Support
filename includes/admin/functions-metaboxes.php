@@ -63,11 +63,12 @@ function wpas_metaboxes() {
  * A template name is given to the function. If the template
  * does exist, the metabox is loaded. If not, nothing happens.
  *
- * @param  (integer) $post     Post ID
- * @param  (string)  $template Metabox content template
+ * @since  3.0.0
+ *
+ * @param  int   $post Post ID
+ * @param  array $args Arguments passed to the callback function
  *
  * @return void
- * @since  3.0.0
  */
 function wpas_metabox_callback( $post, $args ) {
 
