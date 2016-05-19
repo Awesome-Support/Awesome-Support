@@ -91,12 +91,19 @@ table.wp-list-table {
 	.wpas-label {
 		white-space: nowrap;
 	}
+	/* Set max width of ticket title */
+	td.column-title {
+		max-width: 400px;
+	}
 }
 @media screen and (max-width: 782px) {
 	.column-taxonomy-ticket-tag,
 	.column-taxonomy-product,
 	.column-wpas-activity {
 		display: none;
+	}
+	td.column-title {
+		max-width: inherit;
 	}
 }
 
