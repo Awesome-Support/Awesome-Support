@@ -27,6 +27,7 @@ class WPAS_Tickets_List {
 		add_filter( 'post_row_actions',                  array( $this, 'remove_quick_edit' ),           10, 2 );
 		add_filter( 'the_title',                         array( $this, 'add_ticket_id_title' ) );
 		add_action( 'pre_get_posts',                     array( $this, 'filter_staff' ) );
+		add_filter( 'post_class',                        array( $this, 'ticket_row_class' ), 10, 3 );
 	}
 
 	/**
@@ -367,6 +368,43 @@ class WPAS_Tickets_List {
 		}
 
 		$wp_query->set( 'meta_query', $meta_query );
+
+	}
+
+	/**
+	 * Filter the list of CSS classes for the current post.
+	 *
+	 * @since 3.3
+	 *
+	 * @param array $classes An array of post classes.
+	 * @param array $class   An array of additional classes added to the post.
+	 * @param int   $post_id The post ID.
+	 *
+	 * @return array
+	 */
+	public function ticket_row_class( $classes, $class, $post_id ) {
+
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow || ! isset( $_GET['post_type'] ) || isset( $_GET['post_type'] ) && 'ticket' !== $_GET['post_type'] ) {
+			return $classes;
+		}
+
+		if ( ! is_admin() ) {
+			return $classes;
+		}
+
+		if ( 'ticket' !== get_post_type( $post_id ) ) {
+			return $classes;
+		}
+
+		$replies = $this->get_replies_query( $post_id );
+
+		if ( true === wpas_is_reply_needed( $post_id, $replies ) ) {
+			$classes[] = 'wpas-awaiting-support-reply';
+		}
+
+		return $classes;
 
 	}
 
