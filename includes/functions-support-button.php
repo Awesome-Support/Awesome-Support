@@ -11,7 +11,7 @@ function wpas_support_btn() {
 	$enable = (bool) wpas_get_option ( 'support_btn_enable' );
 	$logged_in = (bool) wpas_get_option ( 'support_btn_logged_in' );
 
-	if ( false === $enable ) {
+	if ( false === $enable || wpas_is_plugin_page() ) {
 		return;
 	}
 
