@@ -193,49 +193,40 @@ function wpas_is_ticket_old( $post_id, $latest = null ) {
  * as "awaiting reply".
  *
  * @since  3.0.0
+ *
  * @param  integer $post_id The ID of the ticket to check
- * @param  object  $latest  The object containing the ticket replies. If the object was previously generated we pass it directly in order to avoid re-querying
+ * @param  WP_Post $replies The object containing the ticket replies. If the object was previously generated we pass it
+ *                          directly in order to avoid re-querying
+ *
  * @return boolean          True if a reply is needed, false otherwise
  */
-function wpas_is_reply_needed( $post_id, $latest = null ) {
+function wpas_is_reply_needed( $post_id, $replies = null ) {
 
 	if ( 'closed' === wpas_get_ticket_status( $post_id ) ) {
 		return false;
 	}
 
 	/* Prepare the new object */
-	if ( is_null( $latest ) ) {
-		$latest = new WP_Query(  array(
-						'posts_per_page'         =>	1,
-						'orderby'                =>	'post_date',
-						'order'                  =>	'DESC',
-						'post_type'              =>	'ticket_reply',
-						'post_parent'            =>	$post_id,
-						'post_status'            =>	array( 'unread', 'read' ),
-						'no_found_rows'          => true,
-						'cache_results'          => false,
-						'update_post_term_cache' => false,
-						'update_post_meta_cache' => false,
-				)
-		);
+	if ( is_null( $replies ) || is_object( $replies ) && ! is_a( $replies, 'WP_Post' ) ) {
+		$replies = WPAS_Tickets_List::get_instance()->get_replies_query( $post_id );
 	}
 
 	/* No reply yet. */
-	if ( empty( $latest->posts ) ) {
+	if ( empty( $replies->posts ) ) {
 
 		$post = get_post( $post_id );
 
 		/* Make sure the ticket wan not created by an agent on behalf of the client. */
-		if( !user_can( $post->post_author, 'edit_ticket' ) ) {
+		if ( ! user_can( $post->post_author, 'edit_ticket' ) ) {
 			return true;
 		}
 
 	} else {
 
-		$last = $latest->post_count-1;
+		$last = $replies->post_count - 1;
 
 		/* Check if the last user who replied is an agent. */
-		if( !user_can( $latest->posts[$last]->post_author, 'edit_ticket' ) && 'unread' === $latest->posts[$last]->post_status ) {
+		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && 'unread' === $replies->posts[ $last ]->post_status ) {
 			return true;
 		}
 

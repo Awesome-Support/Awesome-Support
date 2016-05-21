@@ -153,7 +153,7 @@ class WPAS_Tickets_List {
 	 *
 	 * @return WP_Query
 	 */
-	protected function get_replies_query( $ticket_id ) {
+	public function get_replies_query( $ticket_id ) {
 
 		$q = wp_cache_get( 'replies_query_' . $ticket_id, 'wpas' );
 
