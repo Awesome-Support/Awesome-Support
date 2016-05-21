@@ -165,7 +165,7 @@ class WPAS_Tickets_List {
 				'post_status'            => array( 'unread', 'read' ),
 				'posts_per_page'         => - 1,
 				'orderby'                => 'date',
-				'order'                  => 'DESC',
+				'order'                  => 'ASC',
 				'no_found_rows'          => true,
 				'cache_results'          => false,
 				'update_post_term_cache' => false,
