@@ -28,6 +28,107 @@ class WPAS_Tickets_List {
 		add_filter( 'the_title',                         array( $this, 'add_ticket_id_title' ) );
 		add_action( 'pre_get_posts',                     array( $this, 'filter_staff' ) );
 		add_filter( 'post_class',                        array( $this, 'ticket_row_class' ), 10, 3 );
+		add_action( 'pre_get_posts', 					 array( $this, 'set_ordering_query_var' ) );
+		add_filter( 'posts_clauses', 					 array( $this, 'apply_ordering_criteria' ), 10, 2 );
+
+	}
+
+	/**
+	 *  Called by the 'pre_get_posts' filter hook this method sets 
+	 *  the following to true when for the admin ticket list page:
+	 *
+	 * 		$wp_query->query_var['wpas_order_by_urgency']
+	 *
+	 *  Setting this to true will trigger modifications to the query that
+	 *  will be made in the apply_ordering_criteria() function called by 
+	 *  the 'posts_clauses' filter hook.
+	 *
+	 * @since    3.??????????????????????????
+	 *
+	 * @param WP_Query $query
+	 */
+	public function set_ordering_query_var( $query ) {
+		global $pagenow;
+
+		if ( $query->is_main_query() && 'edit.php' === $pagenow && 'ticket' === $query->get( 'post_type' ) ) {
+
+			/**
+			 * Inspect the current context and if appropriate specify a query_var to allow
+			 * WP_Query to modify itself based on arguments passed to WP_Query.
+			 */
+			$query->set( 'wpas_order_by_urgency', true );
+
+		}
+
+	}
+
+	/**
+	 *  Called by the 'posts_clauses' filter hook this method 
+	 *  modifies WP_Query SQL for ticket post types when:
+	 *
+	 * 		$wp_query->get('wpas_order_by_urgency') === true
+	 * 
+	 *  The query var 'wpas_order_by_urgency' will be set in the 
+	 *  set_ordering_query_var() function called by the 'pre_get_posts' 
+	 *  action hook. 
+	 *
+	 * The SQL will modify the WP_Query to follow this logic:
+	 *
+	 * 		Order 	- 	Ticket State
+	 *		-----   	-------------------------------------------
+	 * 		 1st   	- 	No reply - older since request made
+	 * 	 	 2nd 	- 	No reply - newer since request made
+	 * 	 	 3rd 	- 	Reply - older response since client replied
+	 * 	 	 4th 	- 	Reply - newer response since client replied
+	 * 	 	 5th 	- 	Reply - newer response since agent replied
+	 * 	 	 6th 	- 	Reply - older response since agent replied
+	 *
+	 * @since    3.??????????????????????????
+	 *
+	 * @param string[] $clauses
+	 * @param WP_Query $query
+	 * @return string[]
+	 */
+	function apply_ordering_criteria( $clauses, $query ) {
+
+		if ( $query->get( 'wpas_order_by_urgency' )  ) {
+			/**
+			 * Hooks in WP_Query should never modify SQL based on context.
+			 * Instead they should modify based on a query_var so they can
+			 * be tested and side-effects are minimized.
+			 */
+
+			/**
+			 * @var wpdb $wpdb
+			 *
+			 */
+			global $wpdb;
+
+			$LARGEST_UNIX_DATESTAMP = '2038-01-19';
+
+			$clauses['fields'] .= ", wpas_reply.ID AS wpas_reply_ID," .
+				" CASE WHEN {$wpdb->posts}.post_status='queued' THEN 2 WHEN wpas_reply.post_author={$wpdb->posts}.post_author THEN 1 ELSE 0 END AS wpas_sort_order," .
+				" CASE WHEN wpas_reply.post_author={$wpdb->posts}.post_author THEN UNIX_TIMESTAMP({$LARGEST_UNIX_DATESTAMP})-UNIX_TIMESTAMP(wpas_reply.post_date)".
+				" WHEN wpas_reply.post_author<>{$wpdb->posts}.post_author THEN UNIX_TIMESTAMP(wpas_reply.post_date) ELSE UNIX_TIMESTAMP({$wpdb->posts}.post_date) END AS wpas_date_order";
+
+			$sub_query = "SELECT post_parent AS latest_id, MAX(post_date) AS reply_date,CONCAT(UNIX_TIMESTAMP(MAX(post_date)),'-',post_parent,'-',post_type) AS hash".
+				" FROM {$wpdb->posts} WHERE post_parent<>0 AND post_parent IS NOT NULL AND 'ticket_reply'=post_type GROUP BY post_parent";
+
+			$clauses['join'] .= " LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON {$wpdb->posts}.ID = wpas_reply.post_parent" .
+				" LEFT OUTER JOIN ({$sub_query}) wpas_latest ON CONCAT(UNIX_TIMESTAMP(wpas_reply.post_date),'-',wpas_reply.post_parent,'-',wpas_reply.post_type)=wpas_latest.hash";
+
+			$clauses['where'] .= " AND (wpas_reply.ID IS NULL OR 'ticket_reply' = wpas_reply.post_type) AND (wpas_reply.ID IS NULL OR wpas_latest.reply_date IS NOT NULL)";
+
+			$order = 'ASC' === $query->get('order')
+				? 'ASC'
+				: 'DESC';
+
+			$clauses['orderby'] = "	wpas_sort_order {$order}, wpas_date_order {$order}, {$wpdb->posts}.post_date {$order}";
+
+		}
+
+		return $clauses;
+
 	}
 
 	/**
