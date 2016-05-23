@@ -43,7 +43,7 @@ class WPAS_Tickets_List {
 	 *  will be made in the apply_ordering_criteria() function called by 
 	 *  the 'posts_clauses' filter hook.
 	 *
-	 * @since    3.??????????????????????????
+	 * @since    3.3
 	 *
 	 * @param WP_Query $query
 	 */
@@ -83,7 +83,7 @@ class WPAS_Tickets_List {
 	 * 	 	 5th 	- 	Reply - newer response since agent replied
 	 * 	 	 6th 	- 	Reply - older response since agent replied
 	 *
-	 * @since    3.??????????????????????????
+	 * @since    3.3
 	 *
 	 * @param string[] $clauses
 	 * @param WP_Query $query
