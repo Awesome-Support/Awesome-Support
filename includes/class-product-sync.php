@@ -611,7 +611,7 @@ class WPAS_Product_Sync {
 
 		foreach ( $terms as $key => $term ) {
 
-			if ( true === $this->is_synced_term( $term->term_id ) ) {
+			if ( true == $this->is_synced_term( $term->term_id ) ) {
 				$terms[$key] = get_term( $term, $taxonomy );
 			}
 
@@ -690,8 +690,10 @@ class WPAS_Product_Sync {
 	 * Check if a given term is a placeholder for a post.
 	 *
 	 * @since  3.0.2
-	 * @param  string  $term_id ID of the term to check
-	 * @return boolean          True if this is a placeholder term, false otherwise
+	 *
+	 * @param  string $term_id ID of the term to check
+	 *
+	 * @return int|boolean          True if this is a placeholder term, false otherwise
 	 */
 	public function is_synced_term( $term_id = '' ) {
 
