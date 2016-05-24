@@ -94,7 +94,7 @@ class WPAS_Tickets_List {
 	 *
 	 * @return WP_Post[]
 	 */
-	function apply_ordering_criteria( $posts, $query ) {
+	public function apply_ordering_criteria( $posts, $query ) {
 
 		if ( $query->get( 'wpas_order_by_urgency' )  ) {
 
