@@ -246,8 +246,8 @@ SQL;
 		// Finally we re-add the date
 		$new['date'] = $columns['date'];
 
-        // Add the activity column
-        $new['wpas-activity'] = esc_html__( 'Activity', 'awesome-support' );
+		// Add the activity column
+		$new['wpas-activity'] = esc_html__( 'Activity', 'awesome-support' );
 
 		return $new;
 
