@@ -571,7 +571,7 @@ function wpas_get_tickets_list_columns() {
 		/* Don't display fields that aren't specifically designed to */
 		if ( true === $field['args']['show_column'] ) {
 
-			$column_title              = ! empty( $field['args']['title'] ) ? sanitize_text_field( $field['args']['title'] ) : wpas_get_title_from_id( $field['name'] );
+			$column_title              = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
 			$column_callback           = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
 			$columns[ $field['name'] ] = array( 'title' => $column_title, 'callback' => $column_callback );
 

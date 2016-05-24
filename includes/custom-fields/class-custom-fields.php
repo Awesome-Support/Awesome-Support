@@ -332,7 +332,7 @@ class WPAS_Custom_Fields {
 
 			if ( true === $field['args']['show_column'] ) {
 				$id            = $field['name'];
-				$title         = wpas_get_field_title( $field );
+				$title         = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
 				$custom[ $id ] = $title;
 			}
 
