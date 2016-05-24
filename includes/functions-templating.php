@@ -727,7 +727,7 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 
 			if ( is_admin() ) {
 				$get         = (array) $_GET;
-				$get[$field] = $term->slug;
+				$get[$field] = $term->term_id;
 				$url         = add_query_arg( $get, admin_url( 'edit.php' ) );
 				$item        = "<a href='$url'>{$term_title}</a>";
 			} else {
