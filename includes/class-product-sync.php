@@ -587,6 +587,7 @@ class WPAS_Product_Sync {
 		$term->name        = $post->post_title;
 		$term->slug        = $post->post_name;
 		$term->description = wp_trim_words( $post->post_content, 55, ' [...]' );
+		$term->post_id     = $post_id;
 
 		return $term;
 
