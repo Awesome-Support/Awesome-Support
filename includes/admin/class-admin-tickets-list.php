@@ -106,18 +106,18 @@ class WPAS_Tickets_List {
 
 			$LARGEST_UNIX_DATESTAMP = '2038-01-19';
 
-			$clauses['fields'] .= ", wpas_reply.ID AS wpas_reply_ID," .
-				" CASE WHEN {$wpdb->posts}.post_status='queued' THEN 2 WHEN wpas_reply.post_author={$wpdb->posts}.post_author THEN 1 ELSE 0 END AS wpas_sort_order," .
+			$clauses['fields'] .= ",wpas_reply.ID AS wpas_reply_ID,IFNULL(wpas_replies.reply_count,0) AS reply_count," .
+				" CASE WHEN 0=IFNULL(wpas_replies.reply_count,0) THEN 2 WHEN wpas_reply.post_author={$wpdb->posts}.post_author THEN 1 ELSE 0 END AS wpas_sort_order," .
 				" CASE WHEN wpas_reply.post_author={$wpdb->posts}.post_author THEN UNIX_TIMESTAMP({$LARGEST_UNIX_DATESTAMP})-UNIX_TIMESTAMP(wpas_reply.post_date)".
 				" WHEN wpas_reply.post_author<>{$wpdb->posts}.post_author THEN UNIX_TIMESTAMP(wpas_reply.post_date) ELSE UNIX_TIMESTAMP({$wpdb->posts}.post_date) END AS wpas_date_order";
 
-			$sub_query = "SELECT post_parent AS latest_id, MAX(post_date) AS reply_date,CONCAT(UNIX_TIMESTAMP(MAX(post_date)),'-',post_parent,'-',post_type) AS hash".
+			$sub_query = "SELECT post_parent AS latest_id,COUNT(ID) AS reply_count,MAX(post_date) AS latest_timestamp,CONCAT(UNIX_TIMESTAMP(MAX(post_date)),'-',post_parent,'-',post_type) AS hash".
 				" FROM {$wpdb->posts} WHERE post_parent<>0 AND post_parent IS NOT NULL AND 'ticket_reply'=post_type GROUP BY post_parent";
 
 			$clauses['join'] .= " LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON {$wpdb->posts}.ID = wpas_reply.post_parent" .
-				" LEFT OUTER JOIN ({$sub_query}) wpas_latest ON CONCAT(UNIX_TIMESTAMP(wpas_reply.post_date),'-',wpas_reply.post_parent,'-',wpas_reply.post_type)=wpas_latest.hash";
+				" LEFT OUTER JOIN ({$sub_query}) wpas_replies ON CONCAT(UNIX_TIMESTAMP(wpas_reply.post_date),'-',wpas_reply.post_parent,'-',wpas_reply.post_type)=wpas_replies.hash";
 
-			$clauses['where'] .= " AND (wpas_reply.ID IS NULL OR 'ticket_reply' = wpas_reply.post_type) AND (wpas_reply.ID IS NULL OR wpas_latest.reply_date IS NOT NULL)";
+			$clauses['where'] .= " AND (wpas_reply.ID IS NULL OR 'ticket_reply' = wpas_reply.post_type) AND (wpas_reply.ID IS NULL OR wpas_replies.latest_timestamp IS NOT NULL)";
 
 			$order = 'ASC' === $query->get('order')
 				? 'ASC'
