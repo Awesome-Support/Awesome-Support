@@ -727,7 +727,7 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 
 			if ( is_admin() ) {
 				$get         = (array) $_GET;
-				$get[$field] = $term->term_id;
+				$get[$field] = isset( $term->post_id ) ? $term->post_id : $term->term_id; // Check for $term->post_id which is set when products are synchronized
 				$url         = add_query_arg( $get, admin_url( 'edit.php' ) );
 				$item        = "<a href='$url'>{$term_title}</a>";
 			} else {
