@@ -29,7 +29,7 @@ class WPAS_Tickets_List {
 		add_action( 'pre_get_posts',                     array( $this, 'filter_staff' ) );
 		add_filter( 'post_class',                        array( $this, 'ticket_row_class' ), 10, 3 );
 		add_action( 'pre_get_posts', 					 array( $this, 'set_ordering_query_var' ) );
-		add_filter( 'posts_clauses', 					 array( $this, 'apply_ordering_criteria' ), 10, 2 );
+		add_filter( 'posts_results', 					 array( $this, 'apply_ordering_criteria' ), 10, 2 );
 
 	}
 
@@ -72,26 +72,16 @@ class WPAS_Tickets_List {
 	 *  set_ordering_query_var() function called by the 'pre_get_posts' 
 	 *  action hook. 
 	 *
-	 * The SQL will modify the WP_Query to follow this logic:
-	 *
-	 * 		Order 	- 	Ticket State
-	 *		-----   	-------------------------------------------
-	 * 		 1st   	- 	No reply - older since request made
-	 * 	 	 2nd 	- 	No reply - newer since request made
-	 * 	 	 3rd 	- 	Reply - older response since client replied
-	 * 	 	 4th 	- 	Reply - newer response since client replied
-	 * 	 	 5th 	- 	Reply - newer response since agent replied
-	 * 	 	 6th 	- 	Reply - older response since agent replied
-	 *
 	 * @since    3.??????????????????????????
 	 *
-	 * @param string[] $clauses
+	 * @param WP_Post[] $posts
 	 * @param WP_Query $query
-	 * @return string[]
+	 * @return WP_Post[]
 	 */
-	function apply_ordering_criteria( $clauses, $query ) {
+	function apply_ordering_criteria( $posts, $query ) {
 
 		if ( $query->get( 'wpas_order_by_urgency' )  ) {
+
 			/**
 			 * Hooks in WP_Query should never modify SQL based on context.
 			 * Instead they should modify based on a query_var so they can
@@ -104,30 +94,71 @@ class WPAS_Tickets_List {
 			 */
 			global $wpdb;
 
-			$LARGEST_UNIX_DATESTAMP = '2038-01-19';
+			$sql =<<<SQL
+SELECT 
+	wpas_ticket.ID AS ticket_id,
+	wpas_ticket.post_title AS ticket_title,
+	wpas_reply.ID AS reply_id,
+	wpas_reply.post_title AS reply_title,
+	wpas_replies.reply_count AS reply_count,
+	wpas_replies.latest_reply,
+	wpas_ticket.post_author=wpas_reply.post_author AS client_replied_last
+FROM 
+	{$wpdb->posts} AS wpas_ticket 
+	INNER JOIN {$wpdb->postmeta} AS wpas_postmeta ON wpas_ticket.ID=wpas_postmeta.post_id AND '_wpas_status'=wpas_postmeta.meta_key AND 'open'=CAST(wpas_postmeta.meta_value AS CHAR)
+	LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON wpas_ticket.ID=wpas_reply.post_parent
+	LEFT OUTER JOIN (
+		SELECT
+			post_parent AS ticket_id,
+			COUNT(*) AS reply_count,
+			MAX(post_date) AS latest_reply
+		FROM
+			{$wpdb->posts}
+		WHERE 1=1
+			AND 'ticket_reply' = post_type
+		GROUP BY
+			post_parent
+	) wpas_replies ON wpas_replies.ticket_id=wpas_reply.post_parent AND wpas_replies.latest_reply=wpas_reply.post_date 
+WHERE 1=1
+	AND wpas_replies.latest_reply IS NOT NULL
+	AND 'ticket_reply'=wpas_reply.post_type
+ORDER BY
+	wpas_replies.latest_reply ASC
+SQL;
+			$reply_posts = array();
+			foreach( $wpdb->get_results( $sql ) as $reply_post ) {
+				$reply_posts[ $reply_post->ticket_id ] = $reply_post;
+			}
 
-			$clauses['fields'] .= ",wpas_reply.ID AS wpas_reply_ID,IFNULL(wpas_replies.reply_count,0) AS reply_count," .
-				" CASE WHEN 0=IFNULL(wpas_replies.reply_count,0) THEN 2 WHEN wpas_reply.post_author={$wpdb->posts}.post_author THEN 1 ELSE 0 END AS wpas_sort_order," .
-				" CASE WHEN wpas_reply.post_author={$wpdb->posts}.post_author THEN UNIX_TIMESTAMP({$LARGEST_UNIX_DATESTAMP})-UNIX_TIMESTAMP(wpas_reply.post_date)".
-				" WHEN wpas_reply.post_author<>{$wpdb->posts}.post_author THEN UNIX_TIMESTAMP(wpas_reply.post_date) ELSE UNIX_TIMESTAMP({$wpdb->posts}.post_date) END AS wpas_date_order";
+			$no_replies = $client_replies = $agent_replies = array();
+			foreach( array_reverse( $posts ) as $post ) {
+				/**
+				 * The post order will be modifiedusing the following logic:
+				 *
+				 * 		Order 	- 	Ticket State
+				 *		-----   	-------------------------------------------
+				 * 		 1st   	- 	No reply - older since request made
+				 * 	 	 2nd 	- 	No reply - newer since request made
+				 * 	 	 3rd 	- 	Reply - older response since client replied
+				 * 	 	 4th 	- 	Reply - newer response since client replied
+				 * 	 	 5th 	- 	Reply - newer response since agent replied
+				 * 	 	 6th 	- 	Reply - older response since agent replied
+				 */
+				if (  ! isset( $reply_posts[ $post->ID ] ) ) {
+					$no_replies[ $post->ID ] = $post;
+				} else if ( $reply_posts[ $post->ID ]->client_replied_last ) {
+					$client_replies[ $post->ID ] = $post;
+				} else {
+					$agent_replies[ $post->ID ] = $post;
+				}
 
-			$sub_query = "SELECT post_parent AS latest_id,COUNT(ID) AS reply_count,MAX(post_date) AS latest_timestamp,CONCAT(UNIX_TIMESTAMP(MAX(post_date)),'-',post_parent,'-',post_type) AS hash".
-				" FROM {$wpdb->posts} WHERE post_parent<>0 AND post_parent IS NOT NULL AND 'ticket_reply'=post_type GROUP BY post_parent";
+			}
 
-			$clauses['join'] .= " LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON {$wpdb->posts}.ID = wpas_reply.post_parent" .
-				" LEFT OUTER JOIN ({$sub_query}) wpas_replies ON CONCAT(UNIX_TIMESTAMP(wpas_reply.post_date),'-',wpas_reply.post_parent,'-',wpas_reply.post_type)=wpas_replies.hash";
-
-			$clauses['where'] .= " AND (wpas_reply.ID IS NULL OR 'ticket_reply' = wpas_reply.post_type) AND (wpas_reply.ID IS NULL OR wpas_replies.latest_timestamp IS NOT NULL)";
-
-			$order = 'ASC' === $query->get('order')
-				? 'ASC'
-				: 'DESC';
-
-			$clauses['orderby'] = "	wpas_sort_order {$order}, wpas_date_order {$order}, {$wpdb->posts}.post_date {$order}";
+			$posts = array_values( $no_replies + $client_replies + array_reverse( $agent_replies ) );
 
 		}
 
-		return $clauses;
+		return $posts;
 
 	}
 
