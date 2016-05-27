@@ -126,36 +126,40 @@ WHERE 1=1
 ORDER BY
 	wpas_replies.latest_reply ASC
 SQL;
-			$reply_posts = array();
-			foreach( $wpdb->get_results( $sql ) as $reply_post ) {
-				$reply_posts[ $reply_post->ticket_id ] = $reply_post;
-			}
 
-			$no_replies = $client_replies = $agent_replies = array();
-			foreach( array_reverse( $posts ) as $post ) {
-				/**
-				 * The post order will be modified using the following logic:
-				 *
-				 * 		Order 	- 	Ticket State
-				 *		-----   	-------------------------------------------
-				 * 		 1st   	- 	No reply - older since request made
-				 * 	 	 2nd 	- 	No reply - newer since request made
-				 * 	 	 3rd 	- 	Reply - older response since client replied
-				 * 	 	 4th 	- 	Reply - newer response since client replied
-				 * 	 	 5th 	- 	Reply - newer response since agent replied
-				 * 	 	 6th 	- 	Reply - older response since agent replied
-				 */
-				if (  ! isset( $reply_posts[ $post->ID ] ) ) {
-					$no_replies[ $post->ID ] = $post;
-				} else if ( $reply_posts[ $post->ID ]->client_replied_last ) {
-					$client_replies[ $post->ID ] = $post;
+            $no_replies = $client_replies = $agent_replies = array();
+
+            foreach( $posts as $post ) {
+
+                $no_replies[ $post->ID ] = $post;
+
+            }
+
+			/**
+			 * The post order will be modifiedusing the following logic:
+			 *
+			 *        Order    -    Ticket State
+			 *        -----    -------------------------------------------
+			 *         1st    -    No reply - older since request made
+			 *         2nd    -    No reply - newer since request made
+			 *         3rd    -    Reply - older response since client replied
+			 *         4th    -    Reply - newer response since client replied
+			 *         5th    -    Reply - newer response since agent replied
+			 *         6th    -    Reply - older response since agent replied
+			 */
+
+			foreach ( $wpdb->get_results( $sql ) as $reply_post ) {
+
+				if ( $reply_post->client_replied_last ) {
+					$client_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
 				} else {
-					$agent_replies[ $post->ID ] = $post;
+					$agent_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
 				}
+				unset( $no_replies[ $reply_post->ticket_id ] );
 
 			}
 
-			$posts = array_values( $no_replies + $client_replies + array_reverse( $agent_replies ) );
+			$posts = array_values( $no_replies + $client_replies + array_reverse( $agent_replies, true ) );
 
 		}
 
@@ -243,8 +247,8 @@ SQL;
 		// Finally we re-add the date
 		$new['date'] = $columns['date'];
 
-		// Add the activity column
-		$new['wpas-activity'] = esc_html__( 'Activity', 'awesome-support' );
+        // Add the activity column
+        $new['wpas-activity'] = esc_html__( 'Activity', 'awesome-support' );
 
 		return $new;
 
