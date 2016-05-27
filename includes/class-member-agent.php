@@ -84,8 +84,9 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 */
 	public function open_tickets() {
 
-		$count = get_user_meta( $this->user_id, 'wpas_open_tickets', true );
-
+		// Deactivate this for now as it is not reliable enough. Needs more work. Ticket count not correctly updated in certain situations, like when a ticket is transferred from an agent to another
+//		$count = get_user_meta( $this->user_id, 'wpas_open_tickets', true );
+		$count = false;
 		if ( false === $count ) {
 			$count = count( $this->get_open_tickets() );
 			update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
