@@ -312,7 +312,7 @@ SQL;
 			$q = new WP_Query( $args );
 
 			// Cache the result
-			wp_cache_add( 'replies_query_' . $ticket_id, $q, 'wpas' );
+			wp_cache_add( 'replies_query_' . $ticket_id, $q, 'wpas', 600 );
 
 		}
 
