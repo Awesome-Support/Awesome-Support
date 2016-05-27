@@ -71,22 +71,7 @@ class WPAS_Tickets_List {
 	 *  The query var 'wpas_order_by_urgency' will be set in the
 	 *  set_ordering_query_var() function called by the 'pre_get_posts'
 	 *  action hook.
-<<<<<<< 9600a49ace30e11d04a020e68890fe04d30836e0
 	 *
-=======
-	 *
-	 * The SQL will modify the WP_Query to follow this logic:
-	 *
-	 *        Order    -    Ticket State
-	 *        -----    -------------------------------------------
-	 *         1st    -    No reply - older since request made
-	 *         2nd    -    No reply - newer since request made
-	 *         3rd    -    Reply - older response since client replied
-	 *         4th    -    Reply - newer response since client replied
-	 *         5th    -    Reply - newer response since agent replied
-	 *         6th    -    Reply - older response since agent replied
-	 *
->>>>>>> rebasing branch 'mikeschinkel-develop' on '990795d'
 	 * @since    3.3
 	 *
 	 * @param WP_Post[] $posts
