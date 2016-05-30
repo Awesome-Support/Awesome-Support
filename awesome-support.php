@@ -514,12 +514,12 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		public function load_plugin_textdomain() {
 
 			$lang_dir  = WPAS_ROOT . 'languages/';
-			$land_path = WPAS_PATH . 'languages/';
+			$lang_path = WPAS_PATH . 'languages/';
 			$locale    = apply_filters( 'plugin_locale', get_locale(), 'awesome-support' );
 			$mofile    = "awesome-support-$locale.mo";
 
-			if ( file_exists( $land_path . $mofile ) ) {
-				$language = load_textdomain( 'awesome-support', $land_path . $mofile );
+			if ( file_exists( $lang_path . $mofile ) ) {
+				$language = load_textdomain( 'awesome-support', $lang_path . $mofile );
 			} else {
 				$language = load_plugin_textdomain( 'awesome-support', false, $lang_dir );
 			}
