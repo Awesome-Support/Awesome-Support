@@ -150,12 +150,17 @@ SQL;
 
 			foreach( $wpdb->get_results( $sql ) as $reply_post ) {
 
-				if ( $reply_post->client_replied_last ) {
-					$client_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
-				} else {
-					$agent_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
+				if ( isset( $no_replies[ $reply_post->ticket_id ] ) ) {
+
+					if ( $reply_post->client_replied_last ) {
+						$client_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
+					} else {
+						$agent_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
+					}
+
+					unset( $no_replies[ $reply_post->ticket_id ] );
+
 				}
-				unset( $no_replies[ $reply_post->ticket_id ] );
 
 			}
 
