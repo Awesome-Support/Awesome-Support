@@ -63,6 +63,46 @@ class WPAS_Custom_Fields {
 	}
 
 	/**
+	 * Register and enqueue the select2 assets
+	 *
+	 * This method will be called if the select2 parameter is passed with a custom field (could be a select or a
+	 * taxonomy field).
+	 *
+	 * @since 3.3
+	 * @return void
+	 */
+	public function enqueue_select2_assets() {
+
+		global $post;
+
+		// This will usually be packaged with all other components which is why it's not registered with the rest
+		wp_register_script( 'wpas-select2-component', WPAS_URL . 'assets/public/js/component_select2.js', array( 'wpas-select2' ), '4.0.0', true );
+
+		$ticket_submit = wpas_get_option( 'ticket_submit' );
+
+		if ( ! is_array( $ticket_submit ) ) {
+			$ticket_submit = (array) $ticket_submit;
+		}
+
+		if ( ! in_array( $post->ID, $ticket_submit ) ) {
+			return;
+		}
+
+		if ( false === wp_style_is( 'wpas-select2', 'enqueued' ) ) {
+			wp_enqueue_style( 'wpas-select2' );
+		}
+
+		if ( false === wp_script_is( 'wpas-select2', 'enqueued' ) ) {
+			wp_enqueue_script( 'wpas-select2' );
+		}
+
+		if ( false === wp_script_is( 'wpas-select2-component', 'enqueued' ) ) {
+			wp_enqueue_script( 'wpas-select2-component' );
+		}
+
+	}
+
+	/**
 	 * Add a new custom field to the ticket.
 	 *
 	 * @param string $name Option name
@@ -111,6 +151,11 @@ class WPAS_Custom_Fields {
 		$option = array( 'name' => $name, 'args' => $arguments );
 
 		$this->options[ $name ] = apply_filters( 'wpas_add_field', $option );
+
+		// If select2 is enabled we load the required assets
+		if ( isset( $arguments['select2'] ) && true === $arguments['select2'] ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_select2_assets' ) );
+		}
 
 		return true;
 
@@ -287,7 +332,7 @@ class WPAS_Custom_Fields {
 
 			if ( true === $field['args']['show_column'] ) {
 				$id            = $field['name'];
-				$title         = wpas_get_field_title( $field );
+				$title         = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
 				$custom[ $id ] = $title;
 			}
 
@@ -320,6 +365,12 @@ class WPAS_Custom_Fields {
 	 * @return array          Re-ordered list
 	 */
 	public function move_status_first( $columns ) {
+
+		// Don't change columns order on mobiles as it breaks the layout. WordPress expects the title column to be the second one.
+		// @link https://github.com/Awesome-Support/Awesome-Support/issues/306
+		if ( wp_is_mobile() ) {
+			return $columns;
+		}
 
 		if ( isset( $columns['status'] ) ) {
 			$status_content = $columns['status'];

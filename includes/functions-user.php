@@ -94,17 +94,17 @@ function wpas_register_account( $data ) {
 		exit;
 	}
 
-	$username = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
-	$user     = get_user_by( 'login', $username );
+	$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
+	$user_check = get_user_by( 'login', $username );
 
 	/* Check for existing username */
-	if ( is_a( $user, 'WP_User' ) ) {
+	if ( is_a( $user_check, 'WP_User' ) ) {
 		$suffix = 1;
 		do {
 			$alt_username = sanitize_user( $username . $suffix );
-			$user         = get_user_by( 'login', $alt_username );
+			$user_check   = get_user_by( 'login', $alt_username );
 			$suffix ++;
-		} while ( is_a( $user, 'WP_User' ) );
+		} while ( is_a( $user_check, 'WP_User' ) );
 		$username = $alt_username;
 	}
 
@@ -204,26 +204,26 @@ add_action( 'wpas_do_login', 'wpas_try_login' );
  */
 function wpas_try_login( $data ) {
 
-	// Get the redirect URL
-	$redirect_to = home_url();
-
-	if ( isset( $data['redirect_to'] ) ) {
-		$redirect_to = wp_sanitize_redirect( $data['redirect_to'] ); // If a redirect URL is specified we use it
-	} else {
-
-		global $post;
-
-		// Otherwise we try to get the URL of the originating page
-		if ( isset( $post ) && $post instanceof WP_Post ) {
-			$redirect_to = wp_sanitize_redirect( get_permalink( $post->ID ) );
-		}
-
-	}
-
 	/**
 	 * Try to log the user if credentials are submitted.
 	 */
 	if ( isset( $data['wpas_log'] ) ) {
+
+		// Get the redirect URL
+		$redirect_to = home_url();
+
+		if ( isset( $data['redirect_to'] ) ) {
+			$redirect_to = wp_sanitize_redirect( $data['redirect_to'] ); // If a redirect URL is specified we use it
+		} else {
+
+			global $post;
+
+			// Otherwise we try to get the URL of the originating page
+			if ( isset( $post ) && $post instanceof WP_Post ) {
+				$redirect_to = wp_sanitize_redirect( get_permalink( $post->ID ) );
+			}
+
+		}
 
 		$credentials = array(
 				'user_login' => $data['wpas_log'],
@@ -253,10 +253,19 @@ function wpas_try_login( $data ) {
 		$login = wp_signon( $credentials );
 
 		if ( is_wp_error( $login ) ) {
+
+			$code = $login->get_error_code();
 			$error = $login->get_error_message();
+
+			// Pre-populate the user login if the problem is with the password
+			if ( 'incorrect_password' === $code ) {
+				$redirect_to = add_query_arg( 'wpas_log', $credentials['user_login'], $redirect_to );
+			}
+
 			wpas_add_error( 'login_failed', $error );
 			wp_redirect( $redirect_to );
 			exit;
+
 		} elseif ( $login instanceof WP_User ) {
 			wp_redirect( $redirect_to );
 			exit;
@@ -414,10 +423,11 @@ function wpas_can_submit_ticket( $ticket_id = 0 ) {
 /**
  * Get a list of users that belong to the plugin.
  *
+ * @since 3.1.8
+ *
  * @param array $args Arguments used to filter the users
  *
  * @return array An array of users objects
- * @since 3.1.8
  */
 function wpas_get_users( $args = array() ) {
 
@@ -425,72 +435,154 @@ function wpas_get_users( $args = array() ) {
 		'exclude'     => array(),
 		'cap'         => '',
 		'cap_exclude' => '',
+		'search'      => array(),
 	);
 
 	/* The array where we save all users we want to keep. */
 	$list = array();
 
 	/* Merge arguments. */
-	$args = wp_parse_args( $args, $defaults );
+	$args  = wp_parse_args( $args, $defaults );
+	$users = new WPAS_Member_Query( $args );
 
-	/* Get the hash of the arguments that's used for caching the result. */
-	$hash = substr( md5( serialize( $args ) ), 0, 10 ); // Limit the length of the hash in order to avoid issues with option_name being too long in the database (https://core.trac.wordpress.org/ticket/15058)
+	return apply_filters( 'wpas_get_users', $users );
 
-	/* Check if we have a result already cached. */
-	$result = get_transient( "wpas_list_users_$hash" );
+}
 
-	/* If there is a cached result we return it and don't run the expensive query. */
-	if ( false !== $result ) {
-		return apply_filters( 'wpas_get_users', get_users( array( 'include' => (array) $result ) ) );
+/**
+ * Get all Awesome Support members
+ *
+ * @since 3.3
+ * @return array
+ */
+function wpas_get_members() {
+
+	global $wpdb;
+
+	$query = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE 1 LIMIT 0, 2000" );
+
+	if ( empty( $query ) ) {
+		return $query;
 	}
 
-	/* Get all WordPress users */
-	$all_users = get_users();
+	return wpas_users_sql_result_to_wpas_member( $query );
 
-	/**
-	 * Store the selected user IDs for caching.
-	 *
-	 * On database with a lot of users, storing the entire WP_User
-	 * object causes issues (eg. "Got a packet bigger than ‘max_allowed_packet’ bytes").
-	 * In order to avoid that we only store the user IDs and then get the users list
-	 * later on only including those IDs.
-	 *
-	 * @since 3.1.10
-	 */
-	$users_ids = array();
+}
 
-	/* Loop through the users list and filter them */
-	foreach ( $all_users as $user ) {
+/**
+ * Get all Awesome Support members by their user ID
+ *
+ * @since 3.3
+ *
+ * @param $ids
+ *
+ * @return array
+ */
+function wpas_get_members_by_id( $ids ) {
 
-		/* Check for required capability */
-		if ( ! empty( $args['cap'] ) ) {
-			if ( ! user_can( $user, $args['cap'] ) ) {
-				continue;
-			}
-		}
+	if ( ! is_array( $ids ) ) {
+		$ids = (array) $ids;
+	}
 
-		/* Check for excluded capability */
-		if ( ! empty( $args['cap_exclude'] ) ) {
-			if ( user_can( $user, $args['cap_exclude'] ) ) {
-				continue;
-			}
-		}
+	// Prepare the IDs query var
+	$ids = implode( ',', $ids );
 
-		/* Maybe exclude this user from the list */
-		if ( in_array( $user->ID, (array) $args['exclude'] ) ) {
-			continue;
-		}
+	global $wpdb;
 
-		/* Now we add this user to our final list. */
-		array_push( $list, $user );
-		array_push( $users_ids, $user->ID );
+	$query = $wpdb->get_results( "SELECT * FROM $wpdb->users WHERE ID IN ('$ids')" );
+
+	if ( empty( $query ) ) {
+		return $query;
+	}
+
+	return wpas_users_sql_result_to_wpas_member( $query );
+
+}
+
+/**
+ * Transform a users SQL query into WPAS_Member_User objects
+ *
+ * @param array  $results SQL results
+ * @param string $class   The WPAS_Member subclass to use. Possible values are user and agent
+ *
+ * @return array
+ */
+function wpas_users_sql_result_to_wpas_member( $results, $class = 'user' ) {
+
+	$users      = array();
+	$class_name = '';
+
+	switch ( $class ) {
+
+		case 'user':
+			$class_name = 'WPAS_Member_User';
+			break;
+
+		case 'agent':
+			$class_name = 'WPAS_member_Agent';
+			break;
 
 	}
 
-	/* Let's cache the result so that we can avoid running this query too many times. */
-	set_transient( "wpas_list_users_$hash", $users_ids, apply_filters( 'wpas_list_users_cache_expiration', 60 * 60 * 24 ) );
+	if ( empty( $class_name ) ) {
+		return array();
+	}
 
-	return apply_filters( 'wpas_get_users', $list );
+	foreach ( $results as $user ) {
+
+		$usr = new $class_name( $user );
+
+		if ( true === $usr->is_member() ) {
+			$users[] = $usr;
+		}
+
+	}
+
+	return $users;
+
+}
+
+/**
+ * Count the total number of users in the database
+ *
+ * @since 3.3
+ * @return int
+ */
+function wpas_count_wp_users() {
+
+	$count = get_transient( 'wpas_wp_users_count' );
+
+	if ( false === $count ) {
+
+		global $wpdb;
+
+		$query = $wpdb->get_results( "SELECT ID FROM $wpdb->users WHERE 1" );
+		$count = count( $query );
+
+		set_transient( 'wpas_wp_users_count', $count, apply_filters( 'wpas_wp_users_count_transient_lifetime', 604800 ) ); // Default to 1 week
+
+	}
+
+	return $count;
+
+}
+
+/**
+ * Check if the WP database has too many users or not
+ *
+ * @since 3.3
+ * @return bool
+ */
+function wpas_has_too_many_users() {
+
+	// We consider 3000 users to be too many to query at once
+	$limit = apply_filters( 'wpas_has_too_many_users_limit', 3000 );
+
+	if ( wpas_count_wp_users() > $limit ) {
+		return true;
+	}
+
+	return false;
 
 }
 
@@ -535,9 +627,9 @@ function wpas_list_users( $cap = 'all' ) {
 	/* List all users */
 	$all_users = wpas_get_users( array( 'cap' => $cap ) );
 
-	foreach ( $all_users as $user ) {
+	foreach ( $all_users->members as $user ) {
 		$user_id          = $user->ID;
-		$user_name        = $user->data->display_name;
+		$user_name        = $user->display_name;
 		$list[ $user_id ] = $user_name;
 	}
 
@@ -568,6 +660,7 @@ function wpas_users_dropdown( $args = array() ) {
 		'please_select'  => false,
 		'select2'        => false,
 		'disabled'       => false,
+		'data_attr'      => array()
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -594,15 +687,15 @@ function wpas_users_dropdown( $args = array() ) {
 		}
 	}
 
-	foreach ( $all_users as $user ) {
+	foreach ( $all_users->members as $user ) {
 
 		/* This user was already added, skip it */
-		if ( ! empty( $args['selected'] ) && $user->ID === intval( $args['selected'] ) ) {
+		if ( ! empty( $args['selected'] ) && $user->user_id === intval( $args['selected'] ) ) {
 			continue;
 		}
 
 		$user_id       = $user->ID;
-		$user_name     = $user->data->display_name;
+		$user_name     = $user->display_name;
 		$selected_attr = '';
 
 		if ( false === $marker ) {
@@ -782,6 +875,69 @@ function wpas_mailgun_check( $data = '' ) {
 
 	}
 
+	die();
+
+}
+
+add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax' );
+/**
+ * Get AS users using Ajax
+ *
+ * @since 3.3
+ *
+ * @param array $args Query parameters
+ *
+ * @return void
+ */
+function wpas_get_users_ajax( $args = array() ) {
+
+	$defaults = array(
+		'cap'         => 'edit_ticket',
+		'cap_exclude' => '',
+		'exclude'     => '',
+		'q'           => '', // The search query
+	);
+
+	if ( empty( $args ) ) {
+		foreach ( $defaults as $key => $value ) {
+			if ( isset( $_POST[ $key ] ) ) {
+				$args[ $key ] = $_POST[ $key ];
+			}
+		}
+	}
+
+	$args = wp_parse_args( $args, $defaults );
+
+	/**
+	 * @var WPAS_Member_Query $users
+	 */
+	$users = wpas_get_users(
+		array(
+			'cap'         => array_map( 'sanitize_text_field', array_filter( (array) $args['cap'] ) ),
+			'cap_exclude' => array_map( 'sanitize_text_field', array_filter( (array) $args['cap_exclude'] ) ),
+			'exclude'     => array_map( 'intval', array_filter( (array) $args['exclude'] ) ),
+			'search'      => array(
+				'query'    => sanitize_text_field( $args['q'] ),
+				'fields'   => array( 'user_nicename', 'display_name' ),
+				'relation' => 'OR'
+			)
+		)
+	);
+
+	$result = array();
+
+	foreach ( $users->members as $user ) {
+
+		$result[] = array(
+			'user_id'     => $user->ID,
+			'user_name'   => $user->display_name,
+			'user_email'  => $user->user_email,
+			'user_avatar' => get_avatar_url( $user->ID, array( 'size' => 32, 'default' => 'mm' ) ),
+		);
+
+	}
+
+	echo json_encode( $result );
 	die();
 
 }

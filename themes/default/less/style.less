@@ -84,9 +84,14 @@ Forms + Buttons + Labels
 */
 
 /* Forms */
-.wpas-form-group,
-.wpas-checkbox {
+.wpas-form-group {
 	margin-bottom: @spacing;
+}
+.wpas-checkbox + .wpas-checkbox {
+	margin-bottom: @spacing;
+	label {
+		font-weight: normal;
+	}
 }
 .wpas-form-group {
 	label {
@@ -111,9 +116,12 @@ Forms + Buttons + Labels
 	transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 .wpas-form-control-loading {
-	background-image: url('../ajax-loader.gif');
+	/* from https://github.com/jxnblk/loading */
+	background-image: url('../images/loading-spin.svg');
+	/* position the element 10px from the right */
+	background-position: right 10px center;
+	background-size: 16px 16px;
 	background-repeat: no-repeat;
-	background-position: 95% 50%;
 }
 textarea.wpas-form-control {
 	height: auto;
@@ -193,6 +201,7 @@ Tables
 	border-spacing: 0;
 	border-collapse: collapse;
 	border: none;
+	table-layout: auto;
 }
 .wpas-table>caption+thead>tr:first-child>th,
 .wpas-table>colgroup+thead>tr:first-child>th,
@@ -243,6 +252,11 @@ Pages
 		}
 	}
 }
+.wpas-forgot-password-link {
+	margin-left: 10px;
+	font-size: smaller;
+	opacity: .75;
+}
 
 /* Submit Ticket */
 .wpas-submit-ticket {}
@@ -268,16 +282,65 @@ Pages
 }
 
 /* Ticket Details */
+.wpas-ticket-buttons-top {
+	.clearfix();
+	margin-bottom: 2em;
+
+	.wpas-link-logout {
+		float: right;
+		&:after {
+			display: inline-block;
+			content: '';
+			height: 14px;
+			width: 14px;
+			vertical-align: middle;
+			margin-left: 7px;
+			opacity: .5;
+			background-size: contain;
+			background-image: data-uri('image/svg+xml;charset=UTF-8', '../images/logout.svg');
+		}
+	}
+}
+.wpas-ticket-list {
+	.wpas-link-ticketlist {
+		display: none;
+	}
+}
+.wpas-submit-ticket {
+	.wpas-link-ticketnew {
+		display: none;
+	}
+}
+
 .wpas-ticket-details-header {
 	margin-bottom: 0px;
 }
 .wpas-ticket-replies {
-	>tbody>tr>td {
-		padding: 25px 0;
-		border-bottom: 1px solid #ddd;
-	}
-	>tbody>tr>td:last-child {
-		padding-left: 25px;
+	> tbody {
+		> tr {
+			> td {
+				padding: 25px 0;
+				border-bottom: 1px solid #ddd;
+
+				&:first-child {
+					padding-left: 20px;
+				}
+				&:last-child {
+					padding-left: 20px;
+					padding-right: 20px;
+				}
+			}
+
+			// Highlight the agent replies
+			&.wpas_user_administrator,
+			&.wpas_user_wpas_manager,
+			&.wpas_user_wpas_support_manager,
+			&.wpas_user_wpas_agent {
+				> td {
+					background-color: #f5f5f5;
+				}
+			}
+		}
 	}
 }
 .wpas-reply-meta {
@@ -307,12 +370,22 @@ Pages
 		margin-bottom: 0;
 	}
 }
-.wpas-reply-single:hover {
-	.wpas-human-date {
-		display: block;
+.wpas-reply-single {
+	&:hover {
+		.wpas-human-date {
+			display: block;
+		}
+		.wpas-date-ago {
+			display: none;
+		}
 	}
-	.wpas-date-ago {
-		display: none;
+	td {
+		transition: background 0.2s linear;
+	}
+}
+.wpas-reply-single-added {
+	td {
+		background-color: #FFFFED;
 	}
 }
 .wpas-user-profile {
@@ -348,4 +421,177 @@ Pages
 		margin: 0;
 		padding: 0;
 	}
+}
+
+/*
+==========================================================================
+Pagination for ticket replies
+==========================================================================
+*/
+.wpas-pagi {
+	text-align: center;
+
+	p {
+		margin-bottom: 0;
+	}
+}
+.wpas-pagi-loading {
+	.wpas-pagi-text {
+		display: none;
+	}
+	.wpas-pagi-loader {
+		display: block;
+	}
+}
+.wpas-pagi-loader {
+	display: none;
+	text-indent: -9999em;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url('../images/loading-spin.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+/*
+==========================================================================
+Ticket List
+https://github.com/Awesome-Support/Awesome-Support/issues/302
+==========================================================================
+*/
+.footable-sort-indicator {
+	display: inline-block;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	font-size: 60%;
+	opacity: .5;
+	text-transform: none;
+	-webkit-font-smoothing: antialiased;
+	padding-left: 5px;
+	&:hover {
+		cursor: pointer;
+	}
+}
+.footable-sorted {
+	.footable-sort-indicator {
+		&:before {
+			content: '▲';
+		}
+	}
+}
+.footable-sorted-desc {
+	.footable-sort-indicator {
+		&:before {
+			content: '▼';
+		}
+	}
+}
+
+// Add spacing below filters & search. #302
+#wpas_ticketlist_filters {
+	margin-bottom: 1em;
+}
+
+// Add style and features for FooTable. See #302
+#wpas_filter_wrap {
+	position: relative;
+
+	.wpas-clear-filter {
+		position: absolute;
+		top: 50%;
+		margin-top: -(14px/2);
+		right: 10px + 14px;
+		width: 14px;
+		height: 14px;
+		background: url('../images/close.svg') no-repeat;
+		background-size: contain;
+		opacity: .25;
+		cursor: pointer;
+		transition: opacity .3s ease;
+
+		&:hover {
+			opacity: .5;
+		}
+	}
+}
+
+/**
+ * Pagination from Bootstrap
+ * http://getbootstrap.com/components/#pagination
+ */
+.wpas_table_pagination {
+	display: inline-block;
+	padding-left: 0;
+	margin: 20px 0;
+	border-radius: 4px;
+}
+.wpas_table_pagination > li {
+	display: inline;
+}
+.wpas_table_pagination > li > a, .wpas_table_pagination > li > span {
+	position: relative;
+	float: left;
+	padding: 6px 12px;
+	line-height: 1.42857143;
+	text-decoration: none;
+	color: #337ab7;
+	background-color: #ffffff;
+	border: 1px solid #dddddd;
+	margin-left: -1px;
+}
+.wpas_table_pagination > li:first-child > a, .wpas_table_pagination > li:first-child > span {
+	margin-left: 0;
+	border-bottom-left-radius: 4px;
+	border-top-left-radius: 4px;
+}
+.wpas_table_pagination > li:last-child > a, .wpas_table_pagination > li:last-child > span {
+	border-bottom-right-radius: 4px;
+	border-top-right-radius: 4px;
+}
+.wpas_table_pagination > li > a:hover, .wpas_table_pagination > li > span:hover, .wpas_table_pagination > li > a:focus, .wpas_table_pagination > li > span:focus {
+	z-index: 2;
+	color: #23527c;
+	background-color: #eeeeee;
+	border-color: #dddddd;
+}
+.wpas_table_pagination > .active > a, .wpas_table_pagination > .active > span, .wpas_table_pagination > .active > a:hover, .wpas_table_pagination > .active > span:hover, .wpas_table_pagination > .active > a:focus, .wpas_table_pagination > .active > span:focus {
+	z-index: 3;
+	color: #ffffff;
+	background-color: #337ab7;
+	border-color: #337ab7;
+	cursor: default;
+}
+.wpas_table_pagination > .disabled > span, .wpas_table_pagination > .disabled > span:hover, .wpas_table_pagination > .disabled > span:focus, .wpas_table_pagination > .disabled > a, .wpas_table_pagination > .disabled > a:hover, .wpas_table_pagination > .disabled > a:focus {
+	color: #777777;
+	background-color: #ffffff;
+	border-color: #dddddd;
+	cursor: not-allowed;
+}
+.wpas_table_pagination-lg > li > a, .wpas_table_pagination-lg > li > span {
+	padding: 10px 16px;
+	font-size: 18px;
+	line-height: 1.3333333;
+}
+.wpas_table_pagination-lg > li:first-child > a, .wpas_table_pagination-lg > li:first-child > span {
+	border-bottom-left-radius: 6px;
+	border-top-left-radius: 6px;
+}
+.wpas_table_pagination-lg > li:last-child > a, .wpas_table_pagination-lg > li:last-child > span {
+	border-bottom-right-radius: 6px;
+	border-top-right-radius: 6px;
+}
+.wpas_table_pagination-sm > li > a, .wpas_table_pagination-sm > li > span {
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+}
+.wpas_table_pagination-sm > li:first-child > a, .wpas_table_pagination-sm > li:first-child > span {
+	border-bottom-left-radius: 3px;
+	border-top-left-radius: 3px;
+}
+.wpas_table_pagination-sm > li:last-child > a, .wpas_table_pagination-sm > li:last-child > span {
+	border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
 }

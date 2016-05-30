@@ -25,6 +25,151 @@ class WPAS_Tickets_List {
 		add_action( 'admin_menu',                        array( $this, 'hide_closed_tickets' ),         10, 0 );
 		add_filter( 'the_excerpt',                       array( $this, 'remove_excerpt' ),              10, 1 );
 		add_filter( 'post_row_actions',                  array( $this, 'remove_quick_edit' ),           10, 2 );
+		add_filter( 'the_title',                         array( $this, 'add_ticket_id_title' ) );
+		add_action( 'pre_get_posts',                     array( $this, 'filter_staff' ) );
+		add_filter( 'post_class',                        array( $this, 'ticket_row_class' ), 10, 3 );
+		add_action( 'pre_get_posts', 					 array( $this, 'set_ordering_query_var' ) );
+		add_filter( 'posts_results', 					 array( $this, 'apply_ordering_criteria' ), 10, 2 );
+
+	}
+
+	/**
+	 *  Called by the 'pre_get_posts' filter hook this method sets 
+	 *  the following to true when for the admin ticket list page:
+	 *
+	 * 		$wp_query->query_var['wpas_order_by_urgency']
+	 *
+	 *  Setting this to true will trigger modifications to the query that
+	 *  will be made in the apply_ordering_criteria() function called by 
+	 *  the 'posts_clauses' filter hook.
+	 *
+	 * @since    3.3
+	 *
+	 * @param WP_Query $query
+	 */
+	public function set_ordering_query_var( $query ) {
+		global $pagenow;
+
+		if ( $query->is_main_query() && 'edit.php' === $pagenow && 'ticket' === $query->get( 'post_type' ) ) {
+
+			/**
+			 * Inspect the current context and if appropriate specify a query_var to allow
+			 * WP_Query to modify itself based on arguments passed to WP_Query.
+			 */
+			$query->set( 'wpas_order_by_urgency', true );
+
+		}
+
+	}
+
+	/**
+	 *  Called by the 'posts_clauses' filter hook this method
+	 *  modifies WP_Query SQL for ticket post types when:
+	 *
+	 *        $wp_query->get('wpas_order_by_urgency') === true
+	 *
+	 *  The query var 'wpas_order_by_urgency' will be set in the
+	 *  set_ordering_query_var() function called by the 'pre_get_posts'
+	 *  action hook.
+	 *
+	 * @since    3.3
+	 *
+	 * @param WP_Post[] $posts
+	 * @param WP_Query  $query
+	 *
+	 * @return WP_Post[]
+	 */
+	public function apply_ordering_criteria( $posts, $query ) {
+
+		if ( $query->get( 'wpas_order_by_urgency' )  ) {
+
+			/**
+			 * Hooks in WP_Query should never modify SQL based on context.
+			 * Instead they should modify based on a query_var so they can
+			 * be tested and side-effects are minimized.
+			 */
+
+			/**
+			 * @var wpdb $wpdb
+			 *
+			 */
+			global $wpdb;
+
+			$sql =<<<SQL
+SELECT 
+	wpas_ticket.ID AS ticket_id,
+	wpas_ticket.post_title AS ticket_title,
+	wpas_reply.ID AS reply_id,
+	wpas_reply.post_title AS reply_title,
+	wpas_replies.reply_count AS reply_count,
+	wpas_replies.latest_reply,
+	wpas_ticket.post_author=wpas_reply.post_author AS client_replied_last
+FROM 
+	{$wpdb->posts} AS wpas_ticket 
+	INNER JOIN {$wpdb->postmeta} AS wpas_postmeta ON wpas_ticket.ID=wpas_postmeta.post_id AND '_wpas_status'=wpas_postmeta.meta_key AND 'open'=CAST(wpas_postmeta.meta_value AS CHAR)
+	LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON wpas_ticket.ID=wpas_reply.post_parent
+	LEFT OUTER JOIN (
+		SELECT
+			post_parent AS ticket_id,
+			COUNT(*) AS reply_count,
+			MAX(post_date) AS latest_reply
+		FROM
+			{$wpdb->posts}
+		WHERE 1=1
+			AND 'ticket_reply' = post_type
+		GROUP BY
+			post_parent
+	) wpas_replies ON wpas_replies.ticket_id=wpas_reply.post_parent AND wpas_replies.latest_reply=wpas_reply.post_date 
+WHERE 1=1
+	AND wpas_replies.latest_reply IS NOT NULL
+	AND 'ticket_reply'=wpas_reply.post_type
+ORDER BY
+	wpas_replies.latest_reply ASC
+SQL;
+
+            $no_replies = $client_replies = $agent_replies = array();
+
+            foreach( $posts as $post ) {
+
+                $no_replies[ $post->ID ] = $post;
+
+            }
+
+			/**
+			 * The post order will be modifiedusing the following logic:
+			 *
+			 * 		Order 	- 	Ticket State
+			 *		-----   	-------------------------------------------
+			 * 		 1st   	- 	No reply - older since request made
+			 * 	 	 2nd 	- 	No reply - newer since request made
+			 * 	 	 3rd 	- 	Reply - older response since client replied
+			 * 	 	 4th 	- 	Reply - newer response since client replied
+			 * 	 	 5th 	- 	Reply - newer response since agent replied
+			 * 	 	 6th 	- 	Reply - older response since agent replied
+			 */
+
+			foreach( $wpdb->get_results( $sql ) as $reply_post ) {
+
+				if ( isset( $no_replies[ $reply_post->ticket_id ] ) ) {
+
+					if ( $reply_post->client_replied_last ) {
+						$client_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
+					} else {
+						$agent_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
+					}
+
+					unset( $no_replies[ $reply_post->ticket_id ] );
+
+				}
+
+			}
+
+			$posts = array_values( $no_replies + $client_replies + array_reverse( $agent_replies, true ) );
+
+		}
+
+		return $posts;
+
 	}
 
 	/**
@@ -81,31 +226,103 @@ class WPAS_Tickets_List {
 		 */
 		foreach ( $columns as $col_id => $col_label ) {
 
-			if ( 'title' === $col_id ) {
-				$new['ticket_id'] = '#';
-			}
+			// We add all our columns where the date was and move the date column to the end
+			if ( 'date' === $col_id ) {
 
-			/* Remove the date column that's replaced by the activity column */
-			if ( 'date' !== $col_id ) {
-				$new[$col_id] = $col_label;
-			} else {
-				/* If agents can see all tickets do nothing */
+				// Add the client column
+				$new['wpas-client'] = esc_html__( 'Created By', 'awesome-support' );
+
+				// If agents can see all tickets do nothing
 				if (
 					current_user_can( 'administrator' )
 					&& true === boolval( wpas_get_option( 'admin_see_all' ) )
 					|| current_user_can( 'edit_ticket' )
-					&& !current_user_can( 'administrator' )
-					&& true === boolval( wpas_get_option( 'agent_see_all' ) ) ) {
-						$new = array_merge( $new, array( 'wpas-assignee' => __( 'Support Staff', 'awesome-support' ) ) );
+					   && ! current_user_can( 'administrator' )
+					   && true === boolval( wpas_get_option( 'agent_see_all' ) )
+				) {
+					$new['wpas-assignee'] = esc_html__( 'Assigned To', 'awesome-support' );
 				}
 
-				/* Add the activity column */
-				$new = array_merge( $new, array( 'wpas-activity' => __( 'Activity', 'awesome-support' ) ) );
+			} else {
+				$new[ $col_id ] = $col_label;
 			}
 
 		}
 
+		// Finally we re-add the date
+		$new['date'] = $columns['date'];
+
+		// Add the activity column
+		$new['wpas-activity'] = esc_html__( 'Activity', 'awesome-support' );
+
 		return $new;
+
+	}
+
+	/**
+	 * Add ticket ID to the ticket title in admin list screen
+	 *
+	 * @since 3.3
+	 *
+	 * @param string $title Original title
+	 *
+	 * @return string
+	 */
+	public function add_ticket_id_title( $title ) {
+
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow || ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+			return $title;
+		}
+
+		$id = get_the_ID();
+
+		$title = "$title (#$id)";
+
+		return $title;
+
+	}
+
+	/**
+	 * Get all ticket replies
+	 *
+	 * Try to get the replies from cache and if not possible, run the query and cache the result.
+	 *
+	 * @since 3.3
+	 *
+	 * @param int $ticket_id ID of the ticket we want to get the replies for
+	 *
+	 * @return WP_Query
+	 */
+	public function get_replies_query( $ticket_id ) {
+
+		$q = wp_cache_get( 'replies_query_' . $ticket_id, 'wpas' );
+
+		if ( false === $q ) {
+
+			$args = array(
+				'post_parent'            => $ticket_id,
+				'post_type'              => 'ticket_reply',
+				'post_status'            => array( 'unread', 'read' ),
+				'posts_per_page'         => - 1,
+				'orderby'                => 'date',
+				'order'                  => 'ASC',
+				'no_found_rows'          => true,
+				'cache_results'          => false,
+				'update_post_term_cache' => false,
+				'update_post_meta_cache' => false,
+			);
+
+			$q = new WP_Query( $args );
+
+			// Cache the result
+			wp_cache_add( 'replies_query_' . $ticket_id, $q, 'wpas', 600 );
+
+		}
+
+		return $q;
+
 	}
 
 	/**
@@ -119,122 +336,69 @@ class WPAS_Tickets_List {
 
 		switch ( $column ) {
 
-			case 'ticket_id':
+			case 'wpas-assignee':
 
-				$link = add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) );
-				echo "<a href='$link'>#$post_id</a>";
+				$assignee = (int) get_post_meta( $post_id, '_wpas_assignee', true );
+				$agent    = get_user_by( 'id', $assignee );
+				$link     = add_query_arg( array( 'post_type' => 'ticket', 'staff' => $assignee ), admin_url( 'edit.php' ) );
+
+				if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
+					echo "<a href='$link'>{$agent->data->display_name}</a>";
+				}
 
 				break;
 
-			case 'wpas-assignee':
+			case 'wpas-client':
 
-				$assignee = get_post_meta( $post_id, '_wpas_assignee', true );
-				$agent    = get_user_by( 'id', $assignee );
+				$client = get_user_by( 'id', get_the_author_meta( 'ID' ) );
+				$link   = add_query_arg( array( 'post_type' => 'ticket', 'author' => $client->ID ), admin_url( 'edit.php' ) );
 
-				if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
-					echo $agent->data->display_name;
-				}
+				echo "<a href='$link'>$client->display_name</a><br>$client->user_email";
 
 				break;
 
 			case 'wpas-activity':
 
-				$latest        = null;
-				$tags          = array();
-				$activity_meta = get_transient( "wpas_activity_meta_post_$post_id" );
-
-				if ( false === $activity_meta ) {
-
-					$post                         = get_post( $post_id );
-					$activity_meta                = array();
-					$activity_meta['ticket_date'] = $post->post_date;
-
-					/* Get the last reply if any */
-					$latest = new WP_Query(  array(
-						'posts_per_page'         =>	1,
-						'orderby'                =>	'post_date',
-						'order'                  =>	'DESC',
-						'post_type'              =>	'ticket_reply',
-						'post_parent'            =>	$post_id,
-						'post_status'            =>	array( 'unread', 'read' ),
-						'no_found_rows'          => true,
-						'cache_results'          => false,
-						'update_post_term_cache' => false,
-						'update_post_meta_cache' => false,
-						)
-					);
-
-					if ( !empty( $latest->posts ) ) {
-						$user_data                      = get_user_by( 'id', $latest->post->post_author );
-						$activity_meta['user_link']     = add_query_arg( array( 'user_id' => $latest->post->post_author ), admin_url( 'user-edit.php' ) );
-						$activity_meta['user_id']       = $latest->post->post_author;
-						$activity_meta['user_nicename'] = $user_data->user_nicename;
-						$activity_meta['reply_date']    = $latest->post->post_date;
-					}
-
-					set_transient( "wpas_activity_meta_post_$post_id", $activity_meta, apply_filters( 'wpas_activity_meta_transient_lifetime', 60*60*1 ) ); // Set to 1 hour by default
-
-				}
-
-				echo '<ul>';
-
-				// if ( isset( $mode ) && 'details' == $mode ):
-				if ( 1 === 1 ):
-
-					?><li><?php printf( _x( 'Created %s ago.', 'Ticket created on', 'awesome-support' ), human_time_diff( get_the_time( 'U', $post_id ), current_time( 'timestamp' ) ) ); ?></li><?php
-
-					/**
-					 * We check when was the last reply (if there was a reply).
-					 * Then, we compute the ticket age and if it is considered as
-					 * old, we display an informational tag.
-					 */
-					if ( !isset( $activity_meta['reply_date'] ) ) {
-						echo '<li>';
-						echo _x( 'No reply yet.', 'No last reply', 'awesome-support' );
-						echo '</li>';
-					} else {
-
-						$args = array(
-							'post_parent'            => $post_id,
-							'post_type'              => 'ticket_reply',
-							'post_status'            => array( 'unread', 'read' ),
-							'posts_per_page'         => - 1,
-							'orderby'                => 'date',
-							'order'                  => 'DESC',
-							'no_found_rows'          => true,
-							'cache_results'          => false,
-							'update_post_term_cache' => false,
-							'update_post_meta_cache' => false,
-						);
-
-						$query = new WP_Query( $args );
-						$role  = true === user_can( $activity_meta['user_id'], 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
-
-						?><li><?php echo _x( sprintf( _n( '%s reply.', '%s replies.', $query->post_count, 'awesome-support' ), $query->post_count ), 'Number of replies to a ticket', 'awesome-support' ); ?></li><?php
-						?><li><?php printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) . '#wpas-post-' . $query->posts[0]->ID, human_time_diff( strtotime( $activity_meta['reply_date'] ), current_time( 'timestamp' ) ), '<a href="' . $activity_meta['user_link'] . '">' . $activity_meta['user_nicename'] . '</a>', $role ); ?></li><?php
-					}
-
-				endif;
+				$tags    = array();
+				$replies = $this->get_replies_query( $post_id );
 
 				/**
-				 * Add tags
+				 * We check when was the last reply (if there was a reply).
+				 * Then, we compute the ticket age and if it is considered as
+				 * old, we display an informational tag.
 				 */
-				if ( true === wpas_is_reply_needed( $post_id, $latest ) ) {
+				if ( 0 === $replies->post_count ) {
+					echo _x( 'No reply yet.', 'No last reply', 'awesome-support' );
+				} else {
+
+					$last_reply     = $replies->posts[ $replies->post_count - 1 ];
+					$last_user_link = add_query_arg( array( 'user_id' => $last_reply->post_author ), admin_url( 'user-edit.php' ) );
+					$last_user      = get_user_by( 'id', $last_reply->post_author );
+					$role           = true === user_can( $last_reply->post_author, 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
+
+					echo _x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' );
+					echo '<br>';
+					printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
+							'post'   => $post_id,
+							'action' => 'edit'
+						), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
+				}
+
+				// Maybe add the "Awaiting Support Response" tag
+				if ( true === wpas_is_reply_needed( $post_id, $replies ) ) {
 					$color = ( false !== ( $c = wpas_get_option( 'color_awaiting_reply', false ) ) ) ? $c : '#0074a2';
 					array_push( $tags, "<span class='wpas-label' style='background-color:$color;'>" . __( 'Awaiting Support Reply', 'awesome-support' ) . "</span>" );
 				}
 
-
-				if ( true === wpas_is_ticket_old( $post_id, $latest ) ) {
+				// Maybe add the "Old" tag
+				if ( true === wpas_is_ticket_old( $post_id, $replies ) ) {
 					$old_color = wpas_get_option( 'color_old' );
 					array_push( $tags, "<span class='wpas-label' style='background-color:$old_color;'>" . __( 'Old', 'awesome-support' ) . "</span>" );
 				}
 
-				if ( !empty( $tags ) ) {
-					echo '<li>' . implode( ' ', $tags ) . '</li>';
+				if ( ! empty( $tags ) ) {
+					echo '<br>' . implode( ' ', $tags );
 				}
-
-				echo '</ul>';
 
 				break;
 
@@ -294,6 +458,95 @@ class WPAS_Tickets_List {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Filter tickets by assigned staff
+	 *
+	 * @since 3.3
+	 *
+	 * @param WP_Query $wp_query
+	 *
+	 * @return void
+	 */
+	public function filter_staff( $wp_query ) {
+
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow || ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+			return;
+		}
+
+		if ( ! $wp_query->is_main_query() ) {
+			return;
+		}
+
+		if ( ! isset( $_GET['staff'] ) ) {
+			return;
+		}
+
+		$staff_id = (int) $_GET['staff'];
+		$agent    = new WPAS_Member_Agent( $staff_id );
+
+		if ( ! $agent->is_agent() ) {
+			return;
+		}
+
+		$meta_query = $wp_query->get( 'meta_query' );
+
+		if ( ! is_array( $meta_query ) ) {
+			$meta_query = (array) $meta_query;
+		}
+
+		$meta_query[] = array(
+			'key'     => '_wpas_assignee',
+			'value'   => $staff_id,
+			'compare' => '='
+		);
+
+		if ( ! isset( $meta_query['relation'] ) ) {
+			$meta_query['relation'] = 'AND';
+		}
+
+		$wp_query->set( 'meta_query', $meta_query );
+
+	}
+
+	/**
+	 * Filter the list of CSS classes for the current post.
+	 *
+	 * @since 3.3
+	 *
+	 * @param array $classes An array of post classes.
+	 * @param array $class   An array of additional classes added to the post.
+	 * @param int   $post_id The post ID.
+	 *
+	 * @return array
+	 */
+	public function ticket_row_class( $classes, $class, $post_id ) {
+
+		global $pagenow;
+
+		if ( 'edit.php' !== $pagenow || ! isset( $_GET['post_type'] ) || isset( $_GET['post_type'] ) && 'ticket' !== $_GET['post_type'] ) {
+			return $classes;
+		}
+
+		if ( ! is_admin() ) {
+			return $classes;
+		}
+
+		if ( 'ticket' !== get_post_type( $post_id ) ) {
+			return $classes;
+		}
+
+		$replies = $this->get_replies_query( $post_id );
+
+		if ( true === wpas_is_reply_needed( $post_id, $replies ) ) {
+			$classes[] = 'wpas-awaiting-support-reply';
+		}
+
+		return $classes;
+
 	}
 
 }

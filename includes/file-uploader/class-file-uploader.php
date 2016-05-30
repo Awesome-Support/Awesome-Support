@@ -9,11 +9,6 @@
  * @copyright 2014 ThemeAvenue
  */
 
-/**
- * Instantiate the file upload class.
- */
-add_action( 'plugins_loaded', array( 'WPAS_File_Upload', 'get_instance' ) );
-
 class WPAS_File_Upload {
 
 	/**
@@ -50,8 +45,9 @@ class WPAS_File_Upload {
 		add_action( 'pre_get_posts',              array( $this, 'attachment_query_var' ), 10, 1 );
 		add_action( 'init',                       array( $this, 'attachment_endpoint' ),  10, 1 );
 		add_action( 'template_redirect',          array( $this, 'view_attachment' ),      10, 0 );
+		add_action( 'posts_clauses',              array( $this, 'filter_attachments_out' ), 10, 2 );
 
-		if ( !is_admin() ) {
+		if ( ! is_admin() ) {
 
 			/* Load media uploader related files. */
 			require_once( ABSPATH . 'wp-admin/includes/image.php' );
@@ -63,12 +59,15 @@ class WPAS_File_Upload {
 			add_action( 'wpas_add_reply_public_after',               array( $this, 'new_reply_attachment' ), 10, 2 );  // Save attachments after user submitted a new reply
 			add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'upload_field' ) );                  // Load the dropzone after description textarea
 			add_action( 'wpas_ticket_details_reply_textarea_after',  array( $this, 'upload_field' ) );                  // Load dropzone after reply textarea
-			add_action( 'wpas_frontend_ticket_content_after',        array( $this, 'show_attachments' ), 10, 1 );
-			add_action( 'wpas_frontend_reply_content_after',         array( $this, 'show_attachments' ), 10, 1 );
 
 		}
 
+		// We need those during Ajax requests and admin-ajax.php is considered to be part of the admin
+		add_action( 'wpas_frontend_ticket_content_after',        array( $this, 'show_attachments' ), 10, 1 );
+		add_action( 'wpas_frontend_reply_content_after',         array( $this, 'show_attachments' ), 10, 1 );
+
 		if ( is_admin() ) {
+
 			add_action( 'wpas_add_reply_admin_after',        array( $this, 'new_reply_backend_attachment' ), 10, 2 );
 			add_action( 'post_edit_form_tag',                array( $this, 'add_form_enctype' ), 10, 1 );
 			add_action( 'wpas_admin_after_wysiwyg',          array( $this, 'upload_field' ), 10, 0 );
@@ -76,9 +75,56 @@ class WPAS_File_Upload {
 			add_action( 'wpas_backend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_reply_content_after',  array( $this, 'show_attachments' ), 10, 1 );
 			add_filter( 'wpas_cf_wrapper_class',             array( $this, 'add_wrapper_class_admin' ), 10, 2 );
+
 		}
 	}
 
+	/**
+	 * Filter out tickets and ticket replies attachments
+	 *
+	 * Tickets attachments don't have their place in the media library. The library can quickly become a huge mess and
+	 * it becomes impossible to work with actual post attachments.
+	 *
+	 * @since 3.3
+	 *
+	 * @param array    $clauses  SQL query clauses
+	 * @param WP_Query $wp_query WordPress query object
+	 *
+	 * @return array
+	 */
+	public function filter_attachments_out( $clauses, $wp_query ) {
+
+		global $pagenow, $wpdb;
+
+		$action = isset( $_POST['action'] ) ? $_POST['action'] : '';
+
+		// Make sure the query is for the media library
+		if ( 'query-attachments' !== $action ) {
+			return $clauses;
+		}
+
+		// We only want to alter queries in the admin
+		if ( ! $wp_query->is_admin ) {
+			return $clauses;
+		}
+
+		// Make sure this request is done through Ajax as this is how the media library does it
+		if ( 'admin-ajax.php' !== $pagenow ) {
+			return $clauses;
+		}
+
+		// Is this query for attachments?
+		if ( 'attachment' !== $wp_query->query_vars['post_type'] ) {
+			return $clauses;
+		}
+
+		$clauses['join'] .= " LEFT OUTER JOIN $wpdb->posts daddy ON daddy.ID = $wpdb->posts.post_parent";
+		$clauses['where'] .= " AND daddy.post_type NOT IN ( 'ticket', 'ticket_reply' )";
+
+		return $clauses;
+
+	}
+	
 	/**
 	 * Add a custom class to the upload field wrapper in the admin
 	 *
@@ -194,6 +240,7 @@ class WPAS_File_Upload {
 				wp_die( __( 'You are not allowed to view this attachment', 'awesome-support' ) );
 			}
 
+			ini_set( 'user_agent', 'Awesome Support/' . WPAS_VERSION . '; ' . get_bloginfo( 'url' ) );
 			header( "Content-Type: $attachment->post_mime_type" );
 			readfile( $attachment->guid );
 

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="#666666">
+  <style type="text/css">
+  <![CDATA[
+    #circle {
+      -webkit-animation: spin 0.8s infinite linear;
+      -moz-animation: spin 0.8s infinite linear;
+      -o-animation: spin 0.8s infinite linear;
+      -ms-animation: spin 0.8s infinite linear;
+      animation: spin 0.8s infinite linear;
+      -webkit-transform-origin: 16px 16px;
+      -moz-transform-origin: 16px 16px;
+      -o-transform-origin: 16px 16px;
+      transform-origin: 16px 16px;
+    }
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg);}
+      100% { -webkit-transform: rotate(360deg);}
+    }
+    @-moz-keyframes spin {
+      0% { -moz-transform: rotate(0deg); }
+      100% { -moz-transform: rotate(360deg);}
+    }
+    @-o-keyframes spin {
+      0% { -o-transform: rotate(0deg);}
+      100% { -o-transform: rotate(360deg);}
+    }
+    @-ms-keyframes spin {
+      0% { -ms-transform: rotate(0deg);}
+      100% { -ms-transform: rotate(360deg);}
+    }
+    @-keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg);}
+    }
+  ]]>
+  </style>
+  <path opacity=".25" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4"/>
+  <path id="circle" d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z"/>
+</svg>

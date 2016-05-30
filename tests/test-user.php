@@ -33,8 +33,8 @@ class WPAS_Test_Functions_User extends WP_UnitTestCase {
 
 		$users = wpas_get_users( array( 'cap' => 'edit_ticket' ) );
 
-		$this->assertInternalType( 'array', $users );
-		$this->assertCount( 2, $users );
+		$this->assertInternalType( 'array', $users->members );
+		$this->assertCount( 2, $users->members );
 
 	}
 
@@ -42,8 +42,8 @@ class WPAS_Test_Functions_User extends WP_UnitTestCase {
 
 		$users = wpas_get_users( array( 'cap' => 'reply_ticket' ) );
 
-		$this->assertInternalType( 'array', $users );
-		$this->assertCount( 3, $users );
+		$this->assertInternalType( 'array', $users->members );
+		$this->assertCount( 3, $users->members );
 
 	}
 
@@ -60,8 +60,8 @@ class WPAS_Test_Functions_User extends WP_UnitTestCase {
 
 		delete_transient( "wpas_list_users_$hash" );
 
-		$this->assertInternalType( 'array', $users );
-		$this->assertCount( 1, $users );
+		$this->assertInternalType( 'array', $users->members );
+		$this->assertCount( 1, $users->members );
 
 	}
 
@@ -71,16 +71,17 @@ class WPAS_Test_Functions_User extends WP_UnitTestCase {
 			'exclude'     => array(),
 			'cap'         => 'edit_ticket',
 			'cap_exclude' => '',
+			'search'      => array(),
 		);
 
-		$hash      = substr( md5( serialize( $args ) ), 0, 10 );
-		$users     = wpas_get_users( $args );
-		$transient = get_transient( "wpas_list_users_$hash" );
+		$hash  = md5( serialize( $args ) );
+		$users = wpas_get_users( $args );
+		$cache = wp_cache_get( 'users_' . $hash, 'wpas' );
 
 		delete_transient( "wpas_list_users_$hash" );
 
-		$this->assertInternalType( 'array', $transient );
-		$this->assertCount( 2, $transient );
+		$this->assertInternalType( 'array', $cache );
+		$this->assertCount( 2, $cache );
 
 	}
 

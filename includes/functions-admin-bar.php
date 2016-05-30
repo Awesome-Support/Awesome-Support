@@ -38,7 +38,7 @@ function wpas_toolbar_tickets_link( $wp_admin_bar ) {
 
 		global $current_user;
 
-		$agent         = new WPAS_Agent( $current_user->ID );
+		$agent         = new WPAS_Member_Agent( $current_user->ID );
 		$tickets_count = $agent->open_tickets();
 
 	} else {

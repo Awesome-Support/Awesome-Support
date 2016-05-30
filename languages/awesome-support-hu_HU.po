@@ -1,0 +1,1788 @@
+# N2Clic Limited
+# Translators:
+# Laszlo Banfalvi, 2015
+# Laszlo Banfalvi, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Awesome Support\n"
+"Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
+"POT-Creation-Date: 2015-10-23 03:18:35+00:00\n"
+"PO-Revision-Date: 2015-10-25 06:05+0000\n"
+"Last-Translator: Laszlo Banfalvi\n"
+"Language-Team: Hungarian (Hungary) (http://www.transifex.com/themeavenue/awesome-support/language/hu_HU/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: hu_HU\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: grunt-wp-i18n 0.5.3\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
+
+#: awesome-support.php:264 awesome-support.php:274
+#: includes/admin/functions-notices.php:129
+msgid "Cheatin&#8217; huh?"
+msgstr "Csalunk, csalogatunk?"
+
+#: includes/admin/class-admin-help.php:60 includes/admin/class-admin.php:598
+#: includes/admin/settings/settings-general.php:20
+msgid "Multiple Products"
+msgstr "Több termék"
+
+#: includes/admin/class-admin-help.php:61
+#: includes/admin/class-admin-help.php:107
+msgid ""
+"<h2>Multiple Products</h2><p>The plugin can handle single product and "
+"multiple products support. If you do need to provide support for multiple "
+"products it is very important that you do NOT use a custom field or taxonomy"
+" and use the &laquo;Multiple Products&raquo; option instead.</p><p>The "
+"reason why it is so important is that many addons for Awesome Support are "
+"using the built-in products management system to work properly.</p>"
+msgstr "<h2>Több termék</h2><p>A beépülő mind egy mind több termékes üzemmódot is támogat. Ha több terméket szeretnél támogatni, nagyon fontos, hogy NE használj egyedi mezőket vagy taxonómiákat. <p>Az ok, amiért ez ilyen fontos, hogy az Awesome Support beépülői annak beépített termékkatalógusát használják, hogy minden normálisan üzemeljen.</p>"
+
+#: includes/admin/class-admin-help.php:66
+#: includes/admin/settings/settings-general.php:27
+msgid "Default Assignee"
+msgstr "Alapértelmezett kiosztás"
+
+#: includes/admin/class-admin-help.php:67
+msgid ""
+"<h2>Default Assignee</h2><p>Even though the plugin will try to assign new "
+"tickets to the less busy agent, we need to know who to assign to in case we "
+"can't find a perfect fit for the new tickets.</p>"
+msgstr "<h2>Alapértelmezett kiosztás</h2><p>Annak ellenére, hogy a beépülő megpróbálja a hibajegyet a legkevésbé elfoglalt ügynökre rakni, tudnunk kell, hogy kire rakható , ha nincs optimális megoldás.</p>"
+
+#: includes/admin/class-admin-help.php:72
+#: includes/admin/settings/settings-general.php:35
+msgid "Allow Registrations"
+msgstr "Regisztráció engedélyezése"
+
+#: includes/admin/class-admin-help.php:73
+msgid ""
+"<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new "
+"registrations or not. By default, it doesn't. However, with closed "
+"registrations, this plugin becomes useless. This is why we added a separate "
+"setting to allow registrations. Users registering through Awesome Support "
+"will be given a specific role (<code>Support User</code>) with very limited "
+"privileges.</p><p>If you allow registrations through the plugin but not "
+"through WordPress, users will only be able to register through our "
+"registration form.</p>"
+msgstr "<h2>Regisztráció engedélyezése</h2><p>A Wordpress webhely vagy megengedi az ügyfelek regisztrációját, vagy nem. Alapesetben nem. Azonban a beépülő lezárt regisztrációval használhatatlan, ezért adjuk meg a lehetőségét a regisztráció engedélyezésére csak erre a beépülőre. Az Awesome Support-on keresztül regisztráló ügyfelek speciális jogosultságot kapnak (<code>Támogatási ügyfél</code>) limitált jogokkal.</p><p>Ha itt engedélyezed a regisztrációt, az ügyfelek csak a mi formunkon keresztül tudnak regisztrálni.</p>"
+
+#: includes/admin/class-admin-help.php:94
+#: includes/custom-fields/functions-custom-fields.php:184
+#: includes/custom-fields/functions-custom-fields.php:185
+msgid "Tag"
+msgstr "Címke"
+
+#: includes/admin/class-admin-help.php:94 themes/default/submission.php:64
+msgid "Description"
+msgstr "Leírás"
+
+#: includes/admin/class-admin-help.php:106
+msgid "General Settings"
+msgstr "Általános beállítások"
+
+#: includes/admin/class-admin-help.php:112
+msgid "Email Template Tags"
+msgstr "E-mail sablon címkék"
+
+#: includes/admin/class-admin-help.php:113
+msgid ""
+"<p>When setting up your e-mails templates, you can use a certain number of "
+"template tags allowing you to dynamically add ticket-related information at "
+"the moment the e-mail is sent. Here is the list of available tags:</p>%s"
+msgstr "<p>Amikor e-mail sablont készítesz, rengeteg címke áll rendelkezésedre, amik automatikusan belegenrálódnak az email-be. Az elérhető címkék:</p>%s"
+
+#: includes/admin/class-admin-help.php:133
+msgid "Custom Login Page"
+msgstr "Egyedi belépési oldal"
+
+#: includes/admin/class-admin-help.php:134
+msgid ""
+"<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to "
+"allow advanced users to create their own login / registration page. If you "
+"don't like our login form, you can replace it by your own.</p><p>To do so, "
+"create a new page containing the form (either with the use of a shortcode or"
+" a page template), then set this newly created page as the \"Custom Login / "
+"Registration Page\" in the setting below.</p><p><strong>Beware</strong>, "
+"setting a wrong page as the custom login page can either show a blank page "
+"or create an infinite loop.</p>"
+msgstr "<h2>Egyedi belépő oldal</h2><p>Ez a bállítás veszélyes lehet. Haladó felhasználók számára fenntartva, hogy létrehozhassanak saját belépő és regisztrációs oldalt.</p><p>Ehhez hozz létre egy új oldalt (vagy shortcode vagy oldal sablon használatával), aztán állítsd be ezt az oldalt, mint egyedi belépő / regisztrációs oldal.</p><p><strong>Figyelem</strong>, egy hibás oldal beállítása üres oldalhoz vagy végtelen ciklushoz vezethet!</p>"
+
+#: includes/admin/class-admin-tickets-list.php:99
+#: includes/admin/metaboxes/stakeholders.php:81
+#: includes/custom-fields/functions-custom-fields.php:173
+#: includes/functions-post.php:898
+msgid "Support Staff"
+msgstr "Támogatási csoport"
+
+#: includes/admin/class-admin-tickets-list.php:103
+msgid "Activity"
+msgstr "Aktivitás"
+
+#: includes/admin/class-admin-tickets-list.php:224
+msgid "Awaiting Support Reply"
+msgstr "Támogatási válaszra várakozik"
+
+#: includes/admin/class-admin-tickets-list.php:230
+msgid "Old"
+msgstr "Régi"
+
+#: includes/admin/class-admin-titan.php:88 includes/admin/class-admin.php:200
+#: includes/admin/class-admin.php:497
+msgid "Settings"
+msgstr "Beállítások"
+
+#: includes/admin/class-admin-titan.php:89
+msgid "Awesome Support Settings"
+msgstr "Awesome Support beállítások"
+
+#: includes/admin/class-admin-user.php:70
+msgid "Awesome Support Preferences"
+msgstr "Awesome Support tulajdonságok"
+
+#: includes/admin/class-admin-user.php:99
+msgid "Default"
+msgstr "Alapértelmezett"
+
+#: includes/admin/class-admin-user.php:100
+msgid "Stay on screen"
+msgstr "Maradj az oldalon"
+
+#: includes/admin/class-admin-user.php:101
+#: includes/admin/metaboxes/replies-form.php:86
+msgid "Back to list"
+msgstr "Vissza a listához"
+
+#: includes/admin/class-admin-user.php:102
+msgid "Always ask"
+msgstr "Mindig kérdezzen"
+
+#: includes/admin/class-admin-user.php:104
+msgid "Where do you want to go after replying to a ticket?"
+msgstr "Hova akarsz menni, miután megválaszoltál egy hibajegyet?"
+
+#: includes/admin/class-admin-user.php:130
+msgid "Can Be Assigned"
+msgstr "Hozzárendelhető"
+
+#: includes/admin/class-admin-user.php:133
+msgid "Yes"
+msgstr "Igen"
+
+#: includes/admin/class-admin-user.php:134
+msgid "Can the system assign new tickets to this user?"
+msgstr "Hozzárendelhet a rendszer új hibajegyeket ehhez a felhasználóhoz?"
+
+#: includes/admin/class-admin-user.php:211
+msgid "Auto-Assign"
+msgstr "Automatikus hozzárendelés"
+
+#: includes/admin/class-admin.php:389
+msgid "Are you sure you want to delete this reply?"
+msgstr "Biztos, hogy törölni akarod ezt a választ?"
+
+#: includes/admin/class-admin.php:389
+msgid ""
+"No instance of TinyMCE found. Please use wp_editor on this page at least "
+"once: http://codex.wordpress.org/Function_Reference/wp_editor"
+msgstr "Nincs TinyMCE telepítve. Kérlek használd a  wp_editor-t ezen az oldalon legalább egyszer: http://codex.wordpress.org/Function_Reference/wp_editor"
+
+#: includes/admin/class-admin.php:389
+msgid "You can't submit an empty reply"
+msgstr "A válaszüzenet nem lehet üres!"
+
+#: includes/admin/class-admin.php:412 includes/admin/class-admin.php:413
+msgid "My Tickets"
+msgstr "Saját hibajegyek"
+
+#: includes/admin/class-admin.php:432 includes/admin/class-admin.php:433
+msgid "Submit Ticket"
+msgstr "Hibajegy feladása"
+
+#: includes/admin/class-admin.php:522 includes/admin/metaboxes/details.php:82
+msgid "Close"
+msgstr "Lezárás"
+
+#: includes/admin/class-admin.php:524 includes/admin/metaboxes/details.php:80
+#: includes/custom-fields/class-custom-fields.php:522
+#: includes/functions-general.php:358 includes/functions-templating.php:772
+msgid "Open"
+msgstr "Nyitott"
+
+#: includes/admin/class-admin.php:549
+msgid "The ticket #%s has been (re)opened."
+msgstr "A #%s számú hibajegy (újra) megnyitva."
+
+#: includes/admin/class-admin.php:557
+msgid "The ticket #%s has been closed."
+msgstr "A #%s számú hibajegy lezárva."
+
+#: includes/admin/class-admin.php:595
+msgid ""
+"Will you be supporting multiple products on this support site? You can "
+"activate multi-products support now. <small>(This setting can be modified "
+"later)</small>"
+msgstr "Fogsz több terméket támogatni ezen az oldalon? Itt kapcsolhatod be a több termékes üzemmódot. <small>(A későbbiekben is megadható)</small>"
+
+#: includes/admin/class-admin.php:597
+msgid "Single Product"
+msgstr "Egy termék"
+
+#: includes/admin/class-admin.php:658 includes/functions-post.php:999
+msgid "Ticket state changed to %s"
+msgstr "A hibajegy új státusza: %s"
+
+#: includes/admin/class-admin.php:674
+msgid "Debugging Tools"
+msgstr "Hibakereső eszközök"
+
+#: includes/admin/class-admin.php:674 includes/admin/views/system-tools.php:64
+msgid "Tools"
+msgstr "Eszközök"
+
+#: includes/admin/class-admin.php:675
+msgid "Awesome Support Addons"
+msgstr "Awesome Support beépülők"
+
+#: includes/admin/class-admin.php:675
+msgid "Addons"
+msgstr "Beépülők"
+
+#: includes/admin/class-admin.php:676
+msgid "About Awesome Support"
+msgstr "Rólunk"
+
+#: includes/admin/class-admin.php:676
+msgid "About"
+msgstr "Rólunk"
+
+#: includes/admin/class-admin.php:886
+msgid "Ticket"
+msgstr "Hibajegy"
+
+#: includes/admin/class-admin.php:891
+msgid "Ticket Replies"
+msgstr "Válaszok"
+
+#: includes/admin/class-admin.php:896
+msgid "Details"
+msgstr "Részletek"
+
+#: includes/admin/class-admin.php:899
+msgid "Stakeholders"
+msgstr "Résztvevők"
+
+#: includes/admin/class-admin.php:905
+msgid "Custom Fields"
+msgstr "Egyedi mezők"
+
+#: includes/admin/class-admin.php:938
+msgid ""
+"An error occurred while registering this metabox. Please contact the "
+"support."
+msgstr "Hiba történt a metabox regisztrációjakor. Keresse a rendszergazdát."
+
+#: includes/admin/class-admin.php:944
+msgid ""
+"An error occured while loading this metabox. Please contact the support."
+msgstr "Hiba történt a metabox betöltésekor. Keresse a rendszergazdát."
+
+#: includes/admin/metaboxes/details.php:47
+msgid "Ticket status:"
+msgstr "Hibajegy státusza:"
+
+#: includes/admin/metaboxes/details.php:55
+msgid "Opened:"
+msgstr "Megnyitva:"
+
+#: includes/admin/metaboxes/details.php:55
+#: includes/admin/metaboxes/replies-history.php:33
+#: includes/admin/metaboxes/replies-published.php:46
+#: themes/default/details.php:51 themes/default/details.php:139
+#: themes/default/partials/ticket-origin.php:55
+msgid "%s ago"
+msgstr "%s"
+
+#: includes/admin/metaboxes/details.php:57
+msgid "Current state:"
+msgstr "Aktuális státusz:"
+
+#: includes/admin/metaboxes/details.php:78
+msgid "Re-open"
+msgstr "Újranyitás"
+
+#: includes/admin/metaboxes/details.php:93
+msgid "Updating"
+msgstr "Módosítás"
+
+#: includes/admin/metaboxes/details.php:94
+msgid "Update Ticket"
+msgstr "Hibajegy módosítása"
+
+#: includes/admin/metaboxes/details.php:97
+msgid "Creating"
+msgstr "Létrehozás"
+
+#: includes/admin/metaboxes/details.php:98
+msgid "Open Ticket"
+msgstr "Hibajegy nyitása"
+
+#: includes/admin/metaboxes/replies-form.php:73
+#: includes/admin/metaboxes/replies-form.php:80
+#: includes/admin/metaboxes/replies-form.php:89
+#: includes/functions-templating.php:474
+msgid "Reply"
+msgstr "Válasz"
+
+#: includes/admin/metaboxes/replies-form.php:85
+msgid "After Replying"
+msgstr "Válasz után"
+
+#: includes/admin/metaboxes/replies-form.php:87
+msgid "Stay on ticket screen"
+msgstr "Maradj a hibajegy oldalán"
+
+#: includes/admin/metaboxes/replies-form.php:96
+msgid "Reply & Close"
+msgstr "Válasz és bezárás"
+
+#: includes/admin/metaboxes/replies-published.php:40
+msgid "Unread"
+msgstr "Olvasatlan"
+
+#: includes/admin/metaboxes/replies-trashed.php:16
+msgid "This reply has been deleted by %s <em class=\"wpas-time\">%s ago.</em>"
+msgstr "A választ törölte %s <em class=\"wpas-time\">%s ezelőtt.</em>"
+
+#: includes/admin/metaboxes/replies.php:15
+msgid "Create Ticket"
+msgstr "Hibajegy létrehozása"
+
+#: includes/admin/metaboxes/replies.php:16
+msgid "Please save this ticket to reveal all options."
+msgstr "Kérjük mentsd el a hibajegyet az összes opció megjelenítéséhez."
+
+#: includes/admin/metaboxes/replies.php:58
+msgid "Anonymous"
+msgstr "Ismeretlen"
+
+#: includes/admin/metaboxes/replies.php:119
+msgid "Save changes"
+msgstr "Módosítások mentése"
+
+#: includes/admin/metaboxes/replies.php:120
+msgid "Cancel"
+msgstr "Mégse"
+
+#: includes/admin/metaboxes/replies.php:146
+msgid "Sorry, you don't have sufficient permissions to reply to tickets."
+msgstr "Sajnáljuk, de nincs jogosultságod hibajegyre válaszolni."
+
+#: includes/admin/metaboxes/replies.php:154
+msgid "Ticket is closed"
+msgstr "A hibajegy lezárva."
+
+#: includes/admin/metaboxes/replies.php:155
+msgid ""
+"This ticket has been closed. If you want to write a new reply to this "
+"ticket, you need to <a href=\"%s\">re-open it first</a>."
+msgstr "A hibajegy már lezárva. Ha válaszolni szeretnél erre a jegyre, <a href=\"%s\">először nyisd ki újra!</a>."
+
+#: includes/admin/metaboxes/stakeholders.php:31
+msgid "User was deleted"
+msgstr "A felhasználó törölve"
+
+#: includes/admin/metaboxes/stakeholders.php:61
+msgid "Ticket Creator"
+msgstr "Hibajegyet létrehozta"
+
+#: includes/admin/metaboxes/stakeholders.php:78
+msgid "This ticket has been raised by the user hereinabove."
+msgstr "A hibajegyet a fentebb található ügyfél hozta létre."
+
+#: includes/admin/metaboxes/stakeholders.php:99
+msgid "The above agent is currently responsible for this ticket."
+msgstr "A fenti ügynök felel ezért a hibajegyért."
+
+#: includes/admin/metaboxes/stakeholders.php:103
+msgid "CCs"
+msgstr "CC"
+
+#: includes/admin/metaboxes/stakeholders.php:105
+msgid ""
+"If you want to send a copy of the e-mails to another person, add the "
+"address(es) separated by a comma."
+msgstr "Ha szeretnél másolatot küldeni, az e-mail cím(ek)et vesszővel elválasztva sorold fel."
+
+#: includes/admin/settings/functions-settings.php:10
+msgid "None"
+msgstr "Nincs"
+
+#: includes/admin/settings/settings-advanced.php:13
+msgid "Advanced"
+msgstr "Speciális"
+
+#: includes/admin/settings/settings-advanced.php:16
+msgid "Custom Login / Registration Page"
+msgstr "Saját belépési / regisztrációs oldal"
+
+#: includes/admin/settings/settings-advanced.php:19
+msgid ""
+"Only use this option if you know how to create your own registration page, "
+"otherwise you might create an infinite redirect. If you need help on "
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
+msgstr "Csak abban az esetben hozz létre saját regisztrációs oldalt, ha tudod mit csinálsz. Ha segítségre van szükséged, olvasd el a <a href=\"%s\" target=\"_blank\">súgót</a>. "
+
+#: includes/admin/settings/settings-advanced.php:24
+msgid "Admins See All"
+msgstr "Az adminisztrátorok mindent látnak"
+
+#: includes/admin/settings/settings-advanced.php:27
+msgid ""
+"Administrators can see all tickets in the tickets list. If unchecked admins "
+"will only see tickets assigned to them."
+msgstr "Az adminisztrátorok hozzáférnek az összes hibajegyhez. Ha nincs kipipálva, az adminisztrátorok is csak a hozzájuk rendelt jegyeket látják."
+
+#: includes/admin/settings/settings-advanced.php:31
+msgid "Agent See All"
+msgstr "Ügynökök mindent látnak"
+
+#: includes/admin/settings/settings-advanced.php:34
+msgid ""
+"Agents can see all tickets in the tickets list. If unchecked agents will "
+"only see tickets assigned to them."
+msgstr "Az ügynökök hozzáférnek az összes hibajegyhez. Ha nincs kipipálva, az ügynökök csak a hozzájuk rendelt jegyeket látják."
+
+#: includes/admin/settings/settings-advanced.php:38
+msgid "Danger Zone"
+msgstr "Veszély zóna"
+
+#: includes/admin/settings/settings-advanced.php:42
+msgid "Delete Data"
+msgstr "Adatok törlése"
+
+#: includes/admin/settings/settings-advanced.php:46
+msgid "Delete ALL plugin data on uninstall? This cannot be undone."
+msgstr "Az ÖSSZES adat törlése a beépülő eltávolításakor? Ez a lépés nem visszavonható!"
+
+#: includes/admin/settings/settings-general.php:17
+msgid "General"
+msgstr "Általános"
+
+#: includes/admin/settings/settings-general.php:23
+msgid ""
+"If you need to provide support for multiple products, please enable this "
+"option. You will then be able to add your products."
+msgstr "Ha több termék támogatható, jelöld be ezt a lehetőséget, utána megadhatod a termékek listáját."
+
+#: includes/admin/settings/settings-general.php:30
+msgid ""
+"Who to assign tickets to in the case that auto-assignment wouldn&#039;t "
+"work. This does NOT mean that all tickets will be assigned to this user. "
+"This is a fallback option. To enable/disable auto assignment for an agent, "
+"please do so in the user profile settings."
+msgstr "Az a személy, akire a hibajegy kerül, ha az automatikus hozzárendelés nem működik. Ez nem azt jelenti, hogy MINDEN jegy az adott személyhez lesz rendelve. Ez egy tartalék beállítás. Az automatikus hozzárendelés ki/bekapcsolásához egy ügynökön, a felhasználói profilon keresztül lehetséges."
+
+#: includes/admin/settings/settings-general.php:38
+msgid ""
+"Allow users to register on the support page. This setting can be enabled "
+"even though the WordPress setting is disabled. Currently, registrations are "
+"%s by WordPress."
+msgstr "Felhasználói regisztráció engedélyezése a támogatási oldalon. A beállítás akkor is bekapcsolható, ha a Wordpress regisztráció nem engedélyezett, ami pillanatnyilag: %s."
+
+#: includes/admin/settings/settings-general.php:41
+msgid "Allow registrations"
+msgstr "Regisztráció engedélyezése"
+
+#: includes/admin/settings/settings-general.php:42
+msgid "Disallow registrations"
+msgstr "A regisztráció tiltása"
+
+#: includes/admin/settings/settings-general.php:43
+msgid "Disallow registrations without notice (just show the login form)"
+msgstr "A regisztráció tiltása üzenet nélkül (csak a bejelentkező form megjelenítése)"
+
+#: includes/admin/settings/settings-general.php:47
+msgid "Replies Order"
+msgstr "Válaszok sorrendje"
+
+#: includes/admin/settings/settings-general.php:50
+msgid ""
+"In which order should the replies be displayed (for both client and admin "
+"side)?"
+msgstr "Milyen sorrendben jelenjenek meg a válaszok (mind a kliens mind az adminisztrációs oldalon)?"
+
+#: includes/admin/settings/settings-general.php:51
+msgid "Old to New"
+msgstr "Régi elöl"
+
+#: includes/admin/settings/settings-general.php:51
+msgid "New to Old"
+msgstr "Új elöl"
+
+#: includes/admin/settings/settings-general.php:55
+msgid "Replies Per Page"
+msgstr "Válaszok száma oldalanként"
+
+#: includes/admin/settings/settings-general.php:59
+msgid ""
+"How many replies should be displayed per page on a ticket details screen?"
+msgstr "Mennyi válasz jelenjen meg a hibajegy részleteinél oldalanként?"
+
+#: includes/admin/settings/settings-general.php:62
+msgid "Hide Closed"
+msgstr "Lezártak elrejtése"
+
+#: includes/admin/settings/settings-general.php:65
+msgid "Only show open tickets when clicking the \"All Tickets\" link."
+msgstr "Csak a nyitott hibajegyek megjelenítése az \"Összes jegy\" linkre kattintáskor."
+
+#: includes/admin/settings/settings-general.php:69
+msgid "Show Count"
+msgstr "Darabszám megjelenítése"
+
+#: includes/admin/settings/settings-general.php:72
+msgid "Display the number of open tickets in the admin menu."
+msgstr "A nyitott hibajegyek számának megjelenítése az adminisztrációs felületen."
+
+#: includes/admin/settings/settings-general.php:76
+msgid "Old Tickets"
+msgstr "Régi hibajegyek"
+
+#: includes/admin/settings/settings-general.php:80
+msgid "After how many days should a ticket be considered &laquo;old&raquo;?"
+msgstr "Hány nap múlva minősül egy hibajegy &laquo;réginek&raquo;?"
+
+#: includes/admin/settings/settings-general.php:83
+msgid "Plugin Pages"
+msgstr "Beépülő oldalak"
+
+#: includes/admin/settings/settings-general.php:87
+msgid "Ticket Submission"
+msgstr "Hibajegy felvétele"
+
+#: includes/admin/settings/settings-general.php:91
+msgid ""
+"The page used for ticket submission. This page should contain the shortcode "
+"%s"
+msgstr "Oldal a hibajegyek felvételére. Az oldalnak tartalmaznia kell a %s shortcode-ot."
+
+#: includes/admin/settings/settings-general.php:96
+msgid "Tickets List"
+msgstr "Hibajegyek listája"
+
+#: includes/admin/settings/settings-general.php:100
+msgid ""
+"The page that will list all tickets for a client. This page should contain "
+"the shortcode %s"
+msgstr "Oldal az ügyfél által nyitott hibajegyekre. Az oldalnak tartalmaznia kell a %s shortcode-ot."
+
+#: includes/admin/settings/settings-general.php:105
+msgid "Terms & Conditions"
+msgstr "Felhasználási feltételek"
+
+#: includes/admin/settings/settings-general.php:109
+#: includes/admin/settings/settings-notifications.php:56
+#: includes/admin/settings/settings-notifications.php:81
+#: includes/admin/settings/settings-notifications.php:106
+#: includes/admin/settings/settings-notifications.php:131
+#: includes/admin/settings/settings-notifications.php:181
+msgid "Content"
+msgstr "Tartalom"
+
+#: includes/admin/settings/settings-general.php:113
+msgid ""
+"Terms & conditions are not mandatory. If you add terms, a mandatory checkbox"
+" will be added in the registration form. Users won't be able to register if "
+"they don't accept your terms"
+msgstr "Felhasználási feltételek megadása nem kötelező. Ha  megadod a szöveget, akkor egy kötelező jelölő mező kerül elhelyezésre a regisztrációs oldalon, amelyet minden felhasználónak ki kell pipálnia."
+
+#: includes/admin/settings/settings-general.php:117
+msgid "Credit"
+msgstr "Készítők"
+
+#: includes/admin/settings/settings-general.php:121
+msgid "Show Credit"
+msgstr "Készítők megjelenítése"
+
+#: includes/admin/settings/settings-general.php:124
+msgid ""
+"Do you like this plugin? Please help us spread the word by displaying a "
+"credit link at the bottom of your ticket submission page."
+msgstr "Tetszik ez a beépülő modul?  Kérjük segítsd munkánkat azzal, hogy elhelyezed a készítők linkjét a hibajegy oldal alján!"
+
+#: includes/admin/settings/settings-licenses.php:19
+msgid "Licenses"
+msgstr "Licenszek"
+
+#: includes/admin/settings/settings-notifications.php:13
+msgid "E-Mails"
+msgstr "E-mailek"
+
+#: includes/admin/settings/settings-notifications.php:17
+msgid ""
+"For more information about the template tags that can be used in e-mail "
+"templates please click the &laquo;Help&raquo; button in the top right hand "
+"corner of this screen."
+msgstr "A sablon címkék használatával kapcsolatban kattints a  &laquo;Súgó&raquo; gombra az oldal jobb felső sarkában."
+
+#: includes/admin/settings/settings-notifications.php:20
+msgid "Sender Name"
+msgstr "Küldő neve"
+
+#: includes/admin/settings/settings-notifications.php:26
+msgid "Sender E-Mail"
+msgstr "Küldő e-mail címe"
+
+#: includes/admin/settings/settings-notifications.php:32
+msgid "Reply-To E-Mail"
+msgstr "Válasz e-mail cím"
+
+#: includes/admin/settings/settings-notifications.php:39
+msgid "Submission Confirmation"
+msgstr "Feladás jóváhagyása"
+
+#: includes/admin/settings/settings-notifications.php:43
+#: includes/admin/settings/settings-notifications.php:68
+#: includes/admin/settings/settings-notifications.php:93
+#: includes/admin/settings/settings-notifications.php:118
+#: includes/admin/settings/settings-notifications.php:168
+msgid "Enable"
+msgstr "Engedélyezett"
+
+#: includes/admin/settings/settings-notifications.php:47
+#: includes/admin/settings/settings-notifications.php:72
+#: includes/admin/settings/settings-notifications.php:97
+#: includes/admin/settings/settings-notifications.php:122
+#: includes/admin/settings/settings-notifications.php:172
+msgid "Do you want to activate this e-mail template?"
+msgstr "Akarod aktiválni ezt az e-mail sablont?"
+
+#: includes/admin/settings/settings-notifications.php:50
+#: includes/admin/settings/settings-notifications.php:75
+#: includes/admin/settings/settings-notifications.php:100
+#: includes/admin/settings/settings-notifications.php:125
+#: includes/admin/settings/settings-notifications.php:175
+#: themes/default/submission.php:35
+msgid "Subject"
+msgstr "Tárgy"
+
+#: includes/admin/settings/settings-notifications.php:53
+msgid "Request received: {ticket_title}"
+msgstr "Hibajegy befogadva: {ticket_title}"
+
+#: includes/admin/settings/settings-notifications.php:64
+msgid "New Assignment"
+msgstr "Új hozzárendelés"
+
+#: includes/admin/settings/settings-notifications.php:78
+msgid "Ticket #{ticket_id} assigned"
+msgstr "#{ticket_id} számú hibajegy kiosztva"
+
+#: includes/admin/settings/settings-notifications.php:89
+msgid "New Reply from Agent"
+msgstr "Válasz az ügynöktől"
+
+#: includes/admin/settings/settings-notifications.php:103
+msgid "New reply to: {ticket_title}"
+msgstr "Új válasz a hibajegyre: {ticket_title}"
+
+#: includes/admin/settings/settings-notifications.php:114
+msgid "New Reply from Client"
+msgstr "Új válasz az ügyféltől"
+
+#: includes/admin/settings/settings-notifications.php:128
+msgid "Ticket #{ticket_id}"
+msgstr "#{ticket_id} számú hibajegy"
+
+#: includes/admin/settings/settings-notifications.php:139
+msgid "Ticket Will Be Closed"
+msgstr "A hibajegy lezárásra kerül"
+
+#: includes/admin/settings/settings-notifications.php:164
+msgid "Ticket Closed"
+msgstr "A hibajegy lezárva"
+
+#: includes/admin/settings/settings-notifications.php:178
+msgid "Request closed: {ticket_title}"
+msgstr "Hibajegy lezárva: {ticket_title}"
+
+#: includes/admin/settings/settings-style.php:13
+msgid "Style"
+msgstr "Stílus"
+
+#: includes/admin/settings/settings-style.php:16
+msgid "Theme"
+msgstr "Téma"
+
+#: includes/admin/settings/settings-style.php:19
+msgid "Which theme to use for the front-end."
+msgstr "Melyik téma legyen használva a publikus oldalon?"
+
+#: includes/admin/settings/settings-style.php:24
+msgid "Theme Stylesheet"
+msgstr "Téma stíluslap"
+
+#: includes/admin/settings/settings-style.php:27
+msgid ""
+"Load the theme stylesheet. Don't uncheck if you don't know what this means"
+msgstr "A téma stíluslap betöltése. Ne jelöld be, ha nem tudod, hogy mit jelent."
+
+#: includes/admin/settings/settings-style.php:31
+msgid "Use editor in front-end"
+msgstr "Szövegszerkesztő használata a publikus lapon."
+
+#: includes/admin/settings/settings-style.php:34
+msgid ""
+"Show a editor editor for the ticket description when user submits a ticket."
+msgstr "Szövegszerkesztő megjelenítése a hibajegy feladásakor az ügyfélnek."
+
+#: includes/admin/settings/settings-style.php:38
+msgid "Colors"
+msgstr "Színek"
+
+#: includes/admin/settings/settings-style.php:42
+msgid "Open Status"
+msgstr "Nyitott státusz"
+
+#: includes/admin/settings/settings-style.php:48
+msgid "Closed Status"
+msgstr "Lezárt státusz"
+
+#: includes/admin/settings/settings-style.php:54
+msgid "Old Status"
+msgstr "Régi státusz"
+
+#: includes/admin/settings/settings-style.php:60
+msgid "Awaiting Reply"
+msgstr "Válaszra vár"
+
+#: includes/admin/views/status.php:4
+msgid "System Status"
+msgstr "Rendszerállapot"
+
+#: includes/admin/views/status.php:5
+msgid "Cleanup"
+msgstr "Tisztítás"
+
+#: includes/admin/views/system-tools.php:34
+msgid "Tickets metas were cleared"
+msgstr "Hibajegy meta-k kititsztítva."
+
+#: includes/admin/views/system-tools.php:38
+msgid "Agents metas were cleared"
+msgstr "Ügynök meta-k kititsztítva"
+
+#: includes/admin/views/system-tools.php:42
+msgid "All custom taxonomies terms were cleared"
+msgstr "Az összes egyedi taxonómia kititsztítva."
+
+#: includes/admin/views/system-tools.php:46
+msgid "All products have been re-synchronized"
+msgstr "Az összes termék újraszinkronizálva."
+
+#: includes/admin/views/system-tools.php:50
+msgid "All products have been deleted"
+msgstr "Az összes termék törölve"
+
+#: includes/admin/views/system-tools.php:60
+msgid ""
+"These tool are intended for advanced users or for use on the support staff "
+"request. Be aware that some of these tools can definitively erase data."
+msgstr "Az alábbi eszközök csak haladó felhasznóknak ajánlottak a support csapa kérésére. Egyes funkciók adatot törölhetnek!"
+
+#: includes/admin/views/system-tools.php:70
+msgid "Tickets Metas"
+msgstr "Hibajegy meta-k"
+
+#: includes/admin/views/system-tools.php:72
+#: includes/admin/views/system-tools.php:79
+#: includes/admin/views/system-tools.php:86
+msgid "Clear"
+msgstr "Tisztítás"
+
+#: includes/admin/views/system-tools.php:73
+msgid "Clear all transients for all tickets."
+msgstr "A hibajegyekre vonatkozó státuszváltások törlése"
+
+#: includes/admin/views/system-tools.php:77
+msgid "Agents Metas"
+msgstr "Ügynök meta-k"
+
+#: includes/admin/views/system-tools.php:80
+msgid "Clear all agents metas."
+msgstr "Az összes ügynök meta tisztítása"
+
+#: includes/admin/views/system-tools.php:84
+msgid "Custom Taxonomies"
+msgstr "Egyedi taxonómiák"
+
+#: includes/admin/views/system-tools.php:87
+msgid "Clear all terms from all custom taxonomies."
+msgstr "Az összes kifejezés törlése az összes egyedi taxonómiából. "
+
+#: includes/class-agent.php:56
+msgid "The user with ID %d does not exist"
+msgstr "A %d ID-jú felhasználó nem található"
+
+#: includes/class-agent.php:60
+msgid "The user exists but is not a support agent"
+msgstr "A felhasználó létezik, de nem ügynök"
+
+#: includes/class-awesome-support.php:184
+msgid ""
+"The authenticity of your submission could not be validated. If this ticket "
+"is legitimate please try submitting again."
+msgstr "A kérés jogosságát nem lehetett megállapítani. Amennyiben a hibajegy érvényes, kérem ismételten próbálja meg elküldeni."
+
+#: includes/class-awesome-support.php:200
+msgid "The ticket couldn't be submitted for an unknown reason."
+msgstr "A hibajegy ismeretlen okból nem menthető"
+
+#: includes/class-awesome-support.php:238
+msgid ""
+"Something went wrong. We couldn&#039;t identify your ticket. Please try "
+"again."
+msgstr "Valami félresikerült. Nem találjuk a megadott hibajegyet. Kérjük, próbálja újra!"
+
+#: includes/class-awesome-support.php:263
+msgid "The ticket was successfully closed"
+msgstr "A hibajegy sikeresen lezárva."
+
+#: includes/class-awesome-support.php:273
+msgid "Your reply could not be submitted for an unknown reason."
+msgstr "A válasz ismeretlen okból nem menthető"
+
+#: includes/class-awesome-support.php:279
+msgid "Thanks for your reply. The ticket is now closed."
+msgstr "Köszönjük válaszát. A hibajegy lezárva."
+
+#: includes/class-awesome-support.php:281
+msgid "Your reply has been submitted. Your agent will reply ASAP."
+msgstr "A válasz sikeresen mentve. Munkatársunk hamarosan jelentkezik."
+
+#: includes/class-awesome-support.php:378
+msgid "You are not allowed to re-open this ticket"
+msgstr "Nincs jogosultságod a hibajegy újranyitásához."
+
+#: includes/class-awesome-support.php:384
+msgid "The ticket has been successfully re-opened."
+msgstr "A hibajegy sikeresen újranyitva."
+
+#: includes/class-awesome-support.php:565
+msgid "Support Supervisor"
+msgstr "Támogatási supervisor"
+
+#: includes/class-awesome-support.php:566
+msgid "Support Manager"
+msgstr "Támogatási menedzser"
+
+#: includes/class-awesome-support.php:567
+msgid "Support Agent"
+msgstr "Támogatási ügynök"
+
+#: includes/class-awesome-support.php:568
+msgid "Support User"
+msgstr "Ügyfél"
+
+#: includes/class-awesome-support.php:754
+msgid "The following file(s) are too big to be uploaded:"
+msgstr "A következő állomány(ok) túl nagy(ok) a feltöltéshez:"
+
+#: includes/class-awesome-support.php:755
+msgid "The maximum file size allowed for one file is %d MB"
+msgstr "Az állomány mérete maximum %d MB lehet"
+
+#: includes/class-awesome-support.php:918
+msgid "I accept the %sterms and conditions%s"
+msgstr "Elfogadom a %sterms and conditions%s-t"
+
+#: includes/class-awesome-support.php:966
+msgid "Open tickets assigned to you"
+msgstr "A nyitott hibajegyek hozzád rendelve."
+
+#: includes/class-awesome-support.php:1026
+msgid "Did you mean %s"
+msgstr "Úgy érted: %s"
+
+#: includes/class-email-notifications.php:48
+msgid "The post ID provided does not match any of the plugin post types"
+msgstr "Az átadott post ID egyetlen post típusra sem illeszkedik"
+
+#: includes/class-email-notifications.php:282
+msgid "Converts into ticket ID"
+msgstr "Konvertálás hibajegy ID-vá"
+
+#: includes/class-email-notifications.php:286
+msgid "Converts into website name"
+msgstr "Konvertálás weboldal névvé"
+
+#: includes/class-email-notifications.php:290
+msgid "Converts into agent name"
+msgstr "Konvertálás ügynök névvé"
+
+#: includes/class-email-notifications.php:294
+msgid "Converts into agent e-mail address"
+msgstr "Konvertálás ügynök email címmé"
+
+#: includes/class-email-notifications.php:298
+msgid "Converts into client name"
+msgstr "Konvertálás kliens névvé"
+
+#: includes/class-email-notifications.php:302
+msgid "Converts into client e-mail address"
+msgstr "Konvertálás kliens e-mail címmé"
+
+#: includes/class-email-notifications.php:306
+msgid "Converts into current ticket title"
+msgstr "Konvertálás hibajegy címmé"
+
+#: includes/class-email-notifications.php:310
+msgid "Displays a link to public ticket"
+msgstr "Link megjelenítése publikus hibajegyre"
+
+#: includes/class-email-notifications.php:314
+msgid ""
+"Displays the URL <strong>only</strong> (not a link link) to public ticket"
+msgstr "<strong>Csak</strong> az URL megjelenítése (nem linkelve) a publikus hibajegyre"
+
+#: includes/class-email-notifications.php:318
+msgid "Displays a link to ticket details in admin (for agents)"
+msgstr "Hibajegy részletekre mutató link megjelenítése (ügynököknek)"
+
+#: includes/class-email-notifications.php:322
+msgid ""
+"Displays the URL <strong>only</strong> (not a link link) to ticket details "
+"in admin (for agents)"
+msgstr "<strong>Csak</strong> az URL megjelenítése (nem linkelve) a hibajegy részleteire (ügynököknek)"
+
+#: includes/class-email-notifications.php:326
+msgid "Converts into current date"
+msgstr "Konvertálás aktuális dátummá"
+
+#: includes/class-email-notifications.php:330
+msgid "Converts into WordPress admin e-mail (<em>currently: %s</em>)"
+msgstr "Konvertálás WordPress admin e-mail-é (<em>aktuálisan: %s</em>)"
+
+#: includes/class-email-notifications.php:334
+msgid "Converts into ticket content or reply content"
+msgstr "Konvertálás hibajegy vagy válasz tartalommá"
+
+#: includes/class-email-notifications.php:557
+msgid "The requested notification does not exist"
+msgstr "A kért értesítés nem létezik"
+
+#: includes/class-email-notifications.php:564
+msgid "The requested notification is disabled"
+msgstr "A kért értesítés inaktív"
+
+#: includes/class-gist.php:106
+msgid "View the code on <a href=\"%s\">Gist</a>."
+msgstr "A kód megjelenítés <a href=\"%s\">Gist</a>-en."
+
+#: includes/class-mailgun-email-check.php:40
+msgid "E-Mail Checking"
+msgstr "E-mail ellenőrzés"
+
+#: includes/class-mailgun-email-check.php:46
+msgid ""
+"You can enable e-mail checking on the registration page. When enabled, the "
+"plugin will make sure the e-mail address used is valid and can receive "
+"e-mails. The verification is done using <a href=\"%s\">Email validation "
+"API</a> and requires a (free) MailGun account. This helps reducing typos in "
+"email addresses during sign ups."
+msgstr "Beállíthatod az e-mail ellenőrzést a regisztrációs oldalon. Ha be van kapcsolva a beépülő ellenőrizni fogja, hogy az adott e-mail cím fogad-e leveleket. Az ellenőrzést az <a href=\"%s\">E-mail validation API</a> végzi az (ingyenes) MailGun account-on keresztül."
+
+#: includes/class-mailgun-email-check.php:52
+msgid "Enable E-Mail Checking"
+msgstr "E-mail ellenőrzés engedélyezése"
+
+#: includes/class-mailgun-email-check.php:56
+msgid "Do you want to check e-mail addresses on new registrations?"
+msgstr "E-mail cím ellenőrzése új regisztrációkor?"
+
+#: includes/class-mailgun-email-check.php:61
+msgid "MailGun Public API Key"
+msgstr "MailGun Public API kulcs"
+
+#: includes/class-mailgun-email-check.php:65
+msgid ""
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
+msgstr "Ha nincs MailGun account-od, <a href=\"%s\" target=\"_blank\">ingyen létrehozhatsz egyet</a>."
+
+#: includes/class-mailgun-email-check.php:76
+msgid "No API key was provided"
+msgstr "Nincs API kulcs megadva"
+
+#: includes/class-mailgun-email-check.php:83
+msgid "No data to check"
+msgstr "Nincs ellenőrizhető adat"
+
+#: includes/class-mailgun-email-check.php:88
+msgid "No e-mail to check"
+msgstr "Nincs ellenőrizhető e-mail"
+
+#: includes/class-post-type.php:72
+msgid "Add New Ticket"
+msgstr "Új hibajegy létrehozása"
+
+#: includes/class-post-type.php:73
+msgid "New Ticket"
+msgstr "Új hibajegy"
+
+#: includes/class-post-type.php:74
+msgid "Edit Ticket"
+msgstr "Hibajegy szerkesztése"
+
+#: includes/class-post-type.php:75
+msgid "View Ticket"
+msgstr "Hibajegy megtekintése"
+
+#: includes/class-post-type.php:76
+msgid "All Tickets"
+msgstr "Összes hibajegy"
+
+#: includes/class-post-type.php:77
+msgid "Search Tickets"
+msgstr "Hibajegy kersése"
+
+#: includes/class-post-type.php:78
+msgid "Parent Ticket:"
+msgstr "Szülő hibajegy"
+
+#: includes/class-post-type.php:79
+msgid "No tickets found."
+msgstr "Nincsenek hibajegyek"
+
+#: includes/class-post-type.php:80
+msgid "No tickets found in Trash."
+msgstr "Nincs hibajegy a szemetesben"
+
+#: includes/class-post-type.php:143 includes/class-post-type.php:146
+msgid "Ticket updated."
+msgstr "Hibajegy módosítva"
+
+#: includes/class-post-type.php:144
+msgid "Custom field updated."
+msgstr "Egyedi mező módosítva"
+
+#: includes/class-post-type.php:145
+msgid "Custom field deleted."
+msgstr "Egyedi mező törölve"
+
+#. translators: %s: date and time of the revision
+#: includes/class-post-type.php:148
+msgid "Ticket restored to revision from %s"
+msgstr "Hibajegy visszaállítva %s verziótól"
+
+#: includes/class-post-type.php:149
+msgid "Ticket published."
+msgstr "Hibajegy publikálva"
+
+#: includes/class-post-type.php:150
+msgid "Ticket saved."
+msgstr "Hibajegy mentve"
+
+#: includes/class-post-type.php:151
+msgid "Ticket submitted."
+msgstr "Hibajegy befogadva"
+
+#: includes/class-post-type.php:153
+msgid "Ticket scheduled for: <strong>%1$s</strong>."
+msgstr "Hibajegy időzítve: <strong>%1$s</strong>."
+
+#. translators: Publish box date format, see http:php.net/date
+#: includes/class-post-type.php:155
+msgid "M j, Y @ G:i"
+msgstr "M j, Y @ G:i"
+
+#: includes/class-post-type.php:157
+msgid "Ticket draft updated."
+msgstr "Piszkozat módosítva."
+
+#: includes/class-post-type.php:163
+msgid "View ticket"
+msgstr "Hibajegy megtekintése"
+
+#: includes/class-post-type.php:169
+msgid "Preview ticket"
+msgstr "Hibajegy előnézet"
+
+#: includes/class-product-sync.php:766 includes/class-product-sync.php:788
+msgid ""
+"You cannot edit this term from here because it is linked to a post (of the "
+"%s post type). Please edit the post directly instead."
+msgstr "Az adott kifejezés nem szerkeszthető, mert egy bejegyzésre (%s bejegyzés típus) mutat. Kérjük, a bejegyzést szerkeszd közvetlenül."
+
+#: includes/class-product-sync.php:791
+msgid "Term Locked"
+msgstr "Kifejezés zárolva"
+
+#: includes/class-product-sync.php:851
+msgid "Re-Synchronize Products"
+msgstr "Termékek újraszinkronizálása"
+
+#: includes/class-product-sync.php:854
+msgid "Resync"
+msgstr "Újraszinkronizálás"
+
+#: includes/class-product-sync.php:856
+msgid "Re-synchronize all products from your e-commerce plugin."
+msgstr "Termékek újraszinkronizálása az e-commerce beépülővel."
+
+#: includes/class-product-sync.php:868
+msgid "Delete Products"
+msgstr "Termékek törlése"
+
+#: includes/class-product-sync.php:871
+msgid "Delete"
+msgstr "Törlés"
+
+#: includes/class-product-sync.php:873
+msgid "Delete all products synchronized from your e-commerce plugin."
+msgstr "Az összes e-commerce beépülővel szinronizált termék törlése"
+
+#: includes/class-remote-notification-client.php:193
+msgid "The server response was invalid (code %s)"
+msgstr "A szerver válasza érvénytelen (kód %s)"
+
+#: includes/class-remote-notification-client.php:199
+msgid "The server response is empty"
+msgstr "A szerver válasza üres"
+
+#: includes/class-remote-notification-client.php:205
+msgid "Cannot decode the response content"
+msgstr "A válasz tartalma dekódolhatatlan"
+
+#: includes/class-remote-notification-client.php:441
+msgid "Dismiss notification"
+msgstr "Érteístés figyelmen kívül hagyása"
+
+#: includes/class-remote-notification-client.php:443
+msgid "Dismiss"
+msgstr "Figyelmen kívül hagyás"
+
+#: includes/class-wpas-editor-ajax.php:102
+msgid "An editor ID is mandatory to load a new instance of TinyMCE"
+msgstr "Egy editor ID kötelező egy új TinyMCE példány betöltéséhez"
+
+#: includes/custom-fields/class-custom-field.php:401
+msgid "The custom field class does not contain the mandatory method \"display\""
+msgstr "Az egyedi mezőosztály nem tartalmazza a kötelező \"display\" metódust"
+
+#: includes/custom-fields/class-custom-field.php:409
+msgid "The type of custom field you are trying to use does not exist"
+msgstr "Az egyedi mező amit használni próbálsz nem létezik"
+
+#: includes/custom-fields/class-custom-fields.php:93
+msgid "Please use %s to register your custom field type"
+msgstr "Kérlek a %s-t használd a saját mezőtípus bejegyzéséhez"
+
+#: includes/custom-fields/class-custom-fields.php:163
+msgid "Search %s"
+msgstr "Keresés: %s"
+
+#: includes/custom-fields/class-custom-fields.php:164
+msgid "All %s"
+msgstr "Összes %s"
+
+#: includes/custom-fields/class-custom-fields.php:165
+msgid "Parent %s"
+msgstr "Szülő %s"
+
+#: includes/custom-fields/class-custom-fields.php:167
+msgid "Edit %s"
+msgstr "Szerkesztés %s"
+
+#: includes/custom-fields/class-custom-fields.php:168
+msgid "Update %s"
+msgstr "Módosítás %s"
+
+#: includes/custom-fields/class-custom-fields.php:169
+msgid "Add New %s"
+msgstr "Új %s"
+
+#: includes/custom-fields/class-custom-fields.php:521
+msgid "Any Status"
+msgstr "Összes státusz"
+
+#: includes/custom-fields/class-custom-fields.php:523
+#: includes/functions-general.php:350 includes/functions-templating.php:762
+msgid "Closed"
+msgstr "Lezárt"
+
+#: includes/custom-fields/class-custom-fields.php:936
+#: includes/custom-fields/class-custom-fields.php:938
+msgid "The field %s is required."
+msgstr "A %s mező kitöltése kötelező."
+
+#: includes/custom-fields/field-types/class-cf-taxonomy.php:63
+#: includes/functions-general.php:521
+msgid "Please select"
+msgstr "Kérjük válasszon"
+
+#: includes/custom-fields/functions-custom-fields.php:186
+msgid "Tags"
+msgstr "Címkék"
+
+#: includes/custom-fields/functions-custom-fields.php:200
+#: includes/custom-fields/functions-custom-fields.php:201
+msgid "Product"
+msgstr "Termék"
+
+#: includes/custom-fields/functions-custom-fields.php:202
+msgid "Products"
+msgstr "Termékek"
+
+#: includes/file-uploader/class-file-uploader.php:162
+msgid "The file you requested is not a valid attachment"
+msgstr "Az állomány nem egy valós csatolmány."
+
+#: includes/file-uploader/class-file-uploader.php:166
+msgid "The attachment you requested is not attached to any ticket"
+msgstr "A csatolmány nincs hozzákapcsolva egyetlen hibajegyhez sem."
+
+#: includes/file-uploader/class-file-uploader.php:173
+msgid "You are not allowed to view this attachment"
+msgstr "Nincs jogod a csatolmány megtekintéséhez."
+
+#: includes/file-uploader/class-file-uploader.php:341
+msgid "Attachments"
+msgstr "Csatolmányok"
+
+#: includes/file-uploader/class-file-uploader.php:342
+msgid ""
+" You can upload up to %d files (maximum %d MB each) of the following types: "
+"%s"
+msgstr " %d állományt tölthetsz fel (maximum %d MB darabonként) a következő típusokból: %s"
+
+#: includes/file-uploader/class-file-uploader.php:441
+msgid "Attachments:"
+msgstr "Csatolmányok:"
+
+#: includes/file-uploader/class-file-uploader.php:607
+msgid ""
+"Your reply has been correctly submitted but the attachment was not uploaded."
+" %s"
+msgstr "Az üzenet mentése sikeres, de a csatolmány feltöltése sikertelen. %s"
+
+#: includes/file-uploader/class-file-uploader.php:674
+msgid "You are not allowed to upload files of this type (%s)"
+msgstr "Az állomány típus (%s) nem feltölthető."
+
+#: includes/file-uploader/class-file-uploader.php:678
+msgid "You cannot upload empty attachments. You attachments weights 0 bytes"
+msgstr "A feltöltött állomány mérete 0 byte."
+
+#: includes/file-uploader/class-file-uploader.php:682
+msgid "Your attachment is too big. You are allowed to attach files up to %s"
+msgstr "Az állomány mérete túl nagy. A maximálisan feltölthető méret %s"
+
+#: includes/file-uploader/settings-file-upload.php:13
+msgid "File Upload"
+msgstr "Állomány feltöltés"
+
+#: includes/file-uploader/settings-file-upload.php:16
+msgid "Enable File Upload"
+msgstr "Állomány feltöltés engedélyezése"
+
+#: includes/file-uploader/settings-file-upload.php:20
+msgid ""
+"Do you want to allow your users (and agents) to upload attachments to "
+"tickets and replies?"
+msgstr "Az állomány feltöltés engedélyezése az ügyfelek (és ügynökök) részére?"
+
+#: includes/file-uploader/settings-file-upload.php:23
+msgid "Maximum Files"
+msgstr "Állományok maximális száma"
+
+#: includes/file-uploader/settings-file-upload.php:27
+msgid "How many files can a user attach to a ticket or a reply?"
+msgstr "Maximálisan hány csatolmány tölthető fel?"
+
+#: includes/file-uploader/settings-file-upload.php:30
+msgid "Maximum File Size"
+msgstr "Maximális állomány méret"
+
+#: includes/file-uploader/settings-file-upload.php:34
+msgid ""
+"What is the maximum size allowed for one file (in <code>MB</code>)? Your "
+"server allows up to %s"
+msgstr "Mekkora egy feltölthető állomány maximális mérete (in <code>MB</code>)? A szerver ennyit engedélyez: %s"
+
+#: includes/file-uploader/settings-file-upload.php:37
+msgid "Allowed Files Types"
+msgstr "Engedélyezett állomány típusok"
+
+#: includes/file-uploader/settings-file-upload.php:41
+msgid ""
+"Which file types do you allow your users to attach? Please separate each "
+"extension by a comma (%s)"
+msgstr "Milyen fájltípusok engedélyezettek? A kiterjesztéseket vesszővel elválasztva add meg (%s)"
+
+#: includes/functions-addons.php:74
+msgid "An addon with the ID %s is already registered"
+msgstr "Egy addon már létezik %s ID-val"
+
+#: includes/functions-deprecated.php:140
+msgid "Describe your problem as accurately as possible"
+msgstr "Kérjük, részletesen írja le a problémát"
+
+#: includes/functions-general.php:288
+msgid "Submit"
+msgstr "Elküld"
+
+#: includes/functions-general.php:451
+msgid ""
+"Awesome Support dependencies are missing. The plugin can’t be loaded "
+"properly. Please run %s before anything else. If you don’t know what this is"
+" you should <a href=\"%s\" class=\"thickbox\">install the production "
+"version</a> of this plugin instead."
+msgstr "Awesome Support függőségek hiányoznak. A beépülő nem tölthető be. Mielőtt továbbmenne, kérjük futtassa: %s. Ha nem tudja mi ez, inkább <a href=\"%s\" class=\"thickbox\">telepítse a plugin stabil verzióját</a> "
+
+#: includes/functions-post.php:33
+msgid "You do not have the capacity to open a new ticket."
+msgstr "Önnek nincs megfelelő kapacitása új hibajegy nyitására"
+
+#: includes/functions-post.php:47
+msgid "It is mandatory to provide a title for your issue."
+msgstr "A cím kitöltése kötelező."
+
+#: includes/functions-post.php:60
+msgid "It is mandatory to provide a description for your issue."
+msgstr "A leírás megadása kötelező."
+
+#: includes/functions-post.php:112
+msgid "Only registered accounts can submit a ticket. Please register first."
+msgstr "Csak regisztrált ügyfelek hozhatnak létre hibajegyet, kérjük regisztráljon."
+
+#: includes/functions-post.php:384 includes/functions-post.php:385
+#: includes/functions-post.php:557 includes/functions-post.php:558
+msgid "Reply to ticket %s"
+msgstr "Válasz hibajegyre %s"
+
+#: includes/functions-post.php:869
+msgid "The given post ID is not a ticket"
+msgstr "A megadott post ID nem hibajegy"
+
+#: includes/functions-post.php:877
+msgid ""
+"The chosen agent does not have the sufficient capabilities to be assigned a "
+"ticket"
+msgstr "A kiválasztott ügynöknek nincs elegendő kapacitása, hogy rárakjad a hibajegyet"
+
+#: includes/functions-post.php:1033
+msgid "You do not have the capacity to close this ticket"
+msgstr "Nincs elegendő kapacitásod, hogy lezárd a hibajegyet"
+
+#: includes/functions-post.php:1033
+msgid "Can’t close ticket"
+msgstr "A hibajegy lezárása sikertelen"
+
+#: includes/functions-post.php:1048
+msgid "The ticket was closed."
+msgstr "A hibajegy lezárva"
+
+#: includes/functions-post.php:1107
+msgid "The ticket was re-opened."
+msgstr "A hibajegy újranyitva"
+
+#: includes/functions-templating.php:62 includes/functions-templating.php:66
+msgid "You are not allowed to view this ticket."
+msgstr "Önnek nincs jogosultsága a hibajegy megtekintéséhez"
+
+#: includes/functions-templating.php:281
+msgid "ID"
+msgstr "ID"
+
+#: includes/functions-templating.php:282 includes/functions-templating.php:562
+msgid "Status"
+msgstr "Státusz"
+
+#: includes/functions-templating.php:283 includes/functions-templating.php:564
+msgid "Date"
+msgstr "Dátum"
+
+#: includes/functions-templating.php:383
+msgid ""
+"The ticket has been closed. If you feel that your issue has not been solved "
+"yet or something new came up in relation to this ticket, <a href=\"%s\">you "
+"can re-open it by clicking this link</a>."
+msgstr "A hibajegy lezárva. Ha úgy érzed, hogy a probléma nem került megoldásra vagy új körülmény merült fel, a hibajegyet <a href=\"%s\">újranyithatod</a>."
+
+#: includes/functions-templating.php:439
+msgid "Type your reply here."
+msgstr "Gépeld a válaszod ide"
+
+#: includes/functions-templating.php:456
+msgid "No reply is required to close"
+msgstr "Nincs szükség válaszüzenetre a lezáráshoz"
+
+#: includes/functions-templating.php:457
+msgid "Close this ticket"
+msgstr "Hibajegy lezárása"
+
+#: includes/functions-templating.php:474
+msgid "Please Wait..."
+msgstr "Kérjük várjon..."
+
+#: includes/functions-templating.php:491
+msgid "To reply to this ticket, please <a href=\"%s\">go to your admin panel</a>."
+msgstr "Válaszoláshoz menj az <a href=\"%s\">adminisztráció panelre</a>."
+
+#: includes/functions-templating.php:493
+msgid "You are not allowed to reply to this ticket."
+msgstr "Erre a hibajegyre nem válaszolhatsz"
+
+#: includes/functions-templating.php:563
+msgid "Title"
+msgstr "Cím"
+
+#: includes/functions-templating.php:897
+msgid "Previous Page"
+msgstr "Előző oldal"
+
+#: includes/functions-templating.php:930
+msgid "Next Page"
+msgstr "Következő oldal"
+
+#: includes/functions-user.php:18 themes/default/registration.php:29
+msgid "Registrations are currently not allowed."
+msgstr "A regisztráció pillanatnyilag nem elérhető"
+
+#: includes/functions-user.php:62
+msgid "You did not accept the terms and conditions."
+msgstr "Nem fogadta el a Felhasználási feltételeket"
+
+#: includes/functions-user.php:69
+msgid "You didn't correctly fill all the fields."
+msgstr "Nincs minden mező megfelelően kitöltve"
+
+#: includes/functions-user.php:150
+msgid "Your account has been created. Please log-in."
+msgstr "A regisztráció sikeres, kérjük lépjen be!"
+
+#: includes/functions-user.php:220
+msgid "We were unable to log you in for an unknown reason."
+msgstr "A belépés ismeretlen okból sikertelen."
+
+#: includes/integrations/class-product-edd.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to an EDD product. "
+"<a href=\"%s\">Please edit the product directly</a>."
+msgstr "Ez a kifejezés nem szerkeszthető mert egy EDD termnékhez van linkelve. <a href=\"%s\">Szerkeszd a terméket közvetlenül</a>."
+
+#: includes/integrations/class-product-exchange.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to an Exchange "
+"product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Ez a kifejezés nem szerkeszthető mert egy Exchange termékhez van linkelve. <a href=\"%s\">Szerkeszd a terméket közvetlenül</a>."
+
+#: includes/integrations/class-product-jigoshop.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to a Jigoshop "
+"product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Ez a kifejezés nem szerkeszthető mert egy Jigoshop termékhez van linkelve. <a href=\"%s\">Szerkeszd a terméket közvetlenül</a>."
+
+#: includes/integrations/class-product-woocommerce.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to a WooCommerce "
+"product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Ez a kifejezés nem szerkeszthető mert egy WooCommerce termékhez van linkelve. <a href=\"%s\">Szerkeszd a terméket közvetlenül</a>."
+
+#: includes/integrations/class-product-wp-ecommerce.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to a WP eCommerce "
+"product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Ez a kifejezés nem szerkeszthető mert egy WP eCommerce termékhez van linkelve. <a href=\"%s\">Szerkeszd a terméket közvetlenül</a>."
+
+#: includes/shortcodes/shortcode-submit.php:35
+#: includes/shortcodes/shortcode-tickets.php:58
+msgid "You are being redirected..."
+msgstr "Átirányítás..."
+
+#: includes/shortcodes/shortcode-submit.php:72
+msgid "You need to <a href=\"%s\">log-in</a> to submit a ticket."
+msgstr "Hibajegy létrehozásához <a href=\"%s\">be kell lépni</a>."
+
+#: includes/shortcodes/shortcode-submit.php:79
+msgid "You are not allowed to submit a ticket."
+msgstr "Nincs jogosultsága hibajegy létrehozásához"
+
+#: includes/shortcodes/shortcode-submit.php:104
+msgid ""
+"Sorry, support team members cannot submit tickets from here. If you need to "
+"open a ticket, please go to your admin panel or <a href=\"%s\">click here to"
+" open a new ticket</a>."
+msgstr "Sajnáljuk, de a támogatási csapat tagjai erről a felületről nem hozhatnak létre hibajegyet, kérjük menj az adminisztrációs panelre vagy <a href=\"%s\">kattints ide</a> új hibajegy felvételéhez."
+
+#: themes/default/details.php:116
+msgid "This reply has been deleted %s ago."
+msgstr "Ez a válasz %s ezelőtt törölve lett."
+
+#: themes/default/details.php:175
+msgid "Older Replies"
+msgstr "Régebbi válaszok"
+
+#: themes/default/details.php:176
+msgid "Newer Replies"
+msgstr "Újabb válaszok"
+
+#: themes/default/details.php:179
+msgid "Write a reply"
+msgstr "Válasz írása"
+
+#: themes/default/list.php:52
+msgid "Open a ticket"
+msgstr "Hibajegy nyitása"
+
+#: themes/default/list.php:55
+msgid ""
+"You haven't submitted a ticket yet. <a href=\"%s\">Click here to submit your"
+" first ticket</a>."
+msgstr "Még nem hozott létre hibajegyet. <a href=\"%s\">Kattintson ide az első hibajegy feladásához!</a>."
+
+#: themes/default/partials/ticket-origin.php:28
+msgid "User"
+msgstr "Felhasználó"
+
+#: themes/default/partials/ticket-origin.php:29
+msgid "Message"
+msgstr "Üzenet"
+
+#: themes/default/registration.php:24 themes/default/registration.php:78
+msgid "Log in"
+msgstr "Belépés"
+
+#: themes/default/registration.php:37 themes/default/registration.php:38
+msgid "E-mail or username"
+msgstr "E-mail vagy felhasználónév"
+
+#: themes/default/registration.php:50 themes/default/registration.php:51
+#: themes/default/registration.php:132
+msgid "Password"
+msgstr "Jelszó"
+
+#: themes/default/registration.php:69
+msgid "Remember Me"
+msgstr "Emlékezzen rám"
+
+#: themes/default/registration.php:78
+msgid "Logging In..."
+msgstr "Belépés..."
+
+#: themes/default/registration.php:84
+msgid "Register"
+msgstr "Regisztráció"
+
+#: themes/default/registration.php:92 themes/default/registration.php:93
+msgid "First Name"
+msgstr "Keresztnév"
+
+#: themes/default/registration.php:105 themes/default/registration.php:106
+msgid "Last Name"
+msgstr "Vezetéknév"
+
+#: themes/default/registration.php:118 themes/default/registration.php:119
+msgid "Email"
+msgstr "Email"
+
+#: themes/default/registration.php:131
+msgid "Enter a password"
+msgstr "Adjon meg egy jelszót"
+
+#: themes/default/registration.php:161
+msgid "Create Account"
+msgstr "Fiók létrehozása"
+
+#: themes/default/registration.php:161
+msgid "Creating Account..."
+msgstr "Fiók létrehozása..."
+
+#: themes/default/submission.php:81
+msgid "Submit ticket"
+msgstr "Hibajegy feladása"
+
+#. Description of the plugin/theme
+msgid ""
+"Awesome Support is a great ticketing system that will help you improve your "
+"customer satisfaction by providing a unique customer support experience."
+msgstr "Az Awesome Support egy remek hibajegykezelő rendszer, ami segít az ügyfélelégedettség javításában azzal, hogy egyedülálló élményt biztosít a termékek támogatásakor."
+
+#: includes/admin/class-admin-tickets-list.php:184
+msgctxt "Ticket created on"
+msgid "Created %s ago."
+msgstr "Létrehozva %s régebben."
+
+#: includes/admin/class-admin-tickets-list.php:193
+msgctxt "No last reply"
+msgid "No reply yet."
+msgstr "Még nincs válasz"
+
+#: includes/admin/class-admin-tickets-list.php:211
+msgctxt "User role"
+msgid "agent"
+msgstr "ügynök"
+
+#: includes/admin/class-admin-tickets-list.php:211
+msgctxt "User role"
+msgid "client"
+msgstr "kliens"
+
+#: includes/admin/class-admin-tickets-list.php:214
+msgctxt "Last reply ago"
+msgid "<a href=\"%s\">Last replied</a> %s ago by %s (%s)."
+msgstr "<a href=\"%s\">Utolsó válasz</a> %s régebben, %s (%s) küldte."
+
+#: includes/admin/class-admin-user.php:95
+msgctxt "Action after replying to a ticket"
+msgid "After Reply"
+msgstr "Válasz után"
+
+#: includes/admin/functions-admin.php:297
+msgctxt "Link to delete a ticket reply"
+msgid "Delete"
+msgstr "Törlés"
+
+#: includes/admin/functions-admin.php:298
+msgctxt "Link ot edit a ticket reply"
+msgid "Edit"
+msgstr "Szerkesztés"
+
+#: includes/admin/functions-admin.php:303
+msgctxt "Mark a user reply as read"
+msgid "Mark as Read"
+msgstr "Olvasva"
+
+#: includes/admin/functions-notices.php:216
+msgctxt "Dismiss link for admin notices"
+msgid "Dismiss"
+msgstr "Elenged"
+
+#: includes/admin/metaboxes/details.php:52
+msgctxt "Ticket creation"
+msgid "Creating..."
+msgstr "Létrehozás..."
+
+#: includes/admin/metaboxes/replies-form.php:26
+msgctxt "Title of the reply editor in the back-end"
+msgid "Write a reply to %s"
+msgstr "Válasz írása %s címzettnek"
+
+#: includes/admin/settings/settings-general.php:13
+msgctxt "User registration is allowed"
+msgid "allowed"
+msgstr "engedélyezett"
+
+#: includes/admin/settings/settings-general.php:13
+msgctxt "User registration is not allowed"
+msgid "not allowed"
+msgstr "nem engedélyezett"
+
+#: includes/class-awesome-support.php:742
+msgctxt "JavaScript validation error message"
+msgid "You can't submit an empty ticket"
+msgstr "A hibajegy nem lehet üres!"
+
+#: includes/class-awesome-support.php:744
+msgctxt "JavaScript validation error message"
+msgid "You can't submit an empty reply"
+msgstr "A válaszüzenet nem lehet üres!"
+
+#: includes/class-awesome-support.php:759
+msgctxt "ticket submission button text while submitting"
+msgid "Submitting..."
+msgstr "Elküldés..."
+
+#: includes/class-log-history.php:81
+msgctxt "Custom field value was updated"
+msgid "updated %s to %s"
+msgstr "módosítva %s / %s"
+
+#: includes/class-log-history.php:85
+msgctxt "Custom field value was deleted"
+msgid "deleted %s"
+msgstr "törölve %s"
+
+#: includes/class-log-history.php:89
+msgctxt "Custom field value was added"
+msgid "added %s to %s"
+msgstr "hozzáadva %s %s"
+
+#: includes/class-post-type.php:67
+msgctxt "post type general name"
+msgid "Tickets"
+msgstr "Hibajegyek"
+
+#: includes/class-post-type.php:68
+msgctxt "post type singular name"
+msgid "Ticket"
+msgstr "Hibajegy"
+
+#: includes/class-post-type.php:69
+msgctxt "admin menu"
+msgid "Tickets"
+msgstr "Hibajegyek"
+
+#: includes/class-post-type.php:70
+msgctxt "add new on admin bar"
+msgid "Ticket"
+msgstr "Hibajegy"
+
+#: includes/class-post-type.php:71
+msgctxt "book"
+msgid "Add New"
+msgstr "Új létrehozás"
+
+#: includes/class-post-type.php:218
+msgctxt "Reply status"
+msgid "Read"
+msgstr "Olvasva"
+
+#: includes/class-post-type.php:219
+msgctxt "Reply status"
+msgid "Unread"
+msgstr "Olvasatlan"
+
+#: includes/class-post-type.php:231
+msgctxt "Ticket status"
+msgid "New"
+msgstr "Új"
+
+#: includes/class-post-type.php:232
+msgctxt "Ticket status"
+msgid "In Progress"
+msgstr "Folyamatban"
+
+#: includes/class-post-type.php:233
+msgctxt "Ticket status"
+msgid "On Hold"
+msgstr "Tartva"
+
+#: includes/custom-fields/class-custom-fields.php:166
+msgctxt ""
+"Parent term in a taxonomy where %s is dynamically replaced by the taxonomy "
+"(eg. \"book\")"
+msgid "Parent %s:"
+msgstr "Szülő %s"
+
+#: includes/custom-fields/class-custom-fields.php:170
+msgctxt ""
+"A new taxonomy term name where %s is dynamically replaced by the taxonomy "
+"(eg. \"book\")"
+msgid "New %s Name"
+msgstr "Új %s"
+
+#: themes/default/registration.php:145
+msgctxt "Login form"
+msgid "Show Password"
+msgstr "Jelszó megjelenítése"

@@ -53,12 +53,25 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 	 * Automatically set the ticket as processing if this is the first reply.
 	 */
 	if ( user_can( $current_user->ID, 'edit_ticket' ) && isset( $postarr['ID'] ) ) {
-		$replies = wpas_get_replies( intval( $postarr['ID'] ) );
-		if ( 0 === count( $replies ) ) {
-			if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
-				$_POST['post_status_override'] = 'processing';
+
+		$replies       = wpas_get_replies( intval( $postarr['ID'] ) );
+		$agent_replied = false;
+
+		if ( 0 !== count( $replies ) ) {
+
+			foreach ( $replies as $reply ) {
+				if ( user_can( $reply->post_author, 'edit_ticket' ) ) {
+					$agent_replied = true;
+					break;
+				}
 			}
+
 		}
+
+		if ( false === $agent_replied && ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) ) {
+			$_POST['post_status_override'] = 'processing';
+		}
+
 	}
 
 	if ( isset( $_POST['post_status_override'] ) && ! empty( $_POST['post_status_override'] ) ) {
@@ -326,7 +339,7 @@ function wpas_delete_ticket_dependencies( $post_id ) {
 
 	/* Decrement the number of tickets open for this agent */
 	$agent_id = get_post_meta( $post_id, '_wpas_assignee', true );
-	$agent    = new WPAS_Agent( $agent_id );
+	$agent    = new WPAS_Member_Agent( $agent_id );
 	$agent->ticket_minus();
 
 }

@@ -1,0 +1,1791 @@
+# N2Clic Limited
+# Translators:
+# Felipe Sampaio <felipe@ayoola.co>, 2015
+# João Fagner Fonseca de Oliveira <fagworio@gmail.com>, 2015
+# Pedro Moscoso, 2015
+# Rafael Alves <finrod@uol.com.br>, 2015
+# William Marquardt <williammqt@gmail.com>, 2015
+msgid ""
+msgstr ""
+"Project-Id-Version: Awesome Support\n"
+"Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
+"POT-Creation-Date: 2015-10-23 03:18:35+00:00\n"
+"PO-Revision-Date: 2015-12-03 18:16+0000\n"
+"Last-Translator: Pedro Moscoso\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/themeavenue/awesome-support/language/pt_BR/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: grunt-wp-i18n 0.5.3\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-Country: United States\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Textdomain-Support: yes\n"
+
+#: awesome-support.php:264 awesome-support.php:274
+#: includes/admin/functions-notices.php:129
+msgid "Cheatin&#8217; huh?"
+msgstr "A fazer batota, não?!"
+
+#: includes/admin/class-admin-help.php:60 includes/admin/class-admin.php:598
+#: includes/admin/settings/settings-general.php:20
+msgid "Multiple Products"
+msgstr "Diversos Produtos"
+
+#: includes/admin/class-admin-help.php:61
+#: includes/admin/class-admin-help.php:107
+msgid ""
+"<h2>Multiple Products</h2><p>The plugin can handle single product and "
+"multiple products support. If you do need to provide support for multiple "
+"products it is very important that you do NOT use a custom field or taxonomy"
+" and use the &laquo;Multiple Products&raquo; option instead.</p><p>The "
+"reason why it is so important is that many addons for Awesome Support are "
+"using the built-in products management system to work properly.</p>"
+msgstr "<h2>Diversos Produtos</h2><p>O plug-in pode dar suporte a um único produto ou a diversos produtos. Se você precisa fornecer suporte para diversos produtos, é muito importante que você não use um campo personalizado ou taxonomia: ao invés disso use a opção &laquo;Diversos Podutos&raquo;.</p><p>A razão é que muitos addons para o Awesome Support estão usando o sistema interno de gerenciamento de produtos para funcionar corretamente.</p>"
+
+#: includes/admin/class-admin-help.php:66
+#: includes/admin/settings/settings-general.php:27
+msgid "Default Assignee"
+msgstr "Administrador Padrão"
+
+#: includes/admin/class-admin-help.php:67
+msgid ""
+"<h2>Default Assignee</h2><p>Even though the plugin will try to assign new "
+"tickets to the less busy agent, we need to know who to assign to in case we "
+"can't find a perfect fit for the new tickets.</p>"
+msgstr "<h2>Administrador Padrão</h2><p>Embora o plugin tente atribuir novos bilhetes para o agente menos ocupado, precisamos saber a quem atribuir no caso de não podermos encontrar uma combinação perfeita para os novos bilhetes.</p>"
+
+#: includes/admin/class-admin-help.php:72
+#: includes/admin/settings/settings-general.php:35
+msgid "Allow Registrations"
+msgstr "Permitir Inscrições"
+
+#: includes/admin/class-admin-help.php:73
+msgid ""
+"<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new "
+"registrations or not. By default, it doesn't. However, with closed "
+"registrations, this plugin becomes useless. This is why we added a separate "
+"setting to allow registrations. Users registering through Awesome Support "
+"will be given a specific role (<code>Support User</code>) with very limited "
+"privileges.</p><p>If you allow registrations through the plugin but not "
+"through WordPress, users will only be able to register through our "
+"registration form.</p>"
+msgstr "<h2>Permitir Inscrições</h2><p>Seu Site WordPress pode ser configurado para aceitar novos registros ou não. Por padrão, não aceitará. No entanto, com inscrições fechadas, este plugin se torna inútil. É por isso que adicionamos uma configuração em separado para permitir inscrições. Usuários registrados através do Awesome Support receberão um papel específico (<code>Usuário de Suporte</code>) com privilégios limitados.</p><p>Se você permitir que registros através do plugin, mas não pelo Wordpress, os usuários só serão capazes de se registrar através do nosso formulário de inscrição.</p>"
+
+#: includes/admin/class-admin-help.php:94
+#: includes/custom-fields/functions-custom-fields.php:184
+#: includes/custom-fields/functions-custom-fields.php:185
+msgid "Tag"
+msgstr "Tag"
+
+#: includes/admin/class-admin-help.php:94 themes/default/submission.php:64
+msgid "Description"
+msgstr "Descrição"
+
+#: includes/admin/class-admin-help.php:106
+msgid "General Settings"
+msgstr "Configurações Gerais"
+
+#: includes/admin/class-admin-help.php:112
+msgid "Email Template Tags"
+msgstr "Tags de Modelo de Email"
+
+#: includes/admin/class-admin-help.php:113
+msgid ""
+"<p>When setting up your e-mails templates, you can use a certain number of "
+"template tags allowing you to dynamically add ticket-related information at "
+"the moment the e-mail is sent. Here is the list of available tags:</p>%s"
+msgstr "<p>Quando configurar seus modelos de e-mails, você pode usar um determinado número de tags de Modelo permitindo que você adicione dinamicamente informações sobre o bilhete relacionado no momento em que o e-mail é enviado. Aqui está a lista de tags disponíveis:</p>%s"
+
+#: includes/admin/class-admin-help.php:133
+msgid "Custom Login Page"
+msgstr "Página de Login Personalizada"
+
+#: includes/admin/class-admin-help.php:134
+msgid ""
+"<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to "
+"allow advanced users to create their own login / registration page. If you "
+"don't like our login form, you can replace it by your own.</p><p>To do so, "
+"create a new page containing the form (either with the use of a shortcode or"
+" a page template), then set this newly created page as the \"Custom Login / "
+"Registration Page\" in the setting below.</p><p><strong>Beware</strong>, "
+"setting a wrong page as the custom login page can either show a blank page "
+"or create an infinite loop.</p>"
+msgstr "<h2>Diversos Produtos</h2><p>Essas configurações podem ser perigosas. Existem para permitir que usuários avançados criem sua própria página de login / inscrição. Se você não gosta do nosso formulário de login, você pode substituí-lo por um personalizado.</p><p>Para isso, crie uma nova página contendo o formulário (usando um shortcode ou um modelo de página), e configure esta página recém-criada como o \"Página de Login / Inscrição Personalizada\" na opção abaixo.</p><p><strong>Atenção</strong>, colocar uma página errada com a de login personalizada por mostrar uma página em branco ou criar um loop infinito.</p>"
+
+#: includes/admin/class-admin-tickets-list.php:99
+#: includes/admin/metaboxes/stakeholders.php:81
+#: includes/custom-fields/functions-custom-fields.php:173
+#: includes/functions-post.php:898
+msgid "Support Staff"
+msgstr "Equipe de Suporte"
+
+#: includes/admin/class-admin-tickets-list.php:103
+msgid "Activity"
+msgstr "Atividade"
+
+#: includes/admin/class-admin-tickets-list.php:224
+msgid "Awaiting Support Reply"
+msgstr "Esperando Resposta de Suporte"
+
+#: includes/admin/class-admin-tickets-list.php:230
+msgid "Old"
+msgstr "Antigos"
+
+#: includes/admin/class-admin-titan.php:88 includes/admin/class-admin.php:200
+#: includes/admin/class-admin.php:497
+msgid "Settings"
+msgstr "Configurações"
+
+#: includes/admin/class-admin-titan.php:89
+msgid "Awesome Support Settings"
+msgstr "Configurações do Awesome Support"
+
+#: includes/admin/class-admin-user.php:70
+msgid "Awesome Support Preferences"
+msgstr "Preferências do Awesome Support"
+
+#: includes/admin/class-admin-user.php:99
+msgid "Default"
+msgstr "Padrão"
+
+#: includes/admin/class-admin-user.php:100
+msgid "Stay on screen"
+msgstr "Ficar na tela"
+
+#: includes/admin/class-admin-user.php:101
+#: includes/admin/metaboxes/replies-form.php:86
+msgid "Back to list"
+msgstr "Voltar para a lista"
+
+#: includes/admin/class-admin-user.php:102
+msgid "Always ask"
+msgstr "Sempre perguntar"
+
+#: includes/admin/class-admin-user.php:104
+msgid "Where do you want to go after replying to a ticket?"
+msgstr "Onde você quer ir depois de responder a um bilhete?"
+
+#: includes/admin/class-admin-user.php:130
+msgid "Can Be Assigned"
+msgstr "Pode ser Atribuído"
+
+#: includes/admin/class-admin-user.php:133
+msgid "Yes"
+msgstr "Sim"
+
+#: includes/admin/class-admin-user.php:134
+msgid "Can the system assign new tickets to this user?"
+msgstr "O sistema pode atribuir novos bilhetes para este usuário?"
+
+#: includes/admin/class-admin-user.php:211
+msgid "Auto-Assign"
+msgstr "Atribuição Automática"
+
+#: includes/admin/class-admin.php:389
+msgid "Are you sure you want to delete this reply?"
+msgstr "Tem certeza de que quer apagar esta resposta?"
+
+#: includes/admin/class-admin.php:389
+msgid ""
+"No instance of TinyMCE found. Please use wp_editor on this page at least "
+"once: http://codex.wordpress.org/Function_Reference/wp_editor"
+msgstr "Nenhuma instância do TinyMCE foi encontrada. Utilize o wp_editor nesta página pelo menos uma vez: http://codex.wordpress.org/Function_Reference/wp_editor"
+
+#: includes/admin/class-admin.php:389
+msgid "You can't submit an empty reply"
+msgstr "Não pode submeter uma resposta vazia"
+
+#: includes/admin/class-admin.php:412 includes/admin/class-admin.php:413
+msgid "My Tickets"
+msgstr "Meus Bilhetes"
+
+#: includes/admin/class-admin.php:432 includes/admin/class-admin.php:433
+msgid "Submit Ticket"
+msgstr "Enviar Bilhete"
+
+#: includes/admin/class-admin.php:522 includes/admin/metaboxes/details.php:82
+msgid "Close"
+msgstr "Fechar"
+
+#: includes/admin/class-admin.php:524 includes/admin/metaboxes/details.php:80
+#: includes/custom-fields/class-custom-fields.php:522
+#: includes/functions-general.php:358 includes/functions-templating.php:772
+msgid "Open"
+msgstr "Aberto"
+
+#: includes/admin/class-admin.php:549
+msgid "The ticket #%s has been (re)opened."
+msgstr "O bilhete #%s foi (re)aberto."
+
+#: includes/admin/class-admin.php:557
+msgid "The ticket #%s has been closed."
+msgstr "O bilhete #%s foi fechado."
+
+#: includes/admin/class-admin.php:595
+msgid ""
+"Will you be supporting multiple products on this support site? You can "
+"activate multi-products support now. <small>(This setting can be modified "
+"later)</small>"
+msgstr "Você estará suportando diversos produtos neste site de suporte? Você pode ativar diversos produtos agora.<small>(Esta configuração pode ser modificada mais tarde)</small>"
+
+#: includes/admin/class-admin.php:597
+msgid "Single Product"
+msgstr "Produto Único"
+
+#: includes/admin/class-admin.php:658 includes/functions-post.php:999
+msgid "Ticket state changed to %s"
+msgstr "Estado do bilhete mudou para %s"
+
+#: includes/admin/class-admin.php:674
+msgid "Debugging Tools"
+msgstr "Ferramentas para Depurar"
+
+#: includes/admin/class-admin.php:674 includes/admin/views/system-tools.php:64
+msgid "Tools"
+msgstr "Ferramentas"
+
+#: includes/admin/class-admin.php:675
+msgid "Awesome Support Addons"
+msgstr "Addons do Awesome Support"
+
+#: includes/admin/class-admin.php:675
+msgid "Addons"
+msgstr "Addons"
+
+#: includes/admin/class-admin.php:676
+msgid "About Awesome Support"
+msgstr "Sobre o Awesome Support"
+
+#: includes/admin/class-admin.php:676
+msgid "About"
+msgstr "Sobre"
+
+#: includes/admin/class-admin.php:886
+msgid "Ticket"
+msgstr "Bilhete"
+
+#: includes/admin/class-admin.php:891
+msgid "Ticket Replies"
+msgstr "Respostas de Bilhetes"
+
+#: includes/admin/class-admin.php:896
+msgid "Details"
+msgstr "Detalhes"
+
+#: includes/admin/class-admin.php:899
+msgid "Stakeholders"
+msgstr "Partes Interessadas"
+
+#: includes/admin/class-admin.php:905
+msgid "Custom Fields"
+msgstr "Campos Personalizados"
+
+#: includes/admin/class-admin.php:938
+msgid ""
+"An error occurred while registering this metabox. Please contact the "
+"support."
+msgstr "Ocorreu um erro ao registrar esta metabox. Entre em contato com o suporte."
+
+#: includes/admin/class-admin.php:944
+msgid ""
+"An error occured while loading this metabox. Please contact the support."
+msgstr "Ocorreu um erro ao carregar esta metabox. Entre em contato com o suporte."
+
+#: includes/admin/metaboxes/details.php:47
+msgid "Ticket status:"
+msgstr "Status do bilhete:"
+
+#: includes/admin/metaboxes/details.php:55
+msgid "Opened:"
+msgstr "Aberto:"
+
+#: includes/admin/metaboxes/details.php:55
+#: includes/admin/metaboxes/replies-history.php:33
+#: includes/admin/metaboxes/replies-published.php:46
+#: themes/default/details.php:51 themes/default/details.php:139
+#: themes/default/partials/ticket-origin.php:55
+msgid "%s ago"
+msgstr "%s atrás"
+
+#: includes/admin/metaboxes/details.php:57
+msgid "Current state:"
+msgstr "Estado atual:"
+
+#: includes/admin/metaboxes/details.php:78
+msgid "Re-open"
+msgstr "Re-aberto"
+
+#: includes/admin/metaboxes/details.php:93
+msgid "Updating"
+msgstr "Atualizando"
+
+#: includes/admin/metaboxes/details.php:94
+msgid "Update Ticket"
+msgstr "Atualizar Bilhete"
+
+#: includes/admin/metaboxes/details.php:97
+msgid "Creating"
+msgstr "Criando"
+
+#: includes/admin/metaboxes/details.php:98
+msgid "Open Ticket"
+msgstr "Abrir Bilhete"
+
+#: includes/admin/metaboxes/replies-form.php:73
+#: includes/admin/metaboxes/replies-form.php:80
+#: includes/admin/metaboxes/replies-form.php:89
+#: includes/functions-templating.php:474
+msgid "Reply"
+msgstr "Responder"
+
+#: includes/admin/metaboxes/replies-form.php:85
+msgid "After Replying"
+msgstr "Após Resposta"
+
+#: includes/admin/metaboxes/replies-form.php:87
+msgid "Stay on ticket screen"
+msgstr "Ficar na tela do bilhete"
+
+#: includes/admin/metaboxes/replies-form.php:96
+msgid "Reply & Close"
+msgstr "Responder e Fechar"
+
+#: includes/admin/metaboxes/replies-published.php:40
+msgid "Unread"
+msgstr "Não lido"
+
+#: includes/admin/metaboxes/replies-trashed.php:16
+msgid "This reply has been deleted by %s <em class=\"wpas-time\">%s ago.</em>"
+msgstr "Esta resposta foi excluída por %s <em class=\"wpas-time\">%s atrás.</em>"
+
+#: includes/admin/metaboxes/replies.php:15
+msgid "Create Ticket"
+msgstr "Criar Bilhete"
+
+#: includes/admin/metaboxes/replies.php:16
+msgid "Please save this ticket to reveal all options."
+msgstr "Por favor, salve este bilhete para mostrar todas as opções."
+
+#: includes/admin/metaboxes/replies.php:58
+msgid "Anonymous"
+msgstr "Anônimo"
+
+#: includes/admin/metaboxes/replies.php:119
+msgid "Save changes"
+msgstr "Salvar alterações"
+
+#: includes/admin/metaboxes/replies.php:120
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: includes/admin/metaboxes/replies.php:146
+msgid "Sorry, you don't have sufficient permissions to reply to tickets."
+msgstr "Desculpe, você não tem permissões suficientes para responder aos bilhetes."
+
+#: includes/admin/metaboxes/replies.php:154
+msgid "Ticket is closed"
+msgstr "Bilhete está fechado"
+
+#: includes/admin/metaboxes/replies.php:155
+msgid ""
+"This ticket has been closed. If you want to write a new reply to this "
+"ticket, you need to <a href=\"%s\">re-open it first</a>."
+msgstr "Este bilhete foi fechado. Se você quer escrever uma nova resposta a este bilhete, você precisa  <a href=\"%s\">reabri-lo primeiro</a>."
+
+#: includes/admin/metaboxes/stakeholders.php:31
+msgid "User was deleted"
+msgstr "Usuário foi excluído"
+
+#: includes/admin/metaboxes/stakeholders.php:61
+msgid "Ticket Creator"
+msgstr "Criador de Bilhete"
+
+#: includes/admin/metaboxes/stakeholders.php:78
+msgid "This ticket has been raised by the user hereinabove."
+msgstr "Este bilhete foi iniciado pelo usuário acima."
+
+#: includes/admin/metaboxes/stakeholders.php:99
+msgid "The above agent is currently responsible for this ticket."
+msgstr "O agente acima é atualmente responsável por este bilhete."
+
+#: includes/admin/metaboxes/stakeholders.php:103
+msgid "CCs"
+msgstr "CCs"
+
+#: includes/admin/metaboxes/stakeholders.php:105
+msgid ""
+"If you want to send a copy of the e-mails to another person, add the "
+"address(es) separated by a comma."
+msgstr "Se você quiser enviar uma cópia dos e-mails para outra pessoa, adicione o(s) endereço(s) separados por uma vírgula."
+
+#: includes/admin/settings/functions-settings.php:10
+msgid "None"
+msgstr "Nenhum"
+
+#: includes/admin/settings/settings-advanced.php:13
+msgid "Advanced"
+msgstr "Avançado"
+
+#: includes/admin/settings/settings-advanced.php:16
+msgid "Custom Login / Registration Page"
+msgstr "Página de Login / Inscrição Personalizada"
+
+#: includes/admin/settings/settings-advanced.php:19
+msgid ""
+"Only use this option if you know how to create your own registration page, "
+"otherwise you might create an infinite redirect. If you need help on "
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
+msgstr "Só use esta opção se você souber como criar sua própria página de registro, caso contrário você pode criar um redirecionamento infinito. Se precisar de ajuda na criação de uma página de registro você pode <a href=\"%s\" target=\"_blank\">começar por este guia</a>."
+
+#: includes/admin/settings/settings-advanced.php:24
+msgid "Admins See All"
+msgstr "Administradores Vêem Todos"
+
+#: includes/admin/settings/settings-advanced.php:27
+msgid ""
+"Administrators can see all tickets in the tickets list. If unchecked admins "
+"will only see tickets assigned to them."
+msgstr "Os administradores podem ver todos os bilhetes na lista de bilhetes. Se desmarcado, os administradores verão somente os bilhetes atribuídos a eles."
+
+#: includes/admin/settings/settings-advanced.php:31
+msgid "Agent See All"
+msgstr "Agentes Vêem Todos"
+
+#: includes/admin/settings/settings-advanced.php:34
+msgid ""
+"Agents can see all tickets in the tickets list. If unchecked agents will "
+"only see tickets assigned to them."
+msgstr "Os agentes podem ver todos os bilhetes na lista de bilhetes. Se desmarcado, os agentes verão somente os bilhetes atribuídos a eles."
+
+#: includes/admin/settings/settings-advanced.php:38
+msgid "Danger Zone"
+msgstr "Zona Perigosa"
+
+#: includes/admin/settings/settings-advanced.php:42
+msgid "Delete Data"
+msgstr "Excluir Dados"
+
+#: includes/admin/settings/settings-advanced.php:46
+msgid "Delete ALL plugin data on uninstall? This cannot be undone."
+msgstr "Excluir todos os dados do plugin na desinstalação? Isso não pode ser desfeito."
+
+#: includes/admin/settings/settings-general.php:17
+msgid "General"
+msgstr "Configurações Gerais"
+
+#: includes/admin/settings/settings-general.php:23
+msgid ""
+"If you need to provide support for multiple products, please enable this "
+"option. You will then be able to add your products."
+msgstr "Se você precisar fornecer suporte para diversos produtos, por favor habilite esta opção. Você será capaz então de adicionar os seus produtos."
+
+#: includes/admin/settings/settings-general.php:30
+msgid ""
+"Who to assign tickets to in the case that auto-assignment wouldn&#039;t "
+"work. This does NOT mean that all tickets will be assigned to this user. "
+"This is a fallback option. To enable/disable auto assignment for an agent, "
+"please do so in the user profile settings."
+msgstr "A quem atribuir tickets no caso da auto atribuição não funcionar. Isto NÃO significa que todos os tickets serão atribuídos a este utilizador. Isto é uma opção de recurso. Para ativar/desativar a auto atribuição para um agente, por favor faça-o nas definições do perfil de utilizador."
+
+#: includes/admin/settings/settings-general.php:38
+msgid ""
+"Allow users to register on the support page. This setting can be enabled "
+"even though the WordPress setting is disabled. Currently, registrations are "
+"%s by WordPress."
+msgstr "Permitir que usuários se registrem com o suporte. Esta configuração pode ser ativada mesmo que esteja desativado no Wordpress. Neste momento os registos são %s pelo WordPress."
+
+#: includes/admin/settings/settings-general.php:41
+msgid "Allow registrations"
+msgstr "Permitir inscrições"
+
+#: includes/admin/settings/settings-general.php:42
+msgid "Disallow registrations"
+msgstr "Proibir inscrições"
+
+#: includes/admin/settings/settings-general.php:43
+msgid "Disallow registrations without notice (just show the login form)"
+msgstr "Proibir inscrições sem aviso prévio (apenas mostrar o formulário de login)"
+
+#: includes/admin/settings/settings-general.php:47
+msgid "Replies Order"
+msgstr "Ordem da Resposta"
+
+#: includes/admin/settings/settings-general.php:50
+msgid ""
+"In which order should the replies be displayed (for both client and admin "
+"side)?"
+msgstr "Em que ordem as respostas devem ser exibidas (para o cliente e o admin)?"
+
+#: includes/admin/settings/settings-general.php:51
+msgid "Old to New"
+msgstr "Antigo para Novo"
+
+#: includes/admin/settings/settings-general.php:51
+msgid "New to Old"
+msgstr "Novo para antigo"
+
+#: includes/admin/settings/settings-general.php:55
+msgid "Replies Per Page"
+msgstr "Respostas Por Página"
+
+#: includes/admin/settings/settings-general.php:59
+msgid ""
+"How many replies should be displayed per page on a ticket details screen?"
+msgstr "Quantas respostas devem ser exibidas por página na tela de detalhes do bilhete?"
+
+#: includes/admin/settings/settings-general.php:62
+msgid "Hide Closed"
+msgstr "Esconder os Fechados"
+
+#: includes/admin/settings/settings-general.php:65
+msgid "Only show open tickets when clicking the \"All Tickets\" link."
+msgstr "Exibir apenas bilhetes em aberto ao clicar no link \"Todos os Bilhetes\"."
+
+#: includes/admin/settings/settings-general.php:69
+msgid "Show Count"
+msgstr "Mostrar Contagem"
+
+#: includes/admin/settings/settings-general.php:72
+msgid "Display the number of open tickets in the admin menu."
+msgstr "Mostrar o número de bilhetes em aberto no menu de administração."
+
+#: includes/admin/settings/settings-general.php:76
+msgid "Old Tickets"
+msgstr "Bilhetes Antigos"
+
+#: includes/admin/settings/settings-general.php:80
+msgid "After how many days should a ticket be considered &laquo;old&raquo;?"
+msgstr "Depois de quantos dias um bilhete deve ser considerado &laquo;Antigo&raquo;?"
+
+#: includes/admin/settings/settings-general.php:83
+msgid "Plugin Pages"
+msgstr "Páginas do Plugin"
+
+#: includes/admin/settings/settings-general.php:87
+msgid "Ticket Submission"
+msgstr "Submeter o Bilhete"
+
+#: includes/admin/settings/settings-general.php:91
+msgid ""
+"The page used for ticket submission. This page should contain the shortcode "
+"%s"
+msgstr "A página usada para o envio do bilhete. Esta página deve conter o shortcode %s"
+
+#: includes/admin/settings/settings-general.php:96
+msgid "Tickets List"
+msgstr "Listar Bilhetes"
+
+#: includes/admin/settings/settings-general.php:100
+msgid ""
+"The page that will list all tickets for a client. This page should contain "
+"the shortcode %s"
+msgstr "A página que irá listar todos os bilhetes para um cliente. Esta página deve conter o shortcode %s"
+
+#: includes/admin/settings/settings-general.php:105
+msgid "Terms & Conditions"
+msgstr "Termos & Condições"
+
+#: includes/admin/settings/settings-general.php:109
+#: includes/admin/settings/settings-notifications.php:56
+#: includes/admin/settings/settings-notifications.php:81
+#: includes/admin/settings/settings-notifications.php:106
+#: includes/admin/settings/settings-notifications.php:131
+#: includes/admin/settings/settings-notifications.php:181
+msgid "Content"
+msgstr "Conteúdo"
+
+#: includes/admin/settings/settings-general.php:113
+msgid ""
+"Terms & conditions are not mandatory. If you add terms, a mandatory checkbox"
+" will be added in the registration form. Users won't be able to register if "
+"they don't accept your terms"
+msgstr "Os termos & condições não são obrigatórios. Se você adicionar termos, uma caixa de seleção será adicionada no formulário de inscrição. Os usuários não serão capazes de registrar se não aceitar os seus termos."
+
+#: includes/admin/settings/settings-general.php:117
+msgid "Credit"
+msgstr "Crédito"
+
+#: includes/admin/settings/settings-general.php:121
+msgid "Show Credit"
+msgstr "Exibir Crédito"
+
+#: includes/admin/settings/settings-general.php:124
+msgid ""
+"Do you like this plugin? Please help us spread the word by displaying a "
+"credit link at the bottom of your ticket submission page."
+msgstr "Gosta deste plugin? Ajude-nos a passar a palavra ao optar por mostrar uma ligação para créditos no fundo da sua página de submissão de tickets."
+
+#: includes/admin/settings/settings-licenses.php:19
+msgid "Licenses"
+msgstr "Licenças"
+
+#: includes/admin/settings/settings-notifications.php:13
+msgid "E-Mails"
+msgstr "E-Mails"
+
+#: includes/admin/settings/settings-notifications.php:17
+msgid ""
+"For more information about the template tags that can be used in e-mail "
+"templates please click the &laquo;Help&raquo; button in the top right hand "
+"corner of this screen."
+msgstr "Para mais informações sobre as tags de modelos que podem ser usados em modelos de e-mail, por favor clique no botão &laquo;Ajuda&raquo; no canto superior direito desta tela."
+
+#: includes/admin/settings/settings-notifications.php:20
+msgid "Sender Name"
+msgstr "Remetente"
+
+#: includes/admin/settings/settings-notifications.php:26
+msgid "Sender E-Mail"
+msgstr "E-mail do Remetente"
+
+#: includes/admin/settings/settings-notifications.php:32
+msgid "Reply-To E-Mail"
+msgstr "Responder para E-Mail"
+
+#: includes/admin/settings/settings-notifications.php:39
+msgid "Submission Confirmation"
+msgstr "Confirmação de Envio"
+
+#: includes/admin/settings/settings-notifications.php:43
+#: includes/admin/settings/settings-notifications.php:68
+#: includes/admin/settings/settings-notifications.php:93
+#: includes/admin/settings/settings-notifications.php:118
+#: includes/admin/settings/settings-notifications.php:168
+msgid "Enable"
+msgstr "Permitir"
+
+#: includes/admin/settings/settings-notifications.php:47
+#: includes/admin/settings/settings-notifications.php:72
+#: includes/admin/settings/settings-notifications.php:97
+#: includes/admin/settings/settings-notifications.php:122
+#: includes/admin/settings/settings-notifications.php:172
+msgid "Do you want to activate this e-mail template?"
+msgstr "Você quer ativar este modelo de e-mail?"
+
+#: includes/admin/settings/settings-notifications.php:50
+#: includes/admin/settings/settings-notifications.php:75
+#: includes/admin/settings/settings-notifications.php:100
+#: includes/admin/settings/settings-notifications.php:125
+#: includes/admin/settings/settings-notifications.php:175
+#: themes/default/submission.php:35
+msgid "Subject"
+msgstr "Assunto"
+
+#: includes/admin/settings/settings-notifications.php:53
+msgid "Request received: {ticket_title}"
+msgstr "Pedido recebido: {ticket_title}"
+
+#: includes/admin/settings/settings-notifications.php:64
+msgid "New Assignment"
+msgstr "Nova Atribuição"
+
+#: includes/admin/settings/settings-notifications.php:78
+msgid "Ticket #{ticket_id} assigned"
+msgstr "Bilhete #{ticket_id} atribuído"
+
+#: includes/admin/settings/settings-notifications.php:89
+msgid "New Reply from Agent"
+msgstr "Nova Resposta do Agente"
+
+#: includes/admin/settings/settings-notifications.php:103
+msgid "New reply to: {ticket_title}"
+msgstr "Respondendo a: {ticket_title}"
+
+#: includes/admin/settings/settings-notifications.php:114
+msgid "New Reply from Client"
+msgstr "Nova Resposta do Cliente"
+
+#: includes/admin/settings/settings-notifications.php:128
+msgid "Ticket #{ticket_id}"
+msgstr "Bilhete #{ticket_id}"
+
+#: includes/admin/settings/settings-notifications.php:139
+msgid "Ticket Will Be Closed"
+msgstr "Bilhete será fechado"
+
+#: includes/admin/settings/settings-notifications.php:164
+msgid "Ticket Closed"
+msgstr "Bilhete Fechado"
+
+#: includes/admin/settings/settings-notifications.php:178
+msgid "Request closed: {ticket_title}"
+msgstr "Pedido fechado: {ticket_title}"
+
+#: includes/admin/settings/settings-style.php:13
+msgid "Style"
+msgstr "Estilo"
+
+#: includes/admin/settings/settings-style.php:16
+msgid "Theme"
+msgstr "Tema"
+
+#: includes/admin/settings/settings-style.php:19
+msgid "Which theme to use for the front-end."
+msgstr "O tema a ser usado no front-end."
+
+#: includes/admin/settings/settings-style.php:24
+msgid "Theme Stylesheet"
+msgstr "Folha de Estilo do Tema"
+
+#: includes/admin/settings/settings-style.php:27
+msgid ""
+"Load the theme stylesheet. Don't uncheck if you don't know what this means"
+msgstr "Carregar a folha de estilo do tema. Não desmarque essa opção se você não sabe o que isso significa"
+
+#: includes/admin/settings/settings-style.php:31
+msgid "Use editor in front-end"
+msgstr "Use o editor no front-end"
+
+#: includes/admin/settings/settings-style.php:34
+msgid ""
+"Show a editor editor for the ticket description when user submits a ticket."
+msgstr "Mostrar um editor na descrição do ticket quando o usuário enviar um bilhete."
+
+#: includes/admin/settings/settings-style.php:38
+msgid "Colors"
+msgstr "Cores"
+
+#: includes/admin/settings/settings-style.php:42
+msgid "Open Status"
+msgstr "Status Aberto"
+
+#: includes/admin/settings/settings-style.php:48
+msgid "Closed Status"
+msgstr "Status Fechado"
+
+#: includes/admin/settings/settings-style.php:54
+msgid "Old Status"
+msgstr "Status Antigo"
+
+#: includes/admin/settings/settings-style.php:60
+msgid "Awaiting Reply"
+msgstr "Aguardando Resposta"
+
+#: includes/admin/views/status.php:4
+msgid "System Status"
+msgstr "Status do Sistema"
+
+#: includes/admin/views/status.php:5
+msgid "Cleanup"
+msgstr "Limpeza"
+
+#: includes/admin/views/system-tools.php:34
+msgid "Tickets metas were cleared"
+msgstr "Metadados dos bilhetes foram apagados"
+
+#: includes/admin/views/system-tools.php:38
+msgid "Agents metas were cleared"
+msgstr "Metadados dos agentes foram apagados"
+
+#: includes/admin/views/system-tools.php:42
+msgid "All custom taxonomies terms were cleared"
+msgstr "Todos os termos das taxonomias personalizadas foram apagadas"
+
+#: includes/admin/views/system-tools.php:46
+msgid "All products have been re-synchronized"
+msgstr "Todos os produtos foram re-sincronizados"
+
+#: includes/admin/views/system-tools.php:50
+msgid "All products have been deleted"
+msgstr "Todos os produtos foram excluídos"
+
+#: includes/admin/views/system-tools.php:60
+msgid ""
+"These tool are intended for advanced users or for use on the support staff "
+"request. Be aware that some of these tools can definitively erase data."
+msgstr "Estas ferramentas são destinadas a usuários avançados ou para uso a pedido da equipe de suporte. Esteja ciente de que algumas dessas ferramentas podem apagar definitivamente seus dados."
+
+#: includes/admin/views/system-tools.php:70
+msgid "Tickets Metas"
+msgstr "Metadados dos Bilhetes"
+
+#: includes/admin/views/system-tools.php:72
+#: includes/admin/views/system-tools.php:79
+#: includes/admin/views/system-tools.php:86
+msgid "Clear"
+msgstr "Apagar"
+
+#: includes/admin/views/system-tools.php:73
+msgid "Clear all transients for all tickets."
+msgstr "Apagar todos os transientes para todos os bilhetes."
+
+#: includes/admin/views/system-tools.php:77
+msgid "Agents Metas"
+msgstr "Metadados dos Agentes"
+
+#: includes/admin/views/system-tools.php:80
+msgid "Clear all agents metas."
+msgstr "Apagar todos os metadados dos agentes."
+
+#: includes/admin/views/system-tools.php:84
+msgid "Custom Taxonomies"
+msgstr "Taxonomias Personalizadas"
+
+#: includes/admin/views/system-tools.php:87
+msgid "Clear all terms from all custom taxonomies."
+msgstr "Apagar todos os termos de todas as taxonomias personalizadas."
+
+#: includes/class-agent.php:56
+msgid "The user with ID %d does not exist"
+msgstr "O usuário com ID %d não existe"
+
+#: includes/class-agent.php:60
+msgid "The user exists but is not a support agent"
+msgstr "O usuário existe, mas não é um agente de suporte"
+
+#: includes/class-awesome-support.php:184
+msgid ""
+"The authenticity of your submission could not be validated. If this ticket "
+"is legitimate please try submitting again."
+msgstr "A autenticidade da sua submissão não pôde ser validada. Se este bilhete é legítimo, por favor tente enviar novamente."
+
+#: includes/class-awesome-support.php:200
+msgid "The ticket couldn't be submitted for an unknown reason."
+msgstr "O bilhete não pôde ser enviado por uma razão desconhecida."
+
+#: includes/class-awesome-support.php:238
+msgid ""
+"Something went wrong. We couldn&#039;t identify your ticket. Please try "
+"again."
+msgstr "Alguma coisa correu mal. Não conseguimos identificar o seu ticket. Por favor tente novamente."
+
+#: includes/class-awesome-support.php:263
+msgid "The ticket was successfully closed"
+msgstr "O ticket foi encerrado com sucesso"
+
+#: includes/class-awesome-support.php:273
+msgid "Your reply could not be submitted for an unknown reason."
+msgstr "Sua resposta não pôde ser enviada por uma razão desconhecida."
+
+#: includes/class-awesome-support.php:279
+msgid "Thanks for your reply. The ticket is now closed."
+msgstr "Obrigado pela sua resposta. O pedido será encerrado."
+
+#: includes/class-awesome-support.php:281
+msgid "Your reply has been submitted. Your agent will reply ASAP."
+msgstr "Sua resposta foi enviada. Seu agente irá responder o mais rápido possível."
+
+#: includes/class-awesome-support.php:378
+msgid "You are not allowed to re-open this ticket"
+msgstr "Não tem autorização para reabrir este ticket"
+
+#: includes/class-awesome-support.php:384
+msgid "The ticket has been successfully re-opened."
+msgstr "O bilhete foi re-aberto com sucesso."
+
+#: includes/class-awesome-support.php:565
+msgid "Support Supervisor"
+msgstr "Supervisor de Suporte"
+
+#: includes/class-awesome-support.php:566
+msgid "Support Manager"
+msgstr "Gerente de Suporte"
+
+#: includes/class-awesome-support.php:567
+msgid "Support Agent"
+msgstr "Agente de Suporte"
+
+#: includes/class-awesome-support.php:568
+msgid "Support User"
+msgstr "Usuário do Suporte"
+
+#: includes/class-awesome-support.php:754
+msgid "The following file(s) are too big to be uploaded:"
+msgstr "Os arquivos seguintes são grandes demais para serem enviados:"
+
+#: includes/class-awesome-support.php:755
+msgid "The maximum file size allowed for one file is %d MB"
+msgstr "O tamanho máximo permitido para um arquivo é %d MB"
+
+#: includes/class-awesome-support.php:918
+msgid "I accept the %sterms and conditions%s"
+msgstr "Eu aceito os %stermos e condições%s"
+
+#: includes/class-awesome-support.php:966
+msgid "Open tickets assigned to you"
+msgstr "Existem tickets atribuídos a si"
+
+#: includes/class-awesome-support.php:1026
+msgid "Did you mean %s"
+msgstr "Você quis dizer %s"
+
+#: includes/class-email-notifications.php:48
+msgid "The post ID provided does not match any of the plugin post types"
+msgstr "O ID providenciado não corresponde a nenhum tipo de post deste plugin"
+
+#: includes/class-email-notifications.php:282
+msgid "Converts into ticket ID"
+msgstr "Converte para ID do bilhete"
+
+#: includes/class-email-notifications.php:286
+msgid "Converts into website name"
+msgstr "Converte para nome do site"
+
+#: includes/class-email-notifications.php:290
+msgid "Converts into agent name"
+msgstr "Converte para nome do agente"
+
+#: includes/class-email-notifications.php:294
+msgid "Converts into agent e-mail address"
+msgstr "Converte para e-mail do agente"
+
+#: includes/class-email-notifications.php:298
+msgid "Converts into client name"
+msgstr "Converte para nome do cliente"
+
+#: includes/class-email-notifications.php:302
+msgid "Converts into client e-mail address"
+msgstr "Converte para e-mail do cliente"
+
+#: includes/class-email-notifications.php:306
+msgid "Converts into current ticket title"
+msgstr "Converte para o título do bilhete atual"
+
+#: includes/class-email-notifications.php:310
+msgid "Displays a link to public ticket"
+msgstr "Exibe um link para um bilhete público"
+
+#: includes/class-email-notifications.php:314
+msgid ""
+"Displays the URL <strong>only</strong> (not a link link) to public ticket"
+msgstr "Exibe <strong>somente</strong> a URL (e não um link) para um bilhete público"
+
+#: includes/class-email-notifications.php:318
+msgid "Displays a link to ticket details in admin (for agents)"
+msgstr "Exibe um link para os detalhes do bilhete no admin (para agentes)"
+
+#: includes/class-email-notifications.php:322
+msgid ""
+"Displays the URL <strong>only</strong> (not a link link) to ticket details "
+"in admin (for agents)"
+msgstr "Exibe <strong>somente</strong> a URL (e não um link) para os detalhes do bilhete no admin (para agentes)"
+
+#: includes/class-email-notifications.php:326
+msgid "Converts into current date"
+msgstr "Converte para a data atual"
+
+#: includes/class-email-notifications.php:330
+msgid "Converts into WordPress admin e-mail (<em>currently: %s</em>)"
+msgstr "Converte para o e-mail do admin no WordPress (<em>que é atualmente: %s</em>)"
+
+#: includes/class-email-notifications.php:334
+msgid "Converts into ticket content or reply content"
+msgstr "Converte para o conteúdo do bilhete ou o conteúdo da resposta"
+
+#: includes/class-email-notifications.php:557
+msgid "The requested notification does not exist"
+msgstr "A notificação solicitada não existe"
+
+#: includes/class-email-notifications.php:564
+msgid "The requested notification is disabled"
+msgstr "A notificação solicitada está desativada"
+
+#: includes/class-gist.php:106
+msgid "View the code on <a href=\"%s\">Gist</a>."
+msgstr "Ver o código na <a href=\"%s\">Gist</a>."
+
+#: includes/class-mailgun-email-check.php:40
+msgid "E-Mail Checking"
+msgstr "Verificação de E-mail"
+
+#: includes/class-mailgun-email-check.php:46
+msgid ""
+"You can enable e-mail checking on the registration page. When enabled, the "
+"plugin will make sure the e-mail address used is valid and can receive "
+"e-mails. The verification is done using <a href=\"%s\">Email validation "
+"API</a> and requires a (free) MailGun account. This helps reducing typos in "
+"email addresses during sign ups."
+msgstr "Você pode ativar a verificação de e-mail na página de registro. Quando ativada, o plugin irá verificar se o endereço de e-mail usado é válido e se pode receber e-mails. A verificação é feita utilizando a <a href=\"%s\">API de validação de Email</a> e requer uma conta do MailGun (grátis). Isso ajudará a reduzir os erros em endereços de e-mail durante as inscrições."
+
+#: includes/class-mailgun-email-check.php:52
+msgid "Enable E-Mail Checking"
+msgstr "Habilitar Verificação de E-mail"
+
+#: includes/class-mailgun-email-check.php:56
+msgid "Do you want to check e-mail addresses on new registrations?"
+msgstr "Você gostaria de verificar endereços de e-mails em novos cadastros?"
+
+#: includes/class-mailgun-email-check.php:61
+msgid "MailGun Public API Key"
+msgstr "Chave Pública da API do MailGun"
+
+#: includes/class-mailgun-email-check.php:65
+msgid ""
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
+msgstr "Se você não tiver uma conta do MailGun, pode <a href=\"%s\" target=\"_blank\">criar uma conta gratuitamente aqui</a>."
+
+#: includes/class-mailgun-email-check.php:76
+msgid "No API key was provided"
+msgstr "Nenhuma chave de API foi fornecido"
+
+#: includes/class-mailgun-email-check.php:83
+msgid "No data to check"
+msgstr "Não há dados para verificar"
+
+#: includes/class-mailgun-email-check.php:88
+msgid "No e-mail to check"
+msgstr "Não há e-mail para verificar"
+
+#: includes/class-post-type.php:72
+msgid "Add New Ticket"
+msgstr "Adicionar Novo Bilhete"
+
+#: includes/class-post-type.php:73
+msgid "New Ticket"
+msgstr "Novo Bilhete"
+
+#: includes/class-post-type.php:74
+msgid "Edit Ticket"
+msgstr "Editar Bilhete"
+
+#: includes/class-post-type.php:75
+msgid "View Ticket"
+msgstr "Exibir Bilhete"
+
+#: includes/class-post-type.php:76
+msgid "All Tickets"
+msgstr "Todos os Bilhetes"
+
+#: includes/class-post-type.php:77
+msgid "Search Tickets"
+msgstr "Buscar Bilhetes"
+
+#: includes/class-post-type.php:78
+msgid "Parent Ticket:"
+msgstr "Bilhete Pai:"
+
+#: includes/class-post-type.php:79
+msgid "No tickets found."
+msgstr "Nenhum bilhete encontrado."
+
+#: includes/class-post-type.php:80
+msgid "No tickets found in Trash."
+msgstr "Nenhum bilhete achado no lixo."
+
+#: includes/class-post-type.php:143 includes/class-post-type.php:146
+msgid "Ticket updated."
+msgstr "Bilhete atualizado"
+
+#: includes/class-post-type.php:144
+msgid "Custom field updated."
+msgstr "Campos personalizados atualizados."
+
+#: includes/class-post-type.php:145
+msgid "Custom field deleted."
+msgstr "Campos personalizados excluídos."
+
+#. translators: %s: date and time of the revision
+#: includes/class-post-type.php:148
+msgid "Ticket restored to revision from %s"
+msgstr "Bilhete restaurado para revisão de %s"
+
+#: includes/class-post-type.php:149
+msgid "Ticket published."
+msgstr "Bilhete publicado."
+
+#: includes/class-post-type.php:150
+msgid "Ticket saved."
+msgstr "Bilhete salvo."
+
+#: includes/class-post-type.php:151
+msgid "Ticket submitted."
+msgstr "Bilhete enviado."
+
+#: includes/class-post-type.php:153
+msgid "Ticket scheduled for: <strong>%1$s</strong>."
+msgstr "Bilhete agendado para: <strong>%1$s</strong>."
+
+#. translators: Publish box date format, see http:php.net/date
+#: includes/class-post-type.php:155
+msgid "M j, Y @ G:i"
+msgstr "j de F de Y @ G:i"
+
+#: includes/class-post-type.php:157
+msgid "Ticket draft updated."
+msgstr "Rascunho do bilhete atualizado."
+
+#: includes/class-post-type.php:163
+msgid "View ticket"
+msgstr "Ver bilhete"
+
+#: includes/class-post-type.php:169
+msgid "Preview ticket"
+msgstr "Pre-vizualizar bilhete"
+
+#: includes/class-product-sync.php:766 includes/class-product-sync.php:788
+msgid ""
+"You cannot edit this term from here because it is linked to a post (of the "
+"%s post type). Please edit the post directly instead."
+msgstr "Você não pode editar este termo a partir daqui porque ele está ligado a um post (do tipo %s). Por favor edite o post diretamente."
+
+#: includes/class-product-sync.php:791
+msgid "Term Locked"
+msgstr "Termo Bloqueado"
+
+#: includes/class-product-sync.php:851
+msgid "Re-Synchronize Products"
+msgstr "Ressincronizar os Produtos"
+
+#: includes/class-product-sync.php:854
+msgid "Resync"
+msgstr "Ressincronizar"
+
+#: includes/class-product-sync.php:856
+msgid "Re-synchronize all products from your e-commerce plugin."
+msgstr "Ressincronizar todos os produtos do seu plugin de e-commerce."
+
+#: includes/class-product-sync.php:868
+msgid "Delete Products"
+msgstr "Excluir Produtos"
+
+#: includes/class-product-sync.php:871
+msgid "Delete"
+msgstr "Excluir"
+
+#: includes/class-product-sync.php:873
+msgid "Delete all products synchronized from your e-commerce plugin."
+msgstr "Excluir todos os produtos sincronizadas do seu plugin de e-commerce."
+
+#: includes/class-remote-notification-client.php:193
+msgid "The server response was invalid (code %s)"
+msgstr "A resposta do servidor é inválida (código %s)."
+
+#: includes/class-remote-notification-client.php:199
+msgid "The server response is empty"
+msgstr "A resposta do servidor está vazia"
+
+#: includes/class-remote-notification-client.php:205
+msgid "Cannot decode the response content"
+msgstr "Não foi possível decodificar o conteúdo da resposta"
+
+#: includes/class-remote-notification-client.php:441
+msgid "Dismiss notification"
+msgstr "Dispensar notificação"
+
+#: includes/class-remote-notification-client.php:443
+msgid "Dismiss"
+msgstr "Dispensar"
+
+#: includes/class-wpas-editor-ajax.php:102
+msgid "An editor ID is mandatory to load a new instance of TinyMCE"
+msgstr "Um ID de editor é obrigatório para carregar uma nova instância do TinyMCE"
+
+#: includes/custom-fields/class-custom-field.php:401
+msgid "The custom field class does not contain the mandatory method \"display\""
+msgstr "A classe do campo personalizado não contém o método de preenchimento obrigatório \"exibir\""
+
+#: includes/custom-fields/class-custom-field.php:409
+msgid "The type of custom field you are trying to use does not exist"
+msgstr "O tipo de campo personalizado que você está tentando usar não existe"
+
+#: includes/custom-fields/class-custom-fields.php:93
+msgid "Please use %s to register your custom field type"
+msgstr "Por favor use %s para registrar o tipo do seu campo personalizado"
+
+#: includes/custom-fields/class-custom-fields.php:163
+msgid "Search %s"
+msgstr "Procurar %s"
+
+#: includes/custom-fields/class-custom-fields.php:164
+msgid "All %s"
+msgstr "Todos %s"
+
+#: includes/custom-fields/class-custom-fields.php:165
+msgid "Parent %s"
+msgstr "%s Principal"
+
+#: includes/custom-fields/class-custom-fields.php:167
+msgid "Edit %s"
+msgstr "Editar %s"
+
+#: includes/custom-fields/class-custom-fields.php:168
+msgid "Update %s"
+msgstr "Atualizar %s"
+
+#: includes/custom-fields/class-custom-fields.php:169
+msgid "Add New %s"
+msgstr "Adicionar Novo %s"
+
+#: includes/custom-fields/class-custom-fields.php:521
+msgid "Any Status"
+msgstr "Qualquer status"
+
+#: includes/custom-fields/class-custom-fields.php:523
+#: includes/functions-general.php:350 includes/functions-templating.php:762
+msgid "Closed"
+msgstr "Fechado"
+
+#: includes/custom-fields/class-custom-fields.php:936
+#: includes/custom-fields/class-custom-fields.php:938
+msgid "The field %s is required."
+msgstr "O campo %s é obrigatório."
+
+#: includes/custom-fields/field-types/class-cf-taxonomy.php:63
+#: includes/functions-general.php:521
+msgid "Please select"
+msgstr "Por favor selecione"
+
+#: includes/custom-fields/functions-custom-fields.php:186
+msgid "Tags"
+msgstr "Tags"
+
+#: includes/custom-fields/functions-custom-fields.php:200
+#: includes/custom-fields/functions-custom-fields.php:201
+msgid "Product"
+msgstr "Produto"
+
+#: includes/custom-fields/functions-custom-fields.php:202
+msgid "Products"
+msgstr "Produtos"
+
+#: includes/file-uploader/class-file-uploader.php:162
+msgid "The file you requested is not a valid attachment"
+msgstr "O arquivo solicitado não é um anexo válido"
+
+#: includes/file-uploader/class-file-uploader.php:166
+msgid "The attachment you requested is not attached to any ticket"
+msgstr "O anexo solicitado não está ligado a qualquer bilhete"
+
+#: includes/file-uploader/class-file-uploader.php:173
+msgid "You are not allowed to view this attachment"
+msgstr "Você não tem permissão para ver esta anexo"
+
+#: includes/file-uploader/class-file-uploader.php:341
+msgid "Attachments"
+msgstr "Anexos"
+
+#: includes/file-uploader/class-file-uploader.php:342
+msgid ""
+" You can upload up to %d files (maximum %d MB each) of the following types: "
+"%s"
+msgstr "Você pode enviar arquivos de até %d ( máximo de %d MB cada ) dos seguintes tipos: %s"
+
+#: includes/file-uploader/class-file-uploader.php:441
+msgid "Attachments:"
+msgstr "Anexos:"
+
+#: includes/file-uploader/class-file-uploader.php:607
+msgid ""
+"Your reply has been correctly submitted but the attachment was not uploaded."
+" %s"
+msgstr "Sua resposta foi enviada corretamente, mas o anexo não pôde ser enviado. %s"
+
+#: includes/file-uploader/class-file-uploader.php:674
+msgid "You are not allowed to upload files of this type (%s)"
+msgstr "Você não tem permissão para fazer upload de arquivos deste tipo (%s)"
+
+#: includes/file-uploader/class-file-uploader.php:678
+msgid "You cannot upload empty attachments. You attachments weights 0 bytes"
+msgstr "Você não pode enviar anexos vazios. O tamanho do seu anexo é de 0 bytes"
+
+#: includes/file-uploader/class-file-uploader.php:682
+msgid "Your attachment is too big. You are allowed to attach files up to %s"
+msgstr "Seu anexo é muito grande. Você tem permissão para anexar arquivos de até %s"
+
+#: includes/file-uploader/settings-file-upload.php:13
+msgid "File Upload"
+msgstr "Envio de Arquivos"
+
+#: includes/file-uploader/settings-file-upload.php:16
+msgid "Enable File Upload"
+msgstr "Habilitar Envio de Arquivos"
+
+#: includes/file-uploader/settings-file-upload.php:20
+msgid ""
+"Do you want to allow your users (and agents) to upload attachments to "
+"tickets and replies?"
+msgstr "Você quer permitir que seus usuários (e agentes) possam enviar anexos em bilhetes e respostas?"
+
+#: includes/file-uploader/settings-file-upload.php:23
+msgid "Maximum Files"
+msgstr "Máximo de Arquivos"
+
+#: includes/file-uploader/settings-file-upload.php:27
+msgid "How many files can a user attach to a ticket or a reply?"
+msgstr "Quantidade de arquivos que o usuário pode anexar a um bilhete ou a uma resposta?"
+
+#: includes/file-uploader/settings-file-upload.php:30
+msgid "Maximum File Size"
+msgstr "Tamanho Máximo do Arquivo"
+
+#: includes/file-uploader/settings-file-upload.php:34
+msgid ""
+"What is the maximum size allowed for one file (in <code>MB</code>)? Your "
+"server allows up to %s"
+msgstr "Qual é o tamanho máximo permitido para um arquivo (em <code>MB</code>)? Seu servidor permite até %s"
+
+#: includes/file-uploader/settings-file-upload.php:37
+msgid "Allowed Files Types"
+msgstr "Tipos de Arquivo Permitidos"
+
+#: includes/file-uploader/settings-file-upload.php:41
+msgid ""
+"Which file types do you allow your users to attach? Please separate each "
+"extension by a comma (%s)"
+msgstr "Que tipos de arquivos você permite que seus usuários anexem? Por favor separe as extensões de arquivo com uma vírgula (%s)"
+
+#: includes/functions-addons.php:74
+msgid "An addon with the ID %s is already registered"
+msgstr "Um addon com o ID %s já está registrado"
+
+#: includes/functions-deprecated.php:140
+msgid "Describe your problem as accurately as possible"
+msgstr "Descreva seu problema com o maior detalhamento possível"
+
+#: includes/functions-general.php:288
+msgid "Submit"
+msgstr "Enviar"
+
+#: includes/functions-general.php:451
+msgid ""
+"Awesome Support dependencies are missing. The plugin can’t be loaded "
+"properly. Please run %s before anything else. If you don’t know what this is"
+" you should <a href=\"%s\" class=\"thickbox\">install the production "
+"version</a> of this plugin instead."
+msgstr "Estão faltando dependências do Awesome Support. O plugin não pode ser carregado corretamente. Por favor execute %s antes de qualquer coisa. Se você não sabe o que é isso, deve <a href=\"%s\" class=\"thickbox\">instalar a versão de produção</a> deste plugin."
+
+#: includes/functions-post.php:33
+msgid "You do not have the capacity to open a new ticket."
+msgstr "Você não tem permissão de abrir um novo bilhete."
+
+#: includes/functions-post.php:47
+msgid "It is mandatory to provide a title for your issue."
+msgstr "É obrigatório fornecer um título para o seu problema."
+
+#: includes/functions-post.php:60
+msgid "It is mandatory to provide a description for your issue."
+msgstr "É obrigatório fornecer uma descrição para o seu problema."
+
+#: includes/functions-post.php:112
+msgid "Only registered accounts can submit a ticket. Please register first."
+msgstr "Apenas as contas registradas podem enviar um bilhete. Por favor, registre-se primeiro."
+
+#: includes/functions-post.php:384 includes/functions-post.php:385
+#: includes/functions-post.php:557 includes/functions-post.php:558
+msgid "Reply to ticket %s"
+msgstr "Responder ao bilhete %s"
+
+#: includes/functions-post.php:869
+msgid "The given post ID is not a ticket"
+msgstr "Este ID em questão não é um bilhete"
+
+#: includes/functions-post.php:877
+msgid ""
+"The chosen agent does not have the sufficient capabilities to be assigned a "
+"ticket"
+msgstr "O agente escolhido não tem permissões suficientes para ser atribuído um bilhete"
+
+#: includes/functions-post.php:1033
+msgid "You do not have the capacity to close this ticket"
+msgstr "Você não tem a capacidade de fechar este bilhete"
+
+#: includes/functions-post.php:1033
+msgid "Can’t close ticket"
+msgstr "Não é possível fechar o bilhete"
+
+#: includes/functions-post.php:1048
+msgid "The ticket was closed."
+msgstr "O bilhete foi fechado."
+
+#: includes/functions-post.php:1107
+msgid "The ticket was re-opened."
+msgstr "O bilhete foi reaberto."
+
+#: includes/functions-templating.php:62 includes/functions-templating.php:66
+msgid "You are not allowed to view this ticket."
+msgstr "Você não tem permissão para visualizar este bilhete."
+
+#: includes/functions-templating.php:281
+msgid "ID"
+msgstr "ID"
+
+#: includes/functions-templating.php:282 includes/functions-templating.php:562
+msgid "Status"
+msgstr "Status"
+
+#: includes/functions-templating.php:283 includes/functions-templating.php:564
+msgid "Date"
+msgstr "Data"
+
+#: includes/functions-templating.php:383
+msgid ""
+"The ticket has been closed. If you feel that your issue has not been solved "
+"yet or something new came up in relation to this ticket, <a href=\"%s\">you "
+"can re-open it by clicking this link</a>."
+msgstr "O bilhete foi fechado. Se você achar que seu problema ainda não foi resolvido ou algo de novo surgiu em relação a este bilhete, <a href=\"%s\">você pode voltar a abri-lo clicando neste link</a>."
+
+#: includes/functions-templating.php:439
+msgid "Type your reply here."
+msgstr "Digite sua resposta aqui."
+
+#: includes/functions-templating.php:456
+msgid "No reply is required to close"
+msgstr "Nenhuma resposta é necessária para fechar"
+
+#: includes/functions-templating.php:457
+msgid "Close this ticket"
+msgstr "Feche este bilhete"
+
+#: includes/functions-templating.php:474
+msgid "Please Wait..."
+msgstr "Por Favor, Espere ..."
+
+#: includes/functions-templating.php:491
+msgid "To reply to this ticket, please <a href=\"%s\">go to your admin panel</a>."
+msgstr "Para responder a este bilhete, por favor<a href=\"%s\">acesse seu painel de administração</a>."
+
+#: includes/functions-templating.php:493
+msgid "You are not allowed to reply to this ticket."
+msgstr "Você não tem permissão para responder a este bilhete."
+
+#: includes/functions-templating.php:563
+msgid "Title"
+msgstr "Título"
+
+#: includes/functions-templating.php:897
+msgid "Previous Page"
+msgstr "Página Anterior"
+
+#: includes/functions-templating.php:930
+msgid "Next Page"
+msgstr "Página Seguinte"
+
+#: includes/functions-user.php:18 themes/default/registration.php:29
+msgid "Registrations are currently not allowed."
+msgstr "Inscrições não são permitidas atualmente."
+
+#: includes/functions-user.php:62
+msgid "You did not accept the terms and conditions."
+msgstr "Você não aceitou os termos e condições."
+
+#: includes/functions-user.php:69
+msgid "You didn't correctly fill all the fields."
+msgstr "Você não preencheu corretamente todos os campos."
+
+#: includes/functions-user.php:150
+msgid "Your account has been created. Please log-in."
+msgstr "Sua conta foi criada. Por favor entre."
+
+#: includes/functions-user.php:220
+msgid "We were unable to log you in for an unknown reason."
+msgstr "Não fomos capazes de loga-lo por uma razão desconhecida."
+
+#: includes/integrations/class-product-edd.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to an EDD product. "
+"<a href=\"%s\">Please edit the product directly</a>."
+msgstr "Você não pode editar este termo a partir daqui porque está ligado a um produto do EDD. <a href=\"%s\">Por favor edite o produto diretamente</a>."
+
+#: includes/integrations/class-product-exchange.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to an Exchange "
+"product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Você não pode editar este termo a partir daqui porque está ligado a um produto do Exchange. <a href=\"%s\">Por favor edite o produto diretamente</a>."
+
+#: includes/integrations/class-product-jigoshop.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to a Jigoshop "
+"product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Você não pode editar este termo a partir daqui porque está ligado a um produto do Jigoshop. <a href=\"%s\">Por favor edite o produto diretamente</a>."
+
+#: includes/integrations/class-product-woocommerce.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to a WooCommerce "
+"product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Você não pode editar este termo a partir daqui porque está ligado a um produto do WooCommerce.<a href=\"%s\">Por favor edite o produto diretamente</a>."
+
+#: includes/integrations/class-product-wp-ecommerce.php:76
+msgid ""
+"You cannot edit this term from here because it is linked to a WP eCommerce "
+"product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Você não pode editar este termo a partir daqui porque está ligado a um produto do WP eCommerce. <a href=\"%s\">Por favor edite o produto diretamente</a>."
+
+#: includes/shortcodes/shortcode-submit.php:35
+#: includes/shortcodes/shortcode-tickets.php:58
+msgid "You are being redirected..."
+msgstr "Você esta sendo redirecionado ..."
+
+#: includes/shortcodes/shortcode-submit.php:72
+msgid "You need to <a href=\"%s\">log-in</a> to submit a ticket."
+msgstr "Você precisa <a href=\"%s\">logar</a> para enviar um bilhete."
+
+#: includes/shortcodes/shortcode-submit.php:79
+msgid "You are not allowed to submit a ticket."
+msgstr "Você não tem permissão para enviar um bilhete."
+
+#: includes/shortcodes/shortcode-submit.php:104
+msgid ""
+"Sorry, support team members cannot submit tickets from here. If you need to "
+"open a ticket, please go to your admin panel or <a href=\"%s\">click here to"
+" open a new ticket</a>."
+msgstr "Desculpe, membros da equipe de suporte não podem abrir chamados aqui. Se você precisar abrir um chamado, por favor, vá até o painel de administração ou <a href=\"%s\">clique aqui para abrir um chamado</a>."
+
+#: themes/default/details.php:116
+msgid "This reply has been deleted %s ago."
+msgstr "Esta resposta foi deletada %s atrás."
+
+#: themes/default/details.php:175
+msgid "Older Replies"
+msgstr "Respostas Antigas"
+
+#: themes/default/details.php:176
+msgid "Newer Replies"
+msgstr "Respostas Recentes"
+
+#: themes/default/details.php:179
+msgid "Write a reply"
+msgstr "Escrever uma resposta"
+
+#: themes/default/list.php:52
+msgid "Open a ticket"
+msgstr "Abrir um bilhete"
+
+#: themes/default/list.php:55
+msgid ""
+"You haven't submitted a ticket yet. <a href=\"%s\">Click here to submit your"
+" first ticket</a>."
+msgstr "Você ainda não efetuou nenhum chamado. <a href=\"%s\">Clique aqui para criar seu primeiro chamado</a>."
+
+#: themes/default/partials/ticket-origin.php:28
+msgid "User"
+msgstr "Usuário"
+
+#: themes/default/partials/ticket-origin.php:29
+msgid "Message"
+msgstr "Mensagem"
+
+#: themes/default/registration.php:24 themes/default/registration.php:78
+msgid "Log in"
+msgstr "Logar"
+
+#: themes/default/registration.php:37 themes/default/registration.php:38
+msgid "E-mail or username"
+msgstr "E-mail ou nome de usuário"
+
+#: themes/default/registration.php:50 themes/default/registration.php:51
+#: themes/default/registration.php:132
+msgid "Password"
+msgstr "Senha"
+
+#: themes/default/registration.php:69
+msgid "Remember Me"
+msgstr "Lembrar"
+
+#: themes/default/registration.php:78
+msgid "Logging In..."
+msgstr "Logando ..."
+
+#: themes/default/registration.php:84
+msgid "Register"
+msgstr "Registrar"
+
+#: themes/default/registration.php:92 themes/default/registration.php:93
+msgid "First Name"
+msgstr "Nome"
+
+#: themes/default/registration.php:105 themes/default/registration.php:106
+msgid "Last Name"
+msgstr "Sobrenome"
+
+#: themes/default/registration.php:118 themes/default/registration.php:119
+msgid "Email"
+msgstr "E-mail"
+
+#: themes/default/registration.php:131
+msgid "Enter a password"
+msgstr "Insira uma senha"
+
+#: themes/default/registration.php:161
+msgid "Create Account"
+msgstr "Criar Conta"
+
+#: themes/default/registration.php:161
+msgid "Creating Account..."
+msgstr "Criando Conta ..."
+
+#: themes/default/submission.php:81
+msgid "Submit ticket"
+msgstr "Enviar Bilhete"
+
+#. Description of the plugin/theme
+msgid ""
+"Awesome Support is a great ticketing system that will help you improve your "
+"customer satisfaction by providing a unique customer support experience."
+msgstr "Awesome Support é um grande sistema de bilhetes que vai ajudá-lo a melhorar a satisfação do seu cliente, fornecendo uma experiência de suporte de cliente única."
+
+#: includes/admin/class-admin-tickets-list.php:184
+msgctxt "Ticket created on"
+msgid "Created %s ago."
+msgstr "Criado %s atrás."
+
+#: includes/admin/class-admin-tickets-list.php:193
+msgctxt "No last reply"
+msgid "No reply yet."
+msgstr "Ainda não foi respondido."
+
+#: includes/admin/class-admin-tickets-list.php:211
+msgctxt "User role"
+msgid "agent"
+msgstr "Agente"
+
+#: includes/admin/class-admin-tickets-list.php:211
+msgctxt "User role"
+msgid "client"
+msgstr "Cliente"
+
+#: includes/admin/class-admin-tickets-list.php:214
+msgctxt "Last reply ago"
+msgid "<a href=\"%s\">Last replied</a> %s ago by %s (%s)."
+msgstr "<a href=\"%s\">Última resposta</a> %s atrás por %s (%s)."
+
+#: includes/admin/class-admin-user.php:95
+msgctxt "Action after replying to a ticket"
+msgid "After Reply"
+msgstr "Após Resposta"
+
+#: includes/admin/functions-admin.php:297
+msgctxt "Link to delete a ticket reply"
+msgid "Delete"
+msgstr "Apagar"
+
+#: includes/admin/functions-admin.php:298
+msgctxt "Link ot edit a ticket reply"
+msgid "Edit"
+msgstr "Editar"
+
+#: includes/admin/functions-admin.php:303
+msgctxt "Mark a user reply as read"
+msgid "Mark as Read"
+msgstr "Marcar como Lido"
+
+#: includes/admin/functions-notices.php:216
+msgctxt "Dismiss link for admin notices"
+msgid "Dismiss"
+msgstr "Descartar"
+
+#: includes/admin/metaboxes/details.php:52
+msgctxt "Ticket creation"
+msgid "Creating..."
+msgstr "Criando..."
+
+#: includes/admin/metaboxes/replies-form.php:26
+msgctxt "Title of the reply editor in the back-end"
+msgid "Write a reply to %s"
+msgstr "Escreva uma resposta a %s"
+
+#: includes/admin/settings/settings-general.php:13
+msgctxt "User registration is allowed"
+msgid "allowed"
+msgstr "permitida"
+
+#: includes/admin/settings/settings-general.php:13
+msgctxt "User registration is not allowed"
+msgid "not allowed"
+msgstr "não permitida"
+
+#: includes/class-awesome-support.php:742
+msgctxt "JavaScript validation error message"
+msgid "You can't submit an empty ticket"
+msgstr "Não pode submeter um ticket em branco"
+
+#: includes/class-awesome-support.php:744
+msgctxt "JavaScript validation error message"
+msgid "You can't submit an empty reply"
+msgstr "Você não pode enviar uma resposta em branco."
+
+#: includes/class-awesome-support.php:759
+msgctxt "ticket submission button text while submitting"
+msgid "Submitting..."
+msgstr "A submeter..."
+
+#: includes/class-log-history.php:81
+msgctxt "Custom field value was updated"
+msgid "updated %s to %s"
+msgstr "atualizado %s para %s"
+
+#: includes/class-log-history.php:85
+msgctxt "Custom field value was deleted"
+msgid "deleted %s"
+msgstr "%s excluído"
+
+#: includes/class-log-history.php:89
+msgctxt "Custom field value was added"
+msgid "added %s to %s"
+msgstr "adicionado %s para %s"
+
+#: includes/class-post-type.php:67
+msgctxt "post type general name"
+msgid "Tickets"
+msgstr "Bilhetes"
+
+#: includes/class-post-type.php:68
+msgctxt "post type singular name"
+msgid "Ticket"
+msgstr "Bilhete"
+
+#: includes/class-post-type.php:69
+msgctxt "admin menu"
+msgid "Tickets"
+msgstr "Bilhetes"
+
+#: includes/class-post-type.php:70
+msgctxt "add new on admin bar"
+msgid "Ticket"
+msgstr "Bilhete"
+
+#: includes/class-post-type.php:71
+msgctxt "book"
+msgid "Add New"
+msgstr "Adicionar Novo"
+
+#: includes/class-post-type.php:218
+msgctxt "Reply status"
+msgid "Read"
+msgstr "Lido"
+
+#: includes/class-post-type.php:219
+msgctxt "Reply status"
+msgid "Unread"
+msgstr "Não Lido"
+
+#: includes/class-post-type.php:231
+msgctxt "Ticket status"
+msgid "New"
+msgstr "Novo"
+
+#: includes/class-post-type.php:232
+msgctxt "Ticket status"
+msgid "In Progress"
+msgstr "Em Progresso"
+
+#: includes/class-post-type.php:233
+msgctxt "Ticket status"
+msgid "On Hold"
+msgstr "Em Espera"
+
+#: includes/custom-fields/class-custom-fields.php:166
+msgctxt ""
+"Parent term in a taxonomy where %s is dynamically replaced by the taxonomy "
+"(eg. \"book\")"
+msgid "Parent %s:"
+msgstr "%s Principal:"
+
+#: includes/custom-fields/class-custom-fields.php:170
+msgctxt ""
+"A new taxonomy term name where %s is dynamically replaced by the taxonomy "
+"(eg. \"book\")"
+msgid "New %s Name"
+msgstr "Novo Nome de %s"
+
+#: themes/default/registration.php:145
+msgctxt "Login form"
+msgid "Show Password"
+msgstr "Mostrar Senha"

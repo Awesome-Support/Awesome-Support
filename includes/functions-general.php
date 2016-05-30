@@ -341,6 +341,41 @@ function wpas_get_ticket_status_state( $post_id ) {
 
 }
 
+/**
+ * Get the ticket state slug.
+ *
+ * Gets the ticket status. If the ticket is closed nothing fancy.
+ * If not, we return the ticket state instead of the "Open" status.
+ *
+ * The difference with wpas_get_ticket_status_state() is that only slugs are returned. No translation or capitalized
+ * terms.
+ *
+ * @since  3.3
+ *
+ * @param  integer $post_id Post ID
+ *
+ * @return string           Ticket status / state
+ */
+function wpas_get_ticket_status_state_slug( $post_id ) {
+
+	$status = wpas_get_ticket_status( $post_id );
+
+	if ( 'closed' === $status ) {
+		return $status;
+	}
+
+	$post          = get_post( $post_id );
+	$post_status   = $post->post_status;
+	$custom_status = wpas_get_post_status();
+
+	if ( ! array_key_exists( $post_status, $custom_status ) ) {
+		return 'open';
+	}
+
+	return $post->post_status;
+
+}
+
 function wpas_get_current_admin_url() {
 
 	global $pagenow;
@@ -465,8 +500,10 @@ function wpas_array_to_ul( $array ) {
  * Create dropdown of things.
  *
  * @since  3.1.3
- * @param  array $args     Dropdown settings
+ *
+ * @param  array  $args    Dropdown settings
  * @param  string $options Dropdown options
+ *
  * @return string          Dropdown with custom options
  */
 function wpas_dropdown( $args, $options ) {
@@ -478,20 +515,33 @@ function wpas_dropdown( $args, $options ) {
 		'please_select' => false,
 		'select2'       => false,
 		'disabled'      => false,
+		'data_attr'     => array()
 	);
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$class = (array) $args['class'];
+	$class           = (array) $args['class'];
+	$data_attributes = array();
 
 	if ( true === $args['select2'] ) {
 		array_push( $class, 'wpas-select2' );
 	}
 
+	// If there are some data attributes we prepare them
+	if ( ! empty( $args['data_attr'] ) ) {
+
+		foreach ( $args['data_attr'] as $attr => $value ) {
+			$data_attributes[] = "data-$attr='$value'";
+		}
+
+		$data_attributes = implode( ' ', $data_attributes );
+
+	}
+
 	/* Start the buffer */
 	ob_start(); ?>
 
-	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 		<?php
 		if ( $args['please_select'] ) {
 			echo '<option value="">' . __( 'Please select', 'awesome-support' ) . '</option>';
@@ -819,13 +869,12 @@ function wpas_get_reply_link( $reply_id ) {
 
 	}
 
-	if ( 0 === $position ) {
-		return false;
+	// We have more replies that what's displayed on one page, so let's set a session var to force displaying all replies
+	if ( $position > wpas_get_option( 'replies_per_page', 10 ) ) {
+		WPAS()->session->add( 'force_all_replies', true );
 	}
 
-	$page = ceil( $position / 10 );
-	$base = 1 !== (int) $page ? add_query_arg( 'as-page', $page, get_permalink( $reply->post_parent ) ) : get_permalink( $reply->post_parent );
-	$link = $base . "#reply-$reply_id";
+	$link = get_permalink( $reply->post_parent ) . "#reply-$reply_id";
 
 	return esc_url( $link );
 
@@ -836,12 +885,19 @@ add_action( 'wpas_after_template', 'wpas_credit', 10, 3 );
  * Display a link to the plugin page.
  *
  * @since  3.1.3
+ * @var string $name Template name
  * @return void
  */
-function wpas_credit() {
+function wpas_credit( $name ) {
+
+	if ( ! in_array( $name, array( 'details', 'registration', 'submission', 'list' ) ) ) {
+		return;
+	}
+
 	if ( true === (bool) wpas_get_option( 'credit_link' ) ) {
 		echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
 	}
+
 }
 
 add_filter( 'plugin_locale', 'wpas_change_plugin_locale', 10, 2 );
@@ -927,4 +983,98 @@ function wpas_remove_tinymce_links_internal( $query ) {
 
 	return $query;
 
+}
+
+/**
+ * Convert an array to a string of key/value pairs
+ *
+ * This function does not work with multidimensional arrays.
+ *
+ * @since 3.3
+ *
+ * @param array $array The array to convert
+ *
+ * @return string
+ */
+function wpas_array_to_key_value_string( $array ) {
+
+	$pairs = array();
+
+	foreach ( $array as $key => $value ) {
+
+		// Convert boolean values to string
+		if ( is_bool( $value ) ) {
+			$value = $value ? 'true' : false;
+		}
+
+		$pairs[] = "$key='$value'";
+	}
+
+	return implode( ' ', $pairs );
+
+}
+
+/**
+ * Convert an associative array into a key/value pairs string
+ *
+ * The function also takes care of prefixing the attributes with data- if needed.
+ *
+ * @since 3.3
+ *
+ * @param array $array      The array to convert
+ * @param bool  $user_funct Whether or not to check if the value passed is in fact a function to use for getting the
+ *                          actual value
+ *
+ * @return array
+ */
+function wpas_array_to_data_attributes( $array, $user_funct = false ) {
+
+	$clean = array();
+
+	foreach ( $array as $key => $value ) {
+
+		if ( 'data-' !== substr( $key, 0, 5 ) ) {
+			$key = "data-$key";
+		}
+
+		if ( true === $user_funct ) {
+
+			$function = is_array( $value ) ? $value[0] : $value;
+			$args     = array();
+
+			if ( is_array( $value ) ) {
+				$args = $value;
+				unset( $args[0] ); // Remove the function name from the args
+			}
+
+			if ( function_exists( $function ) ) {
+				$value = call_user_func( $function, array_values( $args ) );
+			}
+
+		}
+
+		// This function does not work with multidimensional arrays
+		if ( is_array( $value ) ) {
+			continue;
+		}
+
+		$clean[ $key ] = $value;
+
+	}
+
+	return wpas_array_to_key_value_string( $clean );
+
+}
+
+/**
+ * Dumb wrapper for get_the_time() that passes the desired format for getting a Unix timestamp
+ *
+ * This function is used as a user callback when preparing the front-end tickets list table.
+ *
+ * @see   wpas_get_tickets_list_columns()
+ * @since 3.3
+ * @return string
+ */
+function wpas_get_the_time_timestamp() {
+	return get_the_time( 'U' );
 }

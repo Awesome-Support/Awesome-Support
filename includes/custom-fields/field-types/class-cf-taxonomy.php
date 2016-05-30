@@ -31,14 +31,19 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 		call_user_func_array( array( $this, 'parent::__construct' ), $args );
 
-		$this->terms         = get_terms( $this->field_id, array( 'hide_empty' => 0 ) );
-		$this->ordered_terms = array();
+		$this->terms                 = get_terms( $this->field_id, array( 'hide_empty' => 0 ) );
+		$this->ordered_terms         = array();
+		$this->field_args['select2'] = isset( $this->field_args['select2'] ) ? (bool) $this->field_args['select2'] : false;
 
 		if ( ! is_wp_error( $this->terms ) ) {
 			/**
 			 * Re-order the terms hierarchically.
 			 */
 			wpas_sort_terms_hierarchicaly( $this->terms, $this->ordered_terms );
+		}
+
+		if ( true === $this->field_args['select2'] ) {
+			add_filter( 'wpas_cf_field_class', array( $this, 'add_select2_class' ), 10, 2 );
 		}
 
 	}
@@ -152,6 +157,32 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 		}
 
 		return 0;
+
+	}
+
+	/**
+	 * Add the select2 class to the input
+	 *
+	 * @since 3.3
+	 *
+	 * @param array $classes Input classes
+	 * @param array $field   Array of params of the field being processed
+	 *
+	 * @return array
+	 */
+	public function add_select2_class( $classes, $field ) {
+
+		if ( $field['name'] !== $this->field_id ) {
+			return $classes;
+		}
+
+		if ( true !== $this->field_args['select2'] ) {
+			return $classes;
+		}
+
+		$classes[] = 'wpas-select2';
+
+		return $classes;
 
 	}
 

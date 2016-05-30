@@ -77,25 +77,29 @@ Ticket List
 ==========================================================================
 */
 
-.column-status {
-	width: 90px !important;
-	overflow: hidden
-}
-.column-ticket_id {
-	width: 50px !important;
-	overflow: hidden
-}
-.wpas-activity {
-	ul, li {
-		margin: 0;
-		padding: 0;
+table.wp-list-table {
+	table-layout: auto;
+
+	.wpas-activity {
+		ul, li {
+			margin: 0;
+			padding: 0;
+		}
+	}
+
+	/* Prevent line break on column titles and labels */
+	thead tr th, .wpas-label {
+		white-space: nowrap;
+	}
+
+	/* Set max width of ticket title */
+	td.column-title {
+		max-width: 400px;
 	}
 }
-@media screen and (max-width: 782px) {
-	.column-taxonomy-ticket-tag,
-	.column-taxonomy-product,
-	.column-wpas-activity {
-		display: none;
+@media screen and (max-width:782px) {
+	td.column-title {
+		max-width: inherit;
 	}
 }
 
@@ -456,11 +460,42 @@ Metaboxes - User Profile
 		line-height: 1;
 	}
 }
-.wpas-up-tickets {
+
+/*
+==========================================================================
+Metaboxes - Ticket Details
+==========================================================================
+*/
+.postbox {
 	[data-hint] {
 		position: relative;
 		&:after {
 			font-size: 100%;
+		}
+	}	
+}
+
+#wpas-mb-details {
+	p {
+		margin: 5px 0 10px 0;
+	}
+}
+
+#wpas-statusdate {
+	margin-top: -6px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #eee;
+
+	.wpas-col {
+		padding: 20px 10px;
+		text-align: center;
+
+		&:last-child {
+			border-left: 1px solid #eee;
+		}
+		strong {
+			display: block;
+			margin-bottom: 5px;
 		}
 	}
 }

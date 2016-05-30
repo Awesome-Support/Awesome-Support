@@ -161,7 +161,7 @@ function wpas_core_settings_notifications( $def ) {
 				),*/
 				/* Ticket closed */
 				array(
-					'name' => __( 'Ticket Closed', 'awesome-support' ),
+					'name' => __( 'Ticket Closed (by agent)', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -182,6 +182,30 @@ function wpas_core_settings_notifications( $def ) {
 					'id'       => 'content_closed',
 					'type'     => 'editor',
 					'default'  => '<p>Hi <strong><em>{client_name},</em></strong></p>Your request (<a href="{ticket_url}">#{ticket_id}</a>) has been closed by <strong>{agent_name}</strong>.</p><hr><p>Regards,<br>{site_name}</p>',
+					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
+				),
+				array(
+					'name' => __( 'Ticket Closed (by client)', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Enable', 'awesome-support' ),
+					'id'      => 'enable_closed_client',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Do you want to activate this e-mail template?', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Subject', 'awesome-support' ),
+					'id'      => 'subject_closed_client',
+					'type'    => 'text',
+					'default' => __( 'Request closed: {ticket_title}', 'awesome-support' )
+				),
+				array(
+					'name'     => __( 'Content', 'awesome-support' ),
+					'id'       => 'content_closed_client',
+					'type'     => 'editor',
+					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p>The ticket (<a href="{ticket_admin_url}">#{ticket_id}</a>) has been closed by <strong>{client_name}</strong>.</p><p>Good job!</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 			)

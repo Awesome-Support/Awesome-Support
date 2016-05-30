@@ -23,6 +23,8 @@ add_action( 'add_meta_boxes', 'wpas_metaboxes' );
  */
 function wpas_metaboxes() {
 
+	global $pagenow;
+
 	/* Remove the publishing metabox */
 	remove_meta_box( 'submitdiv', 'ticket', 'side' );
 
@@ -41,13 +43,12 @@ function wpas_metaboxes() {
 	}
 
 	/* Ticket details */
-	add_meta_box( 'wpas-mb-details', __( 'Details', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
-
-	/* Contacts involved in the ticket */
-	add_meta_box( 'wpas-mb-contacts', __( 'Stakeholders', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'stakeholders' ) );
+	add_meta_box( 'wpas-mb-details', __( 'Ticket Details', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
 
 	/* Client profile */
-	add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
+	if ( 'post-new.php' !== $pagenow ) {
+		add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
+	}
 
 	if ( WPAS()->custom_fields->have_custom_fields() ) {
 		add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
@@ -62,11 +63,12 @@ function wpas_metaboxes() {
  * A template name is given to the function. If the template
  * does exist, the metabox is loaded. If not, nothing happens.
  *
- * @param  (integer) $post     Post ID
- * @param  (string)  $template Metabox content template
+ * @since  3.0.0
+ *
+ * @param  int   $post Post ID
+ * @param  array $args Arguments passed to the callback function
  *
  * @return void
- * @since  3.0.0
  */
 function wpas_metabox_callback( $post, $args ) {
 

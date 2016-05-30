@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           3.2.9
+ * Version:           3.3.0
  * Author:            ThemeAvenue
  * Author URI:        http://themeavenue.net
  * Text Domain:       awesome-support
@@ -194,14 +194,15 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Titan', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );
-					add_action( 'plugins_loaded', array( self::$instance, 'remote_notifications' ), 15, 0 );
 
 				}
 
 			}
 
+			add_action( 'plugins_loaded', array( 'WPAS_File_Upload', 'get_instance' ), 11, 0 );
 			add_action( 'plugins_loaded', array( self::$instance, 'load_plugin_textdomain' ) );
 			add_action( 'init', array( self::$instance, 'load_theme_functions' ) );
+			add_action( 'plugins_loaded', array( self::$instance, 'remote_notifications' ), 15, 0 );
 
 		}
 
@@ -237,7 +238,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '3.2.8' );
+			define( 'WPAS_VERSION',           '3.3.0' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -388,7 +389,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			require( WPAS_PATH . 'includes/functions-fallback.php' );
 			require( WPAS_PATH . 'includes/class-logger.php' );
-			require( WPAS_PATH . 'includes/integrations/loader.php' );
+			require( WPAS_PATH . 'includes/integrations/ecommerce.php' );
 			require( WPAS_PATH . 'includes/scripts.php' );
 			require( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' );
 			require( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );
@@ -413,9 +414,16 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/class-product-sync.php' );
 			require( WPAS_PATH . 'includes/class-gist.php' );
 			require( WPAS_PATH . 'includes/class-wpas-editor-ajax.php' );
-			require( WPAS_PATH . 'includes/class-agent.php' );
+			require( WPAS_PATH . 'includes/class-member-query.php' );
+			require( WPAS_PATH . 'includes/class-member.php' );
+			require( WPAS_PATH . 'includes/class-member-agent.php' );
+			require( WPAS_PATH . 'includes/class-member-user.php' );
 			require( WPAS_PATH . 'includes/class-wpas-session.php' );
 			require( WPAS_PATH . 'includes/install.php' );
+
+			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+				require( WPAS_PATH . 'includes/functions-admin-bar.php' );
+			}
 
 		}
 
@@ -437,6 +445,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/functions-tools.php' );
 				require( WPAS_PATH . 'includes/admin/functions-list-table.php' );
 				require( WPAS_PATH . 'includes/admin/functions-metaboxes.php' );
+				require( WPAS_PATH . 'includes/admin/functions-user-profile.php' );
 				require( WPAS_PATH . 'includes/admin/functions-admin-actions.php' );
 				require( WPAS_PATH . 'includes/admin/functions-misc.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
@@ -499,18 +508,30 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		/**
 		 * Load the plugin text domain for translation.
 		 *
-		 * @return boolean True if the language file was loaded, false otherwise
+		 * With the introduction of plugins language packs in WordPress loading the textdomain is slightly more complex.
+		 *
+		 * We now have 3 steps:
+		 *
+		 * 1. Check for the language pack in the WordPress core directory
+		 * 2. Check for the translation file in the plugin's language directory
+		 * 3. Fallback to loading the textdomain the classic way
+		 *
 		 * @since    1.0.0
+		 * @return boolean True if the language file was loaded, false otherwise
 		 */
 		public function load_plugin_textdomain() {
 
-			$lang_dir  = WPAS_ROOT . 'languages/';
-			$land_path = WPAS_PATH . 'languages/';
-			$locale    = apply_filters( 'plugin_locale', get_locale(), 'awesome-support' );
-			$mofile    = "awesome-support-$locale.mo";
+			$lang_dir       = WPAS_ROOT . 'languages/';
+			$lang_path      = WPAS_PATH . 'languages/';
+			$locale         = apply_filters( 'plugin_locale', get_locale(), 'awesome-support' );
+			$mofile         = "awesome-support-$locale.mo";
+			$glotpress_file = WP_LANG_DIR . '/plugins/awesome-support/' . $mofile;
 
-			if ( file_exists( $land_path . $mofile ) ) {
-				$language = load_textdomain( 'awesome-support', $land_path . $mofile );
+			// Look for the GlotPress language pack first of all
+			if ( file_exists( $glotpress_file ) ) {
+				$language = load_textdomain( 'awesome-support', $glotpress_file );
+			} elseif ( file_exists( $lang_path . $mofile ) ) {
+				$language = load_textdomain( 'awesome-support', $lang_path . $mofile );
 			} else {
 				$language = load_plugin_textdomain( 'awesome-support', false, $lang_dir );
 			}
@@ -541,8 +562,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		public function remote_notifications() {
-			if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
-				new TAV_Remote_Notification_Client( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
+			if ( is_admin() && function_exists( 'rdnc_add_notification' ) && ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) ) {
+				rdnc_add_notification( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
 			}
 		}
 

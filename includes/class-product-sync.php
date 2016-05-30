@@ -78,7 +78,7 @@ class WPAS_Product_Sync {
 	 * @since  3.0.2
 	 * @param  string  $post_type Name of the post type that should be used to populate the product taxonomy
 	 * @param  string  $taxonomy  The name of the taxonomy to keep in sync with the $post_type
-	 * @param  boolean $append    Defines if the taxonomy terms should be replaced or if synced terms should just be appened to existing terms
+	 * @param  boolean $append    Defines if the taxonomy terms should be replaced or if synced terms should just be append to existing terms
 	 */
 	public function __construct( $post_type = '', $taxonomy = '', $append = false ) {
 
@@ -342,6 +342,7 @@ class WPAS_Product_Sync {
 
 		$term = array(
 			'term_id'          => $term_id,
+			'post_id'          => $post->ID, // Could be handy to still have access to the post ID
 			'name'             => $post->post_title,
 			'slug'             => $post->post_name,
 			'term_group'       => 0,
@@ -462,11 +463,27 @@ class WPAS_Product_Sync {
 			$taxonomies = array( $taxonomies );
 		}
 
+		// Declare the new terms array
+		$new_terms = array();
+
+		// Add the non-synced terms to the terms array first
+		if ( $this->append ) {
+			foreach ( $terms as $term ) {
+				if ( is_object( $term ) && false === $this->is_synced_term( $term->term_id ) ) {
+					$new_terms[] = $term;
+				}
+			}
+		}
+
 		foreach ( $taxonomies as $taxonomy ) {
 
 			if ( ! $this->is_product_tax( $taxonomy ) ) {
-				return $terms;
+				continue;
 			}
+
+			$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
+			$include = array_filter( wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+			$exclude = array_filter( wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) );
 
 			/* Map the tax args to the WP_Query args */
 			$query_args = $this->map_args( $args );
@@ -486,7 +503,16 @@ class WPAS_Product_Sync {
 			);
 
 			$query_args = wp_parse_args( $query_args, $query_defaults );
-			$query      = new WP_Query( $query_args );
+
+			if ( ! empty( $include ) ) {
+				$query_args['post__in'] = $include;
+			}
+
+			if ( ! empty( $exclude ) ) {
+				$query_args['post__not_in'] = $exclude;
+			}
+
+			$query = new WP_Query( $query_args );
 
 			if ( false === get_option( "wpas_sync_$this->post_type", false ) ) {
 				$this->run_initial_sync();
@@ -497,18 +523,7 @@ class WPAS_Product_Sync {
 			}
 
 			if ( empty( $query->posts ) ) {
-				return $terms;
-			}
-
-			/* This is the terms object array */
-			$new_terms = array();
-
-			if ( $this->append ) {
-				foreach ( $terms as $term ) {
-					if ( is_object( $term ) && ! $this->is_synced_term( $term->term_id ) ) {
-						$new_terms[] = $term;
-					}
-				}
+				continue;
 			}
 
 			/* Create the term object for each post */
@@ -526,14 +541,13 @@ class WPAS_Product_Sync {
 					continue;
 				}
 
-				$new_terms[] = $term;
-			}
+				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $taxonomy );
 
-			return $new_terms;
+			}
 
 		}
 
-		return $terms;
+		return apply_filters( 'wpas_get_terms', $new_terms );
 
 	}
 
@@ -554,7 +568,7 @@ class WPAS_Product_Sync {
 			return $term;
 		}
 
-		if ( ! $this->is_synced_term( $term->term_id ) ) {
+		if ( false === $this->is_synced_term( $term->term_id ) ) {
 			return $term;
 		}
 
@@ -573,6 +587,7 @@ class WPAS_Product_Sync {
 		$term->name        = $post->post_title;
 		$term->slug        = $post->post_name;
 		$term->description = wp_trim_words( $post->post_content, 55, ' [...]' );
+		$term->post_id     = $post_id;
 
 		return $term;
 
@@ -597,7 +612,7 @@ class WPAS_Product_Sync {
 
 		foreach ( $terms as $key => $term ) {
 
-			if ( $this->is_synced_term( $term->term_id ) ) {
+			if ( true == $this->is_synced_term( $term->term_id ) ) {
 				$terms[$key] = get_term( $term, $taxonomy );
 			}
 
@@ -647,7 +662,7 @@ class WPAS_Product_Sync {
 
 		global $pagenow, $wpdb;
 
-		if ( 'edit-tags.php' !== $pagenow ) {
+		if ( 'term.php' !== $pagenow ) {
 			return false;
 		}
 
@@ -676,8 +691,10 @@ class WPAS_Product_Sync {
 	 * Check if a given term is a placeholder for a post.
 	 *
 	 * @since  3.0.2
-	 * @param  string  $term_id ID of the term to check
-	 * @return boolean          True if this is a placeholder term, false otherwise
+	 *
+	 * @param  string $term_id ID of the term to check
+	 *
+	 * @return int|boolean          True if this is a placeholder term, false otherwise
 	 */
 	public function is_synced_term( $term_id = '' ) {
 
@@ -762,7 +779,7 @@ class WPAS_Product_Sync {
 
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
 
-		if ( $this->is_tax_screen() && $this->is_synced_term() ) { ?>
+		if ( $this->is_tax_screen() && true === $this->is_synced_term() ) { ?>
 			<div class="error">
 				<p><?php echo $message; ?></p>
 			</div>
@@ -784,7 +801,7 @@ class WPAS_Product_Sync {
 
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
 
-		if ( $this->is_tax_screen() && $this->is_synced_term() ) {
+		if ( $this->is_tax_screen() && true === $this->is_synced_term() ) {
 			wp_die( $message, __( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );
 		}
 

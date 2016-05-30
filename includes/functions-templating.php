@@ -548,9 +548,17 @@ function wpas_get_tickets_list_columns() {
 	$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
 	$columns = array(
-		'status' => array( 'title' => __( 'Status', 'awesome-support' ), 'callback' => 'wpas_cf_display_status' ),
+		'status' => array(
+			'title'             => __( 'Status', 'awesome-support' ),
+			'callback'          => 'wpas_cf_display_status',
+			'column_attributes' => array( 'head' => array( 'sort-ignore' => true ) )
+		),
 		'title'  => array( 'title' => __( 'Title', 'awesome-support' ), 'callback' => 'title' ),
-		'date'   => array( 'title' => __( 'Date', 'awesome-support' ), 'callback' => 'date' ),
+		'date'   => array(
+			'title'             => __( 'Date', 'awesome-support' ),
+			'callback'          => 'date',
+			'column_attributes' => array( 'head' => array( 'type' => 'numeric', 'sort-initial' => 'descending' ), 'body' => array( 'value' => 'wpas_get_the_time_timestamp' ) )
+		),
 	);
 
 	foreach ( $custom_fields as $field ) {
@@ -562,9 +570,15 @@ function wpas_get_tickets_list_columns() {
 
 		/* Don't display fields that aren't specifically designed to */
 		if ( true === $field['args']['show_column'] ) {
-			$column_title            = !empty( $field['args']['title'] ) ? sanitize_text_field( $field['args']['title'] ) : wpas_get_title_from_id( $field['name'] );
-			$column_callback         = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
-			$columns[$field['name']] = array( 'title' => $column_title, 'callback' => $column_callback );
+
+			$column_title              = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
+			$column_callback           = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
+			$columns[ $field['name'] ] = array( 'title' => $column_title, 'callback' => $column_callback );
+
+			if ( ! empty( $field['args']['column_attributes'] ) && is_array( $field['args']['column_attributes'] ) ) {
+				$columns[ $field['name'] ] = $field['args']['column_attributes'];
+			}
+
 		}
 
 	}
@@ -713,7 +727,7 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 
 			if ( is_admin() ) {
 				$get         = (array) $_GET;
-				$get[$field] = $term->slug;
+				$get[$field] = isset( $term->post_id ) ? $term->post_id : $term->term_id; // Check for $term->post_id which is set when products are synchronized
 				$url         = add_query_arg( $get, admin_url( 'edit.php' ) );
 				$item        = "<a href='$url'>{$term_title}</a>";
 			} else {
@@ -986,11 +1000,23 @@ add_action( 'wpas_after_registration_fields', 'wpas_terms_and_conditions_checkbo
  * @return void
  */
 function wpas_terms_and_conditions_checkbox() {
-	if ( wpas_get_option( 'terms_conditions', false ) ): ?>
-		<div class="wpas-checkbox">
-			<label><input type="checkbox" name="terms" required> <?php printf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ); ?></label>
-		</div>
-	<?php endif;
+
+	if ( false === wpas_get_option( 'terms_conditions', false ) ) {
+		return;
+	}
+
+	$terms = new WPAS_Custom_Field( 'terms', array(
+		'name' => 'terms',
+		'args' => array(
+			'required'   => true,
+			'field_type' => 'checkbox',
+			'sanitize'   => 'sanitize_text_field',
+			'options'    => array( '1' => sprintf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ) ),
+		)
+	) );
+
+	echo $terms->get_output();
+
 }
 
 add_action( 'wpas_after_template', 'wpas_terms_and_conditions_modal', 10, 3 );

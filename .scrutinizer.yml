@@ -5,6 +5,7 @@ filter:
         - '*/vendor/*'
         - 'languages/*'
         - 'includes/functions-deprecated.php'
+        - 'includes/class-remote-notification-client.php'
 
 before_commands:
     - 'composer install --dev --prefer-source'

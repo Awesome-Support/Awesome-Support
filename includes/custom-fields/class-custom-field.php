@@ -123,10 +123,12 @@ class WPAS_Custom_Field {
 			'title'                 => '',                    // Nicely formatted title for this field
 			'placeholder'           => '',                    // Placeholder to display in the submission form
 			'desc'                  => '',                    // Helper description for the field
-		    /* Added in 3.2.0 */
+		    // @since 3.2.0
 		    'html5_pattern'         => '',                    // Adds a validation pattern following the HTML5 standards
-		    /* @since 3.2.2 */
+		    // @since 3.2.2
 		    'default'               => '',                    // Field default value
+		    // @since 3.3
+		    'column_attributes'     => array(),               // User-defined attributes to add to the list table columns (required show_column to be true)
 			/* The following parameters are users for taxonomies only. */
 			'taxo_std'              => false,                 // For taxonomies, should it behave like a standard WordPress taxonomy
 			'label'                 => '',
