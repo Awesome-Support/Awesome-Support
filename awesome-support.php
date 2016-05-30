@@ -508,17 +508,29 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		/**
 		 * Load the plugin text domain for translation.
 		 *
-		 * @return boolean True if the language file was loaded, false otherwise
+		 * With the introduction of plugins language packs in WordPress loading the textdomain is slightly more complex.
+		 *
+		 * We now have 3 steps:
+		 *
+		 * 1. Check for the language pack in the WordPress core directory
+		 * 2. Check for the translation file in the plugin's language directory
+		 * 3. Fallback to loading the textdomain the classic way
+		 *
 		 * @since    1.0.0
+		 * @return boolean True if the language file was loaded, false otherwise
 		 */
 		public function load_plugin_textdomain() {
 
-			$lang_dir  = WPAS_ROOT . 'languages/';
-			$lang_path = WPAS_PATH . 'languages/';
-			$locale    = apply_filters( 'plugin_locale', get_locale(), 'awesome-support' );
-			$mofile    = "awesome-support-$locale.mo";
+			$lang_dir       = WPAS_ROOT . 'languages/';
+			$lang_path      = WPAS_PATH . 'languages/';
+			$locale         = apply_filters( 'plugin_locale', get_locale(), 'awesome-support' );
+			$mofile         = "awesome-support-$locale.mo";
+			$glotpress_file = WP_LANG_DIR . '/plugins/awesome-support/' . $mofile;
 
-			if ( file_exists( $lang_path . $mofile ) ) {
+			// Look for the GlotPress language pack first of all
+			if ( file_exists( $glotpress_file ) ) {
+				$language = load_textdomain( 'awesome-support', $glotpress_file );
+			} elseif ( file_exists( $lang_path . $mofile ) ) {
 				$language = load_textdomain( 'awesome-support', $lang_path . $mofile );
 			} else {
 				$language = load_plugin_textdomain( 'awesome-support', false, $lang_dir );
