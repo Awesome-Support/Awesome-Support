@@ -225,7 +225,12 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 
 		$last = $replies->post_count - 1;
 
-		/* Check if the last user who replied is an agent. */
+		// If the last agent reply was not from the currently logged-in agent then the ticket must have been transferred and we need to to stand out
+		if ( user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && (int) $replies->posts[ $last ]->post_author !== get_current_user_id() ) {
+			return true;
+		}
+
+		// If the last reply is not from an agent and the reply is still unread we need the ticket to stand out
 		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && 'unread' === $replies->posts[ $last ]->post_status ) {
 			return true;
 		}
