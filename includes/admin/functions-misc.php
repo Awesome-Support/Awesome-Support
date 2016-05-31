@@ -128,31 +128,22 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
  * than the post date + the allowed delay, then it is considered old.
  *
  * @since  3.0.0
- * @param  integer $post_id The ID of the ticket to check
- * @param  object  $latest  The object containing the ticket replies. If the object was previously generated we pass it directly in order to avoid re-querying
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ * @param  WP_Query|null $replies The object containing the ticket replies. If the object was previously generated we
+ *                                pass it directly in order to avoid re-querying
+ *
  * @return boolean          True if the ticket is old, false otherwise
  */
-function wpas_is_ticket_old( $post_id, $latest = null ) {
+function wpas_is_ticket_old( $post_id, $replies = null ) {
 
 	if ( 'closed' === wpas_get_ticket_status( $post_id ) ) {
 		return false;
 	}
 
-	/* Prepare the new object */
-	if ( is_null( $latest ) ) {
-		$latest = new WP_Query(  array(
-						'posts_per_page'         =>	1,
-						'orderby'                =>	'post_date',
-						'order'                  =>	'DESC',
-						'post_type'              =>	'ticket_reply',
-						'post_parent'            =>	$post_id,
-						'post_status'            =>	array( 'unread', 'read' ),
-						'no_found_rows'          => true,
-						'cache_results'          => false,
-						'update_post_term_cache' => false,
-						'update_post_meta_cache' => false,
-				)
-		);
+	// Prepare the new object
+	if ( is_null( $replies ) || is_object( $replies ) && ! is_a( $replies, 'WP_Query' ) ) {
+		$replies = WPAS_Tickets_List::get_instance()->get_replies_query( $post_id );
 	}
 
 	/**
@@ -160,7 +151,7 @@ function wpas_is_ticket_old( $post_id, $latest = null ) {
 	 * Then, we compute the ticket age and if it is considered as
 	 * old, we display an informational tag.
 	 */
-	if ( empty( $latest->posts ) ) {
+	if ( empty( $replies->posts ) ) {
 
 		$post = get_post( $post_id );
 
@@ -169,8 +160,10 @@ function wpas_is_ticket_old( $post_id, $latest = null ) {
 
 	} else {
 
+		$last = $replies->post_count - 1;
+
 		/* We get the post date */
-		$date_created = $latest->post->post_date;
+		$date_created = $replies->posts[ $last ]->post_date;
 
 	}
 
