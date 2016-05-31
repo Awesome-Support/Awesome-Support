@@ -194,9 +194,9 @@ function wpas_is_ticket_old( $post_id, $latest = null ) {
  *
  * @since  3.0.0
  *
- * @param  integer $post_id The ID of the ticket to check
- * @param  WP_Post $replies The object containing the ticket replies. If the object was previously generated we pass it
- *                          directly in order to avoid re-querying
+ * @param  integer       $post_id The ID of the ticket to check
+ * @param  WP_Query|null $replies The object containing the ticket replies. If the object was previously generated we
+ *                                pass it directly in order to avoid re-querying
  *
  * @return boolean          True if a reply is needed, false otherwise
  */
