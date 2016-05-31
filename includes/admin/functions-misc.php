@@ -207,7 +207,7 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 	}
 
 	/* Prepare the new object */
-	if ( is_null( $replies ) || is_object( $replies ) && ! is_a( $replies, 'WP_Post' ) ) {
+	if ( is_null( $replies ) || is_object( $replies ) && ! is_a( $replies, 'WP_Query' ) ) {
 		$replies = WPAS_Tickets_List::get_instance()->get_replies_query( $post_id );
 	}
 
