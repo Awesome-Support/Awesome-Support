@@ -1001,7 +1001,7 @@ add_action( 'wpas_after_registration_fields', 'wpas_terms_and_conditions_checkbo
  */
 function wpas_terms_and_conditions_checkbox() {
 
-	if ( false === wpas_get_option( 'terms_conditions', false ) ) {
+	if ( empty( wpas_get_option( 'terms_conditions', '' ) ) ) {
 		return;
 	}
 
