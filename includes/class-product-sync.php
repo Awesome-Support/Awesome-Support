@@ -562,7 +562,7 @@ class WPAS_Product_Sync {
 	 * @param  string     $taxonomy The taxonomy this term belongs to
 	 * @return object               The original term object if the taxonomy it belongs to isn't ours, an updated object otherwise
 	 */
-	public function get_term( $term, $taxonomy ) {
+	public function get_term( $term, $taxonomy = '' ) {
 
 		if ( $taxonomy !== $this->taxonomy ) {
 			return $term;
