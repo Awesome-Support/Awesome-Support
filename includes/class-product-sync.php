@@ -684,11 +684,11 @@ class WPAS_Product_Sync {
 	 *
 	 * @since  3.0.2
 	 *
-	 * @param  int|WP_Term $term Term ID or term object
+	 * @param  string|int|WP_Term $term Term ID or term object
 	 *
 	 * @return int|boolean          True if this is a placeholder term, false otherwise
 	 */
-	public function is_synced_term( $term ) {
+	public function is_synced_term( $term = '' ) {
 
 		if ( ! is_a( $term, 'WP_Term' ) ) {
 
