@@ -451,9 +451,11 @@ class WPAS_Product_Sync {
 	 * posts instead of the actual taxonomy terms.
 	 *
 	 * @since  3.0.2
-	 * @param  array         $terms      Taxonomy terms
-	 * @param  array|string  $taxonomies Taxonomies for which to retrieve the terms
-	 * @param  array         $args       Additional arguments
+	 *
+	 * @param  array        $terms      Taxonomy terms
+	 * @param  array|string $taxonomies Taxonomies for which to retrieve the terms
+	 * @param  array        $args       Additional arguments
+	 *
 	 * @return array                     Array of term objects
 	 */
 	public function get_terms( $terms, $taxonomies, $args ) {
@@ -463,86 +465,76 @@ class WPAS_Product_Sync {
 			$taxonomies = array( $taxonomies );
 		}
 
-		// Declare the new terms array
-		$new_terms = array();
-
-		// Add the non-synced terms to the terms array first
-		if ( $this->append ) {
-			foreach ( $terms as $term ) {
-				if ( is_object( $term ) && false === $this->is_synced_term( $term->term_id ) ) {
-					$new_terms[] = $term;
-				}
-			}
+		// Check if the product taxonomy is one of the taxonomies being queried in this instance. If not, then we immediately return the unchanged terms array
+		if ( ! in_array( $this->taxonomy, $taxonomies ) ) {
+			return $terms;
 		}
 
-		foreach ( $taxonomies as $taxonomy ) {
+		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
+		$include = array_filter( wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+		$exclude = array_filter( wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) );
 
-			if ( ! $this->is_product_tax( $taxonomy ) ) {
-				continue;
+		/* Map the tax args to the WP_Query args */
+		$query_args = $this->map_args( $args );
+
+		$query_defaults = array(
+			'post_type'              => $this->post_type,
+			'post_status'            => 'publish',
+			'order'                  => 'ASC',
+			'orderby'                => 'title',
+			'ignore_sticky_posts'    => false,
+			'posts_per_page'         => - 1,
+			'perm'                   => 'readable',
+			'no_found_rows'          => true,
+			'cache_results'          => false,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);
+
+		$query_args = wp_parse_args( $query_args, $query_defaults );
+
+		if ( ! empty( $include ) ) {
+			$query_args['post__in'] = $include;
+		}
+
+		if ( ! empty( $exclude ) ) {
+			$query_args['post__not_in'] = $exclude;
+		}
+
+		$query = new WP_Query( $query_args );
+
+		if ( false === get_option( "wpas_sync_$this->post_type", false ) ) {
+			$this->run_initial_sync();
+		}
+
+		if ( isset( $query_args['wpas_get_post_count'] ) && $query_args['wpas_get_post_count'] ) {
+			return $this->append ? $query->post_count + count( $terms ) : $query->post_count;
+		}
+
+		if ( empty( $query->posts ) ) {
+			return $terms;
+		}
+
+		// We need to "index" the posts in order to be able to easily compare them to the terms
+		$index = array();
+
+		foreach ( $query->posts as $post ) {
+			$index[ $post->ID ] = $post;
+		}
+
+		// We will store the new terms in this array
+		$new_terms = array();
+
+		// Now go go through each term, maybe update it, and add it to the final terms array
+		foreach ( $terms as $term ) {
+
+			// If the term is a synchronized product we build the custom term object
+			if ( $this->is_synced_term( $term ) && array_key_exists( $term->name, $index ) ) {
+				$term = $this->create_term_object( $index[ $term->name ] );
 			}
 
-			$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
-			$include = array_filter( wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
-			$exclude = array_filter( wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) );
-
-			/* Map the tax args to the WP_Query args */
-			$query_args = $this->map_args( $args );
-
-			$query_defaults = array(
-				'post_type'              => $this->post_type,
-				'post_status'            => 'publish',
-				'order'                  => 'ASC',
-				'orderby'                => 'title',
-				'ignore_sticky_posts'    => false,
-				'posts_per_page'         => -1,
-				'perm'                   => 'readable',
-				'no_found_rows'          => true,
-				'cache_results'          => false,
-				'update_post_term_cache' => false,
-				'update_post_meta_cache' => false,
-			);
-
-			$query_args = wp_parse_args( $query_args, $query_defaults );
-
-			if ( ! empty( $include ) ) {
-				$query_args['post__in'] = $include;
-			}
-
-			if ( ! empty( $exclude ) ) {
-				$query_args['post__not_in'] = $exclude;
-			}
-
-			$query = new WP_Query( $query_args );
-
-			if ( false === get_option( "wpas_sync_$this->post_type", false ) ) {
-				$this->run_initial_sync();
-			}
-
-			if ( isset( $query_args['wpas_get_post_count'] ) && $query_args['wpas_get_post_count'] ) {
-				return $this->append ? $query->post_count + count( $terms ) : $query->post_count;
-			}
-
-			if ( empty( $query->posts ) ) {
-				continue;
-			}
-
-			/* Create the term object for each post */
-			foreach ( $query->posts as $key => $post ) {
-
-				if ( ! is_a( $post, 'WP_Post' ) ) {
-					continue;
-				}
-
-				/* Create the term object */
-				$term = $this->create_term_object( $post );
-
-				/* If an error occurred during the insertion of the placeholder term we do not display this one */
-				if ( false === $term ) {
-					continue;
-				}
-
-				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $taxonomy );
-
+			if ( false !== $term ) {
+				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $this->taxonomy );
 			}
 
 		}
@@ -692,31 +684,37 @@ class WPAS_Product_Sync {
 	 *
 	 * @since  3.0.2
 	 *
-	 * @param  string $term_id ID of the term to check
+	 * @param  int|WP_Term $term Term ID or term object
 	 *
 	 * @return int|boolean          True if this is a placeholder term, false otherwise
 	 */
-	public function is_synced_term( $term_id = '' ) {
+	public function is_synced_term( $term ) {
 
-		global $wpdb;
+		if ( ! is_a( $term, 'WP_Term' ) ) {
 
-		if ( empty( $term_id ) ) {
-			if ( isset( $_GET['tag_ID'] ) ) {
-				$term_id = intval( $_GET['tag_ID'] );
-			} else {
+			global $wpdb;
+
+			if ( ! is_numeric( $term ) ) {
+				if ( isset( $_GET['tag_ID'] ) ) {
+					$term = intval( $_GET['tag_ID'] );
+				} else {
+					return false;
+				}
+			}
+
+			/* We use a SQL query because get_term() would give us a filtered result */
+			$query     = $wpdb->prepare( "SELECT * FROM $wpdb->terms WHERE term_id = '%d'", $term );
+			$term_name = $wpdb->get_col( $query, 1 );
+
+			if ( ! is_array( $term_name ) || ! isset( $term_name[0] ) ) {
 				return false;
 			}
+
+			$term_name = $term_name[0];
+
+		} else {
+			$term_name = $term->name;
 		}
-
-		/* We use a SQL query because get_term() would give us a filtered result */
-		$query     = $wpdb->prepare( "SELECT * FROM $wpdb->terms WHERE term_id = '%d'", $term_id );
-		$term_name = $wpdb->get_col( $query, 1 );
-
-		if ( ! is_array( $term_name ) || ! isset( $term_name[0] ) ) {
-			return false;
-		}
-
-		$term_name = $term_name[0];
 
 		if ( ! is_numeric( $term_name ) ) {
 			return false;
