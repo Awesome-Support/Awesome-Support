@@ -27,7 +27,7 @@ add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
  * @param  string $content Post content
  * @return string          Ticket single
  */
-function wpas_single_ticket( $content ) {
+function wpas_single_ticket( $content = '' ) {
 
 	global $post;
 
@@ -102,7 +102,7 @@ function wpas_single_ticket( $content ) {
 
 	/**
 	 * Finally get the buffer content and return.
-	 * 
+	 *
 	 * @var string
 	 */
 	$content = ob_get_clean();
