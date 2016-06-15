@@ -167,9 +167,10 @@ function wpas_is_ticket_old( $post_id, $replies = null ) {
 
 	}
 
-	$old_after = wpas_get_option( 'old_ticket' );
+	$old_after           = (int) wpas_get_option( 'old_ticket' );
+	$post_date_timestamp = mysql2date( 'U', $date_created );
 
-	if ( strtotime( "$date_created +$old_after days" ) < strtotime( 'now' ) ) {
+	if ( $post_date_timestamp + ( $old_after * 86400 ) < strtotime( 'now' ) ) {
 		return true;
 	}
 
