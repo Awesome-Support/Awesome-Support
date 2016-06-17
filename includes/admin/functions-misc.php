@@ -128,31 +128,22 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
  * than the post date + the allowed delay, then it is considered old.
  *
  * @since  3.0.0
- * @param  integer $post_id The ID of the ticket to check
- * @param  object  $latest  The object containing the ticket replies. If the object was previously generated we pass it directly in order to avoid re-querying
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ * @param  WP_Query|null $replies The object containing the ticket replies. If the object was previously generated we
+ *                                pass it directly in order to avoid re-querying
+ *
  * @return boolean          True if the ticket is old, false otherwise
  */
-function wpas_is_ticket_old( $post_id, $latest = null ) {
+function wpas_is_ticket_old( $post_id, $replies = null ) {
 
 	if ( 'closed' === wpas_get_ticket_status( $post_id ) ) {
 		return false;
 	}
 
-	/* Prepare the new object */
-	if ( is_null( $latest ) ) {
-		$latest = new WP_Query(  array(
-						'posts_per_page'         =>	1,
-						'orderby'                =>	'post_date',
-						'order'                  =>	'DESC',
-						'post_type'              =>	'ticket_reply',
-						'post_parent'            =>	$post_id,
-						'post_status'            =>	array( 'unread', 'read' ),
-						'no_found_rows'          => true,
-						'cache_results'          => false,
-						'update_post_term_cache' => false,
-						'update_post_meta_cache' => false,
-				)
-		);
+	// Prepare the new object
+	if ( is_null( $replies ) || is_object( $replies ) && ! is_a( $replies, 'WP_Query' ) ) {
+		$replies = WPAS_Tickets_List::get_instance()->get_replies_query( $post_id );
 	}
 
 	/**
@@ -160,7 +151,7 @@ function wpas_is_ticket_old( $post_id, $latest = null ) {
 	 * Then, we compute the ticket age and if it is considered as
 	 * old, we display an informational tag.
 	 */
-	if ( empty( $latest->posts ) ) {
+	if ( empty( $replies->posts ) ) {
 
 		$post = get_post( $post_id );
 
@@ -169,14 +160,17 @@ function wpas_is_ticket_old( $post_id, $latest = null ) {
 
 	} else {
 
+		$last = $replies->post_count - 1;
+
 		/* We get the post date */
-		$date_created = $latest->post->post_date;
+		$date_created = $replies->posts[ $last ]->post_date;
 
 	}
 
-	$old_after = wpas_get_option( 'old_ticket' );
+	$old_after           = (int) wpas_get_option( 'old_ticket' );
+	$post_date_timestamp = mysql2date( 'U', $date_created );
 
-	if ( strtotime( "$date_created +$old_after days" ) < strtotime( 'now' ) ) {
+	if ( $post_date_timestamp + ( $old_after * 86400 ) < strtotime( 'now' ) ) {
 		return true;
 	}
 
@@ -194,9 +188,9 @@ function wpas_is_ticket_old( $post_id, $latest = null ) {
  *
  * @since  3.0.0
  *
- * @param  integer $post_id The ID of the ticket to check
- * @param  WP_Post $replies The object containing the ticket replies. If the object was previously generated we pass it
- *                          directly in order to avoid re-querying
+ * @param  integer       $post_id The ID of the ticket to check
+ * @param  WP_Query|null $replies The object containing the ticket replies. If the object was previously generated we
+ *                                pass it directly in order to avoid re-querying
  *
  * @return boolean          True if a reply is needed, false otherwise
  */
@@ -207,7 +201,7 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 	}
 
 	/* Prepare the new object */
-	if ( is_null( $replies ) || is_object( $replies ) && ! is_a( $replies, 'WP_Post' ) ) {
+	if ( is_null( $replies ) || is_object( $replies ) && ! is_a( $replies, 'WP_Query' ) ) {
 		$replies = WPAS_Tickets_List::get_instance()->get_replies_query( $post_id );
 	}
 
@@ -225,7 +219,12 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 
 		$last = $replies->post_count - 1;
 
-		/* Check if the last user who replied is an agent. */
+		// If the last agent reply was not from the currently logged-in agent then the ticket must have been transferred and we need to to stand out
+		if ( user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && (int) $replies->posts[ $last ]->post_author !== get_current_user_id() ) {
+			return true;
+		}
+
+		// If the last reply is not from an agent and the reply is still unread we need the ticket to stand out
 		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && 'unread' === $replies->posts[ $last ]->post_status ) {
 			return true;
 		}

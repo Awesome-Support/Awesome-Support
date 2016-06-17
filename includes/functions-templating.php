@@ -24,10 +24,12 @@ add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
  * we do not apply those modifications as the custom template will do the job.
  *
  * @since  3.0.0
+ *
  * @param  string $content Post content
+ *
  * @return string          Ticket single
  */
-function wpas_single_ticket( $content ) {
+function wpas_single_ticket( $content = '' ) {
 
 	global $post;
 
@@ -44,12 +46,12 @@ function wpas_single_ticket( $content ) {
 	}
 
 	/* Only apply this on the main query. */
-	if( ! is_main_query() ) {
+	if ( ! is_main_query() ) {
 		return $content;
 	}
 
 	/* Only apply this if it's inside of a loop. */
-	if( ! in_the_loop() ) {
+	if ( ! in_the_loop() ) {
 		return $content;
 	}
 
@@ -79,7 +81,7 @@ function wpas_single_ticket( $content ) {
 	$template_path = get_page_template();
 	$template      = explode( '/', $template_path );
 	$count         = count( $template );
-	$template      = $template[$count-1];
+	$template      = $template[ $count - 1 ];
 
 	/* Don't apply the modifications on a custom template */
 	if ( "single-$slug.php" === $template ) {
@@ -102,7 +104,7 @@ function wpas_single_ticket( $content ) {
 
 	/**
 	 * Finally get the buffer content and return.
-	 * 
+	 *
 	 * @var string
 	 */
 	$content = ob_get_clean();
@@ -212,7 +214,7 @@ function wpas_get_theme_stylesheet() {
 	);
 
 	if ( ! $template ) {
-		$template =  WPAS_PATH . "themes/$theme/css/style.css";
+		$template = WPAS_PATH . "themes/$theme/css/style.css";
 	}
 
 	return apply_filters( 'wpas_get_theme_stylesheet', $template );
@@ -230,7 +232,7 @@ function wpas_get_theme_stylesheet_uri() {
 	$template = wpas_get_theme_stylesheet();
 
 	/* Remove the root path and replace backslashes by slashes */
-	$truncate = str_replace('\\', '/', str_replace( untrailingslashit( ABSPATH ), '', $template ) );
+	$truncate = str_replace( '\\', '/', str_replace( untrailingslashit( ABSPATH ), '', $template ) );
 
 	/* Make sure the truncated string doesn't start with a slash because we trailing slash the home URL) */
 	if ( '/' === substr( $truncate, 0, 1 ) ) {
@@ -240,7 +242,7 @@ function wpas_get_theme_stylesheet_uri() {
 	/* Build the final URL to the resource */
 	$uri = trailingslashit( site_url() ) . $truncate;
 
-	return apply_filters( 'wpas_get_theme_stylesheet_uri', $uri ); 
+	return apply_filters( 'wpas_get_theme_stylesheet_uri', $uri );
 
 }
 
@@ -497,7 +499,9 @@ function wpas_get_reply_form( $args = array() ) {
  * Get the URL to re-open a ticket.
  *
  * @since  3.0.0
+ *
  * @param  integer $ticket_id ID of the ticket to re-open
+ *
  * @return string             The URL to trigger re-opening the ticket
  */
 function wpas_get_reopen_url( $ticket_id = null ) {
@@ -557,7 +561,10 @@ function wpas_get_tickets_list_columns() {
 		'date'   => array(
 			'title'             => __( 'Date', 'awesome-support' ),
 			'callback'          => 'date',
-			'column_attributes' => array( 'head' => array( 'type' => 'numeric', 'sort-initial' => 'descending' ), 'body' => array( 'value' => 'wpas_get_the_time_timestamp' ) )
+			'column_attributes' => array(
+				'head' => array( 'type' => 'numeric', 'sort-initial' => 'descending' ),
+				'body' => array( 'value' => 'wpas_get_the_time_timestamp' )
+			)
 		),
 	);
 
@@ -596,8 +603,10 @@ function wpas_get_tickets_list_columns() {
  * as used by the custom fields mostly.
  *
  * @since  3.0.0
+ *
  * @param  string $column_id ID of the current column
  * @param  array  $column    Columns data
+ *
  * @return void
  */
 function wpas_get_tickets_list_column_content( $column_id, $column ) {
@@ -680,7 +689,7 @@ function wpas_get_offset_html5() {
 	$sign    = ( '-' === substr( $hours, 0, 1 ) ) ? '-' : '+';
 
 	/* Remove the sign from the hours */
-	if (  '-' === substr( $hours, 0, 1 ) ) {
+	if ( '-' === substr( $hours, 0, 1 ) ) {
 		$hours = substr( $hours, 1 );
 	}
 
@@ -706,9 +715,9 @@ function wpas_get_offset_html5() {
  *
  * @since  3.1.3
  *
- * @param  string $field    ID of the field to display
- * @param  integer $post_id ID of the current post
- * @param string $separator Separator used to join the taxonomy values
+ * @param  string  $field     ID of the field to display
+ * @param  integer $post_id   ID of the current post
+ * @param string   $separator Separator used to join the taxonomy values
  *
  * @return void
  */
@@ -722,14 +731,14 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 	} else {
 
 		foreach ( $terms as $term ) {
-			
+
 			$term_title = apply_filters( 'wpas_taxonomy_name', $term->name, $post_id, $field );
 
 			if ( is_admin() ) {
-				$get         = (array) $_GET;
-				$get[$field] = isset( $term->post_id ) ? $term->post_id : $term->term_id; // Check for $term->post_id which is set when products are synchronized
-				$url         = add_query_arg( $get, admin_url( 'edit.php' ) );
-				$item        = "<a href='$url'>{$term_title}</a>";
+				$get           = (array) $_GET;
+				$get[ $field ] = isset( $term->post_id ) ? $term->post_id : $term->term_id; // Check for $term->post_id which is set when products are synchronized
+				$url           = add_query_arg( $get, admin_url( 'edit.php' ) );
+				$item          = "<a href='$url'>{$term_title}</a>";
 			} else {
 				$item = $term_title;
 			}
@@ -805,7 +814,7 @@ function wpas_cf_display_status( $name, $post_id ) {
  *
  * @since 3.2
  *
- * @param string $type Type of notification. Defines the wrapper class to use
+ * @param string $type    Type of notification. Defines the wrapper class to use
  * @param string $message Notification message
  *
  * @return string
@@ -827,7 +836,7 @@ function wpas_get_notification_markup( $type = 'info', $message = '' ) {
 	}
 
 	$markup = apply_filters( 'wpas_notification_wrapper', '<div class="%s">%s</div>' ); // Keep this filter for backwards compatibility
-	$markup = apply_filters( 'wpas_notification_markup', sprintf( $markup, $classes[$type], $message ), $type );
+	$markup = apply_filters( 'wpas_notification_markup', sprintf( $markup, $classes[ $type ], $message ), $type );
 
 	return $markup;
 
@@ -842,7 +851,7 @@ function wpas_get_notification_markup( $type = 'info', $message = '' ) {
  * @since 3.2
  *
  * @param string $direction Direction of the link (prev or next)
- * @param int $posts Total number of pages
+ * @param int    $posts     Total number of pages
  *
  * @return string Link to the prev/next page
  */
@@ -889,8 +898,8 @@ function wpas_pagination_link( $direction = 'next', $posts = 0 ) {
  *
  * @since 3.2
  *
- * @param string $label Link anchor
- * @param bool|true $echo Whether to echo the link or just return it
+ * @param string    $label Link anchor
+ * @param bool|true $echo  Whether to echo the link or just return it
  *
  * @return string
  */
@@ -921,9 +930,9 @@ function wpas_prev_page_link( $label = '', $echo = true ) {
  *
  * @since 3.2
  *
- * @param string $label Link anchor
- * @param int $posts Total number of posts
- * @param bool|true $echo Whether to echo the link or just return it
+ * @param string    $label Link anchor
+ * @param int       $posts Total number of posts
+ * @param bool|true $echo  Whether to echo the link or just return it
  *
  * @return string
  */
@@ -960,7 +969,9 @@ add_filter( 'template_include', 'wpas_template_include', 10, 1 );
  * doesn't contain all the post metas and author bio.
  *
  * @since  3.0.0
+ *
  * @param  string $template Path to template
+ *
  * @return string           Path to (possibly) new template
  */
 function wpas_template_include( $template ) {
@@ -970,14 +981,14 @@ function wpas_template_include( $template ) {
 	}
 
 	$filename      = explode( '/', $template );
-	$template_name = $filename[count($filename)-1];
+	$template_name = $filename[ count( $filename ) - 1 ];
 
 	/* Don't change the template if it's already a custom one */
 	if ( 'single-ticket.php' === $template_name ) {
 		return $template;
 	}
 
-	unset( $filename[count($filename)-1] ); // Remove the template name
+	unset( $filename[ count( $filename ) - 1 ] ); // Remove the template name
 	$filename = implode( '/', $filename );
 	$filename = $filename . '/page.php';
 
@@ -1001,7 +1012,9 @@ add_action( 'wpas_after_registration_fields', 'wpas_terms_and_conditions_checkbo
  */
 function wpas_terms_and_conditions_checkbox() {
 
-	if ( false === wpas_get_option( 'terms_conditions', false ) ) {
+	$terms = wpas_get_option( 'terms_conditions', '' );
+
+	if ( empty( $terms ) ) {
 		return;
 	}
 

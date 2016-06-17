@@ -995,7 +995,19 @@ function wpas_find_agent( $ticket_id = false ) {
 
 	}
 
-	$agent_id = ! empty( $agent ) ? $agent['user_id'] : wpas_get_option( 'assignee_default', 1 );
+	if ( is_array( $agent ) && isset( $agent['user_id'] ) ) {
+		$agent_id = $agent['user_id'];
+	} else {
+
+		$default_id = wpas_get_option( 'assignee_default', 1 );
+
+		if ( empty( $default_id ) ) {
+			$default_id = 1;
+		}
+
+		$agent_id = $default_id;
+
+	}
 
 	return apply_filters( 'wpas_find_available_agent', (int) $agent_id, $ticket_id );
 

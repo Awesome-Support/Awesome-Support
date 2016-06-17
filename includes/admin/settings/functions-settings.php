@@ -17,20 +17,20 @@ function wpas_list_pages( $post_type = 'page' ) {
 		'post_status'            => 'publish',
 		'order'                  => 'DESC',
 		'orderby'                => 'page_title',
-		'posts_per_page'         => -1,
-		'no_found_rows'          => false,
+		'posts_per_page'         => - 1,
+		'no_found_rows'          => true,
 		'cache_results'          => false,
 		'update_post_term_cache' => false,
 		'update_post_meta_cache' => false,
-		
+
 	);
 
 	$pages = new WP_Query( $args );
-	
-	if( !empty( $pages->posts ) ) {
 
-		foreach( $pages->posts as $page ) {
-			$list[$page->ID] = apply_filters( 'the_title', $page->post_title );
+	if ( ! empty( $pages->posts ) ) {
+
+		foreach ( $pages->posts as $page ) {
+			$list[ $page->ID ] = $page->post_title;
 		}
 
 	}
