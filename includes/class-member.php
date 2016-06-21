@@ -170,7 +170,7 @@ class WPAS_Member {
 		$roles   = get_user_meta( $this->user_id, $cap_key, true );
 
 		if ( ! is_array( $roles ) ) {
-			$this->roles = array();
+			$roles = array();
 		}
 
 		$this->roles = array_keys( $roles );
