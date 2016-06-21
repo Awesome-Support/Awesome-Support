@@ -180,7 +180,7 @@ class WPAS_Member {
 	/**
 	 * Setup the user capabilities based on their roles
 	 *
-	 * This method is mostly mased on WordPress' WP_User::get_role_caps()
+	 * This method is mostly based on WordPress' WP_User::get_role_caps()
 	 *
 	 * @since 3.3
 	 * @return void
