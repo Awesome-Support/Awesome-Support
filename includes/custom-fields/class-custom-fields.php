@@ -84,7 +84,7 @@ class WPAS_Custom_Fields {
 			$ticket_submit = (array) $ticket_submit;
 		}
 
-		if ( ! in_array( $post->ID, $ticket_submit ) ) {
+		if ( ! is_object( $post ) || ! in_array( $post->ID, $ticket_submit ) ) {
 			return;
 		}
 
