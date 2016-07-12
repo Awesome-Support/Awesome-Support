@@ -88,7 +88,7 @@ function wpas_register_account( $data ) {
 	 */
 	do_action( 'wpas_pre_register_account', $data );
 
-	if ( wpas_get_option( 'terms_conditions', false ) && ! isset( $data['terms'] ) ) {
+	if ( wpas_get_option( 'terms_conditions', false ) && ! isset( $data['wpas_terms'] ) ) {
 		wpas_add_error( 'accept_terms_conditions', __( 'You did not accept the terms and conditions.', 'awesome-support' ) );
 		wp_redirect( $redirect_to );
 		exit;
