@@ -104,11 +104,11 @@ if ( isset( $post ) ) {
 				<span class="spinner"></span>
 				<?php if ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) : ?>
 					<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Updating', 'awesome-support' ) ?>" />
-					<?php submit_button( __( 'Update Ticket' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'u' ) ); ?>
+					<?php submit_button( __( 'Update Ticket', 'awesome-support' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'u' ) ); ?>
 				<?php else:
 					if ( current_user_can( 'create_ticket' ) ): ?>
 						<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Creating', 'awesome-support' ) ?>" />
-						<?php submit_button( __( 'Open Ticket' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'o' ) ); ?>
+						<?php submit_button( __( 'Open Ticket', 'awesome-support' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'o' ) ); ?>
 						<?php endif;
 				endif; ?>
 			</div>
