@@ -427,6 +427,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 				// Compatibility functions
 				require( 'includes/compatibility/sensei.php' );
+				require( 'includes/compatibility/acf-pro.php' );
 
 			}
 
