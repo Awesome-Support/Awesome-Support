@@ -1,9 +1,9 @@
 <?php
 /**
- * @package   Awesome Support/Compatibility/ACF Pro
+ * @package   Awesome Support/Compatibility/Sensei
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      https://etawesomesupport.com
+ * @link      https://getawesomesupport.com
  * @copyright 2016 Awesome Support
  */
 
