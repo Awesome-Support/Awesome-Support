@@ -422,7 +422,12 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/install.php' );
 
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+
 				require( WPAS_PATH . 'includes/functions-admin-bar.php' );
+
+				// Compatibility functions
+				require( 'includes/compatibility/sensei.php' );
+
 			}
 
 		}
