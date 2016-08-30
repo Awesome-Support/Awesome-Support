@@ -119,7 +119,7 @@ class WPAS_File_Upload {
 		}
 
 		$clauses['join'] .= " LEFT OUTER JOIN $wpdb->posts daddy ON daddy.ID = $wpdb->posts.post_parent";
-		$clauses['where'] .= " AND daddy.post_type NOT IN ( 'ticket', 'ticket_reply' )";
+		$clauses['where'] .= " AND ( daddy.post_type NOT IN ( 'ticket', 'ticket_reply' ) OR daddy.ID IS NULL )";
 
 		return $clauses;
 
