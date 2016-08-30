@@ -33,6 +33,7 @@ class WPAS_User {
 		 * Custom profile fields
 		 */
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_user_can_be_assigned' ), 10, 1 );
+		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_smart_tickets_order' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_after_reply' ), 10, 1 );
 //		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_agent_department' ), 10, 1 );
 	}
@@ -75,6 +76,34 @@ class WPAS_User {
 				<?php do_action( 'wpas_user_profile_fields', $user ); ?>
 			</tbody>
 		</table>
+	<?php }
+
+	/**
+	 * User profile field "tickets order"
+	 *
+	 * Let the user selects the order in which his tickets appear in the tickets list screen.
+	 *
+	 * @since 3.3.2
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return void
+	 */
+	public function profile_field_smart_tickets_order( $user ) {
+
+		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
+			return;
+		} ?>
+
+		<tr class="wpas-after-reply-wrap">
+			<th><label><?php esc_attr_e( 'Smart Tickets Order', 'awesome-support' ); ?></label></th>
+			<td>
+				<?php $smart = esc_attr( get_the_author_meta( 'wpas_smart_tickets_order', $user->ID ) ); ?>
+				<label for="wpas_smart_tickets_order"><input type="checkbox" name="wpas_smart_tickets_order" id="wpas_smart_tickets_order" value="yes" <?php if ( ! empty( $smart ) ) { echo 'checked'; } ?>> <?php esc_html_e( 'Enable', 'awesome-support' ); ?></label>
+				<p class="description"><?php esc_attr_e( 'If Smart Tickets Order is enabled, Awesome Support will display tickets that need immediate attention at the top.', 'awesome-support' ); ?></p>
+			</td>
+		</tr>
+
 	<?php }
 
 	/**
@@ -204,6 +233,7 @@ class WPAS_User {
 
 		$wpas_after_reply = filter_input( INPUT_POST, 'wpas_after_reply' );
 		$can_assign       = filter_input( INPUT_POST, 'wpas_can_be_assigned' );
+		$smart            = filter_input( INPUT_POST, 'wpas_smart_tickets_order' );
 		$department       = isset( $_POST['wpas_department'] ) ? array_map( 'intval', $_POST['wpas_department'] ) : array();
 
 		if ( $wpas_after_reply ) {
@@ -211,6 +241,7 @@ class WPAS_User {
 		}
 
 		update_user_meta( $user_id, 'wpas_can_be_assigned', $can_assign );
+		update_user_meta( $user_id, 'wpas_smart_tickets_order', $smart );
 		update_user_meta( $user_id, 'wpas_department', $department );
 
 	}
