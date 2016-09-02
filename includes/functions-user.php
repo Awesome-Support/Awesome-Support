@@ -972,37 +972,3 @@ function wpas_has_smart_tickets_order( $user_id = 0 ) {
 	return apply_filters( 'wpas_has_smart_tickets_order', $value, $user_id );
 
 }
-
-/**
- * Check if a user has Smart Tickets Order
- *
- * Smart Tickets Order is a custom way to order tickets in the tickets list screen. This function checks if the current
- * agent has enabled this option. If not, tickets will be ordered the "WordPress way".
- *
- * @param int $user_id The user ID
- *
- * @return bool
- */
-function wpas_has_smart_tickets_order( $user_id = 0 ) {
-
-	// Set the value to false by default
-	$value = false;
-
-	if ( 0 === $user_id ) {
-		$user_id = get_current_user_id();
-	}
-
-	// If the user is not an agent this is irrelevant. Just return false.
-	if ( user_can( $user_id, 'edit_ticket' ) ) {
-
-		$smart = esc_attr( get_the_author_meta( 'wpas_smart_tickets_order', $user_id ) );
-
-		if ( 'yes' === $smart ) {
-			$value = true;
-		}
-
-	}
-
-	return apply_filters( 'wpas_has_smart_tickets_order', $value, $user_id );
-	
-}
