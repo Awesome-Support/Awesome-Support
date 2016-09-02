@@ -426,6 +426,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/functions-admin-bar.php' );
 
 				// Compatibility functions
+				require( 'includes/compatibility/sensei.php' );
 				require( 'includes/compatibility/acf-pro.php' );
 
 			}
