@@ -14,13 +14,13 @@ php:
     - "5.2"
 
 # WordPress version used in first build configuration.
+# We test 4 versions back and also 3.8 which is announced as compatible
 env:
     - WP_VERSION=master
+    - WP_VERSION=4.6
+    - WP_VERSION=4.5
+    - WP_VERSION=4.4
     - WP_VERSION=4.3
-    - WP_VERSION=4.2
-    - WP_VERSION=4.1
-    - WP_VERSION=4.0
-    #- WP_VERSION=3.9
     - WP_VERSION=3.8
 
 # Next we define our matrix of additional build configurations to test against.
