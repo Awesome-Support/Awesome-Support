@@ -37,10 +37,10 @@ env:
 
 matrix:
   include:
-    - php: "5.3"
+    - php: "5.6"
       env: WP_VERSION=master WP_ALLOW_MULTISITE=1
     - php: "7"
-      env: WP_VERSION=4.3
+      env: WP_VERSION=master
 
 # Clones WordPress and configures our testing environment.
 before_script:
