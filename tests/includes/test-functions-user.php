@@ -44,7 +44,7 @@ class WPAS_Test_Functions_User extends WP_UnitTestCase {
 		$this->user_id = $user_id;
 
 		// Check that the user data is correct
-		$user     = get_user_by( 'ID', $user_id );
+		$user     = get_user_by( 'id', $user_id );
 		$username = sanitize_user( strtolower( $this->first_name ) . strtolower( $this->last_name ) );
 
 		$this->assertInstanceOf( 'WP_User', $user );
