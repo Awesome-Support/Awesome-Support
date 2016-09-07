@@ -2,6 +2,13 @@
 
 class WPAS_Test_Functions_User extends WP_UnitTestCase {
 
+	private $plugin;
+	private $first_name = 'John';
+	private $last_name  = 'Doe';
+	private $pwd        = 'supersecret';
+	private $email      = 'mail@example.com';
+	private $user_id;
+
 	function setUp() {
 
 		parent::setUp();
@@ -23,6 +30,39 @@ class WPAS_Test_Functions_User extends WP_UnitTestCase {
 			'user_pass'  => rand( 1000, 9999 ),
 			'role'       => 'wpas_user'
 		) );
+	}
+
+	function test_wpas_insert_user_valid() {
+
+		$user_id = wpas_insert_user( array(
+			'email'      => $this->email,
+			'first_name' => $this->first_name,
+			'last_name'  => $this->last_name,
+			'pwd'        => $this->pwd,
+		), false );
+		$this->assertInternalType( 'int', $user_id );
+		$this->user_id = $user_id;
+
+		// Check that the user data is correct
+		$user     = get_user_by( 'id', $user_id );
+		$username = sanitize_user( strtolower( $this->first_name ) . strtolower( $this->last_name ) );
+
+		$this->assertInstanceOf( 'WP_User', $user );
+		$this->assertEquals( $username, $user->data->user_login );
+		$this->assertEquals( "{$this->first_name} {$this->last_name}", $user->data->display_name );
+		$this->assertEquals( $this->email, $user->data->user_email );
+		$this->assertEquals( 'wpas_user', $user->roles[0] );
+
+	}
+
+	function test_wpas_insert_user_invalid() {
+		$user_id = wpas_insert_user( array(
+			'email'      => '',
+			'first_name' => $this->first_name,
+			'last_name'  => $this->last_name,
+			'pwd'        => $this->pwd,
+		), false );
+		$this->assertInstanceOf( 'WP_Error', $user_id );
 	}
 
 	function test_wpas_get_user_nice_role() {

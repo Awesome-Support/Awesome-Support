@@ -38,45 +38,13 @@ function wpas_register_account( $data ) {
 		exit;
 	}
 
-	$user               = array();
-	$user['email']      = isset( $data['wpas_email'] ) && ! empty( $data['wpas_email'] ) ? sanitize_email( $data['wpas_email'] ) : false;
-	$user['first_name'] = isset( $data['wpas_first_name'] ) && ! empty( $data['wpas_first_name'] ) ? sanitize_text_field( $data['wpas_first_name'] ) : false;
-	$user['last_name']  = isset( $data['wpas_last_name'] ) && ! empty( $data['wpas_last_name'] ) ? sanitize_text_field( $data['wpas_last_name'] ) : false;
-	$user['pwd']        = isset( $data['wpas_password'] ) && ! empty( $data['wpas_password'] ) ? $data['wpas_password'] : false;
-	$error              = false;
-
-	foreach ( $user as $field => $value ) {
-
-		if ( empty( $value ) ) {
-
-			if ( false === $error ) {
-				$error = new WP_Error();
-			}
-
-			$error->add( 'missing_field_' . $field, sprintf( esc_html__( 'The %s field is mandatory for registering an account', 'awesome-support' ), ucwords( str_replace( '_', ' ', $field ) ) ) );
-
-		}
-
-	}
-
-	/**
-	 * Give a chance to third-parties to add new checks to the account registration process
-	 *
-	 * @since 3.2.0
-	 * @var bool|WP_Error
-	 */
-	$errors = apply_filters( 'wpas_register_account_errors', $error, $user['first_name'], $user['last_name'], $user['email'] );
-
-	if ( false !== $errors ) {
-
-		$notice = implode( '<br>', $errors->get_error_messages() );
-
-		wpas_add_error( 'registration_error', $notice );
-		wp_redirect( $redirect_to );
-
-		exit;
-
-	}
+	// Prepare user data
+	$user = array(
+		'email'      => isset( $data['wpas_email'] ) ? $data['wpas_email'] : '',
+		'first_name' => isset( $data['wpas_first_name'] ) ? $data['wpas_first_name'] : '',
+		'last_name'  => isset( $data['wpas_last_name'] ) ? $data['wpas_last_name'] : '',
+		'pwd'        => isset( $data['wpas_password'] ) ? $data['wpas_password'] : '',
+	);
 
 	/**
 	 * wpas_pre_register_account hook
@@ -86,52 +54,23 @@ function wpas_register_account( $data ) {
 	 *
 	 * @since  3.0.1
 	 */
-	do_action( 'wpas_pre_register_account', $data );
+	do_action( 'wpas_pre_register_account', $user );
 
 	if ( wpas_get_option( 'terms_conditions', false ) && ! isset( $data['wpas_terms'] ) ) {
-		wpas_add_error( 'accept_terms_conditions', __( 'You did not accept the terms and conditions.', 'awesome-support' ) );
+		wpas_add_error( 'accept_terms_conditions', esc_html__( 'You did not accept the terms and conditions.', 'awesome-support' ) );
 		wp_redirect( $redirect_to );
 		exit;
 	}
-
-	$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
-	$user_check = get_user_by( 'login', $username );
-
-	/* Check for existing username */
-	if ( is_a( $user_check, 'WP_User' ) ) {
-		$suffix = 1;
-		do {
-			$alt_username = sanitize_user( $username . $suffix );
-			$user_check   = get_user_by( 'login', $alt_username );
-			$suffix ++;
-		} while ( is_a( $user_check, 'WP_User' ) );
-		$username = $alt_username;
-	}
-
-	/**
-	 * wpas_insert_user_data filter
-	 *
-	 * @since  3.1.5
-	 * @var    array User account arguments
-	 */
-	$args = apply_filters( 'wpas_insert_user_data', array(
-		'user_login'   => $username,
-		'user_email'   => $user['email'],
-		'first_name'   => $user['first_name'],
-		'last_name'    => $user['last_name'],
-		'display_name' => "{$user['first_name']} {$user['last_name']}",
-		'user_pass'    => $user['pwd'],
-		'role'         => 'wpas_user'
-	) );
 
 	/**
 	 * wpas_register_account_before hook
 	 *
 	 * Fired right before the user is added to the database.
 	 */
-	do_action( 'wpas_register_account_before', $args );
+	do_action( 'wpas_register_account_before', $user );
 
-	$user_id = wp_insert_user( apply_filters( 'wpas_user_registration_data', $args ) );
+	// Try and insert the new user in the database
+	$user_id = wpas_insert_user( $user );
 
 	if ( is_wp_error( $user_id ) ) {
 
@@ -142,11 +81,11 @@ function wpas_register_account( $data ) {
 		 *
 		 * @since  3.0.1
 		 */
-		do_action( 'wpas_register_account_failed', $user_id, $args );
+		do_action( 'wpas_register_account_failed', $user_id, $user );
 
-		$error = $user_id->get_error_message();
+		$errors = implode( '<br>', $user_id->get_error_messages() );
 
-		wpas_add_error( 'missing_fields', $error );
+		wpas_add_error( 'missing_fields', $errors );
 		wp_redirect( $redirect_to );
 
 		exit;
@@ -160,14 +99,10 @@ function wpas_register_account( $data ) {
 		 *
 		 * @since  3.0.1
 		 */
-		do_action( 'wpas_register_account_after', $user_id, $args );
-
-		if ( true === apply_filters( 'wpas_new_user_notification', true ) ) {
-			wp_new_user_notification( $user_id );
-		}
+		do_action( 'wpas_register_account_after', $user_id, $user );
 
 		if ( headers_sent() ) {
-			wpas_add_notification( 'account_created', __( 'Your account has been created. Please log-in.', 'awesome-support' ) );
+			wpas_add_notification( 'account_created', esc_html__( 'Your account has been created. Please log-in.', 'awesome-support' ) );
 			wp_redirect( $redirect_to );
 			exit;
 		}
@@ -175,7 +110,7 @@ function wpas_register_account( $data ) {
 		if ( ! is_user_logged_in() ) {
 
 			/* Automatically log the user in */
-			wp_set_current_user( $user_id, $user['email'] );
+			wp_set_current_user( $user_id, get_user_by( 'ID', $user_id )->data->user_email );
 			wp_set_auth_cookie( $user_id );
 
 			wp_redirect( $redirect_to );
@@ -183,6 +118,145 @@ function wpas_register_account( $data ) {
 		}
 
 	}
+
+}
+
+/**
+ * Insert a new Awesome Support user in the WordPress users table
+ *
+ * @since 3.3.2
+ *
+ * @param array $data   The user data to insert
+ * @param bool  $notify Whether or not to send a notification e-mail to the newly created user
+ *
+ * @return int|WP_Error The new user ID or an error object on failure
+ */
+function wpas_insert_user( $data = array(), $notify = true ) {
+
+	// Set the default and required user info
+	$defaults = apply_filters( 'wpas_insert_user_default_args', array(
+		'email'      => '',
+		'first_name' => '',
+		'last_name'  => '',
+		'pwd'        => '',
+	) );
+
+	// Set our user ID to false in the beginning
+	$user_id = false;
+
+	// Set our final user data array
+	$user = array_merge( $defaults, $data );
+
+	// Now we need to make sure that all the required fields are filled before creating the user
+	foreach ( $defaults as $field => $value ) {
+
+		if ( empty( $user[ $field ] ) ) {
+
+			// Create the WP_Error object if it doesn't exist yet
+			if ( false === $user_id ) {
+				$user_id = new WP_Error();
+			}
+
+			// Add a new error to the object
+			$user_id->add( 'missing_field_' . $field, sprintf( esc_html__( 'The %s field is mandatory for registering an account', 'awesome-support' ), ucwords( str_replace( '_', ' ', $field ) ) ) );
+
+		}
+
+	}
+
+	// Only proceed with the insertion process if there is no error so far
+	if ( false === $user_id ) {
+
+		// Now that we know we have all the minimum required information, let's sanitize the user input
+		foreach ( $user as $field => $value ) {
+
+			switch ( $field ) {
+
+				case 'email':
+					$user[ $field ] = sanitize_email( $value );
+					break;
+
+				case 'pwd':
+					$user[ $field ] = $value; // No sanitization of the password
+					break;
+
+				default:
+					$user[ $field ] = sanitize_text_field( $value );
+					break;
+
+			}
+
+		}
+
+		// Let's create the user username and make sure it's unique
+		$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
+		$user_check = get_user_by( 'login', $username );
+
+		if ( is_a( $user_check, 'WP_User' ) ) {
+			$suffix = 1;
+			do {
+				$alt_username = sanitize_user( $username . $suffix );
+				$user_check   = get_user_by( 'login', $alt_username );
+				$suffix ++;
+			} while ( is_a( $user_check, 'WP_User' ) );
+			$username = $alt_username;
+		}
+
+		/**
+		 * wpas_insert_user_data filter
+		 *
+		 * @since  3.1.5
+		 * @var    array User account arguments
+		 */
+		$args = apply_filters( 'wpas_insert_user_data', array(
+			'user_login'   => $username,
+			'user_email'   => $user['email'],
+			'first_name'   => $user['first_name'],
+			'last_name'    => $user['last_name'],
+			'display_name' => "{$user['first_name']} {$user['last_name']}",
+			'user_pass'    => $user['pwd'],
+			'role'         => 'wpas_user',
+		) );
+
+		/**
+		 * Give a chance to third-parties to add new checks to the account registration process
+		 *
+		 * @since 3.2.0
+		 * @var false|WP_Error
+		 */
+		$user_id = apply_filters( 'wpas_register_account_errors', $user_id, $args['first_name'], $args['last_name'], $args['user_email'] );
+
+		if ( ! is_wp_error( $user_id ) ) {
+
+			/**
+			 * wpas_register_account_before hook
+			 *
+			 * Fired right before the user is added to the database.
+			 */
+			do_action( 'wpas_insert_user_before', $args );
+
+			$user_id = wp_insert_user( $args );
+
+			/**
+			 * Fire up another hook after the user has been inserted
+			 *
+			 * @since 3.3.2
+			 *
+			 * @param int|WP_Error $user_id The user ID or a WP_Error object
+			 * @param array        $args    The user data
+			 */
+			do_action( 'wpas_insert_user_after', $user_id, $args );
+
+			// Notify the new user if needed
+			if ( ! is_wp_error( $user_id ) && true === apply_filters( 'wpas_new_user_notification', $notify ) ) {
+				wp_new_user_notification( $user_id );
+			}
+
+		}
+
+	}
+
+	return $user_id;
 
 }
 
