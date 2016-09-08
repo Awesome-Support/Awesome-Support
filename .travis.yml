@@ -68,7 +68,3 @@ script: if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW
 after_script:
     - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
     - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
-
-notifications:
-    slack:
-        secure: SPZ2/D30Q/GYcTOXuhoN2sNT+q/KLKbYW4FTOmunPfVtNwoaWCn4eqpL18X2AmYLxcmtg65UvTiA5qqxJFG7dWIJL9QUZR1txjsJOKdJxtqMSPnKJMyV9IOtvp7HqRgt+Zk/xPxoBs3uhDfhJIfNehFrleBynHqEcVR+9SIBfg0=
