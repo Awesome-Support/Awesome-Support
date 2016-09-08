@@ -249,7 +249,7 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 
 			// Notify the new user if needed
 			if ( ! is_wp_error( $user_id ) && true === apply_filters( 'wpas_new_user_notification', $notify ) ) {
-				wp_new_user_notification( $user_id );
+				wp_new_user_notification( $user_id, null, 'both' );
 			}
 
 		}
