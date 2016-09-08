@@ -34,7 +34,7 @@ function wpas_register_account( $data ) {
 
 	if ( 'allow' !== $registration ) {
 		wpas_add_error( 'registration_not_allowed', __( 'Registrations are currently not allowed.', 'awesome-support' ) );
-		wp_redirect( $redirect_to );
+		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 
@@ -58,7 +58,7 @@ function wpas_register_account( $data ) {
 
 	if ( wpas_get_option( 'terms_conditions', false ) && ! isset( $data['wpas_terms'] ) ) {
 		wpas_add_error( 'accept_terms_conditions', esc_html__( 'You did not accept the terms and conditions.', 'awesome-support' ) );
-		wp_redirect( $redirect_to );
+		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 
@@ -86,7 +86,7 @@ function wpas_register_account( $data ) {
 		$errors = implode( '<br>', $user_id->get_error_messages() );
 
 		wpas_add_error( 'missing_fields', $errors );
-		wp_redirect( $redirect_to );
+		wp_safe_redirect( $redirect_to );
 
 		exit;
 
@@ -103,7 +103,7 @@ function wpas_register_account( $data ) {
 
 		if ( headers_sent() ) {
 			wpas_add_notification( 'account_created', esc_html__( 'Your account has been created. Please log-in.', 'awesome-support' ) );
-			wp_redirect( $redirect_to );
+			wp_safe_redirect( $redirect_to );
 			exit;
 		}
 
@@ -113,7 +113,7 @@ function wpas_register_account( $data ) {
 			wp_set_current_user( $user_id, get_user_by( 'ID', $user_id )->data->user_email );
 			wp_set_auth_cookie( $user_id );
 
-			wp_redirect( $redirect_to );
+			wp_safe_redirect( $redirect_to );
 			exit;
 		}
 
@@ -317,7 +317,7 @@ function wpas_try_login( $data ) {
 		if ( is_wp_error( $login ) ) {
 			$error = $login->get_error_message();
 			wpas_add_error( 'login_failed', $error );
-			wp_redirect( $redirect_to );
+			wp_safe_redirect( $redirect_to );
 			exit;
 		}
 
@@ -334,15 +334,15 @@ function wpas_try_login( $data ) {
 			}
 
 			wpas_add_error( 'login_failed', $error );
-			wp_redirect( $redirect_to );
+			wp_safe_redirect( $redirect_to );
 			exit;
 
 		} elseif ( $login instanceof WP_User ) {
-			wp_redirect( $redirect_to );
+			wp_safe_redirect( $redirect_to );
 			exit;
 		} else {
 			wpas_add_error( 'login_failed', __( 'We were unable to log you in for an unknown reason.', 'awesome-support' ) );
-			wp_redirect( $redirect_to );
+			wp_safe_redirect( $redirect_to );
 			exit;
 		}
 
