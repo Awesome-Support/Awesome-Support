@@ -26,12 +26,18 @@ function wpas_get_option( $option, $default = false ) {
  *
  * @param mixed $option The name of the option to update
  * @param mixed $value  The new value for this option
+ * @param bool  $add    Whether or not a new key should be added if $option is not found in the options array
  *
  * @return bool
  */
-function wpas_update_option( $option, $value ) {
+function wpas_update_option( $option, $value, $add = false ) {
 
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+
+	// Add a new option key if it doesn't yet exist
+	if ( ! array_key_exists( $option, $options ) && true === $add ) {
+		$options[ $option ] = '';
+	}
 
 	if ( ! array_key_exists( $option, $options ) ) {
 		return false;
