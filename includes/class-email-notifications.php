@@ -572,18 +572,23 @@ class WPAS_Email_Notification {
 		/**
 		 * Find out who's the user to notify
 		 */
+		
+		$recipient_email = '';
+		
 		switch ( $case ) {
 			case 'submission_confirmation':
 			case 'agent_reply':
 			case 'ticket_closed':
 			case 'ticket_closed_agent':
-				$user = get_user_by( 'id', $this->get_ticket()->post_author );
+				$recipient_email = get_user_by( 'id', $this->get_ticket()->post_author )->user_email;
+				//$user = get_user_by( 'id', $this->get_ticket()->post_author );
 				break;
 
 			case 'new_ticket_assigned':
 			case 'client_reply':
 			case 'ticket_closed_client':
-				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
+				$recipient_email = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) )->user_email;
+				//$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
 				break;
 		}
 
@@ -628,7 +633,7 @@ class WPAS_Email_Notification {
 		 * Merge all the e-mail variables and apply the wpas_email_notifications_email filter.
 		 */
 		$email = apply_filters( 'wpas_email_notifications_email', array(
-			'recipient_email' => $user->user_email,
+			'recipient_email' => $recipient_email,
 			'subject'         => $subject,
 			'body'            => $body,
 			'headers'         => $headers,
