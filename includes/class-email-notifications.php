@@ -591,7 +591,7 @@ class WPAS_Email_Notification {
 		/**
 		 * Filter the $user variable to allow cases that aren't in the above switch
 		 *
-		 * @since 3.2.2
+		 * @since 3.3.2
 		 * @var WP_User
 		 *
 		 * @param WP_User $user
