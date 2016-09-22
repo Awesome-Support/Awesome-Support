@@ -567,6 +567,9 @@ class WPAS_Email_Notification {
 			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'awesome-support' ) );
 		}
 
+		// Define the $user var to avoid undefined var notices when using a custom $case
+		$user = null;
+
 		/**
 		 * Find out who's the user to notify
 		 */
