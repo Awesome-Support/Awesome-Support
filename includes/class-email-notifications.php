@@ -576,7 +576,7 @@ class WPAS_Email_Notification {
 			case 'agent_reply':
 			case 'ticket_closed':
 			case 'ticket_closed_agent':
-				$user = get_user_by( 'id', $this->get_ticket() );
+				$user = get_user_by( 'id', $this->get_ticket()->post_author );
 				break;
 
 			case 'new_ticket_assigned':
