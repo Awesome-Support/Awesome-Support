@@ -586,6 +586,18 @@ class WPAS_Email_Notification {
 		}
 
 		/**
+		 * Filter the $user variable to allow cases that aren't in the above switch
+		 *
+		 * @since 3.2.2
+		 * @var WP_User
+		 *
+		 * @param WP_User $user
+		 * @param string  $case
+		 * @param int     $ticket_id
+		 */
+		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id );
+
+		/**
 		 * Get the sender information
 		 */
 		$sender      = $this->get_sender();
