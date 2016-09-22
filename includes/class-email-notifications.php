@@ -150,8 +150,9 @@ class WPAS_Email_Notification {
 
 		$option = $options[$case];
 
-		return boolval( wpas_get_option( $option, false ) );
-
+		/* Replace the valueless tags array by the new one */
+		return (bool) apply_filters( 'wpas_email_notifications_case_is_active', wpas_get_option( $option, false ), $case ); 
+		
 	}
 
 	/**
