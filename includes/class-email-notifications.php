@@ -568,6 +568,9 @@ class WPAS_Email_Notification {
 			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'awesome-support' ) );
 		}
 
+		// Define the $user var to avoid undefined var notices when using a custom $case
+		$user = null;
+
 		/**
 		 * Find out who's the user to notify
 		 */
@@ -585,6 +588,18 @@ class WPAS_Email_Notification {
 				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
 				break;
 		}
+
+		/**
+		 * Filter the $user variable to allow cases that aren't in the above switch
+		 *
+		 * @since 3.3.2
+		 * @var WP_User
+		 *
+		 * @param WP_User $user
+		 * @param string  $case
+		 * @param int     $ticket_id
+		 */
+		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id );
 
 		/**
 		 * Get the sender information
