@@ -36,7 +36,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 				'field_type'  => 'text',
 				'label'       => __( 'E-mail or username', 'awesome-support' ),
 				'placeholder' => __( 'E-mail or username', 'awesome-support' ),
-				'sanitize'    => 'sanitize_text_field'
+				'sanitize'    => 'sanitize_user'
 			)
 		) );
 

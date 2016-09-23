@@ -62,7 +62,7 @@ prepros.cfg
 
 .idea
 ### NetBeans ###
-/nbproject/private/
+/nbproject
 
 
 ### Ignore dist files ###

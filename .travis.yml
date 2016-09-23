@@ -8,19 +8,18 @@ sudo: false
 
 # PHP version used in first build configuration.
 php:
+    - "5.6"
     - "5.5"
-    - "5.4"
-    - "5.3"
     - "5.2"
 
 # WordPress version used in first build configuration.
+# We test 4 versions back and also 3.8 which is announced as compatible
 env:
     - WP_VERSION=master
+    - WP_VERSION=4.6
+    - WP_VERSION=4.5
+    - WP_VERSION=4.4
     - WP_VERSION=4.3
-    - WP_VERSION=4.2
-    - WP_VERSION=4.1
-    - WP_VERSION=4.0
-    #- WP_VERSION=3.9
     - WP_VERSION=3.8
 
 # Next we define our matrix of additional build configurations to test against.
@@ -38,10 +37,10 @@ env:
 
 matrix:
   include:
-    - php: "5.3"
+    - php: "5.6"
       env: WP_VERSION=master WP_ALLOW_MULTISITE=1
     - php: "7"
-      env: WP_VERSION=4.3
+      env: WP_VERSION=master
 
 # Clones WordPress and configures our testing environment.
 before_script:
@@ -69,7 +68,3 @@ script: if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW
 after_script:
     - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
     - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
-
-notifications:
-    slack:
-        secure: SPZ2/D30Q/GYcTOXuhoN2sNT+q/KLKbYW4FTOmunPfVtNwoaWCn4eqpL18X2AmYLxcmtg65UvTiA5qqxJFG7dWIJL9QUZR1txjsJOKdJxtqMSPnKJMyV9IOtvp7HqRgt+Zk/xPxoBs3uhDfhJIfNehFrleBynHqEcVR+9SIBfg0=

@@ -214,7 +214,13 @@ function wpas_new_ticket_submission( $data ) {
  */
 function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false ) {
 
-	if ( ! current_user_can( 'create_ticket' ) ) {
+	// First of all we want to set the ticket author so that we can check if (s)he is allowed to open a ticket or not.
+	if ( empty( $data['post_author'] ) ) {
+		global $current_user;
+		$data['post_author'] = $current_user->ID;
+	}
+
+	if ( ! user_can( $data['post_author'], 'create_ticket' ) ) {
 		return false;
 	}
 
@@ -268,12 +274,6 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 
 	if ( isset( $data['post_name'] ) && !empty( $data['post_name'] ) ) {
 		$data['post_name'] = sanitize_text_field( $data['post_name'] );
-	}
-
-	/* Set the current user as author if the field is empty. */
-	if ( empty( $data['post_author'] ) ) {
-		global $current_user;
-		$data['post_author'] = $current_user->ID;
 	}
 
 	/**

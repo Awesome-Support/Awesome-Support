@@ -17,19 +17,18 @@ function wpas_sc_client_account() {
 	 */
 	$author = ( 0 !== $current_user->ID ) ? $current_user->ID : -1;
 
-	$args = array(
+	$args = apply_filters( 'wpas_tickets_shortcode_query_args', array(
 		'author'                 => $author,
 		'post_type'              => 'ticket',
 		'post_status'            => 'any',
 		'order'                  => 'DESC',
 		'orderby'                => 'date',
-		'posts_per_page'         => -1,
+		'posts_per_page'         => - 1,
 		'no_found_rows'          => false,
 		'cache_results'          => false,
 		'update_post_term_cache' => false,
 		'update_post_meta_cache' => false,
-		
-	);
+	) );
 
 	$wpas_tickets = new WP_Query( $args );		
 

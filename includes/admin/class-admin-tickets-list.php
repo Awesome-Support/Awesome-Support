@@ -34,23 +34,26 @@ class WPAS_Tickets_List {
 	}
 
 	/**
-	 *  Called by the 'pre_get_posts' filter hook this method sets 
+	 *  Called by the 'pre_get_posts' filter hook this method sets
 	 *  the following to true when for the admin ticket list page:
 	 *
-	 * 		$wp_query->query_var['wpas_order_by_urgency']
+	 *        $wp_query->query_var['wpas_order_by_urgency']
 	 *
 	 *  Setting this to true will trigger modifications to the query that
-	 *  will be made in the apply_ordering_criteria() function called by 
+	 *  will be made in the apply_ordering_criteria() function called by
 	 *  the 'posts_clauses' filter hook.
 	 *
 	 * @since    3.3
 	 *
 	 * @param WP_Query $query
+	 *
+	 * @return void
 	 */
 	public function set_ordering_query_var( $query ) {
+
 		global $pagenow;
 
-		if ( $query->is_main_query() && 'edit.php' === $pagenow && 'ticket' === $query->get( 'post_type' ) ) {
+		if ( $query->is_main_query() && 'edit.php' === $pagenow && 'ticket' === $query->get( 'post_type' ) && wpas_has_smart_tickets_order() ) {
 
 			/**
 			 * Inspect the current context and if appropriate specify a query_var to allow
