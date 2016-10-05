@@ -264,3 +264,13 @@ function wpas_admin_footer_text( $text ) {
 	return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from ThemeAvenue in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733' );
 
 }
+
+/**
+ * Check if the free addon page has been dismissed or not
+ *
+ * @since 3.3.3
+ * @return bool
+ */
+function wpas_is_free_addon_page_dismissed() {
+	return (bool) get_option( 'wpas_dismiss_free_addon_page', false );
+}

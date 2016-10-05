@@ -25,6 +25,11 @@ function wpas_register_submenu_items() {
 	add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'awesome-support' ), __( 'About', 'awesome-support' ), 'edit_posts', 'wpas-about', 'wpas_display_about_page' );
 	add_submenu_page( 'edit.php?post_type=ticket', __( 'Get a Free Addon', 'awesome-support' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'awesome-support' ) . '</span>', 'administrator', 'wpas-optin', 'wpas_display_optin_page' );
 	remove_submenu_page( 'edit.php?post_type=ticket', 'wpas-about' );
+
+	// Hide the free addon page if the user already claimed it
+	if ( true === wpas_is_free_addon_page_dismissed() ) {
+		remove_submenu_page( 'edit.php?post_type=ticket', 'wpas-optin' );
+	}
 }
 
 add_action( 'admin_menu', 'wpas_tickets_count' );

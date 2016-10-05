@@ -17,6 +17,9 @@
                     } else {
                         $('#wpas-mailchimp-signup-result-error').hide();
                         $('#wpas-mailchimp-signup-result-success').html(response.msg).show();
+
+                        // Hide the free addon page now that the user subscribed
+                        dismiss_free_addon_page();
                     }
                 }
             });
@@ -27,5 +30,18 @@
         });
 
     });
+
+    function dismiss_free_addon_page() {
+
+        var data = {
+            action: 'wpas_dismiss_free_addon_page'
+        };
+
+        jQuery.ajax({
+            type:'POST',
+            url: ajaxurl,
+            data: data
+        });
+    }
 
 }(jQuery));
