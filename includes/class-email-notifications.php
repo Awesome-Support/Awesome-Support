@@ -480,13 +480,15 @@ class WPAS_Email_Notification {
 	 * Get the content for the given part.
 	 *
 	 * @since  3.0.2
+	 *
 	 * @param  string $part Part of the e-mail to retrieve
 	 * @param  string $case Which notification is requested
+	 *
 	 * @return string       The content with tags converted into their values
 	 */
 	private function get_content( $part, $case ) {
 
-		if ( !in_array( $part, array( 'subject', 'content' ) ) ) {
+		if ( ! in_array( $part, array( 'subject', 'content' ) ) ) {
 			return false;
 		}
 
