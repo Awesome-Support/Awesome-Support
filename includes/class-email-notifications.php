@@ -522,7 +522,7 @@ class WPAS_Email_Notification {
 
 		}
 
-		return $this->fetch( apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id ) );
+		return $this->fetch( apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id, $case ) );
 
 	}
 
