@@ -25,14 +25,14 @@
 
 		<p><?php esc_attr_e( 'Getting your addon is dead simple: just subscribe to our newsletter hereafter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new major features in Awesome Support or when new addons are being released. That&#039;s it.', 'awesome-support' ); ?></p>
 
-		<div id="wpas-mailchimp-signup-form">
-			<form action="//themeavenue.us4.list-manage.com/subscribe/post?u=46ccfe899f0d2648a8b74454a&amp;id=ad9db57f69" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+		<div id="wpas-mailchimp-signup-form-wrapper">
+			<form action="<?php echo add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-optin' ), admin_url( 'edit.php' ) ); ?>" method="post" id="wpas-mailchimp-signup-form" name="wpas-mailchimp-signup-form">
 				<table class="form-table">
 					<tr>
 						<td class="row-title"><label for="mce-FNAME">First Name</label> <input type="text" value="" name="FNAME" class="medium-text" id="mce-FNAME"></td>
 						<td class="row-title">
 							<label for="mce-EMAIL">Email Address</label>
-							<input type="email" value="" name="EMAIL" class="regular-text required email" id="mce-EMAIL" required>
+							<input type="email" value="" name="EMAIL" class="regular-text required email" id="mce-EMAIL">
 							<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button-secondary">
 						</td>
 					</tr>
@@ -41,23 +41,11 @@
 					<input type="text" name="b_46ccfe899f0d2648a8b74454a_ad9db57f69" tabindex="-1" value="">
 				</div>
 				<div id="mce-responses" class="clear">
-					<div class="response" id="mce-error-response" style="display:none; color: red;"></div>
-					<div class="response" id="mce-success-response" style="display:none; color: green;"></div>
+					<div class="wpas-alert-danger" id="wpas-mailchimp-signup-result-error" style="display:none;">Error</div>
+					<div class="wpas-alert-success" id="wpas-mailchimp-signup-result-success" style="display:none; color: green;"><?php esc_html_e( 'Thanks for your subscription! You will need to confirm the double opt-in e-mail that you will receive in a coupe of minutes. After you confirmed it, you will receive the free addon directly in your inbox.', 'awesome-support' ); ?></div>
 				</div>
 			</form>
 		</div>
-		<script type='text/javascript' src='//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js'></script>
-		<script type='text/javascript'>(function ($) {
-				window.fnames = new Array();
-				window.ftypes = new Array();
-				fnames[0] = 'EMAIL';
-				ftypes[0] = 'email';
-				fnames[1] = 'FNAME';
-				ftypes[1] = 'text';
-				fnames[2] = 'LNAME';
-				ftypes[2] = 'text';
-			}(jQuery));
-			var $mcj = jQuery.noConflict(true);</script>
 	</div>
 
 </div>

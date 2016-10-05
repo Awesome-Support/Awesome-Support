@@ -54,6 +54,7 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-admin-about-linkify-jquery', WPAS_URL . 'assets/admin/js/vendor/linkify-jquery.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-about-moment', WPAS_URL . 'assets/admin/js/vendor/moment.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
+	wp_register_script( 'wpas-admin-optin-script', WPAS_URL . 'assets/admin/js/admin-optin.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2.min.js', array( 'jquery' ), '4.0.0', true ); // NOTE: This asset is duplicated in the front-end
 	wp_register_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
@@ -135,6 +136,10 @@ function wpas_enqueue_assets_back_end() {
 			wp_enqueue_script( 'wpas-admin-about-linkify-jquery' );
 			wp_enqueue_script( 'wpas-admin-about-moment' );
 			wp_enqueue_script( 'wpas-admin-about-script' );
+		}
+
+		if ( 'wpas-optin' === $page ) {
+			wp_enqueue_script( 'wpas-admin-optin-script' );
 		}
 
 		wp_enqueue_script( 'wpas-select2' );
