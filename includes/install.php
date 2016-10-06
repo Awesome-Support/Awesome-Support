@@ -193,7 +193,7 @@ function wpas_single_activate() {
 	add_option( 'wpas_redirect_about', true );
 	add_option( 'wpas_support_products', 'pending' );
 	add_option( 'wpas_db_version', WPAS_DB_VERSION );
-	update_option( 'wpas_version', WPAS_VERSION );
+	add_option( 'wpas_version', WPAS_VERSION );
 
 }
 
