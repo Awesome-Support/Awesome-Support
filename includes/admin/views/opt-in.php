@@ -9,14 +9,14 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 				<div class="about-body">
-					<img src="<?php echo WPAS_URL; ?>assets/admin/images/about-cf.png" alt="Improved Custom Fields">
+					<img src="<?php echo WPAS_URL; ?>assets/admin/images/custom-status.png" alt="Improved Custom Fields">
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 				<div class="about-body">
-					<h3>Satisfaction Survey</h3>
-					<p><?php esc_attr_e( 'Are you looking to improve the quality of your support? Ask clients their opinion directly!', 'awesome-support' ); ?></p>
-					<p><?php esc_attr_e( 'This extension allows you to automatically send out a survey to rate your agent’s performance on a ticket.  At its core, the add-on does something relatively straight-forward: When a ticket is closed, an email with a simple one-question survey request is sent out to the customer.', 'awesome-support' ); ?></p>
+					<h3><?php esc_attr_e( 'Custom Status', 'awesome-support' ); ?></h3>
+					<p><?php esc_attr_e( 'Need more than the three default statuses?  Maybe you need to tag certain tickets for “Development” or  move them to certain support levels such as “Level 1” and “Level 2”.  With the Custom Status addon you can create the perfect set of ticket statuses for your organization.', 'awesome-support' ); ?></p>
+					<p><a href="https://getawesomesupport.com/addons/custom-status/?utm_source=plugin&utm_medium=optin&utm_campaign=activation" target="_blank"><?php esc_attr_e( 'Read more about this addon on our site >', 'awesome-support' ); ?></a></p>
 				</div>
 			</div>
 		</div>
