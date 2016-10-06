@@ -529,6 +529,38 @@ class WPAS_Email_Notification {
 	}
 
 	/**
+	 * Retrieve the e-mail template to use and input the content
+	 *
+	 * @since 3.3.3
+	 *
+	 * @param string $content The e-mail contents to inject into the template
+	 *
+	 * @return string
+	 */
+	private function get_formatted_email( $content = '' ) {
+
+		if ( false === (bool) wpas_get_option( 'use_email_template', true ) ) {
+			return $content;
+		}
+
+		ob_start();
+
+		// Get the e-mail notification template. This template can be customized by the user.
+		// See https://getawesomesupport.com/documentation-new/documentation-awesome-support-core-customization/
+		wpas_get_template( 'email-notification' );
+
+		$template = ob_get_contents();
+
+		// Clean buffer
+		ob_end_clean();
+
+		$template = str_replace( '{content}', wpautop( $content ), $template );
+
+		return $template;
+
+	}
+
+	/**
 	 * Set the e-mail content type to HTML.
 	 *
 	 * @since  3.1.1
@@ -620,11 +652,19 @@ class WPAS_Email_Notification {
 		$subject = $this->get_subject( $case );
 
 		/**
-		 * Get the e-mail body
+		 * Get the e-mail body and filter it before the template is being applied
 		 *
 		 * @var  string
 		 */
-		$body = $this->get_body( $case );
+		$body = apply_filters( 'wpas_email_notification_body_before_template', $this->get_body( $case ), $case, $this->ticket_id );
+
+		/**
+		 * Filter the e-mail body after the template has been applied
+		 *
+		 * @since 3.3.3
+		 * @var string
+		 */
+		$body = apply_filters( 'wpas_email_notification_body_after_template', $this->get_formatted_email( $body ), $case, $this->ticket_id );
 
 		/**
 		 * Prepare e-mail headers

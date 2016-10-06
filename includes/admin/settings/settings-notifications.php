@@ -17,6 +17,13 @@ function wpas_core_settings_notifications( $def ) {
 					'desc' => __( 'For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen.', 'awesome-support' )
 				),
 				array(
+					'name'    => __( 'Use Template', 'awesome-support' ),
+					'id'      => 'use_email_template',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Outgoing notifications are styled with a built-in template. If you are using an e-mail templating plugin you should deactivate this option.', 'awesome-support' )
+				),
+				array(
 					'name'    => __( 'Sender Name', 'awesome-support' ),
 					'id'      => 'sender_name',
 					'type'    => 'text',
