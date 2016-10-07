@@ -29,6 +29,10 @@ function wpas_core_settings_notifications( $def ) {
 					'desc'    => __( 'Outgoing notifications are styled with a built-in template. If you are using an e-mail templating plugin you should deactivate this option.', 'awesome-support' )
 				),
 				array(
+					'type' => 'note',
+					'desc' => wp_kses( sprintf( __( 'Please note that the <a href="%1$s" target="%2$s">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add fancy styling through the editors hereafter, we cannot guarantee full compatibility anymore.', 'awesome-support' ), 'https://github.com/mailgun/transactional-email-templates', '_blank' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) )
+				),
+				array(
 					'name'    => __( 'Logo', 'awesome-support' ),
 					'id'      => 'email_template_logo',
 					'type'    => 'upload',
