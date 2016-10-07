@@ -50,6 +50,7 @@ function wpas_uninstall() {
 		delete_option( 'wpas_options' );
 		delete_option( 'wpas_db_version' );
 		delete_option( 'wpas_version' );
+		delete_option( 'wpas_dismiss_free_addon_page' );
 
 		/* Delete the plugin pages.	 */
 		wp_delete_post( intval( $options['ticket_submit'] ), true );
