@@ -79,4 +79,7 @@ function wpas_upgrade_330() {
  */
 function wpas_upgrade_333() {
 	wpas_update_option( 'use_email_template', true, true );
+	wpas_update_option( 'email_template_logo', '', true );
+	wpas_update_option( 'email_template_header', get_settings_defaults( 'email_template_header' ), true );
+	wpas_update_option( 'email_template_footer', get_settings_defaults( 'email_template_footer' ), true );
 }

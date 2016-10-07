@@ -554,7 +554,15 @@ class WPAS_Email_Notification {
 		// Clean buffer
 		ob_end_clean();
 
-		$template = str_replace( '{content}', wpautop( $content ), $template );
+		$template = str_replace( '{content}', wpautop( $content ), $template ); // Inject content
+		$template = str_replace( '{footer}', wpas_get_option( 'email_template_footer', '' ), $template ); // Inject footer
+		$template = str_replace( '{header}', wpas_get_option( 'email_template_header', '' ), $template ); // Inject header
+
+		if ( '' !== $logo = wpas_get_option( 'email_template_logo', '' ) ) {
+			$logo = '<img src="' . wp_get_attachment_image_src( $logo, 'full' )[0] . '">';
+		}
+
+		$template = str_replace( '{logo}', $logo, $template ); // Inject logo
 
 		return $template;
 
