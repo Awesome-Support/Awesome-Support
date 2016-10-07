@@ -68,3 +68,18 @@ function wpas_upgrade_330() {
 	wpas_update_option( 'content_closed_client', get_settings_defaults( 'content_closed_client' ) );
 
 }
+
+/**
+ * Upgrade function for version 3.3.3
+ *
+ * A new option was added in this version so we need to set its default value on upgrade.
+ *
+ * @since 3.3.3
+ * @return void
+ */
+function wpas_upgrade_333() {
+	wpas_update_option( 'use_email_template', true, true );
+	wpas_update_option( 'email_template_logo', '', true );
+	wpas_update_option( 'email_template_header', get_settings_defaults( 'email_template_header' ), true );
+	wpas_update_option( 'email_template_footer', get_settings_defaults( 'email_template_footer' ), true );
+}

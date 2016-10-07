@@ -2,9 +2,10 @@
 add_filter( 'wpas_plugin_settings', 'wpas_core_settings_notifications', 5, 1 );
 /**
  * Add plugin notifications settings.
- * 
- * @param  (array) $def Array of existing settings
- * @return (array)      Updated settings
+ *
+ * @param  array $def Array of existing settings
+ *
+ * @return array      Updated settings
  */
 function wpas_core_settings_notifications( $def ) {
 
@@ -15,6 +16,46 @@ function wpas_core_settings_notifications( $def ) {
 				array(
 					'type' => 'note',
 					'desc' => __( 'For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen.', 'awesome-support' )
+				),
+				array(
+					'name' => __( 'E-Mail Template', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Use Template', 'awesome-support' ),
+					'id'      => 'use_email_template',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Outgoing notifications are styled with a built-in template. If you are using an e-mail templating plugin you should deactivate this option.', 'awesome-support' )
+				),
+				array(
+					'type' => 'note',
+					'desc' => wp_kses( sprintf( __( 'Please note that the <a href="%1$s" target="%2$s">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add fancy styling through the editors hereafter, we cannot guarantee full compatibility anymore.', 'awesome-support' ), 'https://github.com/mailgun/transactional-email-templates', '_blank' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) )
+				),
+				array(
+					'name'    => __( 'Logo', 'awesome-support' ),
+					'id'      => 'email_template_logo',
+					'type'    => 'upload',
+					'default' => '',
+					'desc'    => __( 'A logo that displays at the top of the e-mail notification.', 'awesome-support' )
+				),
+				array(
+					'name'     => __( 'Header', 'awesome-support' ),
+					'id'       => 'email_template_header',
+					'type'     => 'editor',
+					'default'  => '<p>' . get_bloginfo( 'site_name' ) . '</p>',
+					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
+				),
+				array(
+					'name'     => __( 'Footer', 'awesome-support' ),
+					'id'       => 'email_template_footer',
+					'type'     => 'editor',
+					'default'  => '<p>&mdash; Your Support Team</p>',
+					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
+				),
+				array(
+					'name' => __( 'E-Mail Defaults', 'awesome-support' ),
+					'type' => 'heading',
 				),
 				array(
 					'name'    => __( 'Sender Name', 'awesome-support' ),
