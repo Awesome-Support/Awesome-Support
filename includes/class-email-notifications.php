@@ -559,7 +559,8 @@ class WPAS_Email_Notification {
 		$template = str_replace( '{header}', wpas_get_option( 'email_template_header', '' ), $template ); // Inject header
 
 		if ( '' !== $logo = wpas_get_option( 'email_template_logo', '' ) ) {
-			$logo = '<img src="' . wp_get_attachment_image_src( $logo, 'full' )[0] . '">';
+			$logo = wp_get_attachment_image_src( $logo, 'full' );
+			$logo = '<img src="' . $logo[0] . '">';
 		}
 
 		$template = str_replace( '{logo}', $logo, $template ); // Inject logo
