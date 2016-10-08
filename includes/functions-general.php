@@ -159,7 +159,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 	if( ! is_array( $ticket_submit ) ) { $ticket_submit = (array) $ticket_submit; }
 
 	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket' ) );
-	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings' ) );
+	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
 	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
 	/* Check for plugin pages in the admin */

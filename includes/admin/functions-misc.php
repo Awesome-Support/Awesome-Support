@@ -264,3 +264,52 @@ function wpas_admin_footer_text( $text ) {
 	return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from ThemeAvenue in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733' );
 
 }
+
+/**
+ * Check if the free addon page has been dismissed or not
+ *
+ * @since 3.3.3
+ * @return bool
+ */
+function wpas_is_free_addon_page_dismissed() {
+	return (bool) get_option( 'wpas_dismiss_free_addon_page', false );
+}
+
+add_action( 'plugins_loaded', 'wpas_free_addon_notice' );
+/**
+ * Add free addon notice
+ *
+ * After the plugin has been activated, we display a notice to admins telling them that they can get a free addon for
+ * Awesome Support.
+ *
+ * @since 3.3.3
+ * @return void
+ */
+function wpas_free_addon_notice() {
+
+	// Only show this message to admins
+	if ( ! current_user_can( 'administrator' ) ) {
+		return;
+	}
+
+	// Don't show the notice if user already claimed the addon
+	if ( wpas_is_free_addon_page_dismissed() ) {
+		return;
+	}
+
+	// Only show the notice on the plugin pages
+	if ( ! wpas_is_plugin_page() ) {
+		return;
+	}
+
+	// No need to show the notice on the free addon page itself
+	if ( isset( $_GET['page'] ) && 'wpas-optin' === $_GET['page'] ) {
+		return;
+	}
+
+	WPAS()->admin_notices->add_notice( 'updated', 'wpas_get_free_addon', wp_kses( sprintf( __( 'Hey! Did you know you can get a <strong>free add-on for unlimited sites</strong> (a $61.00 USD value) for Awesome Support? <a href="%1$s">Click here to read more</a>.', 'awesome-support' ), add_query_arg( array(
+		'post_type' => 'ticket',
+		'page'      => 'wpas-optin',
+	), admin_url( 'edit.php' ) ) ), array( 'strong' => array(), 'a' => array( 'href' => array() ) ) ) );
+
+}

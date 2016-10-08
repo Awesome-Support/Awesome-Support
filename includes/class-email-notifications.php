@@ -480,13 +480,15 @@ class WPAS_Email_Notification {
 	 * Get the content for the given part.
 	 *
 	 * @since  3.0.2
+	 *
 	 * @param  string $part Part of the e-mail to retrieve
 	 * @param  string $case Which notification is requested
+	 *
 	 * @return string       The content with tags converted into their values
 	 */
 	private function get_content( $part, $case ) {
 
-		if ( !in_array( $part, array( 'subject', 'content' ) ) ) {
+		if ( ! in_array( $part, array( 'subject', 'content' ) ) ) {
 			return false;
 		}
 
@@ -522,7 +524,48 @@ class WPAS_Email_Notification {
 
 		}
 
-		return $this->fetch( apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id ) );
+		return $this->fetch( apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id, $case ) );
+
+	}
+
+	/**
+	 * Retrieve the e-mail template to use and input the content
+	 *
+	 * @since 3.3.3
+	 *
+	 * @param string $content The e-mail contents to inject into the template
+	 *
+	 * @return string
+	 */
+	private function get_formatted_email( $content = '' ) {
+
+		if ( false === (bool) wpas_get_option( 'use_email_template', true ) ) {
+			return $content;
+		}
+
+		ob_start();
+
+		// Get the e-mail notification template. This template can be customized by the user.
+		// See https://getawesomesupport.com/documentation-new/documentation-awesome-support-core-customization/
+		wpas_get_template( 'email-notification' );
+
+		$template = ob_get_contents();
+
+		// Clean buffer
+		ob_end_clean();
+
+		$template = str_replace( '{content}', wpautop( $content ), $template ); // Inject content
+		$template = str_replace( '{footer}', wpas_get_option( 'email_template_footer', '' ), $template ); // Inject footer
+		$template = str_replace( '{header}', wpas_get_option( 'email_template_header', '' ), $template ); // Inject header
+
+		if ( '' !== $logo = wpas_get_option( 'email_template_logo', '' ) ) {
+			$logo = wp_get_attachment_image_src( $logo, 'full' );
+			$logo = '<img src="' . $logo[0] . '">';
+		}
+
+		$template = str_replace( '{logo}', $logo, $template ); // Inject logo
+
+		return $template;
 
 	}
 
@@ -618,11 +661,19 @@ class WPAS_Email_Notification {
 		$subject = $this->get_subject( $case );
 
 		/**
-		 * Get the e-mail body
+		 * Get the e-mail body and filter it before the template is being applied
 		 *
 		 * @var  string
 		 */
-		$body = $this->get_body( $case );
+		$body = apply_filters( 'wpas_email_notification_body_before_template', $this->get_body( $case ), $case, $this->ticket_id );
+
+		/**
+		 * Filter the e-mail body after the template has been applied
+		 *
+		 * @since 3.3.3
+		 * @var string
+		 */
+		$body = apply_filters( 'wpas_email_notification_body_after_template', $this->get_formatted_email( $body ), $case, $this->ticket_id );
 
 		/**
 		 * Prepare e-mail headers
