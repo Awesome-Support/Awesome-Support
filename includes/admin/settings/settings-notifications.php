@@ -50,7 +50,7 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Footer', 'awesome-support' ),
 					'id'       => 'email_template_footer',
 					'type'     => 'editor',
-					'default'  => '<p>&mdash; Your Support Team</p>',
+					'default'  => '',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				array(
