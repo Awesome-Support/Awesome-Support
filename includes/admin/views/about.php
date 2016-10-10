@@ -6,6 +6,10 @@
 
 	<div class="changelog">
 
+		<a class="wpas-bundle-link" href="https://getawesomesupport.com/addons/startup-bundle/" target="_blank">
+			<img src="https://cdn.getawesomesupport.com/wp-content/uploads/2015/08/bundle-1140x200.png" alt="Startup Bundle">
+		</a>
+
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 				<div class="about-body">
@@ -24,10 +28,6 @@
 				</div>
 			</div>
 		</div>
-
-		<a class="wpas-bundle-link" href="https://getawesomesupport.com/addons/startup-bundle/" target="_blank">
-			<img src="https://cdn.getawesomesupport.com/wp-content/uploads/2015/08/bundle-1140x200.png" alt="Startup Bundle">
-		</a>
 
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
