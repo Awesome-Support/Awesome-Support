@@ -261,7 +261,7 @@ function wpas_admin_footer_text( $text ) {
 		return $text;
 	}
 
-	return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from ThemeAvenue in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733' );
+	return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733' );
 
 }
 
