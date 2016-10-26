@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'admin_enqueue_scripts', 'wpas_remove_sensei_select2_assets' );
+add_action( 'admin_enqueue_scripts', 'wpas_remove_sensei_select2_assets', 999 );
 /**
  * Fix compatibility issue with Sensei's select2
  *
