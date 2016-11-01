@@ -349,10 +349,10 @@ class WPAS_Member_Query {
 		if ( ! empty( $this->exclude ) ) {
 
 			// Prepare the IDs query var
-			$ids = implode( ',', $this->exclude );
+			$ids = array_map( 'intval', implode( ',', $this->exclude ) );
 
 			// Exclude users by ID
-			$sql .= " AND ID NOT IN ('$ids')";
+			$sql .= " AND ID NOT IN ($ids)";
 
 		}
 
@@ -360,10 +360,10 @@ class WPAS_Member_Query {
 		if ( ! empty( $this->ids ) ) {
 
 			// Prepare the IDs query var
-			$ids = implode( ',', $this->ids );
+			$ids = array_map( 'intval', implode( ',', $this->ids ) );
 
 			// Exclude users by ID
-			$sql .= " AND ID IN ('$ids')";
+			$sql .= " AND ID IN ($ids)";
 
 		}
 

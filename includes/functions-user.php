@@ -372,7 +372,7 @@ function wpas_can_view_ticket( $post_id ) {
 	$post      = get_post( $post_id );
 	$author_id = intval( $post->post_author );
 
-	if ( is_user_logged_in() ) {
+	if ( $author_id && is_user_logged_in() ) {
 		if ( get_current_user_id() === $author_id && current_user_can( 'view_ticket' ) || current_user_can( 'edit_ticket' ) ) {
 			$can = true;
 		}
