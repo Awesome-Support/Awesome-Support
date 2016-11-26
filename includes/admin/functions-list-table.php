@@ -22,7 +22,7 @@ add_action( 'pre_get_posts', 'wpas_hide_others_tickets', 10, 1 );
  *
  * @since  3.0.0
  *
- * @param  object $query WordPress main query
+ * @param  object $query WordPress main query.
  *
  * @return boolean       True if the main query was modified, false otherwise
  */
@@ -38,8 +38,10 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
+	$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+
 	/* Make sure we only alter our post type */
-	if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+	if ( 'ticket' !== $post_type ) {
 		return false;
 	}
 
@@ -55,7 +57,7 @@ function wpas_hide_others_tickets( $query ) {
 
 	global $current_user;
 
-	// We need to update the original meta_query and not replace it to avoid filtering issues
+	// We need to update the original meta_query and not replace it to avoid filtering issues.
 	$meta_query = $query->get( 'meta_query' );
 
 	if ( ! is_array( $meta_query ) ) {
@@ -86,7 +88,7 @@ add_action( 'pre_get_posts', 'wpas_limit_open', 10, 1 );
  *
  * @since  3.1.3
  *
- * @param object $query WordPress main query
+ * @param object $query WordPress main query.
  *
  * @return boolean True if the tickets were filtered, false otherwise
  */
@@ -102,14 +104,17 @@ function wpas_limit_open( $query ) {
 		return false;
 	}
 
+	$post_type   = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+	$post_status = filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING );
+
 	/* Make sure we only alter our post type */
-	if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+	if ( 'ticket' !== $post_type ) {
 		return false;
 	}
 
-	if ( isset( $_GET['post_status'] ) && array_key_exists( $_GET['post_status'], wpas_get_post_status() ) || ! isset( $_GET['post_status'] ) && true === (bool) wpas_get_option( 'hide_closed', false ) ) {
+	if ( array_key_exists( $post_status, wpas_get_post_status() ) || empty( $post_status ) && true === (bool) wpas_get_option( 'hide_closed', false ) ) {
 
-		// We need to update the original meta_query and not replace it to avoid filtering issues
+		// We need to update the original meta_query and not replace it to avoid filtering issues.
 		$meta_query = $query->get( 'meta_query' );
 
 		if ( ! is_array( $meta_query ) ) {
@@ -142,8 +147,8 @@ add_filter( 'post_row_actions', 'wpas_ticket_action_row', 10, 2 );
  *
  * @since  3.0.0
  *
- * @param  array  $actions List of existing options
- * @param  object $post    Current post object
+ * @param  array  $actions List of existing options.
+ * @param  object $post    Current post object.
  *
  * @return array           List of options with ours added
  */
@@ -158,7 +163,6 @@ function wpas_ticket_action_row( $actions, $post ) {
 		} elseif ( 'closed' === $status ) {
 			$actions['open'] = '<a href="' . wpas_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'awesome-support' ) . '</a>';
 		}
-
 	}
 
 	return $actions;
@@ -173,7 +177,7 @@ add_filter( 'views_edit-ticket', 'wpas_fix_tickets_count' );
  *
  * @since 3.2
  *
- * @param $views All available views in the ticket list screen
+ * @param array $views All available views in the ticket list screen.
  *
  * @return array All views with accurate count
  */
@@ -181,12 +185,13 @@ function wpas_fix_tickets_count( $views ) {
 
 	global $wp_query;
 
-	$ticket_status = wpas_get_post_status(); // Our declared ticket status
+	$ticket_status = wpas_get_post_status(); // Our declared ticket status.
 	$status        = 'open';
+	$post_status   = filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING );
 
-	// Maybe apply filters
-	if ( isset( $_GET['wpas_status'] ) ) {
-		switch ( $_GET['wpas_status'] ) {
+	// Maybe apply filters.
+	if ( ! empty( $post_status ) ) {
+		switch ( $post_status ) {
 			case 'closed':
 				$status = 'closed';
 				break;
@@ -204,18 +209,17 @@ function wpas_fix_tickets_count( $views ) {
 			$regex   = '.*?(\\(.*\\))';
 			$replace = '';
 
-			if ( preg_match_all( "/" . $regex . "/is", $label, $matches ) ) {
+			if ( preg_match_all( '/' . $regex . '/is', $label, $matches ) ) {
 				$replace = $matches[1][0];
 			}
 
 			$label           = trim( strip_tags( str_replace( $replace, '', $label ) ) );
-			$class           = isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view || isset( $wp_query->query_vars['post_status'] ) && 'all' === $view && $wp_query->query_vars['post_status'] == null ? ' class="current"' : '';
+			$class           = isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view || isset( $wp_query->query_vars['post_status'] ) && 'all' === $view && null === $wp_query->query_vars['post_status'] ? ' class="current"' : '';
 			$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
 			$link            = esc_url( add_query_arg( $link_query_args, admin_url( 'edit.php' ) ) );
 			$views[ $view ]  = sprintf( '<a href="%1$s"%2$s>%3$s <span class="count">(%4$d)</span></a>', $link, $class, $label, $count );
 
 		}
-
 	}
 
 	return $views;
