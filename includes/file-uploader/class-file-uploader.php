@@ -909,9 +909,29 @@ class WPAS_File_Upload {
 		$attachments = $this->get_attachments( $post_id );
 
 		if ( !empty( $attachments ) ) {
+			/**
+			 * wpas_attachments_before_delete fires before deleting attachments
+			 *
+			 * @since  3.3.3
+			 * @param  integer $post_id       ID of the post we're displaying attachments for
+			 * @param  array   $attachment    The attachment array
+			 */
+			do_action( 'wpas_attachments_before_delete', $post_id, $attachments );
+
 			foreach ( $attachments as $id => $attachment ) {
 				wp_delete_attachment( $id, true );
 			}
+
+			/**
+			 * wpas_attachments_after_delete fires after deleting attachments
+			 * to allow cleanup of attachment folders
+			 *
+			 * @since  3.3.3
+			 * @param  integer $post_id       ID of the post we're displaying attachments for
+			 * @param  array   $attachment    The attachment array
+			 */
+			do_action( 'wpas_attachments_after_delete', $post_id, $attachments );
+
 		}
 
 	}
