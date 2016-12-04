@@ -44,7 +44,7 @@ function wpas_uninstall() {
 	$options = maybe_unserialize( get_option( 'wpas_options' ) );
 
 	/* Make sure that the user wants to remove all the data. */
-	if ( isset( $options['delete_data'] ) || '1' === $options['delete_data'] ) {
+	if ( isset( $options['delete_data'] ) and '1' === $options['delete_data'] ) {
 
 		/* Remove all plugin options. */
 		delete_option( 'wpas_options' );
