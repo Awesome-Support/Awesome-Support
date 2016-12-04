@@ -14,16 +14,10 @@
     "license": "GNU GPL",
     "authors": [
         {
-            "name": "Julien Liabeuf",
-            "email": "julien@liabeuf.fr",
-            "homepage": "http://julienliabeuf.com",
+            "name": "Awesome Support",
+            "email": "contact@awesomesupport.com",
+            "homepage": "https://getawesomesupport.com",
             "role": "Lead Developer"
-        },
-        {
-            "name": "Julien Vernet",
-            "email": "julien@vernet.me",
-            "homepage": "http://siamkreative.com",
-            "role": "Developer"
         }
     ],
     "require": {
