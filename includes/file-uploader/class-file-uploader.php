@@ -676,19 +676,22 @@ class WPAS_File_Upload {
 	}
 
 	/**
-	 * Process the upload.
+	 * Process files as ticket attachments.
 	 *
-	 * We delegate the upload process to WordPress. Why reinvent the wheel?
-	 * The only thing we do change is the upload path. For the rest it's all standard.
+	 * Call with post id and array of attachments (filename and raw file content in data)
 	 *
-	 * @since  3.0.0
-	 * @return bool Whether or not the upload has been processed
+	 * @since  3.3.4
+	 *
+	 * @param  int    $post_id     Ticket or Reply id to attach to
+	 * @param  object $attachments Array of attachment file names and raw content
+	 *
+	 * @return void
 	 */
 	public function process_attachments( $post_id, $attachments ) {
 
 		$max           = wpas_get_option( 'attachments_max' );      // Core AS Max Files (File Upload settings)
 		$cnt           = 0;                                         // Initialize count of current attachments
-		$history_log   = false;                                     // No errors/rejections yet
+		$errors        = false;                                     // No errors/rejections yet
 		$this->post_id = $post_id;                                  // Set post id for /ticket_nnnn folder creation
 
 		foreach ( $attachments as $attachment ) {
@@ -698,7 +701,7 @@ class WPAS_File_Upload {
 
 			/* Limit the number of uploaded files */
 			if ( $cnt + 1 > $max ) {
-				$history_log[] = sprintf( __( '%s -> Max files (%d) exceeded.', 'wpas-gf' ), $filename, $max );
+				$errors[] = sprintf( __( '%s -> Max files (%d) exceeded.', 'wpas-gf' ), $filename, $max );
 				continue;
 			}
 
@@ -720,7 +723,7 @@ class WPAS_File_Upload {
 
 				if ( is_wp_error( $attachment_id ) ) {
 
-					$history_log[] = sprintf( __( '%s -> %s', 'wpas-gf' ), $filename, $attachment_id->get_error_message() );
+					$errors[] = sprintf( __( '%s -> %s', 'wpas-gf' ), $filename, $attachment_id->get_error_message() );
 					continue;
 
 				} else {
@@ -739,19 +742,19 @@ class WPAS_File_Upload {
 					}
 				}
 			} else {
-				$history_log[] = sprintf( __( '%s -> %s', 'wpas-gf' ), $filename, $upload['error'] );
+				$errors[] = sprintf( __( '%s -> %s', 'wpas-gf' ), $filename, $upload['error'] );
 			}
 
 			$cnt ++;
 		}
 
 		// Log any errors
-		if ( $history_log ) {
+		if ( $errors ) {
 
 			$log = __( 'Attachment Errors:', 'wpas-gf' ) . '<br />';
 
-			foreach ( $history_log as $logentry ) {
-				$log .= $logentry . '<br/>';
+			foreach ( $errors as $error ) {
+				$log .= $error . '<br/>';
 			}
 
 			wpas_log( $post_id, $log );
