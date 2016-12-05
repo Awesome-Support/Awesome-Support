@@ -701,7 +701,7 @@ class WPAS_File_Upload {
 
 			/* Limit the number of uploaded files */
 			if ( $cnt + 1 > $max ) {
-				$errors[] = sprintf( __( '%s -> Max files (%d) exceeded.', 'wpas-gf' ), $filename, $max );
+				$errors[] = sprintf( __( '%s -> Max files (%d) exceeded.', 'awesome-support' ), $filename, $max );
 				continue;
 			}
 
@@ -723,7 +723,7 @@ class WPAS_File_Upload {
 
 				if ( is_wp_error( $attachment_id ) ) {
 
-					$errors[] = sprintf( __( '%s -> %s', 'wpas-gf' ), $filename, $attachment_id->get_error_message() );
+					$errors[] = sprintf( '%s -> %s', $filename, $attachment_id->get_error_message() );
 					continue;
 
 				} else {
@@ -742,7 +742,7 @@ class WPAS_File_Upload {
 					}
 				}
 			} else {
-				$errors[] = sprintf( __( '%s -> %s', 'wpas-gf' ), $filename, $upload['error'] );
+				$errors[] = sprintf( __( '%s -> %s', 'awesome-support' ), $filename, $upload['error'] );
 			}
 
 			$cnt ++;
@@ -751,7 +751,7 @@ class WPAS_File_Upload {
 		// Log any errors
 		if ( $errors ) {
 
-			$log = __( 'Attachment Errors:', 'wpas-gf' ) . '<br />';
+			$log = __( 'Attachment Errors:', 'awesome-support' ) . '<br />';
 
 			foreach ( $errors as $error ) {
 				$log .= $error . '<br/>';
