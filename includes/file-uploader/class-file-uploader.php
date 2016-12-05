@@ -742,7 +742,8 @@ class WPAS_File_Upload {
 					}
 				}
 			} else {
-				$errors[] = sprintf( __( '%s -> %s', 'awesome-support' ), $filename, $upload['error'] );
+				$errors[] = sprintf( '%s -> %s', $filename, $upload['error'] );
+
 			}
 
 			$cnt ++;
