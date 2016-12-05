@@ -730,19 +730,19 @@ class WPAS_File_Upload {
 
 				} else {
 
-					//$attach_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
+					$attach_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
 
-					//if ( ! empty( $attach_data ) ) {
-					//	wp_update_attachment_metadata( $attachment_id, $attach_data );
-//
-					//} else {
+					if ( ! empty( $attach_data ) ) {
+						wp_update_attachment_metadata( $attachment_id, $attach_data );
+
+					} else {
 					$fileMeta = array(
 						'file' => $upload['file'],
 						//'wpas_upload_source' => 'email_attachment',
 					);
 					add_post_meta( $attachment_id, '_wp_attachment_metadata', $fileMeta );
 
-					//}
+					}
 				}
 			} else {
 				$history_log[] = sprintf( __( '%s -> %s', 'wpas-gf' ), $filename, $upload['error'] );
@@ -760,7 +760,7 @@ class WPAS_File_Upload {
 				$log .= $logentry . '<br/>';
 			}
 
-			wpas_log( $this->ticket_id ? $this->ticket_id : $this->reply_id, $log );
+			wpas_log( $post_id, $log );
 		}
 
 	}
