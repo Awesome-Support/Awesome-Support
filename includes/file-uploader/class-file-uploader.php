@@ -686,17 +686,15 @@ class WPAS_File_Upload {
 	 */
 	public function process_attachments( $post_id, $attachments ) {
 
-		$post        = get_post( $post_id ); // Get the parent. It can be a ticket or a ticket reply
-		$max         = wpas_get_option( 'attachments_max' );
-		$id          = false; // Declare a default value for $id
-		$cnt         = 0;
-		$history_log = false;
+		$max           = wpas_get_option( 'attachments_max' );      // Core AS Max Files (File Upload settings)
+		$cnt           = 0;                                         // Initialize count of current attachments
+		$history_log   = false;                                     // No errors/rejections yet
+		$this->post_id = $post_id;                                  // Set post id for /ticket_nnnn folder creation
 
 		foreach ( $attachments as $attachment ) {
 
-			$filename = $attachment['filename'];
-			//$mimetype = $attachment['mimetype'];
-			$data = $attachment['data'];
+			$filename = $attachment['filename'];                    // Base filename
+			$data     = $attachment['data'];                        // Raw file contents
 
 			/* Limit the number of uploaded files */
 			if ( $cnt + 1 > $max ) {
@@ -704,9 +702,7 @@ class WPAS_File_Upload {
 				continue;
 			}
 
-			//$x = WPAS_File_Upload::get_instance();
-			$this->post_id = $post_id;
-
+			// Custom AS upload directory set in set_upload_dir() via upload_dir hook.
 			$upload = wp_upload_bits( $filename, null, $data );
 
 			if ( ! $upload['error'] ) {
@@ -719,7 +715,6 @@ class WPAS_File_Upload {
 					'post_content'   => '',
 					'post_status'    => 'inherit',
 				);
-
 
 				$attachment_id = wp_insert_attachment( $attachment_data, $upload['file'], $post_id );
 
@@ -736,11 +731,10 @@ class WPAS_File_Upload {
 						wp_update_attachment_metadata( $attachment_id, $attach_data );
 
 					} else {
-					$fileMeta = array(
-						'file' => $upload['file'],
-						//'wpas_upload_source' => 'email_attachment',
-					);
-					add_post_meta( $attachment_id, '_wp_attachment_metadata', $fileMeta );
+						$fileMeta = array(
+							'file' => $upload['file'],
+						);
+						add_post_meta( $attachment_id, '_wp_attachment_metadata', $fileMeta );
 
 					}
 				}
