@@ -32,6 +32,12 @@ function wpas_system_tools() {
 		case 'delete_products':
 			wpas_delete_synced_products();
 			break;
+
+		case 'ticket_attachments':
+			wpas_delete_unclaimed_attachments();
+			break;
+
+
 	}
 
 	/* Redirect in "read-only" mode */
@@ -283,5 +289,42 @@ function wpas_check_templates_override( $dir ) {
 	}
 
 	return $overrides;
+
+}
+
+// Remove attachment folder
+function wpas_delete_unclaimed_attachments( ) {
+
+	$upload = wp_get_upload_dir();
+	$attachments_root = trailingslashit($upload['basedir']) . 'awesome-support/';
+
+	foreach(glob($attachments_root . 'ticket_*') as $folder)
+	{
+		$ticket_id = false;
+		$basename = basename($folder);
+		$post = false;
+
+		if( ($x_pos = strpos($basename, '_')) !== FALSE ) {
+			$ticket_id = substr( $basename, $x_pos + 1 );
+			$post = get_post(absint($ticket_id));
+
+			if(empty($post)) {
+
+				$it    = new RecursiveDirectoryIterator( $attachments_root . $basename, RecursiveDirectoryIterator::SKIP_DOTS );
+				$files = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
+
+				foreach ( $files as $file ) {
+					if ( $file->isDir() ) {
+						rmdir( $file->getRealPath() );
+					} else {
+						unlink( $file->getRealPath() );
+					}
+				}
+				rmdir( $attachments_root . $basename );
+			}
+		}
+	}
+
+	return;
 
 }

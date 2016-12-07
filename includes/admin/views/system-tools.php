@@ -49,6 +49,10 @@ if ( isset( $_GET['done'] ) ) {
 		case 'delete_products':
 			$message = __( 'All products have been deleted', 'awesome-support' );
 			break;
+
+		case 'ticket_attachments':
+			$message = __( 'All unclaimed ticket attachment folders have been deleted', 'awesome-support' );
+			break;
 	}
 
 }
@@ -85,6 +89,13 @@ if ( isset( $message ) ) {
 			<td>
 				<a href="<?php echo wpas_tool_link( 'clear_taxonomies' ); ?>" class="button-secondary"><?php _e( 'Clear', 'awesome-support' ); ?></a>
 				<span class="wpas-system-tools-desc"><?php _e( 'Clear all terms from all custom taxonomies.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Ticket Attachments', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'ticket_attachments' ); ?>" class="button-secondary"><?php _e( 'Clear', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Clear unclaimed ticket attachment folders.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
 		<?php do_action( 'wpas_system_tools_table_after' ); ?>
