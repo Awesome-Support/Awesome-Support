@@ -292,23 +292,26 @@ function wpas_check_templates_override( $dir ) {
 
 }
 
-// Remove attachment folder
-function wpas_delete_unclaimed_attachments( ) {
+/**
+ * Delete unclaimed attachments
+ *
+ * @since 3.3.4
+ * @return void
+ */
+function wpas_delete_unclaimed_attachments() {
 
-	$upload = wp_get_upload_dir();
-	$attachments_root = trailingslashit($upload['basedir']) . 'awesome-support/';
+	$upload           = wp_get_upload_dir();
+	$attachments_root = trailingslashit( $upload['basedir'] ) . 'awesome-support/';
 
-	foreach(glob($attachments_root . 'ticket_*') as $folder)
-	{
-		$ticket_id = false;
-		$basename = basename($folder);
-		$post = false;
+	foreach ( glob( $attachments_root . 'ticket_*' ) as $folder ) {
 
-		if( ($x_pos = strpos($basename, '_')) !== FALSE ) {
+		$basename  = basename( $folder );
+
+		if ( ( $x_pos = strpos( $basename, '_' ) ) !== false ) {
 			$ticket_id = substr( $basename, $x_pos + 1 );
-			$post = get_post(absint($ticket_id));
+			$post      = get_post( absint( $ticket_id ) );
 
-			if(empty($post)) {
+			if ( empty( $post ) ) {
 
 				$it    = new RecursiveDirectoryIterator( $attachments_root . $basename, RecursiveDirectoryIterator::SKIP_DOTS );
 				$files = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
