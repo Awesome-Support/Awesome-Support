@@ -266,6 +266,21 @@ class WPAS_File_Upload {
 			return false;
 		}
 
+		global $current_user;
+
+		$current_user = wp_get_current_user();
+
+	    if ( defined('DOING_CRON') && 0 == $current_user->ID ) {
+
+		    $default_id = wpas_get_option( 'assignee_default', 1 );
+
+		    if ( empty( $default_id ) ) {
+				$default_id = 1;
+		    }
+
+		    $current_user = wp_set_current_user( $default_id );
+		}
+
 		if ( current_user_can( 'attach_files' ) ) {
 			return true;
 		}
