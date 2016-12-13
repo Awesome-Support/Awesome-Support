@@ -704,6 +704,9 @@ class WPAS_File_Upload {
 		$errors        = false;                                     // No errors/rejections yet
 		$this->post_id = $post_id;                                  // Set post id for /ticket_nnnn folder creation
 
+		$post = get_post($post_id);
+        $this->parent_id = !empty($post->post_parent) ? $post->post_parent : false;
+
 		foreach ( $attachments as $attachment ) {
 
 			$filename = $attachment['filename'];                    // Base filename
@@ -768,7 +771,8 @@ class WPAS_File_Upload {
 				$log .= $error . '<br/>';
 			}
 
-			wpas_log( $post_id, $log );
+			wpas_log( $this->parent_id ? $this->parent_id : $post_id, $log );
+
 		}
 
 	}
