@@ -1224,6 +1224,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
 
 		// Save the date at which the ticket was last closed. The date is updated if the ticket is re-opened and then re-closed.
 		update_post_meta( $ticket_id, '_ticket_closed_on', current_time( 'mysql' ) );
+		update_post_meta( $ticket_id, '_ticket_closed_on_gmt', current_time( 'mysql', 1 ) );
 
 		/* Decrement the number of tickets open for this agent */
 		$agent_id = get_post_meta( $ticket_id, '_wpas_assignee', true );
