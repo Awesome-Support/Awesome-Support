@@ -284,7 +284,6 @@ function wpas_register_core_fields() {
 	}	
 	
 	/* Add ticket channel field (where did the ticket originate from?) */
-	
 	$slug = defined( 'WPAS_CHANNEL_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_channel';
 	
 	$labels = apply_filters( 'wpas_channel_taxonomy_labels', array(
@@ -297,7 +296,7 @@ function wpas_register_core_fields() {
 	$show_channel_column_in_list = ( isset( $options['channel_show_in_ticket_list'] ) && true === boolval( $options['channel_show_in_ticket_list'] ) );
 	
 	wpas_add_custom_field( 'ticket_channel', array(
-		'core'                  => false,
+		'core'                  => true,
 		'show_column'           => $show_channel_column_in_list,
 		'log'                   => true,
 		'field_type'            => 'taxonomy',
@@ -312,6 +311,29 @@ function wpas_register_core_fields() {
 		'select2'               => false,
 		'filterable'			=> true,
 		'default'				=> 'standard ticket form'
+	) );	
+
+	/* Add fields to store the number of replies on a ticket. 				*/
+	/* These will be used for reporting purposes in a new reporting add-on 	*/
+	wpas_add_custom_field( 'ttl_replies_by_agent', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Number of Replies By Agent', 'awesome-support' )
+	) );
+	
+	wpas_add_custom_field( 'ttl_replies_by_customer', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Number of Replies By Customer', 'awesome-support' )
+	) );
+
+	wpas_add_custom_field( 'ttl_replies', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Total Replies On Ticket', 'awesome-support' )
 	) );	
 	
 }
