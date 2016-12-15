@@ -214,6 +214,7 @@ function wpas_register_core_fields() {
 
 	}
 
+	/* Add Department fields */
 	if ( isset( $options['departments'] ) && true === boolval( $options['departments'] ) ) {
 
 		$slug = defined( 'WPAS_DEPARTMENT_SLUG' ) ? WPAS_DEPARTMENT_SLUG : 'department';
@@ -243,6 +244,7 @@ function wpas_register_core_fields() {
 
 	}
 
+	/* Add priority fields */
 	if ( isset( $options['support_priority'] ) && true === boolval( $options['support_priority'] ) ) {
 
 		$slug = defined( 'WPAS_PRIORITY_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_priority';
@@ -254,7 +256,7 @@ function wpas_register_core_fields() {
 		$show_priority_required = ( isset( $options['support_priority_mandatory'] ) && true === boolval( $options['support_priority_mandatory'] ) );
 
 		/* Filter the taxonomy labels */
-		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
+		$labels = apply_filters( 'wpas_priority_taxonomy_labels', array(
 				'label'        => __( 'Priority', 'awesome-support' ),
 				'name'         => __( 'Priority', 'awesome-support' ),
 				'label_plural' => __( 'Priorities', 'awesome-support' )
@@ -281,5 +283,35 @@ function wpas_register_core_fields() {
 
 	}	
 	
+	/* Add ticket channel field (where did the ticket originate from?) */
+	
+	$slug = defined( 'WPAS_CHANNEL_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_channel';
+	
+	$labels = apply_filters( 'wpas_channel_taxonomy_labels', array(
+			'label'        => __( 'Channel', 'awesome-support' ),
+			'name'         => __( 'Channel', 'awesome-support' ),
+			'label_plural' => __( 'Channels', 'awesome-support' )
+		)
+	);
+
+	$show_channel_column_in_list = ( isset( $options['channel_show_in_ticket_list'] ) && true === boolval( $options['channel_show_in_ticket_list'] ) );
+	
+	wpas_add_custom_field( 'ticket_channel', array(
+		'core'                  => false,
+		'show_column'           => $show_channel_column_in_list,
+		'log'                   => true,
+		'field_type'            => 'taxonomy',
+		'taxo_std'              => false,
+		'column_callback'       => 'wpas_show_taxonomy_column',
+		'label'                 => $labels['label'],
+		'name'                  => $labels['name'],
+		'label_plural'          => $labels['label_plural'],
+		'taxo_hierarchical'     => true,
+		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+		'rewrite'               => array( 'slug' => $slug ),
+		'select2'               => false,
+		'filterable'			=> true,
+		'default'				=> 'standard ticket form'
+	) );	
 	
 }

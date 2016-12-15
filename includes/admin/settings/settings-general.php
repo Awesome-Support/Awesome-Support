@@ -92,6 +92,17 @@ function wpas_core_settings_general( $def ) {
 					'name' => __( 'Priority Management', 'awesome-support' ),
 					'type' => 'heading',
 					'options' => wpas_get_priority_options()
+				),
+				array(
+					'name' => __( 'Other Field Settings', 'awesome-support' ),
+					'type' => 'heading',
+				),				
+				array(
+					'name'    => __( 'Show Channel Field', 'awesome-support' ),
+					'id'      => 'channel_show_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show Channel Field In Ticket List?', 'awesome-support' ),
+					'default' => false
 				),				
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
