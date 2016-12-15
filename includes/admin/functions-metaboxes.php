@@ -73,13 +73,13 @@ function wpas_metaboxes() {
 function wpas_metabox_callback( $post, $args ) {
 
 	if ( ! is_array( $args ) || ! isset( $args['args']['template'] ) ) {
-		_e( 'An error occurred while registering this metabox. Please contact the support.', 'awesome-support' );
+		_e( 'An error occurred while registering this metabox. Please contact support.', 'awesome-support' );
 	}
 
 	$template = $args['args']['template'];
 
 	if ( ! file_exists( WPAS_PATH . "includes/admin/metaboxes/$template.php" ) ) {
-		_e( 'An error occured while loading this metabox. Please contact the support.', 'awesome-support' );
+		_e( 'An error occured while loading this metabox. Please contact support.', 'awesome-support' );
 	}
 
 	/* Include the metabox content */
