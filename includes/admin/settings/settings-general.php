@@ -89,6 +89,11 @@ function wpas_core_settings_general( $def ) {
 					'options' => wpas_get_products_options()
 				),
 				array(
+					'name' => __( 'Priority Management', 'awesome-support' ),
+					'type' => 'heading',
+					'options' => wpas_get_priority_options()
+				),				
+				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
 					'type' => 'heading',
 				),
@@ -220,4 +225,52 @@ function wpas_get_products_options() {
 
 	return $products;
 
+}
+
+
+/**
+ * Prepare the available options for priority
+ *
+ * @since 3.3.5
+ * @return array
+ */
+function wpas_get_priority_options() {
+
+	$priority = array(
+		array(
+			'name'    => __( 'Use Priority Field', 'awesome-support' ),
+			'id'      => 'support_priority',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Would you like to use the priority field in your tickets?', 'awesome-support' ),
+			'default' => false
+		),
+
+		array(
+			'name'    => __( 'Mandatory?', 'awesome-support' ),
+			'id'      => 'support_priority_mandatory',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Would you like to make the priority field mandatory in your tickets?', 'awesome-support' ),
+			'default' => false
+		),
+
+		array(
+			'name'    => __( 'Show On Front End?', 'awesome-support' ),
+			'id'      => 'support_priority_show_fe',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Would you like to show the field to the end user (unchecked restricts it to admin use only)?', 'awesome-support' ),
+			'default' => true
+		),		
+
+		array(
+			'name'    => __( 'Show In Column List?', 'awesome-support' ),
+			'id'      => 'support_priority_show_in_ticket_list',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Would you like to show the field in the ticket listing?', 'awesome-support' ),
+			'default' => false
+		)		
+		
+	);
+		
+	
+	return $priority;
 }

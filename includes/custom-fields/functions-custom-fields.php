@@ -223,8 +223,7 @@ function wpas_register_core_fields() {
 				'label'        => __( 'Department', 'awesome-support' ),
 				'name'         => __( 'Department', 'awesome-support' ),
 				'label_plural' => __( 'Departments', 'awesome-support' )
-			)
-		);
+			)		);
 
 		wpas_add_custom_field( 'department', array(
 			'core'                  => false,
@@ -244,4 +243,43 @@ function wpas_register_core_fields() {
 
 	}
 
+	if ( isset( $options['support_priority'] ) && true === boolval( $options['support_priority'] ) ) {
+
+		$slug = defined( 'WPAS_PRIORITY_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_priority';
+		
+		$show_priority_column_in_list = false ;
+		$show_priority_column_in_list = ( isset( $options['support_priority_show_in_ticket_list'] ) && true === boolval( $options['support_priority_show_in_ticket_list'] ) );
+		
+		$show_priority_required = false ;  
+		$show_priority_required = ( isset( $options['support_priority_mandatory'] ) && true === boolval( $options['support_priority_mandatory'] ) );
+
+		/* Filter the taxonomy labels */
+		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
+				'label'        => __( 'Priority', 'awesome-support' ),
+				'name'         => __( 'Priority', 'awesome-support' ),
+				'label_plural' => __( 'Priorities', 'awesome-support' )
+			)
+		);
+
+		wpas_add_custom_field( 'ticket_priority', array(
+			'core'                  => false,
+			'show_column'           => $show_priority_column_in_list,
+			'log'                   => true,
+			'field_type'            => 'taxonomy',
+			'taxo_std'              => false,
+			'column_callback'       => 'wpas_show_taxonomy_column',
+			'label'                 => $labels['label'],
+			'name'                  => $labels['name'],
+			'label_plural'          => $labels['label_plural'],
+			'taxo_hierarchical'     => true,
+			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'rewrite'               => array( 'slug' => $slug ),
+			'select2'               => false,
+			'filterable'			=> true,
+			'required'				=> $show_priority_required 
+		) );
+
+	}	
+	
+	
 }
