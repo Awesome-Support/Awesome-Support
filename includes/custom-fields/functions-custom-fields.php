@@ -336,4 +336,25 @@ function wpas_register_core_fields() {
 		'title'       => __( 'Total Replies On Ticket', 'awesome-support' )
 	) );	
 	
+	/* Add fields to store time spent working on a ticket. */
+	wpas_add_custom_field( 'ttl_calculated_time_spent_on_ticket', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Time Spent on Ticket', 'awesome-support' )
+	) );	
+	
+	wpas_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
+	) );		
+	
+	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
+	) );			
 }

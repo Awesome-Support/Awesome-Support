@@ -697,6 +697,30 @@ class WPAS_Custom_Fields {
 	}
 
 	/**
+	 * Display just a single custom field on submission form.
+	 * This can be more efficient but not sure how to do
+	 * the array search properly so ended up in an inefficient loop.
+	 *
+	 * @since 3.3.5
+	 * @return void
+	 */
+	public function display_single_field( $cffieldname ) {
+
+		$fields = $this->get_custom_fields();
+		
+		foreach ( $fields as $name => $field ) {
+
+			If ( $cffieldname === $name ) {
+				$this_field = new WPAS_Custom_Field( $name, $field );
+				$output     = $this_field->get_output();
+
+				echo $output;			
+			}
+		}		
+		
+	}	
+	
+	/**
 	 * Trigger the custom fields save function upon front-end submission of a new ticket.
 	 *
 	 * @since 3.2.0
