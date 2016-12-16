@@ -21,8 +21,9 @@ if ( ! defined( 'WPINC' ) ) {
 
 
 	// This code doesn't work - what the hell?  It shouldn't be this hard to echo out a custom field!
-	$ticket_priority = wpas_get_cf_value( 'ticket_priority', get_the_ID(), 'NO VALUE RETURNED' );
-	echo $ticket_priority;
+	// So, commenting it out.
+	// $ticket_priority = wpas_get_cf_value( 'ticket_priority', get_the_ID(), 'NO VALUE RETURNED' );
+	// echo $ticket_priority;
 	
 	// Show time fields
 	?> 

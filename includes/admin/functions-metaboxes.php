@@ -44,9 +44,7 @@ function wpas_metaboxes() {
 
 	/* Ticket details */
 	add_meta_box( 'wpas-mb-details', __( 'Ticket Details', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
-
-	/* Ticket Statistics */
-	add_meta_box( 'wpas-mb-ticket-statistics', __( 'Ticket Statistics', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-statistics' ) );	
+	
 	
 	/* Client profile */
 	if ( 'post-new.php' !== $pagenow ) {
@@ -57,6 +55,12 @@ function wpas_metaboxes() {
 		add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
 	}
 
+	/* Ticket Statistics */
+	add_meta_box( 'wpas-mb-ticket-statistics', __( 'Ticket Statistics', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-statistics' ) );	
+	
+	/* Additional Interested Parties */
+	add_meta_box( 'wpas-mb-ticket-addl-parties', __( 'Additional Interested Parties', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-additional-parties' ) );			
+	
 }
 
 /**

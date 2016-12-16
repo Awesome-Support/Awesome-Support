@@ -103,7 +103,15 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'checkbox',
 					'desc'    => __( 'Show Channel Field In Ticket List?', 'awesome-support' ),
 					'default' => false
-				),				
+				),								
+				array(
+					'name'    => __( 'Enable Multiple Agents Per Ticket', 'awesome-support' ),
+					'id'      => 'multiple_agents_per_ticket',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the two extra agent fields on the ticket?', 'awesome-support' ),
+					'default' => false
+				),								
+				
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
 					'type' => 'heading',

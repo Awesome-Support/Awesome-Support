@@ -284,7 +284,7 @@ function wpas_register_core_fields() {
 	}	
 	
 	/* Add ticket channel field (where did the ticket originate from?) */
-	$slug = defined( 'WPAS_CHANNEL_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_channel';
+	$slug = defined( 'WPAS_CHANNEL_SLUG' ) ? WPAS_CHANNEL_SLUG : 'ticket_channel';
 	
 	$labels = apply_filters( 'wpas_channel_taxonomy_labels', array(
 			'label'        => __( 'Channel', 'awesome-support' ),
@@ -312,6 +312,23 @@ function wpas_register_core_fields() {
 		'filterable'			=> true,
 		'default'				=> 'standard ticket form'
 	) );	
+	
+	/* Add additional assignees to ticket */
+	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
+		wpas_add_custom_field( 'secondary_assignee', array(
+			'core'        => true,
+			'show_column' => false,
+			'log'         => true,
+			'title'       => __( 'Additional Support Staff #1', 'awesome-support' )
+		) );		
+		
+		wpas_add_custom_field( 'tertiary_assignee', array(
+			'core'        => true,
+			'show_column' => false,
+			'log'         => true,
+			'title'       => __( 'Additional Support Staff #2', 'awesome-support' )
+		) );				
+	}
 
 	/* Add fields to store the number of replies on a ticket. 				*/
 	/* These will be used for reporting purposes in a new reporting add-on 	*/
@@ -356,5 +373,32 @@ function wpas_register_core_fields() {
 		'show_column' => false,
 		'log'         => false,
 		'title'       => __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
-	) );			
+	) );
+	
+	/* Add fields for other "free-form" interested parties */
+	wpas_add_custom_field( 'first_addl_interested_party_name', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Name Of Additional Interested Party (#1)', 'awesome-support' )
+	) );
+	wpas_add_custom_field( 'first_addl_interested_party_email', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Additional Interested Party Email (#1)', 'awesome-support' )
+	) );		
+	wpas_add_custom_field( 'second_addl_interested_party_name', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Name Of Additional Interested Party (#2)', 'awesome-support' )
+	) );
+	wpas_add_custom_field( 'second_addl_interested_party_email', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Additional Interested Party Email (#2)', 'awesome-support' )
+	) );		
+	
 }
