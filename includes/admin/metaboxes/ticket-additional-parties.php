@@ -30,10 +30,22 @@ if ( ! defined( 'WPINC' ) ) {
 	$tertiary_staff_id = wpas_get_cf_value( 'tertiary_assignee', get_the_ID() );
 	
 	// Translate ids to names
-	$secondary_staff		= get_user_by( 'ID', $secondary_staff_id );
-	$secondary_staff_name	= $secondary_staff->data->display_name;	
-	$tertiary_staff         = get_user_by( 'ID', $tertiary_staff_id );
-	$tertiary_staff_name    = $tertiary_staff->data->display_name;
+	$secondary_staff_name = '';
+	$tertiary_staff_name = '';
+	if ( ! empty( $secondary_staff_id ) ) {
+		$secondary_staff = get_user_by( 'ID', $secondary_staff_id );
+		
+		if ( ! empty ( $secondary_staff ) )  {
+			$secondary_staff_name = $secondary_staff->data->display_name;	
+		}
+	}
+	If ( ! empty( $tertiary_staff_id) ) {
+		$tertiary_staff = get_user_by( 'ID', $tertiary_staff_id );
+	
+		If ( ! empty( $tertiary_staff) ) {
+			$tertiary_staff_name = $tertiary_staff->data->display_name;
+		}
+	}
 	
 	// Display dropdown for secondary staff
 	?> <label for="wpas-secondary-assignee"><strong data-hint="<?php esc_html_e( 'First additional agent who has an interest this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Additional Support Staff #1', 'awesome-support' ); ?></strong></label><?php	
