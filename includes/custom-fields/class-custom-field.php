@@ -109,7 +109,7 @@ class WPAS_Custom_Field {
 
 		/* Default arguments */
 		$defaults = array(
-			'field_type'            => 'text',          // Type of custom field to display
+			'field_type'            => 'text',          	  // Type of custom field to display
 			'core'                  => false,                 // Is this a custom fields that belongs to the plugin core
 			'required'              => false,                 // Is this field required for front-end submission
 			'log'                   => false,                 // Should the content updates of this field be logged in the system
@@ -129,6 +129,10 @@ class WPAS_Custom_Field {
 		    'default'               => '',                    // Field default value
 		    // @since 3.3
 		    'column_attributes'     => array(),               // User-defined attributes to add to the list table columns (required show_column to be true)
+			// @since 3.3.5
+			'hide_front_end'		=> false,				  // Hide the field from being rendered by submission_form_fields() which results in it being hidden from the front end? 
+															  // Setting to true also means that the backend has to have its own rendering logic so be careful.
+			'backend_only'			=> false,				  // If set to true, will only show on backend AND will show in separate metabox.
 			/* The following parameters are users for taxonomies only. */
 			'taxo_std'              => false,                 // For taxonomies, should it behave like a standard WordPress taxonomy
 			'label'                 => '',

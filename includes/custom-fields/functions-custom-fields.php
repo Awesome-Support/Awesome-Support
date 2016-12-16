@@ -296,8 +296,10 @@ function wpas_register_core_fields() {
 	$show_channel_column_in_list = ( isset( $options['channel_show_in_ticket_list'] ) && true === boolval( $options['channel_show_in_ticket_list'] ) );
 	
 	wpas_add_custom_field( 'ticket_channel', array(
-		'core'                  => true,
+		'core'                  => false,
 		'show_column'           => $show_channel_column_in_list,
+		'hide_front_end'		=> true,		
+		'backend_only'			=> true,		
 		'log'                   => true,
 		'field_type'            => 'taxonomy',
 		'taxo_std'              => false,
@@ -316,17 +318,19 @@ function wpas_register_core_fields() {
 	/* Add additional assignees to ticket */
 	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
 		wpas_add_custom_field( 'secondary_assignee', array(
-			'core'        => true,
-			'show_column' => false,
-			'log'         => true,
-			'title'       => __( 'Additional Support Staff #1', 'awesome-support' )
+			'core'        		=> false,
+			'show_column' 		=> false,
+			'hide_front_end'	=> true,			
+			'log'         		=> true,
+			'title'       		=> __( 'Additional Support Staff #1', 'awesome-support' )
 		) );		
 		
 		wpas_add_custom_field( 'tertiary_assignee', array(
-			'core'        => true,
-			'show_column' => false,
-			'log'         => true,
-			'title'       => __( 'Additional Support Staff #2', 'awesome-support' )
+			'core'        		=> false,
+			'hide_front_end'	=> true,			
+			'show_column' 		=> false,
+			'log'         		=> true,
+			'title'       		=> __( 'Additional Support Staff #2', 'awesome-support' )
 		) );				
 	}
 
@@ -363,42 +367,46 @@ function wpas_register_core_fields() {
 	
 	wpas_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
 		'core'        => true,
-		'show_column' => false,
+		'show_column' => false,		
 		'log'         => false,
 		'title'       => __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
 	) );		
 	
 	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
+		'core'        		=> true,
+		'show_column' 		=> false,
+		'log'         		=> false,
+		'title'       		=> __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
 	) );
 	
 	/* Add fields for other "free-form" interested parties */
 	wpas_add_custom_field( 'first_addl_interested_party_name', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Name Of Additional Interested Party (#1)', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> false,
+		'hide_front_end'	=> true,		
+		'log'         		=> false,
+		'title'       		=> __( 'Name Of Additional Interested Party (#1)', 'awesome-support' )
 	) );
 	wpas_add_custom_field( 'first_addl_interested_party_email', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Additional Interested Party Email (#1)', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> false,
+		'hide_front_end'	=> true,		
+		'log'         		=> false,
+		'title'       		=> __( 'Additional Interested Party Email (#1)', 'awesome-support' )
 	) );		
 	wpas_add_custom_field( 'second_addl_interested_party_name', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Name Of Additional Interested Party (#2)', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> false,
+		'hide_front_end'	=> true,		
+		'log'         		=> false,
+		'title'       		=> __( 'Name Of Additional Interested Party (#2)', 'awesome-support' )
 	) );
 	wpas_add_custom_field( 'second_addl_interested_party_email', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Additional Interested Party Email (#2)', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> false,
+		'hide_front_end'	=> true,		
+		'log'         		=> false,
+		'title'       		=> __( 'Additional Interested Party Email (#2)', 'awesome-support' )
 	) );		
 	
 }

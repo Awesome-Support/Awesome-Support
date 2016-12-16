@@ -51,10 +51,16 @@ function wpas_metaboxes() {
 		add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
 	}
 
+	/* Front End Custom Fields */
 	if ( WPAS()->custom_fields->have_custom_fields() ) {
 		add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
 	}
 
+	/* Back End Custom Fields */
+	if ( WPAS()->custom_fields->have_custom_fields() ) {
+		add_meta_box( 'wpas-mb-becf', __( 'Admin Only Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields-backend' ) );
+	}	
+	
 	/* Ticket Statistics */
 	add_meta_box( 'wpas-mb-ticket-statistics', __( 'Ticket Statistics', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-statistics' ) );	
 	
