@@ -249,11 +249,24 @@ function wpas_register_core_fields() {
 
 		$slug = defined( 'WPAS_PRIORITY_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_priority';
 		
-		$show_priority_column_in_list = false ;
-		$show_priority_column_in_list = ( isset( $options['support_priority_show_in_ticket_list'] ) && true === boolval( $options['support_priority_show_in_ticket_list'] ) );
+		$show_priority_column_in_list 	= false ;
+		$show_priority_column_in_list 	= ( isset( $options['support_priority_show_in_ticket_list'] ) && true === boolval( $options['support_priority_show_in_ticket_list'] ) );
 		
-		$show_priority_required = false ;  
-		$show_priority_required = ( isset( $options['support_priority_mandatory'] ) && true === boolval( $options['support_priority_mandatory'] ) );
+		$show_priority_required 		= false ;  
+		$show_priority_required 		= ( isset( $options['support_priority_mandatory'] ) && true === boolval( $options['support_priority_mandatory'] ) );
+		
+		$show_priority_on_front_end 	= false;
+		$show_priority_on_front_end 	= ( isset( $options['support_priority_show_fe'] ) && true === boolval( $options['support_priority_show_fe'] ) );
+		
+		/* Now, depending on if the user specifies whether to show the field on the front end or not, we'll set a flag for the back-end only attribute of the custom field. */
+		/* This way the field always show up in the back-end.  It will show up as a admin only field if the user elects not to turn it on for the front end. Otherwise      */
+		/* if turned on it will show up in the regular custom fields metabox.																								*/
+		$show_priority_on_back_end_only = false ;
+		if ( false === $show_priority_on_front_end ) {
+			
+			$show_priority_on_back_end_only =  true ;
+		}
+		
 
 		/* Filter the taxonomy labels */
 		$labels = apply_filters( 'wpas_priority_taxonomy_labels', array(
@@ -266,6 +279,8 @@ function wpas_register_core_fields() {
 		wpas_add_custom_field( 'ticket_priority', array(
 			'core'                  => false,
 			'show_column'           => $show_priority_column_in_list,
+			'hide_front_end'		=> ! $show_priority_on_front_end,  //inverse of what the user specificed in settings because of how this attribute works...
+			'backend_only'			=> $show_priority_on_back_end_only,					
 			'log'                   => true,
 			'field_type'            => 'taxonomy',
 			'taxo_std'              => false,
