@@ -259,8 +259,8 @@ function wpas_register_core_fields() {
 		$show_priority_on_front_end 	= ( isset( $options['support_priority_show_fe'] ) && true === boolval( $options['support_priority_show_fe'] ) );
 		
 		/* Now, depending on if the user specifies whether to show the field on the front end or not, we'll set a flag for the back-end only attribute of the custom field. */
-		/* This way the field always show up in the back-end.  It will show up as a admin only field if the user elects not to turn it on for the front end. Otherwise      */
-		/* if turned on it will show up in the regular custom fields metabox.																								*/
+		/* This way the field always show up in the back-end.  It will show up as an admin only field if the user elects not to turn it on for the front end. Otherwise		*/
+		/* if turned on for the front-end it will show up in the regular custom fields metabox.																				*/
 		$show_priority_on_back_end_only = false ;
 		if ( false === $show_priority_on_front_end ) {
 			
@@ -329,6 +329,8 @@ function wpas_register_core_fields() {
 		'filterable'			=> true,
 		'default'				=> 'standard ticket form'
 	) );	
+	
+	wpas_insert_default_channel_data();
 	
 	/* Add additional assignees to ticket */
 	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
@@ -424,4 +426,15 @@ function wpas_register_core_fields() {
 		'title'       		=> __( 'Additional Interested Party Email (#2)', 'awesome-support' )
 	) );		
 	
+}
+
+/**
+ * Insert default data for CHANNEL.  
+ * We must make sure we only do this ONCE.
+ *
+ * @since  3.3.5
+ * @return void
+ */
+function wpas_insert_default_channel_data() {
+
 }
