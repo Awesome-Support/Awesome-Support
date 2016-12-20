@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticket statistics
+ * Ticket statistics (Misc)
  *
  * This metabox is used to display misc data about the ticket include
  * number of replies for agents etc.
