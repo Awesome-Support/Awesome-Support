@@ -36,7 +36,10 @@ function wpas_system_tools() {
 		case 'ticket_attachments':
 			wpas_delete_unclaimed_attachments();
 			break;
-
+		
+		case 'reset_replies_count':
+			wpas_reset_replies_count();
+			break;
 
 	}
 
@@ -52,6 +55,42 @@ function wpas_system_tools() {
 	wp_redirect( wp_sanitize_redirect( $url ) );
 	exit;
 
+}
+
+/**
+ * Reset replies count for all tickets.
+ *
+ * Gets all the existing tickets from the system
+ * and reset their replies count one by one.
+ *
+ * @return boolean
+ * 
+ */
+function wpas_reset_replies_count() {
+	$args = array(
+		'post_type'              => 'ticket',
+		'post_status'            => 'any',
+		'posts_per_page'         => -1,
+		'no_found_rows'          => true,
+		'cache_results'          => false,
+		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+	);
+
+	$query   = new WP_Query( $args );
+	$reset = false;
+	
+	if ( 0 == $query->post_count ) {
+		return false;
+	}
+
+	foreach( $query->posts as $post ) {
+		if ( wpas_count_replies( $post->ID ) && false === $reset ) {
+			$reset = true;
+		}
+	}
+
+	return $reset;
 }
 
 /**

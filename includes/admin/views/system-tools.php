@@ -98,6 +98,13 @@ if ( isset( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Clear unclaimed ticket attachment folders.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Reset replies count', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'reset_replies_count' ); ?>" class="button-secondary"><?php _e( 'Count', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Count all ticket replies.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
 		<?php do_action( 'wpas_system_tools_table_after' ); ?>
 	</tbody>
 </table>

@@ -117,6 +117,7 @@ function wpas_admin_action_trash_reply( $data ) {
 	$reply_id = (int) $data['reply_id'];
 
 	wp_trash_post( $reply_id, false );
+	do_action( 'wpas_admin_reply_trashed', $reply_id );
 
 	// Read-only redirect
 	$redirect_to = add_query_arg( array(
