@@ -21,6 +21,26 @@ function wpas_count_user_replies( $ticket_id, $user_id ) {
 }
 
 /**
+ * Fetch ticket total replies count
+ * @global object $wpdb
+ * @param int $ticket_id
+ * 
+ * @return int
+ */
+function wpas_count_total_replies( $ticket_id ) {
+	
+	global $wpdb;
+	$count = 0;
+	
+	$query = $wpdb->prepare("SELECT count(*) FROM {$wpdb->prefix}posts WHERE post_parent = %d AND post_type = %s AND post_status != 'trash'", $ticket_id, 'ticket_reply');
+	$count = $wpdb->get_var($query);
+	
+	
+	return $count;
+	
+}
+
+/**
  * Get ticket agent replies count
  * @param int $ticket_id
  * 
@@ -70,20 +90,13 @@ function wpas_count_replies( $ticket_id ) {
 	$agent_id = (int) get_post_meta( $ticket_id, '_wpas_assignee', true );
 	$customer_id = (int) $ticket->post_author;
 	
-	$agent_replies_count = wpas_count_user_replies($ticket_id, $agent_id);
-	if($agent_id === $customer_id) {
-		$customer_replies_count = 0;
-	} else {
-		$customer_replies_count = wpas_count_user_replies($ticket_id, $customer_id);
-	}
-	
-	
-	
-	$total_replies = $agent_replies_count + $customer_replies_count;
+	$total_replies_count = wpas_count_total_replies($ticket_id);
+	$customer_replies_count = wpas_count_user_replies($ticket_id, $customer_id);
+	$agent_replies_count = $total_replies_count - $customer_replies_count;
 	
 	update_post_meta( $ticket_id, 'ttl_replies_by_customer', $customer_replies_count );
 	update_post_meta( $ticket_id, 'ttl_replies_by_agent', $agent_replies_count );
-	update_post_meta( $ticket_id, 'ttl_replies', $total_replies );
+	update_post_meta( $ticket_id, 'ttl_replies', $total_replies_count );
 	
 }
 
