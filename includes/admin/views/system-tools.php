@@ -53,6 +53,10 @@ if ( isset( $_GET['done'] ) ) {
 		case 'ticket_attachments':
 			$message = __( 'All unclaimed ticket attachment folders have been deleted', 'awesome-support' );
 			break;
+		
+		case 'reset_channels':
+			$message = __( 'All channels have been reset', 'awesome-support' );
+			break;
 	}
 
 }
@@ -103,6 +107,13 @@ if ( isset( $message ) ) {
 			<td>
 				<a href="<?php echo wpas_tool_link( 'reset_replies_count' ); ?>" class="button-secondary"><?php _e( 'Count', 'awesome-support' ); ?></a>
 				<span class="wpas-system-tools-desc"><?php _e( 'Count all ticket replies.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Reset channels', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'reset_channels' ); ?>" class="button-secondary"><?php _e( 'Reset', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Reset channels.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
 		<?php do_action( 'wpas_system_tools_table_after' ); ?>
