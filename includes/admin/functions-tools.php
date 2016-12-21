@@ -40,6 +40,10 @@ function wpas_system_tools() {
 		case 'reset_replies_count':
 			wpas_reset_replies_count();
 			break;
+		
+		case 'reset_channels':
+			wpas_reset_channel_terms();
+			break;
 
 	}
 
@@ -55,6 +59,16 @@ function wpas_system_tools() {
 	wp_redirect( wp_sanitize_redirect( $url ) );
 	exit;
 
+}
+
+/**
+ * Add default channels.
+ * 
+ * @return boolean
+ * 
+ */
+function wpas_reset_channel_terms() {
+	return wpas_add_default_channel_terms(true);
 }
 
 /**
