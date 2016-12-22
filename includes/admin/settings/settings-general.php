@@ -101,7 +101,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Show Channel Field', 'awesome-support' ),
 					'id'      => 'channel_show_in_ticket_list',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show Channel Field In Ticket List?', 'awesome-support' ),
+					'desc'    => __( 'Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
 					'default' => false
 				),								
 				array(
