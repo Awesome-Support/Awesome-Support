@@ -19,8 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 	do_action( 'wpas_mb_details_before_ticket_addl_parties' );
 
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
-	// WPAS()->custom_fields->display_single_field('secondary_assignee');
-	// WPAS()->custom_fields->display_single_field('tertiary_assignee');
+
 	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
 		
 		// Issue warning that these fields are notational only.
@@ -71,13 +70,14 @@ if ( ! defined( 'WPINC' ) ) {
 		);
 
 		echo wpas_dropdown( $staff_atts, "<option value='$tertiary_staff_id' selected='selected'>$tertiary_staff_name</option>" );
-	
-	
-	
-		// Show free-form interested parties (name / email )
+		
+		// Create some space before showing free-form interested parties (name / email )
 		?><br /><br /><?php
-		?><hr /><strong><?php
+		?><hr /><?php
 	}
+
+	// Show free-form interested parties (name / email )
+	?><strong><?php
 	echo _e( 'Note: These fields are notational only. They do not participate in notifications!', 'awesome-support' );	
 	?></strong><hr /><?php
 	WPAS()->custom_fields->display_single_field('first_addl_interested_party_name');
