@@ -1098,3 +1098,17 @@ function wpas_is_multi_agent_active() {
 	
 	return false;
 }
+
+/**
+ * Check if support priority is active
+ * @return boolean
+ */
+function wpas_is_support_priority_active() {
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	
+	if ( isset( $options['support_priority'] ) && true === boolval( $options['support_priority'] ) ) {
+		return true;
+	}
+	
+	return false;
+}
