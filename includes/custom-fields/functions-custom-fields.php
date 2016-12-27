@@ -288,7 +288,7 @@ function wpas_register_core_fields() {
 			'label'                 => $labels['label'],
 			'name'                  => $labels['name'],
 			'label_plural'          => $labels['label_plural'],
-			'taxo_hierarchical'     => false,
+			'taxo_hierarchical'     => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
