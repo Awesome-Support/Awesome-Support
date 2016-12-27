@@ -41,6 +41,13 @@ function wpas_core_settings_general( $def ) {
 					)
 				),
 				array(
+					'name'    => __( 'Tickets Per Page (Front End)', 'awesome-support' ),
+					'id'      => 'tickets_per_page_front_end',
+					'type'    => 'text',
+					'default' => 5,
+					'desc'    => __( 'How many tickets per page should be displayed to the customer/client/end-user?', 'awesome-support' ),
+				),				
+				array(
 					'name'    => __( 'Replies Order', 'awesome-support' ),
 					'id'      => 'replies_order',
 					'type'    => 'radio',
