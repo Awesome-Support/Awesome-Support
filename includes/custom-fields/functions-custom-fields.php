@@ -288,7 +288,7 @@ function wpas_register_core_fields() {
 			'label'                 => $labels['label'],
 			'name'                  => $labels['name'],
 			'label_plural'          => $labels['label_plural'],
-			'taxo_hierarchical'     => true,
+			'taxo_hierarchical'     => false,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
@@ -329,8 +329,6 @@ function wpas_register_core_fields() {
 		'filterable'			=> true,
 		'default'				=> 'standard ticket form'
 	) );	
-	
-	wpas_insert_default_channel_data();
 	
 	/* Add additional assignees to ticket */
 	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
@@ -426,15 +424,4 @@ function wpas_register_core_fields() {
 		'title'       		=> __( 'Additional Interested Party Email (#2)', 'awesome-support' )
 	) );		
 	
-}
-
-/**
- * Insert default data for CHANNEL.  
- * We must make sure we only do this ONCE.
- *
- * @since  3.3.5
- * @return void
- */
-function wpas_insert_default_channel_data() {
-
 }
