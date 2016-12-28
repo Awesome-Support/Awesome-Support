@@ -1075,7 +1075,7 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
 			$agent_ids[] = $secondary_agent_id;
 		}
 
-		if( $tertiary_agent_id && !in_array( $tertiary_agent_id, $exclude )  && !in_array( $secondary_agent_id, $agent_ids ) ) {
+		if( $tertiary_agent_id && !in_array( $tertiary_agent_id, $exclude )  && !in_array( $tertiary_agent_id, $agent_ids ) ) {
 			$agent_ids[] = $tertiary_agent_id;
 		}
 	}
