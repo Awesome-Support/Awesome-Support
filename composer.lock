@@ -4,26 +4,26 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e793d8b6df006318f94b9330006f6ba6",
-    "content-hash": "a32da19a175b18342f98d104ea23ff53",
+    "hash": "fb661285926d65ec70f7b1f38701886f",
+    "content-hash": "b49f813e84834d1ffd6540fc74958f6f",
     "packages": [
         {
             "name": "ericmann/wp-session-manager",
-            "version": "dev-master",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ericmann/wp-session-manager.git",
-                "reference": "c446c85909206345d875297d8691396e0ba624a3"
+                "reference": "2263d891ea235b758c5b2098fda6aeee68e87bf4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/c446c85909206345d875297d8691396e0ba624a3",
-                "reference": "c446c85909206345d875297d8691396e0ba624a3",
+                "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/2263d891ea235b758c5b2098fda6aeee68e87bf4",
+                "reference": "2263d891ea235b758c5b2098fda6aeee68e87bf4",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2015-05-25 00:38:47"
+            "time": "2014-09-30 04:24:24"
         },
         {
             "name": "gambitph/titan-framework",
@@ -72,9 +72,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "ericmann/wp-session-manager": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
