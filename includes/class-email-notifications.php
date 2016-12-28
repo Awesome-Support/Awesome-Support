@@ -721,7 +721,19 @@ class WPAS_Email_Notification {
 			$this->ticket_id
 		);
 
-		$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'] );
+		// We need to send notifications separately per recipient.
+		if( is_array($email['recipient_email']) ) {
+			$mail = false;
+			foreach($email['recipient_email'] as $r_email) {
+				if( wp_mail( $r_email, $email['subject'], $email['body'], $email['headers'] ) ) {
+					$mail = true;
+				}
+			}
+		} else {
+			$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'] );
+		}
+
+		
 
 		return $mail;
 
