@@ -519,7 +519,9 @@ class WPAS_Product_Sync {
 		$index = array();
 
 		foreach ( $query->posts as $post ) {
-			$index[ $post->ID ] = $post;
+			if( isset( $post->ID ) ) {
+				$index[ $post->ID ] = $post;
+			}
 		}
 
 		// We will store the new terms in this array

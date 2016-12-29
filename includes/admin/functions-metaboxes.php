@@ -44,16 +44,33 @@ function wpas_metaboxes() {
 
 	/* Ticket details */
 	add_meta_box( 'wpas-mb-details', __( 'Ticket Details', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
-
+	
+	
 	/* Client profile */
 	if ( 'post-new.php' !== $pagenow ) {
 		add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
 	}
 
+	/* Front End Custom Fields */
 	if ( WPAS()->custom_fields->have_custom_fields() ) {
 		add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
 	}
 
+	/* Back End Custom Fields */
+	if ( WPAS()->custom_fields->have_custom_fields() ) {
+		add_meta_box( 'wpas-mb-becf', __( 'Admin Only Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields-backend' ) );
+	}	
+	
+	/* Ticket Statistics */
+	add_meta_box( 'wpas-mb-ticket-statistics', __( 'Ticket Statistics', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-statistics' ) );	
+
+	/* Time tracking statistics*/
+	add_meta_box( 'wpas-mb-ticket-time-tracking', __( 'Time Tracking', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'time-tracking-statistics' ) );	
+
+	
+	/* Additional Interested Parties */
+	add_meta_box( 'wpas-mb-ticket-addl-parties', __( 'Additional Interested Parties', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-additional-parties' ) );			
+	
 }
 
 /**
@@ -73,13 +90,13 @@ function wpas_metaboxes() {
 function wpas_metabox_callback( $post, $args ) {
 
 	if ( ! is_array( $args ) || ! isset( $args['args']['template'] ) ) {
-		_e( 'An error occurred while registering this metabox. Please contact the support.', 'awesome-support' );
+		_e( 'An error occurred while registering this metabox. Please contact support.', 'awesome-support' );
 	}
 
 	$template = $args['args']['template'];
 
 	if ( ! file_exists( WPAS_PATH . "includes/admin/metaboxes/$template.php" ) ) {
-		_e( 'An error occured while loading this metabox. Please contact the support.', 'awesome-support' );
+		_e( 'An error occured while loading this metabox. Please contact support.', 'awesome-support' );
 	}
 
 	/* Include the metabox content */

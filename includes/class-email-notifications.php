@@ -631,7 +631,7 @@ class WPAS_Email_Notification {
 				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
 				break;
 		}
-
+		
 		/**
 		 * Filter the $user variable to allow cases that aren't in the above switch
 		 *
@@ -644,6 +644,24 @@ class WPAS_Email_Notification {
 		 */
 		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id );
 
+		$recipients = $recipient_emails = array();
+		$recipients[] = $user;
+		
+		if( wpas_is_multi_agent_active() ) {
+			// We need to notify other agents
+			
+			if( $case == 'agent_reply' ) {
+				$recipients = wpas_get_ticket_agents( $this->ticket_id, array($this->get_reply()->post_author) );
+				$recipients[] = $user;
+			} elseif( $case == 'client_reply' ) {
+				$recipients = wpas_get_ticket_agents( $this->ticket_id );
+			}
+		}
+		
+		foreach( $recipients as $recipient ) {
+			$recipient_emails[] = $recipient->user_email;
+		}
+		
 		/**
 		 * Get the sender information
 		 */
@@ -693,7 +711,7 @@ class WPAS_Email_Notification {
 		 * Merge all the e-mail variables and apply the wpas_email_notifications_email filter.
 		 */
 		$email = apply_filters( 'wpas_email_notifications_email', array(
-			'recipient_email' => $user->user_email,
+			'recipient_email' => $recipient_emails,
 			'subject'         => $subject,
 			'body'            => $body,
 			'headers'         => $headers,
@@ -703,7 +721,19 @@ class WPAS_Email_Notification {
 			$this->ticket_id
 		);
 
-		$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'] );
+		// We need to send notifications separately per recipient.
+		if( is_array($email['recipient_email']) ) {
+			$mail = false;
+			foreach($email['recipient_email'] as $r_email) {
+				if( wp_mail( $r_email, $email['subject'], $email['body'], $email['headers'] ) ) {
+					$mail = true;
+				}
+			}
+		} else {
+			$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'] );
+		}
+
+		
 
 		return $mail;
 

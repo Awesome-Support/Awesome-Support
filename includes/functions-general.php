@@ -1084,3 +1084,31 @@ function wpas_array_to_data_attributes( $array, $user_funct = false ) {
 function wpas_get_the_time_timestamp() {
 	return get_the_time( 'U' );
 }
+
+/**
+ * Check if multi agent is enabled
+ * @return boolean
+ */
+function wpas_is_multi_agent_active() {
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	
+	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
+		return true;
+	}
+	
+	return false;
+}
+
+/**
+ * Check if support priority is active
+ * @return boolean
+ */
+function wpas_is_support_priority_active() {
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	
+	if ( isset( $options['support_priority'] ) && true === boolval( $options['support_priority'] ) ) {
+		return true;
+	}
+	
+	return false;
+}

@@ -684,7 +684,12 @@ class WPAS_Custom_Fields {
 				if ( true === $field['args']['core'] ) {
 					continue;
 				}
-
+				
+				/* Do not display if hide_front_end attribute is true */				
+				if ( true === $field['args']['hide_front_end'] ) {
+					continue;
+				}
+				
 				$this_field = new WPAS_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
@@ -696,6 +701,59 @@ class WPAS_Custom_Fields {
 
 	}
 
+	/**
+	 * Display the backend only custom fields in whatever metabox template it is called from
+	 *
+	 * @since 3.3.5
+	 * @return void
+	 */
+	public function show_backend_custom_form_fields() {
+
+		$fields = $this->get_custom_fields();
+
+		if ( ! empty( $fields ) ) {
+
+			foreach ( $fields as $name => $field ) {
+
+				If  ( true === $field['args']['backend_only'] ) {
+				
+					$this_field = new WPAS_Custom_Field( $name, $field );
+					$output     = $this_field->get_output();
+
+					echo $output;
+				}
+
+			}
+
+		}
+
+	}
+	
+	
+	/**
+	 * Display just a single custom field on submission form.
+	 * This can be more efficient but not sure how to do
+	 * the array search properly so ended up in an inefficient loop.
+	 *
+	 * @since 3.3.5
+	 * @return void
+	 */
+	public function display_single_field( $cffieldname ) {
+
+		$fields = $this->get_custom_fields();
+		
+		foreach ( $fields as $name => $field ) {
+
+			If ( $cffieldname === $name ) {
+				$this_field = new WPAS_Custom_Field( $name, $field );
+				$output     = $this_field->get_output();
+
+				echo $output;			
+			}
+		}		
+		
+	}	
+	
 	/**
 	 * Trigger the custom fields save function upon front-end submission of a new ticket.
 	 *
