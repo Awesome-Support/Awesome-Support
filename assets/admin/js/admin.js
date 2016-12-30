@@ -137,7 +137,11 @@
 		$('#publish').on('click', function () {
 			$('#titlediv > #titlewrap > #title').prop('required', true);
 		});
-
+                
+                // Adding color picker for priority taxonomy
+                if ( typeof $.wp.wpColorPicker === 'function' ) {
+                        $( '#term-color' ).wpColorPicker();
+                } 
 	});
 
 }(jQuery));

@@ -36,7 +36,14 @@ function wpas_system_tools() {
 		case 'ticket_attachments':
 			wpas_delete_unclaimed_attachments();
 			break;
-
+		
+		case 'reset_replies_count':
+			wpas_reset_replies_count();
+			break;
+		
+		case 'reset_channels':
+			wpas_reset_channel_terms();
+			break;
 
 	}
 
@@ -52,6 +59,52 @@ function wpas_system_tools() {
 	wp_redirect( wp_sanitize_redirect( $url ) );
 	exit;
 
+}
+
+/**
+ * Add default channels.
+ * 
+ * @return boolean
+ * 
+ */
+function wpas_reset_channel_terms() {
+	return wpas_add_default_channel_terms(true);
+}
+
+/**
+ * Reset replies count for all tickets.
+ *
+ * Gets all the existing tickets from the system
+ * and reset their replies count one by one.
+ *
+ * @return boolean
+ * 
+ */
+function wpas_reset_replies_count() {
+	$args = array(
+		'post_type'              => 'ticket',
+		'post_status'            => 'any',
+		'posts_per_page'         => -1,
+		'no_found_rows'          => true,
+		'cache_results'          => false,
+		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+	);
+
+	$query   = new WP_Query( $args );
+	$reset = false;
+	
+	if ( 0 == $query->post_count ) {
+		return false;
+	}
+
+	foreach( $query->posts as $post ) {
+		if ( wpas_count_replies( $post->ID ) && false === $reset ) {
+			$reset = true;
+		}
+	}
+
+	return $reset;
 }
 
 /**
@@ -292,23 +345,26 @@ function wpas_check_templates_override( $dir ) {
 
 }
 
-// Remove attachment folder
-function wpas_delete_unclaimed_attachments( ) {
+/**
+ * Delete unclaimed attachments
+ *
+ * @since 3.3.4
+ * @return void
+ */
+function wpas_delete_unclaimed_attachments() {
 
-	$upload = wp_get_upload_dir();
-	$attachments_root = trailingslashit($upload['basedir']) . 'awesome-support/';
+	$upload           = wp_get_upload_dir();
+	$attachments_root = trailingslashit( $upload['basedir'] ) . 'awesome-support/';
 
-	foreach(glob($attachments_root . 'ticket_*') as $folder)
-	{
-		$ticket_id = false;
-		$basename = basename($folder);
-		$post = false;
+	foreach ( glob( $attachments_root . 'ticket_*' ) as $folder ) {
 
-		if( ($x_pos = strpos($basename, '_')) !== FALSE ) {
+		$basename  = basename( $folder );
+
+		if ( ( $x_pos = strpos( $basename, '_' ) ) !== false ) {
 			$ticket_id = substr( $basename, $x_pos + 1 );
-			$post = get_post(absint($ticket_id));
+			$post      = get_post( absint( $ticket_id ) );
 
-			if(empty($post)) {
+			if ( empty( $post ) ) {
 
 				$it    = new RecursiveDirectoryIterator( $attachments_root . $basename, RecursiveDirectoryIterator::SKIP_DOTS );
 				$files = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
