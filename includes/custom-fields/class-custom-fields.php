@@ -853,6 +853,7 @@ class WPAS_Custom_Fields {
 
 			if ( 1 === $result || 2 === $result ) {
 				$saved[ $field['name'] ] = $value;
+				do_action('wpas_custom_field_updated', $field_id ,$post_id, $value);
 			}
 
 			if ( true === $field['args']['log'] && true === $allow_log ) {
