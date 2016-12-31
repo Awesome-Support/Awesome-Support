@@ -74,3 +74,22 @@ function wpas_notify_close( $ticket_id, $update, $user_id ) {
 	wpas_email_notify( $ticket_id, $case );
 
 }
+
+
+add_action('wpas_custom_field_updated', 'wpas_additional_agents_new_assignment_notify', 10, 3);
+/**
+ * Notify additional agent about new ticket assignment
+ * @param string $field_id
+ * @param int $post_id
+ * @param string $value
+ */
+function wpas_additional_agents_new_assignment_notify($field_id ,$post_id, $value) {
+	
+	if( $field_id == 'secondary_assignee' ) {
+		wpas_email_notify($post_id, 'new_ticket_assigned_secondary');
+	}
+	
+	elseif( $field_id == 'tertiary_assignee' ) {
+		wpas_email_notify($post_id, 'new_ticket_assigned_tertiary');
+	}
+}
