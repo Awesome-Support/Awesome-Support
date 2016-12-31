@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
 		
 		// Issue warning that these fields are notational only.
-		echo _e( 'Note: These fields are notational only. They do not participate in notifications nor do these agents see this ticket in their ticket lists.', 'awesome-support' );
+		echo _e( 'Note: These agents do not see this ticket in their normal ticket list. However, they are notified of normal ticket events via email.', 'awesome-support' );
 	
 		// get id for additional support agents if they are already on the ticket...
 		$secondary_staff_id = wpas_get_cf_value( 'secondary_assignee', get_the_ID() );
