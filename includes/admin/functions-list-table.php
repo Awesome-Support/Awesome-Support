@@ -55,8 +55,13 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
-	global $current_user;
-
+	global $current_user;	
+	
+	/* If current user can see all tickets do nothing */
+	if ( current_user_can( 'view_all_tickets' ) && ! current_user_can( 'administrator' ) && true === (bool) get_user_meta( (int) $current_user->ID, 'wpas_view_all_tickets', true )  ) {
+		return false;
+	}	
+	
 	// We need to update the original meta_query and not replace it to avoid filtering issues.
 	$meta_query = $query->get( 'meta_query' );
 

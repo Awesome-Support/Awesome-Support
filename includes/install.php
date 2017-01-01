@@ -101,7 +101,8 @@ function wpas_single_activate() {
 		'settings_tickets',
 		'ticket_taxonomy',
 		'create_ticket',
-		'attach_files'
+		'attach_files',
+		'view_all_tickets'
 	) );
 
 	/**
@@ -171,7 +172,7 @@ function wpas_single_activate() {
 	}
 
 	/**
-	 * Add limited capacities ot agents
+	 * Add limited capacities to agents
 	 */
 	foreach ( $agent_cap as $cap ) {
 		if ( null != $agent ) {
