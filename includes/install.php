@@ -102,7 +102,8 @@ function wpas_single_activate() {
 		'ticket_taxonomy',
 		'create_ticket',
 		'attach_files',
-		'view_all_tickets'
+		'view_all_tickets',
+		'view_unassigned_tickets'
 	) );
 
 	/**
