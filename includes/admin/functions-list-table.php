@@ -68,14 +68,40 @@ function wpas_hide_others_tickets( $query ) {
 	if ( ! is_array( $meta_query ) ) {
 		$meta_query = array_filter( (array) $meta_query );
 	}
-
-	$meta_query[] = array(
+	
+	$primary_agent_meta_query = array(
 		'key'     => '_wpas_assignee',
 		'value'   => (int) $current_user->ID,
 		'compare' => '=',
 		'type'    => 'NUMERIC',
 	);
-
+	
+	if( wpas_is_multi_agent_active() ) {
+		// Check if agent is set as secondary or tertiary agent
+		$multi_agents_meta_query = array();
+		$multi_agents_meta_query['relation'] = 'OR';
+		$multi_agents_meta_query[] = $primary_agent_meta_query;
+		
+		$multi_agents_meta_query[] = array(
+			'key'     => '_wpas_secondary_assignee',
+			'value'   => (int) $current_user->ID,
+			'compare' => '=',
+			'type'    => 'NUMERIC',
+		);
+		
+		$multi_agents_meta_query[] = array(
+			'key'     => '_wpas_tertiary_assignee',
+			'value'   => (int) $current_user->ID,
+			'compare' => '=',
+			'type'    => 'NUMERIC',
+		);
+		
+		$meta_query[] = $multi_agents_meta_query;
+		
+	} else {
+		$meta_query[] = $primary_agent_meta_query;
+	}
+	
 	$query->set( 'meta_query', $meta_query );
 
 	return true;
