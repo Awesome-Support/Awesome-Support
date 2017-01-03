@@ -82,11 +82,14 @@ function wpas_single_activate() {
 	$caps = wpas_get_user_capabilities();
 
 	// Get base roles for all custom roles.
+	$subscriber = get_role( 'subscriber' );
 	$admin      = get_role( 'administrator' );
-	$supervisor = get_role( 'editor' );
-	$manager    = get_role( 'subscriber' );
-	$agent      = get_role( 'author' );
-	$user       = get_role( 'subscriber' );
+
+	// Create the new, custom roles.
+	$supervisor = add_role( 'wpas_manager', esc_attr__( 'Support Supervisor', 'awesome-support' ), get_role( 'editor' )->capabilities );
+	$manager    = add_role( 'wpas_support_manager', esc_attr__( 'Support Manager', 'awesome-support' ), $subscriber->capabilities );
+	$agent      = add_role( 'wpas_agent', esc_attr__( 'Support Agent', 'awesome-support' ), get_role( 'author' )->capabilities );
+	$user       = add_role( 'wpas_user', esc_attr__( 'Support User', 'awesome-support' ), $subscriber->capabilities );
 
 	foreach ( $caps as $cap => $roles ) {
 
@@ -179,49 +182,6 @@ function wpas_single_activate() {
 		'reply_ticket',
 		'attach_files'
 	) );
-
-	/* Add the new roles */
-	$manager = add_role( 'wpas_manager',         __( 'Support Supervisor', 'awesome-support' ), $editor->capabilities );     // Has full capabilities for the plugin in addition to editor capabilities
-	$tech    = add_role( 'wpas_support_manager', __( 'Support Manager', 'awesome-support' ),    $subscriber->capabilities ); // Has full capabilities for the plugin only
-	$agent   = add_role( 'wpas_agent',           __( 'Support Agent', 'awesome-support' ),      $author->capabilities );     // Has limited capabilities for the plugin in addition to author's capabilities
-	$client  = add_role( 'wpas_user',            __( 'Support User', 'awesome-support' ),       $subscriber->capabilities ); // Has posting & replying capapbilities for the plugin in addition to subscriber's capabilities
-
-	/**
-	 * Add full capacities to admin roles
-	 */
-	foreach ( $full_cap as $cap ) {
-
-		// Add all the capacities to admin in addition to full WP capacities
-		if ( null != $admin )
-			$admin->add_cap( $cap );
-
-		// Add full plugin capacities to manager in addition to the editor capacities
-		if ( null != $manager )
-			$manager->add_cap( $cap );
-
-		// Add full plugin capacities only to technical manager
-		if ( null != $tech )
-			$tech->add_cap( $cap );
-
-	}
-
-	/**
-	 * Add limited capacities to agents
-	 */
-	foreach ( $agent_cap as $cap ) {
-		if ( null != $agent ) {
-			$agent->add_cap( $cap );
-		}
-	}
-
-	/**
-	 * Add limited capacities to users
-	 */
-	foreach ( $client_cap as $cap ) {
-		if ( null != $client ) {
-			$client->add_cap( $cap );
-		}
-	}
 
 	add_option( 'wpas_options', serialize( get_settings_defaults() ) );
 	add_option( 'wpas_setup', 'pending' );
