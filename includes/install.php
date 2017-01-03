@@ -74,8 +74,63 @@ function wpas_activate_new_site( $blog_id ) {
  * Fired for each blog when the plugin is activated.
  *
  * @since    1.0.0
+ * @return void
  */
 function wpas_single_activate() {
+
+	/**
+	 * Plugin capabilities.
+	 *
+	 * The new user capabilities are added differently (as of 3.4.0).
+	 * Instead of duplicating the caps to assign for each user, thus increasing the risk of error,
+	 * all caps are listed in one array and the various roles are assigned to each cap.
+	 *
+	 * The available roles are (from highest privileges to lowest). For clarity, each role was assigned a numeric value for use in the loop hereafter.
+	 *
+	 * - Admin (as in WordPress admin) (0)
+	 * - Supervisor (1)
+	 * - Manager (2)
+	 * - Agent (3)
+	 * - User (4)
+	 *
+	 * @var array $caps
+	 */
+	$caps = apply_filters( 'wpas_user_capabilities', array(
+		// Misc.
+		'view_all_tickets'    => array(),
+		'attach_files'        => array(),
+		'assign_ticket'       => array(),
+		// Own Tickets.
+		'add_own_ticket'      => array(),
+		'edit_own_ticket'     => array(),
+		'view_own_ticket'     => array(),
+		'close_own_ticket'    => array(),
+		'delete_own_ticket'   => array(),
+		// Other Tickets.
+		'add_other_ticket'    => array(),
+		'edit_other_ticket'   => array(),
+		'view_other_ticket'   => array(),
+		'close_other_ticket'  => array(),
+		'delete_other_ticket' => array(),
+		// Tags.
+		'add_ticket_tag'      => array(),
+		'edit_ticket_tag'     => array(),
+		'delete_ticket_tag'   => array(),
+		// Replies.
+		'reply_own_ticket'    => array(),
+		'reply_other_ticket'  => array(),
+		// Products.
+		'add_product'         => array(),
+		'edit_product'        => array(),
+		'delete_product'      => array(),
+		// Departments.
+		'add_department'      => array(),
+		'edit_department'     => array(),
+		'delete_department'   => array(),
+		// Settings.
+		'edit_settings'       => array(),
+		'use_tools'           => array(),
+	) );
 
 	/**
 	 * Full list of capabilities.
