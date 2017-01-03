@@ -381,8 +381,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @since 3.3.5
 		 * @return void
 		 */
-		public
-		function maybe_instantiate_session() {
+		public function maybe_instantiate_session() {
 			if ( wpas_is_plugin_page() ) {
 				self::$instance->session = new WPAS_Session();
 			}
