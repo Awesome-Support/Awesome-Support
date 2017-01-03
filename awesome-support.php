@@ -371,14 +371,18 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		/**
 		 * (Maybe) instantiate the session
 		 *
-		 * Awesome Support uses WP Session Manager to handle sessions, However, the library sends a set_cookie header every time it is being instantiated. This means that, for users with a backend caching system like Varnish, the session manager will prevent page caching on the site if the session manager is instantiated everywhere.
+		 * Awesome Support uses WP Session Manager to handle sessions, However, the library sends a set_cookie header every
+		 * time it is being instantiated. This means that, for users with a backend caching system like Varnish, the session
+		 * manager will prevent page caching on the site if the session manager is instantiated everywhere.
 		 *
-		 * To fix the problem, we need to load the session manager on the plugin pages only. However, wpas_is_plugin_page() can't be used too early as it partially relies on url_to_postid() that's being loaded on init.
+		 * To fix the problem, we need to load the session manager on the plugin pages only. However, wpas_is_plugin_page()
+		 * can't be used too early as it partially relies on url_to_postid() that's being loaded on init.
 		 *
 		 * @since 3.3.5
 		 * @return void
 		 */
-		public function maybe_instantiate_session() {
+		public
+		function maybe_instantiate_session() {
 			if ( wpas_is_plugin_page() ) {
 				self::$instance->session = new WPAS_Session();
 			}
