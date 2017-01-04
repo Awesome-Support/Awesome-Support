@@ -1097,11 +1097,13 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
  * The available roles are (from highest privileges to lowest). For clarity, each role was assigned a numeric value for
  * use in the loop hereafter.
  *
- * - Admin (as in WordPress admin) (0)
- * - Supervisor (1)
- * - Manager (2)
- * - Agent (3)
- * - User (4)
+ * - Admin (as in WordPress admin) (1)
+ * - Supervisor (2)
+ * - Manager (3)
+ * - Agent (4)
+ * - User (5)
+ *
+ * NOTE: The integer 0 means "all roles"
  *
  * For backward compatibility, the list of capabilities contains a temporary `map` key that contains the equivalent
  * capability from previous versions of Awesome Support.
@@ -1112,43 +1114,43 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
 function wpas_get_user_capabilities() {
 	return apply_filters( 'wpas_user_capabilities', array(
 		// Misc.
-		'view_all_tickets'          => array(),
-		'attach_files'              => array(),
-		'assign_ticket'             => array(),
+		'view_all_tickets'          => array( 1, 2 ),
+		'attach_files'              => array( 0 ),
+		'assign_ticket'             => array( 1, 2, 3, 4 ),
 		// Own Tickets.
-		'add_own_ticket'            => array( 'map' => 'create_ticket' ),
-		'edit_own_ticket'           => array( 'map' => 'edit_ticket' ),
-		'view_own_ticket'           => array( 'map' => 'view_ticket' ),
-		'close_own_ticket'          => array( 'map' => 'close_ticket' ),
-		'delete_own_ticket'         => array( 'map' => 'delete_ticket' ),
+		'add_own_ticket'            => array( 0, 'map' => 'create_ticket' ),
+		'edit_own_ticket'           => array( 0, 'map' => 'edit_ticket' ),
+		'view_own_ticket'           => array( 0, 'map' => 'view_ticket' ),
+		'close_own_ticket'          => array( 0, 'map' => 'close_ticket' ),
+		'delete_own_ticket'         => array( 1, 2, 3, 'map' => 'delete_ticket' ),
 		// Other Tickets.
-		'add_other_ticket'          => array(),
-		'edit_other_ticket'         => array(),
-		'view_other_ticket'         => array(),
-		'close_other_ticket'        => array(),
-		'delete_other_ticket'       => array(),
+		'add_other_ticket'          => array( 1, 2, 3 ),
+		'edit_other_ticket'         => array( 1, 2 ),
+		'view_other_ticket'         => array( 1, 2, 3, 4 ),
+		'close_other_ticket'        => array( 1, 2, 3, 4 ),
+		'delete_other_ticket'       => array( 1 ),
 		// Tags.
-		'add_ticket_tag'            => array( 'map' => 'ticket_taxonomy' ),
-		'edit_ticket_tag'           => array(),
-		'delete_ticket_tag'         => array(),
+		'add_ticket_tag'            => array( 1, 2, 3, 4, 'map' => 'ticket_taxonomy' ),
+		'edit_ticket_tag'           => array( 1, 2 ),
+		'delete_ticket_tag'         => array( 1, 2 ),
 		// Replies.
-		'reply_own_ticket'          => array( 'map' => 'reply_ticket' ),
-		'edit_own_reply'            => array(),
+		'reply_own_ticket'          => array( 0, 'map' => 'reply_ticket' ),
+		'edit_own_reply'            => array( 1, 2, 3, 4 ),
 		'delete_own_reply'          => array( 'map' => 'delete_reply' ),
-		'reply_other_ticket'        => array(),
-		'edit_other_reply'          => array(),
-		'delete_other_reply'        => array(),
+		'reply_other_ticket'        => array( 1, 2, 3, 4 ),
+		'edit_other_reply'          => array( 1, 2, 3 ),
+		'delete_other_reply'        => array( 1 ),
 		// Products.
-		'add_support_product'       => array(),
-		'edit_support_product'      => array(),
-		'delete_support_product'    => array(),
+		'add_support_product'       => array( 1, 2, 3 ),
+		'edit_support_product'      => array( 1, 2 ),
+		'delete_support_product'    => array( 1 ),
 		// Departments.
-		'add_support_department'    => array(),
-		'edit_support_department'   => array(),
-		'delete_support_department' => array(),
+		'add_support_department'    => array( 1 ),
+		'edit_support_department'   => array( 1 ),
+		'delete_support_department' => array( 1 ),
 		// Settings.
-		'edit_support_settings'     => array( 'map' => array( 'settings_tickets' ) ),
-		'use_support_tools'         => array(),
-		'manage_support_license'    => array(),
+		'edit_support_settings'     => array( 1, 'map' => array( 'settings_tickets' ) ),
+		'use_support_tools'         => array( 1 ),
+		'manage_support_license'    => array( 1 ),
 	) );
 }
