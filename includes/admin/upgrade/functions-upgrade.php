@@ -83,3 +83,30 @@ function wpas_upgrade_333() {
 	wpas_update_option( 'email_template_header', get_settings_defaults( 'email_template_header' ), true );
 	wpas_update_option( 'email_template_footer', get_settings_defaults( 'email_template_footer' ), true );
 }
+
+/**
+ * Map the old capabilities to the new ones.
+ *
+ * This function maps the old, deprecated capabilities to the new ones replacing them. Only the deprecated capabilities
+ * are mapped here.
+ *
+ * @since 3.4.0
+ * @return array
+ */
+function wpas_map_old_new_caps() {
+
+	$caps = wpas_get_user_capabilities();
+	$old  = array();
+
+	foreach ( $caps as $cap => $roles ) {
+
+		if ( array_key_exists( 'map', $roles ) ) {
+			if ( ! array_key_exists( $roles['map'], $old ) ) {
+				$old[ $roles['map'] ] = $cap;
+			}
+		}
+	}
+
+	return $old;
+
+}
