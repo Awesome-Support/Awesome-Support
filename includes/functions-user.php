@@ -1103,6 +1103,9 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
  * - Agent (3)
  * - User (4)
  *
+ * For backward compatibility, the list of capabilities contains a temporary `map` key that contains the equivalent
+ * capability from previous versions of Awesome Support.
+ *
  * @since 3.4.0
  * @return array
  */
@@ -1113,11 +1116,11 @@ function wpas_get_user_capabilities() {
 		'attach_files'              => array(),
 		'assign_ticket'             => array(),
 		// Own Tickets.
-		'add_own_ticket'            => array(),
-		'edit_own_ticket'           => array(),
-		'view_own_ticket'           => array(),
-		'close_own_ticket'          => array(),
-		'delete_own_ticket'         => array(),
+		'add_own_ticket'            => array( 'map' => 'create_ticket' ),
+		'edit_own_ticket'           => array( 'map' => 'edit_ticket' ),
+		'view_own_ticket'           => array( 'map' => 'view_ticket' ),
+		'close_own_ticket'          => array( 'map' => 'close_ticket' ),
+		'delete_own_ticket'         => array( 'map' => 'delete_ticket' ),
 		// Other Tickets.
 		'add_other_ticket'          => array(),
 		'edit_other_ticket'         => array(),
@@ -1125,12 +1128,16 @@ function wpas_get_user_capabilities() {
 		'close_other_ticket'        => array(),
 		'delete_other_ticket'       => array(),
 		// Tags.
-		'add_ticket_tag'            => array(),
+		'add_ticket_tag'            => array( 'map' => 'ticket_taxonomy' ),
 		'edit_ticket_tag'           => array(),
 		'delete_ticket_tag'         => array(),
 		// Replies.
-		'reply_own_ticket'          => array(),
+		'reply_own_ticket'          => array( 'map' => 'reply_ticket' ),
+		'edit_own_reply'            => array(),
+		'delete_own_reply'          => array( 'map' => 'delete_reply' ),
 		'reply_other_ticket'        => array(),
+		'edit_other_reply'          => array(),
+		'delete_other_reply'        => array(),
 		// Products.
 		'add_support_product'       => array(),
 		'edit_support_product'      => array(),
@@ -1140,7 +1147,7 @@ function wpas_get_user_capabilities() {
 		'edit_support_department'   => array(),
 		'delete_support_department' => array(),
 		// Settings.
-		'edit_support_settings'     => array(),
+		'edit_support_settings'     => array( 'map' => array( 'settings_tickets' ) ),
 		'use_support_tools'         => array(),
 		'manage_support_license'    => array(),
 	) );
