@@ -1109,38 +1109,39 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
 function wpas_get_user_capabilities() {
 	return apply_filters( 'wpas_user_capabilities', array(
 		// Misc.
-		'view_all_tickets'    => array(),
-		'attach_files'        => array(),
-		'assign_ticket'       => array(),
+		'view_all_tickets'          => array(),
+		'attach_files'              => array(),
+		'assign_ticket'             => array(),
 		// Own Tickets.
-		'add_own_ticket'      => array(),
-		'edit_own_ticket'     => array(),
-		'view_own_ticket'     => array(),
-		'close_own_ticket'    => array(),
-		'delete_own_ticket'   => array(),
+		'add_own_ticket'            => array(),
+		'edit_own_ticket'           => array(),
+		'view_own_ticket'           => array(),
+		'close_own_ticket'          => array(),
+		'delete_own_ticket'         => array(),
 		// Other Tickets.
-		'add_other_ticket'    => array(),
-		'edit_other_ticket'   => array(),
-		'view_other_ticket'   => array(),
-		'close_other_ticket'  => array(),
-		'delete_other_ticket' => array(),
+		'add_other_ticket'          => array(),
+		'edit_other_ticket'         => array(),
+		'view_other_ticket'         => array(),
+		'close_other_ticket'        => array(),
+		'delete_other_ticket'       => array(),
 		// Tags.
-		'add_ticket_tag'      => array(),
-		'edit_ticket_tag'     => array(),
-		'delete_ticket_tag'   => array(),
+		'add_ticket_tag'            => array(),
+		'edit_ticket_tag'           => array(),
+		'delete_ticket_tag'         => array(),
 		// Replies.
-		'reply_own_ticket'    => array(),
-		'reply_other_ticket'  => array(),
+		'reply_own_ticket'          => array(),
+		'reply_other_ticket'        => array(),
 		// Products.
-		'add_product'         => array(),
-		'edit_product'        => array(),
-		'delete_product'      => array(),
+		'add_support_product'       => array(),
+		'edit_support_product'      => array(),
+		'delete_support_product'    => array(),
 		// Departments.
-		'add_department'      => array(),
-		'edit_department'     => array(),
-		'delete_department'   => array(),
+		'add_support_department'    => array(),
+		'edit_support_department'   => array(),
+		'delete_support_department' => array(),
 		// Settings.
-		'edit_settings'       => array(),
-		'use_tools'           => array(),
+		'edit_support_settings'     => array(),
+		'use_support_tools'         => array(),
+		'manage_support_license'    => array(),
 	) );
 }
