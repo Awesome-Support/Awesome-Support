@@ -143,4 +143,16 @@ class WPAS_Test_Functions_User extends WP_UnitTestCase {
 
 	}
 
+	function test_wpas_get_user_capabilities() {
+
+		// Get the list of capabilities.
+		$caps = wpas_get_user_capabilities();
+
+		// Check if $caps is an array.
+		$this->assertInternalType( 'array', $caps );
+
+		// Make sure we have at least the base number of caps in here.
+		$this->assertGreaterThanOrEqual( 31, count( $caps ) );
+	}
+
 }
