@@ -85,6 +85,28 @@ function wpas_upgrade_333() {
 }
 
 /**
+ * Upgrade routine for AS 3.4.0
+ *
+ * @since 3.4.0
+ * @return void
+ */
+function wpas_upgrade_340() {
+
+	$deprecated_caps = array(
+		'view_private_ticket',
+		'edit_private_ticket',
+		'delete_private_ticket',
+	);
+
+	// 1. Get mapped capabilities
+	// 2. Get deprecated caps
+	// 3. Loop through the roles
+	// 4. Delete deprecated caps
+	// 5. Update caps that need to be
+	// 6. Add the new capabilities to the appropriate roles
+}
+
+/**
  * Map the old capabilities to the new ones.
  *
  * This function maps the old, deprecated capabilities to the new ones replacing them. Only the deprecated capabilities
