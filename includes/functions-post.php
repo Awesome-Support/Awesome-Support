@@ -313,38 +313,30 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		wpas_set_ticket_slug($ticket_id);
 	}
 	
-	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
-	If (! empty( $channel_term ) && ( ! $update ) ) {
-		$arr_the_term_id = term_exists( $channel_term, 'ticket_channel' );
-		If ( $arr_the_term_id ) {
-				
-			// Need to get array keys first so we can index and extract the first element in the wp_set_object_terms below.
-			$arr_the_term_id_keys = array_keys($arr_the_term_id);  
-			$int_the_term_id = (int) $arr_the_term_id[ $arr_the_term_id_keys[0] ];
-
-			// Now add the terms (this function call doesn't work consistently for some reason!)
-			$term_taxonomy_ids = wp_set_object_terms( $ticket_id, (int) $int_the_term_id , 'ticket_channel' );
-			
-		}
-	}
-	
 	/* Set the ticket as open. */
 	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
 
 	if ( false === $agent_id ) {
 		$agent_id = wpas_find_agent( $ticket_id );
 	}
-
+				
+	
 	/**
 	 * Fire wpas_open_ticket_before_assigned after the post is successfully submitted but before it has been assigned to an agent.
 	 *
 	 * @since 3.2.6
 	 */
-	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data );
-
+	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data );	
+	
 	/* Assign an agent to the ticket */
 	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
+	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
+	/* Need to update it here because some of the action hooks fired above will overwrite the term.			  */
+	If (! empty( $channel_term ) && ( ! $update ) ) {
+		wpas_set_ticket_channel( $ticket_id , $channel_term );
+	}	
+	
 	/**
 	 * Fire wpas_after_open_ticket just after the post is successfully submitted and assigned.
 	 */
@@ -353,6 +345,35 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	return $ticket_id;
 
 }
+
+/**
+ * Set the channel (ticket source) term/field
+ *
+ * @since 3.4.0
+ *
+ * @param numeric		$ticket_id
+ * @param string		$channel_term
+ *
+ * @return void
+ */
+ function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other' ) {
+
+	/*  get the term id because wp_set_object_terms require an id instead of just a string */
+	$arr_the_term_id = term_exists( $channel_term, 'ticket_channel' );
+
+	If ( $arr_the_term_id ) {
+			
+		// Need to get array keys first so we can index and extract the first element in the wp_set_object_terms below.
+		$arr_the_term_id_keys = array_keys($arr_the_term_id);  
+		$int_the_term_id = (int) $arr_the_term_id[ $arr_the_term_id_keys[0] ];
+
+		// Now add the terms (this function call doesn't work consistently for some reason!)
+		$term_taxonomy_ids = wp_set_object_terms( $ticket_id, (int) $int_the_term_id , 'ticket_channel' );
+
+	} 
+	
+	return;
+ }
 
 /**
  * Set ticket slug on new tickets if the admin chooses anything other than the default slug.
