@@ -272,10 +272,13 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 */
 	$data = apply_filters( 'wpas_open_ticket_data', $data );
 
+	/**
+	* Sanitize the slug
+	*/
 	if ( isset( $data['post_name'] ) && !empty( $data['post_name'] ) ) {
 		$data['post_name'] = sanitize_text_field( $data['post_name'] );
 	}
-
+	
 	/**
 	 * Fire wpas_before_open_ticket just before the post is actually
 	 * inserted in the database.
@@ -301,6 +304,11 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 
 	}
 
+	/**
+	* Change the slug to the postid if that's the option the admin set in the TICKETS->SETTINGS->Advanced tab.  
+	*/	
+	wpas_set_ticket_slug($ticket_id);
+	
 	/* Set the ticket as open. */
 	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
 
@@ -327,6 +335,68 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 
 }
 
+/**
+ * Set ticket slug on new tickets if the admin chooses anything other than the default slug.
+ *
+ * @since 3.4.0
+ *
+ * @param numeric		$ticket_id
+ *
+ * @return void
+ */
+ function wpas_set_ticket_slug( $ticket_id = -1 ) {
+ 	$use_ticket_id_for_slug = wpas_get_option('ticket_topic_slug');  
+
+	/* Set ticket slug to the post id / ticket id */
+	If ( isset( $use_ticket_id_for_slug ) &&  ('ticketid' == $use_ticket_id_for_slug ) ) {
+		
+		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID */
+		/* returned from the wp_insert_post call above  											 */
+		$newdata = array(
+				'ID'			=> $ticket_id,
+				'post_name'		=> (string) $ticket_id
+		);
+		
+		/* Update the post with the new slug */
+		wp_update_post ($newdata);
+	} 	
+	
+	/* Set ticket slug to a random number  */
+	If ( isset( $use_ticket_id_for_slug ) &&  ('randomnumber' == $use_ticket_id_for_slug ) ) {
+		
+		/*Calculate a random number */
+		$randomslug = mt_rand();
+		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID */
+		/* returned from the wp_insert_post call above  											 */
+		$newdata = array(
+				'ID'			=> $ticket_id,
+				'post_name'		=> (string) $randomslug
+		);
+		
+		/* Update the post with the new slug */
+		wp_update_post ($newdata);
+	} 		
+
+	/* Set ticket slug to a GUID  */
+	If ( isset( $use_ticket_id_for_slug ) &&  ('guid' == $use_ticket_id_for_slug ) ) {
+		
+		/*Calculate a guid */
+		$randomguid = wpas_create_pseudo_guid();
+		
+		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID */
+		/* returned from the wp_insert_post call above  											 */
+		$newdata = array(
+				'ID'			=> $ticket_id,
+				'post_name'		=> $randomguid
+		);
+		
+		/* Update the post with the new slug */
+		wp_update_post ($newdata);
+	} 		
+	
+	return void;
+}
+ 
 /**
  * Get tickets.
  *

@@ -33,7 +33,15 @@ function wpas_core_settings_advanced( $def ) {
 					'type'    => 'checkbox',
 					'desc'    => __( 'Agents can see all tickets in the tickets list. If unchecked agents will only see tickets assigned to them.', 'awesome-support' ),
 					'default' => false
-				),
+				),				
+				array(
+					'name'    => __( 'Ticket Topic Slug', 'awesome-support' ),
+					'id'      => 'ticket_topic_slug',
+					'type'    => 'radio',
+					'desc'    => __( 'What to use for the indivdual ticket slug.  The default is the ticket topic transformed into a slug.', 'awesome-support' ),					
+					'options' => array( 'default' => __( 'Default', 'awesome-support' ), 'ticketid' => __( 'Ticket ID', 'awesome-support' ), 'randomnumber' => __( 'Random Number', 'awesome-support' ), 'guid' => __( 'GUID', 'awesome-support' )   ),
+					'default' => 'ASC'
+				),								
 				array(
 					'name' => __( 'Danger Zone', 'awesome-support' ),
 					'type' => 'heading',
