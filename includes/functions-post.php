@@ -394,7 +394,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		wp_update_post ($newdata);
 	} 		
 	
-	return void;
+	return ;
 }
  
 /**
