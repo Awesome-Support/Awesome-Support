@@ -133,7 +133,7 @@ function wpas_open_ticket( $data ) {
 		'comment_status' => 'closed',
 	) );
 
-	return wpas_insert_ticket( $post, false, false );
+	return wpas_insert_ticket( $post, false, false, 'standard-ticket-form' );
 	
 }
 
@@ -206,13 +206,14 @@ function wpas_new_ticket_submission( $data ) {
  * This function is a wrapper function for wp_insert_post
  * with additional checks specific to the ticketing system
  *
- * @param array    $data     Ticket (post) data
- * @param bool|int $post_id  Post ID for an update
- * @param bool|int $agent_id ID of the agent to assign ticket to
+ * @param array    $data     		Ticket (post) data
+ * @param bool|int $post_id  		Post ID for an update
+ * @param bool|int $agent_id		ID of the agent to assign ticket to
+ * @param string   $channel_term	Source of the ticket
  *
  * @return bool|int|WP_Error
  */
-function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false ) {
+function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false, $channel_term = 'other' ) {
 
 	// First of all we want to set the ticket author so that we can check if (s)he is allowed to open a ticket or not.
 	if ( empty( $data['post_author'] ) ) {
@@ -306,8 +307,26 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 
 	/**
 	* Change the slug to the postid if that's the option the admin set in the TICKETS->SETTINGS->Advanced tab.  
+	* Note that we only do this if $update is false signifying a new ticket!
 	*/	
-	wpas_set_ticket_slug($ticket_id);
+	If ( ! $update ) {
+		wpas_set_ticket_slug($ticket_id);
+	}
+	
+	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
+	If (! empty( $channel_term ) && ( ! $update ) ) {
+		$arr_the_term_id = term_exists( $channel_term, 'ticket_channel' );
+		If ( $arr_the_term_id ) {
+				
+			// Need to get array keys first so we can index and extract the first element in the wp_set_object_terms below.
+			$arr_the_term_id_keys = array_keys($arr_the_term_id);  
+			$int_the_term_id = (int) $arr_the_term_id[ $arr_the_term_id_keys[0] ];
+
+			// Now add the terms (this function call doesn't work consistently for some reason!)
+			$term_taxonomy_ids = wp_set_object_terms( $ticket_id, (int) $int_the_term_id , 'ticket_channel' );
+			
+		}
+	}
 	
 	/* Set the ticket as open. */
 	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
@@ -350,8 +369,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	/* Set ticket slug to the post id / ticket id */
 	If ( isset( $use_ticket_id_for_slug ) &&  ('ticketid' == $use_ticket_id_for_slug ) ) {
 		
-		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID */
-		/* returned from the wp_insert_post call above  											 */
+		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
 		$newdata = array(
 				'ID'			=> $ticket_id,
 				'post_name'		=> (string) $ticket_id
@@ -366,8 +384,8 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		
 		/*Calculate a random number */
 		$randomslug = mt_rand();
-		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID */
-		/* returned from the wp_insert_post call above  											 */
+
+		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
 		$newdata = array(
 				'ID'			=> $ticket_id,
 				'post_name'		=> (string) $randomslug
@@ -383,8 +401,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		/*Calculate a guid */
 		$randomguid = wpas_create_pseudo_guid();
 		
-		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID */
-		/* returned from the wp_insert_post call above  											 */
+		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
 		$newdata = array(
 				'ID'			=> $ticket_id,
 				'post_name'		=> $randomguid
