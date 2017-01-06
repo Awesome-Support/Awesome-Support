@@ -74,8 +74,9 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 
 		wpas_do_field( 'login', $redirect_to );
 		wpas_make_button( __( 'Log in' ), array( 'onsubmit' => __( 'Logging In...', 'awesome-support' ) ) );
-		printf( '<a href="%1$s" class="wpas-forgot-password-link">%2$s</a>', wp_lostpassword_url( wpas_get_tickets_list_page_url() ), esc_html__( 'Forgot password?', 'awesome-support' ) ); ?>
+		printf( '<a href="%1$s" class="wpas-forgot-password-link">%2$s</a>', wp_lostpassword_url( wpas_get_tickets_list_page_url() ), esc_html( __( 'Forgot password?', 'awesome-support' ) ) ); ?>
 	</form>
+	
 	<?php
 	if ( 'allow' === $registration ): ?>
 
