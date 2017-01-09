@@ -214,6 +214,9 @@ function wpas_new_ticket_submission( $data ) {
  * @return bool|int|WP_Error
  */
 function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false, $channel_term = 'other' ) {
+	
+	// Save the original data array
+	$incoming_data = $data ;
 
 	// First of all we want to set the ticket author so that we can check if (s)he is allowed to open a ticket or not.
 	if ( empty( $data['post_author'] ) ) {
@@ -267,24 +270,26 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	}
 
 	/**
-	 * Filter the data right before inserting it in the post.
-	 * 
-	 * @var array
-	 */
-	$data = apply_filters( 'wpas_open_ticket_data', $data );
-
-	/**
 	* Sanitize the slug
 	*/
 	if ( isset( $data['post_name'] ) && !empty( $data['post_name'] ) ) {
 		$data['post_name'] = sanitize_text_field( $data['post_name'] );
 	}
+
+	/**
+	 * Filter the data right before inserting it in the post.
+	 * 
+	 * @var array
+	 */
+	$data = apply_filters( 'wpas_open_ticket_data', $data, $incoming_data );
+	
 	
 	/**
 	 * Fire wpas_before_open_ticket just before the post is actually
 	 * inserted in the database.
 	 */
-	do_action( 'wpas_open_ticket_before', $data, $post_id );
+	do_action( 'wpas_open_ticket_before', $data, $post_id, $incoming_data );
+	
 
 	/**
 	 * Insert the post in database using the regular WordPress wp_insert_post
@@ -293,13 +298,13 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 * @var boolean
 	 */
 	$ticket_id = wp_insert_post( $data, false );
-
+	
 	if ( false === $ticket_id ) {
 
 		/**
 		 * Fire wpas_open_ticket_failed if the ticket couldn't be inserted.
 		 */
-		do_action( 'wpas_open_ticket_failed', $data, $post_id );
+		do_action( 'wpas_open_ticket_failed', $data, $post_id, $incoming_data );
 
 		return false;
 
@@ -312,7 +317,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	If ( ! $update ) {
 		wpas_set_ticket_slug($ticket_id);
 	}
-	
+
 	/* Set the ticket as open. */
 	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
 
@@ -326,7 +331,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 *
 	 * @since 3.2.6
 	 */
-	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data );	
+	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data, $incoming_data );	
 	
 	/* Assign an agent to the ticket */
 	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
