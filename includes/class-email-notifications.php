@@ -440,7 +440,6 @@ class WPAS_Email_Notification {
 					$tag['value'] = $this->ticket_id === $this->post_id ? $this->get_ticket()->post_content : $this->get_reply()->post_content;
 					break;
 
-
 			}
 
 			array_push( $new, $tag );

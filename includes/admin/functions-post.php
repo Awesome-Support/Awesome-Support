@@ -254,7 +254,7 @@ function wpas_save_ticket( $post_id ) {
 	if ( ! empty( $log ) ) {
 		wpas_log( $post_id, $log );
 	}
-
+	
 	/* If this was a ticket update, we need to know where to go now... */
 	if ( '' !== $original_status ) {
 
