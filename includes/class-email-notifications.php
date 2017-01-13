@@ -437,16 +437,7 @@ class WPAS_Email_Notification {
 					break;
 
 				case 'message':
-                    
-                    
-                    
-                    
-                    
 					$tag['value'] = $this->ticket_id === $this->post_id ? $this->get_ticket()->post_content : $this->get_reply()->post_content;
-                    
-                    //echo $this->get_ticket()->post_content;
-                    //echo $tag['value'];
-                    //pr($this);
 					break;
 
 
