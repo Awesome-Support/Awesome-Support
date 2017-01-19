@@ -173,7 +173,7 @@ function wpas_single_activate() {
 			$tech->add_cap( $cap );
 
 	}
-
+	
 	/**
 	 * Add limited capacities to agents
 	 */
