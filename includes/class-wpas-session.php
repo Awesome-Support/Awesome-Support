@@ -50,7 +50,7 @@ class WPAS_Session {
 	 * @return void
 	 */
 	public function init() {
-		$this->session = WP_Session::get_instance();
+		$this->session = WPAS_WP_Session::get_instance();
 	}
 
 	/**

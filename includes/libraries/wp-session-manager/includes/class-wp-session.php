@@ -13,10 +13,14 @@
 /**
  * WordPress Session class for managing user session data.
  *
+ * WPAS_WP_Session is a simple by-product of Eric Mann's WP Session Manager with minor changes for adaptation to
+ * Awesome Support.
+ *
+ * @link    https://github.com/ericmann/wp-session-manager
  * @package WordPress
  * @since   3.7.0
  */
-final class WP_Session extends Recursive_ArrayAccess {
+final class WPAS_WP_Session extends Recursive_ArrayAccess {
 	/**
 	 * ID of the current session.
 	 *
@@ -41,7 +45,7 @@ final class WP_Session extends Recursive_ArrayAccess {
 	/**
 	 * Singleton instance.
 	 *
-	 * @var bool|WP_Session
+	 * @var bool|WPAS_WP_Session
 	 */
 	private static $instance = false;
 
@@ -50,7 +54,7 @@ final class WP_Session extends Recursive_ArrayAccess {
 	 *
 	 * @param bool $session_id Session ID from which to populate data.
 	 *
-	 * @return bool|WP_Session
+	 * @return bool|WPAS_WP_Session
 	 */
 	public static function get_instance() {
 		if ( ! self::$instance ) {

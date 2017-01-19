@@ -29,7 +29,7 @@ if ( defined( 'WP_CLI' ) && WP_CLI ) {
 }
 
 // Only include the functionality if it's not pre-defined.
-if ( ! class_exists( 'WP_Session' ) ) {
+if ( ! class_exists( 'WPAS_WP_Session' ) ) {
 	include 'includes/class-wp-session.php';
 	include 'includes/wp-session.php';
 }
