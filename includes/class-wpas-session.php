@@ -36,7 +36,7 @@ class WPAS_Session {
 			define( 'WP_SESSION_COOKIE', '_wpas_session' );
 		}
 
-		require_once( WPAS_PATH . 'vendor/ericmann/wp-session-manager/wp-session-manager.php' );
+		require_once( WPAS_PATH . 'includes/libraries/wp-session-manager/wp-session-manager.php' );
 
 		// Instantiate the session
 		$this->init();

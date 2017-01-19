@@ -4,27 +4,9 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e793d8b6df006318f94b9330006f6ba6",
-    "content-hash": "a32da19a175b18342f98d104ea23ff53",
+    "hash": "596e007c04cea1c247e91e901f69ff2f",
+    "content-hash": "683135994a76a5c56fe44e713547d4e0",
     "packages": [
-        {
-            "name": "ericmann/wp-session-manager",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ericmann/wp-session-manager.git",
-                "reference": "c446c85909206345d875297d8691396e0ba624a3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/c446c85909206345d875297d8691396e0ba624a3",
-                "reference": "c446c85909206345d875297d8691396e0ba624a3",
-                "shasum": ""
-            },
-            "type": "wordpress-plugin",
-            "notification-url": "https://packagist.org/downloads/",
-            "time": "2015-05-25 00:38:47"
-        },
         {
             "name": "gambitph/titan-framework",
             "version": "1.9.2",
@@ -72,9 +54,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "ericmann/wp-session-manager": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
