@@ -191,6 +191,12 @@ function wpas_single_activate() {
 			$client->add_cap( $cap );
 		}
 	}
+	
+	// Now, remove the "view_all_tickets" capability from admin.
+	// We need to do this because this capability will override the
+	// settings for administrators in TICKETS->SETTINGS->ADVANCED.
+	// We don't want to do that!
+	$admin->remove_cap('view_all_tickets');
 
 	add_option( 'wpas_options', serialize( get_settings_defaults() ) );
 	add_option( 'wpas_setup', 'pending' );
