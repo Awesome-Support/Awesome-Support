@@ -1,9 +1,9 @@
 <?php
 /**
  * @package   Awesome Support/Install
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
+ * @link      https://getawesomesupport.com
  * @copyright 2015 ThemeAvenue
  */
 
@@ -25,26 +25,7 @@ register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
  */
 function wpas_install( $network_wide ) {
 
-	if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
-		if ( $network_wide ) {
-
-			// Get all blog ids
-			$blog_ids = wpas_get_blog_ids();
-
-			foreach ( $blog_ids as $blog_id ) {
-
-				switch_to_blog( $blog_id );
-				wpas_single_activate();
-			}
-
-			restore_current_blog();
-
-		} else {
-			wpas_single_activate();
-		}
-
-	} else {
+	if ( ! function_exists( 'is_multisite' ) || function_exists( 'is_multisite' ) && ! is_multisite() ) {
 		wpas_single_activate();
 	}
 
