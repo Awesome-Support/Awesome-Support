@@ -312,11 +312,11 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{ticket_link}',
-				'desc' 	=> __( 'Displays a link to public ticket', 'awesome-support' )
+				'desc' 	=> __( 'Displays a link to the ticket', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_url}',
-				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link link) to public ticket', 'awesome-support' )
+				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link) to the ticket', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_admin_link}',
