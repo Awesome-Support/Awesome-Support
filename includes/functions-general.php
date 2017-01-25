@@ -593,8 +593,7 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	$options = '';
 
 	foreach ( $tickets as $ticket ) {
-		$is_selected = isset( $args['selected'] ) &&  $ticket->ID === $args['selected'] ? true : false;
-		$options .= "<option value='$ticket->ID'".( $is_selected ? ' selected="selected"' : '' ).">$ticket->post_title</option>";
+		$options .= "<option value='$ticket->ID' " . selected( $args['selected'], $ticket->ID ) . ">$ticket->post_title</option>";
 	}
 
 	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
