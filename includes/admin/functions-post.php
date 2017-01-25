@@ -260,14 +260,29 @@ function wpas_save_ticket( $post_id ) {
 
 		$gt_post = null;
 		
-		/* Go back to the tickets list */
-		if ( ( isset( $_POST['wpas_back_to_list'] ) && true === boolval( $_POST['wpas_back_to_list'] ) ) || ( isset( $_POST['where_after'] ) && 'back_to_list' === $_POST['where_after'] ) ) {
-			$_SESSION['wpas_redirect'] = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
-		} 
-		elseif (  isset( $_POST['where_after'] ) && 'next_ticket' === $_POST['where_after']  ) {
-			$gt_post = wpas_get_next_ticket( $post_id );
-		} elseif (  isset( $_POST['where_after'] ) && 'previous_ticket' === $_POST['where_after']  ) {
-			$gt_post = wpas_get_previous_ticket( $post_id );
+		$where_after = filter_input( INPUT_POST, 'where_after' );
+		$back_to_list = filter_input( INPUT_POST, 'wpas_back_to_list' );
+		
+		if ( true === boolval( $back_to_list ) ) {
+			$where_after = 'back_to_list';
+		}
+		
+		
+		switch ( $where_after ) {
+			
+			/* Go back to the tickets list */
+			case "back_to_list":
+				$_SESSION['wpas_redirect'] = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
+				break;
+			
+			case "next_ticket":
+				$gt_post = wpas_get_next_ticket( $post_id );
+				break;
+			
+			case "previous_ticket":
+				$gt_post = wpas_get_previous_ticket( $post_id );
+				break;
+			
 		}
 		
 		/* Go to next or previous ticket */
