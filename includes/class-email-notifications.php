@@ -184,6 +184,8 @@ class WPAS_Email_Notification {
 		$cases = array(
 			'submission_confirmation',
 			'new_ticket_assigned',
+			'new_ticket_assigned_secondary',
+			'new_ticket_assigned_tertiary',
 			'agent_reply',
 			'client_reply',
 			'ticket_closed',
@@ -203,12 +205,14 @@ class WPAS_Email_Notification {
 	 */
 	private function cases_active_option() {
 
-		$cases                            = $this->get_cases();
-		$cases['submission_confirmation'] = 'enable_confirmation';
-		$cases['new_ticket_assigned']     = 'enable_assignment';
-		$cases['agent_reply']             = 'enable_reply_agent';
-		$cases['client_reply']            = 'enable_reply_client';
-		$cases['ticket_closed']           = 'enable_closed';
+		$cases					= $this->get_cases();
+		$cases['submission_confirmation']	= 'enable_confirmation';
+		$cases['new_ticket_assigned']		= 'enable_assignment';
+		$cases['new_ticket_assigned_secondary'] = 'multiple_agents_per_ticket';
+		$cases['new_ticket_assigned_tertiary']	= 'multiple_agents_per_ticket';
+		$cases['agent_reply']			= 'enable_reply_agent';
+		$cases['client_reply']			= 'enable_reply_client';
+		$cases['ticket_closed']			= 'enable_closed';
 
 		return apply_filters( 'wpas_email_notifications_cases_active_option', $cases );
 	}
@@ -308,11 +312,11 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{ticket_link}',
-				'desc' 	=> __( 'Displays a link to public ticket', 'awesome-support' )
+				'desc' 	=> __( 'Displays a link to the ticket', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_url}',
-				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link link) to public ticket', 'awesome-support' )
+				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link) to the ticket', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_admin_link}',
@@ -436,7 +440,6 @@ class WPAS_Email_Notification {
 					$tag['value'] = $this->ticket_id === $this->post_id ? $this->get_ticket()->post_content : $this->get_reply()->post_content;
 					break;
 
-
 			}
 
 			array_push( $new, $tag );
@@ -502,6 +505,8 @@ class WPAS_Email_Notification {
 				break;
 
 			case 'new_ticket_assigned':
+			case 'new_ticket_assigned_secondary':
+			case 'new_ticket_assigned_tertiary':
 				$value = wpas_get_option( "{$part}_assignment", "" );
 				break;
 
@@ -629,6 +634,12 @@ class WPAS_Email_Notification {
 			case 'client_reply':
 			case 'ticket_closed_client':
 				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
+				break;
+			case 'new_ticket_assigned_secondary':
+				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_secondary_assignee', true ) ) );
+				break;
+			case 'new_ticket_assigned_tertiary':
+				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_tertiary_assignee', true ) ) );
 				break;
 		}
 		

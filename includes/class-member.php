@@ -193,8 +193,12 @@ class WPAS_Member {
 		$this->caps = array();
 
 		foreach ( (array) $this->roles as $role ) {
+			
 			$the_role   = $wp_roles->get_role( $role );
-			$this->caps = array_merge( (array) $this->caps, (array) $the_role->capabilities );
+			
+			If ( ! empty ( $the_role->capabilities ) ) {
+				$this->caps = array_merge( (array) $this->caps, (array) $the_role->capabilities );
+			}
 		}
 
 	}

@@ -66,7 +66,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Hide Closed', 'awesome-support' ),
 					'id'      => 'hide_closed',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Only show open tickets when clicking the "All Tickets" link.', 'awesome-support' ),
+					'desc'    => __( 'Only show open tickets when agents click the "All Tickets" link.', 'awesome-support' ),
 					'default' => true
 				),
 				array(

@@ -593,7 +593,7 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	$options = '';
 
 	foreach ( $tickets as $ticket ) {
-		$options .= "<option value='$ticket->ID'>$ticket->post_title</option>";
+		$options .= "<option value='$ticket->ID' " . selected( $args['selected'], $ticket->ID ) . ">$ticket->post_title</option>";
 	}
 
 	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
@@ -1112,3 +1112,13 @@ function wpas_is_support_priority_active() {
 	
 	return false;
 }
+
+/**
+ * Create a pseduo GUID
+ *
+ * @return string
+ */
+ function wpas_create_pseudo_guid(){
+	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+ }
+ 

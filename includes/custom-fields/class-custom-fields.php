@@ -428,12 +428,18 @@
 				 */
 				$field_form_id = "wpas_$field_id";
 
+
 				/* Process core fields differently. */
 				if ( true === $field[ 'args' ][ 'core' ] ) {
 
 					if ( isset( $data[ $field_form_id ] ) ) {
 						$this->save_core_field( $post_id, $field, $data[ $field_form_id ] );
 					}
+
+			if ( 1 === $result || 2 === $result ) {
+				$saved[ $field['name'] ] = $value;
+				do_action('wpas_custom_field_updated', $field_id ,$post_id, $value);
+			}
 
 					continue;
 				}

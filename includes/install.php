@@ -1,9 +1,9 @@
 <?php
 /**
  * @package   Awesome Support/Install
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
+ * @link      https://getawesomesupport.com
  * @copyright 2015 ThemeAvenue
  */
 
@@ -25,26 +25,7 @@ register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
  */
 function wpas_install( $network_wide ) {
 
-	if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
-		if ( $network_wide ) {
-
-			// Get all blog ids
-			$blog_ids = wpas_get_blog_ids();
-
-			foreach ( $blog_ids as $blog_id ) {
-
-				switch_to_blog( $blog_id );
-				wpas_single_activate();
-			}
-
-			restore_current_blog();
-
-		} else {
-			wpas_single_activate();
-		}
-
-	} else {
+	if ( ! function_exists( 'is_multisite' ) || function_exists( 'is_multisite' ) && ! is_multisite() ) {
 		wpas_single_activate();
 	}
 
@@ -101,7 +82,11 @@ function wpas_single_activate() {
 		'settings_tickets',
 		'ticket_taxonomy',
 		'create_ticket',
-		'attach_files'
+		'attach_files',
+		'view_all_tickets',
+		'view_unassigned_tickets',
+		'manage_licenses_for_awesome_support',
+		'administer_awesome_support'
 	) );
 
 	/**
@@ -169,9 +154,9 @@ function wpas_single_activate() {
 			$tech->add_cap( $cap );
 
 	}
-
+	
 	/**
-	 * Add limited capacities ot agents
+	 * Add limited capacities to agents
 	 */
 	foreach ( $agent_cap as $cap ) {
 		if ( null != $agent ) {
@@ -187,6 +172,12 @@ function wpas_single_activate() {
 			$client->add_cap( $cap );
 		}
 	}
+	
+	// Now, remove the "view_all_tickets" capability from admin.
+	// We need to do this because this capability will override the
+	// settings for administrators in TICKETS->SETTINGS->ADVANCED.
+	// We don't want to do that!
+	$admin->remove_cap('view_all_tickets');
 
 	add_option( 'wpas_options', serialize( get_settings_defaults() ) );
 	add_option( 'wpas_setup', 'pending' );
