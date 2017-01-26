@@ -254,40 +254,41 @@ function wpas_save_ticket( $post_id ) {
 	if ( ! empty( $log ) ) {
 		wpas_log( $post_id, $log );
 	}
-	
+
 	/* If this was a ticket update, we need to know where to go now... */
 	if ( '' !== $original_status ) {
 
-		$gt_post = null;
-		
-		$where_after = filter_input( INPUT_POST, 'where_after' );
-		$back_to_list = filter_input( INPUT_POST, 'wpas_back_to_list' );
-		
-		if ( true === boolval( $back_to_list ) ) {
+		$gt_post      = null;
+		$where_after  = filter_input( INPUT_POST, 'where_after', FILTER_SANITIZE_STRING );
+		$back_to_list = filter_input( INPUT_POST, 'wpas_back_to_list', FILTER_SANITIZE_NUMBER_INT );
+
+		if ( true === (bool) $back_to_list ) {
 			$where_after = 'back_to_list';
 		}
-		
-		
+
 		switch ( $where_after ) {
-			
+
 			/* Go back to the tickets list */
-			case "back_to_list":
-				$_SESSION['wpas_redirect'] = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
+			case 'back_to_list':
+				WPAS()->session->add( 'redirect', add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) ) );
 				break;
-			
-			case "next_ticket":
+
+			case 'next_ticket':
 				$gt_post = wpas_get_next_ticket( $post_id );
 				break;
-			
-			case "previous_ticket":
+
+			case 'previous_ticket':
 				$gt_post = wpas_get_previous_ticket( $post_id );
 				break;
-			
+
 		}
-		
+
 		/* Go to next or previous ticket */
-		if( $gt_post ) {
-			$_SESSION['wpas_redirect'] = add_query_arg( array( 'post' => $gt_post, 'action' => 'edit' ), admin_url( 'post.php' ) );
+		if ( $gt_post ) {
+			WPAS()->session->add( 'redirect', add_query_arg( array(
+				'post'   => $gt_post,
+				'action' => 'edit',
+			), admin_url( 'post.php' ) ) );
 		}
 	}
 
@@ -371,28 +372,35 @@ function wpas_delete_ticket_dependencies( $post_id ) {
 }
 
 
-add_filter( 'redirect_post_location',  'redirect_ticket_after_save', 10, 2 );
+add_filter( 'redirect_post_location', 'wpas_redirect_ticket_after_save', 10, 2 );
 
 /**
  * Redirect user after updating ticket
- * @param string $location
- * @param int $post_id
+ *
+ * @param string $location The redirect URL.
+ * @param int    $post_id  ID of the post being saved.
+ *
  * @return string
  */
-function redirect_ticket_after_save( $location, $post_id ) {
-	if( is_admin() ) {
-		
+function wpas_redirect_ticket_after_save( $location, $post_id ) {
+	if ( is_admin() ) {
+
 		$post = get_post( $post_id );
 
-		if( $post && 'ticket' === $post->post_type ) {
-			if(isset($_SESSION['wpas_redirect']) && !empty($_SESSION['wpas_redirect'])) {
-				$location = $_SESSION['wpas_redirect'];
-				unset($_SESSION['wpas_redirect']);
+		if ( $post && 'ticket' === $post->post_type ) {
+
+			// Get the redirect location.
+			$redirect = WPAS()->session->get( 'redirect' );
+
+			if ( false !== $redirect && filter_var( $redirect, FILTER_VALIDATE_URL ) !== false ) {
+				$location = $redirect;
+				WPAS()->session->clean( 'redirect' );
 			}
 		}
 	}
-	
+
 	return $location;
+
 }
 
 /**
@@ -403,7 +411,7 @@ function redirect_ticket_after_save( $location, $post_id ) {
  */
 function wpas_get_next_ticket( $current_ticket ) {
 	
-	return get_adjacent_ticket( $current_ticket );
+	return wpas_get_adjacent_ticket( $current_ticket );
 	
 }
 
@@ -415,7 +423,7 @@ function wpas_get_next_ticket( $current_ticket ) {
  */
 function wpas_get_previous_ticket( $current_ticket ) {
 	
-	return get_adjacent_ticket( $current_ticket, false );
+	return wpas_get_adjacent_ticket( $current_ticket, false );
 	
 }
 
@@ -429,7 +437,7 @@ function wpas_get_previous_ticket( $current_ticket ) {
  * 
  * @return int
  */
-function get_adjacent_ticket( $ticket_id , $next = true ) {
+function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
 	
 	global $wpdb, $current_user;
 
