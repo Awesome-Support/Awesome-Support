@@ -1,4 +1,26 @@
 <?php
+
+	/**
+
+	 * Possibly keep status active regardless of state.
+	 * Sort by age (no filter needed)
+	 * Sort and filter on ticket number
+	 * Color code the priority column
+	 * When Both open and Closed tickets are shown use a different "look" for each type. (Read vs unread a-la email)
+	 * Sort and filter by "created by"
+	 * Note at bottom about sorting not showing null values.
+	 * Clear filters
+	 * Remove columns based on whether they are turned on or not in the settings (dept, product, priority,
+	- Respect "see all" flag
+	- Might require new wpas_user_can("seealltickets") function.
+	- Does this still all work if the flag for "Smart ordering" is turned on in the agent profile?
+
+	- Filter by whether or not the ticket is waiting for a reply by agent (no sorting needed)
+
+	 * NOTE: Please be aware that when you sort on a column, tickets that have never had a value entered into that column will not appear on your sorted list (null fields). This can reduce the number of tickets in your sorted list. This is by design. You should also be aware that deliberately entering a blank into a ticket field is considered data so those tickets will show up in your sort.
+	 *
+	 */
+
 /**
  * Submission Form Functions.
  *
@@ -150,11 +172,22 @@ add_action( 'init', 'wpas_register_core_fields' );
  */
 function wpas_register_core_fields() {
 
+	/** Determine if assignee column is shown in tickets list */
+	$show_assignee = current_user_can( 'administrator' )
+		&& true === boolval( wpas_get_option( 'admin_see_all' ) )
+		|| current_user_can( 'edit_ticket' )
+		&& !current_user_can( 'administrator' )
+		&& true === boolval( wpas_get_option( 'agent_see_all' ) )
+		? true : false;
+
 	wpas_add_custom_field( 'assignee', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => true,
-		'title'       => __( 'Support Staff', 'awesome-support' )
+		'core'              => true,
+		'show_column'       => $show_assignee,
+		'sortable_column'   => $show_assignee,
+		'filterable'        => $show_assignee,
+		'column_callback'   => 'wpas_show_assignee_column',
+		'log'               => true,
+		'title'             => __( 'Agent', 'awesome-support' )
 	) );
 
 	wpas_add_custom_field( 'status', array(
@@ -162,6 +195,7 @@ function wpas_register_core_fields() {
 		'show_column'     => true,
 		'log'             => false,
 		'field_type'      => false,
+		'sortable_column' => true,
 		'column_callback' => 'wpas_cf_display_status',
 		'save_callback'   => null
 	) );
@@ -171,8 +205,10 @@ function wpas_register_core_fields() {
 		'show_column'           => true,
 		'log'                   => true,
 		'field_type'            => 'taxonomy',
-		'taxo_std'              => true,
-		'column_callback'       => 'wpas_cf_display_status',
+		'sortable_column'       => true,
+		'taxo_std'              => false,
+//		'column_callback'       => 'wpas_cf_display_status',
+		'column_callback'       => 'wpas_show_taxonomy_column',
 		'save_callback'         => null,
 		'label'                 => __( 'Tag', 'awesome-support' ),
 		'name'                  => __( 'Tag', 'awesome-support' ),
@@ -207,6 +243,8 @@ function wpas_register_core_fields() {
 			'name'                  => $labels['name'],
 			'label_plural'          => $labels['label_plural'],
 			'taxo_hierarchical'     => true,
+			'sortable_column'       => true,
+			'filterable'            => false,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false
@@ -237,6 +275,8 @@ function wpas_register_core_fields() {
 			'name'                  => $labels['name'],
 			'label_plural'          => $labels['label_plural'],
 			'taxo_hierarchical'     => true,
+			'sortable_column'       => true,
+			'filterable'            => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false
@@ -284,13 +324,15 @@ function wpas_register_core_fields() {
 			'log'                   => true,
 			'field_type'            => 'taxonomy',
 			'taxo_std'              => false,
-			'column_callback'       => 'wpas_show_taxonomy_column',
+			//'column_callback'       => 'wpas_show_taxonomy_column',
+			'column_callback'       => 'wpas_cf_display_priority',
 			'label'                 => $labels['label'],
 			'name'                  => $labels['name'],
 			'label_plural'          => $labels['label_plural'],
 			'taxo_hierarchical'     => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
+			'sortable_column'       => true,
 			'select2'               => false,
 			'filterable'			=> true,
 			'required'				=> $show_priority_required 
@@ -325,8 +367,9 @@ function wpas_register_core_fields() {
 		'taxo_hierarchical'     => true,
 		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 		'rewrite'               => array( 'slug' => $slug ),
+		'sortable_column'       => $show_channel_column_in_list,
 		'select2'               => false,
-		'filterable'			=> true,
+		'filterable'			=> $show_channel_column_in_list,
 		'default'				=> 'standard ticket form'
 	) );	
 	
@@ -357,14 +400,12 @@ function wpas_register_core_fields() {
 		'log'         => false,
 		'title'       => __( 'Number of Replies By Agent', 'awesome-support' )
 	) );
-	
 	wpas_add_custom_field( 'ttl_replies_by_customer', array(
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
 		'title'       => __( 'Number of Replies By Customer', 'awesome-support' )
 	) );
-
 	wpas_add_custom_field( 'ttl_replies', array(
 		'core'        => true,
 		'show_column' => false,
@@ -378,15 +419,13 @@ function wpas_register_core_fields() {
 		'show_column' => false,
 		'log'         => false,
 		'title'       => __( 'Time Spent on Ticket', 'awesome-support' )
-	) );	
-	
+	) );
 	wpas_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
 		'core'        => true,
 		'show_column' => false,		
 		'log'         => false,
 		'title'       => __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
-	) );		
-	
+	) );
 	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
 		'core'        		=> true,
 		'show_column' 		=> false,
@@ -422,6 +461,12 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,		
 		'log'         		=> false,
 		'title'       		=> __( 'Additional Interested Party Email (#2)', 'awesome-support' )
-	) );		
+	) );
+
+	/* Trigger backend custom ticket list columns */
+	if( is_admin() ) {
+		apply_filters( 'wpas_add_custom_fields', array() );
+	}
 	
 }
+

@@ -754,6 +754,30 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 }
 
 /**
+	 * Display assignee.
+	 *
+	 * This function is used to display an assignee by display name.
+	 *
+	 * @since  3.1.3
+	 *
+	 * @param  string  $field     ID of the field to display
+	 * @param  integer $post_id   ID of the current post
+	 *
+	 * @return void
+	 */
+function wpas_show_assignee_column( $field, $post_id ) {
+
+	$assignee = (int) get_post_meta( $post_id, '_wpas_assignee', true );
+	$agent    = get_user_by( 'id', $assignee );
+	$link     = add_query_arg( array( 'post_type' => 'ticket', 'assignee' => $assignee ), admin_url( 'edit.php' ) );
+
+	if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
+		echo "<a href='$link'>{$agent->data->display_name}</a>";
+	}
+
+}
+
+	/**
  * Display the post status.
  *
  * Gets the ticket status and formats it according to the plugin settings.
@@ -768,17 +792,24 @@ function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
  */
 function wpas_cf_display_status( $name, $post_id ) {
 
+    global $pagenow;
+
 	$status = wpas_get_ticket_status( $post_id );
 
-	if ( 'closed' === $status ) {
+	$post          = get_post( $post_id );
+	$post_status   = $post->post_status;
+	$custom_status = wpas_get_post_status();
+
+	if ( 'closed' === $status && ( 'post-new.php' == $pagenow || 'post.php' == $pagenow || 'edit.php' == $pagenow ) ) {
 		$label = __( 'Closed', 'awesome-support' );
 		$color = wpas_get_option( "color_$status", '#dd3333' );
-		$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
-	} else {
+		$tag = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 
-		$post          = get_post( $post_id );
-		$post_status   = $post->post_status;
-		$custom_status = wpas_get_post_status();
+		if ('edit.php' == $pagenow ) {
+            $tag .= '<br/>' . $custom_status[ $post_status ];
+        }
+
+	}  else {
 
 		if ( ! array_key_exists( $post_status, $custom_status ) ) {
 			$label = __( 'Open', 'awesome-support' );
@@ -808,6 +839,40 @@ function wpas_cf_display_status( $name, $post_id ) {
 	echo $tag;
 
 }
+
+	/**
+	 * Display the ticket priority.
+	 *
+	 * Gets the ticket priority and formats it according to the plugin settings.
+	 *
+	 * @since  3.3.4
+	 *
+	 * @param string   $name    Field / column name. This parameter is important as it is automatically passed by some
+	 *                          filters
+	 * @param  integer $post_id ID of the post being processed
+	 *
+	 * @return string           Formatted ticket priority
+	 */
+	function wpas_cf_display_priority( $name, $post_id ) {
+
+		global $pagenow;
+
+		$terms = array();
+
+		if ( ! $terms = get_the_terms( $post_id, $name ) ) {
+		    return;
+		}
+
+		$term = array_shift( $terms ); // Will get first term, and remove it from $terms array
+
+		$label = __( $term->name, 'awesome-support' );
+		$color = get_term_meta( $term->term_id, 'color', true );
+		$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+
+		echo $tag;
+
+	}
+
 
 /**
  * Get the notification wrapper markup
