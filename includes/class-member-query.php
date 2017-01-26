@@ -378,7 +378,11 @@ class WPAS_Member_Query {
 			$operator     = empty( $search_query ) ? 'OR' : $this->search['relation'];
 
 			foreach ( $this->search['fields'] as $field ) {
-				$search_query[] = "{$wpdb->users}.{$field} LIKE '%{$this->search['query']}%'";
+				if( 'ID' === $field ) {
+					$search_query[] = "CAST({$wpdb->users}.{$field} AS CHAR) LIKE '%{$this->search['query']}%'";
+				} else {
+					$search_query[] = "{$wpdb->users}.{$field} LIKE '%{$this->search['query']}%'";
+				}
 			}
 
 			$search_query = implode( " $operator ", $search_query );
