@@ -258,11 +258,37 @@ function wpas_save_ticket( $post_id ) {
 	/* If this was a ticket update, we need to know where to go now... */
 	if ( '' !== $original_status ) {
 
-		/* Go back to the tickets list */
-		if ( isset( $_POST['wpas_back_to_list'] ) && true === boolval( $_POST['wpas_back_to_list'] ) || isset( $_POST['where_after'] ) && 'back_to_list' === $_POST['where_after'] ) {
-			$_SESSION['wpas_redirect'] = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
+		$gt_post = null;
+		
+		$where_after = filter_input( INPUT_POST, 'where_after' );
+		$back_to_list = filter_input( INPUT_POST, 'wpas_back_to_list' );
+		
+		if ( true === boolval( $back_to_list ) ) {
+			$where_after = 'back_to_list';
 		}
-
+		
+		
+		switch ( $where_after ) {
+			
+			/* Go back to the tickets list */
+			case "back_to_list":
+				$_SESSION['wpas_redirect'] = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
+				break;
+			
+			case "next_ticket":
+				$gt_post = wpas_get_next_ticket( $post_id );
+				break;
+			
+			case "previous_ticket":
+				$gt_post = wpas_get_previous_ticket( $post_id );
+				break;
+			
+		}
+		
+		/* Go to next or previous ticket */
+		if( $gt_post ) {
+			$_SESSION['wpas_redirect'] = add_query_arg( array( 'post' => $gt_post, 'action' => 'edit' ), admin_url( 'post.php' ) );
+		}
 	}
 
 }
@@ -342,4 +368,134 @@ function wpas_delete_ticket_dependencies( $post_id ) {
 	$agent    = new WPAS_Member_Agent( $agent_id );
 	$agent->ticket_minus();
 
+}
+
+
+add_filter( 'redirect_post_location',  'redirect_ticket_after_save', 10, 2 );
+
+/**
+ * Redirect user after updating ticket
+ * @param string $location
+ * @param int $post_id
+ * @return string
+ */
+function redirect_ticket_after_save( $location, $post_id ) {
+	if( is_admin() ) {
+		
+		$post = get_post( $post_id );
+
+		if( $post && 'ticket' === $post->post_type ) {
+			if(isset($_SESSION['wpas_redirect']) && !empty($_SESSION['wpas_redirect'])) {
+				$location = $_SESSION['wpas_redirect'];
+				unset($_SESSION['wpas_redirect']);
+			}
+		}
+	}
+	
+	return $location;
+}
+
+/**
+ * Get next id
+ * @param int $current_ticket
+ * 
+ * @return int
+ */
+function wpas_get_next_ticket( $current_ticket ) {
+	
+	return get_adjacent_ticket( $current_ticket );
+	
+}
+
+/**
+ * Get previous id
+ * @param int $current_ticket
+ * 
+ * @return int
+ */
+function wpas_get_previous_ticket( $current_ticket ) {
+	
+	return get_adjacent_ticket( $current_ticket, false );
+	
+}
+
+
+/**
+ * 
+ * @global object $wpdb
+ * @global object $current_user
+ * @param int $ticket_id
+ * @param boolean $next
+ * 
+ * @return int
+ */
+function get_adjacent_ticket( $ticket_id , $next = true ) {
+	
+	global $wpdb, $current_user;
+
+	/* Make sure this is the admin screen */
+	if ( ! is_admin() ) {
+		return false;
+	}
+	
+	if ( true === $next ) {
+		$adjacent = '>';
+		$order_type = 'ASC';
+	} else {
+		$adjacent = '<';
+		$order_type = 'DESC';
+	}
+	
+	
+	$query_args = array();
+	$current_user_can_see_all = false;
+	
+	
+	$query = "SELECT ID FROM {$wpdb->posts} p";
+	
+	
+	/* If admins can see all tickets do nothing */
+	if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
+		$current_user_can_see_all = true;
+	}
+
+	/* If agents can see all tickets do nothing */
+	if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
+		$current_user_can_see_all = true;
+	}
+
+	
+	/* If current user can see all tickets do nothing */
+	if ( current_user_can( 'view_all_tickets' ) && ! current_user_can( 'administrator' ) && true === (bool) get_user_meta( (int) $current_user->ID, 'wpas_view_all_tickets', true )  ) {
+		$current_user_can_see_all = true;
+	}
+	
+	
+	if ( false === $current_user_can_see_all ) {
+		$query .= " INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key IN(%s, %s, %s) AND meta_value=%s";
+		$query_args = array( '_wpas_assignee', '_wpas_secondary_assignee', '_wpas_tertiary_assignee', $current_user->ID );
+	}
+	
+	$query .= " WHERE p.post_type = %s AND p.ID {$adjacent} %d";
+	$query_args[] = 'ticket';
+	$query_args[] = $ticket_id;
+	$query_args[] = 'open';
+	
+	
+	$custom_post_status = wpas_get_post_status();
+	
+	$post_status_query_ar = array_fill(0, count($custom_post_status), "p.post_status=%s");
+	$query .= " AND (" . implode(' OR ', $post_status_query_ar) . ")";
+	
+	
+	foreach($custom_post_status as $status => $label) {
+		$query_args[] = $status;
+	}
+	$query .= " GROUP BY p.ID ORDER BY p.ID {$order_type} LIMIT 1";
+	
+	$query = call_user_func_array( array( $wpdb, 'prepare' ), array_merge( array( $query ), $query_args ) );
+	$adjacent_post_id = $wpdb->get_var( $query );
+	
+	return $adjacent_post_id;
+	
 }
