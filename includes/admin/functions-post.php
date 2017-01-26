@@ -372,17 +372,17 @@ function wpas_delete_ticket_dependencies( $post_id ) {
 }
 
 
-add_filter( 'redirect_post_location', 'redirect_ticket_after_save', 10, 2 );
+add_filter( 'redirect_post_location', 'wpas_redirect_ticket_after_save', 10, 2 );
 
 /**
  * Redirect user after updating ticket
  *
- * @param string $location
- * @param int    $post_id
+ * @param string $location The redirect URL.
+ * @param int    $post_id  ID of the post being saved.
  *
  * @return string
  */
-function redirect_ticket_after_save( $location, $post_id ) {
+function wpas_redirect_ticket_after_save( $location, $post_id ) {
 	if ( is_admin() ) {
 
 		$post = get_post( $post_id );
@@ -411,7 +411,7 @@ function redirect_ticket_after_save( $location, $post_id ) {
  */
 function wpas_get_next_ticket( $current_ticket ) {
 	
-	return get_adjacent_ticket( $current_ticket );
+	return wpas_get_adjacent_ticket( $current_ticket );
 	
 }
 
@@ -423,7 +423,7 @@ function wpas_get_next_ticket( $current_ticket ) {
  */
 function wpas_get_previous_ticket( $current_ticket ) {
 	
-	return get_adjacent_ticket( $current_ticket, false );
+	return wpas_get_adjacent_ticket( $current_ticket, false );
 	
 }
 
@@ -437,7 +437,7 @@ function wpas_get_previous_ticket( $current_ticket ) {
  * 
  * @return int
  */
-function get_adjacent_ticket( $ticket_id , $next = true ) {
+function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
 	
 	global $wpdb, $current_user;
 
