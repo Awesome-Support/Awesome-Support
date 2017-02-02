@@ -150,11 +150,22 @@ add_action( 'init', 'wpas_register_core_fields' );
  */
 function wpas_register_core_fields() {
 
+	/** Determine if assignee column is shown in tickets list */
+	$show_assignee = current_user_can( 'administrator' )
+	&& true === boolval( wpas_get_option( 'admin_see_all' ) )
+	|| current_user_can( 'edit_ticket' )
+	&& !current_user_can( 'administrator' )
+	&& true === boolval( wpas_get_option( 'agent_see_all' ) )
+		? true : false;
+
 	wpas_add_custom_field( 'assignee', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => true,
-		'title'       => __( 'Support Staff', 'awesome-support' )
+		'core'            => true,
+		'show_column'     => $show_assignee,
+		'sortable_column' => $show_assignee,
+		'filterable'      => $show_assignee,
+		'column_callback' => 'wpas_show_assignee_column',
+		'log'             => true,
+		'title'           => __( 'Agent', 'awesome-support' )
 	) );
 
 	wpas_add_custom_field( 'status', array(
@@ -162,6 +173,7 @@ function wpas_register_core_fields() {
 		'show_column'     => true,
 		'log'             => false,
 		'field_type'      => false,
+		'sortable_column' => true,
 		'column_callback' => 'wpas_cf_display_status',
 		'save_callback'   => null
 	) );
@@ -171,8 +183,10 @@ function wpas_register_core_fields() {
 		'show_column'           => true,
 		'log'                   => true,
 		'field_type'            => 'taxonomy',
-		'taxo_std'              => true,
-		'column_callback'       => 'wpas_cf_display_status',
+		'sortable_column'       => true,
+		'taxo_std'              => false,
+//		'column_callback'       => 'wpas_cf_display_status',
+		'column_callback'       => 'wpas_show_taxonomy_column',
 		'save_callback'         => null,
 		'label'                 => __( 'Tag', 'awesome-support' ),
 		'name'                  => __( 'Tag', 'awesome-support' ),
@@ -184,7 +198,7 @@ function wpas_register_core_fields() {
 
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
 
-	if ( isset( $options['support_products'] ) && true === boolval( $options['support_products'] ) ) {
+	if ( isset( $options[ 'support_products' ] ) && true === boolval( $options[ 'support_products' ] ) ) {
 
 		$slug = defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : 'product';
 
@@ -203,10 +217,12 @@ function wpas_register_core_fields() {
 			'field_type'            => 'taxonomy',
 			'taxo_std'              => false,
 			'column_callback'       => 'wpas_show_taxonomy_column',
-			'label'                 => $labels['label'],
-			'name'                  => $labels['name'],
-			'label_plural'          => $labels['label_plural'],
+			'label'                 => $labels[ 'label' ],
+			'name'                  => $labels[ 'name' ],
+			'label_plural'          => $labels[ 'label_plural' ],
 			'taxo_hierarchical'     => true,
+			'sortable_column'       => true,
+			'filterable'            => false,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false
@@ -215,16 +231,16 @@ function wpas_register_core_fields() {
 	}
 
 	/* Add Department fields */
-	if ( isset( $options['departments'] ) && true === boolval( $options['departments'] ) ) {
+	if ( isset( $options[ 'departments' ] ) && true === boolval( $options[ 'departments' ] ) ) {
 
 		$slug = defined( 'WPAS_DEPARTMENT_SLUG' ) ? WPAS_DEPARTMENT_SLUG : 'department';
 
 		/* Filter the taxonomy labels */
 		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
-				'label'        => __( 'Department', 'awesome-support' ),
-				'name'         => __( 'Department', 'awesome-support' ),
-				'label_plural' => __( 'Departments', 'awesome-support' )
-			)		);
+			'label'        => __( 'Department', 'awesome-support' ),
+			'name'         => __( 'Department', 'awesome-support' ),
+			'label_plural' => __( 'Departments', 'awesome-support' )
+		) );
 
 		wpas_add_custom_field( 'department', array(
 			'core'                  => false,
@@ -233,10 +249,12 @@ function wpas_register_core_fields() {
 			'field_type'            => 'taxonomy',
 			'taxo_std'              => false,
 			'column_callback'       => 'wpas_show_taxonomy_column',
-			'label'                 => $labels['label'],
-			'name'                  => $labels['name'],
-			'label_plural'          => $labels['label_plural'],
+			'label'                 => $labels[ 'label' ],
+			'name'                  => $labels[ 'name' ],
+			'label_plural'          => $labels[ 'label_plural' ],
 			'taxo_hierarchical'     => true,
+			'sortable_column'       => true,
+			'filterable'            => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false
@@ -245,28 +263,28 @@ function wpas_register_core_fields() {
 	}
 
 	/* Add priority fields */
-	if ( isset( $options['support_priority'] ) && true === boolval( $options['support_priority'] ) ) {
+	if ( isset( $options[ 'support_priority' ] ) && true === boolval( $options[ 'support_priority' ] ) ) {
 
 		$slug = defined( 'WPAS_PRIORITY_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_priority';
-		
-		$show_priority_column_in_list 	= false ;
-		$show_priority_column_in_list 	= ( isset( $options['support_priority_show_in_ticket_list'] ) && true === boolval( $options['support_priority_show_in_ticket_list'] ) );
-		
-		$show_priority_required 		= false ;  
-		$show_priority_required 		= ( isset( $options['support_priority_mandatory'] ) && true === boolval( $options['support_priority_mandatory'] ) );
-		
-		$show_priority_on_front_end 	= false;
-		$show_priority_on_front_end 	= ( isset( $options['support_priority_show_fe'] ) && true === boolval( $options['support_priority_show_fe'] ) );
-		
+
+		$show_priority_column_in_list = false;
+		$show_priority_column_in_list = ( isset( $options[ 'support_priority_show_in_ticket_list' ] ) && true === boolval( $options[ 'support_priority_show_in_ticket_list' ] ) );
+
+		$show_priority_required = false;
+		$show_priority_required = ( isset( $options[ 'support_priority_mandatory' ] ) && true === boolval( $options[ 'support_priority_mandatory' ] ) );
+
+		$show_priority_on_front_end = false;
+		$show_priority_on_front_end = ( isset( $options[ 'support_priority_show_fe' ] ) && true === boolval( $options[ 'support_priority_show_fe' ] ) );
+
 		/* Now, depending on if the user specifies whether to show the field on the front end or not, we'll set a flag for the back-end only attribute of the custom field. */
 		/* This way the field always show up in the back-end.  It will show up as an admin only field if the user elects not to turn it on for the front end. Otherwise		*/
 		/* if turned on for the front-end it will show up in the regular custom fields metabox.																				*/
-		$show_priority_on_back_end_only = false ;
+		$show_priority_on_back_end_only = false;
 		if ( false === $show_priority_on_front_end ) {
-			
-			$show_priority_on_back_end_only =  true ;
+
+			$show_priority_on_back_end_only = true;
 		}
-		
+
 
 		/* Filter the taxonomy labels */
 		$labels = apply_filters( 'wpas_priority_taxonomy_labels', array(
@@ -279,28 +297,29 @@ function wpas_register_core_fields() {
 		wpas_add_custom_field( 'ticket_priority', array(
 			'core'                  => false,
 			'show_column'           => $show_priority_column_in_list,
-			'hide_front_end'		=> ! $show_priority_on_front_end,  //inverse of what the user specificed in settings because of how this attribute works...
-			'backend_only'			=> $show_priority_on_back_end_only,					
+			'hide_front_end'        => !$show_priority_on_front_end,  //inverse of what the user specificed in settings because of how this attribute works...
+			'backend_only'          => $show_priority_on_back_end_only,
 			'log'                   => true,
 			'field_type'            => 'taxonomy',
 			'taxo_std'              => false,
-			'column_callback'       => 'wpas_show_taxonomy_column',
-			'label'                 => $labels['label'],
-			'name'                  => $labels['name'],
-			'label_plural'          => $labels['label_plural'],
+			'column_callback'       => 'wpas_cf_display_priority',
+			'label'                 => $labels[ 'label' ],
+			'name'                  => $labels[ 'name' ],
+			'label_plural'          => $labels[ 'label_plural' ],
 			'taxo_hierarchical'     => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
+			'sortable_column'       => true,
 			'select2'               => false,
-			'filterable'			=> true,
-			'required'				=> $show_priority_required 
+			'filterable'            => true,
+			'required'              => $show_priority_required
 		) );
 
-	}	
-	
+	}
+
 	/* Add ticket channel field (where did the ticket originate from?) */
 	$slug = defined( 'WPAS_CHANNEL_SLUG' ) ? WPAS_CHANNEL_SLUG : 'ticket_channel';
-	
+
 	$labels = apply_filters( 'wpas_channel_taxonomy_labels', array(
 			'label'        => __( 'Channel', 'awesome-support' ),
 			'name'         => __( 'Channel', 'awesome-support' ),
@@ -308,45 +327,46 @@ function wpas_register_core_fields() {
 		)
 	);
 
-	$show_channel_column_in_list = ( isset( $options['channel_show_in_ticket_list'] ) && true === boolval( $options['channel_show_in_ticket_list'] ) );
-	
+	$show_channel_column_in_list = ( isset( $options[ 'channel_show_in_ticket_list' ] ) && true === boolval( $options[ 'channel_show_in_ticket_list' ] ) );
+
 	wpas_add_custom_field( 'ticket_channel', array(
 		'core'                  => false,
 		'show_column'           => $show_channel_column_in_list,
-		'hide_front_end'		=> true,		
-		'backend_only'			=> true,		
+		'hide_front_end'        => true,
+		'backend_only'          => true,
 		'log'                   => true,
 		'field_type'            => 'taxonomy',
 		'taxo_std'              => false,
 		'column_callback'       => 'wpas_show_taxonomy_column',
-		'label'                 => $labels['label'],
-		'name'                  => $labels['name'],
-		'label_plural'          => $labels['label_plural'],
+		'label'                 => $labels[ 'label' ],
+		'name'                  => $labels[ 'name' ],
+		'label_plural'          => $labels[ 'label_plural' ],
 		'taxo_hierarchical'     => true,
 		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 		'rewrite'               => array( 'slug' => $slug ),
+		'sortable_column'       => $show_channel_column_in_list,
 		'select2'               => false,
-		'filterable'			=> true,
-		'default'				=> 'standard ticket form'
-	) );	
-	
+		'filterable'            => $show_channel_column_in_list,
+		'default'               => 'standard ticket form'
+	) );
+
 	/* Add additional assignees to ticket */
-	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
+	if ( isset( $options[ 'multiple_agents_per_ticket' ] ) && true === boolval( $options[ 'multiple_agents_per_ticket' ] ) ) {
 		wpas_add_custom_field( 'secondary_assignee', array(
-			'core'        		=> false,
-			'show_column' 		=> false,
-			'hide_front_end'	=> true,			
-			'log'         		=> true,
-			'title'       		=> __( 'Additional Support Staff #1', 'awesome-support' )
-		) );		
-		
+			'core'           => false,
+			'show_column'    => false,
+			'hide_front_end' => true,
+			'log'            => true,
+			'title'          => __( 'Additional Support Staff #1', 'awesome-support' )
+		) );
+
 		wpas_add_custom_field( 'tertiary_assignee', array(
-			'core'        		=> false,
-			'hide_front_end'	=> true,			
-			'show_column' 		=> false,
-			'log'         		=> true,
-			'title'       		=> __( 'Additional Support Staff #2', 'awesome-support' )
-		) );				
+			'core'           => false,
+			'hide_front_end' => true,
+			'show_column'    => false,
+			'log'            => true,
+			'title'          => __( 'Additional Support Staff #2', 'awesome-support' )
+		) );
 	}
 
 	/* Add fields to store the number of replies on a ticket. 				*/
@@ -357,7 +377,7 @@ function wpas_register_core_fields() {
 		'log'         => false,
 		'title'       => __( 'Number of Replies By Agent', 'awesome-support' )
 	) );
-	
+
 	wpas_add_custom_field( 'ttl_replies_by_customer', array(
 		'core'        => true,
 		'show_column' => false,
@@ -370,58 +390,63 @@ function wpas_register_core_fields() {
 		'show_column' => false,
 		'log'         => false,
 		'title'       => __( 'Total Replies On Ticket', 'awesome-support' )
-	) );	
-	
+	) );
+
 	/* Add fields to store time spent working on a ticket. */
 	wpas_add_custom_field( 'ttl_calculated_time_spent_on_ticket', array(
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
 		'title'       => __( 'Time Spent on Ticket', 'awesome-support' )
-	) );	
-	
+	) );
+
 	wpas_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
 		'core'        => true,
-		'show_column' => false,		
+		'show_column' => false,
 		'log'         => false,
 		'title'       => __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
-	) );		
-	
-	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
-		'core'        		=> true,
-		'show_column' 		=> false,
-		'log'         		=> false,
-		'title'       		=> __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
 	) );
-	
+
+	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
+		'core'        => true,
+		'show_column' => false,
+		'log'         => false,
+		'title'       => __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
+	) );
+
 	/* Add fields for other "free-form" interested parties */
 	wpas_add_custom_field( 'first_addl_interested_party_name', array(
-		'core'        		=> false,
-		'show_column' 		=> false,
-		'hide_front_end'	=> true,		
-		'log'         		=> false,
-		'title'       		=> __( 'Name Of Additional Interested Party (#1)', 'awesome-support' )
+		'core'           => false,
+		'show_column'    => false,
+		'hide_front_end' => true,
+		'log'            => false,
+		'title'          => __( 'Name Of Additional Interested Party (#1)', 'awesome-support' )
 	) );
 	wpas_add_custom_field( 'first_addl_interested_party_email', array(
-		'core'        		=> false,
-		'show_column' 		=> false,
-		'hide_front_end'	=> true,		
-		'log'         		=> false,
-		'title'       		=> __( 'Additional Interested Party Email (#1)', 'awesome-support' )
-	) );		
+		'core'           => false,
+		'show_column'    => false,
+		'hide_front_end' => true,
+		'log'            => false,
+		'title'          => __( 'Additional Interested Party Email (#1)', 'awesome-support' )
+	) );
 	wpas_add_custom_field( 'second_addl_interested_party_name', array(
-		'core'        		=> false,
-		'show_column' 		=> false,
-		'hide_front_end'	=> true,		
-		'log'         		=> false,
-		'title'       		=> __( 'Name Of Additional Interested Party (#2)', 'awesome-support' )
+		'core'           => false,
+		'show_column'    => false,
+		'hide_front_end' => true,
+		'log'            => false,
+		'title'          => __( 'Name Of Additional Interested Party (#2)', 'awesome-support' )
 	) );
 	wpas_add_custom_field( 'second_addl_interested_party_email', array(
-		'core'        		=> false,
-		'show_column' 		=> false,
-		'hide_front_end'	=> true,		
-		'log'         		=> false,
-		'title'       		=> __( 'Additional Interested Party Email (#2)', 'awesome-support' )
-	) );		
-	
+		'core'           => false,
+		'show_column'    => false,
+		'hide_front_end' => true,
+		'log'            => false,
+		'title'          => __( 'Additional Interested Party Email (#2)', 'awesome-support' )
+	) );
+
+	/* Trigger backend custom ticket list columns */
+	if ( is_admin() ) {
+		apply_filters( 'wpas_add_custom_fields', array() );
+	}
+
 }
