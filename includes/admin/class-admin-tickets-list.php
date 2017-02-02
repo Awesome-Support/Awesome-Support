@@ -34,7 +34,7 @@ class WPAS_Tickets_List {
 			/**
 			 * Add the taxonomies filters
 			 */
-			add_action( 'restrict_manage_posts',                array( $this, 'debug' ), 7, 2 );
+			//add_action( 'restrict_manage_posts',                array( $this, 'debug' ), 7, 2 );
 			add_action( 'restrict_manage_posts',                array( $this, 'custom_filters' ), 8, 2 );
 			add_action( 'restrict_manage_posts',                array( $this, 'custom_taxonomy_filter' ), 10, 2 );
 			add_filter( 'parse_query',                          array( $this, 'custom_taxonomy_filter_convert_id_term' ), 10, 1 );
