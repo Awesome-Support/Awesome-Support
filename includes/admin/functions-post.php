@@ -487,10 +487,10 @@ function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
 	$query .= " WHERE p.post_type = %s AND p.ID {$adjacent} %d";
 	$query_args[] = 'ticket';
 	$query_args[] = $ticket_id;
-	$query_args[] = 'open';
 	
 	
 	$custom_post_status = wpas_get_post_status();
+	$custom_post_status['open'] = 'Open';
 	
 	$post_status_query_ar = array_fill(0, count($custom_post_status), "p.post_status=%s");
 	$query .= " AND (" . implode(' OR ', $post_status_query_ar) . ")";
