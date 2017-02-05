@@ -783,7 +783,7 @@ class WPAS_Custom_Field {
 				 *
 				 * Action: Delete option
 				 */
-				if ( ! empty( $current ) && empty( $value ) ) {
+				if ( ( ! empty( $current ) || is_null( $current ) ) && empty( $value ) ) {
 					if ( delete_post_meta( $post_id, $field_id, $current ) ) {
 						$result = 3;
 					}
@@ -796,7 +796,7 @@ class WPAS_Custom_Field {
 				 *
 				 * Action: Update post meta OR delete it
 				 */
-				elseif ( ! empty( $current ) && ! empty( $value ) ) {
+				elseif ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $value ) ) {
 
 					/* Make sure the old and new values aren't the same */
 					if ( $current !== $value ) {

@@ -617,7 +617,8 @@ SQL;
 				'data_attr' => array( 'capability' => 'edit_ticket',
 				                      'allowClear' => true,
 				                      //'multiple'  => true,
-				                      'placeholder' => $selected, ),
+				                      'placeholder' => $selected,
+					),
 			);
 
 			if ( isset( $staff_id ) ) {
@@ -646,7 +647,10 @@ SQL;
 			'id'        => 'author',
 			'disabled'  => !current_user_can( 'assign_ticket' ) ? true : false,
 			'select2'   => true,
-			'data_attr' => array( 'capability' => 'view_ticket' ),
+			'data_attr' => array( 'capability' => 'view_ticket',
+			                      'allowClear' => true,
+				                  'placeholder' => $selected,
+				),
 		);
 
 		if ( isset( $client_id ) ) {
@@ -975,8 +979,6 @@ SQL;
 			}
 
 			//apply_filters( 'wpas_custom_column_orderby', $wp_query );
-
-			echo '<div><p>' . $GLOBALS['wp_query']->request . '</p></div>';
 
 		}
 
