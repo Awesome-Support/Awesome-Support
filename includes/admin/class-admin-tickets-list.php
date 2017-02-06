@@ -34,15 +34,14 @@ class WPAS_Tickets_List {
 			/**
 			 * Add the taxonomies filters
 			 */
-			//add_action( 'restrict_manage_posts',                array( $this, 'debug' ), 7, 2 );
 			add_action( 'restrict_manage_posts',                array( $this, 'custom_filters' ), 8, 2 );
 			add_action( 'restrict_manage_posts',                array( $this, 'custom_taxonomy_filter' ), 10, 2 );
 			add_filter( 'parse_query',                          array( $this, 'custom_taxonomy_filter_convert_id_term' ), 10, 1 );
 			add_filter( 'parse_query',                          array( $this, 'custom_meta_query' ), 11, 1 );
-			add_filter( 'posts_clauses',                        array( $this, 'post_clauses_orderby' ), 10, 2 );
+			add_filter( 'posts_clauses',                        array( $this, 'post_clauses_orderby' ), 50, 2 );
 			add_filter( 'posts_where',                          array( $this, 'posts_where' ), 10, 2 );
 			add_action( 'parse_request',                        array( $this, 'parse_request' ), 10, 1 );
-			add_action( 'pre_get_posts',                        array( $this, 'set_ordering_query_var' ), 10, 1 );
+			add_action( 'pre_get_posts',                        array( $this, 'set_ordering_query_var' ), 100, 1 );
 			add_filter( 'posts_results', 					    array( $this, 'apply_ordering_criteria' ), 10, 2 );
 
 			add_filter( 'wpas_add_custom_fields',               array( $this, 'add_custom_fields' ) );
@@ -54,17 +53,6 @@ class WPAS_Tickets_List {
 			add_filter( 'manage_posts_extra_tablenav',          array( $this, 'manage_posts_extra_tablenav' ), 10, 1 );
 
 		}
-	}
-
-
-	public function debug( $post_type, $which ) {
-
-		if('ticket' !== $post_type) {
-			return;
-		}
-
-		echo '<div><p>' . $GLOBALS['wp_query']->request . '</p></div>';
-
 	}
 
     /**
@@ -83,17 +71,20 @@ class WPAS_Tickets_List {
 			return self::$instance;
 	}
 
+
 	/**
-     * Add custom fields
-     *
+	 * Add custom fields
+	 *
 	 * @param $fields
+	 *
+	 * @return mixed
 	 */
 	public function add_custom_fields( $fields ) {
 
 		global $pagenow, $typenow;
 
 		if ( 'edit.php' !== $pagenow && 'ticket' !== $typenow ) {
-			return;
+			return $fields;
 		}
 
 		wpas_add_custom_field( 'id', array(
@@ -250,12 +241,6 @@ class WPAS_Tickets_List {
 
 				switch ( $column ) {
 
-					//case 'assignee':
-
-					//	echo $post_id;
-
-					//	break;
-
 					case 'author':
 
 						$client = get_user_by( 'id', get_the_author_meta( 'ID' ) );
@@ -387,36 +372,66 @@ class WPAS_Tickets_List {
 
 		global $pagenow;
 
-			if ( !isset( $_GET[ 'post_type' ] )
-				|| 'ticket' !== $_GET[ 'post_type' ]
-				|| 'edit.php' !== $pagenow
-				|| $query->query[ 'post_type' ] !== 'ticket'
-				//|| 'ticket' !== $query->get( 'post_type' )
-				|| !$query->is_main_query()
-			) {
-				return;
+		if ( !isset( $_GET[ 'post_type' ] )	|| 'ticket' !== $_GET[ 'post_type' ]
+			|| 'edit.php' !== $pagenow
+			|| $query->query[ 'post_type' ] !== 'ticket'
+			//|| 'ticket' !== $query->get( 'post_type' )
+			|| !$query->is_main_query()
+		) {
+			return;
+		}
+
+		$fields     = $this->get_custom_fields();
+		$orderby    = isset($query->query[ 'orderby' ]) ? $query->query[ 'orderby' ] : '';
+
+		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
+			if ( 'taxonomy' != $fields[ $orderby ][ 'args' ][ 'field_type' ] ) {
+
+				switch ($orderby) {
+
+					case 'date':
+					case 'status':
+					case 'assignee':
+					case 'author':
+					case 'id':
+					case 'wpas-activity':
+
+						break;
+
+					default:
+
+						/* Order by Custom Field (_wpas_* in postmeta */
+						$query->set( 'meta_key', '_wpas_' . $orderby );
+						$query->set( 'orderby', 'meta_value' );
+
+						break;
+				}
+
+				$order      = isset( $_GET[ 'order' ] ) && ! empty( $_GET[ 'order' ] ) && strtoupper($_GET[ 'order' ]) === 'DESC' ? 'DESC' : 'ASC';
+
+				$query->set( 'order', $order );
 			}
 
+		} else {
 
-			if ( !isset( $_GET[ 'orderby' ] ) ) {
+				/* Skip urgency ordering on trash page */
 
-				// Skip urgency ordering on trash page
 				if ( ! isset( $_GET[ 'post_status' ] )
 					|| isset( $_GET[ 'post_status' ] ) && 'trash' !== $_GET[ 'post_status' ]
 				) {
 
-					// Manual column sorting disables order by urgency
+					/* NOTE: Manual column sorting disables order by urgency */
+
 					if ( wpas_has_smart_tickets_order() ) {
-			/**
-			 * Inspect the current context and if appropriate specify a query_var to allow
-			 * WP_Query to modify itself based on arguments passed to WP_Query.
-			 */
-			$query->set( 'wpas_order_by_urgency', true );
+						/**
+						 * Inspect the current context and if appropriate specify a query_var to allow
+						 * WP_Query to modify itself based on arguments passed to WP_Query.
+						 */
+						$query->set( 'wpas_order_by_urgency', true );
 					}
+				}
 
-		}
-
-	}
+			}
 
 			return;
 
@@ -789,6 +804,13 @@ SQL;
 		}
 	}
 
+	/**
+	 * Set meta_query cor custom columns
+	 *
+	 * @param $wp_query
+	 *
+	 * @since  3.3.4
+	 */
 	public function custom_meta_query( $wp_query ) {
 
 		global $pagenow;
@@ -874,7 +896,6 @@ SQL;
 			);
 		}
 
-
 		if( isset($meta_query)) {
 			if ( !isset( $meta_query[ 'relation' ] ) ) {
 				$meta_query[ 'relation' ] = 'AND';
@@ -884,6 +905,9 @@ SQL;
 
 	}
 
+	/**
+	 * Save query vars
+	 */
 	public function parse_request() {
 
 		global $wp;
@@ -892,7 +916,7 @@ SQL;
 
 		// Map query vars to their keys, or get them if endpoints are not supported
 		foreach ( $fields as $key => $var ) {
-			if ( isset( $_GET[ $var[ 'name' ] ] ) ) {
+			if ( isset( $_GET[ $var[ 'name' ] ]) ) {    //&& ! empty($_GET[ $var[ 'name' ] ] ) ) {
 				$wp->query_vars[ $key ] = $_GET[ $var[ 'name' ] ];
 			} elseif ( isset( $wp->query_vars[ $var[ 'name' ] ] ) ) {
 				$wp->query_vars[ $key ] = $wp->query_vars[ $var ];
@@ -901,15 +925,27 @@ SQL;
 
 	}
 
+	/**
+	 * Single ticket where
+	 *
+	 * @param $where
+	 * @param $wp_query
+	 *
+	 * @return string
+	 *
+	 * @since  3.3.4
+	 */
 	public function posts_where( $where, $wp_query ) {
 
-		if ( is_admin() || 'ticket' === $wp_query->query[ 'post_type' ] ) {
+		if ( is_admin()
+			&& 'ticket' === $wp_query->query[ 'post_type' ]
+		) {
 
 			global $wpdb;
 
+			/* Filter by Ticket ID */
 			if ( isset( $_GET[ 'id' ] ) && !empty( $_GET[ 'id' ] ) && intval( $_GET[ 'id' ] ) != 0 ) {
-				$post_id = intval( filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING ) );
-				$where .= " AND {$wpdb->posts}.ID = " . $post_id;
+				$where .= " AND {$wpdb->posts}.ID = " . intval( filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING ) );
 			}
 		}
 
@@ -917,22 +953,36 @@ SQL;
 
 	}
 
+	/**
+	 * Set query requirements for column sorting
+	 *
+	 * @param $clauses
+	 * @param $wp_query
+	 *
+	 * @return mixed
+	 *
+	 * @since  3.3.4
+	 */
 	public function post_clauses_orderby( $clauses, $wp_query ) {
 
 		if ( !isset( $wp_query->query[ 'post_type' ] )
 			|| $wp_query->query[ 'post_type' ] !== 'ticket'
-			|| !$wp_query->is_main_query()
-			|| !isset( $wp_query->query[ 'orderby' ] )
+			//|| !$wp_query->is_main_query()
+			//|| !isset( $wp_query->query[ 'orderby' ] )
 		) {
 			return $clauses;
 		}
 
-		global $wpdb;
 
 		$fields = $this->get_custom_fields();
-		$orderby = $wp_query->query[ 'orderby' ];
+		//$orderby = $wp_query->query[ 'orderby' ];
+		$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : '';
 
 		if ( !empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
+
+			global $wpdb;
+
+			$order = ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
 
 			if ( 'taxonomy' == $fields[ $orderby ][ 'args' ][ 'field_type' ] && !$fields[ $orderby ][ 'args' ][ 'taxo_std' ] ) {
 
@@ -944,41 +994,32 @@ SQL;
 
 				$clauses[ 'where' ] .= " AND (taxonomy = '" . $orderby . "' AND taxonomy IS NOT NULL)"; //OR taxonomy IS NULL)";
 				$clauses[ 'groupby' ] = "object_id";
-				$clauses[ 'orderby' ] = "GROUP_CONCAT({$wpdb->terms}.name ORDER BY name ASC) ";
-				$clauses[ 'orderby' ] .= ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
+				$clauses[ 'orderby' ] = "GROUP_CONCAT({$wpdb->terms}.name ORDER BY name ASC) " . $order;
+
+			} elseif ( 'id' === $orderby ) {
 
 			} elseif ( 'status' === $orderby ) {
 
-				$clauses[ 'orderby' ] = "{$wpdb->posts}.post_status ";
-				$clauses[ 'orderby' ] .= ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
+				$clauses[ 'orderby' ] = "{$wpdb->posts}.post_status " . $order;
 
 			} elseif ( 'assignee' === $orderby ) {
 
 				//Join user table onto the postmeta table
-				$clauses[ 'join' ] .= " LEFT JOIN {$wpdb->users} ON {$wpdb->prefix}postmeta.meta_value={$wpdb->users}.ID";
-				$clauses[ 'orderby' ] = "{$wpdb->users}.display_name ";
-				$clauses[ 'orderby' ] .= ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
+				$clauses[ 'join' ] .= " LEFT JOIN {$wpdb->users} ag ON ( {$wpdb->prefix}postmeta.meta_key='_wpas_assignee' AND CAST({$wpdb->prefix}postmeta.meta_value AS INT)=ag.ID)";
+				$clauses[ 'orderby' ] = "ag.display_name " . $order;
 
 			} elseif ( 'author' === $orderby ) {
 
 				//Join user table onto the postmeta table
 				$clauses[ 'join' ] .= " LEFT JOIN {$wpdb->users} ON {$wpdb->prefix}posts.post_author={$wpdb->users}.ID";
-				$clauses[ 'orderby' ] = " {$wpdb->users}.display_name ";
-				$clauses[ 'orderby' ] .= ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
-
-			} elseif ( 'id' === $orderby ) {
-
-				$clauses[ 'orderby' ] = " {$wpdb->posts}.ID ";
-				$clauses[ 'orderby' ] .= ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
+				$clauses[ 'orderby' ] = " {$wpdb->users}.display_name " . $order;
 
 			} else {
 
-				$wp_query->set( 'meta_key', '_wpas_' . $orderby );
-				$wp_query->set( 'orderby', 'meta_value' );
+				/* Exclude empty values in custom fields */
+				$clauses[ 'where' ] .= " AND TRIM(IFNULL({$wpdb->postmeta}.meta_value,''))<>'' ";
 
 			}
-
-			//apply_filters( 'wpas_custom_column_orderby', $wp_query );
 
 		}
 
@@ -1142,9 +1183,7 @@ SQL;
 	 */
 	public function remove_excerpt( $content ) {
 
-		global $mode;
-
-		if ( !is_admin() ||! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
+		if ( !is_admin() || ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
 			return $content;
 		}
 
@@ -1223,49 +1262,5 @@ SQL;
 		return $classes;
 
 	}
-
-
-    public function custom_search_where( $where ) {
-
-			global $pagenow, $typenow;
-
-			if ( !is_search()
-				|| 'edit.php' !== $pagenow
-				|| 'ticket' !== $typenow
-
-			) {
-				return $where;
-			}
-
-			$where_original = $where;
-
-			global $wpdb;
-
-			// Overwrite the existing WHERE clause.
-			$where = '';
-
-			// Store all search terms into array.
-			$search_terms = explode( ' ', get_search_query() );
-
-			// Tables names.
-			$type = $wpdb->prefix . "posts.post_type";
-			$status = $wpdb->prefix . "posts.post_status";
-			$title = $wpdb->prefix . "posts.post_title";
-			$content = $wpdb->prefix . "posts.post_content";
-			$meta_value = $wpdb->prefix . "postmeta.meta_value";
-
-			foreach ( $search_terms as $term ) {
-				$term = trim( $term );
-				$where .= " AND ( ($title LIKE '%$term%') OR ($content LIKE '%$term%') OR ($meta_value LIKE '%$term%') ) ";
-			}
-
-			// As WHERE clause is overwritten, need to specify the post type, the status and/or anything else.
-			// Post Types.
-			//$where .= " AND ($type IN ('post', 'page', ... )) ";
-			// Post status.
-			//$where .= " AND ($status = 'publish') ";
-
-			return $where_original;
-		}
 
 }
