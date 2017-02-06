@@ -176,7 +176,7 @@ function wpas_register_core_fields() {
 		'sortable_column' => true,
 		'column_callback' => 'wpas_cf_display_status',
 		'save_callback'   => null,
-		'title'           => __( 'State', 'awesome-support' )		
+		'title'           => __( 'Status', 'awesome-support' )		
 	) );
 
 	wpas_add_custom_field( 'ticket-tag', array(
