@@ -1438,7 +1438,7 @@ add_action( 'wpas_do_reopen_ticket', 'wpas_reopen_ticket_trigger' );
  * @return void
  */
 function wpas_reopen_ticket_trigger( $data ) {
-
+ 
 	if ( isset( $data['ticket_id'] ) ) {
 
 		$ticket_id = (int) $data['ticket_id'];
@@ -1448,7 +1448,9 @@ function wpas_reopen_ticket_trigger( $data ) {
 			wpas_redirect( 'ticket_reopen', wpas_get_tickets_list_page_url() );
 			exit;
 		}
-
+		
+		do_action( 'wpas_before_customer_reopen_ticket', $ticket_id );
+		
 		wpas_reopen_ticket( $ticket_id );
 		wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'awesome-support' ) );
 		wpas_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );

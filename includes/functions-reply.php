@@ -94,9 +94,9 @@ function wpas_count_replies( $ticket_id ) {
 	$customer_replies_count = wpas_count_user_replies($ticket_id, $customer_id);
 	$agent_replies_count = $total_replies_count - $customer_replies_count;
 	
-	update_post_meta( $ticket_id, 'ttl_replies_by_customer', $customer_replies_count );
-	update_post_meta( $ticket_id, 'ttl_replies_by_agent', $agent_replies_count );
-	update_post_meta( $ticket_id, 'ttl_replies', $total_replies_count );
+	update_post_meta( $ticket_id, '_wpas_ttl_replies_by_customer', $customer_replies_count );
+	update_post_meta( $ticket_id, '_wpas_ttl_replies_by_agent', $agent_replies_count );
+	update_post_meta( $ticket_id, '_wpas_ttl_replies', $total_replies_count );
 	
 }
 
