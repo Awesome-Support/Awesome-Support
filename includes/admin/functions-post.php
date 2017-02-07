@@ -507,3 +507,129 @@ function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
 	return $adjacent_post_id;
 	
 }
+
+/**
+ * Check if user can see all tickets
+ * 
+ * @global object $current_user
+ * @return boolean
+ */
+function wpas_can_user_see_all_tickets() {
+	
+	$user_can_see_all = false;
+	
+	/* Check if admins can see all tickets */
+	if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
+		$user_can_see_all = true;
+	}
+
+	/* Check if agents can see all tickets */
+	if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
+		$user_can_see_all = true;
+	}
+
+	global $current_user;
+	
+	/* If current user can see all tickets */
+	if ( current_user_can( 'view_all_tickets' ) && ! current_user_can( 'administrator' ) && true === (bool) get_user_meta( (int) $current_user->ID, 'wpas_view_all_tickets', true )  ) {
+		$user_can_see_all = true;
+	}
+	
+	return $user_can_see_all;
+}
+
+/**
+ * 
+ * @global object $wpdb
+ * @global object $current_user
+ * @param int $ticket_id
+ * @param boolean $next
+ * 
+ * @return int
+ */
+function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
+	
+	global $current_user;
+	
+	$custom_post_status = wpas_get_post_status();
+	$custom_post_status['open'] = 'Open';
+	
+	foreach($custom_post_status as $status => $label) {
+		$post_status[] = $status;
+	}
+	
+	
+	$defaults = array(
+		'post_type'              => 'ticket',
+		'post_status'            => $post_status,
+		'posts_per_page'         => - 1
+	);
+
+	$args  = wp_parse_args( $args, $defaults );
+	
+	$meta_query = array();
+	
+	if ( 'any' !== $ticket_status ) {
+		if ( in_array( $ticket_status, array( 'open', 'closed' ) ) ) {
+			$meta_query[] = array(
+					'key'     => '_wpas_status',
+					'value'   => $ticket_status,
+					'compare' => '=',
+					'type'    => 'CHAR'
+			);
+		}
+	}
+	
+	
+	
+	$user_can_see_all = wpas_can_user_see_all_tickets();
+	
+	
+	if( false === $user_can_see_all ) {
+		
+		$primary_agent_meta_query = array(
+		'key'     => '_wpas_assignee',
+		'value'   => (int) $current_user->ID,
+		'compare' => '=',
+		'type'    => 'NUMERIC',
+		);
+	
+		if( wpas_is_multi_agent_active() ) {
+			// Check if agent is set as secondary or tertiary agent
+			$multi_agents_meta_query = array();
+			$multi_agents_meta_query['relation'] = 'OR';
+			$multi_agents_meta_query[] = $primary_agent_meta_query;
+
+			$multi_agents_meta_query[] = array(
+				'key'     => '_wpas_secondary_assignee',
+				'value'   => (int) $current_user->ID,
+				'compare' => '=',
+				'type'    => 'NUMERIC',
+			);
+
+			$multi_agents_meta_query[] = array(
+				'key'     => '_wpas_tertiary_assignee',
+				'value'   => (int) $current_user->ID,
+				'compare' => '=',
+				'type'    => 'NUMERIC',
+			);
+
+			$meta_query[] = $multi_agents_meta_query;
+
+		} else {
+			$meta_query[] = $primary_agent_meta_query;
+		}
+	}
+		
+	if( !empty( $meta_query ) ) {
+		$args['meta_query'] = $meta_query;
+	}
+	
+	$query = new WP_Query( $args );
+	if ( empty( $query->posts ) ) {
+		return array();
+	} else {
+		return $query->posts;
+	}
+	
+}

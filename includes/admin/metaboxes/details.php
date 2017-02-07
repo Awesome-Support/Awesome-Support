@@ -48,6 +48,9 @@ if ( isset( $post ) ) {
 }
 ?>
 <div class="wpas-ticket-status submitbox">
+	
+	<?php do_action( 'wpas_backend_ticket_status_content_before', $post->ID ); ?>
+	
 	<div class="wpas-row" id="wpas-statusdate">
 		<div class="wpas-col">
 			<strong><?php _e( 'Status', 'awesome-support' ); ?></strong>
@@ -81,7 +84,8 @@ if ( isset( $post ) ) {
 			<?php endif; ?>
 		</p>
 	<?php endif; ?>
-	
+		
+	<?php do_action( 'wpas_backend_ticket_status_before_actions', $post->ID ); ?>
 	<div id="major-publishing-actions">
 		<?php if ( current_user_can( "delete_ticket", $post->ID ) ): ?>
 			<div id="delete-action">
