@@ -1000,6 +1000,11 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		do_action( 'wpas_add_reply_public_after', $reply_id, $data );
 
 	}
+	
+	/**
+	 * Fire wpas_add_reply_complete after the reply and attachments was successfully added.
+	 */
+	do_action( 'wpas_add_reply_complete', $reply_id, $data );
 
 	return $reply_id;
 

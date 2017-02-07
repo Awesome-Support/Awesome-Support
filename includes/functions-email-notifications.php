@@ -47,7 +47,7 @@ function wpas_notify_assignment( $ticket_id, $agent_id ) {
 }
 
 
-add_action( 'wpas_add_reply_after', 'wpas_notify_reply', 10, 2 );
+add_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10, 2 );
 function wpas_notify_reply( $reply_id, $data ) {
 
 	/* If the ID is set it means we're updating a post and NOT creating. In this case no notification. */
