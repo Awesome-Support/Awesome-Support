@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 10, 2 );
+add_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 11, 2 );
 /**
  * Send e-mail confirmation.
  *
@@ -29,7 +29,7 @@ function wpas_notify_confirmation( $ticket_id, $data ) {
 	wpas_email_notify( $ticket_id, 'submission_confirmation' );
 }
 
-add_action( 'wpas_ticket_assigned', 'wpas_notify_assignment', 10, 2 );
+add_action( 'wpas_open_ticket_after', 'wpas_notify_assignment', 12, 2 );
 /**
  * Send e-mail assignment notification.
  *
