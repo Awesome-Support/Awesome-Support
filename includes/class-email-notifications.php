@@ -262,7 +262,7 @@ class WPAS_Email_Notification {
 			$id       = $tag['tag'];
 			$value    = $tag['value'];
 			$contents = str_replace( $id, $value, $contents );
-
+			
 		}
 
 		return $contents;
@@ -528,9 +528,15 @@ class WPAS_Email_Notification {
 				break;
 
 		}
+		
+		$pre_fetch_content = apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id, $case );
+		
+		if( 'content' === $part && false !== strpos( $pre_fetch_content, '{attachments}' ) ) {
+			$this->link_attachments = true;
+		}
 
-		return $this->fetch( apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id, $case ) );
-
+		return $this->fetch( $pre_fetch_content );
+		
 	}
 
 	/**
@@ -731,17 +737,22 @@ class WPAS_Email_Notification {
 			$case,
 			$this->ticket_id
 		);
-
+		
+		$attachments = array();
+		if( isset( $this->link_attachments ) && true === $this->link_attachments ) {
+			$attachments = apply_filters( 'wpas_email_notification_attachments', $attachments, $case, $this->ticket_id, $this->post_id );
+		}
+		
 		// We need to send notifications separately per recipient.
 		if( is_array($email['recipient_email']) ) {
 			$mail = false;
-			foreach($email['recipient_email'] as $r_email) {
-				if( wp_mail( $r_email, $email['subject'], $email['body'], $email['headers'] ) ) {
+			foreach( $email['recipient_email'] as $r_email ) {
+				if( wp_mail( $r_email, $email['subject'], $email['body'], $email['headers'], $attachments ) ) {
 					$mail = true;
 				}
 			}
 		} else {
-			$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'] );
+			$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'], $attachments );
 		}
 
 		

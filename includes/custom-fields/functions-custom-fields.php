@@ -175,7 +175,8 @@ function wpas_register_core_fields() {
 		'field_type'      => false,
 		'sortable_column' => true,
 		'column_callback' => 'wpas_cf_display_status',
-		'save_callback'   => null
+		'save_callback'   => null,
+		'title'           => __( 'Status', 'awesome-support' )		
 	) );
 
 	wpas_add_custom_field( 'ticket-tag', array(
@@ -193,7 +194,8 @@ function wpas_register_core_fields() {
 		'label_plural'          => __( 'Tags', 'awesome-support' ),
 		'taxo_hierarchical'     => false,
 		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
-		'select2'               => false
+		'select2'               => false,
+		'title'           		=> __( 'Tag', 'awesome-support' )		
 	) );
 
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
@@ -225,7 +227,8 @@ function wpas_register_core_fields() {
 			'filterable'            => false,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
-			'select2'               => false
+			'select2'               => false,
+			'title'           		=> __( 'Product', 'awesome-support' )			
 		) );
 
 	}
@@ -257,7 +260,8 @@ function wpas_register_core_fields() {
 			'filterable'            => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
-			'select2'               => false
+			'select2'               => false,
+			'title'           		=> __( 'Department', 'awesome-support' )			
 		) );
 
 	}
@@ -312,7 +316,8 @@ function wpas_register_core_fields() {
 			'sortable_column'       => true,
 			'select2'               => false,
 			'filterable'            => true,
-			'required'              => $show_priority_required
+			'required'              => $show_priority_required,
+			'title'           		=> __( 'Priority', 'awesome-support' )			
 		) );
 
 	}
@@ -347,7 +352,8 @@ function wpas_register_core_fields() {
 		'sortable_column'       => $show_channel_column_in_list,
 		'select2'               => false,
 		'filterable'            => $show_channel_column_in_list,
-		'default'               => 'standard ticket form'
+		'default'               => 'standard ticket form',
+		'title'           		=> __( 'Channel', 'awesome-support' )		
 	) );
 
 	/* Add additional assignees to ticket */

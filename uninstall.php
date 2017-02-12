@@ -105,6 +105,21 @@ function wpas_uninstall() {
 			wpas_delete_taxonomy( 'product' );
 		}
 
+		/**
+		* Delete all deparments
+		*/
+		wpas_delete_taxonomy( 'department' );
+		
+		/**
+		* Delete Priority taxonomy
+		*/
+		wpas_delete_taxonomy( 'ticket_priority' );		
+		
+		/**
+		* Delete Channel taxonomy
+		*/
+		wpas_delete_taxonomy( 'ticket_channel' );				
+		
 	}
 
 }

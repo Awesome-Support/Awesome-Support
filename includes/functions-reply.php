@@ -48,7 +48,7 @@ function wpas_count_total_replies( $ticket_id ) {
  */
 function wpas_num_agent_replies( $ticket_id ) {
 	
-	$count = get_post_meta( $ticket_id, 'ttl_replies_by_agent', true );
+	$count = wpas_get_cf_value( 'ttl_replies_by_agent', $ticket_id );
 	return ( $count ? $count : 0 );
 	
 }
@@ -62,7 +62,7 @@ function wpas_num_agent_replies( $ticket_id ) {
  */
 function wpas_num_customer_replies( $ticket_id ) {
 	
-	$count = get_post_meta( $ticket_id, 'ttl_replies_by_customer', true );
+	$count = wpas_get_cf_value( 'ttl_replies_by_customer', $ticket_id );
 	return ( $count ? $count : 0 );
 	
 }
@@ -75,7 +75,7 @@ function wpas_num_customer_replies( $ticket_id ) {
  */
 function wpas_num_total_replies( $ticket_id ) {
 	
-	$count = get_post_meta( $ticket_id, 'ttl_replies', true );
+	$count = wpas_get_cf_value( 'ttl_replies', $ticket_id );
 	return ( $count ? $count : 0 );
 	
 }
@@ -94,9 +94,9 @@ function wpas_count_replies( $ticket_id ) {
 	$customer_replies_count = wpas_count_user_replies($ticket_id, $customer_id);
 	$agent_replies_count = $total_replies_count - $customer_replies_count;
 	
-	update_post_meta( $ticket_id, 'ttl_replies_by_customer', $customer_replies_count );
-	update_post_meta( $ticket_id, 'ttl_replies_by_agent', $agent_replies_count );
-	update_post_meta( $ticket_id, 'ttl_replies', $total_replies_count );
+	update_post_meta( $ticket_id, '_wpas_ttl_replies_by_customer', $customer_replies_count );
+	update_post_meta( $ticket_id, '_wpas_ttl_replies_by_agent', $agent_replies_count );
+	update_post_meta( $ticket_id, '_wpas_ttl_replies', $total_replies_count );
 	
 }
 
