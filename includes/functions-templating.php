@@ -576,7 +576,10 @@ function wpas_get_tickets_list_columns() {
 		}
 
 		/* Don't display fields that aren't specifically designed to */
-		if ( true === $field['args']['show_column'] ) {
+		if ( true === $field['args']['show_column']
+			&& ( true !== $field['args']['backend_only'] )
+			&& ( true !== $field['args']['hide_front_end'] )
+        ) {
 
 			$column_title              = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
 			$column_callback           = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
@@ -800,7 +803,7 @@ function wpas_cf_display_status( $name, $post_id ) {
 	$post_status   = $post->post_status;
 	$custom_status = wpas_get_post_status();
 
-	if ( 'closed' === $status && ( 'post-new.php' == $pagenow || 'post.php' == $pagenow || 'edit.php' == $pagenow ) ) {
+	if ( 'closed' === $status && ( 'post-new.php' == $pagenow || 'post.php' == $pagenow || 'edit.php' == $pagenow || ( ! is_admin() && 'index.php' === $pagenow ) ) ) {
 		$label = __( 'Closed', 'awesome-support' );
 		$color = wpas_get_option( "color_$status", '#dd3333' );
 		$tag = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
