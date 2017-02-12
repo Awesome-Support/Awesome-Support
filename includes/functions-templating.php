@@ -803,7 +803,7 @@ function wpas_cf_display_status( $name, $post_id ) {
 	$post_status   = $post->post_status;
 	$custom_status = wpas_get_post_status();
 
-	if ( 'closed' === $status && ( 'post-new.php' == $pagenow || 'post.php' == $pagenow || 'edit.php' == $pagenow ) ) {
+	if ( 'closed' === $status && ( 'post-new.php' == $pagenow || 'post.php' == $pagenow || 'edit.php' == $pagenow || 'index.php' === $pagenow ) ) {
 		$label = __( 'Closed', 'awesome-support' );
 		$color = wpas_get_option( "color_$status", '#dd3333' );
 		$tag = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
