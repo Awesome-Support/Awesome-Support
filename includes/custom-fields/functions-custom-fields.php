@@ -399,25 +399,69 @@ function wpas_register_core_fields() {
 	) );
 
 	/* Add fields to store time spent working on a ticket. */
+	$audit_log_for_time_tracking_fields = false ;
+	$audit_log_for_time_tracking_fields = ( isset( $options[ 'keep_audit_log_time_tracking' ] ) && true === boolval( $options[ 'keep_audit_log_time_tracking' ] ) );
+	
+	
+	$show_total_time_in_list = false;
+	$show_total_time_in_list = ( isset( $options[ 'show_total_time_in_ticket_list' ] ) && true === boolval( $options[ 'show_total_time_in_ticket_list' ] ) );
+	
+	$show_total_time_adj_in_list = false;
+	$show_total_time_adj_in_list = ( isset( $options[ 'show_total_time_adj_in_ticket_list' ] ) && true === boolval( $options[ 'show_total_time_adj_in_ticket_list' ] ) );
+	
+	$show_final_time_in_list = false;
+	$show_final_time_in_list = ( isset( $options[ 'show_final_time_in_ticket_list' ] ) && true === boolval( $options[ 'show_final_time_in_ticket_list' ] ) );
+
+	
 	wpas_add_custom_field( 'ttl_calculated_time_spent_on_ticket', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Time Spent on Ticket', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> $show_total_time_in_list,
+		'log'         		=> $audit_log_for_time_tracking_fields,
+		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',
+		'placeholder'		=> 'hh:mm:ss',
+		'hide_front_end'	=> true,
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'custom',
+		'sortable'			=> true,
+		'title'       		=> __( 'Time Spent on Ticket', 'awesome-support' )
 	) );
 
 	wpas_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> $show_total_time_adj_in_list,
+		'log'         		=> $audit_log_for_time_tracking_fields,
+		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',		
+		'placeholder'		=> 'hh:mm:ss',	
+		'hide_front_end'	=> true,
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'custom',
+		'sortable'			=> true,		
+		'title'       		=> __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
 	) );
+	
+	wpas_add_custom_field( 'time_adjustments_pos_or_neg', array(
+		'core'        		=> false,
+		'field_type'		=> 'radio',
+		'options' 			=> array( '+' => '+ive', '-' => '-ive' ),
+		'show_column' 		=> false,
+		'log'         		=> false,
+		'hide_front_end'	=> true,
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'custom',
+		'title'       		=> __( '+ive or -ive Adj?', 'awesome-support' )		
+	) );		
 
 	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> $show_final_time_in_list,
+		'log'         		=> $audit_log_for_time_tracking_fields,
+		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',		
+		'placeholder'		=> 'hh:mm:ss',	
+		'hide_front_end'	=> true,		
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'custom',
+		'sortable'			=> true,		
+		'title'       		=> __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
 	) );
 
 	/* Add fields for other "free-form" interested parties */
