@@ -141,6 +141,9 @@ class WPAS_Custom_Field {
 			'label_plural'          => '',
 			'taxo_hierarchical'     => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+
+			'disable_input'         => false,
+
 		);
 
 		return $defaults;
@@ -485,6 +488,11 @@ class WPAS_Custom_Field {
 		/* Add the required attribute */
 		if ( true === $this->field['args']['required'] ) {
 			array_push( $atts, 'required' );
+		}
+
+		/* Add the disabled attribute */
+		if ( true === apply_filters('wpas_cf_field_markup_disable_input', $this->field['args']['disable_input'], $this->field ) ) {
+			array_push( $atts, 'disabled' );
 		}
 
 		$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field, $this->field ) ), $field );

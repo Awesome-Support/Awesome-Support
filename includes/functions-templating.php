@@ -635,7 +635,12 @@ function wpas_get_tickets_list_column_content( $column_id, $column ) {
 			} else {
 				$link = get_permalink( get_the_ID() );
 			}
-			?><a href="<?php echo $link; ?>"><?php the_title(); ?></a><?php
+
+			$id     = get_the_ID();
+			$title  = get_the_title();
+			$title  .= " (#$id)";
+
+			?><a href="<?php echo $link; ?>"><?php echo $title; ?></a><?php
 		break;
 
 		case 'date':

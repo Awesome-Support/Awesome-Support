@@ -239,7 +239,7 @@ function wpas_register_core_fields() {
 		$slug = defined( 'WPAS_DEPARTMENT_SLUG' ) ? WPAS_DEPARTMENT_SLUG : 'department';
 
 		/* Filter the taxonomy labels */
-		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
+		$labels = apply_filters( 'wpas_department_taxonomy_labels', array(
 			'label'        => __( 'Department', 'awesome-support' ),
 			'name'         => __( 'Department', 'awesome-support' ),
 			'label_plural' => __( 'Departments', 'awesome-support' )

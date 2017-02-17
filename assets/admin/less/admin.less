@@ -447,7 +447,10 @@ Metaboxes - Time Tracking Statistics Fields
 	.wpas-form-group + .wpas-form-group {
 		margin-top: 1em;
 	}
-	.wpas-form-control, select, input, textarea {
+	input:disabled {
+		cursor: not-allowed;
+	}
+	.wpas-form-control, input:not([type='radio']), select, textarea {
 		width: 100%;
 	}
 	label {
