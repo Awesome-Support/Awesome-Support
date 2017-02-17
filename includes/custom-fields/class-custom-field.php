@@ -491,8 +491,10 @@ class WPAS_Custom_Field {
 		}
 
 		/* Add the disabled attribute */
-		if ( true === apply_filters('wpas_cf_field_markup_disable_input', $this->field['args']['disable_input'], $this->field ) ) {
-			array_push( $atts, 'disabled' );
+		if ( ! empty( $this->field['args']['disable_input'] ) ) {
+			if ( true === apply_filters('wpas_cf_field_markup_disable_input', $this->field['args']['disable_input'], $this->field ) ) {
+				array_push( $atts, 'disabled' );
+			}
 		}
 
 		$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field, $this->field ) ), $field );
