@@ -491,7 +491,7 @@ class WPAS_Custom_Field {
 		}
 
 		/* Add the disabled attribute */
-		if ( ! empty( $this->field['args']['disable_input'] ) ) {
+		if ( isset( $this->field['args']['disable_input'] ) ) {
 			if ( true === apply_filters('wpas_cf_field_markup_disable_input', $this->field['args']['disable_input'], $this->field ) ) {
 				array_push( $atts, 'disabled' );
 			}
