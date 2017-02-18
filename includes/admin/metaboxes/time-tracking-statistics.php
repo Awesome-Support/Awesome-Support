@@ -46,7 +46,6 @@
 		if ( $field[ 'name' ] === 'ttl_calculated_time_spent_on_ticket'
 			|| $field[ 'name' ] === 'ttl_adjustments_to_time_spent_on_ticket'
 			|| $field[ 'name' ] === 'time_adjustments_pos_or_neg'
-			|| $field[ 'name' ] === 'final_time_spent_on_ticket'
 		) {
 
 			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $disabled ) ) ) {
