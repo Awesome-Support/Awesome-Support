@@ -141,7 +141,83 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
 
 }
 
-add_action( 'init', 'wpas_register_core_fields' );
+/**
+ * Calculate and save time spent on ticket
+ *
+ * @since  3.3.5
+ *
+ * @param  string   $value      Not used
+ * @param  int      $post_id    Ticket ID
+ * @param  string   $field_id   Field ID
+ * @param  array    $field      Custom field
+ *
+ * @return  int         Returns result of add/update post meta
+ */
+function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field ) {
+
+	$result = 0;
+
+	// No time spent on this ticket
+	if ( ! isset ($_POST['wpas_ttl_calculated_time_spent_on_ticket']) ) {
+		return $result;
+	}
+
+	$hours = $minutes = $seconds = 0;
+
+	// Time spent on ticket (hh:mm:ss)
+	sscanf( $_POST['wpas_ttl_calculated_time_spent_on_ticket'], "%d:%d:%d", $hours, $minutes, $seconds);
+
+	// Convert to seconds
+	$calculated_time = $hours * 3600 + $minutes * 60 + $seconds;
+
+	// Calculate time adjustment
+	if( isset ( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
+		&& ! empty( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
+	) {
+		sscanf( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'], "%d:%d:%d", $hours, $minutes, $seconds);
+		$adjustment_time = $hours * 3600 + $minutes * 60 + $seconds;
+
+		if( '+' === $_POST['wpas_time_adjustments_pos_or_neg'] ) {
+			$seconds = $calculated_time + $adjustment_time;
+		}
+		else {
+			$seconds = $calculated_time - $adjustment_time;
+		}
+	}
+
+	// No adjustment
+	else {
+		$seconds = $calculated_time;
+	}
+
+	$value = sprintf("%02d:%02d:%02d", floor($seconds / 3600), ($seconds / 60) % 60, $seconds % 60);
+
+	/**
+	 * Get the current field value.
+	 */
+	$current = get_post_meta( $post_id, $field_id, true );
+
+	/* Update post meta */
+	if ( ( ! empty( $current ) || is_null( $current ) ) ) {
+		if ( false !== update_post_meta( $post_id, $field_id, $value, $current ) ) {
+			$result = 2;
+		}
+	}
+
+	/* Action: Add post meta */
+	elseif ( empty( $current ) ) {
+		if ( false !== add_post_meta( $post_id, $field_id, $value, true ) ) {
+			$result = 1;
+		}
+	}
+
+	return $result;
+
+}
+
+
+
+	add_action( 'init', 'wpas_register_core_fields' );
 /**
  * Register the cure custom fields.
  *
@@ -461,7 +537,9 @@ function wpas_register_core_fields() {
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
 		'sortable'			=> true,		
-		'title'       		=> __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
+		'title'       		=> __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' ),
+		'save_callback'     => 'wpas_update_time_spent_on_ticket',
+		'disable_input'     => true,
 	) );
 
 	/* Add fields for other "free-form" interested parties */
