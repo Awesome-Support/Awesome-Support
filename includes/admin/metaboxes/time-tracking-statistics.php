@@ -41,6 +41,12 @@
 
 <?php
 
+	/**
+     * Filter
+	 * @param $disabled
+	 * @param $field
+	 * @return bool
+	 */
 	function wpas_cf_field_markup_disable_input( $disabled, $field ) {
 
 		if ( $field[ 'name' ] === 'ttl_calculated_time_spent_on_ticket'
