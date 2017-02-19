@@ -34,6 +34,7 @@
 		WPAS()->custom_fields->display_single_field( 'ttl_adjustments_to_time_spent_on_ticket' );
 		WPAS()->custom_fields->display_single_field( 'time_adjustments_pos_or_neg' );
 		WPAS()->custom_fields->display_single_field( 'final_time_spent_on_ticket' );
+		WPAS()->custom_fields->display_single_field( 'time_notes' );
 
 		do_action( 'wpas_mb_details_after_time_tracking_statistics' );
 	?>

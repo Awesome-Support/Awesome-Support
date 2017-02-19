@@ -554,7 +554,7 @@ function wpas_register_core_fields() {
 		'log'         		=> false,
 		'hide_front_end'	=> true,		
 		'backend_only'		=> true,
-		'backend_display_type'	=> 'std',
+		'backend_display_type'	=> 'custom',
 		'title'       		=> __( 'Notes', 'awesome-support' )
 	) );
 	
