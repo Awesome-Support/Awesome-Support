@@ -500,7 +500,8 @@ function wpas_register_core_fields() {
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
 		'sortable_column'	=> true,
-		'title'       		=> __( 'Time Spent on Ticket', 'awesome-support' )
+		'title'       		=> __( 'Gross Time', 'awesome-support' ),
+		'desc'       		=> __( 'Enter the cummulative time spent on ticket by the agent', 'awesome-support' )		
 	) );
 
 	wpas_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
@@ -514,7 +515,8 @@ function wpas_register_core_fields() {
 		'backend_display_type'	=> 'custom',
 		'column_callback'   => 'wpas_cf_display_time_adjustment_column',
 		'sortable_column'	=> true,
-		'title'       		=> __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
+		'title'       		=> __( 'Time Adjustments', 'awesome-support' ),
+		'desc'       		=> __( 'Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin.', 'awesome-support' )				
 	) );
 	
 	wpas_add_custom_field( 'time_adjustments_pos_or_neg', array(
@@ -539,10 +541,23 @@ function wpas_register_core_fields() {
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
 		'sortable_column'	=> true,
-		'title'       		=> __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' ),
+		'title'       		=> __( 'Final Time', 'awesome-support' ),
+		'desc'       		=> __( 'This is the time calculated by the system - a sum of gross time and adjustments/credits granted.', 'awesome-support' ),						
 		'save_callback'     => 'wpas_update_time_spent_on_ticket',
 		'readonly'          => true,
 	) );
+	
+	wpas_add_custom_field( 'time_notes', array(
+		'field_type'		=> 'wysiwyg',
+		'core'        		=> false,
+		'show_column' 		=> false,
+		'log'         		=> false,
+		'hide_front_end'	=> true,		
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'std',
+		'title'       		=> __( 'Notes', 'awesome-support' )
+	) );
+	
 
 	/* Add fields for other "free-form" interested parties */
 	wpas_add_custom_field( 'first_addl_interested_party_name', array(
