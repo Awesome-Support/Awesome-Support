@@ -785,6 +785,29 @@ function wpas_show_assignee_column( $field, $post_id ) {
 
 }
 
+/**
+ * Display time adjustment column
+ *
+ * @param $field
+ * @param $post_id
+ */
+function wpas_cf_display_time_adjustment_column ( $field, $post_id ) {
+
+	$adjustment_time     = get_post_meta( $post_id, '_wpas_ttl_adjustments_to_time_spent_on_ticket', true );
+	$adjustment_operator = get_post_meta( $post_id, '_wpas_time_adjustments_pos_or_neg', true );
+
+	if( '+' === $adjustment_operator ) {
+
+		echo "<span style='color: #6ddb32;'>$adjustment_operator</span> <span>$adjustment_time</span>";
+
+    } elseif( '-' === $adjustment_operator ) {
+
+		echo "<span style='color: #dd3333;'>$adjustment_operator</span> (<span style='color: #dd3333;'>$adjustment_time</span>)";
+
+    }
+
+}
+
 	/**
  * Display the post status.
  *

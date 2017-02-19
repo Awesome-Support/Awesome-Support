@@ -151,7 +151,7 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
  * @param  string   $field_id   Field ID
  * @param  array    $field      Custom field
  *
- * @return  int         Returns result of add/update post meta
+ * @return  int|array           Returns result of add/update post meta
  */
 function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field ) {
 
@@ -197,27 +197,28 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	 */
 	$current = get_post_meta( $post_id, $field_id, true );
 
-	/* Update post meta */
-	if ( ( ! empty( $current ) || is_null( $current ) ) ) {
-		if ( false !== update_post_meta( $post_id, $field_id, $value, $current ) ) {
-			$result = 2;
+	/* Action: Update post meta */
+	if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $value ) ) {
+		if ( $current !== $value ) {
+			if ( false !== update_post_meta( $post_id, $field_id, $value, $current ) ) {
+				$result = 2;
+			}
 		}
 	}
 
 	/* Action: Add post meta */
-	elseif ( empty( $current ) ) {
+	elseif ( empty( $current ) && ! empty( $value ) ) {
 		if ( false !== add_post_meta( $post_id, $field_id, $value, true ) ) {
 			$result = 1;
 		}
 	}
 
-	return $result;
+	return array( 'result' => $result, 'value' => $value );
 
 }
 
 
-
-	add_action( 'init', 'wpas_register_core_fields' );
+add_action( 'init', 'wpas_register_core_fields' );
 /**
  * Register the cure custom fields.
  *
@@ -498,7 +499,7 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'sortable'			=> true,
+		'sortable_column'	=> true,
 		'title'       		=> __( 'Time Spent on Ticket', 'awesome-support' )
 	) );
 
@@ -511,7 +512,8 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'sortable'			=> true,		
+		'column_callback'   => 'wpas_cf_display_time_adjustment_column',
+		'sortable_column'	=> true,
 		'title'       		=> __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
 	) );
 	
@@ -536,7 +538,7 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,		
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'sortable'			=> true,		
+		'sortable_column'	=> true,
 		'title'       		=> __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' ),
 		'save_callback'     => 'wpas_update_time_spent_on_ticket',
 		'readonly'          => true,
