@@ -467,7 +467,7 @@ class WPAS_Custom_Fields {
 				$value  = $custom_field->get_sanitized_value( $data[ $field_form_id ] );
 				$result = $custom_field->update_value( $value, $post_id );
 
-			} else {
+			} else {        //if ( false === $field['args']['disable_input'] ) {
 				/**
 				 * This is actually important as passing an empty value
 				 * for custom fields that aren't set in the form allows
@@ -478,6 +478,7 @@ class WPAS_Custom_Fields {
 				$value  = '';
 				$result = $custom_field->update_value( $value, $post_id );
 			}
+
 
 			if ( 1 === $result || 2 === $result ) {
 				$saved[ $field['name'] ] = $value;

@@ -539,7 +539,7 @@ function wpas_register_core_fields() {
 		'sortable'			=> true,		
 		'title'       		=> __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' ),
 		'save_callback'     => 'wpas_update_time_spent_on_ticket',
-		'disable_input'     => true,
+		'readonly'          => true,
 	) );
 
 	/* Add fields for other "free-form" interested parties */

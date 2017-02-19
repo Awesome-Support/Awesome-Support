@@ -17,7 +17,7 @@
 
 		do_action( 'wpas_mb_details_before_time_tracking_statistics' );
 
-		add_filter( 'wpas_cf_field_markup_disable_input', 'wpas_cf_field_markup_disable_input', 10, 2 );
+		add_filter( 'wpas_cf_field_markup_readonly', 'wpas_cf_field_markup_readonly', 10, 2 );
 
 
 		// Show time fields
@@ -47,20 +47,20 @@
 	 * @param $field
 	 * @return bool
 	 */
-	function wpas_cf_field_markup_disable_input( $disabled, $field ) {
+	function wpas_cf_field_markup_readonly( $readonly, $field ) {
 
 		if ( $field[ 'name' ] === 'ttl_calculated_time_spent_on_ticket'
 			|| $field[ 'name' ] === 'ttl_adjustments_to_time_spent_on_ticket'
 			|| $field[ 'name' ] === 'time_adjustments_pos_or_neg'
 		) {
 
-			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $disabled ) ) ) {
-				$disabled = true;
+			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $readonly ) ) ) {
+				$readonly = true;
 			}
 
 		}
 
-		return $disabled;
+		return $readonly;
 
 	}
 
