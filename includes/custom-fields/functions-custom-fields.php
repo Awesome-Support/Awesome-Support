@@ -512,6 +512,7 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
+		'column_callback'   => 'wpas_cf_display_time_adjustment_column',
 		'sortable_column'	=> true,
 		'title'       		=> __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
 	) );
