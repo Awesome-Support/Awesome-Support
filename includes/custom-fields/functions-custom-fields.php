@@ -499,7 +499,7 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'sortable'			=> true,
+		'sortable_column'	=> true,
 		'title'       		=> __( 'Time Spent on Ticket', 'awesome-support' )
 	) );
 
@@ -512,7 +512,7 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'sortable'			=> true,		
+		'sortable_column'	=> true,
 		'title'       		=> __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
 	) );
 	
@@ -537,7 +537,7 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,		
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'sortable'			=> true,		
+		'sortable_column'	=> true,
 		'title'       		=> __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' ),
 		'save_callback'     => 'wpas_update_time_spent_on_ticket',
 		'readonly'          => true,
