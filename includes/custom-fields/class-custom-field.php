@@ -143,7 +143,7 @@ class WPAS_Custom_Field {
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 
 			// @since 3.3.5
-			'readonly'         => false,                      // Disable user input on field.
+			'readonly'              => false,                 // Readonly field by default. Can be updated in custom save_callback
 
 		);
 
@@ -491,8 +491,9 @@ class WPAS_Custom_Field {
 			array_push( $atts, 'required' );
 		}
 
-		/* Add the disabled attribute */
+		/* Add the readonly attribute */
 		if ( isset( $this->field['args']['readonly'] ) ) {
+			/* Allow filter to change readonly setting */
 			if ( true === apply_filters('wpas_cf_field_markup_readonly', $this->field['args']['readonly'], $this->field ) ) {
 				array_push( $atts, 'readonly' );
 			}

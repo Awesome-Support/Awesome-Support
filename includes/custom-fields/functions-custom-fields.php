@@ -151,7 +151,7 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
  * @param  string   $field_id   Field ID
  * @param  array    $field      Custom field
  *
- * @return  int         Returns result of add/update post meta
+ * @return  int|array           Returns result of add/update post meta
  */
 function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field ) {
 
@@ -197,27 +197,28 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	 */
 	$current = get_post_meta( $post_id, $field_id, true );
 
-	/* Update post meta */
-	if ( ( ! empty( $current ) || is_null( $current ) ) ) {
-		if ( false !== update_post_meta( $post_id, $field_id, $value, $current ) ) {
-			$result = 2;
+	/* Action: Update post meta */
+	if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $value ) ) {
+		if ( $current !== $value ) {
+			if ( false !== update_post_meta( $post_id, $field_id, $value, $current ) ) {
+				$result = 2;
+			}
 		}
 	}
 
 	/* Action: Add post meta */
-	elseif ( empty( $current ) ) {
+	elseif ( empty( $current ) && ! empty( $value ) ) {
 		if ( false !== add_post_meta( $post_id, $field_id, $value, true ) ) {
 			$result = 1;
 		}
 	}
 
-	return $result;
+	return array( 'result' => $result, 'value' => $value );
 
 }
 
 
-
-	add_action( 'init', 'wpas_register_core_fields' );
+add_action( 'init', 'wpas_register_core_fields' );
 /**
  * Register the cure custom fields.
  *
