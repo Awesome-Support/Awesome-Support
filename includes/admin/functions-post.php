@@ -131,6 +131,9 @@ function wpas_save_ticket( $post_id ) {
 	 * Store possible logs
 	 */
 	$log = array();
+	
+	/* Now we can save the custom fields */
+	WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
 
 	/**
 	 * If no ticket status is found we are in the situation where
@@ -247,8 +250,6 @@ function wpas_save_ticket( $post_id ) {
 
 	}
 
-	/* Now we can save the custom fields */
-	WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
 
 	/* Log the action */
 	if ( ! empty( $log ) ) {
