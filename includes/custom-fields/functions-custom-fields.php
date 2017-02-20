@@ -141,6 +141,83 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
 
 }
 
+/**
+ * Calculate and save time spent on ticket
+ *
+ * @since  3.3.5
+ *
+ * @param  string   $value      Not used
+ * @param  int      $post_id    Ticket ID
+ * @param  string   $field_id   Field ID
+ * @param  array    $field      Custom field
+ *
+ * @return  int|array           Returns result of add/update post meta
+ */
+function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field ) {
+
+	$result = 0;
+
+	// No time spent on this ticket
+	if ( ! isset ($_POST['wpas_ttl_calculated_time_spent_on_ticket']) ) {
+		return $result;
+	}
+
+	$hours = $minutes = $seconds = 0;
+
+	// Time spent on ticket (hh:mm:ss)
+	sscanf( $_POST['wpas_ttl_calculated_time_spent_on_ticket'], "%d:%d:%d", $hours, $minutes, $seconds);
+
+	// Convert to seconds
+	$calculated_time = $hours * 3600 + $minutes * 60 + $seconds;
+
+	// Calculate time adjustment
+	if( isset ( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
+		&& ! empty( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
+	) {
+		sscanf( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'], "%d:%d:%d", $hours, $minutes, $seconds);
+		$adjustment_time = $hours * 3600 + $minutes * 60 + $seconds;
+
+		if( '+' === $_POST['wpas_time_adjustments_pos_or_neg'] ) {
+			$seconds = $calculated_time + $adjustment_time;
+		}
+		else {
+			$seconds = $calculated_time - $adjustment_time;
+		}
+	}
+
+	// No adjustment
+	else {
+		$seconds = $calculated_time;
+	}
+
+	$value = sprintf("%02d:%02d:%02d", floor($seconds / 3600), ($seconds / 60) % 60, $seconds % 60);
+
+	/**
+	 * Get the current field value.
+	 */
+	$current = get_post_meta( $post_id, $field_id, true );
+
+	/* Action: Update post meta */
+	if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $value ) ) {
+		if ( $current !== $value ) {
+			if ( false !== update_post_meta( $post_id, $field_id, $value, $current ) ) {
+				$result = 2;
+			}
+		}
+	}
+
+	/* Action: Add post meta */
+	elseif ( empty( $current ) && ! empty( $value ) ) {
+		if ( false !== add_post_meta( $post_id, $field_id, $value, true ) ) {
+			$result = 1;
+		}
+	}
+
+	return array( 'result' => $result, 'value' => $value );
+
+}
+
+
 add_action( 'init', 'wpas_register_core_fields' );
 /**
  * Register the cure custom fields.
@@ -399,26 +476,88 @@ function wpas_register_core_fields() {
 	) );
 
 	/* Add fields to store time spent working on a ticket. */
+	$audit_log_for_time_tracking_fields = false ;
+	$audit_log_for_time_tracking_fields = ( isset( $options[ 'keep_audit_log_time_tracking' ] ) && true === boolval( $options[ 'keep_audit_log_time_tracking' ] ) );
+	
+	
+	$show_total_time_in_list = false;
+	$show_total_time_in_list = ( isset( $options[ 'show_total_time_in_ticket_list' ] ) && true === boolval( $options[ 'show_total_time_in_ticket_list' ] ) );
+	
+	$show_total_time_adj_in_list = false;
+	$show_total_time_adj_in_list = ( isset( $options[ 'show_total_time_adj_in_ticket_list' ] ) && true === boolval( $options[ 'show_total_time_adj_in_ticket_list' ] ) );
+	
+	$show_final_time_in_list = false;
+	$show_final_time_in_list = ( isset( $options[ 'show_final_time_in_ticket_list' ] ) && true === boolval( $options[ 'show_final_time_in_ticket_list' ] ) );
+
+	
 	wpas_add_custom_field( 'ttl_calculated_time_spent_on_ticket', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Time Spent on Ticket', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> $show_total_time_in_list,
+		'log'         		=> $audit_log_for_time_tracking_fields,
+		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',
+		'placeholder'		=> 'hh:mm:ss',
+		'hide_front_end'	=> true,
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'custom',
+		'sortable_column'	=> true,
+		'title'       		=> __( 'Gross Time', 'awesome-support' ),
+		'desc'       		=> __( 'Enter the cummulative time spent on ticket by the agent', 'awesome-support' )		
 	) );
 
 	wpas_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Adjustments For Time Spent On Ticket', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> $show_total_time_adj_in_list,
+		'log'         		=> $audit_log_for_time_tracking_fields,
+		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',		
+		'placeholder'		=> 'hh:mm:ss',	
+		'hide_front_end'	=> true,
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'custom',
+		'column_callback'   => 'wpas_cf_display_time_adjustment_column',
+		'sortable_column'	=> true,
+		'title'       		=> __( 'Time Adjustments', 'awesome-support' ),
+		'desc'       		=> __( 'Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin.', 'awesome-support' )				
 	) );
+	
+	wpas_add_custom_field( 'time_adjustments_pos_or_neg', array(
+		'core'        		=> false,
+		'field_type'		=> 'radio',
+		'options' 			=> array( '+' => '+ive', '-' => '-ive' ),
+		'show_column' 		=> false,
+		'log'         		=> false,
+		'hide_front_end'	=> true,
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'custom',
+		'title'       		=> __( '+ive or -ive Adj?', 'awesome-support' )		
+	) );		
 
 	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
-		'core'        => true,
-		'show_column' => false,
-		'log'         => false,
-		'title'       => __( 'Final Amount Of Time Spent On Ticket', 'awesome-support' )
+		'core'        		=> false,
+		'show_column' 		=> $show_final_time_in_list,
+		'log'         		=> $audit_log_for_time_tracking_fields,
+		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',		
+		'placeholder'		=> 'hh:mm:ss',	
+		'hide_front_end'	=> true,		
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'custom',
+		'sortable_column'	=> true,
+		'title'       		=> __( 'Final Time', 'awesome-support' ),
+		'desc'       		=> __( 'This is the time calculated by the system - a sum of gross time and adjustments/credits granted.', 'awesome-support' ),						
+		'save_callback'     => 'wpas_update_time_spent_on_ticket',
+		'readonly'          => true,
 	) );
+	
+	wpas_add_custom_field( 'time_notes', array(
+		'field_type'		=> 'wysiwyg',
+		'core'        		=> false,
+		'show_column' 		=> false,
+		'log'         		=> false,
+		'hide_front_end'	=> true,		
+		'backend_only'		=> true,
+		'backend_display_type'	=> 'custom',
+		'title'       		=> __( 'Notes', 'awesome-support' )
+	) );
+	
 
 	/* Add fields for other "free-form" interested parties */
 	wpas_add_custom_field( 'first_addl_interested_party_name', array(

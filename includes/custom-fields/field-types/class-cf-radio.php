@@ -22,9 +22,14 @@ class WPAS_CF_Radio extends WPAS_Custom_Field {
 		$output        = '<legend class="wpas-label-radio">{{label}}</legend>';
 		$this->options = $this->field_args['options'];
 
+		// Radio buttons cannot be set to readonly. (A missing HTML spec??) To overcome this
+		// we set the selected radio button option to 'checked' and all others to 'disabled'.
+		$readonly = wpas_cf_field_markup_readonly( $this->get_field_arg( 'readonly', false ), $this->field ) ? 'disabled' : '';
+		//$readonly = $this->get_field_arg( 'readonly', false ) ? 'disabled' : '';
+
 		foreach ( $this->options as $option_id => $option_label ) {
-			$selected = $option_id === $this->populate() ? 'checked' : '';
-			$output .= sprintf( "<div class='wpas-radio'><label><input type='radio' name='%s' value='%s' %s> %s</label></div>", $this->get_field_id(), $option_id, $selected, $option_label );
+			$selected = $option_id === $this->populate() ? 'checked' : $readonly;
+			$output .= sprintf( "<div class='wpas-radio'><label><input type='radio' name='%s' value='%s' %s > %s</label></div>", $this->get_field_id(), $option_id, $selected, $option_label );
 		}
 
 		return $output;
