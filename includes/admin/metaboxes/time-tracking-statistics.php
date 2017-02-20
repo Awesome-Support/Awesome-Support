@@ -22,11 +22,15 @@
 
 		// Show time fields
 	?>
-    <em>
+    <b>
         <div class="wpas-time-tracking-statistics-mb-time-display-header">
-			<?php echo __( 'Time Summary' ); ?>
+			<?php
+			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $readonly ) ) ){			
+				echo __( 'Note: Read-only Configuration - You Are Not Permitted To Edit Time Data' ); 
+			 }
+			 ?>
         </div>
-    </em>
+    </b>
 
 	<?php
 
