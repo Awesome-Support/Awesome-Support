@@ -132,13 +132,19 @@ class WPAS_Custom_Field {
 			// @since 3.3.5
 			'hide_front_end'		=> false,				  // Hide the field from being rendered by submission_form_fields() which results in it being hidden from the front end? 
 															  // Setting to true also means that the backend has to have its own rendering logic so be careful.
-			'backend_only'			=> false,				  // If set to true, will only show on backend AND will show in separate metabox.
-			/* The following parameters are users for taxonomies only. */
+			'backend_only'			=> false,				  // If set to true, will only show on backend AND will show in separate metabox (no custom rendering mandatory unlike the hide_front_end option above.)
+			'backend_display_type'	=> 'std',				  // If set to "std" then do nothing special - let the default display routines determine which metabox to show the field in. 
+															  // Set to custom to remove from all default metaboxes - something else will have to handle the display.
+			/* The following parameters are used for taxonomies only. */
 			'taxo_std'              => false,                 // For taxonomies, should it behave like a standard WordPress taxonomy
 			'label'                 => '',
 			'label_plural'          => '',
 			'taxo_hierarchical'     => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+
+			// @since 3.3.5
+			'readonly'              => false,                 // Readonly field by default. Can be updated in custom save_callback
+
 		);
 
 		return $defaults;
@@ -483,6 +489,14 @@ class WPAS_Custom_Field {
 		/* Add the required attribute */
 		if ( true === $this->field['args']['required'] ) {
 			array_push( $atts, 'required' );
+		}
+
+		/* Add the readonly attribute */
+		if ( isset( $this->field['args']['readonly'] ) ) {
+			/* Allow filter to change readonly setting */
+			if ( true === apply_filters('wpas_cf_field_markup_readonly', $this->field['args']['readonly'], $this->field ) ) {
+				array_push( $atts, 'readonly' );
+			}
 		}
 
 		$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field, $this->field ) ), $field );

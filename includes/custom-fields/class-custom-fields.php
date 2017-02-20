@@ -313,6 +313,11 @@ class WPAS_Custom_Fields {
 					continue;
 				}
 				
+				/* Do not display if backend display type is set to custom */
+				If ( 'custom' === $field['args']['backend_display_type'] ) {
+					continue;
+				}
+				
 				$this_field = new WPAS_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
@@ -338,7 +343,7 @@ class WPAS_Custom_Fields {
 
 			foreach ( $fields as $name => $field ) {
 
-				If  ( true === $field['args']['backend_only'] ) {
+				If  ( ( true === $field['args']['backend_only'] ) && ( 'custom' <> $field['args']['backend_display_type'] ) ) {
 				
 					$this_field = new WPAS_Custom_Field( $name, $field );
 					$output     = $this_field->get_output();
@@ -472,6 +477,12 @@ class WPAS_Custom_Fields {
 				 */
 				$value  = '';
 				$result = $custom_field->update_value( $value, $post_id );
+			}
+
+			/* Allow custom save_callback (if specified) to modify $value if needed */
+			if( is_array( $result ) ) {
+				$value  = $result[ 'value' ];
+				$result = $result[ 'result' ];
 			}
 
 			if ( 1 === $result || 2 === $result ) {
