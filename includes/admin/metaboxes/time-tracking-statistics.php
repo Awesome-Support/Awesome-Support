@@ -58,6 +58,13 @@
 
 			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $readonly ) ) ) {
 				$readonly = true;
+
+				// Disable tiny mce editor
+				add_filter( 'tiny_mce_before_init', function( $args ) {
+					$args['readonly'] = true;
+					return $args;
+				} );
+
 			}
 
 		}
