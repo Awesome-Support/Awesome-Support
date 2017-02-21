@@ -481,7 +481,7 @@ class WPAS_Custom_Fields {
 
 			/* Allow custom save_callback (if specified) to modify $value if needed */
 			if( is_array( $result ) ) {
-				$value  = $result[ 'value' ];
+				$value  = $custom_field->get_sanitized_value( $result[ 'value' ] );
 				$result = $result[ 'result' ];
 			}
 
