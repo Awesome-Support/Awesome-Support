@@ -481,8 +481,17 @@ class WPAS_Custom_Fields {
 
 			/* Allow custom save_callback (if specified) to modify $value if needed */
 			if( is_array( $result ) ) {
-				$value  = $result[ 'value' ];
-				$result = $result[ 'result' ];
+				$value  = $custom_field->get_sanitized_value( $result[ 'value' ] );
+
+				/* Validate return $result is int and valid */
+				if( (int) $result[ 'result' ] === $result[ 'result' ]
+					&& 0 <= $result [ 'result' ] && 4 >= $result[ 'result' ]
+				) {
+					$result = $result[ 'result' ];
+				} else {
+					/* Invalid $result returned from custom save_callback */
+					$result = 0;
+				}
 			}
 
 			if ( 1 === $result || 2 === $result ) {
