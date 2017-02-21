@@ -875,39 +875,38 @@ function wpas_cf_display_status( $name, $post_id ) {
 
 }
 
-	/**
-	 * Display the ticket priority.
-	 *
-	 * Gets the ticket priority and formats it according to the plugin settings.
-	 *
-	 * @since  3.3.4
-	 *
-	 * @param string   $name    Field / column name. This parameter is important as it is automatically passed by some
-	 *                          filters
-	 * @param  integer $post_id ID of the post being processed
-	 *
-	 * @return string           Formatted ticket priority
-	 */
-	function wpas_cf_display_priority( $name, $post_id ) {
+/**
+ * Display the ticket priority.
+ *
+ * Gets the ticket priority and formats it according to the plugin settings.
+ *
+ * @since  3.3.4
+ *
+ * @param string   $name    Field / column name. This parameter is important as it is automatically passed by some
+ *                          filters
+ * @param  integer $post_id ID of the post being processed
+ *
+ * @return string           Formatted ticket priority
+ */
+function wpas_cf_display_priority( $name, $post_id ) {
 
-		global $pagenow;
+	global $pagenow;
 
-		$terms = array();
+	$terms = array();
 
-		if ( ! $terms = get_the_terms( $post_id, $name ) ) {
-		    return;
-		}
-
-		$term = array_shift( $terms ); // Will get first term, and remove it from $terms array
-
-		$label = __( $term->name, 'awesome-support' );
-		$color = get_term_meta( $term->term_id, 'color', true );
-		$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
-
-		echo $tag;
-
+	if ( ! $terms = get_the_terms( $post_id, $name ) ) {
+	    return;
 	}
 
+	$term = array_shift( $terms ); // Will get first term, and remove it from $terms array
+
+	$label = __( $term->name, 'awesome-support' );
+	$color = get_term_meta( $term->term_id, 'color', true );
+	$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+
+	echo $tag;
+
+}
 
 /**
  * Get the notification wrapper markup
@@ -1162,3 +1161,40 @@ function wpas_terms_and_conditions_modal( $name ) {
 	return true;
 
 }
+
+add_filter( 'wpas_cf_field_markup_readonly', 'wpas_cf_field_markup_time_tracking_readonly', 10, 2 );
+/**
+ * Check AS Settings to see if agents are allowed to manually edit
+ * time tracking fields. If not set cf readonly setting.
+ *
+ * Filter
+ * @param $disabled
+ * @param $field
+ *
+ * @return bool
+ */
+function wpas_cf_field_markup_time_tracking_readonly( $readonly, $field ) {
+
+	if ( $field[ 'name' ] === 'ttl_calculated_time_spent_on_ticket'
+	     || $field[ 'name' ] === 'ttl_adjustments_to_time_spent_on_ticket'
+	     || $field[ 'name' ] === 'time_adjustments_pos_or_neg'
+	     || $field[ 'name' ] === 'time_notes'
+	) {
+
+		if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $readonly ) ) ) {
+				$readonly = true;
+
+				// Disable tiny mce editor
+				add_filter( 'tiny_mce_before_init', function( $args ) {
+					$args['readonly'] = true;
+					return $args;
+				} );
+
+			}
+
+	}
+
+	return $readonly;
+
+}
+

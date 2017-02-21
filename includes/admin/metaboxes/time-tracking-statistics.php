@@ -17,9 +17,6 @@
 
 		do_action( 'wpas_mb_details_before_time_tracking_statistics' );
 
-		add_filter( 'wpas_cf_field_markup_readonly', 'wpas_cf_field_markup_readonly', 10, 2 );
-
-
 		// Show time fields
 	?>
     <b>
@@ -43,39 +40,3 @@
 		do_action( 'wpas_mb_details_after_time_tracking_statistics' );
 	?>
 </div>
-
-<?php
-
-	/**
-     * Filter
-	 * @param $disabled
-	 * @param $field
-	 * @return bool
-	 */
-	function wpas_cf_field_markup_readonly( $readonly, $field ) {
-
-		if ( $field[ 'name' ] === 'ttl_calculated_time_spent_on_ticket'
-			|| $field[ 'name' ] === 'ttl_adjustments_to_time_spent_on_ticket'
-			|| $field[ 'name' ] === 'time_adjustments_pos_or_neg'
-			|| $field[ 'name' ] === 'time_notes'
-		) {
-
-			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $readonly ) ) ) {
-				$readonly = true;
-
-				// Disable tiny mce editor
-				add_filter( 'tiny_mce_before_init', function( $args ) {
-					$args['readonly'] = true;
-					return $args;
-				} );
-
-			}
-
-		}
-
-		return $readonly;
-
-	}
-
-?>
-
