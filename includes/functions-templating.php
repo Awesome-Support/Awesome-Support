@@ -1182,15 +1182,15 @@ function wpas_cf_field_markup_time_tracking_readonly( $readonly, $field ) {
 	) {
 
 		if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $readonly ) ) ) {
-				$readonly = true;
+			$readonly = true;
 
-				// Disable tiny mce editor
-				add_filter( 'tiny_mce_before_init', function( $args ) {
-					$args['readonly'] = true;
-					return $args;
-				} );
+			// Disable tiny mce editor
+			add_filter( 'tiny_mce_before_init', function( $args ) {
+				$args['readonly'] = true;
+				return $args;
+			} );
 
-			}
+		}
 
 	}
 
