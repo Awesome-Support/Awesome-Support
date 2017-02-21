@@ -12,7 +12,7 @@
 		die;
 	} ?>
 
-<div class="wpas-time-tracking-statistics-mb">
+<div class="wpas-custom-fields wpas-time-tracking-statistics-mb">
 	<?php
 
 		do_action( 'wpas_mb_details_before_time_tracking_statistics' );
