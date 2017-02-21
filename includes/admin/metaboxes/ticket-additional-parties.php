@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 } ?>
 
-<div class="wpas-ticket-addl-parties-mb">
+<div class="wpas-custom-fields wpas-ticket-addl-parties-mb">
 	<?php
 
 	do_action( 'wpas_mb_details_before_ticket_addl_parties' );

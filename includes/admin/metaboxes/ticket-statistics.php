@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 } ?>
 
-<div class="wpas-ticket-statistics-mb">
+<div class="wpas-custom-fields wpas-ticket-statistics-mb">
 	<?php
 	do_action( 'wpas_mb_details_before_ticket_statistics' );
 	?>
