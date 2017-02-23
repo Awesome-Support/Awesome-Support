@@ -302,7 +302,7 @@ class WPAS_File_Upload {
 	public function set_upload_dir( $upload ) {
 
 		/* Get the ticket ID */
-		$ticket_id = ! is_null( $this->parent_id ) ? $this->parent_id : $this->post_id;
+		$ticket_id = ! empty( $this->parent_id ) ? $this->parent_id : $this->post_id;
 
 		if ( empty( $ticket_id ) ) {
 			return $upload;
