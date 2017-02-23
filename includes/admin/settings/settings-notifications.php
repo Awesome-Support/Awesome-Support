@@ -180,26 +180,7 @@ function wpas_core_settings_notifications( $def ) {
 					'name' => __( 'Ticket Will Be Closed', 'awesome-support' ),
 					'type' => 'heading',
 				),
-				/*array(
-					'name'    => __( 'Enable', 'awesome-support' ),
-					'id'      => 'enable_will_close',
-					'type'    => 'checkbox',
-					'default' => true,
-					'desc'    => __( 'Do you want to activate this e-mail template?', 'awesome-support' )
-				),
-				array(
-					'name'    => __( 'Subject', 'awesome-support' ),
-					'id'      => 'subject_will_close',
-					'type'    => 'text',
-					'default' => ''
-				),
-				array(
-					'name'     => __( 'Content', 'awesome-support' ),
-					'id'       => 'content_will_close',
-					'type'     => 'editor',
-					'default'  => '',
-					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),*/
+
 				/* Ticket closed */
 				array(
 					'name' => __( 'Ticket Closed (by agent)', 'awesome-support' ),
