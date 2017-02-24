@@ -118,7 +118,7 @@ class WPAS_Tickets_List {
 	 * @return mixed
 	 */
 	public function get_custom_fields() {
-		return WPAS()->custom_fields->get_custom_fields(); //$this->get_custom_fields();
+		return WPAS()->custom_fields->get_custom_fields(); 
 
 	}
 
@@ -163,10 +163,6 @@ class WPAS_Tickets_List {
 
 			// We add all our columns where the date was and move the date column to the end
 			if ( 'date' === $col_id ) {
-
-				//continue;
-
-				//} else if ( 'status' === $col_id ) {
 
 				$new[ 'status' ] = $col_label;
 
@@ -329,9 +325,6 @@ class WPAS_Tickets_List {
 
 		$new = array();
 
-		//$new[ 'author' ] = 'author';
-		//$new[ 'id' ] = 'id';
-
 		$fields = $this->get_custom_fields();
 
 		foreach ( $fields as $field ) {
@@ -375,7 +368,6 @@ class WPAS_Tickets_List {
 		if ( !isset( $_GET[ 'post_type' ] )	|| 'ticket' !== $_GET[ 'post_type' ]
 			|| 'edit.php' !== $pagenow
 			|| $query->query[ 'post_type' ] !== 'ticket'
-			//|| 'ticket' !== $query->get( 'post_type' )
 			|| !$query->is_main_query()
 		) {
 			return;
@@ -584,7 +576,7 @@ SQL;
 			$this_sort = isset( $_GET[ 'post_status' ] ) ? filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING ) : 'any';
 			$all_selected = ( 'any' === $this_sort ) ? 'selected="selected"' : '';
 
-			$dropdown = '<select id="post_status" name="post_status" >'; //disabled >';
+			$dropdown = '<select id="post_status" name="post_status" >'; 
 			$dropdown .= "<option value='any' $all_selected>" . __( 'All Status', 'awesome-support' ) . "</option>";
 
 			/**
@@ -631,7 +623,6 @@ SQL;
 				'select2'   => true,
 				'data_attr' => array( 'capability' => 'edit_ticket',
 				                      'allowClear' => true,
-				                      //'multiple'  => true,
 				                      'placeholder' => $selected,
 					),
 			);
@@ -916,7 +907,7 @@ SQL;
 
 		// Map query vars to their keys, or get them if endpoints are not supported
 		foreach ( $fields as $key => $var ) {
-			if ( isset( $_GET[ $var[ 'name' ] ]) ) {    //&& ! empty($_GET[ $var[ 'name' ] ] ) ) {
+			if ( isset( $_GET[ $var[ 'name' ] ]) ) {
 				$wp->query_vars[ $key ] = $_GET[ $var[ 'name' ] ];
 			} elseif ( isset( $wp->query_vars[ $var[ 'name' ] ] ) ) {
 				$wp->query_vars[ $key ] = $wp->query_vars[ $var ];
@@ -967,15 +958,13 @@ SQL;
 
 		if ( !isset( $wp_query->query[ 'post_type' ] )
 			|| $wp_query->query[ 'post_type' ] !== 'ticket'
-			//|| !$wp_query->is_main_query()
-			//|| !isset( $wp_query->query[ 'orderby' ] )
 		) {
 			return $clauses;
 		}
 
 
 		$fields = $this->get_custom_fields();
-		//$orderby = $wp_query->query[ 'orderby' ];
+
 		$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : '';
 
 		if ( !empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {

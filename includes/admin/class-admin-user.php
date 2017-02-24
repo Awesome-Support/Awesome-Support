@@ -25,7 +25,6 @@ class WPAS_User {
 		add_action( 'personal_options_update',    array( $this, 'save_user_custom_fields' ) );    // Save the user preferences
 		add_action( 'edit_user_profile_update',   array( $this, 'save_user_custom_fields' ) );    // Save the user preferences when modified by admins
 		add_action( 'user_register',              array( $this, 'enable_assignment' ), 10, 1 );   // Enable auto-assignment for new users
-//		add_action( 'profile_update',             array( $this, 'maybe_enable_assignment' ), 10, 2 );
 		add_filter( 'manage_users_columns',       array( $this, 'auto_assignment_user_column' ) );
 		add_filter( 'manage_users_custom_column', array( $this, 'auto_assignment_user_column_content' ), 10, 3 );
 
@@ -36,7 +35,6 @@ class WPAS_User {
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_smart_tickets_order' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_after_reply' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_user_view_all_tickets' ), 10, 1 );
-//		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_agent_department' ), 10, 1 );
 	}
 
 	/**
