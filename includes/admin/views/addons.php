@@ -69,7 +69,7 @@ if ( false === $items ) {
 		if ( false === $items ):
 			?><p>To check out all our addons please visit <a href="http://getawesomesupport.com/addons" target="_blank">http://getawesomesupport.com/addons</a></p><?php
 		else:
-			// wpas_debug_display( $items );
+
 			foreach ( $items as $key => $item ):
 
 				/* Get the item price */

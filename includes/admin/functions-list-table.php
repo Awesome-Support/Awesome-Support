@@ -108,8 +108,6 @@ function wpas_hide_others_tickets( $query ) {
 
 }
 
-
-//add_action( 'pre_get_posts', 'wpas_limit_open', 10, 1 );
 /**
  * Limit the list of tickets to open.
  *
