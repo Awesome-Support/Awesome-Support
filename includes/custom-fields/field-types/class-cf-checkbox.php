@@ -72,7 +72,7 @@ class WPAS_CF_Checkbox extends WPAS_Custom_Field {
 
 		foreach ( $this->options as $option_id => $option_label ) {
 			$selected = in_array( $option_id, $values ) ? 'checked="checked"' : '';
-			$output .= sprintf( "<label><input type='checkbox' name='%s' value='%s' %s> %s</label>", $name_attr, $option_id, $selected, $option_label );
+			$output .= sprintf( "<div class='wpas-checkbox'><label><input type='checkbox' name='%s' value='%s' %s> %s</label></div>", $name_attr, $option_id, $selected, $option_label );
 		}
 
 		return $output;
