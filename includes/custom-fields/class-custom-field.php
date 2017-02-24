@@ -785,9 +785,18 @@ class WPAS_Custom_Field {
 			else {
 
 				/**
+				 * Check if custom field exists - requires WP 3.3.0 or higher.
+				 *
+				 * @since   3.3.5
+				 *
+				 * @var  $key_exists
+				 */
+				$key_exists = metadata_exists( 'post', $post_id, $field_id );
+
+				/**
 				 * Get the current field value.
 				 */
-				$current = get_post_meta( $post_id, $field_id, true );
+				$current    = $key_exists ? get_post_meta( $post_id, $field_id, true ) : null ;
 
 				/**
 				 * First case scenario
@@ -797,7 +806,7 @@ class WPAS_Custom_Field {
 				 *
 				 * Action: Delete option
 				 */
-				if ( ( ! empty( $current ) || is_null( $current ) ) && empty( $value ) ) {
+				if ( $key_exists && empty( $value ) ) {
 					if ( delete_post_meta( $post_id, $field_id, $current ) ) {
 						$result = 3;
 					}
@@ -810,7 +819,7 @@ class WPAS_Custom_Field {
 				 *
 				 * Action: Update post meta OR delete it
 				 */
-				elseif ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $value ) ) {
+				elseif ( $key_exists && ! empty( $value ) ) {
 
 					/* Make sure the old and new values aren't the same */
 					if ( $current !== $value ) {
@@ -828,7 +837,7 @@ class WPAS_Custom_Field {
 				 *
 				 * Action: Add post meta
 				 */
-				elseif ( empty( $current ) && ! empty( $value ) ) {
+				elseif ( ! $key_exists && ! empty( $value ) ) {
 					if ( false !== add_post_meta( $post_id, $field_id, $value, true ) ) {
 						$result = 1;
 					}
