@@ -928,15 +928,18 @@ SQL;
 	 */
 	public function posts_where( $where, $wp_query ) {
 
-		if ( is_admin()
+		if ( is_admin() && is_main_query()
+		    && ! is_null( filter_input( INPUT_GET, 'id' ) )
 			&& 'ticket' === $wp_query->query[ 'post_type' ]
 		) {
 
 			global $wpdb;
 
+			$ticket_id = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
+
 			/* Filter by Ticket ID */
-			if ( isset( $_GET[ 'id' ] ) && !empty( $_GET[ 'id' ] ) && intval( $_GET[ 'id' ] ) != 0 ) {
-				$where .= " AND {$wpdb->posts}.ID = " . intval( filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING ) );
+			if ( ! empty( $ticket_id ) && intval( $ticket_id ) != 0 ) {
+				$where .= " AND {$wpdb->posts}.ID = " . intval( $ticket_id );
 			}
 		}
 
