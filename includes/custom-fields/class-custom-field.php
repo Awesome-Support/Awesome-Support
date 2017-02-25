@@ -492,7 +492,7 @@ class WPAS_Custom_Field {
 		}
 
 		/* Add the readonly attribute */
-		if ( isset( $this->field['args']['readonly'] ) ) {
+		if ( true === $this->field['args']['readonly'] ) {
 			/* Allow filter to change readonly setting */
 			if ( true === apply_filters('wpas_cf_field_markup_readonly', $this->field['args']['readonly'], $this->field ) ) {
 				array_push( $atts, 'readonly' );
