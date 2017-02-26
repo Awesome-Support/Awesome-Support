@@ -531,7 +531,7 @@ class WPAS_Product_Sync {
 		foreach ( $terms as $term ) {
 
 			// If the term is a synchronized product we build the custom term object
-			if ( $this->is_synced_term( $term ) && array_key_exists( $term->name, $index ) ) {
+			if ( $this->is_synced_term( $term ) && is_array( $term ) && array_key_exists( $term->name, $index ) ) {
 				$term = $this->create_term_object( $index[ $term->name ] );
 			}
 

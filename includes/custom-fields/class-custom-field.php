@@ -95,8 +95,7 @@ class WPAS_Custom_Field {
 		/**
 		 * Get the ID of the post the custom field relates to.
 		 */
-		$this->post_id = false; // Set the default value
-		$this->post_id = isset( $post ) ? $post->ID : filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+		$this->post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
 
 	}
 
@@ -321,8 +320,12 @@ class WPAS_Custom_Field {
 
 		if ( empty( $value ) ) {
 
-			if ( isset( $_GET[$this->get_field_id()] ) ) {
-				$value = is_array( $_GET[$this->get_field_id()] ) ? filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY ) : filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING );
+			$queried_value = filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING );
+
+			if ( ! empty( $queried_value ) ) {
+				$value = is_array( $_GET[$this->get_field_id()] )
+					? filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY )
+					: filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING );
 			}
 
 			$fields = WPAS()->session->get( 'submission_form' );
@@ -492,7 +495,7 @@ class WPAS_Custom_Field {
 		}
 
 		/* Add the readonly attribute */
-		if ( true === $this->field['args']['readonly'] ) {
+		if ( ! empty( $this->field['args']['readonly'] ) && true === $this->field['args']['readonly'] ) {
 			/* Allow filter to change readonly setting */
 			if ( true === apply_filters('wpas_cf_field_markup_readonly', $this->field['args']['readonly'], $this->field ) ) {
 				array_push( $atts, 'readonly' );

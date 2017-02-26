@@ -383,7 +383,7 @@ class WPAS_Tickets_List {
 
 					case 'date':
 					case 'status':
-					case 'assignee':
+					//case 'assignee':
 					case 'author':
 					case 'id':
 					case 'wpas-activity':
@@ -978,13 +978,24 @@ SQL;
 
 			if ( 'taxonomy' == $fields[ $orderby ][ 'args' ][ 'field_type' ] && !$fields[ $orderby ][ 'args' ][ 'taxo_std' ] ) {
 
-				$clauses[ 'join' ] .= <<<SQL
+
+				if (strpos($clauses['join'], $wpdb->term_relationships ) === false) {
+
+					$clauses[ 'join' ] .= <<<SQL
 LEFT OUTER JOIN {$wpdb->term_relationships} ON {$wpdb->posts}.ID={$wpdb->term_relationships}.object_id
 LEFT OUTER JOIN {$wpdb->term_taxonomy} USING (term_taxonomy_id)
 LEFT OUTER JOIN {$wpdb->terms} USING (term_id)
 SQL;
+				}
+				else {
 
-				$clauses[ 'where' ] .= " AND (taxonomy = '" . $orderby . "' AND taxonomy IS NOT NULL)"; //OR taxonomy IS NULL)";
+					$clauses[ 'join' ] .= <<<SQL
+LEFT OUTER JOIN {$wpdb->term_taxonomy} USING (term_taxonomy_id)
+LEFT OUTER JOIN {$wpdb->terms} USING (term_id)
+SQL;
+				}
+
+				$clauses[ 'where' ] .= " AND (taxonomy = '" . $orderby . "' AND taxonomy IS NOT NULL)";
 				$clauses[ 'groupby' ] = "object_id";
 				$clauses[ 'orderby' ] = "GROUP_CONCAT({$wpdb->terms}.name ORDER BY name ASC) " . $order;
 
