@@ -38,7 +38,7 @@ class WPAS_Tickets_List {
 			add_action( 'restrict_manage_posts',                array( $this, 'custom_taxonomy_filter' ), 10, 2 );
 			add_filter( 'parse_query',                          array( $this, 'custom_taxonomy_filter_convert_id_term' ), 10, 1 );
 			add_filter( 'parse_query',                          array( $this, 'custom_meta_query' ), 11, 1 );
-			add_filter( 'posts_clauses',                        array( $this, 'post_clauses_orderby' ), 50, 2 );
+			add_filter( 'posts_clauses',                        array( $this, 'post_clauses_orderby' ), 5, 2 );
 			add_filter( 'posts_where',                          array( $this, 'posts_where' ), 10, 2 );
 			add_action( 'parse_request',                        array( $this, 'parse_request' ), 10, 1 );
 			add_action( 'pre_get_posts',                        array( $this, 'set_ordering_query_var' ), 100, 1 );
@@ -383,7 +383,7 @@ class WPAS_Tickets_List {
 
 					case 'date':
 					case 'status':
-					case 'assignee':
+					//case 'assignee':
 					case 'author':
 					case 'id':
 					case 'wpas-activity':
@@ -928,15 +928,18 @@ SQL;
 	 */
 	public function posts_where( $where, $wp_query ) {
 
-		if ( is_admin()
+		if ( is_admin() && is_main_query()
+		    && ! is_null( filter_input( INPUT_GET, 'id' ) )
 			&& 'ticket' === $wp_query->query[ 'post_type' ]
 		) {
 
 			global $wpdb;
 
+			$ticket_id = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
+
 			/* Filter by Ticket ID */
-			if ( isset( $_GET[ 'id' ] ) && !empty( $_GET[ 'id' ] ) && intval( $_GET[ 'id' ] ) != 0 ) {
-				$where .= " AND {$wpdb->posts}.ID = " . intval( filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING ) );
+			if ( ! empty( $ticket_id ) && intval( $ticket_id ) != 0 ) {
+				$where .= " AND {$wpdb->posts}.ID = " . intval( $ticket_id );
 			}
 		}
 
@@ -958,10 +961,10 @@ SQL;
 
 		if ( !isset( $wp_query->query[ 'post_type' ] )
 			|| $wp_query->query[ 'post_type' ] !== 'ticket'
+			|| ! $wp_query->query_vars_changed
 		) {
 			return $clauses;
 		}
-
 
 		$fields = $this->get_custom_fields();
 
@@ -975,15 +978,19 @@ SQL;
 
 			if ( 'taxonomy' == $fields[ $orderby ][ 'args' ][ 'field_type' ] && !$fields[ $orderby ][ 'args' ][ 'taxo_std' ] ) {
 
+				/*
+				 *  Alias taxonomy tables used by sorting in
+				 *  case there is an active taxonomy filter. (is_tax())
+				 */
 				$clauses[ 'join' ] .= <<<SQL
-LEFT OUTER JOIN {$wpdb->term_relationships} ON {$wpdb->posts}.ID={$wpdb->term_relationships}.object_id
-LEFT OUTER JOIN {$wpdb->term_taxonomy} USING (term_taxonomy_id)
-LEFT OUTER JOIN {$wpdb->terms} USING (term_id)
+LEFT OUTER JOIN {$wpdb->term_relationships} AS t_rel ON {$wpdb->posts}.ID=t_rel.object_id
+LEFT OUTER JOIN {$wpdb->term_taxonomy} AS t_t ON t_t.term_taxonomy_id=t_rel.term_taxonomy_id
+LEFT OUTER JOIN {$wpdb->terms} AS tms ON tms.term_id=t_t.term_id
 SQL;
 
-				$clauses[ 'where' ] .= " AND (taxonomy = '" . $orderby . "' AND taxonomy IS NOT NULL)"; //OR taxonomy IS NULL)";
-				$clauses[ 'groupby' ] = "object_id";
-				$clauses[ 'orderby' ] = "GROUP_CONCAT({$wpdb->terms}.name ORDER BY name ASC) " . $order;
+				$clauses[ 'where' ] .= " AND (t_t.taxonomy = '" . $orderby . "' AND t_t.taxonomy IS NOT NULL)";
+				$clauses[ 'groupby' ] = "t_rel.object_id";
+				$clauses[ 'orderby' ] = "GROUP_CONCAT(tms.name ORDER BY tms.name ASC) " . $order;
 
 			} elseif ( 'id' === $orderby ) {
 
@@ -993,19 +1000,19 @@ SQL;
 
 			} elseif ( 'assignee' === $orderby ) {
 
-				//Join user table onto the postmeta table
-				$clauses[ 'join' ] .= " LEFT JOIN {$wpdb->users} ag ON ( {$wpdb->prefix}postmeta.meta_key='_wpas_assignee' AND CAST({$wpdb->prefix}postmeta.meta_value AS INT)=ag.ID)";
+				// Join user table onto the postmeta table
+				$clauses[ 'join' ] .= " LEFT JOIN {$wpdb->users} ag ON ( {$wpdb->prefix}postmeta.meta_key='_wpas_assignee' AND CAST({$wpdb->prefix}postmeta.meta_value AS UNSIGNED)=ag.ID)";
 				$clauses[ 'orderby' ] = "ag.display_name " . $order;
 
 			} elseif ( 'author' === $orderby ) {
 
-				//Join user table onto the postmeta table
+				// Join user table onto the postmeta table
 				$clauses[ 'join' ] .= " LEFT JOIN {$wpdb->users} ON {$wpdb->prefix}posts.post_author={$wpdb->users}.ID";
 				$clauses[ 'orderby' ] = " {$wpdb->users}.display_name " . $order;
 
 			} else {
 
-				/* Exclude empty values in custom fields */
+				// Exclude empty values in custom fields
 				$clauses[ 'where' ] .= " AND TRIM(IFNULL({$wpdb->postmeta}.meta_value,''))<>'' ";
 
 			}

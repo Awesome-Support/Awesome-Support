@@ -71,3 +71,5 @@ assets/public/css/public.css
 assets/public/js/public-dist.js
 assets/public/js/public-dist.js.map
 themes/default/css/style.css
+/phpdocs/
+/docs/
