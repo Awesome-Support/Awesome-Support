@@ -39,9 +39,8 @@ function wpas_add_default_channel_terms($reset = false) {
 	if (!$reset) {
 		
 		$added_before = boolval( get_option( 'wpas_default_channels_added', false ) );
-		$is_channel_field_active = boolval( wpas_get_option('channel_show_in_ticket_list', false) );
 		
-		if ( false === $is_channel_field_active || true ===  $added_before) {
+		if ( true ===  $added_before) {
 			return;
 		}
 	}

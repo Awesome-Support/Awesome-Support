@@ -217,7 +217,6 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 
 }
 
-
 add_action( 'init', 'wpas_register_core_fields' );
 /**
  * Register the cure custom fields.
@@ -432,7 +431,7 @@ function wpas_register_core_fields() {
 		'default'               => 'standard ticket form',
 		'title'           		=> __( 'Channel', 'awesome-support' )		
 	) );
-
+	
 	/* Add additional assignees to ticket */
 	if ( isset( $options[ 'multiple_agents_per_ticket' ] ) && true === boolval( $options[ 'multiple_agents_per_ticket' ] ) ) {
 		wpas_add_custom_field( 'secondary_assignee', array(
@@ -594,4 +593,15 @@ function wpas_register_core_fields() {
 		apply_filters( 'wpas_add_custom_fields', array() );
 	}
 
+}
+
+add_action( 'admin_init', 'insert_channel_terms' );
+/**
+ * Make sure the channel terms are registered.  
+ *
+ * @since  3.6.0
+ * @return void
+ */
+function insert_channel_terms() {
+	wpas_add_default_channel_terms(false);
 }
