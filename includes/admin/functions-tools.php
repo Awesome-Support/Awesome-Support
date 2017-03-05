@@ -47,6 +47,8 @@ function wpas_system_tools() {
 
 	}
 
+	do_action('execute_additional_tools',sanitize_text_field( $_GET['tool'] ));
+	
 	/* Redirect in "read-only" mode */
 	$url = add_query_arg( array(
 			'post_type' => 'ticket',
