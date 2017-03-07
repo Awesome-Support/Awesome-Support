@@ -521,19 +521,28 @@ class WPAS_Product_Sync {
 		foreach ( $query->posts as $post ) {
 			if( isset( $post->ID ) ) {
 				$index[ $post->ID ] = $post;
-			}
+			} else {
+			    $index[ $post ] = $post;
+            }
 		}
 
 		// We will store the new terms in this array
 		$new_terms = array();
 
 		// Now go go through each term, maybe update it, and add it to the final terms array
-		foreach ( $terms as $term ) {
+		foreach ( $terms as $key => $term ) {
 
-			// If the term is a synchronized product we build the custom term object
-			if ( $this->is_synced_term( $term ) && is_array( $term ) && array_key_exists( $term->name, $index ) ) {
-				$term = $this->create_term_object( $index[ $term->name ] );
-			}
+		    // If the term is a synchronized product we build the custom term object
+		    if ( $this->is_synced_term( $term ) ) {
+
+			    $tid = is_a( $term, 'WP_Term' ) ? (int) $term->name : (int) $term;
+
+                // Create the custom term object
+                if( array_key_exists( (int) $tid, $index ) ) {
+	                $term = $this->create_term_object( $index[ $tid ] );
+                }
+
+		    }
 
 			if ( false !== $term ) {
 				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $this->taxonomy );
