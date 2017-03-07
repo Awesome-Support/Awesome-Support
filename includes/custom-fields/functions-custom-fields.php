@@ -487,6 +487,9 @@ function wpas_register_core_fields() {
 	
 	$show_final_time_in_list = false;
 	$show_final_time_in_list = ( isset( $options[ 'show_final_time_in_ticket_list' ] ) && true === boolval( $options[ 'show_final_time_in_ticket_list' ] ) );
+	
+	$allow_agents_to_enter_time = true;
+	$allow_agents_to_enter_time = ! ( isset( $options[ 'allow_agents_to_enter_time' ] ) && true === boolval( $options[ 'allow_agents_to_enter_time' ] ) );
 
 	
 	wpas_add_custom_field( 'ttl_calculated_time_spent_on_ticket', array(
@@ -500,7 +503,8 @@ function wpas_register_core_fields() {
 		'backend_display_type'	=> 'custom',
 		'sortable_column'	=> true,
 		'title'       		=> __( 'Gross Time', 'awesome-support' ),
-		'desc'       		=> __( 'Enter the cummulative time spent on ticket by the agent', 'awesome-support' )		
+		'desc'       		=> __( 'Enter the cummulative time spent on ticket by the agent', 'awesome-support' ),
+		'readonly'			=> $allow_agents_to_enter_time
 	) );
 
 	wpas_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
@@ -515,7 +519,8 @@ function wpas_register_core_fields() {
 		'column_callback'   => 'wpas_cf_display_time_adjustment_column',
 		'sortable_column'	=> true,
 		'title'       		=> __( 'Time Adjustments', 'awesome-support' ),
-		'desc'       		=> __( 'Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin.', 'awesome-support' )				
+		'desc'       		=> __( 'Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin.', 'awesome-support' ),
+		'readonly'			=> $allow_agents_to_enter_time
 	) );
 	
 	wpas_add_custom_field( 'time_adjustments_pos_or_neg', array(
@@ -527,7 +532,8 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'title'       		=> __( '+ive or -ive Adj?', 'awesome-support' )		
+		'title'       		=> __( '+ive or -ive Adj?', 'awesome-support' ),
+		'readonly'			=> $allow_agents_to_enter_time
 	) );		
 
 	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
@@ -554,7 +560,8 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,		
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'title'       		=> __( 'Notes', 'awesome-support' )
+		'title'       		=> __( 'Notes', 'awesome-support' ),
+		'readonly'			=> $allow_agents_to_enter_time		
 	) );
 	
 
