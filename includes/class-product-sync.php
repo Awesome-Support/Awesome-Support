@@ -515,15 +515,12 @@ class WPAS_Product_Sync {
 			return $terms;
 		}
 
-		// We need to "index" the posts in order to be able to easily compare them to the terms
-		$index = array();
-
 		foreach ( $query->posts as $post ) {
 			if( isset( $post->ID ) ) {
 				$index[ $post->ID ] = $post;
 			} else {
-			    $index[ $post ] = $post;
-            }
+				$index[ $post ] = $post;
+			}
 		}
 
 		// We will store the new terms in this array

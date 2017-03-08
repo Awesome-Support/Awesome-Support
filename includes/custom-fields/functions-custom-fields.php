@@ -84,7 +84,18 @@ function wpas_get_cf_value( $name, $post_id, $default = false ) {
 
 	$field = new WPAS_Custom_Field( $name );
 
-	return $field->get_field_value( $default, $post_id );
+	$cf_value = $field->get_field_value( $default, $post_id );
+
+	/*
+	 * Some custom fields have multiple values. For example,
+	 * checkboxe custom fields. These are stored as an array.
+	 *
+	 */
+	if ( is_array( $cf_value )) {
+		$cf_value = implode(', ', $cf_value );
+	}
+
+	return $cf_value;
 }
 
 /**
