@@ -357,8 +357,9 @@ function wpas_delete_unclaimed_attachments() {
 
 	$upload           = wp_get_upload_dir();
 	$attachments_root = trailingslashit( $upload['basedir'] ) . 'awesome-support/';
+	$ticket_folders   = glob( $attachments_root . 'ticket_*' );
 
-	foreach ( glob( $attachments_root . 'ticket_*' ) as $folder ) {
+	foreach ( $ticket_folders as $folder ) {
 
 		$basename  = basename( $folder );
 
