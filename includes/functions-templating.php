@@ -667,8 +667,8 @@ function wpas_get_tickets_list_column_content( $column_id, $column ) {
 
 		default:
 
-			if ( function_exists( $callback ) ) {
-				call_user_func( $callback, $column_id, get_the_ID() );
+			if ( ( is_array( $callback ) && method_exists( $callback[0], $callback[1] ) ) || ( ! is_array( $callback ) && function_exists( $callback ) ) ) {
+   				call_user_func( $callback, $column_id, get_the_ID() );
 			}
 
 		break;
