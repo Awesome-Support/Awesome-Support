@@ -166,6 +166,7 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
  */
 function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field ) {
 
+	// Default to saved value unchanged
 	$result = 0;
 
 	// No time spent on this ticket
@@ -173,35 +174,28 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 		return $result;
 	}
 
-	$hours = $minutes = $seconds = 0;
+	$hours = $minutes = $adj_hours = $adj_minutes = 0;
 
 	// Time spent on ticket (hh:mm:ss)
-	sscanf( $_POST['wpas_ttl_calculated_time_spent_on_ticket'], "%d:%d:%d", $hours, $minutes, $seconds);
+	sscanf( $_POST['wpas_ttl_calculated_time_spent_on_ticket'], "%d:%d", $hours, $minutes );
 
 	// Convert to seconds
-	$calculated_time = $hours * 3600 + $minutes * 60 + $seconds;
+	$minutes = $hours * 60 + $minutes;
 
 	// Calculate time adjustment
 	if( isset ( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
 		&& ! empty( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
 	) {
-		sscanf( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'], "%d:%d:%d", $hours, $minutes, $seconds);
-		$adjustment_time = $hours * 3600 + $minutes * 60 + $seconds;
+		sscanf( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'], "%d:%d", $adj_hours, $adj_minutes );
+		$adjustment_time = $adj_hours * 60 + $adj_minutes;
 
 		if( '+' === $_POST['wpas_time_adjustments_pos_or_neg'] ) {
-			$seconds = $calculated_time + $adjustment_time;
+			$minutes += $adjustment_time;
 		}
 		else {
-			$seconds = $calculated_time - $adjustment_time;
+			$minutes -= $adjustment_time;
 		}
 	}
-
-	// No adjustment
-	else {
-		$seconds = $calculated_time;
-	}
-
-	$value = sprintf("%02d:%02d:%02d", floor($seconds / 3600), ($seconds / 60) % 60, $seconds % 60);
 
 	/**
 	 * Get the current field value.
@@ -209,26 +203,73 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	$current = get_post_meta( $post_id, $field_id, true );
 
 	/* Action: Update post meta */
-	if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $value ) ) {
-		if ( $current !== $value ) {
-			if ( false !== update_post_meta( $post_id, $field_id, $value, $current ) ) {
+	if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
+		if ( $current !== $minutes ) {
+			if ( false !== update_post_meta( $post_id, $field_id, $minutes, $current ) ) {
 				$result = 2;
 			}
 		}
 	}
 
 	/* Action: Add post meta */
-	elseif ( empty( $current ) && ! empty( $value ) ) {
-		if ( false !== add_post_meta( $post_id, $field_id, $value, true ) ) {
+	elseif ( empty( $current ) && ! empty( $minutes ) ) {
+		if ( false !== add_post_meta( $post_id, $field_id, $minutes, true ) ) {
 			$result = 1;
 		}
 	}
 
-	return array( 'result' => $result, 'value' => $value );
+	return array( 'result' => $result, 'value' => $minutes );
 
 }
 
-add_action( 'init', 'wpas_register_core_fields' );
+	/**
+	 * Custom Save Callback - save user entered hh:mm time as integer in minutes
+	 *
+	 * @since 3.3.5
+	 *
+	 * @param $value
+	 *
+	 * @param $post_id
+	 *
+	 * @param $field_id
+	 *
+	 * @param $field
+	 */
+	function wpas_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
+
+		$hours = $minutes = 0;
+
+		// Time spent on ticket (hh:mm:ss)
+		sscanf( $value, "%d:%d", $hours, $minutes );
+
+		// Convert to minutes
+		$minutes = $hours * 60 + $minutes;
+
+		/**
+		 * Get the current field value.
+		 */
+		$current = get_post_meta( $post_id, $field_id, true );
+
+		/* Action: Update post meta */
+		if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
+			if ( $current !== $minutes ) {
+				if ( false !== update_post_meta( $post_id, $field_id, $minutes, $current ) ) {
+					$result = 2;
+				}
+			}
+		}
+
+		/* Action: Add post meta */
+		elseif ( empty( $current ) && ! empty( $minutes ) ) {
+			if ( false !== add_post_meta( $post_id, $field_id, $minutes, true ) ) {
+				$result = 1;
+			}
+		}
+
+	}
+
+
+	add_action( 'init', 'wpas_register_core_fields' );
 /**
  * Register the cure custom fields.
  *
@@ -507,11 +548,13 @@ function wpas_register_core_fields() {
 		'core'        		=> false,
 		'show_column' 		=> $show_total_time_in_list,
 		'log'         		=> $audit_log_for_time_tracking_fields,
-		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',
-		'placeholder'		=> 'hh:mm:ss',
+		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){1}',
+		'placeholder'		=> 'hh:mm',
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
+		'column_callback'   => 'wpas_cf_display_time_hhmm',
+		'save_callback'     => 'wpas_cf_save_time_hhmm',
 		'sortable_column'	=> true,
 		'title'       		=> __( 'Gross Time', 'awesome-support' ),
 		'desc'       		=> __( 'Enter the cummulative time spent on ticket by the agent', 'awesome-support' ),
@@ -522,12 +565,14 @@ function wpas_register_core_fields() {
 		'core'        		=> false,
 		'show_column' 		=> $show_total_time_adj_in_list,
 		'log'         		=> $audit_log_for_time_tracking_fields,
-		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',		
-		'placeholder'		=> 'hh:mm:ss',	
+		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){1}',
+		'placeholder'		=> 'hh:mm',
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
+		//'column_callback'   => 'wpas_cf_display_time_hhmm',
 		'column_callback'   => 'wpas_cf_display_time_adjustment_column',
+		'save_callback'     => 'wpas_cf_save_time_hhmm',
 		'sortable_column'	=> true,
 		'title'       		=> __( 'Time Adjustments', 'awesome-support' ),
 		'desc'       		=> __( 'Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin.', 'awesome-support' ),
@@ -551,11 +596,12 @@ function wpas_register_core_fields() {
 		'core'        		=> false,
 		'show_column' 		=> $show_final_time_in_list,
 		'log'         		=> $audit_log_for_time_tracking_fields,
-		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}',		
-		'placeholder'		=> 'hh:mm:ss',	
+		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){1}',
+		'placeholder'		=> 'hh:mm',
 		'hide_front_end'	=> true,		
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
+		'column_callback'   => 'wpas_cf_display_time_hhmm',
 		'sortable_column'	=> true,
 		'title'       		=> __( 'Final Time', 'awesome-support' ),
 		'desc'       		=> __( 'This is the time calculated by the system - a sum of gross time and adjustments/credits granted.', 'awesome-support' ),						

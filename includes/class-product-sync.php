@@ -101,15 +101,18 @@ class WPAS_Product_Sync {
 				$this->run_initial_sync();
 			}
 
-			add_filter( 'get_terms',     array( $this, 'get_terms' ),          1, 3 );
-			add_filter( 'get_term',      array( $this, 'get_term' ),           1, 2 );
-			add_filter( 'get_the_terms', array( $this, 'get_the_terms' ),      1, 3 );
-			add_action( 'init',          array( $this, 'lock_taxonomy' ),     12, 0 );
-			add_action( 'admin_notices', array( $this, 'notice_locked_tax' ), 10, 0 );
-			add_action( 'trashed_post',  array( $this, 'unsync_term' ),       10, 1 );
-			add_action( 'delete_post',   array( $this, 'unsync_term' ),       10, 1 );
-			add_action( 'wpas_system_tools_table_after', array( $this, 'add_resync_tool' ), 10, 0 );
-			add_action( 'wpas_system_tools_table_after', array( $this, 'add_delete_tool' ), 10, 0 );
+			add_filter( 'get_terms',                        array( $this, 'get_terms' ),          1, 3 );
+			add_filter( 'get_term',                         array( $this, 'get_term' ),           1, 2 );
+			add_filter( 'get_the_terms',                    array( $this, 'get_the_terms' ),      1, 3 );
+			add_action( 'init',                             array( $this, 'lock_taxonomy' ),     12, 0 );
+			add_action( 'admin_notices',                    array( $this, 'notice_locked_tax' ), 10, 0 );
+
+			add_action( 'wp_insert_post',                   array( $this, 'sync_term' ),         10, 3 );
+			add_action( 'trashed_post',                     array( $this, 'unsync_term' ),       10, 1 );
+			add_action( 'delete_post',                      array( $this, 'unsync_term' ),       10, 1 );
+
+			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_resync_tool' ),   10, 0 );
+			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_delete_tool' ),   10, 0 );
 
 		}
 
@@ -527,7 +530,7 @@ class WPAS_Product_Sync {
 		$new_terms = array();
 
 		// Now go go through each term, maybe update it, and add it to the final terms array
-		foreach ( $terms as $key => $term ) {
+		foreach ( $terms as $term ) {
 
 		    // If the term is a synchronized product we build the custom term object
 		    if ( $this->is_synced_term( $term ) ) {
@@ -622,6 +625,47 @@ class WPAS_Product_Sync {
 	}
 
 	/**
+	 * Add an AS Product taxonomy term
+	 *
+	 * @param $post_id
+	 *
+	 * @param $post
+	 *
+	 * @param $update
+	 *
+	 */
+	public function sync_term( $post_id, $post, $update ) {
+
+		if ( ! is_a( $post, 'WP_Post' ) ) {
+			return;
+		}
+
+		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
+
+		// If syncing enabled
+		if( (bool) wpas_get_option( 'support_products_' . $slug, array() ) ) {
+
+			// Get currently synced products
+			$include = array_filter( wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+
+            if( ! empty( $include ) ) {
+
+                // If include list configured add this term if it doesn't exist
+	            if( !in_array( (string) $post_id, $include ) ) {
+		            $include[] = (string) $post_id;
+		            wpas_update_option( 'support_products_' . $slug . '_include', $include );
+	            }
+
+            }
+
+            // Create the AS Product term
+            $term = $this->create_term_object( $post );
+
+		}
+
+	}
+
+	/**
 	 * Delete a placeholder term.
 	 *
 	 * This function is used to delete a placeholder taxonomy term.
@@ -639,13 +683,16 @@ class WPAS_Product_Sync {
 			$term = get_post_meta( $post_id, '_wpas_product_term', true );
 
 			/* Delete the term */
-			$delete = wp_delete_term( (int) $term['term_id'], $this->taxonomy );
+			if( ! empty( $term ) ) {
+				$delete = wp_delete_term( (int) $term['term_id'], $this->taxonomy );
 
-			if ( true === $delete ) {
-				delete_post_meta( $post_id, '_wpas_product_term' );
+				if ( true === $delete ) {
+					delete_post_meta( $post_id, '_wpas_product_term' );
+				}
+
+				return $delete;
 			}
 
-			return $delete;
 		}
 
 		return false;
@@ -839,7 +886,7 @@ class WPAS_Product_Sync {
 		$count = 0;
 
 		/* Create the term object for each post */
-		foreach ( $query->posts as $key => $post ) {
+		foreach ( $query->posts as $post ) {
 
 			if ( ! is_a( $post, 'WP_Post' ) ) {
 				continue;
