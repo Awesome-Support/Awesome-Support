@@ -810,32 +810,32 @@
 	 * @since 3.3.5
 	 *
 	 * @param $field
-     *
+	 *
 	 * @param $post_id
 	 */
 	function wpas_cf_display_time_hhmm( $field, $post_id ) {
 
-		$minutes     = get_post_meta( $post_id, '_wpas_' . $field, true );
+		$minutes = get_post_meta( $post_id, '_wpas_' . $field, true );
 
-		if( ! empty( $minutes ) ) {
-	        echo sprintf("%02d:%02d", floor($minutes / 60), ($minutes) % 60);
-        }
+		if ( ! empty( $minutes ) ) {
+			echo sprintf( "%02d:%02d", floor( $minutes / 60 ), ( $minutes ) % 60 );
+		}
 
 	}
 
-    /**
+	/**
 	 * Display time adjustment column
-     *
-     * @since 3.3.5
+	 *
+	 * @since 3.3.5
 	 *
 	 * @param $field
-     *
+	 *
 	 * @param $post_id
 	 */
 	function wpas_cf_display_time_adjustment_column( $field, $post_id ) {
 
-		$minutes     = get_post_meta( $post_id, '_wpas_ttl_adjustments_to_time_spent_on_ticket', true );
-		$minutes     = sprintf( "%02d:%02d", floor($minutes / 60), ($minutes) % 60 );
+		$minutes = get_post_meta( $post_id, '_wpas_ttl_adjustments_to_time_spent_on_ticket', true );
+		$minutes = sprintf( "%02d:%02d", floor( $minutes / 60 ), ( $minutes ) % 60 );
 
 		$adjustment_operator = get_post_meta( $post_id, '_wpas_time_adjustments_pos_or_neg', true );
 
@@ -879,7 +879,7 @@
 			$color = wpas_get_option( "color_$status", '#dd3333' );
 			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 
-			if ( 'edit.php' == $pagenow && in_array( $post_status, $custom_status )) {
+			if ( 'edit.php' == $pagenow && in_array( $post_status, $custom_status ) ) {
 				$tag .= '<br/>' . $custom_status[ $post_status ];
 			}
 
@@ -1229,11 +1229,7 @@
 				$readonly = true;
 
 				// Disable tiny mce editor
-				add_filter( 'tiny_mce_before_init', function ( $args ) {
-					$args[ 'readonly' ] = true;
-
-					return $args;
-				} );
+				add_filter( 'tiny_mce_before_init', 'wpas_cf_field_time_tracking_disable_tiny_mce' );
 
 			}
 
@@ -1243,3 +1239,19 @@
 
 	}
 
+	/**
+	 * Disable tiny mce editor for Time Tracking Notes when readonly
+	 *
+	 * @since 3.3.5
+	 *
+	 * @param $args
+	 *
+	 * @return mixed
+	 */
+	function wpas_cf_field_time_tracking_disable_tiny_mce( $args ) {
+
+		$args[ 'readonly' ] = true;
+
+		return $args;
+
+	}
