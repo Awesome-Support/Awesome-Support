@@ -100,7 +100,7 @@ function wpas_core_settings_general( $def ) {
 					'name' => __( 'Multiple Agents', 'awesome-support' ),
 					'type' => 'heading',
 					'desc' => 'Use these options to control whether multiple agents can actively handle a single ticket'
-				),							
+				),
 				array(
 					'name'    => __( 'Enable Multiple Agents Per Ticket', 'awesome-support' ),
 					'id'      => 'multiple_agents_per_ticket',
@@ -125,6 +125,27 @@ function wpas_core_settings_general( $def ) {
 					'default' => false
 				),				
 				
+				array(
+					'name' => __( 'Third Parties', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => 'Use these options to control whether third parties show in the ticket list.  To change the labels for 3rd party fields please see our PRODUCTIVITY add-on.'
+				),	
+
+				array(
+					'name'    => __( 'Show Third Party #1 in Ticket List', 'awesome-support' ),
+					'id'      => 'show_third_party_01_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show Third Party #1 Data in the Ticket List?', 'awesome-support' ),
+					'default' => false
+				),
+				
+				array(
+					'name'    => __( 'Show Third Party #2 in Ticket List', 'awesome-support' ),
+					'id'      => 'show_third_party_02_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show Third Party #2 Data in the Ticket List?', 'awesome-support' ),
+					'default' => false
+				),				
 				
 				array(
 					'name' => __( 'Other Field Settings', 'awesome-support' ),

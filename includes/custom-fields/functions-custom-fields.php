@@ -727,6 +727,12 @@ function wpas_register_core_fields() {
 	/* Add fields for other "free-form" interested parties             */
 	/*******************************************************************/
 	
+	/** Get the flag that controls whther to show these fields in the ticket list */
+	$show_thirdparty01_in_list = false;
+	$show_thirdparty01_in_list = ( isset( $options[ 'show_third_party_01_in_ticket_list' ] ) && true === boolval( $options[ 'show_third_party_01_in_ticket_list' ] ) );	
+	$show_thirdparty02_in_list = false;
+	$show_thirdparty02_in_list = ( isset( $options[ 'show_third_party_02_in_ticket_list' ] ) && true === boolval( $options[ 'show_third_party_02_in_ticket_list' ] ) );		
+	
 	/** Get the labels for these additional interested party fields if they are provided */
 	$as_label_for_first_addl_interested_party_name_singular 			= isset( $options[ 'label_for_first_addl_interested_party_name_singular' ] ) ? $options[ 'label_for_first_addl_interested_party_name_singular' ] : __( 'Name Of Additional Interested Party #1', 'awesome-support' );
 	$as_label_for_first_addl_interested_party_email_singular 			= isset( $options[ 'label_for_first_addl_interested_party_email_singular' ] ) ? $options[ 'label_for_first_addl_interested_party_email_singular' ] : __( 'Additional Interested Party Email #1', 'awesome-support' );
@@ -734,32 +740,42 @@ function wpas_register_core_fields() {
 	$as_label_for_second_addl_interested_party_email_singular 			= isset( $options[ 'label_for_second_addl_interested_party_email_singular' ] ) ? $options[ 'label_for_second_addl_interested_party_email_singular' ] : __( 'Additional Interested Party Email #2', 'awesome-support' );
 	
 	wpas_add_custom_field( 'first_addl_interested_party_name', array(
-		'core'           => false,
-		'show_column'    => false,
-		'hide_front_end' => true,
-		'log'            => false,
-		'title'          => $as_label_for_first_addl_interested_party_name_singular
+		'core'           	=> false,
+		'show_column'    	=> $show_thirdparty01_in_list,
+		'sortable_column'	=> $show_thirdparty01_in_list,
+		'filterable'        => $show_thirdparty01_in_list,
+		'column_callback'	=> 'wpas_show_3rd_party01_column',
+		'hide_front_end' 	=> true,
+		'log'            	=> false,
+		'title'          	=> $as_label_for_first_addl_interested_party_name_singular
 	) );
 	wpas_add_custom_field( 'first_addl_interested_party_email', array(
-		'core'           => false,
-		'show_column'    => false,
-		'hide_front_end' => true,
-		'log'            => false,
-		'title'          => $as_label_for_first_addl_interested_party_email_singular
+		'core'           	=> false,
+		'show_column'    	=> false,  // set to false because this is handled by the callback function on the name field above
+		'sortable_column'	=> false,
+		'filterable'        => false,	
+		'hide_front_end' 	=> true,
+		'log'            	=> false,
+		'title'          	=> $as_label_for_first_addl_interested_party_email_singular
 	) );
 	wpas_add_custom_field( 'second_addl_interested_party_name', array(
-		'core'           => false,
-		'show_column'    => false,
-		'hide_front_end' => true,
-		'log'            => false,
-		'title'          => $as_label_for_second_addl_interested_party_name_singular
+		'core'           	=> false,
+		'show_column'    	=> $show_thirdparty02_in_list,
+		'sortable_column'	=> $show_thirdparty02_in_list,
+		'filterable'        => $show_thirdparty02_in_list,
+		'column_callback'	=> 'wpas_show_3rd_party02_column',		
+		'hide_front_end' 	=> true,
+		'log'            	=> false,
+		'title'          	=> $as_label_for_second_addl_interested_party_name_singular
 	) );
 	wpas_add_custom_field( 'second_addl_interested_party_email', array(
-		'core'           => false,
-		'show_column'    => false,
-		'hide_front_end' => true,
-		'log'            => false,
-		'title'          => $as_label_for_second_addl_interested_party_email_singular
+		'core'           	=> false,
+		'show_column'    	=> false,  // set to false because this is handled by the callback function on the name field above
+		'sortable_column'	=> false,
+		'filterable'        => false,
+		'hide_front_end' 	=> true,
+		'log'            	=> false,
+		'title'          	=> $as_label_for_second_addl_interested_party_email_singular
 	) );
 
 	/* Trigger backend custom ticket list columns */

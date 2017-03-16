@@ -852,6 +852,78 @@
 
 	}
 	
+	/**
+	 * Display 3rd party information in ticket list.
+	 *
+	 * This function is used to display both the name and email.
+	 * uused for 3rd party #1
+	 *
+	 * @since  3.6.0
+	 *
+	 * @param  string $field ID of the field to display
+	 * @param  integer $post_id ID of the current post
+	 *
+	 * @return void
+	 */
+	function wpas_show_3rd_party01_column( $field, $post_id ) {
+		$third_party_name01  = get_post_meta( $post_id, '_wpas_first_addl_interested_party_name', true );
+		$third_party_email01 = get_post_meta( $post_id, '_wpas_first_addl_interested_party_email', true );
+		
+		$fullouput = '';
+		If ( ! empty($third_party_name01) ) {
+			$fullouput .= $third_party_name01 ;
+		}
+		If ( ! empty($third_party_email01) ) {
+			If ( empty($fullouput) ) {
+				$fullouput .= $third_party_email01 ;
+			}
+			
+			If ( ! empty($fullouput) ) {
+				$fullouput .= '<br />' . $third_party_email01 ;
+			}
+		}
+
+		if ( ! empty($fullouput) ){
+			echo $fullouput;
+		}
+	}
+
+		/**
+	 * Display 3rd party information in ticket list.
+	 *
+	 * This function is used to display both the name and email.
+	 * uused for 3rd party #2
+	 *
+	 * @since  3.6.0
+	 *
+	 * @param  string $field ID of the field to display
+	 * @param  integer $post_id ID of the current post
+	 *
+	 * @return void
+	 */
+	function wpas_show_3rd_party02_column( $field, $post_id ) {
+		$third_party_name02  = get_post_meta( $post_id, '_wpas_second_addl_interested_party_name', true );
+		$third_party_email02 = get_post_meta( $post_id, '_wpas_second_addl_interested_party_email', true );
+		
+		$fullouput = '';
+		If ( ! empty($third_party_name02) ) {
+			$fullouput .= $third_party_name02 ;
+		}
+		If ( ! empty($third_party_email02) ) {
+			If ( empty($fullouput) ) {
+				$fullouput .= $third_party_email02 ;
+			}
+			
+			If ( ! empty($fullouput) ) {
+				$fullouput .= '<br />' . $third_party_email02 ;
+			}
+		}
+
+		if ( ! empty($fullouput) ){
+			echo $fullouput;
+		}
+	}
+	
 	/***
 	 * Display integer as hh:mm:ss
 	 *
