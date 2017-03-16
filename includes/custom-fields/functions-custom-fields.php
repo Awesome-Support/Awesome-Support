@@ -389,7 +389,7 @@ function wpas_register_core_fields() {
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
-			'title'           		=> __( 'Department', 'awesome-support' )			
+			'title'           		=> __( 'Department', 'awesome-support' )
 		) );
 
 	}
