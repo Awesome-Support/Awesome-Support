@@ -509,6 +509,7 @@ function wpas_register_core_fields() {
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
+		'readonly'    => true,
 		'title'       => __( 'Number of Replies By Agent', 'awesome-support' )
 	) );
 
@@ -516,6 +517,7 @@ function wpas_register_core_fields() {
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
+		'readonly'    => true,
 		'title'       => __( 'Number of Replies By Customer', 'awesome-support' )
 	) );
 
@@ -523,6 +525,7 @@ function wpas_register_core_fields() {
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
+		'readonly'    => true,
 		'title'       => __( 'Total Replies On Ticket', 'awesome-support' )
 	) );
 
