@@ -161,33 +161,38 @@ class WPAS_Tickets_List {
 		 */
 		foreach ( $columns as $col_id => $col_label ) {
 
+			$field = $fields[$col_id];
+			$title = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
+
 			// We add all our columns where the date was and move the date column to the end
 			if ( 'date' === $col_id ) {
 
-				$new[ 'status' ] = $col_label;
+				if ( array_key_exists( 'status', $custom ) ) {
+					$new[ 'status' ] = esc_html__( 'Status', 'awesome-support' );
+				}
 
 				$new[ 'title' ] = esc_html__( 'Title', 'awesome-support' );
 
 				if ( array_key_exists( 'ticket_priority', $custom ) ) {
-					$new[ 'ticket_priority' ] = esc_html__( 'Priority', 'awesome-support' );
+					$new[ 'ticket_priority' ] = $this->get_cf_title( 'ticket_priority', 'Priority' );
 				}
 
 				$new[ 'id' ] = esc_html__( 'ID', 'awesome-support' );
 
 				if ( array_key_exists( 'product', $custom ) ) {
-					$new[ 'product' ] = esc_html__( 'Product', 'awesome-support' );
+					$new[ 'product' ] = $this->get_cf_title( 'product', 'Product' );
 				}
 
 				if ( array_key_exists( 'department', $custom ) ) {
-					$new[ 'department' ] = esc_html__( 'Department', 'awesome-support' );
+					$new[ 'department' ] = $this->get_cf_title( 'department', 'Department' );
 				}
 
 				if ( array_key_exists( 'ticket_channel', $custom ) ) {
-					$new[ 'ticket_channel' ] = esc_html__( 'Channel', 'awesome-support' );
+					$new[ 'ticket_channel' ] = $this->get_cf_title( 'ticket_channel', 'Channel' );
 				}
 
 				if ( array_key_exists( 'ticket-tag', $custom ) ) {
-					$new[ 'ticket-tag' ] = esc_html__( 'Tag', 'awesome-support' );
+					$new[ 'ticket-tag' ] = $this->get_cf_title( 'ticket-tag', 'Tag' );
 				}
 
 				// Add the client column
@@ -201,14 +206,13 @@ class WPAS_Tickets_List {
 					&& ! current_user_can( 'administrator' )
 					&& true === boolval( wpas_get_option( 'agent_see_all' ) )
 				) {
-					$new[ 'assignee' ] = esc_html__( 'Agent', 'awesome-support' );
+					$new[ 'assignee' ] = $this->get_cf_title( 'assignee', 'Agent' );
 				}
 
 				// Add the date
 				$new[ 'date' ] = $columns[ 'date' ];
 
-				$new[ 'wpas-activity' ] = esc_html__( 'Activity', 'awesome-support' );
-
+				$new[ 'wpas-activity' ] = $this->get_cf_title( 'wpas-activity', 'Activity' );
 
 			} else {
 				$new[ $col_id ] = $col_label;
@@ -220,11 +224,40 @@ class WPAS_Tickets_List {
 
 	}
 
+
+	/**
+	 * Return CF Title after applying filters
+	 *
+	 * @since 3.3.5
+	 *
+	 * @param $field_id
+	 *
+	 * @param $field_title
+	 *
+	 * @return string
+	 */
+	public function get_cf_title( $field_id, $field_title ) {
+
+		$fields = $this->get_custom_fields();
+
+		$field = $fields[ $field_id ];
+
+		if( ! empty( $field ) ) {
+			$field_title = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
+		}
+
+		return esc_html__( $field_title, 'awesome-support' );
+
+	}
+
+
 	/**
 	 * Manage core column content.
 	 *
 	 * @since  3.0.0
+	 *
 	 * @param  array $column Column currently processed
+	 *
 	 * @param  integer $post_id ID of the post being processed
 	 */
 	public function custom_columns_content( $column, $post_id ) {

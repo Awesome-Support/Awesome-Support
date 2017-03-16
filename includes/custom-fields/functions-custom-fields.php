@@ -277,13 +277,13 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
  * @return void
  */
 function wpas_register_core_fields() {
-	
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );	
-	
+
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+
 	/*******************************************************************/
 	/* Add Agent/Assignee field                                        */
-	/*******************************************************************/	
-	
+	/*******************************************************************/
+
 	/** Determine if assignee column is shown in tickets list */
 	$show_assignee = current_user_can( 'administrator' )
 	&& true === boolval( wpas_get_option( 'admin_see_all' ) )
@@ -294,7 +294,7 @@ function wpas_register_core_fields() {
 
 	/** Get the label for the agent field if one is provided */
 	$as_label_for_agent_singular = isset( $options[ 'label_for_agent_singular' ] ) ? $options[ 'label_for_agent_singular' ] : __( 'Agent', 'awesome-support' );
-	
+
 	/** Create the custom field for agents */
 	wpas_add_custom_field( 'assignee', array(
 		'core'            => true,
@@ -308,12 +308,12 @@ function wpas_register_core_fields() {
 
 	/*******************************************************************/
 	/* Add Status/state field                                          */
-	/*******************************************************************/	
-	
+	/*******************************************************************/
+
 	/** Get the label for the status field if one is provided */
 	$as_label_for_status_singular = isset( $options[ 'label_for_status_singular' ] ) ? $options[ 'label_for_status_singular' ] : __( 'Status', 'awesome-support' );
-	
-	/** Create the custom field for status */	
+
+	/** Create the custom field for status */
 	wpas_add_custom_field( 'status', array(
 		'core'            => true,
 		'show_column'     => true,
@@ -322,19 +322,19 @@ function wpas_register_core_fields() {
 		'sortable_column' => true,
 		'column_callback' => 'wpas_cf_display_status',
 		'save_callback'   => null,
-		'title'           => $as_label_for_status_singular		
+		'title'           => $as_label_for_status_singular
 	) );
 
-	
+
 	/*******************************************************************/
 	/* Add Tag fields                                                  */
-	/*******************************************************************/	
-	
+	/*******************************************************************/
+
 	/** Get the labels for the ticket tags field if they are provided */
 	$as_label_for_ticket_tag_singular 	= isset( $options[ 'label_for_ticket_tag_singular' ] ) ? $options[ 'label_for_ticket_tag_singular' ] : __( 'Tag', 'awesome-support' );
 	$as_label_for_ticket_tag_plural 	= isset( $options[ 'label_for_ticket_tag_plural' ] ) ? $options[ 'label_for_ticket_tag_plural' ] : __( 'Tags', 'awesome-support' );
-	
-	/** Create the custom field for ticket tags */	
+
+	/** Create the custom field for ticket tags */
 	wpas_add_custom_field( 'ticket-tag', array(
 		'core'                  => true,
 		'show_column'           => true,
@@ -350,22 +350,22 @@ function wpas_register_core_fields() {
 		'taxo_hierarchical'     => false,
 		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 		'select2'               => false,
-		'title'           		=> $as_label_for_ticket_tag_singular		
+		'title'           		=> $as_label_for_ticket_tag_singular
 	) );
 
-	
+
 	/*******************************************************************/
 	/* Add Product fields                                              */
-	/*******************************************************************/	
-	
+	/*******************************************************************/
+
 	if ( isset( $options[ 'support_products' ] ) && true === boolval( $options[ 'support_products' ] ) ) {
 
 		$slug = defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : 'product';
-		
+
 		/** Get the labels for the products field if they are provided */
 		$as_label_for_product_singular 	= isset( $options[ 'label_for_product_singular' ] ) ? $options[ 'label_for_product_singular' ] : __( 'Product', 'awesome-support' );
 		$as_label_for_product_plural 	= isset( $options[ 'label_for_product_plural' ] ) ? $options[ 'label_for_product_plural' ] : __( 'Products', 'awesome-support' );
-	
+
 		/* Filter the product taxonomy labels */
 		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
 				'label'        => $as_label_for_product_singular,
@@ -391,21 +391,21 @@ function wpas_register_core_fields() {
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
-			'title'           		=> $as_label_for_product_singular			
+			'title'           		=> $as_label_for_product_singular
 		) );
 
 	}
-	
+
 	/*******************************************************************/
 	/* Add Department fields                                           */
 	/*******************************************************************/
 	if ( isset( $options[ 'departments' ] ) && true === boolval( $options[ 'departments' ] ) ) {
 
 		$slug = defined( 'WPAS_DEPARTMENT_SLUG' ) ? WPAS_DEPARTMENT_SLUG : 'department';
-		
+
 		/** Get the labels for the department field if they are provided */
 		$as_label_for_department_singular 	= isset( $options[ 'label_for_department_singular' ] ) ? $options[ 'label_for_department_singular' ] : __( 'Department', 'awesome-support' );
-		$as_label_for_department_plural 	= isset( $options[ 'label_for_department_plural' ] ) ? $options[ 'label_for_department_plural' ] : __( 'Departments', 'awesome-support' );		
+		$as_label_for_department_plural 	= isset( $options[ 'label_for_department_plural' ] ) ? $options[ 'label_for_department_plural' ] : __( 'Departments', 'awesome-support' );
 
 		/* Filter the department taxonomy labels */
 		$labels = apply_filters( 'wpas_department_taxonomy_labels', array(
@@ -414,7 +414,7 @@ function wpas_register_core_fields() {
 			'label_plural' => $as_label_for_department_plural
 		) );
 
-		/** Create the custom field for department */		
+		/** Create the custom field for department */
 		wpas_add_custom_field( 'department', array(
 			'core'                  => false,
 			'show_column'           => true,
@@ -431,12 +431,12 @@ function wpas_register_core_fields() {
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
-			'title'           		=> $as_label_for_department_singular			
+			'title'           		=> $as_label_for_department_singular
 		) );
 
 	}
 
-	/*******************************************************************/	
+	/*******************************************************************/
 	/* Add priority fields                                             */
 	/*******************************************************************/
 	if ( isset( $options[ 'support_priority' ] ) && true === boolval( $options[ 'support_priority' ] ) ) {
@@ -460,10 +460,10 @@ function wpas_register_core_fields() {
 
 			$show_priority_on_back_end_only = true;
 		}
-		
+
 		/** Get the labels for the priority field if they are provided */
 		$as_label_for_priority_singular 	= isset( $options[ 'label_for_priority_singular' ] ) ? $options[ 'label_for_priority_singular' ] : __( 'Priority', 'awesome-support' );
-		$as_label_for_priority_plural 	= isset( $options[ 'label_for_priority_plural' ] ) ? $options[ 'label_for_priority_plural' ] : __( 'Priorities', 'awesome-support' );				
+		$as_label_for_priority_plural 	= isset( $options[ 'label_for_priority_plural' ] ) ? $options[ 'label_for_priority_plural' ] : __( 'Priorities', 'awesome-support' );
 
 
 		/* Filter the priority taxonomy labels */
@@ -474,7 +474,7 @@ function wpas_register_core_fields() {
 		) );
 
 
-		/** Create the custom field for priority */			
+		/** Create the custom field for priority */
 		wpas_add_custom_field( 'ticket_priority', array(
 			'core'                  => false,
 			'show_column'           => $show_priority_column_in_list,
@@ -494,7 +494,7 @@ function wpas_register_core_fields() {
 			'select2'               => false,
 			'filterable'            => true,
 			'required'              => $show_priority_required,
-			'title'           		=> $as_label_for_priority_singular			
+			'title'           		=> $as_label_for_priority_singular
 		) );
 
 	}
@@ -503,12 +503,12 @@ function wpas_register_core_fields() {
 	/* Add ticket channel field (where did the ticket originate from?) */
 	/*******************************************************************/
 	$slug = defined( 'WPAS_CHANNEL_SLUG' ) ? WPAS_CHANNEL_SLUG : 'ticket_channel';
-	
+
 	/** Get the labels for the channel field if they are provided */
 	$as_label_for_channel_singular 	= isset( $options[ 'label_for_channel_singular' ] ) ? $options[ 'label_for_channel_singular' ] : __( 'Channel', 'awesome-support' );
-	$as_label_for_channel_plural 	= isset( $options[ 'label_for_channel_plural' ] ) ? $options[ 'label_for_channel_plural' ] : __( 'Channels', 'awesome-support' );					
-	
-	
+	$as_label_for_channel_plural 	= isset( $options[ 'label_for_channel_plural' ] ) ? $options[ 'label_for_channel_plural' ] : __( 'Channels', 'awesome-support' );
+
+
 	/* Filter the channel taxonomy labels */
 	$labels = apply_filters( 'wpas_channel_taxonomy_labels', array(
 			'label'        => $as_label_for_channel_singular,
@@ -519,8 +519,8 @@ function wpas_register_core_fields() {
 
 	$show_channel_column_in_list = ( isset( $options[ 'channel_show_in_ticket_list' ] ) && true === boolval( $options[ 'channel_show_in_ticket_list' ] ) );
 
-	
-	/** Create the custom field for channel */		
+
+	/** Create the custom field for channel */
 	wpas_add_custom_field( 'ticket_channel', array(
 		'core'                  => false,
 		'show_column'           => $show_channel_column_in_list,
@@ -540,10 +540,10 @@ function wpas_register_core_fields() {
 		'select2'               => false,
 		'filterable'            => $show_channel_column_in_list,
 		'default'               => 'standard ticket form',
-		'title'           		=> $as_label_for_channel_singular		
+		'title'           		=> $as_label_for_channel_singular
 	) );
 	
-	/*******************************************************************/	
+	/*******************************************************************/
 	/* Add additional assignees to ticket                              */
 	/*******************************************************************/
 	if ( isset( $options[ 'multiple_agents_per_ticket' ] ) && true === boolval( $options[ 'multiple_agents_per_ticket' ] ) ) {
@@ -551,14 +551,14 @@ function wpas_register_core_fields() {
 		/** Get the flag that controls whther to show these fields in the ticket list */
 		$show_secondary_agent_in_list = false;
 		$show_secondary_agent_in_list = ( isset( $options[ 'show_secondary_agent_in_ticket_list' ] ) && true === boolval( $options[ 'show_secondary_agent_in_ticket_list' ] ) );
-		
+
 		$show_tertiary_agent_in_list = false;
-		$show_tertiary_agent_in_list = ( isset( $options[ 'show_tertiary_agent_in_ticket_list' ] ) && true === boolval( $options[ 'show_tertiary_agent_in_ticket_list' ] ) );		
-		
-		
+		$show_tertiary_agent_in_list = ( isset( $options[ 'show_tertiary_agent_in_ticket_list' ] ) && true === boolval( $options[ 'show_tertiary_agent_in_ticket_list' ] ) );
+
+
 		/** Get the label for the secondary agent field if one is provided */
 		$as_label_for_secondary_agent_singular = isset( $options[ 'label_for_secondary_agent_singular' ] ) ? $options[ 'label_for_secondary_agent_singular' ] : __( 'Additional Support Staff #1', 'awesome-support' );
-		
+
 		/*** Create the secondary assignee custom field */
 		wpas_add_custom_field( 'secondary_assignee', array(
 			'core'           	=> false,
@@ -567,49 +567,51 @@ function wpas_register_core_fields() {
 			'filterable'        => $show_secondary_agent_in_list,
 			'hide_front_end' 	=> true,
 			'log'            	=> true,
-			'column_callback' 	=> 'wpas_show_secondary_assignee_column',			
+			'column_callback' 	=> 'wpas_show_secondary_assignee_column',
 			'title'          	=> $as_label_for_secondary_agent_singular
 		) );
 
 		/** Get the label for the tertiary agent field if one is provided */
-		$as_label_for_tertiary_agent_singular = isset( $options[ 'label_for_tertiary_agent_singular' ] ) ? $options[ 'label_for_tertiary_agent_singular' ] : __( 'Additional Support Staff #2', 'awesome-support' );		
-		
+		$as_label_for_tertiary_agent_singular = isset( $options[ 'label_for_tertiary_agent_singular' ] ) ? $options[ 'label_for_tertiary_agent_singular' ] : __( 'Additional Support Staff #2', 'awesome-support' );
+
 		/*** Create the tertiary assignee custom field */
 		wpas_add_custom_field( 'tertiary_assignee', array(
 			'core'           	=> false,
 			'hide_front_end' 	=> true,
 			'show_column'    	=> $show_tertiary_agent_in_list,
 			'sortable_column'	=> $show_tertiary_agent_in_list,
-			'filterable'        => $show_tertiary_agent_in_list,			
+			'filterable'        => $show_tertiary_agent_in_list,
 			'log'            	=> true,
-			'column_callback' 	=> 'wpas_show_tertiary_assignee_column',			
+			'column_callback' 	=> 'wpas_show_tertiary_assignee_column',
 			'title'          	=> $as_label_for_tertiary_agent_singular
 		) );
 	}
 
-	/************************************************************************/	
+	/************************************************************************/
 	/* Add fields to store the number of replies on a ticket. 				*/
 	/* These will be used for reporting purposes in a new reporting add-on 	*/
 	/************************************************************************/
-	
+
 	/** Get the labels for these replies statistic fields if they are provided */
-	
+
 	$as_label_for_ttl_replies_by_agent_singular 	= isset( $options[ 'label_for_ttl_replies_by_agent_singular' ] ) ? $options[ 'label_for_ttl_replies_by_agent_singular' ] : __( 'Number of Replies By Agent', 'awesome-support' );
 	$as_label_for_ttl_replies_by_customer_singular 	= isset( $options[ 'label_for_ttl_replies_by_customer_singular' ] ) ? $options[ 'label_for_ttl_replies_by_customer_singular' ] : __( 'Number of Replies By Customer', 'awesome-support' );
 	$as_label_for_ttl_replies_singular 				= isset( $options[ 'label_for_ttl_replies_singular' ] ) ? $options[ 'label_for_ttl_replies_singular' ] : __( 'Total Replies On Ticket', 'awesome-support' );
-	
+
 	/** Now create the replies statistics fields */
 	wpas_add_custom_field( 'ttl_replies_by_agent', array(
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
-		'title'       => $as_label_for_ttl_replies_by_agent_singular
+		'readonly'    => true,
+		'title'       => $as_label_for_ttl_replies_by_agent_singular,
 	) );
 
 	wpas_add_custom_field( 'ttl_replies_by_customer', array(
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
+		'readonly'    => true,
 		'title'       => $as_label_for_ttl_replies_by_customer_singular
 	) );
 
@@ -617,10 +619,11 @@ function wpas_register_core_fields() {
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
+		'readonly'    => true,
 		'title'       => $as_label_for_ttl_replies_singular
 	) );
 
-	/*******************************************************************/	
+	/*******************************************************************/
 	/* Add fields to store time spent working on a ticket.             */
 	/*******************************************************************/
 	$audit_log_for_time_tracking_fields = false ;
@@ -645,7 +648,7 @@ function wpas_register_core_fields() {
 	$as_label_for_time_adjustments_dir_singular = isset( $options[ 'label_for_time_adjustments_dir_singular' ] ) ? $options[ 'label_for_time_adjustments_dir_singular' ] : __( '+ive or -ive Adj?', 'awesome-support' );
 	$as_label_for_final_time_singular 			= isset( $options[ 'label_for_final_time_singular' ] ) ? $options[ 'label_for_final_time_singular' ] : __( 'Final Time', 'awesome-support' );
 	$as_label_for_time_notes_singular 			= isset( $options[ 'label_for_time_notes_singular' ] ) ? $options[ 'label_for_time_notes_singular' ] : __( 'Notes', 'awesome-support' );
-	
+
 	wpas_add_custom_field( 'ttl_calculated_time_spent_on_ticket', array(
 		'core'        		=> false,
 		'show_column' 		=> $show_total_time_in_list,
@@ -726,19 +729,19 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 	/* Add fields for other "free-form" interested parties             */
 	/*******************************************************************/
-	
+
 	/** Get the flag that controls whther to show these fields in the ticket list */
 	$show_thirdparty01_in_list = false;
-	$show_thirdparty01_in_list = ( isset( $options[ 'show_third_party_01_in_ticket_list' ] ) && true === boolval( $options[ 'show_third_party_01_in_ticket_list' ] ) );	
+	$show_thirdparty01_in_list = ( isset( $options[ 'show_third_party_01_in_ticket_list' ] ) && true === boolval( $options[ 'show_third_party_01_in_ticket_list' ] ) );
 	$show_thirdparty02_in_list = false;
-	$show_thirdparty02_in_list = ( isset( $options[ 'show_third_party_02_in_ticket_list' ] ) && true === boolval( $options[ 'show_third_party_02_in_ticket_list' ] ) );		
-	
+	$show_thirdparty02_in_list = ( isset( $options[ 'show_third_party_02_in_ticket_list' ] ) && true === boolval( $options[ 'show_third_party_02_in_ticket_list' ] ) );
+
 	/** Get the labels for these additional interested party fields if they are provided */
 	$as_label_for_first_addl_interested_party_name_singular 			= isset( $options[ 'label_for_first_addl_interested_party_name_singular' ] ) ? $options[ 'label_for_first_addl_interested_party_name_singular' ] : __( 'Name Of Additional Interested Party #1', 'awesome-support' );
 	$as_label_for_first_addl_interested_party_email_singular 			= isset( $options[ 'label_for_first_addl_interested_party_email_singular' ] ) ? $options[ 'label_for_first_addl_interested_party_email_singular' ] : __( 'Additional Interested Party Email #1', 'awesome-support' );
 	$as_label_for_second_addl_interested_party_name_singular 			= isset( $options[ 'label_for_second_addl_interested_party_name_singular' ] ) ? $options[ 'label_for_second_addl_interested_party_name_singular' ] : __( 'Name Of Additional Interested Party #2', 'awesome-support' );
 	$as_label_for_second_addl_interested_party_email_singular 			= isset( $options[ 'label_for_second_addl_interested_party_email_singular' ] ) ? $options[ 'label_for_second_addl_interested_party_email_singular' ] : __( 'Additional Interested Party Email #2', 'awesome-support' );
-	
+
 	wpas_add_custom_field( 'first_addl_interested_party_name', array(
 		'core'           	=> false,
 		'show_column'    	=> $show_thirdparty01_in_list,
@@ -753,7 +756,7 @@ function wpas_register_core_fields() {
 		'core'           	=> false,
 		'show_column'    	=> false,  // set to false because this is handled by the callback function on the name field above
 		'sortable_column'	=> false,
-		'filterable'        => false,	
+		'filterable'        => false,
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
 		'title'          	=> $as_label_for_first_addl_interested_party_email_singular
@@ -763,7 +766,7 @@ function wpas_register_core_fields() {
 		'show_column'    	=> $show_thirdparty02_in_list,
 		'sortable_column'	=> $show_thirdparty02_in_list,
 		'filterable'        => $show_thirdparty02_in_list,
-		'column_callback'	=> 'wpas_show_3rd_party02_column',		
+		'column_callback'	=> 'wpas_show_3rd_party02_column',
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
 		'title'          	=> $as_label_for_second_addl_interested_party_name_singular
