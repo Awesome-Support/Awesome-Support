@@ -547,18 +547,28 @@ function wpas_register_core_fields() {
 	/* Add additional assignees to ticket                              */
 	/*******************************************************************/
 	if ( isset( $options[ 'multiple_agents_per_ticket' ] ) && true === boolval( $options[ 'multiple_agents_per_ticket' ] ) ) {
+
+		/** Get the flag that controls whther to show these fields in the ticket list */
+		$show_secondary_agent_in_list = false;
+		$show_secondary_agent_in_list = ( isset( $options[ 'show_secondary_agent_in_ticket_list' ] ) && true === boolval( $options[ 'show_secondary_agent_in_ticket_list' ] ) );
+		
+		$show_tertiary_agent_in_list = false;
+		$show_tertiary_agent_in_list = ( isset( $options[ 'show_tertiary_agent_in_ticket_list' ] ) && true === boolval( $options[ 'show_tertiary_agent_in_ticket_list' ] ) );		
+		
 		
 		/** Get the label for the secondary agent field if one is provided */
 		$as_label_for_secondary_agent_singular = isset( $options[ 'label_for_secondary_agent_singular' ] ) ? $options[ 'label_for_secondary_agent_singular' ] : __( 'Additional Support Staff #1', 'awesome-support' );
 		
-		
 		/*** Create the secondary assignee custom field */
 		wpas_add_custom_field( 'secondary_assignee', array(
-			'core'           => false,
-			'show_column'    => false,
-			'hide_front_end' => true,
-			'log'            => true,
-			'title'          => $as_label_for_secondary_agent_singular
+			'core'           	=> false,
+			'show_column'    	=> $show_secondary_agent_in_list,
+			'sortable_column'	=> $show_secondary_agent_in_list,
+			'filterable'        => $show_secondary_agent_in_list,
+			'hide_front_end' 	=> true,
+			'log'            	=> true,
+			'column_callback' 	=> 'wpas_show_secondary_assignee_column',			
+			'title'          	=> $as_label_for_secondary_agent_singular
 		) );
 
 		/** Get the label for the tertiary agent field if one is provided */
@@ -566,11 +576,14 @@ function wpas_register_core_fields() {
 		
 		/*** Create the tertiary assignee custom field */
 		wpas_add_custom_field( 'tertiary_assignee', array(
-			'core'           => false,
-			'hide_front_end' => true,
-			'show_column'    => false,
-			'log'            => true,
-			'title'          => $as_label_for_tertiary_agent_singular
+			'core'           	=> false,
+			'hide_front_end' 	=> true,
+			'show_column'    	=> $show_tertiary_agent_in_list,
+			'sortable_column'	=> $show_tertiary_agent_in_list,
+			'filterable'        => $show_tertiary_agent_in_list,			
+			'log'            	=> true,
+			'column_callback' 	=> 'wpas_show_tertiary_assignee_column',			
+			'title'          	=> $as_label_for_tertiary_agent_singular
 		) );
 	}
 

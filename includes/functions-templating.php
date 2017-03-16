@@ -804,6 +804,54 @@
 
 	}
 
+	/**
+	 * Display secondary assignee.
+	 *
+	 * This function is used to display an assignee by display name.
+	 *
+	 * @since  3.6.0
+	 *
+	 * @param  string $field ID of the field to display
+	 * @param  integer $post_id ID of the current post
+	 *
+	 * @return void
+	 */
+	function wpas_show_secondary_assignee_column( $field, $post_id ) {
+
+		$assignee = (int) get_post_meta( $post_id, '_wpas_secondary_assignee', true );
+		$agent    = get_user_by( 'id', $assignee );
+		$link     = add_query_arg( array( 'post_type' => 'ticket', 'secondary_assignee' => $assignee ), admin_url( 'edit.php' ) );
+
+		if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
+			echo "<a href='$link'>{$agent->data->display_name}</a>";
+		}
+
+	}
+	
+	/**
+	 * Display tertiary assignee.
+	 *
+	 * This function is used to display an assignee by display name.
+	 *
+	 * @since  3.6.0
+	 *
+	 * @param  string $field ID of the field to display
+	 * @param  integer $post_id ID of the current post
+	 *
+	 * @return void
+	 */
+	function wpas_show_tertiary_assignee_column( $field, $post_id ) {
+
+		$assignee = (int) get_post_meta( $post_id, '_wpas_tertiary_assignee', true );
+		$agent    = get_user_by( 'id', $assignee );
+		$link     = add_query_arg( array( 'post_type' => 'ticket', 'tertiary_assignee' => $assignee ), admin_url( 'edit.php' ) );
+
+		if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
+			echo "<a href='$link'>{$agent->data->display_name}</a>";
+		}
+
+	}
+	
 	/***
 	 * Display integer as hh:mm:ss
 	 *

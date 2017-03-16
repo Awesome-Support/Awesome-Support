@@ -95,6 +95,37 @@ function wpas_core_settings_general( $def ) {
 					'type' => 'heading',
 					'options' => wpas_get_priority_options()
 				),
+				
+				array(
+					'name' => __( 'Multiple Agents', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => 'Use these options to control whether multiple agents can actively handle a single ticket'
+				),							
+				array(
+					'name'    => __( 'Enable Multiple Agents Per Ticket', 'awesome-support' ),
+					'id'      => 'multiple_agents_per_ticket',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the two extra agent fields on the ticket?', 'awesome-support' ),
+					'default' => false
+				),
+				
+				array(
+					'name'    => __( 'Show Secondary Agent In Ticket List', 'awesome-support' ),
+					'id'      => 'show_secondary_agent_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the secondary agent in the ticket list?', 'awesome-support' ),
+					'default' => false
+				),
+				
+				array(
+					'name'    => __( 'Show Tertiary Agent In Ticket List', 'awesome-support' ),
+					'id'      => 'show_tertiary_agent_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the Tertiary agent in the ticket list?', 'awesome-support' ),
+					'default' => false
+				),				
+				
+				
 				array(
 					'name' => __( 'Other Field Settings', 'awesome-support' ),
 					'type' => 'heading',
@@ -104,13 +135,6 @@ function wpas_core_settings_general( $def ) {
 					'id'      => 'channel_show_in_ticket_list',
 					'type'    => 'checkbox',
 					'desc'    => __( 'Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
-					'default' => false
-				),
-				array(
-					'name'    => __( 'Enable Multiple Agents Per Ticket', 'awesome-support' ),
-					'id'      => 'multiple_agents_per_ticket',
-					'type'    => 'checkbox',
-					'desc'    => __( 'Show the two extra agent fields on the ticket?', 'awesome-support' ),
 					'default' => false
 				),
 				
