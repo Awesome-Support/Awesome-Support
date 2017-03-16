@@ -91,38 +91,74 @@ function wpas_core_settings_general( $def ) {
 					'default' => false
 				),
 				array(
-					'name' => __( 'Products Management', 'awesome-support' ),
-					'type' => 'heading',
-					'options' => wpas_get_products_options()
-				),
-				array(
 					'name' => __( 'Priority Management', 'awesome-support' ),
 					'type' => 'heading',
+					'desc' => 'Use these options to control how the priority field is used and shown.  To change the labels used for this field please see our PRODUCTIVITY add-on.',
 					'options' => wpas_get_priority_options()
 				),
+				
 				array(
-					'name' => __( 'Basic Time Tracking', 'awesome-support' ),
+					'name' => __( 'Multiple Agents', 'awesome-support' ),
 					'type' => 'heading',
-					'options' => wpas_get_basic_time_tracking_options()
-				),				
-				array(
-					'name' => __( 'Other Field Settings', 'awesome-support' ),
-					'type' => 'heading',
-				),				
-				array(
-					'name'    => __( 'Show Channel Field', 'awesome-support' ),
-					'id'      => 'channel_show_in_ticket_list',
-					'type'    => 'checkbox',
-					'desc'    => __( 'Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
-					'default' => false
-				),								
+					'desc' => 'Use these options to control whether multiple agents can actively handle a single ticket. To change the labels please see our PRODUCTIVITY add-on.'
+				),
 				array(
 					'name'    => __( 'Enable Multiple Agents Per Ticket', 'awesome-support' ),
 					'id'      => 'multiple_agents_per_ticket',
 					'type'    => 'checkbox',
 					'desc'    => __( 'Show the two extra agent fields on the ticket?', 'awesome-support' ),
 					'default' => false
-				),								
+				),
+				
+				array(
+					'name'    => __( 'Show Secondary Agent In Ticket List', 'awesome-support' ),
+					'id'      => 'show_secondary_agent_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the secondary agent in the ticket list?', 'awesome-support' ),
+					'default' => false
+				),
+				
+				array(
+					'name'    => __( 'Show Tertiary Agent In Ticket List', 'awesome-support' ),
+					'id'      => 'show_tertiary_agent_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the Tertiary agent in the ticket list?', 'awesome-support' ),
+					'default' => false
+				),				
+				
+				array(
+					'name' => __( 'Third Parties', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => 'Use these options to control whether third parties show in the ticket list.  To change the labels for 3rd party fields please see our PRODUCTIVITY add-on.'
+				),	
+
+				array(
+					'name'    => __( 'Show Third Party #1 in Ticket List', 'awesome-support' ),
+					'id'      => 'show_third_party_01_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show Third Party #1 Data in the Ticket List?', 'awesome-support' ),
+					'default' => false
+				),
+				
+				array(
+					'name'    => __( 'Show Third Party #2 in Ticket List', 'awesome-support' ),
+					'id'      => 'show_third_party_02_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show Third Party #2 Data in the Ticket List?', 'awesome-support' ),
+					'default' => false
+				),				
+				
+				array(
+					'name' => __( 'Other Field Settings', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Show Channel Field', 'awesome-support' ),
+					'id'      => 'channel_show_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
+					'default' => false
+				),
 				
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
@@ -178,88 +214,6 @@ function wpas_core_settings_general( $def ) {
 }
 
 /**
- * Prepare the available options for the products
- *
- * @since 3.3
- * @return array
- */
-function wpas_get_products_options() {
-
-	$products = array(
-		array(
-			'name'    => __( 'Multiple Products', 'awesome-support' ),
-			'id'      => 'support_products',
-			'type'    => 'checkbox',
-			'desc'    => __( 'If you need to provide support for multiple products, please enable this option. You will then be able to add your products.', 'awesome-support' ),
-			'default' => false
-		),
-	);
-
-	$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->plugin;
-
-	if ( ! is_null( $ecommerce_synced ) ) {
-
-		$plugin_name = ucwords( str_replace( array( '-', '_' ), ' ', $ecommerce_synced ) );
-
-		$products[] = array(
-			'name'    => sprintf( esc_html__( 'Synchronize %s Products', 'awesome-support' ), $plugin_name ),
-			'id'      => 'support_products_' . $ecommerce_synced,
-			'type'    => 'checkbox',
-			'desc'    => sprintf( esc_html__( 'We have detected that you are using the e-commerce plugin %1$s. Would you like to automatically synchronize your e-commerce products with Awesome Support?', 'awesome-support' ), $plugin_name ),
-			'default' => true
-		);
-
-		$products[] = array(
-			'type' => 'note',
-			'desc' => wp_kses( sprintf( __( 'If you just disabled this option and want to remove the previously synchronized products, <a href="%1$s">please use the dedicated option &laquo;Delete Products&raquo;</a>', 'awesome-support' ), esc_url( add_query_arg( array(
-					'post_type' => 'ticket',
-					'page'      => 'wpas-status',
-					'tab'       => 'tools'
-				), admin_url( 'edit.php' ) )
-			) ), array(
-				'a' => array(
-					'href'  => array(),
-					'title' => array()
-				)
-			) )
-		);
-
-		$registered = WPAS_eCommerce_Integration::get_instance()->get_plugins();
-		$post_type  = $registered[ $ecommerce_synced ]['post_type'];
-
-		$products[] = array(
-			'name'     => __( 'Include Products', 'awesome-support' ),
-			'id'       => 'support_products_' . $ecommerce_synced . '_include',
-			'type'     => 'select',
-			'multiple' => true,
-			'desc'     => esc_html__( 'Which products do you want to synchronize with Awesome Support (leave blank for all products)', 'awesome-support' ),
-			'options'  => wpas_list_pages( $post_type ),
-			'default'  => ''
-		);
-
-		$products[] = array(
-			'name'     => __( 'Exclude Products', 'awesome-support' ),
-			'id'       => 'support_products_' . $ecommerce_synced . '_exclude',
-			'type'     => 'select',
-			'multiple' => true,
-			'desc'     => esc_html__( 'Which products do you want to exclude from synchronization with Awesome Support (leave blank for no exclusion)', 'awesome-support' ),
-			'options'  => wpas_list_pages( $post_type ),
-			'default'  => ''
-		);
-
-		$products[] = array(
-			'type' => 'note',
-			'desc' => esc_html__( 'You cannot use the include and exclude options at the same time. Please use one or the other. You should use the option where you need to select the least amount of products.', 'awesome-support' )
-		);
-
-	}
-
-	return $products;
-
-}
-
-
-/**
  * Prepare the available options for priority
  *
  * @since 3.3.5
@@ -304,74 +258,4 @@ function wpas_get_priority_options() {
 		
 	
 	return $priority;
-}
-
-/**
- * Prepare the available options for basic time tracking...
- *
- * @since 3.3.5
- * @return array
- */
-function wpas_get_basic_time_tracking_options() {
-
-	$basic_time_tracking_options = array(
-		array(
-			'name'    => __( 'Show Basic Time Tracking Fields', 'awesome-support' ),
-			'id'      => 'show_basic_time_tracking_fields',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to show the basic time tracking fields?', 'awesome-support' ),
-			'default' => true
-		),
-
-		array(
-			'name'    => __( 'Allow Agents To Enter Time', 'awesome-support' ),
-			'id'      => 'allow_agents_to_enter_time',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Can agents enter time?  If unchecked, agents cannot enter or adjust time and it is assumed that another add-on will do time tracking and update these fields', 'awesome-support' ),
-			'default' => true
-		),
-		
-		array(
-			'name'    => __( 'Recalculate Final Time On Save', 'awesome-support' ),
-			'id'      => 'recalculate_final_time_on_save',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Recalculate the final time when the ticket is saved? This should be checked for manual time tracking not handled by another add-on.  It takes the original time, adds or subtracts the adjustments and enters the new amount in the final time field. This should be unchecked if another add-on is handling the time tracking and updates!', 'awesome-support' ),
-			'default' => true
-		),		
-		
-		array(
-			'name'    => __( 'Keep Audit Log', 'awesome-support' ),
-			'id'      => 'keep_audit_log_time_tracking',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Adds an internal note to the ticket every time someone updates the basic time tracking fields', 'awesome-support' ),
-			'default' => true
-		),
-		
-		array(
-			'name'    => __( 'Show Total Time In Ticket List', 'awesome-support' ),
-			'id'      => 'show_total_time_in_ticket_list',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Adds a column to the ticket list to show the total original time recorded for the ticket', 'awesome-support' ),
-			'default' => false
-		),
-		
-		array(
-			'name'    => __( 'Show Total Time Adjustments In Ticket List', 'awesome-support' ),
-			'id'      => 'show_total_time_adj_in_ticket_list',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Adds a column to the ticket list to show the time adjustments recorded for the ticket', 'awesome-support' ),
-			'default' => false
-		),
-		
-		array(
-			'name'    => __( 'Show Final Recorded Time In Ticket List', 'awesome-support' ),
-			'id'      => 'show_final_time_in_ticket_list',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Adds a column to the ticket list to show the final time recorded for the ticket', 'awesome-support' ),
-			'default' => false
-		)		
-	);
-		
-	
-	return $basic_time_tracking_options;
 }

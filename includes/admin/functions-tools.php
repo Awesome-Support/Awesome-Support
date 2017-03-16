@@ -45,6 +45,10 @@ function wpas_system_tools() {
 			wpas_reset_channel_terms();
 			break;
 
+		case 'reset_time_fields':
+			wpas_reset_time_fields_to_zero();
+			break;
+			
 	}
 
 	do_action('execute_additional_tools',sanitize_text_field( $_GET['tool'] ));
@@ -386,4 +390,39 @@ function wpas_delete_unclaimed_attachments() {
 
 	return;
 
+}
+
+/**
+ * Reset all time tracking fields to zero
+ *
+ * @since 3.6.0
+ * @return void
+ */
+
+function wpas_reset_time_fields_to_zero() {
+
+	$args = array(
+		'post_type'              => 'ticket',
+		'post_status'            => 'any',
+		'posts_per_page'         => -1,
+		'no_found_rows'          => true,
+		'cache_results'          => false,
+		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+	);
+
+	$query   = new WP_Query( $args );
+	$reset = true;
+
+	if ( 0 == $query->post_count ) {
+		return false;
+	}
+
+	foreach( $query->posts as $post ) {
+		update_post_meta( $post->ID, '_wpas_ttl_calculated_time_spent_on_ticket', 0 );
+		update_post_meta( $post->ID, '_wpas_ttl_adjustments_to_time_spent_on_ticket', 0 );
+		update_post_meta( $post->ID, '_wpas_final_time_spent_on_ticket', 0 );		
+	}
+	
+	return $reset;	
 }
