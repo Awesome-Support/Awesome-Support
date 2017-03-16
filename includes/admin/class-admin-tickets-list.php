@@ -83,7 +83,7 @@ class WPAS_Tickets_List {
 
 		global $pagenow, $typenow;
 
-		if ( 'edit.php' !== $pagenow && 'ticket' !== $typenow ) {
+		if ( ( 'edit.php' !== $pagenow && 'ticket' !== $typenow ) && 'user-edit.php' !== $pagenow ) {
 			return $fields;
 		}
 

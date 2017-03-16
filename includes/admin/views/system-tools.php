@@ -116,6 +116,13 @@ if ( isset( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Reset channels.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Zero Out All Time Fields', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'reset_time_fields' ); ?>" class="button-secondary"><?php _e( 'Reset', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Reset time fields by setting them all to zero on ALL tickets!', 'awesome-support' ); ?></span>
+			</td>
+		</tr>		
 		<?php do_action( 'wpas_system_tools_table_after' ); ?>
 	</tbody>
 </table>
