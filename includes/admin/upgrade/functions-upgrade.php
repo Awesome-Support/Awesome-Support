@@ -83,3 +83,64 @@ function wpas_upgrade_333() {
 	wpas_update_option( 'email_template_header', get_settings_defaults( 'email_template_header' ), true );
 	wpas_update_option( 'email_template_footer', get_settings_defaults( 'email_template_footer' ), true );
 }
+
+/**
+ * Upgrade function for version 3.3.6
+ *
+ * A new option was added in this version so we need to set its default value on upgrade.
+ *
+ * @since 3.3.6
+ * @return void
+ */
+function wpas_upgrade_336() {
+
+	/* Add new capabilities to these roles and all users assigned these roles:
+	 *
+	 *  WordPress Administrator
+	 *  AS Support Manager
+	 *
+	 */
+	$admin_caps = array(
+		'view_unassigned_tickets',
+		'manage_licenses_for_awesome_support',
+		'administer_awesome_support',
+		'view_all_tickets',
+	);
+
+	$manager = get_role( 'wpas_support_manager' );
+	$admin   = get_role( 'administrator' );
+
+	/**
+	 * Add capacities to admin roles
+	 */
+	foreach ( $admin_caps as $cap ) {
+
+		// Add all the capacities to admin in addition to full WP capacities
+		if ( null != $admin )
+			$admin->add_cap( $cap );
+
+		// Add full plugin capacities to manager in addition to the editor capacities
+		if ( null != $manager )
+			$manager->add_cap( $cap );
+
+	}
+
+	// Don't assign the following to users
+	//unset( $admin_caps[] );
+
+	if(($key = array_search('view_all_tickets', $admin_caps)) !== false) {
+        unset($admin_caps[$key]);
+	}
+
+	/**
+	 * Add capacities to admin users
+	 */
+	$admins = get_users( array( 'role__in' => array( 'administrator', 'wpas_support_manager' ) ) );
+	foreach ( $admins as $admin ) {
+		foreach ( $admin_caps as $cap ) {
+			$admin->add_cap( $cap );
+		}
+	}
+
+}
+
