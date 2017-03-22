@@ -686,7 +686,9 @@
 
 			default:
 
-				if ( function_exists( $callback ) ) {
+                if ( ( ! is_array( $callback ) && function_exists( $callback ) )
+                     || ( is_array( $callback ) && method_exists( $callback[0], $callback[1] ) )
+                ) {
 					call_user_func( $callback, $column_id, get_the_ID() );
 				}
 

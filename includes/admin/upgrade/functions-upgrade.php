@@ -130,22 +130,5 @@ function wpas_upgrade_400() {
 	// settings for administrators in TICKETS->SETTINGS->ADVANCED.
 	// We don't want to do that!
 	$admin->remove_cap('view_all_tickets');
-
-
-	// Don't assign the following to users
-	if(($key = array_search('view_all_tickets', $admin_caps)) !== false) {
-        unset($admin_caps[$key]);
-	}
-
-	/**
-	 * Add capacities to admin users
-	 */
-	$admins = get_users( array( 'role__in' => array( 'administrator', 'wpas_support_manager' ) ) );
-	foreach ( $admins as $admin ) {
-		foreach ( $admin_caps as $cap ) {
-			$admin->add_cap( $cap );
-		}
-	}
-
 }
 
