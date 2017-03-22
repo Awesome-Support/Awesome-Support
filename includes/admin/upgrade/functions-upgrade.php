@@ -92,7 +92,7 @@ function wpas_upgrade_333() {
  * @since 3.3.6
  * @return void
  */
-function wpas_upgrade_336() {
+function wpas_upgrade_400() {
 
 	/* Add new capabilities to these roles and all users assigned these roles:
 	 *
@@ -126,8 +126,6 @@ function wpas_upgrade_336() {
 	}
 
 	// Don't assign the following to users
-	//unset( $admin_caps[] );
-
 	if(($key = array_search('view_all_tickets', $admin_caps)) !== false) {
         unset($admin_caps[$key]);
 	}
