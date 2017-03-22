@@ -125,6 +125,13 @@ function wpas_upgrade_400() {
 
 	}
 
+	// Now, remove the "view_all_tickets" capability from admin.
+	// We need to do this because this capability will override the
+	// settings for administrators in TICKETS->SETTINGS->ADVANCED.
+	// We don't want to do that!
+	$admin->remove_cap('view_all_tickets');
+
+
 	// Don't assign the following to users
 	if(($key = array_search('view_all_tickets', $admin_caps)) !== false) {
         unset($admin_caps[$key]);
