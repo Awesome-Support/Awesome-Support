@@ -83,3 +83,52 @@ function wpas_upgrade_333() {
 	wpas_update_option( 'email_template_header', get_settings_defaults( 'email_template_header' ), true );
 	wpas_update_option( 'email_template_footer', get_settings_defaults( 'email_template_footer' ), true );
 }
+
+/**
+ * Upgrade function for version 3.3.6
+ *
+ * A new option was added in this version so we need to set its default value on upgrade.
+ *
+ * @since 3.3.6
+ * @return void
+ */
+function wpas_upgrade_400() {
+
+	/* Add new capabilities to these roles and all users assigned these roles:
+	 *
+	 *  WordPress Administrator
+	 *  AS Support Manager
+	 *
+	 */
+	$admin_caps = array(
+		'view_unassigned_tickets',
+		'manage_licenses_for_awesome_support',
+		'administer_awesome_support',
+		'view_all_tickets',
+	);
+
+	$manager = get_role( 'wpas_support_manager' );
+	$admin   = get_role( 'administrator' );
+
+	/**
+	 * Add capacities to admin roles
+	 */
+	foreach ( $admin_caps as $cap ) {
+
+		// Add all the capacities to admin in addition to full WP capacities
+		if ( null != $admin )
+			$admin->add_cap( $cap );
+
+		// Add full plugin capacities to manager in addition to the editor capacities
+		if ( null != $manager )
+			$manager->add_cap( $cap );
+
+	}
+
+	// Now, remove the "view_all_tickets" capability from admin.
+	// We need to do this because this capability will override the
+	// settings for administrators in TICKETS->SETTINGS->ADVANCED.
+	// We don't want to do that!
+	$admin->remove_cap('view_all_tickets');
+}
+

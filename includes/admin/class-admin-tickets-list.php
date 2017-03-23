@@ -161,9 +161,6 @@ class WPAS_Tickets_List {
 		 */
 		foreach ( $columns as $col_id => $col_label ) {
 
-			$field = $fields[$col_id];
-			$title = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
-
 			// We add all our columns where the date was and move the date column to the end
 			if ( 'date' === $col_id ) {
 
