@@ -406,7 +406,7 @@ class WPAS_Tickets_List {
 		$fields     = $this->get_custom_fields();
 		$orderby    = isset($query->query[ 'orderby' ]) ? $query->query[ 'orderby' ] : '';
 
-		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
+		if ( ! empty( $orderby ) && 'wpas-activity' !== $orderby && array_key_exists( $orderby, $fields ) ) {
 			if ( 'taxonomy' != $fields[ $orderby ][ 'args' ][ 'field_type' ] ) {
 
 				switch ($orderby) {
@@ -442,9 +442,7 @@ class WPAS_Tickets_List {
 					|| isset( $_GET[ 'post_status' ] ) && 'trash' !== $_GET[ 'post_status' ]
 				) {
 
-					/* NOTE: Manual column sorting disables order by urgency */
-
-					if ( wpas_has_smart_tickets_order() ) {
+					if ( ( ! empty( $orderby ) && 'wpas-activity' === $orderby ) || wpas_has_smart_tickets_order() ) {
 						/**
 						 * Inspect the current context and if appropriate specify a query_var to allow
 						 * WP_Query to modify itself based on arguments passed to WP_Query.
