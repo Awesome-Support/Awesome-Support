@@ -55,16 +55,18 @@
 					<p><b>New:</b> Read Only Fields.</p>
 					<p><b>New:</b> Control over where fields show up in the ticket in the admin panel.</p>
 					<p><b>New:</b> Control over how the fields are displayed.</p>
+					<p><b>New:</b> Custom taxonomy fields now have options for individual <em>capabilities</em>.</p>
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 				<div class="about-body">
 					<img src="<?php echo WPAS_URL; ?>assets/admin/images/v400/Security.jpg" alt="Security Enhancements">
 					<h3>Security Enhancements</h3>
-					<p><b>New:</b> 4 additional wordpress capabilities.</p>
+					<p><b>New:</b> 19 additional WordPress capabilities.</p>
 					<p><b>New:</b> Granular control over who can view all tickets.</p>
 					<p><b>New:</b> Granular control over who can view unassigned tickets created by the email add-on.</p>
 					<p><b>New:</b> Granular control over who can view your license information in the license tab. </p>
+					<p><b>New:</b> Granular control over all pre-installed taxonomies such as priorities, products and departments. </p>
 				</div>
 			</div>
 		</div>
