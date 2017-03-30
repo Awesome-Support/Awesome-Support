@@ -144,38 +144,6 @@ function wpas_single_activate() {
 	) );
 
 	
-	/**
-	 * Limited list of capabilities for the managers (aka supervisor)
-	 */		
-	$manager_cap = array(
-		'ticket_edit_tags',
-		'ticket_delete_tags',
-		'ticket_edit_products',
-		'ticket_delete_products',
-		'ticket_edit_departments',
-		'ticket_delete_departments',
-		'ticket_edit_priorities',
-		'ticket_delete_priorities',
-		'ticket_edit_channels',
-		'ticket_delete_channels'		
-	);	
-	
-	/**
-	 * Limited list of capabilities for support managers 
-	 */			
-	$supportmanager_cap = array(
-		'ticket_edit_tags',
-		'ticket_delete_tags',
-		'ticket_edit_products',
-		'ticket_delete_products',
-		'ticket_edit_departments',
-		'ticket_delete_departments',
-		'ticket_edit_priorities',
-		'ticket_delete_priorities',
-		'ticket_edit_channels',
-		'ticket_delete_channels'		
-	);		
-
 	/* Get roles to copy capabilities from */
 	$editor     = get_role( 'editor' );
 	$author     = get_role( 'author' );
