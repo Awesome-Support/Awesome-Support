@@ -547,7 +547,7 @@ SQL;
 
 				if ( isset( $no_replies[ $reply_post->ticket_id ] ) ) {
 
-					if ( $reply_post->client_replied_last ) {
+					if ( (bool) $reply_post->client_replied_last ) {
 						$client_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
 					} else {
 						$agent_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
@@ -559,7 +559,11 @@ SQL;
 
 			}
 
-			$posts = array_values( $no_replies + $client_replies + array_reverse( $agent_replies, true ) );
+			if( 'asc' !== filter_input(INPUT_GET, 'order') ) {
+				$posts = array_values( $client_replies + $no_replies + array_reverse( $agent_replies, true ) );
+			} else {
+				$posts = array_values( $no_replies + $client_replies + array_reverse( $agent_replies, true ) );
+			}
 
 		}
 
@@ -998,7 +1002,7 @@ SQL;
 
 		$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : '';
 
-		if ( !empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
+		if ( !empty( $orderby ) && 'wpas-activity' !== $orderby && array_key_exists( $orderby, $fields ) ) {
 
 			global $wpdb;
 
