@@ -162,6 +162,10 @@
 				'label_plural'          => '',
 				'taxo_hierarchical'     => true,
 				'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+				'taxo_manage_terms' 	=> 'create_ticket',
+				'taxo_edit_terms'   	=> 'settings_tickets',
+				'taxo_delete_terms' 	=> 'settings_tickets',
+				'taxo_assign_terms' 	=> 'create_ticket',
 
 				// @since 3.3.5
 				'readonly'              => false,

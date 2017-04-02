@@ -184,8 +184,14 @@ class WPAS_Custom_Fields {
 				$name         = ! empty( $option['args']['label'] ) ? sanitize_text_field( $option['args']['label'] ) : ucwords( str_replace( array( '_', '-' ), ' ', $option['name'] ) );
 				$plural       = ! empty( $option['args']['label_plural'] ) ? sanitize_text_field( $option['args']['label_plural'] ) : $name . 's';
 				$column       = true === $option['args']['taxo_std'] ? true : false;
+				
 				$hierarchical = $option['args']['taxo_hierarchical'];
-
+				
+				$taxo_manage_terms 	= $option['args']['taxo_manage_terms'];
+				$taxo_edit_terms 	= $option['args']['taxo_edit_terms'];
+				$taxo_delete_terms 	= $option['args']['taxo_delete_terms'];
+				$taxo_assign_terms 	= $option['args']['taxo_assign_terms'];				
+				
 				$labels = array(
 					'name'              => $plural,
 					'singular_name'     => $name,
@@ -208,10 +214,10 @@ class WPAS_Custom_Fields {
 					'query_var'         => true,
 					'rewrite'           => array( 'slug' => $option['name'] ),
 					'capabilities'      => array(
-						'manage_terms' => 'create_ticket',
-						'edit_terms'   => 'settings_tickets',
-						'delete_terms' => 'settings_tickets',
-						'assign_terms' => 'create_ticket'
+						'manage_terms' => $taxo_manage_terms,
+						'edit_terms'   => $taxo_edit_terms,
+						'delete_terms' => $taxo_delete_terms,
+						'assign_terms' => $taxo_assign_terms
 					)
 				);
 

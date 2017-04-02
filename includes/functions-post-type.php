@@ -28,7 +28,7 @@ function wpas_register_post_type() {
 	}
 
 	/* Post type menu icon */
-	$icon = version_compare( get_bloginfo( 'version' ), '3.8', '>=') ? 'dashicons-sos' : WPAS_ADMIN_ASSETS_URL . 'images/icon-tickets.png';
+	$icon = version_compare( get_bloginfo( 'version' ), '3.8', '>=') ? 'dashicons-forms' : WPAS_ADMIN_ASSETS_URL . 'images/icon-tickets.png';
 
 	/* Post type labels */
 	$labels = apply_filters( 'wpas_ticket_type_labels', array(
