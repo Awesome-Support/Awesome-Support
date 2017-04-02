@@ -1001,7 +1001,7 @@
 			$color = wpas_get_option( "color_$status", '#dd3333' );
 			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 
-			if ( 'edit.php' == $pagenow && in_array( $post_status, $custom_status ) ) {
+			if ( 'edit.php' == $pagenow && array_key_exists( $post_status, $custom_status ) ) {
 				$tag .= '<br/>' . $custom_status[ $post_status ];
 			}
 
