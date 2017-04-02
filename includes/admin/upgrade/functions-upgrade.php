@@ -105,13 +105,75 @@ function wpas_upgrade_400() {
 		'manage_licenses_for_awesome_support',
 		'administer_awesome_support',
 		'view_all_tickets',
+		'ticket_manage_tags',
+		'ticket_edit_tags',
+		'ticket_delete_tags',
+		'ticket_manage_products',
+		'ticket_edit_products',
+		'ticket_delete_products',
+		'ticket_manage_departments',
+		'ticket_edit_departments',
+		'ticket_delete_departments',
+		'ticket_manage_priorities',
+		'ticket_edit_priorities',
+		'ticket_delete_priorities',
+		'ticket_manage_channels',
+		'ticket_edit_channels',
+		'ticket_delete_channels'
 	);
+	
+	$agent_caps = array(
+		'ticket_manage_tags',
+		'ticket_manage_products',
+		'ticket_manage_departments',
+		'ticket_manage_priorities',
+		'ticket_manage_channels'		
+	);
+	
+	$manager_caps = array(
+		'ticket_manage_tags',
+		'ticket_edit_tags',
+		'ticket_delete_tags',
+		'ticket_manage_products',
+		'ticket_edit_products',
+		'ticket_delete_products',
+		'ticket_manage_departments',
+		'ticket_edit_departments',
+		'ticket_delete_departments',
+		'ticket_manage_priorities',
+		'ticket_edit_priorities',
+		'ticket_delete_priorities',
+		'ticket_manage_channels',
+		'ticket_edit_channels',
+		'ticket_delete_channels'
+	);
+	
+	$supportmanager_caps = array(
+		'ticket_manage_tags',
+		'ticket_edit_tags',
+		'ticket_delete_tags',
+		'ticket_manage_products',
+		'ticket_edit_products',
+		'ticket_delete_products',
+		'ticket_manage_departments',
+		'ticket_edit_departments',
+		'ticket_delete_departments',
+		'ticket_manage_priorities',
+		'ticket_edit_priorities',
+		'ticket_delete_priorities',
+		'ticket_manage_channels',
+		'ticket_edit_channels',
+		'ticket_delete_channels'
+	);	
 
-	$manager = get_role( 'wpas_support_manager' );
-	$admin   = get_role( 'administrator' );
+	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
+	$supportmanager = get_role( 'wpas_support_manager' );
+	$admin   		= get_role( 'administrator' );
+	$agent	 		= get_role( 'wpas_agent' );
+	
 
 	/**
-	 * Add capacities to admin roles
+	 * Add new capacities to admin roles
 	 */
 	foreach ( $admin_caps as $cap ) {
 
@@ -124,6 +186,25 @@ function wpas_upgrade_400() {
 			$manager->add_cap( $cap );
 
 	}
+	
+	/**
+	 * Add certain new capacities to agents
+	 */
+	foreach ( $agent_caps as $cap ) {
+		if ( null != $agent ) {
+			$agent->add_cap( $cap );
+		}
+	}
+	
+	/**
+	 * Add certain new capacities to support managers
+	 */
+	foreach ( $supportmanager_caps as $cap ) {
+		if ( null != $supportmanager ) {
+			$supportmanager->add_cap( $cap );
+		}
+	}
+	
 
 	// Now, remove the "view_all_tickets" capability from admin.
 	// We need to do this because this capability will override the

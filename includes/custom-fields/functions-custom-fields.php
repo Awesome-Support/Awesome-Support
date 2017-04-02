@@ -350,6 +350,9 @@ function wpas_register_core_fields() {
 		'taxo_hierarchical'     => false,
 		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 		'select2'               => false,
+		'taxo_manage_terms' 	=> 'ticket_manage_tags',
+		'taxo_edit_terms'   	=> 'ticket_edit_tags',
+		'taxo_delete_terms' 	=> 'ticket_delete_tags',
 		'title'           		=> $as_label_for_ticket_tag_singular
 	) );
 
@@ -391,6 +394,9 @@ function wpas_register_core_fields() {
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
+			'taxo_manage_terms' 	=> 'ticket_manage_products',
+			'taxo_edit_terms'   	=> 'ticket_edit_products',
+			'taxo_delete_terms' 	=> 'ticket_delete_products',
 			'title'           		=> $as_label_for_product_singular
 		) );
 
@@ -431,6 +437,9 @@ function wpas_register_core_fields() {
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
+			'taxo_manage_terms' 	=> 'ticket_manage_departments',
+			'taxo_edit_terms'   	=> 'ticket_edit_departments',
+			'taxo_delete_terms' 	=> 'ticket_delete_departments',			
 			'title'           		=> $as_label_for_department_singular
 		) );
 
@@ -492,6 +501,9 @@ function wpas_register_core_fields() {
 			'rewrite'               => array( 'slug' => $slug ),
 			'sortable_column'       => true,
 			'select2'               => false,
+			'taxo_manage_terms' 	=> 'ticket_manage_priorities',
+			'taxo_edit_terms'   	=> 'ticket_edit_priorities',
+			'taxo_delete_terms' 	=> 'ticket_delete_priorities',			
 			'filterable'            => true,
 			'required'              => $show_priority_required,
 			'title'           		=> $as_label_for_priority_singular
@@ -538,6 +550,9 @@ function wpas_register_core_fields() {
 		'rewrite'               => array( 'slug' => $slug ),
 		'sortable_column'       => $show_channel_column_in_list,
 		'select2'               => false,
+		'taxo_manage_terms' 	=> 'ticket_manage_channels',
+		'taxo_edit_terms'   	=> 'ticket_edit_channels',
+		'taxo_delete_terms' 	=> 'ticket_delete_channels',		
 		'filterable'            => $show_channel_column_in_list,
 		'default'               => 'standard ticket form',
 		'title'           		=> $as_label_for_channel_singular

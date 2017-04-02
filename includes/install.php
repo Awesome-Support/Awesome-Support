@@ -86,7 +86,22 @@ function wpas_single_activate() {
 		'view_all_tickets',
 		'view_unassigned_tickets',
 		'manage_licenses_for_awesome_support',
-		'administer_awesome_support'
+		'administer_awesome_support',
+		'ticket_manage_tags',
+		'ticket_edit_tags',
+		'ticket_delete_tags',
+		'ticket_manage_products',
+		'ticket_edit_products',
+		'ticket_delete_products',
+		'ticket_manage_departments',
+		'ticket_edit_departments',
+		'ticket_delete_departments',
+		'ticket_manage_priorities',
+		'ticket_edit_priorities',
+		'ticket_delete_priorities',
+		'ticket_manage_channels',
+		'ticket_edit_channels',
+		'ticket_delete_channels'
 	) );
 
 	/**
@@ -109,7 +124,12 @@ function wpas_single_activate() {
 		'reply_ticket',
 		'create_ticket',
 		'delete_reply',
-		'attach_files'
+		'attach_files',
+		'ticket_manage_tags',
+		'ticket_manage_products',
+		'ticket_manage_departments',
+		'ticket_manage_priorities',
+		'ticket_manage_channels'
 	) );
 
 	/**
@@ -123,7 +143,7 @@ function wpas_single_activate() {
 		'attach_files'
 	) );
 
-
+	
 	/* Get roles to copy capabilities from */
 	$editor     = get_role( 'editor' );
 	$author     = get_role( 'author' );
@@ -152,7 +172,6 @@ function wpas_single_activate() {
 		// Add full plugin capacities only to technical manager
 		if ( null != $tech )
 			$tech->add_cap( $cap );
-
 	}
 	
 	/**
