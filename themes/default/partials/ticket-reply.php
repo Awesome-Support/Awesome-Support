@@ -8,10 +8,10 @@
  * will be overwritten during next update of the plugin.
  *
  * @package   Awesome Support/Templates/Reply
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2016 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2016-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.

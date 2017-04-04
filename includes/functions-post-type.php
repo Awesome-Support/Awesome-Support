@@ -5,8 +5,8 @@
  * @package   Admin/Post Type
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 add_action( 'init', 'wpas_register_post_type', 10, 0 );

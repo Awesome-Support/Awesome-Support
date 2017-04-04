@@ -4,7 +4,7 @@
  * @author    Awesome Support Team <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link       https://getawesomesupport.com
- * @copyright 2014 ThemeAvenue
+ * @copyright 2014-2017 AwesomeSupport
  *
  * @wordpress-plugin
  * Plugin Name:       Awesome Support

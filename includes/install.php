@@ -4,7 +4,7 @@
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
- * @copyright 2015 ThemeAvenue
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
