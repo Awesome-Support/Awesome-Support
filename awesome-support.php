@@ -508,7 +508,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			 * (products support is disabled by default). In this case we don't ask again.
 			 */
 			if ( 'pending' === get_option( 'wpas_support_products' ) ) {
-				if ( ! isset( $_GET['page'] ) || isset( $_GET['page'] ) && 'wpas-about' !== $_GET['page'] ) {
+			    if ( 'wpas-about' !== filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) ) {
 					add_action( 'admin_notices', 'wpas_ask_support_products' );
 				}
 
