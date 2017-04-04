@@ -85,11 +85,11 @@ function wpas_upgrade_333() {
 }
 
 /**
- * Upgrade function for version 3.3.6
+ * Upgrade function for version 4.0.0
  *
  * A new option was added in this version so we need to set its default value on upgrade.
  *
- * @since 3.3.6
+ * @since 4.0.0
  * @return void
  */
 function wpas_upgrade_400() {

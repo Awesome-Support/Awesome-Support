@@ -48,6 +48,10 @@ function wpas_system_tools() {
 		case 'reset_time_fields':
 			wpas_reset_time_fields_to_zero();
 			break;
+		
+		case 'rerun_334_to_400_conversion':			
+			wpas_upgrade_400();
+			break ;
 			
 	}
 
@@ -66,6 +70,13 @@ function wpas_system_tools() {
 	exit;
 
 }
+
+/**
+* Require this file here so that we don't duplicate the upgrade functions. Its used by one of the case statements above to 
+* run the 3.3.4 to 4.0.0 upgrade process on demand.
+* We can remove it or find a better way to handle it later (after a couple of 4.x releases).
+*/
+require_once( WPAS_PATH . 'includes/admin/upgrade/functions-upgrade.php' );
 
 /**
  * Add default channels.
