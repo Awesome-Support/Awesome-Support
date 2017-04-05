@@ -640,6 +640,10 @@ class WPAS_Product_Sync {
 			return;
 		}
 
+		if ( get_post_type( $post_id ) !== $this->post_type ) {
+		    return;
+        }
+
 		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
 
 		// If syncing enabled
