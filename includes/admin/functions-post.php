@@ -305,6 +305,10 @@ add_action( 'wpas_add_reply_after', 'wpas_mark_replies_read', 10, 2 );
  * or manually marks the last reply as read.
  *
  * @since  3.0.0
+ *
+ * @param $reply_id
+ * @param $data
+ *
  * @return void
  */
 function wpas_mark_replies_read( $reply_id, $data ) {
@@ -540,13 +544,11 @@ function wpas_can_user_see_all_tickets() {
 }
 
 /**
- * 
- * @global object $wpdb
- * @global object $current_user
- * @param int $ticket_id
- * @param boolean $next
- * 
- * @return int
+ *
+ * @param array  $args
+ * @param string $ticket_status
+ *
+ * @return array|int
  */
 function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
 	
