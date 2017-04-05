@@ -699,12 +699,9 @@ SQL;
 
 
 		/* TICKET ID */
-
 		$selected_value = '';
-
 		if ( isset( $_GET[ 'id' ] ) && !empty( $_GET[ 'id' ] ) ) {
-			$ticket_id = $_GET[ 'id' ];
-			$selected_value = $ticket_id;
+			$selected_value = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 		}
 
 		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . $selected_value . '" />';
