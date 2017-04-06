@@ -97,7 +97,6 @@ class WPAS_Gist {
 		}
 
 		$url  = $matches[1];  // Gist full URL
-		$id   = $matches[3];  // Gist ID
 		$file = $matches[7];  // Gist file
 		$url  = $url . '.js'; // Append the .js extension
 
