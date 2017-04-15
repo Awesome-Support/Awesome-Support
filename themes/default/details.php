@@ -38,14 +38,14 @@ $author = get_user_by( 'id', $post->post_author );
 			<tr class="wpas-reply-single" valign="top">
 				<td style="width: 64px;">
 					<div class="wpas-user-profile">
-						<?php echo get_avatar( $post->post_author, '64', get_option( 'avatar_default' ) ); ?>
+						<?php echo apply_filters('wpas_fe_template_detail_author_avatar', get_avatar( $post->post_author, '64', get_option( 'avatar_default' ) ), $post ); ?>
 					</div>
 				</td>
 
 				<td>
 					<div class="wpas-reply-meta">
 						<div class="wpas-reply-user">
-							<strong class="wpas-profilename"><?php echo $author->data->display_name; ?></strong>
+							<strong class="wpas-profilename"><?php echo apply_filters('wpas_fe_template_detail_author_display_name', $author->data->display_name, $post ); ?></strong>
 						</div>
 						<div class="wpas-reply-time">
 							<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>">

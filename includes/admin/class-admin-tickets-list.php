@@ -5,8 +5,8 @@
  * @package   Admin/Tickets List
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 class WPAS_Tickets_List {
@@ -164,30 +164,32 @@ class WPAS_Tickets_List {
 			// We add all our columns where the date was and move the date column to the end
 			if ( 'date' === $col_id ) {
 
-				$new[ 'status' ] = $col_label;
+				if ( array_key_exists( 'status', $custom ) ) {
+					$new[ 'status' ] = esc_html__( 'Status', 'awesome-support' );
+				}
 
 				$new[ 'title' ] = esc_html__( 'Title', 'awesome-support' );
 
 				if ( array_key_exists( 'ticket_priority', $custom ) ) {
-					$new[ 'ticket_priority' ] = esc_html__( 'Priority', 'awesome-support' );
+					$new[ 'ticket_priority' ] = $this->get_cf_title( 'ticket_priority', 'Priority' );
 				}
 
 				$new[ 'id' ] = esc_html__( 'ID', 'awesome-support' );
 
 				if ( array_key_exists( 'product', $custom ) ) {
-					$new[ 'product' ] = esc_html__( 'Product', 'awesome-support' );
+					$new[ 'product' ] = $this->get_cf_title( 'product', 'Product' );
 				}
 
 				if ( array_key_exists( 'department', $custom ) ) {
-					$new[ 'department' ] = esc_html__( 'Department', 'awesome-support' );
+					$new[ 'department' ] = $this->get_cf_title( 'department', 'Department' );
 				}
 
 				if ( array_key_exists( 'ticket_channel', $custom ) ) {
-					$new[ 'ticket_channel' ] = esc_html__( 'Channel', 'awesome-support' );
+					$new[ 'ticket_channel' ] = $this->get_cf_title( 'ticket_channel', 'Channel' );
 				}
 
 				if ( array_key_exists( 'ticket-tag', $custom ) ) {
-					$new[ 'ticket-tag' ] = esc_html__( 'Tag', 'awesome-support' );
+					$new[ 'ticket-tag' ] = $this->get_cf_title( 'ticket-tag', 'Tag' );
 				}
 
 				// Add the client column
@@ -201,14 +203,13 @@ class WPAS_Tickets_List {
 					&& ! current_user_can( 'administrator' )
 					&& true === boolval( wpas_get_option( 'agent_see_all' ) )
 				) {
-					$new[ 'assignee' ] = esc_html__( 'Agent', 'awesome-support' );
+					$new[ 'assignee' ] = $this->get_cf_title( 'assignee', 'Agent' );
 				}
 
 				// Add the date
 				$new[ 'date' ] = $columns[ 'date' ];
 
-				$new[ 'wpas-activity' ] = esc_html__( 'Activity', 'awesome-support' );
-
+				$new[ 'wpas-activity' ] = $this->get_cf_title( 'wpas-activity', 'Activity' );
 
 			} else {
 				$new[ $col_id ] = $col_label;
@@ -220,11 +221,40 @@ class WPAS_Tickets_List {
 
 	}
 
+
+	/**
+	 * Return CF Title after applying filters
+	 *
+	 * @since 3.3.5
+	 *
+	 * @param $field_id
+	 *
+	 * @param $field_title
+	 *
+	 * @return string
+	 */
+	public function get_cf_title( $field_id, $field_title ) {
+
+		$fields = $this->get_custom_fields();
+
+		$field = $fields[ $field_id ];
+
+		if( ! empty( $field ) ) {
+			$field_title = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
+		}
+
+		return esc_html__( $field_title, 'awesome-support' );
+
+	}
+
+
 	/**
 	 * Manage core column content.
 	 *
 	 * @since  3.0.0
+	 *
 	 * @param  array $column Column currently processed
+	 *
 	 * @param  integer $post_id ID of the post being processed
 	 */
 	public function custom_columns_content( $column, $post_id ) {
@@ -376,7 +406,7 @@ class WPAS_Tickets_List {
 		$fields     = $this->get_custom_fields();
 		$orderby    = isset($query->query[ 'orderby' ]) ? $query->query[ 'orderby' ] : '';
 
-		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
+		if ( ! empty( $orderby ) && 'wpas-activity' !== $orderby && array_key_exists( $orderby, $fields ) ) {
 			if ( 'taxonomy' != $fields[ $orderby ][ 'args' ][ 'field_type' ] ) {
 
 				switch ($orderby) {
@@ -412,9 +442,7 @@ class WPAS_Tickets_List {
 					|| isset( $_GET[ 'post_status' ] ) && 'trash' !== $_GET[ 'post_status' ]
 				) {
 
-					/* NOTE: Manual column sorting disables order by urgency */
-
-					if ( wpas_has_smart_tickets_order() ) {
+					if ( ( ! empty( $orderby ) && 'wpas-activity' === $orderby ) || wpas_has_smart_tickets_order() ) {
 						/**
 						 * Inspect the current context and if appropriate specify a query_var to allow
 						 * WP_Query to modify itself based on arguments passed to WP_Query.
@@ -519,7 +547,7 @@ SQL;
 
 				if ( isset( $no_replies[ $reply_post->ticket_id ] ) ) {
 
-					if ( $reply_post->client_replied_last ) {
+					if ( (bool) $reply_post->client_replied_last ) {
 						$client_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
 					} else {
 						$agent_replies[ $reply_post->ticket_id ] = $no_replies[ $reply_post->ticket_id ];
@@ -531,7 +559,11 @@ SQL;
 
 			}
 
-			$posts = array_values( $no_replies + $client_replies + array_reverse( $agent_replies, true ) );
+			if( 'asc' !== filter_input(INPUT_GET, 'order') ) {
+				$posts = array_values( $client_replies + $no_replies + array_reverse( $agent_replies, true ) );
+			} else {
+				$posts = array_values( $no_replies + $client_replies + array_reverse( $agent_replies, true ) );
+			}
 
 		}
 
@@ -667,12 +699,9 @@ SQL;
 
 
 		/* TICKET ID */
-
 		$selected_value = '';
-
 		if ( isset( $_GET[ 'id' ] ) && !empty( $_GET[ 'id' ] ) ) {
-			$ticket_id = $_GET[ 'id' ];
-			$selected_value = $ticket_id;
+			$selected_value = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_STRING);
 		}
 
 		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . $selected_value . '" />';
@@ -970,7 +999,7 @@ SQL;
 
 		$orderby = isset($_GET['orderby']) ? $_GET['orderby'] : '';
 
-		if ( !empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
+		if ( !empty( $orderby ) && 'wpas-activity' !== $orderby && array_key_exists( $orderby, $fields ) ) {
 
 			global $wpdb;
 

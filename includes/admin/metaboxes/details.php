@@ -81,7 +81,7 @@ if ( isset( $post ) ) {
 				<?php endforeach; ?>
 			</select>
 			<?php if ( isset( $_GET['post'] ) ): ?>
-				<input type="hidden" name="wpas_post_parent" value="<?php echo $_GET['post']; ?>">
+				<input type="hidden" name="wpas_post_parent" value="<?php echo filter_input(INPUT_GET, 'post', FILTER_SANITIZE_STRING); ?>">
 			<?php endif; ?>
 		</p>
 	<?php endif; ?>

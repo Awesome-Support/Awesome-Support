@@ -35,9 +35,9 @@ function wpas_ticket_priority_add_form_color_field( $taxonomy ) {
 	?>
 
 	<div class="form-field term-color-wrap">
-		<label for="term-color"><?php echo _e( 'Color', 'wpas' ); ?></label>
+		<label for="term-color"><?php echo _e( 'Color', 'awesome-support' ); ?></label>
 		<input type="text" name="term-color" id="term-color" value="" />
-		<p class="description">Set priority color.</p>
+		<p class="description"><?php echo _e( 'Set priority color.', 'awesome-support' ); ?></p>
 	</div>
 
 	<?php
@@ -55,11 +55,11 @@ function wpas_ticket_priority_edit_form_color_field( $term, $taxonomy ) {
 
 	<tr class="form-field term-color-wrap">
 		<th scope="row" valign="top">
-			<label for="term-color"><?php echo _e( 'Color', 'wpas' ); ?></label>
+			<label for="term-color"><?php echo _e( 'Color', 'awesome-support' ); ?></label>
 		</th>
 		<td>
 			<input type="text" name="term-color" id="term-color" value="<?php echo esc_attr( $color ); ?>" />
-			<p class="description">Set priority color.</p>
+			<p class="description"><?php echo _e( 'Set priority color.', 'awesome-support' ); ?></p>
 		</td>
 	</tr>
 

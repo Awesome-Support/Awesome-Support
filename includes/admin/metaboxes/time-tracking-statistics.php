@@ -31,10 +31,32 @@
 
 	<?php
 
+        /*
+         * Filter time fields - display minutes integer in hh:mm format
+         */
+		function wpas_cf_field_markup_time_display_hhmm( $field, $populate ) {
+
+		    if( empty( $populate ) || ! is_numeric( $populate ) ) {
+		        return $field;
+            }
+
+		    // Change minutes integer to hh:mm for display
+            $minutes    = (int) $populate;
+			$hhmm       = sprintf( "%02d:%02d", floor( $minutes / 60 ), ( $minutes ) % 60 );
+
+            return str_replace( 'value="' . $populate . '"', 'value="' . $hhmm . '"', $field );
+
+		}
+
+		// Activate time display filter
+		add_filter( 'wpas_cf_field_markup', 'wpas_cf_field_markup_time_display_hhmm', 10, 2 );
 		WPAS()->custom_fields->display_single_field( 'ttl_calculated_time_spent_on_ticket' );
 		WPAS()->custom_fields->display_single_field( 'ttl_adjustments_to_time_spent_on_ticket' );
-		WPAS()->custom_fields->display_single_field( 'time_adjustments_pos_or_neg' );
 		WPAS()->custom_fields->display_single_field( 'final_time_spent_on_ticket' );
+        // Remove time display filter
+		remove_filter('wpas_cf_field_markup', 'wpas_cf_field_markup_time_display_hhmm');
+
+		WPAS()->custom_fields->display_single_field( 'time_adjustments_pos_or_neg' );
 		WPAS()->custom_fields->display_single_field( 'time_notes' );
 
 		do_action( 'wpas_mb_details_after_time_tracking_statistics' );

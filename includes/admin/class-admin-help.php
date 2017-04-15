@@ -5,8 +5,8 @@
  * @package   Admin/Help
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 class WPAS_Help {
@@ -49,7 +49,8 @@ class WPAS_Help {
 	 */
 	public function settings_general_contextual_help() {
 
-		if( !isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] || isset( $_GET['tab'] ) && 'general' !== $_GET['tab'] ) {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
+		    'general' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
 			return;
 		}
 		
@@ -82,7 +83,8 @@ class WPAS_Help {
 	 */
 	public function settings_notifications_contextual_help() {
 
-		if( !isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] || !isset( $_GET['tab'] ) || 'email' !== $_GET['tab'] ) {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
+		    'email' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
 			return;
 		}
 
@@ -122,10 +124,11 @@ class WPAS_Help {
 	 */
 	public function settings_advanced_contextual_help() {
 
-		if( !isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] || !isset( $_GET['tab'] ) || 'advanced' !== $_GET['tab'] ) {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
+		    'advanced' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
 			return;
 		}
-		
+
 		$screen = get_current_screen();
 
 		$screen->add_help_tab( array(
