@@ -13,14 +13,15 @@ php:
     - "5.2"
 
 # WordPress version used in first build configuration.
-# We test 4 versions back and also 3.8 which is announced as compatible
+# We test 4 versions back
+# We used to test 3.8 which was announced as compatible but removed that as of AS 4.0.0.
 env:
     - WP_VERSION=master
     - WP_VERSION=4.6
     - WP_VERSION=4.5
     - WP_VERSION=4.4
     - WP_VERSION=4.3
-    - WP_VERSION=3.8
+#    - WP_VERSION=3.8
 
 # Next we define our matrix of additional build configurations to test against.
 # The versions listed above will automatically create our first configuration,
@@ -39,8 +40,8 @@ matrix:
   include:
     - php: "5.6"
       env: WP_VERSION=master WP_ALLOW_MULTISITE=1
-    - php: "7"
-      env: WP_VERSION=master
+ #   - php: "7"
+ #     env: WP_VERSION=master
 
 # Clones WordPress and configures our testing environment.
 before_script:
