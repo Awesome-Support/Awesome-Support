@@ -20,7 +20,19 @@ class WPAS_Titan {
 	protected static $instance = null;
 
 	public function __construct() {
+		add_action( 'admin_enqueue_scripts', array($this, 'load_color_picker') );
 		add_action( 'after_setup_theme', array( $this, 'load_titan_framework' ), 12 );
+	}
+
+	/**
+	 * Prevent JS error on wp-admin (bug in Titan framework)
+	 * THIS IS A TEMPORARY SOLUTION UNTIL NEXT RELEASE OF TITAN
+	 * @link https://github.com/ThemeAvenue/Awesome-Support/issues/221
+	 * @link https://github.com/gambitph/Titan-Framework/issues/290
+	 */
+	public static function load_color_picker() {
+		wp_enqueue_script( 'wp-color-picker' );
+		wp_enqueue_style( 'wp-color-picker' );
 	}
 
 	/**
