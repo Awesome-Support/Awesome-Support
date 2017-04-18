@@ -21,6 +21,10 @@ $user = get_userdata( $post->post_author );
 $open   = wpas_get_tickets( 'open', array( 'posts_per_page' => apply_filters( 'wpas_user_profile_tickets_open_limit', 10 ), 'author' => $post->post_author ) );
 $closed = wpas_get_tickets( 'closed', array( 'posts_per_page' => apply_filters( 'wpas_user_profile_tickets_closed_limit', 5 ), 'author' => $post->post_author ) );
 
+// Get tickets again without the wpas_user_profile_tickets_open_limit filter so that we can get a full and accurate count of tickets.  Gah - hate duplicating code.
+$open_for_count   = wpas_get_tickets( 'open', array( 'posts_per_page' => -1, 'author' => $post->post_author ) );
+$closed_for_count = wpas_get_tickets( 'closed', array( 'posts_per_page' => -1, 'author' => $post->post_author ) );
+
 // Sort open tickets
 $by_status  = array();
 $all_status = wpas_get_post_status();
@@ -85,20 +89,26 @@ $by_status['closed'] = $closed;
 	
 	<div class="wpas-row wpas-up-stats">
 		<div class="wpas-col wpas-up-stats-all">
-			<strong><?php echo count( $open ) + count( $closed ); ?></strong>
+			<strong><?php echo count( $open_for_count ) + count( $closed_for_count ); ?></strong>
 			<?php echo esc_html__( 'Total', 'awesome-support' ); ?>
 		</div>
 		<div class="wpas-col wpas-up-stats-open">
-			<strong><?php echo count( $open ); ?></strong>
+			<strong><?php echo count( $open_for_count ); ?></strong>
 			<?php echo esc_html__( 'Open', 'awesome-support' ); ?>
 		</div>
 		<div class="wpas-col wpas-up-stats-closed">
-			<strong><?php echo count( $closed ); ?></strong>
+			<strong><?php echo count( $closed_for_count ); ?></strong>
 			<?php echo esc_html__( 'Closed', 'awesome-support' ); ?>
 		</div>
 	</div>
-
+	
 	<?php
+	
+	If ( ( count( $open_for_count) <> count ($open) ) or ( count( $closed_for_count ) <> count ($closed) ) ) {
+		// add warning message that the totals shown will not match the list of open tickets
+		echo esc_html__( 'Note: A filter is enabled that allows the totals shown above to be greater than the list of tickets below.', 'awesome-support' ); 
+	}
+	
 	/**
 	 * Fires after the user stats
 	 *
