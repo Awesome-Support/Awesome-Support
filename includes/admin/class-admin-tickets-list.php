@@ -22,6 +22,7 @@ class WPAS_Tickets_List {
 	public function __construct() {
 		add_action( 'manage_ticket_posts_columns',       array( $this, 'add_core_custom_columns' ),     16, 1 );
 		add_action( 'manage_ticket_posts_custom_column', array( $this, 'core_custom_columns_content' ), 10, 2 );
+		add_filter( 'posts_clauses',                     array( $this, 'core_custom_columns_sort' ),    10, 2 );
 		add_action( 'admin_menu',                        array( $this, 'hide_closed_tickets' ),         10, 0 );
 		add_filter( 'the_excerpt',                       array( $this, 'remove_excerpt' ),              10, 1 );
 		add_filter( 'post_row_actions',                  array( $this, 'remove_quick_edit' ),           10, 2 );
@@ -407,6 +408,17 @@ SQL;
 
 		}
 
+	}
+	public function core_custom_columns_sort( $clauses, $wp_query ) {
+		global $wpdb;
+
+		if ( $wp_query->query_vars['post_type'] === 'ticket' ) {
+			$clauses['join']   .= " LEFT OUTER JOIN $wpdb->posts recent ON recent.post_parent = $wpdb->posts.ID AND recent.post_type = 'ticket_reply'";
+			$order = ( $wp_query->get( 'order' ) == 'ASC' ? 'ASC' : 'DESC' );
+			$clauses['orderby'] = 'recent.post_date '. $order .', wp_posts.ID '. $order;
+		}
+
+		return $clauses;
 	}
 
 	/**
