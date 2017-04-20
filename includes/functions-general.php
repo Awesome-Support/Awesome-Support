@@ -521,7 +521,8 @@ function wpas_dropdown( $args, $options ) {
 		'please_select' => false,
 		'select2'       => false,
 		'disabled'      => false,
-		'data_attr'     => array()
+		'data_attr'     => array(),
+		'multiple'	=> false,
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -547,7 +548,7 @@ function wpas_dropdown( $args, $options ) {
 	/* Start the buffer */
 	ob_start(); ?>
 
-	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 		<?php
 		if ( $args['please_select'] ) {
 			echo '<option value="">' . __( 'Please select', 'awesome-support' ) . '</option>';
