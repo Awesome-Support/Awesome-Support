@@ -964,7 +964,15 @@ class WPAS_File_Upload {
 
 		if ( ( isset( $_POST['wpas_nonce'] ) || isset( $_POST['client_reply'] ) ) || isset( $_POST['wpas_reply'] ) ) {
 			$this->post_id   = intval( $reply_id );
-			$this->parent_id = intval( $_POST['ticket_id'] );
+			if( isset( $_POST['ticket_id'] ) ){
+				$this->parent_id = intval( $_POST['ticket_id'] );
+			}else{
+				/**
+				 * Ruleset bug fix on missing parent ID
+				 * Get parent post ID from reply ID
+				*/
+				$this->parent_id = wp_get_post_parent_id( $reply_id );
+			}
 			$this->process_upload();
 		}
 	}
