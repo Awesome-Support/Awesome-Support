@@ -62,18 +62,20 @@ function wpas_metaboxes() {
 	}	
 	
 	/* Ticket Statistics */
-	add_meta_box( 'wpas-mb-ticket-statistics', __( 'Ticket Statistics', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-statistics' ) );	
+	add_meta_box( 'wpas-mb-ticket-statistics', __( 'Ticket Statistics', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-statistics' ) );
 
 	/* Time tracking statistics*/
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
 
 	if ( isset( $options['show_basic_time_tracking_fields'] ) && true === boolval( $options['show_basic_time_tracking_fields'] ) ) {	
-		add_meta_box( 'wpas-mb-ticket-time-tracking', __( 'Time Tracking', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'time-tracking-statistics' ) );	
+		add_meta_box( 'wpas-mb-ticket-time-tracking', __( 'Time Tracking', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'time-tracking-statistics' ) );
 	}
 
 	
 	/* Additional Interested Parties */
-	add_meta_box( 'wpas-mb-ticket-addl-parties', __( 'Additional Interested Parties', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-additional-parties' ) );			
+	if (  ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) or ( isset( $options['show_third_party_fields'] ) && true === boolval( $options['show_third_party_fields'] ) ) ) {
+		add_meta_box( 'wpas-mb-ticket-addl-parties', __( 'Additional Interested Parties', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-additional-parties' ) );
+	}
 	
 }
 
