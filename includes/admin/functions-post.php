@@ -120,7 +120,7 @@ function wpas_save_ticket( $post_id ) {
 		return;
 	}
 
-	/* Does the current user has permission? */
+	/* Does the current user have permission? */
 	if ( ! current_user_can( 'edit_ticket', $post_id ) ) {
 		return;
 	}
@@ -131,6 +131,11 @@ function wpas_save_ticket( $post_id ) {
 	 * Store possible logs
 	 */
 	$log = array();
+
+	/**
+	 * Save old assignee - will need to pass it to action hooks later
+	 */ 
+	 $old_assignee = get_post_meta( $post_id, '_wpas_assignee', true );
 	
 	/* Now we can save the custom fields */
 	WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
@@ -146,6 +151,15 @@ function wpas_save_ticket( $post_id ) {
 		 * First of all, set the ticket as open. This is very important.
 		 */
 		add_post_meta( $post_id, '_wpas_status', 'open', true );
+		
+		/**
+		 * Fires when a new ticket is being added 
+		 *
+		 * @since 4.0.0
+		 *
+		 * @param int   $post_id Ticket ID
+		 */
+		do_action( 'wpas_post_new_ticket_admin', $post_id );
 
 		/**
 		 * Send the confirmation e-mail to the user.
@@ -153,6 +167,14 @@ function wpas_save_ticket( $post_id ) {
 		 * @since  3.1.5
 		 */
 		wpas_email_notify( $post_id, 'submission_confirmation' );
+		
+		
+		/**
+		 * Send a confirmation e-mail to the agent assigned 
+		 *
+		 * @since  4.0.0
+		 */		
+		wpas_email_notify( $post_id, 'new_ticket_assigned' );
 
 	}
 
@@ -207,11 +229,19 @@ function wpas_save_ticket( $post_id ) {
 
 			/* In case the insertion failed... */
 			if ( is_wp_error( $reply ) ) {
+				
+				// Fire action hook for failed reply inserted via admin
+				do_action( 'wpas_insert_reply_admin_failed', $post_id, $data, $reply );
 
 				/* Set the redirection */
 				$_SESSION['wpas_redirect'] = add_query_arg( array( 'wpas-message' => 'wpas_reply_error' ), get_permalink( $post_id ) );
 
 			} else {
+				
+				/**
+				 * Fire action hook for reply inserted via admin
+				 */								
+				do_action( 'wpas_insert_reply_admin_success', $post_id, $data, $reply );
 
 				/* E-Mail the client */
 				new WPAS_Email_Notification( $post_id, array(
@@ -250,14 +280,20 @@ function wpas_save_ticket( $post_id ) {
 
 	}
 
-
 	/* Log the action */
 	if ( ! empty( $log ) ) {
 		wpas_log( $post_id, $log );
 	}
 
-	/* If this was a ticket update, we need to know where to go now... */
+	/* If this was a ticket update, we need to fire some action hooks and then figure out where to go next... */
 	if ( '' !== $original_status ) {
+		
+		/**
+		 * Fire action hook for after ticket update...
+		 *
+		 * @since 4.0.0
+		 */
+		do_action( 'wpas_ticket_after_update_admin_success', $post_id, $old_assignee, $_POST);	
 
 		$gt_post      = null;
 		$where_after  = filter_input( INPUT_POST, 'where_after', FILTER_SANITIZE_STRING );

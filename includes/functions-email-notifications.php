@@ -47,6 +47,29 @@ function wpas_notify_assignment( $ticket_id, $agent_id ) {
 }
 
 
+
+add_action( 'wpas_ticket_after_update_admin_success', 'wpas_notify_admin_assignment', 12, 3 );
+/**
+ * Send e-mail assignment notification when ticket is updated from back-end or admin pannel.
+ *
+ * Sends an e-mail to the agent that they were added to an existing ticket.
+ *
+ * @since  4.0.0
+ *
+ * @param  integer $ticket_id ID of the new ticket
+ * @param  numeric $old_assignee id of old assignee before ticket was updated...
+ * @param  array   $current_ticket contents of current post / ticket
+ *
+ * @return void
+ */
+function wpas_notify_admin_assignment( $ticket_id, $old_assignee, $current_ticket ) {
+	
+	If ( (int) $current_ticket['wpas_assignee'] <> (int) $old_assignee ) {
+		wpas_email_notify( $ticket_id, 'new_ticket_assigned' );
+	}
+}
+
+
 add_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10, 2 );
 function wpas_notify_reply( $reply_id, $data ) {
 
@@ -91,5 +114,5 @@ function wpas_additional_agents_new_assignment_notify($field_id ,$post_id, $valu
 	
 	elseif( $field_id == 'tertiary_assignee' ) {
 		wpas_email_notify($post_id, 'new_ticket_assigned_tertiary');
-	}
+	}	
 }
