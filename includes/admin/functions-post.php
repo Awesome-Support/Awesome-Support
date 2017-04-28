@@ -153,28 +153,13 @@ function wpas_save_ticket( $post_id ) {
 		add_post_meta( $post_id, '_wpas_status', 'open', true );
 		
 		/**
-		 * Fires when a new ticket is being added 
+		 * Fire hook when a new ticket is being added - works great for notifications
 		 *
 		 * @since 4.0.0
 		 *
 		 * @param int   $post_id Ticket ID
 		 */
 		do_action( 'wpas_post_new_ticket_admin', $post_id );
-
-		/**
-		 * Send the confirmation e-mail to the user.
-		 *
-		 * @since  3.1.5
-		 */
-		wpas_email_notify( $post_id, 'submission_confirmation' );
-		
-		
-		/**
-		 * Send a confirmation e-mail to the agent assigned 
-		 *
-		 * @since  4.0.0
-		 */		
-		wpas_email_notify( $post_id, 'new_ticket_assigned' );
 
 	}
 
@@ -239,15 +224,9 @@ function wpas_save_ticket( $post_id ) {
 			} else {
 				
 				/**
-				 * Fire action hook for reply inserted via admin
+				 * Fire action hook for reply inserted via admin - great place for notifications...
 				 */								
 				do_action( 'wpas_insert_reply_admin_success', $post_id, $data, $reply );
-
-				/* E-Mail the client */
-				new WPAS_Email_Notification( $post_id, array(
-					'reply_id' => $reply,
-					'action'   => 'reply_agent'
-				) );
 
 				/* The agent wants to close the ticket */
 				if ( isset( $_POST['wpas_do'] ) && 'reply_close' == $_POST['wpas_do'] ) {
@@ -262,9 +241,6 @@ function wpas_save_ticket( $post_id ) {
 
 						/* Close */
 						wpas_close_ticket( $post_id );
-
-						/* E-Mail the client */
-						new WPAS_Email_Notification( $post_id, array( 'action' => 'closed' ) );
 
 						/**
 						 * wpas_ticket_closed_by_agent hook
