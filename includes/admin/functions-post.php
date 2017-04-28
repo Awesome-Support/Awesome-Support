@@ -600,7 +600,7 @@ function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
  * @param type $use_id
  * @return type
  */
-function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0 ) {
+function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_filter = true ) {
 	
 	if( 0 ===  $user_id ) {
 		$user_id = get_current_user_id();
@@ -646,6 +646,6 @@ function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0 ) {
 		}
 	}
 	
-	return $meta_query;
+	return apply_filters( 'wpas_assignee_meta_query', $meta_query, $user_id, $profile_filter );
 	
 }
