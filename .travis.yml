@@ -8,6 +8,7 @@ sudo: false
 
 # PHP version used in first build configuration.
 php:
+    - "7.0"
     - "5.6"
 #    - "5.5"
 #    - "5.2"
@@ -40,8 +41,8 @@ matrix:
   include:
     - php: "5.6"
       env: WP_VERSION=master WP_ALLOW_MULTISITE=1
- #   - php: "7"
- #     env: WP_VERSION=master
+    - php: "7"
+      env: WP_VERSION=master
 
 # Clones WordPress and configures our testing environment.
 before_script:
@@ -59,12 +60,12 @@ before_script:
     - sed -i "s/user/root/" unittests-config.php
     - sed -i "s/password//" unittests-config.php
     - cd "/tmp/wordpress/wp-content/plugins/$PLUGIN_SLUG"
-    - phpenv global 5.3
+    - phpenv global 5.6
     - composer install
     - phpenv global "$TRAVIS_PHP_VERSION"
     - cd "/tmp/wordpress/wp-content/plugins/$PLUGIN_SLUG/tests"
 
-script: if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then phpunit --coverage-clover=coverage.clover all; else phpunit all; fi
+script: if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then ../vendor/bin/phpunit --coverage-clover=coverage.clover all; else ../vendor/bin/phpunit all; fi
 
 after_script:
     - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
