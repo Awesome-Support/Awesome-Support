@@ -5,25 +5,41 @@
         "This file is @generated automatically"
     ],
     "hash": "e793d8b6df006318f94b9330006f6ba6",
-    "content-hash": "a32da19a175b18342f98d104ea23ff53",
+    "content-hash": "af12a9c9d71f9e651d13ab0e62063ed9",
     "packages": [
         {
             "name": "ericmann/wp-session-manager",
-            "version": "dev-master",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ericmann/wp-session-manager.git",
-                "reference": "c446c85909206345d875297d8691396e0ba624a3"
+                "reference": "8a4aacd25e4a89429e93a85df70a068052853cae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/c446c85909206345d875297d8691396e0ba624a3",
-                "reference": "c446c85909206345d875297d8691396e0ba624a3",
+                "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/8a4aacd25e4a89429e93a85df70a068052853cae",
+                "reference": "8a4aacd25e4a89429e93a85df70a068052853cae",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2015-05-25 00:38:47"
+            "license": [
+                "GPLv2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Eric Mann",
+                    "email": "eric@eamann.com",
+                    "homepage": "https://eamann.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Prototype session management for WordPress.",
+            "homepage": "https://github.com/ericmann/wp-session-manager",
+            "keywords": [
+                "session"
+            ],
+            "time": "2017-04-26T13:27:37+00:00"
         },
         {
             "name": "gambitph/titan-framework",
@@ -1386,9 +1402,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "ericmann/wp-session-manager": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

@@ -23,7 +23,7 @@
     "require": {
         "php": ">=5.6",
         "gambitph/titan-framework": "1.9.*",
-        "ericmann/wp-session-manager": "dev-master#c446c85909206345d875297d8691396e0ba624a3"
+        "ericmann/wp-session-manager": "1.2.*"
     },
     "archive": {
         "exclude": [
