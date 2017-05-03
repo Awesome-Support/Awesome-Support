@@ -390,7 +390,7 @@ function wpas_register_core_fields() {
 			'label_plural'          => $labels[ 'label_plural' ],
 			'taxo_hierarchical'     => true,
 			'sortable_column'       => true,
-			'filterable'            => false,
+			'filterable'            => true,
 			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
