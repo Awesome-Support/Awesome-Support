@@ -323,7 +323,7 @@ class WPAS_Product_Sync {
 		$term_data = get_post_meta( $post->ID, '_wpas_product_term', true );
 
 		/* If this post doesn't have a corresponding term we create it now */
-		if ( empty( $term_data ) ) {
+		if ( ! $term_data ) {
 
 			/* Make sure this term is not currently being inserted */
 			if ( $this->is_insert_protected( $post->ID ) ) {
@@ -332,7 +332,7 @@ class WPAS_Product_Sync {
 
 			$term_data = $this->insert_term( $post );
 
-			/* If the term couldn't be inserted we return false, which will result in skipping this post */
+            /* If the term couldn't be inserted we return false, which will result in skipping this post */
 			if ( false === $term_data ) {
 				return false;
 			}
@@ -340,8 +340,14 @@ class WPAS_Product_Sync {
 		}
 
 		/* Get the term and term taxonomy IDs */
-		$term_id          = $term_data['term_id'];
-		$term_taxonomy_id = $term_data['term_taxonomy_id'];
+        if( ! is_array($term_data) && is_a( $term_data, 'WP_Term' )) {
+            $term_id          = $term_data->term_id;
+            $term_taxonomy_id = $term_data->term_taxonomy_id;
+        }
+        else {
+            $term_id          = $term_data['term_id'];
+            $term_taxonomy_id = $term_data['term_taxonomy_id'];
+        }
 
 		$term = array(
 			'term_id'          => $term_id,
@@ -353,7 +359,8 @@ class WPAS_Product_Sync {
 			'taxonomy'         => $this->taxonomy,
 			'description'      => wp_trim_words( $post->post_content, 55, ' [...]' ),
 			'parent'           => $post->post_parent,
-			'count'            => 0,
+			'count'            => get_term_by('id', $term_id, $this->taxonomy )->count,   //0,
+			'object_id'        => $post->ID, // Could be handy to still have access to the post ID
 		);
 
 		return (object) $term;
@@ -538,7 +545,7 @@ class WPAS_Product_Sync {
 			    $tid = is_a( $term, 'WP_Term' ) ? (int) $term->name : (int) $term;
 
                 // Create the custom term object
-                if( array_key_exists( (int) $tid, $index ) ) {
+                if( array_key_exists( $tid, $index ) ) {
 	                $term = $this->create_term_object( $index[ $tid ] );
                 }
 
@@ -592,6 +599,10 @@ class WPAS_Product_Sync {
 		$term->description = wp_trim_words( $post->post_content, 55, ' [...]' );
 		$term->post_id     = $post_id;
 
+		//$x = wp_cache_get( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
+
+		//$x = wp_cache_add( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
+
 		return $term;
 
 	}
@@ -612,6 +623,15 @@ class WPAS_Product_Sync {
 		if ( ! $this->is_product_tax( $taxonomy ) ) {
 			return $terms;
 		}
+
+        $post_terms = wp_get_post_terms( $post_id, $taxonomy );
+		if( ! empty( $post_terms ) ) {
+            $terms = array_merge( $terms, $post_terms );
+        }
+
+        if( empty( $terms ) ) {
+		    return $terms;
+        }
 
 		foreach ( $terms as $key => $term ) {
 
