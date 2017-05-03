@@ -6,10 +6,10 @@
 	 * for developers to gather ticket details and insert them in a custom template.
 	 *
 	 * @package   Awesome_Support
-	 * @author    ThemeAvenue <web@themeavenue.net>
+	 * @author    AwesomeSupport <contact@getawesomesupport.com>
 	 * @license   GPL-2.0+
-	 * @link      http://themeavenue.net
-	 * @copyright 2014 ThemeAvenue
+	 * @link      https://getawesomesupport.com
+	 * @copyright 2014-2017 AwesomeSupport
 	 */
 
 	add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );

@@ -956,7 +956,7 @@ function wpas_mailgun_check( $data = '' ) {
 
 }
 
-add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax' );
+add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax',11,0 );
 /**
  * Get AS users using Ajax
  *

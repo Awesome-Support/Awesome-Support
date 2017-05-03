@@ -130,7 +130,15 @@ function wpas_core_settings_general( $def ) {
 					'name' => __( 'Third Parties', 'awesome-support' ),
 					'type' => 'heading',
 					'desc' => 'Use these options to control whether third parties show in the ticket list.  To change the labels for 3rd party fields please see our PRODUCTIVITY add-on.'
-				),	
+				),
+				
+				array(
+					'name'    => __( 'Enable Third Party Fields', 'awesome-support' ),
+					'id'      => 'show_third_party_fields',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the third party fields on the ticket?', 'awesome-support' ),
+					'default' => false
+				),				
 
 				array(
 					'name'    => __( 'Show Third Party #1 in Ticket List', 'awesome-support' ),

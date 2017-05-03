@@ -4,7 +4,7 @@
  * @author    Awesome Support Team <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link       https://getawesomesupport.com
- * @copyright 2014 ThemeAvenue
+ * @copyright 2014-2017 AwesomeSupport
  *
  * @wordpress-plugin
  * Plugin Name:       Awesome Support
@@ -67,7 +67,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @since 3.3
 		 * @var string
 		 */
-		public $php_version_required = '5.2';
+		public $php_version_required = '5.6';
 
 		/**
 		 * Holds the WPAS_Custom_Fields instance

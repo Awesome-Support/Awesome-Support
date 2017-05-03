@@ -8,19 +8,21 @@ sudo: false
 
 # PHP version used in first build configuration.
 php:
+    - "7.0"
     - "5.6"
-    - "5.5"
-    - "5.2"
+#    - "5.5"
+#    - "5.2"
 
 # WordPress version used in first build configuration.
-# We test 4 versions back and also 3.8 which is announced as compatible
+# We test 4 versions back
+# We used to test 3.8 which was announced as compatible but removed that as of AS 4.0.0.
 env:
     - WP_VERSION=master
     - WP_VERSION=4.6
     - WP_VERSION=4.5
     - WP_VERSION=4.4
     - WP_VERSION=4.3
-    - WP_VERSION=3.8
+#    - WP_VERSION=3.8
 
 # Next we define our matrix of additional build configurations to test against.
 # The versions listed above will automatically create our first configuration,
@@ -58,12 +60,12 @@ before_script:
     - sed -i "s/user/root/" unittests-config.php
     - sed -i "s/password//" unittests-config.php
     - cd "/tmp/wordpress/wp-content/plugins/$PLUGIN_SLUG"
-    - phpenv global 5.3
+    - phpenv global 5.6
     - composer install
     - phpenv global "$TRAVIS_PHP_VERSION"
     - cd "/tmp/wordpress/wp-content/plugins/$PLUGIN_SLUG/tests"
 
-script: if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then phpunit --coverage-clover=coverage.clover all; else phpunit all; fi
+script: if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then ../vendor/bin/phpunit --coverage-clover=coverage.clover all; else ../vendor/bin/phpunit all; fi
 
 after_script:
     - if [[ $TRAVIS_PHP_VERSION = '5.5' && $WP_VERSION = 'master' && $WP_ALLOW_MULTISITE != '1' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi

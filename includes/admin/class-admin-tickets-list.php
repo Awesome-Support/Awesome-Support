@@ -5,8 +5,8 @@
  * @package   Admin/Tickets List
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 class WPAS_Tickets_List {
@@ -83,7 +83,8 @@ class WPAS_Tickets_List {
 
 		global $pagenow, $typenow;
 
-		if ( ( 'edit.php' !== $pagenow && 'ticket' !== $typenow ) && 'user-edit.php' !== $pagenow ) {
+		$add_custom_fields = ( 'edit.php' !== $pagenow && 'ticket' !== $typenow ) ? false : true;
+		if( !apply_filters( 'add_ticket_column_custom_fields', $add_custom_fields ) ) {
 			return $fields;
 		}
 
