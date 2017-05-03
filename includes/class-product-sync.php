@@ -39,10 +39,10 @@
  * through get_term() in order to correctly apply the filters to the synced terms.
  *
  * @package   Awesome Support
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 class WPAS_Product_Sync {
 

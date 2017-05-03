@@ -12,10 +12,10 @@
  * server for e-mail routing in order to ensure a safe delivery.
  *
  * @package   Awesome Support
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 class WPAS_Email_Notification {
 

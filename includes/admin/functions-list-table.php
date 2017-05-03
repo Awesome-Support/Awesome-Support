@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Admin/Functions/List Table
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -45,22 +45,8 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
-	/* If admins can see all tickets do nothing */
-	if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
-		return false;
-	}
-
-	/* If agents can see all tickets do nothing */
-	if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
-		return false;
-	}
-
 	global $current_user;	
 	
-	/* If current user can see all tickets do nothing */
-	if ( current_user_can( 'view_all_tickets' ) && ! current_user_can( 'administrator' ) && true === (bool) get_user_meta( (int) $current_user->ID, 'wpas_view_all_tickets', true )  ) {
-		return false;
-	}	
 	
 	// We need to update the original meta_query and not replace it to avoid filtering issues.
 	$meta_query = $query->get( 'meta_query' );
@@ -69,41 +55,13 @@ function wpas_hide_others_tickets( $query ) {
 		$meta_query = array_filter( (array) $meta_query );
 	}
 	
-	$primary_agent_meta_query = array(
-		'key'     => '_wpas_assignee',
-		'value'   => (int) $current_user->ID,
-		'compare' => '=',
-		'type'    => 'NUMERIC',
-	);
+	$agents_meta_query = wpas_ticket_listing_assignee_meta_query_args( $current_user->ID );
 	
-	if( wpas_is_multi_agent_active() ) {
-		// Check if agent is set as secondary or tertiary agent
-		$multi_agents_meta_query = array();
-		$multi_agents_meta_query['relation'] = 'OR';
-		$multi_agents_meta_query[] = $primary_agent_meta_query;
-		
-		$multi_agents_meta_query[] = array(
-			'key'     => '_wpas_secondary_assignee',
-			'value'   => (int) $current_user->ID,
-			'compare' => '=',
-			'type'    => 'NUMERIC',
-		);
-		
-		$multi_agents_meta_query[] = array(
-			'key'     => '_wpas_tertiary_assignee',
-			'value'   => (int) $current_user->ID,
-			'compare' => '=',
-			'type'    => 'NUMERIC',
-		);
-		
-		$meta_query[] = $multi_agents_meta_query;
-		
-	} else {
-		$meta_query[] = $primary_agent_meta_query;
+	if( !empty( $agents_meta_query ) ) {
+		$meta_query[] = $agents_meta_query;
+		$query->set( 'meta_query', $meta_query );
 	}
 	
-	$query->set( 'meta_query', $meta_query );
-
 	return true;
 
 }
