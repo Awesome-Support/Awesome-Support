@@ -330,6 +330,7 @@ class WPAS_Product_Sync {
 				return false;
 			}
 
+
 			$term_data = $this->insert_term( $post );
 
             /* If the term couldn't be inserted we return false, which will result in skipping this post */
@@ -624,13 +625,12 @@ class WPAS_Product_Sync {
 			return $terms;
 		}
 
-        $post_terms = wp_get_post_terms( $post_id, $taxonomy );
-		if( ! empty( $post_terms ) ) {
+		if( empty($terms) ) {
+            $post_terms = wp_get_post_terms( $post_id, $taxonomy );
+	       	if( empty( $post_terms ) ) {
+	       	    return $terms;
+            }
             $terms = array_merge( $terms, $post_terms );
-        }
-
-        if( empty( $terms ) ) {
-		    return $terms;
         }
 
 		foreach ( $terms as $key => $term ) {
