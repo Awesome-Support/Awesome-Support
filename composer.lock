@@ -4,7 +4,6 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "af12a9c9d71f9e651d13ab0e62063ed9",
     "packages": [
         {
             "name": "ericmann/wp-session-manager",
