@@ -3,10 +3,10 @@
  * Awesome Support Member.
  *
  * @package   Awesome Support
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -193,8 +193,12 @@ class WPAS_Member {
 		$this->caps = array();
 
 		foreach ( (array) $this->roles as $role ) {
+			
 			$the_role   = $wp_roles->get_role( $role );
-			$this->caps = array_merge( (array) $this->caps, (array) $the_role->capabilities );
+			
+			If ( ! empty ( $the_role->capabilities ) ) {
+				$this->caps = array_merge( (array) $this->caps, (array) $the_role->capabilities );
+			}
 		}
 
 	}

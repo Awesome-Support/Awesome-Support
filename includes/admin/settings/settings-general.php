@@ -41,6 +41,13 @@ function wpas_core_settings_general( $def ) {
 					)
 				),
 				array(
+					'name'    => __( 'Tickets Per Page (Front End)', 'awesome-support' ),
+					'id'      => 'tickets_per_page_front_end',
+					'type'    => 'text',
+					'default' => 5,
+					'desc'    => __( 'How many tickets per page should be displayed to the customer/client/end-user?', 'awesome-support' ),
+				),				
+				array(
 					'name'    => __( 'Replies Order', 'awesome-support' ),
 					'id'      => 'replies_order',
 					'type'    => 'radio',
@@ -59,7 +66,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Hide Closed', 'awesome-support' ),
 					'id'      => 'hide_closed',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Only show open tickets when clicking the "All Tickets" link.', 'awesome-support' ),
+					'desc'    => __( 'Only show open tickets when agents click the "All Tickets" link.', 'awesome-support' ),
 					'default' => true
 				),
 				array(
@@ -84,10 +91,83 @@ function wpas_core_settings_general( $def ) {
 					'default' => false
 				),
 				array(
-					'name' => __( 'Products Management', 'awesome-support' ),
+					'name' => __( 'Priority Management', 'awesome-support' ),
 					'type' => 'heading',
-					'options' => wpas_get_products_options()
+					'desc' => 'Use these options to control how the priority field is used and shown.  To change the labels used for this field please see our PRODUCTIVITY add-on.',
+					'options' => wpas_get_priority_options()
 				),
+				
+				array(
+					'name' => __( 'Multiple Agents', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => 'Use these options to control whether multiple agents can actively handle a single ticket. To change the labels please see our PRODUCTIVITY add-on.'
+				),
+				array(
+					'name'    => __( 'Enable Multiple Agents Per Ticket', 'awesome-support' ),
+					'id'      => 'multiple_agents_per_ticket',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the two extra agent fields on the ticket?', 'awesome-support' ),
+					'default' => false
+				),
+				
+				array(
+					'name'    => __( 'Show Secondary Agent In Ticket List', 'awesome-support' ),
+					'id'      => 'show_secondary_agent_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the secondary agent in the ticket list?', 'awesome-support' ),
+					'default' => false
+				),
+				
+				array(
+					'name'    => __( 'Show Tertiary Agent In Ticket List', 'awesome-support' ),
+					'id'      => 'show_tertiary_agent_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the Tertiary agent in the ticket list?', 'awesome-support' ),
+					'default' => false
+				),				
+				
+				array(
+					'name' => __( 'Third Parties', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => 'Use these options to control whether third parties show in the ticket list.  To change the labels for 3rd party fields please see our PRODUCTIVITY add-on.'
+				),
+				
+				array(
+					'name'    => __( 'Enable Third Party Fields', 'awesome-support' ),
+					'id'      => 'show_third_party_fields',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the third party fields on the ticket?', 'awesome-support' ),
+					'default' => false
+				),				
+
+				array(
+					'name'    => __( 'Show Third Party #1 in Ticket List', 'awesome-support' ),
+					'id'      => 'show_third_party_01_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show Third Party #1 Data in the Ticket List?', 'awesome-support' ),
+					'default' => false
+				),
+				
+				array(
+					'name'    => __( 'Show Third Party #2 in Ticket List', 'awesome-support' ),
+					'id'      => 'show_third_party_02_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show Third Party #2 Data in the Ticket List?', 'awesome-support' ),
+					'default' => false
+				),				
+				
+				array(
+					'name' => __( 'Other Field Settings', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Show Channel Field', 'awesome-support' ),
+					'id'      => 'channel_show_in_ticket_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
+					'default' => false
+				),
+				
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
 					'type' => 'heading',
@@ -142,82 +222,48 @@ function wpas_core_settings_general( $def ) {
 }
 
 /**
- * Prepare the available options for the products
+ * Prepare the available options for priority
  *
- * @since 3.3
+ * @since 3.3.5
  * @return array
  */
-function wpas_get_products_options() {
+function wpas_get_priority_options() {
 
-	$products = array(
+	$priority = array(
 		array(
-			'name'    => __( 'Multiple Products', 'awesome-support' ),
-			'id'      => 'support_products',
+			'name'    => __( 'Use Priority Field', 'awesome-support' ),
+			'id'      => 'support_priority',
 			'type'    => 'checkbox',
-			'desc'    => __( 'If you need to provide support for multiple products, please enable this option. You will then be able to add your products.', 'awesome-support' ),
+			'desc'    => __( 'Would you like to use the priority field in your tickets?', 'awesome-support' ),
 			'default' => false
 		),
-	);
 
-	$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->plugin;
-
-	if ( ! is_null( $ecommerce_synced ) ) {
-
-		$plugin_name = ucwords( str_replace( array( '-', '_' ), ' ', $ecommerce_synced ) );
-
-		$products[] = array(
-			'name'    => sprintf( esc_html__( 'Synchronize %s Products', 'awesome-support' ), $plugin_name ),
-			'id'      => 'support_products_' . $ecommerce_synced,
+		array(
+			'name'    => __( 'Mandatory?', 'awesome-support' ),
+			'id'      => 'support_priority_mandatory',
 			'type'    => 'checkbox',
-			'desc'    => sprintf( esc_html__( 'We have detected that you are using the e-commerce plugin %1$s. Would you like to automatically synchronize your e-commerce products with Awesome Support?', 'awesome-support' ), $plugin_name ),
+			'desc'    => __( 'Would you like to make the priority field mandatory in your tickets?', 'awesome-support' ),
+			'default' => false
+		),
+
+		array(
+			'name'    => __( 'Show On Front End?', 'awesome-support' ),
+			'id'      => 'support_priority_show_fe',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Would you like to show the field to the end user (unchecked restricts it to admin use only)?', 'awesome-support' ),
 			'default' => true
-		);
+		),		
 
-		$products[] = array(
-			'type' => 'note',
-			'desc' => wp_kses( sprintf( __( 'If you just disabled this option and want to remove the previously synchronized products, <a href="%1$s">please use the dedicated option &laquo;Delete Products&raquo;</a>', 'awesome-support' ), esc_url( add_query_arg( array(
-					'post_type' => 'ticket',
-					'page'      => 'wpas-status',
-					'tab'       => 'tools'
-				), admin_url( 'edit.php' ) )
-			) ), array(
-				'a' => array(
-					'href'  => array(),
-					'title' => array()
-				)
-			) )
-		);
-
-		$registered = WPAS_eCommerce_Integration::get_instance()->get_plugins();
-		$post_type  = $registered[ $ecommerce_synced ]['post_type'];
-
-		$products[] = array(
-			'name'     => __( 'Include Products', 'awesome-support' ),
-			'id'       => 'support_products_' . $ecommerce_synced . '_include',
-			'type'     => 'select',
-			'multiple' => true,
-			'desc'     => esc_html__( 'Which products do you want to synchronize with Awesome Support (leave blank for all products)', 'awesome-support' ),
-			'options'  => wpas_list_pages( $post_type ),
-			'default'  => ''
-		);
-
-		$products[] = array(
-			'name'     => __( 'Exclude Products', 'awesome-support' ),
-			'id'       => 'support_products_' . $ecommerce_synced . '_exclude',
-			'type'     => 'select',
-			'multiple' => true,
-			'desc'     => esc_html__( 'Which products do you want to exclude from synchronization with Awesome Support (leave blank for no exclusion)', 'awesome-support' ),
-			'options'  => wpas_list_pages( $post_type ),
-			'default'  => ''
-		);
-
-		$products[] = array(
-			'type' => 'note',
-			'desc' => esc_html__( 'You cannot use the include and exclude options at the same time. Please use one or the other. You should use the option where you need to select the least amount of products.', 'awesome-support' )
-		);
-
-	}
-
-	return $products;
-
+		array(
+			'name'    => __( 'Show In Column List?', 'awesome-support' ),
+			'id'      => 'support_priority_show_in_ticket_list',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Would you like to show the field in the ticket listing?', 'awesome-support' ),
+			'default' => false
+		)		
+		
+	);
+		
+	
+	return $priority;
 }

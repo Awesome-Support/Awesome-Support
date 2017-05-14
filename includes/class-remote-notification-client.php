@@ -11,12 +11,12 @@
  * in order to let the user hide the notification.
  *
  * @package   Remote Dashboard Notifications
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
+ * @link      https://getawesomesupport.com
  * @link      http://wordpress.org/plugins/remote-dashboard-notifications/
  * @link 	  https://github.com/ThemeAvenue/Remote-Dashboard-Notifications
- * @copyright 2016 ThemeAvenue
+ * @copyright 2016-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.

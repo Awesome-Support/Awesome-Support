@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Admin/Functions/List Table
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -45,40 +45,27 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
-	/* If admins can see all tickets do nothing */
-	if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
-		return false;
-	}
-
-	/* If agents can see all tickets do nothing */
-	if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
-		return false;
-	}
-
-	global $current_user;
-
+	global $current_user;	
+	
+	
 	// We need to update the original meta_query and not replace it to avoid filtering issues.
 	$meta_query = $query->get( 'meta_query' );
 
 	if ( ! is_array( $meta_query ) ) {
 		$meta_query = array_filter( (array) $meta_query );
 	}
-
-	$meta_query[] = array(
-		'key'     => '_wpas_assignee',
-		'value'   => (int) $current_user->ID,
-		'compare' => '=',
-		'type'    => 'NUMERIC',
-	);
-
-	$query->set( 'meta_query', $meta_query );
-
+	
+	$agents_meta_query = wpas_ticket_listing_assignee_meta_query_args( $current_user->ID );
+	
+	if( !empty( $agents_meta_query ) ) {
+		$meta_query[] = $agents_meta_query;
+		$query->set( 'meta_query', $meta_query );
+	}
+	
 	return true;
 
 }
 
-
-add_action( 'pre_get_posts', 'wpas_limit_open', 10, 1 );
 /**
  * Limit the list of tickets to open.
  *

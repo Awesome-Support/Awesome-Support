@@ -36,10 +36,27 @@ function wpas_system_tools() {
 		case 'ticket_attachments':
 			wpas_delete_unclaimed_attachments();
 			break;
+		
+		case 'reset_replies_count':
+			wpas_reset_replies_count();
+			break;
+		
+		case 'reset_channels':
+			wpas_reset_channel_terms();
+			break;
 
-
+		case 'reset_time_fields':
+			wpas_reset_time_fields_to_zero();
+			break;
+		
+		case 'rerun_334_to_400_conversion':			
+			wpas_upgrade_400();
+			break ;
+			
 	}
 
+	do_action('execute_additional_tools',sanitize_text_field( $_GET['tool'] ));
+	
 	/* Redirect in "read-only" mode */
 	$url = add_query_arg( array(
 			'post_type' => 'ticket',
@@ -52,6 +69,59 @@ function wpas_system_tools() {
 	wp_redirect( wp_sanitize_redirect( $url ) );
 	exit;
 
+}
+
+/**
+* Require this file here so that we don't duplicate the upgrade functions. Its used by one of the case statements above to 
+* run the 3.3.4 to 4.0.0 upgrade process on demand.
+* We can remove it or find a better way to handle it later (after a couple of 4.x releases).
+*/
+require_once( WPAS_PATH . 'includes/admin/upgrade/functions-upgrade.php' );
+
+/**
+ * Add default channels.
+ * 
+ * @return boolean
+ * 
+ */
+function wpas_reset_channel_terms() {
+	return wpas_add_default_channel_terms(true);
+}
+
+/**
+ * Reset replies count for all tickets.
+ *
+ * Gets all the existing tickets from the system
+ * and reset their replies count one by one.
+ *
+ * @return boolean
+ * 
+ */
+function wpas_reset_replies_count() {
+	$args = array(
+		'post_type'              => 'ticket',
+		'post_status'            => 'any',
+		'posts_per_page'         => -1,
+		'no_found_rows'          => true,
+		'cache_results'          => false,
+		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+	);
+
+	$query   = new WP_Query( $args );
+	$reset = false;
+	
+	if ( 0 == $query->post_count ) {
+		return false;
+	}
+
+	foreach( $query->posts as $post ) {
+		if ( wpas_count_replies( $post->ID ) && false === $reset ) {
+			$reset = true;
+		}
+	}
+
+	return $reset;
 }
 
 /**
@@ -302,8 +372,9 @@ function wpas_delete_unclaimed_attachments() {
 
 	$upload           = wp_get_upload_dir();
 	$attachments_root = trailingslashit( $upload['basedir'] ) . 'awesome-support/';
+	$ticket_folders   = glob( $attachments_root . 'ticket_*' );
 
-	foreach ( glob( $attachments_root . 'ticket_*' ) as $folder ) {
+	foreach ( $ticket_folders as $folder ) {
 
 		$basename  = basename( $folder );
 
@@ -330,4 +401,39 @@ function wpas_delete_unclaimed_attachments() {
 
 	return;
 
+}
+
+/**
+ * Reset all time tracking fields to zero
+ *
+ * @since 3.6.0
+ * @return void
+ */
+
+function wpas_reset_time_fields_to_zero() {
+
+	$args = array(
+		'post_type'              => 'ticket',
+		'post_status'            => 'any',
+		'posts_per_page'         => -1,
+		'no_found_rows'          => true,
+		'cache_results'          => false,
+		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+	);
+
+	$query   = new WP_Query( $args );
+	$reset = true;
+
+	if ( 0 == $query->post_count ) {
+		return false;
+	}
+
+	foreach( $query->posts as $post ) {
+		update_post_meta( $post->ID, '_wpas_ttl_calculated_time_spent_on_ticket', 0 );
+		update_post_meta( $post->ID, '_wpas_ttl_adjustments_to_time_spent_on_ticket', 0 );
+		update_post_meta( $post->ID, '_wpas_final_time_spent_on_ticket', 0 );		
+	}
+	
+	return $reset;	
 }

@@ -6,8 +6,8 @@
  * @package   Awesome_Support
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 class WPAS_File_Upload {
 
@@ -302,43 +302,11 @@ class WPAS_File_Upload {
 	public function set_upload_dir( $upload ) {
 
 		/* Get the ticket ID */
-		$ticket_id = ! is_null( $this->parent_id ) ? $this->parent_id : $this->post_id;
+		$ticket_id = ! empty( $this->parent_id ) ? $this->parent_id : $this->post_id;
 
 		if ( empty( $ticket_id ) ) {
 			return $upload;
 		}
-
-		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-			/* On the front-end, we make sure that a new ticket or a reply is being submitted */
-			//if ( ! is_admin() ) {
-			//	if ( ! isset( $_POST['wpas_title'] ) && ! isset( $_POST['wpas_user_reply'] ) ) {
-			//		return $upload;
-			//	}
-			//}
-
-			//if ( is_admin() ) {
-
-			/* Are we in the right post type? */
-
-			//if ( ! isset( $_POST['post_type'] ) || 'ticket' !== $_POST['post_type'] && 'wpas_unassigned_mail' !== $_POST['post_type'] ) {
-			//	return $upload;
-			//}
-
-			//if ( ! isset( $_POST['wpas_reply'] ) ) {
-			//	return $upload;
-			//}
-
-			//}
-		} elseif ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
-
-			if ( ! isset( $_GET['action'] ) || $_GET['action'] !== 'delete' ) {
-				return $upload;
-			}
-
-		} else {
-			return $upload;
-		}
-
 
 		if ( ! $this->can_attach_files() ) {
 			return $upload;
@@ -358,6 +326,14 @@ class WPAS_File_Upload {
 
 		/* Create the directory if it doesn't exist yet, make sure it's protected otherwise */
 		if ( ! is_dir( $dir ) ) {
+
+		    if ( $_SERVER['REQUEST_METHOD'] == 'GET'
+			    && isset( $_GET['action'] )
+                && $_GET['action'] === 'delete'
+            ) {
+				return $upload;
+			}
+
 			$this->create_upload_dir( $dir );
 		} else {
 			$this->protect_upload_dir( $dir );
@@ -988,7 +964,15 @@ class WPAS_File_Upload {
 
 		if ( ( isset( $_POST['wpas_nonce'] ) || isset( $_POST['client_reply'] ) ) || isset( $_POST['wpas_reply'] ) ) {
 			$this->post_id   = intval( $reply_id );
-			$this->parent_id = intval( $_POST['ticket_id'] );
+			if( isset( $_POST['ticket_id'] ) ){
+				$this->parent_id = intval( $_POST['ticket_id'] );
+			}else{
+				/**
+				 * Ruleset bug fix on missing parent ID
+				 * Get parent post ID from reply ID
+				*/
+				$this->parent_id = wp_get_post_parent_id( $reply_id );
+			}
 			$this->process_upload();
 		}
 	}
@@ -1031,11 +1015,10 @@ class WPAS_File_Upload {
 	 */
 	public function delete_attachments( $post_id ) {
 
-		global $post_type;
-
-		if ( 'ticket' !== $post_type && 'wpas_unassigned_mail' !== $post_type ) {
-			return;
-		}
+		$post = get_post( $post_id );
+		if( empty( $post ) || 'ticket' !== $post->post_type ) {
+		    return;
+        }
 
 		$this->post_id = $post_id;
 
@@ -1044,6 +1027,13 @@ class WPAS_File_Upload {
 		if ( ! empty( $attachments ) ) {
 
 			$args = array();
+
+			// Remove attachment folder
+			$upload = wp_get_upload_dir();
+
+			if ( ! file_exists( $upload['path'] ) ) {
+				return;
+			}
 
 			/**
 			 * wpas_attachments_before_delete fires before deleting attachments
@@ -1057,13 +1047,6 @@ class WPAS_File_Upload {
 
 			foreach ( $attachments as $id => $attachment ) {
 				wp_delete_attachment( $id, true );
-			}
-
-			// Remove attachment folder
-			$upload = wp_get_upload_dir();
-
-			if ( ! file_exists( $upload['path'] ) ) {
-				return;
 			}
 
 			$it    = new RecursiveDirectoryIterator( $upload['path'], RecursiveDirectoryIterator::SKIP_DOTS );

@@ -956,7 +956,7 @@ function wpas_mailgun_check( $data = '' ) {
 
 }
 
-add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax' );
+add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax',11,0 );
 /**
  * Get AS users using Ajax
  *
@@ -1051,4 +1051,38 @@ function wpas_has_smart_tickets_order( $user_id = 0 ) {
 
 	return apply_filters( 'wpas_has_smart_tickets_order', $value, $user_id );
 
+}
+
+/**
+ * return list of agents in a ticket
+ * @param int $ticket_id
+ * @param array $exclude
+ * @return array
+ */
+function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
+	
+	$agent_ids = $agents = array();
+	
+	$primary_agent_id    = intval( get_post_meta( $ticket_id, '_wpas_assignee', true ) );
+	if( $primary_agent_id && !in_array( $primary_agent_id, $exclude ) ) {
+		$agent_ids[] = $primary_agent_id;
+	}
+	
+	if( wpas_is_multi_agent_active() ) {
+		$secondary_agent_id  = intval( get_post_meta( $ticket_id, '_wpas_secondary_assignee', true ) );
+		$tertiary_agent_id   = intval( get_post_meta( $ticket_id, '_wpas_tertiary_assignee', true ) );
+		if( $secondary_agent_id && !in_array( $secondary_agent_id, $exclude ) && !in_array( $secondary_agent_id, $agent_ids ) ) {
+			$agent_ids[] = $secondary_agent_id;
+		}
+
+		if( $tertiary_agent_id && !in_array( $tertiary_agent_id, $exclude )  && !in_array( $tertiary_agent_id, $agent_ids ) ) {
+			$agent_ids[] = $tertiary_agent_id;
+		}
+	}
+	
+	foreach ($agent_ids as $id) {
+		$agents[] = get_user_by('id', $id);
+	}
+	
+	return $agents;
 }

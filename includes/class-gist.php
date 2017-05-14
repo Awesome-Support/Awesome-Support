@@ -9,10 +9,10 @@
  * (https://github.com/miya0001/oembed-gist) by Takayuki Miyauchi.
  *
  * @package   Awesome Support
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  * @since     3.1.3
  */
 
@@ -97,7 +97,6 @@ class WPAS_Gist {
 		}
 
 		$url  = $matches[1];  // Gist full URL
-		$id   = $matches[3];  // Gist ID
 		$file = $matches[7];  // Gist file
 		$url  = $url . '.js'; // Append the .js extension
 

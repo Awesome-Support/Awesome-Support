@@ -186,25 +186,25 @@ Ticket Replies
 		margin: 0 0 10px 0;
 		padding: 0;
 	}
-	ul { 
-		list-style-type: disc; 
-		list-style-position: inside; 
+	ul {
+		list-style-type: disc;
+		list-style-position: inside;
 	}
-	ol { 
-		list-style-type: decimal; 
-		list-style-position: inside; 
+	ol {
+		list-style-type: decimal;
+		list-style-position: inside;
 	}
 	ul ul,
-	ol ul { 
-		list-style-type: circle; 
-		list-style-position: inside; 
-		margin-left: 15px; 
+	ol ul {
+		list-style-type: circle;
+		list-style-position: inside;
+		margin-left: 15px;
 	}
 	ol ol,
-	td ul ol { 
-		list-style-type: lower-latin; 
-		list-style-position: inside; 
-		margin-left: 15px; 
+	td ul ol {
+		list-style-type: lower-latin;
+		list-style-position: inside;
+		margin-left: 15px;
 	}
 }
 .wpas-ticket-controls,
@@ -326,6 +326,15 @@ Ticket Replies
 }
 .wp-core-ui {
 	.wpas-reply-actions {
+
+		fieldset {
+			margin: 1.25em 0 1.25em 0;
+		}
+
+		fieldset label {
+			margin-right: 1.25em;
+		}
+
 		.button,
 		.button-primary,
 		.button-secondary {
@@ -411,7 +420,10 @@ Metaboxes - Custom Fields
 	.wpas-form-group + .wpas-form-group {
 		margin-top: 1em;
 	}
-	.wpas-form-control, select, input, textarea {
+	input:read-only, input:disabled {
+		cursor: not-allowed;
+	}
+	.wpas-form-control, select, input:not([type='radio']), textarea {
 		width: 100%;
 	}
 	label {
@@ -419,6 +431,7 @@ Metaboxes - Custom Fields
 		margin-bottom: .25em;
 	}
 }
+
 
 /*
 ==========================================================================
@@ -472,7 +485,7 @@ Metaboxes - Ticket Details
 		&:after {
 			font-size: 100%;
 		}
-	}	
+	}
 }
 
 #wpas-mb-details {

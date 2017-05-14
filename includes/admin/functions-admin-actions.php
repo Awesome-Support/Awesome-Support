@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Admin/Functions/Actions
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -117,6 +117,7 @@ function wpas_admin_action_trash_reply( $data ) {
 	$reply_id = (int) $data['reply_id'];
 
 	wp_trash_post( $reply_id, false );
+	do_action( 'wpas_admin_reply_trashed', $reply_id );
 
 	// Read-only redirect
 	$redirect_to = add_query_arg( array(

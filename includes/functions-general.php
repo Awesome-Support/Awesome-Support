@@ -521,7 +521,8 @@ function wpas_dropdown( $args, $options ) {
 		'please_select' => false,
 		'select2'       => false,
 		'disabled'      => false,
-		'data_attr'     => array()
+		'data_attr'     => array(),
+		'multiple'	=> false,
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -547,7 +548,7 @@ function wpas_dropdown( $args, $options ) {
 	/* Start the buffer */
 	ob_start(); ?>
 
-	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 		<?php
 		if ( $args['please_select'] ) {
 			echo '<option value="">' . __( 'Please select', 'awesome-support' ) . '</option>';
@@ -593,7 +594,7 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	$options = '';
 
 	foreach ( $tickets as $ticket ) {
-		$options .= "<option value='$ticket->ID'>$ticket->post_title</option>";
+		$options .= "<option value='$ticket->ID' " . selected( $args['selected'], $ticket->ID ) . ">$ticket->post_title</option>";
 	}
 
 	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
@@ -1084,3 +1085,41 @@ function wpas_array_to_data_attributes( $array, $user_funct = false ) {
 function wpas_get_the_time_timestamp() {
 	return get_the_time( 'U' );
 }
+
+/**
+ * Check if multi agent is enabled
+ * @return boolean
+ */
+function wpas_is_multi_agent_active() {
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	
+	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
+		return true;
+	}
+	
+	return false;
+}
+
+/**
+ * Check if support priority is active
+ * @return boolean
+ */
+function wpas_is_support_priority_active() {
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	
+	if ( isset( $options['support_priority'] ) && true === boolval( $options['support_priority'] ) ) {
+		return true;
+	}
+	
+	return false;
+}
+
+/**
+ * Create a pseduo GUID
+ *
+ * @return string
+ */
+ function wpas_create_pseudo_guid(){
+	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+ }
+ 

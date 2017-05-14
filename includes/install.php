@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Install
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -25,26 +25,7 @@ register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
  */
 function wpas_install( $network_wide ) {
 
-	if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
-		if ( $network_wide ) {
-
-			// Get all blog ids
-			$blog_ids = wpas_get_blog_ids();
-
-			foreach ( $blog_ids as $blog_id ) {
-
-				switch_to_blog( $blog_id );
-				wpas_single_activate();
-			}
-
-			restore_current_blog();
-
-		} else {
-			wpas_single_activate();
-		}
-
-	} else {
+	if ( ! function_exists( 'is_multisite' ) || function_exists( 'is_multisite' ) && ! is_multisite() ) {
 		wpas_single_activate();
 	}
 
@@ -101,7 +82,26 @@ function wpas_single_activate() {
 		'settings_tickets',
 		'ticket_taxonomy',
 		'create_ticket',
-		'attach_files'
+		'attach_files',
+		'view_all_tickets',
+		'view_unassigned_tickets',
+		'manage_licenses_for_awesome_support',
+		'administer_awesome_support',
+		'ticket_manage_tags',
+		'ticket_edit_tags',
+		'ticket_delete_tags',
+		'ticket_manage_products',
+		'ticket_edit_products',
+		'ticket_delete_products',
+		'ticket_manage_departments',
+		'ticket_edit_departments',
+		'ticket_delete_departments',
+		'ticket_manage_priorities',
+		'ticket_edit_priorities',
+		'ticket_delete_priorities',
+		'ticket_manage_channels',
+		'ticket_edit_channels',
+		'ticket_delete_channels'
 	) );
 
 	/**
@@ -124,7 +124,12 @@ function wpas_single_activate() {
 		'reply_ticket',
 		'create_ticket',
 		'delete_reply',
-		'attach_files'
+		'attach_files',
+		'ticket_manage_tags',
+		'ticket_manage_products',
+		'ticket_manage_departments',
+		'ticket_manage_priorities',
+		'ticket_manage_channels'
 	) );
 
 	/**
@@ -138,7 +143,7 @@ function wpas_single_activate() {
 		'attach_files'
 	) );
 
-
+	
 	/* Get roles to copy capabilities from */
 	$editor     = get_role( 'editor' );
 	$author     = get_role( 'author' );
@@ -167,11 +172,10 @@ function wpas_single_activate() {
 		// Add full plugin capacities only to technical manager
 		if ( null != $tech )
 			$tech->add_cap( $cap );
-
 	}
-
+	
 	/**
-	 * Add limited capacities ot agents
+	 * Add limited capacities to agents
 	 */
 	foreach ( $agent_cap as $cap ) {
 		if ( null != $agent ) {
@@ -187,6 +191,12 @@ function wpas_single_activate() {
 			$client->add_cap( $cap );
 		}
 	}
+	
+	// Now, remove the "view_all_tickets" capability from admin.
+	// We need to do this because this capability will override the
+	// settings for administrators in TICKETS->SETTINGS->ADVANCED.
+	// We don't want to do that!
+	$admin->remove_cap('view_all_tickets');
 
 	add_option( 'wpas_options', serialize( get_settings_defaults() ) );
 	add_option( 'wpas_setup', 'pending' );

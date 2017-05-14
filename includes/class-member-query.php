@@ -3,10 +3,10 @@
  * Awesome Support Members Query.
  *
  * @package   Awesome Support
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -378,7 +378,11 @@ class WPAS_Member_Query {
 			$operator     = empty( $search_query ) ? 'OR' : $this->search['relation'];
 
 			foreach ( $this->search['fields'] as $field ) {
-				$search_query[] = "{$wpdb->users}.{$field} LIKE '%{$this->search['query']}%'";
+				if( 'ID' === $field ) {
+					$search_query[] = "CAST({$wpdb->users}.{$field} AS CHAR) LIKE '%{$this->search['query']}%'";
+				} else {
+					$search_query[] = "{$wpdb->users}.{$field} LIKE '%{$this->search['query']}%'";
+				}
 			}
 
 			$search_query = implode( " $operator ", $search_query );

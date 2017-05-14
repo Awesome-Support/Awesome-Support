@@ -5,8 +5,8 @@
  * @package   Awesome Support/Uninstallation
  * @author    Julien Liabeuf <julien@liabeuf.Fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 // If uninstall not called from WordPress, then exit
@@ -82,12 +82,22 @@ function wpas_uninstall() {
 			$upload_dir = wp_upload_dir();
 			$dirpath    = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post->ID";
 
-			if ( $post->post_parent == 0 ) {
+			if ( $post->post_parent == 0 && is_dir( $dirpath ) ) {
+
+				$it    = new RecursiveDirectoryIterator( $dirpath, RecursiveDirectoryIterator::SKIP_DOTS );
+				$files = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
+
+				/* Delete each file */
+				foreach ( $files as $file ) {
+					if ( $file->isDir() ) {
+						rmdir( $file->getRealPath() );
+					} else {
+						unlink( $file->getRealPath() );
+					}
+				}
 
 				/* Delete the uploads folder */
-				if ( is_dir( $dirpath ) ) {
-					rmdir( $dirpath );
-				}
+				rmdir( $dirpath );
 
 				/* Remove transients */
 				delete_transient( "wpas_activity_meta_post_$post->ID" );
@@ -105,6 +115,21 @@ function wpas_uninstall() {
 			wpas_delete_taxonomy( 'product' );
 		}
 
+		/**
+		* Delete all deparments
+		*/
+		wpas_delete_taxonomy( 'department' );
+		
+		/**
+		* Delete Priority taxonomy
+		*/
+		wpas_delete_taxonomy( 'ticket_priority' );		
+		
+		/**
+		* Delete Channel taxonomy
+		*/
+		wpas_delete_taxonomy( 'ticket_channel' );				
+		
 	}
 
 }

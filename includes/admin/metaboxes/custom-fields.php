@@ -1,13 +1,9 @@
 <?php
 /**
- * Ticket Status.
+ * Custom Fields.
  *
- * This metabox is used to display the ticket current status
- * and change it in one click.
- *
- * For more details on how the ticket status is changed,
- *
- * @see   Awesome_Support_Admin::custom_actions()
+ * This metabox is used to display custom fields.
+ * Generally it displays custom fields that are only shown on the front end as well.
  *
  * @since 3.0.0
  */

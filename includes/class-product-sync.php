@@ -39,10 +39,10 @@
  * through get_term() in order to correctly apply the filters to the synced terms.
  *
  * @package   Awesome Support
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 class WPAS_Product_Sync {
 
@@ -101,15 +101,18 @@ class WPAS_Product_Sync {
 				$this->run_initial_sync();
 			}
 
-			add_filter( 'get_terms',     array( $this, 'get_terms' ),          1, 3 );
-			add_filter( 'get_term',      array( $this, 'get_term' ),           1, 2 );
-			add_filter( 'get_the_terms', array( $this, 'get_the_terms' ),      1, 3 );
-			add_action( 'init',          array( $this, 'lock_taxonomy' ),     12, 0 );
-			add_action( 'admin_notices', array( $this, 'notice_locked_tax' ), 10, 0 );
-			add_action( 'trashed_post',  array( $this, 'unsync_term' ),       10, 1 );
-			add_action( 'delete_post',   array( $this, 'unsync_term' ),       10, 1 );
-			add_action( 'wpas_system_tools_table_after', array( $this, 'add_resync_tool' ), 10, 0 );
-			add_action( 'wpas_system_tools_table_after', array( $this, 'add_delete_tool' ), 10, 0 );
+			add_filter( 'get_terms',                        array( $this, 'get_terms' ),          1, 3 );
+			add_filter( 'get_term',                         array( $this, 'get_term' ),           1, 2 );
+			add_filter( 'get_the_terms',                    array( $this, 'get_the_terms' ),      1, 3 );
+			add_action( 'init',                             array( $this, 'lock_taxonomy' ),     12, 0 );
+			add_action( 'admin_notices',                    array( $this, 'notice_locked_tax' ), 10, 0 );
+
+			add_action( 'wp_insert_post',                   array( $this, 'sync_term' ),         10, 3 );
+			add_action( 'trashed_post',                     array( $this, 'unsync_term' ),       10, 1 );
+			add_action( 'delete_post',                      array( $this, 'unsync_term' ),       10, 1 );
+
+			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_resync_tool' ),   10, 0 );
+			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_delete_tool' ),   10, 0 );
 
 		}
 
@@ -320,16 +323,17 @@ class WPAS_Product_Sync {
 		$term_data = get_post_meta( $post->ID, '_wpas_product_term', true );
 
 		/* If this post doesn't have a corresponding term we create it now */
-		if ( empty( $term_data ) ) {
+		if ( ! $term_data ) {
 
 			/* Make sure this term is not currently being inserted */
 			if ( $this->is_insert_protected( $post->ID ) ) {
 				return false;
 			}
 
+
 			$term_data = $this->insert_term( $post );
 
-			/* If the term couldn't be inserted we return false, which will result in skipping this post */
+            /* If the term couldn't be inserted we return false, which will result in skipping this post */
 			if ( false === $term_data ) {
 				return false;
 			}
@@ -337,8 +341,14 @@ class WPAS_Product_Sync {
 		}
 
 		/* Get the term and term taxonomy IDs */
-		$term_id          = $term_data['term_id'];
-		$term_taxonomy_id = $term_data['term_taxonomy_id'];
+        if( ! is_array($term_data) && is_a( $term_data, 'WP_Term' )) {
+            $term_id          = $term_data->term_id;
+            $term_taxonomy_id = $term_data->term_taxonomy_id;
+        }
+        else {
+            $term_id          = $term_data['term_id'];
+            $term_taxonomy_id = $term_data['term_taxonomy_id'];
+        }
 
 		$term = array(
 			'term_id'          => $term_id,
@@ -350,7 +360,8 @@ class WPAS_Product_Sync {
 			'taxonomy'         => $this->taxonomy,
 			'description'      => wp_trim_words( $post->post_content, 55, ' [...]' ),
 			'parent'           => $post->post_parent,
-			'count'            => 0,
+			'count'            => get_term_by('id', $term_id, $this->taxonomy )->count,   //0,
+			'object_id'        => $post->ID, // Could be handy to still have access to the post ID
 		);
 
 		return (object) $term;
@@ -515,11 +526,12 @@ class WPAS_Product_Sync {
 			return $terms;
 		}
 
-		// We need to "index" the posts in order to be able to easily compare them to the terms
-		$index = array();
-
 		foreach ( $query->posts as $post ) {
-			$index[ $post->ID ] = $post;
+			if( isset( $post->ID ) ) {
+				$index[ $post->ID ] = $post;
+			} else {
+				$index[ $post ] = $post;
+			}
 		}
 
 		// We will store the new terms in this array
@@ -528,10 +540,17 @@ class WPAS_Product_Sync {
 		// Now go go through each term, maybe update it, and add it to the final terms array
 		foreach ( $terms as $term ) {
 
-			// If the term is a synchronized product we build the custom term object
-			if ( $this->is_synced_term( $term ) && array_key_exists( $term->name, $index ) ) {
-				$term = $this->create_term_object( $index[ $term->name ] );
-			}
+		    // If the term is a synchronized product we build the custom term object
+		    if ( $this->is_synced_term( $term ) ) {
+
+			    $tid = is_a( $term, 'WP_Term' ) ? (int) $term->name : (int) $term;
+
+                // Create the custom term object
+                if( array_key_exists( $tid, $index ) ) {
+	                $term = $this->create_term_object( $index[ $tid ] );
+                }
+
+		    }
 
 			if ( false !== $term ) {
 				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $this->taxonomy );
@@ -581,6 +600,10 @@ class WPAS_Product_Sync {
 		$term->description = wp_trim_words( $post->post_content, 55, ' [...]' );
 		$term->post_id     = $post_id;
 
+		//$x = wp_cache_get( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
+
+		//$x = wp_cache_add( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
+
 		return $term;
 
 	}
@@ -602,6 +625,14 @@ class WPAS_Product_Sync {
 			return $terms;
 		}
 
+		if( empty($terms) ) {
+            $post_terms = wp_get_post_terms( $post_id, $taxonomy );
+	       	if( empty( $post_terms ) ) {
+	       	    return $terms;
+            }
+            $terms = array_merge( $terms, $post_terms );
+        }
+
 		foreach ( $terms as $key => $term ) {
 
 			if ( true == $this->is_synced_term( $term->term_id ) ) {
@@ -611,6 +642,51 @@ class WPAS_Product_Sync {
 		}
 
 		return $terms;
+	}
+
+	/**
+	 * Add an AS Product taxonomy term
+	 *
+	 * @param $post_id
+	 *
+	 * @param $post
+	 *
+	 * @param $update
+	 *
+	 */
+	public function sync_term( $post_id, $post, $update ) {
+
+		if ( ! is_a( $post, 'WP_Post' ) ) {
+			return;
+		}
+
+		if ( get_post_type( $post_id ) !== $this->post_type ) {
+		    return;
+        }
+
+		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
+
+		// If syncing enabled
+		if( (bool) wpas_get_option( 'support_products_' . $slug, array() ) ) {
+
+			// Get currently synced products
+			$include = array_filter( wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+
+            if( ! empty( $include ) ) {
+
+                // If include list configured add this term if it doesn't exist
+	            if( !in_array( (string) $post_id, $include ) ) {
+		            $include[] = (string) $post_id;
+		            wpas_update_option( 'support_products_' . $slug . '_include', $include );
+	            }
+
+            }
+
+            // Create the AS Product term
+            $term = $this->create_term_object( $post );
+
+		}
+
 	}
 
 	/**
@@ -631,13 +707,16 @@ class WPAS_Product_Sync {
 			$term = get_post_meta( $post_id, '_wpas_product_term', true );
 
 			/* Delete the term */
-			$delete = wp_delete_term( (int) $term['term_id'], $this->taxonomy );
+			if( ! empty( $term ) ) {
+				$delete = wp_delete_term( (int) $term['term_id'], $this->taxonomy );
 
-			if ( true === $delete ) {
-				delete_post_meta( $post_id, '_wpas_product_term' );
+				if ( true === $delete ) {
+					delete_post_meta( $post_id, '_wpas_product_term' );
+				}
+
+				return $delete;
 			}
 
-			return $delete;
 		}
 
 		return false;
@@ -831,7 +910,7 @@ class WPAS_Product_Sync {
 		$count = 0;
 
 		/* Create the term object for each post */
-		foreach ( $query->posts as $key => $post ) {
+		foreach ( $query->posts as $post ) {
 
 			if ( ! is_a( $post, 'WP_Post' ) ) {
 				continue;
@@ -865,7 +944,7 @@ class WPAS_Product_Sync {
 				<a href="<?php echo wpas_tool_link( 'resync_products', array( 'pt' => $this->post_type ) ); ?>"
 				   class="button-secondary"><?php _e( 'Resync', 'awesome-support' ); ?></a>
 				<span
-					class="wpas-system-tools-desc"><?php _e( 'Re-synchronize all products from your e-commerce plugin.', 'awesome-support' ); ?></span>
+					class="wpas-system-tools-desc"><?php _e( 'Re-synchronize all products from your e-commerce plugin. Note that this will delete all products and re-add them to our products list.  This means that you will lose any existing product references on your current tickets!!!', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
 	<?php }

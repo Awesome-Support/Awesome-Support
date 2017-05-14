@@ -137,7 +137,16 @@
 				alert(wpasL10n.alertNoTinyMCE);
 			});
 		}
-
+                
+                if( 1 === $('#wpas-mb-message').length && 1 === $('#ticket_priority_color').length ) {
+                        var priority_color = $('#ticket_priority_color').val();
+                        if( priority_color ) {
+                                $('#wpas-mb-message h2.hndle').css({color:'#FFF'});
+                                $('#wpas-mb-message h2.hndle').css({backgroundColor:priority_color});
+                        }
+                        
+                }
+                
 	});
 
 }(jQuery));

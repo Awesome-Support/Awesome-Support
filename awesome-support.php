@@ -4,13 +4,13 @@
  * @author    Awesome Support Team <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link       https://getawesomesupport.com
- * @copyright 2014 ThemeAvenue
+ * @copyright 2014-2017 AwesomeSupport
  *
  * @wordpress-plugin
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           3.3.4
+ * Version:           4.0.0
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -67,7 +67,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @since 3.3
 		 * @var string
 		 */
-		public $php_version_required = '5.2';
+		public $php_version_required = '5.6';
 
 		/**
 		 * Holds the WPAS_Custom_Fields instance
@@ -238,7 +238,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '3.3.4' );
+			define( 'WPAS_VERSION',           '4.0.0' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -419,6 +419,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/class-member-agent.php' );
 			require( WPAS_PATH . 'includes/class-member-user.php' );
 			require( WPAS_PATH . 'includes/class-wpas-session.php' );
+			require( WPAS_PATH . 'includes/functions-reply.php' );
+			require( WPAS_PATH . 'includes/functions-channels.php' );
+			require( WPAS_PATH . 'includes/functions-priority.php' );
 			require( WPAS_PATH . 'includes/install.php' );
 
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
@@ -472,7 +475,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
-
+				require( WPAS_PATH . 'includes/admin/settings/settings-products-management.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
 			}
 
 		}
@@ -504,7 +508,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			 * (products support is disabled by default). In this case we don't ask again.
 			 */
 			if ( 'pending' === get_option( 'wpas_support_products' ) ) {
-				if ( ! isset( $_GET['page'] ) || isset( $_GET['page'] ) && 'wpas-about' !== $_GET['page'] ) {
+			    if ( 'wpas-about' !== filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) ) {
 					add_action( 'admin_notices', 'wpas_ask_support_products' );
 				}
 

@@ -12,10 +12,10 @@
  * server for e-mail routing in order to ensure a safe delivery.
  *
  * @package   Awesome Support
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 class WPAS_Email_Notification {
 
@@ -184,6 +184,8 @@ class WPAS_Email_Notification {
 		$cases = array(
 			'submission_confirmation',
 			'new_ticket_assigned',
+			'new_ticket_assigned_secondary',
+			'new_ticket_assigned_tertiary',
 			'agent_reply',
 			'client_reply',
 			'ticket_closed',
@@ -203,12 +205,14 @@ class WPAS_Email_Notification {
 	 */
 	private function cases_active_option() {
 
-		$cases                            = $this->get_cases();
-		$cases['submission_confirmation'] = 'enable_confirmation';
-		$cases['new_ticket_assigned']     = 'enable_assignment';
-		$cases['agent_reply']             = 'enable_reply_agent';
-		$cases['client_reply']            = 'enable_reply_client';
-		$cases['ticket_closed']           = 'enable_closed';
+		$cases					= $this->get_cases();
+		$cases['submission_confirmation']	= 'enable_confirmation';
+		$cases['new_ticket_assigned']		= 'enable_assignment';
+		$cases['new_ticket_assigned_secondary'] = 'multiple_agents_per_ticket';
+		$cases['new_ticket_assigned_tertiary']	= 'multiple_agents_per_ticket';
+		$cases['agent_reply']			= 'enable_reply_agent';
+		$cases['client_reply']			= 'enable_reply_client';
+		$cases['ticket_closed']			= 'enable_closed';
 
 		return apply_filters( 'wpas_email_notifications_cases_active_option', $cases );
 	}
@@ -258,7 +262,7 @@ class WPAS_Email_Notification {
 			$id       = $tag['tag'];
 			$value    = $tag['value'];
 			$contents = str_replace( $id, $value, $contents );
-
+			
 		}
 
 		return $contents;
@@ -308,11 +312,11 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{ticket_link}',
-				'desc' 	=> __( 'Displays a link to public ticket', 'awesome-support' )
+				'desc' 	=> __( 'Displays a link to the ticket', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_url}',
-				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link link) to public ticket', 'awesome-support' )
+				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link) to the ticket', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_admin_link}',
@@ -436,7 +440,6 @@ class WPAS_Email_Notification {
 					$tag['value'] = $this->ticket_id === $this->post_id ? $this->get_ticket()->post_content : $this->get_reply()->post_content;
 					break;
 
-
 			}
 
 			array_push( $new, $tag );
@@ -502,6 +505,8 @@ class WPAS_Email_Notification {
 				break;
 
 			case 'new_ticket_assigned':
+			case 'new_ticket_assigned_secondary':
+			case 'new_ticket_assigned_tertiary':
 				$value = wpas_get_option( "{$part}_assignment", "" );
 				break;
 
@@ -523,9 +528,15 @@ class WPAS_Email_Notification {
 				break;
 
 		}
+		
+		$pre_fetch_content = apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id, $case );
+		
+		if( 'content' === $part && false !== strpos( $pre_fetch_content, '{attachments}' ) ) {
+			$this->link_attachments = true;
+		}
 
-		return $this->fetch( apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id, $case ) );
-
+		return $this->fetch( $pre_fetch_content );
+		
 	}
 
 	/**
@@ -630,8 +641,14 @@ class WPAS_Email_Notification {
 			case 'ticket_closed_client':
 				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
 				break;
+			case 'new_ticket_assigned_secondary':
+				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_secondary_assignee', true ) ) );
+				break;
+			case 'new_ticket_assigned_tertiary':
+				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_tertiary_assignee', true ) ) );
+				break;
 		}
-
+		
 		/**
 		 * Filter the $user variable to allow cases that aren't in the above switch
 		 *
@@ -644,6 +661,24 @@ class WPAS_Email_Notification {
 		 */
 		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id );
 
+		$recipients = $recipient_emails = array();
+		$recipients[] = $user;
+		
+		if( wpas_is_multi_agent_active() ) {
+			// We need to notify other agents
+			
+			if( $case == 'agent_reply' ) {
+				$recipients = wpas_get_ticket_agents( $this->ticket_id, array($this->get_reply()->post_author) );
+				$recipients[] = $user;
+			} elseif( $case == 'client_reply' ) {
+				$recipients = wpas_get_ticket_agents( $this->ticket_id );
+			}
+		}
+		
+		foreach( $recipients as $recipient ) {
+			$recipient_emails[] = $recipient->user_email;
+		}
+		
 		/**
 		 * Get the sender information
 		 */
@@ -693,7 +728,7 @@ class WPAS_Email_Notification {
 		 * Merge all the e-mail variables and apply the wpas_email_notifications_email filter.
 		 */
 		$email = apply_filters( 'wpas_email_notifications_email', array(
-			'recipient_email' => $user->user_email,
+			'recipient_email' => $recipient_emails,
 			'subject'         => $subject,
 			'body'            => $body,
 			'headers'         => $headers,
@@ -702,8 +737,25 @@ class WPAS_Email_Notification {
 			$case,
 			$this->ticket_id
 		);
+		
+		$attachments = array();
+		if( isset( $this->link_attachments ) && true === $this->link_attachments ) {
+			$attachments = apply_filters( 'wpas_email_notification_attachments', $attachments, $case, $this->ticket_id, $this->post_id );
+		}
+		
+		// We need to send notifications separately per recipient.
+		if( is_array($email['recipient_email']) ) {
+			$mail = false;
+			foreach( $email['recipient_email'] as $r_email ) {
+				if( wp_mail( $r_email, $email['subject'], $email['body'], $email['headers'], $attachments ) ) {
+					$mail = true;
+				}
+			}
+		} else {
+			$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'], $attachments );
+		}
 
-		$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'] );
+		
 
 		return $mail;
 

@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Admin/Functions/Post
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -120,7 +120,7 @@ function wpas_save_ticket( $post_id ) {
 		return;
 	}
 
-	/* Does the current user has permission? */
+	/* Does the current user have permission? */
 	if ( ! current_user_can( 'edit_ticket', $post_id ) ) {
 		return;
 	}
@@ -133,6 +133,14 @@ function wpas_save_ticket( $post_id ) {
 	$log = array();
 
 	/**
+	 * Save old assignee - will need to pass it to action hooks later
+	 */ 
+	 $old_assignee = get_post_meta( $post_id, '_wpas_assignee', true );
+	
+	/* Now we can save the custom fields */
+	WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
+
+	/**
 	 * If no ticket status is found we are in the situation where
 	 * the agent is creating a ticket on behalf of the user. There are
 	 * a couple of things that we need to do then.
@@ -143,13 +151,15 @@ function wpas_save_ticket( $post_id ) {
 		 * First of all, set the ticket as open. This is very important.
 		 */
 		add_post_meta( $post_id, '_wpas_status', 'open', true );
-
+		
 		/**
-		 * Send the confirmation e-mail to the user.
+		 * Fire hook when a new ticket is being added - works great for notifications
 		 *
-		 * @since  3.1.5
+		 * @since 4.0.0
+		 *
+		 * @param int   $post_id Ticket ID
 		 */
-		wpas_email_notify( $post_id, 'submission_confirmation' );
+		do_action( 'wpas_post_new_ticket_admin', $post_id );
 
 	}
 
@@ -204,17 +214,19 @@ function wpas_save_ticket( $post_id ) {
 
 			/* In case the insertion failed... */
 			if ( is_wp_error( $reply ) ) {
+				
+				// Fire action hook for failed reply inserted via admin
+				do_action( 'wpas_insert_reply_admin_failed', $post_id, $data, $reply );
 
 				/* Set the redirection */
 				$_SESSION['wpas_redirect'] = add_query_arg( array( 'wpas-message' => 'wpas_reply_error' ), get_permalink( $post_id ) );
 
 			} else {
-
-				/* E-Mail the client */
-				new WPAS_Email_Notification( $post_id, array(
-					'reply_id' => $reply,
-					'action'   => 'reply_agent'
-				) );
+				
+				/**
+				 * Fire action hook for reply inserted via admin - great place for notifications...
+				 */								
+				do_action( 'wpas_insert_reply_admin_success', $post_id, $data, $reply );
 
 				/* The agent wants to close the ticket */
 				if ( isset( $_POST['wpas_do'] ) && 'reply_close' == $_POST['wpas_do'] ) {
@@ -230,9 +242,6 @@ function wpas_save_ticket( $post_id ) {
 						/* Close */
 						wpas_close_ticket( $post_id );
 
-						/* E-Mail the client */
-						new WPAS_Email_Notification( $post_id, array( 'action' => 'closed' ) );
-
 						/**
 						 * wpas_ticket_closed_by_agent hook
 						 */
@@ -247,22 +256,53 @@ function wpas_save_ticket( $post_id ) {
 
 	}
 
-	/* Now we can save the custom fields */
-	WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
-
 	/* Log the action */
 	if ( ! empty( $log ) ) {
 		wpas_log( $post_id, $log );
 	}
 
-	/* If this was a ticket update, we need to know where to go now... */
+	/* If this was a ticket update, we need to fire some action hooks and then figure out where to go next... */
 	if ( '' !== $original_status ) {
+		
+		/**
+		 * Fire action hook for after ticket update...
+		 *
+		 * @since 4.0.0
+		 */
+		do_action( 'wpas_ticket_after_update_admin_success', $post_id, $old_assignee, $_POST);	
 
-		/* Go back to the tickets list */
-		if ( isset( $_POST['wpas_back_to_list'] ) && true === boolval( $_POST['wpas_back_to_list'] ) || isset( $_POST['where_after'] ) && 'back_to_list' === $_POST['where_after'] ) {
-			$_SESSION['wpas_redirect'] = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
+		$gt_post      = null;
+		$where_after  = filter_input( INPUT_POST, 'where_after', FILTER_SANITIZE_STRING );
+		$back_to_list = filter_input( INPUT_POST, 'wpas_back_to_list', FILTER_SANITIZE_NUMBER_INT );
+
+		if ( true === (bool) $back_to_list ) {
+			$where_after = 'back_to_list';
 		}
 
+		switch ( $where_after ) {
+
+			/* Go back to the tickets list */
+			case 'back_to_list':
+				WPAS()->session->add( 'redirect', add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) ) );
+				break;
+
+			case 'next_ticket':
+				$gt_post = wpas_get_next_ticket( $post_id );
+				break;
+
+			case 'previous_ticket':
+				$gt_post = wpas_get_previous_ticket( $post_id );
+				break;
+
+		}
+
+		/* Go to next or previous ticket */
+		if ( $gt_post ) {
+			WPAS()->session->add( 'redirect', add_query_arg( array(
+				'post'   => $gt_post,
+				'action' => 'edit',
+			), admin_url( 'post.php' ) ) );
+		}
 	}
 
 }
@@ -277,6 +317,10 @@ add_action( 'wpas_add_reply_after', 'wpas_mark_replies_read', 10, 2 );
  * or manually marks the last reply as read.
  *
  * @since  3.0.0
+ *
+ * @param $reply_id
+ * @param $data
+ *
  * @return void
  */
 function wpas_mark_replies_read( $reply_id, $data ) {
@@ -342,4 +386,278 @@ function wpas_delete_ticket_dependencies( $post_id ) {
 	$agent    = new WPAS_Member_Agent( $agent_id );
 	$agent->ticket_minus();
 
+}
+
+
+add_filter( 'redirect_post_location', 'wpas_redirect_ticket_after_save', 10, 2 );
+
+/**
+ * Redirect user after updating ticket
+ *
+ * @param string $location The redirect URL.
+ * @param int    $post_id  ID of the post being saved.
+ *
+ * @return string
+ */
+function wpas_redirect_ticket_after_save( $location, $post_id ) {
+	if ( is_admin() ) {
+
+		$post = get_post( $post_id );
+
+		if ( $post && 'ticket' === $post->post_type ) {
+
+			// Get the redirect location.
+			$redirect = WPAS()->session->get( 'redirect' );
+
+			if ( false !== $redirect && filter_var( $redirect, FILTER_VALIDATE_URL ) !== false ) {
+				$location = $redirect;
+				WPAS()->session->clean( 'redirect' );
+			}
+		}
+	}
+
+	return $location;
+
+}
+
+/**
+ * Get next id
+ * @param int $current_ticket
+ * 
+ * @return int
+ */
+function wpas_get_next_ticket( $current_ticket ) {
+	
+	return wpas_get_adjacent_ticket( $current_ticket );
+	
+}
+
+/**
+ * Get previous id
+ * @param int $current_ticket
+ * 
+ * @return int
+ */
+function wpas_get_previous_ticket( $current_ticket ) {
+	
+	return wpas_get_adjacent_ticket( $current_ticket, false );
+	
+}
+
+
+/**
+ * 
+ * @global object $wpdb
+ * @global object $current_user
+ * @param int $ticket_id
+ * @param boolean $next
+ * 
+ * @return int
+ */
+function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
+	
+	/* Make sure this is the admin screen */
+	if ( ! is_admin() ) {
+		return false;
+	}
+	
+	if ( true === $next ) {
+		$adjacent = '>';
+		$order_type = 'ASC';
+	} else {
+		$adjacent = '<';
+		$order_type = 'DESC';
+	}
+	
+	$custom_post_status = wpas_get_post_status();
+	$custom_post_status['open'] = 'Open';
+	
+	$meta_query = wpas_ticket_listing_assignee_meta_query_args();
+	
+	$args = array(
+		'post_type' => 'ticket',
+		'posts_per_page' => 1,
+		'orderby' => 'ID',
+		'order' => $order_type,
+		'post_status' => array_keys( $custom_post_status ),
+		'meta_query' => $meta_query,
+		'next_previous_adjacent' => "{$adjacent} {$ticket_id}",
+		'wpas_tickets_query' => 'listing'
+	);
+	
+	$query = new WP_Query( $args );
+	
+	$adjacent_post_id = '';
+	
+	if ( !empty( $query->posts ) ) {
+		$adjacent_post_id = $query->posts[0]->ID;
+	} 
+	
+	return $adjacent_post_id;
+}
+
+add_filter( 'posts_clauses', 'wpas_get_adjacent_ticket_posts_clauses', 30, 2 );
+
+/**
+ * Modify get_adjacent_ticket query
+ * 
+ * @global object $wpdb
+ * @param array $pieces
+ * @param object $wp_query
+ * 
+ * @return array
+ */
+function wpas_get_adjacent_ticket_posts_clauses( $pieces , $wp_query ) {
+	global $wpdb;
+	
+	if ( isset( $wp_query->query['next_previous_adjacent'] ) ) {
+		$adjacent = $wp_query->query['next_previous_adjacent'];
+		$pieces['where'] = "AND ({$wpdb->posts}.ID {$adjacent} ) " . $pieces['where'];
+	}
+	
+	return $pieces;
+}
+/**
+ * Check if user can see all tickets
+ * 
+ * @global object $current_user
+ * @return boolean
+ */
+function wpas_can_user_see_all_tickets() {
+	
+	$user_can_see_all = false;
+	
+	/* Check if admins can see all tickets */
+	if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
+		$user_can_see_all = true;
+	}
+
+	/* Check if agents can see all tickets */
+	if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
+		$user_can_see_all = true;
+	}
+
+	global $current_user;
+	
+	/* If current user can see all tickets */
+	if ( current_user_can( 'view_all_tickets' ) && ! current_user_can( 'administrator' ) && true === (bool) get_user_meta( (int) $current_user->ID, 'wpas_view_all_tickets', true )  ) {
+		$user_can_see_all = true;
+	}
+	
+	return $user_can_see_all;
+}
+
+/**
+ *
+ * @param array  $args
+ * @param string $ticket_status
+ *
+ * @return array|int
+ */
+function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
+	
+	global $current_user;
+	
+	$custom_post_status = wpas_get_post_status();
+	$custom_post_status['open'] = 'Open';
+	
+	foreach($custom_post_status as $status => $label) {
+		$post_status[] = $status;
+	}
+	
+	
+	$defaults = array(
+		'post_type'              => 'ticket',
+		'post_status'            => $post_status,
+		'posts_per_page'         => - 1
+	);
+
+	$args  = wp_parse_args( $args, $defaults );
+	
+	$meta_query = array();
+	
+	if ( 'any' !== $ticket_status ) {
+		if ( in_array( $ticket_status, array( 'open', 'closed' ) ) ) {
+			$meta_query[] = array(
+					'key'     => '_wpas_status',
+					'value'   => $ticket_status,
+					'compare' => '=',
+					'type'    => 'CHAR'
+			);
+		}
+	}
+	
+	
+	
+	$meta_query = wpas_ticket_listing_assignee_meta_query_args();
+		
+	if( !empty( $meta_query ) ) {
+		$args['meta_query'] = $meta_query;
+	}
+	
+	$args['wpas_tickets_query'] = 'listing';
+	
+	$query = new WP_Query( $args );
+	if ( empty( $query->posts ) ) {
+		return array();
+	} else {
+		return $query->posts;
+	}
+	
+}
+
+/**
+ * Return meta query args for ticket listing query relative to assignee
+ * 
+ * @param type $use_id
+ * @return type
+ */
+function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_filter = true ) {
+	
+	if( 0 ===  $user_id ) {
+		$user_id = get_current_user_id();
+	}
+	
+	$user_can_see_all = wpas_can_user_see_all_tickets();
+	
+	$meta_query = array();
+	
+	if( false === $user_can_see_all ) {
+		
+		$primary_agent_meta_query = array(
+			'key'     => '_wpas_assignee',
+			'value'   => (int) $user_id,
+			'compare' => '=',
+			'type'    => 'NUMERIC',
+		);
+	
+		if( wpas_is_multi_agent_active() ) {
+			// Check if agent is set as secondary or tertiary agent
+			$multi_agents_meta_query = array();
+			$multi_agents_meta_query['relation'] = 'OR';
+			$multi_agents_meta_query[] = $primary_agent_meta_query;
+
+			$multi_agents_meta_query[] = array(
+				'key'     => '_wpas_secondary_assignee',
+				'value'   => (int) $user_id,
+				'compare' => '=',
+				'type'    => 'NUMERIC',
+			);
+
+			$multi_agents_meta_query[] = array(
+				'key'     => '_wpas_tertiary_assignee',
+				'value'   => (int) $user_id,
+				'compare' => '=',
+				'type'    => 'NUMERIC',
+			);
+
+			$meta_query[] = $multi_agents_meta_query;
+
+		} else {
+			$meta_query[] = $primary_agent_meta_query;
+		}
+	}
+	
+	return apply_filters( 'wpas_assignee_meta_query', $meta_query, $user_id, $profile_filter );
+	
 }

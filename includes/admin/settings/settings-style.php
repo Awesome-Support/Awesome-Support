@@ -74,19 +74,19 @@ function wpas_core_settings_style( $def ) {
 		'hold'       => '#b56629',
 		'unknown'    => '#169baa'
 	) );
-
+	
 	foreach ( $status as $id => $label ) {
-
+		
 		$option = array(
 			'name'    => $label,
 			'id'      => 'color_' . $id,
 			'type'    => 'color',
-			'default' => isset( $defaults[$id] ) ? $defaults[$id] : $defaults['unknown'],
+			'default' => isset( $defaults[$id] ) ? $defaults[$id] : wpas_get_option( "color_$id", $defaults['unknown'] ),
 		);
 
 		array_push( $settings['style']['options'], $option );
 	}
-
+	
 	return array_merge( $def, $settings );
 
 }

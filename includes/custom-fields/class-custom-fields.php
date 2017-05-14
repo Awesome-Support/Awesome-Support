@@ -3,10 +3,10 @@
  * Awesome Support.
  *
  * @package   Awesome Support/Custom Fields
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 class WPAS_Custom_Fields {
@@ -28,36 +28,20 @@ class WPAS_Custom_Fields {
 		 */
 		add_action( 'init', array( $this, 'register_taxonomies' ) );
 
-		if( is_admin() ) {
+		if ( ( !defined( 'DOING_AJAX' ) || !DOING_AJAX ) ) {
 
-			/**
-			 * Add custom columns
-			 */
-			add_action( 'manage_ticket_posts_columns',          array( $this, 'add_custom_column' ), 10, 1 );
-			add_action( 'manage_ticket_posts_columns',          array( $this, 'move_status_first' ), 15, 1 );
-			add_action( 'manage_ticket_posts_custom_column' ,   array( $this, 'custom_columns_content' ), 10, 2 );
-			add_filter( 'manage_edit-ticket_sortable_columns' , array( $this, 'custom_columns_sortable' ), 10, 1 );
-			add_action( 'pre_get_posts',                        array( $this, 'custom_column_orderby' ) );
+			if( ! is_admin() ) {
 
-			/**
-			 * Add the taxonomies filters
-			 */
-			add_action( 'restrict_manage_posts', array( $this, 'custom_taxonomy_filter' ), 10, 0 );
-			add_action( 'restrict_manage_posts', array( $this, 'status_filter' ), 9, 0 ); // Filter by ticket status
-			add_filter( 'parse_query',           array( $this, 'custom_taxonomy_filter_convert_id_term' ), 10, 1 );
-			add_filter( 'parse_query',           array( $this, 'status_filter_by_status' ), 10, 1 );
+				/* Check for required fields and possibly block the submission. */
+				add_filter( 'wpas_before_submit_new_ticket_checks', array( $this, 'check_required_fields' ) );
 
-		} else {
+				/* Save the custom fields. */
+				add_action( 'wpas_open_ticket_before_assigned', array( $this, 'frontend_submission' ), 10, 2 );
 
-			/* Check for required fields and possibly block the submission. */
-			add_filter( 'wpas_before_submit_new_ticket_checks', array( $this, 'check_required_fields' ) );
+				/* Display the custom fields on the submission form */
+				add_action( 'wpas_submission_form_inside_after_subject', array( $this, 'submission_form_fields' ) );
 
-			/* Save the custom fields. */
-			add_action( 'wpas_open_ticket_before_assigned', array( $this, 'frontend_submission' ), 10, 2 );
-
-			/* Display the custom fields on the submission form */
-			add_action( 'wpas_submission_form_inside_after_subject', array( $this, 'submission_form_fields' ) );
-
+			}
 		}
 
 	}
@@ -200,8 +184,14 @@ class WPAS_Custom_Fields {
 				$name         = ! empty( $option['args']['label'] ) ? sanitize_text_field( $option['args']['label'] ) : ucwords( str_replace( array( '_', '-' ), ' ', $option['name'] ) );
 				$plural       = ! empty( $option['args']['label_plural'] ) ? sanitize_text_field( $option['args']['label_plural'] ) : $name . 's';
 				$column       = true === $option['args']['taxo_std'] ? true : false;
+				
 				$hierarchical = $option['args']['taxo_hierarchical'];
-
+				
+				$taxo_manage_terms 	= $option['args']['taxo_manage_terms'];
+				$taxo_edit_terms 	= $option['args']['taxo_edit_terms'];
+				$taxo_delete_terms 	= $option['args']['taxo_delete_terms'];
+				$taxo_assign_terms 	= $option['args']['taxo_assign_terms'];				
+				
 				$labels = array(
 					'name'              => $plural,
 					'singular_name'     => $name,
@@ -224,10 +214,10 @@ class WPAS_Custom_Fields {
 					'query_var'         => true,
 					'rewrite'           => array( 'slug' => $option['name'] ),
 					'capabilities'      => array(
-						'manage_terms' => 'create_ticket',
-						'edit_terms'   => 'settings_tickets',
-						'delete_terms' => 'settings_tickets',
-						'assign_terms' => 'create_ticket'
+						'manage_terms' => $taxo_manage_terms,
+						'edit_terms'   => $taxo_edit_terms,
+						'delete_terms' => $taxo_delete_terms,
+						'assign_terms' => $taxo_assign_terms
 					)
 				);
 
@@ -306,367 +296,6 @@ class WPAS_Custom_Fields {
 	}
 
 	/**
-	 * Add possible custom columns to tickets list.
-	 *
-	 * @param  array $columns List of default columns
-	 *
-	 * @return array          Updated list of columns
-	 * @since  3.0.0
-	 */
-	public function add_custom_column( $columns ) {
-
-		$new    = array();
-		$custom = array();
-		$fields = $this->get_custom_fields();
-
-		/**
-		 * Prepare all custom fields that are supposed to show up
-		 * in the admin columns.
-		 */
-		foreach ( $fields as $field ) {
-
-			/* If CF is a regular taxonomy we don't handle it, WordPress does */
-			if ( 'taxonomy' == $field['args']['field_type'] && true === $field['args']['taxo_std'] ) {
-				continue;
-			}
-
-			if ( true === $field['args']['show_column'] ) {
-				$id            = $field['name'];
-				$title         = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
-				$custom[ $id ] = $title;
-			}
-
-		}
-
-		/**
-		 * Parse the old columns and add the new ones.
-		 */
-		foreach ( $columns as $col_id => $col_label ) {
-
-			/* Merge all custom columns right before the date column */
-			if ( 'date' == $col_id ) {
-				$new = array_merge( $new, $custom );
-			}
-
-			$new[ $col_id ] = $col_label;
-
-		}
-
-		return $new;
-	}
-
-	/**
-	 * Reorder the admin columns.
-	 *
-	 * @since  3.0.0
-	 *
-	 * @param  array $columns List of admin columns
-	 *
-	 * @return array          Re-ordered list
-	 */
-	public function move_status_first( $columns ) {
-
-		// Don't change columns order on mobiles as it breaks the layout. WordPress expects the title column to be the second one.
-		// @link https://github.com/Awesome-Support/Awesome-Support/issues/306
-		if ( wp_is_mobile() ) {
-			return $columns;
-		}
-
-		if ( isset( $columns['status'] ) ) {
-			$status_content = $columns['status'];
-			unset( $columns['status'] );
-		} else {
-			return $columns;
-		}
-
-		$new = array();
-
-		foreach ( $columns as $column => $content ) {
-
-			if ( 'title' === $column ) {
-				$new['status'] = $status_content;
-			}
-
-			$new[ $column ] = $content;
-
-		}
-
-		return $new;
-
-	}
-
-	/**
-	 * Manage custom columns content
-	 *
-	 * @param  string  $column  The name of the column to display
-	 * @param  integer $post_id ID of the post being processed
-	 *
-	 * @return void
-	 *
-	 * @since  3.0.0
-	 */
-	public function custom_columns_content( $column, $post_id ) {
-
-		$fields = $this->get_custom_fields();
-
-		if ( isset( $fields[ $column ] ) ) {
-
-			if ( true === $fields[ $column ]['args']['show_column'] ) {
-
-				/* In case a custom callback is specified we use it */
-				if ( function_exists( $fields[ $column ]['args']['column_callback'] ) ) {
-					call_user_func( $fields[ $column ]['args']['column_callback'], $fields[ $column ]['name'], $post_id );
-				}
-
-				/* Otherwise we use the default rendering options */
-				else {
-					wpas_cf_value( $fields[ $column ]['name'], $post_id );
-				}
-
-			}
-
-		}
-
-	}
-
-	/**
-	 * Make custom columns sortable
-	 *
-	 * @param  array $columns Already sortable columns
-	 *
-	 * @return array          New sortable columns
-	 * @since  3.0.0
-	 */
-	public function custom_columns_sortable( $columns ) {
-
-		$new    = array();
-		$fields = $this->get_custom_fields();
-
-		foreach ( $fields as $field ) {
-
-			/* If CF is a regular taxonomy we don't handle it, WordPress does */
-			if ( 'taxonomy' == $field['args']['field_type'] && true === $field['args']['taxo_std'] ) {
-				continue;
-			}
-
-			if ( true === $field['args']['show_column'] && true === $field['args']['sortable_column'] ) {
-				$id         = $field['name'];
-				$new[ $id ] = $id;
-			}
-
-		}
-
-		return array_merge( $columns, $new );
-
-	}
-
-	/**
-	 * Reorder custom columns based on custom values.
-	 *
-	 * @param  object $query Main query
-	 *
-	 * @return void
-	 *
-	 * @since  3.0.0
-	 */
-	public function custom_column_orderby( $query ) {
-
-		if ( ! isset( $_GET['post_type'] ) || 'ticket' !== $_GET['post_type'] ) {
-			return;
-		}
-
-		$fields  = $this->get_custom_fields();
-		$orderby = $query->get( 'orderby' );
-
-		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
-
-			if ( 'taxonomy' != $fields[ $orderby ]['args']['field_type'] ) {
-				$query->set( 'meta_key', '_wpas_' . $orderby );
-				$query->set( 'orderby', 'meta_value' );
-			}
-
-		}
-
-	}
-
-	/**
-	 * Add filters for custom taxonomies
-	 *
-	 * @since  2.0.0
-	 * @return void
-	 */
-	public function custom_taxonomy_filter() {
-
-		global $typenow;
-
-		if ( 'ticket' != $typenow ) {
-			echo '';
-		}
-
-		$post_types = get_post_types( array( '_builtin' => false ) );
-
-		if ( in_array( $typenow, $post_types ) ) {
-
-			$filters = get_object_taxonomies( $typenow );
-
-			/* Get all custom fields */
-			$fields = $this->get_custom_fields();
-
-			foreach ( $filters as $tax_slug ) {
-
-				if ( ! array_key_exists( $tax_slug, $fields ) ) {
-					continue;
-				}
-
-				if ( true !== $fields[ $tax_slug ]['args']['filterable'] ) {
-					continue;
-				}
-
-				$tax_obj = get_taxonomy( $tax_slug );
-
-				$args = array(
-					'show_option_all' => __( 'Show All ' . $tax_obj->label ),
-					'taxonomy'        => $tax_slug,
-					'name'            => $tax_obj->name,
-					'orderby'         => 'name',
-					'hierarchical'    => $tax_obj->hierarchical,
-					'show_count'      => true,
-					'hide_empty'      => true,
-					'hide_if_empty'   => true,
-				);
-
-				if ( isset( $_GET[ $tax_slug ] ) ) {
-					$args['selected'] = filter_input( INPUT_GET, $tax_slug, FILTER_SANITIZE_STRING );
-				}
-
-				wp_dropdown_categories( $args );
-
-			}
-		}
-
-	}
-
-	/**
-	 * Add status dropdown in the filters bar.
-	 *
-	 * @since  2.0.0
-	 * @return void
-	 */
-	public function status_filter() {
-
-		global $typenow;
-
-		if ( ('ticket' != $typenow ) || isset( $_GET['post_status'] ) ) {
-			return;
-		}
-
-		$this_sort       = isset( $_GET['wpas_status'] ) ? filter_input( INPUT_GET, 'wpas_status', FILTER_SANITIZE_STRING ) : '';
-		$all_selected    = ( '' === $this_sort ) ? 'selected="selected"' : '';
-		$open_selected   = ( ! isset( $_GET['wpas_status'] ) && true === (bool) wpas_get_option( 'hide_closed' ) || 'open' === $this_sort ) ? 'selected="selected"' : '';
-		$closed_selected = ( 'closed' === $this_sort ) ? 'selected="selected"' : '';
-		$dropdown        = '<select id="wpas_status" name="wpas_status">';
-		$dropdown        .= "<option value='' $all_selected>" . __( 'Any Status', 'awesome-support' ) . "</option>";
-		$dropdown        .= "<option value='open' $open_selected>" . __( 'Open', 'awesome-support' ) . "</option>";
-		$dropdown        .= "<option value='closed' $closed_selected>" . __( 'Closed', 'awesome-support' ) . "</option>";
-		$dropdown        .= '</select>';
-
-		echo $dropdown;
-
-	}
-
-	/**
-	 * Convert taxonomy term ID into term slug.
-	 *
-	 * When filtering, WordPress uses the term ID by default in the query but
-	 * that doesn't work. We need to convert it to the taxonomy term slug.
-	 *
-	 * @param  object $query WordPress current main query
-	 *
-	 * @return void
-	 *
-	 * @since  2.0.0
-	 * @link   http://wordpress.stackexchange.com/questions/578/adding-a-taxonomy-filter-to-admin-list-for-a-custom-post-type
-	 */
-	public function custom_taxonomy_filter_convert_id_term( $query ) {
-
-		global $pagenow;
-
-		/* Check if we are in the correct post type */
-		if ( is_admin() && 'edit.php' == $pagenow && isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && $query->is_main_query() ) {
-
-			/* Get all custom fields */
-			$fields = $this->get_custom_fields();
-
-			/* Filter custom fields that are taxonomies */
-			foreach ( $query->query_vars as $arg => $value ) {
-
-				if ( array_key_exists( $arg, $fields ) && 'taxonomy' === $fields[ $arg ]['args']['field_type'] && true === $fields[ $arg ]['args']['filterable'] ) {
-
-					$term = get_term_by( 'id', $value, $arg );
-
-					// Depending on where the filter was triggered (dropdown or click on a term) it uses either the term ID or slug. Let's see if this term slug exists
-					if ( is_null( $term ) ) {
-						$term = get_term_by( 'slug', $value, $arg );
-					}
-
-					if ( ! empty( $term ) ) {
-						$query->query_vars[ $arg ] = $term->slug;
-					}
-
-				}
-
-			}
-
-		}
-	}
-
-	/**
-	 * Filter tickets by status.
-	 *
-	 * When filtering, WordPress uses the ID by default in the query but
-	 * that doesn't work. We need to convert it to the taxonomy term.
-	 *
-	 * @since  3.0.0
-	 *
-	 * @param  object $query WordPress current main query
-	 *
-	 * @return void
-	 */
-	public function status_filter_by_status( $query ) {
-
-		global $pagenow;
-
-		/* Check if we are in the correct post type */
-		if ( is_admin()
-		     && 'edit.php' == $pagenow
-		     && isset( $_GET['post_type'] )
-		     && 'ticket' == $_GET['post_type']
-		     && isset( $_GET['wpas_status'] )
-		     && ! empty( $_GET['wpas_status'] )
-		     && $query->is_main_query()
-		) {
-
-			// We need to update the original meta_query and not replace it to avoid filtering issues
-			$meta_query = $query->get( 'meta_query' );
-
-			if ( ! is_array( $meta_query ) ) {
-				$meta_query = array_filter( (array) $meta_query );
-			}
-
-			$meta_query[] = array(
-					'key'     => '_wpas_status',
-					'value'   => sanitize_text_field( $_GET['wpas_status'] ),
-					'compare' => '=',
-					'type'    => 'CHAR',
-			);
-
-			$query->set( 'meta_query', $meta_query );
-
-		}
-
-	}
-
-	/**
 	 * Display the custom fields on submission form.
 	 *
 	 * @since 3.2.0
@@ -684,7 +313,22 @@ class WPAS_Custom_Fields {
 				if ( true === $field['args']['core'] ) {
 					continue;
 				}
-
+				
+				/* Do not display if hide_front_end attribute is true */				
+				if ( true === $field['args']['hide_front_end'] ) {
+					continue;
+				}
+				
+				/* Do not display if backend display type is set to custom */
+				If ( 'custom' === $field['args']['backend_display_type'] ) {
+					continue;
+				}
+				
+				/* Do not display if backend_only attribute is true */				
+				if ( true === $field['args']['backend_only'] ) {
+					continue;
+				}				
+				
 				$this_field = new WPAS_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
@@ -696,6 +340,59 @@ class WPAS_Custom_Fields {
 
 	}
 
+	/**
+	 * Display the backend only custom fields in whatever metabox template it is called from
+	 *
+	 * @since 3.3.5
+	 * @return void
+	 */
+	public function show_backend_custom_form_fields() {
+
+		$fields = $this->get_custom_fields();
+
+		if ( ! empty( $fields ) ) {
+
+			foreach ( $fields as $name => $field ) {
+
+				If  ( ( true === $field['args']['backend_only'] ) && ( 'custom' <> $field['args']['backend_display_type'] ) ) {
+				
+					$this_field = new WPAS_Custom_Field( $name, $field );
+					$output     = $this_field->get_output();
+
+					echo $output;
+				}
+
+			}
+
+		}
+
+	}
+	
+	
+	/**
+	 * Display just a single custom field on submission form.
+	 * This can be more efficient but not sure how to do
+	 * the array search properly so ended up in an inefficient loop.
+	 *
+	 * @since 3.3.5
+	 * @return void
+	 */
+	public function display_single_field( $cffieldname ) {
+
+		$fields = $this->get_custom_fields();
+		
+		foreach ( $fields as $name => $field ) {
+
+			If ( $cffieldname === $name ) {
+				$this_field = new WPAS_Custom_Field( $name, $field );
+				$output     = $this_field->get_output();
+
+				echo $output;			
+			}
+		}		
+		
+	}	
+	
 	/**
 	 * Trigger the custom fields save function upon front-end submission of a new ticket.
 	 *
@@ -793,8 +490,24 @@ class WPAS_Custom_Fields {
 				$result = $custom_field->update_value( $value, $post_id );
 			}
 
+			/* Allow custom save_callback (if specified) to modify $value if needed */
+			if( is_array( $result ) ) {
+				$value  = $custom_field->get_sanitized_value( $result[ 'value' ] );
+
+				/* Validate return $result is int and valid */
+				if( (int) $result[ 'result' ] === $result[ 'result' ]
+					&& 0 <= $result [ 'result' ] && 4 >= $result[ 'result' ]
+				) {
+					$result = $result[ 'result' ];
+				} else {
+					/* Invalid $result returned from custom save_callback */
+					$result = 0;
+				}
+			}
+
 			if ( 1 === $result || 2 === $result ) {
 				$saved[ $field['name'] ] = $value;
+				do_action('wpas_custom_field_updated', $field_id ,$post_id, $value);
 			}
 
 			if ( true === $field['args']['log'] && true === $allow_log ) {

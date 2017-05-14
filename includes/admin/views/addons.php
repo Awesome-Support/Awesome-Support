@@ -4,7 +4,7 @@
  * 
  * @var object
  */
-$items = get_transient( 'wpas_addons' );
+$items = get_transient( 'wpas_addonsx' );
 setlocale( LC_MONETARY, get_locale() );
 
 if ( false === $items ) {
@@ -12,7 +12,8 @@ if ( false === $items ) {
 	$route    = esc_url( 'http://getawesomesupport.com/edd-api/products/' );
 	$api_key  = trim( 'd83df1849d3204ed6641faa92ed55eb2' );
 	$token    = trim( '39e17c3737d608900e2f403b55dda68d' );
-	$endpoint = add_query_arg( array( 'key' => $api_key, 'token' => $token ), $route );
+	$pagesize = 50;
+	$endpoint = add_query_arg( array( 'key' => $api_key, 'token' => $token, 'number' => $pagesize ), $route );
 	$response = wp_remote_get( $endpoint );
 
 	if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
@@ -21,7 +22,7 @@ if ( false === $items ) {
 		$content = json_decode( $body );
 		
 		if ( is_object( $content ) && isset( $content->products ) ) {
-			set_transient( 'wpas_addons', $content->products, 60 * 60 * 24 ); // Cache for 24 hours
+			set_transient( 'wpas_addonsx', $content->products, 60 * 60 * 24 ); // Cache for 24 hours
 			$items = $content->products;
 		}
 
@@ -68,7 +69,7 @@ if ( false === $items ) {
 		if ( false === $items ):
 			?><p>To check out all our addons please visit <a href="http://getawesomesupport.com/addons" target="_blank">http://getawesomesupport.com/addons</a></p><?php
 		else:
-			// wpas_debug_display( $items );
+
 			foreach ( $items as $key => $item ):
 
 				/* Get the item price */

@@ -4,7 +4,15 @@ global $wpas_tickets;
 
 if ( $wpas_tickets->have_posts() ):
 
-	$columns = wpas_get_tickets_list_columns();
+	/* Get list of columns to display */
+	$columns 		  = wpas_get_tickets_list_columns();
+	
+	/* Get number of tickets per page */
+	$tickets_per_page = wpas_get_option( 'tickets_per_page_front_end' );
+	If ( empty($tickets_per_page) ) {
+		$tickets_per_page = 5 ; // default number of tickets per page to 5 if no value specified.
+	}
+	
 	?>
 	<div class="wpas wpas-ticket-list">
 
@@ -25,7 +33,7 @@ if ( $wpas_tickets->have_posts() ):
 		</div>
 
 		<!-- List of tickets -->
-		<table id="wpas_ticketlist" class="wpas-table wpas-table-hover" data-filter="#wpas_filter" data-filter-text-only="true" data-page-navigation=".wpas_table_pagination" data-page-size="5">
+		<table id="wpas_ticketlist" class="wpas-table wpas-table-hover" data-filter="#wpas_filter" data-filter-text-only="true" data-page-navigation=".wpas_table_pagination" data-page-size=" <?php echo $tickets_per_page ?> ">
 			<thead>
 				<tr>
 					<?php foreach ( $columns as $column_id => $column ) {

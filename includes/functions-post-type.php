@@ -5,8 +5,8 @@
  * @package   Admin/Post Type
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 add_action( 'init', 'wpas_register_post_type', 10, 0 );
@@ -28,7 +28,7 @@ function wpas_register_post_type() {
 	}
 
 	/* Post type menu icon */
-	$icon = version_compare( get_bloginfo( 'version' ), '3.8', '>=') ? 'dashicons-sos' : WPAS_ADMIN_ASSETS_URL . 'images/icon-tickets.png';
+	$icon = version_compare( get_bloginfo( 'version' ), '3.8', '>=') ? 'dashicons-forms' : WPAS_ADMIN_ASSETS_URL . 'images/icon-tickets.png';
 
 	/* Post type labels */
 	$labels = apply_filters( 'wpas_ticket_type_labels', array(
@@ -36,7 +36,7 @@ function wpas_register_post_type() {
 			'singular_name'      => _x( 'Ticket', 'post type singular name', 'awesome-support' ),
 			'menu_name'          => _x( 'Tickets', 'admin menu', 'awesome-support' ),
 			'name_admin_bar'     => _x( 'Ticket', 'add new on admin bar', 'awesome-support' ),
-			'add_new'            => _x( 'Add New', 'book', 'awesome-support' ),
+			'add_new'            => _x( 'Add New', 'ticket', 'awesome-support' ),
 			'add_new_item'       => __( 'Add New Ticket', 'awesome-support' ),
 			'new_item'           => __( 'New Ticket', 'awesome-support' ),
 			'edit_item'          => __( 'Edit Ticket', 'awesome-support' ),
@@ -155,9 +155,61 @@ add_action( 'init', 'wpas_register_secondary_post_type', 10, 0 );
  * @since  3.0.0
  */
 function wpas_register_secondary_post_type() {
-	register_post_type( 'ticket_reply', array( 'public' => false, 'exclude_from_search' => true, 'supports' => array( 'editor' ) ) );
-	register_post_type( 'ticket_history', array( 'public' => false, 'exclude_from_search' => true ) );
-	register_post_type( 'ticket_log', array( 'public' => false, 'exclude_from_search' => true ) );
+
+	$ticket_reply_labels = apply_filters( 'wpas_ticket_replies_type_labels', array(
+			'name'               => _x( 'Ticket Replies', 'post type general name', 'awesome-support' ),
+			'singular_name'      => _x( 'Ticket Reply', 'post type singular name', 'awesome-support' ),
+			'menu_name'          => _x( 'Ticket Reply', 'admin menu', 'awesome-support' ),
+			'name_admin_bar'     => _x( 'Ticket Reply', 'add new on admin bar', 'awesome-support' ),
+			'add_new'            => _x( 'Add New', 'Ticket Reply', 'awesome-support' ),
+			'add_new_item'       => __( 'Add New Ticket Reply', 'awesome-support' ),
+			'new_item'           => __( 'New Ticket Reply', 'awesome-support' ),
+			'edit_item'          => __( 'Edit Ticket Reply', 'awesome-support' ),
+			'view_item'          => __( 'View Ticket Reply', 'awesome-support' ),
+			'all_items'          => __( 'All Ticket Replies', 'awesome-support' ),
+			'search_items'       => __( 'Search Ticket Reply', 'awesome-support' ),
+			'parent_item_colon'  => __( 'Parent Ticket Replies:', 'awesome-support' ),
+			'not_found'          => __( 'No Ticket Replies found.', 'awesome-support' ),
+			'not_found_in_trash' => __( 'No Ticket Replies found in Trash.', 'awesome-support' )
+	)	);
+	
+	$ticket_history_labels = apply_filters( 'wpas_ticket_history_type_labels', array(
+			'name'               => _x( 'Ticket History', 'post type general name', 'awesome-support' ),
+			'singular_name'      => _x( 'Ticket History', 'post type singular name', 'awesome-support' ),
+			'menu_name'          => _x( 'Ticket History', 'admin menu', 'awesome-support' ),
+			'name_admin_bar'     => _x( 'Ticket History', 'add new on admin bar', 'awesome-support' ),
+			'add_new'            => _x( 'Add History', 'Ticket History', 'awesome-support' ),
+			'add_new_item'       => __( 'Add New Ticket History', 'awesome-support' ),
+			'new_item'           => __( 'New Ticket History', 'awesome-support' ),
+			'edit_item'          => __( 'Edit Ticket History', 'awesome-support' ),
+			'view_item'          => __( 'View Ticket History', 'awesome-support' ),
+			'all_items'          => __( 'All Ticket History', 'awesome-support' ),
+			'search_items'       => __( 'Search Ticket History', 'awesome-support' ),
+			'parent_item_colon'  => __( 'Parent Ticket History:', 'awesome-support' ),
+			'not_found'          => __( 'No Ticket History found.', 'awesome-support' ),
+			'not_found_in_trash' => __( 'No Ticket History found in Trash.', 'awesome-support' )
+	)	);	
+	
+	$ticket_log_labels = apply_filters( 'wpas_ticket_log_type_labels', array(
+			'name'               => _x( 'Ticket Log', 'post type general name', 'awesome-support' ),
+			'singular_name'      => _x( 'Ticket Log', 'post type singular name', 'awesome-support' ),
+			'menu_name'          => _x( 'Ticket Log', 'admin menu', 'awesome-support' ),
+			'name_admin_bar'     => _x( 'Ticket Log', 'add new on admin bar', 'awesome-support' ),
+			'add_new'            => _x( 'Add Ticket Log', 'Ticket Log', 'awesome-support' ),
+			'add_new_item'       => __( 'Add New Ticket Log', 'awesome-support' ),
+			'new_item'           => __( 'New Ticket Log', 'awesome-support' ),
+			'edit_item'          => __( 'Edit Ticket Log', 'awesome-support' ),
+			'view_item'          => __( 'View Ticket Log', 'awesome-support' ),
+			'all_items'          => __( 'All Ticket Logs', 'awesome-support' ),
+			'search_items'       => __( 'Search Ticket Logs', 'awesome-support' ),
+			'parent_item_colon'  => __( 'Parent Ticket Log:', 'awesome-support' ),
+			'not_found'          => __( 'No Ticket Logs found.', 'awesome-support' ),
+			'not_found_in_trash' => __( 'No Ticket Logs found in Trash.', 'awesome-support' )
+	)	);		
+	
+	register_post_type( 'ticket_reply', array( 'labels' => $ticket_reply_labels, 'public' => false, 'exclude_from_search' => true, 'supports' => array( 'editor' ) ) );
+	register_post_type( 'ticket_history', array( 'labels' => $ticket_history_labels, 'public' => false, 'exclude_from_search' => true ) );
+	register_post_type( 'ticket_log', array( 'labels' => $ticket_log_labels, 'public' => false, 'exclude_from_search' => true ) );
 }
 
 add_action( 'init', 'wpas_register_post_status', 10, 0 );

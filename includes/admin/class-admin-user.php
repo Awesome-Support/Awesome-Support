@@ -5,8 +5,8 @@
  * @package   Admin/User
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 class WPAS_User {
@@ -25,7 +25,6 @@ class WPAS_User {
 		add_action( 'personal_options_update',    array( $this, 'save_user_custom_fields' ) );    // Save the user preferences
 		add_action( 'edit_user_profile_update',   array( $this, 'save_user_custom_fields' ) );    // Save the user preferences when modified by admins
 		add_action( 'user_register',              array( $this, 'enable_assignment' ), 10, 1 );   // Enable auto-assignment for new users
-//		add_action( 'profile_update',             array( $this, 'maybe_enable_assignment' ), 10, 2 );
 		add_filter( 'manage_users_columns',       array( $this, 'auto_assignment_user_column' ) );
 		add_filter( 'manage_users_custom_column', array( $this, 'auto_assignment_user_column_content' ), 10, 3 );
 
@@ -35,7 +34,7 @@ class WPAS_User {
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_user_can_be_assigned' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_smart_tickets_order' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_after_reply' ), 10, 1 );
-//		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_agent_department' ), 10, 1 );
+		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_user_view_all_tickets' ), 10, 1 );
 	}
 
 	/**
@@ -167,6 +166,34 @@ class WPAS_User {
 
 	<?php }
 
+	
+	/**
+	 * User profile field "View All Tickets"
+	 *
+	 * @since 3.3.5
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return void
+	 */
+	public function profile_field_user_view_all_tickets( $user ) {
+
+		if ( ! user_can( $user->ID, 'view_all_tickets' ) ) {
+			return;
+		} ?>
+
+		<tr class="wpas-after-reply-wrap">
+			<th><label><?php _e( 'View All Tickets', 'awesome-support' ); ?></label></th>
+			<td>
+				<?php $view_all_tickets = esc_attr( get_the_author_meta( 'wpas_view_all_tickets', $user->ID ) ); ?>
+				<label for="wpas_view_all_tickets"><input type="checkbox" name="wpas_view_all_tickets" id="wpas_view_all_tickets" value="yes" <?php if ( ! empty( $view_all_tickets ) ) { echo 'checked'; } ?>> <?php _e( 'Yes', 'awesome-support' ); ?></label>
+				<p class="description"><?php _e( 'If agents role is allowed to view all tickets, turn on the option to do so?', 'awesome-support' ); ?></p>
+			</td>
+		</tr>
+
+	<?php }	
+	
+	
 	/**
 	 * User profile field "departments"
 	 *
@@ -234,6 +261,7 @@ class WPAS_User {
 		$wpas_after_reply = filter_input( INPUT_POST, 'wpas_after_reply' );
 		$can_assign       = filter_input( INPUT_POST, 'wpas_can_be_assigned' );
 		$smart            = filter_input( INPUT_POST, 'wpas_smart_tickets_order' );
+		$view_all_tickets = filter_input( INPUT_POST, 'wpas_view_all_tickets' );
 		$department       = isset( $_POST['wpas_department'] ) ? array_map( 'intval', $_POST['wpas_department'] ) : array();
 
 		if ( $wpas_after_reply ) {
@@ -243,6 +271,7 @@ class WPAS_User {
 		update_user_meta( $user_id, 'wpas_can_be_assigned', $can_assign );
 		update_user_meta( $user_id, 'wpas_smart_tickets_order', $smart );
 		update_user_meta( $user_id, 'wpas_department', $department );
+		update_user_meta( $user_id, 'wpas_view_all_tickets', $view_all_tickets );
 
 	}
 

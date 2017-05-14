@@ -9,7 +9,7 @@
 		var rowCount = rows.length;
 		var controls = $('#wpas_ticketlist_filters');
 		var condition = selector.length && rowCount >= 5 && $.fn.footable && typeof wpas !== 'undefined';
-		condition ? drawTable() : controls.hide();
+		var res = ( false !== condition ) ? drawTable() : controls.hide();
 
 		function drawTable() {
 

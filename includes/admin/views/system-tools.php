@@ -53,7 +53,13 @@ if ( isset( $_GET['done'] ) ) {
 		case 'ticket_attachments':
 			$message = __( 'All unclaimed ticket attachment folders have been deleted', 'awesome-support' );
 			break;
+		
+		case 'reset_channels':
+			$message = __( 'All channels have been reset', 'awesome-support' );
+			break;
 	}
+	
+	do_action('wpas_show_done_tool_message',sanitize_text_field( $_GET['done'] ));
 
 }
 
@@ -98,6 +104,34 @@ if ( isset( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Clear unclaimed ticket attachment folders.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Reset replies count', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'reset_replies_count' ); ?>" class="button-secondary"><?php _e( 'Count', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Count all ticket replies.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Reset channels', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'reset_channels' ); ?>" class="button-secondary"><?php _e( 'Reset', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Reset channels.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Zero Out All Time Fields', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'reset_time_fields' ); ?>" class="button-secondary"><?php _e( 'Reset', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Reset time fields by setting them all to zero on ALL tickets!', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Re-run conversion from 3.3.x to 4.0.0', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'rerun_334_to_400_conversion' ); ?>" class="button-secondary"><?php _e( 'Rerun Conversion', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'If your CAPABILITIES are not installed, re-run the 3.3.x to 4.0.0 conversion process. Make sure you have a BACKUP!', 'awesome-support' ); ?></span>
+			</td>
+		</tr>		
 		<?php do_action( 'wpas_system_tools_table_after' ); ?>
 	</tbody>
 </table>

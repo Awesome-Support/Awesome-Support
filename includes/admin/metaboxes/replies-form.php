@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Admin/Reply
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -82,6 +82,8 @@ wp_nonce_field( 'reply_ticket', 'wpas_reply_ticket', false, true );
 				<strong><?php _e( 'After Replying', 'awesome-support' ); ?></strong><br>
 				<label for="back_to_list"><input type="radio" id="back_to_list" name="where_after" value="back_to_list" checked="checked"> <?php _e( 'Back to list', 'awesome-support' ); ?></label>
 				<label for="stay_here"><input type="radio" id="stay_here" name="where_after" value="stay_here"> <?php _e( 'Stay on ticket screen', 'awesome-support' ); ?></label>
+				<label for="next_ticket"><input type="radio" id="next_ticket" name="where_after" value="next_ticket"> <?php _e( 'Go to the next ticket', 'awesome-support' ); ?></label>
+				<label for="previous_ticket"><input type="radio" id="previous_ticket" name="where_after" value="previous_ticket"> <?php _e( 'Go to the previous ticket', 'awesome-support' ); ?></label>
 			</fieldset>
 			<button type="submit" name="wpas_do" class="button-primary wpas_btn_reply" value="reply"><?php _e( 'Reply', 'awesome-support' ); ?></button>
 			<?php break;

@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Admin/Functions/Misc
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -99,9 +99,9 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 
 		$_GET['del_id'] = $reply->ID;
 		$url            = add_query_arg( $_GET, admin_url( 'post.php' ) );
-		$url            = remove_query_arg( 'message', $url );
+		remove_query_arg( 'message', $url );
 		$delete         = wpas_do_url( admin_url( 'post.php' ), 'admin_trash_reply', array( 'post' => $ticket_id, 'action' => 'edit', 'reply_id' => $reply->ID ) );
-		$edit           = wp_nonce_url( add_query_arg( array(
+		wp_nonce_url( add_query_arg( array(
 				'post'   => $ticket_id,
 				'rid'    => $reply->ID,
 				'action' => 'edit_reply'
@@ -312,4 +312,42 @@ function wpas_free_addon_notice() {
 		'page'      => 'wpas-optin',
 	), admin_url( 'edit.php' ) ) ), array( 'strong' => array(), 'a' => array( 'href' => array() ) ) ) );
 
+}
+
+add_action( 'plugins_loaded', 'wpas_request_first_5star_rating' );
+/**
+ * Request 5 star rating after 25 closed tickets.
+ *
+ * After 25 closed tickets we ask the admin for a 5 star rating
+ *
+ * @since 4.0.0
+ * @return void
+ */
+function wpas_request_first_5star_rating() {
+
+	// Only show this message to admins
+	if ( ! current_user_can( 'administrator' ) ) {
+		return;
+	}
+
+	// Only show the notice on the plugin pages
+	if ( ! wpas_is_plugin_page() ) {
+		return;
+	}
+	
+	// If notice has been dismissed, return since everything else after this is expensive operations!
+	If ( wpas_is_notice_dismissed('wpas_request_first_5star_rating') ) {
+		return ;
+	}
+
+	// How many tickets have been closed?
+	$closed_tickets = wpas_get_tickets( 'closed', array( 'posts_per_page' => 25 ) );
+	
+	// Show notice if number of closed tickets greater than 25.
+	If ( count ($closed_tickets) >= 25 ) {
+	
+		WPAS()->admin_notices->add_notice( 'updated', 'wpas_request_first_5star_rating', wp_kses( sprintf( __( 'Wow! It looks like you have closed a lot of tickets which is pretty awesome! We guess you must really like Awesome Support, huh? Could you please do us a favor and leave a 5 star rating on WordPress? It will only take a minute and helps to motivate our developers and volunteers. <a href="%1$s">Yes, you deserve it!</a>.', 'awesome-support' ), 'https://wordpress.org/support/plugin/awesome-support/reviews/' ) , 
+		array( 'strong' => array(), 'a' => array( 'href' => array() ) ) ) );
+
+	}
 }
