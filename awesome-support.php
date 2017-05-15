@@ -146,7 +146,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			// Make sure we have a version of PHP that's not too old
 			if ( ! self::$instance->is_php_version_enough() ) {
-				self::$instance->add_error( sprintf( __( 'Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>.', 'awesome-support' ), self::$instance->wordpress_version_required, 'a href="http://www.wpupdatephp.com/update/" target="_blank"' ) );
+				self::$instance->add_error( sprintf( __( 'Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>.', 'awesome-support' ), self::$instance->php_version_required, 'a href="http://www.wpupdatephp.com/update/" target="_blank"' ) );
 			}
 
 			// Check that the vendor directory is present
