@@ -58,6 +58,8 @@ if ( isset( $_GET['done'] ) ) {
 			$message = __( 'All channels have been reset', 'awesome-support' );
 			break;
 	}
+	
+	do_action('wpas_show_done_tool_message',sanitize_text_field( $_GET['done'] ));
 
 }
 

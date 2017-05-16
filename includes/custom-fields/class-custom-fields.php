@@ -324,6 +324,11 @@ class WPAS_Custom_Fields {
 					continue;
 				}
 				
+				/* Do not display if backend_only attribute is true */				
+				if ( true === $field['args']['backend_only'] ) {
+					continue;
+				}				
+				
 				$this_field = new WPAS_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
