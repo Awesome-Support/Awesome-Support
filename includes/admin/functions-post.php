@@ -152,6 +152,9 @@ function wpas_save_ticket( $post_id ) {
 		 */
 		add_post_meta( $post_id, '_wpas_status', 'open', true );
 		
+		/* Set the slug */
+		wpas_set_ticket_slug( $post_id );
+		
 		/**
 		 * Fire hook when a new ticket is being added - works great for notifications
 		 *
