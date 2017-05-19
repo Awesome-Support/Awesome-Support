@@ -937,7 +937,7 @@
 	 */
 	function wpas_cf_display_time_hhmm( $field, $post_id ) {
 
-		$minutes = get_post_meta( $post_id, '_wpas_' . $field, true );
+		$minutes = (int) get_post_meta( $post_id, '_wpas_' . $field, true );
 
 		if ( ! empty( $minutes ) ) {
 			echo sprintf( "%02d:%02d", floor( $minutes / 60 ), ( $minutes ) % 60 );
@@ -956,7 +956,7 @@
 	 */
 	function wpas_cf_display_time_adjustment_column( $field, $post_id ) {
 
-		$minutes = get_post_meta( $post_id, '_wpas_ttl_adjustments_to_time_spent_on_ticket', true );
+		$minutes = (int) get_post_meta( $post_id, '_wpas_ttl_adjustments_to_time_spent_on_ticket', true );
 		$minutes = sprintf( "%02d:%02d", floor( $minutes / 60 ), ( $minutes ) % 60 );
 
 		$adjustment_operator = get_post_meta( $post_id, '_wpas_time_adjustments_pos_or_neg', true );
