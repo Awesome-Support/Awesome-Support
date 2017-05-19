@@ -41,3 +41,33 @@ function wpas_remove_sensei_select2_assets() {
 	wp_deregister_style( 'sensei-core-select2' );
 
 }
+
+
+add_action( 'init', 'wpas_remove_sensei_actions', 999 );
+/**
+ * Fix compatibility issue with Sensei's action hooks
+ *
+ * Sensei outputs column data (post ID) indiscriminately on ANY custom post types
+ * list page.
+ *
+ * This function will de-register Sensei's manage_posts_custom_column hook
+ * from WordPress on Awesome Support's pages.
+ *
+ * @since 3.3.2
+ * @return void
+ */
+function wpas_remove_sensei_actions() {
+
+	// Only make changes on our pages. Don't want to mess up even more with other stuff
+	if ( ! wpas_is_plugin_page() ) {
+		return;
+	}
+
+	if ( class_exists( 'Sensei_Main' ) ) {
+		$sensei_main = Sensei_Main::instance( null );
+		remove_action( 'manage_posts_custom_column', array( $sensei_main->lesson, 'add_column_data' ) );
+		remove_action( 'manage_posts_custom_column', array( $sensei_main->course, 'add_column_data' ) );
+		remove_action( 'manage_posts_custom_column', array( $sensei_main->question, 'add_column_data' ) );
+	}
+
+}
