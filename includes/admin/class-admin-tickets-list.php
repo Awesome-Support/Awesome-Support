@@ -95,7 +95,7 @@ class WPAS_Tickets_List {
 			'title'           => __( 'ID', 'awesome-support' ),
 		) );
 
-		wpas_add_custom_field( 'author', array(
+		wpas_add_custom_field( 'wpas-client', array(
 			'show_column'     => true,
 			'sortable_column' => true,
 			'filterable'      => true,
@@ -194,7 +194,7 @@ class WPAS_Tickets_List {
 				}
 
 				// Add the client column
-				$new[ 'author' ] = esc_html__( 'Created By', 'awesome-support' );
+				$new[ 'wpas-client' ] = esc_html__( 'Created By', 'awesome-support' );
 
 				// If agents can see all tickets do nothing
 				if (
@@ -268,19 +268,26 @@ class WPAS_Tickets_List {
 
 				switch ( $column ) {
 
-					case 'author':
-
-						$client = get_user_by( 'id', get_the_author_meta( 'ID' ) );
-						$link = add_query_arg( array( 'post_type' => 'ticket', 'author' => $client->ID ), admin_url( 'edit.php' ) );
-
-						echo "<a href='$link'>$client->display_name</a><br>$client->user_email";
-
-						break;
-
 					case 'id':
 
 						$link = add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) );
 						echo "<strong><a href='$link'>{$post_id}</a></strong>";
+
+						break;
+
+					case 'wpas-client':
+
+						$client = get_user_by( 'id', get_the_author_meta( 'ID' ) );
+
+						if( !empty( $client) ) {
+							$link = add_query_arg( array( 'post_type' => 'ticket', 'author' => $client->ID ), admin_url( 'edit.php' ) );
+
+							echo "<a href='$link'>$client->display_name</a><br />$client->user_email";
+						}
+						else {
+							// This shouldn't ever execute?
+							echo '';
+						}
 
 						break;
 
@@ -415,8 +422,8 @@ class WPAS_Tickets_List {
 					case 'date':
 					case 'status':
 					//case 'assignee':
-					case 'author':
 					case 'id':
+					case 'wpas-client':
 					case 'wpas-activity':
 
 						break;
