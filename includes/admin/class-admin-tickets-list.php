@@ -1041,7 +1041,7 @@ SQL;
 				$clauses[ 'join' ] .= " LEFT JOIN {$wpdb->users} ag ON ( {$wpdb->prefix}postmeta.meta_key='_wpas_assignee' AND CAST({$wpdb->prefix}postmeta.meta_value AS UNSIGNED)=ag.ID)";
 				$clauses[ 'orderby' ] = "ag.display_name " . $order;
 
-			} elseif ( 'author' === $orderby ) {
+			} elseif ( 'wpas-client' === $orderby ) {
 
 				// Join user table onto the postmeta table
 				$clauses[ 'join' ] .= " LEFT JOIN {$wpdb->users} ON {$wpdb->prefix}posts.post_author={$wpdb->users}.ID";
