@@ -1788,3 +1788,2709 @@ msgstr "Nyt %s navn"
 msgctxt "Login form"
 msgid "Show Password"
 msgstr "Vis adgangskode"
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Awesome Support Core\n"
+"Language: da\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: awesome-support.php:220 awesome-support.php:231
+#: includes/admin/functions-notices.php:131
+#: includes/class-remote-notification-client.php:126
+#: includes/class-remote-notification-client.php:137
+msgid "Cheatin&#8217; huh?"
+msgstr "Snyder du, hva&#8217?"
+
+#: includes/admin/class-admin-help.php:61
+#: includes/admin/settings/settings-products-management.php:39
+#: includes/install.php:339
+msgid "Multiple Products"
+msgstr "Flere produkter"
+
+#: includes/admin/class-admin-help.php:62
+#: includes/admin/class-admin-help.php:109
+msgid "<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>"
+msgstr "<h2>Multiple produkter</h2><p>Dette plugin kan håndtere både single- og multipel produktsupport. Har du behov for at tilbyde multipel produktsupport er det meget vigtigt du IKKE benytter et custom felt eller taxonomy og benytter \"Multiple Product\" optionen i stedet.</p><p>Årsagen til at det er så vigtigt er, at mange tilføjelser til Awesome Support benytter det indbyggede produkt management system for at fungere."
+
+#: includes/admin/class-admin-help.php:67
+#: includes/admin/settings/settings-general.php:24
+msgid "Default Assignee"
+msgstr "Standard Agent"
+
+#: includes/admin/class-admin-help.php:68
+msgid "<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agent, we need to know who to assign to in case we can't find a perfect fit for the new tickets.</p>"
+msgstr "<h2>Standard Agent</h2><p>Selvom plugin'et vil forsøge at tildele nye supportsager til den mindst travle agent er det nødvendigt at vide hvilken agent der som standard skal tildeles hvis der ikke findes et perfekt match for en ny supportsag."
+
+#: includes/admin/class-admin-help.php:73
+#: includes/admin/settings/settings-general.php:32
+msgid "Allow Registrations"
+msgstr "Tillad registrering"
+
+#: includes/admin/class-admin-help.php:74
+msgid "<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn't. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>"
+msgstr "<h2>Tillad oprettelser</h2><p>Din WordPress side kan blive sat op til at tillade nye oprettelser eller ej. Som standard tillades det ikke. Men, uden tilladelse til oprettelser, bliver dette plugin ubrugeligt. Det er derfor, at vi har tilføjet en separat indstilling til at tillade oprettelser. Brugere der opretter sig igennem Awesome Support vil blive tildelt en specifik rolle (<code>Support bruger</code>) med meget brgrænsede privilegier.</p><p>Hvis du tillader oprettelser igennem dette plugin, men ikke gennem WordPress, vil brugerne kun kunne oprette sig gennem vores oprettelsesform. </p>"
+
+#: includes/admin/class-admin-help.php:96
+#: includes/custom-fields/functions-custom-fields.php:334
+msgid "Tag"
+msgstr "Mærke"
+
+#: includes/admin/class-admin-help.php:96 themes/default/submission.php:67
+msgid "Description"
+msgstr "Beskrivelse"
+
+#: includes/admin/class-admin-help.php:108
+msgid "General Settings"
+msgstr "Generelle indstillinger"
+
+#: includes/admin/class-admin-help.php:114
+msgid "Email Template Tags"
+msgstr "Email Skabelon Tags"
+
+#: includes/admin/class-admin-help.php:115
+msgid "<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s"
+msgstr "<p>Når du sætter sine email-skabeloner op, kan du bruge et bestemt antal skabelon-tags, som tillader dig at dynamisk tilføje supportsags-relaterede informationer, i det øjeblik emailen er sent. Her er en liste af mulige tags:</p>%s"
+
+#: includes/admin/class-admin-help.php:136
+msgid "Custom Login Page"
+msgstr "Specialtilrettet login side"
+
+#: includes/admin/class-admin-help.php:137
+msgid "<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don't like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the \"Custom Login / Registration Page\" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>"
+msgstr "<h2>Flere produkter</h2><p>Dette kan være en farlig indstilling. Den her for at tillade avancerede brugere at oprette deres egen log ind / registrerings side. Hvis du ikke kan lide vores log ind form, kan du erstatte den med din egen.</p><p>For at gøre det, lav da en ny side som inkluderer formen (enten ved brug af shortcode eller en side-skabelon), og sæt den nyligt lavede side som \"brugerdefineret log ind / registrerings side\" i indstillingerne nedenfor.</p><p><strong>Pas på</strong>, hvis en forkert side bliver sat som den brugerdefinerede log ind side, kan det resultere i en blank side, eller skabe en uendelig løkke.</p>"
+
+#: includes/admin/metaboxes/stakeholders.php:68
+#: includes/functions-post.php:1181
+msgid "Support Staff"
+msgstr "Supportmedarbejder"
+
+#: includes/admin/class-admin-tickets-list.php:108
+msgid "Activity"
+msgstr "Aktivitet"
+
+#: includes/admin/class-admin-tickets-list.php:316
+msgid "Awaiting Support Reply"
+msgstr "Venter på svar fra supporten"
+
+#: includes/admin/class-admin-tickets-list.php:322
+msgid "Old"
+msgstr "Gammel"
+
+#: includes/admin/class-admin-titan.php:88 includes/admin/functions-misc.php:28
+msgid "Settings"
+msgstr "Indstillinger"
+
+#: includes/admin/class-admin-titan.php:89
+msgid "Awesome Support Settings"
+msgstr "Awesome Support Indstillinger"
+
+#: includes/admin/class-admin-user.php:71
+msgid "Awesome Support Preferences"
+msgstr "Awesome Support Preferencer"
+
+#: includes/admin/class-admin-user.php:128
+#: includes/admin/settings/settings-advanced.php:42
+#: includes/admin/views/system-status.php:136
+msgid "Default"
+msgstr "Standard"
+
+#: includes/admin/class-admin-user.php:129
+msgid "Stay on screen"
+msgstr "Forbliv på skærmen"
+
+#: includes/admin/class-admin-user.php:130
+#: includes/admin/metaboxes/replies-form.php:83
+msgid "Back to list"
+msgstr "Tilbage til listen"
+
+#: includes/admin/class-admin-user.php:131
+msgid "Always ask"
+msgstr "Spørg altid"
+
+#: includes/admin/class-admin-user.php:133
+msgid "Where do you want to go after replying to a ticket?"
+msgstr "Hvor vil du sendes hen efter besvarelse af en supportsag?"
+
+#: includes/admin/class-admin-user.php:159
+msgid "Can Be Assigned"
+msgstr "Kan blive tildelt"
+
+#: includes/admin/class-admin-user.php:162
+#: includes/admin/class-admin-user.php:189
+#: includes/admin/views/system-status.php:31
+#: includes/admin/views/system-status.php:39
+#: includes/admin/views/system-status.php:182
+#: includes/admin/views/system-status.php:314
+#: includes/admin/views/system-status.php:315
+#: includes/admin/views/system-status.php:316
+#: includes/admin/views/system-status.php:317
+#: includes/admin/views/system-status.php:421
+msgid "Yes"
+msgstr "Ja"
+
+#: includes/admin/class-admin-user.php:163
+msgid "Can the system assign new tickets to this user?"
+msgstr "Kan systemet tildele nye supportsager til denne bruger ?"
+
+#: includes/admin/class-admin-user.php:325
+msgid "Auto-Assign"
+msgstr "Auto-tildel"
+
+#: includes/scripts.php:70
+msgid "Are you sure you want to delete this reply?"
+msgstr "Er du sikker på at du vil slette dette svar?"
+
+#: includes/scripts.php:71
+msgid "No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor"
+msgstr "Ingen udgave af TinyMCE fundet. Benyt venligst wp_editor på denne side mindst én gang: http://codex.wordpress.org/Function_Reference/wp_editor"
+
+#: includes/scripts.php:72
+msgid "You can't submit an empty reply"
+msgstr "Du kan ikke tilføje et tomt svar"
+
+#: includes/install.php:250 includes/install.php:251
+#: themes/default/partials/ticket-navigation.php:2
+msgid "My Tickets"
+msgstr "Mine supportsager"
+
+#: includes/install.php:270 includes/install.php:271
+msgid "Submit Ticket"
+msgstr "Opret supportsag"
+
+#: includes/admin/functions-list-table.php:191
+#: includes/admin/metaboxes/details.php:100
+msgid "Close"
+msgstr "Luk"
+
+#: includes/admin/class-admin-tickets-list.php:596
+#: includes/admin/functions-list-table.php:193
+#: includes/admin/metaboxes/details.php:98
+#: includes/admin/metaboxes/user-profile.php:97
+#: includes/admin/views/system-status.php:128
+#: includes/functions-general.php:340 includes/functions-templating.php:1015
+msgid "Open"
+msgstr "Åben"
+
+#: includes/admin/functions-misc.php:66
+msgid "The ticket #%s has been (re)opened."
+msgstr "Supportsagen #%s er blevet (gen)åbnet."
+
+#: includes/admin/functions-misc.php:74
+msgid "The ticket #%s has been closed."
+msgstr "Supportsagen #%s er blevet lukket."
+
+#: includes/install.php:333
+msgid "Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>"
+msgstr "Vil du supportere multiple produkter på denne support side? Du kan aktivere multiple produkt support nu. <small>(Denne indstilling kan ændres senere)</small>"
+
+#: includes/install.php:337
+msgid "Single Product"
+msgstr "Single produkt"
+
+#: includes/admin/functions-post.php:86 includes/functions-post.php:1300
+msgid "Ticket state changed to %s"
+msgstr "Supportsagens tilstand ændredes til %s"
+
+#: includes/admin/functions-menu.php:23
+msgid "Debugging Tools"
+msgstr "Debugging værktøjer"
+
+#: includes/admin/functions-menu.php:23
+#: includes/admin/views/system-tools.php:72
+msgid "Tools"
+msgstr "Værktøjer"
+
+#: includes/admin/functions-menu.php:24
+msgid "Awesome Support Addons"
+msgstr "Awesome Support tilføjelser"
+
+#: includes/admin/functions-menu.php:24
+msgid "Addons"
+msgstr "Tilføjelser"
+
+#: includes/admin/functions-menu.php:26
+msgid "About Awesome Support"
+msgstr "Om Awesome Support"
+
+#: includes/admin/functions-menu.php:26
+msgid "About"
+msgstr "Om"
+
+#: includes/admin/functions-metaboxes.php:36
+msgid "Ticket"
+msgstr "Supportsag"
+
+#: includes/admin/functions-metaboxes.php:41
+msgid "Ticket Replies"
+msgstr "Svar på supportsag"
+
+#: includes/admin/class-admin.php:896
+msgid "Details"
+msgstr "Detaljer"
+
+#: includes/admin/class-admin.php:899
+msgid "Stakeholders"
+msgstr "Interessenter"
+
+#: includes/admin/functions-metaboxes.php:56
+msgid "Custom Fields"
+msgstr "Specialfelter"
+
+#: includes/admin/class-admin.php:938
+msgid "An error occurred while registering this metabox. Please contact the support."
+msgstr "En fejl opstod under registreringen af denne metax. Kontakt venligst support"
+
+#: includes/admin/class-admin.php:944
+msgid "An error occured while loading this metabox. Please contact the support."
+msgstr "En fejl opstod under load af denne metabox. Venligst kontakt supporten."
+
+#: includes/admin/metaboxes/details.php:47
+msgid "Ticket status:"
+msgstr "Status for supportsag:"
+
+#: includes/admin/metaboxes/details.php:55
+msgid "Opened:"
+msgstr "Åbnet:"
+
+#: includes/admin/metaboxes/details.php:67
+#: includes/admin/metaboxes/replies-history.php:33
+#: includes/admin/metaboxes/replies-published.php:46
+#: themes/default/details.php:53 themes/default/partials/ticket-origin.php:55
+msgid "%s ago"
+msgstr "%s siden"
+
+#: includes/admin/metaboxes/details.php:57
+msgid "Current state:"
+msgstr "Aktuel tilstand:"
+
+#: includes/admin/metaboxes/details.php:96
+msgid "Re-open"
+msgstr "Genåben"
+
+#: includes/admin/metaboxes/details.php:111
+msgid "Updating"
+msgstr "Opdaterer"
+
+#: includes/admin/metaboxes/details.php:112
+msgid "Update Ticket"
+msgstr "Opdater supportsag"
+
+#: includes/admin/metaboxes/details.php:115
+msgid "Creating"
+msgstr "Opretter"
+
+#: includes/admin/metaboxes/details.php:116
+msgid "Open Ticket"
+msgstr "Åben supportsag"
+
+#: includes/admin/metaboxes/replies-form.php:70
+#: includes/admin/metaboxes/replies-form.php:77
+#: includes/admin/metaboxes/replies-form.php:88
+#: includes/functions-templating.php:475
+msgid "Reply"
+msgstr "Svar"
+
+#: includes/admin/metaboxes/replies-form.php:82
+msgid "After Replying"
+msgstr "Efter svar"
+
+#: includes/admin/metaboxes/replies-form.php:84
+msgid "Stay on ticket screen"
+msgstr "Bliv på supportsag side"
+
+#: includes/admin/metaboxes/replies-form.php:95
+msgid "Reply & Close"
+msgstr "Svar og luk"
+
+#: includes/admin/metaboxes/replies-published.php:40
+msgid "Unread"
+msgstr "Ulæst"
+
+#: includes/admin/metaboxes/replies-trashed.php:16
+msgid "This reply has been deleted by %s <em class=\"wpas-time\">%s ago.</em>"
+msgstr "Dette svar er blevet slettet af %s <em class=\"wpas-time\">%s ago.</em>"
+
+#: includes/admin/metaboxes/replies.php:15
+msgid "Create Ticket"
+msgstr "Opret supportsag"
+
+#: includes/admin/metaboxes/replies.php:16
+msgid "Please save this ticket to reveal all options."
+msgstr "Venligst gem denne supportsag for at vise alle muligheder."
+
+#: includes/admin/metaboxes/replies.php:58
+msgid "Anonymous"
+msgstr "Anonym"
+
+#: includes/admin/metaboxes/replies.php:119
+msgid "Save changes"
+msgstr "Gem ændringer"
+
+#: includes/admin/metaboxes/replies.php:120
+msgid "Cancel"
+msgstr "Annuller"
+
+#: includes/admin/metaboxes/replies.php:146
+msgid "Sorry, you don't have sufficient permissions to reply to tickets."
+msgstr "Beklager, du har ikke tilstrækkelige rettigheder til at besvare supportsag."
+
+#: includes/admin/metaboxes/replies.php:154
+msgid "Ticket is closed"
+msgstr "Supportsag er lukket"
+
+#: includes/admin/metaboxes/replies.php:155
+msgid "This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href=\"%s\">re-open it first</a>."
+msgstr "Denne supportsag er lukket. Ønsker du alligevel at besvare skal du <a href=\"%s\">genåbne den først</a>."
+
+#: includes/admin/metaboxes/stakeholders.php:31
+msgid "User was deleted"
+msgstr "Bruger er slettet"
+
+#: includes/admin/metaboxes/stakeholders.php:52
+msgid "Ticket Creator"
+msgstr "Supportsags-opretter"
+
+#: includes/admin/metaboxes/stakeholders.php:78
+msgid "This ticket has been raised by the user hereinabove."
+msgstr "Denne forespørgsel er oprettet af brugeren herover."
+
+#: includes/admin/metaboxes/stakeholders.php:99
+msgid "The above agent is currently responsible for this ticket."
+msgstr "Ovenstående agent er i øjeblikket ansvarlig for denne forespørgsel."
+
+#: includes/admin/metaboxes/stakeholders.php:103
+msgid "CCs"
+msgstr "CC'er"
+
+#: includes/admin/metaboxes/stakeholders.php:105
+msgid "If you want to send a copy of the e-mails to another person, add the address(es) separated by a comma."
+msgstr "Ønsker du at sende en kopi af disse emails til en anden person skal du tilføje email adresserne adskilt af et komma."
+
+#: includes/admin/settings/functions-settings.php:13
+msgid "None"
+msgstr "Ingen"
+
+#: includes/admin/settings/settings-advanced.php:13
+msgid "Advanced"
+msgstr "Avanceret"
+
+#: includes/admin/settings/settings-advanced.php:16
+msgid "Custom Login / Registration Page"
+msgstr "Special login / Registreringsside"
+
+#: includes/admin/settings/settings-advanced.php:19
+msgid "Only use this option if you know how to create your own registration page, otherwise you might create an infinite redirect. If you need help on creating a registration page you should <a href=\"%s\" target=\"_blank\">start by reading this guide</a>."
+msgstr "Benyt kun denne indstilling hvis du ved hvordan du laver din egen registrerings-side, ellers kan du muligvis lave et uendeligt henvisningsloop. Hvis du har behov for hjælp til at lave en registreringsside kan du <a href=\"%s\" target=\"_blank\">starte med at læse denne guide</a>."
+
+#: includes/admin/settings/settings-advanced.php:24
+msgid "Admins See All"
+msgstr "Administratorer Ser Alt"
+
+#: includes/admin/settings/settings-advanced.php:27
+msgid "Administrators can see all tickets in the tickets list. If unchecked admins will only see tickets assigned to them."
+msgstr "Administratorer kan se alle forespørgsler på listen. Fjernes denne afkrydsning kan administratorer kun se forespørgsler tildelt dem."
+
+#: includes/admin/settings/settings-advanced.php:31
+msgid "Agent See All"
+msgstr "Agent Se Alt"
+
+#: includes/admin/settings/settings-advanced.php:34
+msgid "Agents can see all tickets in the tickets list. If unchecked agents will only see tickets assigned to them."
+msgstr "Agenter kan se alle forespørgsler på listen. Fjernes afkrydsningen vil agenter kun kunne se forespørgsler tildelt dem."
+
+#: includes/admin/settings/settings-advanced.php:46
+msgid "Danger Zone"
+msgstr "Farezone"
+
+#: includes/admin/settings/settings-advanced.php:50
+msgid "Delete Data"
+msgstr "Slet Data"
+
+#: includes/admin/settings/settings-advanced.php:54
+msgid "Delete ALL plugin data on uninstall? This cannot be undone."
+msgstr "Slet ALLE plugin data ved afinstallation? Dette kan ikke fortrydes."
+
+#: includes/admin/settings/settings-general.php:17
+msgid "General"
+msgstr "Generelt"
+
+#: includes/admin/settings/settings-products-management.php:42
+msgid "If you need to provide support for multiple products, please enable this option. You will then be able to add your products."
+msgstr "Har du behov for at yde support for multiple produkter skal du aktivere denne option. Herefter kan du tilføje dine produkter."
+
+#: includes/admin/settings/settings-general.php:27
+msgid "Who to assign tickets to in the case that auto-assignment wouldn&#039;t work. This does NOT mean that all tickets will be assigned to this user. This is a fallback option. To enable/disable auto assignment for an agent, please do so in the user profile settings."
+msgstr "Hvem der skal tildeles supportsager til, i tilfælde hvor auto&#039;t-tildelingen ikke virker. Dette betyder IKKE at alle supportsager tildeles til denne bruger. Dette er en tilbagefalds-mekanisme. For at aktivere/deaktivere automatisk tildeling for en agent, skal du gøre det bruger-profil indstillingerne."
+
+#: includes/admin/settings/settings-general.php:35
+msgid "Allow users to register on the support page. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress."
+msgstr "Tillad brugere at registrere sig på support siden. Denne indstilling kan slås til på trods af at WordPress indstillingen er slået fra. I øjeblikket er registreringer %s af WordPress."
+
+#: includes/admin/settings/settings-general.php:38
+msgid "Allow registrations"
+msgstr "Tillad registreringer"
+
+#: includes/admin/settings/settings-general.php:39
+msgid "Disallow registrations"
+msgstr "Tillad ikke registreringer"
+
+#: includes/admin/settings/settings-general.php:40
+msgid "Disallow registrations without notice (just show the login form)"
+msgstr "Tillad ikke registreringer uden varsel (Vis blot log ind formular)"
+
+#: includes/admin/settings/settings-general.php:51
+msgid "Replies Order"
+msgstr "Svar rækkefølge"
+
+#: includes/admin/settings/settings-general.php:54
+msgid "In which order should the replies be displayed (for both client and admin side)?"
+msgstr "I hvilken rækkefølge burde svarene vises (for både klienter og administrator)?"
+
+#: includes/admin/settings/settings-general.php:55
+msgid "Old to New"
+msgstr "Gammel til ny"
+
+#: includes/admin/settings/settings-general.php:55
+msgid "New to Old"
+msgstr "Ny til gammel"
+
+#: includes/admin/settings/settings-general.php:59
+msgid "Replies Per Page"
+msgstr "Svar per side"
+
+#: includes/admin/settings/settings-general.php:63
+msgid "How many replies should be displayed per page on a ticket details screen?"
+msgstr "Hvor mange svar burde vises per side på en ticket detalje skærm?"
+
+#: includes/admin/settings/settings-general.php:66
+msgid "Hide Closed"
+msgstr "Gem lukkede"
+
+#: includes/admin/settings/settings-general.php:65
+msgid "Only show open tickets when clicking the \"All Tickets\" link."
+msgstr "Vis kun åbne forespørgsler ved tryk på \"Alle Forespørgsler\" linket."
+
+#: includes/admin/settings/settings-general.php:73
+msgid "Show Count"
+msgstr "Vis antal"
+
+#: includes/admin/settings/settings-general.php:76
+msgid "Display the number of open tickets in the admin menu."
+msgstr "Vis antallet af åbne forespørgsler i admin menuen"
+
+#: includes/admin/settings/settings-general.php:80
+msgid "Old Tickets"
+msgstr "Gamle forespørgsler"
+
+#: includes/admin/settings/settings-general.php:84
+msgid "After how many days should a ticket be considered &laquo;old&raquo;?"
+msgstr "Efter hvor mange dage skal en forespørgsel anses for værende forældet ?"
+
+#: includes/admin/settings/settings-general.php:172
+msgid "Plugin Pages"
+msgstr "Plugin sider"
+
+#: includes/admin/settings/settings-general.php:176
+msgid "Ticket Submission"
+msgstr "Afgiv forespørgsel"
+
+#: includes/admin/settings/settings-general.php:180
+msgid "The page used for ticket submission. This page should contain the shortcode %s"
+msgstr "Siden til afgivelse af forespørgsler. Denne side bør indeholde shortkoden %s"
+
+#: includes/admin/settings/settings-general.php:185
+msgid "Tickets List"
+msgstr "Forespørgselsliste"
+
+#: includes/admin/settings/settings-general.php:189
+msgid "The page that will list all tickets for a client. This page should contain the shortcode %s"
+msgstr "Siden som lister en brugers forespørgsler. Denne side bør indeholde shortkoden %s"
+
+#: includes/admin/settings/settings-general.php:194
+msgid "Terms & Conditions"
+msgstr "Betingelser"
+
+#: includes/admin/settings/settings-general.php:198
+#: includes/admin/settings/settings-notifications.php:97
+#: includes/admin/settings/settings-notifications.php:122
+#: includes/admin/settings/settings-notifications.php:147
+#: includes/admin/settings/settings-notifications.php:172
+#: includes/admin/settings/settings-notifications.php:203
+#: includes/admin/settings/settings-notifications.php:227
+msgid "Content"
+msgstr "Indhold"
+
+#: includes/admin/settings/settings-general.php:202
+msgid "Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept your terms"
+msgstr "Vilkår og betingelser er ikke obligatorisk. Hvis du tilføjer vilkår bliver en obligatorisk checkbox tilføjet i oprettelsesformen. Brugere vil ikke kunne oprette sig hvis de ikke accepterer dine vilkår"
+
+#: includes/admin/settings/settings-general.php:206
+msgid "Credit"
+msgstr "Credit"
+
+#: includes/admin/settings/settings-general.php:210
+msgid "Show Credit"
+msgstr "Vis credit"
+
+#: includes/admin/settings/settings-general.php:213
+msgid "Do you like this plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page."
+msgstr "Kan du lide det her plugin? Hjælp os gerne med at sprede ordet, ved at vise et credit-link i bunden af jeres ticket-tilføjelses side"
+
+#: includes/admin/settings/settings-licenses.php:26
+msgid "Licenses"
+msgstr "Licenser"
+
+#: includes/admin/settings/settings-notifications.php:14
+msgid "E-Mails"
+msgstr "Emails"
+
+#: includes/admin/settings/settings-notifications.php:18
+msgid "For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen."
+msgstr "For mere information omkring skabelon-tags der kan benyttes i email-skabeloner, klik venligst på &laquo;Hjælp&raquo; knappen i øverste højre hjørne af denne skærm."
+
+#: includes/admin/settings/settings-notifications.php:61
+msgid "Sender Name"
+msgstr "Afsender Navn"
+
+#: includes/admin/settings/settings-notifications.php:67
+msgid "Sender E-Mail"
+msgstr "Afsender Email"
+
+#: includes/admin/settings/settings-notifications.php:73
+msgid "Reply-To E-Mail"
+msgstr "Svar-email"
+
+#: includes/admin/settings/settings-notifications.php:80
+msgid "Submission Confirmation"
+msgstr "Bekræftelse på afgivelse af forespørgsel"
+
+#: includes/admin/class-admin-user.php:101
+#: includes/admin/settings/settings-notifications.php:84
+#: includes/admin/settings/settings-notifications.php:109
+#: includes/admin/settings/settings-notifications.php:134
+#: includes/admin/settings/settings-notifications.php:159
+#: includes/admin/settings/settings-notifications.php:190
+#: includes/admin/settings/settings-notifications.php:214
+msgid "Enable"
+msgstr "Aktiver"
+
+#: includes/admin/settings/settings-notifications.php:88
+#: includes/admin/settings/settings-notifications.php:113
+#: includes/admin/settings/settings-notifications.php:138
+#: includes/admin/settings/settings-notifications.php:163
+#: includes/admin/settings/settings-notifications.php:194
+#: includes/admin/settings/settings-notifications.php:218
+msgid "Do you want to activate this e-mail template?"
+msgstr "Ønsker du at aktivere denne email skabelon?"
+
+#: includes/admin/settings/settings-notifications.php:91
+#: includes/admin/settings/settings-notifications.php:116
+#: includes/admin/settings/settings-notifications.php:141
+#: includes/admin/settings/settings-notifications.php:166
+#: includes/admin/settings/settings-notifications.php:197
+#: includes/admin/settings/settings-notifications.php:221
+#: themes/default/submission.php:38
+msgid "Subject"
+msgstr "Emne"
+
+#: includes/admin/settings/settings-notifications.php:94
+msgid "Request received: {ticket_title}"
+msgstr "Forespørgsel modtaget: {ticket_title}"
+
+#: includes/admin/settings/settings-notifications.php:105
+msgid "New Assignment"
+msgstr "Ny tildeling"
+
+#: includes/admin/settings/settings-notifications.php:119
+msgid "Ticket #{ticket_id} assigned"
+msgstr "Forespørgsel #{ticket_id} tildelt"
+
+#: includes/admin/settings/settings-notifications.php:130
+msgid "New Reply from Agent"
+msgstr "Nyt svar fra Agent"
+
+#: includes/admin/settings/settings-notifications.php:144
+msgid "New reply to: {ticket_title}"
+msgstr "Nyt svar til: {ticket_title}"
+
+#: includes/admin/settings/settings-notifications.php:155
+msgid "New Reply from Client"
+msgstr "Nyt svar fra Bruger"
+
+#: includes/admin/settings/settings-notifications.php:169
+msgid "Ticket #{ticket_id}"
+msgstr "Forespørgsel #{ticket_id}"
+
+#: includes/admin/settings/settings-notifications.php:180
+msgid "Ticket Will Be Closed"
+msgstr "Forespørgsel lukkes"
+
+#: includes/admin/settings/settings-notifications.php:164
+msgid "Ticket Closed"
+msgstr "Forespørgsel Lukket"
+
+#: includes/admin/settings/settings-notifications.php:200
+#: includes/admin/settings/settings-notifications.php:224
+msgid "Request closed: {ticket_title}"
+msgstr "Forespørgsel lukket: {ticket_title}"
+
+#: includes/admin/settings/settings-style.php:13
+msgid "Style"
+msgstr "Typografi"
+
+#: includes/admin/settings/settings-style.php:16
+msgid "Theme"
+msgstr "Tema"
+
+#: includes/admin/settings/settings-style.php:19
+msgid "Which theme to use for the front-end."
+msgstr "Hvilket tema skal benyttes som front-end"
+
+#: includes/admin/settings/settings-style.php:24
+msgid "Theme Stylesheet"
+msgstr "Tema Stylesheet"
+
+#: includes/admin/settings/settings-style.php:27
+msgid "Load the theme stylesheet. Don't uncheck if you don't know what this means"
+msgstr "Indlæs tema stylesheet. Fjern ikke fluebenet hvis du ikke er sikker på hvad det betyder"
+
+#: includes/admin/settings/settings-style.php:31
+msgid "Use editor in front-end"
+msgstr "Benyt editor i front-end"
+
+#: includes/admin/settings/settings-style.php:34
+msgid "Show a editor editor for the ticket description when user submits a ticket."
+msgstr "Vis en editor for forespørgslen når en klient opretter en forespørgsel."
+
+#: includes/admin/settings/settings-style.php:38
+msgid "Colors"
+msgstr "Farver"
+
+#: includes/admin/settings/settings-style.php:42
+msgid "Open Status"
+msgstr "Status Åbne"
+
+#: includes/admin/settings/settings-style.php:48
+msgid "Closed Status"
+msgstr "Status Lukket"
+
+#: includes/admin/settings/settings-style.php:54
+msgid "Old Status"
+msgstr "Status Forældede"
+
+#: includes/admin/settings/settings-style.php:60
+msgid "Awaiting Reply"
+msgstr "Afventer Svar"
+
+#: includes/admin/views/status.php:4
+msgid "System Status"
+msgstr "System Status"
+
+#: includes/admin/views/status.php:5
+msgid "Cleanup"
+msgstr "Ryd op"
+
+#: includes/admin/views/system-tools.php:34
+msgid "Tickets metas were cleared"
+msgstr "Forespørgsels-meta'er nulstillet"
+
+#: includes/admin/views/system-tools.php:38
+msgid "Agents metas were cleared"
+msgstr "Agent-metaer blev ryddet"
+
+#: includes/admin/views/system-tools.php:42
+msgid "All custom taxonomies terms were cleared"
+msgstr "Alle custom taxonomier's betingelser nulstillet"
+
+#: includes/admin/views/system-tools.php:46
+msgid "All products have been re-synchronized"
+msgstr "Alle produkter er blevet resynkroniseret"
+
+#: includes/admin/views/system-tools.php:50
+msgid "All products have been deleted"
+msgstr "Alle produkter er blevet slettet"
+
+#: includes/admin/views/system-tools.php:68
+msgid "These tool are intended for advanced users or for use on the support staff request. Be aware that some of these tools can definitively erase data."
+msgstr "Disse værktøjer er tiltænkt avancerede brugere, eller til brug for support-ansatte. Vær opmærksom på, at nogle af disse værktøjer kan slette data definitivt."
+
+#: includes/admin/views/system-tools.php:78
+msgid "Tickets Metas"
+msgstr "Forespørgsels-meta'er"
+
+#: includes/admin/views/system-tools.php:80
+#: includes/admin/views/system-tools.php:87
+#: includes/admin/views/system-tools.php:94
+#: includes/admin/views/system-tools.php:101
+msgid "Clear"
+msgstr "Nulstil"
+
+#: includes/admin/views/system-tools.php:81
+msgid "Clear all transients for all tickets."
+msgstr "Nulstil alle transienter for alle forespørgsler."
+
+#: includes/admin/views/system-tools.php:85
+msgid "Agents Metas"
+msgstr "Agent-metaer"
+
+#: includes/admin/views/system-tools.php:88
+msgid "Clear all agents metas."
+msgstr "Ryd alle agent-metaer"
+
+#: includes/admin/views/system-tools.php:92
+msgid "Custom Taxonomies"
+msgstr "Custom Taxonomier"
+
+#: includes/admin/views/system-tools.php:95
+msgid "Clear all terms from all custom taxonomies."
+msgstr "Nulstil alle betingelser fra alle custom taxonomier."
+
+#: includes/class-member-agent.php:55
+msgid "The user with ID %d does not exist"
+msgstr "Brugeren med IDet %d eksisterer ikke"
+
+#: includes/class-member-agent.php:59
+msgid "The user exists but is not a support agent"
+msgstr "Brugeren eksistere, men det er ikke en supportmedarbejder"
+
+#: includes/functions-post.php:164
+msgid "The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again."
+msgstr "Ægtheden af ​​din indsendelse kunne ikke valideres . Hvis denne sag er legitim, så prøv at indsende den igen."
+
+#: includes/functions-post.php:180
+msgid "The ticket couldn't be submitted for an unknown reason."
+msgstr "Forespørgslen kunne af ukendte årsager ikke oprettes."
+
+#: includes/functions-post.php:606
+msgid "Something went wrong. We couldn&#039;t identify your ticket. Please try again."
+msgstr "Noget gik galt. Vi kunne ikke identificere din ticket. Prøv venligst igen."
+
+#: includes/functions-post.php:631
+msgid "The ticket was successfully closed"
+msgstr "Supportsagen blev lukket."
+
+#: includes/functions-post.php:641
+msgid "Your reply could not be submitted for an unknown reason."
+msgstr "Dit svar kunne af ukendte årsager ikke oprettes."
+
+#: includes/functions-post.php:647
+msgid "Thanks for your reply. The ticket is now closed."
+msgstr "Tak for dit svar. Din supportsag er nu lukket."
+
+#: includes/functions-post.php:649
+msgid "Your reply has been submitted. Your agent will reply ASAP."
+msgstr "Dit svar er afsendt. Vores agent vil gennemse det hurtigst muligt."
+
+#: includes/functions-post.php:1452
+msgid "You are not allowed to re-open this ticket"
+msgstr "Du har ikke tilladelse til at genåbne denne supportsag"
+
+#: includes/functions-post.php:1460
+msgid "The ticket has been successfully re-opened."
+msgstr "Supportsagen blev genåbnet med succes."
+
+#: includes/install.php:154
+msgid "Support Supervisor"
+msgstr "Support Superviser"
+
+#: includes/install.php:155
+msgid "Support Manager"
+msgstr "Support Manager"
+
+#: includes/install.php:156
+msgid "Support Agent"
+msgstr "Support Agent"
+
+#: includes/install.php:157
+msgid "Support User"
+msgstr "Support Bruger"
+
+#: includes/scripts.php:195
+msgid "The following file(s) are too big to be uploaded:"
+msgstr "De(n) følgende fil(er) er for store til at blive uploadet:"
+
+#: includes/scripts.php:196
+msgid "The maximum file size allowed for one file is %d MB"
+msgstr "Maximum fil størrelse for en fil er %d MB"
+
+#: includes/functions-templating.php:1291
+msgid "I accept the %sterms and conditions%s"
+msgstr "Jeg accepterer %svilkår og betingelser%s"
+
+#: includes/functions-admin-bar.php:60
+msgid "Open tickets assigned to you"
+msgstr "Åben supportsager tilknyttet dig"
+
+#: includes/functions-user.php:949
+msgid "Did you mean %s"
+msgstr "Mente du %s"
+
+#: includes/class-email-notifications.php:48
+msgid "The post ID provided does not match any of the plugin post types"
+msgstr "Forespørgsels-ID'et oplyst matcher ingen indlæg."
+
+#: includes/class-email-notifications.php:287
+msgid "Converts into ticket ID"
+msgstr "Konverter til forespørgsels-ID"
+
+#: includes/class-email-notifications.php:291
+msgid "Converts into website name"
+msgstr "Konverter til webside navn"
+
+#: includes/class-email-notifications.php:295
+msgid "Converts into agent name"
+msgstr "Konverter til agent navn"
+
+#: includes/class-email-notifications.php:299
+msgid "Converts into agent e-mail address"
+msgstr "Konverter til agent email adresse"
+
+#: includes/class-email-notifications.php:303
+msgid "Converts into client name"
+msgstr "Konverter til klient navn"
+
+#: includes/class-email-notifications.php:307
+msgid "Converts into client e-mail address"
+msgstr "Konverter til klient email adresse"
+
+#: includes/class-email-notifications.php:311
+msgid "Converts into current ticket title"
+msgstr "Konverter til aktuel forespørgsels titel"
+
+#: includes/class-email-notifications.php:310
+msgid "Displays a link to public ticket"
+msgstr "Viser et link til offentlig forespørgsel"
+
+#: includes/class-email-notifications.php:314
+msgid "Displays the URL <strong>only</strong> (not a link link) to public ticket"
+msgstr "Viser <strong>kun</strong> en URL (ikke et link) til en offentlig forespørgsel."
+
+#: includes/class-email-notifications.php:323
+msgid "Displays a link to ticket details in admin (for agents)"
+msgstr "Viser et link til forespørgselsdetaljer i admin (for agenter)"
+
+#: includes/class-email-notifications.php:327
+msgid "Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)"
+msgstr "Viser <strong>kun</strong> URL'en (ikke et link) til forespørgselsdetaljerne i admin (for agenter)"
+
+#: includes/class-email-notifications.php:331
+msgid "Converts into current date"
+msgstr "Konverter til aktuel dato"
+
+#: includes/class-email-notifications.php:335
+msgid "Converts into WordPress admin e-mail (<em>currently: %s</em>)"
+msgstr "Konverter til WordPress admin email (<em>aktuelt: %s</em>)"
+
+#: includes/class-email-notifications.php:339
+msgid "Converts into ticket content or reply content"
+msgstr "Konverter til forespørgselsindhold eller besvar indhold"
+
+#: includes/class-email-notifications.php:615
+msgid "The requested notification does not exist"
+msgstr "Den adspurgte notifikation eksisterer ikke"
+
+#: includes/class-email-notifications.php:622
+msgid "The requested notification is disabled"
+msgstr "Den adspurgte notifikation er deaktiveret"
+
+#: includes/class-gist.php:109
+msgid "View the code on <a href=\"%s\">Gist</a>."
+msgstr "Vis koden på <a href=\"%s\">Gist</a>"
+
+#: includes/class-mailgun-email-check.php:45
+msgid "E-Mail Checking"
+msgstr "Kontrol af e-mail"
+
+#: includes/class-mailgun-email-check.php:51
+msgid "You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href=\"%s\">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups."
+msgstr "Du kan aktivere email kontrol på registreringssiden. Hvis aktiveret vil plugin'et sikre at den benyttede email adresse er valid og kan modtage mails. Verifikationen gøres ved brug af <a href=\"%s\">Email validation API</a> og kræver en (gratis) MailGun konto. Dette hjælper med til at reducere skrive-/stavefejl i email adressen under registrering."
+
+#: includes/class-mailgun-email-check.php:57
+msgid "Enable E-Mail Checking"
+msgstr "Slå kontrol af e-mail til"
+
+#: includes/class-mailgun-email-check.php:61
+msgid "Do you want to check e-mail addresses on new registrations?"
+msgstr "Ønsker du at kontrollere e-mailadresser ved nye registreringer?"
+
+#: includes/class-mailgun-email-check.php:66
+msgid "MailGun Public API Key"
+msgstr "MailGun Offentlig API Nøgle"
+
+#: includes/class-mailgun-email-check.php:70
+msgid "If you don&#39;t have a MailGun account you can <a href=\"%s\" target=\"_blank\">create one for free here</a>."
+msgstr "Hvis du ikke har en MailGun konto kan du <a href=\"%s\" target=\"_blank\">oprette ne gratis konto her</a>."
+
+#: includes/class-mailgun-email-check.php:81
+msgid "No API key was provided"
+msgstr "Ingen API nøgle tildelt"
+
+#: includes/class-mailgun-email-check.php:88
+msgid "No data to check"
+msgstr "Ingen data at tjekke"
+
+#: includes/class-mailgun-email-check.php:93
+msgid "No e-mail to check"
+msgstr "Ingen e-mail at tjekke"
+
+#: includes/functions-post-type.php:40
+msgid "Add New Ticket"
+msgstr "Tilføj Ny Forespørgsel"
+
+#: includes/functions-post-type.php:41
+msgid "New Ticket"
+msgstr "Ny Forespørgsel"
+
+#: includes/functions-post-type.php:42
+msgid "Edit Ticket"
+msgstr "Rediger Forespørgsel"
+
+#: includes/functions-post-type.php:43
+msgid "View Ticket"
+msgstr "Se Forespørgsel"
+
+#: includes/functions-post-type.php:44
+msgid "All Tickets"
+msgstr "Alle Forespørgsler"
+
+#: includes/functions-post-type.php:45
+msgid "Search Tickets"
+msgstr "Søg Forespørgsler"
+
+#: includes/functions-post-type.php:46
+msgid "Parent Ticket:"
+msgstr "Forældre Forespørgsel:"
+
+#: includes/functions-post-type.php:47
+msgid "No tickets found."
+msgstr "Ingen forespørgsler funder."
+
+#: includes/functions-post-type.php:48
+msgid "No tickets found in Trash."
+msgstr "Ingen Forespørgsler fundet i papirkurven."
+
+#: includes/functions-post-type.php:114 includes/functions-post-type.php:117
+msgid "Ticket updated."
+msgstr "Forespørgsel opdateret."
+
+#: includes/functions-post-type.php:115
+msgid "Custom field updated."
+msgstr "Custom felt opdateret."
+
+#: includes/functions-post-type.php:116
+msgid "Custom field deleted."
+msgstr "Custom felt slettet."
+
+#. translators: %s: date and time of the revision
+#: includes/functions-post-type.php:119
+msgid "Ticket restored to revision from %s"
+msgstr "Forespørgsel genoprettet til revisionen fra %s"
+
+#: includes/functions-post-type.php:120
+msgid "Ticket published."
+msgstr "Supportsag offentliggjort."
+
+#: includes/functions-post-type.php:121
+msgid "Ticket saved."
+msgstr "Supportsag gemt."
+
+#: includes/functions-post-type.php:122
+msgid "Ticket submitted."
+msgstr "Forespørgsel oprettet."
+
+#: includes/functions-post-type.php:124
+msgid "Ticket scheduled for: <strong>%1$s</strong>."
+msgstr "Forespørgsel planlagt for: <strong>%1$s</strong>"
+
+#. translators: Publish box date format, see http:php.net/date
+#: includes/functions-post-type.php:126
+msgid "M j, Y @ G:i"
+msgstr "M j, Y @ G:i"
+
+#: includes/functions-post-type.php:128
+msgid "Ticket draft updated."
+msgstr "Udkast af supportsag opdateret."
+
+#: includes/functions-post-type.php:134
+msgid "View ticket"
+msgstr "Se supportsag"
+
+#: includes/functions-post-type.php:140
+msgid "Preview ticket"
+msgstr "Se eksempel på supportsag"
+
+#: includes/class-product-sync.php:837 includes/class-product-sync.php:859
+msgid "You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead."
+msgstr "Du kan ikke redigere dette term herfra, da den er linket til en post (af typen %s). Rediger venligst posten direkte i stedet."
+
+#: includes/class-product-sync.php:862
+msgid "Term Locked"
+msgstr "Betingelser låst"
+
+#: includes/class-product-sync.php:922
+msgid "Re-Synchronize Products"
+msgstr "Synkroniser produkter igen"
+
+#: includes/class-product-sync.php:925
+msgid "Resync"
+msgstr "Synkroniser igen"
+
+#: includes/class-product-sync.php:927
+msgid "Re-synchronize all products from your e-commerce plugin."
+msgstr "Resynkroniser alle produkter fra dit e-commerce plugin."
+
+#: includes/class-product-sync.php:939
+msgid "Delete Products"
+msgstr "Slet produkter"
+
+#: includes/class-product-sync.php:942
+msgid "Delete"
+msgstr "Slet"
+
+#: includes/class-product-sync.php:944
+msgid "Delete all products synchronized from your e-commerce plugin."
+msgstr "Slet alle produkter synkroniseret fra dit e-commerce plugin"
+
+#: includes/class-remote-notification-client.php:716
+msgid "The server response was invalid (code %s)"
+msgstr "Serverens respons var ugyldig (kode %s)"
+
+#: includes/class-remote-notification-client.php:722
+msgid "The server response is empty"
+msgstr "Serverens respons er tom"
+
+#: includes/class-remote-notification-client.php:728
+msgid "Cannot decode the response content"
+msgstr "Kan ikke dekode responsens indhold"
+
+#: includes/class-remote-notification-client.php:500
+msgid "Dismiss notification"
+msgstr "Afvis meddelelse"
+
+#: includes/class-remote-notification-client.php:443
+msgid "Dismiss"
+msgstr "Afvis"
+
+#: includes/class-wpas-editor-ajax.php:108
+msgid "An editor ID is mandatory to load a new instance of TinyMCE"
+msgstr "Et editor-ID er påkrævet for at loade et nyt eksempel af TinyMCE"
+
+#: includes/custom-fields/class-custom-field.php:463
+msgid "The custom field class does not contain the mandatory method \"display\""
+msgstr "Det vilkårlige tekstfelt-klasse indeholder ikke den obligatoriske metode \"display\""
+
+#: includes/custom-fields/class-custom-field.php:469
+msgid "The type of custom field you are trying to use does not exist"
+msgstr "Den type vilkårlige tekstfelt du prøver at benytte eksisterer ikke"
+
+#: includes/custom-fields/class-custom-fields.php:117
+msgid "Please use %s to register your custom field type"
+msgstr "Benyt venligst %s til at registrere dit brugerdefinerede indholdsfelt"
+
+#: includes/custom-fields/class-custom-fields.php:198
+msgid "Search %s"
+msgstr "Søg %s"
+
+#: includes/custom-fields/class-custom-fields.php:199
+msgid "All %s"
+msgstr "Alle %s"
+
+#: includes/custom-fields/class-custom-fields.php:200
+msgid "Parent %s"
+msgstr "Forældre %s"
+
+#: includes/custom-fields/class-custom-fields.php:202
+msgid "Edit %s"
+msgstr "Redigér %s"
+
+#: includes/custom-fields/class-custom-fields.php:203
+msgid "Update %s"
+msgstr "Opdatér %s"
+
+#: includes/custom-fields/class-custom-fields.php:204
+msgid "Add New %s"
+msgstr "Tilføj Ny %s"
+
+#: includes/custom-fields/class-custom-fields.php:521
+msgid "Any Status"
+msgstr "Vilkårlig status"
+
+#: includes/admin/class-admin-tickets-list.php:597
+#: includes/admin/metaboxes/user-profile.php:101
+#: includes/admin/metaboxes/user-profile.php:129
+#: includes/admin/views/system-status.php:128
+#: includes/functions-general.php:332 includes/functions-templating.php:1000
+msgid "Closed"
+msgstr "Lukket"
+
+#: includes/custom-fields/class-custom-fields.php:704
+#: includes/custom-fields/class-custom-fields.php:706
+msgid "The field %s is required."
+msgstr "Feltet %s er obligatorisk."
+
+#: includes/custom-fields/field-types/class-cf-taxonomy.php:71
+#: includes/functions-general.php:554
+msgid "Please select"
+msgstr "Vælg venligst"
+
+#: includes/custom-fields/functions-custom-fields.php:335
+msgid "Tags"
+msgstr "Mærker"
+
+#: includes/custom-fields/functions-custom-fields.php:369
+msgid "Product"
+msgstr "Produkt"
+
+#: includes/custom-fields/functions-custom-fields.php:370
+msgid "Products"
+msgstr "Produkter"
+
+#: includes/file-uploader/class-file-uploader.php:230
+msgid "The file you requested is not a valid attachment"
+msgstr "Filen du har valgt er ikke en korrekt vedhæftning"
+
+#: includes/file-uploader/class-file-uploader.php:234
+msgid "The attachment you requested is not attached to any ticket"
+msgstr "Vedhæftningen du har forespurgt er ikke relateret til nogen sag"
+
+#: includes/file-uploader/class-file-uploader.php:241
+msgid "You are not allowed to view this attachment"
+msgstr "Du har ikke tilladelser til at se denne vedhæftning"
+
+#: includes/file-uploader/class-file-uploader.php:417
+msgid "Attachments"
+msgstr "Vedhæftninger"
+
+#: includes/file-uploader/class-file-uploader.php:418
+msgid " You can upload up to %d files (maximum %d MB each) of the following types: %s"
+msgstr "Du kan oploade op til %d filer (maximum %d MB hver) af de følgende typer: %s"
+
+#: includes/file-uploader/class-file-uploader.php:516
+msgid "Attachments:"
+msgstr "Vedhæftninger"
+
+#: includes/file-uploader/class-file-uploader.php:774
+msgid "Your reply has been correctly submitted but the attachment was not uploaded. %s"
+msgstr "Dit svar er korrekt leveret men den vedhæftede fil blev ikke uploadet. %s"
+
+#: includes/file-uploader/class-file-uploader.php:843
+msgid "You are not allowed to upload files of this type (%s)"
+msgstr "Du har ikke rettighed til at uploade filer af denne type (%s)"
+
+#: includes/file-uploader/class-file-uploader.php:847
+msgid "You cannot upload empty attachments. You attachments weights 0 bytes"
+msgstr "Du kan ikke uploade tomme vedhæftninger. Den vedhæftede fil fylder 0 bytes"
+
+#: includes/file-uploader/class-file-uploader.php:851
+msgid "Your attachment is too big. You are allowed to attach files up to %s"
+msgstr "Den vedhæftede fil er for stor. Du har ret til at uploade filer op til %s"
+
+#: includes/file-uploader/settings-file-upload.php:13
+msgid "File Upload"
+msgstr "Fil upload"
+
+#: includes/file-uploader/settings-file-upload.php:16
+msgid "Enable File Upload"
+msgstr "Tillad fil upload"
+
+#: includes/file-uploader/settings-file-upload.php:20
+msgid "Do you want to allow your users (and agents) to upload attachments to tickets and replies?"
+msgstr "Ønsker du at tillade dine brugere (og agenter) at uploade vedhæftede filer sammen med forespørgsler og svar ?"
+
+#: includes/file-uploader/settings-file-upload.php:23
+msgid "Maximum Files"
+msgstr "Max filer"
+
+#: includes/file-uploader/settings-file-upload.php:27
+msgid "How many files can a user attach to a ticket or a reply?"
+msgstr "Hvor mange filer kan en bruger vedhæfte en forespørgsel eller svar?"
+
+#: includes/file-uploader/settings-file-upload.php:30
+msgid "Maximum File Size"
+msgstr "Max fil størrelse"
+
+#: includes/file-uploader/settings-file-upload.php:34
+msgid "What is the maximum size allowed for one file (in <code>MB</code>)? Your server allows up to %s"
+msgstr "Hvad er max filstørrelse pr. fil (i <code>Mo</code>)?\n"
+"Din server tillader op til %s"
+
+#: includes/file-uploader/settings-file-upload.php:37
+msgid "Allowed Files Types"
+msgstr "Tilladte filtyper"
+
+#: includes/file-uploader/settings-file-upload.php:41
+msgid "Which file types do you allow your users to attach? Please separate each extension by a comma (%s)"
+msgstr "Hvilke filtyper tillader du brugerne at vedhæfte? Venligst list dem separeret med komma'er (%s)"
+
+#: includes/functions-addons.php:70
+msgid "An addon with the ID %s is already registered"
+msgstr "Et addon med ID'et %s er allerede registreret"
+
+#: includes/functions-deprecated.php:140
+msgid "Describe your problem as accurately as possible"
+msgstr "Beskriv dit problem så præcist som muligt"
+
+#: includes/functions-general.php:270
+msgid "Submit"
+msgstr "Send"
+
+#: awesome-support.php:154 includes/functions-general.php:468
+msgid "Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href=\"%s\" class=\"thickbox\">install the production version</a> of this plugin instead."
+msgstr "Awesome Supports afhængigheder mangler. Plugin'et kan ikke loades ordentligt. Kør venligst %s før noget andet. Hvis du ikke hvad dette her, bør du nok  <a href=\"%s\" class=\"thickbox\">installere produktionsversionen</a> af dette plugin i stedet."
+
+#: includes/functions-post.php:33
+msgid "You do not have the capacity to open a new ticket."
+msgstr "Du har ingen rettigheder til at oprette en ny forespørgsel."
+
+#: includes/functions-post.php:47
+msgid "It is mandatory to provide a title for your issue."
+msgstr "Det er obligatorisk at tilføje en overskrift til din forespørgsel."
+
+#: includes/functions-post.php:60
+msgid "It is mandatory to provide a description for your issue."
+msgstr "Det er obligatorisk at oprette en beskrivelse af emnet."
+
+#: includes/functions-post.php:112
+msgid "Only registered accounts can submit a ticket. Please register first."
+msgstr "Kun registrerede konti kan oprette en forespørgsel. Venligst registrer først."
+
+#: includes/functions-post.php:563 includes/functions-post.php:564
+#: includes/functions-post.php:823 includes/functions-post.php:824
+msgid "Reply to ticket %s"
+msgstr "Svar på supportsag %s"
+
+#: includes/functions-post.php:1152
+msgid "The given post ID is not a ticket"
+msgstr "Det indtastede forespørgsels-ID er ikke en forespørgsel"
+
+#: includes/functions-post.php:1160
+msgid "The chosen agent does not have the sufficient capabilities to be assigned a ticket"
+msgstr "Den valgte agent har ikke tilstrækkelige egenskaber for tildeling af forespørgsler"
+
+#: includes/functions-post.php:1334
+msgid "You do not have the capacity to close this ticket"
+msgstr "Du har desværre ikke muligheden for at lukke denne sag"
+
+#: includes/functions-post.php:1334
+msgid "Can’t close ticket"
+msgstr "Kan ikke lukke sagen"
+
+#: includes/functions-post.php:1353
+msgid "The ticket was closed."
+msgstr "Supportsagen blev lukket."
+
+#: includes/functions-post.php:1420
+msgid "The ticket was re-opened."
+msgstr "Supportsagen blev genåbnet."
+
+#: includes/functions-templating.php:65 includes/functions-templating.php:69
+msgid "You are not allowed to view this ticket."
+msgstr "Du har ikke ret til at læse denne forespørgsel."
+
+#: includes/admin/class-admin-tickets-list.php:94
+#: includes/admin/class-admin-tickets-list.php:177
+#: includes/functions-templating.php:275
+msgid "ID"
+msgstr "ID"
+
+#: includes/admin/class-admin-tickets-list.php:168
+#: includes/admin/metaboxes/details.php:56
+#: includes/custom-fields/functions-custom-fields.php:314
+#: includes/functions-templating.php:276 includes/functions-templating.php:570
+msgid "Status"
+msgstr "Status"
+
+#: includes/functions-templating.php:277 includes/functions-templating.php:576
+msgid "Date"
+msgstr "Dato"
+
+#: includes/functions-templating.php:379
+msgid "The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href=\"%s\">you can re-open it by clicking this link</a>."
+msgstr "Sagen er blevet lukket. Hvis du ikke mener at sagen er løst, eller noget andet er kommet op i relation til denne sag, <a href=\"%s\">Så kan du genåbne sagen her</a>."
+
+#: includes/functions-templating.php:436
+msgid "Type your reply here."
+msgstr "Skriv dit svar her."
+
+#: includes/functions-templating.php:455
+msgid "No reply is required to close"
+msgstr "Et svar er ikke nødvendigt for at lukke"
+
+#: includes/functions-templating.php:457
+msgid "Close this ticket"
+msgstr "Luk denne supportsag"
+
+#: includes/functions-templating.php:477
+msgid "Please Wait..."
+msgstr "Vent venligst..."
+
+#: includes/functions-templating.php:495
+msgid "To reply to this ticket, please <a href=\"%s\">go to your admin panel</a>."
+msgstr "For at svare på denne supportsag <a href=\"%s\">besøg venligst dit administrationspanel</a>."
+
+#: includes/functions-templating.php:500
+msgid "You are not allowed to reply to this ticket."
+msgstr "Du har ikke tilladelse til at svare på denne supportsag."
+
+#: includes/admin/class-admin-tickets-list.php:171
+#: includes/functions-templating.php:574
+msgid "Title"
+msgstr "Titel"
+
+#: includes/functions-templating.php:1173
+msgid "Previous Page"
+msgstr "Forrige side"
+
+#: includes/functions-templating.php:1206
+msgid "Next Page"
+msgstr "Næste side"
+
+#: includes/functions-user.php:36 themes/default/registration.php:29
+msgid "Registrations are currently not allowed."
+msgstr "Registreringer er ikke tilladt i øjeblikket."
+
+#: includes/functions-user.php:60
+msgid "You did not accept the terms and conditions."
+msgstr "Du accepterede ikke vilkår og betingelser."
+
+#: includes/functions-user.php:69
+msgid "You didn't correctly fill all the fields."
+msgstr "Du har ikke udfyldt alle felterne korrekt."
+
+#: includes/functions-user.php:105
+msgid "Your account has been created. Please log-in."
+msgstr "Din konto er blevet oprettet, log venligst ind."
+
+#: includes/functions-user.php:344
+msgid "We were unable to log you in for an unknown reason."
+msgstr "Vi kunne ikke logge dig ind af ukendte årsager."
+
+#: includes/integrations/ecommerce.php:67
+msgid "You cannot edit this term from here because it is linked to an EDD product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Du kan ikke redigere dette term her fra, da det er linket til et EDD produkt. <a href=\"%s\">Rediger venligst produktet direkte</a>."
+
+#: includes/integrations/ecommerce.php:81
+msgid "You cannot edit this term from here because it is linked to an Exchange product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Du kan ikke redigere dette term herfra, da den er linket til et Exchange produkt. <a href=\"%s\">Rediger venligst produktet direkte i stedet.</a>."
+
+#: includes/integrations/ecommerce.php:88
+msgid "You cannot edit this term from here because it is linked to a Jigoshop product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Du kan ikke redigere dette term her fra, da det er linket til et Jigoshop produkt. <a href=\"%s\">Rediger venligst produktet direkte</a>."
+
+#: includes/integrations/ecommerce.php:74
+msgid "You cannot edit this term from here because it is linked to a WooCommerce product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Du kan ikke redigere dette term her fra, da det er linket til et Woocommerce produkt. <a href=\"%s\">Rediger venligst produktet direkte</a>."
+
+#: includes/integrations/ecommerce.php:95
+msgid "You cannot edit this term from here because it is linked to a WP eCommerce product. <a href=\"%s\">Please edit the product directly</a>."
+msgstr "Du kan ikke redigere dette term her fra, da det er linket til et WP eCommere produkt. <a href=\"%s\">Rediger venligst produktet direkte</a>."
+
+#: includes/shortcodes/shortcode-submit.php:35
+#: includes/shortcodes/shortcode-tickets.php:57
+msgid "You are being redirected..."
+msgstr "Du bliver viderestillet..."
+
+#: includes/shortcodes/shortcode-submit.php:72
+msgid "You need to <a href=\"%s\">log-in</a> to submit a ticket."
+msgstr "Du skal <a href=\"%s\">logge ind</a> for at oprette en supportsag."
+
+#: includes/shortcodes/shortcode-submit.php:79
+msgid "You are not allowed to submit a ticket."
+msgstr "Du har ikke tilladelse til at oprette en supportsag."
+
+#: includes/shortcodes/shortcode-submit.php:104
+msgid "Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href=\"%s\">click here to open a new ticket</a>."
+msgstr "Beklager, supportmedarbejdere kan ikke tilføje forespørgsler her fra. Hvis du skal oprette en forspørgsel, så gå venligst til dit administratorpanel eller <a href=\"%s\">klik her for at åbne en forespørgsel</a>."
+
+#: themes/default/partials/ticket-reply.php:35
+msgid "This reply has been deleted %s ago."
+msgstr "Svaret blev slettet %s siden."
+
+#: themes/default/details.php:175
+msgid "Older Replies"
+msgstr "Tidligere svar"
+
+#: themes/default/details.php:176
+msgid "Newer Replies"
+msgstr "Nyere svar"
+
+#: themes/default/details.php:137
+msgid "Write a reply"
+msgstr "Skriv et svar"
+
+#: themes/default/partials/ticket-navigation.php:3
+msgid "Open a ticket"
+msgstr "Opret en supportsag"
+
+#: themes/default/list.php:95
+msgid "You haven't submitted a ticket yet. <a href=\"%s\">Click here to submit your first ticket</a>."
+msgstr "Du har ikke oprettet en supportsag endnu. <a href=\"%s\">Klik her for at oprette din første supportsag</a>."
+
+#: themes/default/partials/ticket-origin.php:28
+msgid "User"
+msgstr "Bruger"
+
+#: themes/default/partials/ticket-origin.php:29
+msgid "Message"
+msgstr "Besked"
+
+#: themes/default/registration.php:24 themes/default/registration.php:76
+msgid "Log in"
+msgstr "Log ind"
+
+#: themes/default/registration.php:37 themes/default/registration.php:38
+msgid "E-mail or username"
+msgstr "E-mail eller brugernavn"
+
+#: themes/default/registration.php:50 themes/default/registration.php:51
+#: themes/default/registration.php:132
+msgid "Password"
+msgstr "Adgangskode"
+
+#: themes/default/registration.php:69
+msgid "Remember Me"
+msgstr "Husk mig"
+
+#: themes/default/registration.php:76
+msgid "Logging In..."
+msgstr "Logger ind..."
+
+#: themes/default/registration.php:84
+msgid "Register"
+msgstr "Registrér"
+
+#: themes/default/registration.php:92 themes/default/registration.php:93
+msgid "First Name"
+msgstr "Fornavn"
+
+#: themes/default/registration.php:105 themes/default/registration.php:106
+msgid "Last Name"
+msgstr "Efternavn"
+
+#: themes/default/registration.php:118 themes/default/registration.php:119
+msgid "Email"
+msgstr "E-mail"
+
+#: themes/default/registration.php:131
+msgid "Enter a password"
+msgstr "Skriv en adgangskode"
+
+#: themes/default/registration.php:159
+msgid "Create Account"
+msgstr "Opret konto"
+
+#: themes/default/registration.php:159
+msgid "Creating Account..."
+msgstr "Opretter konto..."
+
+#: themes/default/submission.php:84
+msgid "Submit ticket"
+msgstr "Indsend supportsag"
+
+#. Description of the plugin/theme
+#: 
+msgid "Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience."
+msgstr "Awesome Support er et fantastisk system, som vil hjælpe dig med at forbedre dine kunders tilfredshed, ved at tilbyde en unik kundesupport oplevelse."
+
+#: includes/admin/class-admin-tickets-list.php:184
+msgctxt "Ticket created on"
+msgid "Created %s ago."
+msgstr "Oprettet %s siden."
+
+#: includes/admin/class-admin-tickets-list.php:297
+msgctxt "No last reply"
+msgid "No reply yet."
+msgstr "Intet svar endnu."
+
+#: includes/admin/class-admin-tickets-list.php:303
+msgctxt "User role"
+msgid "agent"
+msgstr "agent"
+
+#: includes/admin/class-admin-tickets-list.php:303
+msgctxt "User role"
+msgid "client"
+msgstr "klient"
+
+#: includes/admin/class-admin-tickets-list.php:307
+msgctxt "Last reply ago"
+msgid "<a href=\"%s\">Last replied</a> %s ago by %s (%s)."
+msgstr "<a href=\"%s\">Sidst besvaret</a> %s siden af %s (%s)."
+
+#: includes/admin/class-admin-user.php:124
+msgctxt "Action after replying to a ticket"
+msgid "After Reply"
+msgstr "Efter besvarelse"
+
+#: includes/admin/functions-misc.php:110
+msgctxt "Link to delete a ticket reply"
+msgid "Delete"
+msgstr "Slet"
+
+#: includes/admin/functions-misc.php:111
+msgctxt "Link ot edit a ticket reply"
+msgid "Edit"
+msgstr "Rediger"
+
+#: includes/admin/functions-misc.php:116
+msgctxt "Mark a user reply as read"
+msgid "Mark as Read"
+msgstr "Marker som læst"
+
+#: includes/admin/functions-notices.php:216
+msgctxt "Dismiss link for admin notices"
+msgid "Dismiss"
+msgstr "Afvis"
+
+#: includes/admin/metaboxes/details.php:61
+msgctxt "Ticket creation"
+msgid "Creating..."
+msgstr "Opretter..."
+
+#: includes/admin/metaboxes/replies-form.php:26
+msgctxt "Title of the reply editor in the back-end"
+msgid "Write a reply to %s"
+msgstr "Skriv et svar til %s"
+
+#: includes/admin/settings/settings-general.php:13
+msgctxt "User registration is allowed"
+msgid "allowed"
+msgstr "tilladt"
+
+#: includes/admin/settings/settings-general.php:13
+msgctxt "User registration is not allowed"
+msgid "not allowed"
+msgstr "ikke tilladt"
+
+#: includes/scripts.php:183
+msgctxt "JavaScript validation error message"
+msgid "You can't submit an empty ticket"
+msgstr "Du kan ikke sende en tom sag"
+
+#: includes/scripts.php:185
+msgctxt "JavaScript validation error message"
+msgid "You can't submit an empty reply"
+msgstr "Du kan ikke tilføje et tomt svar"
+
+#: includes/scripts.php:200
+msgctxt "ticket submission button text while submitting"
+msgid "Submitting..."
+msgstr "Sender..."
+
+#: includes/class-log-history.php:79
+msgctxt "Custom field value was updated"
+msgid "updated %s to %s"
+msgstr "opdaterede %s til %s"
+
+#: includes/class-log-history.php:83
+msgctxt "Custom field value was deleted"
+msgid "deleted %s"
+msgstr "slettede %s"
+
+#: includes/class-log-history.php:87
+msgctxt "Custom field value was added"
+msgid "added %s to %s"
+msgstr "tilføjede %s til %s"
+
+#: includes/functions-post-type.php:35
+msgctxt "post type general name"
+msgid "Tickets"
+msgstr "Forespørgsler"
+
+#: includes/functions-post-type.php:36
+msgctxt "post type singular name"
+msgid "Ticket"
+msgstr "Forespørgsel"
+
+#: includes/functions-post-type.php:37
+msgctxt "admin menu"
+msgid "Tickets"
+msgstr "Forespørgsler"
+
+#: includes/functions-post-type.php:38
+msgctxt "add new on admin bar"
+msgid "Ticket"
+msgstr "Forespørgsel"
+
+#: includes/class-post-type.php:71
+msgctxt "book"
+msgid "Add New"
+msgstr "Tilføj Ny"
+
+#: includes/functions-post-type.php:243
+msgctxt "Reply status"
+msgid "Read"
+msgstr "Læs"
+
+#: includes/functions-post-type.php:244
+msgctxt "Reply status"
+msgid "Unread"
+msgstr "Ulæst"
+
+#: includes/functions-post-type.php:256
+msgctxt "Ticket status"
+msgid "New"
+msgstr "Ny"
+
+#: includes/functions-post-type.php:257
+msgctxt "Ticket status"
+msgid "In Progress"
+msgstr "Igangværende"
+
+#: includes/functions-post-type.php:258
+msgctxt "Ticket status"
+msgid "On Hold"
+msgstr "Sat på hold"
+
+#: includes/custom-fields/class-custom-fields.php:201
+msgctxt "Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. \"book\")"
+msgid "Parent %s:"
+msgstr "Forældre %s:"
+
+#: includes/custom-fields/class-custom-fields.php:205
+msgctxt "A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. \"book\")"
+msgid "New %s Name"
+msgstr "Nyt %s navn"
+
+#: themes/default/registration.php:145
+msgctxt "Login form"
+msgid "Show Password"
+msgstr "Vis adgangskode"
+
+#: themes/default/registration.php:77
+msgid "Forgot password?"
+msgstr ""
+
+#: themes/default/partials/ticket-navigation.php:4
+msgid "Logout"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:413
+msgid "Department"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:474
+msgid "Priority"
+msgstr ""
+
+#: 
+msgid "Ticket Priority"
+msgstr ""
+
+#: awesome-support.php:144
+msgid "Awesome Support requires WordPress version %s or above. Please update WordPress to run this plugin."
+msgstr ""
+
+#: awesome-support.php:149
+msgid "Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>."
+msgstr ""
+
+#: includes/admin/class-admin-tickets-list.php:101
+msgid "Created by"
+msgstr ""
+
+#: includes/admin/class-admin-tickets-list.php:196
+msgid "Created By"
+msgstr ""
+
+#: includes/admin/class-admin-tickets-list.php:305
+msgid "%s reply."
+msgid_plural "%s replies."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/class-admin-tickets-list.php:595
+msgid "All States"
+msgstr ""
+
+#: includes/admin/class-admin-tickets-list.php:612
+msgid "All Status"
+msgstr ""
+
+#: includes/admin/class-admin-tickets-list.php:637
+msgid "All Agents"
+msgstr ""
+
+#: includes/admin/class-admin-tickets-list.php:673
+msgid "All Clients"
+msgstr ""
+
+#: includes/admin/class-admin-tickets-list.php:755
+msgid "All "
+msgstr ""
+
+#: includes/admin/class-admin-tickets-list.php:1242
+msgid "NOTE: Please be aware that when you sort on a column, tickets that have never had a value entered into that column will not appear on your sorted list (null fields). This can reduce the number of tickets in your sorted list.  This reduced number of tickets is NOT a bug - it is a deliberate design decision. You should also be aware that deliberately entering a blank into a ticket field is considered data so those tickets will show up in the sorted list."
+msgstr ""
+
+#: includes/admin/class-admin-user.php:98
+msgid "Smart Tickets Order"
+msgstr ""
+
+#: includes/admin/class-admin-user.php:102
+msgid "If Smart Tickets Order is enabled, Awesome Support will display tickets that need immediate attention at the top."
+msgstr ""
+
+#: includes/admin/class-admin-user.php:186
+msgid "View All Tickets"
+msgstr ""
+
+#: includes/admin/class-admin-user.php:190
+msgid "If agents role is allowed to view all tickets, turn on the option to do so?"
+msgstr ""
+
+#: includes/admin/class-admin-user.php:232
+msgid "Department(s)"
+msgstr ""
+
+#: includes/admin/class-admin-user.php:240
+msgid "Which department(s) does this agent belong to?"
+msgstr ""
+
+#: includes/admin/functions-menu.php:25
+msgid "Get a Free Addon"
+msgstr ""
+
+#: includes/admin/functions-menu.php:25
+msgid "Get a Free Addon!"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:46
+msgid "Ticket Details"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:51
+msgid "User Profile"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:61
+msgid "Admin Only Custom Fields"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:65
+msgid "Ticket Statistics"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:71
+msgid "Time Tracking"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:77
+msgid "Additional Interested Parties"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:99
+msgid "An error occurred while registering this metabox. Please contact support."
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:105
+msgid "An error occured while loading this metabox. Please contact support."
+msgstr ""
+
+#: includes/admin/functions-misc.php:264
+msgid "If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)"
+msgstr ""
+
+#: includes/admin/functions-misc.php:310
+msgid "Hey! Did you know you can get a <strong>free add-on for unlimited sites</strong> (a $61.00 USD value) for Awesome Support? <a href=\"%1$s\">Click here to read more</a>."
+msgstr ""
+
+#: includes/admin/functions-user-profile.php:58
+msgid "Support User since %s"
+msgstr ""
+
+#: includes/admin/metaboxes/details.php:74
+msgid "Current Status"
+msgstr ""
+
+#: includes/admin/metaboxes/replies-form.php:85
+msgid "Go to the next ticket"
+msgstr ""
+
+#: includes/admin/metaboxes/replies-form.php:86
+msgid "Go to the previous ticket"
+msgstr ""
+
+#: includes/admin/metaboxes/replies-form.php:109
+msgctxt "Close the ticket"
+msgid "Close"
+msgstr ""
+
+#: includes/admin/metaboxes/stakeholders.php:52
+msgid "This user who raised this ticket"
+msgstr ""
+
+#: includes/admin/metaboxes/stakeholders.php:68
+msgid "The agent currently responsible for this ticket"
+msgstr ""
+
+#: includes/admin/metaboxes/ticket-additional-parties.php:26
+msgid "Note: Email notifications to these agents will be under the name of the PRIMARY agent."
+msgstr ""
+
+#: includes/admin/metaboxes/ticket-additional-parties.php:51
+msgid "First additional agent who has an interest this ticket"
+msgstr ""
+
+#: includes/admin/metaboxes/ticket-additional-parties.php:51
+#: includes/custom-fields/functions-custom-fields.php:575
+msgid "Additional Support Staff #1"
+msgstr ""
+
+#: includes/admin/metaboxes/ticket-additional-parties.php:63
+msgid "Second additional agent who has an interest this ticket"
+msgstr ""
+
+#: includes/admin/metaboxes/ticket-additional-parties.php:63
+#: includes/custom-fields/functions-custom-fields.php:590
+msgid "Additional Support Staff #2"
+msgstr ""
+
+#: includes/admin/metaboxes/ticket-additional-parties.php:82
+msgid "Note: These fields are notational only. They do not participate in notifications!"
+msgstr ""
+
+#: includes/admin/metaboxes/time-tracking-statistics.php:26
+msgid "Note: Read-only Configuration - You Are Not Permitted To Edit Time Data"
+msgstr ""
+
+#: includes/admin/metaboxes/user-profile.php:93
+msgid "Total"
+msgstr ""
+
+#: includes/admin/metaboxes/user-profile.php:133
+msgctxt "Ticket date creation"
+msgid "Created on %s"
+msgstr ""
+
+#: includes/admin/metaboxes/user-profile.php:140
+msgctxt "Identifies the ticket in a list as being the ticket displayed on the current screen"
+msgid "current"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:38
+msgid "Ticket Topic Slug"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:41
+msgid "What to use for the indivdual ticket slug.  The default is the ticket topic transformed into a slug."
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:42
+msgid "Ticket ID"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:42
+msgid "Random Number"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:42
+msgid "GUID"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:14
+#: includes/admin/settings/settings-basic-time-tracking.php:17
+msgid "Basic Time Tracking"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:39
+msgid "Show Basic Time Tracking Fields"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:42
+msgid "Would you like to show the basic time tracking fields?"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:47
+msgid "Allow Agents To Enter Time"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:50
+msgid "Can agents enter time?  If unchecked, agents cannot enter or adjust time and it is assumed that another add-on will do time tracking and update these fields"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:55
+msgid "Recalculate Final Time On Save"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:58
+msgid "Recalculate the final time when the ticket is saved? This should be checked for manual time tracking not handled by another add-on.  It takes the original time, adds or subtracts the adjustments and enters the new amount in the final time field. This should be unchecked if another add-on is handling the time tracking and updates!"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:63
+msgid "Keep Audit Log"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:66
+msgid "Adds an internal note to the ticket every time someone updates the basic time tracking fields"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:71
+msgid "Show Total Time In Ticket List"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:74
+msgid "Adds a column to the ticket list to show the total original time recorded for the ticket"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:79
+msgid "Show Total Time Adjustments In Ticket List"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:82
+msgid "Adds a column to the ticket list to show the time adjustments recorded for the ticket"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:87
+msgid "Show Final Recorded Time In Ticket List"
+msgstr ""
+
+#: includes/admin/settings/settings-basic-time-tracking.php:90
+msgid "Adds a column to the ticket list to show the final time recorded for the ticket"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:20
+msgid "Misc"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:44
+msgid "Tickets Per Page (Front End)"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:48
+msgid "How many tickets per page should be displayed to the customer/client/end-user?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:69
+msgid "Only show open tickets when agents click the \"All Tickets\" link."
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:87
+#: includes/custom-fields/functions-custom-fields.php:414
+msgid "Departments"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:90
+msgid "Enable departments management."
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:94
+msgid "Priority Management"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:101
+msgid "Multiple Agents"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:106
+msgid "Enable Multiple Agents Per Ticket"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:109
+msgid "Show the two extra agent fields on the ticket?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:114
+msgid "Show Secondary Agent In Ticket List"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:117
+msgid "Show the secondary agent in the ticket list?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:122
+msgid "Show Tertiary Agent In Ticket List"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:125
+msgid "Show the Tertiary agent in the ticket list?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:130
+msgid "Third Parties"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:144
+msgid "Show Third Party #1 in Ticket List"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:147
+msgid "Show Third Party #1 Data in the Ticket List?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:152
+msgid "Show Third Party #2 in Ticket List"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:155
+msgid "Show Third Party #2 Data in the Ticket List?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:160
+msgid "Other Field Settings"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:164
+msgid "Show Channel Field"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:167
+msgid "Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:234
+msgid "Use Priority Field"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:237
+msgid "Would you like to use the priority field in your tickets?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:242
+msgid "Mandatory?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:245
+msgid "Would you like to make the priority field mandatory in your tickets?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:250
+msgid "Show On Front End?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:253
+msgid "Would you like to show the field to the end user (unchecked restricts it to admin use only)?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:258
+msgid "Show In Column List?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:261
+msgid "Would you like to show the field in the ticket listing?"
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:21
+msgid "E-Mail Template"
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:25
+msgid "Use Template"
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:29
+msgid "Outgoing notifications are styled with a built-in template. If you are using an e-mail templating plugin you should deactivate this option."
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:33
+msgid "Please note that the <a href=\"%1$s\" target=\"%2$s\">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add fancy styling through the editors hereafter, we cannot guarantee full compatibility anymore."
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:36
+msgid "Logo"
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:40
+msgid "A logo that displays at the top of the e-mail notification."
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:43
+msgid "Header"
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:50
+msgid "Footer"
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:57
+msgid "E-Mail Defaults"
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:186
+msgid "Ticket Closed (by agent)"
+msgstr ""
+
+#: includes/admin/settings/settings-notifications.php:210
+msgid "Ticket Closed (by client)"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:14
+#: includes/admin/settings/settings-products-management.php:17
+msgid "Products Management"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:54
+msgid "Synchronize %s Products"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:57
+msgid "We have detected that you are using the e-commerce plugin %1$s. Would you like to automatically synchronize your e-commerce products with Awesome Support?"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:63
+msgid "If you just disabled this option and want to remove the previously synchronized products, <a href=\"%1$s\">please use the dedicated option &laquo;Delete Products&raquo;</a>"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:80
+msgid "Include Products"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:84
+msgid "Which products do you want to synchronize with Awesome Support (leave blank for all products)"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:90
+msgid "Exclude Products"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:94
+msgid "Which products do you want to exclude from synchronization with Awesome Support (leave blank for no exclusion)"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:101
+msgid "You cannot use the include and exclude options at the same time. Please use one or the other. You should use the option where you need to select the least amount of products."
+msgstr ""
+
+#: includes/admin/views/opt-in.php:3
+msgid "Get Your Free Addon!"
+msgstr ""
+
+#: includes/admin/views/opt-in.php:5
+msgid "Wanna get more out of Awesome Support, but not yet ready to spend the cash? Get one free addon today!"
+msgstr ""
+
+#: includes/admin/views/opt-in.php:17
+msgid "Custom Status"
+msgstr ""
+
+#: includes/admin/views/opt-in.php:18
+msgid "Need more than the three default statuses?  Maybe you need to tag certain tickets for “Development” or  move them to certain support levels such as “Level 1” and “Level 2”.  With the Custom Status addon you can create the perfect set of ticket statuses for your organization."
+msgstr ""
+
+#: includes/admin/views/opt-in.php:19
+msgid "Read more about this addon on our site >"
+msgstr ""
+
+#: includes/admin/views/opt-in.php:24
+msgid "How to Get Your Free Addon"
+msgstr ""
+
+#: includes/admin/views/opt-in.php:26
+msgid "Getting your addon is dead simple: just subscribe to our newsletter hereafter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new major features in Awesome Support or when new addons are being released. That&#039;s it."
+msgstr ""
+
+#: includes/admin/views/opt-in.php:45
+msgid "Thanks for your subscription! You will need to confirm the double opt-in e-mail that you will receive in a coupe of minutes. After you confirmed it, you will receive the free addon directly in your inbox."
+msgstr ""
+
+#: includes/admin/views/system-status.php:1
+msgid "The system status is a built-in debugging tool. If you contacted the support and you're asked to provide the system status, <strong>click the button below</strong> to copy your system report:"
+msgstr ""
+
+#: includes/admin/views/system-status.php:5
+#: includes/admin/views/system-status.php:6
+msgid "Copy Report"
+msgstr ""
+
+#: includes/admin/views/system-status.php:31
+#: includes/admin/views/system-status.php:39
+#: includes/admin/views/system-status.php:182
+#: includes/admin/views/system-status.php:314
+#: includes/admin/views/system-status.php:315
+#: includes/admin/views/system-status.php:316
+#: includes/admin/views/system-status.php:317
+#: includes/admin/views/system-status.php:326
+#: includes/admin/views/system-status.php:421
+msgid "No"
+msgstr ""
+
+#: includes/admin/views/system-status.php:55
+msgid "%s (The server only allows %s)"
+msgstr ""
+
+#: includes/admin/views/system-status.php:71
+msgid "The timezone hasn't been set"
+msgstr ""
+
+#: includes/admin/views/system-status.php:124
+msgid "Enabled"
+msgstr ""
+
+#: includes/admin/views/system-status.php:124
+msgid "Disabled"
+msgstr ""
+
+#: includes/admin/views/system-status.php:149
+msgid "The upload folder doesn't exist and can't be created"
+msgstr ""
+
+#: includes/admin/views/system-status.php:151
+msgid "The upload folder doesn't exist but can be created"
+msgstr ""
+
+#: includes/admin/views/system-status.php:155
+msgid "The upload folder exists but isn't writable"
+msgstr ""
+
+#: includes/admin/views/system-status.php:157
+msgid "The upload folder exists and is writable"
+msgstr ""
+
+#: includes/admin/views/system-status.php:170
+msgctxt "Allowed file types for attachments"
+msgid "None"
+msgstr ""
+
+#: includes/admin/views/system-status.php:313
+msgid "Capability"
+msgstr ""
+
+#: includes/admin/views/system-status.php:314
+msgid "Core"
+msgstr ""
+
+#: includes/admin/views/system-status.php:315
+msgid "Required"
+msgstr ""
+
+#: includes/admin/views/system-status.php:316
+msgid "Logged"
+msgstr ""
+
+#: includes/admin/views/system-status.php:317
+msgid "Show Column"
+msgstr ""
+
+#: includes/admin/views/system-status.php:321
+#: includes/admin/views/system-status.php:323
+#: includes/admin/views/system-status.php:326
+msgid "Taxonomy"
+msgstr ""
+
+#: includes/admin/views/system-status.php:321
+msgid "Yes (standard)"
+msgstr ""
+
+#: includes/admin/views/system-status.php:323
+msgid "Yes (custom)"
+msgstr ""
+
+#: includes/admin/views/system-status.php:329
+msgid "Callback"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:54
+msgid "All unclaimed ticket attachment folders have been deleted"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:58
+msgid "All channels have been reset"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:99
+msgid "Ticket Attachments"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:102
+msgid "Clear unclaimed ticket attachment folders."
+msgstr ""
+
+#: includes/admin/views/system-tools.php:106
+msgid "Reset replies count"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:108
+msgid "Count"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:109
+msgid "Count all ticket replies."
+msgstr ""
+
+#: includes/admin/views/system-tools.php:113
+msgid "Reset channels"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:115
+#: includes/admin/views/system-tools.php:122
+msgid "Reset"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:116
+msgid "Reset channels."
+msgstr ""
+
+#: includes/admin/views/system-tools.php:120
+msgid "Zero Out All Time Fields"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:123
+msgid "Reset time fields by setting them all to zero on ALL tickets!"
+msgstr ""
+
+#: includes/class-email-notifications.php:315
+msgid "Displays a link to the ticket"
+msgstr ""
+
+#: includes/class-email-notifications.php:319
+msgid "Displays the URL <strong>only</strong> (not a link) to the ticket"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:296
+msgid "Agent"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:475
+msgid "Priorities"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:520
+msgid "Channel"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:521
+msgid "Channels"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:612
+msgid "Number of Replies By Agent"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:613
+msgid "Number of Replies By Customer"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:614
+msgid "Total Replies On Ticket"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:661
+msgid "Gross Time"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:662
+msgid "Time Adjustments"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:663
+msgid "+ive or -ive Adj?"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:664
+msgid "Final Time"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:665
+msgid "Notes"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:680
+msgid "Enter the cummulative time spent on ticket by the agent"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:698
+msgid "Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin."
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:727
+msgid "This is the time calculated by the system - a sum of gross time and adjustments/credits granted."
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:755
+msgid "Name Of Additional Interested Party #1"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:756
+msgid "Additional Interested Party Email #1"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:757
+msgid "Name Of Additional Interested Party #2"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:758
+msgid "Additional Interested Party Email #2"
+msgstr ""
+
+#: includes/file-uploader/class-file-uploader.php:693
+msgid "%s -> Max files (%d) exceeded."
+msgstr ""
+
+#: includes/file-uploader/class-file-uploader.php:744
+msgid "Attachment Errors:"
+msgstr ""
+
+#: includes/functions-post-type.php:39
+msgctxt "ticket"
+msgid "Add New"
+msgstr ""
+
+#: includes/functions-post-type.php:160
+msgctxt "post type general name"
+msgid "Ticket Replies"
+msgstr ""
+
+#: includes/functions-post-type.php:161
+msgctxt "post type singular name"
+msgid "Ticket Reply"
+msgstr ""
+
+#: includes/functions-post-type.php:162
+msgctxt "admin menu"
+msgid "Ticket Reply"
+msgstr ""
+
+#: includes/functions-post-type.php:163
+msgctxt "add new on admin bar"
+msgid "Ticket Reply"
+msgstr ""
+
+#: includes/functions-post-type.php:164
+msgctxt "Ticket Reply"
+msgid "Add New"
+msgstr ""
+
+#: includes/functions-post-type.php:165
+msgid "Add New Ticket Reply"
+msgstr ""
+
+#: includes/functions-post-type.php:166
+msgid "New Ticket Reply"
+msgstr ""
+
+#: includes/functions-post-type.php:167
+msgid "Edit Ticket Reply"
+msgstr ""
+
+#: includes/functions-post-type.php:168
+msgid "View Ticket Reply"
+msgstr ""
+
+#: includes/functions-post-type.php:169
+msgid "All Ticket Replies"
+msgstr ""
+
+#: includes/functions-post-type.php:170
+msgid "Search Ticket Reply"
+msgstr ""
+
+#: includes/functions-post-type.php:171
+msgid "Parent Ticket Replies:"
+msgstr ""
+
+#: includes/functions-post-type.php:172
+msgid "No Ticket Replies found."
+msgstr ""
+
+#: includes/functions-post-type.php:173
+msgid "No Ticket Replies found in Trash."
+msgstr ""
+
+#: includes/functions-post-type.php:177
+msgctxt "post type general name"
+msgid "Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:178
+msgctxt "post type singular name"
+msgid "Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:179
+msgctxt "admin menu"
+msgid "Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:180
+msgctxt "add new on admin bar"
+msgid "Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:181
+msgctxt "Ticket History"
+msgid "Add History"
+msgstr ""
+
+#: includes/functions-post-type.php:182
+msgid "Add New Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:183
+msgid "New Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:184
+msgid "Edit Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:185
+msgid "View Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:186
+msgid "All Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:187
+msgid "Search Ticket History"
+msgstr ""
+
+#: includes/functions-post-type.php:188
+msgid "Parent Ticket History:"
+msgstr ""
+
+#: includes/functions-post-type.php:189
+msgid "No Ticket History found."
+msgstr ""
+
+#: includes/functions-post-type.php:190
+msgid "No Ticket History found in Trash."
+msgstr ""
+
+#: includes/functions-post-type.php:194
+msgctxt "post type general name"
+msgid "Ticket Log"
+msgstr ""
+
+#: includes/functions-post-type.php:195
+msgctxt "post type singular name"
+msgid "Ticket Log"
+msgstr ""
+
+#: includes/functions-post-type.php:196
+msgctxt "admin menu"
+msgid "Ticket Log"
+msgstr ""
+
+#: includes/functions-post-type.php:197
+msgctxt "add new on admin bar"
+msgid "Ticket Log"
+msgstr ""
+
+#: includes/functions-post-type.php:198
+msgctxt "Ticket Log"
+msgid "Add Ticket Log"
+msgstr ""
+
+#: includes/functions-post-type.php:199
+msgid "Add New Ticket Log"
+msgstr ""
+
+#: includes/functions-post-type.php:200
+msgid "New Ticket Log"
+msgstr ""
+
+#: includes/functions-post-type.php:201
+msgid "Edit Ticket Log"
+msgstr ""
+
+#: includes/functions-post-type.php:202
+msgid "View Ticket Log"
+msgstr ""
+
+#: includes/functions-post-type.php:203
+msgid "All Ticket Logs"
+msgstr ""
+
+#: includes/functions-post-type.php:204
+msgid "Search Ticket Logs"
+msgstr ""
+
+#: includes/functions-post-type.php:205
+msgid "Parent Ticket Log:"
+msgstr ""
+
+#: includes/functions-post-type.php:206
+msgid "No Ticket Logs found."
+msgstr ""
+
+#: includes/functions-post-type.php:207
+msgid "No Ticket Logs found in Trash."
+msgstr ""
+
+#: includes/functions-post.php:1583
+msgid "No ticket ID given"
+msgstr ""
+
+#: includes/functions-post.php:1593
+msgid "Invalid ticket ID"
+msgstr ""
+
+#: includes/functions-post.php:1599
+msgid "Given ID is not a ticket"
+msgstr ""
+
+#: includes/functions-priority.php:38 includes/functions-priority.php:58
+msgid "Color"
+msgstr ""
+
+#: includes/functions-priority.php:40 includes/functions-priority.php:62
+msgid "Set priority color."
+msgstr ""
+
+#: includes/functions-user.php:161
+msgid "The %s field is mandatory for registering an account"
+msgstr ""
+
+#: themes/default/details.php:129
+msgid "Loading..."
+msgstr ""
+
+#: themes/default/details.php:130
+msgctxt "Showing X replies out of a total of X replies"
+msgid "Showing %s replies of %s."
+msgstr ""
+
+#: themes/default/details.php:131
+msgid "Load newer replies"
+msgstr ""
+
+#: themes/default/list.php:25
+msgid "Any status"
+msgstr ""
+
+#: themes/default/list.php:30
+msgid "Search tickets..."
+msgstr ""
+
+#: themes/default/list.php:31
+msgid "Clear Filter"
+msgstr ""
+
+#: themes/default/partials/ticket-reply.php:53
+msgctxt "Time ago (eg. 5 minutes ago)"
+msgid "%s ago"
+msgstr ""
+
+#: includes/admin/functions-misc.php:349
+msgid "Wow! It looks like you have closed a lot of tickets which is pretty awesome! We guess you must really like Awesome Support, huh? Could you please do us a favor and leave a 5 star rating on WordPress? It will only take a minute and helps to motivate our developers and volunteers. <a href=\"%1$s\">Yes, you deserve it!</a>."
+msgstr ""
+
+#: includes/admin/metaboxes/user-profile.php:109
+msgid "Note: A filter is enabled that allows the totals shown above to be greater than the list of tickets below."
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:136
+msgid "Enable Third Party Fields"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:139
+msgid "Show the third party fields on the ticket?"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:127
+msgid "Re-run conversion from 3.3.x to 4.0.0"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:129
+msgid "Rerun Conversion"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:130
+msgid "If your CAPABILITIES are not installed, re-run the 3.3.x to 4.0.0 conversion process. Make sure you have a BACKUP!"
+msgstr ""
+
