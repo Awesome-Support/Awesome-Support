@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "af12a9c9d71f9e651d13ab0e62063ed9",
+	"hash": "af12a9c9d71f9e651d13ab0e62063ed9",
     "packages": [
         {
             "name": "ericmann/wp-session-manager",
