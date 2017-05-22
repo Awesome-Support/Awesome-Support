@@ -736,7 +736,11 @@
 		 */
 		public function get_sanitized_value( $value ) {
 
-			$sanitize_function = function_exists( $this->field[ 'args' ][ 'sanitize' ] ) ? $this->field[ 'args' ][ 'sanitize' ] : 'sanitize_text_field';
+			$sanitize_function = 'sanitize_text_field' ;
+			
+			if ( isset( $this->field[ 'args' ][ 'sanitize' ] ) ) {
+				$sanitize_function = function_exists( $this->field[ 'args' ][ 'sanitize' ] ) ? $this->field[ 'args' ][ 'sanitize' ] : 'sanitize_text_field';
+			}
 
 			if ( is_array( $value ) ) {
 				$sanitized_value = array_map( $sanitize_function, $value );
