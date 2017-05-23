@@ -767,7 +767,7 @@ function wpas_users_dropdown( $args = array() ) {
 	foreach ( $all_users->members as $user ) {
 
 		/* This user was already added, skip it */
-		if ( ! empty( $args['selected'] ) && $user->user_id === intval( $args['selected'] ) ) {
+		if ( ! empty( $args['selected'] ) && intval( $user->user_id ) === intval( $args['selected'] ) ) {
 			continue;
 		}
 
