@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
 <div>
 	<?php
 	// Load the WordPress WYSIWYG with minimal options
-	wp_editor( '', 'wpas_reply', apply_filters( 'wpas_admin_reply_form_args', array(
+	wp_editor( apply_filters( 'wpas_admin_reply_form_reply_content', '' ), 'wpas_reply', apply_filters( 'wpas_admin_reply_form_args', array(
 			'media_buttons' => false,
 			'teeny'         => true,
 			'quicktags'     => true,
