@@ -189,7 +189,12 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 		}
 
 		// Let's create the user username and make sure it's unique
-		$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
+		if ( isset( $data['user_login'] ) ) {
+			$username = $data['user_login'];
+		} else {
+			$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
+		}
+		
 		$user_check = get_user_by( 'login', $username );
 
 		if ( is_a( $user_check, 'WP_User' ) ) {
@@ -767,7 +772,7 @@ function wpas_users_dropdown( $args = array() ) {
 	foreach ( $all_users->members as $user ) {
 
 		/* This user was already added, skip it */
-		if ( ! empty( $args['selected'] ) && $user->user_id === intval( $args['selected'] ) ) {
+		if ( ! empty( $args['selected'] ) && intval( $user->user_id ) === intval( $args['selected'] ) ) {
 			continue;
 		}
 
