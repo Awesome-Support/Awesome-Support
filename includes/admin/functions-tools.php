@@ -260,15 +260,6 @@ function wpas_delete_synced_products( $resync = false ) {
 	$posts = new WP_Query( array( 'post_type' => $post_type, 'posts_per_page' => -1, 'post_status' => 'any' ) );
 	$sync->set_post_type( $post_type );
 
-	if ( ! empty( $posts->posts ) ) {
-
-		/* Remove all terms and post metas */
-		foreach ( $posts->posts as $post ) {
-			$sync->unsync_term( $post->ID );
-		}
-
-	}
-
 	/* Now let's make sure we don't have some orphan post metas left */
 	global $wpdb;
 
