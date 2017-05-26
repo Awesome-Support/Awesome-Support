@@ -944,7 +944,7 @@ class WPAS_Product_Sync {
 				<a href="<?php echo wpas_tool_link( 'resync_products', array( 'pt' => $this->post_type ) ); ?>"
 				   class="button-secondary"><?php _e( 'Resync', 'awesome-support' ); ?></a>
 				<span
-					class="wpas-system-tools-desc"><?php _e( 'Re-synchronize all products from your e-commerce plugin. Note that this will delete all products and re-add them to our products list.  This means that you will lose any existing product references on your current tickets!!!', 'awesome-support' ); ?></span>
+					class="wpas-system-tools-desc"><?php _e( 'Re-synchronize all products from your e-commerce plugin. No existing products will be deleted from the Awesome Support Product List - just new ones added.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
 	<?php }
