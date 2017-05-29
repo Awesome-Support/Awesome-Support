@@ -345,9 +345,7 @@ function wpas_try_login( $data ) {
 		} elseif ( $login instanceof WP_User ) {
 
 			// Filter to allow redirection of successful login
-			if ( apply_filters( 'wpas_try_login_redirect', false ) ) {
-				$redirect_to = apply_filters( 'login_redirect', $redirect_to, $redirect_to, $login );
-			}
+			$redirect_to = apply_filters( 'wpas_try_login_redirect', $redirect_to, $redirect_to, $login );
 
 			wp_safe_redirect( $redirect_to );
 			exit;
