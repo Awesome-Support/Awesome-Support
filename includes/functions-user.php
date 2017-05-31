@@ -343,8 +343,13 @@ function wpas_try_login( $data ) {
 			exit;
 
 		} elseif ( $login instanceof WP_User ) {
+
+			// Filter to allow redirection of successful login
+			$redirect_to = apply_filters( 'wpas_try_login_redirect', $redirect_to, $redirect_to, $login );
+
 			wp_safe_redirect( $redirect_to );
 			exit;
+
 		} else {
 			wpas_add_error( 'login_failed', __( 'We were unable to log you in for an unknown reason.', 'awesome-support' ) );
 			wp_safe_redirect( $redirect_to );
