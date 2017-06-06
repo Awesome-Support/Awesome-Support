@@ -354,7 +354,7 @@ class WPAS_File_Upload {
 	 */
 	public function create_upload_dir( $dir ) {
 
-		$make = mkdir( $dir );
+		$make = mkdir( $dir, 0777, true );
 
 		if ( true === $make ) {
 			$this->protect_upload_dir( $dir );
