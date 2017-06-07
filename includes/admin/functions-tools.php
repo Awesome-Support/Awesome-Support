@@ -277,8 +277,13 @@ function wpas_delete_synced_products( $resync = false ) {
 				}
 			}
 			
-			if($unsync_term == false){				
-				wp_delete_term( (int) $product_term->term_id, 'product' );
+			if($unsync_term == false){
+				
+				if( wpas_product_has_tickets($product_term->term_id) === false ){
+					
+					wp_delete_term( (int) $product_term->term_id, 'product' );
+					
+				}
 			}
 			
 		}
@@ -317,6 +322,33 @@ function wpas_delete_synced_products( $resync = false ) {
 
 	return true;
 
+}
+
+/**
+ * Check product term has any ticket
+ *
+ * @since 4.0.0
+ * @return boolean */
+function wpas_product_has_tickets($term_id) {
+	$args = array(
+		'post_type' => 'ticket',
+		'status' => 'publish',
+		'tax_query' => array(
+			array(
+				'taxonomy' => 'product',
+				'field' => 'id',
+				'terms' => $term_id
+			)
+		)
+	);
+	$term_query =  new WP_Query( $args );
+	$term_posts_count = $term_query->found_posts;
+	
+	if( $term_posts_count > 0 ){
+		return true;
+	}else{
+		return false;
+	}
 }
 
 /**
