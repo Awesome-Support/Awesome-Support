@@ -195,7 +195,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		if ( empty( $post ) ) {
 			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
+			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
 			$post     = get_post( $post_id );
 		}
 

@@ -4,6 +4,9 @@ $tools_tabs = apply_filters( 'wpas_system_tabls', array(
     'status' => array(
 	'name' => 'System Status'
     ),
+    'logs'  => array(
+	'name' => 'Log Viewer'
+    ),
     'tools'  => array(
 	'name' => 'Cleanup'
     )
