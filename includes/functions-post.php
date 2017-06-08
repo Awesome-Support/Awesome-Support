@@ -1321,7 +1321,7 @@ function wpas_update_ticket_status( $post_id, $status ) {
  *
  * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
  */
-function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
+function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = false ) {
 
 	global $current_user;
 
@@ -1330,8 +1330,10 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
 		$user_id = $current_user->ID;
 	}
 
-	if ( ! current_user_can( 'close_ticket' ) ) {
-		wp_die( __( 'You do not have the capacity to close this ticket', 'awesome-support' ), __( 'Can’t close ticket', 'awesome-support' ), array( 'back_link' => true ) );
+	if ( ! $skip_user_validation ) {
+		if ( ! current_user_can( 'close_ticket' ) ) {
+			wp_die( __( 'You do not have the capacity to close this ticket', 'awesome-support' ), __( 'Can’t close ticket', 'awesome-support' ), array( 'back_link' => true ) );
+		}
 	}
 
 	$ticket_id = intval( $ticket_id );
