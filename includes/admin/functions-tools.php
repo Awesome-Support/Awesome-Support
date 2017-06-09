@@ -1,4 +1,5 @@
 <?php
+
 add_action( 'admin_init', 'wpas_system_tools', 10, 0 );
 function wpas_system_tools() {
 
@@ -31,6 +32,10 @@ function wpas_system_tools() {
 
 		case 'delete_products':
 			wpas_delete_synced_products();
+			break;
+
+		case 'delete_unused_terms':
+			wpas_delete_unused_terms();
 			break;
 
 		case 'ticket_attachments':
@@ -292,6 +297,51 @@ function wpas_delete_synced_products( $resync = false ) {
 
 	return true;
 
+}
+
+/**
+ * @return array
+ */
+function wpas_delete_unused_terms() {
+
+	$statistics = array(
+		'count'     => 0,
+		'deleted'   => 0,
+		'used'      => 0,
+	);
+
+	$taxonomy   = get_taxonomy('product');
+	$terms      = get_terms( 'product', array( 'hide_empty' => false ) );
+
+	$statistics['count'] = count($terms);
+
+	foreach( $terms as $term ) {
+
+		$items = new WP_Query( array(
+                            'post_type'   => 'ticket',
+                            'numberposts' => -1,
+                            'tax_query'   => array(
+                            	array(
+                            		'taxonomy'  => 'product',
+                                    'terms'     => array($term->term_id),
+                                    'field'     => 'term_id',
+	                                'operator'  => 'IN'
+	                            )
+                            )
+        ) );
+
+		if( 0 === count( $items->posts ) ) {
+			wp_delete_term($term->term_id, $taxonomy->name);
+			$statistics['deleted'] += 1;
+		}
+
+		wp_update_term_count_now( array($term->term_id), $taxonomy->name );
+
+	}
+
+	$statistics['used'] = count(get_terms( 'product', array( 'hide_empty' => false ) ));
+
+	return $statistics;
 }
 
 /**
