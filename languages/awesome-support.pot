@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 3.3.4\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2017-05-25 18:58-0500\n"
+"POT-Creation-Date: 2017-06-08 20:15-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -362,6 +362,24 @@ msgstr ""
 #: includes/admin/functions-list-table.php:149
 #: includes/admin/metaboxes/details.php:100
 msgid "Close"
+msgstr ""
+
+#: includes/admin/functions-log-viewer.php:32
+#: includes/admin/functions-log-viewer.php:55
+#: includes/admin/functions-log-viewer.php:80
+msgid "No file given"
+msgstr ""
+
+#: includes/admin/functions-log-viewer.php:164
+#: includes/admin/functions-log-viewer.php:201
+#, php-format
+msgid "Read %d lines from %s"
+msgstr ""
+
+#: includes/admin/functions-log-viewer.php:174
+#: includes/admin/functions-log-viewer.php:211
+#, php-format
+msgid "Couldn't open the file %s. Make sure the file exists and is readable."
 msgstr ""
 
 #: includes/admin/functions-menu.php:23
@@ -1429,12 +1447,33 @@ msgid ""
 "you will receive the free addon directly in your inbox."
 msgstr ""
 
-#: includes/admin/views/status.php:4
-msgid "System Status"
+#: includes/admin/views/system-logs.php:138
+msgid "Log Viewer"
 msgstr ""
 
-#: includes/admin/views/status.php:5
-msgid "Cleanup"
+#: includes/admin/views/system-logs.php:159
+msgid "Max # Lines"
+msgstr ""
+
+#: includes/admin/views/system-logs.php:170
+msgid "Clear Content"
+msgstr ""
+
+#: includes/admin/views/system-logs.php:209
+msgid "View"
+msgstr ""
+
+#: includes/admin/views/system-logs.php:214
+msgid "Download"
+msgstr ""
+
+#: includes/admin/views/system-logs.php:219 includes/class-product-sync.php:963
+#: includes/class-product-sync.php:980
+msgid "Delete"
+msgstr ""
+
+#: includes/admin/views/system-logs.php:230
+msgid "Nothing to display."
 msgstr ""
 
 #: includes/admin/views/system-status.php:1
@@ -1805,42 +1844,46 @@ msgstr ""
 msgid "The user exists but is not a support agent"
 msgstr ""
 
-#: includes/class-product-sync.php:857 includes/class-product-sync.php:879
+#: includes/class-product-sync.php:858 includes/class-product-sync.php:880
 #, php-format
 msgid ""
 "You cannot edit this term from here because it is linked to a post (of the "
 "%s post type). Please edit the post directly instead."
 msgstr ""
 
-#: includes/class-product-sync.php:882
+#: includes/class-product-sync.php:883
 msgid "Term Locked"
 msgstr ""
 
-#: includes/class-product-sync.php:942
+#: includes/class-product-sync.php:943
 msgid "Re-Synchronize Products"
 msgstr ""
 
-#: includes/class-product-sync.php:945
+#: includes/class-product-sync.php:946
 msgid "Resync"
 msgstr ""
 
-#: includes/class-product-sync.php:947
+#: includes/class-product-sync.php:948
 msgid ""
 "Re-synchronize all products from your e-commerce plugin. No existing "
 "products will be deleted from the Awesome Support Product List - just new "
 "ones added."
 msgstr ""
 
-#: includes/class-product-sync.php:959
+#: includes/class-product-sync.php:960
 msgid "Delete Products"
 msgstr ""
 
-#: includes/class-product-sync.php:962
-msgid "Delete"
+#: includes/class-product-sync.php:965
+msgid "Delete all products synchronized from your e-commerce plugin."
 msgstr ""
 
-#: includes/class-product-sync.php:964
-msgid "Delete all products synchronized from your e-commerce plugin."
+#: includes/class-product-sync.php:977
+msgid "Delete unused Product Terms"
+msgstr ""
+
+#: includes/class-product-sync.php:982
+msgid "Delete all Product Terms not used in any AS ticket."
 msgstr ""
 
 #: includes/class-remote-notification-client.php:500
@@ -2047,47 +2090,47 @@ msgstr ""
 msgid "You are not allowed to view this attachment"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:417
+#: includes/file-uploader/class-file-uploader.php:428
 msgid "Attachments"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:418
+#: includes/file-uploader/class-file-uploader.php:429
 #, php-format
 msgid ""
 " You can upload up to %d files (maximum %d MB each) of the following types: "
 "%s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:516
+#: includes/file-uploader/class-file-uploader.php:527
 msgid "Attachments:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:693
+#: includes/file-uploader/class-file-uploader.php:704
 #, php-format
 msgid "%s -> Max files (%d) exceeded."
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:744
+#: includes/file-uploader/class-file-uploader.php:755
 msgid "Attachment Errors:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:774
+#: includes/file-uploader/class-file-uploader.php:785
 #, php-format
 msgid ""
 "Your reply has been correctly submitted but the attachment was not uploaded. "
 "%s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:843
+#: includes/file-uploader/class-file-uploader.php:854
 #, php-format
 msgid "You are not allowed to upload files of this type (%s)"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:847
+#: includes/file-uploader/class-file-uploader.php:858
 msgid "You cannot upload empty attachments. You attachments weights 0 bytes"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:851
+#: includes/file-uploader/class-file-uploader.php:862
 #, php-format
 msgid "Your attachment is too big. You are allowed to attach files up to %s"
 msgstr ""
@@ -2536,39 +2579,39 @@ msgid ""
 "ticket"
 msgstr ""
 
-#: includes/functions-post.php:1334
+#: includes/functions-post.php:1335
 msgid "You do not have the capacity to close this ticket"
 msgstr ""
 
-#: includes/functions-post.php:1334
+#: includes/functions-post.php:1335
 msgid "Can’t close ticket"
 msgstr ""
 
-#: includes/functions-post.php:1353
+#: includes/functions-post.php:1355
 msgid "The ticket was closed."
 msgstr ""
 
-#: includes/functions-post.php:1420
+#: includes/functions-post.php:1422
 msgid "The ticket was re-opened."
 msgstr ""
 
-#: includes/functions-post.php:1452
+#: includes/functions-post.php:1454
 msgid "You are not allowed to re-open this ticket"
 msgstr ""
 
-#: includes/functions-post.php:1460
+#: includes/functions-post.php:1462
 msgid "The ticket has been successfully re-opened."
 msgstr ""
 
-#: includes/functions-post.php:1583
+#: includes/functions-post.php:1585
 msgid "No ticket ID given"
 msgstr ""
 
-#: includes/functions-post.php:1593
+#: includes/functions-post.php:1595
 msgid "Invalid ticket ID"
 msgstr ""
 
-#: includes/functions-post.php:1599
+#: includes/functions-post.php:1601
 msgid "Given ID is not a ticket"
 msgstr ""
 
@@ -2652,11 +2695,11 @@ msgstr ""
 msgid "The %s field is mandatory for registering an account"
 msgstr ""
 
-#: includes/functions-user.php:349
+#: includes/functions-user.php:354
 msgid "We were unable to log you in for an unknown reason."
 msgstr ""
 
-#: includes/functions-user.php:954
+#: includes/functions-user.php:959
 #, php-format
 msgid "Did you mean %s"
 msgstr ""
@@ -2833,7 +2876,7 @@ msgstr ""
 msgid "Open a ticket"
 msgstr ""
 
-#: themes/default/partials/ticket-navigation.php:4
+#: themes/default/partials/ticket-navigation.php:5
 msgid "Logout"
 msgstr ""
 
