@@ -46,7 +46,9 @@ if ( isset( $post ) && is_a( $post, 'WP_Post' ) && 'auto-draft' !== $post->post_
 
 // Set post-independent vars
 $staff         = get_user_by( 'ID', $staff_id );
-$staff_name    = $staff->data->display_name;
+if (! empty( $staff ) ) {
+	$staff_name    = $staff->data->display_name;
+}
 ?>
 <div id="wpas-stakeholders">
 	<label for="wpas-issuer"><strong data-hint="<?php esc_html_e( 'This user who raised this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
@@ -75,8 +77,14 @@ $staff_name    = $staff->data->display_name;
 			'select2'   => true,
 			'data_attr' => array( 'capability' => 'edit_ticket' )
 		);
-
-		echo wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );
+		
+		if (! empty( $staff ) ) {
+			// We have a valid staff id
+			echo wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );		
+		} else {
+			// Oops - no valid staff id...
+			echo wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );					
+		}
 		?>
 	</p>
 </div>
