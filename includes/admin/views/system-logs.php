@@ -292,12 +292,23 @@ function wpas_tools_log_viewer_ajax_script() {
 
             function disableInputs(disable, filename, statusmessage) {
 
+                var download_color, delete_color, clear_color, wrap_on_color, wrap_off_color;
+
                 if (!disable) {
                     $('body').css('cursor', 'wait');
                     statusMessage(statusmessage);
                     $('i.fa').removeClass('disabled');
+
+                    download_color = "green";
+                    delete_color = "red";
+                    clear_color = "black";
+                    wrap_off_color = "black";
+                    wrap_on_color = "black";
                 }
                 else {
+
+                    download_color = delete_color = clear_color = wrap_off_color = wrap_on_color = "lightgray";
+
                     statusMessage(statusmessage);
                     $('body').css('cursor', 'auto');
                     $('i.fa').addClass('disabled');
@@ -316,15 +327,21 @@ function wpas_tools_log_viewer_ajax_script() {
                     $('button#download').data('filename', '');
                 }
 
-                $('i.fa').addClass('disabled');
+
+                $('button#clear_content i.fa').css('color', clear_color);
+                $('button#download i.fa').css('color', download_color);
+                $('button#delete i.fa').css('color', delete_color);
+
+                $('button#wrap-off i.fa').css('color', wrap_off_color);
+                $('button#wrap-on i.fa').css('color', wrap_off_color);
+
+                $('button#clear_content').attr('disabled', disable);
                 $('button#download').attr('disabled', disable);
                 $('button#delete').attr('disabled', disable);
 
                 $('button#wrap-off').attr('disabled', disable);
                 $('button#wrap-on').attr('disabled', disable);
-
                 $('select#lines').attr('disabled', disable);
-                $('button#clear_content').attr('disabled', disable);
                 $('textarea#content').attr('disabled', disable);
 
                 var parent = $('div.log-viewer-controls.' + safeClassName);
@@ -356,7 +373,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                         class="button-secondary wpas-tools-log-clear"
                         disabled="disabled"><i
                             class="fa fa-eraser fa-fw"
-                            style="color:darkgreen;"></i><?php _e( 'Clear', 'awesome-support' ); ?></button>
+                            style="color:lightgray;"></i><?php _e( 'Clear', 'awesome-support' ); ?></button>
 
                 <button id="download"
                         class="button-secondary wpas-tools-log-download"
@@ -364,7 +381,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                         data-filename=""
                         disabled="disabled"><i
                             class="fa fa-arrow-circle-down fa-fw"
-                            style="color:green;"></i><?php _e( 'Download', 'awesome-support' ); ?></button>
+                            style="color:lightgray;"></i><?php _e( 'Download', 'awesome-support' ); ?></button>
 
                 <button id="delete"
                         class="button-secondary wpas-tools-log-delete"
@@ -372,7 +389,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                         data-filename=""
                         disabled="disabled"><i
                             class="fa fa-minus-circle fa-fw"
-                            style="color: red;"></i><?php _e( 'Delete', 'awesome-support' ); ?></button>
+                            style="color: lightgray;"></i><?php _e( 'Delete', 'awesome-support' ); ?></button>
 
             </div>
 
@@ -397,14 +414,14 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                         onclick="setWrap('soft');"
                         disabled="disabled"><i
                             class="fa fa-align-left fa-fw"
-                            style="color: darkgray;"></i></button>
+                            style="color: lightgray;"></i></button>
                 <button id="wrap-off"
                         data-wrap="off"
                         class="button-secondary"
                         onclick="setWrap('off');"
                         disabled="disabled"><i
                             class="fa fa-align-justify fa-fw"
-                            style="color: darkgray;"></i></button>
+                            style="color: lightgray;"></i></button>
             </div>
 
         </th>
