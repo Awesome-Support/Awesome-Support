@@ -96,6 +96,13 @@ function wpas_tools_log_viewer_ajax_script() {
             background-color: #fff;
         }
 
+        div:focus, span:focus, textarea:focus, a:focus, a:active {
+            border-color: #5b9dd9;
+            -webkit-box-shadow: 0 0 0 rgba(30,140,190,.8);
+            box-shadow: 0 0 0 rgba(30,140,190,.8);
+            outline: none;
+        }
+
         *.fa {
             font-size: 16px;
             line-height: 26px;
@@ -248,7 +255,6 @@ function wpas_tools_log_viewer_ajax_script() {
              * Clear display.
              */
             $('button#clear_content').click(function () {
-                accordion_collapse_all();
                 disableInputs(true, '', 'Ready.');
             });
 
@@ -305,6 +311,7 @@ function wpas_tools_log_viewer_ajax_script() {
                     safeClassName = safeClassName.toLowerCase();
                 }
                 else {
+                    accordion_collapse_all();
                     $('button#delete').data('filename', '');
                     $('button#download').data('filename', '');
                 }
