@@ -427,7 +427,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                                                         data-action="wpas_tools_log_viewer_view"
                                                         class="wpas-tools-log-view <?php echo $classfromfilename; ?>"><i
                                         class="fa fa-chevron-right fa-fw"
-                                        style="color: dimgray;"></i><?php echo $file; ?></a>
+                                        style="color: dimgray; font-size: 12px;"></i><?php echo $file; ?></a>
                         </h3>
 
                         <div class="log-viewer-controls <?php echo $classfromfilename; ?>" style="100%">
