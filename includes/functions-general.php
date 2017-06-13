@@ -195,7 +195,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		if ( empty( $post ) ) {
 			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
+			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
 			$post     = get_post( $post_id );
 		}
 
@@ -1191,3 +1191,17 @@ function wpas_is_support_priority_active() {
 	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
  }
  
+
+/**
+ * Create a random MD5 based hash.
+ *
+ * @return string
+ */ 
+ function wpas_random_hash() {
+	
+	$time  = time();
+	$the_hash = md5( $time . (string) random_int(0, getrandmax()) );
+	
+	return $the_hash;
+	
+}
