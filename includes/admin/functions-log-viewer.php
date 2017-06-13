@@ -7,6 +7,15 @@
  */
 
 /*
+log viewer - just a couple of minor changes:
+1. Don't show the logs folder or show it at the bottom of the screen.
+2. Make the main background color gray and the viewer itself black text on white background.
+3. Remove the horizontal lines across the top - looks too busy with them there. This is a simple interface so lets make it less busy by doing that.
+4. If possible, add an option to turn off wordwrap.
+
+*/
+
+/*
  * Actions
  * --------------------------------
  * wpas_tools_log_viewer_view
@@ -160,8 +169,12 @@ function wpas_log_viewer_read_last_lines( $file, $lines ) {
 		return array(
 			'status' => array(
 				'code'    => '200',
-				//'message' => '',
 				'message' => sprintf(__( "Read %d lines from %s", 'awesome-support' ), count($result), esc_html( $file )),
+			),
+			'fileinfo' => array(
+				'created' => date ("F d Y H:i:s", filectime($file_path)),
+				'lastmodified' => date ("F d Y H:i:s", filemtime($file_path)),
+			    'filesize' => formatbytes(filesize($file_path)),
 			),
 			'data'   => $result,
 		);
@@ -200,6 +213,11 @@ function wpas_log_viewer_read_full_file( $file ) {
 				//'message' => '',
 				'message' => sprintf(__( "Read %d lines from %s", 'awesome-support' ), count($result), esc_html( $file )),
 			),
+			'fileinfo' => array(
+				'created' => date ("F d Y H:i:s", filectime($file_path)),
+				'lastmodified' => date ("F d Y H:i:s", filemtime($file_path)),
+			    'filesize' => formatbytes(filesize($file_path)),
+			),
 			'data'   => $result,
 		);
 	}
@@ -215,3 +233,32 @@ function wpas_log_viewer_read_full_file( $file ) {
 	}
 }
 
+function formatbytes($val, $digits = 3, $mode = "SI", $bB = "B")
+{
+  $si = array("", "k", "M", "G", "T", "P", "E", "Z", "Y");
+  $iec = array("", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi");
+
+  switch(strtoupper($mode))
+  {
+      case "SI" : $factor = 1000; $symbols = $si; break;
+      case "IEC" : $factor = 1024; $symbols = $iec; break;
+      default : $factor = 1000; $symbols = $si; break;
+  }
+
+  switch($bB)
+  {
+      case "b" : $val *= 8; break;
+      default : $bB = "B"; break;
+  }
+
+  for($i=0;$i<count($symbols)-1 && $val>=$factor;$i++)
+      $val /= $factor;
+
+  $p = strpos($val, ".");
+  if($p !== false && $p > $digits)
+    $val = round($val);
+  elseif($p !== false)
+    $val = round($val, $digits-$p);
+
+  return round($val, $digits) . " " . $symbols[$i] . $bB;
+}

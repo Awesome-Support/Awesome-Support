@@ -41,6 +41,31 @@ function dirToArray() {
 	return $result;
 }
 
+
+function enqueue_scripts() {
+	if( is_admin() ) {
+
+		//	    wp_register_style('jquery-ui-style', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css', false, null);
+		//        wp_enqueue_style('jquery-ui-style');
+
+		wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script(
+			'jquery-ui-core',
+			get_stylesheet_directory_uri() . '/js/jquery/ui/jquery.ui.core.min.js',
+			array( 'jquery' )
+		);
+		wp_enqueue_script( 'jquery-ui-accordion' );
+		wp_enqueue_script(
+			'custom-accordion',
+			get_stylesheet_directory_uri() . '/js/accordion.js',
+			array( 'jquery' )
+		);
+	}
+}
+
+add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
+
+
 /*
  * The JavaScript for our AJAX call
  */
@@ -61,33 +86,105 @@ function wpas_tools_log_viewer_ajax_script() {
             display: none;
         }
 
+        .log-viewer-controls table tr th,
+        .log-viewer-controls table tr td {
+            padding: 0px 10px;
+        }
+
+        textarea[disabled] {
+            color: #000;
+            background-color: #fff;
+        }
+
+        div:focus, span:focus, textarea:focus, a:focus, a:active {
+            border-color: #5b9dd9;
+            -webkit-box-shadow: 0 0 0 rgba(30,140,190,.8);
+            box-shadow: 0 0 0 rgba(30,140,190,.8);
+            outline: none;
+        }
+
+        *.fa {
+            font-size: 16px;
+            line-height: 26px;
+            margin-right: 5px;
+        }
+
+        *.fa .disabled {
+            color: lightgray;
+        }
+
     </style>
 
     <script type="text/javascript">
+
+        function makeSafeForCSS(name) {
+            return name.replace(/[^a-z0-9]/g, function (s) {
+                var c = s.charCodeAt(0);
+                if (c == 32) return '-';
+                if (c >= 65 && c <= 90) return '_' + s.toLowerCase();
+                return '__' + ('000' + c.toString(16)).slice(-4);
+            });
+        }
+
+        function setWrap(wrap) {
+
+            var area = jQuery('textarea#content');
+            //var wrap = jQuery('input#wrap').is(':checked') === true ? 'soft' : 'off';
+
+            if (area.wrap) {
+                area.attr('wrap', wrap);
+                area.wrap = wrap;
+            } else { // wrap attribute not supported - try Mozilla workaround
+                area.setAttribute("wrap", wrap);
+                area.style.overflow = "hidden";
+                area.style.overflow = "auto";
+            }
+        }
+
+        wpas_log_viewer_current_file = '';
+        safeClassName = '';
+
         jQuery(document).ready(function ($) {
-            $('a.wpas-tools-log-delete, a.wpas-tools-log-view, a.wpas-tools-log-download').click(function () {
+            $('button.wpas-tools-log-delete, a.wpas-tools-log-view, button.wpas-tools-log-download').click(function () {
 
                 $action = $(this).data("action");
-                $file = $(this).data("filename");
                 $lines = $('#lines').val();
 
+                if ($action === 'wpas_tools_log_viewer_view') {
+                    wpas_log_viewer_current_file = $(this).data("filename");
+                    $('button#delete').data('filename', wpas_log_viewer_current_file);
+                    $('button#download').data('filename', wpas_log_viewer_current_file);
+                }
+
+                disableInputs(false, wpas_log_viewer_current_file, 'Working ...');
+
+                // Confirm Delete
                 if ($action === 'wpas_tools_log_viewer_delete'
-                    && !confirm("Deleting server log file '" + $file + "' is permanent.\r\nAre you sure?")
+                    && !confirm("Deleting server log file '" + wpas_log_viewer_current_file + "' is permanent.\r\nAre you sure?")
                 ) {
                     return false;
                 }
+                // View
+                else if ($action === 'wpas_tools_log_viewer_view'
+                ) {
+                }
+                // Download
+                else if ($action === 'wpas_tools_log_viewer_download'
+                ) {
+                }
+
 
                 $.ajax({
                     type: "POST",
                     url: ajaxurl,
                     data: {
                         action: $action,
-                        file: $file,
-                        lines: $lines,
+                        file: wpas_log_viewer_current_file,
+                        lines: $lines
                     },
                     success: function (data) {
 
-                        $('#log-viewer-status').html(data.data.status['message']);
+                        // Download
                         if ($action === 'wpas_tools_log_viewer_download') {
 
                             var url = data.data.url;
@@ -99,142 +196,298 @@ function wpas_tools_log_viewer_ajax_script() {
                                 false, false, false, false, 0, null);
                             a.dispatchEvent(ev);
                         }
-                        else {
+
+                        if ($action === 'wpas_tools_log_viewer_delete') {
+
+                            // Alert user of successful deletion.
+                            disableInputs(true, '', wpas_log_viewer_current_file + ' successfully deleted.');
+
+                            /*
+                             Delete the log viewer controls associated with this file.
+                             */
+                            var parent = $('div.log-viewer-controls.' + safeClassName);
+                            var head = parent.prev('h3');
+                            parent.add(head).fadeOut('slow', function () {
+                                $(parent).remove();
+                            });
+
+                        }
+
+                        else if ($action === 'wpas_tools_log_viewer_download') {
+
+                        }
+
+                        // View
+                        else if ($action === 'wpas_tools_log_viewer_view') {
+
+                            disableInputs(false, wpas_log_viewer_current_file, data.data.status['message']);
+
+                            $('.' + safeClassName + ' .lastmodified').html(data.data.fileinfo.lastmodified);
+                            $('.' + safeClassName + ' .created').html(data.data.fileinfo.created);
+                            $('.' + safeClassName + ' .filesize').html(data.data.fileinfo.filesize);
 
                             $('textarea#content').val(data.data.data);
+
                             console.log(data);
                         }
                     }
                 })
                 .done(function (data) {
-                    $("#overlay").fadeOut();
+                    $('body').css('cursor', 'auto');
+                    //disableInputs(false);
+                    //$("#overlay").fadeOut();
                 })
                 .fail(function (data) {
+                    alert('Failed.');
                     console.log('Failed AJAX Call :( /// Return Data: ' + data);
                 });
             });
 
+
+            /*
+             * Number of lines to display. Triggers View action.
+             */
             $('select#lines').change(function () {
-                $('button.wpas-tools-log-delete').trigger('click');
+                $('a.wpas-tools-log-view.' + safeClassName).trigger('click');
             });
 
-            var $control_boxes = $('.log-viewer-controls'),
-                $controlLinks = $('li.log-viewer-item').mouseover(function () {
-                    $control_boxes.hide();  //.filter(this).show();
-                    $('div.log-viewer-controls', this).show();  //fadeIn(500);
+            /*
+             * Clear display.
+             */
+            $('button#clear_content').click(function () {
+                disableInputs(true, '', 'Ready.');
+            });
+
+            /*
+             * Initialize log files accordion
+             */
+            $("#accordion").accordion({
+                active: false,
+                collapsible: true
+            }).show();
+
+
+            function accordion_expand_all() {
+                var sections = $('#accordion').find("h3");
+                sections.each(function (index, section) {
+                    if ($(section).hasClass('ui-state-default') && !$(section).hasClass('accordion-header-active')) {
+                        $(section).click();
+                    }
                 });
 
-            $('button#clear_content').click(function () {
-                $('textarea#content').val("Nothing to display.");
-            });
+            }
+
+            function accordion_collapse_all() {
+                var sections = $('#accordion').find("h3");
+                sections.each(function (index, section) {
+                    if ($(section).hasClass('ui-state-active')) {
+                        $(section).click();
+                    }
+                });
+            }
+
+            function statusMessage(message) {
+                $('#log-viewer-status').html(message);
+            }
+
+            function disableInputs(disable, filename, statusmessage) {
+
+                var download_color, delete_color, clear_color, wrap_on_color, wrap_off_color;
+
+                if (!disable) {
+                    $('body').css('cursor', 'wait');
+                    statusMessage(statusmessage);
+                    $('i.fa').removeClass('disabled');
+
+                    download_color = "green";
+                    delete_color = "red";
+                    clear_color = "black";
+                    wrap_off_color = "black";
+                    wrap_on_color = "black";
+                }
+                else {
+
+                    download_color = delete_color = clear_color = wrap_off_color = wrap_on_color = "lightgray";
+
+                    statusMessage(statusmessage);
+                    $('body').css('cursor', 'auto');
+                    $('i.fa').addClass('disabled');
+                    $('textarea#content').val('');
+                }
+
+                if (filename !== '') {
+                    safeClassName = wpas_log_viewer_current_file.replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
+                    safeClassName = safeClassName.replace(/ /g, '');
+                    safeClassName = safeClassName.replace(/-{2,}/g, '-');
+                    safeClassName = safeClassName.toLowerCase();
+                }
+                else {
+                    accordion_collapse_all();
+                    $('button#delete').data('filename', '');
+                    $('button#download').data('filename', '');
+                }
+
+
+                $('button#clear_content i.fa').css('color', clear_color);
+                $('button#download i.fa').css('color', download_color);
+                $('button#delete i.fa').css('color', delete_color);
+
+                $('button#wrap-off i.fa').css('color', wrap_off_color);
+                $('button#wrap-on i.fa').css('color', wrap_off_color);
+
+                $('button#clear_content').attr('disabled', disable);
+                $('button#download').attr('disabled', disable);
+                $('button#delete').attr('disabled', disable);
+
+                $('button#wrap-off').attr('disabled', disable);
+                $('button#wrap-on').attr('disabled', disable);
+                $('select#lines').attr('disabled', disable);
+                $('textarea#content').attr('disabled', disable);
+
+                var parent = $('div.log-viewer-controls.' + safeClassName);
+                var head = parent.prev('h3');
+                parent.find('a').attr('disabled', disable);
+            }
 
         });
     </script>
 	<?php
 }
+
 add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
 ?>
 
-<p><strong><?php _e( 'Log Viewer', 'awesome-support' ); ?></strong></p>
-
-<table class="widefat wpas-tools-log-viewer">
+<table class="widefat wpas-tools-log-viewer" style="background-color:#f1f1f1;">
 
     <thead>
-
     <tr>
-        <th data-override="key" class="row-title">Logs Directory</th>
-        <th data-override="value"><?php echo get_logs_path(); ?></th>
-    </tr>
-
-    <tr>
-        <th data-override="key" class="row-title"></th>
-        <th data-override="value"></th>
-    </tr>
-
-    <tr>
-        <th data-override="key" class="row-title"></th>
+        <th data-override="key" class="row-title" width="289">
+            <strong><?php _e( 'Server Logs', 'awesome-support' ); ?></strong></th>
         <th data-override="value">
 
             <div style="float: left;">
-                <label for="lines"><?php _e( 'Max # Lines', 'awesome-support' ); ?></label>
+
+                <button id="clear_content"
+                        data-action=""
+                        data-filename=""
+                        class="button-secondary wpas-tools-log-clear"
+                        disabled="disabled"><i
+                            class="fa fa-eraser fa-fw"
+                            style="color:lightgray;"></i><?php _e( 'Clear', 'awesome-support' ); ?></button>
+
+                <button id="download"
+                        class="button-secondary wpas-tools-log-download"
+                        data-action="wpas_tools_log_viewer_download"
+                        data-filename=""
+                        disabled="disabled"><i
+                            class="fa fa-arrow-circle-down fa-fw"
+                            style="color:lightgray;"></i><?php _e( 'Download', 'awesome-support' ); ?></button>
+
+                <button id="delete"
+                        class="button-secondary wpas-tools-log-delete"
+                        data-action="wpas_tools_log_viewer_delete"
+                        data-filename=""
+                        disabled="disabled"><i
+                            class="fa fa-minus-circle fa-fw"
+                            style="color: lightgray;"></i><?php _e( 'Delete', 'awesome-support' ); ?></button>
+
+            </div>
+
+            <div id="log-viewer-status"
+                 style="float: left;height: 27px; min-width: 320px; line-height: 26px;border: 1px solid lightgray;margin-left: 20px;padding: 0 10px;">
+                Ready.
+            </div>
+
+            <div style="float: right;">
+
+                <label for="lines"><?php _e( 'Max Lines', 'awesome-support' ); ?></label>
                 <select id="lines">
                     <option value="50">50</option>
                     <option value="500">500</option>
                     <option value="5000">5000</option>
                     <option value="All">All</option>
                 </select>
-            </div>
 
-            <div style="float: right;">
-                <button id="clear_content"
-                        class="button-secondary wpas-tools-log-clear"><?php _e( 'Clear Content', 'awesome-support' ); ?></button>
+                <button id="wrap-on"
+                        data-wrap="soft"
+                        class="button-secondary"
+                        onclick="setWrap('soft');"
+                        disabled="disabled"><i
+                            class="fa fa-align-left fa-fw"
+                            style="color: lightgray;"></i></button>
+                <button id="wrap-off"
+                        data-wrap="off"
+                        class="button-secondary"
+                        onclick="setWrap('off');"
+                        disabled="disabled"><i
+                            class="fa fa-align-justify fa-fw"
+                            style="color: lightgray;"></i></button>
             </div>
 
         </th>
     </tr>
-
     </thead>
 
     <tbody>
 
     <tr>
-        <td class="row-title" style="min-width: 200px;"><?php
+        <td class="row-title" style="">
 
-			$ar = dirToArray();
-			echo '<br><ul style="100%;">';
+            <div style="max-height: 500px; overflow-y: scroll;">
+                <div id="accordion" style="width: 100%; display: none;">
 
-			foreach( $ar as $file ) {
+					<?php
 
-				$args[ 'tab' ]                                = 'logs';
-				$args[ 'page' ]                               = 'wpas-status';
-				$args[ 'post_type' ]                          = 'ticket';
-				$args[ 'wpas_tools_log_viewer_action' ]       = 'view';
-				$args[ 'wpas_tools_log_viewer_current_file' ] = $file;
-				$args[ '_nonce' ]                             = wp_create_nonce( 'tool_log_viewer' );
-				$url                                          = esc_url( add_query_arg( $args, admin_url( 'edit.php' ) ) );
+					$ar = dirToArray();
 
-				?>
-                <li class="log-viewer-item" style="100%; height: auto; line-height: 32px; background-color: #dfdfdf;">
-                    <div class="log-viewer-filename" style="clear:both; overflow: hidden; display: block;">
-                        <a href="<?php echo $url; ?>"
-                           data-filename="<?php echo $file; ?>"
-                           data-action="wpas_tools_log_viewer_view"
-                           class=" "><?php echo $file; ?></a>
-                    </div>
+					foreach( $ar as $file ) {
 
-                    <div class="log-viewer-controls" style="display: none;">
-                        <a href="#"
-                           data-filename="<?php echo $file; ?>"
-                           data-action="wpas_tools_log_viewer_view"
-                           class="wpas-tools-log-view"><?php _e( 'View', 'awesome-support' ); ?></a>
+						$classfromfilename = sanitize_title( $file );
+						?>
 
-                        | <a href="#"
-                             data-filename="<?php echo $file; ?>"
-                             data-action="wpas_tools_log_viewer_download"
-                             class="wpas-tools-log-download"><?php _e( 'Download', 'awesome-support' ); ?></a>
+                        <h3 class="log-viewer-filename <?php echo $classfromfilename; ?>"
+                            style="font-size: 14px;"><a href="#"
+                                                        data-filename="<?php echo $file; ?>"
+                                                        data-action="wpas_tools_log_viewer_view"
+                                                        class="wpas-tools-log-view <?php echo $classfromfilename; ?>"><i
+                                        class="fa fa-chevron-right fa-fw"
+                                        style="color: dimgray; font-size: 12px;"></i><?php echo $file; ?></a>
+                        </h3>
 
-                        | <a href="#"
-                             data-filename="<?php echo $file; ?>"
-                             data-action="wpas_tools_log_viewer_delete"
-                             class="wpas-tools-log-delete"><?php _e( 'Delete', 'awesome-support' ); ?></a>
-                    </div>
+                        <div class="log-viewer-controls <?php echo $classfromfilename; ?>" style="100%">
 
-                </li>
-				<?php
-			}
-			echo '</ul>';
+                            <table width="100%">
+                                <tr>
+                                    <th>File Size:</th>
+                                    <td><span class="filesize"></span></td>
+                                </tr>
+                                <tr>
+                                    <th>Last Modified:</th>
+                                    <td><span class="lastmodified"></span></td>
+                                </tr>
+                                <tr>
+                                    <th>Created:</th>
+                                    <td><span class="created"></span></td>
+                                </tr>
+                            </table>
 
-			?></td>
-        <td>
-            <textarea id="content" cols="150" rows="25" style="width: 100%;"
-                      readonly><?php _e( 'Nothing to display.', 'awesome-support' ); ?></textarea>
+                            <br/>
+
+                        </div>
+
+						<?php
+					}
+					?>
+                </div>
+            </div>
+
         </td>
-    </tr>
-
-    <tr>
-        <td></td>
         <td>
-            <div id="log-viewer-status"></div>
+
+            <textarea id="content" cols="150" rows="25" style="width: 100%;"
+                      wrap="soft"
+                      readonly disabled="disabled"></textarea>
+            <br/>
         </td>
     </tr>
 
