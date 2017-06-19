@@ -274,7 +274,7 @@ function wpas_delete_synced_products( $resync = false ) {
 			$unsync_term = false;
 			
 			foreach ( $posts->posts as $post ) {
-				if($product_term->slug == $post->post_name){
+				if($product_term->name == $post->ID){
 					$unsync_term = true;
 				}
 			}
