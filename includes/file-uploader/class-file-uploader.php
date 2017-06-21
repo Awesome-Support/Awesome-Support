@@ -820,7 +820,7 @@ class WPAS_File_Upload {
 		 * on the submission page or on a ticket details page.
 		 */
 		if ( ! is_admin() ) {
-			if ( 'ticket' !== $post->post_type && $submission !== $post->ID ) {
+			if ( ! empty( $post) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
 				return $file;
 			}
 		}
