@@ -245,6 +245,28 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 
 }
 
+/**
+ * Returns the close date of the ticket based on the ticket/post id passed
+ *
+ *
+ * @since  4.0.4
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  Close date of ticket, an empty string otherwise
+ */
+function wpas_get_close_date( $post_id ) {
+	
+	$close_date = get_post_meta( $post_id, '_ticket_closed_on', true) ;
+	
+	if ( ! empty( $close_date ) ) {
+		return $close_date ;
+	} else {
+		return '' ;
+	}
+	
+}
+
 add_filter( 'admin_footer_text', 'wpas_admin_footer_text', 999, 1 );
 /**
  * Add a custom admin footer text
