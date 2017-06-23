@@ -375,12 +375,23 @@ class WPAS_File_Upload {
 	 */
 	protected function protect_upload_dir( $dir ) {
 
-		$filename = $dir . '/.htaccess';
+		if ( is_writable( $dir ) ) {
+			$filename = $dir . '/.htaccess';
 
-		if ( ! file_exists( $filename ) ) {
-			$file = fopen( $filename, 'a+' );
-			fwrite( $file, 'Options -Indexes' );
-			fclose( $file );
+			if ( ! file_exists( $filename ) ) {
+				$file = fopen( $filename, 'a+' );
+				if ( false <> $file ) {
+					fwrite( $file, 'Options -Indexes' );
+					fclose( $file );
+				} else {
+					// attempt to record failure...
+					wpas_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
+				}
+			}
+		} else {
+			// folder isn't writable so no point in attempting to do it...
+			// log the error in our log files instead...
+			wpas_write_log('file-uploader','The folder ' . $dir . ' is not writable.  So we are unable to write a .htaccess file to this folder' ) ;			
 		}
 
 	}
@@ -797,7 +808,7 @@ class WPAS_File_Upload {
 
 		if ( empty( $post ) ) {
 			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
+			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
 			$post     = get_post( $post_id );
 		}
 
@@ -809,7 +820,7 @@ class WPAS_File_Upload {
 		 * on the submission page or on a ticket details page.
 		 */
 		if ( ! is_admin() ) {
-			if ( 'ticket' !== $post->post_type && $submission !== $post->ID ) {
+			if ( ! empty( $post) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
 				return $file;
 			}
 		}

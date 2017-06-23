@@ -101,18 +101,19 @@ class WPAS_Product_Sync {
 				$this->run_initial_sync();
 			}
 
-			add_filter( 'get_terms',                        array( $this, 'get_terms' ),          1, 3 );
-			add_filter( 'get_term',                         array( $this, 'get_term' ),           1, 2 );
-			add_filter( 'get_the_terms',                    array( $this, 'get_the_terms' ),      1, 3 );
-			add_action( 'init',                             array( $this, 'lock_taxonomy' ),     12, 0 );
-			add_action( 'admin_notices',                    array( $this, 'notice_locked_tax' ), 10, 0 );
+			add_filter( 'get_terms',                        array( $this, 'get_terms' ),                       1, 3 );
+			add_filter( 'get_term',                         array( $this, 'get_term' ),                        1, 2 );
+			add_filter( 'get_the_terms',                    array( $this, 'get_the_terms' ),                   1, 3 );
+			add_action( 'init',                             array( $this, 'lock_taxonomy' ),                  12, 0 );
+			add_action( 'admin_notices',                    array( $this, 'notice_locked_tax' ),              10, 0 );
 
-			add_action( 'wp_insert_post',                   array( $this, 'sync_term' ),         10, 3 );
-			add_action( 'trashed_post',                     array( $this, 'unsync_term' ),       10, 1 );
-			add_action( 'delete_post',                      array( $this, 'unsync_term' ),       10, 1 );
+			add_action( 'wp_insert_post',                   array( $this, 'sync_term' ),                      10, 3 );
+			add_action( 'trashed_post',                     array( $this, 'unsync_term' ),                    10, 1 );
+			add_action( 'delete_post',                      array( $this, 'unsync_term' ),                    10, 1 );
 
-			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_resync_tool' ),   10, 0 );
-			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_delete_tool' ),   10, 0 );
+			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_resync_tool' ),                11, 0 );
+			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_delete_tool' ),                12, 0 );
+			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_delete_unused_terms_tool' ),   13, 0 );
 
 		}
 
@@ -944,7 +945,7 @@ class WPAS_Product_Sync {
 				<a href="<?php echo wpas_tool_link( 'resync_products', array( 'pt' => $this->post_type ) ); ?>"
 				   class="button-secondary"><?php _e( 'Resync', 'awesome-support' ); ?></a>
 				<span
-					class="wpas-system-tools-desc"><?php _e( 'Re-synchronize all products from your e-commerce plugin. Note that this will delete all products and re-add them to our products list.  This means that you will lose any existing product references on your current tickets!!!', 'awesome-support' ); ?></span>
+					class="wpas-system-tools-desc"><?php _e( 'Re-synchronize all products from your e-commerce plugin. Any product not attached to an existing ticket and not matched to a product in your e-commerce system will be deleted.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
 	<?php }
@@ -962,6 +963,23 @@ class WPAS_Product_Sync {
 				   class="button-secondary"><?php _e( 'Delete', 'awesome-support' ); ?></a>
 				<span
 					class="wpas-system-tools-desc"><?php _e( 'Delete all products synchronized from your e-commerce plugin.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+	<?php }
+
+	/**
+	 * Adds a button to delete unused Product Terms system tools.
+	 *
+	 * @since 3.1.7
+	 */
+	public function add_delete_unused_terms_tool() { ?>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Delete unused Product Terms', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'delete_unused_terms', array( 'pt' => $this->post_type ) ); ?>"
+				   class="button-secondary"><?php _e( 'Delete', 'awesome-support' ); ?></a>
+				<span
+					class="wpas-system-tools-desc"><?php _e( 'Delete all Product Terms not used in any AS ticket.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
 	<?php }
