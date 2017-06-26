@@ -410,6 +410,8 @@ class WPAS_Custom_Fields {
 	/**
 	 * Save all custom fields given in $data to the database.
 	 *
+	 * @todo if you update this functionality, be sure to do the same in the Rest-API plugin in /includes/API/Tickets.php on line 648
+	 *
 	 * @since 3.2.0
 	 *
 	 * @param int   $post_id   ID of the post being saved
