@@ -193,6 +193,11 @@ function wpas_new_ticket_submission( $data ) {
 			 * Redirect to the newly created ticket
 			 */
 			wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
+
+			/**
+ 			 * Hook for after ticket submission
+ 			 */
+ 			do_action( 'wpas_after_ticket_submission' );
 			exit;
 
 		}
