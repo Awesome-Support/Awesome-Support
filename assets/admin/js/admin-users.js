@@ -8,13 +8,17 @@ jQuery(document).ready(function ($) {
 	 */
 	var selector = $('.wpas-select2');
 	var condition = selector.length && $.fn.select2 && typeof ajaxurl !== 'undefined';
-	if (condition) getUserList();
+	if (condition) getUserList( selector );
 
 	/**
 	 * Get User List via AJAX
 	 * https://select2.github.io/examples.html#data-ajax
 	 */
-	function getUserList() {
+        
+        
+        
+        
+	function getUserList( selector ) {
 		selector.each(function (index, el) {
 			var capability = $(el).attr('data-capability');
 			if (capability) {
@@ -47,5 +51,7 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	}
+        
+        window.getUserListSelect2 = getUserList;
 
 });
