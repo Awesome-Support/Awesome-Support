@@ -674,7 +674,7 @@ class WPAS_Email_Notification {
 				$recipients = wpas_get_ticket_agents( $this->ticket_id );
 			}
 		}
-		
+				
 		foreach( $recipients as $recipient ) {
 			
 			$recipient_emails[] = array( 'user_id' => $recipient->ID, 'email' => $recipient->user_email );
@@ -759,10 +759,14 @@ class WPAS_Email_Notification {
 			
 			$to_email = $r_email;
 			
-			if( is_array( $r_email ) && isset( $r_email['cc_addresses'] ) && !empty( $r_email['cc_addresses'] ) ) {
-				$email_headers[] = 'Cc: ' . implode( ',', $r_email['cc_addresses'] );
+			if( is_array( $r_email ) &&  $r_email['email'] ) {
 				$to_email = $r_email['email'];
 			}
+			
+			if( is_array( $r_email ) && isset( $r_email['cc_addresses'] ) && !empty( $r_email['cc_addresses'] ) ) {
+				$email_headers[] = 'Cc: ' . implode( ',', $r_email['cc_addresses'] );
+			}
+			
 			if( wp_mail( $to_email, $email['subject'], $email['body'], $email_headers, $attachments ) ) {
 				$mail = true;
 			}
