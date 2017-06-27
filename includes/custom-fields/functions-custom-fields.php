@@ -155,6 +155,8 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
 /**
  * Calculate and save time spent on ticket
  *
+ * @todo if you update this functionality, be sure to do the same in the Rest-API plugin in /includes/API/Tickets.php on line 595
+ *
  * @since  3.3.5
  *
  * @param  string   $value      Not used

@@ -317,6 +317,19 @@ class WPAS_Tickets_List {
 									'action' => 'edit',
 								), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
 						}
+						
+						// Maybe add close date
+						$close_date = wpas_get_close_date( $post_id );
+						if (! empty( $close_date ) ) {
+							
+							$close_date_string = (string) date_i18n( $close_date ) ;  // Convert date to string
+							$close_date_string_tokens = explode(' ', $close_date_string ) ;	// Separate date/time
+							
+							if ( ! empty( $close_date_string_tokens ) ) {
+								echo '<br>';
+								echo __('Closed on: ', 'awesome-support') . $close_date_string_tokens[0] ;
+							}
+						}
 
 						// Maybe add the "Awaiting Support Response" tag
 						if ( true === wpas_is_reply_needed( $post_id, $replies ) ) {
