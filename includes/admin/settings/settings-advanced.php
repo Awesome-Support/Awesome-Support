@@ -44,6 +44,25 @@ function wpas_core_settings_advanced( $def ) {
 				),
 				
 				array(
+					'name' => __( 'Attachment Overrides', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => 'Modifications to this section has major security implications so be careful!',
+				),
+				array(
+					'name'    => __( 'Do Not Mask Attachment Links', 'awesome-support' ),
+					'id'      => 'unmask_attachment_links',
+					'type'    => 'checkbox',
+					'desc'    => __( 'There are some server configurations that do not work with our masked links. Try checking this box to make them work. This only works on NEW tickets.  Old tickets retain their prior links!', 'awesome-support' ),
+					'default' => false
+				),
+				array(
+					'name'    => __( '.htaccess Contents', 'awesome-support' ),
+					'id'      => 'htaccess_contents_for_attachment_folders',
+					'type'    => 'textarea',
+					'desc'    => __( 'The contents of your ticket uploads folder can be protected by an htaccess file on apache servers. <br />If this is left empty then the value of <b>options -Indexes</b> is automatically added to the file to prevent others from browsing the directory. <br />Add to this only if you are a super-duper apache server expert! <br /> No technical support is available for modifications to this setting!', 'awesome-support' )
+				),				
+				
+				array(
 					'name' => __( 'Cookie Management', 'awesome-support' ),
 					'type' => 'heading',
 				),
