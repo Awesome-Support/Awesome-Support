@@ -554,7 +554,7 @@ class WPAS_File_Upload {
 							/**
 							 * Prepare attachment link
 							 */
-							$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
+							$link = $attachment['url'];
 
 							?>
 							<li><a href="<?php echo $link; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
