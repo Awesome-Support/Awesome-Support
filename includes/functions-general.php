@@ -544,6 +544,8 @@ function wpas_dropdown( $args, $options ) {
 		$data_attributes = implode( ' ', $data_attributes );
 
 	}
+	
+	$id = $args['id'];
 
 	/* Start the buffer */
 	ob_start(); ?>
