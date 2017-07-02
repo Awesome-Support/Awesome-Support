@@ -176,12 +176,20 @@ function wpas_core_settings_general( $def ) {
 					'default' => false
 				),				
 				array(
-					'name'    => __( 'Show Close Date in GMT ', 'awesome-support' ),
+					'name'    => __( 'Show Close Date in GMT', 'awesome-support' ),
 					'id'      => 'show_close_date_gmt_in_activity_column',
 					'type'    => 'checkbox',
 					'desc'    => __( 'Show the close date in GMT in the activity column?', 'awesome-support' ),
 					'default' => false
 				),
+				array(
+					'name'    => __( 'Show Length Of Time Ticket Was Opened', 'awesome-support' ),
+					'id'      => 'show_length_of_time_ticket_was_opened',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show how long the ticket was opened?  Note that this applies to closed tickets only.', 'awesome-support' ),
+					'default' => false
+				),				
+				
 				
 				array(
 					'name' => __( 'Other Field Settings', 'awesome-support' ),

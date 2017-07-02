@@ -362,7 +362,8 @@ class WPAS_Tickets_List {
 						}
 						
 						// Maybe add gmt close date
-						if ( true === boolval( wpas_get_option( 'show_clse_date_gmt_in_activity_column', false) ) ) {					
+						if ( true === boolval( wpas_get_option( 'show_clse_date_gmt_in_activity_column', false) ) ) {
+							
 							$close_date_gmt = wpas_get_close_date_gmt( $post_id );
 							if (! empty( $close_date_gmt ) ) {
 								
@@ -375,6 +376,20 @@ class WPAS_Tickets_List {
 								}
 							}
 						}
+						
+						// Show the length of time a ticket was opened (applies to closed tickets only)...
+						if ( true === boolval( wpas_get_option( 'show_length_of_time_ticket_was_opened', false) ) ) {
+							
+							$open_date_gmt = wpas_get_open_date_gmt( $post_id );
+							$close_date_gmt = wpas_get_close_date_gmt( $post_id );
+							if (! empty( $close_date_gmt ) && ! empty( $open_date_gmt ) ) {
+								echo '<br>';
+								echo __('Ticket was opened for: ', 'awesome-support') . human_time_diff( strtotime( $open_date_gmt ), strtotime( $close_date_gmt ) ) ;
+								
+							}
+						}
+						
+						
 
 						// Maybe add the "Awaiting Support Response" tag
 						if ( true === wpas_is_reply_needed( $post_id, $replies ) ) {
