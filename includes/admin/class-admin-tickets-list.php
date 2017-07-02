@@ -383,8 +383,20 @@ class WPAS_Tickets_List {
 							$open_date_gmt = wpas_get_open_date_gmt( $post_id );
 							$close_date_gmt = wpas_get_close_date_gmt( $post_id );
 							if (! empty( $close_date_gmt ) && ! empty( $open_date_gmt ) ) {
+								
+								// Calculate difference object...
+								$date1 = new DateTime( $open_date_gmt );
+								$date2 = new DateTime( $close_date_gmt );
+								$diff_dates = $date2->diff($date1) ;
+								
+								//echo '<br>';
+								//echo __('Ticket was opened for: ', 'awesome-support') . human_time_diff( strtotime( $open_date_gmt ), strtotime( $close_date_gmt ) )   ;
 								echo '<br>';
-								echo __('Ticket was opened for: ', 'awesome-support') . human_time_diff( strtotime( $open_date_gmt ), strtotime( $close_date_gmt ) ) ;
+								echo __('Ticket was opened for: ', 'awesome-support');
+								echo ' ' . $diff_dates->format('%d') .  __(' day(s)', 'awesome-support') ;
+								echo ' ' . $diff_dates->format('%h') .  __(' hour(s)', 'awesome-support') ;								
+								echo ' ' . $diff_dates->format('%i') .  __(' minute(s)', 'awesome-support') ;
+
 								
 							}
 						}
