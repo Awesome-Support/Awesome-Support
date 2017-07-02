@@ -248,7 +248,6 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 /**
  * Returns the close date of the ticket based on the ticket/post id passed
  *
- *
  * @since  4.0.4
  *
  * @param  integer       $post_id The ID of the ticket to check
@@ -261,6 +260,83 @@ function wpas_get_close_date( $post_id ) {
 	
 	if ( ! empty( $close_date ) ) {
 		return $close_date ;
+	} else {
+		return '' ;
+	}
+	
+}
+
+/**
+ * Returns the close date in GMT of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.5
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  Close date of ticket, an empty string otherwise
+ */
+function wpas_get_close_date_gmt( $post_id ) {
+	
+	$close_date = get_post_meta( $post_id, '_ticket_closed_on_gmt', true) ;
+	
+	if ( ! empty( $close_date ) ) {
+		return $close_date ;
+	} else {
+		return '' ;
+	}
+	
+}
+
+/**
+ * Returns the open date of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.5
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  open date of ticket, an empty string otherwise
+ */
+function wpas_get_open_date( $post_id ) {
+	
+	// Return if not a ticket...
+	if ( 'ticket' <> get_post_type( $post_id ) ) {
+		return '' ;
+	}
+		
+	$the_ticket = get_post( $post_id ) ;
+
+	$open_date = $the_ticket->post_date ;
+	
+	if ( ! empty( $open_date ) ) {
+		return $open_date ;
+	} else {
+		return '' ;
+	}
+	
+}
+
+/**
+ * Returns the open date in GMT of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.5
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  open date of ticket, an empty string otherwise
+ */
+function wpas_get_open_date_gmt( $post_id ) {
+	
+	// Return if not a ticket...
+	if ( 'ticket' <> get_post_type( $post_id ) ) {
+		return '' ;
+	}
+		
+	$the_ticket = get_post( $post_id ) ;
+
+	$open_date = $the_ticket->post_date_gmt ;
+	
+	if ( ! empty( $open_date ) ) {
+		return $open_date ;
 	} else {
 		return '' ;
 	}

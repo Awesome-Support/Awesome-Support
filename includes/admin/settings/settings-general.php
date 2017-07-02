@@ -155,6 +155,33 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'Show Third Party #2 Data in the Ticket List?', 'awesome-support' ),
 					'default' => false
 				),				
+
+				array(
+					'name' => __( 'Show Date Fields in the Activity Column', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'The settings below control which dates show up in the activity column in the ticket list. The more fields you turn on the taller the row. Tall rows mean you can view fewer tickets on one screen. Sometimes, though, seeing all these dates can help with troubleshooting issues especially those related to reporting.', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'Show Open Date ', 'awesome-support' ),
+					'id'      => 'show_open_date_in_activity_column',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the open date in the activity column?', 'awesome-support' ),
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Show Open Date in GMT', 'awesome-support' ),
+					'id'      => 'show_open_date_gmt_in_activity_column',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the open date in GMT in the activity column?', 'awesome-support' ),
+					'default' => false
+				),				
+				array(
+					'name'    => __( 'Show Close Date in GMT ', 'awesome-support' ),
+					'id'      => 'show_close_date_gmt_in_activity_column',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the close date in GMT in the activity column?', 'awesome-support' ),
+					'default' => false
+				),
 				
 				array(
 					'name' => __( 'Other Field Settings', 'awesome-support' ),
@@ -167,6 +194,9 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
 					'default' => false
 				),
+				
+				
+
 				
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),

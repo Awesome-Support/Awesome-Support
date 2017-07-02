@@ -318,6 +318,36 @@ class WPAS_Tickets_List {
 								), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
 						}
 						
+						// Add open date
+						if ( true === boolval( wpas_get_option( 'show_open_date_in_activity_column', false) ) ) {
+							$open_date = wpas_get_open_date( $post_id ) ;
+							if (! empty( $open_date ) ) {
+								
+								$open_date_string = (string) date_i18n( $open_date ) ;  // Convert date to string
+								$open_date_string_tokens = explode(' ', $open_date_string ) ;	// Separate date/time
+								
+								if ( ! empty( $open_date_string_tokens ) ) {
+									echo '<br>';
+									echo __('Opened on: ', 'awesome-support') . $open_date_string_tokens[0] . ' at: ' . $open_date_string_tokens[1] ;
+								}
+							}
+						}
+						
+						// Add open date gmt
+						if ( true === boolval( wpas_get_option( 'show_open_date_gmt_in_activity_column', false) ) ) {						
+							$open_date_gmt = wpas_get_open_date_gmt( $post_id ) ;
+							if (! empty( $open_date_gmt ) ) {
+								
+								$open_date_string_gmt = (string) date_i18n( $open_date_gmt ) ;  // Convert date to string
+								$open_date_string_tokens_gmt = explode(' ', $open_date_string_gmt ) ;	// Separate date/time
+								
+								if ( ! empty( $open_date_string_tokens_gmt ) ) {
+									echo '<br>';
+									echo __('Opened on GMT: ', 'awesome-support') . $open_date_string_tokens_gmt[0] . ' at: ' . $open_date_string_tokens_gmt[1] ;
+								}
+							}
+						}
+						
 						// Maybe add close date
 						$close_date = wpas_get_close_date( $post_id );
 						if (! empty( $close_date ) ) {
@@ -327,7 +357,22 @@ class WPAS_Tickets_List {
 							
 							if ( ! empty( $close_date_string_tokens ) ) {
 								echo '<br>';
-								echo __('Closed on: ', 'awesome-support') . $close_date_string_tokens[0] ;
+								echo __('Closed on: ', 'awesome-support') . $close_date_string_tokens[0] . ' at: ' . $close_date_string_tokens[1] ;
+							}
+						}
+						
+						// Maybe add gmt close date
+						if ( true === boolval( wpas_get_option( 'show_clse_date_gmt_in_activity_column', false) ) ) {					
+							$close_date_gmt = wpas_get_close_date_gmt( $post_id );
+							if (! empty( $close_date_gmt ) ) {
+								
+								$close_date_string_gmt = (string) date_i18n( $close_date_gmt ) ;  // Convert date to string
+								$close_date_string_tokens_gmt = explode(' ', $close_date_string_gmt ) ;	// Separate date/time
+								
+								if ( ! empty( $close_date_string_tokens_gmt ) ) {
+									echo '<br>';
+									echo __('Closed on GMT: ', 'awesome-support') . $close_date_string_tokens_gmt[0] . ' at: ' . $close_date_string_tokens_gmt[1] ;
+								}
 							}
 						}
 
