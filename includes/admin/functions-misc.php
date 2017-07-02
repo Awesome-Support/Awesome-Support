@@ -343,6 +343,33 @@ function wpas_get_open_date_gmt( $post_id ) {
 	
 }
 
+/**
+ * Returns difference between two dates in string format to help with debugging.
+ * Formatted string will look like this sample : 0 day(s) 14 hour(s) 33 minute(s)
+ * 
+ * @since  4.0.5
+ *
+ * @param  date $firstdate 	First date in the format you get when using post->post_date to get a date from a post
+ * @param  date $seconddate Second date in the format you get when using post->post_date to get a date from a post
+ *
+ * @return string  difference between two dates, an empty string otherwise
+ */
+function wpas_get_date_diff_string( $firstdate, $seconddate ) {
+	
+		// Calculate difference object...
+		$date1 = new DateTime( $firstdate );
+		$date2 = new DateTime( $seconddate );
+		$diff_dates = $date2->diff($date1) ;	
+		
+		$date_string = '' ;
+		$date_string .= ' ' . $diff_dates->format('%d') .  __(' day(s)', 'awesome-support') ;
+		$date_string .=  ' ' . $diff_dates->format('%h') .  __(' hour(s)', 'awesome-support') ;								
+		$date_string .=  ' ' . $diff_dates->format('%i') .  __(' minute(s)', 'awesome-support') ;
+		
+		return $date_string ;
+	
+}
+
 add_filter( 'admin_footer_text', 'wpas_admin_footer_text', 999, 1 );
 /**
  * Add a custom admin footer text
