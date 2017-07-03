@@ -676,9 +676,10 @@ class WPAS_Email_Notification {
 		}
 				
 		foreach( $recipients as $recipient ) {
-			
-			$recipient_emails[] = array( 'user_id' => $recipient->ID, 'email' => $recipient->user_email );
-			
+			if( $recipient instanceof WP_User ) {
+				$recipient_emails[] = array( 'user_id' => $recipient->ID, 'email' => $recipient->user_email );
+			}
+
 		}
 		
 		/**
@@ -759,7 +760,7 @@ class WPAS_Email_Notification {
 			
 			$to_email = $r_email;
 			
-			if( is_array( $r_email ) &&  $r_email['email'] ) {
+			if( is_array( $r_email ) &&  isset( $r_email['email'] ) && $r_email['email'] ) {
 				$to_email = $r_email['email'];
 			}
 			
