@@ -25,7 +25,7 @@ register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
  */
 function wpas_install( $network_wide ) {
 
-	if ( ! function_exists( 'is_multisite' ) || function_exists( 'is_multisite' ) && ! is_multisite() ) {
+	if ( false === $network_wide || ! function_exists( 'is_multisite' ) || ( function_exists( 'is_multisite' ) && ! is_multisite() ) ) {
 		wpas_single_activate();
 	}
 

@@ -376,12 +376,18 @@ class WPAS_File_Upload {
 	protected function protect_upload_dir( $dir ) {
 
 		if ( is_writable( $dir ) ) {
+			
 			$filename = $dir . '/.htaccess';
+			
+			$filecontents = wpas_get_option( 'htaccess_contents_for_attachment_folders', 'Options -Indexes' ) ;
+			if ( empty( $filecontents ) ) {
+				$filecontents = 'Options -Indexes' ;
+			}
 
 			if ( ! file_exists( $filename ) ) {
 				$file = fopen( $filename, 'a+' );
 				if ( false <> $file ) {
-					fwrite( $file, 'Options -Indexes' );
+					fwrite( $file, $filecontents );
 					fclose( $file );
 				} else {
 					// attempt to record failure...
@@ -554,7 +560,13 @@ class WPAS_File_Upload {
 							/**
 							 * Prepare attachment link
 							 */
-							$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
+							if ( false === boolval( wpas_get_option( 'unmask_attachment_links', false ) ) ) {
+								// mask or obscure attachment links
+								$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
+							} else {
+								// show full link
+								$link = $attachment['url'];
+							}
 
 							?>
 							<li><a href="<?php echo $link; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
@@ -820,7 +832,7 @@ class WPAS_File_Upload {
 		 * on the submission page or on a ticket details page.
 		 */
 		if ( ! is_admin() ) {
-			if ( 'ticket' !== $post->post_type && $submission !== $post->ID ) {
+			if ( ! empty( $post) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
 				return $file;
 			}
 		}

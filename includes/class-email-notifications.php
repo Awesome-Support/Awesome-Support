@@ -674,9 +674,12 @@ class WPAS_Email_Notification {
 				$recipients = wpas_get_ticket_agents( $this->ticket_id );
 			}
 		}
-		
+				
 		foreach( $recipients as $recipient ) {
-			$recipient_emails[] = $recipient->user_email;
+			if( $recipient instanceof WP_User ) {
+				$recipient_emails[] = array( 'user_id' => $recipient->ID, 'email' => $recipient->user_email );
+			}
+
 		}
 		
 		/**
@@ -743,20 +746,35 @@ class WPAS_Email_Notification {
 			$attachments = apply_filters( 'wpas_email_notification_attachments', $attachments, $case, $this->ticket_id, $this->post_id );
 		}
 		
-		// We need to send notifications separately per recipient.
-		if( is_array($email['recipient_email']) ) {
-			$mail = false;
-			foreach( $email['recipient_email'] as $r_email ) {
-				if( wp_mail( $r_email, $email['subject'], $email['body'], $email['headers'], $attachments ) ) {
-					$mail = true;
-				}
-			}
-		} else {
-			$mail = wp_mail( $email['recipient_email'], $email['subject'], $email['body'], $email['headers'], $attachments );
-		}
-
 		
-
+		if( !is_array( $email['recipient_email'] ) ) {
+			$email['recipient_email'] = array( $email['recipient_email'] );
+		}
+		
+		
+		// We need to send notifications separately per recipient.
+		$mail = false;
+		foreach( $email['recipient_email'] as $r_email ) {
+			
+			$email_headers = $email['headers'];
+			
+			$to_email = $r_email;
+			
+			if( is_array( $r_email ) &&  isset( $r_email['email'] ) && $r_email['email'] ) {
+				$to_email = $r_email['email'];
+			}
+			
+			if( is_array( $r_email ) && isset( $r_email['cc_addresses'] ) && !empty( $r_email['cc_addresses'] ) ) {
+				$email_headers[] = 'Cc: ' . implode( ',', $r_email['cc_addresses'] );
+			}
+			
+			if( wp_mail( $to_email, $email['subject'], $email['body'], $email_headers, $attachments ) ) {
+				$mail = true;
+			}
+		}		
+		
+		
+		
 		return $mail;
 
 	}
