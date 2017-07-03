@@ -111,9 +111,7 @@ function wpas_uninstall() {
 		 * Delete all products if the taxonomy
 		 * was in use on this install.
 		 */
-		if ( '1' === $options['support_products'] ) {
-			wpas_delete_taxonomy( 'product' );
-		}
+		wpas_delete_taxonomy( 'product' );
 
 		/**
 		* Delete all deparments

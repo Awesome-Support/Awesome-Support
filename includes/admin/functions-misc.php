@@ -245,6 +245,131 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 
 }
 
+/**
+ * Returns the close date of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.4
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  Close date of ticket, an empty string otherwise
+ */
+function wpas_get_close_date( $post_id ) {
+	
+	$close_date = get_post_meta( $post_id, '_ticket_closed_on', true) ;
+	
+	if ( ! empty( $close_date ) ) {
+		return $close_date ;
+	} else {
+		return '' ;
+	}
+	
+}
+
+/**
+ * Returns the close date in GMT of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.5
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  Close date of ticket, an empty string otherwise
+ */
+function wpas_get_close_date_gmt( $post_id ) {
+	
+	$close_date = get_post_meta( $post_id, '_ticket_closed_on_gmt', true) ;
+	
+	if ( ! empty( $close_date ) ) {
+		return $close_date ;
+	} else {
+		return '' ;
+	}
+	
+}
+
+/**
+ * Returns the open date of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.5
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  open date of ticket, an empty string otherwise
+ */
+function wpas_get_open_date( $post_id ) {
+	
+	// Return if not a ticket...
+	if ( 'ticket' <> get_post_type( $post_id ) ) {
+		return '' ;
+	}
+		
+	$the_ticket = get_post( $post_id ) ;
+
+	$open_date = $the_ticket->post_date ;
+	
+	if ( ! empty( $open_date ) ) {
+		return $open_date ;
+	} else {
+		return '' ;
+	}
+	
+}
+
+/**
+ * Returns the open date in GMT of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.5
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  open date of ticket, an empty string otherwise
+ */
+function wpas_get_open_date_gmt( $post_id ) {
+	
+	// Return if not a ticket...
+	if ( 'ticket' <> get_post_type( $post_id ) ) {
+		return '' ;
+	}
+		
+	$the_ticket = get_post( $post_id ) ;
+
+	$open_date = $the_ticket->post_date_gmt ;
+	
+	if ( ! empty( $open_date ) ) {
+		return $open_date ;
+	} else {
+		return '' ;
+	}
+	
+}
+
+/**
+ * Returns difference between two dates in string format to help with debugging.
+ * Formatted string will look like this sample : 0 day(s) 14 hour(s) 33 minute(s)
+ * 
+ * @since  4.0.5
+ *
+ * @param  date $firstdate 	First date in the format you get when using post->post_date to get a date from a post
+ * @param  date $seconddate Second date in the format you get when using post->post_date to get a date from a post
+ *
+ * @return string  difference between two dates, an empty string otherwise
+ */
+function wpas_get_date_diff_string( $firstdate, $seconddate ) {
+	
+		// Calculate difference object...
+		$date1 = new DateTime( $firstdate );
+		$date2 = new DateTime( $seconddate );
+		$diff_dates = $date2->diff($date1) ;	
+		
+		$date_string = '' ;
+		$date_string .= ' ' . $diff_dates->format('%d') .  __(' day(s)', 'awesome-support') ;
+		$date_string .=  ' ' . $diff_dates->format('%h') .  __(' hour(s)', 'awesome-support') ;								
+		$date_string .=  ' ' . $diff_dates->format('%i') .  __(' minute(s)', 'awesome-support') ;
+		
+		return $date_string ;
+	
+}
+
 add_filter( 'admin_footer_text', 'wpas_admin_footer_text', 999, 1 );
 /**
  * Add a custom admin footer text

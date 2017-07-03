@@ -37,6 +37,9 @@ class WPAS_Session {
 		}
 
 		require_once( WPAS_PATH . 'vendor/ericmann/wp-session-manager/wp-session-manager.php' );
+		
+		add_filter( 'wp_session_cookie_secure',   array( $this, 'wpas_set_cookie_secure_flag' ), 10, 1 );	// Set the SECURE flag on the cookie
+		add_filter( 'wp_session_cookie_httponly', array( $this, 'wpas_set_http_only_flag' ), 10, 1 );	// Set the SECURE flag on the cookie
 
 		// Instantiate the session
 		$this->init();
@@ -170,5 +173,44 @@ class WPAS_Session {
 		return $value;
 
 	}
+	
+	
+	/**
+	 * Set the secure flag on the cookie
+	 *
+	 * Filter: wp_session_cookie_secure
+	 *
+	 * @param boolean $secure_flag
+	 *
+	 * @since 4.0.4
+	 *
+	 * @return boolean flag - true or false, default false
+	 */
+	public function wpas_set_cookie_secure_flag ( $secure_flag ) {
+		
+		$secure_flag = boolval( wpas_get_option( 'secure_cookies', false) );
+		
+		return $secure_flag;
+	}
+	
+	/**
+	 * Set the httponly flag on the cookie
+	 *
+	 * Filter: wp_session_cookie_httponly
+	 *
+	 * @param boolean $http_only_flag
+	 *
+	 * @since 4.0.4
+	 *
+	 * @return boolean flag - true or false, default false
+	 */
+	public function wpas_set_http_only_flag ( $http_only_flag ) {
+		
+		$http_only_flag = boolval( wpas_get_option( 'cookie_http_only', false) );
+		
+		return $http_only_flag;
+	}
 
+	
+	
 }
