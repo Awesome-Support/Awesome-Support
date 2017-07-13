@@ -92,7 +92,7 @@ function wpas_upgrade_333() {
  * @since 4.0.0
  * @return void
  */
-function wpas_upgrade_400() {
+function wpas_upgrade_405() {
 
 	/* Add new capabilities to these roles and all users assigned these roles:
 	 *
