@@ -155,6 +155,8 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
 /**
  * Calculate and save time spent on ticket
  *
+ * @todo if you update this functionality, be sure to do the same in the Rest-API plugin in /includes/API/Tickets.php on line 595
+ *
  * @since  3.3.5
  *
  * @param  string   $value      Not used
@@ -285,12 +287,7 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 
 	/** Determine if assignee column is shown in tickets list */
-	$show_assignee = current_user_can( 'administrator' )
-	&& true === boolval( wpas_get_option( 'admin_see_all' ) )
-	|| current_user_can( 'edit_ticket' )
-	&& !current_user_can( 'administrator' )
-	&& true === boolval( wpas_get_option( 'agent_see_all' ) )
-		? true : false;
+	$show_assignee = true ;
 
 	/** Get the label for the agent field if one is provided */
 	$as_label_for_agent_singular = isset( $options[ 'label_for_agent_singular' ] ) ? $options[ 'label_for_agent_singular' ] : __( 'Agent', 'awesome-support' );

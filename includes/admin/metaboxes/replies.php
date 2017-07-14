@@ -61,6 +61,8 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 
 					$user_avatar     = get_avatar( $user_id, '64', get_option( 'avatar_default' ) );
 					$date            = human_time_diff( get_the_time( 'U', $row->ID ), current_time( 'timestamp' ) );
+					$date_full		 = get_the_time('F j, Y g:i a', $row->ID);
+					$days_since_open = wpas_get_date_diff_string( $post->post_date, $row->post_date) ;  // This is a string showing the number of dates/hours/mins that this reply arrived compared to the date the ticket was opened
 					$post_type       = $row->post_type;
 					$post_type_class = ( 'ticket_reply' === $row->post_type && 'trash' === $row->post_status ) ? 'ticket_history' : $row->post_type;
 
