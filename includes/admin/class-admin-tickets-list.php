@@ -196,6 +196,8 @@ class WPAS_Tickets_List {
 				// Add the client column
 				$new[ 'wpas-client' ] = esc_html__( 'Created By', 'awesome-support' );
 
+				// agents...
+				$new[ 'assignee' ] = $this->get_cf_title( 'assignee', 'Agent' );				
 				// If agents can see all tickets do nothing
 				if (
 					current_user_can( 'administrator' )

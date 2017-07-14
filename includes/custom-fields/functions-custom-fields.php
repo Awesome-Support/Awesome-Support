@@ -287,12 +287,7 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 
 	/** Determine if assignee column is shown in tickets list */
-	$show_assignee = current_user_can( 'administrator' )
-	&& true === boolval( wpas_get_option( 'admin_see_all' ) )
-	|| current_user_can( 'edit_ticket' )
-	&& !current_user_can( 'administrator' )
-	&& true === boolval( wpas_get_option( 'agent_see_all' ) )
-		? true : false;
+	$show_assignee = true ;
 
 	/** Get the label for the agent field if one is provided */
 	$as_label_for_agent_singular = isset( $options[ 'label_for_agent_singular' ] ) ? $options[ 'label_for_agent_singular' ] : __( 'Agent', 'awesome-support' );
