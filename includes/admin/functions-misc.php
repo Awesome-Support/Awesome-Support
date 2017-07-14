@@ -223,12 +223,12 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 		if ( user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) ) {
 			
 			return false ;
-			
-			// Or the ticket has just been transferred, in which case we want to show the awaiting reply tag
-			else {				
-				return true;
-			}
-
+		
+		} else {
+		
+			// Or the ticket has just been transferred, in which case we want to show the awaiting reply tag			
+			return true;
+		
 		}
 
 		// If the last reply is not from an agent return true since ticket is waiting for a reply from an agent...

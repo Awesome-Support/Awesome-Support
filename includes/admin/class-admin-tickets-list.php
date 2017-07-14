@@ -196,18 +196,8 @@ class WPAS_Tickets_List {
 				// Add the client column
 				$new[ 'wpas-client' ] = esc_html__( 'Created By', 'awesome-support' );
 
-				// agents...
+				// assignee/agent...
 				$new[ 'assignee' ] = $this->get_cf_title( 'assignee', 'Agent' );				
-				// If agents can see all tickets do nothing
-				if (
-					current_user_can( 'administrator' )
-					&& true === boolval( wpas_get_option( 'admin_see_all' ) )
-					|| current_user_can( 'edit_ticket' )
-					&& ! current_user_can( 'administrator' )
-					&& true === boolval( wpas_get_option( 'agent_see_all' ) )
-				) {
-					$new[ 'assignee' ] = $this->get_cf_title( 'assignee', 'Agent' );
-				}
 
 				// Add the date
 				$new[ 'date' ] = $columns[ 'date' ];
