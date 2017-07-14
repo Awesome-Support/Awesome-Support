@@ -483,8 +483,23 @@ class WPAS_Product_Sync {
 		}
 
 		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
-		$include = array_filter( wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
-		$exclude = array_filter( wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) );
+		
+		// Get the list of products to include/exclude
+		$raw_include =  wpas_get_option( 'support_products_' . $slug . '_include', array() ) ;
+		$raw_exclude =  wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) ;
+		
+		// Initialize empty arrays just in case the if statements below turn out to be true.
+		// $raw_exclude/include in the if statements below can be empty if the user did not click SAVE on the PRODUCTS configuration tab. 
+		$include = array();
+		$exclude = array();
+		
+		if ( ! empty( $raw_include ) ) {
+			$include = array_filter( $raw_include ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+		}
+		
+		if ( ! empty( $raw_exclude ) ) {
+			$exclude = array_filter( $raw_exclude );  // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+		}
 
 		/* Map the tax args to the WP_Query args */
 		$query_args = $this->map_args( $args );
