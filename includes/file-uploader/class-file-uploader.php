@@ -71,7 +71,10 @@ class WPAS_File_Upload {
 
 			add_action( 'wpas_add_reply_admin_after', array( $this, 'new_reply_backend_attachment' ), 10, 2 );
 			add_action( 'post_edit_form_tag', array( $this, 'add_form_enctype' ), 10, 1 );
-			add_action( 'wpas_admin_after_wysiwyg', array( $this, 'upload_field' ), 10, 0 );
+			
+			add_filter( 'wpas_admin_tabs_after_reply_wysiwyg', array( $this, 'upload_field_add_tab' ) , 11, 1 ); // Register attachments tab under reply wysiwyg
+			add_filter( 'wpas_admin_tabs_after_reply_wysiwyg_attachments_content', array( $this, 'upload_field_tab_content' ) , 11, 1 ); // Return content for attachments tab
+			
 			add_action( 'before_delete_post', array( $this, 'delete_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_reply_content_after', array( $this, 'show_attachments' ), 10, 1 );
@@ -439,6 +442,35 @@ class WPAS_File_Upload {
 		$attachments = new WPAS_Custom_Field( $this->index, $attachments_args );
 		echo $attachments->get_output();
 
+	}
+	
+	/**
+	 * 
+	 * Register attachments tab under reply wysiwyg
+	 * 
+	 * @param array $tabs
+	 * 
+	 * @return array
+	 */
+	public function upload_field_add_tab( $tabs ) {
+		
+		$tabs['attachments'] = __( 'Attachments' , 'awesome-support' );
+		
+		return $tabs;
+	}
+	
+	/**
+	 * 
+	 * Return content for attachments tab
+	 * 
+	 * @param string $content
+	 * 
+	 * @return string
+	 */
+	public function upload_field_tab_content( $content ) {
+		ob_start();
+		$this->upload_field();
+		return ob_get_clean();
 	}
 
 	/**
