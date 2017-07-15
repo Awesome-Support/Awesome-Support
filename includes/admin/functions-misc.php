@@ -219,23 +219,20 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 
 		$last = $replies->post_count - 1;
 
-		// If the last agent reply was not from the currently logged-in agent then there are two possible scenarios
-		if ( user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && (int) $replies->posts[ $last ]->post_author !== get_current_user_id() ) {
-
-			// First, the plugin is set to show all tickets to every agent. In this case, we don't want all agents to see the awaiting reply tag
-			if ( true === (bool) wpas_get_option( 'agent_see_all' ) ) {
-				return false;
-			}
-
-			// Or the ticket has just been transferred, in which case we want to show the awaiting reply tag
-			else {
-				return true;
-			}
-
+		// If the last reply was from an agent then return false - the ticket is waiting for the customer to reply.
+		if ( user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) ) {
+			
+			return false ;
+		
+		} else {
+		
+			// Or the ticket has just been transferred, in which case we want to show the awaiting reply tag			
+			return true;
+		
 		}
 
-		// If the last reply is not from an agent and the reply is still unread we need the ticket to stand out
-		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && 'unread' === $replies->posts[ $last ]->post_status ) {
+		// If the last reply is not from an agent return true since ticket is waiting for a reply from an agent...
+		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) ) { 
 			return true;
 		}
 
