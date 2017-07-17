@@ -594,14 +594,18 @@ Admin Tabs
                 float : left;
                 padding: 10px;
                 cursor: pointer;
-                
+                background: #f7f7f7;
+                margin-right: 6px;
+                border: #efefef solid 1px;
+                color : #777;
 
                 &.active {
-                    background: #f1f1f1;
-                    border: 1px solid #e5e5e5;
+                    background: #e5e5e5;
+                    border: 1px solid #dadada;
                     border-bottom: none;
                     height : 20px;
                     position: relative;
+                    color : #191919;
                     &::after {
                         content: " ";
                         width: 100%;
@@ -610,7 +614,7 @@ Admin Tabs
                         left: 0;
                         bottom: -1px;
                         z-index: 1;
-                        background: #f1f1f1;
+                        background: #e5e5e5;
                     }
                 }
             }
@@ -654,9 +658,9 @@ Admin Tabs
         .wpas_admin_tab_content {
             display : none;
             padding: 20px 10px;
-            background: #f1f1f1;
+            background: #e5e5e5;
             margin-bottom: 20px;
-            border: #e5e5e5 solid 1px;
+            border: #dadada solid 1px;
         }
         
         
