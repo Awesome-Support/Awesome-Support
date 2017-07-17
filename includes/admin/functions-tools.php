@@ -55,7 +55,7 @@ function wpas_system_tools() {
 			break;
 		
 		case 'rerun_334_to_400_conversion':			
-			wpas_upgrade_400();
+			wpas_upgrade_405();
 			break ;
 			
 	}

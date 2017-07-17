@@ -219,23 +219,20 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 
 		$last = $replies->post_count - 1;
 
-		// If the last agent reply was not from the currently logged-in agent then there are two possible scenarios
-		if ( user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && (int) $replies->posts[ $last ]->post_author !== get_current_user_id() ) {
-
-			// First, the plugin is set to show all tickets to every agent. In this case, we don't want all agents to see the awaiting reply tag
-			if ( true === (bool) wpas_get_option( 'agent_see_all' ) ) {
-				return false;
-			}
-
-			// Or the ticket has just been transferred, in which case we want to show the awaiting reply tag
-			else {
-				return true;
-			}
-
+		// If the last reply was from an agent then return false - the ticket is waiting for the customer to reply.
+		if ( user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) ) {
+			
+			return false ;
+		
+		} else {
+		
+			// Or the ticket has just been transferred, in which case we want to show the awaiting reply tag			
+			return true;
+		
 		}
 
-		// If the last reply is not from an agent and the reply is still unread we need the ticket to stand out
-		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && 'unread' === $replies->posts[ $last ]->post_status ) {
+		// If the last reply is not from an agent return true since ticket is waiting for a reply from an agent...
+		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) ) { 
 			return true;
 		}
 
@@ -475,4 +472,90 @@ function wpas_request_first_5star_rating() {
 		array( 'strong' => array(), 'a' => array( 'href' => array() ) ) ) );
 
 	}
+}
+
+
+
+
+
+/**
+ * Generate admin tabs html
+ * 
+ * @param string $type
+ * @param array $tabs
+ * 
+ * @return string
+ */
+function wpas_admin_tabs( $type, $tabs = array() ) {
+	
+	// Unique tabs widget id
+	$id = "wpas_admin_tabs_{$type}";
+	
+	
+	$tabs = apply_filters( $id, $tabs );
+	
+	// Stop processing if no tab exist
+	if( empty( $tabs ) ) {
+		return;
+	}
+	
+	
+	$tab_order = 1;
+	$tab_content_items_ar = array();
+	$tab_content_ar = array();
+	
+	foreach( $tabs as $tab_id => $tab_name ) {
+		$_id = "{$id}_{$tab_id}";
+		
+		$tab_content = apply_filters( "{$_id}_content", "" );
+		
+		if( $tab_content ) {
+			$tab_content_items_ar[] = sprintf( '<li data-tab-order="%s" rel="%s" class="wpas_tab_name">%s</li>' , $tab_order, $_id, $tab_name );
+			$tab_content_ar[] = '<div class="wpas_admin_tab_content" id="' . $_id . '">' . $tab_content . '</div>';
+			$tab_order++;
+		}
+	}
+	
+	
+	// Stop processing if no tab's data exist
+	if( empty( $tab_content_items_ar ) ) {
+		return;
+	}
+	
+	ob_start();
+	
+	?>
+
+
+	<div class="wpas_admin_tabs" id="<?php echo $id; ?>">
+		<div class="wpas_admin_tabs_names_wrapper">
+			<ul>
+			    <?php echo implode( '', $tab_content_items_ar ); ?>
+				<li class="moreTab">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">More <span class="caret"></span></a>
+					<ul class="dropdown-menu tabs_collapsed"></ul>
+				</li>
+				<li class="clear clearfix"></li>
+	
+			</ul>
+		</div>
+		<?php echo implode( '', $tab_content_ar ); ?>
+	</div>
+	<?php
+	
+	
+	return ob_get_clean();
+	
+}
+
+
+add_action( 'wpas_admin_after_wysiwyg', 'reply_tabs', 8, 0 );
+
+/**
+ * Add tabs under reply wysiwyg editor
+ */
+function reply_tabs() {
+	
+	$tabs_content = wpas_admin_tabs( 'after_reply_wysiwyg' );
+	echo $tabs_content;
 }
