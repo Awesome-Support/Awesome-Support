@@ -560,3 +560,112 @@ div.about-wrap {
 		border: 1px solid #ddd;
 	}
 }
+
+
+/*
+==========================================================================
+Admin Tabs
+==========================================================================
+*/
+
+.wpas_admin_tabs {
+        
+        background: #fff;
+        font-size: 14px;
+        margin: 0;
+        line-height: 1.4;
+        background: #f1f1f1;
+        
+        .wpas_admin_tabs_names_wrapper {
+            position: relative;
+            background : #FFF;
+            ul, ul li {
+                margin-bottom: 0; 
+            }
+            
+            ul .clear {
+                clear: both;
+                margin: 0;
+                float: none;
+                width: 0;
+            }
+            
+            .wpas_tab_name {
+                float : left;
+                padding: 10px;
+                cursor: pointer;
+                background: #f7f7f7;
+                margin-right: 6px;
+                border: #efefef solid 1px;
+                color : #777;
+
+                &.active {
+                    background: #e5e5e5;
+                    border: 1px solid #dadada;
+                    border-bottom: none;
+                    height : 20px;
+                    position: relative;
+                    color : #191919;
+                    &::after {
+                        content: " ";
+                        width: 100%;
+                        height: 1px;
+                        position: absolute;
+                        left: 0;
+                        bottom: -1px;
+                        z-index: 1;
+                        background: #e5e5e5;
+                    }
+                }
+            }
+            
+            .moreTab {
+                    display: none;
+                    float: right;
+                    padding: 10px;
+                    
+                    &:hover ul {
+                        display : block;
+                    }
+
+                    ul {
+                        display: none;
+                        position: absolute;
+                        right: 0;
+                        z-index: 100;
+                        background: #FFF;
+                        border: #dedede solid 1px;
+                        padding-bottom: 1px;
+
+                        li {
+                            float: none;
+                            margin: 0;
+                            
+                            &.active {
+                                background: #e5e5e5;
+                                border: 0;
+                            }
+                            
+                            &:hover {
+                                background: #eaeaea;
+                            }
+                        }
+                    }
+            }
+            
+        }
+        
+        .wpas_admin_tab_content {
+            display : none;
+            padding: 20px 10px;
+            background: #e5e5e5;
+            margin-bottom: 20px;
+            border: #dadada solid 1px;
+        }
+        
+        
+}
+
+
+
+
