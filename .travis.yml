@@ -8,6 +8,7 @@ sudo: false
 
 # PHP version used in first build configuration.
 php:
+    - "7.1"
     - "7.0"
     - "5.6"
 #    - "5.5"
@@ -18,6 +19,7 @@ php:
 # We used to test 3.8 which was announced as compatible but removed that as of AS 4.0.0.
 env:
     - WP_VERSION=master
+    - WP_VERSION=4.7
     - WP_VERSION=4.6
     - WP_VERSION=4.5
     - WP_VERSION=4.4
@@ -33,8 +35,8 @@ env:
 
 # Note that Travis CI supports listing these above to automatically build a
 # matrix of configurations, but we're being nice here by manually building a
-# total of four configurations even though we're testing 4 versions of PHP
-# along with 2 versions of WordPress (which would build 8 configs otherwise).
+# fewer configurations even though we're testing 3 versions of PHP
+# along with 5 versions of WordPress (which would build 15 configs otherwise).
 # This takes half as long to run while still providing adequate coverage.
 
 matrix:
@@ -43,6 +45,8 @@ matrix:
       env: WP_VERSION=master WP_ALLOW_MULTISITE=1
     - php: "7"
       env: WP_VERSION=master
+    - php: "7.1"
+      env: WP_VERSION=master      
 
 # Clones WordPress and configures our testing environment.
 before_script:
