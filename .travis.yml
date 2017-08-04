@@ -8,22 +8,22 @@ sudo: false
 
 # PHP version used in first build configuration.
 php:
-    - "7.1"
-    - "7.0"
+#    - "7.1"
+#    - "7.0"
     - "5.6"
 #    - "5.5"
 #    - "5.2"
 
 # WordPress version used in first build configuration.
 # We test 4 versions back
-# We used to test 3.8 which was announced as compatible but removed that as of AS 4.0.0.
+# We used to test the 3.x lines which was announced as compatible but removed that as of AS 4.0.0.
 env:
     - WP_VERSION=master
-    - WP_VERSION=4.7
+    - WP_VERSION=4.7.5
     - WP_VERSION=4.6
     - WP_VERSION=4.5
-    - WP_VERSION=4.4
-    - WP_VERSION=4.3
+#    - WP_VERSION=4.4
+#    - WP_VERSION=4.3
 #    - WP_VERSION=3.8
 
 # Next we define our matrix of additional build configurations to test against.
@@ -36,7 +36,7 @@ env:
 # Note that Travis CI supports listing these above to automatically build a
 # matrix of configurations, but we're being nice here by manually building a
 # fewer configurations even though we're testing 3 versions of PHP
-# along with 5 versions of WordPress (which would build 15 configs otherwise).
+# along with 4 versions of WordPress (which would build 15 configs otherwise).
 # This takes half as long to run while still providing adequate coverage.
 
 matrix:
