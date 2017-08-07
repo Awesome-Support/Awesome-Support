@@ -47,6 +47,20 @@ module.exports = function (grunt) {
 		},
 
 		/*
+		Concatenate CSS files into one
+		 */
+		concat_css: {
+    		options: {},
+    		files: {
+		  		src: [
+			  		'assets/public/css/public.css',
+			  		'assets/public/css/component_*.css'
+		  		],
+	      		dest: 'assets/public/css/public.css'
+    		}
+  		},
+
+		/*
 		Add vendor prefixes
 		@author: https://github.com/nDmitry/grunt-autoprefixer
 		 */
@@ -261,8 +275,8 @@ module.exports = function (grunt) {
 
 	require('load-grunt-tasks')(grunt);
 
-	grunt.registerTask('default', ['jshint', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
-	grunt.registerTask('build', ['jshint', 'uglify', 'less', 'autoprefixer', 'combine_mq', 'cssmin']);
+	grunt.registerTask('default', ['jshint', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
+	grunt.registerTask('build', ['jshint', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin']);
 	
 	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);

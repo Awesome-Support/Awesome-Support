@@ -87,6 +87,43 @@ class WPAS_Custom_Fields {
 	}
 
 	/**
+	 * Register and enqueue the datepicker assets
+	 *
+	 * This method will be called if the field_type parameter date so we can enqueue assets
+	 * included in WP.
+	 *
+	 * @since 4.0.0
+	 * @return void
+	 */
+	public function enqueue_datepicker_assets() {
+
+		global $post;
+
+		// This will usually be packaged with all other components which is why it's not registered with the rest
+		//wp_register_script( 'wpas-date-component', WPAS_URL . 'assets/public/js/component_date.js', array( 'wpas-date' ), '4.0.0', true );
+
+		$ticket_submit = wpas_get_option( 'ticket_submit' );
+
+		if ( ! is_array( $ticket_submit ) ) {
+			$ticket_submit = (array) $ticket_submit;
+		}
+
+		if ( ! is_object( $post ) || ! in_array( $post->ID, $ticket_submit ) ) {
+			return;
+		}
+
+		if ( false === wp_script_is( 'jquery-ui-datepicker', 'enqueued' ) ) {
+			// Load the datepicker script (pre-registered in WordPress).
+            wp_enqueue_script( 'jquery-ui-datepicker' );
+		}
+
+		//if ( false === wp_script_is( 'wpas-date-component', 'enqueued' ) ) {
+		//	wp_enqueue_script( 'wpas-date-component' );
+		//}
+
+	}
+
+	/**
 	 * Add a new custom field to the ticket.
 	 *
 	 * @param string $name Option name
@@ -135,6 +172,11 @@ class WPAS_Custom_Fields {
 		$option = array( 'name' => $name, 'args' => $arguments );
 
 		$this->options[ $name ] = apply_filters( 'wpas_add_field', $option );
+
+		// If date field we load the required assets
+		if ( isset( $arguments['field_type'] ) && 'date-field' === $arguments['field_type'] ) {
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_datepicker_assets' ) );
+		}
 
 		// If select2 is enabled we load the required assets
 		if ( isset( $arguments['select2'] ) && true === $arguments['select2'] ) {
