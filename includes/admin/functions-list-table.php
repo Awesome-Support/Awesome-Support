@@ -212,3 +212,21 @@ function wpas_fix_tickets_count( $views ) {
 	return $views;
 
 }
+
+
+add_filter( 'bulk_actions-edit-ticket', 'wpas_manage_ticket_bulk_actions', 11, 1 );
+
+/**
+ * Remove bulk edit action from ticket listing page
+ * 
+ * @param array $bulk_actions
+ * @return array
+ */
+function wpas_manage_ticket_bulk_actions( $bulk_actions ) {
+	
+	if( isset( $bulk_actions['edit'] ) ) {
+		unset( $bulk_actions['edit'] );
+	}
+	
+	return $bulk_actions;
+}
