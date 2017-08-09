@@ -20,7 +20,13 @@ class WPAS_Titan {
 	protected static $instance = null;
 
 	public function __construct() {
-		add_action( 'after_setup_theme', array( $this, 'load_titan_framework' ), 12 );
+
+		if( isset( $_GET['page'] ) && 'wpas-settings' === $_GET['page']
+		    && wpas_is_plugin_page()
+		) {
+			add_action( 'after_setup_theme', array( $this, 'load_titan_framework' ), 12 );
+		}
+
 	}
 
 	/**

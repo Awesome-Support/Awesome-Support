@@ -131,6 +131,14 @@
 		}
 
 		/**
+		 * jQuery DatePicker
+		 *
+		 */
+		if (jQuery().datepicker && $('input.wpas-date').length) {
+			$('input.wpas-date').datepicker();
+		}
+
+		/**
 		 * Make ticket title required
 		 * http://wordpress.stackexchange.com/a/101260
 		 */

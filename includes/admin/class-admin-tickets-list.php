@@ -616,7 +616,7 @@ SQL;
             }
 
 			/**
-			 * The post order will be modifiedusing the following logic:
+			 * The post order will be modified using the following logic:
 			 *
 			 * 		Order 	- 	Ticket State
 			 *		-----   	-------------------------------------------
@@ -710,6 +710,22 @@ SQL;
 
 			echo $dropdown;
 		}
+
+
+		/* ACTIVITY */
+
+		$this_sort = isset( $_GET[ 'activity' ] ) ? filter_input( INPUT_GET, 'activity', FILTER_SANITIZE_STRING ) : '';
+		$all_selected = ( 'all' === $this_sort ) ? 'selected="selected"' : '';
+		$waiting_selected = ( 'awaiting_support_reply' === $this_sort ) ? 'selected="selected"' : '';
+		$old_selected = ( 'old' === $this_sort ) ? 'selected="selected"' : '';
+
+		$dropdown = '<select id="activity" name="activity">';
+		$dropdown .= "<option value='all' $all_selected>" . __( 'All Activity', 'awesome-support' ) . "</option>";
+		$dropdown .= "<option value='awaiting_support_reply' $waiting_selected>" . __( 'Awaiting Support Reply', 'awesome-support' ) . "</option>";
+		$dropdown .= "<option value='old' $old_selected>" . __( 'Old', 'awesome-support' ) . "</option>";
+		$dropdown .= '</select>';
+
+		echo $dropdown;
 
 
 		$fields = $this->get_custom_fields();
@@ -1055,6 +1071,26 @@ SQL;
 			if ( ! empty( $ticket_id ) && intval( $ticket_id ) != 0 ) {
 				$where .= " AND {$wpdb->posts}.ID = " . intval( $ticket_id );
 			}
+
+
+			$activity = filter_input( INPUT_GET, 'activity', FILTER_SANITIZE_STRING, 'all' );
+
+			/* Filter by Activity */
+			if ( 'awaiting_support_reply' === $activity  ) {
+				// ACTIVITY: AWAITING SUPPORT REPLY
+				// where status !== closed
+
+				$where = $where;
+			}
+			elseif ( 'old' === $activity  ) {
+				// ACTIVITY: OLD
+				// where status !== closed
+				// and replies > 0 and last_reply_date < 10 days
+				// or replies === 0 and post_date < 10 days
+
+				$where = $where;
+			}
+
 		}
 
 		return $where;

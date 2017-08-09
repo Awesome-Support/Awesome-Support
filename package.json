@@ -7,6 +7,7 @@
     "grunt-autoprefixer": "~0.8.2",
     "grunt-combine-mq": "^0.6.0",
     "grunt-composer": "^0.4.4",
+    "grunt-concat-css": "^0.3.2",
     "grunt-contrib-compress": "^0.13.0",
     "grunt-contrib-cssmin": "^0.11.0",
     "grunt-contrib-jshint": "^0.10.0",
