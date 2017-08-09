@@ -24,7 +24,7 @@ class WPAS_Email_Notification {
 	 * 
 	 * @var integer
 	 */
-	private $post_id;
+	protected $post_id;
 
 	/**
 	 * ID of the related ticket.
@@ -34,8 +34,8 @@ class WPAS_Email_Notification {
 	 *
 	 * @var  integer
 	 */
-	private $ticket_id;
-
+	protected $ticket_id;
+	
 	/**
 	 * Class constructor.
 	 * 
@@ -62,7 +62,7 @@ class WPAS_Email_Notification {
 		} else {
 			$reply           = $this->get_reply();
 			$this->ticket_id = $reply->post_parent;
-		}
+		} 
 
 	}
 
@@ -79,7 +79,7 @@ class WPAS_Email_Notification {
 	}
 
 	/**
-	 * Ge the post object for the reply.
+	 * Get the post object for the reply.
 	 *
 	 * @since  3.0.2
 	 * @return boolean|object The reply object if there is a reply, false otherwise
@@ -101,7 +101,7 @@ class WPAS_Email_Notification {
 	}
 
 	/**
-	 * Ge the post object for the ticket.
+	 * Get the post object for the ticket.
 	 *
 	 * @since  3.0.2
 	 * @return boolean|object The ticket object if there is a reply, false otherwise
@@ -256,11 +256,11 @@ class WPAS_Email_Notification {
 	public function fetch( $contents ) {
 
 		$tags = $this->get_tags_values();
-
+		
 		foreach ( $tags as $tag ) {
 
 			$id       = $tag['tag'];
-			$value    = $tag['value'];
+			$value    = isset( $tag['value'] ) ? $tag['value'] : '';
 			$contents = str_replace( $id, $value, $contents );
 			
 		}
@@ -353,7 +353,7 @@ class WPAS_Email_Notification {
 	public function get_tags_values() {
 
 		/* Get all available tags */
-		$tags = self::get_tags();
+		$tags = $this->get_tags();
 
 		/* This is where we save the tags with their new value */
 		$new = array();

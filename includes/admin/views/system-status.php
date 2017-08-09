@@ -66,8 +66,9 @@
 			<td>
 				<?php
 				$timezone = get_option( 'timezone_string' );
+				$gmtoffset= get_option( 'gmt_offset' ) ;
 
-				if ( empty( $timezone ) ) {
+				if ( empty( $timezone ) && empty( $gmtoffset ) && '0' <> $gmtoffset ) {
 					echo '<span class="wpas-alert-danger">' . __( 'The timezone hasn\'t been set', 'awesome-support' ) . '</span>';
 				} else {
 					echo $timezone . ' (UTC' . wpas_get_offset_html5() . ')';

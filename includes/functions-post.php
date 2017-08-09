@@ -339,7 +339,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
 	/* Need to update it here because some of the action hooks fired above will overwrite the term.			  */
 	If (! empty( $channel_term ) && ( ! $update ) ) {
-		wpas_set_ticket_channel( $ticket_id , $channel_term );
+		wpas_set_ticket_channel( $ticket_id , $channel_term, false );
 	}	
 	
 	/**
@@ -358,10 +358,19 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
  *
  * @param numeric		$ticket_id
  * @param string		$channel_term
+ * @param string		$overwrite	whether or not to overwrite existing channel on the ticket - set to false by default 
  *
  * @return void
  */
- function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other' ) {
+ function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other', $overwrite = false ) {
+	 
+	 /* Does a term already exist on the ticket?  If so, do not overrite it if $overwrite is false */
+	 if ( false === $overwrite ) {
+		 $existing_channel = wp_get_post_terms($ticket_id,'ticket_channel');
+		 if ( ! empty( $existing_channel ) ) {
+			 return ;
+		 }
+	 }	 
 
 	/*  get the term id because wp_set_object_terms require an id instead of just a string */
 	$arr_the_term_id = term_exists( $channel_term, 'ticket_channel' );

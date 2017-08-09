@@ -172,6 +172,11 @@
                     var id = $(this).attr('rel');
                     $('#'+id).show();
                     
+                    $('#'+id+' .wpas-select2').each(function() {
+                            if( typeof $(this).data('select2') != 'object' ) {
+                                    $(this).select2();
+                            }
+                    });
                 }
                 
                 

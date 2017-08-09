@@ -408,6 +408,11 @@ add_action( 'plugins_loaded', 'wpas_free_addon_notice' );
  * @return void
  */
 function wpas_free_addon_notice() {
+	
+	// Do not show message if installed in an SAAS environment
+	if ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) {
+		return ;
+	}			
 
 	// Only show this message to admins
 	if ( ! current_user_can( 'administrator' ) ) {
@@ -447,6 +452,11 @@ add_action( 'plugins_loaded', 'wpas_request_first_5star_rating' );
  */
 function wpas_request_first_5star_rating() {
 
+	// Do not show message if installed in an SAAS environment
+	if ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) {
+		return ;
+	}				
+
 	// Only show this message to admins
 	if ( ! current_user_can( 'administrator' ) ) {
 		return;
@@ -473,10 +483,6 @@ function wpas_request_first_5star_rating() {
 
 	}
 }
-
-
-
-
 
 /**
  * Generate admin tabs html
