@@ -21,11 +21,7 @@ class WPAS_Titan {
 
 	public function __construct() {
 
-		if( isset( $_GET['page'] ) && 'wpas-settings' === $_GET['page']
-		    && wpas_is_plugin_page()
-		) {
-			add_action( 'after_setup_theme', array( $this, 'load_titan_framework' ), 12 );
-		}
+		add_action( 'after_setup_theme', array( $this, 'load_titan_framework' ), 12 );
 
 	}
 
@@ -98,6 +94,12 @@ class WPAS_Titan {
 						'capability' => 'settings_tickets'
 				)
 		);
+
+		if( ! isset( $_GET['page'] ) || 'wpas-settings' !== $_GET['page']
+		    || ! wpas_is_plugin_page()
+		) {
+			return;
+		}
 
 		/**
 		 * Get plugin core options
