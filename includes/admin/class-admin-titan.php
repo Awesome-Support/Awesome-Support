@@ -95,12 +95,6 @@ class WPAS_Titan {
 				)
 		);
 
-		if( ! isset( $_GET['page'] ) || 'wpas-settings' !== $_GET['page']
-		    || ! wpas_is_plugin_page()
-		) {
-			return;
-		}
-
 		/**
 		 * Get plugin core options
 		 * 
