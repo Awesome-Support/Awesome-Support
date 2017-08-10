@@ -100,7 +100,7 @@ class WPAS_Custom_Fields {
 		global $post;
 
 		// This will usually be packaged with all other components which is why it's not registered with the rest
-		//wp_register_script( 'wpas-date-component', WPAS_URL . 'assets/public/js/component_date.js', array( 'wpas-date' ), '4.0.0', true );
+		wp_register_script( 'wpas-datepicker-component', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'wpas-date' ), '4.0.0', true );
 
 		$ticket_submit = wpas_get_option( 'ticket_submit' );
 
@@ -117,9 +117,9 @@ class WPAS_Custom_Fields {
             wp_enqueue_script( 'jquery-ui-datepicker' );
 		}
 
-		//if ( false === wp_script_is( 'wpas-date-component', 'enqueued' ) ) {
-		//	wp_enqueue_script( 'wpas-date-component' );
-		//}
+		if ( false === wp_script_is( 'wpas-datepicker-component', 'enqueued' ) ) {
+			wp_enqueue_script( 'wpas-datepicker-component' );
+		}
 
 	}
 
@@ -176,6 +176,9 @@ class WPAS_Custom_Fields {
 		// If date field we load the required assets
 		if ( isset( $arguments['field_type'] ) && 'date-field' === $arguments['field_type'] ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_datepicker_assets' ) );
+			wp_register_script( 'wpas-datepicker-component', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'wpas-date' ), '4.0.0', true );
+            wp_enqueue_script( 'jquery-ui-datepicker' );
+			wp_enqueue_script( 'wpas-datepicker-component' );
 		}
 
 		// If select2 is enabled we load the required assets

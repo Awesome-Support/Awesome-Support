@@ -1,10 +1,15 @@
 jQuery(document).ready(function ($) {
 
-	/**
-	 * jQuery Datepicker
-	 */
-	if (jQuery().datepicker && $('input.wpas-date').length) {
-		$('input.wpas-date').datepicker();
-	}
+    /**
+     * jQuery DatePicker
+     *
+     */
+    if (jQuery().datepicker && $('input.wpas-date').length) {
+        // Check first element compatibility for HTML5 <input type="date" />
+        if ($('input.wpas-date:first').prop('type') != 'date') {
+            // Not supported. Fallback to jQuery DatePicker
+            $('input.wpas-date').datepicker();
+        }
+    }
 
 });
