@@ -45,6 +45,7 @@ function wpas_register_assets_back_end() {
 
 	// Styles
 	wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2.min.css', null, '3.5.2', 'all' ); // NOTE: This asset is duplicated in the front-end
+	wp_register_style( 'wpas-datepicker', WPAS_URL . 'assets/public/css/component_datepicker.css', null, WPAS_VERSION, 'all' ); // NOTE: This asset is duplicated in the back-end
 	wp_register_style( 'wpas-flexboxgrid', WPAS_URL . 'assets/admin/css/vendor/flexboxgrid.min.css', null, '6.2.0', 'all' );
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
 	wp_register_style( 'wpas-simple-hint', 'https://cdn.jsdelivr.net/simple-hint/2.1.1/simple-hint.min.css', null, '2.1.1' );
@@ -63,6 +64,15 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-users', WPAS_URL . 'assets/admin/js/admin-users.js', null, WPAS_VERSION, true );
 	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
 	wp_register_script( 'wpas-admin-upload', WPAS_URL . 'assets/public/js/component_upload.js', array( 'jquery' ), WPAS_VERSION );
+	wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2.min.js', array( 'jquery' ), WPAS_VERSION, true ); // NOTE: This asset is duplicated in the front-end
+	//wp_register_script( 'wpas-datepicker', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'jquery' ), WPAS_VERSION, true );
+	wp_register_script(
+		'wpas-datepicker',
+		WPAS_URL . 'assets/public/js/component_datepicker.js',
+		array('jquery', 'jquery-ui-core', 'jquery-ui-datepicker'),
+		time(),
+		true
+	);
 
 	// JS Objects
 	wp_localize_script( 'wpas-admin-script', 'wpas', wpas_get_javascript_object() );
@@ -116,6 +126,7 @@ function wpas_enqueue_assets_back_end() {
 
 		// Styles
 		wp_enqueue_style( 'wpas-select2' );
+		wp_enqueue_style( 'wpas-datepicker' );
 		wp_enqueue_style( 'wpas-flexboxgrid' );
 		wp_enqueue_style( 'wpas-admin-styles' );
 
@@ -143,6 +154,8 @@ function wpas_enqueue_assets_back_end() {
 		}
 
 		wp_enqueue_script( 'wpas-select2' );
+		wp_enqueue_script( 'wpas-datepicker' );
+
 		wp_enqueue_script( 'wpas-admin-script' );
 		wp_enqueue_script( 'wpas-admin-tabletojson' );
 		wp_enqueue_script( 'wpas-users' );
