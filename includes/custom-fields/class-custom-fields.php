@@ -176,9 +176,6 @@ class WPAS_Custom_Fields {
 		// If date field we load the required assets
 		if ( isset( $arguments['field_type'] ) && 'date-field' === $arguments['field_type'] ) {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_datepicker_assets' ) );
-			wp_register_script( 'wpas-datepicker-component', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'wpas-date' ), '4.0.0', true );
-            wp_enqueue_script( 'jquery-ui-datepicker' );
-			wp_enqueue_script( 'wpas-datepicker-component' );
 		}
 
 		// If select2 is enabled we load the required assets
