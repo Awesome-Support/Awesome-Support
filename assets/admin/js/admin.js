@@ -308,6 +308,37 @@
 
             $(window).on('resize', admin_tabs_responsive);
         }
+        
+        
+        var tab_widget = $('#wpas_admin_tabs_tickets_tablenav.wpas_admin_tabs');
+                if( 0 < tab_widget.length ) {
+                        
+                        // place filter button into filter tab
+                        $('#post-query-submit').appendTo('.filter_btn_container');
+                        
+                        // place date filter dropdown into filter tab
+                        $('.actions #filter-by-date').appendTo('.filter_by_date_container');
+                        
+                        // Place search box into search tab
+                        if( $('#posts-filter .search-box').length > 0 ) {
+                                $('#posts-filter .search-box').appendTo('#search_tab_content_placeholder');
+                        } else {
+                                // Search box does not exist so we should hide it.
+                                $('#wpas_admin_tabs_tickets_tablenav .wpas_admin_tabs_names_wrapper li[rel=wpas_admin_tabs_tickets_tablenav_search]').hide();
+                        }
+
+                        // Place bulk actions dropdown and button into bulk actions tab
+                        if( $('#bulk-action-selector-top').length > 0 ) {
+                                $('#bulk-action-selector-top, .actions.bulkactions input#doaction[type=submit]').appendTo('#bulk_action_tab_content_placeholder');
+                        } else {
+                                // Bulk action dropdown does not exist so we should hide bulk actions tab
+                                $('#wpas_admin_tabs_tickets_tablenav .wpas_admin_tabs_names_wrapper li[rel=wpas_admin_tabs_tickets_tablenav_bulk_actions]').hide();
+                        }
+
+                        
+                        
+                        
+                }
 
 
     });
