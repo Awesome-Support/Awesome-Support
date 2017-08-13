@@ -32,10 +32,9 @@ class WPAS_Tickets_List {
 			add_filter( 'manage_edit-ticket_sortable_columns',  array( $this, 'custom_columns_sortable' ), 10, 1 );
 
 			/**
-			 * Add the taxonomies filters
+			 * Add tabs in ticket listing page
 			 */
-			add_action( 'restrict_manage_posts',                array( $this, 'custom_filters' ), 8, 2 );
-			add_action( 'restrict_manage_posts',                array( $this, 'custom_taxonomy_filter' ), 10, 2 );
+			add_action( 'restrict_manage_posts',                array( $this, 'tablenav_tabs' ), 8, 2 );
 			add_filter( 'parse_query',                          array( $this, 'custom_taxonomy_filter_convert_id_term' ), 10, 1 );
 			add_filter( 'parse_query',                          array( $this, 'custom_meta_query' ), 11, 1 );
 			add_filter( 'posts_clauses',                        array( $this, 'post_clauses_orderby' ), 5, 2 );
@@ -655,6 +654,106 @@ SQL;
 		return $posts;
 
 	}
+	
+	
+	/**
+	 * Turn tablenav area into tabs for ticket listing page
+	 * 
+	 * @param string $post_type
+	 * @param string $which
+	 * 
+	 */
+	public function tablenav_tabs( $post_type, $which ) {
+		
+		if ( 'ticket' !== $post_type || 'top' !== $which ) {
+			return;
+		}
+		
+		// Register tabs
+		add_filter( 'wpas_admin_tabs_tickets_tablenav', array( $this, 'register_tabs' ) );
+		echo wpas_admin_tabs( 'tickets_tablenav' );
+	}
+	
+	/**
+	 * Register tabs for tickets tablenav
+	 * 
+	 * @param array $tabs
+	 * 
+	 * @return array
+	 */
+	public function register_tabs( $tabs ) {
+		
+		$tabs['filter'] = __( 'Filter', 'awesome-support' );
+		$tabs['search'] = __( 'Search', 'awesome-support' );
+		$tabs['bulk_actions'] = __( 'Bulk Actions', 'awesome-support' );
+		
+		
+		add_filter( 'wpas_admin_tabs_tickets_tablenav_filter_content',		array( $this, 'filter_tab_content' ) );
+		add_filter( 'wpas_admin_tabs_tickets_tablenav_search_content',		array( $this, 'search_tab_content' ) );
+		add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content',	array( $this, 'bulk_actions_tab_content' ) );
+		
+		
+		return $tabs;
+	}
+	
+	/**
+	 * Add content to filter tab
+	 * 
+	 * @param string $content
+	 * 
+	 * @return string
+	 */
+	public function filter_tab_content( $content ) {
+		
+		ob_start();
+		
+		echo '<div class="filter_by_date_container"></div>';
+		
+		// Add custom field filters
+		$this->custom_filters();
+		
+		// Add texonomy filters
+		$this->custom_taxonomy_filter();
+		
+		// Emply container to place filter button via jQuery
+		echo '<div class="filter_btn_container"></div>';
+		
+		/* RESET FILTERS */
+
+		echo '<span style="line-height: 28px; margin: 0 25px;">';
+		echo $this->reset_link();
+		echo '</span>';
+		
+		echo '<div class="clear clearfix"></div>';
+		
+		$content = ob_get_clean();
+		
+		return $content;
+	}
+
+	/**
+	 * Add content to search tab
+	 * 
+	 * @param string $content
+	 * 
+	 * @return string
+	 */
+	public function search_tab_content( $content ) {
+		
+		return '<div id="search_tab_content_placeholder"></div>';
+	}
+	
+	/**
+	 * * Add content to bulk actions tab
+	 * 
+	 * @param string $content
+	 * 
+	 * @return string
+	 */
+	public function bulk_actions_tab_content( $content ) {
+		return '<div id="bulk_action_tab_content_placeholder" class="actions"></div>';
+	}
+	
 
 	/***
      * Display filters
@@ -663,11 +762,7 @@ SQL;
      *
 	 * @param $which
 	 */
-	public function custom_filters( $post_type, $which ) {
-
-		if ( 'ticket' !== $post_type || 'top' !== $which ) {
-			return;
-		}
+	public function custom_filters() {
 
 		/* STATE */
 
@@ -808,12 +903,6 @@ SQL;
 		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . $selected_value . '" />';
 
 		echo '<div style="clear:both;"></div>';
-
-		/* RESET FILTERS */
-
-		echo '<span class="alignright" style="line-height: 28px; margin: 0 25px;">';
-		echo $this->reset_link();
-		echo '</span>';
 
 	}
 

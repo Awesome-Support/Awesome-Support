@@ -666,6 +666,39 @@ Admin Tabs
         
 }
 
+/*
+==========================================================================
+Ticket Listing Page Tabs
+==========================================================================
+*/
+.post-type-ticket #posts-filter {
+        .tablenav.top {
+                height: auto;
+                
+                
+                .alignleft.actions {
+                        float : none;
+                }
+                
+                .actions.bulkactions, .search-box, #post-query-submit, #filter-by-date {
+                        display : none;
+                }
+                
+                .filter_btn_container {
+                        float: left;
+                        #post-query-submit {
+                                display: inline-block;
+                        }
+                }
 
+                #search_tab_content_placeholder .search-box {
+                        display: block !important;
+                        float : none;
+                }
 
-
+                .filter_by_date_container #filter-by-date {
+                        display: inline-block;
+                }
+        }
+        
+}	
