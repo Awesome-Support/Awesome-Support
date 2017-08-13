@@ -751,7 +751,7 @@ SQL;
 	 * @return string
 	 */
 	public function bulk_actions_tab_content( $content ) {
-		return '<div id="bulk_action_tab_content_placeholder"></div>';
+		return '<div id="bulk_action_tab_content_placeholder" class="actions"></div>';
 	}
 	
 
