@@ -702,3 +702,69 @@ Ticket Listing Page Tabs
         }
         
 }	
+
+
+@media screen and (max-width: 782px) {
+        
+        
+        /*
+        ==========================================================================
+        Fix ticket listing table
+        ==========================================================================
+        */
+        .post-type-ticket {
+        
+                .wp-list-table {
+                        tr:not(.inline-edit-row):not(.no-items) td:not(.check-column) {
+                                display: table-cell;
+                        }
+                        
+                        .is-expanded td.column-status {
+                                display: table-cell !important;
+                        }
+                        
+                        td.column-status::before {
+                                content : '' !important;
+                        }
+                        
+                        td.column-title {
+                                max-width: 100% !important;
+                        }
+                }
+                
+        }
+}
+
+
+@media screen and (max-width: 420px) {
+        
+        /*
+        ==========================================================================
+        Fix ticket listing table
+        ==========================================================================
+        */
+        .post-type-ticket {
+        
+                .wp-list-table {
+                        
+                        tr.is-expanded:not(.inline-edit-row):not(.no-items) td:not(.check-column) {
+                                display: block !important;
+                        }
+                        
+                        td.column-title {
+                                max-width: 100% !important;
+                        }
+                        
+                        thead .column-status, tfoot .column-status {
+                                display: none !important;
+                        }
+                        
+                        #the-list {
+                                .column-status, .column-title {
+                                        display: block !important;
+                                }
+                        }
+                }
+                
+        }
+}
