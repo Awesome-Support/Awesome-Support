@@ -715,20 +715,21 @@ Ticket Listing Page Tabs
         .post-type-ticket {
         
                 .wp-list-table {
+                        
                         tr:not(.inline-edit-row):not(.no-items) td:not(.check-column) {
-                                display: table-cell;
+                                
+                                &.column-status {
+                                        display: table-cell !important;
+                                }
+                                
                         }
                         
-                        .is-expanded td.column-status {
-                                display: table-cell !important;
-                        }
-                        
-                        td.column-status::before {
-                                content : '' !important;
+                        tr td.column-status:not(.column-primary)::before {
+                                display: none;
                         }
                         
                         td.column-title {
-                                max-width: 100% !important;
+                                max-width: 100%;
                         }
                 }
                 
@@ -747,16 +748,8 @@ Ticket Listing Page Tabs
         
                 .wp-list-table {
                         
-                        tr.is-expanded:not(.inline-edit-row):not(.no-items) td:not(.check-column) {
-                                display: block !important;
-                        }
-                        
-                        td.column-title {
-                                max-width: 100% !important;
-                        }
-                        
                         thead .column-status, tfoot .column-status {
-                                display: none !important;
+                                display: none;
                         }
                         
                         #the-list {
