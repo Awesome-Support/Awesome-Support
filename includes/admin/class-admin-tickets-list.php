@@ -796,12 +796,13 @@ SQL;
 		$tabs['filter'] = __( 'Filter', 'awesome-support' );
 		$tabs['search'] = __( 'Search', 'awesome-support' );
 		$tabs['bulk_actions'] = __( 'Bulk Actions', 'awesome-support' );
+		$tabs['documentation'] = __( 'Documentation', 'awesome-support' );
 		
 		
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_filter_content',		array( $this, 'filter_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_search_content',		array( $this, 'search_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content',	array( $this, 'bulk_actions_tab_content' ) );
-		
+		add_filter( 'wpas_admin_tabs_tickets_tablenav_documentation_content',		array( $this, 'filter_documentation_content' ) );
 		
 		return $tabs;
 	}
@@ -851,7 +852,21 @@ SQL;
 	public function search_tab_content( $content ) {
 		
 		return '<div id="search_tab_content_placeholder"></div>';
+		
 	}
+	
+	/**
+	 * Add content to documentation tab
+	 * 
+	 * @param string $content
+	 * 
+	 * @return string
+	 */
+	public function filter_documentation_content( $content ) {
+		
+		return 'Core documentation links will go here eventually';
+		
+	}	
 	
 	/**
 	 * * Add content to bulk actions tab
