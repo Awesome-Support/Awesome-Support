@@ -32,7 +32,7 @@ class WPAS_Tickets_List {
 			add_filter( 'manage_edit-ticket_sortable_columns',  array( $this, 'custom_columns_sortable' ), 10, 1 );
 
 			/**
-			 * Add the taxonomies filters
+			 * Add tabs in ticket listing page
 			 */
 			add_action( 'restrict_manage_posts',                array( $this, 'tablenav_tabs' ), 8, 2 );
 			add_filter( 'parse_query',                          array( $this, 'custom_taxonomy_filter_convert_id_term' ), 10, 1 );
@@ -41,19 +41,19 @@ class WPAS_Tickets_List {
 			add_filter( 'posts_where',                          array( $this, 'posts_where' ), 10, 2 );
 			add_action( 'parse_request',                        array( $this, 'parse_request' ), 10, 1 );
 			add_action( 'pre_get_posts',                        array( $this, 'set_ordering_query_var' ), 100, 1 );
-			add_filter( 'posts_results', 					    array( $this, 'apply_ordering_criteria' ), 10, 2 );
+			add_filter( 'posts_results', 							          array( $this, 'apply_ordering_criteria' ), 10, 2 );
 
 			add_filter( 'wpas_add_custom_fields',               array( $this, 'add_custom_fields' ) );
+			
+			add_filter( 'screen_settings',                      array( $this, 'show_screen_options' ), 10, 2 );
+			add_filter( 'set-screen-option',                    array( $this, 'set_screen_options' ), 11, 3 );
+			add_action( 'load-edit.php',                        array( $this, 'load_edit_php' ), 90, 0 );
 
-			add_filter( 'screen_settings', array( $this, 'show_screen_options' ), 10, 2 );
-			add_filter( 'set-screen-option', array( $this, 'set_screen_options' ), 11, 3 );
-			add_action( 'load-edit.php', array( $this, 'load_edit_php' ), 90, 0 );
-
-			add_action( 'admin_menu', array( $this, 'hide_closed_tickets' ), 10, 0 );
-			add_filter( 'the_excerpt', array( $this, 'remove_excerpt' ), 10, 1 );
-			add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2 );
-			add_filter( 'post_class', array( $this, 'ticket_row_class' ), 10, 3 );
-			add_filter( 'manage_posts_extra_tablenav', array( $this, 'manage_posts_extra_tablenav' ), 10, 1 );
+			add_action( 'admin_menu',                           array( $this, 'hide_closed_tickets' ),         10, 0 );
+			add_filter( 'the_excerpt',                          array( $this, 'remove_excerpt' ),              10, 1 );
+			add_filter( 'post_row_actions',                     array( $this, 'remove_quick_edit' ),           10, 2 );
+			add_filter( 'post_class',                           array( $this, 'ticket_row_class' ), 10, 3 );
+			add_filter( 'manage_posts_extra_tablenav',          array( $this, 'manage_posts_extra_tablenav' ), 10, 1 );
 
 		}
 	}
@@ -244,7 +244,7 @@ class WPAS_Tickets_List {
 	}
 
 
-	/**
+/**
 	 * Display custom screen options
 	 *
 	 * @param $status
@@ -311,7 +311,7 @@ class WPAS_Tickets_List {
 		);
 
 	}
-
+	
 	/**
 	 * Get screen option for current user else return default.
 	 *
@@ -336,7 +336,7 @@ class WPAS_Tickets_List {
 	/**
 	 * @return
 	 */
-	public function edit_link_target( $option ) {
+	public function edit_link_target() {
 
 		$current_val = $this->get_user_meta_current_val( 'edit_ticket_in_new_window' );
 
@@ -365,8 +365,11 @@ class WPAS_Tickets_List {
 
 					case 'id':
 
-						$link = add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) );
-						echo "<strong><a href='$link'>{$post_id}</a></strong>";
+						$link = add_query_arg( array(
+							                       'post'   => $post_id,
+							                       'action' => 'edit',
+						                       ), admin_url( 'post.php' ) );
+						echo "<strong><a href='$link' target='" . $this->edit_link_target() . "'>{$post_id}</a></strong>";
 
 						break;
 
@@ -375,7 +378,10 @@ class WPAS_Tickets_List {
 						$client = get_user_by( 'id', get_the_author_meta( 'ID' ) );
 
 						if( !empty( $client) ) {
-							$link = add_query_arg( array( 'post_type' => 'ticket', 'author' => $client->ID ), admin_url( 'edit.php' ) );
+								$link = add_query_arg( array(
+									                       'post_type' => 'ticket',
+									                       'author'    => $client->ID,
+								                       ), admin_url( 'edit.php' ) );
 
 							echo "<a href='$link'>$client->display_name</a><br />$client->user_email";
 						}
@@ -407,10 +413,10 @@ class WPAS_Tickets_List {
 
 							echo _x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' );
 							echo '<br>';
-							printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
-									'post'   => $post_id,
-									'action' => 'edit',
-								), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
+							printf( _x( '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
+								                                                                                                                                                                 'post'   => $post_id,
+								                                                                                                                                                                 'action' => 'edit',
+							                                                                                                                                                                 ), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
 						}
 						
 						// Add open date
@@ -758,119 +764,155 @@ SQL;
 		return $posts;
 
 	}
-
-
+	
+	
 	/**
 	 * Turn tablenav area into tabs for ticket listing page
-	 *
+	 * 
 	 * @param string $post_type
 	 * @param string $which
-	 *
+	 * 
 	 */
 	public function tablenav_tabs( $post_type, $which ) {
-
+		
 		if ( 'ticket' !== $post_type || 'top' !== $which ) {
 			return;
 		}
-
+		
 		// Register tabs
 		add_filter( 'wpas_admin_tabs_tickets_tablenav', array( $this, 'register_tabs' ) );
 		echo wpas_admin_tabs( 'tickets_tablenav' );
 	}
-
+	
 	/**
 	 * Register tabs for tickets tablenav
-	 *
+	 * 
 	 * @param array $tabs
-	 *
+	 * 
 	 * @return array
 	 */
 	public function register_tabs( $tabs ) {
-
+		
 		$tabs['filter'] = __( 'Filter', 'awesome-support' );
 		$tabs['search'] = __( 'Search', 'awesome-support' );
 		$tabs['bulk_actions'] = __( 'Bulk Actions', 'awesome-support' );
-
-
+		$tabs['documentation'] = __( 'Documentation', 'awesome-support' );
+		
+		
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_filter_content',		array( $this, 'filter_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_search_content',		array( $this, 'search_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content',	array( $this, 'bulk_actions_tab_content' ) );
-
-
+		add_filter( 'wpas_admin_tabs_tickets_tablenav_documentation_content',		array( $this, 'filter_documentation_content' ) );
+		
 		return $tabs;
 	}
-
+	
 	/**
 	 * Add content to filter tab
-	 *
+	 * 
 	 * @param string $content
-	 *
+	 * 
 	 * @return string
 	 */
 	public function filter_tab_content( $content ) {
-
+		
 		ob_start();
-
+		
 		echo '<div class="filter_by_date_container"></div>';
-
+		
 		// Add custom field filters
 		$this->custom_filters();
-
+		
 		// Add texonomy filters
 		$this->custom_taxonomy_filter();
-
+		
 		// Emply container to place filter button via jQuery
 		echo '<div class="filter_btn_container"></div>';
-
+		
 		/* RESET FILTERS */
 
 		echo '<span style="line-height: 28px; margin: 0 25px;">';
 		echo $this->reset_link();
 		echo '</span>';
-
+		
 		echo '<div class="clear clearfix"></div>';
-
+		
 		$content = ob_get_clean();
-
+		
 		return $content;
 	}
 
 	/**
 	 * Add content to search tab
-	 *
+	 * 
 	 * @param string $content
-	 *
+	 * 
 	 * @return string
 	 */
 	public function search_tab_content( $content ) {
-
+		
 		return '<div id="search_tab_content_placeholder"></div>';
+		
 	}
+	
+	/**
+	 * Add content to documentation tab
+	 * 
+	 * @param string $content
+	 * 
+	 * @return string
+	 */
+	public function filter_documentation_content( $content ) {
+		
+		ob_start();
+		
+		echo '<H2>' . __( 'Awesome Support Core Documentation', 'awesome-support' ) . '</H2>'. '<br />';
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/post-installation-need-know-quick-start/">'  	. __( '1. User Guide', 			 'awesome-support' ) . '</a>' . '<br />' ;
+		echo __( 'The end user guide covers topics such as instructions for installation, entering tickets, adding agents, navigation, replying to and closing tickets and more.' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/admin-overview/">'  							. __( '2. Administration Guide', 'awesome-support' ) . '</a>' . '<br />' ;
+		echo __( 'The admin guide covers topics such as configuring products, departments, priorities and channels. It also includes guides for security using roles and capabilities along with time tracking, email alerts and known incompatibilities.' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/how-to-fix-you-do-not-have-the-capacity-to-open-a-new-ticket/">'  . __( '3. Troubleshooting', 'awesome-support' ) . '</a>' . '<br />' ;		
+		echo __( 'Having an issue? Your answer might be in here.' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/faq/">'  																	. __( '4. FAQ and More Troubleshooting Tips', 'awesome-support' ) . '</a>' . '<br />' ;				
+		echo __( 'Even more trouble-shooting tips and other frequently asked questions. 404 pages, missing tabs, PHP errors and conflicts are just some of the topics covered here!' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/custom-fields/">'  							. __( '5. Customization', 'awesome-support' ) . '</a>' . '<br />' ;				
+		echo __( 'Need to change the look of your ticket pages?  Maybe add some custom fields? Then this is the guide you need!' , 'awesome-support' ) . '<br /><br />';		
+		
+		echo '<H2>' . __( 'Awesome Support Add-ons and Extensions Documentation', 'awesome-support' ) . '</H2>'. '<br />';		
+		echo '<a href = "https://getawesomesupport.com/documentation-new/">'  														. __( '1. All Extensions', 			 'awesome-support' ) . '</a>' . '<br />' ;
+		echo __( 'Links to documentation for every single extension or add-on.' , 'awesome-support' ) . '<br /><br />';	
+		
+		echo '<a href = "http://restapidocs.getawesomesupport.com/">'  																. __( '2. REST API', 			 'awesome-support' ) . '</a>' . '<br />' ;		
+		echo __( 'Documentation for the REST API.' , 'awesome-support' ) . '<br /><br />';	
+			
+		
+		$content = ob_get_clean();
+		
+		return $content;
 
+		
+	}	
+	
 	/**
 	 * * Add content to bulk actions tab
-	 *
+	 * 
 	 * @param string $content
-	 *
+	 * 
 	 * @return string
 	 */
 	public function bulk_actions_tab_content( $content ) {
 		return '<div id="bulk_action_tab_content_placeholder" class="actions"></div>';
 	}
-
+	
 
 	/***
-     * Display filters
-     *
-	 * @param $post_type
-     *
-	 * @param $which
+	 * Display filters
 	 */
-	public function custom_filters( $post_type, $which ) {
-
-		if ( 'ticket' !== $post_type || 'top' !== $which ) {
-			return;
-		}
+	public function custom_filters() {
 
 		/* STATE */
 
@@ -1011,12 +1053,6 @@ SQL;
 		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . $selected_value . '" />';
 
 		echo '<div style="clear:both;"></div>';
-
-		/* RESET FILTERS */
-
-		echo '<span class="alignright" style="line-height: 28px; margin: 0 25px;">';
-		echo $this->reset_link();
-		echo '</span>';
 
 	}
 
