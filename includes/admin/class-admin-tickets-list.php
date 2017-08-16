@@ -32,7 +32,7 @@ class WPAS_Tickets_List {
 			add_filter( 'manage_edit-ticket_sortable_columns',  array( $this, 'custom_columns_sortable' ), 10, 1 );
 
 			/**
-			 * Add tabs in ticket listing page
+			 * Add the taxonomies filters
 			 */
 			add_action( 'restrict_manage_posts',                array( $this, 'tablenav_tabs' ), 8, 2 );
 			add_filter( 'parse_query',                          array( $this, 'custom_taxonomy_filter_convert_id_term' ), 10, 1 );
@@ -45,11 +45,15 @@ class WPAS_Tickets_List {
 
 			add_filter( 'wpas_add_custom_fields',               array( $this, 'add_custom_fields' ) );
 
-			add_action( 'admin_menu',                           array( $this, 'hide_closed_tickets' ),         10, 0 );
-			add_filter( 'the_excerpt',                          array( $this, 'remove_excerpt' ),              10, 1 );
-			add_filter( 'post_row_actions',                     array( $this, 'remove_quick_edit' ),           10, 2 );
-			add_filter( 'post_class',                           array( $this, 'ticket_row_class' ), 10, 3 );
-			add_filter( 'manage_posts_extra_tablenav',          array( $this, 'manage_posts_extra_tablenav' ), 10, 1 );
+			add_filter( 'screen_settings', array( $this, 'show_screen_options' ), 10, 2 );
+			add_filter( 'set-screen-option', array( $this, 'set_screen_options' ), 11, 3 );
+			add_action( 'load-edit.php', array( $this, 'load_edit_php' ), 90, 0 );
+
+			add_action( 'admin_menu', array( $this, 'hide_closed_tickets' ), 10, 0 );
+			add_filter( 'the_excerpt', array( $this, 'remove_excerpt' ), 10, 1 );
+			add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2 );
+			add_filter( 'post_class', array( $this, 'ticket_row_class' ), 10, 3 );
+			add_filter( 'manage_posts_extra_tablenav', array( $this, 'manage_posts_extra_tablenav' ), 10, 1 );
 
 		}
 	}
@@ -239,6 +243,106 @@ class WPAS_Tickets_List {
 
 	}
 
+
+	/**
+	 * Display custom screen options
+	 *
+	 * @param $status
+	 * @param $args
+	 *
+	 * @return string
+	 */
+	function show_screen_options( $status, $args ) {
+		$return = $status;
+		if ( $args->base == 'edit' ) {
+
+			$current_val = $this->get_user_meta_current_val( 'edit_ticket_in_new_window' );
+			$selected    = isset( $current_val ) && $current_val === 'yes' ? 'checked' : '';
+
+			$return .= "
+            <fieldset>
+            <legend>" . __( 'Miscellaneous', 'awesome-support' ) . "</legend>
+            <div class='metabox-prefs'>
+            <div><input type='hidden' name='wp_screen_options[option]' value='edit_ticket_in_new_window' /></div>
+            <div><input type='hidden' name='wp_screen_options[value]' value='yes' /></div>
+            <div class='edit_ticket_in_new_window'>
+                <label for='edit_ticket_in_new_window'>
+                <input type='checkbox' value='yes' name='edit_ticket_in_new_window' id='edit_ticket_in_new_window' " . $selected . " /> "
+			           . __( 'Edit tickets in new window/tab', 'awesome-support' ) . "</label><br />
+            </div>
+            </div>
+            </fieldset>
+            <br class='clear'>";
+			//$button";
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Filter screen option values before setting.
+	 *
+	 * @param $status
+	 * @param $option
+	 * @param $value
+	 *
+	 * @return mixed
+	 */
+	function set_screen_options( $status, $option, $value ) {
+
+		if ( 'edit_ticket_in_new_window' === $option ) {
+			return $_POST[ 'edit_ticket_in_new_window' ];
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Screen options for edit.php
+	 */
+	public function load_edit_php() {
+
+		add_screen_option( 'edit_ticket_in_new_window',
+		                   array(
+			                   'label'   => 'Open tickets/replies in new window',
+			                   'default' => 'no',
+			                   'option'  => 'edit_ticket_in_new_window',
+		                   )
+		);
+
+	}
+
+	/**
+	 * Get screen option for current user else return default.
+	 *
+	 * @param $option
+	 *
+	 * @return mixed|string
+	 */
+	public function get_user_meta_current_val( $option ) {
+
+		$user        = get_current_user_id();
+		$screen      = get_current_screen();
+		$option      = $screen->get_option( $option, 'option' );
+		$current_val = get_user_meta( $user, $option, true );
+
+		if ( empty( $current_val ) ) {
+			$current_val = $screen->get_option( $option, 'default' );
+		}
+
+		return $current_val;
+	}
+
+	/**
+	 * @return
+	 */
+	public function edit_link_target( $option ) {
+
+		$current_val = $this->get_user_meta_current_val( 'edit_ticket_in_new_window' );
+
+		return ( 'yes' !== $current_val ? '_self' : '_blank' );
+
+	}
 
 	/**
 	 * Manage core column content.
@@ -654,106 +758,106 @@ SQL;
 		return $posts;
 
 	}
-	
-	
+
+
 	/**
 	 * Turn tablenav area into tabs for ticket listing page
-	 * 
+	 *
 	 * @param string $post_type
 	 * @param string $which
-	 * 
+	 *
 	 */
 	public function tablenav_tabs( $post_type, $which ) {
-		
+
 		if ( 'ticket' !== $post_type || 'top' !== $which ) {
 			return;
 		}
-		
+
 		// Register tabs
 		add_filter( 'wpas_admin_tabs_tickets_tablenav', array( $this, 'register_tabs' ) );
 		echo wpas_admin_tabs( 'tickets_tablenav' );
 	}
-	
+
 	/**
 	 * Register tabs for tickets tablenav
-	 * 
+	 *
 	 * @param array $tabs
-	 * 
+	 *
 	 * @return array
 	 */
 	public function register_tabs( $tabs ) {
-		
+
 		$tabs['filter'] = __( 'Filter', 'awesome-support' );
 		$tabs['search'] = __( 'Search', 'awesome-support' );
 		$tabs['bulk_actions'] = __( 'Bulk Actions', 'awesome-support' );
-		
-		
+
+
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_filter_content',		array( $this, 'filter_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_search_content',		array( $this, 'search_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content',	array( $this, 'bulk_actions_tab_content' ) );
-		
-		
+
+
 		return $tabs;
 	}
-	
+
 	/**
 	 * Add content to filter tab
-	 * 
+	 *
 	 * @param string $content
-	 * 
+	 *
 	 * @return string
 	 */
 	public function filter_tab_content( $content ) {
-		
+
 		ob_start();
-		
+
 		echo '<div class="filter_by_date_container"></div>';
-		
+
 		// Add custom field filters
 		$this->custom_filters();
-		
+
 		// Add texonomy filters
 		$this->custom_taxonomy_filter();
-		
+
 		// Emply container to place filter button via jQuery
 		echo '<div class="filter_btn_container"></div>';
-		
+
 		/* RESET FILTERS */
 
 		echo '<span style="line-height: 28px; margin: 0 25px;">';
 		echo $this->reset_link();
 		echo '</span>';
-		
+
 		echo '<div class="clear clearfix"></div>';
-		
+
 		$content = ob_get_clean();
-		
+
 		return $content;
 	}
 
 	/**
 	 * Add content to search tab
-	 * 
+	 *
 	 * @param string $content
-	 * 
+	 *
 	 * @return string
 	 */
 	public function search_tab_content( $content ) {
-		
+
 		return '<div id="search_tab_content_placeholder"></div>';
 	}
-	
+
 	/**
 	 * * Add content to bulk actions tab
-	 * 
+	 *
 	 * @param string $content
-	 * 
+	 *
 	 * @return string
 	 */
 	public function bulk_actions_tab_content( $content ) {
 		return '<div id="bulk_action_tab_content_placeholder" class="actions"></div>';
 	}
-	
+
 
 	/***
      * Display filters
@@ -762,7 +866,11 @@ SQL;
      *
 	 * @param $which
 	 */
-	public function custom_filters() {
+	public function custom_filters( $post_type, $which ) {
+
+		if ( 'ticket' !== $post_type || 'top' !== $which ) {
+			return;
+		}
 
 		/* STATE */
 
@@ -903,6 +1011,12 @@ SQL;
 		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . $selected_value . '" />';
 
 		echo '<div style="clear:both;"></div>';
+
+		/* RESET FILTERS */
+
+		echo '<span class="alignright" style="line-height: 28px; margin: 0 25px;">';
+		echo $this->reset_link();
+		echo '</span>';
 
 	}
 
