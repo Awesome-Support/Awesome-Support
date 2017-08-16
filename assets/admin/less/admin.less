@@ -666,6 +666,98 @@ Admin Tabs
         
 }
 
+/*
+==========================================================================
+Ticket Listing Page Tabs
+==========================================================================
+*/
+.post-type-ticket #posts-filter {
+        .tablenav.top {
+                height: auto;
+                
+                
+                .alignleft.actions {
+                        float : none;
+                }
+                
+                .actions.bulkactions, .search-box, #post-query-submit, #filter-by-date {
+                        display : none;
+                }
+                
+                .filter_btn_container {
+                        float: left;
+                        #post-query-submit {
+                                display: inline-block;
+                        }
+                }
+
+                #search_tab_content_placeholder .search-box {
+                        display: block !important;
+                        float : none;
+                }
+
+                .filter_by_date_container #filter-by-date {
+                        display: inline-block;
+                }
+        }
+        
+}	
 
 
+@media screen and (max-width: 782px) {
+        
+        
+        /*
+        ==========================================================================
+        Fix ticket listing table
+        ==========================================================================
+        */
+        .post-type-ticket {
+        
+                .wp-list-table {
+                        
+                        tr:not(.inline-edit-row):not(.no-items) td:not(.check-column) {
+                                
+                                &.column-status {
+                                        display: table-cell !important;
+                                }
+                                
+                        }
+                        
+                        tr td.column-status:not(.column-primary)::before {
+                                display: none;
+                        }
+                        
+                        td.column-title {
+                                max-width: 100%;
+                        }
+                }
+                
+        }
+}
 
+
+@media screen and (max-width: 420px) {
+        
+        /*
+        ==========================================================================
+        Fix ticket listing table
+        ==========================================================================
+        */
+        .post-type-ticket {
+        
+                .wp-list-table {
+                        
+                        thead .column-status, tfoot .column-status {
+                                display: none;
+                        }
+                        
+                        #the-list {
+                                .column-status, .column-title {
+                                        display: block !important;
+                                }
+                        }
+                }
+                
+        }
+}
