@@ -864,7 +864,36 @@ SQL;
 	 */
 	public function filter_documentation_content( $content ) {
 		
-		return 'Core documentation links will go here eventually';
+		ob_start();
+		
+		echo '<H2>' . __( 'Awesome Support Core Documentation', 'awesome-support' ) . '</H2>'. '<br />';
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/post-installation-need-know-quick-start/">'  	. __( '1. User Guide', 			 'awesome-support' ) . '</a>' . '<br />' ;
+		echo __( 'The end user guide covers topics such as instructions for installation, entering tickets, adding agents, navigation, replying to and closing tickets and more.' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/admin-overview/">'  							. __( '2. Administration Guide', 'awesome-support' ) . '</a>' . '<br />' ;
+		echo __( 'The admin guide covers topics such as configuring products, departments, priorities and channels. It also includes guides for security using roles and capabilities along with time tracking, email alerts and known incompatibilities.' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/how-to-fix-you-do-not-have-the-capacity-to-open-a-new-ticket/">'  . __( '3. Troubleshooting', 'awesome-support' ) . '</a>' . '<br />' ;		
+		echo __( 'Having an issue? Your answer might be in here.' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/faq/">'  																	. __( '4. FAQ and More Troubleshooting Tips', 'awesome-support' ) . '</a>' . '<br />' ;				
+		echo __( 'Even more trouble-shooting tips and other frequently asked questions. 404 pages, missing tabs, PHP errors and conflicts are just some of the topics covered here!' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/custom-fields/">'  							. __( '5. Customization', 'awesome-support' ) . '</a>' . '<br />' ;				
+		echo __( 'Need to change the look of your ticket pages?  Maybe add some custom fields? Then this is the guide you need!' , 'awesome-support' ) . '<br /><br />';		
+		
+		echo '<H2>' . __( 'Awesome Support Add-ons and Extensions Documentation', 'awesome-support' ) . '</H2>'. '<br />';		
+		echo '<a href = "https://getawesomesupport.com/documentation-new/">'  														. __( '1. All Extensions', 			 'awesome-support' ) . '</a>' . '<br />' ;
+		echo __( 'Links to documentation for every single extension or add-on.' , 'awesome-support' ) . '<br /><br />';	
+		
+		echo '<a href = "http://restapidocs.getawesomesupport.com/">'  																. __( '2. REST API', 			 'awesome-support' ) . '</a>' . '<br />' ;		
+		echo __( 'Documentation for the REST API.' , 'awesome-support' ) . '<br /><br />';	
+			
+		
+		$content = ob_get_clean();
+		
+		return $content;
+
 		
 	}	
 	
