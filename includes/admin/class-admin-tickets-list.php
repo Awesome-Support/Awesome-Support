@@ -41,9 +41,13 @@ class WPAS_Tickets_List {
 			add_filter( 'posts_where',                          array( $this, 'posts_where' ), 10, 2 );
 			add_action( 'parse_request',                        array( $this, 'parse_request' ), 10, 1 );
 			add_action( 'pre_get_posts',                        array( $this, 'set_ordering_query_var' ), 100, 1 );
-			add_filter( 'posts_results', 					    array( $this, 'apply_ordering_criteria' ), 10, 2 );
+			add_filter( 'posts_results', 							          array( $this, 'apply_ordering_criteria' ), 10, 2 );
 
 			add_filter( 'wpas_add_custom_fields',               array( $this, 'add_custom_fields' ) );
+			
+			add_filter( 'screen_settings',                      array( $this, 'show_screen_options' ), 10, 2 );
+			add_filter( 'set-screen-option',                    array( $this, 'set_screen_options' ), 11, 3 );
+			add_action( 'load-edit.php',                        array( $this, 'load_edit_php' ), 90, 0 );
 
 			add_filter( 'screen_settings', array( $this, 'show_screen_options' ), 10, 2 );
 			add_filter( 'set-screen-option', array( $this, 'set_screen_options' ), 11, 3 );
@@ -244,6 +248,106 @@ class WPAS_Tickets_List {
 	}
 
 
+/**
+	 * Display custom screen options
+	 *
+	 * @param $status
+	 * @param $args
+	 *
+	 * @return string
+	 */
+	function show_screen_options( $status, $args ) {
+		$return = $status;
+		if ( $args->base == 'edit' ) {
+
+			$current_val = $this->get_user_meta_current_val( 'edit_ticket_in_new_window' );
+			$selected    = isset( $current_val ) && $current_val === 'yes' ? 'checked' : '';
+
+			$return .= "
+            <fieldset>
+            <legend>" . __( 'Miscellaneous', 'awesome-support' ) . "</legend>
+            <div class='metabox-prefs'>
+            <div><input type='hidden' name='wp_screen_options[option]' value='edit_ticket_in_new_window' /></div>
+            <div><input type='hidden' name='wp_screen_options[value]' value='yes' /></div>
+            <div class='edit_ticket_in_new_window'>
+                <label for='edit_ticket_in_new_window'>
+                <input type='checkbox' value='yes' name='edit_ticket_in_new_window' id='edit_ticket_in_new_window' " . $selected . " /> "
+			           . __( 'Edit tickets in new window/tab', 'awesome-support' ) . "</label><br />
+            </div>
+            </div>
+            </fieldset>
+            <br class='clear'>";
+			//$button";
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Filter screen option values before setting.
+	 *
+	 * @param $status
+	 * @param $option
+	 * @param $value
+	 *
+	 * @return mixed
+	 */
+	function set_screen_options( $status, $option, $value ) {
+
+		if ( 'edit_ticket_in_new_window' === $option ) {
+			return $_POST[ 'edit_ticket_in_new_window' ];
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Screen options for edit.php
+	 */
+	public function load_edit_php() {
+
+		add_screen_option( 'edit_ticket_in_new_window',
+		                   array(
+			                   'label'   => 'Open tickets/replies in new window',
+			                   'default' => 'no',
+			                   'option'  => 'edit_ticket_in_new_window',
+		                   )
+		);
+
+	}
+	
+	/**
+	 * Get screen option for current user else return default.
+	 *
+	 * @param $option
+	 *
+	 * @return mixed|string
+	 */
+	public function get_user_meta_current_val( $option ) {
+
+		$user        = get_current_user_id();
+		$screen      = get_current_screen();
+		$option      = $screen->get_option( $option, 'option' );
+		$current_val = get_user_meta( $user, $option, true );
+
+		if ( empty( $current_val ) ) {
+			$current_val = $screen->get_option( $option, 'default' );
+		}
+
+		return $current_val;
+	}
+
+	/**
+	 * @return
+	 */
+	public function edit_link_target() {
+
+		$current_val = $this->get_user_meta_current_val( 'edit_ticket_in_new_window' );
+
+		return ( 'yes' !== $current_val ? '_self' : '_blank' );
+
+	}
+
 	/**
 	 * Display custom screen options
 	 *
@@ -365,8 +469,11 @@ class WPAS_Tickets_List {
 
 					case 'id':
 
-						$link = add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) );
-						echo "<strong><a href='$link'>{$post_id}</a></strong>";
+						$link = add_query_arg( array(
+							                       'post'   => $post_id,
+							                       'action' => 'edit',
+						                       ), admin_url( 'post.php' ) );
+						echo "<strong><a href='$link' target='" . $this->edit_link_target() . "'>{$post_id}</a></strong>";
 
 						break;
 
@@ -375,7 +482,10 @@ class WPAS_Tickets_List {
 						$client = get_user_by( 'id', get_the_author_meta( 'ID' ) );
 
 						if( !empty( $client) ) {
-							$link = add_query_arg( array( 'post_type' => 'ticket', 'author' => $client->ID ), admin_url( 'edit.php' ) );
+								$link = add_query_arg( array(
+									                       'post_type' => 'ticket',
+									                       'author'    => $client->ID,
+								                       ), admin_url( 'edit.php' ) );
 
 							echo "<a href='$link'>$client->display_name</a><br />$client->user_email";
 						}
@@ -407,10 +517,10 @@ class WPAS_Tickets_List {
 
 							echo _x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' );
 							echo '<br>';
-							printf( _x( '<a href="%s">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
-									'post'   => $post_id,
-									'action' => 'edit',
-								), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
+							printf( _x( '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
+								                                                                                                                                                                 'post'   => $post_id,
+								                                                                                                                                                                 'action' => 'edit',
+							                                                                                                                                                                 ), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
 						}
 						
 						// Add open date
@@ -791,11 +901,12 @@ SQL;
 		$tabs['search'] = __( 'Search', 'awesome-support' );
 		$tabs['bulk_actions'] = __( 'Bulk Actions', 'awesome-support' );
 
-
+		$tabs['documentation'] = __( 'Documentation', 'awesome-support' );
+		
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_filter_content',		array( $this, 'filter_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_search_content',		array( $this, 'search_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content',	array( $this, 'bulk_actions_tab_content' ) );
-
+		add_filter( 'wpas_admin_tabs_tickets_tablenav_documentation_content',		array( $this, 'filter_documentation_content' ) );
 
 		return $tabs;
 	}
@@ -845,8 +956,51 @@ SQL;
 	public function search_tab_content( $content ) {
 
 		return '<div id="search_tab_content_placeholder"></div>';
+		
 	}
 
+	/**
+	 * Add content to documentation tab
+	 * 
+	 * @param string $content
+	 * 
+	 * @return string
+	 */
+	public function filter_documentation_content( $content ) {
+		
+		ob_start();
+		
+		echo '<H2>' . __( 'Awesome Support Core Documentation', 'awesome-support' ) . '</H2>'. '<br />';
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/post-installation-need-know-quick-start/">'  	. __( '1. User Guide', 			 'awesome-support' ) . '</a>' . '<br />' ;
+		echo __( 'The end user guide covers topics such as instructions for installation, entering tickets, adding agents, navigation, replying to and closing tickets and more.' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/admin-overview/">'  							. __( '2. Administration Guide', 'awesome-support' ) . '</a>' . '<br />' ;
+		echo __( 'The admin guide covers topics such as configuring products, departments, priorities and channels. It also includes guides for security using roles and capabilities along with time tracking, email alerts and known incompatibilities.' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/how-to-fix-you-do-not-have-the-capacity-to-open-a-new-ticket/">'  . __( '3. Troubleshooting', 'awesome-support' ) . '</a>' . '<br />' ;		
+		echo __( 'Having an issue? Your answer might be in here.' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/faq/">'  																	. __( '4. FAQ and More Troubleshooting Tips', 'awesome-support' ) . '</a>' . '<br />' ;				
+		echo __( 'Even more trouble-shooting tips and other frequently asked questions. 404 pages, missing tabs, PHP errors and conflicts are just some of the topics covered here!' , 'awesome-support' ) . '<br /><br />';
+		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/custom-fields/">'  							. __( '5. Customization', 'awesome-support' ) . '</a>' . '<br />' ;				
+		echo __( 'Need to change the look of your ticket pages?  Maybe add some custom fields? Then this is the guide you need!' , 'awesome-support' ) . '<br /><br />';		
+		
+		echo '<H2>' . __( 'Awesome Support Add-ons and Extensions Documentation', 'awesome-support' ) . '</H2>'. '<br />';		
+		echo '<a href = "https://getawesomesupport.com/documentation-new/">'  														. __( '1. All Extensions', 			 'awesome-support' ) . '</a>' . '<br />' ;
+		echo __( 'Links to documentation for every single extension or add-on.' , 'awesome-support' ) . '<br /><br />';	
+		
+		echo '<a href = "http://restapidocs.getawesomesupport.com/">'  																. __( '2. REST API', 			 'awesome-support' ) . '</a>' . '<br />' ;		
+		echo __( 'Documentation for the REST API.' , 'awesome-support' ) . '<br /><br />';	
+			
+		
+		$content = ob_get_clean();
+		
+		return $content;
+
+		
+	}	
+	
 	/**
 	 * * Add content to bulk actions tab
 	 *
@@ -860,11 +1014,7 @@ SQL;
 
 
 	/***
-     * Display filters
-     *
-	 * @param $post_type
-     *
-	 * @param $which
+	 * Display filters
 	 */
 	public function custom_filters( $post_type, $which ) {
 
