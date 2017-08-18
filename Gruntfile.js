@@ -275,8 +275,8 @@ module.exports = function (grunt) {
 
 	require('load-grunt-tasks')(grunt);
 
-	grunt.registerTask('default', ['jshint', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
-	grunt.registerTask('build', ['jshint', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin']);
+	grunt.registerTask('default', ['jshint', 'uglify', 'less', 'concat_css', 'makepot', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
+	grunt.registerTask('build'  , ['jshint', 'uglify', 'less', 'concat_css', 'makepot', 'autoprefixer', 'combine_mq', 'cssmin']);
 	
 	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
