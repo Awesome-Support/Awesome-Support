@@ -273,7 +273,6 @@ class WPAS_Tickets_List {
             </div>
             </fieldset>
             <br class='clear'>";
-			//$button";
 		}
 
 		return $return;
@@ -311,7 +310,7 @@ class WPAS_Tickets_List {
 		);
 
 	}
-	
+
 	/**
 	 * Get screen option for current user else return default.
 	 *
