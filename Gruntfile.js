@@ -177,6 +177,22 @@ module.exports = function (grunt) {
 				}]
 			}
 		},
+		
+		/**
+		 Updates the translation catalog (not currently used but added here to eventually replace the transifix stuff below)
+		 @author https://www.npmjs.com/package/grunt-pot
+		 */		
+		pot: {
+			  options:{
+			  text_domain: 'awesome-support', 
+			  dest: 'languages/', 
+			  keywords: ['__','_e','_x:1,2c','_ex:1,2c','_n:1,2','_nx:1,2,4c','_n_noop:1,2','_nx_noop:1,2,3c','esc_attr__','esc_html__','esc_attr_e','esc_html_e','esc_attr_x:1,2c','esc_html_x:1,2c\n'], //functions to look for 
+			},
+			files:{
+			  src:  [ '**/*.php' ], //Parse all php files 
+			  expand: true,
+			   }
+		  },		
 
 		/**
 		 Updates the translation catalog
