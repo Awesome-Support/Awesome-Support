@@ -298,7 +298,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
 
 
-	grunt.registerTask('release', ['composer:install', 'build', 'compress']);
+	grunt.registerTask('release', ['composer:install --no-dev', 'build', 'compress']);
 	grunt.registerTask('release_patch', ['version::patch', 'release']);
 	grunt.registerTask('release_minor', ['version::minor', 'release']);
 	grunt.registerTask('release_major', ['version::major', 'release']);
