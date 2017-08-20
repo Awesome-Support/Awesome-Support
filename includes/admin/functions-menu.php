@@ -23,7 +23,8 @@ function wpas_register_submenu_items() {
 
 	add_submenu_page( 'edit.php?post_type=ticket', __( 'Debugging Tools', 'awesome-support' ), __( 'Tools', 'awesome-support' ), 'administrator', 'wpas-status', 'wpas_display_status_page' );
 	add_submenu_page( 'edit.php?post_type=ticket', __( 'Awesome Support Addons', 'awesome-support' ), '<span style="color:#f39c12;">' . __( 'Addons', 'awesome-support' ) . '</span>', 'edit_posts', 'wpas-addons', 'wpas_display_addons_page' );
-	
+	add_submenu_page( 'edit.php?post_type=ticket', __( 'My Addons', 'awesome-support' ), esc_attr__( 'My Addons', 'awesome-support' ), 'edit_posts', 'wpas-my-addons', 'wpas_display_purchased_addons_page' );
+
 	if ( ! defined( 'WPAS_SAAS' ) || ( defined( 'WPAS_SAAS' ) && false === WPAS_SAAS ) ) {
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Get a Free Addon', 'awesome-support' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'awesome-support' ) . '</span>', 'administrator', 'wpas-optin', 'wpas_display_optin_page' );
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'awesome-support' ), __( 'About', 'awesome-support' ), 'edit_posts', 'wpas-about', 'wpas_display_about_page' );	
@@ -93,6 +94,15 @@ function wpas_display_about_page() {
  */
 function wpas_display_addons_page() {
 	include_once( WPAS_PATH . 'includes/admin/views/addons.php' );
+}
+
+/**
+ * Render the addons page for this plugin.
+ *
+ * @since    4.1
+ */
+function wpas_display_purchased_addons_page() {
+	include_once( WPAS_PATH . 'includes/admin/views/addons-installer.php' );
 }
 
 /**
