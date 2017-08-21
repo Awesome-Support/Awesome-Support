@@ -48,6 +48,14 @@ if ( ! class_exists( 'WPAS_Addons_Installer' ) ) {
 		protected $user_api_email;
 
 		/**
+		 * The EDD API endpoint.
+		 *
+		 * @since 4.1
+		 * @var string API endpoint URL
+		 */
+		public $api_endpoint = 'https://getawesomesupport.com/edd-api/v2/';
+
+		/**
 		 * Addons_Installer constructor.
 		 *
 		 * @since 4.1
@@ -66,15 +74,137 @@ if ( ! class_exists( 'WPAS_Addons_Installer' ) ) {
 		 */
 		public function load_api_credentials() {
 
-			$this->user_api_key   = trim( wpas_get_option( 'edd_api_key', '' ) );
-			$this->user_api_token = trim( wpas_get_option( 'edd_api_token', '' ) );
-			$this->user_api_email = trim( wpas_get_option( 'edd_api_email', '' ) );
+			$this->user_api_key   = trim( wpas_get_option( 'edd_api_key', getenv( 'WPAS_EDD_API_KEY' ) ) );
+			$this->user_api_token = trim( wpas_get_option( 'edd_api_token', getenv( 'WPAS_EDD_API_TOKEN' ) ) );
+			$this->user_api_email = trim( wpas_get_option( 'edd_api_email', getenv( 'WPAS_EDD_API_EMAIL' ) ) );
 
-			if ( '' === ( $this->user_api_key || $this->user_api_token || $this->user_api_email ) ) {
+			if ( empty( $this->user_api_key ) || empty( $this->user_api_token ) || empty( $this->user_api_email ) ) {
 				return false;
 			}
 
 			return true;
+		}
+
+		/**
+		 * Get the list of addons the user purchased.
+		 *
+		 * @since 4.1
+		 * @return array
+		 */
+		public function get_purchased_addons() {
+
+			$purchase    = array();
+			$query_param = array( 'email' => $this->user_api_email );
+			$response    = $this->query_edd_server( 'sales', $query_param );
+
+			if ( ! array_key_exists( 'sales', $response ) ) {
+				return array();
+			}
+
+			foreach ( $response as $sale ) {
+				$purchase[] = array(
+					'id'       => $sale['ID'],
+					'key'      => $sale['key'],
+					'date'     => $sale['date'],
+					'products' => $this->get_purchased_addons_products( $sale ),
+				);
+			}
+
+			return $purchase;
+
+		}
+
+		/**
+		 * Get all purchased addons for the sale.
+		 *
+		 * This method fetches all the addons purchased in the current sale, filters out the data we don't need, and adds the license key with each product (needed for addon activation).
+		 *
+		 * @since 4.1
+		 *
+		 * @param array $sale The sale array.
+		 *
+		 * @return array
+		 */
+		protected function get_purchased_addons_products( $sale ) {
+
+			$products = array();
+
+			foreach ( $sale['products'] as $key => $product ) {
+				$products[] = array(
+					'id'      => $product['id'],
+					'name'    => $product['name'],
+					'license' => $sale['licenses'][ $key ]['key'],
+				);
+			}
+
+			return $products;
+
+		}
+
+		/**
+		 * Query the EDD API server.
+		 *
+		 * @since 4.2
+		 *
+		 * @param string $route  The route to query.
+		 * @param array  $params The query parameters.
+		 *
+		 * @return array|WP_Error
+		 */
+		protected function query_edd_server( $route, $params = array() ) {
+
+			global $wp_version;
+
+			$routes = array(
+				'products',
+				'sales',
+				'download-logs',
+				'customers',
+				'stats',
+				'discounts',
+			);
+
+			if ( ! in_array( $route, $routes, true ) ) {
+				return new WP_Error( 'unknown_route', esc_attr( 'The API route you are trying to query is unknown.' ) );
+			}
+
+			$params   = $this->get_authenticated_params( $params );
+			$query    = esc_url_raw( $this->api_endpoint . '?' . http_build_query( $params ) );
+			$response = wp_remote_get( $query, array(
+				'timeout'     => 30,
+				'redirection' => 3,
+				'user-agent'  => 'WordPress/' . $wp_version . '; ' . home_url(),
+			) );
+
+			// Check the response code.
+			$response_code    = wp_remote_retrieve_response_code( $response );
+			$response_message = wp_remote_retrieve_response_message( $response );
+
+			if ( 200 !== $response_code && ! empty( $response_message ) ) {
+				return new WP_Error( $response_code, $response_message );
+			} elseif ( 200 !== $response_code ) {
+				return new WP_Error( $response_code, 'Unknown error occurred' );
+			}
+
+			return json_decode( wp_remote_retrieve_body( $response ) );
+
+		}
+
+		/**
+		 * Add API credentials to the query parameters.
+		 *
+		 * @since 4.1
+		 *
+		 * @param array $params Query parameters.
+		 *
+		 * @return array
+		 */
+		protected function get_authenticated_params( $params ) {
+
+			$params['key']   = $this->user_api_key;
+			$params['token'] = $this->user_api_token;
+
+			return $params;
 		}
 
 	}
