@@ -177,6 +177,22 @@ module.exports = function (grunt) {
 				}]
 			}
 		},
+		
+		/**
+		 Updates the translation catalog (not currently used but added here to eventually replace the transifix stuff below)
+		 @author https://www.npmjs.com/package/grunt-pot
+		 */		
+		pot: {
+			  options:{
+			  text_domain: 'awesome-support', 
+			  dest: 'languages/', 
+			  keywords: ['__','_e','_x:1,2c','_ex:1,2c','_n:1,2','_nx:1,2,4c','_n_noop:1,2','_nx_noop:1,2,3c','esc_attr__','esc_html__','esc_attr_e','esc_html_e','esc_attr_x:1,2c','esc_html_x:1,2c\n'], //functions to look for 
+			},
+			files:{
+			  src:  [ '**/*.php' ], //Parse all php files 
+			  expand: true,
+			   }
+		  },		
 
 		/**
 		 Updates the translation catalog
@@ -276,13 +292,13 @@ module.exports = function (grunt) {
 	require('load-grunt-tasks')(grunt);
 
 	grunt.registerTask('default', ['jshint', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
-	grunt.registerTask('build', ['jshint', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin']);
+	grunt.registerTask('build'  , ['jshint', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin']);
 	
 	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
 
 
-	grunt.registerTask('release', ['composer:install', 'build', 'compress']);
+	grunt.registerTask('release', ['composer:install --no-dev', 'build', 'compress']);
 	grunt.registerTask('release_patch', ['version::patch', 'release']);
 	grunt.registerTask('release_minor', ['version::minor', 'release']);
 	grunt.registerTask('release_major', ['version::major', 'release']);
