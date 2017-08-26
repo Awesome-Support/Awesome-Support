@@ -23,11 +23,43 @@ function wpas_register_assets_front_end() {
 
 	// Styles
 	wp_register_style( 'wpas-plugin-styles', WPAS_URL . 'assets/public/css/public.css', array(), WPAS_VERSION );
-	wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2.min.css', null, '3.5.2', 'all' ); // NOTE: This asset is duplicated in the back-end
+	
+	// Select 2 styles are loaded based on a setting.  This asset is duplicated on the back-end.
+	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
+	$which_select2_css = wpas_get_option('select2_css_file', 'min') ;
+	switch ( $which_select2_css ) {
+		case 'min': 
+			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.min.css', null, '4.0.3.1', 'all' );
+			break ;
+		
+		case 'full':
+			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.css', null, '4.0.3.1', 'all' );
+			break ;
+	}	
 
 	// Scripts
 	wp_register_script( 'wpas-plugin-script', WPAS_URL . 'assets/public/js/public-dist.js', array( 'jquery' ), WPAS_VERSION, true );
-	wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2.min.js', array( 'jquery' ), '4.0.0', true ); // NOTE: This asset is duplicated in the back-end
+	
+	// Select 2 scripts are loaded based on a setting.  This asset is duplicated on the back-end.
+	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.
+	$which_select2_js = wpas_get_option('select2_js_file', 'full-min') ;
+	switch ( $which_select2_js ) {
+		case 'full': 
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.js', array( 'jquery' ), '4.0.3.1', 'all' );
+			break ;
+		
+		case 'full-min':
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.min.js', array( 'jquery' ), '4.0.3.11', 'all' );
+			break ;
+			
+		case 'partial': 
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.js', array( 'jquery' ), '4.0.3.11', 'all' );
+			break ;
+
+		case 'partial-min': 
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.3.1111', 'all' );
+			break ;						
+	}
 
 	// JS Objects
 	wp_localize_script( 'wpas-plugin-script', 'wpas', wpas_get_javascript_object() );
@@ -44,11 +76,24 @@ add_action( 'admin_enqueue_scripts', 'wpas_register_assets_back_end', 5 );
 function wpas_register_assets_back_end() {
 
 	// Styles
-	wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2.min.css', null, '3.5.2', 'all' ); // NOTE: This asset is duplicated in the front-end
 	wp_register_style( 'wpas-datepicker', WPAS_URL . 'assets/public/css/component_datepicker.css', null, WPAS_VERSION, 'all' ); // NOTE: This asset is duplicated in the back-end
 	wp_register_style( 'wpas-flexboxgrid', WPAS_URL . 'assets/admin/css/vendor/flexboxgrid.min.css', null, '6.2.0', 'all' );
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
 	wp_register_style( 'wpas-simple-hint', 'https://cdn.jsdelivr.net/simple-hint/2.1.1/simple-hint.min.css', null, '2.1.1' );
+	
+	// Select 2 styles are loaded based on a setting.  This asset is duplicated on the front-end.
+	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
+	$which_select2_css = wpas_get_option('select2_css_file', 'min') ;
+	switch ( $which_select2_css ) {
+		case 'min': 
+			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.min.css', null, '4.0.3.1', 'all' );
+			break ;
+		
+		case 'full':
+			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.css', null, '4.0.3.1', 'all' );
+			break ;
+	}
+	
 
 	// Scripts
 	wp_register_script( 'wpas-admin-about-linkify', WPAS_URL . 'assets/admin/js/vendor/linkify.min.js', array( 'jquery' ), WPAS_VERSION );
@@ -56,7 +101,6 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-admin-about-moment', WPAS_URL . 'assets/admin/js/vendor/moment.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-optin-script', WPAS_URL . 'assets/admin/js/admin-optin.js', array( 'jquery' ), WPAS_VERSION );
-	wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2.min.js', array( 'jquery' ), '4.0.0', true ); // NOTE: This asset is duplicated in the front-end
 	wp_register_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-reply', WPAS_URL . 'assets/admin/js/admin-reply.js', array( 'jquery' ), WPAS_VERSION );
@@ -64,8 +108,8 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-users', WPAS_URL . 'assets/admin/js/admin-users.js', null, WPAS_VERSION, true );
 	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
 	wp_register_script( 'wpas-admin-upload', WPAS_URL . 'assets/public/js/component_upload.js', array( 'jquery' ), WPAS_VERSION );
-	wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2.min.js', array( 'jquery' ), WPAS_VERSION, true ); // NOTE: This asset is duplicated in the front-end
-	//wp_register_script( 'wpas-datepicker', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'jquery' ), WPAS_VERSION, true );
+
+	// @TODO: Why is the version set to TIME() below instead of WPAS_VERSION?
 	wp_register_script(
 		'wpas-datepicker',
 		WPAS_URL . 'assets/public/js/component_datepicker.js',
@@ -73,6 +117,27 @@ function wpas_register_assets_back_end() {
 		time(),
 		true
 	);
+	
+	// Select 2 scripts are loaded based on a setting.  This asset is duplicated on the front-end.
+	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
+	$which_select2_js = wpas_get_option('select2_js_file', 'partial-min') ;
+	switch ( $which_select2_js ) {
+		case 'full': 
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.js', array( 'jquery' ), '4.0.3.1', 'all' );
+			break ;
+		
+		case 'full-min':
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.min.js', array( 'jquery' ), '4.0.3.11', 'all' );
+			break ;
+			
+		case 'partial': 
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.js', array( 'jquery' ), '4.0.3.111', 'all' );
+			break ;
+
+		case 'partial-min': 
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.3.1111', 'all' );
+			break ;						
+	}	
 
 	// JS Objects
 	wp_localize_script( 'wpas-admin-script', 'wpas', wpas_get_javascript_object() );
