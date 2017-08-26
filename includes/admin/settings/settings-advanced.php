@@ -65,7 +65,7 @@ function wpas_core_settings_advanced( $def ) {
 				array(
 					'name' => __( 'Compatibility', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => __('Settings in this section might help with compatibility with certain themes and plugins - please experiment to see if one of these settings work for you before contacting our support center. NOTE: Changing ANYTHING in this section will require ALL CACHES to be flushed including CDNs, BROWSER CACHES and possibly a restart of the PHP service or your WEB SERVER in order to become fully activated!', 'awesome-support' ),
+					'desc' => __('Settings in this section might help with compatibility with certain themes and plugins - please experiment to see if one of these settings work for you before contacting our support center. NOTE: Changing ANYTHING in this section will require ALL CACHES to be flushed including CDNs, BROWSER CACHES.  Also, its possible that you would need a restart of the PHP service or your WEB SERVER in order to become fully activated!', 'awesome-support' ),
 				),
 				
 				array(

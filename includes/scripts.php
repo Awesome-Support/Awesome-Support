@@ -24,7 +24,7 @@ function wpas_register_assets_front_end() {
 	// Styles
 	wp_register_style( 'wpas-plugin-styles', WPAS_URL . 'assets/public/css/public.css', array(), WPAS_VERSION );
 	
-	// Select 2 styles are loaded based on a setting.  This asset is duplicated on the back-end.
+	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the back-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
 	$which_select2_css = wpas_get_option('select2_css_file', 'min') ;
 	switch ( $which_select2_css ) {
@@ -40,7 +40,7 @@ function wpas_register_assets_front_end() {
 	// Scripts
 	wp_register_script( 'wpas-plugin-script', WPAS_URL . 'assets/public/js/public-dist.js', array( 'jquery' ), WPAS_VERSION, true );
 	
-	// Select 2 scripts are loaded based on a setting.  This asset is duplicated on the back-end.
+	// Select2 scripts are loaded based on a setting.  This asset is also duplicated on the back-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.
 	$which_select2_js = wpas_get_option('select2_js_file', 'full-min') ;
 	switch ( $which_select2_js ) {
@@ -81,7 +81,7 @@ function wpas_register_assets_back_end() {
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
 	wp_register_style( 'wpas-simple-hint', 'https://cdn.jsdelivr.net/simple-hint/2.1.1/simple-hint.min.css', null, '2.1.1' );
 	
-	// Select 2 styles are loaded based on a setting.  This asset is duplicated on the front-end.
+	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
 	$which_select2_css = wpas_get_option('select2_css_file', 'min') ;
 	switch ( $which_select2_css ) {
@@ -118,7 +118,7 @@ function wpas_register_assets_back_end() {
 		true
 	);
 	
-	// Select 2 scripts are loaded based on a setting.  This asset is duplicated on the front-end.
+	// Select2 scripts are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
 	$which_select2_js = wpas_get_option('select2_js_file', 'partial-min') ;
 	switch ( $which_select2_js ) {
