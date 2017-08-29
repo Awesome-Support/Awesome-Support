@@ -7,8 +7,12 @@
  * @copyright 2017 Awesome Support
  */
 
-if ( ! is_admin() ) {
-	add_filter( 'wpas_plugin_frontend_pages', 'wpas_translate_frontend_pages_ids' );
+add_action( 'wpml_loaded', 'wpas_load_wpml_compatibility' );
+
+function wpas_load_wpml_compatibility() {
+	if ( ! is_admin() ) {
+		add_filter( 'wpas_plugin_frontend_pages', 'wpas_translate_frontend_pages_ids' );
+	}
 }
 
 function wpas_translate_frontend_pages_ids( $ids ) {
