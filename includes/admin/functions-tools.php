@@ -42,6 +42,10 @@ function wpas_system_tools() {
 			wpas_delete_unclaimed_attachments();
 			break;
 		
+		case 'update_last_reply':
+			wpas_update_last_reply();
+			break;
+
 		case 'reset_replies_count':
 			wpas_reset_replies_count();
 			break;
@@ -448,6 +452,72 @@ function wpas_check_templates_override( $dir ) {
 }
 
 /**
+ * Update the last reply date postmeta for all tickets.
+ *
+ * @return boolean
+ *
+ */
+function wpas_update_last_reply() {
+
+	global $wpdb;
+
+	$sql = <<<SQL
+SELECT 
+	wpas_ticket.ID AS ticket_id,
+	wpas_reply.ID AS reply_id,
+	wpas_replies.latest_reply,
+	wpas_replies.latest_reply_gmt,
+	wpas_replies.post_author,
+	wpas_ticket.post_author=wpas_reply.post_author AS client_replied_last
+FROM 
+	{$wpdb->posts} AS wpas_ticket 
+	LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON wpas_ticket.ID=wpas_reply.post_parent
+	LEFT OUTER JOIN (
+		SELECT
+			post_parent AS ticket_id,
+			post_author as post_author,
+  			post_date_gmt AS latest_reply_gmt,
+			MAX(post_date) AS latest_reply
+		FROM
+			{$wpdb->posts}
+		WHERE 1=1
+			AND 'ticket_reply' = post_type
+		GROUP BY
+			post_parent
+	) wpas_replies ON wpas_replies.ticket_id=wpas_reply.post_parent AND wpas_replies.latest_reply=wpas_reply.post_date 
+WHERE 1=1
+	AND wpas_replies.latest_reply IS NOT NULL
+	AND 'ticket_reply'=wpas_reply.post_type
+ORDER BY
+	wpas_replies.latest_reply ASC
+SQL;
+
+	$test = wpas_get_tickets('any');
+
+	/* Set some defaults or all tickets */
+	foreach ( $test as $ticket) {
+		update_post_meta( $ticket->ID, '_wpas_last_reply_date', $ticket->post_date );
+		update_post_meta( $ticket->ID, '_wpas_last_reply_date_gmt', $ticket->post_date_gmt );
+		update_post_meta( $ticket->ID, '_wpas_is_waiting_client_reply', 0 );
+	}
+
+	$replies = $wpdb->get_results( $sql );
+
+	foreach ( $replies as $reply_post ) {
+
+		if( null !== get_post( $reply_post->ticket_id) ) {
+
+			/* . */
+			update_post_meta( $reply_post->ticket_id, '_wpas_last_reply_date', $reply_post->latest_reply );
+			update_post_meta( $reply_post->ticket_id, '_wpas_last_reply_date_gmt', $reply_post->latest_reply_gmt );
+			update_post_meta( $reply_post->ticket_id, '_wpas_is_waiting_client_reply', (int)$reply_post->client_replied_last );
+
+		}
+	}
+
+}
+
+/**
  * Delete unclaimed attachments
  *
  * @since 3.3.4
@@ -517,7 +587,7 @@ function wpas_reset_time_fields_to_zero() {
 	foreach( $query->posts as $post ) {
 		update_post_meta( $post->ID, '_wpas_ttl_calculated_time_spent_on_ticket', 0 );
 		update_post_meta( $post->ID, '_wpas_ttl_adjustments_to_time_spent_on_ticket', 0 );
-		update_post_meta( $post->ID, '_wpas_final_time_spent_on_ticket', 0 );		
+		update_post_meta( $post->ID, '_wpas_final_time_spent_on_ticket', 0 );
 	}
 	
 	return $reset;	
