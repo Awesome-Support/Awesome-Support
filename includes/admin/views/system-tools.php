@@ -50,10 +50,14 @@ if ( isset( $_GET['done'] ) ) {
 			$message = __( 'All products have been deleted', 'awesome-support' );
 			break;
 
+		case 'update_last_reply':
+			$message = __( 'Last reply date has been updated on all tickets.', 'awesome-support' );
+			break;
+		
 		case 'ticket_attachments':
 			$message = __( 'All unclaimed ticket attachment folders have been deleted', 'awesome-support' );
 			break;
-		
+
 		case 'reset_channels':
 			$message = __( 'All channels have been reset', 'awesome-support' );
 			break;
@@ -102,6 +106,13 @@ if ( isset( $message ) ) {
 			<td>
 				<a href="<?php echo wpas_tool_link( 'ticket_attachments' ); ?>" class="button-secondary"><?php _e( 'Clear', 'awesome-support' ); ?></a>
 				<span class="wpas-system-tools-desc"><?php _e( 'Clear unclaimed ticket attachment folders.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Update last reply date on tickets', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'update_last_reply' ); ?>" class="button-secondary"><?php _e( 'Update', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Update last reply date on tickets.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
 		<tr>

@@ -52,43 +52,43 @@ class WPAS_Tickets_List {
 			add_filter( 'manage_posts_extra_tablenav', array( $this, 'manage_posts_extra_tablenav' ), 10, 1 );
 
 			// Temporary (Activity filter)
-			add_filter( 'posts_results', array( $this, 'filter_the_posts' ) );
+			add_filter( 'posts_results', array( $this, 'filter_the_posts' ), 10, 2 );
 		}
 	}
 
 
-	function filter_the_posts( $posts ) {
-		global $wp_query, $typenow;
+	function filter_the_posts( $posts, $query ) {
 
-		if ( ! $wp_query->is_main_query()
-		     || 'ticket' !== $typenow
-		     || ! isset( $_GET[ 'activity' ] ) || 'any' === $_GET[ 'activity' ]
-		) {
+		global $typenow;
+
+		if ( ! $query->get( 'wpas_activity' ) ) {
 			return $posts;
 		}
 
-		foreach ( $posts as $key => $post ) {
+		$p = array_reverse($posts, true);
+		foreach ( array_reverse($posts, true) as $key => $post ) {
+
 			$replies = $this->get_replies_query( $post->ID );
 
-			if ( 'awaiting_support_reply' === $_GET[ 'activity' ] ) {
-				// Maybe add the "Awaiting Support Response" tag
-				if ( false === wpas_is_reply_needed( $post->ID, $replies ) ) {
-					unset( $posts[ $key ] );
-				}
+			if( empty($replies->posts) ) {
+				unset( $p[ $key ] );
 			}
 
-			if ( 'old' === $_GET[ 'activity' ] ) {
-				// Maybe add the "Old" tag
-				if ( false === wpas_is_ticket_old( $post->ID, $replies ) ) {
-					unset( $posts[ $key ] );
-				}
+			// Maybe add the "Awaiting Support Response" tag
+			if ( 'awaiting_support_reply' === $_GET[ 'activity' ]
+				&& user_can( (int) $post->post_author, 'edit_ticket' )
+			) {
+				unset( $p[ $key ] );
 			}
+
+			// Maybe add the "Old" tag
+			if ( 'old' === $_GET[ 'activity' ]
+			     && false === wpas_is_ticket_old( $post->ID, wpas_get_replies($post->ID) ) ) {
+				unset( $p[ $key ] );
+			}
+
 		}
-
-		//$wp_query->posts = $posts;
-		// set the paged and other wp_query properties to the right value, to make pagination work
-		//$wp_query->set('paged', $the_original_paged);
-		$wp_query->post_count = count( $wp_query->posts );
+		$posts = array_reverse($p);
 
 		return $posts;
 	}
@@ -232,7 +232,7 @@ class WPAS_Tickets_List {
 				}
 
 				// Add the client column
-				$new[ 'wpas-client' ] = esc_html__( 'Created By', 'awesome-support' );
+				$new[ 'wpas-client' ] = $this->get_cf_title( 'wpas-client', 'Created by' );
 
 				// assignee/agent...
 				$new[ 'assignee' ] = $this->get_cf_title( 'assignee', 'Agent' );
@@ -288,8 +288,9 @@ class WPAS_Tickets_List {
 	 */
 	public function get_user_meta_current_val( $option, $default = null ) {
 
-		$user        = get_current_user_id();
-		$current_val = get_user_meta( $user, $option, true );
+		$user_id        = get_current_user_id();
+		//$current_val = get_user_meta( $user_id, $option, true );
+		$current_val = esc_attr( get_the_author_meta( $option, $user_id ) );
 
 		if ( empty( $current_val ) ) {
 			return $default;
@@ -564,19 +565,22 @@ class WPAS_Tickets_List {
 		$fields  = $this->get_custom_fields();
 		$orderby = isset( $query->query[ 'orderby' ] ) ? $query->query[ 'orderby' ] : '';
 
-		if ( ! empty( $orderby ) && 'wpas-activity' !== $orderby && array_key_exists( $orderby, $fields ) ) {
+		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
 			if ( 'taxonomy' != $fields[ $orderby ][ 'args' ][ 'field_type' ] ) {
 
 				switch ( $orderby ) {
 
 					case 'date':
 					case 'status':
-						//case 'assignee':
 					case 'id':
 					case 'wpas-client':
-					case 'wpas-activity':
 
 						break;
+
+					case 'wpas-activity':
+
+						$orderby = 'last_reply_date';
+						$query->set( 'wpas_activity', true );
 
 					default:
 
@@ -600,7 +604,7 @@ class WPAS_Tickets_List {
 			     || isset( $_GET[ 'post_status' ] ) && 'trash' !== $_GET[ 'post_status' ]
 			) {
 
-				if ( ( ! empty( $orderby ) && 'wpas-activity' === $orderby ) || wpas_has_smart_tickets_order() ) {
+				if ( wpas_has_smart_tickets_order() ) {
 					/**
 					 * Inspect the current context and if appropriate specify a query_var to allow
 					 * WP_Query to modify itself based on arguments passed to WP_Query.
@@ -608,7 +612,6 @@ class WPAS_Tickets_List {
 					$query->set( 'wpas_order_by_urgency', true );
 				}
 			}
-
 		}
 
 		return;
@@ -636,16 +639,6 @@ class WPAS_Tickets_List {
 
 		if ( $query->get( 'wpas_order_by_urgency' ) ) {
 
-			/**
-			 * Hooks in WP_Query should never modify SQL based on context.
-			 * Instead they should modify based on a query_var so they can
-			 * be tested and side-effects are minimized.
-			 */
-			//AND '_wpas_status'=wpas_postmeta.meta_key AND 'open'=CAST(wpas_postmeta.meta_value AS CHAR)
-			/**
-			 * @var wpdb $wpdb
-			 *
-			 */
 			global $wpdb;
 
 			$sql = <<<SQL
@@ -681,6 +674,7 @@ ORDER BY
 SQL;
 
 			$no_replies = $client_replies = $agent_replies = array();
+			$replies = $wpdb->get_results( $sql );
 
 			foreach ( $posts as $post ) {
 
@@ -701,7 +695,7 @@ SQL;
 			 *         6th    -    Reply - older response since agent replied
 			 */
 
-			foreach ( $wpdb->get_results( $sql ) as $reply_post ) {
+			foreach ( $replies as $reply_post ) {
 
 				if ( isset( $no_replies[ $reply_post->ticket_id ] ) ) {
 
@@ -717,11 +711,8 @@ SQL;
 
 			}
 
-			if ( 'asc' !== filter_input( INPUT_GET, 'order' ) ) {
-				$posts = array_values( $client_replies + $no_replies + array_reverse( $agent_replies, true ) );
-			} else {
-				$posts = array_values( $no_replies + $client_replies + array_reverse( $agent_replies, true ) );
-			}
+			// Smart sort
+			$posts = array_values( $client_replies + $no_replies + array_reverse( $agent_replies, true ) );
 
 		}
 
@@ -979,7 +970,7 @@ SQL;
 		$dropdown = '<select id="activity" name="activity">';
 		$dropdown .= "<option value='all' $all_selected>" . __( 'All Activity', 'awesome-support' ) . "</option>";
 		$dropdown .= "<option value='awaiting_support_reply' $waiting_selected>" . __( 'Awaiting Support Reply', 'awesome-support' ) . "</option>";
-		$dropdown .= "<option value='old' $old_selected>" . __( 'Old', 'awesome-support' ) . "</option>";
+		$dropdown .= "<option value='old' $old_selected>" . __( 'Old', 'awesome-support' ) . " (Open > " . wpas_get_option( 'old_ticket' ) . " Days)</option>";
 		$dropdown .= '</select>';
 
 		echo $dropdown;
@@ -1228,6 +1219,30 @@ SQL;
 		}
 
 
+		$wpas_activity = isset( $_GET[ 'activity' ] ) && ! empty( $_GET[ 'activity' ] ) ? $_GET[ 'activity' ] : 'any';
+
+			if( 'awaiting_support_reply' === $wpas_activity ) {
+				$meta_query[] = array(
+					'key'     => '_wpas_is_waiting_client_reply',
+					'value'   => 1,
+					'compare' => '=',
+					'type'    => 'numeric',
+				);
+			}
+
+			elseif( 'old' === $wpas_activity ) {
+
+				$old_after           = (int) wpas_get_option( 'old_ticket' );
+				$old_after           = strtotime( 'now' ) + ( $old_after * 86400 );
+
+				$meta_query[] = array(
+					'key'     => '_wpas_last_reply_date',
+					'value'   => $old_after,
+					'compare' => '<=',
+					'type'    => 'numeric',
+				);
+			}
+
 		$wpas_status = isset( $_GET[ 'status' ] ) && ! empty( $_GET[ 'status' ] ) ? $_GET[ 'status' ] : 'open';
 
 		if ( 'any' === $wpas_status ) {
@@ -1324,25 +1339,6 @@ SQL;
 			if ( ! empty( $ticket_id ) && intval( $ticket_id ) != 0 ) {
 				$where .= " AND {$wpdb->posts}.ID = " . intval( $ticket_id );
 			}
-
-
-			$activity = filter_input( INPUT_GET, 'activity', FILTER_SANITIZE_STRING, 'all' );
-
-			/* Filter by Activity */
-			if ( 'awaiting_support_reply' === $activity ) {
-				// ACTIVITY: AWAITING SUPPORT REPLY
-				// where status !== closed
-
-				$where = $where;
-			} elseif ( 'old' === $activity ) {
-				// ACTIVITY: OLD
-				// where status !== closed
-				// and replies > 0 and last_reply_date < 10 days
-				// or replies === 0 and post_date < 10 days
-
-				$where = $where;
-			}
-
 		}
 
 		return $where;
@@ -1372,7 +1368,8 @@ SQL;
 
 		$orderby = isset( $_GET[ 'orderby' ] ) ? $_GET[ 'orderby' ] : '';
 
-		if ( ! empty( $orderby ) && 'wpas-activity' !== $orderby && array_key_exists( $orderby, $fields ) ) {
+		//if ( ! empty( $orderby ) && 'wpas-activity' !== $orderby && array_key_exists( $orderby, $fields ) ) {
+		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
 
 			global $wpdb;
 
@@ -1411,6 +1408,13 @@ SQL;
 				// Join user table onto the postmeta table
 				$clauses[ 'join' ]    .= " LEFT JOIN {$wpdb->users} ON {$wpdb->prefix}posts.post_author={$wpdb->users}.ID";
 				$clauses[ 'orderby' ] = " {$wpdb->users}.display_name " . $order;
+
+			//} elseif ( 'wpas-activity' === $orderby ) {
+
+				// Join user table onto the postmeta table
+				//$clauses[ 'join' ]    .= " LEFT JOIN {$wpdb->users} ON {$wpdb->prefix}posts.post_author={$wpdb->users}.ID";
+
+				//$clauses[ 'orderby' ] = " {$wpdb->postmeta}.meta_value " . $order;
 
 			} else {
 
