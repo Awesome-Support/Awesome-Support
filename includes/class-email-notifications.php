@@ -548,7 +548,7 @@ class WPAS_Email_Notification {
 	 *
 	 * @return string
 	 */
-	private function get_formatted_email( $content = '' ) {
+	public function get_formatted_email( $content = '' ) {
 
 		if ( false === (bool) wpas_get_option( 'use_email_template', true ) ) {
 			return $content;
