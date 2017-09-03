@@ -70,20 +70,14 @@ class WPAS_Tickets_List {
 
 			$replies = $this->get_replies_query( $post->ID );
 
-			//$replies = wpas_get_replies($post->ID);
-
 			if( empty($replies->posts) ) {
 				unset( $p[ $key ] );
 			}
 
 			// Maybe add the "Awaiting Support Response" tag
 			if ( 'awaiting_support_reply' === $_GET[ 'activity' ]
-			     //&& false === (boolean) get_post_meta( $post->ID, '_wpas_is_waiting_client_reply', false)
 				&& user_can( (int) $post->post_author, 'edit_ticket' )
 			) {
-
-					// If the user is not an agent this is irrelevant. Just return false.
-			     //false === wpas_is_reply_needed( $post->ID, $replies ) ) {
 				unset( $p[ $key ] );
 			}
 
@@ -95,11 +89,6 @@ class WPAS_Tickets_List {
 
 		}
 		$posts = array_reverse($p);
-
-		//$wp_query->posts = $posts;
-		// set the paged and other wp_query properties to the right value, to make pagination work
-		//$wp_query->set('paged', $the_original_paged);
-		//$wp_query->post_count = count( $wp_query->posts );
 
 		return $posts;
 	}
@@ -592,7 +581,6 @@ class WPAS_Tickets_List {
 
 						$orderby = 'last_reply_date';
 						$query->set( 'wpas_activity', true );
-						//break;
 
 					default:
 
@@ -651,16 +639,6 @@ class WPAS_Tickets_List {
 
 		if ( $query->get( 'wpas_order_by_urgency' ) ) {
 
-			/**
-			 * Hooks in WP_Query should never modify SQL based on context.
-			 * Instead they should modify based on a query_var so they can
-			 * be tested and side-effects are minimized.
-			 */
-			//AND '_wpas_status'=wpas_postmeta.meta_key AND 'open'=CAST(wpas_postmeta.meta_value AS CHAR)
-			/**
-			 * @var wpdb $wpdb
-			 *
-			 */
 			global $wpdb;
 
 			$sql = <<<SQL
