@@ -422,6 +422,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/functions-reply.php' );
 			require( WPAS_PATH . 'includes/functions-channels.php' );
 			require( WPAS_PATH . 'includes/functions-priority.php' );
+			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );			
 			require( WPAS_PATH . 'includes/install.php' );
 
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
@@ -431,6 +432,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				// Compatibility functions
 				require( 'includes/compatibility/sensei.php' );
 				require( 'includes/compatibility/acf-pro.php' );
+				require( 'includes/compatibility/wpml.php' );
 
 			}
 
@@ -446,7 +448,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			require( WPAS_PATH . 'includes/admin/functions-notices.php' );
 			require( WPAS_PATH . 'includes/admin/functions-ajax.php' );
-				require( WPAS_PATH . 'includes/admin/functions-log-viewer.php' );
+			require( WPAS_PATH . 'includes/admin/functions-log-viewer.php' );
 
 			// We don't need all this during Ajax processing
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
@@ -470,7 +472,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				}
 
 				/* Load settings files */
-				require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );

@@ -170,6 +170,17 @@
 				// @since 3.3.5
 				'readonly'              => false,
 				// Readonly field by default. Can be updated in custom save_callback
+				
+				// @since 4.1.0
+				// Whether or not to show the field in the front-end my-tickets list screen after a ticket is submitted.
+				// Sometimes when you get a ton of custom fields, having them all in the list is an issue.
+				'show_frontend_list'	=> true,
+				
+				// @since 4.1.0
+				// Whether or not to show the field in the front-end detail screen (header area) for existing tickets.
+				// Sometimes when you get a ton of custom fields, having them all in the list is an issue.
+				'show_frontend_detail'	=> true,				
+				
 
 			);
 
