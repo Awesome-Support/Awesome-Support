@@ -119,7 +119,7 @@ function wpas_core_settings_advanced( $def ) {
 										'pulse' => __( 'Pulse', 'awesome-support' ),
 										'sandstone' => __( 'Sandstone', 'awesome-support' ), 
 										'simplex' => __( 'Simplex', 'awesome-support' ),
-										'slate' => __( 'slate', 'awesome-support' ),
+										'slate' => __( 'Slate', 'awesome-support' ),
 										'solar' => __( 'Solar', 'awesome-support' ), 
 										'spacelab' => __( 'spacelab', 'awesome-support' ), 
 										'united' => __( 'United', 'awesome-support' ), 
