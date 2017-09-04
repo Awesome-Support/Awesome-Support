@@ -89,7 +89,7 @@ function wpas_core_settings_advanced( $def ) {
 				array(
 					'name' => __( 'Bootstrap Support (Experimental)', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => __('Options for loading bootstrap files. Bootstrap is used for styling certain objects so if an addon uses it then this should be turned on.', 'awesome-support' ),
+					'desc' => __('Options for loading bootstrap files. While you can enable this now please be aware that not all elements in the plugin renders properly.', 'awesome-support' ),
 				),
 				array(
 					'name'    => __( 'Load BootStrap Files?', 'awesome-support' ),
@@ -100,17 +100,18 @@ function wpas_core_settings_advanced( $def ) {
 				),
 				
 				array(
-					'name'    => __( 'Bootstrap Theme', 'awesome-support' ),
+					'name'    => __( 'Bootstrap 4 Theme', 'awesome-support' ),
 					'id'      => 'bs4_theme',
 					'type'    => 'radio',					
-					'options' => array( 'default' => __( 'Default', 'awesome-support' ), 
+					'options' => array( 'default' => __( 'Default', 'awesome-support' ),
+										'awesome'=> __( 'Future Awesome Support BS4 Theme', 'awesome-support' ), 
 										'cerulean' => __( 'Cerulean', 'awesome-support' ), 
 										'cosmo' => __( 'Cosmo', 'awesome-support' ),
 										'cyborg' => __( 'Cyborg', 'awesome-support' ),
 										'darkly' => __( 'Darkly', 'awesome-support' ),										
 										'flatly' => __( 'Flatly', 'awesome-support'), 
 										'journal' => __( 'Journal', 'awesome-support'), 										
-										'Litera' => __( 'Litera', 'awesome-support'), 
+										'litera' => __( 'Litera', 'awesome-support'), 
 										'lumen' => __( 'Lumen', 'awesome-support'), 
 										'lux' => __( 'Lux', 'awesome-support'), 
 										'materia' => __( 'Materia', 'awesome-support'), 
@@ -123,6 +124,7 @@ function wpas_core_settings_advanced( $def ) {
 										'spacelab' => __( 'spacelab', 'awesome-support' ), 
 										'united' => __( 'United', 'awesome-support' ), 
 										'yeti' => __( 'Yeti', 'awesome-support' ), 
+										'custom' => __( 'Custom theme', 'awesome-support' ), 
 										),
 					'default' => 'default'
 				),				

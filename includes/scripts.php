@@ -365,6 +365,14 @@ function wpas_register_bs4_theme_styles() {
 			wp_register_style( 'wpas-bootstrap-4', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css', array(), '4.0.0' );		
 			break ;
 				
+		case 'awesome':
+			wp_register_style( 'wpas-bootstrap-4', WPAS_URL . 'assets/admin/css/vendor/bootstrap4themes/awesome-support/' . $bs4_theme . '/bootstrap.min.css', array(), WPAS_VERSION );
+			break ;
+			
+		case 'custom':
+			wp_register_style( 'wpas-bootstrap-4', WPAS_URL . 'assets/admin/css/vendor/bootstrap4themes/custom/style.css', array(), WPAS_VERSION );
+			break ;			
+			
 		default: 
 			wp_register_style( 'wpas-bootstrap-4', WPAS_URL . 'assets/admin/css/vendor/bootstrap4themes/bootswatch/' . $bs4_theme . '/bootstrap.min.css', array(), WPAS_VERSION );
 			break ;
