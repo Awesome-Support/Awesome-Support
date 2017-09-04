@@ -20,8 +20,23 @@ add_action( 'wp_enqueue_scripts', 'wpas_register_assets_front_end', 5 );
  * @return void
  */
 function wpas_register_assets_front_end() {
-
-	// Styles
+	
+	// Optionally load bootstrap 4 or bootstrap 3 files from cdn.
+	// These assets are also duplicated and loaded on the back-end
+	$load_bs4 = wpas_get_option('load_bs4_files', '0') ;
+	if ( '1' === $load_bs4 ) {
+		wpas_register_bs4_theme_styles() ;
+		wp_register_script( 'wpas-bootstrap-4-popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js', array( 'jquery' ), '1.11.0', true );
+		wp_register_script( 'wpas-bootstrap-4-js', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js', array( 'jquery' ), '4.0.0', true );
+	}
+	if ( '2' === $load_bs4 ) {
+		// Boostrap 3 styles and scripts
+		wp_register_style( 'wpas-bootstrap-3', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', array(), '3.3.7' );
+		wp_register_style( 'wpas-bootstrap-3-ss', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', array(), '3.3.7' );
+		wp_register_script( 'wpas-bootstrap-3-js', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', array( 'jquery' ), '3.3.7', true );
+	}
+	
+	// Our styles
 	wp_register_style( 'wpas-plugin-styles', WPAS_URL . 'assets/public/css/public.css', array(), WPAS_VERSION );
 	
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the back-end.
@@ -60,7 +75,7 @@ function wpas_register_assets_front_end() {
 			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.3.1111', 'all' );
 			break ;						
 	}
-
+	
 	// JS Objects
 	wp_localize_script( 'wpas-plugin-script', 'wpas', wpas_get_javascript_object() );
 
@@ -74,8 +89,23 @@ add_action( 'admin_enqueue_scripts', 'wpas_register_assets_back_end', 5 );
  * @return void
  */
 function wpas_register_assets_back_end() {
-
-	// Styles
+	
+	// Optionally load bootstrap 4 or bootstrap 3 files from cdn.
+	// These assets are also duplicated and loaded on the front-end
+	$load_bs4  = wpas_get_option('load_bs4_files', '0') ;	
+	if ( '1' === $load_bs4 ) {
+		wpas_register_bs4_theme_styles();
+		wp_register_script( 'wpas-bootstrap-4-popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js', array( 'jquery' ), '1.11.0', true );
+		wp_register_script( 'wpas-bootstrap-4-js', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js', array( 'jquery' ), '4.0.0', true );
+	}	
+	if ( '2' === $load_bs4 ) {
+		// Boostrap 3 styles and scripts		
+		wp_register_style( 'wpas-bootstrap-3', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', array(), '3.3.7' );
+		wp_register_style( 'wpas-bootstrap-3-ss', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', array(), '3.3.7' );
+		wp_register_script( 'wpas-bootstrap-3-js', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', array( 'jquery' ), '3.3.7', true );
+	}
+	
+	// Our Styles
 	wp_register_style( 'wpas-datepicker', WPAS_URL . 'assets/public/css/component_datepicker.css', null, WPAS_VERSION, 'all' ); // NOTE: This asset is duplicated in the back-end
 	wp_register_style( 'wpas-flexboxgrid', WPAS_URL . 'assets/admin/css/vendor/flexboxgrid.min.css', null, '6.2.0', 'all' );
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
@@ -95,7 +125,7 @@ function wpas_register_assets_back_end() {
 	}
 	
 
-	// Scripts
+	// Our Scripts
 	wp_register_script( 'wpas-admin-about-linkify', WPAS_URL . 'assets/admin/js/vendor/linkify.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-about-linkify-jquery', WPAS_URL . 'assets/admin/js/vendor/linkify-jquery.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-about-moment', WPAS_URL . 'assets/admin/js/vendor/moment.min.js', array( 'jquery' ), WPAS_VERSION );
@@ -159,8 +189,26 @@ function wpas_assets_front_end() {
 
 	// Make sure we only enqueue on our plugin's pages
 	if ( wpas_is_plugin_page() ) {
-
-		// Styles
+		
+		// Optionally load bootstrap 4 or bootstrap 3 files from cdn.		
+		$load_bs4 = wpas_get_option('load_bs4_files', '0') ;
+		if ( '1' === $load_bs4 ) {
+			// Boostrap 4 styles and scripts
+			wp_enqueue_style( 'wpas-bootstrap-4' );
+			wp_enqueue_script( 'wpas-bootstrap-4-popper' );
+			wp_enqueue_script( 'wpas-bootstrap-4-js' );			
+		}
+		if ( '2' === $load_bs4 ) {
+			// Boostrap 3 styles and scripts
+			wp_enqueue_style( 'wpas-bootstrap-3' );
+			wp_enqueue_style( 'wpas-bootstrap-3-ss' );
+			wp_enqueue_script( 'wpas-bootstrap-3-js' );
+		}
+		
+		// @todo - where are the SELECT2 scripts being enqueued?
+		// Feels like they shoudl be enqueued here - maybe controlled via a setting in TICKETS->SETTINGS->ADVANCED
+		
+		// Our Custom Styles
 		wp_enqueue_style( 'wpas-plugin-styles' );
 
 		$stylesheet = wpas_get_theme_stylesheet();
@@ -170,7 +218,7 @@ function wpas_assets_front_end() {
 			wp_enqueue_style( 'wpas-theme-styles' );
 		}
 
-		// Scripts
+		// Our Custom Scripts
 		wp_enqueue_script( 'wpas-plugin-script' );
 
 	}
@@ -188,8 +236,23 @@ function wpas_enqueue_assets_back_end() {
 
 	// Make sure we only enqueue on our plugin's pages
 	if ( wpas_is_plugin_page() ) {
+		
+		// Optionally load bootstrap 4 or bootstrap 3 files from cdn.		
+		$load_bs4 = wpas_get_option('load_bs4_files', '0') ;
+		if ( '1' === $load_bs4 ) {
+			// Boostrap 4 styles and scripts			
+			wp_enqueue_style( 'wpas-bootstrap-4' );
+			wp_enqueue_script( 'wpas-bootstrap-4-popper' );
+			wp_enqueue_script( 'wpas-bootstrap-4-js' );			
+		}
+		if ( '2' === $load_bs4 ) {
+			// Boostrap 3 styles and scripts
+			wp_enqueue_style( 'wpas-bootstrap-3' );
+			wp_enqueue_style( 'wpas-bootstrap-3-ss' );
+			wp_enqueue_script( 'wpas-bootstrap-3-js' );
+		}				
 
-		// Styles
+		// Our Styles
 		wp_enqueue_style( 'wpas-select2' );
 		wp_enqueue_style( 'wpas-datepicker' );
 		wp_enqueue_style( 'wpas-flexboxgrid' );
@@ -199,7 +262,7 @@ function wpas_enqueue_assets_back_end() {
 			wp_enqueue_style( 'wpas-simple-hint' );
 		}
 
-		// Scripts
+		// Our Scripts
 		if ( 'ticket' == get_post_type() ) {
 			wp_dequeue_script( 'autosave' );
 		}
@@ -285,4 +348,33 @@ function wpas_get_javascript_object() {
 
 	return $object;
 
+}
+
+/**
+ * Register bootstrap 4 theme theme stylesheets
+ *
+ * @since  4.1.0
+ * 
+ * @return void
+ */
+function wpas_register_bs4_theme_styles() {
+	$bs4_theme = wpas_get_option('bs4_theme', 'default') ;
+	switch ( $bs4_theme ) {
+		
+		case 'default':
+			wp_register_style( 'wpas-bootstrap-4', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css', array(), '4.0.0' );		
+			break ;
+				
+		case 'awesome':
+			wp_register_style( 'wpas-bootstrap-4', WPAS_URL . 'assets/admin/css/vendor/bootstrap4themes/awesome-support/' . $bs4_theme . '/bootstrap.min.css', array(), WPAS_VERSION );
+			break ;
+			
+		case 'custom':
+			wp_register_style( 'wpas-bootstrap-4', WPAS_URL . 'assets/admin/css/vendor/bootstrap4themes/custom/style.css', array(), WPAS_VERSION );
+			break ;			
+			
+		default: 
+			wp_register_style( 'wpas-bootstrap-4', WPAS_URL . 'assets/admin/css/vendor/bootstrap4themes/bootswatch/' . $bs4_theme . '/bootstrap.min.css', array(), WPAS_VERSION );
+			break ;
+	}
 }
