@@ -87,12 +87,12 @@ function wpas_upgrade_333() {
 /**
  * Upgrade function for version 4.0.0
  *
- * A new option was added in this version so we need to set its default value on upgrade.
+ * New capabilities need to be added to all roles.
  *
  * @since 4.0.0
  * @return void
  */
-function wpas_upgrade_410() {
+function wpas_upgrade_406() {
 
 	/* Add new capabilities to these roles and all users assigned these roles:
 	 *
@@ -213,3 +213,14 @@ function wpas_upgrade_410() {
 	$admin->remove_cap('view_all_tickets');
 }
 
+/**
+ * Upgrade function for version 4.1.0
+ *
+ * Need to update tickets to add values to new fields that were added to the Tickets CPT.
+ *
+ * @since 4.1.0
+ * @return void
+ */
+function wpas_upgrade_410() {
+	wpas_update_last_reply();
+}
