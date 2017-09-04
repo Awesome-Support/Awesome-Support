@@ -75,14 +75,14 @@ class WPAS_Tickets_List {
 			}
 
 			// Maybe add the "Awaiting Support Response" tag
-			if ( 'awaiting_support_reply' === $_GET[ 'activity' ]
+			if ( isset( $_GET[ 'activity' ] ) && 'awaiting_support_reply' === $_GET[ 'activity' ]
 				&& user_can( (int) $post->post_author, 'edit_ticket' )
 			) {
 				unset( $p[ $key ] );
 			}
 
 			// Maybe add the "Old" tag
-			if ( 'old' === $_GET[ 'activity' ]
+			if ( isset( $_GET[ 'activity' ] ) &&  'old' === $_GET[ 'activity' ]
 			     && false === wpas_is_ticket_old( $post->ID, wpas_get_replies($post->ID) ) ) {
 				unset( $p[ $key ] );
 			}
