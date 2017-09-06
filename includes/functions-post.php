@@ -326,7 +326,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	add_post_meta( $ticket_id, '_wpas_last_reply_date_gmt', null, true );
 
 	/* . */
-	add_post_meta( $ticket_id, '_wpas_is_waiting_client_reply', false, true  );
+	add_post_meta( $ticket_id, '_wpas_is_waiting_client_reply', ! user_can( $data['post_author'], 'edit_ticket' ), true  );
 
 	if ( false === $agent_id ) {
 		$agent_id = wpas_find_agent( $ticket_id );
@@ -1026,7 +1026,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	update_post_meta( $data[ 'post_parent' ], '_wpas_last_reply_date', current_time( 'mysql' ) );
 	update_post_meta( $data[ 'post_parent' ], '_wpas_last_reply_date_gmt', current_time( 'mysql', 1 ) );
 
-	update_post_meta( $data[ 'post_parent' ], '_wpas_is_waiting_client_reply', user_can( (int) $data->post_author, 'edit_ticket' )  );
+	update_post_meta( $data[ 'post_parent' ], '_wpas_is_waiting_client_reply', ! current_user_can( 'edit_ticket' )  );
 
 	return $reply_id;
 
