@@ -382,8 +382,13 @@ function wpas_admin_footer_text( $text ) {
 	if ( ! is_admin() || ! wpas_is_plugin_page() ) {
 		return $text;
 	}
+	
+	// Do not show message if installed in an SAAS environment
+	if ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) {
+		return ;
+	}	
 
-	return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733' );
+	return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733 ' );
 
 }
 
