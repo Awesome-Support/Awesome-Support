@@ -87,7 +87,7 @@ function wpas_upgrade_333() {
 /**
  * Upgrade function for version 4.0.0
  *
- * A new option was added in this version so we need to set its default value on upgrade.
+ * New capabilities need to be added to all roles.
  *
  * @since 4.0.0
  * @return void
@@ -213,3 +213,45 @@ function wpas_upgrade_406() {
 	$admin->remove_cap('view_all_tickets');
 }
 
+/**
+ * Upgrade functions for version 4.1.0
+ *
+ * Need to update tickets to add values to new fields that were added to the Tickets CPT.
+ *
+ * @since 4.1.0
+ * @return void
+ */
+function wpas_upgrade_410() {
+	wpas_update_last_reply();
+}
+
+/* Execute upgrade functions from 3.3.4 to just before 4.1.0. */
+function wpas_upgrade_334_410() {
+	wpas_upgrade_406();
+}
+
+/* Execute upgrade functions from 3.3.3 to just before 4.1.0. */
+function wpas_upgrade_333_410() {
+	wpas_upgrade_406();
+}
+
+/* Execute upgrade functions from 3.2.8 to just before 4.1.0. */
+function wpas_upgrade_328_410() {
+	wpas_upgrade_333();
+	wpas_upgrade_406();
+}
+
+/* Execute upgrade functions from 3.2.1 to just before 4.1.0. */
+function wpas_upgrade_321_410() {
+	wpas_upgrade_328();
+	wpas_upgrade_333();
+	wpas_upgrade_406();
+}
+
+/* Execute upgrade functions from 3.2.0 to just before 4.1.0. */
+function wpas_upgrade_320_410() {
+	wpas_upgrade_321();
+	wpas_upgrade_328();
+	wpas_upgrade_333();
+	wpas_upgrade_406();
+}

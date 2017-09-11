@@ -75,6 +75,9 @@ function wpas_get_products_options() {
 
 		$registered = WPAS_eCommerce_Integration::get_instance()->get_plugins();
 		$post_type  = $registered[ $ecommerce_synced ]['post_type'];
+		$options    = ( isset( $_GET['page'] ) && 'wpas-settings' === $_GET['page'] && wpas_is_plugin_page() )
+			? wpas_list_pages( $post_type )
+			: '';
 
 		$products[] = array(
 			'name'     => __( 'Include Products', 'awesome-support' ),
@@ -82,7 +85,7 @@ function wpas_get_products_options() {
 			'type'     => 'select',
 			'multiple' => true,
 			'desc'     => esc_html__( 'Which products do you want to synchronize with Awesome Support (leave blank for all products)', 'awesome-support' ),
-			'options'  => wpas_list_pages( $post_type ),
+			'options'  => $options,
 			'default'  => ''
 		);
 
@@ -92,7 +95,7 @@ function wpas_get_products_options() {
 			'type'     => 'select',
 			'multiple' => true,
 			'desc'     => esc_html__( 'Which products do you want to exclude from synchronization with Awesome Support (leave blank for no exclusion)', 'awesome-support' ),
-			'options'  => wpas_list_pages( $post_type ),
+			'options'  => $options,
 			'default'  => ''
 		);
 

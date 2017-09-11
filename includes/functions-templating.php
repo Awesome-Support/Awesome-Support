@@ -290,8 +290,8 @@
 				continue;
 			}
 
-			/* Don't display fields that aren't specifically designed to */
-			if ( ( true === $field[ 'args' ][ 'show_column' ] ) && ( false === $field[ 'args' ][ 'hide_front_end' ] ) && ( false === $field[ 'args' ][ 'backend_only' ] ) ) {
+			/* Don't display fields that aren't specifically designed to be displayed on the front end*/
+			if ( ( true === $field[ 'args' ][ 'show_column' ] ) && ( false === $field[ 'args' ][ 'hide_front_end' ] ) && ( false === $field[ 'args' ][ 'backend_only' ] ) && ( true === $field[ 'args' ][ 'show_frontend_detail' ] )  ) {
 				$columns[ $field[ 'name' ] ]           = ! empty( $field[ 'args' ][ 'title' ] ) ? sanitize_text_field( $field[ 'args' ][ 'title' ] ) : wpas_get_title_from_id( $field[ 'name' ] );
 				$columns_callbacks[ $field[ 'name' ] ] = ( 'taxonomy' === $field[ 'args' ][ 'field_type' ] && true === $field[ 'args' ][ 'taxo_std' ] ) ? 'taxonomy' : $field[ 'args' ][ 'column_callback' ];
 			}
@@ -589,10 +589,10 @@
 				continue;
 			}
 
-			/* Don't display fields that aren't specifically designed to */
-			if ( true === $field[ 'args' ][ 'show_column' ]
-			     && ( true !== $field[ 'args' ][ 'backend_only' ] )
+			/* Don't display fields that aren't specifically designed to be shown */
+			if ( ( true !== $field[ 'args' ][ 'backend_only' ] )
 			     && ( true !== $field[ 'args' ][ 'hide_front_end' ] )
+				 && ( true === $field[ 'args' ][ 'show_frontend_list' ] )
 			) {
 
 				$column_title                = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );

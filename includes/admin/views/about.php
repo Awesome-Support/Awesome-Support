@@ -41,7 +41,7 @@
 					<p><b>Basic time tracking</b> at the ticket level is now available. Agents can enter the total time they spent on a ticket along with any adjustments and time related notes.</a>.</p>
 					<p>Time columns can optionally be added to the primary ticket list view.</p>
 					<p>Advanced automatic and manual time-tracking down to the reply level is supported via add-ons.</p>
-					<p><a href="https://getawesomesupport.com/documentation-new/documentation-awesome-support-core-getting-started/#agent-functions-track-time-spent-ticket-basic" target="_blank">Read the documentation</a></p>
+					<p><a href="https://getawesomesupport.com/documentation/awesome-support/admin-basic-time-tracking/" target="_blank">Read the documentation</a></p>
 				</div>				
 			</div>
 		</div>
@@ -137,7 +137,7 @@
 					<img src="<?php echo WPAS_URL; ?>assets/admin/images/about-translations.png" alt="Translated in many languages">
 					<h3>Translated in many languages</h3>
 					<p>Thanks to our contributors, the plugin is available in several languages. Currently the plugin is <mark>available in nearly 10 languages</mark>.</p>
-					<p>To check out available translations, please visit <a href="https://www.transifex.com/projects/p/awesome-support/" target="_blank">our transifex project</a>.</p>
+					<p>To check out available translations, please visit <a href="https://getawesomesupport.com/documentation/awesome-support/translations/" target="_blank">our POEditor.com project list</a>.</p>
 				</div>
 			</div>
 		</div>
