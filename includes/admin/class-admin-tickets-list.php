@@ -1224,7 +1224,7 @@ SQL;
 		$meta_query = $wp_query->get( 'meta_query' );
 
 		if ( ! is_array( $meta_query ) ) {
-			$meta_query = (array) $meta_query;
+			$meta_query = empty( $meta_query ) ? [] : (array) $meta_query;
 		}
 
 		if ( isset( $_GET[ 'assignee' ] ) && ! empty( $_GET[ 'assignee' ] ) ) {
