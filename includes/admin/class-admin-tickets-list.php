@@ -1326,7 +1326,7 @@ SQL;
 	 */
 	public function posts_where( $where, $wp_query ) {
 
-		if ( is_admin() && is_main_query()
+		if ( is_admin() && $wp_query->is_main_query()
 		     && ! is_null( filter_input( INPUT_GET, 'id' ) )
 		     && 'ticket' === $wp_query->query[ 'post_type' ]
 		) {

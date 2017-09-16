@@ -12,6 +12,14 @@ $tools_tabs = apply_filters( 'wpas_system_tabls', array(
     )
 ) );
 
+/* Remove some items if running in SAAS mode AND in a multi-site environment - do not allow the user to see  the LOG viewer and the SYSTEM STATUS screen! */
+if ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) {
+	if ( true === is_multisite() && 1 <> get_current_blog_id() && 0 <> get_current_blog_id() ) {
+		unset($tools_tabs['logs']);
+		unset($tools_tabs['status']);
+	}
+}
+
 
 if(!empty( $tools_tabs )) {
 ?>
