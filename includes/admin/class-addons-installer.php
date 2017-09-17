@@ -53,7 +53,7 @@ if ( ! class_exists( 'WPAS_Addons_Installer' ) ) {
 		 * @since 4.1
 		 * @var string API endpoint URL
 		 */
-		public $api_endpoint = 'https://getawesomesupport.com/edd-api/v2/';
+		public $api_endpoint = 'https://getawesomesupport.com/wp-json/as-client/';
 
 		/**
 		 * Addons_Installer constructor.
@@ -62,6 +62,7 @@ if ( ! class_exists( 'WPAS_Addons_Installer' ) ) {
 		 */
 		public function __construct() {
 			$this->load_api_credentials();
+			$this->api_endpoint = apply_filters( 'wpas_addon_installer_api_endpoint', $this->api_endpoint );
 		}
 
 		/**
@@ -94,23 +95,8 @@ if ( ! class_exists( 'WPAS_Addons_Installer' ) ) {
 		public function get_purchased_addons() {
 
 			$purchase    = array();
-			$query_param = array( 'email' => $this->user_api_email );
-			$response    = $this->query_edd_server( 'sales', $query_param );
-
-			if ( ! array_key_exists( 'sales', $response ) ) {
-				return array();
-			}
-
-			foreach ( $response as $sale ) {
-				$purchase[] = array(
-					'id'       => $sale['ID'],
-					'key'      => $sale['key'],
-					'date'     => $sale['date'],
-					'products' => $this->get_purchased_addons_products( $sale ),
-				);
-			}
-
-			return $purchase;
+			$response    = $this->query_edd_server( 'addons' );
+			return $response;
 
 		}
 
@@ -156,12 +142,7 @@ if ( ! class_exists( 'WPAS_Addons_Installer' ) ) {
 			global $wp_version;
 
 			$routes = array(
-				'products',
-				'sales',
-				'download-logs',
-				'customers',
-				'stats',
-				'discounts',
+				'addons',
 			);
 
 			if ( ! in_array( $route, $routes, true ) ) {
@@ -169,7 +150,7 @@ if ( ! class_exists( 'WPAS_Addons_Installer' ) ) {
 			}
 
 			$params   = $this->get_authenticated_params( $params );
-			$query    = esc_url_raw( $this->api_endpoint . '?' . http_build_query( $params ) );
+			$query    = esc_url_raw( trailingslashit( $this->api_endpoint ) . $route . '?' . http_build_query( $params ) );
 			$response = wp_remote_get( $query, array(
 				'timeout'     => 30,
 				'redirection' => 3,
@@ -201,8 +182,9 @@ if ( ! class_exists( 'WPAS_Addons_Installer' ) ) {
 		 */
 		protected function get_authenticated_params( $params ) {
 
-			$params['key']   = $this->user_api_key;
-			$params['token'] = $this->user_api_token;
+			$params['email']     = $this->user_api_email;
+			$params['api_key']   = $this->user_api_key;
+			$params['api_token'] = $this->user_api_token;
 
 			return $params;
 		}
