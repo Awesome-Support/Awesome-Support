@@ -444,6 +444,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		private function includes_admin() {
 
+			require( WPAS_PATH . 'includes/admin/functions-addons-installer.php' );
 			require( WPAS_PATH . 'includes/admin/functions-notices.php' );
 			require( WPAS_PATH . 'includes/admin/functions-ajax.php' );
 			require( WPAS_PATH . 'includes/admin/functions-log-viewer.php' );
