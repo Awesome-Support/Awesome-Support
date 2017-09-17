@@ -110,7 +110,7 @@
 				<div class="about-body">
 					<img src="<?php echo WPAS_URL; ?>assets/admin/images/about-cf.png" alt="Improved Custom Fields">
 					<h3>Improved Custom Fields</h3>
-					<p>This feature lets your tailor your support system to your needs, allowing you to <mark>add more fields to the ticket submission form</a>.</p>
+                    <p>This feature lets your tailor your support system to your needs, allowing you to <mark>add more fields to the ticket submission form</mark>.</p>
 					<p>Since version 3.1.2, custom fields become much more powerful. They are simpler to use, and many more field types are available: checkbox, email, number, radio, text, and much more. Find all the available field types in <a href="https://getawesomesupport.com/documentation/awesome-support/custom-fields/" target="_blank">the documentation</a>.</p>
 				</div>
 			</div>
