@@ -87,17 +87,43 @@ if ( ! class_exists( 'WPAS_Addons_Installer' ) ) {
 		}
 
 		/**
-		 * Get the list of addons the user purchased.
+		 * Get the list of user purchases.
 		 *
 		 * @since 4.1
 		 * @return array
 		 */
-		public function get_purchased_addons() {
+		public function get_purchases() {
 
-			$purchase    = array();
-			$response    = $this->query_edd_server( 'addons' );
+			$response = $this->query_edd_server( 'addons' );
+
+			if ( is_wp_error( $response ) ) {
+				return array();
+			}
+
 			return $response;
 
+		}
+
+		/**
+		 * Get all the downloads from the user purchases.
+		 *
+		 * @since 4.1
+		 * @return array
+		 */
+		public function get_downloads() {
+
+			$downloads = array();
+			$purchases = $this->get_purchases();
+
+			foreach ( $purchases as $purchase ) {
+				if ( isset( $purchase->downloads ) ) {
+					foreach ( $purchase->downloads as $download ) {
+						$downloads[] = $download;
+					}
+				}
+			}
+
+			return $downloads;
 		}
 
 		/**
