@@ -130,7 +130,7 @@ function wpas_core_settings_advanced( $def ) {
 				),				
 				
 				array(
-					'name' => __( 'Cookie Management', 'awesome-support' ),
+					'name' => __( 'Sessions and Cookie Management', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -145,6 +145,15 @@ function wpas_core_settings_advanced( $def ) {
 					'type'    => 'checkbox',
 					'default' => false
 				),
+				array(
+					'name'    => __( 'Expired Sessions Cleanup Batch Size', 'awesome-support' ),
+					'id'      => 'session_delete_batch_size',
+					'type'    => 'number',
+					'default' => 1000,
+					'min'	  => 1000,
+					'max'	  => 100000,
+				),				
+				
 				
 				array(
 					'name' => __( 'Danger Zone', 'awesome-support' ),
