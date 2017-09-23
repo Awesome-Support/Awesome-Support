@@ -225,33 +225,69 @@ function wpas_upgrade_410() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.4 to just before 4.1.0. */
-function wpas_upgrade_334_410() {
+/* Execute upgrade functions from 3.3.4 to just before 4.2.0. */
+function wpas_upgrade_334_420() {
 	wpas_upgrade_406();
+	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.3 to just before 4.1.0. */
-function wpas_upgrade_333_410() {
+/* Execute upgrade functions from 3.3.3 to just before 4.2.0. */
+function wpas_upgrade_333_420() {
 	wpas_upgrade_406();
+	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.8 to just before 4.1.0. */
-function wpas_upgrade_328_410() {
+/* Execute upgrade functions from 3.2.8 to just before 4.2.0. */
+function wpas_upgrade_328_420() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
+	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.1 to just before 4.1.0. */
-function wpas_upgrade_321_410() {
+/* Execute upgrade functions from 3.2.1 to just before 4.2.0. */
+function wpas_upgrade_321_420() {
 	wpas_upgrade_328();
 	wpas_upgrade_333();
 	wpas_upgrade_406();
+	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.0 to just before 4.1.0. */
-function wpas_upgrade_320_410() {
+/* Execute upgrade functions from 3.2.0 to just before 4.2.0. */
+function wpas_upgrade_320_420() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
 	wpas_upgrade_406();
+	wpas_update_last_reply();
+}
+/**
+ * Execute upgrade functions from 4.0.x to 4.2.0.
+ *
+ * Normally we would have just a single function called wpas_upgrade_420.  
+ * But because the wpas_update_last_reply function is so intensive it is probably best to make sure
+ * it only runs when absolutely necessary instead of running on every upgrade.  
+ * Upgrades from 4.1.0 are not necessary for it to run. So, we have to make upgrade routines 
+ * for all the 4.x to 4.2 versions - gah.
+ * 
+ */
+function wpas_upgrade_400_420() {
+	wpas_update_last_reply();	
+}
+function wpas_upgrade_401_420() {
+	wpas_update_last_reply();	
+}
+function wpas_upgrade_402_420() {
+	wpas_update_last_reply();	
+}
+function wpas_upgrade_403_420() {
+	wpas_update_last_reply();	
+}
+function wpas_upgrade_404_420() {
+	wpas_update_last_reply();	
+}
+function wpas_upgrade_405_420() {
+	wpas_update_last_reply();	
+}
+function wpas_upgrade_406_420() {
+	wpas_update_last_reply();	
 }
