@@ -50,11 +50,18 @@ class WPAS_Session {
 	/**
 	 * Instantiate the session
 	 *
+	 * You can use the wpas_initiate_session_flag filter to disable creating the session.
+	 * This would be useful when the traffic is coming from bot sources such as pingdom or uptimerobot
+	 *
 	 * @since 3.2
 	 * @return void
 	 */
 	public function init() {
-		$this->session = WP_Session::get_instance();
+		$open_session = apply_filters( 'wpas_initiate_session_flag', true ) ;
+		
+		if ( true === $open_session ) {
+			$this->session = WP_Session::get_instance();
+		}
 	}
 
 	/**
