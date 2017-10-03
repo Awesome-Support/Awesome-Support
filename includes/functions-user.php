@@ -425,7 +425,7 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
 
 		if ( ! current_user_can( 'reply_ticket' ) ) {
 			// return false;
-			return apply_filters( ‘wpas_can_also_reply_ticket’, false, $post_id, $author_id, 1 );
+			return apply_filters( 'wpas_can_also_reply_ticket', false, $post_id, $author_id, 1 );
 		}
 
 		$user_id = $current_user->data->ID;
@@ -433,22 +433,22 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
 		/* If the current user is the author then yes */
 		if ( $user_id == $author_id ) {
 			// return true;
-			return apply_filters( ‘wpas_can_also_reply_ticket’, true, $post_id, $author_id, 2 );
+			return apply_filters( 'wpas_can_also_reply_ticket', true, $post_id, $author_id, 2 );
 		} else {
 
 			if ( current_user_can( 'edit_ticket' ) && true === $admins_allowed ) {
 				// return true;
-				return apply_filters( ‘wpas_can_also_reply_ticket’, true, $post_id, $author_id, 3 );
+				return apply_filters( 'wpas_can_also_reply_ticket', true, $post_id, $author_id, 3 );
 			} else {
 				// return false;
-				return apply_filters( ‘wpas_can_also_reply_ticket’, false, $post_id, $author_id, 4 );
+				return apply_filters( 'wpas_can_also_reply_ticket', false, $post_id, $author_id, 4 );
 			}
 
 		}
 
 	} else {
 		// return false;
-		return apply_filters( ‘wpas_can_also_reply_ticket’, false, $post_id, $author_id, 5 );
+		return apply_filters( 'wpas_can_also_reply_ticket', false, $post_id, $author_id, 5 );
 	}
 
 }
