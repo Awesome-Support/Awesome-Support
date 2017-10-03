@@ -447,7 +447,8 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
 		}
 
 	} else {
-		return false;
+		// return false;
+		return apply_filters( ‘wpas_can_also_reply_ticket’, false, $post_id, $author_id, 5 );
 	}
 
 }
