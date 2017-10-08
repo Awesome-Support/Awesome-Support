@@ -206,7 +206,7 @@ function wpas_core_settings_general( $def ) {
 				array(
 					'name' => __( 'Ticket List Tabs', 'awesome-support' ),
 					'type' => 'heading',
-					'desc'    => __( 'Control whether certain tabs are visible at the top of the ticket list screen in admin)', 'awesome-support' ),					
+					'desc'    => __( 'Control whether certain tabs are visible at the top of the admin ticket list', 'awesome-support' ),					
 				),
 				array(
 					'name'    => __( 'Show Documentation Tab', 'awesome-support' ),
