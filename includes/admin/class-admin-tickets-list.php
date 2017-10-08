@@ -40,8 +40,10 @@ class WPAS_Tickets_List {
 			add_filter( 'posts_clauses', array( $this, 'post_clauses_orderby' ), 5, 2 );
 			add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
 			add_action( 'parse_request', array( $this, 'parse_request' ), 10, 1 );
+			add_action( 'pre_get_posts', array( $this, 'set_filtering_query_var' ), 1, 1 );
 			add_action( 'pre_get_posts', array( $this, 'set_ordering_query_var' ), 100, 1 );
 			add_filter( 'posts_results', array( $this, 'apply_ordering_criteria' ), 10, 2 );
+			add_filter( 'posts_results', array( $this, 'filter_the_posts' ), 10, 2 );
 
 			add_filter( 'wpas_add_custom_fields', array( $this, 'add_custom_fields' ) );
 
@@ -51,13 +53,43 @@ class WPAS_Tickets_List {
 			add_filter( 'post_class', array( $this, 'ticket_row_class' ), 10, 3 );
 			add_filter( 'manage_posts_extra_tablenav', array( $this, 'manage_posts_extra_tablenav' ), 10, 1 );
 
-			// Temporary (Activity filter)
-			add_filter( 'posts_results', array( $this, 'filter_the_posts' ), 10, 2 );
 		}
 	}
 
+	/**
+	 * Clear all filters if filtering by Ticket ID
+	 *
+	 * @param $query
+	 */
+	public function set_filtering_query_var( $query ) {
 
-	function filter_the_posts( $posts, $query ) {
+		global $post_type;
+
+	    if ( 'ticket' !== $post_type
+	        || ! $query->is_main_query()
+	        || empty ($_GET[ 'id' ])
+	    ) {
+	        return;
+	    }
+
+    	$fields = $this->get_custom_fields();
+
+    	foreach( $fields as $key => $value ) {
+			if ( 'id' !== $key && $value[ 'args' ][ 'filterable' ] ) {
+				$query->query[ $key ] = '';
+				$query->set( $key, '');
+			}
+	    }
+
+		$query->query[ 'post_status' ] = '';
+		$query->set( 'post_status', '');
+
+		$query->query[ 'filter-by-date' ] = '';
+		$query->set( 'filter-by-date', '');
+
+	}
+
+	public function filter_the_posts( $posts, $query ) {
 
 		global $typenow;
 
@@ -289,7 +321,6 @@ class WPAS_Tickets_List {
 	public function get_user_meta_current_val( $option, $default = null ) {
 
 		$user_id        = get_current_user_id();
-		//$current_val = get_user_meta( $user_id, $option, true );
 		$current_val = esc_attr( get_the_author_meta( $option, $user_id ) );
 
 		if ( empty( $current_val ) ) {
@@ -747,26 +778,51 @@ SQL;
 	 * @return array
 	 */
 	public function register_tabs( $tabs ) {
+		
+		// Check options to see which tabs to show...
+		$show_doc_tab = boolval( wpas_get_option( 'ticket_list_show_doc_tab', true) );
+		$show_bulk_actions_tab = boolval( wpas_get_option( 'ticket_list_show_bulk_actions_tab', true) );
+		$show_preferences_tab = boolval( wpas_get_option( 'ticket_list_show_preferences_tab', true) ) ;
 
+		// Add tabs to tab array based on options set
 		$tabs[ 'filter' ]        = __( 'Filter', 'awesome-support' );
 		$tabs[ 'search' ]        = __( 'Search', 'awesome-support' );
-		$tabs[ 'bulk_actions' ]  = __( 'Bulk Actions', 'awesome-support' );
-		$tabs[ 'preferences' ]   = __( 'Preferences', 'awesome-support' );
-		$tabs[ 'documentation' ] = __( 'Documentation', 'awesome-support' );
+		
+		if ( true === $show_bulk_actions_tab ) {
+			$tabs[ 'bulk_actions' ]  = __( 'Bulk Actions', 'awesome-support' );
+		}
+		
+		if ( true === $show_preferences_tab ) {
+			$tabs[ 'preferences' ]   = __( 'Preferences', 'awesome-support' );
+		}
+		
+		if ( true === $show_doc_tab ) {		
+			$tabs[ 'documentation' ] = __( 'Documentation', 'awesome-support' );
+		}
 
-
+		// Set content fo tabs based on which tabs are set to be active...
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_filter_content', array( $this, 'filter_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_search_content', array( $this, 'search_tab_content' ) );
-		add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content', array(
-			$this,
-			'bulk_actions_tab_content',
-		) );
-		add_filter( 'wpas_admin_tabs_tickets_tablenav_preferences_content', array( $this, 'preferences_tab_content' ) );
-		add_filter( 'wpas_admin_tabs_tickets_tablenav_documentation_content', array(
-			$this,
-			'filter_documentation_content',
-		) );
+		
+		if ( true === $show_bulk_actions_tab ) {		
+			add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content', array(
+				$this,
+				'bulk_actions_tab_content',
+			) );
+		}
+		
+		if ( true === $show_preferences_tab ) {		
+			add_filter( 'wpas_admin_tabs_tickets_tablenav_preferences_content', array( $this, 'preferences_tab_content' ) );
+		}
+		
+		if ( true === $show_doc_tab ) {				
+			add_filter( 'wpas_admin_tabs_tickets_tablenav_documentation_content', array(
+				$this,
+				'filter_documentation_content',
+			) );
+		}
 
+			
 		return $tabs;
 	}
 
@@ -1193,7 +1249,7 @@ SQL;
 		$meta_query = $wp_query->get( 'meta_query' );
 
 		if ( ! is_array( $meta_query ) ) {
-			$meta_query = (array) $meta_query;
+			$meta_query = empty( $meta_query ) ? [] : (array) $meta_query;
 		}
 
 		if ( isset( $_GET[ 'assignee' ] ) && ! empty( $_GET[ 'assignee' ] ) ) {
@@ -1305,13 +1361,13 @@ SQL;
 
 		// Map query vars to their keys, or get them if endpoints are not supported
 		foreach ( $fields as $key => $var ) {
+
 			if ( isset( $_GET[ $var[ 'name' ] ] ) ) {
 				$wp->query_vars[ $key ] = $_GET[ $var[ 'name' ] ];
 			} elseif ( isset( $wp->query_vars[ $var[ 'name' ] ] ) ) {
 				$wp->query_vars[ $key ] = $wp->query_vars[ $var ];
 			}
 		}
-
 	}
 
 	/**
@@ -1337,7 +1393,7 @@ SQL;
 
 			/* Filter by Ticket ID */
 			if ( ! empty( $ticket_id ) && intval( $ticket_id ) != 0 ) {
-				$where .= " AND {$wpdb->posts}.ID = " . intval( $ticket_id );
+				$where = " AND {$wpdb->posts}.ID = " . intval( $ticket_id );
 			}
 		}
 
@@ -1368,7 +1424,6 @@ SQL;
 
 		$orderby = isset( $_GET[ 'orderby' ] ) ? $_GET[ 'orderby' ] : '';
 
-		//if ( ! empty( $orderby ) && 'wpas-activity' !== $orderby && array_key_exists( $orderby, $fields ) ) {
 		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
 
 			global $wpdb;
@@ -1408,13 +1463,6 @@ SQL;
 				// Join user table onto the postmeta table
 				$clauses[ 'join' ]    .= " LEFT JOIN {$wpdb->users} ON {$wpdb->prefix}posts.post_author={$wpdb->users}.ID";
 				$clauses[ 'orderby' ] = " {$wpdb->users}.display_name " . $order;
-
-			//} elseif ( 'wpas-activity' === $orderby ) {
-
-				// Join user table onto the postmeta table
-				//$clauses[ 'join' ]    .= " LEFT JOIN {$wpdb->users} ON {$wpdb->prefix}posts.post_author={$wpdb->users}.ID";
-
-				//$clauses[ 'orderby' ] = " {$wpdb->postmeta}.meta_value " . $order;
 
 			} else {
 

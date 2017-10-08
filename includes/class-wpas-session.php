@@ -38,8 +38,9 @@ class WPAS_Session {
 
 		require_once( WPAS_PATH . 'vendor/ericmann/wp-session-manager/wp-session-manager.php' );
 		
-		add_filter( 'wp_session_cookie_secure',   array( $this, 'wpas_set_cookie_secure_flag' ), 10, 1 );	// Set the SECURE flag on the cookie
-		add_filter( 'wp_session_cookie_httponly', array( $this, 'wpas_set_http_only_flag' ), 10, 1 );	// Set the SECURE flag on the cookie
+		add_filter( 'wp_session_cookie_secure',     array( $this, 'wpas_set_cookie_secure_flag' ), 10, 1 );	// Set the SECURE flag on the cookie
+		add_filter( 'wp_session_cookie_httponly',   array( $this, 'wpas_set_http_only_flag' ), 10, 1 );	// Set the SECURE flag on the cookie
+		add_filter( 'wp_session_delete_batch_size', array( $this, 'wpas_set_session_delete_batch_Size' ), 10, 1 );	// Set the number of expired session objects to delete on every clean-up pass
 
 		// Instantiate the session
 		$this->init();
@@ -49,11 +50,18 @@ class WPAS_Session {
 	/**
 	 * Instantiate the session
 	 *
+	 * You can use the wpas_initiate_session_flag filter to disable creating the session.
+	 * This would be useful when the traffic is coming from bot sources such as pingdom or uptimerobot
+	 *
 	 * @since 3.2
 	 * @return void
 	 */
 	public function init() {
-		$this->session = WP_Session::get_instance();
+		$open_session = apply_filters( 'wpas_initiate_session_flag', true ) ;
+		
+		if ( true === $open_session ) {
+			$this->session = WP_Session::get_instance();
+		}
 	}
 
 	/**
@@ -211,6 +219,23 @@ class WPAS_Session {
 		return $http_only_flag;
 	}
 
-	
+	/**
+	 * Set the amount of expired sessions to delete in one pass
+	 *
+	 * Filter: wp_session_delete_batch_size
+	 *
+	 * @param boolean $batch_size
+	 *
+	 * @since 4.2.0
+	 *
+	 * @return number - number of expired sessions to delete in every call
+	 */	
+	public function wpas_set_session_delete_batch_Size ( $batch_size ) {
+		
+		$batch_size = intval( wpas_get_option( 'session_delete_batch_size', 1000 ) ) ;
+		
+		return $batch_size;
+		
+	}
 	
 }
