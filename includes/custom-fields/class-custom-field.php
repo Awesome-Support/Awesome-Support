@@ -181,6 +181,17 @@
 				// Sometimes when you get a ton of custom fields, having them all in the list is an issue.
 				'show_frontend_detail'	=> true,				
 				
+				// @since 4.3.0
+				// Hold extra wrapper classes/ids
+				'extra_wrapper_css'		=> '' ,
+
+				// @since 4.3.0
+				// Hold extra field classes/ids
+				'extra_field_css'		=> '' ,
+				
+				// @since 4.3.0
+				// Hold extra label classes/ids - this one not currently used - for possible future use only.
+				'extra_label_css'		=> '' ,				
 
 			);
 
@@ -551,7 +562,7 @@
 		}
 
 		/**
-		 * Get field container class.
+		 * Get field container class along with any user defined extra classes.
 		 *
 		 * @since  3.2.0
 		 *
@@ -569,6 +580,11 @@
 			$classes = array(
 				'wpas-form-group',
 			);
+			
+			/* Add in any user defined classes if any */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css' ] ) ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css' ] ;
+			}			
 
 			$class_name = $this->get_class_name();
 
@@ -631,13 +647,18 @@
 		public function get_field_class( $class = array() ) {
 
 			/**
-			 * Set the classes array with the default class.
+			 * Set the classes array with the default class along with any user defined extra classes.
 			 *
 			 * @var $classes array
 			 */
 			$classes = array(
 				'wpas-form-control',
 			);
+			
+			/* Add in any user defined classes if any */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css' ] ) ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_field_css' ] ;
+			}
 
 			$class_name = $this->get_class_name();
 
