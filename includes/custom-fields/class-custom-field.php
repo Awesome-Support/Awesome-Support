@@ -198,6 +198,10 @@
 				'boot_strap_row_fe_start'	=> false ,
 				'boot_strap_row_fe_end'		=> false ,
 
+				// @since 4.3.0
+				// Place this field in a bootstrap column?
+				'boot_strap_column_fe'	=> false ,
+
 			);
 
 			return $defaults;
@@ -589,8 +593,14 @@
 			/* Add in any user defined classes if any */
 			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] ) ) {
 				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] ;
-			}			
+			}
 
+			/* If this field should go into its own bootstrap column add in that class name here */
+			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_column_fe' ] ) && true === $this->field[ 'args' ][ 'boot_strap_column_fe' ] && false === is_admin() ) {
+				$classes[] = 'col' ;
+			}
+
+			/* Ok, now we can get the classname for the wrapper for the field */
 			$class_name = $this->get_class_name();
 
 			if ( class_exists( $class_name ) && property_exists( $class_name, 'default_wrapper_class' ) ) {
