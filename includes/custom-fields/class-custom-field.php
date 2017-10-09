@@ -183,15 +183,15 @@
 				
 				// @since 4.3.0
 				// Hold extra wrapper classes/ids
-				'extra_wrapper_css'		=> '' ,
+				'extra_wrapper_css_classes'	=> '' ,
 
 				// @since 4.3.0
 				// Hold extra field classes/ids
-				'extra_field_css'		=> '' ,
+				'extra_field_css_classes'	=> '' ,
 				
 				// @since 4.3.0
 				// Hold extra label classes/ids - this one not currently used - for possible future use only.
-				'extra_label_css'		=> '' ,				
+				'extra_label_css_classes'	=> '' ,				
 
 			);
 
@@ -582,8 +582,8 @@
 			);
 			
 			/* Add in any user defined classes if any */
-			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css' ] ) ) {
-				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css' ] ;
+			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] ) ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] ;
 			}			
 
 			$class_name = $this->get_class_name();
@@ -656,8 +656,8 @@
 			);
 			
 			/* Add in any user defined classes if any */
-			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css' ] ) ) {
-				$classes[] = $this->field[ 'args' ][ 'extra_field_css' ] ;
+			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css_classes' ] ) ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_field_css_classes' ] ;
 			}
 
 			$class_name = $this->get_class_name();
