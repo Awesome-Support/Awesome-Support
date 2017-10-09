@@ -191,7 +191,12 @@
 				
 				// @since 4.3.0
 				// Hold extra label classes/ids - this one not currently used - for possible future use only.
-				'extra_label_css_classes'	=> '' ,				
+				'extra_label_css_classes'	=> '' ,
+				
+				// @since 4.3.0
+				// Start or end front-end bootstrap row with this field?
+				'boot_strap_row_fe_start'	=> false ,
+				'boot_strap_row_fe_end'		=> false ,
 
 			);
 
@@ -744,7 +749,19 @@
 			$this->require_field_type_class();
 
 			$wrapper     = $this->get_wrapper_markup();
+			
+			/* Add a beginning DIV if this field marks the start of a bootstrap row and we're displaying on the front-end... */	
+			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_row_fe_start' ] ) && true === $this->field[ 'args' ][ 'boot_strap_row_fe_start' ] && false === is_admin() ) {
+				$wrapper = ' <div class="wpas-fe-bs4-row row"> ' . $wrapper;
+			}
+
+			/* Add an ending DIV if this field marks the end of a bootstrap row and we're displaying on the front-end... */		
+			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_row_fe_end' ] ) && true === $this->field[ 'args' ][ 'boot_strap_row_fe_end' ] && false === is_admin() ) {
+				$wrapper .= ' </div> ' ;
+			}			
+			
 			$field       = $this->get_field_markup();
+			
 			$description = $this->get_field_description();
 
 			if ( ! empty( $description ) ) {
