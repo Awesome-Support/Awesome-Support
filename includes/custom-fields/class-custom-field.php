@@ -182,12 +182,20 @@
 				'show_frontend_detail'	=> true,				
 				
 				// @since 4.3.0
-				// Hold extra wrapper classes/ids
+				// Hold extra wrapper classes/ids - applies to front-end only
 				'extra_wrapper_css_classes'	=> '' ,
 
 				// @since 4.3.0
-				// Hold extra field classes/ids
+				// Hold extra field classes/ids - applies to front-end only
 				'extra_field_css_classes'	=> '' ,
+				
+				// @since 4.3.0
+				// Hold extra wrapper classes/ids - applies to back-end only
+				'extra_wrapper_css_classes_be'	=> '' ,
+
+				// @since 4.3.0
+				// Hold extra field classes/ids - applies to back-end only
+				'extra_field_css_classes_be'	=> '' ,				
 				
 				// @since 4.3.0
 				// Hold extra label classes/ids - this one not currently used - for possible future use only.
@@ -590,11 +598,16 @@
 				'wpas-form-group',
 			);
 			
-			/* Add in any user defined classes if any */
-			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] ) ) {
+			/* Add in any user defined classes if any (front-end) */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] )  && false === is_admin() ) {
 				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] ;
 			}
 
+			/* Add in any user defined classes if any (back-end) */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css_classes_be' ] )  && true === is_admin() ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css_classes_be' ] ;
+			}
+			
 			/* If this field should go into its own bootstrap column add in that class name here */
 			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_column_fe' ] ) && true === $this->field[ 'args' ][ 'boot_strap_column_fe' ] && false === is_admin() ) {
 				$classes[] = 'col' ;
@@ -670,10 +683,15 @@
 				'wpas-form-control',
 			);
 			
-			/* Add in any user defined classes if any */
-			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css_classes' ] ) ) {
+			/* Add in any user defined classes if any (front-end) */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css_classes' ] ) && false === is_admin() ) {
 				$classes[] = $this->field[ 'args' ][ 'extra_field_css_classes' ] ;
 			}
+			
+			/* Add in any user defined classes if any (back-end) */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css_classes_be' ] ) && true === is_admin() ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_field_css_classes_be' ] ;
+			}			
 
 			$class_name = $this->get_class_name();
 
