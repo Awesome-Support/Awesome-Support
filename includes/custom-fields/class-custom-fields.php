@@ -339,8 +339,12 @@ class WPAS_Custom_Fields {
 
 	/**
 	 * Display the custom fields on submission form.
+	 * This function is used to display the custom fields on both
+	 * the front-end and back-end.  Probably should have a 
+	 * back-end only version at some point.
 	 *
 	 * @since 3.2.0
+	 *
 	 * @return void
 	 */
 	public function submission_form_fields() {
@@ -349,6 +353,13 @@ class WPAS_Custom_Fields {
 
 		if ( ! empty( $fields ) ) {
 
+			// If we're painting the custom fields on the front-end wrap them in a bootstrap container class.		
+			if ( false === is_admin() ) {
+				?> 
+				<div class="wpas-submission-form-inside-after-subject container"> 
+				<?php
+			}
+		
 			foreach ( $fields as $name => $field ) {
 
 				/* Do not display core fields */
@@ -377,7 +388,13 @@ class WPAS_Custom_Fields {
 				echo $output;
 
 			}
-
+			
+			// If we're painting the custom fields on the front-end wrap them in a bootstrap container class (in this case, just the ending div tag to match the one we added above)
+			if ( false === is_admin() ) {
+				?> 
+				</div> 
+				<?php
+			}
 		}
 
 	}
