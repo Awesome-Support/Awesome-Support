@@ -203,8 +203,29 @@ function wpas_core_settings_general( $def ) {
 					'default' => false
 				),
 				
-				
-
+				array(
+					'name' => __( 'Ticket List Tabs', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Control whether certain tabs are visible at the top of the admin ticket list', 'awesome-support' ),					
+				),
+				array(
+					'name'    => __( 'Show Documentation Tab', 'awesome-support' ),
+					'id'      => 'ticket_list_show_doc_tab',
+					'type'    => 'checkbox',
+					'default' => true
+				),
+				array(
+					'name'    => __( 'Show Bulk Actions Tab', 'awesome-support' ),
+					'id'      => 'ticket_list_show_bulk_actions_tab',
+					'type'    => 'checkbox',
+					'default' => true
+				),
+				array(
+					'name'    => __( 'Show Preferences Tab', 'awesome-support' ),
+					'id'      => 'ticket_list_show_preferences_tab',
+					'type'    => 'checkbox',
+					'default' => true
+				),
 				
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),

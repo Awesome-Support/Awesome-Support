@@ -778,26 +778,51 @@ SQL;
 	 * @return array
 	 */
 	public function register_tabs( $tabs ) {
+		
+		// Check options to see which tabs to show...
+		$show_doc_tab = boolval( wpas_get_option( 'ticket_list_show_doc_tab', true) );
+		$show_bulk_actions_tab = boolval( wpas_get_option( 'ticket_list_show_bulk_actions_tab', true) );
+		$show_preferences_tab = boolval( wpas_get_option( 'ticket_list_show_preferences_tab', true) ) ;
 
+		// Add tabs to tab array based on options set
 		$tabs[ 'filter' ]        = __( 'Filter', 'awesome-support' );
 		$tabs[ 'search' ]        = __( 'Search', 'awesome-support' );
-		$tabs[ 'bulk_actions' ]  = __( 'Bulk Actions', 'awesome-support' );
-		$tabs[ 'preferences' ]   = __( 'Preferences', 'awesome-support' );
-		$tabs[ 'documentation' ] = __( 'Documentation', 'awesome-support' );
+		
+		if ( true === $show_bulk_actions_tab ) {
+			$tabs[ 'bulk_actions' ]  = __( 'Bulk Actions', 'awesome-support' );
+		}
+		
+		if ( true === $show_preferences_tab ) {
+			$tabs[ 'preferences' ]   = __( 'Preferences', 'awesome-support' );
+		}
+		
+		if ( true === $show_doc_tab ) {		
+			$tabs[ 'documentation' ] = __( 'Documentation', 'awesome-support' );
+		}
 
-
+		// Set content fo tabs based on which tabs are set to be active...
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_filter_content', array( $this, 'filter_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_search_content', array( $this, 'search_tab_content' ) );
-		add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content', array(
-			$this,
-			'bulk_actions_tab_content',
-		) );
-		add_filter( 'wpas_admin_tabs_tickets_tablenav_preferences_content', array( $this, 'preferences_tab_content' ) );
-		add_filter( 'wpas_admin_tabs_tickets_tablenav_documentation_content', array(
-			$this,
-			'filter_documentation_content',
-		) );
+		
+		if ( true === $show_bulk_actions_tab ) {		
+			add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content', array(
+				$this,
+				'bulk_actions_tab_content',
+			) );
+		}
+		
+		if ( true === $show_preferences_tab ) {		
+			add_filter( 'wpas_admin_tabs_tickets_tablenav_preferences_content', array( $this, 'preferences_tab_content' ) );
+		}
+		
+		if ( true === $show_doc_tab ) {				
+			add_filter( 'wpas_admin_tabs_tickets_tablenav_documentation_content', array(
+				$this,
+				'filter_documentation_content',
+			) );
+		}
 
+			
 		return $tabs;
 	}
 
