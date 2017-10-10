@@ -146,9 +146,9 @@ function wpas_ticket_action_row( $actions, $post ) {
 		$status = wpas_get_ticket_status( $post->ID );
 
 		if ( 'open' === $status ) {
-			$actions['close'] = '<a href="' . wpas_get_close_ticket_url( $post->ID ) . '">' . __( 'Close', 'awesome-support' ) . '</a>';
+			$actions['closeticket'] = '<a href="' . wpas_get_close_ticket_url( $post->ID ) . '">' . __( 'Close', 'awesome-support' ) . '</a>';
 		} elseif ( 'closed' === $status ) {
-			$actions['open'] = '<a href="' . wpas_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'awesome-support' ) . '</a>';
+			$actions['openticket'] = '<a href="' . wpas_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'awesome-support' ) . '</a>';
 		}
 	}
 
