@@ -1,6 +1,6 @@
 {
   "name": "awesome-support",
-  "version": "4.0.6",
+  "version": "4.2.1",
   "private": true,
   "devDependencies": {
     "grunt": "~0.4.2",

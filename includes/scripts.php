@@ -23,7 +23,7 @@ function wpas_register_assets_front_end() {
 	
 	// Optionally load bootstrap 4 or bootstrap 3 files from cdn.
 	// These assets are also duplicated and loaded on the back-end
-	$load_bs4 = wpas_get_option('load_bs4_files', '0') ;
+	$load_bs4 = wpas_get_option('load_bs4_files_fe', '0') ;
 	if ( '1' === $load_bs4 ) {
 		wpas_register_bs4_theme_styles() ;
 		wp_register_script( 'wpas-bootstrap-4-popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js', array( 'jquery' ), '1.11.0', true );
@@ -92,7 +92,7 @@ function wpas_register_assets_back_end() {
 	
 	// Optionally load bootstrap 4 or bootstrap 3 files from cdn.
 	// These assets are also duplicated and loaded on the front-end
-	$load_bs4  = wpas_get_option('load_bs4_files', '0') ;	
+	$load_bs4  = wpas_get_option('load_bs4_files_be', '0') ;	
 	if ( '1' === $load_bs4 ) {
 		wpas_register_bs4_theme_styles();
 		wp_register_script( 'wpas-bootstrap-4-popper', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js', array( 'jquery' ), '1.11.0', true );
@@ -191,7 +191,7 @@ function wpas_assets_front_end() {
 	if ( wpas_is_plugin_page() ) {
 		
 		// Optionally load bootstrap 4 or bootstrap 3 files from cdn.		
-		$load_bs4 = wpas_get_option('load_bs4_files', '0') ;
+		$load_bs4 = wpas_get_option('load_bs4_files_fe', '0') ;
 		if ( '1' === $load_bs4 ) {
 			// Boostrap 4 styles and scripts
 			wp_enqueue_style( 'wpas-bootstrap-4' );
@@ -238,7 +238,7 @@ function wpas_enqueue_assets_back_end() {
 	if ( wpas_is_plugin_page() ) {
 		
 		// Optionally load bootstrap 4 or bootstrap 3 files from cdn.		
-		$load_bs4 = wpas_get_option('load_bs4_files', '0') ;
+		$load_bs4 = wpas_get_option('load_bs4_files_be', '0') ;
 		if ( '1' === $load_bs4 ) {
 			// Boostrap 4 styles and scripts			
 			wp_enqueue_style( 'wpas-bootstrap-4' );

@@ -92,12 +92,19 @@ function wpas_core_settings_advanced( $def ) {
 					'desc' => __('Options for loading bootstrap files. While you can enable this now please be aware that not all elements in the plugin renders properly.', 'awesome-support' ),
 				),
 				array(
-					'name'    => __( 'Load BootStrap Files?', 'awesome-support' ),
-					'id'      => 'load_bs4_files',
+					'name'    => __( 'Load BootStrap Files on Front-end?', 'awesome-support' ),
+					'id'      => 'load_bs4_files_fe',
 					'type'    => 'radio',					
 					'options' => array( '0' => __( 'Do not load bootstrap files', 'awesome-support' ), '1' => __( 'Load bootstrap 4 files located on maxcdn', 'awesome-support'), '2' => __( 'Load bootstrap 3 files located on maxcdn', 'awesome-support' )  ),
 					'default' => '0'
 				),
+				array(
+					'name'    => __( 'Load BootStrap Files on Back-end?', 'awesome-support' ),
+					'id'      => 'load_bs4_files_be',
+					'type'    => 'radio',					
+					'options' => array( '0' => __( 'Do not load bootstrap files', 'awesome-support' ), '1' => __( 'Load bootstrap 4 files located on maxcdn', 'awesome-support'), '2' => __( 'Load bootstrap 3 files located on maxcdn', 'awesome-support' )  ),
+					'default' => '0'
+				),				
 				
 				array(
 					'name'    => __( 'Bootstrap 4 Theme', 'awesome-support' ),
@@ -130,7 +137,7 @@ function wpas_core_settings_advanced( $def ) {
 				),				
 				
 				array(
-					'name' => __( 'Cookie Management', 'awesome-support' ),
+					'name' => __( 'Sessions and Cookie Management', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -145,6 +152,15 @@ function wpas_core_settings_advanced( $def ) {
 					'type'    => 'checkbox',
 					'default' => false
 				),
+				array(
+					'name'    => __( 'Expired Sessions Cleanup Batch Size', 'awesome-support' ),
+					'id'      => 'session_delete_batch_size',
+					'type'    => 'number',
+					'default' => 1000,
+					'min'	  => 1000,
+					'max'	  => 100000,
+				),				
+				
 				
 				array(
 					'name' => __( 'Danger Zone', 'awesome-support' ),
