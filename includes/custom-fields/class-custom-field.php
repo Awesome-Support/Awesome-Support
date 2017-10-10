@@ -181,6 +181,34 @@
 				// Sometimes when you get a ton of custom fields, having them all in the list is an issue.
 				'show_frontend_detail'	=> true,				
 				
+				// @since 4.3.0
+				// Hold extra wrapper classes/ids - applies to front-end only
+				'extra_wrapper_css_classes'	=> '' ,
+
+				// @since 4.3.0
+				// Hold extra field classes/ids - applies to front-end only
+				'extra_field_css_classes'	=> '' ,
+				
+				// @since 4.3.0
+				// Hold extra wrapper classes/ids - applies to back-end only
+				'extra_wrapper_css_classes_be'	=> '' ,
+
+				// @since 4.3.0
+				// Hold extra field classes/ids - applies to back-end only
+				'extra_field_css_classes_be'	=> '' ,				
+				
+				// @since 4.3.0
+				// Hold extra label classes/ids - this one not currently used - for possible future use only.
+				'extra_label_css_classes'	=> '' ,
+				
+				// @since 4.3.0
+				// Start or end front-end bootstrap row with this field?
+				'boot_strap_row_fe_start'	=> false ,
+				'boot_strap_row_fe_end'		=> false ,
+
+				// @since 4.3.0
+				// Place this field in a bootstrap column?
+				'boot_strap_column_fe'	=> false ,
 
 			);
 
@@ -551,7 +579,7 @@
 		}
 
 		/**
-		 * Get field container class.
+		 * Get field container class along with any user defined extra classes.
 		 *
 		 * @since  3.2.0
 		 *
@@ -569,7 +597,23 @@
 			$classes = array(
 				'wpas-form-group',
 			);
+			
+			/* Add in any user defined classes if any (front-end) */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] )  && false === is_admin() ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] ;
+			}
 
+			/* Add in any user defined classes if any (back-end) */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css_classes_be' ] )  && true === is_admin() ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css_classes_be' ] ;
+			}
+			
+			/* If this field should go into its own bootstrap column add in that class name here */
+			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_column_fe' ] ) && true === $this->field[ 'args' ][ 'boot_strap_column_fe' ] && false === is_admin() ) {
+				$classes[] = 'col' ;
+			}
+
+			/* Ok, now we can get the classname for the wrapper for the field */
 			$class_name = $this->get_class_name();
 
 			if ( class_exists( $class_name ) && property_exists( $class_name, 'default_wrapper_class' ) ) {
@@ -631,13 +675,23 @@
 		public function get_field_class( $class = array() ) {
 
 			/**
-			 * Set the classes array with the default class.
+			 * Set the classes array with the default class along with any user defined extra classes.
 			 *
 			 * @var $classes array
 			 */
 			$classes = array(
 				'wpas-form-control',
 			);
+			
+			/* Add in any user defined classes if any (front-end) */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css_classes' ] ) && false === is_admin() ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_field_css_classes' ] ;
+			}
+			
+			/* Add in any user defined classes if any (back-end) */
+			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css_classes_be' ] ) && true === is_admin() ) {
+				$classes[] = $this->field[ 'args' ][ 'extra_field_css_classes_be' ] ;
+			}			
 
 			$class_name = $this->get_class_name();
 
@@ -723,7 +777,19 @@
 			$this->require_field_type_class();
 
 			$wrapper     = $this->get_wrapper_markup();
+			
+			/* Add a beginning DIV if this field marks the start of a bootstrap row and we're displaying on the front-end... */	
+			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_row_fe_start' ] ) && true === $this->field[ 'args' ][ 'boot_strap_row_fe_start' ] && false === is_admin() ) {
+				$wrapper = ' <div class="wpas-fe-bs4-row row"> ' . $wrapper;
+			}
+
+			/* Add an ending DIV if this field marks the end of a bootstrap row and we're displaying on the front-end... */		
+			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_row_fe_end' ] ) && true === $this->field[ 'args' ][ 'boot_strap_row_fe_end' ] && false === is_admin() ) {
+				$wrapper .= ' </div> ' ;
+			}			
+			
 			$field       = $this->get_field_markup();
+			
 			$description = $this->get_field_description();
 
 			if ( ! empty( $description ) ) {

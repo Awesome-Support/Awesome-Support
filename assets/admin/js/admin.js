@@ -341,21 +341,21 @@
 
 
         // Enable/disable filters if Ticket ID specified
-        $('.wpas_admin_tab_content #id').on( 'input', function () {
+        $('#wpas_admin_tabs_tickets_tablenav .wpas_admin_tab_content #id').on( 'input', function () {
             if( $(this).val() === '' ) {
                 // Enable other filters
-                $('.wpas_admin_tab_content select').removeAttr('disabled', false);
+                $('#wpas_admin_tabs_tickets_tablenav .wpas_admin_tab_content select').removeAttr('disabled', false);
             }
             else {
                 // Disable other filters
-                $('.wpas_admin_tab_content select').attr('disabled', 'disabled');
+                $('#wpas_admin_tabs_tickets_tablenav .wpas_admin_tab_content select').attr('disabled', 'disabled');
             }
         });
 
         // Disable filters on Ready if filtering by Ticket ID
-        if( $('.wpas_admin_tab_content #id').val() !== '' ) {
+        if( $('#wpas_admin_tabs_tickets_tablenav .wpas_admin_tab_content #id').val() !== '' ) {
             // Disable other filters
-            $('.wpas_admin_tab_content select').attr('disabled', 'disabled');
+            $('#wpas_admin_tabs_tickets_tablenav .wpas_admin_tab_content select').attr('disabled', 'disabled');
         }
 
 
