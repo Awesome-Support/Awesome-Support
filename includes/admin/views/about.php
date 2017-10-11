@@ -2,11 +2,11 @@
 
 	<h1>Welcome to Awesome Support&nbsp;<?php echo WPAS_VERSION; ?></h1>
 
-	<div class="about-text">Trusted by over 4000+ Happy Users, Awesome Support is the most versatile WordPress support plugin.</div>
+	<div class="about-text">Trusted by over 6000+ Happy Users, Awesome Support is the most versatile WordPress support plugin.</div>
 
 	<div class="changelog">
 
-	<div class="row">
+		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 				<div class="about-body">
 					<a class="wpas-bundle-link" href="https://getawesomesupport.com/addons/startup-bundle/" target="_blank">
