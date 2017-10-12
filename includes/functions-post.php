@@ -321,7 +321,8 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	/* Set the ticket as open. */
 	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
 
-	/* . */
+	/* Next - update other some meta values. If you add or delete from this list you also */
+	/* need to do the same thing in the /includes/admin/functions-post.php file */
 	add_post_meta( $ticket_id, '_wpas_last_reply_date', null, true );
 	add_post_meta( $ticket_id, '_wpas_last_reply_date_gmt', null, true );
 

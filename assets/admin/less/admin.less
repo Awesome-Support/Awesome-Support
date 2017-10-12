@@ -708,7 +708,7 @@ Ticket Listing Page Tabs
         
         /*
         ==========================================================================
-        Fix ticket listing table
+        Fix ticket listing table for smaller screens
         ==========================================================================
         */
         .post-type-ticket {
@@ -740,7 +740,7 @@ Ticket Listing Page Tabs
         
         /*
         ==========================================================================
-        Fix ticket listing table
+        Fix ticket listing table for smaller screens
         ==========================================================================
         */
         .post-type-ticket {
@@ -759,4 +759,15 @@ Ticket Listing Page Tabs
                 }
                 
         }
+}
+
+/*
+==========================================================================
+WordPress overrides
+==========================================================================
+*/
+
+/* Make the pagination arrows in the wp-admin ticket list screen full-height - fix for bootstrap 4 themes otherwise locking it at 16px for some reason...*/
+.tablenav-pages-navspan {
+	height: auto;
 }
