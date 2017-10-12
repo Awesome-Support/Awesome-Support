@@ -2,11 +2,33 @@
 
 	<h1>Welcome to Awesome Support&nbsp;<?php echo WPAS_VERSION; ?></h1>
 
-	<div class="about-text">Trusted by over 4000+ Happy Users, Awesome Support is the most versatile WordPress support plugin.</div>
+	<div class="about-text">Trusted by over 6000+ Happy Users, Awesome Support is the most versatile WordPress support plugin. So now, lets get you started!</div>
+	
+	<hr />	
+	
+	<div>
 
+		<h2>Quick Start With The Basics</h2>
+		<ol>
+			<li>Your ticket system is all ready to go so getting started is really simple!  A new page has been created named SUBMIT TICKET. Just add it to your WordPress menu and your customers can start submitting tickets on your site!</li>
+			<li>Our videos page has a <a href= "https://www.getawesomesupport.com/videos"> quick-start and setup video</a> - use it to follow along and quickly configure your new help desk.</li>
+			<li>Here are links to our very extensive documentation: <a href= "https://getawesomesupport.com/documentation/awesome-support/admin-overview/"> Admin Documentation </a> &nbsp <a href= "https://getawesomesupport.com/documentation/awesome-support/post-installation-need-know-quick-start/"> User Documentation </a> </li>					
+		</ol>
+		
+		<h2>Tickets, Agents and Users</h2>
+		<ol>
+			<li>You can find a list of new and existing tickets under the TICKETS menu option - this is your main dashboard for managing tickets.</li>
+			<li><b>Set up new agents:</b> Your primary WordPress Admin is now an agent and will automatically be assigned all new tickets unless you <a href= "https://getawesomesupport.com/documentation/awesome-support/basic-admin-add-agent/"> set up additional agents.</a></li>
+			<li><b>Existing Users:</b> If you have existing users you will need to update their roles to be <b>Support User</b>. Or update their existing roles to <a href="https://getawesomesupport.com/documentation/awesome-support/how-to-fix-you-do-not-have-the-capacity-to-open-a-new-ticket/">add the proper WordPress security capabilities for Awesome Support ticket users. </a>  This will grant them the permissions necessary to submit tickets.</li>
+			<li>Your users can find a list of their tickets on the MY TICKETS page - you just need to add that page to your WordPress menu as well.</li>
+		</ol>			
+	</div>
+
+	<hr />	
+	
 	<div class="changelog">
 
-	<div class="row">
+		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 				<div class="about-body">
 					<a class="wpas-bundle-link" href="https://getawesomesupport.com/addons/startup-bundle/" target="_blank">

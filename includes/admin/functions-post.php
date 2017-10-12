@@ -152,6 +152,11 @@ function wpas_save_ticket( $post_id ) {
 		 */
 		add_post_meta( $post_id, '_wpas_status', 'open', true );
 		
+		/* Next - update other some meta values. If you add or delete from this list you also */
+		/* need to do the same thing in the /includes/functions-post.php file */
+		add_post_meta( $post_id, '_wpas_last_reply_date', null, true );
+		add_post_meta( $post_id, '_wpas_last_reply_date_gmt', null, true );
+		
 		/* Set the slug */
 		wpas_set_ticket_slug( $post_id );
 		
