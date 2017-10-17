@@ -1,6 +1,13 @@
 <?php 
 
-$tools_tabs = apply_filters( 'wpas_system_tabls', array(
+$tools_tabs['status'] = array( 'name' => 'System Status' );
+if( current_user_can( 'administrator' ) ) {
+    $tools_tabs['logs'] = array( 'name' => 'Log Viewer' );
+}
+$tools_tabs['tools'] = array( 'name' => 'Cleanup' );
+$tools_tabs = apply_filters( 'wpas_system_tabls', $tools_tabs );
+
+/*$tools_tabs = apply_filters( 'wpas_system_tabls', array(
     'status' => array(
 	'name' => 'System Status'
     ),
@@ -11,6 +18,7 @@ $tools_tabs = apply_filters( 'wpas_system_tabls', array(
 	'name' => 'Cleanup'
     )
 ) );
+*/
 
 /* Remove some items if running in SAAS mode AND in a multi-site environment - do not allow the user to see  the LOG viewer and the SYSTEM STATUS screen! */
 if ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) {

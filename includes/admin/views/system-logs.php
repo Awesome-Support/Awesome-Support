@@ -86,6 +86,9 @@ function wpas_tools_log_viewer_ajax_script() {
             display: none;
         }
 
+        div.log-viewer-controls {
+            width: 100%;
+        }
         .log-viewer-controls table tr th,
         .log-viewer-controls table tr td {
             padding: 0px 10px;
@@ -149,6 +152,7 @@ function wpas_tools_log_viewer_ajax_script() {
 
                 $action = $(this).data("action");
                 $lines = $('#lines').val();
+                $nonce = $(this).data("nonce");
 
                 if ($action === 'wpas_tools_log_viewer_view') {
                     wpas_log_viewer_current_file = $(this).data("filename");
@@ -180,7 +184,8 @@ function wpas_tools_log_viewer_ajax_script() {
                     data: {
                         action: $action,
                         file: wpas_log_viewer_current_file,
-                        lines: $lines
+                        lines: $lines,
+                        nonce: $nonce
                     },
                     success: function (data) {
 
@@ -214,7 +219,6 @@ function wpas_tools_log_viewer_ajax_script() {
                         }
 
                         else if ($action === 'wpas_tools_log_viewer_download') {
-
                         }
 
                         // View
@@ -378,6 +382,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                 <button id="download"
                         class="button-secondary wpas-tools-log-download"
                         data-action="wpas_tools_log_viewer_download"
+                        data-nonce="<?php echo wp_create_nonce( 'wpas_tools_log_viewer_download' ); ?>"
                         data-filename=""
                         disabled="disabled"><i
                             class="fa fa-arrow-circle-down fa-fw"
@@ -386,6 +391,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                 <button id="delete"
                         class="button-secondary wpas-tools-log-delete"
                         data-action="wpas_tools_log_viewer_delete"
+                        data-nonce="<?php echo wp_create_nonce( 'wpas_tools_log_viewer_delete' ); ?>"
                         data-filename=""
                         disabled="disabled"><i
                             class="fa fa-minus-circle fa-fw"
@@ -449,6 +455,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                             style="font-size: 14px;"><a href="#"
                                                         data-filename="<?php echo $file; ?>"
                                                         data-action="wpas_tools_log_viewer_view"
+                                                        data-nonce="<?php echo wp_create_nonce( 'wpas_tools_log_viewer_view' ); ?>"
                                                         class="wpas-tools-log-view <?php echo $classfromfilename; ?>"><i
                                         class="fa fa-chevron-right fa-fw"
                                         style="color: dimgray; font-size: 12px;"></i><?php echo $file; ?></a>
