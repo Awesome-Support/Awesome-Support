@@ -41,9 +41,7 @@ function wpas_tools_log_viewer_view() {
 		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
 	}
 
-	if( ! isset( $_POST[ 'nonce' ] ) || ! wp_verify_nonce( $_POST[ 'nonce' ], 'wpas_tools_log_viewer_view' ) ) {
-		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
-	}
+	check_ajax_referer( 'wpas_tools_log_viewer_view', 'nonce' );
 
 	if( ! isset( $_POST[ 'file' ] ) ) {
 		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
@@ -73,9 +71,7 @@ function wpas_tools_log_viewer_download() {
 		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
 	}
 
-	if( ! isset( $_POST[ 'nonce' ] ) || ! wp_verify_nonce( $_POST[ 'nonce' ], 'wpas_tools_log_viewer_download' ) ) {
-		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
-	}
+	check_ajax_referer( 'wpas_tools_log_viewer_download', 'nonce' );
 
 	if( ! isset( $_POST[ 'file' ] ) ) {
 		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
@@ -105,9 +101,7 @@ function wpas_tools_log_viewer_delete() {
 		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
 	}
 
-	if( ! isset( $_POST[ 'nonce' ] ) || ! wp_verify_nonce( $_POST[ 'nonce' ], 'wpas_tools_log_viewer_delete' ) ) {
-		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
-	}
+	check_ajax_referer( 'wpas_tools_log_viewer_delete', 'nonce' );
 
 	if( ! isset( $_POST[ 'file' ] ) ) {
 		echo json_encode( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
