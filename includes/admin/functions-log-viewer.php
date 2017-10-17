@@ -37,19 +37,26 @@ function get_logs_url() {
  */
 function wpas_tools_log_viewer_view() {
 
+	if ( ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
+	}
+
+	check_ajax_referer( 'wpas_tools_log_viewer_view', 'nonce' );
+
 	if( ! isset( $_POST[ 'file' ] ) ) {
 		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
 	}
 
 	// Default number of lines to return
 	$lines = 100;
+	$file  = basename( $_POST[ 'file' ] );
 
 	// Get posted number of lines
 	if( isset( $_POST[ 'lines' ] ) ) {
 		$lines = $_POST[ 'lines' ];
 	}
 
-	wp_send_json_success( wpas_log_viewer_read_last_lines( $_POST[ 'file' ], $lines ) );
+	wp_send_json_success( wpas_log_viewer_read_last_lines( $file, $lines ) );
 
 }
 add_action( 'wp_ajax_wpas_tools_log_viewer_view', 'wpas_tools_log_viewer_view', 10, 0 );
@@ -60,11 +67,17 @@ add_action( 'wp_ajax_wpas_tools_log_viewer_view', 'wpas_tools_log_viewer_view', 
  */
 function wpas_tools_log_viewer_download() {
 
+	if ( ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
+	}
+
+	check_ajax_referer( 'wpas_tools_log_viewer_download', 'nonce' );
+
 	if( ! isset( $_POST[ 'file' ] ) ) {
 		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
 	}
 
-	$file = $_POST[ 'file' ];
+	$file = basename( $_POST[ 'file' ] );
 
 	$content = array(
 		'status' => array(
@@ -76,7 +89,6 @@ function wpas_tools_log_viewer_download() {
 
 	wp_send_json_success( $content );
 }
-
 add_action( 'wp_ajax_wpas_tools_log_viewer_download', 'wpas_tools_log_viewer_download', 10, 0 );
 
 
@@ -85,17 +97,22 @@ add_action( 'wp_ajax_wpas_tools_log_viewer_download', 'wpas_tools_log_viewer_dow
  */
 function wpas_tools_log_viewer_delete() {
 
+	if ( ! current_user_can( 'administrator' ) ) {
+		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
+	}
+
+	check_ajax_referer( 'wpas_tools_log_viewer_delete', 'nonce' );
+
 	if( ! isset( $_POST[ 'file' ] ) ) {
 		echo json_encode( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
 		wp_die();
 	}
 
-	$file = $_POST[ 'file' ];
+	$file = basename( $_POST[ 'file' ] );
 
 	wp_send_json_success(	wpas_log_viewer_delete_file( $file ) );
 
 }
-
 add_action( 'wp_ajax_wpas_tools_log_viewer_delete', 'wpas_tools_log_viewer_delete', 10, 0 );
 
 

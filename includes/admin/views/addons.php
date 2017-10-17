@@ -81,9 +81,16 @@ if ( false === $items ) {
 				}
 
 				/* This item has variable pricing */
+				/* 'singlesite' object element covers most pricing items for awesome support. */
+				/* But some items like paid support starts at 2 sites. Note the use of curly  */
+				/* brackets for those because the object element starts with a number.        */
 				else {
 					if ( isset( $item->pricing->singlesite ) ) {
 						$price = number_format( $item->pricing->singlesite, 0 );
+					} elseif ( isset( $item->pricing->{'2sites'} ) ) {
+						$price = number_format( $item->pricing->{'2sites'}, 0 );
+					} elseif ( isset( $item->pricing->singlesiteupdatesonlynosupport ) ) {
+						$price = number_format( $item->pricing->singlesiteupdatesonlynosupport, 0 );
 					}
 				} ?>
 
