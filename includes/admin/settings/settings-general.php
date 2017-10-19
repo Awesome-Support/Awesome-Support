@@ -272,6 +272,13 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'Do you like this plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page.', 'awesome-support' ),
 					'default' => false
 				),
+				array(
+					'name'    => __( 'Admin Rating Request', 'awesome-support' ),
+					'id'      => 'remove_admin_ratings_request',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Remove the rating request footer in the admin screen.', 'awesome-support' ),
+					'default' => false
+				),				
 			)
 		),
 	);
