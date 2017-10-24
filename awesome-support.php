@@ -24,6 +24,12 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// Check to see if we're even allowed to load Awesome Support
+$load_allowed = apply_filters( 'wpas_allow_loading', true ) ;
+if ( ! $load_allowed ) {
+	die;
+}
+
 if ( ! class_exists( 'Awesome_Support' ) ):
 
 	/**
