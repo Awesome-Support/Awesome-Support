@@ -54,7 +54,7 @@ class WPAS_Logger {
 		} else {
 			
 			// If we get here it means we don't have an actual file handle/resource.
-			// take what we have an attempt to close anyway. Just in case.
+			// Take what we have and attempt to close anyway. Just in case.
 			// An error will be thrown if parameters are not compatible!
 			@fclose( escapeshellarg( $file ) );
 			
