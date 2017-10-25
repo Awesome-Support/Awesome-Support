@@ -46,7 +46,19 @@ class WPAS_Logger {
 	 */
 	public function __destruct() {
 		$file = $this->open();
-		@fclose( escapeshellarg( $file ) );
+		
+		if ( is_resource ( $file ) ) {
+			
+			@fclose( $file );
+			
+		} else {
+			
+			// If we get here it means we don't have an actual file handle/resource.
+			// take what we have an attempt to close anyway. Just in case.
+			// An error will be thrown if parameters are not compatible!
+			@fclose( escapeshellarg( $file ) );
+			
+		}
 	}
 
 	public function get_handles() {
