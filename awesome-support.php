@@ -30,6 +30,14 @@ if ( ! $load_allowed ) {
 	die;
 }
 
+// Check to see if we're allowed to load Awesome Support.
+// With this filter we allow other scripts to run by returning instead of 
+// dieing.
+$soft_load_allowed = apply_filters( 'wpas_allow_soft_loading', true ) ;
+if ( ! $soft_load_allowed ) {
+	return;
+}
+
 if ( ! class_exists( 'Awesome_Support' ) ):
 
 	/**
