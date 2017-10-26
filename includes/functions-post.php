@@ -325,8 +325,6 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	/* need to do the same thing in the /includes/admin/functions-post.php file */
 	add_post_meta( $ticket_id, '_wpas_last_reply_date', null, true );
 	add_post_meta( $ticket_id, '_wpas_last_reply_date_gmt', null, true );
-
-	/* . */
 	add_post_meta( $ticket_id, '_wpas_is_waiting_client_reply', ! user_can( $data['post_author'], 'edit_ticket' ), true  );
 
 	if ( false === $agent_id ) {
