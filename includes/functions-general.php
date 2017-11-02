@@ -1207,3 +1207,32 @@ function wpas_is_support_priority_active() {
 	return $the_hash;
 	
 }
+
+/**
+ * Wrapper for FILTER_INPUT using the INPUT_SERVER parameter.
+ * Includes a work-around for a known issue.
+ * See: https://github.com/xwp/stream/issues/254
+ * 
+ * @since 4.3.3
+ *
+ * @return string
+ */ 
+ function wpas_filter_input_server( $input_var = 'REQUEST_URI' ) {
+	 
+	 $filtered_input = filter_input( INPUT_SERVER, $input_var, FILTER_SANITIZE_STRING );
+	 
+	 if ( empty( $filtered_input ) ) {
+		 
+		if ( filter_has_var(INPUT_SERVER, $input_var )) {
+				$filtered_input = filter_input( INPUT_SERVER, $input_var, FILTER_SANITIZE_STRING );
+			} else {
+				if (isset($_SERVER["REQUEST_URI"]))
+					$filtered_input = filter_var( $_SERVER[$input_var], FILTER_SANITIZE_STRING );
+				else
+					$filtered_input = null;
+			}		 
+	 }
+	 
+	 return $filtered_input ;
+	 
+ }
