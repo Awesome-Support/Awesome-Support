@@ -66,8 +66,13 @@ class WPAS_Logger {
 	}
 
 	public function get_logs_path() {
+		
+		$path_postfix = '' ;  // the last part of the default logs path name.  Will be blank if not on multi-site.
+		if ( true == is_multisite() ) {
+			$path_postfix = '/site' . (string) get_current_blog_id();
+		}
 
-		$path = apply_filters( 'wpas_logs_path', WPAS_PATH . 'logs', $this->handle );
+		$path = apply_filters( 'wpas_logs_path', WPAS_PATH . 'logs' . $path_postfix, $this->handle );
 
 		if ( !is_dir( $path ) ) {
 			$dir = mkdir( $path );
