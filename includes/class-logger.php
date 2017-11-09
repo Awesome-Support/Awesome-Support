@@ -100,10 +100,13 @@ class WPAS_Logger {
 		$file = trailingslashit( $path ) . "log-$this->handle.txt";
 
 		if ( !file_exists( $file ) ) {
-			fopen( $file, 'a' );
-			if ( $file ) {
-				fclose( $file );
+			
+			$handle = fopen( $file, 'a' );
+			
+			if ( is_resource( $handle ) ) {
+				fclose( $handle );
 			}
+
 		}
 
 		return $file;
