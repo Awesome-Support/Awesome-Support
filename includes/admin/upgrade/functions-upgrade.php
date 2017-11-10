@@ -34,7 +34,7 @@ function wpas_upgrade_321() {
 	$agents = wpas_list_users( 'edit_ticket' );
 
 	foreach ( $agents as $agent_id => $agent_name ) {
-		update_user_meta( $agent_id, 'wpas_can_be_assigned', 'yes' );
+		update_user_option( $agent_id, 'wpas_can_be_assigned', 'yes' );
 	}
 
 }

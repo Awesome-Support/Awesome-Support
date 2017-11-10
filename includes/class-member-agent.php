@@ -71,7 +71,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 */
 	public function can_be_assigned() {
 
-		$can = esc_attr( get_user_meta( $this->user_id, 'wpas_can_be_assigned', true ) );
+		$can = esc_attr( get_user_option( 'wpas_can_be_assigned', $this->user_id ) );
 
 		return empty( $can ) ? false : true;
 	}
@@ -85,11 +85,11 @@ class WPAS_Member_Agent extends WPAS_Member {
 	public function open_tickets() {
 
 		// Deactivate this for now as it is not reliable enough. Needs more work. Ticket count not correctly updated in certain situations, like when a ticket is transferred from an agent to another
-//		$count = get_user_meta( $this->user_id, 'wpas_open_tickets', true );
+//		$count = get_user_option( 'wpas_open_tickets', $this->user_id );
 		$count = false;
 		if ( false === $count ) {
 			$count = count( $this->get_open_tickets() );
-			update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
+			update_user_option( $this->user_id, 'wpas_open_tickets', $count );
 		}
 
 		return $count;
@@ -110,7 +110,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 		$count = (int) $this->open_tickets();
 		$count = $count + $num;
 
-		update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
+		update_user_option( $this->user_id, 'wpas_open_tickets', $count );
 
 		return $count;
 
@@ -130,7 +130,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 		$count = (int) $this->open_tickets();
 		$count = $count - $num;
 
-		update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
+		update_user_option( $this->user_id, 'wpas_open_tickets', $count );
 
 		return $count;
 

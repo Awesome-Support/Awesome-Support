@@ -59,7 +59,7 @@ wp_nonce_field( 'reply_ticket', 'wpas_reply_ticket', false, true );
 	 * @var string
 	 */
 	global $current_user;
-	$where = get_user_meta( $current_user->ID, 'wpas_after_reply', true );
+	$where = get_user_option( 'wpas_after_reply', $current_user->ID );
 
 	switch ( $where ):
 
