@@ -991,6 +991,7 @@ function wpas_get_users_ajax( $args = array() ) {
 	);
 
 	if ( empty( $args ) ) {
+		$args = array();
 		foreach ( $defaults as $key => $value ) {
 			if ( isset( $_POST[ $key ] ) ) {
 				$args[ $key ] = $_POST[ $key ];

@@ -134,14 +134,23 @@ $author = get_user_by( 'id', $post->post_author );
 
 	<?php endif; ?>
 
-	<h3><?php _e( 'Write a reply', 'awesome-support' ); ?></h3>
-
-	<?php
+	<?php 
 	/**
-	 * Display the reply form.
-	 *
-	 * @since 3.0.0
-	 */
-	wpas_get_reply_form(); ?>
+	* Prepare to show the reply form.
+	*/
+	if ( apply_filters('wpas_show_reply_form_front_end',true, $post ) ) { 
+	?>	
+	
+		<h3><?php _e( 'Write a reply', 'awesome-support' ); ?></h3>
+
+		<?php
+		/**
+		 * Display the reply form.
+		 *
+		 * @since 3.0.0
+		 */
+		 
+			wpas_get_reply_form(); 
+	 } ?>
 
 </div>

@@ -330,7 +330,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 
 			global $current_user;
 
-			$dismissed = array_filter( (array) get_user_meta( $current_user->ID, '_rn_dismissed', true ) );
+			$dismissed = array_filter( (array) get_user_option( '_rn_dismissed', $current_user->ID ) );
 
 			if ( is_array( $dismissed ) && in_array( $slug, $dismissed ) ) {
 				return true;
@@ -527,7 +527,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			/* Get dismissed list */
-			$dismissed = array_filter( (array) get_user_meta( $current_user->ID, '_rn_dismissed', true ) );
+			$dismissed = array_filter( (array) get_user_option( '_rn_dismissed', $current_user->ID ) );
 
 			/* Add the current notice to the list if needed */
 			if ( is_array( $dismissed ) && ! in_array( $_GET['notification'], $dismissed ) ) {
@@ -535,7 +535,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			/* Update option */
-			update_user_meta( $current_user->ID, '_rn_dismissed', $dismissed );
+			update_user_option( $current_user->ID, '_rn_dismissed', $dismissed );
 
 			/* Get redirect URL */
 			$args = array();

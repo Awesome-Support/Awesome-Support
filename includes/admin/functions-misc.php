@@ -388,7 +388,9 @@ function wpas_admin_footer_text( $text ) {
 		return ;
 	}	
 
-	return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733 ' );
+	if ( ! boolval( wpas_get_option( 'remove_admin_ratings_request', false) ) ) {
+		return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733 ' );
+	}
 
 }
 

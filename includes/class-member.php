@@ -167,7 +167,7 @@ class WPAS_Member {
 		global $wpdb;
 
 		$cap_key = $wpdb->get_blog_prefix() . 'capabilities';
-		$roles   = get_user_meta( $this->user_id, $cap_key, true );
+		$roles   = get_user_option( $cap_key, $this->user_id );
 
 		if ( ! is_array( $roles ) ) {
 			$roles = array();

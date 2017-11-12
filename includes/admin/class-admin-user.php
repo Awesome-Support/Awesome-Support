@@ -265,13 +265,13 @@ class WPAS_User {
 		$department       = isset( $_POST['wpas_department'] ) ? array_map( 'intval', $_POST['wpas_department'] ) : array();
 
 		if ( $wpas_after_reply ) {
-			update_user_meta( $user_id, 'wpas_after_reply', $wpas_after_reply );
+			update_user_option( $user_id, 'wpas_after_reply', $wpas_after_reply );
 		}
 
-		update_user_meta( $user_id, 'wpas_can_be_assigned', $can_assign );
-		update_user_meta( $user_id, 'wpas_smart_tickets_order', $smart );
-		update_user_meta( $user_id, 'wpas_department', $department );
-		update_user_meta( $user_id, 'wpas_view_all_tickets', $view_all_tickets );
+		update_user_option( $user_id, 'wpas_can_be_assigned', $can_assign );
+		update_user_option( $user_id, 'wpas_smart_tickets_order', $smart );
+		update_user_option( $user_id, 'wpas_department', $department );
+		update_user_option( $user_id, 'wpas_view_all_tickets', $view_all_tickets );
 
 	}
 
@@ -286,7 +286,7 @@ class WPAS_User {
 	 */
 	public function enable_assignment( $user_id ) {
 		if ( user_can( $user_id, 'edit_ticket' ) && ! user_can( $user_id, 'administrator' ) ) {
-			update_user_meta( $user_id, 'wpas_can_be_assigned', 'yes' );
+			update_user_option( $user_id, 'wpas_can_be_assigned', 'yes' );
 		}
 	}
 
