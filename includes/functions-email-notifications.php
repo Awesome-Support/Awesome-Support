@@ -44,6 +44,7 @@ add_action( 'wpas_open_ticket_after', 'wpas_notify_assignment', 12, 2 );
  */
 function wpas_notify_assignment( $ticket_id, $agent_id ) {
 	wpas_email_notify( $ticket_id, 'new_ticket_assigned' );
+	delete_transient( 'wpas_tickets_counts' );
 }
 
 add_action( 'wpas_ticket_after_update_admin_success', 'wpas_notify_admin_assignment', 12, 3 );

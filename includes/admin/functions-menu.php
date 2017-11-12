@@ -50,18 +50,33 @@ function wpas_tickets_count() {
 
 	global $menu, $current_user;
 
-	if ( current_user_can( 'administrator' )
-		 && false === boolval( wpas_get_option( 'admin_see_all' ) )
-		 || ! current_user_can( 'administrator' )
+	$is_agent = current_user_can( 'administrator' )
+		&& false === boolval( wpas_get_option( 'admin_see_all' ) )
+		|| ! current_user_can( 'administrator' )
 			&& current_user_can( 'edit_ticket' )
-			&& false === boolval( wpas_get_option( 'agent_see_all' ) )
-	) {
+			&& false === boolval( wpas_get_option( 'agent_see_all' ) );
 
-		$agent = new WPAS_Member_Agent( $current_user->ID );
-		$count = $agent->open_tickets();
+	$count_cache = get_site_transient( 'wpas_tickets_counts' );
 
-	} else {
-		$count = count( wpas_get_tickets( 'open' ) );
+	if( !is_array($count_cache) )
+		$count_cache = array();
+
+	$agent_id = $is_agent ? $current_user->ID : 0;
+
+	if( !isset( $count_cache[$agent_id] ) )  {
+
+		if ( $is_agent ) {
+
+			$agent = new WPAS_Member_Agent( $agent_id );
+			$count = $agent->open_tickets();
+
+		} else {
+			$count = count( wpas_get_tickets( 'open' ) );
+		}
+
+		$count_cache[$agent_id] = $count;
+
+		set_site_transient( 'wpas_tickets_counts', $count_cache, 24 * HOUR_IN_SECOND );
 	}
 
 	if ( 0 === $count ) {
