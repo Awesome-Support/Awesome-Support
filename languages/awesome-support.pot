@@ -2,7 +2,7 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Awesome Support 3.3.4\n"
+"Project-Id-Version: Awesome Support 4.3.4\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
 "POT-Creation-Date: 2017-11-12 06:35-0600\n"
 "MIME-Version: 1.0\n"
