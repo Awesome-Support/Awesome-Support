@@ -18,7 +18,7 @@ class WPAS_Test_Functions_Post extends WP_UnitTestCase {
             'post_content' => 'Vivamus aliquet elit ac nisl. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. Nullam dictum felis eu pede mollis pretium. Nullam vel sem. Praesent nonummy mi in odio.'
         );
 
-        update_user_meta( 1, 'wpas_can_be_assigned', 'yes' );
+        update_user_option( 1, 'wpas_can_be_assigned', 'yes' );
      
     }
 

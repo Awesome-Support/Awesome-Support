@@ -226,6 +226,7 @@ class WPAS_Custom_Fields {
 				$name         = ! empty( $option['args']['label'] ) ? sanitize_text_field( $option['args']['label'] ) : ucwords( str_replace( array( '_', '-' ), ' ', $option['name'] ) );
 				$plural       = ! empty( $option['args']['label_plural'] ) ? sanitize_text_field( $option['args']['label_plural'] ) : $name . 's';
 				$column       = true === $option['args']['taxo_std'] ? true : false;
+				$rewrite	  = ! empty( $option['args']['rewrite'] ) && ! empty( $option['args']['rewrite']['slug'] ) ? sanitize_text_field( $option['args']['rewrite']['slug'] ) : $name;				
 				
 				$hierarchical = $option['args']['taxo_hierarchical'];
 				
@@ -254,7 +255,7 @@ class WPAS_Custom_Fields {
 					'show_ui'           => true,
 					'show_admin_column' => $column,
 					'query_var'         => true,
-					'rewrite'           => array( 'slug' => $option['name'] ),
+					'rewrite'           => array( 'slug' => $rewrite ),
 					'capabilities'      => array(
 						'manage_terms' => $taxo_manage_terms,
 						'edit_terms'   => $taxo_edit_terms,

@@ -46,7 +46,19 @@ class WPAS_Logger {
 	 */
 	public function __destruct() {
 		$file = $this->open();
-		@fclose( escapeshellarg( $file ) );
+		
+		if ( is_resource ( $file ) ) {
+			
+			@fclose( $file );
+			
+		} else {
+			
+			// If we get here it means we don't have an actual file handle/resource.
+			// Take what we have and attempt to close anyway. Just in case.
+			// An error will be thrown if parameters are not compatible!
+			@fclose( escapeshellarg( $file ) );
+			
+		}
 	}
 
 	public function get_handles() {
@@ -54,8 +66,13 @@ class WPAS_Logger {
 	}
 
 	public function get_logs_path() {
+		
+		$path_postfix = '' ;  // the last part of the default logs path name.  Will be blank if not on multi-site.
+		if ( true == is_multisite() ) {
+			$path_postfix = '/site' . (string) get_current_blog_id();
+		}
 
-		$path = apply_filters( 'wpas_logs_path', WPAS_PATH . 'logs', $this->handle );
+		$path = apply_filters( 'wpas_logs_path', WPAS_PATH . 'logs' . $path_postfix, $this->handle );
 
 		if ( !is_dir( $path ) ) {
 			$dir = mkdir( $path );
@@ -83,10 +100,13 @@ class WPAS_Logger {
 		$file = trailingslashit( $path ) . "log-$this->handle.txt";
 
 		if ( !file_exists( $file ) ) {
-			fopen( $file, 'a' );
-			if ( $file ) {
-				fclose( $file );
+			
+			$handle = fopen( $file, 'a' );
+			
+			if ( is_resource( $handle ) ) {
+				fclose( $handle );
 			}
+
 		}
 
 		return $file;

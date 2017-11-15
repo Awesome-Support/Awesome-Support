@@ -9,7 +9,7 @@ function wpas_dismissed_notices() {
 
 	global $current_user;
 
-	$user_notices = (array) get_user_meta( $current_user->ID, 'wpas_dismissed_notices', true );
+	$user_notices = (array) get_user_option( 'wpas_dismissed_notices', $current_user->ID );
 
 	return $user_notices;
 
@@ -51,7 +51,7 @@ function wpas_dismiss_notice( $notice ) {
 		$new[$notice] = 'true';
 	}
 
-	$update = update_user_meta( $current_user->ID, 'wpas_dismissed_notices', $new, $dismissed_notices );
+	$update = update_user_option( $current_user->ID, 'wpas_dismissed_notices', $new );
 
 	return $update;
 
@@ -74,7 +74,7 @@ function wpas_restore_notice( $notice ) {
 		unset( $dismissed_notices[$notice] );
 	}
 
-	$update = update_user_meta( $current_user->ID, 'wpas_dismissed_notices', $dismissed_notices );
+	$update = update_user_option( $current_user->ID, 'wpas_dismissed_notices', $dismissed_notices );
 
 	return $update;
 

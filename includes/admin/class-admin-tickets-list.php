@@ -889,9 +889,9 @@ SQL;
 		if ( isset( $_GET[ 'save_preferences' ] ) ) {
 			$user = get_current_user_id();
 			if ( 'yes' === $_GET[ 'edit_ticket_in_new_window' ] ) {
-				update_user_meta( $user, 'edit_ticket_in_new_window', 'yes' );
+				update_user_option( $user, 'edit_ticket_in_new_window', 'yes' );
 			} else {
-				update_user_meta( $user, 'edit_ticket_in_new_window', 'no' );
+				update_user_option( $user, 'edit_ticket_in_new_window', 'no' );
 			}
 		}
 
