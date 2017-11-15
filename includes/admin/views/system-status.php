@@ -312,22 +312,22 @@
 				$cf_tr_class                            = 'alt' === $cf_tr_class ? '' : 'alt';
 				$values                                 = array();
 				$attributes                             = array( __( 'Capability', 'awesome-support' ) => '<code>' . $field['args']['capability'] . '</code>' );
-				$attributes[__( 'Core', 'wpas')]        = true === boolval( $field['args']['core'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
-				$attributes[__( 'Required', 'wpas')]    = true === boolval( $field['args']['required'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
-				$attributes[__( 'Logged', 'wpas')]      = true === boolval( $field['args']['log'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
-				$attributes[__( 'Show Column', 'wpas')] = true === boolval( $field['args']['show_column'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
+				$attributes[__( 'Core', 'awesome-support')]        = true === boolval( $field['args']['core'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
+				$attributes[__( 'Required', 'awesome-support')]    = true === boolval( $field['args']['required'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
+				$attributes[__( 'Logged', 'awesome-support')]      = true === boolval( $field['args']['log'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
+				$attributes[__( 'Show Column', 'awesome-support')] = true === boolval( $field['args']['show_column'] ) ? __( 'Yes', 'awesome-support' ) : __( 'No', 'awesome-support' );
 
 				if ( 'taxonomy' === $field['args']['field_type'] ) {
 					if ( true === boolval( $field['args']['taxo_std'] ) ) {
-						$attributes[__( 'Taxonomy', 'wpas')] = __( 'Yes (standard)', 'awesome-support' );
+						$attributes[__( 'Taxonomy', 'awesome-support')] = __( 'Yes (standard)', 'awesome-support' );
 					} else {
-						$attributes[__( 'Taxonomy', 'wpas')] = __( 'Yes (custom)', 'awesome-support' );
+						$attributes[__( 'Taxonomy', 'awesome-support')] = __( 'Yes (custom)', 'awesome-support' );
 					}
 				} else {
-					$attributes[__( 'Taxonomy', 'wpas')] = __( 'No', 'awesome-support' );
+					$attributes[__( 'Taxonomy', 'awesome-support')] = __( 'No', 'awesome-support' );
 				}
 
-				$attributes[__( 'Callback', 'wpas')] = '<code>' . $field['args']['field_type'] . '</code>';
+				$attributes[__( 'Callback', 'awesome-support')] = '<code>' . $field['args']['field_type'] . '</code>';
 
 				foreach ( $attributes as $label => $value ) {
 					array_push( $values,  "<strong>$label</strong>: $value" );
