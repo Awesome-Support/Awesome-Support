@@ -43,13 +43,10 @@ function dirToArray() {
 
 
 function enqueue_scripts() {
-	if( is_admin() ) {
         wp_enqueue_script( 'jquery-ui-core' );
 		wp_enqueue_script( 'jquery-ui-accordion' );
-	}
 }
-
-add_action( 'wp_enqueue_scripts', 'enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', 'enqueue_scripts' );
 
 
 /*
