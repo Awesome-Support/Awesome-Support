@@ -1,6 +1,6 @@
 <h3>Maintenance and Security Releases</h3>
 <p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
-<p><b>Version 4.3.5</b> fixed a color-picker issue that popped up on WP 4.9 and added a compatiblity layer for the DIVI them.</p>
+<p><b>Version 4.3.5</b> fixed a color-picker issue that popped up on WP 4.9 and added a compatiblity layer for the DIVI theme.</p>
 <p><b>Version 4.3.4</b> removed some old javascript queuing calls and fixed a few incorrect text-domain references.</p>
 <p><b>Version 4.3.3</b> fixed issues with logging, taxonomy custom fields and added a few new filters for use by developers.   </p>
 <p><b>Version 4.3.2</b> addressed some urgent security issues, tweaked our ongoing implementation of bootstrap 4 and addressed some minor grammar issues.  </p>
