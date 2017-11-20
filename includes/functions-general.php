@@ -1236,3 +1236,24 @@ function wpas_is_support_priority_active() {
 	 return $filtered_input ;
 	 
  }
+ 
+ /**
+ * Returns TRUE if running in SAAS mode, False otherwise
+ *
+ * @since 4.3.6
+ *
+ * @return boolean
+ */
+ function is_saas() {
+	 
+	if ( ! defined( 'WPAS_SAAS' ) ) {
+		return false ;
+	} elseif  ( ( defined( 'WPAS_SAAS' ) && false === WPAS_SAAS ) ) {
+		return false ;
+	} elseif  ( ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) ) {
+		return true ;
+	}
+  
+	return false ;
+  
+ }

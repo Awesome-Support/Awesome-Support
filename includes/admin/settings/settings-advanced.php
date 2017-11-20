@@ -60,7 +60,7 @@ function wpas_core_settings_advanced( $def ) {
 					'id'      => 'htaccess_contents_for_attachment_folders',
 					'type'    => 'textarea',
 					'desc'    => __( 'The contents of your ticket uploads folder can be protected by an htaccess file on apache servers. <br />If this is left empty then the value of <b>options -Indexes</b> is automatically added to the file to prevent others from browsing the directory. <br />Add to this only if you are a super-duper apache server expert! <br /> No technical support is available for modifications to this setting!', 'awesome-support' )
-				),				
+				),
 				
 				array(
 					'name' => __( 'Compatibility', 'awesome-support' ),
@@ -104,7 +104,7 @@ function wpas_core_settings_advanced( $def ) {
 					'type'    => 'radio',					
 					'options' => array( '0' => __( 'Do not load bootstrap files', 'awesome-support' ), '1' => __( 'Load bootstrap 4 files located on maxcdn', 'awesome-support'), '2' => __( 'Load bootstrap 3 files located on maxcdn', 'awesome-support' )  ),
 					'default' => '0'
-				),				
+				),
 				
 				array(
 					'name'    => __( 'Bootstrap 4 Theme', 'awesome-support' ),
@@ -161,6 +161,25 @@ function wpas_core_settings_advanced( $def ) {
 					'max'	  => 100000,
 				),				
 				
+				array(
+					'name' => __( 'Log Files', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Awesome Support creates log files for certain events.  These are different from WordPress, PHP and your webserver log files.  Please tell us where you would like these files to be placed.', 'awesome-support' ),
+				),
+
+				array(
+					'name'    => __( 'Where Should Log Files Be Stored?', 'awesome-support' ),
+					'id'      => 'log_file_location',
+					'type'    => 'radio',					
+					'options' => array( '0' => __( 'Default', 'awesome-support' ), '1' => __( 'WordPress Uploads Folder', 'awesome-support'), '2' => __( 'In The Absolute Path Specified Below', 'awesome-support')  ),
+					'default' => '0'
+				),
+				array(
+					'name'    => __( 'Neither Of The Above - Place Log Files Here ', 'awesome-support' ),
+					'id'      => 'log_file_location_absolute',
+					'type'    => 'text',
+					'desc'    => __( 'The absolute path to the log file location.  This must be relative to the server user account and must NOT end in a forward slash!', 'awesome-support' )
+				),
 				
 				array(
 					'name' => __( 'Danger Zone', 'awesome-support' ),
