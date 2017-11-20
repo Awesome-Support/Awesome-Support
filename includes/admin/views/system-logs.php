@@ -27,10 +27,7 @@ $log_viewer_current_file =               //
  */
 function dirToArray() {
 
-	//@TODO:  This should not be hardcoded.  
-	// Needs to somehow be taken from the class-logger
-	// Use function get_logs_base_path() in there.
-	$dir = WPAS_PATH . 'logs';
+	$dir =  get_logs_path();
 
 	$result = array();
 
