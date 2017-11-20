@@ -20,6 +20,11 @@ $log_viewer_current_file =               //
 	              ) );
 
 
+/**
+ * Scan AS logs folder for files.
+ *
+ * @return array
+ */
 function dirToArray() {
 
 	//@TODO:  This should not be hardcoded.  
@@ -44,10 +49,12 @@ function dirToArray() {
 	return $result;
 }
 
-
+/**
+ *  Enqueue Admin Scripts
+ */
 function enqueue_scripts() {
-        wp_enqueue_script( 'jquery-ui-core' );
-		wp_enqueue_script( 'jquery-ui-accordion' );
+    wp_enqueue_script( 'jquery-ui-core' );
+    wp_enqueue_script( 'jquery-ui-accordion' );
 }
 add_action( 'admin_enqueue_scripts', 'enqueue_scripts' );
 
@@ -343,7 +350,6 @@ function wpas_tools_log_viewer_ajax_script() {
     </script>
 	<?php
 }
-
 add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
 ?>
 

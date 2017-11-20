@@ -98,13 +98,13 @@ class WPAS_Logger {
 
 		$base_path = '' ;
 		switch ( intval( wpas_get_option( 'log_file_location', 0 ) ) ) {
-			case 0: 
-				// use default path
+			case 0:
+//				// use default path
 				$base_path = WPAS_PATH . 'logs' . $this->get_logs_base_path_postfix() ;
 				break ;
 				
 			case 1:
-				// use normal uploads folder
+//				// use normal uploads folder
 				$uploads = wp_upload_dir() ;
 
 				if ( isset( $uploads['basedir'] ) ) {
@@ -126,7 +126,7 @@ class WPAS_Logger {
 		if ( empty( $base_path ) ) {
 			// for some reason WP didnt' return anything in the array above so go back to default...
 			$base_path = WPAS_PATH . 'logs' . $this->get_logs_base_path_postfix() ;
-		}		
+		}
 
 		return $base_path;
 		
