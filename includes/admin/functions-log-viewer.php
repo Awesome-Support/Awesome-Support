@@ -24,11 +24,6 @@ log viewer - just a couple of minor changes:
  *
  */
 
-add_filter('wpas_logs_handles', 'my_wpas_logs_handles', 10 );
-function my_wpas_logs_handles() {
-	return array('awesome-support-test');
-}
-
 function get_logs_path() {
 
 	$log = new WPAS_Logger( '' );
