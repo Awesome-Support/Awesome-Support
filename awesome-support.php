@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           4.3.3
+ * Version:           4.3.5
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -252,7 +252,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '4.3.3' );
+			define( 'WPAS_VERSION',           '4.3.5' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -447,6 +447,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( 'includes/compatibility/sensei.php' );
 				require( 'includes/compatibility/acf-pro.php' );
 				require( 'includes/compatibility/wpml.php' );
+				require( 'includes/compatibility/divi.php' );
 
 			}
 

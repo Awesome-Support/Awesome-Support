@@ -25,6 +25,9 @@ log viewer - just a couple of minor changes:
  */
 
 function get_logs_path() {
+	//@TODO:  This should not be hardcoded.  
+	// Needs to somehow be taken from the class-logger
+	// Use function get_logs_base_path() in there.
 	return WPAS_PATH  . 'logs/';
 }
 
