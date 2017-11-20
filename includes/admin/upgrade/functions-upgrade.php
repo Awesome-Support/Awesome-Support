@@ -210,7 +210,9 @@ function wpas_upgrade_406() {
 	// We need to do this because this capability will override the
 	// settings for administrators in TICKETS->SETTINGS->ADVANCED.
 	// We don't want to do that!
-	$admin->remove_cap('view_all_tickets');
+	if ( null != $admin ) {
+		$admin->remove_cap('view_all_tickets');
+	}
 }
 
 /**
