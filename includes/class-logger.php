@@ -127,7 +127,7 @@ class WPAS_Logger {
 			// for some reason WP didnt' return anything in the array above so go back to default...
 			$base_path = WPAS_PATH . 'logs' . $this->get_logs_base_path_postfix() ;
 		}		
-error_log( $base_path );
+
 		return $base_path;
 		
 	}
