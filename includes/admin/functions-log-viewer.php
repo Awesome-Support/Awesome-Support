@@ -24,11 +24,18 @@ log viewer - just a couple of minor changes:
  *
  */
 
+add_filter('wpas_logs_handles', 'my_wpas_logs_handles', 10 );
+function my_wpas_logs_handles() {
+	return array('awesome-support-test');
+}
+
 function get_logs_path() {
-	//@TODO:  This should not be hardcoded.  
-	// Needs to somehow be taken from the class-logger
-	// Use function get_logs_base_path() in there.
-	return WPAS_PATH  . 'logs/';
+
+	$log = new WPAS_Logger( '' );
+	$base_path = $log->get_logs_base_path() . '/';
+
+	return $base_path;
+
 }
 
 function get_logs_url() {
