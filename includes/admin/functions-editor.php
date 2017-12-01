@@ -87,8 +87,8 @@ class WPAS_Editor_Email_Template_Tags_Button {
 		$list_tags = WPAS_Email_Notification::get_tags();
 		$list_tags = json_encode( $list_tags, true );
 		
-		$script = 'var wpas_editor_js_vars = { template_tags: ' . $list_tags . ' };';
-		printf('<script type="text/javascript">' . $script . '</script>');
+		$script = 'var wpas_editor_js_vars = { "template_tags": ' . $list_tags . ' };' ;
+		printf( '<script type="text/javascript">%s</script>', $script );
 	}
 }
 
