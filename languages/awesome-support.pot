@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.3.4\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2017-11-12 06:35-0600\n"
+"POT-Creation-Date: 2017-12-01 18:01-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -103,11 +103,14 @@ msgid ""
 msgstr ""
 
 #: includes/admin/class-admin-help.php:96
-#: includes/custom-fields/functions-custom-fields.php:331
+#: includes/admin/tinymce/langs/wpas_editor_langs.php:16
+#: includes/custom-fields/functions-custom-fields.php:349
 msgid "Tag"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:96 themes/default/submission.php:67
+#: includes/admin/class-admin-help.php:96
+#: includes/admin/tinymce/langs/wpas_editor_langs.php:17
+#: themes/default/submission.php:67
 msgid "Description"
 msgstr ""
 
@@ -159,7 +162,7 @@ msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:239
 #: includes/admin/metaboxes/details.php:56
-#: includes/custom-fields/functions-custom-fields.php:311
+#: includes/custom-fields/functions-custom-fields.php:329
 #: includes/functions-templating.php:276 includes/functions-templating.php:570
 msgid "Status"
 msgstr ""
@@ -433,7 +436,8 @@ msgstr ""
 
 #: includes/admin/class-admin-user.php:128
 #: includes/admin/settings/settings-advanced.php:42
-#: includes/admin/settings/settings-advanced.php:113
+#: includes/admin/settings/settings-advanced.php:141
+#: includes/admin/settings/settings-advanced.php:202
 #: includes/admin/views/system-status.php:137
 msgid "Default"
 msgstr ""
@@ -502,26 +506,26 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: includes/admin/functions-log-viewer.php:41
-#: includes/admin/functions-log-viewer.php:71
-#: includes/admin/functions-log-viewer.php:101
+#: includes/admin/functions-log-viewer.php:46
+#: includes/admin/functions-log-viewer.php:76
+#: includes/admin/functions-log-viewer.php:106
 msgid "Not found"
 msgstr ""
 
-#: includes/admin/functions-log-viewer.php:47
-#: includes/admin/functions-log-viewer.php:77
-#: includes/admin/functions-log-viewer.php:107
+#: includes/admin/functions-log-viewer.php:52
+#: includes/admin/functions-log-viewer.php:82
+#: includes/admin/functions-log-viewer.php:112
 msgid "No file given"
 msgstr ""
 
-#: includes/admin/functions-log-viewer.php:189
-#: includes/admin/functions-log-viewer.php:231
+#: includes/admin/functions-log-viewer.php:194
+#: includes/admin/functions-log-viewer.php:236
 #, php-format
 msgid "Read %d lines from %s"
 msgstr ""
 
-#: includes/admin/functions-log-viewer.php:204
-#: includes/admin/functions-log-viewer.php:246
+#: includes/admin/functions-log-viewer.php:209
+#: includes/admin/functions-log-viewer.php:251
 #, php-format
 msgid "Couldn't open the file %s. Make sure the file exists and is readable."
 msgstr ""
@@ -821,7 +825,7 @@ msgid "First additional agent who has an interest this ticket"
 msgstr ""
 
 #: includes/admin/metaboxes/ticket-additional-parties.php:51
-#: includes/custom-fields/functions-custom-fields.php:572
+#: includes/custom-fields/functions-custom-fields.php:590
 msgid "Additional Support Staff #1"
 msgstr ""
 
@@ -830,7 +834,7 @@ msgid "Second additional agent who has an interest this ticket"
 msgstr ""
 
 #: includes/admin/metaboxes/ticket-additional-parties.php:63
-#: includes/custom-fields/functions-custom-fields.php:587
+#: includes/custom-fields/functions-custom-fields.php:605
 msgid "Additional Support Staff #2"
 msgstr ""
 
@@ -931,30 +935,68 @@ msgid "GUID"
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:47
-msgid "Attachment Overrides"
+msgid "Importer Integration"
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:49
+#, php-format
+msgid ""
+"If you use the <a href=\"%s\" target=\"_blank\">Awesome Support SAAS "
+"Importer</a> to import data from Zendesk, Helpscout or Ticksy, there is a "
+"reference field that contains the original ticket ID.  The options below "
+"control what to do with that field. "
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:52
+msgid "Enable the Original Ticket ID Field?"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:55
+msgid "Show this field in the admin screen?"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:59
+msgid "Show Original Ticket ID In Column List?"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:62
+msgid ""
+"Would you like to show the Original Ticket ID field in the ticket listing?"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:66
+msgid "Label"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:69
+msgid "What should the field be named on the screen?"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:75
+msgid "Attachment Overrides"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:77
 msgid ""
 "Modifications to this section has major security implications so be careful!"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:52
+#: includes/admin/settings/settings-advanced.php:80
 msgid "Do Not Mask Attachment Links"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:55
+#: includes/admin/settings/settings-advanced.php:83
 msgid ""
 "There are some server configurations that do not work with our masked links. "
 "Try checking this box to make them work. This only works on NEW tickets.  "
 "Old tickets retain their prior links!"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:59
+#: includes/admin/settings/settings-advanced.php:87
 msgid ".htaccess Contents"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:62
+#: includes/admin/settings/settings-advanced.php:90
 msgid ""
 "The contents of your ticket uploads folder can be protected by an htaccess "
 "file on apache servers. <br />If this is left empty then the value of "
@@ -964,11 +1006,11 @@ msgid ""
 "modifications to this setting!"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:66
+#: includes/admin/settings/settings-advanced.php:94
 msgid "Compatibility"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:68
+#: includes/admin/settings/settings-advanced.php:96
 msgid ""
 "Settings in this section might help with compatibility with certain themes "
 "and plugins - please experiment to see if one of these settings work for you "
@@ -978,193 +1020,226 @@ msgid ""
 "or your WEB SERVER in order to become fully activated!"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:72
+#: includes/admin/settings/settings-advanced.php:100
 msgid "Select2 JS File"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:75
+#: includes/admin/settings/settings-advanced.php:103
 msgid ""
 "Which select2 file should be loaded? Minimized version of files will load "
 "faster but cannot be used for debugging."
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:76
-#: includes/admin/settings/settings-advanced.php:85
+#: includes/admin/settings/settings-advanced.php:104
+#: includes/admin/settings/settings-advanced.php:113
 msgid "Full"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:76
+#: includes/admin/settings/settings-advanced.php:104
 msgid "Full - Minimized"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:76
+#: includes/admin/settings/settings-advanced.php:104
 msgid "Partial"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:76
+#: includes/admin/settings/settings-advanced.php:104
 msgid "Partial Minimized"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:81
+#: includes/admin/settings/settings-advanced.php:109
 msgid "Select2 CSS File"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:84
+#: includes/admin/settings/settings-advanced.php:112
 msgid ""
 "Which select2 css file should be loaded? Minimized version of files will "
 "load faster but cannot be used for debugging."
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:85
+#: includes/admin/settings/settings-advanced.php:113
 msgid "Minimized"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:90
+#: includes/admin/settings/settings-advanced.php:118
 msgid "Bootstrap Support (Experimental)"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:92
+#: includes/admin/settings/settings-advanced.php:120
 msgid ""
 "Options for loading bootstrap files. While you can enable this now please be "
 "aware that not all elements in the plugin renders properly."
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:95
+#: includes/admin/settings/settings-advanced.php:123
 msgid "Load BootStrap Files on Front-end?"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:98
-#: includes/admin/settings/settings-advanced.php:105
+#: includes/admin/settings/settings-advanced.php:126
+#: includes/admin/settings/settings-advanced.php:133
 msgid "Do not load bootstrap files"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:98
-#: includes/admin/settings/settings-advanced.php:105
+#: includes/admin/settings/settings-advanced.php:126
+#: includes/admin/settings/settings-advanced.php:133
 msgid "Load bootstrap 4 files located on maxcdn"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:98
-#: includes/admin/settings/settings-advanced.php:105
+#: includes/admin/settings/settings-advanced.php:126
+#: includes/admin/settings/settings-advanced.php:133
 msgid "Load bootstrap 3 files located on maxcdn"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:102
+#: includes/admin/settings/settings-advanced.php:130
 msgid "Load BootStrap Files on Back-end?"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:110
+#: includes/admin/settings/settings-advanced.php:138
 msgid "Bootstrap 4 Theme"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:114
+#: includes/admin/settings/settings-advanced.php:142
 msgid "Future Awesome Support BS4 Theme"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:115
+#: includes/admin/settings/settings-advanced.php:143
 msgid "Cerulean"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:116
+#: includes/admin/settings/settings-advanced.php:144
 msgid "Cosmo"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:117
+#: includes/admin/settings/settings-advanced.php:145
 msgid "Cyborg"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:118
+#: includes/admin/settings/settings-advanced.php:146
 msgid "Darkly"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:119
+#: includes/admin/settings/settings-advanced.php:147
 msgid "Flatly"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:120
+#: includes/admin/settings/settings-advanced.php:148
 msgid "Journal"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:121
+#: includes/admin/settings/settings-advanced.php:149
 msgid "Litera"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:122
+#: includes/admin/settings/settings-advanced.php:150
 msgid "Lumen"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:123
+#: includes/admin/settings/settings-advanced.php:151
 msgid "Lux"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:124
+#: includes/admin/settings/settings-advanced.php:152
 msgid "Materia"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:125
+#: includes/admin/settings/settings-advanced.php:153
 msgid "Minty"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:126
+#: includes/admin/settings/settings-advanced.php:154
 msgid "Pulse"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:127
+#: includes/admin/settings/settings-advanced.php:155
 msgid "Sandstone"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:128
+#: includes/admin/settings/settings-advanced.php:156
 msgid "Simplex"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:129
+#: includes/admin/settings/settings-advanced.php:157
 msgid "Slate"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:130
+#: includes/admin/settings/settings-advanced.php:158
 msgid "Solar"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:131
+#: includes/admin/settings/settings-advanced.php:159
 msgid "spacelab"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:132
+#: includes/admin/settings/settings-advanced.php:160
 msgid "United"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:133
+#: includes/admin/settings/settings-advanced.php:161
 msgid "Yeti"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:134
+#: includes/admin/settings/settings-advanced.php:162
 msgid "Custom theme"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:140
+#: includes/admin/settings/settings-advanced.php:168
 msgid "Sessions and Cookie Management"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:144
+#: includes/admin/settings/settings-advanced.php:172
 msgid "Secure Cookies"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:150
+#: includes/admin/settings/settings-advanced.php:178
 msgid "HTTP Only"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:156
+#: includes/admin/settings/settings-advanced.php:184
 msgid "Expired Sessions Cleanup Batch Size"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:166
+#: includes/admin/settings/settings-advanced.php:193
+msgid "Log Files"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:195
+msgid ""
+"Awesome Support creates log files for certain events.  These are different "
+"from WordPress, PHP and your webserver log files.  Please tell us where you "
+"would like these files to be placed."
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:199
+msgid "Where Should Log Files Be Stored?"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:202
+msgid "WordPress Uploads Folder"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:202
+msgid "In The Absolute Path Specified Below"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:206
+msgid "None Of The Above - Place Log Files Here "
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:209
+msgid ""
+"The absolute path to the log file location.  This must be relative to the "
+"server user account and must NOT end in a forward slash!"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:213
 msgid "Danger Zone"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:170
+#: includes/admin/settings/settings-advanced.php:217
 msgid "Delete Data"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:174
+#: includes/admin/settings/settings-advanced.php:221
 msgid "Delete ALL plugin data on uninstall? This cannot be undone."
 msgstr ""
 
@@ -1353,7 +1428,7 @@ msgid "After how many days should a ticket be considered &laquo;old&raquo;?"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:87
-#: includes/custom-fields/functions-custom-fields.php:411
+#: includes/custom-fields/functions-custom-fields.php:429
 msgid "Departments"
 msgstr ""
 
@@ -1853,6 +1928,23 @@ msgstr ""
 msgid "Awaiting Reply"
 msgstr ""
 
+#: includes/admin/tinymce/langs/wpas_editor_langs.php:13
+msgid "WPAS Template Tags"
+msgstr ""
+
+#: includes/admin/tinymce/langs/wpas_editor_langs.php:14
+#: includes/admin/tinymce/langs/wpas_editor_langs.php:15
+msgid "Awesome Support Email Template Tags"
+msgstr ""
+
+#: includes/admin/tinymce/langs/wpas_editor_langs.php:18
+msgid ""
+"Select one of the following tags to insert into the email template, at the "
+"current cursor location. Note that these tags are only applicable on the "
+"EMAIL and NOTIFICATIONS settings tabs. Using them anywhere else will have no "
+"effect!"
+msgstr ""
+
 #: includes/admin/views/opt-in.php:3
 msgid "Get Your Free Addon!"
 msgstr ""
@@ -1898,11 +1990,11 @@ msgid ""
 "you will receive the free addon directly in your inbox."
 msgstr ""
 
-#: includes/admin/views/system-logs.php:369
+#: includes/admin/views/system-logs.php:358
 msgid "Server Logs"
 msgstr ""
 
-#: includes/admin/views/system-logs.php:380
+#: includes/admin/views/system-logs.php:369
 #: includes/admin/views/system-tools.php:86
 #: includes/admin/views/system-tools.php:93
 #: includes/admin/views/system-tools.php:100
@@ -1910,16 +2002,16 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-#: includes/admin/views/system-logs.php:389
+#: includes/admin/views/system-logs.php:378
 msgid "Download"
 msgstr ""
 
-#: includes/admin/views/system-logs.php:398 includes/class-product-sync.php:978
+#: includes/admin/views/system-logs.php:387 includes/class-product-sync.php:978
 #: includes/class-product-sync.php:995
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/views/system-logs.php:409
+#: includes/admin/views/system-logs.php:398
 msgid "Max Lines"
 msgstr ""
 
@@ -2434,104 +2526,108 @@ msgstr ""
 msgid "Please select"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:293
+#: includes/custom-fields/functions-custom-fields.php:311
 msgid "Agent"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:332
+#: includes/custom-fields/functions-custom-fields.php:350
 msgid "Tags"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:366
+#: includes/custom-fields/functions-custom-fields.php:384
 msgid "Product"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:367
+#: includes/custom-fields/functions-custom-fields.php:385
 msgid "Products"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:410
+#: includes/custom-fields/functions-custom-fields.php:428
 msgid "Department"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:471
+#: includes/custom-fields/functions-custom-fields.php:489
 msgid "Priority"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:472
+#: includes/custom-fields/functions-custom-fields.php:490
 msgid "Priorities"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:517
+#: includes/custom-fields/functions-custom-fields.php:535
 msgid "Channel"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:518
+#: includes/custom-fields/functions-custom-fields.php:536
 msgid "Channels"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:609
+#: includes/custom-fields/functions-custom-fields.php:627
 msgid "Number of Replies By Agent"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:610
+#: includes/custom-fields/functions-custom-fields.php:628
 msgid "Number of Replies By Customer"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:611
+#: includes/custom-fields/functions-custom-fields.php:629
 msgid "Total Replies On Ticket"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:658
+#: includes/custom-fields/functions-custom-fields.php:676
 msgid "Gross Time"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:659
+#: includes/custom-fields/functions-custom-fields.php:677
 msgid "Time Adjustments"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:660
+#: includes/custom-fields/functions-custom-fields.php:678
 msgid "+ive or -ive Adj?"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:661
+#: includes/custom-fields/functions-custom-fields.php:679
 msgid "Final Time"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:662
+#: includes/custom-fields/functions-custom-fields.php:680
 msgid "Notes"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:677
+#: includes/custom-fields/functions-custom-fields.php:695
 msgid "Enter the cummulative time spent on ticket by the agent"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:695
+#: includes/custom-fields/functions-custom-fields.php:713
 msgid ""
 "Enter any adjustments or credits granted to the customer - generally filled "
 "in by a supervisor or admin."
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:724
+#: includes/custom-fields/functions-custom-fields.php:742
 msgid ""
 "This is the time calculated by the system - a sum of gross time and "
 "adjustments/credits granted."
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:752
+#: includes/custom-fields/functions-custom-fields.php:770
 msgid "Name Of Additional Interested Party #1"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:753
+#: includes/custom-fields/functions-custom-fields.php:771
 msgid "Additional Interested Party Email #1"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:754
+#: includes/custom-fields/functions-custom-fields.php:772
 msgid "Name Of Additional Interested Party #2"
 msgstr ""
 
-#: includes/custom-fields/functions-custom-fields.php:755
+#: includes/custom-fields/functions-custom-fields.php:773
 msgid "Additional Interested Party Email #2"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:828
+msgid "Help Desk SaaS Ticket ID"
 msgstr ""
 
 #: includes/file-uploader/class-file-uploader.php:233
