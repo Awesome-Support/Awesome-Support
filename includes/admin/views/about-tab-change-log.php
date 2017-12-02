@@ -1,5 +1,6 @@
 <h3>Maintenance and Security Releases</h3>
 <p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
+<p><b>Version 4.4.0</b> added a new button to the editor to make it easier to identify and use email template tags, upgraded the session manager library to 2.0, provides an option to change the location of our log files and fixed a couple of pesky bugs.</p>
 <p><b>Version 4.3.5</b> fixed a color-picker issue that popped up on WP 4.9 and added a compatiblity layer for the DIVI theme.</p>
 <p><b>Version 4.3.4</b> removed some old javascript queuing calls and fixed a few incorrect text-domain references.</p>
 <p><b>Version 4.3.3</b> fixed issues with logging, taxonomy custom fields and added a few new filters for use by developers.   </p>
