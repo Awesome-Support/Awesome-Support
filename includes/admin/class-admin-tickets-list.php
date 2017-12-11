@@ -1358,15 +1358,21 @@ SQL;
 		global $wp;
 
 		$fields = $this->get_custom_fields();
+		
+		$screen = get_current_screen(); 
+		
+		if ( $screen->id == 'edit-ticket' ){ 		
 
-		// Map query vars to their keys, or get them if endpoints are not supported
-		foreach ( $fields as $key => $var ) {
+			// Map query vars to their keys, or get them if endpoints are not supported
+			foreach ( $fields as $key => $var ) {
 
-			if ( isset( $_GET[ $var[ 'name' ] ] ) ) {
-				$wp->query_vars[ $key ] = $_GET[ $var[ 'name' ] ];
-			} elseif ( isset( $wp->query_vars[ $var[ 'name' ] ] ) ) {
-				$wp->query_vars[ $key ] = $wp->query_vars[ $var ];
+				if ( isset( $_GET[ $var[ 'name' ] ] ) ) {
+					$wp->query_vars[ $key ] = $_GET[ $var[ 'name' ] ];
+				} elseif ( isset( $wp->query_vars[ $var[ 'name' ] ] ) ) {
+					$wp->query_vars[ $key ] = $wp->query_vars[ $var ];
+				}
 			}
+			
 		}
 	}
 
