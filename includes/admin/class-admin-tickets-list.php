@@ -321,7 +321,7 @@ class WPAS_Tickets_List {
 	public function get_user_meta_current_val( $option, $default = null ) {
 
 		$user_id        = get_current_user_id();
-		$current_val = esc_attr( get_the_author_meta( $option, $user_id ) );
+		$current_val = esc_attr( get_user_option( $option, $user_id ) );
 
 		if ( empty( $current_val ) ) {
 			return $default;
@@ -371,8 +371,14 @@ class WPAS_Tickets_List {
 						break;
 
 					case 'wpas-client':
+					
+						$the_post = get_post( $post_id ) ;
+						$author_id = 0 ;
+						if ( ! is_wp_error( $the_post ) && ! empty( $the_post ) ) {
+							$author_id = $the_post->post_author ;
+						}
 
-						$client = get_user_by( 'id', get_the_author_meta( 'ID' ) );
+						$client = get_user_by( 'id', $author_id );
 
 						if ( ! empty( $client ) ) {
 							$link = add_query_arg( array(

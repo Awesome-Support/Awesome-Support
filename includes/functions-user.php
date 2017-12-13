@@ -1057,7 +1057,7 @@ function wpas_has_smart_tickets_order( $user_id = 0 ) {
 	// If the user is not an agent this is irrelevant. Just return false.
 	if ( user_can( $user_id, 'edit_ticket' ) ) {
 
-		$smart = esc_attr( get_the_author_meta( 'wpas_smart_tickets_order', $user_id ) );
+		$smart = esc_attr( get_user_option( 'wpas_smart_tickets_order', $user_id ) );
 
 		if ( 'yes' === $smart ) {
 			$value = true;

@@ -172,7 +172,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 
 		if ( is_null( $this->department ) ) {
 
-			$this->department = get_the_author_meta( 'wpas_department', $this->user_id );
+			$this->department = get_user_option( 'wpas_department', $this->user_id );
 
 			if ( empty( $this->department ) ) {
 				$this->department = array();
