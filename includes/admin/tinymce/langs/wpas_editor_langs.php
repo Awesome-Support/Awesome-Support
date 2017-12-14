@@ -10,7 +10,7 @@ function wpas_editor_langs() {
 	
     $strings = array(
 		
-		'button_title' => __('WPAS Template Tags', 'awesome-support'),
+		'button_title' => __('Ticket Email Template Tags', 'awesome-support'),
 		'window_title' => __('Awesome Support Email Template Tags', 'awesome-support'),
 		'plugin_long_name' => __('Awesome Support Email Template Tags', 'awesome-support'),
 		'table_header_tag' => __('Tag', 'awesome-support'),

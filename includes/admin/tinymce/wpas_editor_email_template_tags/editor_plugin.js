@@ -34,8 +34,8 @@
 				ed.windowManager.open({
 						
 					title: ed.getLang('wpas_editor_langs.window_title'),
-					width: winW*.5,
-					height: winH*.5,
+					width: winW*.95,
+					height: winH*.95,
 					url: url + '/wpas_editor_email_template_tags.php'
 				}, {
 					// Pass variables to window
