@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.3.4\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2017-12-02 00:42-0600\n"
+"POT-Creation-Date: 2017-12-14 11:35-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -172,123 +172,123 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:402
+#: includes/admin/class-admin-tickets-list.php:408
 msgctxt "No last reply"
 msgid "No reply yet."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:408
+#: includes/admin/class-admin-tickets-list.php:414
 msgctxt "User role"
 msgid "agent"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:408
+#: includes/admin/class-admin-tickets-list.php:414
 msgctxt "User role"
 msgid "client"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:410
+#: includes/admin/class-admin-tickets-list.php:416
 #, php-format
 msgid "%s reply."
 msgid_plural "%s replies."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/class-admin-tickets-list.php:412
+#: includes/admin/class-admin-tickets-list.php:418
 #, php-format
 msgctxt "Last reply ago"
 msgid "<a href=\"%s\" target=\""
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:428
+#: includes/admin/class-admin-tickets-list.php:434
 msgid "Opened on: "
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:443
+#: includes/admin/class-admin-tickets-list.php:449
 msgid "Opened on GMT: "
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:457
+#: includes/admin/class-admin-tickets-list.php:463
 msgid "Closed on: "
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:472
+#: includes/admin/class-admin-tickets-list.php:478
 msgid "Closed on GMT: "
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:492
+#: includes/admin/class-admin-tickets-list.php:498
 msgid "Ticket was opened for: "
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:493
+#: includes/admin/class-admin-tickets-list.php:499
 #: includes/admin/functions-misc.php:362
 msgid " day(s)"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:494
+#: includes/admin/class-admin-tickets-list.php:500
 #: includes/admin/functions-misc.php:363
 msgid " hour(s)"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:495
+#: includes/admin/class-admin-tickets-list.php:501
 #: includes/admin/functions-misc.php:364
 msgid " minute(s)"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:506
-#: includes/admin/class-admin-tickets-list.php:1028
+#: includes/admin/class-admin-tickets-list.php:512
+#: includes/admin/class-admin-tickets-list.php:1034
 msgid "Awaiting Support Reply"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:512
-#: includes/admin/class-admin-tickets-list.php:1029
+#: includes/admin/class-admin-tickets-list.php:518
+#: includes/admin/class-admin-tickets-list.php:1035
 msgid "Old"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:788
+#: includes/admin/class-admin-tickets-list.php:794
 msgid "Filter"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:789
+#: includes/admin/class-admin-tickets-list.php:795
 msgid "Search"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:792
+#: includes/admin/class-admin-tickets-list.php:798
 msgid "Bulk Actions"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:796
+#: includes/admin/class-admin-tickets-list.php:802
 msgid "Preferences"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:800
+#: includes/admin/class-admin-tickets-list.php:806
 msgid "Documentation"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:906
+#: includes/admin/class-admin-tickets-list.php:912
 msgid "Edit in new Window"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:928
+#: includes/admin/class-admin-tickets-list.php:934
 msgid "Awesome Support Core Documentation"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:929
+#: includes/admin/class-admin-tickets-list.php:935
 msgid "1. User Guide"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:930
+#: includes/admin/class-admin-tickets-list.php:936
 msgid ""
 "The end user guide covers topics such as instructions for installation, "
 "entering tickets, adding agents, navigation, replying to and closing tickets "
 "and more."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:932
+#: includes/admin/class-admin-tickets-list.php:938
 msgid "2. Administration Guide"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:933
+#: includes/admin/class-admin-tickets-list.php:939
 msgid ""
 "The admin guide covers topics such as configuring products, departments, "
 "priorities and channels. It also includes guides for security using roles "
@@ -296,60 +296,60 @@ msgid ""
 "incompatibilities."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:935
+#: includes/admin/class-admin-tickets-list.php:941
 msgid "3. Troubleshooting"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:936
+#: includes/admin/class-admin-tickets-list.php:942
 msgid "Having an issue? Your answer might be in here."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:938
+#: includes/admin/class-admin-tickets-list.php:944
 msgid "4. FAQ and More Troubleshooting Tips"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:939
+#: includes/admin/class-admin-tickets-list.php:945
 msgid ""
 "Even more trouble-shooting tips and other frequently asked questions. 404 "
 "pages, missing tabs, PHP errors and conflicts are just some of the topics "
 "covered here!"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:941
+#: includes/admin/class-admin-tickets-list.php:947
 msgid "5. Customization"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:942
+#: includes/admin/class-admin-tickets-list.php:948
 msgid ""
 "Need to change the look of your ticket pages?  Maybe add some custom fields? "
 "Then this is the guide you need!"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:944
+#: includes/admin/class-admin-tickets-list.php:950
 msgid "Awesome Support Add-ons and Extensions Documentation"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:945
+#: includes/admin/class-admin-tickets-list.php:951
 msgid "1. All Extensions"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:946
+#: includes/admin/class-admin-tickets-list.php:952
 msgid "Links to documentation for every single extension or add-on."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:948
+#: includes/admin/class-admin-tickets-list.php:954
 msgid "2. REST API"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:949
+#: includes/admin/class-admin-tickets-list.php:955
 msgid "Documentation for the REST API."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:984
+#: includes/admin/class-admin-tickets-list.php:990
 msgid "All States"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:985
+#: includes/admin/class-admin-tickets-list.php:991
 #: includes/admin/functions-list-table.php:151
 #: includes/admin/metaboxes/details.php:98
 #: includes/admin/metaboxes/user-profile.php:97
@@ -358,7 +358,7 @@ msgstr ""
 msgid "Open"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:986
+#: includes/admin/class-admin-tickets-list.php:992
 #: includes/admin/metaboxes/user-profile.php:101
 #: includes/admin/metaboxes/user-profile.php:129
 #: includes/admin/views/system-status.php:129
@@ -366,27 +366,27 @@ msgstr ""
 msgid "Closed"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1001
+#: includes/admin/class-admin-tickets-list.php:1007
 msgid "All Status"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1027
+#: includes/admin/class-admin-tickets-list.php:1033
 msgid "All Activity"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1042
+#: includes/admin/class-admin-tickets-list.php:1048
 msgid "All Agents"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1079
+#: includes/admin/class-admin-tickets-list.php:1085
 msgid "All Clients"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1156
+#: includes/admin/class-admin-tickets-list.php:1162
 msgid "All "
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1667
+#: includes/admin/class-admin-tickets-list.php:1679
 msgid ""
 "NOTE: Please be aware that when you sort on a column, tickets that have "
 "never had a value entered into that column will not appear on your sorted "
@@ -658,7 +658,7 @@ msgid ""
 "deserve it!</a>."
 msgstr ""
 
-#: includes/admin/functions-notices.php:216
+#: includes/admin/functions-notices.php:240
 msgctxt "Dismiss link for admin notices"
 msgid "Dismiss"
 msgstr ""
@@ -1929,7 +1929,7 @@ msgid "Awaiting Reply"
 msgstr ""
 
 #: includes/admin/tinymce/langs/wpas_editor_langs.php:13
-msgid "WPAS Template Tags"
+msgid "Ticket Email Template Tags"
 msgstr ""
 
 #: includes/admin/tinymce/langs/wpas_editor_langs.php:14
@@ -1941,8 +1941,11 @@ msgstr ""
 msgid ""
 "Select one of the following tags to insert into the email template, at the "
 "current cursor location. <br /> <br /> <i>Note that these tags are only "
-"applicable on the <b>EMAIL</b>, <b>NOTIFICATIONS</b> and <b>SATISFACTION "
-"SURVEY</b> settings tabs. Using them anywhere else will have no effect!</i>"
+"applicable on certain settings tabs and screens.  These include the "
+"<b>EMAIL</b>, <b>NOTIFICATIONS</b> and <b>SATISFACTION SURVEY</b> settings "
+"tabs as well as the <b>RULESET</b> screens. Some tags are applicable on the "
+"<b>FAQ</b> and <b>DOCUMENTATION</b> settings screens as well. Using them "
+"anywhere else will have no effect!</i>"
 msgstr ""
 
 #: includes/admin/views/opt-in.php:3
@@ -3388,21 +3391,21 @@ msgid ""
 "open a new ticket</a>."
 msgstr ""
 
-#: themes/default/details.php:129
+#: themes/default/details.php:128
 msgid "Loading..."
 msgstr ""
 
-#: themes/default/details.php:130
+#: themes/default/details.php:129
 #, php-format
 msgctxt "Showing X replies out of a total of X replies"
 msgid "Showing %s replies of %s."
 msgstr ""
 
-#: themes/default/details.php:131
+#: themes/default/details.php:130
 msgid "Load newer replies"
 msgstr ""
 
-#: themes/default/details.php:144
+#: themes/default/details.php:143
 msgid "Write a reply"
 msgstr ""
 
@@ -3441,12 +3444,12 @@ msgstr ""
 msgid "Message"
 msgstr ""
 
-#: themes/default/partials/ticket-reply.php:35
+#: themes/default/partials/ticket-reply.php:34
 #, php-format
 msgid "This reply has been deleted %s ago."
 msgstr ""
 
-#: themes/default/partials/ticket-reply.php:53
+#: themes/default/partials/ticket-reply.php:52
 #, php-format
 msgctxt "Time ago (eg. 5 minutes ago)"
 msgid "%s ago"
