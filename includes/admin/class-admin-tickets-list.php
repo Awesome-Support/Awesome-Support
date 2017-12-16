@@ -909,7 +909,7 @@ SQL;
 
 		echo "<tr><td width='100' align='right'>";
 		echo "<input type='checkbox' name='edit_ticket_in_new_window' id='edit_ticket_in_new_window' value='yes' " . $selected . " />";
-		echo "</td><td><label for='edit_ticket_in_new_window'>" . __('Edit in new Window', 'awesome-support') . "</label></td></tr>";
+		echo "</td><td><label for='edit_ticket_in_new_window'>" . __('Edit ticket in new Window when the ticket ID is clicked', 'awesome-support') . "</label></td></tr>";
 
 		echo "<tr><td></td><td><br/><input type='submit' name='save_preferences' class='button' value='Save Preferences' /></td></tr>";
 		echo "</table>";

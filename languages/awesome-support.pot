@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.3.4\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2017-12-14 11:35-0600\n"
+"POT-Creation-Date: 2017-12-16 14:59-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -266,7 +266,7 @@ msgid "Documentation"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:912
-msgid "Edit in new Window"
+msgid "Edit ticket in new Window when the ticket ID is clicked"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:934
