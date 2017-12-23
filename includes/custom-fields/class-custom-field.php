@@ -209,6 +209,10 @@
 				// @since 4.3.0
 				// Place this field in a bootstrap column?
 				'boot_strap_column_fe'	=> false ,
+				
+				// @since 4.4.0
+				// The sort order of the field - used only by the custom-fields add-on!
+				'order'	=> '0',
 
 			);
 
