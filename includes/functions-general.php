@@ -1270,7 +1270,17 @@ function wpas_is_support_priority_active() {
  function wpas_gutenberg_meta_box_compatible() {
 	 $is_compatible = false ;
 	 
-	 if ( defined('WPAS_META_BOX_COMPATIBLE') && true === WPAS_META_BOX_COMPATIBLE )  {
+	 /**
+	  * if our REST API is NOT enabled, return TRUE since the lack of a REST API will force GUTENBERG 
+	  * to fallback to the regular editor anyway.  This will then prevent the "Gutenberg Incompatible Meta Box"
+	  * message from showing up in our metaboxes
+	  */ 
+	  if ( ! class_exists( 'WPAS_API' ) ) {
+		  $is_compatible = true ;
+	  }
+		  
+	 // Override everything anyway based on a variable in the wp-config file.
+	 if ( defined('WPAS_GUTENBERG_META_BOX_COMPATIBLE') && true === WPAS_GUTENBERG_META_BOX_COMPATIBLE )  {
 		 $is_compatible = true ;
 	 }
 	 
