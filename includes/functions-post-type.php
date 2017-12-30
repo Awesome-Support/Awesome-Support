@@ -315,7 +315,6 @@ add_filter( 'allowed_block_types', 'wpas_filter_gutenberg_blocks_ticket' );
 	 
 	$post             = get_post();
 	$post_type        = get_post_type( $post );
-	$post_type_object = get_post_type_object( $post_type );
 
 	if ( 'ticket' !== $post_type ) {
 		return $block_types;
