@@ -495,7 +495,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-products-management.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
-
+				
+				/* Load Gutenberg related files */
+				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg.php' );
 
 			}
 
