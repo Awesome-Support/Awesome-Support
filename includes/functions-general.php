@@ -1257,3 +1257,24 @@ function wpas_is_support_priority_active() {
 	return false ;
   
  }
+ 
+ /**
+ * Returns TRUE if we are declaring compatibility with GUTENBERG.
+ * Returns FALSE if not.  The default is FALSE - we are not
+ * compatible
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+ function wpas_gutenberg_meta_box_compatible() {
+	 $is_compatible = false ;
+	 
+	 if ( defined('WPAS_META_BOX_COMPATIBLE') && true === WPAS_META_BOX_COMPATIBLE )  {
+		 $is_compatible = true ;
+	 }
+	 
+	 return $is_compatible;
+ }
+ 
+ 

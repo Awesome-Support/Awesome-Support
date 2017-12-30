@@ -62,7 +62,7 @@ function wpas_metaboxes() {
 	}	
 	
 	/* Ticket Statistics */
-	add_meta_box( 'wpas-mb-ticket-statistics', __( 'Ticket Statistics', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-statistics' ) );
+	add_meta_box( 'wpas-mb-ticket-statistics', __( 'Ticket Statistics', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-statistics', '__block_editor_compatible_meta_box' => wpas_gutenberg_meta_box_compatible() ) );
 
 	/* Time tracking statistics*/
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
