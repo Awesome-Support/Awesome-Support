@@ -4,14 +4,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.3.4\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2017-12-16 14:59-0600\n"
+"POT-Creation-Date: 2017-12-30 14:57-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Awesome Support (https://getawesomesupport.com/)\n"
 "Language-Team: Awesome Support <contact@awesomesupport.com>\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.5\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
 "_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
 "esc_html_x:1,2c\n"
@@ -671,6 +671,25 @@ msgstr ""
 #: includes/admin/functions-user-profile.php:58
 #, php-format
 msgid "Support User since %s"
+msgstr ""
+
+#: includes/admin/gutenberg/blocks/my-tickets/my-tickets-block.js:25
+#: includes/install.php:250 includes/install.php:251
+#: themes/default/partials/ticket-navigation.php:2
+msgid "My Tickets"
+msgstr ""
+
+#: includes/admin/gutenberg/blocks/my-tickets/my-tickets-block.js:32
+msgid "Awesome Support: My Tickets"
+msgstr ""
+
+#: includes/admin/gutenberg/blocks/submit-ticket/submit-ticket-block.js:25
+#: includes/install.php:270 includes/install.php:271
+msgid "Submit Ticket"
+msgstr ""
+
+#: includes/admin/gutenberg/blocks/submit-ticket/submit-ticket-block.js:32
+msgid "Awesome Support: Submit Ticket"
 msgstr ""
 
 #: includes/admin/metaboxes/details.php:61
@@ -2458,12 +2477,12 @@ msgstr ""
 msgid "An editor ID is mandatory to load a new instance of TinyMCE"
 msgstr ""
 
-#: includes/custom-fields/class-custom-field.php:502
+#: includes/custom-fields/class-custom-field.php:506
 msgid ""
 "The custom field class does not contain the mandatory method \"display\""
 msgstr ""
 
-#: includes/custom-fields/class-custom-field.php:508
+#: includes/custom-fields/class-custom-field.php:512
 msgid "The type of custom field you are trying to use does not exist"
 msgstr ""
 
@@ -2752,321 +2771,326 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: includes/functions-post-type.php:35
+#: includes/functions-post-type.php:28
+msgctxt "placeholder for main paragraph when adding a new ticket"
+msgid "Enter the contents for your new ticket here"
+msgstr ""
+
+#: includes/functions-post-type.php:42
 msgctxt "post type general name"
 msgid "Tickets"
 msgstr ""
 
-#: includes/functions-post-type.php:36
+#: includes/functions-post-type.php:43
 msgctxt "post type singular name"
 msgid "Ticket"
 msgstr ""
 
-#: includes/functions-post-type.php:37
+#: includes/functions-post-type.php:44
 msgctxt "admin menu"
 msgid "Tickets"
 msgstr ""
 
-#: includes/functions-post-type.php:38
+#: includes/functions-post-type.php:45
 msgctxt "add new on admin bar"
 msgid "Ticket"
 msgstr ""
 
-#: includes/functions-post-type.php:39
+#: includes/functions-post-type.php:46
 msgctxt "ticket"
 msgid "Add New"
 msgstr ""
 
-#: includes/functions-post-type.php:40
+#: includes/functions-post-type.php:47
 msgid "Add New Ticket"
 msgstr ""
 
-#: includes/functions-post-type.php:41
+#: includes/functions-post-type.php:48
 msgid "New Ticket"
 msgstr ""
 
-#: includes/functions-post-type.php:42
+#: includes/functions-post-type.php:49
 msgid "Edit Ticket"
 msgstr ""
 
-#: includes/functions-post-type.php:43
+#: includes/functions-post-type.php:50
 msgid "View Ticket"
 msgstr ""
 
-#: includes/functions-post-type.php:44
+#: includes/functions-post-type.php:51
 msgid "All Tickets"
 msgstr ""
 
-#: includes/functions-post-type.php:45
+#: includes/functions-post-type.php:52
 msgid "Search Tickets"
 msgstr ""
 
-#: includes/functions-post-type.php:46
+#: includes/functions-post-type.php:53
 msgid "Parent Ticket:"
 msgstr ""
 
-#: includes/functions-post-type.php:47
+#: includes/functions-post-type.php:54
 msgid "No tickets found."
 msgstr ""
 
-#: includes/functions-post-type.php:48
+#: includes/functions-post-type.php:55
 msgid "No tickets found in Trash."
 msgstr ""
 
-#: includes/functions-post-type.php:114 includes/functions-post-type.php:117
+#: includes/functions-post-type.php:122 includes/functions-post-type.php:125
 msgid "Ticket updated."
 msgstr ""
 
-#: includes/functions-post-type.php:115
+#: includes/functions-post-type.php:123
 msgid "Custom field updated."
 msgstr ""
 
-#: includes/functions-post-type.php:116
+#: includes/functions-post-type.php:124
 msgid "Custom field deleted."
 msgstr ""
 
-#: includes/functions-post-type.php:119
+#: includes/functions-post-type.php:127
 #, php-format
 msgid "Ticket restored to revision from %s"
 msgstr ""
 
-#: includes/functions-post-type.php:120
+#: includes/functions-post-type.php:128
 msgid "Ticket published."
 msgstr ""
 
-#: includes/functions-post-type.php:121
+#: includes/functions-post-type.php:129
 msgid "Ticket saved."
 msgstr ""
 
-#: includes/functions-post-type.php:122
+#: includes/functions-post-type.php:130
 msgid "Ticket submitted."
 msgstr ""
 
-#: includes/functions-post-type.php:124
+#: includes/functions-post-type.php:132
 #, php-format
 msgid "Ticket scheduled for: <strong>%1$s</strong>."
 msgstr ""
 
-#: includes/functions-post-type.php:126
+#: includes/functions-post-type.php:134
 msgid "M j, Y @ G:i"
 msgstr ""
 
-#: includes/functions-post-type.php:128
+#: includes/functions-post-type.php:136
 msgid "Ticket draft updated."
 msgstr ""
 
-#: includes/functions-post-type.php:134
+#: includes/functions-post-type.php:142
 msgid "View ticket"
 msgstr ""
 
-#: includes/functions-post-type.php:140
+#: includes/functions-post-type.php:148
 msgid "Preview ticket"
 msgstr ""
 
-#: includes/functions-post-type.php:160
+#: includes/functions-post-type.php:168
 msgctxt "post type general name"
 msgid "Ticket Replies"
 msgstr ""
 
-#: includes/functions-post-type.php:161
+#: includes/functions-post-type.php:169
 msgctxt "post type singular name"
 msgid "Ticket Reply"
 msgstr ""
 
-#: includes/functions-post-type.php:162
+#: includes/functions-post-type.php:170
 msgctxt "admin menu"
 msgid "Ticket Reply"
 msgstr ""
 
-#: includes/functions-post-type.php:163
+#: includes/functions-post-type.php:171
 msgctxt "add new on admin bar"
 msgid "Ticket Reply"
 msgstr ""
 
-#: includes/functions-post-type.php:164
+#: includes/functions-post-type.php:172
 msgctxt "Ticket Reply"
 msgid "Add New"
 msgstr ""
 
-#: includes/functions-post-type.php:165
+#: includes/functions-post-type.php:173
 msgid "Add New Ticket Reply"
 msgstr ""
 
-#: includes/functions-post-type.php:166
+#: includes/functions-post-type.php:174
 msgid "New Ticket Reply"
 msgstr ""
 
-#: includes/functions-post-type.php:167
+#: includes/functions-post-type.php:175
 msgid "Edit Ticket Reply"
 msgstr ""
 
-#: includes/functions-post-type.php:168
+#: includes/functions-post-type.php:176
 msgid "View Ticket Reply"
 msgstr ""
 
-#: includes/functions-post-type.php:169
+#: includes/functions-post-type.php:177
 msgid "All Ticket Replies"
 msgstr ""
 
-#: includes/functions-post-type.php:170
+#: includes/functions-post-type.php:178
 msgid "Search Ticket Reply"
 msgstr ""
 
-#: includes/functions-post-type.php:171
+#: includes/functions-post-type.php:179
 msgid "Parent Ticket Replies:"
 msgstr ""
 
-#: includes/functions-post-type.php:172
+#: includes/functions-post-type.php:180
 msgid "No Ticket Replies found."
 msgstr ""
 
-#: includes/functions-post-type.php:173
+#: includes/functions-post-type.php:181
 msgid "No Ticket Replies found in Trash."
 msgstr ""
 
-#: includes/functions-post-type.php:177
+#: includes/functions-post-type.php:185
 msgctxt "post type general name"
 msgid "Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:178
+#: includes/functions-post-type.php:186
 msgctxt "post type singular name"
 msgid "Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:179
+#: includes/functions-post-type.php:187
 msgctxt "admin menu"
 msgid "Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:180
+#: includes/functions-post-type.php:188
 msgctxt "add new on admin bar"
 msgid "Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:181
+#: includes/functions-post-type.php:189
 msgctxt "Ticket History"
 msgid "Add History"
 msgstr ""
 
-#: includes/functions-post-type.php:182
+#: includes/functions-post-type.php:190
 msgid "Add New Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:183
+#: includes/functions-post-type.php:191
 msgid "New Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:184
+#: includes/functions-post-type.php:192
 msgid "Edit Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:185
+#: includes/functions-post-type.php:193
 msgid "View Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:186
+#: includes/functions-post-type.php:194
 msgid "All Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:187
+#: includes/functions-post-type.php:195
 msgid "Search Ticket History"
 msgstr ""
 
-#: includes/functions-post-type.php:188
+#: includes/functions-post-type.php:196
 msgid "Parent Ticket History:"
 msgstr ""
 
-#: includes/functions-post-type.php:189
+#: includes/functions-post-type.php:197
 msgid "No Ticket History found."
 msgstr ""
 
-#: includes/functions-post-type.php:190
+#: includes/functions-post-type.php:198
 msgid "No Ticket History found in Trash."
 msgstr ""
 
-#: includes/functions-post-type.php:194
+#: includes/functions-post-type.php:202
 msgctxt "post type general name"
 msgid "Ticket Log"
 msgstr ""
 
-#: includes/functions-post-type.php:195
+#: includes/functions-post-type.php:203
 msgctxt "post type singular name"
 msgid "Ticket Log"
 msgstr ""
 
-#: includes/functions-post-type.php:196
+#: includes/functions-post-type.php:204
 msgctxt "admin menu"
 msgid "Ticket Log"
 msgstr ""
 
-#: includes/functions-post-type.php:197
+#: includes/functions-post-type.php:205
 msgctxt "add new on admin bar"
 msgid "Ticket Log"
 msgstr ""
 
-#: includes/functions-post-type.php:198
+#: includes/functions-post-type.php:206
 msgctxt "Ticket Log"
 msgid "Add Ticket Log"
 msgstr ""
 
-#: includes/functions-post-type.php:199
+#: includes/functions-post-type.php:207
 msgid "Add New Ticket Log"
 msgstr ""
 
-#: includes/functions-post-type.php:200
+#: includes/functions-post-type.php:208
 msgid "New Ticket Log"
 msgstr ""
 
-#: includes/functions-post-type.php:201
+#: includes/functions-post-type.php:209
 msgid "Edit Ticket Log"
 msgstr ""
 
-#: includes/functions-post-type.php:202
+#: includes/functions-post-type.php:210
 msgid "View Ticket Log"
 msgstr ""
 
-#: includes/functions-post-type.php:203
+#: includes/functions-post-type.php:211
 msgid "All Ticket Logs"
 msgstr ""
 
-#: includes/functions-post-type.php:204
+#: includes/functions-post-type.php:212
 msgid "Search Ticket Logs"
 msgstr ""
 
-#: includes/functions-post-type.php:205
+#: includes/functions-post-type.php:213
 msgid "Parent Ticket Log:"
 msgstr ""
 
-#: includes/functions-post-type.php:206
+#: includes/functions-post-type.php:214
 msgid "No Ticket Logs found."
 msgstr ""
 
-#: includes/functions-post-type.php:207
+#: includes/functions-post-type.php:215
 msgid "No Ticket Logs found in Trash."
 msgstr ""
 
-#: includes/functions-post-type.php:243
+#: includes/functions-post-type.php:251
 msgctxt "Reply status"
 msgid "Read"
 msgstr ""
 
-#: includes/functions-post-type.php:244
+#: includes/functions-post-type.php:252
 msgctxt "Reply status"
 msgid "Unread"
 msgstr ""
 
-#: includes/functions-post-type.php:256
+#: includes/functions-post-type.php:264
 msgctxt "Ticket status"
 msgid "New"
 msgstr ""
 
-#: includes/functions-post-type.php:257
+#: includes/functions-post-type.php:265
 msgctxt "Ticket status"
 msgid "In Progress"
 msgstr ""
 
-#: includes/functions-post-type.php:258
+#: includes/functions-post-type.php:266
 msgctxt "Ticket status"
 msgid "On Hold"
 msgstr ""
@@ -3274,15 +3298,6 @@ msgstr ""
 
 #: includes/install.php:157
 msgid "Support User"
-msgstr ""
-
-#: includes/install.php:250 includes/install.php:251
-#: themes/default/partials/ticket-navigation.php:2
-msgid "My Tickets"
-msgstr ""
-
-#: includes/install.php:270 includes/install.php:271
-msgid "Submit Ticket"
 msgstr ""
 
 #: includes/install.php:333
