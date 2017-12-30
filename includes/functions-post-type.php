@@ -21,6 +21,13 @@ function wpas_register_post_type() {
 
 	/* Supported components */
 	$supports = array( 'title' );
+	
+	/* Template components for Gutenberg */
+	$gutenburg_new_template = array(
+					array( 'core/paragraph', array(
+							'placeholder' => _x('Enter the contents for your new ticket here', 'placeholder for main paragraph when adding a new ticket', 'awesome-support' )
+						) ),
+				);
 
 	/* If the post is being created we add the editor */
 	if( !isset( $_GET['post'] ) ) {
@@ -82,7 +89,8 @@ function wpas_register_post_type() {
 			'hierarchical'        => false,
 			'menu_position'       => null,
 			'menu_icon'           => $icon,
-			'supports'            => $supports
+			'supports'            => $supports,
+			'template' 			  => $gutenburg_new_template
 	) );
 
 	register_post_type( 'ticket', $args );
