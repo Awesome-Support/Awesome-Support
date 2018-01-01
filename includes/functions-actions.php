@@ -62,9 +62,8 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 	$field = sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'wpas-do', $action );
 	
 	$field .= wp_nonce_field( 'trigger_custom_action', 'wpas-do-nonce', true, false );
-error_log( $field );		
+
 	$field = str_replace( 'id="wpas-do-nonce"' , 'id="wpas-do-nonce-' . $action . '"' , $field );
-error_log( $field );	
 
 	if ( ! empty( $redirect_to ) ) {
 		$field .= sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'redirect_to', wp_sanitize_redirect( $redirect_to ) );
