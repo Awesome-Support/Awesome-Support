@@ -1287,4 +1287,26 @@ function wpas_is_support_priority_active() {
 	 return $is_compatible;
  }
  
+ /**
+ * Returns TRUE if the current user is an agent
+ * Returns FALSE if not.  
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+ function wpas_is_agent() {
+	 return current_user_can( 'edit_ticket' ) ;
+ }
  
+ /**
+ * Returns TRUE if the current user is an Awesome Support Admin
+ * Returns FALSE if not.  
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+ function wpas_is_asadmin() {
+	 return ( current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
+ }

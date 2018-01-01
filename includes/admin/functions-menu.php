@@ -50,10 +50,10 @@ function wpas_tickets_count() {
 
 	global $menu, $current_user;
 
-	if ( current_user_can( 'administrator' )
+	if ( wpas_is_asadmin()
 		 && false === boolval( wpas_get_option( 'admin_see_all' ) )
-		 || ! current_user_can( 'administrator' )
-			&& current_user_can( 'edit_ticket' )
+		 || ! wpas_is_asadmin()
+			&& wpas_is_agent()
 			&& false === boolval( wpas_get_option( 'agent_see_all' ) )
 	) {
 
