@@ -536,12 +536,12 @@ function wpas_can_user_see_all_tickets() {
 	$user_can_see_all = false;
 	
 	/* Check if admins can see all tickets */
-	if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
+	if ( wpas_is_asadmin() && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
 		$user_can_see_all = true;
 	}
 
 	/* Check if agents can see all tickets */
-	if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
+	if ( wpas_is_agent() && ! wpas_is_asadmin() && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
 		$user_can_see_all = true;
 	}
 
