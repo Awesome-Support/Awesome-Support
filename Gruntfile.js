@@ -296,7 +296,8 @@ module.exports = function (grunt) {
 	
 	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
-
+	
+	grunt.registerTask('ugly', ['uglify'] );
 
 	grunt.registerTask('release', ['composer:install --no-dev', 'build', 'compress']);
 	grunt.registerTask('release_patch', ['version::patch', 'release']);

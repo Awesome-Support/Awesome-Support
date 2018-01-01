@@ -999,7 +999,7 @@
 		if ( 'closed' === $status && ( 'post-new.php' == $pagenow || 'post.php' == $pagenow || 'edit.php' == $pagenow || ( ! is_admin() && 'index.php' === $pagenow ) ) ) {
 			$label = __( 'Closed', 'awesome-support' );
 			$color = wpas_get_option( "color_$status", '#dd3333' );
-			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+			$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
 			if ( 'edit.php' == $pagenow && array_key_exists( $post_status, $custom_status ) ) {
 				$tag .= '<br/>' . $custom_status[ $post_status ];
@@ -1014,7 +1014,7 @@
 			if ( ! array_key_exists( $post_status, $custom_status ) ) {
 				$label = __( 'Open', 'awesome-support' );
 				$color = wpas_get_option( "color_$status", '#169baa' );
-				$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+				$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 			} else {
 				$defaults = array(
 					'queued'     => '#1e73be',
@@ -1032,7 +1032,7 @@
 					}
 				}
 
-				$tag = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+				$tag = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 			}
 		}
 
@@ -1067,7 +1067,7 @@
 
 		$label = __( $term->name, 'awesome-support' );
 		$color = get_term_meta( $term->term_id, 'color', true );
-		$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
 		echo $tag;
 
