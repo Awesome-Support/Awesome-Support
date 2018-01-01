@@ -548,7 +548,7 @@ function wpas_can_user_see_all_tickets() {
 	global $current_user;
 	
 	/* If current user can see all tickets */
-	if ( current_user_can( 'view_all_tickets' ) && ! current_user_can( 'administrator' ) && true === (bool) get_user_option( 'wpas_view_all_tickets', (int) $current_user->ID )  ) {
+	if ( current_user_can( 'view_all_tickets' ) && ! wpas_is_asadmin() && true === (bool) get_user_option( 'wpas_view_all_tickets', (int) $current_user->ID )  ) {
 		$user_can_see_all = true;
 	}
 	

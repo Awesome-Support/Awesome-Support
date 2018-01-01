@@ -1573,8 +1573,8 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
 
 	// Maybe restrict the count to the current user only
 	if (
-		current_user_can( 'administrator' ) && false === (bool) wpas_get_option( 'admin_see_all' )
-		|| ! current_user_can( 'administrator' ) && current_user_can( 'edit_ticket' ) && false === (bool) wpas_get_option( 'agent_see_all' )
+		( wpas_is_asadmin() && false === (bool) wpas_get_option( 'admin_see_all' ) )
+		|| ( ! wpas_is_asadmin() && wpas_is_agent() && false === (bool) wpas_get_option( 'agent_see_all' ) )
 	) {
 
 		global $current_user;
