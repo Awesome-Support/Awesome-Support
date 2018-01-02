@@ -4,6 +4,10 @@ global $post;
 $status = get_post_meta( $post->ID, '_wpas_status', true );
 ?>
 
+<!-- Button to collapse replies -->
+<button type="button" name="wpas_collapse_replies_top" id="wpas_collapse_replies_top" class="button-primary wpas_btn_reply" value="collapse_replies"><?php _e( 'Toggle Replies', 'awesome-support' ); ?></button>
+
+<!-- Table of replies, notes and logs -->
 <table class="form-table wpas-table-replies">
 	<tbody>
 

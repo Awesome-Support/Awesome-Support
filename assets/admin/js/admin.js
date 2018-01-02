@@ -4,6 +4,44 @@
     $(function () {
 
         /**
+         * Function that will hide all replies except the last two on the page.
+         */		 
+		function hideReplies() {	
+			var rows = $('.wpas-ticket-reply');  // Get all the reply rows
+			var otherrows = $('.wpas-table-replies .wpas-table-row').not('.wpas-ticket-reply');  // Get all other rows
+
+			/* Hide Regular Reply Rows */
+			var rowCount = rows.length;  // Count of strictly the replies (not notes or log records)
+			if ( rowCount > 2 ) {
+				rows = rows.slice(0,rowCount-1);
+				rows.toggle();	
+				otherrows.toggle();
+			}
+			
+			/* Hide other rows but only if the existing replies is less than 2. If the number of replies was more than 2 rows would already be hidden above. */
+			if ( rowCount < 2 && otherrows.length > 0 ) {
+				otherrows.toggle();
+			}
+		}
+		
+		var btnToggleRepliesTop 	= $('#wpas_collapse_replies_top');  	// Get a handle to the TOGGLE REPLIES button at the top of the reply list
+		var btnToggleRepliesBottom 	= $('#wpas_collapse_replies_bottom');  	// Get a handle to the TOGGLE REPLIES button at the bottom of the reply list
+		btnToggleRepliesTop.click( function() { hideReplies(); } ) ;  		// When its clicked, call our hideReplies function above.	
+		btnToggleRepliesBottom.click( function() { hideReplies(); } ) ;  	// When its clicked, call our hideReplies function above.
+
+        /**
+         * Function that will hide the TOGGLE REPLES button if the number of reply rows is 3 or less.
+         */		 
+		function hideToggleReplyButtons() {	
+			var rows = $('.wpas-table-replies .wpas-table-row');  // Get all the reply rows
+			if ( rows.length <= 3 ) {
+				$('#wpas_collapse_replies_top').hide();
+				$('#wpas_collapse_replies_bottom').hide();
+			}
+		}
+		hideToggleReplyButtons();
+	
+        /**
          * Automatically Link URLs, Email Addresses, Phone Numbers, etc.
          * https://github.com/gregjacobs/Autolinker.js
          */
