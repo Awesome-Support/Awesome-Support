@@ -481,6 +481,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/functions-admin-actions.php' );
 				require( WPAS_PATH . 'includes/admin/functions-misc.php' );
 				require( WPAS_PATH . 'includes/admin/functions-editor.php' );
+				require( WPAS_PATH . 'includes/admin/functions-admin-ticket-detail-toolbars.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
