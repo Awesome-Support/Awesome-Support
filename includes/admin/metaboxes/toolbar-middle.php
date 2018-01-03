@@ -11,15 +11,8 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
  * Generally, just call the wpas_add_ticket_detail_toolbar_item() 
  * function at the bottom of this file to add a new toolbar item.
  */
-do_action( 'wpas_backend_middle_toolbar_before', $post ); 
+do_action( 'wpas_ticket_detail_toolbar01_before', $post ); 
 ?>
-
-<!-- Link to collapse replies -->
-<?php /*
-<span data-hint="<?php esc_html_e( 'Toggle Replies (Hide All Replies Except The Last 3)', 'awesome-support' ); ?>" class="wpas-replies-middle-toolbar-item hint-bottom hint-anim"> 
-	<img name="wpas_collapse_replies_top" id="wpas-collapse-replies-top" class="link-primary wpas-link-reply wpas-middle-toolbar-links" value="collapse_replies" src="<?php echo WPAS_URL; ?>assets/admin/images/icons/toggle-replies.png"></img> 
-</span>
-*/ ?>
 
 <!-- Link to collapse replies -->
 <?php wpas_add_ticket_detail_toolbar_item( 'img', 'wpas-collapse-replies-top', __( 'Toggle Replies (Hide All Replies Except The Last 3)', 'awesome-support' ), WPAS_URL . "assets/admin/images/icons/toggle-replies.png" ); ?>
@@ -30,7 +23,7 @@ do_action( 'wpas_backend_middle_toolbar_before', $post );
  * Generally, just call the wpas_add_ticket_detail_toolbar_item() 
  * function at the bottom of this file to add a new toolbar item. 
  */
-do_action( 'wpas_backend_middle_toolbar_after', $post ); 
+do_action( 'wpas_ticket_detail_toolbar01_after', $post ); 
 ?>
 
 <?php

@@ -32,15 +32,15 @@ function get_ticket_details_action_link( $post ) {
 	return $action ;
 }
 
-add_action( 'wpas_backend_middle_toolbar_before', 'wpas_add_close_ticket_item_to_middle_toolbar', 10, 1 );
+add_action( 'wpas_ticket_detail_toolbar01_before', 'wpas_add_close_ticket_item_to_ticket_detail_toolbar', 10, 1 );
 /**
  * Add a CLOSE TICKET button to the ticket detail toolbar
  * 
- * Action Hook: wpas_backend_middle_toolbar_before
+ * Action Hook: wpas_ticket_detail_toolbar01_before
  *
  * @params post $post the current post/ticket being worked on
  */
-function wpas_add_close_ticket_item_to_middle_toolbar( $post ) {
+function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $post ) {
 	
 	/* Current status of ticket */
 	$ticket_status = get_post_meta( get_the_ID(), '_wpas_status', true );
