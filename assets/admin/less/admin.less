@@ -226,9 +226,19 @@ Ticket Replies
 	}
 }
 
-.wpas-middle-toolbar-links,
+.wpas-middle-toolbar-links {
+	/* Style the images for the toolbar images and links in the ticket detail screen in admin */
+	cursor: pointer ;
+	text-decoration: none;
+}
+
+.wpas-replies-middle-toolbar-item:hover {
+	/* Show some sort of an effect when the user hovers over a toolbar item */
+	background-color: #0074A2;
+}
+
 .wpas-replies-links-bottom {
-	/* Style the link and images for the TOGGLE REPLIES links in a ticket in admin */
+	/* Style the links at the bottom of the replies in the ticket detail screen in admin (eg: TOGGLE REPLIES)*/
 	cursor: pointer ;
 	text-decoration: underline;
 	color: #0074A2;
