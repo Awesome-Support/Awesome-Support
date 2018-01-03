@@ -22,6 +22,10 @@
 			if ( rowCount < 2 && otherrows.length > 0 ) {
 				otherrows.toggle();
 			}
+			
+			/* Go to top of table of replies */
+			var topTarget = $('.wpas-table-replies');
+			$('html, body').animate({ scrollTop: topTarget.offset().top }, 500); 			
 		}
 		
 		var lnkToggleRepliesTop 	= $('#wpas-collapse-replies-top');  	// Get a handle to the TOGGLE REPLIES link at the top of the reply list
