@@ -4,12 +4,7 @@ global $post;
 $status = get_post_meta( $post->ID, '_wpas_status', true );
 ?>
 
-<?php do_action( 'wpas_backend_replies_top_before', $post ); ?>
-
-<!-- Link to collapse replies -->
-<span name="wpas_collapse_replies_top" id="wpas-collapse-replies-top" class="link-primary wpas-link-reply wpas-replies-links-top" value="collapse_replies"><?php _e( 'Toggle Replies', 'awesome-support' ); ?></span>
-
-<?php do_action( 'wpas_backend_replies_top_before', $post ); ?>
+<?php do_action( 'wpas_backend_replies_top', $post ); ?>
 
 <!-- Table of replies, notes and logs -->
 <table class="form-table wpas-table-replies">

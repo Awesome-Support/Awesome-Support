@@ -33,15 +33,22 @@ function wpas_metaboxes() {
 	 */
 	/* Issue details, only available for existing tickets */
 	if( isset( $_GET['post'] ) ) {
+		$status = get_post_meta( intval( $_GET['post'] ), '_wpas_status', true );
+		
+		if ( '' !== $status ) {		
+			/* Ticket toolbar */
+			add_meta_box( 'wpas-mb-toolbar', __( 'Ticket Toolbar', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'toolbar-middle' ) );
+		}
+		
 		add_meta_box( 'wpas-mb-message', __( 'Ticket', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'message' ) );
 
-		$status = get_post_meta( intval( $_GET['post'] ), '_wpas_status', true );
-
 		if ( '' !== $status ) {
+			
+			/* Ticket Replies */
 			add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'replies' ) );
 		}
 	}
-
+	
 	/* Ticket details */
 	add_meta_box( 'wpas-mb-details', __( 'Ticket Details', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
 	
