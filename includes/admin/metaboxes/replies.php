@@ -4,8 +4,12 @@ global $post;
 $status = get_post_meta( $post->ID, '_wpas_status', true );
 ?>
 
-<!-- Button to collapse replies -->
-<button type="button" name="wpas_collapse_replies_top" id="wpas_collapse_replies_top" class="button-primary wpas_btn_reply" value="collapse_replies"><?php _e( 'Toggle Replies', 'awesome-support' ); ?></button>
+<?php do_action( 'wpas_backend_replies_top_before', $post ); ?>
+
+<!-- Link to collapse replies -->
+<span name="wpas_collapse_replies_top" id="wpas-collapse-replies-top" class="link-primary wpas-link-reply wpas-replies-links-top" value="collapse_replies"><?php _e( 'Toggle Replies', 'awesome-support' ); ?></span>
+
+<?php do_action( 'wpas_backend_replies_top_before', $post ); ?>
 
 <!-- Table of replies, notes and logs -->
 <table class="form-table wpas-table-replies">
@@ -141,6 +145,16 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 		endif; ?>
 	</tbody>
 </table>
+
+<hr />
+<div>
+	<?php do_action( 'wpas_backend_replies_bottom_before', $post ); ?>
+	
+	<!-- Link to collapse replies -->
+	<span name="wpas_collapse_replies_bottom" id="wpas-collapse-replies-bottom" class="link-primary wpas-link-reply wpas-replies-links-bottom" value="collapse_replies"><?php _e( 'Toggle Replies', 'awesome-support' ); ?></span>	
+	
+	<?php do_action( 'wpas_backend_replies_bottom_after', $post ); ?>
+</div>
 
 <?php
 if( 'open' == $status ):

@@ -24,22 +24,22 @@
 			}
 		}
 		
-		var btnToggleRepliesTop 	= $('#wpas_collapse_replies_top');  	// Get a handle to the TOGGLE REPLIES button at the top of the reply list
-		var btnToggleRepliesBottom 	= $('#wpas_collapse_replies_bottom');  	// Get a handle to the TOGGLE REPLIES button at the bottom of the reply list
-		btnToggleRepliesTop.click( function() { hideReplies(); } ) ;  		// When its clicked, call our hideReplies function above.	
-		btnToggleRepliesBottom.click( function() { hideReplies(); } ) ;  	// When its clicked, call our hideReplies function above.
+		var lnkToggleRepliesTop 	= $('#wpas-collapse-replies-top');  	// Get a handle to the TOGGLE REPLIES link at the top of the reply list
+		var lnkToggleRepliesBottom 	= $('#wpas-collapse-replies-bottom');  	// Get a handle to the TOGGLE REPLIES link at the bottom of the reply list
+		lnkToggleRepliesTop.click( function() { hideReplies(); } ) ;  		// When its clicked, call our hideReplies function above.	
+		lnkToggleRepliesBottom.click( function() { hideReplies(); } ) ;  	// When its clicked, call our hideReplies function above.
 
         /**
-         * Function that will hide the TOGGLE REPLES button if the number of reply rows is 3 or less.
+         * Function that will hide the TOGGLE REPLES links/buttons if the number of reply rows is 3 or less.
          */		 
-		function hideToggleReplyButtons() {	
+		function hideToggleReplyLinks() {	
 			var rows = $('.wpas-table-replies .wpas-table-row');  // Get all the reply rows
 			if ( rows.length <= 3 ) {
-				$('#wpas_collapse_replies_top').hide();
-				$('#wpas_collapse_replies_bottom').hide();
+				$('#wpas-collapse-replies-top').hide();
+				$('#wpas-collapse-replies-bottom').hide();
 			}
 		}
-		hideToggleReplyButtons();
+		hideToggleReplyLinks();
 	
         /**
          * Automatically Link URLs, Email Addresses, Phone Numbers, etc.

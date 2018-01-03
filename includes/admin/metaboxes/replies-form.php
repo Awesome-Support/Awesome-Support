@@ -12,11 +12,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 ?>
-<hr />
-<div>
-	<!-- Button to collapse replies -->
-	<button type="button" name="wpas_collapse_replies_bottom" id="wpas_collapse_replies_bottom" class="button-primary wpas_btn_reply" value="collapse_replies"><?php _e( 'Toggle Replies', 'awesome-support' ); ?></button>
-</div>
 
 <h2>
 	<?php
