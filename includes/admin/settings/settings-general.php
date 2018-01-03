@@ -17,7 +17,7 @@ function wpas_core_settings_general( $def ) {
 			'name'    => __( 'General', 'awesome-support' ),
 			'options' => array(
 				array(
-					'name' => __( 'Misc', 'awesome-support' ),
+					'name' => __( 'General', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -144,7 +144,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Show Third Party #1 in Ticket List', 'awesome-support' ),
 					'id'      => 'show_third_party_01_in_ticket_list',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show Third Party #1 Data in the Ticket List?', 'awesome-support' ),
+					'desc'    => __( 'Show Third Party #1 data in the ticket list?', 'awesome-support' ),
 					'default' => false
 				),
 				
@@ -152,7 +152,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Show Third Party #2 in Ticket List', 'awesome-support' ),
 					'id'      => 'show_third_party_02_in_ticket_list',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show Third Party #2 Data in the Ticket List?', 'awesome-support' ),
+					'desc'    => __( 'Show Third Party #2 data in the ticket list?', 'awesome-support' ),
 					'default' => false
 				),				
 
@@ -199,7 +199,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Show Channel Field', 'awesome-support' ),
 					'id'      => 'channel_show_in_ticket_list',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
+					'desc'    => __( 'Show Channel field in the ticket list? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
 					'default' => false
 				),
 				
@@ -226,6 +226,19 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'checkbox',
 					'default' => true
 				),
+				
+				array(
+					'name' => __( 'Toolbars', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Control whether certain toolbars are visible', 'awesome-support' ),					
+				),
+				array(
+					'name'    => __( 'Show Ticket Details Toolbar', 'awesome-support' ),
+					'id'      => 'ticket_detail_show_toolbar',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Show the toolbar on the ticket detail screen when an agent is viewing the ticket?', 'awesome-support' ),
+				),				
 				
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),

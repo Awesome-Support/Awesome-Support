@@ -37,7 +37,9 @@ function wpas_metaboxes() {
 		
 		if ( '' !== $status ) {		
 			/* Ticket toolbar */
-			add_meta_box( 'wpas-mb-toolbar', __( 'Ticket Toolbar', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'toolbar-middle' ) );
+			if ( true == boolval( wpas_get_option( 'ticket_detail_show_toolbar', true ) ) ) {
+				add_meta_box( 'wpas-mb-toolbar', __( 'Ticket Toolbar', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'toolbar-middle' ) );
+			}
 		}
 		
 		add_meta_box( 'wpas-mb-message', __( 'Ticket', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'message' ) );
