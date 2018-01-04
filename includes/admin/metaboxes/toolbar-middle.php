@@ -14,8 +14,12 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 do_action( 'wpas_ticket_detail_toolbar01_before', $post ); 
 ?>
 
-<!-- Link to collapse replies -->
+<!-- Button to collapse replies -->
 <?php wpas_add_ticket_detail_toolbar_item( 'img', 'wpas-collapse-replies-top', __( 'Toggle Replies (Hide All Replies Except The Last 3)', 'awesome-support' ), WPAS_URL . "assets/admin/images/icons/toggle-replies.png" ); ?>
+
+<!-- Button to toggle ticket slug -->
+<?php wpas_add_ticket_detail_toolbar_item( 'img', 'wpas-toggle-ticket-slug', __( 'Show/Hide The Ticket Slug)', 'awesome-support' ), WPAS_URL . "assets/admin/images/icons/toggle-ticket-slug.png" ); ?>
+
 
 <?php 
 /**
