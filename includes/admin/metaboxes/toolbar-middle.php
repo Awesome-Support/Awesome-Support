@@ -41,13 +41,17 @@ do_action( 'wpas_ticket_detail_toolbar01_after', $post );
  * @since 4.4.0
  *
  * @param 	string $html_element_type   img or a (anchor)
- *          string $item_css_id 		The CSS ID of the toolbar item
+ *          string $item_css_id 		The CSS ID of the toolbar item 
+ *                                      Any "-" in the name will be converted to underscores to create a class name; the "-" will remain for the CSS ID;
+ *                                      For example: my-css-id will result in a markup with the css id = 'my-css-id' and the class name = 'my_css_id'.
  *		  	string $tool_tip_text 		The tool tip that will be displayed for the new toolbar item
- *			string $image_url			the URL for the toolbar item image. 
+ *			string $image_url			The URL for the toolbar item image.
+ *			string $target_url			(optional) The URL target if creating an 'a' (anchor) element
+ *			string $attributes			(optional) Any other attribute that needs to be added to the markup
  *
  * @return 	void (basically nothing is returned)
  */
-function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, $tool_tip_text, $image_url, $target_url='' ) {
+function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, $tool_tip_text, $image_url, $target_url='', $attributes = '' ) {
 	$name = str_replace( '-', '_', $item_css_id );
 ?>
 	<span data-hint="<?php echo $tool_tip_text ?>" class="wpas-replies-middle-toolbar-item hint-bottom hint-anim"> 
@@ -59,12 +63,18 @@ function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, 
 			$echoout = $echoout . ' ' . 'class="link-primary wpas-link-reply wpas-middle-toolbar-links ' . $name . '"' ; // css class names
 			$echoout = $echoout . ' ' . 'value = ' . '"' . $name . '"' ;		// value attribute
 			
+			
+			if ( ! empty( $attributes ) ) {
+				// other attributes as passed in.
+				$echoout = $echoout . ' ' . $attributes; 
+			}
+			
 			if ( 'img' === $html_element_type ) {
 				// img elements need the src attribute
 				$echoout = $echoout . ' ' . 'src = ' . '"' . $image_url . '"' ;
 			}
 			
-			if ( 'a' === $html_element_type ) {
+			if ( 'a' === $html_element_type && ! empty( $target_url ) ) {
 				// add the href element
 				$echoout = $echoout . ' ' . 'href = ' . '"' . $target_url . '"' ;
 			}
