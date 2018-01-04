@@ -464,6 +464,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/functions-notices.php' );
 			require( WPAS_PATH . 'includes/admin/functions-ajax.php' );
 			require( WPAS_PATH . 'includes/admin/functions-log-viewer.php' );
+			require( WPAS_PATH . 'includes/admin/functions-admin-ticket-detail-toolbars.php' );
 			
 			if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
 				require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
@@ -481,7 +482,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/functions-admin-actions.php' );
 				require( WPAS_PATH . 'includes/admin/functions-misc.php' );
 				require( WPAS_PATH . 'includes/admin/functions-editor.php' );
-				require( WPAS_PATH . 'includes/admin/functions-admin-ticket-detail-toolbars.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
