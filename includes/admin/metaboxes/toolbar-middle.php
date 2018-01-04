@@ -48,47 +48,52 @@ do_action( 'wpas_ticket_detail_toolbar01_after', $post );
  *			string $image_url			The URL for the toolbar item image.
  *			string $target_url			(optional) The URL target if creating an 'a' (anchor) element
  *			string $attributes			(optional) Any other attribute that needs to be added to the markup
+ * 			bool   $return_markup		If set to true, it will return the button markup instead of echoing it to the screen.
  *
  * @return 	void (basically nothing is returned)
  */
-function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, $tool_tip_text, $image_url, $target_url='', $attributes = '' ) {
-	$name = str_replace( '-', '_', $item_css_id );
-?>
-	<span data-hint="<?php echo $tool_tip_text ?>" class="wpas-replies-middle-toolbar-item hint-bottom hint-anim"> 
-		<?php
-			$echoout = '';
-			$echoout = $echoout . ' ' . '<' . $html_element_type . ' ' ;  		// opening tag such as <a> or <img>
-			$echoout = $echoout . ' ' . 'name = ' . '"' . $name . '"' ; 		// name attribute
-			$echoout = $echoout . ' ' . 'id = ' . '"' . $item_css_id . '"' ;	// css ID
-			$echoout = $echoout . ' ' . 'class="link-primary wpas-link-reply wpas-middle-toolbar-links ' . $name . '"' ; // css class names
-			$echoout = $echoout . ' ' . 'value = ' . '"' . $name . '"' ;		// value attribute
-			
-			
-			if ( ! empty( $attributes ) ) {
-				// other attributes as passed in.
-				$echoout = $echoout . ' ' . $attributes; 
-			}
-			
-			if ( 'img' === $html_element_type ) {
-				// img elements need the src attribute
-				$echoout = $echoout . ' ' . 'src = ' . '"' . $image_url . '"' ;
-			}
-			
-			if ( 'a' === $html_element_type && ! empty( $target_url ) ) {
-				// add the href element
-				$echoout = $echoout . ' ' . 'href = ' . '"' . $target_url . '"' ;
-			}
+function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, $tool_tip_text, $image_url, $target_url='', $attributes = '', $return_markup = false ) {
+	
+	$name = str_replace( '-', '_', $item_css_id );  // convert the passed ids into text to be used for classnames.  For convention we're using classnames with underscores (_) and ids with dashes (-)
 
-			$echoout = $echoout. '>'; // closing bracket for the tag
-			
-			if ( 'a' === $html_element_type ) {
-				// add the img element if we're using an "a" tag
-				$echoout = $echoout . ' ' . '<img src = ' . $image_url . '>';
-			}
-			
-			$echoout = $echoout. ' ' . '</' . $html_element_type . '>'; // closing tag such as </a> or </img>
-			
-			echo $echoout ;
-		?>
-	</span>
-<?php }
+	$echoout = '';
+	$echoout = $echoout . '<span data-hint=' . '"' . $tool_tip_text . '"' . 'class="wpas-replies-middle-toolbar-item hint-bottom hint-anim">';
+	$echoout = $echoout . ' ' . '<' . $html_element_type . ' ' ;  		// opening tag such as <a> or <img>
+	$echoout = $echoout . ' ' . 'name = ' . '"' . $name . '"' ; 		// name attribute
+	$echoout = $echoout . ' ' . 'id = ' . '"' . $item_css_id . '"' ;	// css ID
+	$echoout = $echoout . ' ' . 'class="link-primary wpas-link-reply wpas-middle-toolbar-links ' . $name . '"' ; // css class names
+	$echoout = $echoout . ' ' . 'value = ' . '"' . $name . '"' ;		// value attribute
+	
+	
+	if ( ! empty( $attributes ) ) {
+		// other attributes as passed in.
+		$echoout = $echoout . ' ' . $attributes; 
+	}
+	
+	if ( 'img' === $html_element_type ) {
+		// img elements need the src attribute
+		$echoout = $echoout . ' ' . 'src = ' . '"' . $image_url . '"' ;
+	}
+	
+	if ( 'a' === $html_element_type && ! empty( $target_url ) ) {
+		// add the href element
+		$echoout = $echoout . ' ' . 'href = ' . '"' . $target_url . '"' ;
+	}
+
+	$echoout = $echoout. '>'; // closing bracket for the tag
+	
+	if ( 'a' === $html_element_type ) {
+		// add the img element if we're using an "a" tag
+		$echoout = $echoout . ' ' . '<img src = ' . $image_url . '>';
+	}
+	
+	$echoout = $echoout. ' ' . '</' . $html_element_type . '>'; // closing tag such as </a> or </img>
+	
+	$echoout = $echoout. ' ' . '</span>' ; // closing tag of encompassing span
+	
+	if ( ! $return_markup ) {
+		echo $echoout ;
+	} else {
+		return $echoout;
+	}
+}
