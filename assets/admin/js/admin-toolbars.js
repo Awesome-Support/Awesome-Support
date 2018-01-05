@@ -57,6 +57,9 @@
 /***********************************************************************
 * All functions below this are GLOBAL in scope so that other WPAS 
 * Javascript modules can call them!
+*
+* @TODO: At some point they should all be put into a class/object so that
+* they're not all in the global scope!!!
 ***********************************************************************/
 
 /**
@@ -82,20 +85,34 @@ wpas_toggle_ToolBar_Message_Area(); // make sure the area is initially hidden.
  *
  * @params string 	imessage 	The message to show in the bar
  * @params boolean	successflag Whether to decorate the text with a green or red indicator
+ * @params integer  ttl			The amount of time the message will be displayed before automatically disppearing. Must be greater than zero.
  * 
  */
-function wpas_add_toolbar_msg(imessage = '', successflag = true) {
+function wpas_add_toolbar_msg(imessage = '', successflag = true, ttl = 0 ) {
 	
 	(function($){
 		
+		var dismissibleText = '<button type="button" class="notice-dismiss" id="wpas-toolbar-dismissible"><span class="screen-reader-text">X</span></button>';  // Allows you to show the "X" that will dismiss the message shown.
 		var msg = $('#wpas-tb01-msg-area .wpas_btn_msg')  // Get a jquery object handle to the message text inside the toolbar message area - should only be one!
-		$(msg).find('p').html(imessage); // find the empty paragraph area inside of it and add the text message to that paragraph
+		$(msg).find('p').html(dismissibleText + imessage); // find the paragraph area inside of it and add the text message to that paragraph
 		$('#wpas-tb01-msg-area').show(); // show the message area
 		
 		if( successflag ) {
 				msg.addClass('updated').removeClass('error');
 		} else {
 				msg.addClass('error').removeClass('updated');
+		}
+
+		/* If the dismissible text is clicked hide the entire message area */
+		$('#wpas-toolbar-dismissible').click(function() {
+                $('#wpas-tb01-msg-area').hide();
+        });
+		
+		/* Automatically hide the message after a few seconds seconds */
+		if ( ttl > 0 ) {
+			setTimeout(function() {
+			  $("#wpas-tb01-msg-area").hide();
+			}, 1000 * ttl);
 		}
 		
 	})(jQuery);		
@@ -132,7 +149,7 @@ function wpas_remove_toolbar_loading_spinner() {
 	(function($){	
                 
 		var loader = $('.wpas_toolbar_loading_spinner');  // Find the spinner class in the toolbar area...
-		loader.remove();
+		loader.remove();  // Remove it.
 		
 	})(jQuery);					
 }

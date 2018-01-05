@@ -32,8 +32,7 @@ do_action( 'wpas_ticket_detail_toolbar01_after', $post );
 <!-- Toolbar Message area -->
 <div class="wpas_tb01_msg_area" id="wpas-tb01-msg-area">
 	<div class="wpas_btn_msg">
-		<p></p>
-		<button type="button" class="notice-dismiss"><span class="screen-reader-text"> <?php echo __( 'Dismiss this notice.', 'awesome-support' ) ?> </span></button>
+		<p></p>		
 	</div>
 </div>
 
