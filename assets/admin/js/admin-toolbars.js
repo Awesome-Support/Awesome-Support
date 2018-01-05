@@ -5,6 +5,9 @@
 
         /**
          * Function that will hide all replies except the last two on the page.
+		 *
+		 * This is called by a click event from a button on the ticket details page toolbar
+		 *
          */		 
 		function hideReplies() {	
 			var rows = $('.wpas-ticket-reply');  // Get all the reply rows
@@ -44,7 +47,57 @@
 			}
 		}
 		hideToggleReplyLinks();
+		
 
+		 
     });
 
 }(jQuery));
+
+/***********************************************************************
+* All functions below this are GLOBAL in scope so that other WPAS 
+* Javascript modules can call them!
+***********************************************************************/
+
+/**
+ * Function that will hide the success and message areas on the toolbar
+ *
+ * Visibility: GLOBAL
+ *
+ */
+function wpas_toggle_ToolBar_Message_Area() {
+	(function($){
+		
+		var msgarea = $('#wpas-tb01-msg-area');  // Get a jquery object handle to all the toolbar message areas - should only be one though.
+		msgarea.toggle();
+		
+	})(jQuery);		
+}
+wpas_toggle_ToolBar_Message_Area(); // make sure the area is initially hidden.
+
+/**
+ * Function that will write a message to the message area of the toolbar
+ *
+ * Visibility: GLOBAL
+ *
+ * @params string 	imessage 	The message to show in the bar
+ * @params boolean	successflag Whether to decorate the text with a green or red indicator
+ * 
+ */
+function wpas_add_toolbar_msg(imessage = '', successflag = true) {
+	
+	(function($){
+		
+		var msg = $('#wpas-tb01-msg-area .wpas_btn_msg')  // Get a jquery object handle to the message text inside the toolbar message area - should only be one!
+		$(msg).find('p').html(imessage); // find the empty paragraph area inside of it and add the text message to that paragraph
+		$('#wpas-tb01-msg-area').show(); // show the message area
+		
+		if( successflag ) {
+				msg.addClass('updated').removeClass('error');
+		} else {
+				msg.addClass('error').removeClass('updated');
+		}
+		
+	})(jQuery);		
+	
+}		 
