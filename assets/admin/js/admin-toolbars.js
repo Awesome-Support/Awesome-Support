@@ -100,4 +100,39 @@ function wpas_add_toolbar_msg(imessage = '', successflag = true) {
 		
 	})(jQuery);		
 	
-}		 
+}
+
+/**
+ * Function that will enable a "loading" spinner.  
+ * It actually just disables/enables a class where 
+ * CSS does the actual hard work.
+ *
+ * Visibility: GLOBAL
+ *
+  */
+function wpas_add_toolbar_loading_spinner() {
+	(function($){	
+                
+		var loader = $('<div class="spinner wpas_toolbar_loading_spinner"></div>');  // create the jQuery div object with the spinner class.
+		var msgarea = $('#wpas-tb01-msg-area');  // Get a jquery object handle to all the toolbar message areas - should only be one though.		
+		loader.css({visibility: 'visible'}).insertBefore(msgarea);
+		
+	})(jQuery);					
+}
+
+/**
+ * Function that will disable the "loading" spinner.  
+ * It actually just disables a class where 
+ * CSS does the actual hard work.
+ *
+ * Visibility: GLOBAL
+ *
+  */
+function wpas_remove_toolbar_loading_spinner() {
+	(function($){	
+                
+		var loader = $('.wpas_toolbar_loading_spinner');  // Find the spinner class in the toolbar area...
+		loader.remove();
+		
+	})(jQuery);					
+}
