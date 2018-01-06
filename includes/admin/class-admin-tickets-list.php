@@ -517,6 +517,8 @@ class WPAS_Tickets_List {
 							$old_color = wpas_get_option( 'color_old' );
 							array_push( $tags, "<span class='wpas-label' style='background-color:$old_color;'>" . __( 'Old', 'awesome-support' ) . "</span>" );
 						}
+						
+						$tags = apply_filters( 'wpas_ticket_listing_activity_tags', $tags, $post_id );
 
 						if ( ! empty( $tags ) ) {
 							echo '<br>' . implode( ' ', $tags );
@@ -1023,16 +1025,25 @@ SQL;
 
 
 		/* ACTIVITY */
-
-		$this_sort        = isset( $_GET[ 'activity' ] ) ? filter_input( INPUT_GET, 'activity', FILTER_SANITIZE_STRING ) : '';
-		$all_selected     = ( 'all' === $this_sort ) ? 'selected="selected"' : '';
-		$waiting_selected = ( 'awaiting_support_reply' === $this_sort ) ? 'selected="selected"' : '';
-		$old_selected     = ( 'old' === $this_sort ) ? 'selected="selected"' : '';
+		
+		
+		$selected_activity        = isset( $_GET[ 'activity' ] ) ? filter_input( INPUT_GET, 'activity', FILTER_SANITIZE_STRING ) : '';
+		
+		$activity_options = apply_filters( 'wpas_ticket_list_activity_options', array(
+			'all' =>					__( 'All Activity', 'awesome-support' ),
+			'awaiting_support_reply' => __( 'Awaiting Support Reply', 'awesome-support' ),
+			'old' =>					__( 'Old', 'awesome-support' ) . " (Open > " . wpas_get_option( 'old_ticket' ) . " Days)"
+			
+		) );
+		
 
 		$dropdown = '<select id="activity" name="activity">';
-		$dropdown .= "<option value='all' $all_selected>" . __( 'All Activity', 'awesome-support' ) . "</option>";
-		$dropdown .= "<option value='awaiting_support_reply' $waiting_selected>" . __( 'Awaiting Support Reply', 'awesome-support' ) . "</option>";
-		$dropdown .= "<option value='old' $old_selected>" . __( 'Old', 'awesome-support' ) . " (Open > " . wpas_get_option( 'old_ticket' ) . " Days)</option>";
+		
+		foreach ( $activity_options as $a_value => $a_name ) {
+			$selected = $selected_activity === $a_value ? ' selected="selected"' : '';
+			$dropdown .= "<option value=\"{$a_value}\"{$selected}>{$a_name}</option>";
+		}
+		
 		$dropdown .= '</select>';
 
 		echo $dropdown;
