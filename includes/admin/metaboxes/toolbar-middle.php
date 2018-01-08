@@ -18,7 +18,7 @@ do_action( 'wpas_ticket_detail_toolbar01_before', $post );
 <?php echo wpas_add_ticket_detail_toolbar_item( 'img', 'wpas-collapse-replies-top', __( 'Toggle Replies (Hide All Replies Except The Last 3)', 'awesome-support' ), WPAS_URL . "assets/admin/images/icons/toggle-replies.png" ); ?>
 
 <!-- Button to toggle ticket slug -->
-<?php echo wpas_add_ticket_detail_toolbar_item( 'img', 'wpas-toggle-ticket-slug', __( 'Show/Hide The Ticket Slug)', 'awesome-support' ), WPAS_URL . "assets/admin/images/icons/toggle-ticket-slug.png" ); ?>
+<?php echo wpas_add_ticket_detail_toolbar_item( 'img', 'wpas-toggle-ticket-slug', __( 'Show/Hide The Ticket Slug', 'awesome-support' ), WPAS_URL . "assets/admin/images/icons/toggle-ticket-slug.png" ); ?>
 
 <?php 
 /**
