@@ -136,6 +136,7 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-optin-script', WPAS_URL . 'assets/admin/js/admin-optin.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
+	wp_register_script( 'wpas-admin-toolbars-script', WPAS_URL . 'assets/admin/js/admin-toolbars.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-reply', WPAS_URL . 'assets/admin/js/admin-reply.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-autolinker', WPAS_URL . 'assets/public/vendor/Autolinker/Autolinker.min.js', null, '0.19.0', true );
@@ -289,6 +290,7 @@ function wpas_enqueue_assets_back_end() {
 		wp_enqueue_script( 'wpas-datepicker' );
 
 		wp_enqueue_script( 'wpas-admin-script' );
+		wp_enqueue_script( 'wpas-admin-toolbars-script' ) ;
 		wp_enqueue_script( 'wpas-admin-tabletojson' );
 		wp_enqueue_script( 'wpas-users' );
 		wp_enqueue_script( 'wpas-admin-helpers_functions' );

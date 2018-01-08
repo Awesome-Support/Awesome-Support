@@ -25,6 +25,7 @@ if ( ! defined( 'WPINC' ) ) {
 	 */
 	echo apply_filters( 'wpas_write_reply_title_admin', sprintf( esc_html_x( 'Write a reply to %s', 'Title of the reply editor in the back-end', 'awesome-support' ), '&laquo;' . esc_attr( get_the_title( $post->ID ) ) . '&raquo;' ), $post ); ?>
 </h2>
+
 <div>
 	<?php
 	// Load the WordPress WYSIWYG with minimal options
