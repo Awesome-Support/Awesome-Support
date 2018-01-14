@@ -317,6 +317,12 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	If ( ! $update ) {
 		wpas_set_ticket_slug($ticket_id);
 	}
+	
+	/* Update the channel on the ticket so that hooks can access it - but only if the $update is false which means we've got a new ticket */
+	/* It will need to be re-added to the ticket at the bottom of this routine because some hooks overwrite it with a blank. */
+	If (! empty( $channel_term ) && ( ! $update ) ) {
+		wpas_set_ticket_channel( $ticket_id , $channel_term, false );
+	}		
 
 	/* Set the ticket as open. */
 	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
@@ -343,7 +349,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
 	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
-	/* Need to update it here because some of the action hooks fired above will overwrite the term.			  */
+	/* Need to update it here again because some of the action hooks fired above will overwrite the term.			  */
 	If (! empty( $channel_term ) && ( ! $update ) ) {
 		wpas_set_ticket_channel( $ticket_id , $channel_term, false );
 	}	
