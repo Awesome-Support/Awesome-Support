@@ -232,9 +232,22 @@ Ticket Replies
 	text-decoration: none;
 }
 
-.wpas-replies-middle-toolbar-item:hover {
+.wpas-middle-toolbar-links img,
+.wpas-middle-toolbar-links a,
+.wpas-replies-middle-toolbar-item img {
+	/* Put a round border around the toolbar images in he ticket detail screen admin */
+	border-radius: 50%;
+	border-color: #C8CDD2 ;
+	border-width: 1px;
+	border-style:solid;
+	padding: 10px;
+}
+
+.wpas-middle-toolbar-links img:hover,
+.wpas-middle-toolbar-links a:hover,
+.wpas-replies-middle-toolbar-item img:hover {
 	/* Show some sort of an effect when the user hovers over a toolbar item */
-	background-color: #0074A2;
+	border-color: #0073AA ;	
 }
 
 .wpas-replies-links-bottom {
