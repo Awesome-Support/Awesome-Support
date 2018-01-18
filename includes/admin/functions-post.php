@@ -312,6 +312,8 @@ function wpas_save_ticket( $post_id ) {
 			), admin_url( 'post.php' ) ) );
 		}
 	}
+	
+	do_action( 'wpas_tikcet_after_saved', $post_id );
 
 }
 
