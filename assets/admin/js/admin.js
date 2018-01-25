@@ -197,6 +197,20 @@
                     $(this).select2();
                 }
             });
+            
+            /* Reset tinymce editors in tab so they size properly */
+            if( typeof tinymce !== 'undefined') {
+                $('#' + id + ' .wp-editor-wrap').each(function () {
+                    
+                    var editor_ele_id = $(this).attr('id');
+                    var editor_id = editor_ele_id.substring( 3, editor_ele_id.length - 5 ) ;
+                    
+                    if (  $(this).hasClass( 'tmce-active' ) && tinyMCEPreInit.mceInit.hasOwnProperty(editor_id) ) {
+                        tinyMCE.get( editor_id ).destroy();
+                        tinymce.init( tinyMCEPreInit.mceInit[editor_id] )
+                    }
+                });
+            }
         }
 
         // making tabs smart responsive
