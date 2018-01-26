@@ -206,8 +206,10 @@
                     var editor_id = editor_ele_id.substring( 3, editor_ele_id.length - 5 ) ;
                     
                     if (  $(this).hasClass( 'tmce-active' ) && tinyMCEPreInit.mceInit.hasOwnProperty(editor_id) ) {
-                        tinyMCE.get( editor_id ).destroy();
-                        tinymce.init( tinyMCEPreInit.mceInit[editor_id] )
+                        if( null !== tinyMCE.get( editor_id ) ) {
+                            tinyMCE.get( editor_id ).destroy();
+                            tinymce.init( tinyMCEPreInit.mceInit[editor_id] )
+                        }
                     }
                 });
             }
