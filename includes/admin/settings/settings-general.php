@@ -28,6 +28,15 @@ function wpas_core_settings_general( $def ) {
 					'options' => isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && isset( $_GET['page'] ) && 'wpas-settings' === $_GET['page'] ? wpas_list_users( 'edit_ticket' ) : array(),
 					'default' => ''
 				),
+				
+				array(
+                        'name'    => __( 'Use SELECT2 For Staff Drop-downs', 'awesome-support' ),
+                        'id'      => "support_staff_select2_enabled",
+                        'type'    => 'checkbox',
+                        'default' => false,
+                        'desc'    => __( 'On ticket screen turn the staff dropdown into select2 box.', 'awesome-support' )
+                ),
+				
 				array(
 					'name'    => __( 'Allow Registrations', 'awesome-support' ),
 					'id'      => 'allow_registrations',

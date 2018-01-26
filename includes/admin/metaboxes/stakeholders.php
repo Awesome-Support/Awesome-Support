@@ -70,20 +70,35 @@ if (! empty( $staff ) ) {
 	<label for="wpas-assignee"><strong data-hint="<?php esc_html_e( 'The agent currently responsible for this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php
-		$staff_atts = array(
-			'name'      => 'wpas_assignee',
-			'id'        => 'wpas-assignee',
-			'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
-			'select2'   => true,
-			'data_attr' => array( 'capability' => 'edit_ticket' )
-		);
 		
-		if (! empty( $staff ) ) {
-			// We have a valid staff id
-			echo wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );		
+		if ( wpas_get_option( 'support_staff_select2_enabled', false ) ) {
+		
+			$staff_atts = array(
+				'name'      => 'wpas_assignee',
+				'id'        => 'wpas-assignee',
+				'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
+				'select2'   => true,
+				'data_attr' => array( 'capability' => 'edit_ticket' )
+			);
+
+			if (! empty( $staff ) ) {
+				// We have a valid staff id
+				echo wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );		
+			} else {
+				// Oops - no valid staff id...
+				echo wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );					
+			}
 		} else {
-			// Oops - no valid staff id...
-			echo wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );					
+			
+			
+			echo wpas_users_dropdown( array( 
+				'cap'	=> 'edit_ticket',
+				'name'  => 'wpas_assignee',
+				'id'    => 'wpas-assignee',
+				'class' => 'wpas-form-control',
+				'please_select' => true,
+				'selected' => $staff_id
+			) );
 		}
 		?>
 	</p>
