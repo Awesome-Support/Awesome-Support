@@ -527,6 +527,8 @@ function wpas_get_users( $args = array() ) {
 		'exclude'     => array(),
 		'cap'         => '',
 		'cap_exclude' => '',
+		'orderby'		 => 'ID',
+		'order'			 => 'ASC',
 		'search'      => array(),
 	);
 
@@ -748,6 +750,8 @@ function wpas_users_dropdown( $args = array() ) {
 		'selected'       => '',
 		'cap'            => '',
 		'cap_exclude'    => '',
+		'orderby'		 => 'ID',
+		'order'			 => 'ASC',
 		'agent_fallback' => false,
 		'please_select'  => false,
 		'select2'        => false,
@@ -758,7 +762,7 @@ function wpas_users_dropdown( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 
 	/* List all users */
-	$all_users = wpas_get_users( array( 'cap' => $args['cap'], 'cap_exclude' => $args['cap_exclude'], 'exclude' => $args['exclude'] ) );
+	$all_users = wpas_get_users( array( 'cap' => $args['cap'], 'cap_exclude' => $args['cap_exclude'], 'exclude' => $args['exclude'], 'orderby' => $args['orderby'], 'order' => $args['order'] ) );
 
 	/**
 	 * We use a marker to keep track of when a user was selected.
