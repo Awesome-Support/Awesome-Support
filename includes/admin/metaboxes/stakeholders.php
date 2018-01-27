@@ -93,6 +93,8 @@ if (! empty( $staff ) ) {
 			
 			echo wpas_users_dropdown( array( 
 				'cap'	=> 'edit_ticket',
+				'orderby' => 'display_name',
+				'order' => 'ASC',
 				'name'  => 'wpas_assignee',
 				'id'    => 'wpas-assignee',
 				'class' => 'wpas-form-control',

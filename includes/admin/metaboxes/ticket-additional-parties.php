@@ -63,10 +63,12 @@ if ( ! defined( 'WPINC' ) ) {
 				echo wpas_dropdown( $staff_atts, "<option value='$secondary_staff_id' selected='selected'>$secondary_staff_name</option>" );	
 			} else {
 				echo wpas_users_dropdown( array( 
-					'cap'	=> 'edit_ticket',
+					'cap'		=> 'edit_ticket',
+					'orderby'	=> 'display_name',
+					'order'		=> 'ASC',
 					'name'      => 'wpas_secondary_assignee',
 					'id'        => 'wpas-secondary-assignee',
-					'class' => 'wpas-form-control',
+					'class'		=> 'wpas-form-control',
 					'please_select' => true,
 					'selected' => $secondary_staff_id
 				) );
@@ -86,10 +88,12 @@ if ( ! defined( 'WPINC' ) ) {
 				echo wpas_dropdown( $staff_atts, "<option value='$tertiary_staff_id' selected='selected'>$tertiary_staff_name</option>" );
 			} else {
 				echo wpas_users_dropdown( array( 
-					'cap'	=> 'edit_ticket',
+					'cap'		=> 'edit_ticket',
+					'orderby'	=> 'display_name',
+					'order'		=> 'ASC',
 					'name'      => 'wpas_tertiary_assignee',
 					'id'        => 'wpas-tertiary-assignee',
-					'class' => 'wpas-form-control',
+					'class'		=> 'wpas-form-control',
 					'please_select' => true,
 					'selected' => $tertiary_staff_id
 				) );
