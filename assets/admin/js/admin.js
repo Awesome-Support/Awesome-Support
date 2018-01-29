@@ -442,7 +442,7 @@
          */
         if( 0 < $('#wpas_admin_tabs_ticket_main_custom_fields').length ) {
                 
-                $('#post-body-content').prependTo('.wpas-post-body-content');
+                $('#postdivrich').prependTo('.wpas-post-body-content');
                 
                 $(window).on('resize', flex_custom_fields_tab );
                 $('#wpas_admin_tabs_ticket_main_custom_fields').on( 'tab_show', flex_custom_fields_tab );
