@@ -35,6 +35,10 @@ function wpas_ticket_main_tabs( $tabs ) {
 		$tabs['ai_parties'] = __( 'Additional Interested Parties', 'awesome-support' );
 	}
 	
+	if ( isset( $options['show_basic_time_tracking_fields'] ) && true === boolval( $options['show_basic_time_tracking_fields'] ) ) {
+		$tabs['time_tracking'] = __( 'Time Tracking', 'awesome-support' );
+	}
+	
 	return $tabs;
 }
 
@@ -132,6 +136,24 @@ add_filter( 'wpas_admin_tabs_ticket_main_statistics_content', 'wpas_statistics_m
 function wpas_statistics_main_tab_content( $content ) {
 	ob_start();
 	include WPAS_PATH . "includes/admin/metaboxes/ticket-statistics.php";
+	
+	$content = ob_get_clean();
+	return $content;
+}
+
+
+add_filter( 'wpas_admin_tabs_ticket_main_time_tracking_content', 'wpas_time_tracking_main_tab_content' );
+
+/**
+ * Return content for time tracking tab
+ * 
+ * @param string $content
+ * 
+ * @return string
+ */
+function wpas_time_tracking_main_tab_content( $content ) {
+	ob_start();
+	include WPAS_PATH . "includes/admin/metaboxes/time-tracking-statistics.php";
 	
 	$content = ob_get_clean();
 	return $content;
