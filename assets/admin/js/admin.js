@@ -392,63 +392,13 @@
             $('#wpas_admin_tabs_tickets_tablenav .wpas_admin_tab_content select').attr('disabled', 'disabled');
         }
         
-        /**
-         * Arrange fields in custom fields tab
-         * 
-         * @returns void
-         */
-        function flex_custom_fields_tab() {
-                
-                var cols = 3;
-                var rows, flex_height, flex_height, fields_count, field_height;
-                rows = flex_height = flex_height = fields_count = field_height = 0;
-                
-                var width = '30%';
-                
-                var win_width = $(window).width();
-                
-                if( win_width < 1200 ) {
-                        cols = 2;
-                        width = '46%';
-                }
-                
-                if( win_width < 720 ) {
-                        cols = 1;
-                        width = '100%';
-                }
-                
-                
-                
-                $('#wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields .wpas-form-group').each( function() {
-                        if ( 0 < $(this).height() ) {
-                                fields_count++;
-                                
-                                field_height = $(this).outerHeight(true) > field_height ? $(this).outerHeight(true) : field_height;
-                        }
-                });
-                
-                rows = Math.ceil( fields_count / cols  );
-                
-                flex_height = field_height * rows;
-                
-                 
-                $('#wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields')
-                        .css({height : flex_height+'px'})
-                        .find('.wpas-form-group').css({width : width});
-        }
+        
         
         /**
          * Only run this if main tabs exist in ticket add|edit page
          */
         if( 0 < $('#wpas_admin_tabs_ticket_main_custom_fields').length ) {
-                
                 $('#postdivrich').prependTo('.wpas-post-body-content');
-                
-                $(window).on('resize', flex_custom_fields_tab );
-                $('#wpas_admin_tabs_ticket_main_custom_fields').on( 'tab_show', flex_custom_fields_tab );
-                
-                flex_custom_fields_tab();
-                
         }
 
     });

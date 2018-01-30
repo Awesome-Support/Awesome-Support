@@ -464,7 +464,7 @@ Metaboxes - Custom Fields
 ==========================================================================
 */
 .wpas-custom-fields {
-	.wpas-form-group + .wpas-form-group {
+	.wpas-form-group {
 		margin-top: 1em;
 	}
 	input:read-only, input:disabled {
@@ -852,14 +852,39 @@ Ticket Page : Main tabs
         padding: 0;
 }
 
+/* Custom fields tab */
 #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields {
-        display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        height: 135px;
+        
+        -moz-column-gap: 1.5em;
+        -webkit-column-gap: 1.5em;
+        column-gap: 1.5em;
+        -moz-column-count: 3;
+        -webkit-column-count: 3;
+        column-count: 3;
+        
 }
 
-#wpas_admin_tabs_ticket_main_custom_fields .wpas-form-group {
-        width: 30%;
-        float: left;
+#wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields .wpas-form-group {
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+}
+
+@media only screen and (max-width: 1200px) {
+    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields {
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+}
+
+
+@media only screen and (max-width: 720px) {
+    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields {
+        -moz-column-count: 1;
+        -webkit-column-count: 1;
+        column-count: 1;
+    }
 }
