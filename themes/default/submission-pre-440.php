@@ -17,29 +17,18 @@ global $post;
 
 		<?php
 		/**
-		 * The wpas_submission_form_inside_top has to be placed
+		 * The wpas_submission_form_inside_before has to be placed
 		 * inside the form, right in between the form opening tag
-		 * and the first field being rendered.
+		 * and the subject field.
 		 *
-		 * @since  4.4.0
+		 * @since  3.0.0
 		 */
-		do_action( 'wpas_submission_form_inside_top' );
+		do_action( 'wpas_submission_form_inside_before_subject' );
 
 		/**
 		 * Filter the subject field arguments
 		 *
 		 * @since 3.2.0
-		 *
-		 * Note the use of the The wpas_submission_form_inside_before 
-		 * action hook.  It will be placed inside the form, usually
-		 * right in between the form opening tag
-		 * and the subject field.
-		 *
-		 * However, the hook can be moved if the subject field is set 
-		 * to a different sort order in the custom fields array.
-		 *
-		 * The wpas_submission_form_inside_after_subject action 
-		 * hook is also declared as a post-render hook.
 		 */
 		$subject_args = apply_filters( 'wpas_subject_field_args', array(
 			'name' => 'title',
@@ -47,15 +36,24 @@ global $post;
 				'required'   => true,
 				'field_type' => 'text',
 				'label'      => __( 'Subject', 'awesome-support' ),
-				'sanitize'   => 'sanitize_text_field',
-				'order'		 => '-2',
-				'pre_render_action_hook_fe'		=> 'wpas_submission_form_inside_before_subject',
-				'post_render_action_hook_fe'	=> 'wpas_submission_form_inside_after_subject-x',
+				'sanitize'   => 'sanitize_text_field'
 			)
 		) );
 
-		wpas_add_custom_field($subject_args['name'], $subject_args['args']);
-		
+		$subject = new WPAS_Custom_Field( 'title', $subject_args );
+		echo $subject->get_output();
+
+		/**
+		 * The wpas_submission_form_inside_after_subject hook has to be placed
+		 * right after the subject field.
+		 *
+		 * This hook is very important as this is where the custom fields are hooked.
+		 * Without this hook custom fields would not display at all.
+		 *
+		 * @since  3.0.0
+		 */
+		do_action( 'wpas_submission_form_inside_after_subject' );
+
 		/**
 		 * Filter the description field arguments
 		 *
@@ -67,28 +65,12 @@ global $post;
 				'required'   => true,
 				'field_type' => 'wysiwyg',
 				'label'      => __( 'Description', 'awesome-support' ),
-				'sanitize'   => 'sanitize_text_field',
-				'order'		 => '-1',
-				'pre_render_action_hook_fe'		=> 'wpas_submission_form_inside_before_description',
-				'post_render_action_hook_fe'	=> 'wpas_submission_form_inside_after_description',
+				'sanitize'   => 'sanitize_text_field'
 			)
 		) );
 
-		wpas_add_custom_field($body_args['name'], $body_args['args']);		
-		
-		/**
-		 * Declare an action hook just before rendering all the fields...
-		 */
-		do_action( 'wpas_submission_form_pre_render_fields' );
-		
-		/* All custom fields have been declared so render them all */
-		WPAS()->custom_fields->submission_form_fields();
-		
-		/**
-		 * Declare an action hook just after rendering all the fields...
-		 */
-		do_action( 'wpas_submission_form_post_render_fields' );		
-		
+		$body = new WPAS_Custom_Field( 'message', $body_args );
+		echo $body->get_output();
 
 		/**
 		 * The wpas_submission_form_inside_before hook has to be placed
