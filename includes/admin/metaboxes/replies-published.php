@@ -68,7 +68,7 @@ if ( ! defined( 'WPINC' ) ) {
 		 * @since 3.2.6
 		 */
 		$controls = apply_filters( 'wpas_ticket_reply_controls', array(), $ticket_id, $row );
-
+		
 		if ( ! empty( $controls ) ) {
 
 			$output = array();
@@ -77,7 +77,7 @@ if ( ! defined( 'WPINC' ) ) {
 				array_push( $output, $control );
 			}
 
-			echo implode( ' | ', $output );
+			echo implode( ' ', $output );
 		}
 
 		/**
