@@ -274,10 +274,34 @@ Ticket Replies
 
 .wpas-ticket-controls {
 	position: absolute;
-	top: 50px;
+	top: auto;
 	right: 0;
+        
+        
+        a {
+                vertical-align: top;
+                margin-top: 3px;
+                display: inline-block;
+                span {
+                        display: none;
+                }
+        }
+        .reply_icon {
+                border: solid 1px #cacfd3;
+                width: 24px;
+                height: 24px;
+                border-radius: 15px;
+                margin: 0 6px;
+                display: inline-block;
+                
+                &:hover {
+                        border-color: #14a1e4;
+                        border-width: 1px;
+                }
+        }
+        
 
-	.wpas-delete:first-child {
+/*	.wpas-delete:first-child {
 		border-top-right-radius: 0px;
 		border-bottom-right-radius: 0px;
 		border-right: none;
@@ -285,7 +309,7 @@ Ticket Replies
 	.wpas-edit:last-child {
 		border-top-left-radius: 0px;
 		border-bottom-left-radius: 0px;
-	}
+	}*/
 }
 .wpas-reply-meta {
 	.wpas-cf;
