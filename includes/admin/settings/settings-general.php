@@ -197,6 +197,13 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'checkbox',
 					'desc'    => __( 'Show how long the ticket was opened?  Note that this applies to closed tickets only.', 'awesome-support' ),
 					'default' => false
+				),
+				array(
+					'name'    => __( 'Show Extended Date In Replies', 'awesome-support' ),
+					'id'      => 'show_extended_date_in_replies',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Hovering over replies can show a short date or a full date-time stamp.  Turn this on to show the full date-time stamp as well as a human-readable number indicating the age of the reply.', 'awesome-support' ),
+					'default' => false
 				),				
 				
 				
