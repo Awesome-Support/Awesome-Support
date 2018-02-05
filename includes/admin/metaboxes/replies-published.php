@@ -77,7 +77,7 @@ if ( ! defined( 'WPINC' ) ) {
 				array_push( $output, $control );
 			}
 
-			echo implode( ' | ', $output );
+			echo implode( ' ', $output );
 		}
 
 		/**

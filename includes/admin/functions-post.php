@@ -671,3 +671,43 @@ function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_fi
 	return apply_filters( 'wpas_assignee_meta_query', $meta_query, $user_id, $profile_filter );
 	
 }
+
+
+/**
+ * Generate a link with icon for a reply action
+ * 
+ * @param string $id
+ * @param array $args
+ * 
+ * @return string
+ */
+function wpas_reply_control_item( $id , $args = array() ) {
+	
+	$link = isset( $args['link'] ) ? $args['link'] : '#';
+	$title = isset( $args['title'] ) ? $args['title'] : '';
+	
+	$icon = isset( $args['icon'] ) && $args['icon'] ? $args['icon'] : false;
+	
+	$attr_id = isset( $args['id'] ) && $args['id'] ? $args['id'] : '';
+	
+	$classes = isset( $args['classes'] ) ? $args['classes'] : '';
+	$classes .= " {$id}";
+	$classes .= ( $icon ? ' reply_icon' : '' );
+	$classes .= $title ? ' hint-bottom hint-anim' : '';
+	
+	$data_params = isset( $args['data'] ) && is_array( $args['data'] ) ?  $args['data'] : array();
+	
+	$markup = "<a href=\"{$link}\" data-hint=\"{$title}\" class=\"{$classes}\"";
+	
+	foreach( $data_params as $dp_name => $dp_value ) {
+		$markup .= " data-{$dp_name}=\"{$dp_value}\"";
+	}
+	
+	$markup .= $attr_id ? " id=\"{$attr_id}\"" : '';
+	$markup .= '>';
+	$markup .= $icon ? "<img src=\"{$icon}\" />" : '';
+	$markup .= '</a>';
+	
+	
+	return $markup;
+}
