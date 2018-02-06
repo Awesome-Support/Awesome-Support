@@ -100,7 +100,9 @@ add_filter( 'wpas_admin_tabs_ticket_main_custom_fields_content', 'wpas_custom_fi
 function wpas_custom_fields_main_tab_content( $content ) {
 	ob_start();
 	
-	include WPAS_PATH . "includes/admin/metaboxes/tab-custom-fields.php";
+	include WPAS_PATH . "includes/admin/metaboxes/custom-fields.php";
+	
+	include WPAS_PATH . "includes/admin/metaboxes/custom-fields-backend.php";
 	
 	$content = ob_get_clean();
 	return $content;
