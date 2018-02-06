@@ -35,6 +35,19 @@ function wpas_core_settings_registration( $def ) {
 				),
 				
 				array(
+					'name' => __( 'Registration Alerts', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => __( 'Who should receive the standard WordPress notifications when a new user registers on the site?', 'awesome-support' ),
+				),								
+				array(
+					'name'    => __( 'Who Should Receive New User Notifications?', 'awesome-support' ),
+					'id'      => 'reg_notify_users',
+					'type'    => 'radio',
+					'options' => array( 'none' => __('No One','awesome-support'), 'user' => __('Only The Customer','awesome-support'), 'admin' => __('Only The Site Admin','awesome-support'), 'both' => __('Customer and Admin','awesome-support') ),
+					'default' => 'both,',
+				),
+				
+				array(
 					'name' => __( 'Registration Field Descriptions', 'awesome-support' ),
 					'type' => 'heading',
 					'desc' => __( 'Add a description to each of the registration fields which will appear beneath the field. You can use this to add GDPR related information indicating what each field is used for.', 'awesome-support' ),

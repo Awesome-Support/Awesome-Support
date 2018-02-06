@@ -272,7 +272,13 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 
 			// Notify the new user if needed
 			if ( ! is_wp_error( $user_id ) && true === apply_filters( 'wpas_new_user_notification', $notify ) ) {
-				wp_new_user_notification( $user_id, null, 'both' );
+				
+				$receive_alert = wpas_get_option('reg_notify_users', 'both');  // Who should receive alerts?
+				
+				if ( 'none' <> $receive_alert ) {
+					wp_new_user_notification( $user_id, null, $receive_alert );
+				}
+				
 			}
 
 		}
