@@ -564,7 +564,6 @@ function wpas_admin_tabs( $type, $tabs = array() ) {
 			<ul>
 			    <?php echo implode( '', $tab_content_items_ar ); ?>
 				<li class="moreTab">
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">More <span class="caret"></span></a>
 					<ul class="dropdown-menu tabs_collapsed"></ul>
 				</li>
 				<li class="clear clearfix"></li>
