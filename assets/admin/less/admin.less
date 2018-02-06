@@ -699,7 +699,27 @@ Admin Tabs
             .moreTab {
                     display: none;
                     float: right;
-                    padding: 10px;
+                    
+                    &:before {
+                        content: "\f228";
+                        display: inline-block;
+                        float: left;
+                        font: 400 24px/30px dashicons;
+                        vertical-align: middle;
+                        outline: 0;
+                        margin: 0;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        height: 38px;
+                        width: 38px;
+                        padding: 4px 0;
+                        border: none;
+                        text-align: center;
+                        text-decoration: none;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                    }
                     
                     &:hover ul {
                         display : block;
