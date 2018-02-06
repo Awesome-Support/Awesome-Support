@@ -881,38 +881,35 @@ Ticket Page : Main tabs
 }
 
 /* Custom fields tab */
-#wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields {
-        
-        -moz-column-gap: 1.5em;
-        -webkit-column-gap: 1.5em;
-        column-gap: 1.5em;
-        -moz-column-count: 3;
-        -webkit-column-count: 3;
-        column-count: 3;
-        
+#wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields:first-child {
+        margin-bottom: 20px;
+}
+
+#wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields h2 {
+        font-weight: bold;
 }
 
 #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields .wpas-form-group {
-        display: inline-block;
-        width: 100%;
+        width: 33%;
+        float: left;
         box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        -webkit-box-sizing: border-box;
+        padding: 0 10px;
 }
 
 @media only screen and (max-width: 1200px) {
-    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields {
-        -moz-column-count: 2;
-        -webkit-column-count: 2;
-        column-count: 2;
+    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields .wpas-form-group {
+        width: 50%;
     }
 }
 
 
 @media only screen and (max-width: 720px) {
-    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields {
-        -moz-column-count: 1;
-        -webkit-column-count: 1;
-        column-count: 1;
+    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields .wpas-form-group {
+        width: 100%;
+        padding: 0;
+    }
+    
+    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields h2 {
+        padding-left: 0;
     }
 }
