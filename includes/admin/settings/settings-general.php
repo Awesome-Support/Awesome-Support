@@ -36,19 +36,7 @@ function wpas_core_settings_general( $def ) {
                         'default' => false,
                         'desc'    => __( 'On ticket screen turn the staff dropdown into select2 box.', 'awesome-support' )
                 ),
-				
-				array(
-					'name'    => __( 'Allow Registrations', 'awesome-support' ),
-					'id'      => 'allow_registrations',
-					'type'    => 'radio',
-					'desc'    => sprintf( __( 'Allow users to register on the support page. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress.', 'awesome-support' ),  "<strong>$registration_lbl</strong>" ),
-					'default' => 'allow',
-					'options' => array(
-						'allow'           => __( 'Allow registrations', 'awesome-support' ),
-						'disallow'        => __( 'Disallow registrations', 'awesome-support' ),
-						'disallow_silent' => __( 'Disallow registrations without notice (just show the login form)', 'awesome-support' ),
-					)
-				),
+
 				array(
 					'name'    => __( 'Tickets Per Page (Front End)', 'awesome-support' ),
 					'id'      => 'tickets_per_page_front_end',
@@ -278,18 +266,7 @@ function wpas_core_settings_general( $def ) {
 					'options'  => wpas_list_pages(),
 					'default'  => ''
 				),
-				array(
-					'name' => __( 'Terms & Conditions', 'awesome-support' ),
-					'type' => 'heading',
-				),
-				array(
-					'name'     => __( 'Content', 'awesome-support' ),
-					'id'       => 'terms_conditions',
-					'type'     => 'editor',
-					'default'  => '',
-					'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'awesome-support' ),
-					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),
+
 				array(
 					'name' => __( 'Credit', 'awesome-support' ),
 					'type' => 'heading',

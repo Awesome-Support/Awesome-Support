@@ -490,6 +490,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 				/* Load settings files */
 				require( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-registration.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );

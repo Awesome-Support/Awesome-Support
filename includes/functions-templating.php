@@ -1326,6 +1326,77 @@
 		return true;
 
 	}
+	
+	add_action( 'wpas_after_registration_fields', 'wpas_gdpr_checkboxes', 10, 3 );
+	/**
+	 * Add the checkboxes for GDPR notices
+	 *
+	 * Adds one or more checkboxes to the registration form if there are
+	 * GDPR options set in the plugin settings.
+	 *
+	 * @since  4.4.0
+	 * @return void
+	 */
+	function wpas_gdpr_checkboxes() {
+
+		$gdpr_short_desc_01 = wpas_get_option( 'gdpr_notice_short_desc_01', '' );
+		$gdpr_long_desc_01 = wpas_get_option( 'gdpr_notice_long_desc_01', '' );
+
+		if ( ! empty( $gdpr_short_desc_01 ) || ! empty( $gdpr_short_desc_01 ) ) {
+
+			$gdpr01 = new WPAS_Custom_Field( 'gdpr01', array(
+				'name' => 'gdpr01',
+				'args' => array(
+					'required'   => true,
+					'field_type' => 'checkbox',
+					'sanitize'   => 'sanitize_text_field',
+					'options'    => array( '1' => $gdpr_short_desc_01 ),
+					'desc'		 => $gdpr_long_desc_01,
+				),
+			) );
+
+			echo $gdpr01->get_output();
+		}
+		
+		$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
+		$gdpr_long_desc_02 = wpas_get_option( 'gdpr_notice_long_desc_02', '' );
+
+		if ( ! empty( $gdpr_short_desc_02 ) || ! empty( $gdpr_short_desc_02 ) ) {
+
+			$gdpr02 = new WPAS_Custom_Field( 'gdpr02', array(
+				'name' => 'gdpr02',
+				'args' => array(
+					'required'   => true,
+					'field_type' => 'checkbox',
+					'sanitize'   => 'sanitize_text_field',
+					'options'    => array( '1' => $gdpr_short_desc_02 ),
+					'desc'		 => $gdpr_long_desc_02,
+				),
+			) );
+
+			echo $gdpr02->get_output();
+		}	
+
+		$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
+		$gdpr_long_desc_03 = wpas_get_option( 'gdpr_notice_long_desc_03', '' );
+
+		if ( ! empty( $gdpr_short_desc_03 ) || ! empty( $gdpr_short_desc_03 ) ) {
+
+			$gdpr03 = new WPAS_Custom_Field( 'gdpr03', array(
+				'name' => 'gdpr03',
+				'args' => array(
+					'required'   => true,
+					'field_type' => 'checkbox',
+					'sanitize'   => 'sanitize_text_field',
+					'options'    => array( '1' => $gdpr_short_desc_03 ),
+					'desc'		 => $gdpr_long_desc_03,
+				),
+			) );
+
+			echo $gdpr03->get_output();
+		}		
+
+	}	
 
 	add_filter( 'wpas_cf_field_markup_readonly', 'wpas_cf_field_markup_time_tracking_readonly', 10, 2 );
 	/**
