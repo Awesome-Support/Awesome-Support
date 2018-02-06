@@ -1,5 +1,17 @@
 (function ($) {
     "use strict";
+    
+        /* Place an element at specific index */
+        $.fn.appendAtIndex = function( to,index ) {
+                if(! to instanceof jQuery){
+                    to=$(to);
+                }
+                if( index===0 ){
+                    $(this).prependTo( to )
+                }else{
+                    $(this).insertAfter( to.children().eq(index-1) );
+                }
+        };
 
     $(function () {
 		
@@ -400,6 +412,41 @@
         if( 0 < $('#wpas_admin_tabs_ticket_main_custom_fields').length ) {
                 $('#postdivrich').prependTo('.wpas-post-body-content');
         }
+        
+        
+        /* Arrange metaboxes in ticket edit page on small screens */
+        
+        /* Lets store original position of metaboxes so we can revert them back to original positions on large screens  */
+        if( 0 < $('#wpas-mb-toolbar').length ) {
+                var toolbar_index = $('#wpas-mb-toolbar').index();
+                var main_tabs_index = $('#wpas-mb-ticket-main-tabs').index();
+                var replies_mb_index = $('#wpas-mb-replies').index();
+
+                var toolbar_mb_sortable = $('#wpas-mb-toolbar').closest('.meta-box-sortables');
+                var main_tabs_mb_sortable = $('#wpas-mb-ticket-main-tabs').closest('.meta-box-sortables');
+                var replies_mb_sortable = $('#wpas-mb-replies').closest('.meta-box-sortables');
+                
+                /* Arrange metaboxes based on screen size */
+                function arrange_ticket_metaboxes() {
+
+                        if( 0 === parseInt( $('#postbox-container-1').css( 'marginRight' ) ) ) {
+                                $('#wpas-mb-toolbar').insertAfter('#post-body-content');
+                                $('#wpas-mb-ticket-main-tabs').insertAfter('#wpas-mb-toolbar');
+                                $('#wpas-mb-replies').insertAfter('#wpas-mb-ticket-main-tabs');
+                        } else {
+                                $('#wpas-mb-toolbar').appendAtIndex( toolbar_mb_sortable, toolbar_index );
+                                $('#wpas-mb-ticket-main-tabs').appendAtIndex( main_tabs_mb_sortable, main_tabs_index );
+                                $('#wpas-mb-replies').appendAtIndex( replies_mb_sortable, replies_mb_index );
+                        }
+
+                }
+
+
+                $(window).on( 'resize', arrange_ticket_metaboxes );
+
+                arrange_ticket_metaboxes();
+        }
+        
 
     });
 
