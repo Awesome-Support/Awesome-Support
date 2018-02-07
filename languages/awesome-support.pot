@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-02-06 14:42-0600\n"
+"POT-Creation-Date: 2018-02-06 18:33-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1828,7 +1828,7 @@ msgstr ""
 #: includes/admin/settings/settings-notifications.php:172
 #: includes/admin/settings/settings-notifications.php:203
 #: includes/admin/settings/settings-notifications.php:227
-#: includes/admin/settings/settings-registration.php:142
+#: includes/admin/settings/settings-registration.php:164
 msgid "Content"
 msgstr ""
 
@@ -1988,33 +1988,77 @@ msgid "Customer and Admin"
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:51
-msgid "Registration Field Descriptions"
+msgid "User Names"
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:53
+msgid "How should user names be determined?"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:56
+msgid "User Name Construction"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:60
+msgid "How should we construct the user name?"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:62
+msgid "Default - Uses the first part of email address"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:63
+msgid "Use the entire email address"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:64
+msgid "Use a random number"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:65
+msgid "Use a GUID"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:66
+msgid "Use the first name"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:67
+msgid "Use the last name"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:68
+msgid "Concatenate the first and last name"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:73
+msgid "Registration Field Descriptions"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:75
 msgid ""
 "Add a description to each of the registration fields which will appear "
 "beneath the field. You can use this to add GDPR related information "
 "indicating what each field is used for."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:56
+#: includes/admin/settings/settings-registration.php:78
 msgid "First name description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:62
+#: includes/admin/settings/settings-registration.php:84
 msgid "Last name description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:68
+#: includes/admin/settings/settings-registration.php:90
 msgid "Email address description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:75
+#: includes/admin/settings/settings-registration.php:97
 msgid "GDPR Notice #1"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:77
+#: includes/admin/settings/settings-registration.php:99
 msgid ""
 "The GDPR requires that you provide explicit notice about what you will do "
 "with the data you collect from users. This section allows you to describe "
@@ -2022,56 +2066,56 @@ msgid ""
 "user before they can register."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:80
-#: includes/admin/settings/settings-registration.php:101
-#: includes/admin/settings/settings-registration.php:122
+#: includes/admin/settings/settings-registration.php:102
+#: includes/admin/settings/settings-registration.php:123
+#: includes/admin/settings/settings-registration.php:144
 msgid "GDPR Notice: Short Description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:84
-#: includes/admin/settings/settings-registration.php:105
-#: includes/admin/settings/settings-registration.php:126
+#: includes/admin/settings/settings-registration.php:106
+#: includes/admin/settings/settings-registration.php:127
+#: includes/admin/settings/settings-registration.php:148
 msgid ""
 "If you fill this in, a mandatory checkbox will be added in the registration "
 "form. Users won't be able to register if they don't tick the checkbox.  It "
 "is best to keep this brief - eg: Receive Emails? or Join Email List?"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:87
-#: includes/admin/settings/settings-registration.php:108
-#: includes/admin/settings/settings-registration.php:129
+#: includes/admin/settings/settings-registration.php:109
+#: includes/admin/settings/settings-registration.php:130
+#: includes/admin/settings/settings-registration.php:151
 msgid "GDPR Notice: Long Description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:91
-#: includes/admin/settings/settings-registration.php:112
-#: includes/admin/settings/settings-registration.php:133
+#: includes/admin/settings/settings-registration.php:113
+#: includes/admin/settings/settings-registration.php:134
+#: includes/admin/settings/settings-registration.php:155
 msgid ""
 "If you add notice terms in this box, a mandatory checkbox will be added in "
 "the registration form. Users won't be able to register if they don't accept "
 "these notice terms.  It is best to keep this notice to one or two lines."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:96
+#: includes/admin/settings/settings-registration.php:118
 msgid "GDPR Notice #2"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:98
-#: includes/admin/settings/settings-registration.php:119
+#: includes/admin/settings/settings-registration.php:120
+#: includes/admin/settings/settings-registration.php:141
 msgid ""
 "If personal data will be used in any additional context add that here. It is "
 "best to keep this brief."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:117
+#: includes/admin/settings/settings-registration.php:139
 msgid "GDPR Notice #3"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:138
+#: includes/admin/settings/settings-registration.php:160
 msgid "Terms & Conditions"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:146
+#: includes/admin/settings/settings-registration.php:168
 msgid ""
 "Terms & conditions are not mandatory. If you add terms, a mandatory checkbox "
 "will be added in the registration form. Users won't be able to register if "
@@ -3464,11 +3508,11 @@ msgstr ""
 msgid "The %s field is mandatory for registering an account"
 msgstr ""
 
-#: includes/functions-user.php:378
+#: includes/functions-user.php:460
 msgid "We were unable to log you in for an unknown reason."
 msgstr ""
 
-#: includes/functions-user.php:992
+#: includes/functions-user.php:1074
 #, php-format
 msgid "Did you mean %s"
 msgstr ""

@@ -38,7 +38,7 @@ function wpas_core_settings_registration( $def ) {
 					'name' => __( 'Registration Alerts', 'awesome-support' ),
 					'type' => 'heading',
 					'desc' => __( 'Who should receive the standard WordPress notifications when a new user registers on the site?', 'awesome-support' ),
-				),								
+				),
 				array(
 					'name'    => __( 'Who Should Receive New User Notifications?', 'awesome-support' ),
 					'id'      => 'reg_notify_users',
@@ -46,6 +46,28 @@ function wpas_core_settings_registration( $def ) {
 					'options' => array( 'none' => __('No One','awesome-support'), 'user' => __('Only The Customer','awesome-support'), 'admin' => __('Only The Site Admin','awesome-support'), 'both' => __('Customer and Admin','awesome-support') ),
 					'default' => 'both,',
 				),
+				
+				array(
+					'name' => __( 'User Names', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => __( 'How should user names be determined?', 'awesome-support' ),
+				),												
+				array(
+					'name'    => __( 'User Name Construction', 'awesome-support' ),
+					'id'      => 'reg_user_name_construction',
+					'type'    => 'radio',
+					'default' => 6,
+					'desc'    => __( 'How should we construct the user name?', 'awesome-support' ),
+					'options' => array(
+						'0' => __( 'Default - Uses the first part of email address', 'awesome-support' ),
+						'1' => __( 'Use the entire email address', 'awesome-support' ),
+						'2' => __( 'Use a random number', 'awesome-support' ),
+						'3' => __( 'Use a GUID', 'awesome-support' ),
+						'4' => __( 'Use the first name', 'awesome-support' ),
+						'5' => __( 'Use the last name', 'awesome-support' ),
+						'6' => __( 'Concatenate the first and last name', 'awesome-support' ),
+					),
+				),				
 				
 				array(
 					'name' => __( 'Registration Field Descriptions', 'awesome-support' ),

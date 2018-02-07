@@ -163,7 +163,7 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 	$user_id = false;
 
 	// Set our final user data array
-	$user = array_merge( $defaults, $data );
+	$user = apply_filters( 'wpas_insert_user_args', array_merge( $defaults, $data ) );
 
 	// Now we need to make sure that all the required fields are filled before creating the user
 	foreach ( $defaults as $field => $value ) {
@@ -210,21 +210,10 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 		if ( isset( $data['user_login'] ) ) {
 			$username = $data['user_login'];
 		} else {
-			$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
+			$username = wpas_create_user_name( $user ) ;
+			//$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
 		}
 		
-		$user_check = get_user_by( 'login', $username );
-
-		if ( is_a( $user_check, 'WP_User' ) ) {
-			$suffix = 1;
-			do {
-				$alt_username = sanitize_user( $username . $suffix );
-				$user_check   = get_user_by( 'login', $alt_username );
-				$suffix ++;
-			} while ( is_a( $user_check, 'WP_User' ) );
-			$username = $alt_username;
-		}
-
 		/**
 		 * wpas_insert_user_data filter
 		 *
@@ -287,6 +276,99 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 
 	return $user_id;
 
+}
+
+/**
+ * Create the user name for a user being added
+  *
+ * @since 4.4.0
+ *
+ * @param array $user_args An array that contains the current user information
+ *
+ * @return string username
+ */
+function wpas_create_user_name( $user_args ) {
+
+	$name_ary = explode( '@', $user_args['email'] ); 	// extract whatever name we can from the email address...
+	
+	$user_name_construction = (int) wpas_get_option( 'reg_user_name_construction', 6 );	// get setting for how user name is to be constructed...
+	
+	$user_name = '' ; // initialize the user name variable...
+	
+	switch ( $user_name_construction ) {
+		case 0 :
+			// use the first part of the email address
+			$user_name  = strtolower( $name_ary[0] );
+			break;
+			
+		case 1:
+			// use the full email address
+			$user_name = strtolower( $user_args['email'] );
+			break;
+			
+		case 2:
+			// use a random number
+			$user_name = mt_rand();
+			break;
+			
+		case 3:
+			// use a guid
+			$user_name = wpas_create_pseudo_guid();
+			break;
+			
+		case 4:
+			// user the first name
+			$user_name = strtolower( $user_args['first_name'] );
+			break ;
+
+		case 5:
+			// user the last name
+			$user_name = strtolower( $user_args['last_name'] );
+			break ;
+			
+		case 6:
+			// user the first and last name name
+			$user_name = strtolower( $user_args['first_name'] . $user_args['last_name'] );
+			break ;
+			
+		default: 
+			$user_name = $user_args['first_name'] . $user_args['last_name'] ;
+			break;
+	}				
+
+	// Now verify that the selected username is not already in use.
+	// If it is, append a postfix and return it.	
+	return wpas_check_duplicate_user_name( $user_name );
+	
+}
+
+/**
+ * Check to see if a username is a duplicate
+ *
+ * If the user name is a duplicate, append a postfix and return it.
+ * 
+ * @since 4.4.0
+ *
+ * @param string $user_name
+ *
+ * @return string username
+ */
+function wpas_check_duplicate_user_name( $user_name ) {
+	
+	$user_check = get_user_by( 'login', $user_name );
+
+	if ( is_a( $user_check, 'WP_User' ) ) {
+		$suffix = 1;
+		do {
+			$alt_username = sanitize_user( $user_name . $suffix );
+			$user_check   = get_user_by( 'login', $alt_username );
+			$suffix ++;
+		} while ( is_a( $user_check, 'WP_User' ) );
+		$user_name = $alt_username;
+	}
+
+	return $user_name ;
+	
 }
 
 add_action( 'wpas_do_login', 'wpas_try_login' );
