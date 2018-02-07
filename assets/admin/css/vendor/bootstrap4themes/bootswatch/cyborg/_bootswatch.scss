@@ -2,22 +2,27 @@
 // Bootswatch
 
 
+// Variables ===================================================================
+
 $web-font-path: "https://fonts.googleapis.com/css?family=Roboto:400,700" !default;
 @import url($web-font-path);
 
 // Navbar ======================================================================
 
-.bg-primary {
-  background-color: #060606 !important;
-  border: 1px solid $gray;
-}
-
-.bg-inverse {
-  background-color: $gray !important;
-  border: 1px solid $gray;
-}
-
 .navbar {
+
+  &.bg-primary {
+    border: 1px solid $gray-700;
+  }
+
+  &.bg-dark {
+    background-color: $body-bg !important;
+    border: 1px solid $gray-700;
+  }
+
+  &.bg-light {
+    background-color: $gray-500 !important;
+  }
 
   &.fixed-top {
     border-width: 0 0 1px 0;
@@ -31,12 +36,79 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Roboto:400,700" !defaul
 
 // Buttons =====================================================================
 
+.btn {
+
+  &-warning,
+  &-warning:hover {
+    color: $white;
+  }
+}
+
 // Typography ==================================================================
 
 // Tables ======================================================================
 
 table {
   color: #fff;
+}
+
+.table {
+
+  .thead-dark th {
+    color: $white;
+  }
+
+  &-success {
+    &, > th, > td {
+      background-color: $success;
+    }
+  }
+
+  &-info {
+    &, > th, > td {
+      background-color: $info;
+    }
+  }
+
+  &-danger {
+    &, > th, > td {
+      background-color: $danger;
+    }
+  }
+
+  &-warning {
+    &, > th, > td {
+      background-color: $warning;
+    }
+  }
+
+  &-hover {
+
+    .table-success:hover {
+      &, > th, > td {
+        background-color: darken($success, 5%);
+      }
+    }
+
+    .table-info:hover {
+      &, > th, > td {
+        background-color: darken($info, 5%);
+      }
+    }
+
+    .table-danger:hover {
+      &, > th, > td {
+        background-color: darken($danger, 5%);
+      }
+    }
+
+    .table-warning:hover {
+      &, > th, > td {
+        background-color: darken($warning, 5%);
+      }
+    }
+
+  }
 }
 
 // Forms =======================================================================
@@ -54,17 +126,17 @@ legend,
     color: #fff;
 
     &:hover {
-      background-color: $gray;
+      background-color: $gray-700;
     }
 
     &.disabled,
     &.disabled:hover {
       background-color: transparent;
-      color: $nav-disabled-link-color;
+      color: $nav-link-disabled-color;
     }
 
     &.active {
-      background-color: $brand-primary;
+      background-color: $primary;
     }
   }
 }
@@ -84,10 +156,25 @@ legend,
 // Indicators ==================================================================
 
 .alert {
+  border: none;
+  color: $white;
+
   a,
   .alert-link {
     color: #fff;
     text-decoration: underline;
+  }
+
+  @each $color, $value in $theme-colors {
+    &-#{$color} {
+      background-color: $value;
+    }
+  }
+}
+
+.badge {
+  &-warning {
+    color: $white;
   }
 }
 
@@ -104,17 +191,16 @@ legend,
 // Containers ==================================================================
 
 .list-group-item {
-
   &:hover {
-    background-color: $gray;
+    background-color: $gray-700;
     color: #fff;
   }
 
   &-action {
-    color: $gray-lighter;
+    color: $gray-500;
 
     .list-group-item-heading {
-      color: $gray-lighter;
+      color: $gray-500;
     }
   }
 
@@ -123,14 +209,10 @@ legend,
   }
 }
 
-.card {
-  &-header {
-    background-color: $gray-dark;
-  }
-
-  &-header,
-  &-title {
-    color: #fff;
+.card,
+.list-group-item {
+  h1, h2, h3, h4, h5, h6 {
+    color: inherit;
   }
 }
 
