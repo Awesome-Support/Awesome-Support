@@ -132,7 +132,18 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 	}
 
 	if ( get_current_user_id() !== $reply->post_author && 'unread' === $reply->post_status ) {
-		$controls['mark_read'] = sprintf( '<a class="%1$s" href="%2$s" data-replyid="%3$d" title="%4$s">%4$s</a>', 'wpas-mark-read', '#', $reply->ID, esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ) );
+		
+		/* Add mark as read icon */
+		$controls['mark_read'] = wpas_reply_control_item( 'mark_read' ,array(
+			'title' => esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ),
+			'link'	=> '#',
+			'icon' => WPAS_URL . 'assets/admin/images/mark-as-read.png',
+			'classes' => 'wpas-mark-read',
+			'data' => array( 
+				'replyid' => $reply->ID
+			)
+		));
+		
 	}
 
 	return $controls;
