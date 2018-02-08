@@ -1448,3 +1448,21 @@
 		return $args;
 
 	}
+	
+	/**
+	 * Returns the URL that the user should be redirected to when the logout button is pushed
+	 *
+	 * @since 4.4.0
+	 *
+	 * @return string
+	 */
+	function wpas_get_logout_redirect() {
+
+		if ( ! empty( wpas_get_option( 'logout_redirect_fe', '') ) ) {
+			return wp_logout_url( wpas_get_option( 'logout_redirect_fe', '') );
+		} else {
+			return wp_logout_url();
+		}
+		
+	}
+	

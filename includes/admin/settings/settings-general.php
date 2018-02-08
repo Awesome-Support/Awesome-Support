@@ -232,6 +232,18 @@ function wpas_core_settings_general( $def ) {
 				),
 				
 				array(
+					'name' => __( 'Logout', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Logout Options', 'awesome-support' ),					
+				),
+				array(
+					'name'    => __( 'Logout Redirect', 'awesome-support' ),
+					'id'      => 'logout_redirect_fe',
+					'type'    => 'text',
+					'desc' 	  => __( 'When the user clicks the logout button on an Awesome Support page, where should they be redirected to?  Enter the FULL url starting with http or https.', 'awesome-support' ),
+				),				
+				
+				array(
 					'name' => __( 'Toolbars', 'awesome-support' ),
 					'type' => 'heading',
 					'desc'    => __( 'Control whether certain toolbars are visible', 'awesome-support' ),					
