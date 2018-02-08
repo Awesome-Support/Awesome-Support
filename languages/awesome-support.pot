@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-02-06 18:33-0600\n"
+"POT-Creation-Date: 2018-02-07 23:35-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -221,17 +221,17 @@ msgid "Ticket was opened for: "
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:499
-#: includes/admin/functions-misc.php:381
+#: includes/admin/functions-misc.php:392
 msgid " day(s)"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:500
-#: includes/admin/functions-misc.php:382
+#: includes/admin/functions-misc.php:393
 msgid " hour(s)"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:501
-#: includes/admin/functions-misc.php:383
+#: includes/admin/functions-misc.php:394
 msgid " minute(s)"
 msgstr ""
 
@@ -620,19 +620,19 @@ msgctxt "Link to edit a ticket reply"
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/functions-misc.php:135
+#: includes/admin/functions-misc.php:138
 msgctxt "Mark a user reply as read"
 msgid "Mark as Read"
 msgstr ""
 
-#: includes/admin/functions-misc.php:411
+#: includes/admin/functions-misc.php:422
 #, php-format
 msgid ""
 "If you like Awesome Support <a %s>please leave us a %s rating</a>. Many "
 "thanks from the Awesome Support team in advance :)"
 msgstr ""
 
-#: includes/admin/functions-misc.php:463
+#: includes/admin/functions-misc.php:474
 #, php-format
 msgid ""
 "Hey! Did you know you can get a <strong>free add-on for unlimited sites</"
@@ -640,7 +640,7 @@ msgid ""
 "here to read more</a>."
 msgstr ""
 
-#: includes/admin/functions-misc.php:507
+#: includes/admin/functions-misc.php:518
 #, php-format
 msgid ""
 "Wow! It looks like you have closed a lot of tickets which is pretty awesome! "
@@ -2148,8 +2148,7 @@ msgid "Use editor in front-end"
 msgstr ""
 
 #: includes/admin/settings/settings-style.php:34
-msgid ""
-"Show a editor editor for the ticket description when user submits a ticket."
+msgid "Show an editor for the ticket description when user submits a ticket."
 msgstr ""
 
 #: includes/admin/settings/settings-style.php:38
