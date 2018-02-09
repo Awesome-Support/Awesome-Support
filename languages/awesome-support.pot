@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-02-08 23:43-0600\n"
+"POT-Creation-Date: 2018-02-09 15:43-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -655,7 +655,7 @@ msgctxt "Dismiss link for admin notices"
 msgid "Dismiss"
 msgstr ""
 
-#: includes/admin/functions-post.php:86 includes/functions-post.php:1329
+#: includes/admin/functions-post.php:92 includes/functions-post.php:1334
 #, php-format
 msgid "Ticket state changed to %s"
 msgstr ""
@@ -835,7 +835,7 @@ msgid "The agent currently responsible for this ticket"
 msgstr ""
 
 #: includes/admin/metaboxes/stakeholders.php:70
-#: includes/functions-post.php:1210
+#: includes/functions-post.php:1215
 msgid "Support Staff"
 msgstr ""
 
@@ -1626,12 +1626,11 @@ msgid "Show Preferences Tab"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:235
-#: themes/default/partials/ticket-navigation.php:5
-msgid "Logout"
+msgid "Redirects"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:237
-msgid "Logout Options"
+msgid "Configure where the user should be sent after certain actions"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:240
@@ -1645,103 +1644,114 @@ msgid ""
 "https."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:247
-msgid "Toolbars"
+#: includes/admin/settings/settings-general.php:246
+msgid "New Ticket Redirect"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:249
-msgid "Control whether certain toolbars are visible"
+msgid ""
+"When the user enters a new ticket they are usually taken to the newly "
+"entered ticket.  But, if you would like to redirect them someplace else, "
+"enter that location here. Enter the FULL url starting with http or https."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:252
-msgid "Show Ticket Details Toolbar"
+#: includes/admin/settings/settings-general.php:254
+msgid "Toolbars"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:256
+msgid "Control whether certain toolbars are visible"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:259
+msgid "Show Ticket Details Toolbar"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:263
 msgid ""
 "Show the toolbar on the ticket detail screen when an agent is viewing the "
 "ticket?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:260
+#: includes/admin/settings/settings-general.php:267
 msgid "Plugin Pages"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:264
+#: includes/admin/settings/settings-general.php:271
 msgid "Ticket Submission"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:268
+#: includes/admin/settings/settings-general.php:275
 #, php-format
 msgid ""
 "The page used for ticket submission. This page should contain the shortcode "
 "%s"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:273
+#: includes/admin/settings/settings-general.php:280
 msgid "Tickets List"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:277
+#: includes/admin/settings/settings-general.php:284
 #, php-format
 msgid ""
 "The page that will list all tickets for a client. This page should contain "
 "the shortcode %s"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:283
+#: includes/admin/settings/settings-general.php:290
 msgid "Credit"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:287
+#: includes/admin/settings/settings-general.php:294
 msgid "Show Credit"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:290
+#: includes/admin/settings/settings-general.php:297
 msgid ""
 "Do you like this plugin? Please help us spread the word by displaying a "
 "credit link at the bottom of your ticket submission page."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:294
+#: includes/admin/settings/settings-general.php:301
 msgid "Admin Rating Request"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:297
+#: includes/admin/settings/settings-general.php:304
 msgid "Remove the rating request footer in the admin screen."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:318
+#: includes/admin/settings/settings-general.php:325
 msgid "Use Priority Field"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:321
+#: includes/admin/settings/settings-general.php:328
 msgid "Would you like to use the priority field in your tickets?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:326
+#: includes/admin/settings/settings-general.php:333
 msgid "Mandatory?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:329
+#: includes/admin/settings/settings-general.php:336
 msgid "Would you like to make the priority field mandatory in your tickets?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:334
+#: includes/admin/settings/settings-general.php:341
 msgid "Show On Front End?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:337
+#: includes/admin/settings/settings-general.php:344
 msgid ""
 "Would you like to show the field to the end user (unchecked restricts it to "
 "admin use only)?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:342
+#: includes/admin/settings/settings-general.php:349
 msgid "Show In Column List?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:345
+#: includes/admin/settings/settings-general.php:352
 msgid "Would you like to show the field in the ticket listing?"
 msgstr ""
 
@@ -3376,77 +3386,77 @@ msgstr ""
 msgid "The ticket couldn't be submitted for an unknown reason."
 msgstr ""
 
-#: includes/functions-post.php:586 includes/functions-post.php:587
-#: includes/functions-post.php:846 includes/functions-post.php:847
+#: includes/functions-post.php:591 includes/functions-post.php:592
+#: includes/functions-post.php:851 includes/functions-post.php:852
 #, php-format
 msgid "Reply to ticket %s"
 msgstr ""
 
-#: includes/functions-post.php:629
+#: includes/functions-post.php:634
 msgid ""
 "Something went wrong. We couldn&#039;t identify your ticket. Please try "
 "again."
 msgstr ""
 
-#: includes/functions-post.php:654
+#: includes/functions-post.php:659
 msgid "The ticket was successfully closed"
 msgstr ""
 
-#: includes/functions-post.php:664
+#: includes/functions-post.php:669
 msgid "Your reply could not be submitted for an unknown reason."
 msgstr ""
 
-#: includes/functions-post.php:670
+#: includes/functions-post.php:675
 msgid "Thanks for your reply. The ticket is now closed."
 msgstr ""
 
-#: includes/functions-post.php:672
+#: includes/functions-post.php:677
 msgid "Your reply has been submitted. Your agent will reply ASAP."
 msgstr ""
 
-#: includes/functions-post.php:1181
+#: includes/functions-post.php:1186
 msgid "The given post ID is not a ticket"
 msgstr ""
 
-#: includes/functions-post.php:1189
+#: includes/functions-post.php:1194
 msgid ""
 "The chosen agent does not have the sufficient capabilities to be assigned a "
 "ticket"
 msgstr ""
 
-#: includes/functions-post.php:1364
+#: includes/functions-post.php:1369
 msgid "You do not have the capacity to close this ticket"
 msgstr ""
 
-#: includes/functions-post.php:1364
+#: includes/functions-post.php:1369
 msgid "Can’t close ticket"
 msgstr ""
 
-#: includes/functions-post.php:1384
+#: includes/functions-post.php:1389
 msgid "The ticket was closed."
 msgstr ""
 
-#: includes/functions-post.php:1451
+#: includes/functions-post.php:1456
 msgid "The ticket was re-opened."
 msgstr ""
 
-#: includes/functions-post.php:1483
+#: includes/functions-post.php:1488
 msgid "You are not allowed to re-open this ticket"
 msgstr ""
 
-#: includes/functions-post.php:1491
+#: includes/functions-post.php:1496
 msgid "The ticket has been successfully re-opened."
 msgstr ""
 
-#: includes/functions-post.php:1614
+#: includes/functions-post.php:1619
 msgid "No ticket ID given"
 msgstr ""
 
-#: includes/functions-post.php:1624
+#: includes/functions-post.php:1629
 msgid "Invalid ticket ID"
 msgstr ""
 
-#: includes/functions-post.php:1630
+#: includes/functions-post.php:1635
 msgid "Given ID is not a ticket"
 msgstr ""
 
@@ -3708,6 +3718,10 @@ msgstr ""
 
 #: themes/default/partials/ticket-navigation.php:3
 msgid "Open a ticket"
+msgstr ""
+
+#: themes/default/partials/ticket-navigation.php:5
+msgid "Logout"
 msgstr ""
 
 #: themes/default/partials/ticket-origin.php:28

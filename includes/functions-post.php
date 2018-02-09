@@ -175,7 +175,7 @@ function wpas_new_ticket_submission( $data ) {
 			wpas_save_values();
 
 			/**
-			 * Redirect to the newly created ticket
+			 * Redirect to the referrer since ticket creation failed....
 			 */
 			wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'awesome-support' ) );
 			wp_redirect( wp_sanitize_redirect( home_url( $data['_wp_http_referer'] ) ) );
@@ -192,7 +192,12 @@ function wpas_new_ticket_submission( $data ) {
 			/**
 			 * Redirect to the newly created ticket
 			 */
-			wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
+			if ( ! empty( wpas_get_option( 'new_ticket_redirect_fe','' ) ) ) {
+				wpas_redirect( 'ticket_added', wpas_get_option( 'new_ticket_redirect_fe','' ), $ticket_id );
+			} else {
+				wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
+			}
+			
 			exit;
 
 		}
