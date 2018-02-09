@@ -378,7 +378,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
  */
  function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other', $overwrite = false ) {
 	 
-	 /* Does a term already exist on the ticket?  If so, do not overrite it if $overwrite is false */
+	 /* Does a term already exist on the ticket?  If so, do not overwrite it if $overwrite is false */
 	 if ( false === $overwrite ) {
 		 $existing_channel = wp_get_post_terms($ticket_id,'ticket_channel');
 		 if ( ! empty( $existing_channel ) ) {
@@ -386,7 +386,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		 }
 	 }	 
 
-	/*  get the term id because wp_set_object_terms require an id instead of just a string */
+	/* Get the term id because wp_set_object_terms require an id instead of just a string */
 	$arr_the_term_id = term_exists( $channel_term, 'ticket_channel' );
 
 	If ( $arr_the_term_id ) {
