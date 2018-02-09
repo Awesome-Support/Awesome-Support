@@ -53,7 +53,10 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 	 * Automatically set the ticket as processing if this is the first reply.
 	 */
 	if ( user_can( $current_user->ID, 'edit_ticket' ) && isset( $postarr['ID'] ) ) {
-
+		
+		
+		// @TODO:  Its possible that this entire section of code to set the $agent_replied flag might not be needed.
+		// We'll keep it for now but its not used in this function at this time.
 		$replies       = wpas_get_replies( intval( $postarr['ID'] ) );
 		$agent_replied = false;
 
@@ -68,7 +71,10 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 
 		}
 
-		if ( false === $agent_replied && ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) ) {
+		// @TODO: Its possible this if statement below might need an additional qualifier to see if $agent_replied = true.
+		// For now the ticket is going to IN PROCESS properly but if there is an issue later then using the additional 
+		// qualifier might be warranted.
+		if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
 			$_POST['post_status_override'] = 'processing';
 		}
 
