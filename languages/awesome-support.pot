@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-02-07 23:35-0600\n"
+"POT-Creation-Date: 2018-02-08 23:43-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1626,102 +1626,122 @@ msgid "Show Preferences Tab"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:235
-msgid "Toolbars"
+#: themes/default/partials/ticket-navigation.php:5
+msgid "Logout"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:237
-msgid "Control whether certain toolbars are visible"
+msgid "Logout Options"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:240
+msgid "Logout Redirect"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:243
+msgid ""
+"When the user clicks the logout button on an Awesome Support page, where "
+"should they be redirected to?  Enter the FULL url starting with http or "
+"https."
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:247
+msgid "Toolbars"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:249
+msgid "Control whether certain toolbars are visible"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:252
 msgid "Show Ticket Details Toolbar"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:244
+#: includes/admin/settings/settings-general.php:256
 msgid ""
 "Show the toolbar on the ticket detail screen when an agent is viewing the "
 "ticket?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:248
+#: includes/admin/settings/settings-general.php:260
 msgid "Plugin Pages"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:252
+#: includes/admin/settings/settings-general.php:264
 msgid "Ticket Submission"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:256
+#: includes/admin/settings/settings-general.php:268
 #, php-format
 msgid ""
 "The page used for ticket submission. This page should contain the shortcode "
 "%s"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:261
+#: includes/admin/settings/settings-general.php:273
 msgid "Tickets List"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:265
+#: includes/admin/settings/settings-general.php:277
 #, php-format
 msgid ""
 "The page that will list all tickets for a client. This page should contain "
 "the shortcode %s"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:271
+#: includes/admin/settings/settings-general.php:283
 msgid "Credit"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:275
+#: includes/admin/settings/settings-general.php:287
 msgid "Show Credit"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:278
+#: includes/admin/settings/settings-general.php:290
 msgid ""
 "Do you like this plugin? Please help us spread the word by displaying a "
 "credit link at the bottom of your ticket submission page."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:282
+#: includes/admin/settings/settings-general.php:294
 msgid "Admin Rating Request"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:285
+#: includes/admin/settings/settings-general.php:297
 msgid "Remove the rating request footer in the admin screen."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:306
+#: includes/admin/settings/settings-general.php:318
 msgid "Use Priority Field"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:309
+#: includes/admin/settings/settings-general.php:321
 msgid "Would you like to use the priority field in your tickets?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:314
+#: includes/admin/settings/settings-general.php:326
 msgid "Mandatory?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:317
+#: includes/admin/settings/settings-general.php:329
 msgid "Would you like to make the priority field mandatory in your tickets?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:322
+#: includes/admin/settings/settings-general.php:334
 msgid "Show On Front End?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:325
+#: includes/admin/settings/settings-general.php:337
 msgid ""
 "Would you like to show the field to the end user (unchecked restricts it to "
 "admin use only)?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:330
+#: includes/admin/settings/settings-general.php:342
 msgid "Show In Column List?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:333
+#: includes/admin/settings/settings-general.php:345
 msgid "Would you like to show the field in the ticket listing?"
 msgstr ""
 
@@ -1884,12 +1904,23 @@ msgid ""
 "option. You will then be able to add your products."
 msgstr ""
 
-#: includes/admin/settings/settings-products-management.php:54
+#: includes/admin/settings/settings-products-management.php:47
+msgid "Slug"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:50
+msgid ""
+"Enter the slug you would like to use for your product urls. If you change "
+"this, please to to the WordPress SETTINGS->PERMALINKS page and click the "
+"save button to force WP to update its configuration with your new value"
+msgstr ""
+
+#: includes/admin/settings/settings-products-management.php:62
 #, php-format
 msgid "Synchronize %s Products"
 msgstr ""
 
-#: includes/admin/settings/settings-products-management.php:57
+#: includes/admin/settings/settings-products-management.php:65
 #, php-format
 msgid ""
 "We have detected that you are using the e-commerce plugin %1$s. Would you "
@@ -1897,7 +1928,7 @@ msgid ""
 "Support?"
 msgstr ""
 
-#: includes/admin/settings/settings-products-management.php:63
+#: includes/admin/settings/settings-products-management.php:71
 #, php-format
 msgid ""
 "If you just disabled this option and want to remove the previously "
@@ -1905,27 +1936,27 @@ msgid ""
 "&laquo;Delete Products&raquo;</a>"
 msgstr ""
 
-#: includes/admin/settings/settings-products-management.php:83
+#: includes/admin/settings/settings-products-management.php:91
 msgid "Include Products"
 msgstr ""
 
-#: includes/admin/settings/settings-products-management.php:87
+#: includes/admin/settings/settings-products-management.php:95
 msgid ""
 "Which products do you want to synchronize with Awesome Support (leave blank "
 "for all products)"
 msgstr ""
 
-#: includes/admin/settings/settings-products-management.php:93
+#: includes/admin/settings/settings-products-management.php:101
 msgid "Exclude Products"
 msgstr ""
 
-#: includes/admin/settings/settings-products-management.php:97
+#: includes/admin/settings/settings-products-management.php:105
 msgid ""
 "Which products do you want to exclude from synchronization with Awesome "
 "Support (leave blank for no exclusion)"
 msgstr ""
 
-#: includes/admin/settings/settings-products-management.php:104
+#: includes/admin/settings/settings-products-management.php:112
 msgid ""
 "You cannot use the include and exclude options at the same time. Please use "
 "one or the other. You should use the option where you need to select the "
@@ -3677,10 +3708,6 @@ msgstr ""
 
 #: themes/default/partials/ticket-navigation.php:3
 msgid "Open a ticket"
-msgstr ""
-
-#: themes/default/partials/ticket-navigation.php:5
-msgid "Logout"
 msgstr ""
 
 #: themes/default/partials/ticket-origin.php:28
