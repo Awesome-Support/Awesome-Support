@@ -37,8 +37,10 @@
             "Gruntfile.js",
             "package.json",
             "/node_modules",
+			"/vendor-overrides",
+			"/dist",
             "/tests",
-            "!/vendor"
+            "/vendor"
         ]
     },
     "scripts": {
