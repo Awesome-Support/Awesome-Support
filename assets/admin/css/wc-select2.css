@@ -1,0 +1,22 @@
+/* 
+    Created on : Feb 11, 2018, 6:54:09 AM
+    Author     : Tahir Nazir
+*/
+
+
+.select2-container {
+        margin: 1px;
+}
+.select2-container--default .select2-selection--single {
+        border-radius: 0;
+        height: 28px;
+        margin: 0;
+}
+.select2-container .select2-selection--single .select2-selection__rendered {
+        padding-right: 20px;
+        line-height: 28px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 26px;
+    right: 1px;
+}

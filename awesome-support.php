@@ -448,6 +448,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( 'includes/compatibility/acf-pro.php' );
 				require( 'includes/compatibility/wpml.php' );
 				require( 'includes/compatibility/divi.php' );
+				require( 'includes/compatibility/wc.php' );
 
 			}
 
