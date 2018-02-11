@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'wp_enqueue_scripts', 'wpas_register_assets_front_end', 12 );
+add_action( 'wp_enqueue_scripts', 'wpas_register_assets_front_end', 5 );
 /**
  * Register all front-end assets
  *
