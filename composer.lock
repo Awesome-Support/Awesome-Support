@@ -7,21 +7,140 @@
     "content-hash": "af12a9c9d71f9e651d13ab0e62063ed9",
 	"hash": "af12a9c9d71f9e651d13ab0e62063ed9",	
     "packages": [
-        {
-            "name": "ericmann/wp-session-manager",
-            "version": "2.0.2",
+		{
+            "name": "defuse/php-encryption",
+            "version": "v2.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ericmann/wp-session-manager.git",
-                "reference": "8a4aacd25e4a89429e93a85df70a068052853cae"
+                "url": "https://github.com/defuse/php-encryption.git",
+                "reference": "5176f5abb38d3ea8a6e3ac6cd3bbb54d8185a689"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/8a4aacd25e4a89429e93a85df70a068052853cae",
-                "reference": "8a4aacd25e4a89429e93a85df70a068052853cae",
+                "url": "https://api.github.com/repos/defuse/php-encryption/zipball/5176f5abb38d3ea8a6e3ac6cd3bbb54d8185a689",
+                "reference": "5176f5abb38d3ea8a6e3ac6cd3bbb54d8185a689",
                 "shasum": ""
             },
+            "require": {
+                "ext-openssl": "*",
+                "paragonie/random_compat": "~2.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "nikic/php-parser": "^2.0|^3.0",
+                "phpunit/phpunit": "^4|^5"
+            },
+            "bin": [
+                "bin/generate-defuse-key"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Defuse\\Crypto\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Hornby",
+                    "email": "taylor@defuse.ca",
+                    "homepage": "https://defuse.ca/"
+                },
+                {
+                    "name": "Scott Arciszewski",
+                    "email": "info@paragonie.com",
+                    "homepage": "https://paragonie.com"
+                }
+            ],
+            "description": "Secure PHP Encryption Library",
+            "keywords": [
+                "aes",
+                "authenticated encryption",
+                "cipher",
+                "crypto",
+                "cryptography",
+                "encrypt",
+                "encryption",
+                "openssl",
+                "security",
+                "symmetric key cryptography"
+            ],
+            "time": "2017-05-18T21:28:48+00:00"
+        },
+        {
+            "name": "ericmann/sessionz",
+            "version": "0.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ericmann/sessionz.git",
+                "reference": "b1a278c54aa13035ed0ca0c297fb117d04036d9b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ericmann/sessionz/zipball/b1a278c54aa13035ed0ca0c297fb117d04036d9b",
+                "reference": "b1a278c54aa13035ed0ca0c297fb117d04036d9b",
+                "shasum": ""
+            },
+            "require": {
+                "defuse/php-encryption": "^2.0",
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.6",
+                "satooshi/php-coveralls": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EAMann\\Sessionz\\": "php/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Eric Mann",
+                    "email": "eric@eamann.com"
+                }
+            ],
+            "description": "PHP Session Manager Interface",
+            "time": "2018-01-16T15:06:12+00:00"
+        },
+        {
+            "name": "ericmann/wp-session-manager",
+            "version": "3.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ericmann/wp-session-manager.git",
+                "reference": "f8820e0bffd7f63fb8aa91284105201265310896"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/f8820e0bffd7f63fb8aa91284105201265310896",
+                "reference": "f8820e0bffd7f63fb8aa91284105201265310896",
+                "shasum": ""
+            },
+            "require": {
+                "ericmann/sessionz": "^0.3",
+                "php": ">=5.6"
+            },
             "type": "wordpress-plugin",
+            "autoload": {
+                "classmap": [
+                    "includes/SessionHandler.php",
+                    "includes/DatabaseHandler.php",
+                    "includes/Option.php",
+                    "includes/OptionsHandler.php"
+                ],
+                "files": [
+                    "includes/deprecated.php"
+                ]
+            },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPLv2.0+"
@@ -39,7 +158,7 @@
             "keywords": [
                 "session"
             ],
-            "time": "2017-04-26T13:27:37+00:00"
+            "time": "2018-01-19T17:16:16+00:00"
         },
         {
             "name": "gambitph/titan-framework",
