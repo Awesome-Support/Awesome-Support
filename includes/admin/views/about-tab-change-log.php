@@ -1,17 +1,79 @@
-<h3>Maintenance and Security Releases</h3>
-<p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
-<p><b>Version 4.4.0</b> added a new button to the editor to make it easier to identify and use email template tags, upgraded the session manager library to 2.0, provides an option to change the location of our log files and fixed a couple of pesky bugs.</p>
-<p><b>Version 4.3.5</b> fixed a color-picker issue that popped up on WP 4.9 and added a compatiblity layer for the DIVI theme.</p>
-<p><b>Version 4.3.4</b> removed some old javascript queuing calls and fixed a few incorrect text-domain references.</p>
-<p><b>Version 4.3.3</b> fixed issues with logging, taxonomy custom fields and added a few new filters for use by developers.   </p>
-<p><b>Version 4.3.2</b> addressed some urgent security issues, tweaked our ongoing implementation of bootstrap 4 and addressed some minor grammar issues.  </p>
-<p><b>Version 4.3.1</b> fixed some urgent issues related to the changes we made for handling last reply dates in 4.3.0, added quick-start instructions and addressed some issues related to our ongoing implementation of bootstrap 4.  </p>
-<p><b>Version 4.3.0</b> added new attributes to custom fields to take advantage of bootstrap 4 and fixed an urgent issue related to some add-ons.</p>
-<p><b>Version 4.2.0</b> added options and related developer filters for cleaning up session transients, improved ticket filtering speed for certain filters and added options to control viewing tabs at the top of the ticket list among other fixes and improvements.</p>
 
 <div class="changelog">
 	<div class="row">
-		<div>			
+	<div>
+	<div class="about-body">
+		<h1>What's New In 5.0</h1>
+		<h3>5.0 Introduces dozens of new changes, tweaks and fixes! Among them are the following:</h3>
+		<ul style="padding-left: 3em; list-style-type: disc;">
+			<li>UI and UX Changes </li>
+			<li>User Registration Enhancements </li>
+			<li>GDPR Related Enhancements </li>
+			<li>Email Template Tags Usability Enhancements </li>
+			<li>New System Configuration Options </li>
+			<li>Internal Architecture and Code Changes  </li>
+			<li>Bug Fixes  </li>	
+		</ul>
+	</div>		
+	</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">			
+			<div class="about-body">
+				<h2>UI and UX Changes: New Ticket Toolbar</h3>
+				<img src="<?php echo WPAS_URL; ?>assets/admin/images/v500/AS-440-ReleaseNotes-01.jpg" alt="UI and UX Changes">
+				<p><b>New:</b> We Introduced an icon toolbar at the top of the individual ticket view in the backend.</p>				
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<div class="about-body">
+				<h2>UI and UX Changes: New Ticket Tabs</h3>
+				<img src="<?php echo WPAS_URL; ?>assets/admin/images/v500/AS-440-ReleaseNotes-02.jpg" alt="Metaboxes closer to ticket as tabs">
+				<p><b>New:</b> We moved some of the metaboxes closer to the ticket as tabs. In particular you no longer have to scroll down to view custom fields – they are now right next to the ticket info, more easily accessible via a tab.</p>
+			</div>
+		</div>
+		
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<div class="about-body">
+				<h2>UI and UX Changes: New Reply Icons</h3>
+				<img src="<?php echo WPAS_URL; ?>assets/admin/images/v500/AS-440-ReleaseNotes-04.jpg" alt="Reply icons instead of links on hover">
+				<p><b>New:</b> Hovering over a reply will show icons instead of links. This helps when you have a lot of add-ons installed where the links were just messy.</p>
+				
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<div class="about-body">
+				<h2>UI and UX Changes: New Reply Tabs</h3>
+				<img src="<?php echo WPAS_URL; ?>assets/admin/images/v500/AS-440-ReleaseNotes-05.jpg" alt="New reply area tabs">
+				<p><b>New:</b> Attachments, FAQ and similar tabs are now right next to the reply in tabs so you don’t have to scroll down to get to them.</p>
+			</div>
+		</div>			
+	</div>
+	
+	<hr />
+	<div class="about-body">
+		<h1>New Custom Fields Layout</h1>
+		<br />
+		<img src="<?php echo WPAS_URL; ?>assets/admin/images/v500/AS-440-ReleaseNotes-03.jpg" alt="New Custom Fields Layout">
+		<p><b>Multi-column custom fields layout:</b> Version 5 introduces a new custom fields layout tab on the back-end. On large screens you get three columns for the fields. On medium sized screens you get two columns and on small screens you go back to one column.</p>
+	</div>
+			
+
+	<hr />
+	<div>	
+		<h1>Minor Releases Between 4.0.0 and 5.0.0</h1>
+		<p><b>Version 4.3.5</b> fixed a color-picker issue that popped up on WP 4.9 and added a compatiblity layer for the DIVI theme.</p>
+		<p><b>Version 4.3.4</b> removed some old javascript queuing calls and fixed a few incorrect text-domain references.</p>
+		<p><b>Version 4.3.3</b> fixed issues with logging, taxonomy custom fields and added a few new filters for use by developers.   </p>
+		<p><b>Version 4.3.2</b> addressed some urgent security issues, tweaked our ongoing implementation of bootstrap 4 and addressed some minor grammar issues.  </p>
+		<p><b>Version 4.3.1</b> fixed some urgent issues related to the changes we made for handling last reply dates in 4.3.0, added quick-start instructions and addressed some issues related to our ongoing implementation of bootstrap 4.  </p>
+		<p><b>Version 4.3.0</b> added new attributes to custom fields to take advantage of bootstrap 4 and fixed an urgent issue related to some add-ons.</p>
+		<p><b>Version 4.2.0</b> added options and related developer filters for cleaning up session transients, improved ticket filtering speed for certain filters and added options to control viewing tabs at the top of the ticket list among other fixes and improvements.</p>	
+	</div>	
+	<hr />
+	
+	<div class="row">
+		<div>
 			<div class="about-body">
 				<h1>What's New In 4.0</h1>
 				<h2>Improved Ticket List And Ticket Management</h2>
