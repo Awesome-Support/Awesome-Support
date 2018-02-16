@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 
-add_filter( 'wpas_admin_tabs_after_reply_wysiwyg', 'wpas_add_reply_form_tab' , 10, 1 );
+add_filter( 'wpas_admin_tabs_after_reply_wysiwyg', 'wpas_add_reply_form_tab' , 8, 1 );
 add_filter( 'wpas_admin_tabs_after_reply_wysiwyg_reply_form_content','wpas_reply_form_tab_content' , 11, 1 );
 
 /**
