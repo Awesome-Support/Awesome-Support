@@ -48,6 +48,10 @@ function wpas_user_profile_get_contact_info( $ticket_id ) {
  */
 function wpas_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
 
+	if ( !$user ) {
+		return;
+	}
+
 	switch ( $info ) {
 
 		case 'name':
