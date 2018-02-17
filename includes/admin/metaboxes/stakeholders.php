@@ -20,13 +20,18 @@ if ( isset( $post ) && is_a( $post, 'WP_Post' ) && 'auto-draft' !== $post->post_
 
 	// Client
 	$client        = get_userdata( $post->post_author );
-	$client_id     = $client->ID;
-	$client_name   = $client->data->display_name;
+	$client_id     = !empty($client) ? $client->ID : 0;
+	$client_name   = !empty($client) ? $client->data->display_name : '';
+	$client_link   = '';
+	$client_option = '';
+
+	if ( $client_id !== 0 && $client_name !== '' ) {
 	$client_option = "<option value='$client_id' selected='selected'>$client_name</option>";
 	$client_link   = esc_url( admin_url( add_query_arg( array(
 		'post_type' => 'ticket',
 		'author'    => $client_id
 	), 'edit.php' ) ) );
+	}
 
 	// Staff
 	$staff_id = wpas_get_cf_value( 'assignee', get_the_ID() );

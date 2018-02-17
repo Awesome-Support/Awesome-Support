@@ -63,9 +63,11 @@ $by_status['closed'] = $closed;
 	do_action( 'wpas_user_profile_metabox_before', $user, $post ); ?>
 
 	<div class="wpas-up-contact-details wpas-cf">
+		<?php if ( $user ): ?>
 		<a href="<?php echo esc_url( admin_url( 'user-edit.php?user_id=' . $user->ID ) ); ?>">
 			<?php echo get_avatar( $user->ID, '80', 'mm', $user->data->display_name, array( 'class' => 'wpas-up-contact-img' ) ); ?>
 		</a>
+		<?php endif; ?>
 		<?php
 		$contact_fields = wpas_user_profile_get_contact_info( $post->ID );
 
