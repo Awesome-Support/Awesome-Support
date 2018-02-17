@@ -26,11 +26,11 @@ if ( isset( $post ) && is_a( $post, 'WP_Post' ) && 'auto-draft' !== $post->post_
 	$client_option = '';
 
 	if ( $client_id !== 0 && $client_name !== '' ) {
-	$client_option = "<option value='$client_id' selected='selected'>$client_name</option>";
-	$client_link   = esc_url( admin_url( add_query_arg( array(
-		'post_type' => 'ticket',
-		'author'    => $client_id
-	), 'edit.php' ) ) );
+		$client_option = "<option value='$client_id' selected='selected'>$client_name</option>";
+		$client_link   = esc_url( admin_url( add_query_arg( array(
+			'post_type' => 'ticket',
+			'author'    => $client_id
+		), 'edit.php' ) ) );
 	}
 
 	// Staff
