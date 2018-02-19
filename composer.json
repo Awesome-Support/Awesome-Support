@@ -11,7 +11,7 @@
         "tickets"
     ],
     "homepage": "https://getawesomesupport.com",
-    "license": "GNU GPL",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Awesome Support",
