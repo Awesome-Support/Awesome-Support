@@ -447,6 +447,23 @@
                 arrange_ticket_metaboxes();
         }
         
+        /* Make sure we activate error tab once ticket submit button is pressed, so agent can see error message */
+        if( $( '#wpas-mb-ticket-main-tabs' ).length > 0 ) {
+                
+                $('form[name=post] #publishing-action').click( function(e) {
+                        if( !$('form[name=post]').get(0).checkValidity() ) {
+
+                                $('#wpas_admin_tabs_ticket_main .wpas_admin_tab_content').find('input, select, textarea').each( function() {
+                                        if( !$(this).get(0).checkValidity() ) {
+                                                var error_tab = $(this).closest('.wpas_admin_tab_content').attr('id');
+                                                $('#wpas_admin_tabs_ticket_main li[rel='+error_tab+']').trigger('click');
+                                        }
+                                })
+                        }
+                        
+                });
+        }
+        
 
     });
 
