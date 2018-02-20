@@ -61,6 +61,9 @@ function wpas_metaboxes() {
 		
 	/* Metabox to add main tabs */
 	add_meta_box( 'wpas-mb-ticket-main-tabs', __( 'Main Tabs', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'ticket-main-tabs' ) );
+	
+	/* Add a dummy metabox to force gutenberg to render in old-style mode... */
+	add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version', '__block_editor_compatible_meta_box' => wpas_gutenberg_meta_box_compatible() ) );	
 }
 
 /**
