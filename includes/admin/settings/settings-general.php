@@ -60,12 +60,19 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'How many replies should be displayed per page on a ticket details screen?', 'awesome-support' )
 				),
 				array(
-					'name'    => __( 'Hide Closed', 'awesome-support' ),
+					'name'    => __( 'Hide Closed (Admin)', 'awesome-support' ),
 					'id'      => 'hide_closed',
 					'type'    => 'checkbox',
 					'desc'    => __( 'Only show open tickets when agents click the "All Tickets" link.', 'awesome-support' ),
 					'default' => true
 				),
+				array(
+					'name'    => __( 'Hide Closed (Front End)', 'awesome-support' ),
+					'id'      => 'hide_closed_fe',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Only show open tickets to clients on the front-end.', 'awesome-support' ),
+					'default' => false
+				),				
 				array(
 					'name'    => __( 'Show Count', 'awesome-support' ),
 					'id'      => 'show_count',
