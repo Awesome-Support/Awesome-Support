@@ -183,7 +183,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			self::$instance->includes();
 			self::$instance->session = new WPAS_Session();
 			self::$instance->custom_fields = new WPAS_Custom_Fields;
-			self::$instance->maybe_setup();
+			self::$instance->maybe_setup();			
 
 			if ( is_admin() ) {
 
@@ -208,6 +208,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Titan', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( self::$instance, 'awesome_support_start_plugin_tracking' ), 11, 0);
 
 				}
 
@@ -501,7 +502,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				
 				/* Load Gutenberg related files */
 				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg.php' );
-
+				
+				/* Wisdom Tracking */
+				require( WPAS_PATH . '/tracking/class-plugin-usage-tracker.php' );
 			}
 
 		}
@@ -602,6 +605,27 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				rdnc_add_notification( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
 			}
 		}
+		
+		/**
+		 * Start application statistics tracking
+		 *
+		 * Use the WISDOM Tracking plugin to track
+		 * application usage.
+		 * https://wisdomplugin.com/support/#getting-started
+		 *
+		 * @since  4.4.0
+		 * @return void
+		 */		
+		public function awesome_support_start_plugin_tracking() {
+			$wisdom = new Plugin_Usage_Tracker(
+				__FILE__,
+				'https://tracking.getawesomesupport.com',
+				array(),
+				true,
+				true,
+				2
+			);
+		}		
 
 	}
 
