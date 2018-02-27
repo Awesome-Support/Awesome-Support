@@ -208,7 +208,11 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Titan', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );
+					
+					/* User stats tracking from the Wisdom plugin */
 					add_action( 'plugins_loaded', array( self::$instance, 'awesome_support_start_plugin_tracking' ), 11, 0);
+					add_filter( 'wisdom_notice_text_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_notification_text' ) ); 
+					add_filter( 'wisdom_delay_notification_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_delay_notification' ) );
 
 				}
 
@@ -613,6 +617,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * application usage.
 		 * https://wisdomplugin.com/support/#getting-started
 		 *
+		 * Filter: plugins_loaded
+		 *
 		 * @since  4.4.0
 		 * @return void
 		 */		
@@ -623,10 +629,53 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				array(),
 				true,
 				true,
-				2
+				1
 			);
-		}		
-
+		}
+		
+		/**
+		 * Application statistics tracking opt-in text
+		 *
+		 * We use the WISDOM Tracking plugin to track
+		 * application usage.  This allows us to set the 
+		 * opt-in text shown to the user when they activate the plugin.
+		 *
+		 * https://wisdomplugin.com/support/#getting-started
+		 *
+		 * Filter: wisdom_notice_text_
+		 *
+		 * @param text default notice text.
+		 *
+		 * @since  4.4.0
+		 *
+		 * @return text the notice text to be shown to the user
+		 */		
+		function awesome_support_tracking_notification_text( $notice_text ) {
+			$notice_text = __( 'Thank you for installing our product. We’d like your permission to track its usage on your site and subscribe you to our newsletter. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. Tracking is completely optional.  To show our appreciation for helping make Awesome Support better, when you opt-in we will send you a discount code good towards your next purchase. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
+			return $notice_text;
+		}
+		
+		/**
+		 * Application statistics tracking opt-in text
+		 *
+		 * We use the WISDOM Tracking plugin to track
+		 * application usage.  This allows us to set the 
+		 * time delay before the opt-in notice shows up.
+		 *
+		 * https://wisdomplugin.com/support/#getting-started
+		 *
+		 * Filter: wisdom_delay_notification_
+		 *
+		 * @param text default notice text.
+		 *
+		 * @since  4.4.0
+		 *
+		 * @return text the notice text to be shown to the user
+		 */		
+		function awesome_support_tracking_delay_notification( $delay ) {
+			return 900; // 15 mins
+		}
+	
 	}
 
 endif;

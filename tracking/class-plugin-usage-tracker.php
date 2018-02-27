@@ -2,7 +2,7 @@
 /**
  * This is the class that sends all the data back to the home site
  * It also handles opting in and deactivation
- * @version 1.2.2
+ * @version 1.2.4
  */
 
 // Exit if accessed directly
@@ -14,7 +14,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 
 	class Plugin_Usage_Tracker {
 
-		private $wisdom_version = '1.2.2';
+		private $wisdom_version = '1.2.4';
 		private $home_url = '';
 		private $plugin_file = '';
 		private $plugin_name = '';
@@ -99,13 +99,16 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 				$this->do_tracking();
 			}
 
-			// Hook our do_tracking function to the daily action
+			// Hook our do_tracking function to the weekly action
+			add_filter( 'cron_schedules', array( $this, 'schedule_weekly_event' ) );
+			// It's called weekly, but in fact it could be daily, weekly or monthly
 			add_action( 'put_do_weekly_action', array( $this, 'do_tracking' ) );
 
 			// Use this action for local testing
 			// add_action( 'admin_init', array( $this, 'do_tracking' ) );
 
 			// Display the admin notice on activation
+			add_action( 'admin_init', array( $this, 'set_notification_time' ) );
 			add_action( 'admin_notices', array( $this, 'optin_notice' ) );
 			add_action( 'admin_notices', array( $this, 'marketing_notice' ) );
 
@@ -124,11 +127,39 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 		 * @since 1.0.0
 		 */
 		public function schedule_tracking() {
-			// For historical reasons, this is called 'weekly' but is in fact daily
 			if ( ! wp_next_scheduled( 'put_do_weekly_action' ) ) {
-				wp_schedule_event( time(), 'daily', 'put_do_weekly_action' );
+				$schedule = $this->get_schedule();
+				wp_schedule_event( time(), $schedule, 'put_do_weekly_action' );
 			}
 			$this->do_tracking( true );
+		}
+
+		/**
+		 * Create weekly schedule
+		 *
+		 * @since 1.2.3
+		 */
+		public function schedule_weekly_event( $schedules ) {
+			$schedules['weekly'] = array(
+				'interval'	=> 604800,
+				'display'		=> __( 'Once Weekly' )
+			);
+			$schedules['monthly'] = array(
+				'interval'	=> 2635200,
+				'display'		=> __( 'Once Monthly' )
+			);
+			return $schedules;
+		}
+
+		/**
+		 * Get how frequently data is tracked back
+		 *
+		 * @since 1.2.3
+		 */
+		public function get_schedule() {
+			// Could be daily, weekly or monthly
+			$schedule = apply_filters( 'wisdom_filter_schedule_' . $this->plugin_name, 'monthly' );
+			return $schedule;
 		}
 
 		/**
@@ -520,8 +551,16 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 				// If we haven't set a time for this plugin yet, then we must track it
 				return true;
 			} else {
-				// If the time is set, let's see if it's more than a day ago
-				if( $track_times[$this->plugin_name] < strtotime( '-1 day' ) ) {
+				// If the time is set, let's get our schedule and check if it's time to track
+				$schedule = $this->get_schedule();
+				if( $schedule == 'daily' ) {
+					$period = 'day';
+				} else if( $schedule == 'weekly' ) {
+					$period = 'week';
+				} else {
+					$period = 'month';
+				}
+				if( $track_times[$this->plugin_name] < strtotime( '-1 ' . $period ) ) {
 					return true;
 				}
 			}
@@ -538,6 +577,41 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 			// Set different times according to plugin, in case we are tracking multiple plugins
 			$track_times[$this->plugin_name] = time();
 			update_option( 'wisdom_last_track_time', $track_times );
+		}
+
+		/**
+		 * Set the time when we can display the opt-in notification
+		 * Will display now unless filtered
+		 * @since 1.2.4
+		 */
+		public function set_notification_time() {
+			$notification_times = get_option( 'wisdom_notification_times', array() );
+			// Set different times according to plugin, in case we are tracking multiple plugins
+			if( ! isset( $notification_times[$this->plugin_name] ) ) {
+				$delay_notification = apply_filters( 'wisdom_delay_notification_' . $this->plugin_name, 0 );
+				// We can delay the notification time
+				$notification_time = time() + absint( $delay_notification );
+				$notification_times[$this->plugin_name] = $notification_time;
+				update_option( 'wisdom_notification_times', $notification_times );
+			}
+		}
+
+		/**
+		 * Get whether it's time to display the notification
+		 * @since 1.2.4
+		 * @return Boolean
+		 */
+		public function get_is_notification_time() {
+			$notification_times = get_option( 'wisdom_notification_times', array() );
+			$time = time();
+			// Set different times according to plugin, in case we are tracking multiple plugins
+			if( isset( $notification_times[$this->plugin_name] ) ) {
+				$notification_time = $notification_times[$this->plugin_name];
+				if( $time >= $notification_time ) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		/**
@@ -671,6 +745,12 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 				$this->update_block_notice( $plugin );
 			}
 
+			// Is it time to display the notification?
+			$is_time = $this->get_is_notification_time();
+			if( ! $is_time ) {
+				return false;
+			}
+
 			// Check whether to block the notice, e.g. because we're in a local environment
 			// wisdom_block_notice works the same as wisdom_allow_tracking, an array of plugin names
 			$block_notice = get_option( 'wisdom_block_notice' );
@@ -685,7 +765,12 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 
 			// @credit EDD
 			// Don't bother asking user to opt in if they're in local dev
-			if ( stristr( network_site_url( '/' ), 'dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
+			$is_local = false;
+			if( stristr( network_site_url( '/' ), '.dev' ) !== false || stristr( network_site_url( '/' ), 'localhost' ) !== false || stristr( network_site_url( '/' ), ':8888' ) !== false ) {
+				$is_local = true;
+			}
+			$is_local = apply_filters( 'wisdom_is_local_' . $this->plugin_name, $is_local );
+			if ( $is_local ) {
 				$this->update_block_notice();
 			} else {
 
