@@ -488,6 +488,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/functions-admin-actions.php' );
 				require( WPAS_PATH . 'includes/admin/functions-misc.php' );
 				require( WPAS_PATH . 'includes/admin/functions-editor.php' );
+				require( WPAS_PATH . 'includes/admin/functions-agent-chat.php' );				
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
@@ -503,6 +504,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-products-management.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-integration.php' );
 				
 				/* Load Gutenberg related files */
 				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg.php' );
