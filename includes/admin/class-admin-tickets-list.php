@@ -933,7 +933,7 @@ SQL;
 
 		ob_start();
 
-		echo '<H2>' . __( 'Awesome Support Core Documentation', 'awesome-support' ) . '</H2>' . '<br />';
+		echo '<h2>' . __( 'Awesome Support Core Documentation', 'awesome-support' ) . '</h2>' . '<br />';
 		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/post-installation-need-know-quick-start/">' . __( '1. User Guide', 'awesome-support' ) . '</a>' . '<br />';
 		echo __( 'The end user guide covers topics such as instructions for installation, entering tickets, adding agents, navigation, replying to and closing tickets and more.', 'awesome-support' ) . '<br /><br />';
 
@@ -948,14 +948,20 @@ SQL;
 
 		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/custom-fields/">' . __( '5. Customization', 'awesome-support' ) . '</a>' . '<br />';
 		echo __( 'Need to change the look of your ticket pages?  Maybe add some custom fields? Then this is the guide you need!', 'awesome-support' ) . '<br /><br />';
-
-		echo '<H2>' . __( 'Awesome Support Add-ons and Extensions Documentation', 'awesome-support' ) . '</H2>' . '<br />';
+		
+		echo '<h2>' . __( 'Awesome Support Add-ons and Extensions Documentation', 'awesome-support' ) . '</h2>' . '<br />';
 		echo '<a href = "https://getawesomesupport.com/documentation-new/">' . __( '1. All Extensions', 'awesome-support' ) . '</a>' . '<br />';
-		echo __( 'Links to documentation for every single extension or add-on.', 'awesome-support' ) . '<br /><br />';
-
+		echo __( 'Links to documentation for all extensions and add-ons.', 'awesome-support' ) . '<br /><br />';
+		
 		echo '<a href = "http://restapidocs.getawesomesupport.com/">' . __( '2. REST API', 'awesome-support' ) . '</a>' . '<br />';
 		echo __( 'Documentation for the REST API.', 'awesome-support' ) . '<br /><br />';
+		
+		echo '<h2>' . __( 'Import Tickets (Zendesk, Ticksy, Helpscout)', 'awesome-support' ) . '</h2>' . '<br />';		
+		echo '<a href = "https://getawesomesupport.com/addons/awesome-support-importer/">' . __( '1. Install The FREE Importer', 'awesome-support' ) . '</a>' . '<br />';
+		echo __( 'The link above will direct you to the page with the importer add-on', 'awesome-support' ) . '<br /><br />';		
 
+		echo '<a href = "https://getawesomesupport.com/documentation/importer/installation/">' . __( '2. Importer Documentation', 'awesome-support' ) . '</a>' . '<br />';		
+		echo __( 'Read the documentation to learn how to import tickets from Zendesk, Ticksy and Helpscout', 'awesome-support' ) . '<br /><br />';		
 
 		$content = ob_get_clean();
 
