@@ -653,7 +653,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return text the notice text to be shown to the user
 		 */		
 		function awesome_support_tracking_notification_text( $notice_text ) {
-			$notice_text = __( 'Thank you for installing our product. We’d like your permission to track its usage on your site and subscribe you to our newsletter. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. Tracking is completely optional.  To show our appreciation for helping make Awesome Support better, when you opt-in we will send you a discount code good towards your next purchase. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
+			$notice_text = __( 'Thank you for installing our product. We’d like your permission to track its usage on your site and subscribe you to our newsletter. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
 			return $notice_text;
 		}
 		
