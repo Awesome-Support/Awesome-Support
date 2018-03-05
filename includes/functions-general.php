@@ -1296,7 +1296,7 @@ function wpas_is_support_priority_active() {
  * @return boolean
  */
  function wpas_is_agent() {
-	 return current_user_can( 'edit_ticket' ) ;
+	return current_user_can( 'edit_ticket' ) ;
  }
  
  /**
@@ -1308,5 +1308,129 @@ function wpas_is_support_priority_active() {
  * @return boolean
  */
  function wpas_is_asadmin() {
-	 return ( current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
+	return ( current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
  }
+ 
+
+ /**
+ * Returns the role of the current logged in user.
+ *
+ * Returns FALSE if user is not logged in.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+function wpas_get_current_user_role() {
+	
+	if( is_user_logged_in() ) {
+		
+		$user = wp_get_current_user();
+		$role = ( array ) $user->roles;
+		return $role[0];
+		
+	} else {
+		
+		return false;
+		
+	}
+ }
+ 
+ /**
+ * Returns ALL the roles of the current logged in user.
+ *
+ * This is sometimes needed when using a plugin like USER ROLE EDITOR 
+ * that can assign multiple roles to a user.
+ *
+ * Returns FALSE if user is not logged in.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+function wpas_get_current_user_roles() {
+	
+	if( is_user_logged_in() ) {
+		
+		$user = wp_get_current_user();
+		$role = ( array ) $user->roles;
+		return $role;
+		
+	} else {
+		
+		return false;
+		
+	}
+ }
+ 
+ /**
+ * Checks to see if a role is in a list of roles.
+ *
+ * Returns true if $role is in $role_list.
+ * otherwise returns false.
+ *
+ * $role_list is a comma separate list of values.
+ *
+ * Since all parameters are strings this could be a generic search for a string in a comma separated list of strings...
+ *
+ * @since 4.4.0
+ *
+ * @param string $role 		The name of the role to search for
+ * @param string $role_list	The list of roles to search in - comma separated values.
+ *
+ * @return boolean
+ */
+ function wpas_role_in_list( $role, $role_list ) {
+	 
+	$roles = explode( ',', $role_list ) ;
+		
+	if ( empty( $roles) ) return false ;  // no roles listed so return false - row is not in the list ;
+			
+	if ( in_array( $role, $roles, true ) ) {
+		return true ;
+	} else {
+		return false ;
+	}
+	 
+ }
+ 
+ /**
+ * Checks to see if the current user's role is in a list of roles.
+ *
+ * Returns true if the current user's role is in $role_list.
+ * otherwise returns false.
+ *
+ * $role_list is a comma separate list of values.
+ *
+ *
+ * @since 4.4.0
+ *
+ * @param string $role_list	The list of roles to search in - comma separated values.
+ *
+ * @return boolean
+ */
+ function wpas_current_role_in_list( $role_list ) {
+	 
+	 // If list of roles is empty for some reason return false
+	 if ( true === empty( $role_list ) ) {
+		 return false ;
+	 }
+	 
+	$current_roles = wpas_get_current_user_roles();  // note that we are expect an array of roles.
+	
+	if ( empty( $current_roles ) ) return false ;  // user not logged in for some reason so return false ;
+	
+	foreach ( $current_roles as $current_role ) {
+		
+		if ( true === wpas_role_in_list( $current_role, $role_list ) ) {
+			// role found so break prematurely and just return;
+			return true ;
+		}
+		
+	}
+	
+	return false ;
+	 
+	 
+ }
+ 

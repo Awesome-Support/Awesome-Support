@@ -22,16 +22,15 @@ add_filter( 'wpas_admin_tabs_ticket_main', 'wpas_ticket_main_tabs' ); // Registe
  */
 function wpas_ticket_main_tabs( $tabs ) {
 	
-	
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
 	
 	$tabs['ticket']	= __( 'Ticket' , 'awesome-support' );
 	
-	if ( WPAS()->custom_fields->have_custom_fields() ) {
+	if ( wpas_can_view_custom_field_tab() && WPAS()->custom_fields->have_custom_fields() ) {
 		$tabs['custom_fields'] = __( 'Custom Fields' , 'awesome-support' );
 	}
 	
-	if (  ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) or ( isset( $options['show_third_party_fields'] ) && true === boolval( $options['show_third_party_fields'] ) ) ) {
+	if (  wpas_can_view_ai_tab() ) {
 		$tabs['ai_parties'] = __( 'Additional Interested Parties', 'awesome-support' );
 	}
 	
@@ -160,6 +159,47 @@ function wpas_time_tracking_main_tab_content( $content ) {
 	$content = ob_get_clean();
 	return $content;
 }
+
+/**
+ * Return whether or not the logged in user can view the custom fields tab
+ * 
+ * @return boolean
+ */
+function wpas_can_view_custom_field_tab() {
+	if ( wpas_current_role_in_list( wpas_get_option( 'hide_cf_tab_roles' ) ) ) {
+		return false ;
+	} else {
+		return true ;
+	}
+}
+
+/**
+ * Return whether or not the logged in user can view the additional interested parties tab
+ * 
+ * @return boolean
+ */
+function wpas_can_view_ai_tab() {
+	if ( wpas_current_role_in_list( wpas_get_option( 'hide_ai_tab_roles' ) ) ) {
+		
+		return false ;	
+		
+	} else {
+
+		$show_multiple_agents_per_ticket = boolval( wpas_get_option( 'multiple_agents_per_ticket', false ) );
+		$show_third_party_fields = boolval( wpas_get_option( 'show_third_party_fields', false ) );
+		
+		if ( true === $show_multiple_agents_per_ticket or true === $show_third_party_fields ) {
+			
+			return true ;		
+			
+		} else {
+			
+			return false ;		
+			
+		}
+	}
+}
+
 
 /**
  * Print main tabs in ticket edit page
