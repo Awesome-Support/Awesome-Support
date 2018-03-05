@@ -62,6 +62,14 @@ function wpas_system_tools() {
 			wpas_upgrade_406();
 			break ;
 			
+		case 'rerun_400_to_440_conversion':
+			wpas_upgrade_440();
+			break;
+
+		case 'rerun_400_to_500_conversion':
+			wpas_upgrade_500();
+			break;			
+			
 	}
 
 	do_action('execute_additional_tools',sanitize_text_field( $_GET['tool'] ));
