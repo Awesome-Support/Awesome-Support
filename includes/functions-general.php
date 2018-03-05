@@ -1296,7 +1296,7 @@ function wpas_is_support_priority_active() {
  * @return boolean
  */
  function wpas_is_agent() {
-	 return current_user_can( 'edit_ticket' ) ;
+	return current_user_can( 'edit_ticket' ) ;
  }
  
  /**
@@ -1308,5 +1308,30 @@ function wpas_is_support_priority_active() {
  * @return boolean
  */
  function wpas_is_asadmin() {
-	 return ( current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
+	return ( current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
+ }
+ 
+
+ /**
+ * Returns the role of the current logged in user.
+ *
+ * Returns FALSE if user is not logged in.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+function wpas_get_current_user_role() {
+	
+	if( is_user_logged_in() ) {
+		
+		$user = wp_get_current_user();
+		$role = ( array ) $user->roles;
+		return $role[0];
+		
+	} else {
+		
+		return false;
+		
+	}
  }
