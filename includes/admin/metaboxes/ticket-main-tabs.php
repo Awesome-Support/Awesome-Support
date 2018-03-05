@@ -27,7 +27,7 @@ function wpas_ticket_main_tabs( $tabs ) {
 	
 	$tabs['ticket']	= __( 'Ticket' , 'awesome-support' );
 	
-	if ( WPAS()->custom_fields->have_custom_fields() ) {
+	if ( wpas_can_view_custom_field_tab() && WPAS()->custom_fields->have_custom_fields() ) {
 		$tabs['custom_fields'] = __( 'Custom Fields' , 'awesome-support' );
 	}
 	
@@ -159,6 +159,14 @@ function wpas_time_tracking_main_tab_content( $content ) {
 	
 	$content = ob_get_clean();
 	return $content;
+}
+
+function wpas_can_view_custom_field_tab() {
+	if ( wpas_current_role_in_list( wpas_get_option( 'hide_cf_tab_roles' ) ) ) {
+		return false ;
+	} else {
+		return true ;
+	}
 }
 
 /**
