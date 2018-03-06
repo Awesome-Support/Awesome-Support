@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-03-05 05:20-0600\n"
+"POT-Creation-Date: 2018-03-05 23:57-0600\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,11 +39,15 @@ msgstr ""
 msgid "Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href=\"%s\" class=\"thickbox\">install the production version</a> of this plugin instead."
 msgstr ""
 
-#: awesome-support.php:234 awesome-support.php:245
+#: awesome-support.php:239 awesome-support.php:250
 #: includes/admin/functions-notices.php:131
 #: includes/class-remote-notification-client.php:126
 #: includes/class-remote-notification-client.php:137
 msgid "Cheatin&#8217; huh?"
+msgstr ""
+
+#: awesome-support.php:656
+msgid "Thank you for installing our product. We’d like your permission to track its usage on your site and subscribe you to our newsletter. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources."
 msgstr ""
 
 #: includes/admin/class-admin-help.php:61
@@ -531,35 +535,35 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:41
+#: includes/admin/functions-metaboxes.php:46
 msgid "Ticket Toolbar"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:49
+#: includes/admin/functions-metaboxes.php:54
 msgid "Ticket Replies"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:54
+#: includes/admin/functions-metaboxes.php:59
 msgid "Ticket Details"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:59
+#: includes/admin/functions-metaboxes.php:64
 msgid "User Profile"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:63
+#: includes/admin/functions-metaboxes.php:68
 msgid "Main Tabs"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:66
+#: includes/admin/functions-metaboxes.php:71
 msgid "Misc and Debug"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:86
+#: includes/admin/functions-metaboxes.php:91
 msgid "An error occurred while registering this metabox. Please contact support."
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:92
+#: includes/admin/functions-metaboxes.php:97
 msgid "An error occured while loading this metabox. Please contact support."
 msgstr ""
 
@@ -1501,7 +1505,7 @@ msgid "Show Preferences Tab"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:242
-msgid "Ticket Details Tabs"
+msgid "Ticket Details Tabs And Metaboxes"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:244
@@ -1524,117 +1528,125 @@ msgstr ""
 msgid "Enter a comma separated list of roles that should not see the ADDITIONAL INTERESTED PARTIES tab. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:262
-msgid "Redirects"
+#: includes/admin/settings/settings-general.php:261
+msgid "Roles That Are NOT Allowed Access To The Tags Metabox"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:264
+msgid "Enter a comma separated list of roles that should not see the tags metabox. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:269
+msgid "Redirects"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:271
 msgid "Configure where the user should be sent after certain actions"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:267
+#: includes/admin/settings/settings-general.php:274
 msgid "Logout Redirect"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:270
+#: includes/admin/settings/settings-general.php:277
 msgid "When the user clicks the logout button on an Awesome Support page, where should they be redirected to?  Enter the FULL url starting with http or https."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:273
+#: includes/admin/settings/settings-general.php:280
 msgid "New Ticket Redirect"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:276
+#: includes/admin/settings/settings-general.php:283
 msgid "When the user enters a new ticket they are usually taken to the newly entered ticket.  But, if you would like to redirect them someplace else, enter that location here. Enter the FULL url starting with http or https."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:281
+#: includes/admin/settings/settings-general.php:288
 msgid "Toolbars"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:283
+#: includes/admin/settings/settings-general.php:290
 msgid "Control whether certain toolbars are visible"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:286
+#: includes/admin/settings/settings-general.php:293
 msgid "Show Ticket Details Toolbar"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:290
+#: includes/admin/settings/settings-general.php:297
 msgid "Show the toolbar on the ticket detail screen when an agent is viewing the ticket?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:294
+#: includes/admin/settings/settings-general.php:301
 msgid "Plugin Pages"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:298
+#: includes/admin/settings/settings-general.php:305
 msgid "Ticket Submission"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:302
+#: includes/admin/settings/settings-general.php:309
 #, php-format
 msgid "The page used for ticket submission. This page should contain the shortcode %s"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:307
+#: includes/admin/settings/settings-general.php:314
 msgid "Tickets List"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:311
+#: includes/admin/settings/settings-general.php:318
 #, php-format
 msgid "The page that will list all tickets for a client. This page should contain the shortcode %s"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:317
+#: includes/admin/settings/settings-general.php:324
 msgid "Credit"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:321
+#: includes/admin/settings/settings-general.php:328
 msgid "Show Credit"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:324
+#: includes/admin/settings/settings-general.php:331
 msgid "Do you like this plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:328
+#: includes/admin/settings/settings-general.php:335
 msgid "Admin Rating Request"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:331
+#: includes/admin/settings/settings-general.php:338
 msgid "Remove the rating request footer in the admin screen."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:352
+#: includes/admin/settings/settings-general.php:359
 msgid "Use Priority Field"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:355
+#: includes/admin/settings/settings-general.php:362
 msgid "Would you like to use the priority field in your tickets?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:360
+#: includes/admin/settings/settings-general.php:367
 msgid "Mandatory?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:363
+#: includes/admin/settings/settings-general.php:370
 msgid "Would you like to make the priority field mandatory in your tickets?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:368
+#: includes/admin/settings/settings-general.php:375
 msgid "Show On Front End?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:371
+#: includes/admin/settings/settings-general.php:378
 msgid "Would you like to show the field to the end user (unchecked restricts it to admin use only)?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:376
+#: includes/admin/settings/settings-general.php:383
 msgid "Show In Column List?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:379
+#: includes/admin/settings/settings-general.php:386
 msgid "Would you like to show the field in the ticket listing?"
 msgstr ""
 
@@ -3573,6 +3585,146 @@ msgstr ""
 
 #: themes/default/submission-pre-440.php:84 themes/default/submission.php:102
 msgid "Submit ticket"
+msgstr ""
+
+#: tracking/class-example-settings.php:43
+#: tracking/class-example-settings.php:52
+msgid "Example Settings"
+msgstr ""
+
+#: tracking/class-example-settings.php:58
+msgid "Text field:"
+msgstr ""
+
+#: tracking/class-example-settings.php:65
+msgid "Checkbox"
+msgstr ""
+
+#: tracking/class-example-settings.php:72
+msgid "Select"
+msgstr ""
+
+#: tracking/class-example-settings.php:79
+msgid "Opt out"
+msgstr ""
+
+#: tracking/class-example-settings.php:97
+msgid "Default setting"
+msgstr ""
+
+#: tracking/class-example-settings.php:128
+msgid "You previously opted in to sending tracking details. You can change that setting here."
+msgstr ""
+
+#: tracking/class-example-settings.php:140
+msgid "Option 1"
+msgstr ""
+
+#: tracking/class-example-settings.php:141
+msgid "Option 2"
+msgstr ""
+
+#: tracking/class-example-settings.php:142
+msgid "Option 3"
+msgstr ""
+
+#: tracking/class-example-settings.php:148
+msgid "These settings are for example only."
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:145
+msgid "Once Weekly"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:149
+msgid "Once Monthly"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:313
+msgid "We can't detect any product information. This is most probably because you have not included the code snippet."
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:806
+#, php-format
+msgid "Thank you for installing our %1$s. We would like to track its usage on your site. We don't record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional."
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:812
+#, php-format
+msgid "Thank you for installing our %1$s. We'd like your permission to track its usage on your site and subscribe you to our newsletter. We won't record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional."
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:823
+msgid "Allow"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:824
+msgid "Do Not Allow"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:861
+#, php-format
+msgid "Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:870
+msgid "Yes Please"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:871
+msgid "No Thank You"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:902
+msgid "Sorry to see you go"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:903
+msgid "Before you deactivate the plugin, would you quickly give us your reason for doing so?"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:905
+msgid "Set up is too difficult"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:906
+msgid "Lack of documentation"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:907
+msgid "Not the features I wanted"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:908
+msgid "Found a better plugin"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:909
+msgid "Installed by mistake"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:910
+msgid "Only required temporarily"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:911
+msgid "Didn't work"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:913
+msgid "Details (optional)"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:952
+msgid "Submitting form"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:1012
+msgid "Submit and Deactivate"
+msgstr ""
+
+#: tracking/class-plugin-usage-tracker.php:1012
+msgid "Just Deactivate"
 msgstr ""
 
 #: vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php:198

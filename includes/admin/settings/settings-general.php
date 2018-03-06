@@ -239,7 +239,7 @@ function wpas_core_settings_general( $def ) {
 				),
 				
 				array(
-					'name' => __( 'Ticket Details Tabs', 'awesome-support' ),
+					'name' => __( 'Ticket Details Tabs And Metaboxes', 'awesome-support' ),
 					'type' => 'heading',
 					'desc'    => __( 'Control who can view certain ticket tabs on the ticket detail screen in wp-admin', 'awesome-support' ),					
 				),
@@ -256,7 +256,14 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'text',
 					'desc'    => __( 'Enter a comma separated list of roles that should not see the ADDITIONAL INTERESTED PARTIES tab. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
 					'default' => ''
-				),		
+				),
+				array(
+					'name'    => __( 'Roles That Are NOT Allowed Access To The Tags Metabox', 'awesome-support' ),
+					'id'      => 'hide_tags_mb_roles',
+					'type'    => 'text',
+					'desc'    => __( 'Enter a comma separated list of roles that should not see the tags metabox. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+					'default' => ''
+				),				
 				
 				array(
 					'name' => __( 'Redirects', 'awesome-support' ),

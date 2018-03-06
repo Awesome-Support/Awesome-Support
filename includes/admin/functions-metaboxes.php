@@ -27,6 +27,11 @@ function wpas_metaboxes() {
 
 	/* Remove the publishing metabox */
 	remove_meta_box( 'submitdiv', 'ticket', 'side' );
+	
+	/* Possibly remove the TAGS metabox */
+	if (  wpas_current_role_in_list( wpas_get_option( 'hide_tags_mb_roles' ) ) )  {
+		remove_meta_box( 'tagsdiv-ticket-tag', 'ticket', 'side' );
+	}
 
 	/**
 	 * Register the metaboxes.
