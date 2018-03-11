@@ -32,27 +32,28 @@ function wpas_metaboxes() {
 	if (  wpas_current_role_in_list( wpas_get_option( 'hide_tags_mb_roles' ) ) )  {
 		remove_meta_box( 'tagsdiv-ticket-tag', 'ticket', 'side' );
 	}
+	
+	$status = isset( $_GET['post'] ) ? get_post_meta( intval( $_GET['post'] ), '_wpas_status', true ) : '';
 
 	/**
 	 * Register the metaboxes.
 	 */
-	/* Issue details, only available for existing tickets */
-	if( isset( $_GET['post'] ) ) {
-		$status = get_post_meta( intval( $_GET['post'] ), '_wpas_status', true );
-		
-		if ( '' !== $status ) {		
-			/* Ticket toolbar */
-			if ( true == boolval( wpas_get_option( 'ticket_detail_show_toolbar', true ) ) ) {
-				add_meta_box( 'wpas-mb-toolbar', __( 'Ticket Toolbar', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'toolbar-middle' ) );
-			}
+	
+	/* Issue details, only available for existing tickets */	
+	if ( '' !== $status ) {		
+		/* Ticket toolbar */
+		if ( true == boolval( wpas_get_option( 'ticket_detail_show_toolbar', true ) ) ) {
+			add_meta_box( 'wpas-mb-toolbar', __( 'Ticket Toolbar', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'toolbar-middle' ) );
 		}
+	}
 		
-
-		if ( '' !== $status ) {
-			
-			/* Ticket Replies */
-			add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'replies' ) );
-		}
+	
+	/* Metabox to add main tabs */
+	add_meta_box( 'wpas-mb-ticket-main-tabs', __( 'Main Tabs', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'ticket-main-tabs' ) );
+		
+	if ( '' !== $status ) {
+		/* Ticket Replies */
+		add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'replies' ) );
 	}
 	
 	/* Ticket details */
@@ -63,9 +64,6 @@ function wpas_metaboxes() {
 	if ( 'post-new.php' !== $pagenow ) {
 		add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
 	}
-		
-	/* Metabox to add main tabs */
-	add_meta_box( 'wpas-mb-ticket-main-tabs', __( 'Main Tabs', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'ticket-main-tabs' ) );
 	
 	/* Add a dummy metabox to force gutenberg to render in old-style mode... */
 	add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version', '__block_editor_compatible_meta_box' => wpas_gutenberg_meta_box_compatible() ) );	
