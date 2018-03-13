@@ -170,6 +170,11 @@ class AS_Admin_Notices {
 	 * @return void
 	 */
 	public function add_notice( $type, $id, $message ) {
+		
+		/* If running in SAAS mode and the notice is something about a license then don't bother! */
+		if ( true === $this->is_license_notice( $type, $id, $message ) && ( true === is_saas() )  ) {
+			return ;
+		}		
 
 		if ( ! in_array( $type, $this->notice_types() ) ) {
 			$type = 'updated';
@@ -181,6 +186,25 @@ class AS_Admin_Notices {
 		$this->notices[ $id ] = array( $type, $message );
 
 	}
+	
+	/**
+	 * Check to see if the notice is a license notice by inspecting the $ID.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param string $type    Notice type (see notice_types())
+	 * @param string $id      Notice unique ID
+	 * @param string $message Notice message
+	 *
+	 * @return boolean
+	 */	
+	public function is_license_notice( $type, $id, $message ){
+		if ( ( strpos( 'xxx'.$id, 'lincense_' ) >= 0 ) || ( strpos( 'xxx'.$id, 'license_' ) >= 0 ) ) {			
+			return true ;
+		}
+		
+		return false ;
+	}	
 
 	/**
 	 * Get all custom notices registered

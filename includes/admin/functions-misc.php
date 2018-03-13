@@ -107,13 +107,43 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 				'action' => 'edit_reply'
 		), admin_url( 'post.php' ) ), 'delete_reply_' . $reply->ID );
 
-		$controls['delete_reply'] = sprintf( '<a class="%1$s" href="%2$s" title="%3$s">%3$s</a>', 'wpas-delete', esc_url( $delete ), esc_html_x( 'Delete', 'Link to delete a ticket reply', 'awesome-support' ) );
-		$controls['edit_reply']   = sprintf( '<a class="%1$s" href="%2$s" data-origin="%3$s" data-replyid="%4$d" data-reply="%5$s" data-wysiwygid="%6$s" title="%7$s">%7$s</a>', 'wpas-edit', '#', "#wpas-reply-$reply->ID", $reply->ID, "wpas-editwrap-$reply->ID", "wpas-editreply-$reply->ID", esc_html_x( 'Edit', 'Link ot edit a ticket reply', 'awesome-support' ) );
+		/* Add delete reply icon */
+		$controls['delete_reply'] = wpas_reply_control_item( 'delete_reply' ,array(
+			'title' => esc_html_x( 'Delete', 'Link to delete a ticket reply', 'awesome-support' ),
+			'link'	=> esc_url( $delete ),
+			'icon'  => WPAS_URL . 'assets/admin/images/delete-ticket-reply.png',
+			'classes' => 'wpas-delete'
+		));
+		
+		/* Add edit reply icon */
+		$controls['edit_reply'] = wpas_reply_control_item( 'edit_reply' ,array(
+			'title' => esc_html_x( 'Edit', 'Link to edit a ticket reply', 'awesome-support' ),
+			'link'	=> '#',
+			'icon' => WPAS_URL . 'assets/admin/images/edit-ticket-reply.png',
+			'classes' => 'wpas-edit',
+			'data' => array( 
+				'origin'=> "#wpas-reply-{$reply->ID}",
+				'replyid' => $reply->ID,
+				'reply' => "wpas-editwrap-{$reply->ID}",
+				'wysiwygid'=> "wpas-editreply-{$reply->ID}"
+			)
+		));
 
 	}
 
 	if ( get_current_user_id() !== $reply->post_author && 'unread' === $reply->post_status ) {
-		$controls['mark_read'] = sprintf( '<a class="%1$s" href="%2$s" data-replyid="%3$d" title="%4$s">%4$s</a>', 'wpas-mark-read', '#', $reply->ID, esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ) );
+		
+		/* Add mark as read icon */
+		$controls['mark_read'] = wpas_reply_control_item( 'mark_read' ,array(
+			'title' => esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ),
+			'link'	=> '#',
+			'icon' => WPAS_URL . 'assets/admin/images/mark-as-read.png',
+			'classes' => 'wpas-mark-read',
+			'data' => array( 
+				'replyid' => $reply->ID
+			)
+		));
+		
 	}
 
 	return $controls;
@@ -545,7 +575,6 @@ function wpas_admin_tabs( $type, $tabs = array() ) {
 			<ul>
 			    <?php echo implode( '', $tab_content_items_ar ); ?>
 				<li class="moreTab">
-				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">More <span class="caret"></span></a>
 					<ul class="dropdown-menu tabs_collapsed"></ul>
 				</li>
 				<li class="clear clearfix"></li>

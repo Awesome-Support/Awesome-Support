@@ -392,20 +392,20 @@ class WPAS_Email_Notification {
 
 				/* Name of the agent assigned to this ticket */
 				case 'agent_name':
-					$tag['value'] = $agent->display_name;
+					$tag['value'] = !empty($agent) ? $agent->display_name : '';
 					break;
 
 				/* E-mail of the agent assigned to this ticket */
 				case 'agent_email':
-					$tag['value'] = $agent->user_email;
+					$tag['value'] = !empty($agent) ? $agent->user_email : '';
 					break;
 
 				case 'client_name':
-					$tag['value'] = $client->display_name;
+					$tag['value'] = !empty($client) ? $client->display_name : '';
 					break;
 
 				case 'client_email':
-					$tag['value'] = $client->user_email;
+					$tag['value'] = !empty($client) ? $client->user_email : '';
 					break;
 
 				case 'ticket_title':

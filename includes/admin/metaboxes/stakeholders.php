@@ -20,13 +20,18 @@ if ( isset( $post ) && is_a( $post, 'WP_Post' ) && 'auto-draft' !== $post->post_
 
 	// Client
 	$client        = get_userdata( $post->post_author );
-	$client_id     = $client->ID;
-	$client_name   = $client->data->display_name;
-	$client_option = "<option value='$client_id' selected='selected'>$client_name</option>";
-	$client_link   = esc_url( admin_url( add_query_arg( array(
-		'post_type' => 'ticket',
-		'author'    => $client_id
-	), 'edit.php' ) ) );
+	$client_id     = !empty($client) ? $client->ID : 0;
+	$client_name   = !empty($client) ? $client->data->display_name : '';
+	$client_link   = '';
+	$client_option = '';
+
+	if ( $client_id !== 0 && $client_name !== '' ) {
+		$client_option = "<option value='$client_id' selected='selected'>$client_name</option>";
+		$client_link   = esc_url( admin_url( add_query_arg( array(
+			'post_type' => 'ticket',
+			'author'    => $client_id
+		), 'edit.php' ) ) );
+	}
 
 	// Staff
 	$staff_id = wpas_get_cf_value( 'assignee', get_the_ID() );
@@ -55,7 +60,14 @@ if (! empty( $staff ) ) {
 	<p>
 		<?php if ( current_user_can( 'create_ticket' ) ):
 
-			$users_atts = array( 'agent_fallback' => true, 'select2' => true, 'name' => 'post_author_override', 'id' => 'wpas-issuer', 'data_attr' => array( 'capability' => 'create_ticket' ) );
+			$users_atts = array( 
+				'agent_fallback' => true, 
+				'select2' => true, 
+				'name' => 'post_author_override', 
+				'id' => 'wpas-issuer', 
+				'disabled'  => ! current_user_can( 'assign_ticket_creator' ) && ! wpas_is_asadmin() ? true : false, 
+				'data_attr' => array( 'capability' => 'create_ticket' )
+			);
 
 			if ( isset( $post ) ) {
 				$users_atts['selected'] = $post->post_author;
@@ -70,20 +82,37 @@ if (! empty( $staff ) ) {
 	<label for="wpas-assignee"><strong data-hint="<?php esc_html_e( 'The agent currently responsible for this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php
-		$staff_atts = array(
-			'name'      => 'wpas_assignee',
-			'id'        => 'wpas-assignee',
-			'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
-			'select2'   => true,
-			'data_attr' => array( 'capability' => 'edit_ticket' )
-		);
 		
-		if (! empty( $staff ) ) {
-			// We have a valid staff id
-			echo wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );		
+		if ( wpas_get_option( 'support_staff_select2_enabled', false ) ) {
+		
+			$staff_atts = array(
+				'name'      => 'wpas_assignee',
+				'id'        => 'wpas-assignee',
+				'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
+				'select2'   => true,
+				'data_attr' => array( 'capability' => 'edit_ticket' )
+			);
+
+			if (! empty( $staff ) ) {
+				// We have a valid staff id
+				echo wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );		
+			} else {
+				// Oops - no valid staff id...
+				echo wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );					
+			}
 		} else {
-			// Oops - no valid staff id...
-			echo wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );					
+			
+			
+			echo wpas_users_dropdown( array( 
+				'cap'	=> 'edit_ticket',
+				'orderby' => 'display_name',
+				'order' => 'ASC',
+				'name'  => 'wpas_assignee',
+				'id'    => 'wpas-assignee',
+				'class' => 'wpas-form-control',
+				'please_select' => true,
+				'selected' => $staff_id
+			) );
 		}
 		?>
 	</p>

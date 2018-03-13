@@ -31,7 +31,7 @@ function wpas_core_settings_style( $def ) {
 					'name'    => __( 'Use editor in front-end', 'awesome-support' ),
 					'id'      => 'frontend_wysiwyg_editor',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show a editor editor for the ticket description when user submits a ticket.', 'awesome-support' ),
+					'desc'    => __( 'Show an editor for the ticket description when user submits a ticket.', 'awesome-support' ),
 					'default' => true
 				),
 				array(

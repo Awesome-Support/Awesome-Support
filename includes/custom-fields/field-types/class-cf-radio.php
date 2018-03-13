@@ -26,10 +26,12 @@ class WPAS_CF_Radio extends WPAS_Custom_Field {
 		// we set the selected radio button option to 'checked' and all others to 'disabled'.
 		$readonly = wpas_cf_field_markup_time_tracking_readonly( $this->get_field_arg( 'readonly', false ), $this->field ) ? 'disabled' : '';
 
-		foreach ( $this->options as $option_id => $option_label ) {
-			$selected = $option_id === $this->populate() ? 'checked' : $readonly;
-			$output .= sprintf( "<div class='wpas-radio'><span><input type='radio' name='%s' value='%s' %s > %s</span></div>", $this->get_field_id(), $option_id, $selected, $option_label );
-		}
+        $index = 1;
+        foreach ( $this->options as $option_id => $option_label ) {
+            $selected = $option_id === $this->populate() ? 'checked' : $readonly;
+            $output .= sprintf( '<div class="wpas-radio"><span><input type="radio" name="%1$s" id="%1$s-option%5$s" value="%2$s" %3$s > <label for="%1$s-option%5$s">%4$s</label></span></div>', $this->get_field_id(), $option_id, $selected, $option_label, $index );
+            $index++;
+        }
 
 		return $output;
 

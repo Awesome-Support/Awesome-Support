@@ -169,6 +169,7 @@ function wpas_upgrade_406() {
 	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
 	$supportmanager = get_role( 'wpas_support_manager' );
 	$admin   		= get_role( 'administrator' );
+	$as_admin  		= get_role( 'as_admin' );	
 	$agent	 		= get_role( 'wpas_agent' );
 	
 
@@ -180,6 +181,11 @@ function wpas_upgrade_406() {
 		// Add all the capacities to admin in addition to full WP capacities
 		if ( null != $admin )
 			$admin->add_cap( $cap );
+		
+		// Add all the capacities to as_admin in addition to full WP capacities
+		if ( null != $as_admin )
+			$as_admin->add_cap( $cap );
+		
 
 		// Add full plugin capacities to manager in addition to the editor capacities
 		if ( null != $manager )
@@ -227,111 +233,111 @@ function wpas_upgrade_410() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.4 to 4.3.6. */
-function wpas_upgrade_334_436() {
+/* Execute upgrade functions from 3.3.4 to 5.0.0. */
+function wpas_upgrade_334_500() {
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.3 to 4.3.6. */
-function wpas_upgrade_333_436() {
+/* Execute upgrade functions from 3.3.3 to 5.0.0. */
+function wpas_upgrade_333_500() {
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.2 to 4.3.6. */
-function wpas_upgrade_332_436() {
+/* Execute upgrade functions from 3.3.2 to 5.0.0. */
+function wpas_upgrade_332_500() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.1 to 4.3.6. */
-function wpas_upgrade_331_436() {
+/* Execute upgrade functions from 3.3.1 to 5.0.0. */
+function wpas_upgrade_331_500() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.0 to 4.3.6. */
-function wpas_upgrade_330_436() {
+/* Execute upgrade functions from 3.3.0 to 5.0.0. */
+function wpas_upgrade_330_500() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.9 to 4.3.6. */
-function wpas_upgrade_329_436() {
+/* Execute upgrade functions from 3.2.9 to 5.0.0. */
+function wpas_upgrade_329_500() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.8 to 4.3.6. */
-function wpas_upgrade_328_436() {
+/* Execute upgrade functions from 3.2.8 to 5.0.0. */
+function wpas_upgrade_328_500() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.7 to 4.3.6. */
-function wpas_upgrade_327_436() {
+/* Execute upgrade functions from 3.2.7 to 5.0.0. */
+function wpas_upgrade_327_500() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.6 to 4.3.6. */
-function wpas_upgrade_326_436() {
+/* Execute upgrade functions from 3.2.6 to 5.0.0. */
+function wpas_upgrade_326_500() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.5 to 4.3.6. */
-function wpas_upgrade_325_436() {
+/* Execute upgrade functions from 3.2.5 to 5.0.0. */
+function wpas_upgrade_325_500() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.4 to 4.3.6. */
-function wpas_upgrade_324_436() {
+/* Execute upgrade functions from 3.2.4 to 5.0.0. */
+function wpas_upgrade_324_500() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.3 to 4.3.6. */
-function wpas_upgrade_323_436() {
+/* Execute upgrade functions from 3.2.3 to 5.0.0. */
+function wpas_upgrade_323_500() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.2 to 4.3.6. */
-function wpas_upgrade_322_436() {
+/* Execute upgrade functions from 3.2.2 to 5.0.0. */
+function wpas_upgrade_322_500() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.1 to 4.3.6. */
-function wpas_upgrade_321_436() {
+/* Execute upgrade functions from 3.2.1 to 5.0.0. */
+function wpas_upgrade_321_500() {
 	wpas_upgrade_328();
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.0 to 4.3.6. */
-function wpas_upgrade_320_436() {
+/* Execute upgrade functions from 3.2.0 to 5.0.0. */
+function wpas_upgrade_320_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -339,8 +345,8 @@ function wpas_upgrade_320_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.12 to 4.3.6. */
-function wpas_upgrade_3112_436() {
+/* Execute upgrade functions from 3.1.12 to 5.0.0. */
+function wpas_upgrade_3112_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -348,8 +354,8 @@ function wpas_upgrade_3112_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.11 to 4.3.6. */
-function wpas_upgrade_3111_436() {
+/* Execute upgrade functions from 3.1.11 to 5.0.0. */
+function wpas_upgrade_3111_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -357,8 +363,8 @@ function wpas_upgrade_3111_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.10 to 4.3.6. */
-function wpas_upgrade_3110_436() {
+/* Execute upgrade functions from 3.1.10 to 5.0.0. */
+function wpas_upgrade_3110_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -366,8 +372,8 @@ function wpas_upgrade_3110_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.9 to 4.3.6. */
-function wpas_upgrade_319_436() {
+/* Execute upgrade functions from 3.1.9 to 5.0.0. */
+function wpas_upgrade_319_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -375,8 +381,8 @@ function wpas_upgrade_319_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.8 to 4.3.6. */
-function wpas_upgrade_318_436() {
+/* Execute upgrade functions from 3.1.8 to 5.0.0. */
+function wpas_upgrade_318_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -384,8 +390,8 @@ function wpas_upgrade_318_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.7 to 4.3.6. */
-function wpas_upgrade_317_436() {
+/* Execute upgrade functions from 3.1.7 to 5.0.0. */
+function wpas_upgrade_317_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -393,8 +399,8 @@ function wpas_upgrade_317_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.6 to 4.3.6. */
-function wpas_upgrade_316_436() {
+/* Execute upgrade functions from 3.1.6 to 5.0.0. */
+function wpas_upgrade_316_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -402,8 +408,8 @@ function wpas_upgrade_316_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.5 to 4.3.6. */
-function wpas_upgrade_315_436() {
+/* Execute upgrade functions from 3.1.5 to 5.0.0. */
+function wpas_upgrade_315_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -411,8 +417,8 @@ function wpas_upgrade_315_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.4 to 4.3.6. */
-function wpas_upgrade_314_436() {
+/* Execute upgrade functions from 3.1.4 to 5.0.0. */
+function wpas_upgrade_314_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -420,8 +426,8 @@ function wpas_upgrade_314_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.3 to 4.3.6. */
-function wpas_upgrade_313_436() {
+/* Execute upgrade functions from 3.1.3 to 5.0.0. */
+function wpas_upgrade_313_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -429,8 +435,8 @@ function wpas_upgrade_313_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.2 to 4.3.6. */
-function wpas_upgrade_312_436() {
+/* Execute upgrade functions from 3.1.2 to 5.0.0. */
+function wpas_upgrade_312_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -438,8 +444,8 @@ function wpas_upgrade_312_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.1 to 4.3.6. */
-function wpas_upgrade_311_436() {
+/* Execute upgrade functions from 3.1.1 to 5.0.0. */
+function wpas_upgrade_311_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -447,8 +453,8 @@ function wpas_upgrade_311_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.0 to 4.3.6. */
-function wpas_upgrade_310_436() {
+/* Execute upgrade functions from 3.1.0 to 5.0.0. */
+function wpas_upgrade_310_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -456,8 +462,8 @@ function wpas_upgrade_310_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.0.1 to 4.3.6. */
-function wpas_upgrade_301_436() {
+/* Execute upgrade functions from 3.0.1 to 5.0.0. */
+function wpas_upgrade_301_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -465,8 +471,8 @@ function wpas_upgrade_301_436() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.0.0 to 4.3.6. */
-function wpas_upgrade_300_436() {
+/* Execute upgrade functions from 3.0.0 to 5.0.0. */
+function wpas_upgrade_300_500() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -475,38 +481,128 @@ function wpas_upgrade_300_436() {
 }
 
 /**
- * Execute upgrade functions from 4.0.x to 4.3.6.
+ * Execute upgrade functions from 4.0.x to 5.0.0.
  *
- * Normally we would have just a single function called wpas_upgrade_436.  
+ * Normally we would have just a single function called wpas_upgrade_500.  
  * But because the wpas_update_last_reply function is so intensive it is probably best to make sure
  * it only runs when absolutely necessary instead of running on every upgrade.  
  * Upgrades from 4.1.0 are not necessary for it to run. So, we have to make upgrade routines 
  * for all the 4.x to 4.2 versions - gah.
  * 
  */
-function wpas_upgrade_400_436() {
+function wpas_upgrade_400_500() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_401_436() {
+function wpas_upgrade_401_500() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_402_436() {
+function wpas_upgrade_402_500() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_403_436() {
+function wpas_upgrade_403_500() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_404_436() {
+function wpas_upgrade_404_500() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_405_436() {
+function wpas_upgrade_405_500() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_406_436() {
-	wpas_update_last_reply();	
-}
-
-function wpas_upgrade_421_436() {
+function wpas_upgrade_406_500() {
 	wpas_update_last_reply();	
 }
 
+function wpas_upgrade_421_500() {
+	wpas_update_last_reply();	
+}
+
+
+/**
+ * Upgrade function for version 4.4.0
+ *
+ * New capabilities need to be added to all roles.
+ *
+ * @since 4.4.0
+ * @return void
+ */
+function wpas_upgrade_440() {
+	wpas_upgrade_500();
+}
+
+/**
+ * Upgrade function for version 5.0.0
+ *
+ * New capabilities need to be added to all roles.
+ *
+ * @since 5.0.0
+ * @return void
+ */
+function wpas_upgrade_500() {
+
+	/* Add new capabilities to these roles and all users assigned these roles:
+	 *
+	 *  WordPress Administrator
+	 *  AS Support Manager
+	 *
+	 */
+	$admin_caps = array(
+		'assign_ticket_creator'
+	);
+	
+	$agent_caps = array(
+		'assign_ticket_creator'
+	);
+	
+	$manager_caps = array(
+		'assign_ticket_creator'
+	);
+	
+	$supportmanager_caps = array(
+		'assign_ticket_creator'
+	);	
+
+	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
+	$supportmanager = get_role( 'wpas_support_manager' );
+	$admin   		= get_role( 'administrator' );
+	$as_admin		= get_role( 'as_admin' );
+	$agent	 		= get_role( 'wpas_agent' );
+	
+
+	/**
+	 * Add new capacities to admin roles
+	 */
+	foreach ( $admin_caps as $cap ) {
+
+		// Add all the capacities to admin in addition to full WP capacities
+		if ( null != $admin )
+			$admin->add_cap( $cap );
+		
+		// Add all the capacities to as_admin in addition to full WP capacities
+		if ( null != $as_admin )
+			$as_admin->add_cap( $cap );
+
+		// Add full plugin capacities to manager in addition to the editor capacities
+		if ( null != $manager )
+			$manager->add_cap( $cap );
+
+	}
+	
+	/**
+	 * Add certain new capacities to agents
+	 */
+	foreach ( $agent_caps as $cap ) {
+		if ( null != $agent ) {
+			$agent->add_cap( $cap );
+		}
+	}
+	
+	/**
+	 * Add certain new capacities to support managers
+	 */
+	foreach ( $supportmanager_caps as $cap ) {
+		if ( null != $supportmanager ) {
+			$supportmanager->add_cap( $cap );
+		}
+	}
+
+}

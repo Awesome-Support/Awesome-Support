@@ -21,14 +21,8 @@ global $pagenow, $post;
 /* Current status */
 $ticket_status = get_post_meta( get_the_ID(), '_wpas_status', true );
 
-/** 
- * Status action link
- * 
- * @var string
- * @see admin/class-awesome-support-admin.php
- */
-$base_url = add_query_arg( array( 'action' => 'edit', 'post' => $post->ID ), admin_url( 'post.php' ) );
-$action = ( in_array( $ticket_status, array( 'closed', '' ) ) ) ? wpas_do_url( $base_url, 'admin_open_ticket' ) : wpas_do_url( $base_url, 'admin_close_ticket' );
+/* Status action link - @see admin/class-awesome-support-admin.php */
+$action = get_ticket_details_action_link( $post );
 
 /**
  * Get available statuses.
@@ -121,3 +115,4 @@ if ( isset( $post ) ) {
 		<div class="clear"></div>
 	</div>
 </div>
+

@@ -62,6 +62,14 @@ function wpas_system_tools() {
 			wpas_upgrade_406();
 			break ;
 			
+		case 'rerun_400_to_440_conversion':
+			wpas_upgrade_440();
+			break;
+
+		case 'rerun_400_to_500_conversion':
+			wpas_upgrade_500();
+			break;			
+			
 	}
 
 	do_action('execute_additional_tools',sanitize_text_field( $_GET['tool'] ));
@@ -403,7 +411,8 @@ function wpas_clear_agents_metas() {
 	$agents = wpas_get_users( array( 'cap' => 'edit_ticket' ) );
 
 	foreach ( $agents as $user ) {
-		delete_user_meta( $user->ID, 'wpas_open_tickets' ); // Delete the open tickets count
+		delete_user_option( $user->ID, 'wpas_open_tickets' ); 		// Delete the open tickets count
+		delete_user_option( $user->ID, 'wpas_open_tickets',true ); // Delete it as well at the global level just in case it exists there (which it shouldn't!)
 	}
 
 }

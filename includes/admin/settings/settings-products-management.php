@@ -42,8 +42,16 @@ function wpas_get_products_options() {
 			'desc'    => __( 'If you need to provide support for multiple products, please enable this option. You will then be able to add your products.', 'awesome-support' ),
 			'default' => false
 		),
+		
+		array(
+			'name'    => __( 'Slug', 'awesome-support' ),
+			'id'      => 'products_slug',
+			'type'    => 'text',
+			'desc'    => __( 'Enter the slug you would like to use for your product urls. If you change this, please to to the WordPress SETTINGS->PERMALINKS page and click the save button to force WP to update its configuration with your new value', 'awesome-support' ),
+			'default' => 'product'
+		),		
 	);
-
+	
 	$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->plugin;
 
 	if ( ! is_null( $ecommerce_synced ) ) {

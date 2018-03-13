@@ -27,21 +27,35 @@ function wpas_metaboxes() {
 
 	/* Remove the publishing metabox */
 	remove_meta_box( 'submitdiv', 'ticket', 'side' );
+	
+	/* Possibly remove the TAGS metabox */
+	if (  wpas_current_role_in_list( wpas_get_option( 'hide_tags_mb_roles' ) ) )  {
+		remove_meta_box( 'tagsdiv-ticket-tag', 'ticket', 'side' );
+	}
+	
+	$status = isset( $_GET['post'] ) ? get_post_meta( intval( $_GET['post'] ), '_wpas_status', true ) : '';
 
 	/**
 	 * Register the metaboxes.
 	 */
-	/* Issue details, only available for existing tickets */
-	if( isset( $_GET['post'] ) ) {
-		add_meta_box( 'wpas-mb-message', __( 'Ticket', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'message' ) );
-
-		$status = get_post_meta( intval( $_GET['post'] ), '_wpas_status', true );
-
-		if ( '' !== $status ) {
-			add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'replies' ) );
+	
+	/* Issue details, only available for existing tickets */	
+	if ( '' !== $status ) {		
+		/* Ticket toolbar */
+		if ( true == boolval( wpas_get_option( 'ticket_detail_show_toolbar', true ) ) ) {
+			add_meta_box( 'wpas-mb-toolbar', __( 'Ticket Toolbar', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'toolbar-middle' ) );
 		}
 	}
-
+		
+	
+	/* Metabox to add main tabs */
+	add_meta_box( 'wpas-mb-ticket-main-tabs', __( 'Main Tabs', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'ticket-main-tabs' ) );
+		
+	if ( '' !== $status ) {
+		/* Ticket Replies */
+		add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'replies' ) );
+	}
+	
 	/* Ticket details */
 	add_meta_box( 'wpas-mb-details', __( 'Ticket Details', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
 	
@@ -50,33 +64,9 @@ function wpas_metaboxes() {
 	if ( 'post-new.php' !== $pagenow ) {
 		add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
 	}
-
-	/* Front End Custom Fields */
-	if ( WPAS()->custom_fields->have_custom_fields() ) {
-		add_meta_box( 'wpas-mb-cf', __( 'Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields' ) );
-	}
-
-	/* Back End Custom Fields */
-	if ( WPAS()->custom_fields->have_custom_fields() ) {
-		add_meta_box( 'wpas-mb-becf', __( 'Admin Only Custom Fields', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'custom-fields-backend' ) );
-	}	
 	
-	/* Ticket Statistics */
-	add_meta_box( 'wpas-mb-ticket-statistics', __( 'Ticket Statistics', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-statistics' ) );
-
-	/* Time tracking statistics*/
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
-
-	if ( isset( $options['show_basic_time_tracking_fields'] ) && true === boolval( $options['show_basic_time_tracking_fields'] ) ) {	
-		add_meta_box( 'wpas-mb-ticket-time-tracking', __( 'Time Tracking', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'time-tracking-statistics' ) );
-	}
-
-	
-	/* Additional Interested Parties */
-	if (  ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) or ( isset( $options['show_third_party_fields'] ) && true === boolval( $options['show_third_party_fields'] ) ) ) {
-		add_meta_box( 'wpas-mb-ticket-addl-parties', __( 'Additional Interested Parties', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'default', array( 'template' => 'ticket-additional-parties' ) );
-	}
-	
+	/* Add a dummy metabox to force gutenberg to render in old-style mode... */
+	add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version', '__block_editor_compatible_meta_box' => wpas_gutenberg_meta_box_compatible() ) );	
 }
 
 /**

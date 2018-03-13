@@ -9,16 +9,16 @@
     "packages": [
         {
             "name": "ericmann/wp-session-manager",
-            "version": "1.2.2",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ericmann/wp-session-manager.git",
-                "reference": "8a4aacd25e4a89429e93a85df70a068052853cae"
+                "reference": "daa557a9c05feab9eb4b3cffeb39999da4471839"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/8a4aacd25e4a89429e93a85df70a068052853cae",
-                "reference": "8a4aacd25e4a89429e93a85df70a068052853cae",
+                "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/daa557a9c05feab9eb4b3cffeb39999da4471839",
+                "reference": "daa557a9c05feab9eb4b3cffeb39999da4471839",
                 "shasum": ""
             },
             "type": "wordpress-plugin",
@@ -39,7 +39,7 @@
             "keywords": [
                 "session"
             ],
-            "time": "2017-04-26T13:27:37+00:00"
+            "time": "2017-12-20T00:44:26+00:00"
         },
         {
             "name": "gambitph/titan-framework",

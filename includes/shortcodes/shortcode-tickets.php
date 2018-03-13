@@ -5,32 +5,9 @@ add_shortcode( 'tickets', 'wpas_sc_client_account' );
  */
 function wpas_sc_client_account() {
 
-	global $wpas_tickets, $current_user, $post;
+	global $wpas_tickets, $post;
 
-	/**
-	 * For some reason when the user ID is set to 0
-	 * the query returns posts whose author has ID 1.
-	 * In order to avoid that (for non logged users)
-	 * we set the user ID to -1 if it is 0.
-	 * 
-	 * @var integer
-	 */
-	$author = ( 0 !== $current_user->ID ) ? $current_user->ID : -1;
-
-	$args = apply_filters( 'wpas_tickets_shortcode_query_args', array(
-		'author'                 => $author,
-		'post_type'              => 'ticket',
-		'post_status'            => 'any',
-		'order'                  => 'DESC',
-		'orderby'                => 'date',
-		'posts_per_page'         => - 1,
-		'no_found_rows'          => false,
-		'cache_results'          => false,
-		'update_post_term_cache' => false,
-		'update_post_meta_cache' => false,
-	) );
-
-	$wpas_tickets = new WP_Query( $args );		
+	$wpas_tickets = wpas_get_tickets_for_shortcode() ;
 
 	/* Get the ticket content */
 	ob_start();
@@ -83,4 +60,60 @@ function wpas_sc_client_account() {
 
 	return $content;
 
+}
+/**
+ * Get the list of tickets that should be shown in the [tickets] shortcode.
+ *
+ * @since 4.4.0
+ *
+ * @param none
+ * 
+ * @return array post array of tickets found
+ */
+function wpas_get_tickets_for_shortcode() {
+	
+	global $current_user, $post;
+
+	/**
+	 * For some reason when the user ID is set to 0
+	 * the query returns posts whose author has ID 1.
+	 * In order to avoid that (for non logged users)
+	 * we set the user ID to -1 if it is 0.
+	 * 
+	 * @var integer
+	 */
+	$author = ( 0 !== $current_user->ID ) ? $current_user->ID : -1;
+	
+	$args = array(
+		'author'                 => $author,
+		'post_type'              => 'ticket',
+		'post_status'            => 'any',
+		'order'                  => 'DESC',
+		'orderby'                => 'date',
+		'posts_per_page'         => - 1,
+		'no_found_rows'          => false,
+		'cache_results'          => false,
+		'update_post_term_cache' => false,
+		'update_post_meta_cache' => false,
+	) ;
+
+	/* Maybe only show open tickets */
+	if ( true === boolval( wpas_get_option( 'hide_closed_fe', false) ) ) {
+		$args_meta = array( 
+			'meta_query' => array(
+				'meta_key'     => '_wpas_status',
+				'meta_value'   => 'closed',
+				'meta_compare' => '!=',
+			),		
+		) ;
+		
+		$args = array_merge($args, $args_meta);		
+	}	
+	
+	$args = apply_filters( 'wpas_tickets_shortcode_query_args', $args );
+
+	$wpas_tickets_found = new WP_Query( $args );	
+
+	return $wpas_tickets_found ;
+	
 }

@@ -34,7 +34,7 @@ function wpas_toolbar_tickets_link( $wp_admin_bar ) {
 	$args          = array( 'post_type' => 'ticket' );
 
 	// In case the current user can only see his own tickets
-	if ( current_user_can( 'administrator' ) && false === $admin_see_all || ! current_user_can( 'administrator' ) && false === $agent_see_all ) {
+	if ( wpas_is_asadmin() && false === $admin_see_all || ! wpas_is_asadmin() && false === $agent_see_all ) {
 
 		global $current_user;
 

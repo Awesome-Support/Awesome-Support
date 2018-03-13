@@ -40,7 +40,7 @@ jQuery(document).ready(function ($) {
 								results: $.map(data, function (obj) {
 									return {
 										id: obj.user_id,
-										text: obj.user_name
+										text: "#" +  obj.user_id + " " + obj.user_name + " (" +  obj.user_email + ")"
 									};
 								})
 							};
