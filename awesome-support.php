@@ -406,6 +406,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		private function includes() {
 
+			require( WPAS_PATH . 'includes/class_extension_base.php' );
 			require( WPAS_PATH . 'includes/functions-fallback.php' );
 			require( WPAS_PATH . 'includes/class-logger.php' );
 			require( WPAS_PATH . 'includes/integrations/ecommerce.php' );
