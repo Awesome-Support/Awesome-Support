@@ -527,39 +527,12 @@ function wpas_can_user_see_all_tickets() {
 	global $current_user;
 	
 	/* If current user can see all tickets */
-	if ( current_user_can( 'view_all_tickets' ) && ! wpas_is_asadmin() && true === (bool) get_user_option( 'wpas_view_all_tickets', (int) $current_user->ID )  ) {
+	if ( current_user_can( 'view_all_tickets' ) || true === (bool) get_user_option( 'wpas_view_all_tickets', (int) $current_user->ID )  ) {
 		$user_can_see_all = true;
 	}
 	
 	return $user_can_see_all;
 }
-
-/**
- * Checks if a user who is an agent can view a ticket.
- *
- * @since  4.4.0
- *
- *
- * @return boolean
- */
-function wpas_agent_can_view_ticket() {
-	
-	// If logged in user is an admin and they can view all then just return true...
-	if ( wpas_is_asadmin() and true === boolval( wpas_get_option( 'admin_see_all', false ) ) ) {
-		return true ;
-	}
-	
-	// If logged in user is an agent and agents can view all then just return true...
-	if ( wpas_is_agent() and true === boolval( wpas_get_option( 'agent_see_all', false ) ) ) {
-		return true ;
-	}
-	
-	// Well, we got here so return false ;
-	return false ;
-		
-}
-
-
 
 /**
  * Check if the current user can reply from the frontend.
