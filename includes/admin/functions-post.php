@@ -533,35 +533,6 @@ function wpas_get_adjacent_ticket_posts_clauses( $pieces , $wp_query ) {
 	
 	return $pieces;
 }
-/**
- * Check if user can see all tickets
- * 
- * @global object $current_user
- * @return boolean
- */
-function wpas_can_user_see_all_tickets() {
-	
-	$user_can_see_all = false;
-	
-	/* Check if admins can see all tickets */
-	if ( wpas_is_asadmin() && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
-		$user_can_see_all = true;
-	}
-
-	/* Check if agents can see all tickets */
-	if ( wpas_is_agent() && ! wpas_is_asadmin() && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
-		$user_can_see_all = true;
-	}
-
-	global $current_user;
-	
-	/* If current user can see all tickets */
-	if ( current_user_can( 'view_all_tickets' ) && ! wpas_is_asadmin() && true === (bool) get_user_option( 'wpas_view_all_tickets', (int) $current_user->ID )  ) {
-		$user_can_see_all = true;
-	}
-	
-	return $user_can_see_all;
-}
 
 /**
  *
