@@ -12,6 +12,36 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+
+add_action( 'admin_head-post.php', 'admin_head_post_editing' );
+/**
+ * Check to see if user can view a ticket.  If not, return them to the ticket list
+ *
+ * @since 3.3
+ *
+ * @param $data
+ *
+ * @return void
+ */
+function admin_head_post_editing() {
+
+	global $post_type, $post_ID;
+
+	if( 'ticket' === $post_type ) {
+		$can = wpas_can_view_ticket( $post_ID );
+
+		if( $can ) {
+			//can view ticket - do nothing and continue.
+		}
+		else {
+			//Not allowed to view ticket - bail out.
+			wp_redirect( add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) ) );
+		}
+	}
+
+}
+
+
 add_action( 'wpas_do_admin_close_ticket', 'wpas_admin_action_close_ticket' );
 /**
  * Close a ticket
