@@ -567,7 +567,7 @@ abstract class WPAS_Extension_Base {
 		}
 
 		$link = wpas_get_settings_page_url( 'licenses' );
-		WPAS()->admin_notices->add_notice( 'error', "lincense_{$this->slug}", sprintf( __( 'Please <a href="%s">fill-in your product license</a> now. If you don\'t, your copy of the plugin <strong>will never be updated</strong>.', 'awesome-support' ), $link ) );
+		WPAS()->admin_notices->add_notice( 'error', "license_{$this->slug}", sprintf( __( 'Please <a href="%s">fill-in your product license</a> now. If you don\'t, your copy of <strong>%s</strong> will <strong>never be updated</strong>.', 'awesome-support' ), $link, $this->get_addon_name( false ) ) );
 
 	}
 
