@@ -646,5 +646,221 @@ abstract class WPAS_Extension_Base {
 		return $language;
 
 	}
+	
+	/**
+	 * Return addon item id
+	 * 
+	 * @return int
+	 */
+	public function getItemId() {
+		return $this->item_id;
+	}
+	
+	/**
+	 * Set addon item id
+	 * 
+	 * @param int $item_id
+	 */
+	public function setItemId( $item_id ) {
+		$this->item_id = $item_id;
+	}
+	
+	/**
+	 * Return required version of core
+	 * 
+	 * @return float
+	 */
+	public function getVersionRequired() {
+		return $this->version_required;
+	}
+	
+	/**
+	 * Set required version of core
+	 * 
+	 * @param float $version_required
+	 */
+	public function setVersionRequired( $version_required ) {
+		$this->version_required = $version_required;
+	}
+	
+	/**
+	 * Return required version of php
+	 * 
+	 * @return float
+	 */
+	public function getPhpVersionRequired() {
+		return $this->php_version_required;
+	}
+	
+	/**
+	 * Set required version of php
+	 * 
+	 * @param float $php_version_required
+	 */
+	public function setPhpVersionRequired( $php_version_required ) {
+		$this->php_version_required = $php_version_required;
+	}
+	
+	/**
+	 * Return addon slug
+	 * 
+	 * @return string
+	 */
+	public function getSlug() {
+		return $this->slug;
+	}
+	
+	/**
+	 * Set addon slug
+	 * 
+	 * @param string $slug
+	 */
+	public function setSlug( $slug ) {
+		$this->slug = $slug;
+	}
+	
+	/**
+	 * Return text domain for translation
+	 * 
+	 * @return string
+	 */
+	public function getTextDomain() {
+		return $this->text_domain;
+	}
+	
+	/**
+	 * Set text domain for translation
+	 * 
+	 * @param string $text_domain
+	 */
+	public function setTextDomain( $text_domain ) {
+		$this->text_domain = $text_domain;
+	}
+	
+	/**
+	 * Return short unique id
+	 * 
+	 * @return string
+	 */
+	public function getUid() {
+		return $this->uid;
+	}
+	
+	/**
+	 * Set short unique id
+	 * 
+	 * @param string $uid
+	 */
+	public function setUid( $uid ) {
+		$this->uid = $uid;
+	}
+	
+	/**
+	 * Return addon version
+	 * 
+	 * @return float
+	 */
+	public function getVersion() {
+		return $this->version;
+	}
+	
+	/**
+	 * Set addon version
+	 * 
+	 * @param float $version
+	 */
+	public function setVersion( $version ) {
+		$this->version = $version;
+	}
+	
+	/**
+	 * Return addon main file path
+	 * 
+	 * @return string
+	 */
+	public function getAddonFile() {
+		return $this->addon_file;
+	}
+	
+	/**
+	 * Set addon main file path
+	 * 
+	 * @param string $addon_file
+	 */
+	public function setAddonFile( $addon_file ) {
+		$this->addon_file = $addon_file;
+	}
+	
+	/**
+	 * Return url of addon's main directory
+	 * 
+	 * @return string
+	 */
+	public function getAddonUrl() {
+		return $this->addon_url;
+	}
+	
+	/**
+	 * Set url of addon's main directory
+	 * 
+	 * @param string $addon_url
+	 */
+	public function setAddonUrl( $addon_url ) {
+		$this->addon_url = $addon_url;
+	}
+	
+	/**
+	 * Return path of addon's main directory
+	 * 
+	 * @return string
+	 */
+	public function getAddonPath() {
+		return $this->addon_path;
+	}
+	
+	/**
+	 * Set path of addon's main directory
+	 * 
+	 * @param string $addon_path
+	 */
+	public function setAddonPath( $addon_path ) {
+		$this->addon_path = $addon_path;
+	}
+	
+	/**
+	 * Return addon's directory name with trailing slash
+	 * 
+	 * @return string
+	 */
+	public function getAddonRoot() {
+		return $this->addon_root;
+	}
+	
+	/**
+	 * Set addon's directory name with trailing slash
+	 * 
+	 * @param string $addon_root
+	 */
+	public function setAddonRoot( $addon_root ) {
+		$this->addon_root = $addon_root;
+	}
+	
+	/**
+	 * Return addon name
+	 * 
+	 * @return string
+	 */
+	public function getName() {
+		return $this->name;
+	}
+	
+	/**
+	 * Set addon name
+	 * 
+	 * @param string $name
+	 */
+	public function setName( $name ) {
+		$this->name = $name;
+	}
 
 }
