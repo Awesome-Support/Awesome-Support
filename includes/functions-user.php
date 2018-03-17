@@ -486,6 +486,7 @@ function wpas_can_view_ticket( $post_id ) {
 	 * Get the post data.
 	 */
 	$post = get_post( $post_id );
+	$author_id = null;
 	
 	if (!empty($post)) {
 	
