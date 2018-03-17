@@ -1311,6 +1311,65 @@ function wpas_is_support_priority_active() {
 	return ( current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
  }
  
+ /**
+ * Returns TRUE if the current user is an agent on the ticket
+ * Returns FALSE if not.  
+ *
+ * @since 4.4.0
+ *
+ * @param int|post Ticket id or post object
+ *
+ * @return boolean
+ */
+ function wpas_is_user_agent_on_ticket( $ticket ) {
+	 
+	$ticket_id = null;	
+	$post = null ;
+	$is_agent_on_ticket = false ;
+
+	/**
+	 * Get the post data if $ticket passed in is a ticket id.
+	 * Otherwise, get the id if $ticket passed is a post/ticket object.
+	 */	
+	if ( 'array' == gettype( $ticket ) || 'object' === gettype( $ticket ) ) {
+		$post = $ticket;
+		if ( ! empty( $post ) ) {
+			$ticket_id = $post->ID;
+		}
+	} else {
+		$ticket_id = $ticket ;
+		if ( ! empty( $ticket ) ) {
+			$post = get_post( $ticket_id ); 
+		}		
+	}
+	
+	if (!empty($post)) {
+	
+		/**
+		 * Get author and agent ids on the ticket
+		 */
+		$author_id = intval( $post->post_author );
+		$agent_id = intval(get_post_meta( $post->ID, '_wpas_assignee', true ));
+		$agent_id2 = intval(get_post_meta( $post->ID, '_wpas_secondary_assignee', true ));
+		$agent_id3 = intval(get_post_meta( $post->ID, '_wpas_tertiary_assignee', true ));		
+		
+		$current_user = get_current_user_id();
+
+		if (   ( $current_user === $author_id  && current_user_can( 'view_ticket' ) ) 
+			|| ( $current_user === $agent_id  && current_user_can( 'view_ticket' ) )
+			|| ( $current_user === $agent_id2  && current_user_can( 'view_ticket' ) ) 
+			|| ( $current_user === $agent_id3  && current_user_can( 'view_ticket' ) ) ) {
+				
+			$is_agent_on_ticket = true;
+			
+		}		
+		
+	}
+	
+	return apply_filters('wpas_is_user_agent_on_ticket', $is_agent_on_ticket);
+	
+ }
+ 
 
  /**
  * Returns the role of the current logged in user.

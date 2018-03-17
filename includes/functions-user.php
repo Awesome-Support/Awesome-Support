@@ -485,25 +485,18 @@ function wpas_can_view_ticket( $post_id ) {
 	/**
 	 * Get the post data.
 	 */
-	$post      = get_post( $post_id );
-	$author_id = null;
-	$agent_id  = null;
-	$agent_id2 = null;
-	$agent_id3 = null ;
-
+	$post = get_post( $post_id );
+	
 	if (!empty($post)) {
-
+	
+		/**
+		 * Get author and agent ids on the ticket
+		 */
 		$author_id = intval( $post->post_author );
-		$agent_id = intval(get_post_meta( $post->ID, '_wpas_assignee', true ));
-		$agent_id2 = intval(get_post_meta( $post->ID, '_wpas_secondary_assignee', true ));
-		$agent_id3 = intval(get_post_meta( $post->ID, '_wpas_tertiary_assignee', true ));
-		
 
 		if ( is_user_logged_in() ) {
 			if (   ( get_current_user_id() === $author_id && current_user_can( 'view_ticket' ) )
-				|| ( get_current_user_id() === $agent_id  && current_user_can( 'view_ticket' ) )
-				|| ( get_current_user_id() === $agent_id2  && current_user_can( 'view_ticket' ) )
-				|| ( get_current_user_id() === $agent_id3  && current_user_can( 'view_ticket' ) )
+				|| ( wpas_is_user_agent_on_ticket( $post_id ) && current_user_can( 'view_ticket' ) )
 				|| wpas_can_user_see_all_tickets() ) {
 				$can = true;
 			}
