@@ -487,13 +487,17 @@ function wpas_can_view_ticket( $post_id ) {
 	 */
 	$post      = get_post( $post_id );
 	$author_id = null;
+	$agent_id  = null;
 
 	if (!empty($post)) {
 
 		$author_id = intval( $post->post_author );
+		$agent_id = intval(get_post_meta( $post->ID, '_wpas_assignee', true ));
 
 		if ( is_user_logged_in() ) {
-			if ( get_current_user_id() === $author_id && current_user_can( 'view_ticket' ) || wpas_can_user_see_all_tickets() ) {
+			if (   ( get_current_user_id() === $author_id && current_user_can( 'view_ticket' ) )
+				|| ( get_current_user_id() === $agent_id  && current_user_can( 'view_ticket' ) )
+				|| wpas_can_user_see_all_tickets() ) {
 				$can = true;
 			}
 		}

@@ -1421,7 +1421,7 @@ SQL;
 			$ticket_id = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
 
 			/* Filter by Ticket ID */
-			if ( ! empty( $ticket_id ) && intval( $ticket_id ) != 0 ) {
+			if ( ! empty( $ticket_id ) && intval( $ticket_id ) != 0 && 'ticket' === get_post_type( $ticket_id ) && wpas_can_view_ticket( intval( $ticket_id ) ) ) {
 				$where = " AND {$wpdb->posts}.ID = " . intval( $ticket_id );
 			}
 		}
