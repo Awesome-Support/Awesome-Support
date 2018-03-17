@@ -309,7 +309,7 @@ add_filter( 'allowed_block_types', 'wpas_filter_gutenberg_blocks_ticket' );
  *
  * @since  4.4.0
  * 
- * @return void
+ * @return array List of allowed block types
  */
  function wpas_filter_gutenberg_blocks_ticket( $block_types ) {
 	 
