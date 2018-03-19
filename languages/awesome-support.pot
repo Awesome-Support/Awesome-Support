@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-03-05 23:57-0600\n"
+"POT-Creation-Date: 2018-03-18 22:08-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -539,31 +539,31 @@ msgstr ""
 msgid "Ticket Toolbar"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:54
-msgid "Ticket Replies"
-msgstr ""
-
-#: includes/admin/functions-metaboxes.php:59
-msgid "Ticket Details"
-msgstr ""
-
-#: includes/admin/functions-metaboxes.php:64
-msgid "User Profile"
-msgstr ""
-
-#: includes/admin/functions-metaboxes.php:68
+#: includes/admin/functions-metaboxes.php:52
 msgid "Main Tabs"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:71
+#: includes/admin/functions-metaboxes.php:56
+msgid "Ticket Replies"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:60
+msgid "Ticket Details"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:65
+msgid "User Profile"
+msgstr ""
+
+#: includes/admin/functions-metaboxes.php:69
 msgid "Misc and Debug"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:91
+#: includes/admin/functions-metaboxes.php:89
 msgid "An error occurred while registering this metabox. Please contact support."
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:97
+#: includes/admin/functions-metaboxes.php:95
 msgid "An error occured while loading this metabox. Please contact support."
 msgstr ""
 
@@ -2447,6 +2447,41 @@ msgstr ""
 msgid "The requested notification is disabled"
 msgstr ""
 
+#: includes/class-extension-base.php:226
+#, php-format
+msgid "You need Awesome Support to activate this addon. Please <a href=\"%s\" target=\"_blank\">install Awesome Support</a> before continuing."
+msgstr ""
+
+#: includes/class-extension-base.php:247
+#, php-format
+msgid "%s requires Awesome Support to be active. Please activate the core plugin first."
+msgstr ""
+
+#: includes/class-extension-base.php:251
+#, php-format
+msgid "Unfortunately, %s can not run on PHP versions older than %s. Read more information about <a href=\"%s\" target=\"_blank\">how you can update</a>."
+msgstr ""
+
+#: includes/class-extension-base.php:255
+#, php-format
+msgid "%s requires Awesome Support version %s or greater. Please update the core plugin first."
+msgstr ""
+
+#: includes/class-extension-base.php:259
+#, php-format
+msgid "%s requires some dependencies that aren&#039;t loaded. Please contact support."
+msgstr ""
+
+#: includes/class-extension-base.php:570
+#, php-format
+msgid "Please <a href=\"%s\">fill-in your product license</a> now. If you don't, your copy of <strong>%s</strong> will <strong>never be updated</strong>."
+msgstr ""
+
+#: includes/class-extension-base.php:595
+#, php-format
+msgid "You must fill-in your product license in order to get future plugin updates. <a href=\"%s\">Click here to do it</a>."
+msgstr ""
+
 #: includes/class-gist.php:109
 #, php-format
 msgid "View the code on <a href=\"%s\">Gist</a>."
@@ -3354,7 +3389,7 @@ msgstr ""
 msgid "We were unable to log you in for an unknown reason."
 msgstr ""
 
-#: includes/functions-user.php:1074
+#: includes/functions-user.php:1109
 #, php-format
 msgid "Did you mean %s"
 msgstr ""
