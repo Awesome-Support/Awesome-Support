@@ -4,9 +4,9 @@
 			<div class="about-body">
 				<h1>Quick Start With The Basics</h1>
 				<br />
-				<h4><em>Your ticket system is all ready to go so getting started is really simple!  A new page has been created named SUBMIT TICKET. Just add it to your WordPress menu and your customers can start submitting tickets on your site!</em></h4>
-				<h2>View our quick-start and setup videos on our videos page</h2>
-				<a href="https://getawesomesupport.com/videos/"> <img src="<?php echo WPAS_URL; ?>assets/admin/images/about/Videos-749x450.png" alt="Videos Image Link"> </a>
+				<p>Your ticket system is all ready to go so getting started is really simple!  A new page has been created named SUBMIT TICKET. Just add it to your WordPress menu and your customers can start submitting tickets on your site!</p>
+				<h2>Check out our videos for more detailed instructions:</h2>
+				<a href="https://getawesomesupport.com/videos/"> <img src="<?php echo WPAS_URL; ?>assets/admin/images/about/Videos-1016x651.png" alt="Videos Image Link"> </a>
 			</div>
 		</div>
 	</div>

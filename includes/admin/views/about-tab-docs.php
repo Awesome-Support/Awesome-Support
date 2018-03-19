@@ -31,6 +31,11 @@
 				<a href="https://getawesomesupport.com/documentation/awesome-support/admin-roles-capabilities/"> <img src="<?php echo WPAS_URL; ?>assets/admin/images/about/Security.png" alt="Security Image Link"> </a>
 			</div>
 		</div>
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<div class="about-body">
+				<a href="https://getawesomesupport.com/documentation/awesome-support/translations/"> <img src="<?php echo WPAS_URL; ?>assets/admin/images/about/Translations.png" alt="Security Image Link"> </a>
+			</div>
+		</div>		
 
 	</div>	
 
