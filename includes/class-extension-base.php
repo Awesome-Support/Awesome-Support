@@ -177,7 +177,7 @@ abstract class WPAS_Extension_Base {
 	 * 
 	 * @return string
 	 */
-	protected function get_addon_path() {
+	protected static function get_addon_path() {
 		$reflector = new ReflectionClass( get_called_class() );
 		
 		return  $reflector->getFileName();
@@ -219,9 +219,9 @@ abstract class WPAS_Extension_Base {
 	 * @return void
 	 */
 	public static function activate() {
-
+		
 		if ( ! class_exists( 'Awesome_Support' ) ) {
-			deactivate_plugins( basename( $this->addon_file ) );
+			deactivate_plugins( basename( self::get_addon_path() ) );
 			wp_die(
 				sprintf( __( 'You need Awesome Support to activate this addon. Please <a href="%s" target="_blank">install Awesome Support</a> before continuing.', 'awesome-support' ), esc_url( 'http://getawesomesupport.com/?utm_source=internal&utm_medium=addon_loader&utm_campaign=Addons' ) )
 			);
