@@ -448,7 +448,7 @@
 			 */
 			do_action( 'wpas_ticket_details_reply_textarea_after' );
 
-			if ( current_user_can( 'close_ticket' ) ): ?>
+			if ( current_user_can( 'close_ticket' ) && apply_filters( 'wpas_user_can_close_ticket', true, $post_id ) ): ?>
 
                 <div class="checkbox">
                     <label for="close_ticket" data-toggle="tooltip" data-placement="right" title=""
