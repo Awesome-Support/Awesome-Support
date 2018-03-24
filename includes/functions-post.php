@@ -650,7 +650,7 @@ function wpas_new_reply_submission( $data ) {
 	}
 
 	/* Possibly close the ticket */
-	if ( $close && apply_filters( 'wpas_user_can_close_tikcet', true, $ticket_id ) ) {
+	if ( $close && apply_filters( 'wpas_user_can_close_ticket', true, $ticket_id ) ) {
 
 		wpas_close_ticket( $parent_id );
 
