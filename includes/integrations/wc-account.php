@@ -70,10 +70,16 @@
 			unset( $items['customer-logout'] );
 		}		
 
-		// Insert the custom endpoint/url links
-		$items[ $this->endpoint_ticketlist ] = apply_filters( 'wpas_wc_account_tab_name_ticketlist', __( 'My Tickets', 'awesome-support' ) );
-		$items[ $this->endpoint_openticket ] = apply_filters( 'wpas_wc_account_tab_name_openticket', __( 'Open A Ticket', 'awesome-support' ) );		
-
+		// Get the labels for the new WooCommerce MY ACCOUNT menu items...
+		// NOTE: The if-then-else format used below is very deliberate in order to support translation in a multi-language website!
+		// If the admin deliberately left the fields blank then they can easily translate the default text into multiple langauges instead of being stuck with one language in settings.
+		$my_tickets_label = empty( wpas_get_option( 'simple_wc_my_tickets_label' ) ) ? __( 'My tickets', 'awesome-support' ) :  wpas_get_option( 'simple_wc_my_tickets_label' ) ;
+		$submit_ticket_label = empty( wpas_get_option( 'simple_wc_submit_ticket_label') ) ? __( 'Open a support ticket', 'awesome-support' ) : wpas_get_option( 'simple_wc_submit_ticket_label') ;
+		
+		// Insert the new menu items (endpoints)
+		$items[ $this->endpoint_openticket ] = apply_filters( 'wpas_wc_account_tab_name_openticket', $submit_ticket_label );		
+		$items[ $this->endpoint_ticketlist ] = apply_filters( 'wpas_wc_account_tab_name_ticketlist', $my_tickets_label );
+		
 		// Insert back the logout item.
 		if ($logout) {
 			$items['customer-logout'] = $logout;

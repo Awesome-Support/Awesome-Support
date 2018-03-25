@@ -30,7 +30,20 @@ function wpas_core_settings_integration( $def ) {
 					'name'    => __( 'Permalinks Warning:', 'awesome-support' ),
 					'type'	  => 'note',
 					'desc'    => __( 'Note: You must go to your Permalinks page and save the settings there again if you turn on or off the WooCommerce option above.', 'awesome-support' ),
-				),				
+				),
+				array(
+					'name'    => __( 'Label for MY TICKETS link', 'awesome-support' ),
+					'id'      => 'simple_wc_my_tickets_label',
+					'type'    => 'text',
+					'desc'    => __( 'If left blank, the label will be "My tickets". Leave blank if you are creating a multi-language website', 'awesome-support' ),					
+				),
+				array(
+					'name'    => __( 'Label for SUBMIT TICKET link', 'awesome-support' ),
+					'id'      => 'simple_wc_submit_ticket_label',
+					'type'    => 'text',
+					'desc'    => __( 'If left blank, the label will be "Open a support ticket". Leave blank if you are creating a multi-language website', 'awesome-support' ),					
+				),
+				
 
 				array(
 					'name'    => __( 'Teamviewer', 'awesome-support' ),
