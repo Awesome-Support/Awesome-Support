@@ -43,6 +43,10 @@
 		
 	}
 	
+	/**
+	 * Setup instance variables for the class.
+	 *
+	 */	
 	public function setup() {
 		
 		$this->endpoint_ticketlist = $this->get_endpoint_name_for_ticket_list();
@@ -52,6 +56,8 @@
 
 	/**
 	 * Insert the new endpoint into the My Account menu.
+	 *
+	 * Filter hook: woocommerce_account_menu_items
 	 *
 	 * @param array $items
 	 * @return array
@@ -64,7 +70,7 @@
 			unset( $items['customer-logout'] );
 		}		
 
-		// Insert the custom endpoint.
+		// Insert the custom endpoint/url links
 		$items[ $this->endpoint_ticketlist ] = apply_filters( 'wpas_wc_account_tab_name_ticketlist', __( 'My Tickets', 'awesome-support' ) );
 		$items[ $this->endpoint_openticket ] = apply_filters( 'wpas_wc_account_tab_name_openticket', __( 'Open A Ticket', 'awesome-support' ) );		
 
@@ -133,10 +139,16 @@
 	 * Register new endpoints to use inside My Account page.
 	 *
 	 * @see https://developer.wordpress.org/reference/functions/add_rewrite_endpoint/
+	 *
+	 * Filter Hook: init
+	 *
 	 */
 	public function add_endpoints() {
-		add_rewrite_endpoint( $this->endpoint_ticketlist, EP_ROOT | EP_PAGES );
-		add_rewrite_endpoint( $this->endpoint_openticket, EP_ROOT | EP_PAGES );		
+		// We have this function here to be used later to add rewritable endpoints if necessary.
+		// For now we don't have to do anything with it.
+		
+		//add_rewrite_endpoint( $this->endpoint_ticketlist, EP_ROOT | EP_PAGES );
+		//add_rewrite_endpoint( $this->endpoint_openticket, EP_ROOT | EP_PAGES );		
 	}
 	 
  }
