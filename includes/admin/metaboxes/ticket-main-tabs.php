@@ -204,4 +204,15 @@ function wpas_can_view_ai_tab() {
 /**
  * Print main tabs in ticket edit page
  */
+
+global $post_id;
+
+$terms = get_the_terms( $post_id, 'ticket_priority' );
+
+if ( $terms ) {
+	$term = array_shift( $terms );
+	$color = get_term_meta( $term->term_id, 'color', true );
+	echo "<div style=\"margin:0 1px; border-top : 2px solid {$color}\"></div>";
+}
+
 echo wpas_admin_tabs( 'ticket_main' );
