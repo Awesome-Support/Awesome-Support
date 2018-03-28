@@ -472,8 +472,8 @@
         
         /* Make sure we activate error tab once ticket submit button is pressed, so agent can see error message */
         if( $( '#wpas-mb-ticket-main-tabs' ).length > 0 ) {
-                
-                $('form[name=post] #publishing-action').click( function(e) {
+                        
+                $('form[name=post] #publishing-action, .wpas-reply-actions .wpas_btn_reply').click( function(e) {
                         if( !$('form[name=post]').get(0).checkValidity() ) {
 
                                 $('#wpas_admin_tabs_ticket_main .wpas_admin_tab_content').find('input, select, textarea').each( function() {
