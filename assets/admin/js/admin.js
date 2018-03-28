@@ -426,9 +426,19 @@
                 var main_tabs_mb_sortable = $('#wpas-mb-ticket-main-tabs').closest('.meta-box-sortables');
                 var replies_mb_sortable = $('#wpas-mb-replies').closest('.meta-box-sortables');
                 
+                var previous_layout_type = 0 === parseInt( $('#postbox-container-1').css( 'marginRight' ) ) ? 2 : 1;
+                var layout_type ;
+                
                 /* Arrange metaboxes based on screen size */
                 function arrange_ticket_metaboxes() {
+                        
+                        layout_type = 0 === parseInt( $('#postbox-container-1').css( 'marginRight' ) ) ? 2 : 1;
+                        
+                        if( layout_type == previous_layout_type ) {
+                                return;
+                        }
 
+                        
                         if( 0 === parseInt( $('#postbox-container-1').css( 'marginRight' ) ) ) {
                                 $('#wpas-mb-toolbar').insertAfter('#post-body-content');
                                 $('#wpas-mb-ticket-main-tabs').insertAfter('#wpas-mb-toolbar');
@@ -438,10 +448,23 @@
                                 $('#wpas-mb-ticket-main-tabs').appendAtIndex( main_tabs_mb_sortable, main_tabs_index );
                                 $('#wpas-mb-replies').appendAtIndex( replies_mb_sortable, replies_mb_index );
                         }
+                        
+                        
+                        previous_layout_type = layout_type;
+                        
+                        $('body').find('.wp-editor-wrap').each(function () {
+                    
+                                var editor_ele_id = $(this).attr('id');
+                                var editor_id = editor_ele_id.substring( 3, editor_ele_id.length - 5 ) ;
 
+                                if (  tinyMCEPreInit.mceInit.hasOwnProperty(editor_id) && null !== tinyMCE.get( editor_id ) ) {
+                                        tinyMCE.get( editor_id ).destroy();
+                                        tinymce.init( tinyMCEPreInit.mceInit[editor_id] )
+                                }
+                        });
+                        
                 }
-
-
+                
                 $(window).on( 'resize', arrange_ticket_metaboxes );
 
                 arrange_ticket_metaboxes();
