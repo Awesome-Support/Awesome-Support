@@ -72,7 +72,7 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 
 		$accept = implode( ',', $accept );
 
-		return sprintf( '<label {{label_atts}}>{{label}}</label><input style="height: auto;" type="file" data-dd="ddh" value="%s" {{atts}} accept="%s" %s>', $this->populate(), $accept, $multiple );
+		return sprintf( '<label {{label_atts}}>{{label}}</label><input style="height: auto;" type="file" {{atts}} accept="%s" %s>', $this->populate(), $accept, $multiple );
 	}
 
 	/**
