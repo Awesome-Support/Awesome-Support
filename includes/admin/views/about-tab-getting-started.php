@@ -3,15 +3,29 @@
 		<div>			
 			<div class="about-body">
 				<h1>Quick Start With The Basics</h1>
-				<br />
-				<h4><em>Your ticket system is all ready to go so getting started is really simple!  A new page has been created named SUBMIT TICKET. Just add it to your WordPress menu and your customers can start submitting tickets on your site!</em></h4>
-				<h2>View our quick-start and setup videos on our videos page</h2>
-				<a href="https://getawesomesupport.com/videos/"> <img src="<?php echo WPAS_URL; ?>assets/admin/images/about/Videos-749x450.png" alt="Videos Image Link"> </a>
 			</div>
 		</div>
 	</div>
 	
-	<h2> Here are links to our very extensive documentation </h2>	
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<div class="about-body">
+				<p><b>Your ticket system is all ready to go so getting started is really simple!  </b></p>
+				<p>1. A new page has been created named SUBMIT TICKET. Just add it to your WordPress menu and your customers can start submitting tickets on your site!</p>
+				<p><b>Here are some other options to help guide on your way to an Awesome Helpdesk: </b></p>
+				<p>1. View our <a href="https://getawesomesupport.com/videos/">videos</a> for more intensive getting started instructions.</p>
+				<p>2. Basic documentation links are below for even more detailed help. </p>
+				<p>3. Click on the DOCUMENTATION tab for all our instructional options! </p>
+			</div>
+		</div>	
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<div class="about-body">
+				<a href="https://getawesomesupport.com/videos/"> <img src="<?php echo WPAS_URL; ?>assets/admin/images/about/Videos.png" alt="Videos Image Link"> </a>
+			</div>
+		</div>
+
+	</div>
+
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 			<div class="about-body">

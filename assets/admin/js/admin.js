@@ -1,7 +1,35 @@
 (function ($) {
     "use strict";
+    
+        /* Place an element at specific index */
+        $.fn.appendAtIndex = function( to,index ) {
+                if(! to instanceof jQuery){
+                    to=$(to);
+                }
+                if( index===0 ){
+                    $(this).prependTo( to )
+                }else{
+                    $(this).insertAfter( to.children().eq(index-1) );
+                }
+        };
 
     $(function () {
+		
+		/* Hide the ticket slug on the ticket details page  */
+		function hideTicketSlug() {
+			var slug = $('.post-type-ticket #edit-slug-box');  // Get all the slug rows - should only be one though.
+			slug.toggle(); // hide it.
+		}
+		hideTicketSlug(); // Hide the slug as soon as the page loads
+		
+		/* Show the ticket slug on the ticket details page */
+		function toggleTicketSlug() {
+			var slug = $('.post-type-ticket #edit-slug-box');  // Get all the slug rows - should only be one though.
+			slug.toggle(); 
+		}
+		
+		var btnToggleTicketSlug	= $('#wpas-toggle-ticket-slug');  			// Get a handle to the TOGGLE TICKET SLUG button in the ticket details toolbar
+		btnToggleTicketSlug.click( function() { toggleTicketSlug(); } ) ;  	// When its clicked, call our toggleTicketSlug function above.			
 
         /**
          * Automatically Link URLs, Email Addresses, Phone Numbers, etc.
@@ -85,11 +113,12 @@
             if (btn.hasClass('wpas_btn_reply') || btn.hasClass('wpas_btn_reply_close')) {
 
                 // Detect Visual and Text Mode in WordPress TinyMCE Editor
-                var is_tinymce_active = (typeof tinyMCE != "undefined") && tinyMCE.activeEditor && !tinyMCE.activeEditor.isHidden();
+                
+                var editor = tinymce.get('wpas_reply');
+                var is_tinymce_active = (typeof tinyMCE != "undefined") && editor && !editor.isHidden();
 
                 // Visual Editor
                 if (is_tinymce_active) {
-                    var editor = tinyMCE.activeEditor;
                     var editorContent = editor.getContent();
                     if (editorContent === '' || editorContent === null) {
 
@@ -181,6 +210,24 @@
                     $(this).select2();
                 }
             });
+            
+            /* Reset tinymce editors in tab so they size properly */
+            if( typeof tinymce !== 'undefined') {
+                $('#' + id + ' .wp-editor-wrap').each(function () {
+                    
+                    var editor_ele_id = $(this).attr('id');
+                    var editor_id = editor_ele_id.substring( 3, editor_ele_id.length - 5 ) ;
+                    
+                    if (  $(this).hasClass( 'tmce-active' ) && tinyMCEPreInit.mceInit.hasOwnProperty(editor_id) ) {
+                        if( null !== tinyMCE.get( editor_id ) ) {
+                            tinyMCE.get( editor_id ).destroy();
+                            tinymce.init( tinyMCEPreInit.mceInit[editor_id] )
+                        }
+                    }
+                });
+            }
+            
+            $('#' + id).trigger( 'tab_show' );
         }
 
         // making tabs smart responsive
@@ -357,7 +404,90 @@
             // Disable other filters
             $('#wpas_admin_tabs_tickets_tablenav .wpas_admin_tab_content select').attr('disabled', 'disabled');
         }
+        
+        
+        
+        /**
+         * Only run this if main tabs exist in ticket add|edit page
+         */
+        if( 0 < $('#wpas_admin_tabs_ticket_main_custom_fields').length ) {
+                $('#postdivrich').prependTo('.wpas-post-body-content');
+        }
+        
+        
+        /* Arrange metaboxes in ticket edit page on small screens */
+        
+        /* Lets store original position of metaboxes so we can revert them back to original positions on large screens  */
+        if( 0 < $('#wpas-mb-toolbar').length ) {
+                var toolbar_index = $('#wpas-mb-toolbar').index();
+                var main_tabs_index = $('#wpas-mb-ticket-main-tabs').index();
+                var replies_mb_index = $('#wpas-mb-replies').index();
 
+                var toolbar_mb_sortable = $('#wpas-mb-toolbar').closest('.meta-box-sortables');
+                var main_tabs_mb_sortable = $('#wpas-mb-ticket-main-tabs').closest('.meta-box-sortables');
+                var replies_mb_sortable = $('#wpas-mb-replies').closest('.meta-box-sortables');
+                
+                var previous_layout_type = 0 === parseInt( $('#postbox-container-1').css( 'marginRight' ) ) ? 2 : 1;
+                var layout_type ;
+                
+                /* Arrange metaboxes based on screen size */
+                function arrange_ticket_metaboxes() {
+                        
+                        layout_type = 0 === parseInt( $('#postbox-container-1').css( 'marginRight' ) ) ? 2 : 1;
+                        
+                        if( layout_type == previous_layout_type ) {
+                                return;
+                        }
+
+                        
+                        if( 0 === parseInt( $('#postbox-container-1').css( 'marginRight' ) ) ) {
+                                $('#wpas-mb-toolbar').insertAfter('#post-body-content');
+                                $('#wpas-mb-ticket-main-tabs').insertAfter('#wpas-mb-toolbar');
+                                $('#wpas-mb-replies').insertAfter('#wpas-mb-ticket-main-tabs');
+                        } else {
+                                $('#wpas-mb-toolbar').appendAtIndex( toolbar_mb_sortable, toolbar_index );
+                                $('#wpas-mb-ticket-main-tabs').appendAtIndex( main_tabs_mb_sortable, main_tabs_index );
+                                $('#wpas-mb-replies').appendAtIndex( replies_mb_sortable, replies_mb_index );
+                        }
+                        
+                        
+                        previous_layout_type = layout_type;
+                        
+                        $('body').find('.wp-editor-wrap').each(function () {
+                    
+                                var editor_ele_id = $(this).attr('id');
+                                var editor_id = editor_ele_id.substring( 3, editor_ele_id.length - 5 ) ;
+
+                                if (  tinyMCEPreInit.mceInit.hasOwnProperty(editor_id) && null !== tinyMCE.get( editor_id ) ) {
+                                        tinyMCE.get( editor_id ).destroy();
+                                        tinymce.init( tinyMCEPreInit.mceInit[editor_id] )
+                                }
+                        });
+                        
+                }
+                
+                $(window).on( 'resize', arrange_ticket_metaboxes );
+
+                arrange_ticket_metaboxes();
+        }
+        
+        /* Make sure we activate error tab once ticket submit button is pressed, so agent can see error message */
+        if( $( '#wpas-mb-ticket-main-tabs' ).length > 0 ) {
+                        
+                $('form[name=post] #publishing-action, .wpas-reply-actions .wpas_btn_reply').click( function(e) {
+                        if( !$('form[name=post]').get(0).checkValidity() ) {
+
+                                $('#wpas_admin_tabs_ticket_main .wpas_admin_tab_content').find('input, select, textarea').each( function() {
+                                        if( !$(this).get(0).checkValidity() ) {
+                                                var error_tab = $(this).closest('.wpas_admin_tab_content').attr('id');
+                                                $('#wpas_admin_tabs_ticket_main li[rel='+error_tab+']').trigger('click');
+                                        }
+                                })
+                        }
+                        
+                });
+        }
+        
 
     });
 

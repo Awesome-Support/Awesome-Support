@@ -11,32 +11,72 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-?>
 
-<h2>
-	<?php
-	/**
-	 * wpas_write_reply_title_admin filter
-	 *
-	 * @since  3.1.5
-	 *
-	 * @param  string  Title to display
-	 * @param  WP_Post Current post object
-	 */
-	echo apply_filters( 'wpas_write_reply_title_admin', sprintf( esc_html_x( 'Write a reply to %s', 'Title of the reply editor in the back-end', 'awesome-support' ), '&laquo;' . esc_attr( get_the_title( $post->ID ) ) . '&raquo;' ), $post ); ?>
-</h2>
-<div>
-	<?php
-	// Load the WordPress WYSIWYG with minimal options
-	wp_editor( apply_filters( 'wpas_admin_reply_form_reply_content', '' ), 'wpas_reply', apply_filters( 'wpas_admin_reply_form_args', array(
-			'media_buttons' => false,
-			'teeny'         => true,
-			'quicktags'     => true,
-		)
-	) );
+
+add_filter( 'wpas_admin_tabs_after_reply_wysiwyg', 'wpas_add_reply_form_tab' , 8, 1 );
+add_filter( 'wpas_admin_tabs_after_reply_wysiwyg_reply_form_content','wpas_reply_form_tab_content' , 11, 1 );
+
+/**
+ * Add Reply form tab in ticket edit page
+ * 
+ * @param array $tabs
+ * 
+ * @return array
+ */
+function wpas_add_reply_form_tab( $tabs ) {
+	$tabs['reply_form'] = __( 'Reply', 'awesome-support' );
+	
+	return $tabs;
+}
+
+/**
+ * Return content for reply tab
+ * 
+ * @global Object $post
+ * 
+ * @param string $content
+ * 
+ * @return string
+ */
+function wpas_reply_form_tab_content( $content = '' ) {
+	global $post;
+	
+	ob_start();
 	?>
-</div>
-<?php
+
+	<h2>
+		<?php
+		/**
+		 * wpas_write_reply_title_admin filter
+		 *
+		 * @since  3.1.5
+		 *
+		 * @param  string  Title to display
+		 * @param  WP_Post Current post object
+		 */
+		echo apply_filters( 'wpas_write_reply_title_admin', sprintf( esc_html_x( 'Write a reply to %s', 'Title of the reply editor in the back-end', 'awesome-support' ), '&laquo;' . esc_attr( get_the_title( $post->ID ) ) . '&raquo;' ), $post ); ?>
+	</h2>
+
+	<div>
+		<?php
+		// Load the WordPress WYSIWYG with minimal options
+		wp_editor( apply_filters( 'wpas_admin_reply_form_reply_content', '' ), 'wpas_reply', apply_filters( 'wpas_admin_reply_form_args', array(
+				'media_buttons' => false,
+				'teeny'         => true,
+				'quicktags'     => true,
+			)
+		) );
+		?>
+	</div>
+
+	<?php
+	
+	$content = ob_get_clean();
+	
+	return $content;
+}
+
+
 /**
  * Add a hook after the WYSIWYG editor
  * for tickets reply.

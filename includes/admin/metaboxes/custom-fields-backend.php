@@ -16,11 +16,16 @@ if ( ! defined( 'WPINC' ) ) {
 
 <div class="wpas-custom-fields">
 	<?php
+	
+	printf('<h2>%s</h2>', __( 'Admin Only Custom Fields', 'awesome-support' ) );
 
 	do_action( 'wpas_mb_details_before_custom_fields_admin_only' );
 
 	WPAS()->custom_fields->show_backend_custom_form_fields();
-
+	
 	do_action( 'wpas_mb_details_after_custom_fields_admin_only' );
+	
+	echo '<div class="clear clearfix"></div>';
+	
 	?>
 </div>

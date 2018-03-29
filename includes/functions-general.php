@@ -158,7 +158,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 	if( ! is_array( $ticket_list ) ) { $ticket_list = (array) $ticket_list; }
 	if( ! is_array( $ticket_submit ) ) { $ticket_submit = (array) $ticket_submit; }
 
-	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'wpas_unassigned_mail', 'wpas_mailbox_config', 'wpas_inbox_rules', 'faq', 'wpas_gadget', 'ruleset', 'trackedtimes'  ) );
+	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'wpas_unassigned_mail', 'wpas_mailbox_config', 'wpas_inbox_rules', 'faq', 'wpas_gadget', 'ruleset', 'trackedtimes', 'wpas_sla', 'wpas_issue_tracking' ) );
 	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
 	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
@@ -1236,3 +1236,260 @@ function wpas_is_support_priority_active() {
 	 return $filtered_input ;
 	 
  }
+ 
+ /**
+ * Returns TRUE if running in SAAS mode, False otherwise
+ *
+ * @since 4.3.6
+ *
+ * @return boolean
+ */
+ function is_saas() {
+	 
+	if ( ! defined( 'WPAS_SAAS' ) ) {
+		return false ;
+	} elseif  ( ( defined( 'WPAS_SAAS' ) && false === WPAS_SAAS ) ) {
+		return false ;
+	} elseif  ( ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) ) {
+		return true ;
+	}
+  
+	return false ;
+  
+ }
+ 
+ /**
+ * Returns TRUE if we are declaring compatibility with GUTENBERG.
+ * Returns FALSE if not.  The default is FALSE - we are not
+ * compatible
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+ function wpas_gutenberg_meta_box_compatible() {
+	 $is_compatible = false ;
+	 
+	 /**
+	  * if our REST API is NOT enabled, return TRUE since the lack of a REST API will force GUTENBERG 
+	  * to fallback to the regular editor anyway.  This will then prevent the "Gutenberg Incompatible Meta Box"
+	  * message from showing up in our metaboxes
+	  */ 
+	  if ( ! class_exists( 'WPAS_API' ) ) {
+		  $is_compatible = true ;
+	  }
+		  
+	 // Override everything anyway based on a variable in the wp-config file.
+	 if ( defined('WPAS_GUTENBERG_META_BOX_COMPATIBLE') && true === WPAS_GUTENBERG_META_BOX_COMPATIBLE )  {
+		 $is_compatible = true ;
+	 }
+	 
+	 return $is_compatible;
+ }
+ 
+ /**
+ * Returns TRUE if the current user is an agent
+ * Returns FALSE if not.  
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+ function wpas_is_agent() {
+	return current_user_can( 'edit_ticket' ) ;
+ }
+ 
+ /**
+ * Returns TRUE if the current user is an Awesome Support Admin
+ * Returns FALSE if not.  
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+ function wpas_is_asadmin() {
+	return ( current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
+ }
+ 
+ /**
+ * Returns TRUE if the current user is an agent on the ticket
+ * Returns FALSE if not.  
+ *
+ * @since 4.4.0
+ *
+ * @param int|post Ticket id or post object
+ *
+ * @return boolean
+ */
+ function wpas_is_user_agent_on_ticket( $ticket ) {
+	 
+	$ticket_id = null;	
+	$post = null ;
+	$is_agent_on_ticket = false ;
+
+	/**
+	 * Get the post data if $ticket passed in is a ticket id.
+	 * Otherwise, get the id if $ticket passed is a post/ticket object.
+	 */	
+	if ( 'array' == gettype( $ticket ) || 'object' === gettype( $ticket ) ) {
+		$post = $ticket;
+		if ( ! empty( $post ) ) {
+			$ticket_id = $post->ID;
+		}
+	} else {
+		$ticket_id = $ticket ;
+		if ( ! empty( $ticket ) ) {
+			$post = get_post( $ticket_id ); 
+		}		
+	}
+	
+	if (!empty($post)) {
+	
+		/**
+		 * Get author and agent ids on the ticket
+		 */
+		$author_id = intval( $post->post_author );
+		$agent_id = intval(get_post_meta( $post->ID, '_wpas_assignee', true ));
+		$agent_id2 = intval(get_post_meta( $post->ID, '_wpas_secondary_assignee', true ));
+		$agent_id3 = intval(get_post_meta( $post->ID, '_wpas_tertiary_assignee', true ));		
+		
+		$current_user = get_current_user_id();
+
+		if (   ( $current_user === $author_id  && current_user_can( 'view_ticket' ) ) 
+			|| ( $current_user === $agent_id  && current_user_can( 'view_ticket' ) )
+			|| ( $current_user === $agent_id2  && current_user_can( 'view_ticket' ) ) 
+			|| ( $current_user === $agent_id3  && current_user_can( 'view_ticket' ) ) ) {
+				
+			$is_agent_on_ticket = true;
+			
+		}		
+		
+	}
+	
+	return apply_filters('wpas_is_user_agent_on_ticket', $is_agent_on_ticket);
+	
+ }
+ 
+
+ /**
+ * Returns the role of the current logged in user.
+ *
+ * Returns FALSE if user is not logged in.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+function wpas_get_current_user_role() {
+	
+	if( is_user_logged_in() ) {
+		
+		$user = wp_get_current_user();
+		$role = ( array ) $user->roles;
+		return $role[0];
+		
+	} else {
+		
+		return false;
+		
+	}
+ }
+ 
+ /**
+ * Returns ALL the roles of the current logged in user.
+ *
+ * This is sometimes needed when using a plugin like USER ROLE EDITOR 
+ * that can assign multiple roles to a user.
+ *
+ * Returns FALSE if user is not logged in.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+function wpas_get_current_user_roles() {
+	
+	if( is_user_logged_in() ) {
+		
+		$user = wp_get_current_user();
+		$role = ( array ) $user->roles;
+		return $role;
+		
+	} else {
+		
+		return false;
+		
+	}
+ }
+ 
+ /**
+ * Checks to see if a role is in a list of roles.
+ *
+ * Returns true if $role is in $role_list.
+ * otherwise returns false.
+ *
+ * $role_list is a comma separate list of values.
+ *
+ * Since all parameters are strings this could be a generic search for a string in a comma separated list of strings...
+ *
+ * @since 4.4.0
+ *
+ * @param string $role 		The name of the role to search for
+ * @param string $role_list	The list of roles to search in - comma separated values.
+ *
+ * @return boolean
+ */
+ function wpas_role_in_list( $role, $role_list ) {
+	 
+	$roles = explode( ',', $role_list ) ;
+		
+	if ( empty( $roles) ) return false ;  // no roles listed so return false - row is not in the list ;
+			
+	if ( in_array( $role, $roles, true ) ) {
+		return true ;
+	} else {
+		return false ;
+	}
+	 
+ }
+ 
+ /**
+ * Checks to see if the current user's role is in a list of roles.
+ *
+ * Returns true if the current user's role is in $role_list.
+ * otherwise returns false.
+ *
+ * $role_list is a comma separate list of values.
+ *
+ *
+ * @since 4.4.0
+ *
+ * @param string $role_list	The list of roles to search in - comma separated values.
+ *
+ * @return boolean
+ */
+ function wpas_current_role_in_list( $role_list ) {
+	 
+	 // If list of roles is empty for some reason return false
+	 if ( true === empty( $role_list ) ) {
+		 return false ;
+	 }
+	 
+	$current_roles = wpas_get_current_user_roles();  // note that we are expect an array of roles.
+	
+	if ( empty( $current_roles ) ) return false ;  // user not logged in for some reason so return false ;
+	
+	foreach ( $current_roles as $current_role ) {
+		
+		if ( true === wpas_role_in_list( $current_role, $role_list ) ) {
+			// role found so break prematurely and just return;
+			return true ;
+		}
+		
+	}
+	
+	return false ;
+	 
+	 
+ }
+ 

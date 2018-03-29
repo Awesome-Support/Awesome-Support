@@ -53,7 +53,10 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 	 * Automatically set the ticket as processing if this is the first reply.
 	 */
 	if ( user_can( $current_user->ID, 'edit_ticket' ) && isset( $postarr['ID'] ) ) {
-
+		
+		
+		// @TODO:  Its possible that this entire section of code to set the $agent_replied flag might not be needed.
+		// We'll keep it for now but its not used in this function at this time.
 		$replies       = wpas_get_replies( intval( $postarr['ID'] ) );
 		$agent_replied = false;
 
@@ -68,7 +71,10 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 
 		}
 
-		if ( false === $agent_replied && ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) ) {
+		// @TODO: Its possible this if statement below might need an additional qualifier to see if $agent_replied = true.
+		// For now the ticket is going to IN PROCESS properly but if there is an issue later then using the additional 
+		// qualifier might be warranted.
+		if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
 			$_POST['post_status_override'] = 'processing';
 		}
 
@@ -312,6 +318,8 @@ function wpas_save_ticket( $post_id ) {
 			), admin_url( 'post.php' ) ) );
 		}
 	}
+	
+	do_action( 'wpas_tikcet_after_saved', $post_id );
 
 }
 
@@ -525,35 +533,6 @@ function wpas_get_adjacent_ticket_posts_clauses( $pieces , $wp_query ) {
 	
 	return $pieces;
 }
-/**
- * Check if user can see all tickets
- * 
- * @global object $current_user
- * @return boolean
- */
-function wpas_can_user_see_all_tickets() {
-	
-	$user_can_see_all = false;
-	
-	/* Check if admins can see all tickets */
-	if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
-		$user_can_see_all = true;
-	}
-
-	/* Check if agents can see all tickets */
-	if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
-		$user_can_see_all = true;
-	}
-
-	global $current_user;
-	
-	/* If current user can see all tickets */
-	if ( current_user_can( 'view_all_tickets' ) && ! current_user_can( 'administrator' ) && true === (bool) get_user_option( 'wpas_view_all_tickets', (int) $current_user->ID )  ) {
-		$user_can_see_all = true;
-	}
-	
-	return $user_can_see_all;
-}
 
 /**
  *
@@ -668,4 +647,44 @@ function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_fi
 	
 	return apply_filters( 'wpas_assignee_meta_query', $meta_query, $user_id, $profile_filter );
 	
+}
+
+
+/**
+ * Generate a link with icon for a reply action
+ * 
+ * @param string $id
+ * @param array $args
+ * 
+ * @return string
+ */
+function wpas_reply_control_item( $id , $args = array() ) {
+	
+	$link = isset( $args['link'] ) ? $args['link'] : '#';
+	$title = isset( $args['title'] ) ? $args['title'] : '';
+	
+	$icon = isset( $args['icon'] ) && $args['icon'] ? $args['icon'] : false;
+	
+	$attr_id = isset( $args['id'] ) && $args['id'] ? $args['id'] : '';
+	
+	$classes = isset( $args['classes'] ) ? $args['classes'] : '';
+	$classes .= " {$id}";
+	$classes .= ( $icon ? ' reply_icon' : '' );
+	$classes .= $title ? ' hint-bottom hint-anim' : '';
+	
+	$data_params = isset( $args['data'] ) && is_array( $args['data'] ) ?  $args['data'] : array();
+	
+	$markup = "<a href=\"{$link}\" data-hint=\"{$title}\" class=\"{$classes}\"";
+	
+	foreach( $data_params as $dp_name => $dp_value ) {
+		$markup .= " data-{$dp_name}=\"{$dp_value}\"";
+	}
+	
+	$markup .= $attr_id ? " id=\"{$attr_id}\"" : '';
+	$markup .= '>';
+	$markup .= $icon ? "<img src=\"{$icon}\" />" : '';
+	$markup .= '</a>';
+	
+	
+	return $markup;
 }

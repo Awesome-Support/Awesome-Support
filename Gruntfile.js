@@ -156,7 +156,10 @@ module.exports = function (grunt) {
 					src: [
 						'*',
 						'**',
+						'!dist/**',
 						'!node_modules/**',
+						'!vendor-overrides/**',
+						'!vendor/freemius/**',
 						'!tests/**',
 						'!.tx/**',
 						'!.gitignore',
@@ -285,20 +288,37 @@ module.exports = function (grunt) {
 				files: ['assets/**/*.less', 'assets/**/*.css', 'themes/**/*.less'],
 				tasks: ['less', 'autoprefixer', 'combine_mq', 'cssmin']
 			}
+		},
+		
+		copy: {
+		  vendoroverrides: {
+			files: [
+			  { src:"vendor-overrides/titan-framework-overrides/class-option-edd-license.php", dest:"vendor/gambitph/titan-framework/lib/class-option-edd-license.php" },
+			  { src:"vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php", dest:"vendor/gambitph/titan-framework/inc/edd-licensingEDD_SL_Plugin_Updater.php" },
+			  { src:"vendor-overrides/titan-framework-overrides/wp-color-picker-alpha-min.js", dest:"vendor/gambitph/titan-framework/js/min/wp-color-picker-alpha-min.js" },
+			  { src:"vendor-overrides/titan-framework-overrides/wp-color-picker-alpha.js", dest:"vendor/gambitph/titan-framework/js/wp-color-picker-alpha.js" }
+			]
+		  },
+			copytodist: {
+			files: [
+			  { src:"awesome-support-<%= pkg.version %>.zip", dest:"dist/awesome-support.zip" }
+			]
+		  }
 		}
-
+		
 	});
 
 	require('load-grunt-tasks')(grunt);
 
-	grunt.registerTask('default', ['jshint', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
-	grunt.registerTask('build'  , ['jshint', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin']);
+	grunt.registerTask('default', ['jshint', 'copy:vendoroverrides', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
+	grunt.registerTask('build'  , ['jshint', 'copy:vendoroverrides', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin']);
 	
 	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
+	
+	grunt.registerTask('ugly', ['uglify'] );
 
-
-	grunt.registerTask('release', ['composer:install --no-dev', 'build', 'compress']);
+	grunt.registerTask('release', ['composer:install --no-dev', 'build', 'compress', 'copy:copytodist']);
 	grunt.registerTask('release_patch', ['version::patch', 'release']);
 	grunt.registerTask('release_minor', ['version::minor', 'release']);
 	grunt.registerTask('release_major', ['version::major', 'release']);

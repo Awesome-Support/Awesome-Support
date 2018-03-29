@@ -25,7 +25,12 @@ log viewer - just a couple of minor changes:
  */
 
 function get_logs_path() {
-	return WPAS_PATH  . 'logs/';
+
+	$log = new WPAS_Logger( '' );
+	$base_path = $log->get_logs_base_path() . '/';
+
+	return $base_path;
+
 }
 
 function get_logs_url() {

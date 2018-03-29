@@ -11,7 +11,7 @@
         "tickets"
     ],
     "homepage": "https://getawesomesupport.com",
-    "license": "GNU GPL",
+    "license": "GPL-2.0-or-later",
     "authors": [
         {
             "name": "Awesome Support",
@@ -23,7 +23,7 @@
     "require": {
         "php": ">=5.6",
         "gambitph/titan-framework": "1.9.*",
-        "ericmann/wp-session-manager": "1.2.*"
+        "ericmann/wp-session-manager": "2.0.*"
     },
     "archive": {
         "exclude": [
@@ -37,8 +37,10 @@
             "Gruntfile.js",
             "package.json",
             "/node_modules",
+			"/vendor-overrides",
+			"/dist",
             "/tests",
-            "!/vendor"
+            "/vendor"
         ]
     },
     "scripts": {

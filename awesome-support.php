@@ -183,7 +183,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			self::$instance->includes();
 			self::$instance->session = new WPAS_Session();
 			self::$instance->custom_fields = new WPAS_Custom_Fields;
-			self::$instance->maybe_setup();
+			self::$instance->maybe_setup();			
 
 			if ( is_admin() ) {
 
@@ -208,6 +208,11 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Titan', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );
+					
+					/* User stats tracking from the Wisdom plugin */
+					add_action( 'plugins_loaded', array( self::$instance, 'awesome_support_start_plugin_tracking' ), 11, 0);
+					add_filter( 'wisdom_notice_text_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_notification_text' ) ); 
+					add_filter( 'wisdom_delay_notification_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_delay_notification' ) );
 
 				}
 
@@ -439,6 +444,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );			
 			require( WPAS_PATH . 'includes/install.php' );
 
+			/* Simple WooCommerce Integration */
+			require( WPAS_PATH . 'includes/integrations/wc-account.php' );
+
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
 				require( WPAS_PATH . 'includes/functions-admin-bar.php' );
@@ -448,6 +456,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( 'includes/compatibility/acf-pro.php' );
 				require( 'includes/compatibility/wpml.php' );
 				require( 'includes/compatibility/divi.php' );
+				require( 'includes/compatibility/wc.php' );
 
 			}
 
@@ -464,6 +473,11 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/functions-notices.php' );
 			require( WPAS_PATH . 'includes/admin/functions-ajax.php' );
 			require( WPAS_PATH . 'includes/admin/functions-log-viewer.php' );
+			require( WPAS_PATH . 'includes/admin/functions-admin-ticket-detail-toolbars.php' );
+			
+			if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
+				require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
+			}			
 
 			// We don't need all this during Ajax processing
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
@@ -476,26 +490,31 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/functions-user-profile.php' );
 				require( WPAS_PATH . 'includes/admin/functions-admin-actions.php' );
 				require( WPAS_PATH . 'includes/admin/functions-misc.php' );
+				require( WPAS_PATH . 'includes/admin/functions-editor.php' );
+				require( WPAS_PATH . 'includes/admin/functions-agent-chat.php' );				
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-help.php' );
 				require( WPAS_PATH . 'includes/admin/upgrade/class-upgrade.php' );
 
-				if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
-					require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
-				}
-
 				/* Load settings files */
 				require( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-registration.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-products-management.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
-
-
+				require( WPAS_PATH . 'includes/admin/settings/settings-integration.php' );
+				
+				/* Load Gutenberg related files */
+				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg.php' );
+				
+				/* Wisdom Tracking */
+				require( WPAS_PATH . '/tracking/class-plugin-usage-tracker.php' );
+				
 			}
 
 		}
@@ -596,7 +615,73 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				rdnc_add_notification( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
 			}
 		}
-
+		
+		/**
+		 * Start application statistics tracking
+		 *
+		 * Use the WISDOM Tracking plugin to track
+		 * application usage.
+		 * https://wisdomplugin.com/support/#getting-started
+		 *
+		 * Filter: plugins_loaded
+		 *
+		 * @since  4.4.0
+		 * @return void
+		 */		
+		public function awesome_support_start_plugin_tracking() {
+			$wisdom = new Plugin_Usage_Tracker(
+				__FILE__,
+				'https://tracking.getawesomesupport.com',
+				array(),
+				true,
+				true,
+				1
+			);
+		}
+		
+		/**
+		 * Application statistics tracking opt-in text
+		 *
+		 * We use the WISDOM Tracking plugin to track
+		 * application usage.  This allows us to set the 
+		 * opt-in text shown to the user when they activate the plugin.
+		 *
+		 * https://wisdomplugin.com/support/#getting-started
+		 *
+		 * Filter: wisdom_notice_text_
+		 *
+		 * @param text default notice text.
+		 *
+		 * @since  4.4.0
+		 *
+		 * @return text the notice text to be shown to the user
+		 */		
+		function awesome_support_tracking_notification_text( $notice_text ) {
+			$notice_text = __( 'Would you like a discount on your next Awesome Support purchase?  Help us make a better product for you by allowing us to collect some anonymous statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
+			return $notice_text;
+		}
+		
+		/**
+		 * Application statistics tracking opt-in text
+		 *
+		 * We use the WISDOM Tracking plugin to track
+		 * application usage.  This allows us to set the 
+		 * time delay before the opt-in notice shows up.
+		 *
+		 * https://wisdomplugin.com/support/#getting-started
+		 *
+		 * Filter: wisdom_delay_notification_
+		 *
+		 * @param text default notice text.
+		 *
+		 * @since  4.4.0
+		 *
+		 * @return text the notice text to be shown to the user
+		 */		
+		function awesome_support_tracking_delay_notification( $delay ) {
+			return 900; // 15 mins
+		}
+	
 	}
 
 endif;

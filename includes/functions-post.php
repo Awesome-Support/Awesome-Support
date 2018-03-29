@@ -175,7 +175,7 @@ function wpas_new_ticket_submission( $data ) {
 			wpas_save_values();
 
 			/**
-			 * Redirect to the newly created ticket
+			 * Redirect to the referrer since ticket creation failed....
 			 */
 			wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'awesome-support' ) );
 			wp_redirect( wp_sanitize_redirect( home_url( $data['_wp_http_referer'] ) ) );
@@ -192,7 +192,12 @@ function wpas_new_ticket_submission( $data ) {
 			/**
 			 * Redirect to the newly created ticket
 			 */
-			wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
+			if ( ! empty( wpas_get_option( 'new_ticket_redirect_fe','' ) ) ) {
+				wpas_redirect( 'ticket_added', wpas_get_option( 'new_ticket_redirect_fe','' ), $ticket_id );
+			} else {
+				wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
+			}
+			
 			exit;
 
 		}
@@ -317,6 +322,12 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	If ( ! $update ) {
 		wpas_set_ticket_slug($ticket_id);
 	}
+	
+	/* Update the channel on the ticket so that hooks can access it - but only if the $update is false which means we've got a new ticket */
+	/* It will need to be re-added to the ticket at the bottom of this routine because some hooks overwrite it with a blank. */
+	If (! empty( $channel_term ) && ( ! $update ) ) {
+		wpas_set_ticket_channel( $ticket_id , $channel_term, false );
+	}		
 
 	/* Set the ticket as open. */
 	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
@@ -343,7 +354,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
 	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
-	/* Need to update it here because some of the action hooks fired above will overwrite the term.			  */
+	/* Need to update it here again because some of the action hooks fired above will overwrite the term.			  */
 	If (! empty( $channel_term ) && ( ! $update ) ) {
 		wpas_set_ticket_channel( $ticket_id , $channel_term, false );
 	}	
@@ -353,6 +364,8 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 */
 	do_action( 'wpas_open_ticket_after', $ticket_id, $data );
 
+	do_action( 'wpas_tikcet_after_saved', $ticket_id );
+	
 	return $ticket_id;
 
 }
@@ -370,7 +383,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
  */
  function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other', $overwrite = false ) {
 	 
-	 /* Does a term already exist on the ticket?  If so, do not overrite it if $overwrite is false */
+	 /* Does a term already exist on the ticket?  If so, do not overwrite it if $overwrite is false */
 	 if ( false === $overwrite ) {
 		 $existing_channel = wp_get_post_terms($ticket_id,'ticket_channel');
 		 if ( ! empty( $existing_channel ) ) {
@@ -378,7 +391,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 		 }
 	 }	 
 
-	/*  get the term id because wp_set_object_terms require an id instead of just a string */
+	/* Get the term id because wp_set_object_terms require an id instead of just a string */
 	$arr_the_term_id = term_exists( $channel_term, 'ticket_channel' );
 
 	If ( $arr_the_term_id ) {
@@ -626,7 +639,7 @@ function wpas_new_reply_submission( $data ) {
 	// Define if the ticket must be closed
 	$close = isset( $data['wpas_close_ticket'] ) ? true : false;
 
-	if ( ! empty( $data['wpas_user_reply'] ) ) {
+	if ( ! empty( $data['wpas_user_reply'] ) && apply_filters( 'wpas_user_can_reply_ticket', true, $ticket_id ) ) {
 
 		/* Sanitize the data */
 		$data = array( 'post_content' => wp_kses( $data['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
@@ -637,7 +650,7 @@ function wpas_new_reply_submission( $data ) {
 	}
 
 	/* Possibly close the ticket */
-	if ( $close ) {
+	if ( $close && apply_filters( 'wpas_user_can_close_ticket', true, $ticket_id ) ) {
 
 		wpas_close_ticket( $parent_id );
 
@@ -1573,8 +1586,8 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
 
 	// Maybe restrict the count to the current user only
 	if (
-		current_user_can( 'administrator' ) && false === (bool) wpas_get_option( 'admin_see_all' )
-		|| ! current_user_can( 'administrator' ) && current_user_can( 'edit_ticket' ) && false === (bool) wpas_get_option( 'agent_see_all' )
+		( wpas_is_asadmin() && false === (bool) wpas_get_option( 'admin_see_all' ) )
+		|| ( ! wpas_is_asadmin() && wpas_is_agent() && false === (bool) wpas_get_option( 'agent_see_all' ) )
 	) {
 
 		global $current_user;

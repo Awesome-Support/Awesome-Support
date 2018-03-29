@@ -104,8 +104,7 @@ $author = get_user_by( 'id', $post->post_author );
 
 					$replies->the_post();
 					$user      = get_userdata( $post->post_author );
-					$user_role = get_the_author_meta( 'roles' );
-					$user_role = $user_role[0];
+					$user_role = $user->roles[0];
 					$time_ago  = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) );
 
 					wpas_get_template( 'partials/ticket-reply', array( 'time_ago' => $time_ago, 'user' => $user, 'post' => $post ) );

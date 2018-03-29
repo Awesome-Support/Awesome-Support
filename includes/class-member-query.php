@@ -59,6 +59,20 @@ class WPAS_Member_Query {
 	protected $ids = array();
 
 	/**
+	 * Order field name used to sort results, default is ID
+	 * 
+	 * @var string
+	 */
+	protected $orderby = 'ID';
+	
+	/**
+	 * Order type to sort results either ASC or DESC
+	 * 
+	 * @var string 
+	 */
+	protected $order = 'ASC';
+	
+	/**
 	 * Whether or not to convert the results into WPAS_Member (sub)objects
 	 *
 	 * @since 3.3
@@ -116,7 +130,7 @@ class WPAS_Member_Query {
 	 * @param array $args Query args
 	 */
 	public function __construct( $args = array() ) {
-
+		
 		$this->cap         = isset( $args['cap'] ) ? (array) $args['cap'] : array();
 		$this->cap_exclude = isset( $args['cap_exclude'] ) ? (array) $args['cap_exclude'] : array();
 		$this->exclude     = isset( $args['exclude'] ) ? (array) $args['exclude'] : array();
@@ -124,6 +138,8 @@ class WPAS_Member_Query {
 		$this->fields      = isset( $args['fields'] ) ? $this->sanitize_fields( (array) $args['fields'] ) : '*';
 		$this->output      = isset( $args['output'] ) ? $this->sanitize_output_format( $args['output'] ) : 'stdClass';
 		$this->search      = isset( $args['search'] ) ? $args['search'] : array();
+		$this->orderby	   = isset( $args['orderby'] ) ? $args['orderby'] : $this->orderby;
+		$this->order	   = isset( $args['order'] ) ? $args['order'] : $this->order;
 		$this->hash        = md5( serialize( $args ) );
 
 		// Run the whole process
@@ -391,9 +407,12 @@ class WPAS_Member_Query {
 
 		}
 
-		// Order users by login
-		$sql .= " ORDER BY {$wpdb->users}.ID ASC";
-
+		// Order users by provided args or default by login ID
+		
+		$order_field = $this->orderby ? $this->orderby : 'ID';
+		$order_type = $this->order ? $this->order : 'ASC';
+		
+		$sql .= " ORDER BY {$wpdb->users}.{$order_field} {$order_type}";
 		$this->members = $wpdb->get_results( $sql );
 
 		// Cache the results

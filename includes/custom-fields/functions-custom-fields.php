@@ -1,10 +1,9 @@
 <?php
 /**
- * Submission Form Functions.
+ * Custom fields functions that are at a higher level than the classes the define the custom fields.
  *
- * This file contains all the functions related to the ticket submission form.
- * Those functions are being used on the front-end only and aren't used anywhere
- * else than the submission form.
+ * Many of these functions are used in the front-end submission forms.
+ *
  */
 
 /**
@@ -130,6 +129,25 @@ function wpas_add_custom_field( $name, $args = array() ) {
 }
 
 /**
+ * Checks to see if a custom field already exists
+ *
+ * @since  4.3.6
+ *
+ * @param  string $name The ID of the custom field to check for
+ *
+ * @return boolean        Returns true if it exists of false otherwise
+ */
+function wpas_custom_field_exists( $name ) {
+	
+	if ( isset( WPAS()->custom_fields->get_custom_fields()[ $name ] ) ) {
+		return true ;		
+	}
+	
+	return false ;
+}
+
+
+/**
  * Add a new custom taxonomy.
  *
  * @since  3.0.0
@@ -224,54 +242,54 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 
 }
 
+/**
+ * Custom Save Callback - save user entered hh:mm time as integer in minutes
+ *
+ * @since 3.3.5
+ *
+ * @param $value
+ *
+ * @param $post_id
+ *
+ * @param $field_id
+ *
+ * @param $field
+ */
+function wpas_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
+
+	$hours = $minutes = 0;
+
+	// Time spent on ticket (hh:mm:ss)
+	sscanf( $value, "%d:%d", $hours, $minutes );
+
+	// Convert to minutes
+	$minutes = $hours * 60 + $minutes;
+
 	/**
-	 * Custom Save Callback - save user entered hh:mm time as integer in minutes
-	 *
-	 * @since 3.3.5
-	 *
-	 * @param $value
-	 *
-	 * @param $post_id
-	 *
-	 * @param $field_id
-	 *
-	 * @param $field
+	 * Get the current field value.
 	 */
-	function wpas_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
+	$current = get_post_meta( $post_id, $field_id, true );
 
-		$hours = $minutes = 0;
-
-		// Time spent on ticket (hh:mm:ss)
-		sscanf( $value, "%d:%d", $hours, $minutes );
-
-		// Convert to minutes
-		$minutes = $hours * 60 + $minutes;
-
-		/**
-		 * Get the current field value.
-		 */
-		$current = get_post_meta( $post_id, $field_id, true );
-
-		/* Action: Update post meta */
-		if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
-			if ( $current !== $minutes ) {
-				if ( false !== update_post_meta( $post_id, $field_id, $minutes, $current ) ) {
-					$result = 2;
-				}
+	/* Action: Update post meta */
+	if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
+		if ( $current !== $minutes ) {
+			if ( false !== update_post_meta( $post_id, $field_id, $minutes, $current ) ) {
+				$result = 2;
 			}
 		}
-
-		/* Action: Add post meta */
-		elseif ( empty( $current ) && ! empty( $minutes ) ) {
-			if ( false !== add_post_meta( $post_id, $field_id, $minutes, true ) ) {
-				$result = 1;
-			}
-		}
-
 	}
 
+	/* Action: Add post meta */
+	elseif ( empty( $current ) && ! empty( $minutes ) ) {
+		if ( false !== add_post_meta( $post_id, $field_id, $minutes, true ) ) {
+			$result = 1;
+		}
+	}
 
-	add_action( 'init', 'wpas_register_core_fields' );
+}
+
+
+add_action( 'init', 'wpas_register_core_fields' );
 /**
  * Register the cure custom fields.
  *
@@ -360,7 +378,7 @@ function wpas_register_core_fields() {
 
 	if ( isset( $options[ 'support_products' ] ) && true === boolval( $options[ 'support_products' ] ) ) {
 
-		$slug = defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : 'product';
+		$slug = defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : wpas_get_option( 'products_slug', 'product');
 
 		/** Get the labels for the products field if they are provided */
 		$as_label_for_product_singular 	= isset( $options[ 'label_for_product_singular' ] ) ? $options[ 'label_for_product_singular' ] : __( 'Product', 'awesome-support' );
@@ -792,7 +810,34 @@ function wpas_register_core_fields() {
 		'log'            	=> false,
 		'title'          	=> $as_label_for_second_addl_interested_party_email_singular
 	) );
+	
+	
+	/*******************************************************************/
+	/* Add the IMPORTER fields - in this case only one.                */
+	/*******************************************************************/	
+	//if ( true === ( isset( $options[ 'importer_id_enable' ] ) && ( true === boolval( $options[ 'importer_id_enable' ] ) ) ) ) {
+	$show_saas_id = false;
+	$show_saas_id = ( isset( $options[ 'importer_id_enable' ] ) && ( true === boolval( $options[ 'importer_id_enable' ] ) ) ) ;
+	
+	if ( true === $show_saas_id ) {
+		
+		$show_saas_id_in_list = false;
+		$show_saas_id_in_list = ( isset( $options[ 'importer_id_show_in_tkt_list' ] ) && true === boolval( $options[ 'importer_id_show_in_tkt_list' ] ) );	
+		
+		$saas_id_label = 'Help Desk SaaS Ticket ID';
+		$saas_id_label = isset( $options[ 'importer_id_label' ] ) ? $options[ 'importer_id_label' ] : __( 'Help Desk SaaS Ticket ID', 'awesome-support' );
 
+		wpas_add_custom_field( 'help_desk_ticket_id', array(
+			'core'           	=> false,
+			'show_column'    	=> $show_saas_id_in_list,
+			'sortable_column'	=> true,
+			'filterable'        => true,
+			'backend_only' 		=> true,
+			'log'            	=> true,
+			'title'          	=> $saas_id_label,
+		) );	
+	}
+	
 	/* Trigger backend custom ticket list columns */
 	if ( is_admin() ) {
 		apply_filters( 'wpas_add_custom_fields', array() );

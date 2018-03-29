@@ -2,7 +2,9 @@
 // Bootswatch
 
 
-$web-font-path: "https://fonts.googleapis.com/css?family=Nunito+Sans" !default;
+// Variables ===================================================================
+
+$web-font-path: "https://fonts.googleapis.com/css?family=Nunito+Sans:400,600" !default;
 @import url($web-font-path);
 
 // Navbar ======================================================================
@@ -17,10 +19,6 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Nunito+Sans" !default;
       padding-top: .715rem;
       padding-bottom: .715rem;
     }
-
-    .nav-item + .nav-item {
-      margin-left: 3rem;
-    }
   }
 
   &-brand {
@@ -29,11 +27,10 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Nunito+Sans" !default;
 }
 
 .bg-primary {
-  background-color: $gray-dark !important;
+  background-color: $gray-900 !important;
 }
 
-.bg-inverse {
-  background-color: #fff !important;
+.bg-light {
   border: 1px solid rgba(0, 0, 0, 0.1);
 
   &.navbar-fixed-top {
@@ -45,29 +42,53 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Nunito+Sans" !default;
   }
 }
 
+.nav-item {
+  margin-right: 3rem;
+}
+
 // Buttons =====================================================================
 
 .btn {
   font-size: $font-size-sm;
   text-transform: uppercase;
-  font-weight: 600;
 
   &-sm {
     font-size: 10px;
   }
+
+  &-warning {
+    &,
+    &:hover,
+    &:not([disabled]):not(.disabled):active,
+    &:focus {
+      color: $white;
+    }
+  }
 }
 
 .btn-outline-secondary {
-  border-color: $gray-light;
-  color: $gray-light;
+  border-color: $gray-600;
+  color: $gray-600;
 
-  &:hover {
-    background-color: $gray-light;
+  &:not([disabled]):not(.disabled):hover,
+  &:not([disabled]):not(.disabled):focus,
+  &:not([disabled]):not(.disabled):active {
+    background-color: $gray-400;
+    border-color: $gray-400;
+    color: $white;
+  }
+
+  &:not([disabled]):not(.disabled):focus {
+    box-shadow: 0 0 0 0.2rem rgba($gray-400, 0.5);
   }
 }
 
 [class*="btn-outline-"] {
   border-width: 2px;
+}
+
+.border-secondary {
+  border: 1px solid $gray-400 !important;
 }
 
 // Typography ==================================================================
@@ -80,6 +101,10 @@ body {
 h1, h2, h3, h4, h5, h6 {
   text-transform: uppercase;
   letter-spacing: 3px;
+}
+
+.text-secondary {
+  color: $body-color !important;
 }
 
 // Tables ======================================================================
@@ -109,3 +134,18 @@ th {
 // Progress bars ===============================================================
 
 // Containers ==================================================================
+
+.list-group-item {
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6 {
+    color: inherit;
+  }
+}
+
+.card {
+
+  &-title,
+  &-header {
+    color: inherit;
+  }
+}

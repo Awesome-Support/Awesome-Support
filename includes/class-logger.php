@@ -64,24 +64,90 @@ class WPAS_Logger {
 	public function get_handles() {
 		return apply_filters( 'wpas_logs_handles', $this->handles );
 	}
-
+	
+	/**
+	 * Get the folder where log files are written.
+	 *
+	 * @since  3.0.2
+	 * @return mixed Path if the log file exists, false otherwise
+	 */	
 	public function get_logs_path() {
 		
-		$path_postfix = '' ;  // the last part of the default logs path name.  Will be blank if not on multi-site.
-		if ( true == is_multisite() ) {
-			$path_postfix = '/site' . (string) get_current_blog_id();
-		}
+		/* Figure out which base path to use */
+		$base_path = $this->get_logs_base_path();
 
-		$path = apply_filters( 'wpas_logs_path', WPAS_PATH . 'logs' . $path_postfix, $this->handle );
+		$path = apply_filters( 'wpas_logs_path', $base_path, $this->handle );
 
 		if ( !is_dir( $path ) ) {
-			$dir = mkdir( $path );
+			$dir = wp_mkdir_p( $path );
 			if ( !$dir ) {
 				return false;
 			}
 		}
-
 		return $path;
+	}
+	
+	/**
+	 * Return the base path to use for all log files. 
+	 * This is determined based on the option set by the user in TICKETS->SETTINGS->ADVANCED
+	 *
+	 * @since  4.3.6
+	 * @return string Base path
+	 */	
+	public function get_logs_base_path() {
+
+		$base_path = '' ;
+		switch ( intval( wpas_get_option( 'log_file_location', 0 ) ) ) {
+			case 0:
+//				// use default path
+				$base_path = WPAS_PATH . 'logs' . $this->get_logs_base_path_postfix() ;
+				break ;
+				
+			case 1:
+//				// use normal uploads folder
+				$uploads = wp_upload_dir() ;
+
+				if ( isset( $uploads['basedir'] ) ) {
+					$base_path = $uploads['basedir'] . '/awesome-support/logs' ;
+				}
+				break ;
+				
+			case 2:
+				// use absolute folder provided...
+				// Do not set if running in SAAS mode though - just in case the admin of a sub-site
+				// decides to do something stupid.  
+				if ( ! is_saas() ) {
+					$base_path = wpas_get_option ( 'log_file_location_absolute' , '' ) ;
+				}
+				break ;
+
+		}
+		
+		if ( empty( $base_path ) ) {
+			// for some reason WP didnt' return anything in the array above so go back to default...
+			$base_path = WPAS_PATH . 'logs' . $this->get_logs_base_path_postfix() ;
+		}
+
+		return $base_path;
+		
+	}
+	
+	/**
+	 * Return the string that will be appended to the end of the log files base path. 
+	 * This is usually blank but will no tbe blank if running multisite.
+	 *
+	 * @since  4.3.6
+	 * @return string Base path postfix
+	 */		
+	public function get_logs_base_path_postfix() {
+
+		/* Set the last part of the default logs path name.  Will be blank if not on multi-site. */
+		$path_postfix = '' ;  
+		if ( true == is_multisite() ) {
+			$path_postfix = '/site' . (string) get_current_blog_id();
+		}		
+		
+		return $path_postfix ;
 	}
 
 	/**

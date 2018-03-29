@@ -21,6 +21,13 @@ function wpas_register_post_type() {
 
 	/* Supported components */
 	$supports = array( 'title' );
+	
+	/* Template components for Gutenberg */
+	$gutenburg_new_template = array(
+					array( 'core/paragraph', array(
+							'placeholder' => _x('Enter the contents for your new ticket here', 'placeholder for main paragraph when adding a new ticket', 'awesome-support' )
+						) ),
+				);
 
 	/* If the post is being created we add the editor */
 	if( !isset( $_GET['post'] ) ) {
@@ -82,7 +89,8 @@ function wpas_register_post_type() {
 			'hierarchical'        => false,
 			'menu_position'       => null,
 			'menu_icon'           => $icon,
-			'supports'            => $supports
+			'supports'            => $supports,
+			'template' 			  => $gutenburg_new_template
 	) );
 
 	register_post_type( 'ticket', $args );
@@ -294,3 +302,24 @@ function wpas_redirect_ticket_archive() {
 	}
 
 }
+
+add_filter( 'allowed_block_types', 'wpas_filter_gutenberg_blocks_ticket' );
+/**
+ * Make sure that new tickets that use the GUTENBERG editor can only use the paragraph block type
+ *
+ * @since  4.4.0
+ * 
+ * @return array List of allowed block types
+ */
+ function wpas_filter_gutenberg_blocks_ticket( $block_types ) {
+	 
+	$post             = get_post();
+	$post_type        = get_post_type( $post );
+
+	if ( 'ticket' !== $post_type ) {
+		return $block_types;
+	}	 
+	 
+	 return [ 'core/paragraph' ];
+	 
+ }

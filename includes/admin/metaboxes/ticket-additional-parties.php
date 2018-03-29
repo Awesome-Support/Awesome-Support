@@ -47,29 +47,57 @@ if ( ! defined( 'WPINC' ) ) {
 			}
 		}
 	
-		// Display dropdown for secondary staff
-		?> <label for="wpas-secondary-assignee"><strong data-hint="<?php esc_html_e( 'First additional agent who has an interest this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Additional Support Staff #1', 'awesome-support' ); ?></strong></label><?php	
-		$staff_atts = array(
-			'name'      => 'wpas_secondary_assignee',
-			'id'        => 'wpas-secondary-assignee',
-			'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
-			'select2'   => true,
-			'data_attr' => array( 'capability' => 'edit_ticket' )
-		);
+			// Display dropdown for secondary staff
+			?> <label for="wpas-secondary-assignee"><strong data-hint="<?php esc_html_e( 'First additional agent who has an interest this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Additional Support Staff #1', 'awesome-support' ); ?></strong></label><?php	
+			
+			if ( wpas_get_option( 'support_staff_select2_enabled', false ) ) {
+			
+				$staff_atts = array(
+					'name'      => 'wpas_secondary_assignee',
+					'id'        => 'wpas-secondary-assignee',
+					'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
+					'select2'   => true,
+					'data_attr' => array( 'capability' => 'edit_ticket' )
+				);
 
-		echo wpas_dropdown( $staff_atts, "<option value='$secondary_staff_id' selected='selected'>$secondary_staff_name</option>" );	
+				echo wpas_dropdown( $staff_atts, "<option value='$secondary_staff_id' selected='selected'>$secondary_staff_name</option>" );	
+			} else {
+				echo wpas_users_dropdown( array( 
+					'cap'		=> 'edit_ticket',
+					'orderby'	=> 'display_name',
+					'order'		=> 'ASC',
+					'name'      => 'wpas_secondary_assignee',
+					'id'        => 'wpas-secondary-assignee',
+					'class'		=> 'wpas-form-control',
+					'please_select' => true,
+					'selected' => $secondary_staff_id
+				) );
+			}
+			// Display dropdown for tertiary staff
+			?><label for="wpas-tertiary-assignee"><strong data-hint="<?php esc_html_e( 'Second additional agent who has an interest this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Additional Support Staff #2', 'awesome-support' ); ?></strong></label><?php
+			
+			if ( wpas_get_option( 'support_staff_select2_enabled', false ) ) {
+				$staff_atts = array(
+					'name'      => 'wpas_tertiary_assignee',
+					'id'        => 'wpas-tertiary-assignee',
+					'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
+					'select2'   => true,
+					'data_attr' => array( 'capability' => 'edit_ticket' )
+				);
 
-		// Display dropdown for tertiary staff
-		?><label for="wpas-tertiary-assignee"><strong data-hint="<?php esc_html_e( 'Second additional agent who has an interest this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Additional Support Staff #2', 'awesome-support' ); ?></strong></label><?php
-		$staff_atts = array(
-			'name'      => 'wpas_tertiary_assignee',
-			'id'        => 'wpas-tertiary-assignee',
-			'disabled'  => ! current_user_can( 'assign_ticket' ) ? true : false,
-			'select2'   => true,
-			'data_attr' => array( 'capability' => 'edit_ticket' )
-		);
-
-		echo wpas_dropdown( $staff_atts, "<option value='$tertiary_staff_id' selected='selected'>$tertiary_staff_name</option>" );
+				echo wpas_dropdown( $staff_atts, "<option value='$tertiary_staff_id' selected='selected'>$tertiary_staff_name</option>" );
+			} else {
+				echo wpas_users_dropdown( array( 
+					'cap'		=> 'edit_ticket',
+					'orderby'	=> 'display_name',
+					'order'		=> 'ASC',
+					'name'      => 'wpas_tertiary_assignee',
+					'id'        => 'wpas-tertiary-assignee',
+					'class'		=> 'wpas-form-control',
+					'please_select' => true,
+					'selected' => $tertiary_staff_id
+				) );
+			}
 		
 		// Create some space before showing free-form interested parties (name / email )
 		?><br /><br /><?php

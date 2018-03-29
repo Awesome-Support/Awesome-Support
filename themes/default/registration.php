@@ -73,7 +73,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 		echo $rememberme->get_output();
 
 		wpas_do_field( 'login', $redirect_to );
-		wpas_make_button( __( 'Log in' ), array( 'onsubmit' => __( 'Logging In...', 'awesome-support' ) ) );
+		wpas_make_button( __( 'Log in', 'awesome-support' ), array( 'onsubmit' => __( 'Logging In...', 'awesome-support' ) ) );
 		printf( '<a href="%1$s" class="wpas-forgot-password-link">%2$s</a>', wp_lostpassword_url( wpas_get_tickets_list_page_url() ), esc_html( __( 'Forgot password?', 'awesome-support' ) ) ); ?>
 	</form>
 	
@@ -84,6 +84,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 			<h3><?php _e( 'Register', 'awesome-support' ); ?></h3>
 
 			<?php
+			$first_name_desc = wpas_get_option( 'reg_first_name_desc', '' ) ;
 			$first_name = new WPAS_Custom_Field( 'first_name', array(
 				'name' => 'first_name',
 				'args' => array(
@@ -91,12 +92,14 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 					'field_type'  => 'text',
 					'label'       => __( 'First Name', 'awesome-support' ),
 					'placeholder' => __( 'First Name', 'awesome-support' ),
-					'sanitize'    => 'sanitize_text_field'
+					'sanitize'    => 'sanitize_text_field',
+					'desc'		  => $first_name_desc,
 				)
 			) );
 
 			echo $first_name->get_output();
 
+			$last_name_desc = wpas_get_option( 'reg_last_name_desc', '' ) ;
 			$last_name = new WPAS_Custom_Field( 'last_name', array(
 				'name' => 'last_name',
 				'args' => array(
@@ -104,12 +107,14 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 					'field_type'  => 'text',
 					'label'       => __( 'Last Name', 'awesome-support' ),
 					'placeholder' => __( 'Last Name', 'awesome-support' ),
-					'sanitize'    => 'sanitize_text_field'
+					'sanitize'    => 'sanitize_text_field',
+					'desc'		  => $last_name_desc,
 				)
 			) );
 
 			echo $last_name->get_output();
 
+			$email_desc = wpas_get_option( 'reg_email_desc', '' ) ;
 			$email = new WPAS_Custom_Field( 'email', array(
 				'name' => 'email',
 				'args' => array(
@@ -117,7 +122,8 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 					'field_type'  => 'email',
 					'label'       => __( 'Email', 'awesome-support' ),
 					'placeholder' => __( 'Email', 'awesome-support' ),
-					'sanitize'    => 'sanitize_text_field'
+					'sanitize'    => 'sanitize_text_field',
+					'desc'		  => $email_desc,
 				)
 			) );
 

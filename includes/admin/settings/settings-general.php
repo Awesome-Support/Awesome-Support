@@ -17,7 +17,7 @@ function wpas_core_settings_general( $def ) {
 			'name'    => __( 'General', 'awesome-support' ),
 			'options' => array(
 				array(
-					'name' => __( 'Misc', 'awesome-support' ),
+					'name' => __( 'General', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -28,18 +28,15 @@ function wpas_core_settings_general( $def ) {
 					'options' => isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && isset( $_GET['page'] ) && 'wpas-settings' === $_GET['page'] ? wpas_list_users( 'edit_ticket' ) : array(),
 					'default' => ''
 				),
+				
 				array(
-					'name'    => __( 'Allow Registrations', 'awesome-support' ),
-					'id'      => 'allow_registrations',
-					'type'    => 'radio',
-					'desc'    => sprintf( __( 'Allow users to register on the support page. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress.', 'awesome-support' ),  "<strong>$registration_lbl</strong>" ),
-					'default' => 'allow',
-					'options' => array(
-						'allow'           => __( 'Allow registrations', 'awesome-support' ),
-						'disallow'        => __( 'Disallow registrations', 'awesome-support' ),
-						'disallow_silent' => __( 'Disallow registrations without notice (just show the login form)', 'awesome-support' ),
-					)
-				),
+                        'name'    => __( 'Use SELECT2 For Staff Drop-downs', 'awesome-support' ),
+                        'id'      => "support_staff_select2_enabled",
+                        'type'    => 'checkbox',
+                        'default' => false,
+                        'desc'    => __( 'On ticket screen turn the staff dropdown into select2 box.', 'awesome-support' )
+                ),
+
 				array(
 					'name'    => __( 'Tickets Per Page (Front End)', 'awesome-support' ),
 					'id'      => 'tickets_per_page_front_end',
@@ -63,12 +60,19 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'How many replies should be displayed per page on a ticket details screen?', 'awesome-support' )
 				),
 				array(
-					'name'    => __( 'Hide Closed', 'awesome-support' ),
+					'name'    => __( 'Hide Closed (Admin)', 'awesome-support' ),
 					'id'      => 'hide_closed',
 					'type'    => 'checkbox',
 					'desc'    => __( 'Only show open tickets when agents click the "All Tickets" link.', 'awesome-support' ),
 					'default' => true
 				),
+				array(
+					'name'    => __( 'Hide Closed (Front End)', 'awesome-support' ),
+					'id'      => 'hide_closed_fe',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Only show open tickets to clients on the front-end.', 'awesome-support' ),
+					'default' => false
+				),				
 				array(
 					'name'    => __( 'Show Count', 'awesome-support' ),
 					'id'      => 'show_count',
@@ -144,7 +148,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Show Third Party #1 in Ticket List', 'awesome-support' ),
 					'id'      => 'show_third_party_01_in_ticket_list',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show Third Party #1 Data in the Ticket List?', 'awesome-support' ),
+					'desc'    => __( 'Show Third Party #1 data in the ticket list?', 'awesome-support' ),
 					'default' => false
 				),
 				
@@ -152,7 +156,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Show Third Party #2 in Ticket List', 'awesome-support' ),
 					'id'      => 'show_third_party_02_in_ticket_list',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show Third Party #2 Data in the Ticket List?', 'awesome-support' ),
+					'desc'    => __( 'Show Third Party #2 data in the ticket list?', 'awesome-support' ),
 					'default' => false
 				),				
 
@@ -188,6 +192,13 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'checkbox',
 					'desc'    => __( 'Show how long the ticket was opened?  Note that this applies to closed tickets only.', 'awesome-support' ),
 					'default' => false
+				),
+				array(
+					'name'    => __( 'Show Extended Date In Replies', 'awesome-support' ),
+					'id'      => 'show_extended_date_in_replies',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Hovering over replies can show a short date or a full date-time stamp.  Turn this on to show the full date-time stamp as well as a human-readable number indicating the age of the reply.', 'awesome-support' ),
+					'default' => false
 				),				
 				
 				
@@ -199,7 +210,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Show Channel Field', 'awesome-support' ),
 					'id'      => 'channel_show_in_ticket_list',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
+					'desc'    => __( 'Show Channel field in the ticket list? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
 					'default' => false
 				),
 				
@@ -228,6 +239,65 @@ function wpas_core_settings_general( $def ) {
 				),
 				
 				array(
+					'name' => __( 'Ticket Details Tabs And Metaboxes', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Control who can view certain ticket tabs on the ticket detail screen in wp-admin', 'awesome-support' ),					
+				),
+				array(
+					'name'    => __( 'Roles That Are NOT Allowed Access To The Custom Fields Tab', 'awesome-support' ),
+					'id'      => 'hide_cf_tab_roles',
+					'type'    => 'text',
+					'desc'    => __( 'Enter a comma separated list of roles that should not see the CUSTOM FIELDS tab. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+					'default' => ''
+				),
+				array(
+					'name'    => __( 'Roles That Are NOT Allowed Access To The Additional Interested Parties Tab', 'awesome-support' ),
+					'id'      => 'hide_ai_tab_roles',
+					'type'    => 'text',
+					'desc'    => __( 'Enter a comma separated list of roles that should not see the ADDITIONAL INTERESTED PARTIES tab. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+					'default' => ''
+				),
+				array(
+					'name'    => __( 'Roles That Are NOT Allowed Access To The Tags Metabox', 'awesome-support' ),
+					'id'      => 'hide_tags_mb_roles',
+					'type'    => 'text',
+					'desc'    => __( 'Enter a comma separated list of roles that should not see the tags metabox. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+					'default' => ''
+				),				
+				
+				array(
+					'name' => __( 'Redirects', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Configure where the user should be sent after certain actions', 'awesome-support' ),					
+				),
+				array(
+					'name'    => __( 'Logout Redirect', 'awesome-support' ),
+					'id'      => 'logout_redirect_fe',
+					'type'    => 'text',
+					'desc' 	  => __( 'When the user clicks the logout button on an Awesome Support page, where should they be redirected to?  Enter the FULL url starting with http or https.', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'New Ticket Redirect', 'awesome-support' ),
+					'id'      => 'new_ticket_redirect_fe',
+					'type'    => 'text',
+					'desc' 	  => __( 'When the user enters a new ticket they are usually taken to the newly entered ticket.  But, if you would like to redirect them someplace else, enter that location here. Enter the FULL url starting with http or https.', 'awesome-support' ),
+				),				
+				
+				
+				array(
+					'name' => __( 'Toolbars', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Control whether certain toolbars are visible', 'awesome-support' ),					
+				),
+				array(
+					'name'    => __( 'Show Ticket Details Toolbar', 'awesome-support' ),
+					'id'      => 'ticket_detail_show_toolbar',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Show the toolbar on the ticket detail screen when an agent is viewing the ticket?', 'awesome-support' ),
+				),				
+				
+				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
 					'type' => 'heading',
 				),
@@ -249,18 +319,7 @@ function wpas_core_settings_general( $def ) {
 					'options'  => wpas_list_pages(),
 					'default'  => ''
 				),
-				array(
-					'name' => __( 'Terms & Conditions', 'awesome-support' ),
-					'type' => 'heading',
-				),
-				array(
-					'name'     => __( 'Content', 'awesome-support' ),
-					'id'       => 'terms_conditions',
-					'type'     => 'editor',
-					'default'  => '',
-					'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'awesome-support' ),
-					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),
+
 				array(
 					'name' => __( 'Credit', 'awesome-support' ),
 					'type' => 'heading',
@@ -326,7 +385,15 @@ function wpas_get_priority_options() {
 			'type'    => 'checkbox',
 			'desc'    => __( 'Would you like to show the field in the ticket listing?', 'awesome-support' ),
 			'default' => false
-		)		
+		),
+		
+		array(
+			'name'    => __( 'Color-code Ticket Header?', 'awesome-support' ),
+			'id'      => 'support_priority_color_code_ticket_header',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Checking this box will color the top border of the opening post to match the priority color', 'awesome-support' ),
+			'default' => false
+		),				
 		
 	);
 		

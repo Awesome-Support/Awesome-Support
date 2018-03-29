@@ -32,7 +32,7 @@
 			var statusesArr = [];
 			var statusesOptions = '';
 			rows.each(function (index, el) {
-				var status = $(el).find('.wpas-label').text();
+				var status = $(el).find('.wpas-label-status').text();
 				if (statusesArr.indexOf(status) == -1) {
 					statusesArr.push(status);
 					statusesOptions += '<option value="' + status + '">' + status + '</option>';

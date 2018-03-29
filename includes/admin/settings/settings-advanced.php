@@ -44,6 +44,34 @@ function wpas_core_settings_advanced( $def ) {
 				),
 				
 				array(
+					'name' => __( 'Importer Integration', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => sprintf( __( 'If you use the <a href="%s" target="_blank">Awesome Support SAAS Importer</a> to import data from Zendesk, Helpscout or Ticksy, there is a reference field that contains the original ticket ID.  The options below control what to do with that field. ' , 'awesome-support' ), esc_url( 'https://getawesomesupport.com/addons/awesome-support-importer/' ) ),					
+				),
+				array(
+					'name'    => __( 'Enable the Original Ticket ID Field?', 'awesome-support' ),
+					'id'      => 'importer_id_enable',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show this field in the admin screen?', 'awesome-support' ),
+					'default' => false,
+				),
+				array(
+					'name'    => __( 'Show Original Ticket ID In Column List?', 'awesome-support' ),
+					'id'      => 'importer_id_show_in_tkt_list',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Would you like to show the Original Ticket ID field in the ticket listing?', 'awesome-support' ),
+					'default' => false,
+				),
+				array(
+					'name'    => __( 'Label', 'awesome-support' ),
+					'id'      => 'importer_id_label',
+					'type'    => 'text',
+					'desc'    => __( 'What should the field be named on the screen?', 'awesome-support' ),
+					'default' => 'Help Desk SaaS Ticket ID',
+				),				
+				
+				
+				array(
 					'name' => __( 'Attachment Overrides', 'awesome-support' ),
 					'type' => 'heading',
 					'desc' => __('Modifications to this section has major security implications so be careful!','awesome-support' ),
@@ -60,7 +88,7 @@ function wpas_core_settings_advanced( $def ) {
 					'id'      => 'htaccess_contents_for_attachment_folders',
 					'type'    => 'textarea',
 					'desc'    => __( 'The contents of your ticket uploads folder can be protected by an htaccess file on apache servers. <br />If this is left empty then the value of <b>options -Indexes</b> is automatically added to the file to prevent others from browsing the directory. <br />Add to this only if you are a super-duper apache server expert! <br /> No technical support is available for modifications to this setting!', 'awesome-support' )
-				),				
+				),
 				
 				array(
 					'name' => __( 'Compatibility', 'awesome-support' ),
@@ -104,12 +132,12 @@ function wpas_core_settings_advanced( $def ) {
 					'type'    => 'radio',					
 					'options' => array( '0' => __( 'Do not load bootstrap files', 'awesome-support' ), '1' => __( 'Load bootstrap 4 files located on maxcdn', 'awesome-support'), '2' => __( 'Load bootstrap 3 files located on maxcdn', 'awesome-support' )  ),
 					'default' => '0'
-				),				
+				),
 				
 				array(
 					'name'    => __( 'Bootstrap 4 Theme', 'awesome-support' ),
 					'id'      => 'bs4_theme',
-					'type'    => 'radio',					
+					'type'    => 'select',
 					'options' => array( 'default' => __( 'Default', 'awesome-support' ),
 										'awesome'=> __( 'Future Awesome Support BS4 Theme', 'awesome-support' ), 
 										'cerulean' => __( 'Cerulean', 'awesome-support' ), 
@@ -161,6 +189,25 @@ function wpas_core_settings_advanced( $def ) {
 					'max'	  => 100000,
 				),				
 				
+				array(
+					'name' => __( 'Log Files', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Awesome Support creates log files for certain events.  These are different from WordPress, PHP and your webserver log files.  Please tell us where you would like these files to be placed.', 'awesome-support' ),
+				),
+
+				array(
+					'name'    => __( 'Where Should Log Files Be Stored?', 'awesome-support' ),
+					'id'      => 'log_file_location',
+					'type'    => 'radio',					
+					'options' => array( '0' => __( 'Default', 'awesome-support' ), '1' => __( 'WordPress Uploads Folder', 'awesome-support'), '2' => __( 'In The Absolute Path Specified Below', 'awesome-support')  ),
+					'default' => '0'
+				),
+				array(
+					'name'    => __( 'None Of The Above - Place Log Files Here ', 'awesome-support' ),
+					'id'      => 'log_file_location_absolute',
+					'type'    => 'text',
+					'desc'    => __( 'The absolute path to the log file location.  This must be relative to the server user account and must NOT end in a forward slash!', 'awesome-support' )
+				),
 				
 				array(
 					'name' => __( 'Danger Zone', 'awesome-support' ),

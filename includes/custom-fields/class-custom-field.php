@@ -209,6 +209,30 @@
 				// @since 4.3.0
 				// Place this field in a bootstrap column?
 				'boot_strap_column_fe'	=> false ,
+				
+				// @since 4.4.0
+				// The sort order of the field - used only by the custom-fields add-on!
+				'order'	=> '99999',
+				
+				// @since 4.4.0
+				// Action hook to declare just before rendering the field on the front-end
+				'pre_render_action_hook_fe' => '',
+				
+				// @since 4.4.0
+				// Action hook to declare just after rendering the field on the front-end
+				'post_render_action_hook_fe' => '',
+				
+				// @since 4.4.0
+				// Action hook to declare just before rendering the field on the back-end
+				// Future use only since we don't have a back-end only rendering function yet.
+				// Use the front-end hook above for everything for now.
+				'pre_render_action_hook_be' => '',
+				
+				// @since 4.4.0
+				// Action hook to declare just after rendering the field on the back-end
+				// Future use only since we don't have a back-end only rendering function yet.
+				// Use the front-end hook above for everything for now.				
+				'post_render_action_hook_be' => '',								
 
 			);
 

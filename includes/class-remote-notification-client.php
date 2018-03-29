@@ -107,7 +107,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 				add_action( 'admin_footer', array( self::$instance, 'script' ) );
 			}
 
-			add_action( 'wp_ajax_rdn_fetch_notifications', array( $this, 'remote_get_notice_ajax' ) );
+			add_action( 'wp_ajax_rdn_fetch_notifications', array( self::$instance, 'remote_get_notice_ajax' ) );
 			add_filter( 'heartbeat_received', array( self::$instance, 'heartbeat' ), 10, 2 );
 
 		}
@@ -581,7 +581,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 					// Listen for the custom event "heartbeat-tick" on $(document).
 					$(document).on('heartbeat-tick', function (e, data) {
 
-						if (data.rdn_fetch !== '') {
+						if (typeof(data.rdn_fetch) !== 'undefined' && data.rdn_fetch !== '') {
 
 							ajax_data = {
 								'action': 'rdn_fetch_notifications',

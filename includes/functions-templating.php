@@ -448,7 +448,7 @@
 			 */
 			do_action( 'wpas_ticket_details_reply_textarea_after' );
 
-			if ( current_user_can( 'close_ticket' ) ): ?>
+			if ( current_user_can( 'close_ticket' ) && apply_filters( 'wpas_user_can_close_ticket', true, $post_id ) ): ?>
 
                 <div class="checkbox">
                     <label for="close_ticket" data-toggle="tooltip" data-placement="right" title=""
@@ -999,7 +999,7 @@
 		if ( 'closed' === $status && ( 'post-new.php' == $pagenow || 'post.php' == $pagenow || 'edit.php' == $pagenow || ( ! is_admin() && 'index.php' === $pagenow ) ) ) {
 			$label = __( 'Closed', 'awesome-support' );
 			$color = wpas_get_option( "color_$status", '#dd3333' );
-			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+			$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
 			if ( 'edit.php' == $pagenow && array_key_exists( $post_status, $custom_status ) ) {
 				$tag .= '<br/>' . $custom_status[ $post_status ];
@@ -1014,7 +1014,7 @@
 			if ( ! array_key_exists( $post_status, $custom_status ) ) {
 				$label = __( 'Open', 'awesome-support' );
 				$color = wpas_get_option( "color_$status", '#169baa' );
-				$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+				$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 			} else {
 				$defaults = array(
 					'queued'     => '#1e73be',
@@ -1032,7 +1032,7 @@
 					}
 				}
 
-				$tag = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+				$tag = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 			}
 		}
 
@@ -1067,7 +1067,7 @@
 
 		$label = __( $term->name, 'awesome-support' );
 		$color = get_term_meta( $term->term_id, 'color', true );
-		$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
+		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
 		echo $tag;
 
@@ -1326,6 +1326,77 @@
 		return true;
 
 	}
+	
+	add_action( 'wpas_after_registration_fields', 'wpas_gdpr_checkboxes', 10, 3 );
+	/**
+	 * Add the checkboxes for GDPR notices
+	 *
+	 * Adds one or more checkboxes to the registration form if there are
+	 * GDPR options set in the plugin settings.
+	 *
+	 * @since  4.4.0
+	 * @return void
+	 */
+	function wpas_gdpr_checkboxes() {
+
+		$gdpr_short_desc_01 = wpas_get_option( 'gdpr_notice_short_desc_01', '' );
+		$gdpr_long_desc_01 = wpas_get_option( 'gdpr_notice_long_desc_01', '' );
+
+		if ( ! empty( $gdpr_short_desc_01 ) || ! empty( $gdpr_short_desc_01 ) ) {
+
+			$gdpr01 = new WPAS_Custom_Field( 'gdpr01', array(
+				'name' => 'gdpr01',
+				'args' => array(
+					'required'   => true,
+					'field_type' => 'checkbox',
+					'sanitize'   => 'sanitize_text_field',
+					'options'    => array( '1' => $gdpr_short_desc_01 ),
+					'desc'		 => $gdpr_long_desc_01,
+				),
+			) );
+
+			echo $gdpr01->get_output();
+		}
+		
+		$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
+		$gdpr_long_desc_02 = wpas_get_option( 'gdpr_notice_long_desc_02', '' );
+
+		if ( ! empty( $gdpr_short_desc_02 ) || ! empty( $gdpr_short_desc_02 ) ) {
+
+			$gdpr02 = new WPAS_Custom_Field( 'gdpr02', array(
+				'name' => 'gdpr02',
+				'args' => array(
+					'required'   => true,
+					'field_type' => 'checkbox',
+					'sanitize'   => 'sanitize_text_field',
+					'options'    => array( '1' => $gdpr_short_desc_02 ),
+					'desc'		 => $gdpr_long_desc_02,
+				),
+			) );
+
+			echo $gdpr02->get_output();
+		}	
+
+		$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
+		$gdpr_long_desc_03 = wpas_get_option( 'gdpr_notice_long_desc_03', '' );
+
+		if ( ! empty( $gdpr_short_desc_03 ) || ! empty( $gdpr_short_desc_03 ) ) {
+
+			$gdpr03 = new WPAS_Custom_Field( 'gdpr03', array(
+				'name' => 'gdpr03',
+				'args' => array(
+					'required'   => true,
+					'field_type' => 'checkbox',
+					'sanitize'   => 'sanitize_text_field',
+					'options'    => array( '1' => $gdpr_short_desc_03 ),
+					'desc'		 => $gdpr_long_desc_03,
+				),
+			) );
+
+			echo $gdpr03->get_output();
+		}		
+
+	}	
 
 	add_filter( 'wpas_cf_field_markup_readonly', 'wpas_cf_field_markup_time_tracking_readonly', 10, 2 );
 	/**
@@ -1377,3 +1448,21 @@
 		return $args;
 
 	}
+	
+	/**
+	 * Returns the URL that the user should be redirected to when the logout button is pushed
+	 *
+	 * @since 4.4.0
+	 *
+	 * @return string
+	 */
+	function wpas_get_logout_redirect() {
+
+		if ( ! empty( wpas_get_option( 'logout_redirect_fe', '') ) ) {
+			return wp_logout_url( wpas_get_option( 'logout_redirect_fe', '') );
+		} else {
+			return wp_logout_url();
+		}
+		
+	}
+	

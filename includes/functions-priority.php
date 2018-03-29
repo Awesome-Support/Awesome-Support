@@ -72,8 +72,10 @@ function wpas_ticket_priority_edit_form_color_field( $term, $taxonomy ) {
  * @param int $tt_id
  */
 function wpas_ticket_priority_save_color( $term_id, $tt_id ) {
+	$term_color = filter_input( INPUT_POST, 'term-color', FILTER_SANITIZE_STRING );
 	
-	if( isset( $_POST['term-color'] ) ) {
-		update_term_meta( $term_id, 'color', $_POST['term-color'] );
-	}
+	$term_color = sanitize_hex_color( $term_color );
+	
+	update_term_meta( $term_id, 'color', $term_color );
+	
 }

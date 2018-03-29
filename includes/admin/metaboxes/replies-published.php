@@ -38,12 +38,13 @@ if ( ! defined( 'WPINC' ) ) {
 <td class="col2">
 
 	<?php if ( 'unread' === $row->post_status ): ?><div id="wpas-unread-<?php echo $row->ID; ?>" class="wpas-unread-badge"><?php _e( 'Unread', 'awesome-support' ); ?></div><?php endif; ?>
+	<?php $show_extended_date_in_replies = boolval( wpas_get_option( 'show_extended_date_in_replies', false ) ); ?>
 	<div class="wpas-reply-meta">
 		<div class="wpas-reply-user">
-			<strong class="wpas-profilename"><?php echo $user_name; ?></strong> <span class="wpas-profilerole">(<?php echo wpas_get_user_nice_role( $user_data->roles[0] ); ?>)</span>
+			<strong class="wpas-profilename"><?php echo $user_name; ?></strong><?php if ( $user_data ): ?> <span class="wpas-profilerole">(<?php echo wpas_get_user_nice_role( $user_data->roles[0] ); ?>)</span><?php endif; ?>
 		</div>
 		<div class="wpas-reply-time">
-			<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>"><span class="wpas-human-date"><?php echo date( get_option( 'date_format' ), strtotime( $row->post_date ) ); ?> <?php printf( __( '(%s - %s since ticket was opened.)', 'awesome-support' ), $date_full, $days_since_open ); ?>  | </span><?php printf( __( '%s ago', 'awesome-support' ), $date ); ?></time>
+			<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>"><span class="wpas-human-date"><?php echo date( get_option( 'date_format' ), strtotime( $row->post_date ) ); ?> <?php if ( true === $show_extended_date_in_replies ) { printf( __( '(%s - %s since ticket was opened.)', 'awesome-support' ), $date_full, $days_since_open ); } ?>  | </span><?php printf( __( '%s ago', 'awesome-support' ), $date ); ?></time>
 		</div>
 	</div>
 
@@ -77,7 +78,7 @@ if ( ! defined( 'WPINC' ) ) {
 				array_push( $output, $control );
 			}
 
-			echo implode( ' | ', $output );
+			echo implode( ' ', $output );
 		}
 
 		/**
