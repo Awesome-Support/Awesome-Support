@@ -113,11 +113,12 @@
             if (btn.hasClass('wpas_btn_reply') || btn.hasClass('wpas_btn_reply_close')) {
 
                 // Detect Visual and Text Mode in WordPress TinyMCE Editor
-                var is_tinymce_active = (typeof tinyMCE != "undefined") && tinyMCE.activeEditor && !tinyMCE.activeEditor.isHidden();
+                
+                var editor = tinymce.get('wpas_reply');
+                var is_tinymce_active = (typeof tinyMCE != "undefined") && editor && !editor.isHidden();
 
                 // Visual Editor
                 if (is_tinymce_active) {
-                    var editor = tinyMCE.activeEditor;
                     var editorContent = editor.getContent();
                     if (editorContent === '' || editorContent === null) {
 
