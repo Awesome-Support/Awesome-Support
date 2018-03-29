@@ -200,19 +200,28 @@ function wpas_can_view_ai_tab() {
 	}
 }
 
+function wpas_color_ticket_header_by_priority() {
+	
+	if ( true === boolval( wpas_get_option( 'support_priority_color_code_ticket_header', false ) ) ) {
+	
+		global $post_id;
+
+		$terms = get_the_terms( $post_id, 'ticket_priority' );
+
+		if ( $terms ) {
+			$term = array_shift( $terms );
+			$color = get_term_meta( $term->term_id, 'color', true );
+			echo "<div style=\"margin:0 1px; border-top : 2px solid {$color}\"></div>";
+		}	
+	}
+
+}
+
 
 /**
  * Print main tabs in ticket edit page
  */
 
-global $post_id;
-
-$terms = get_the_terms( $post_id, 'ticket_priority' );
-
-if ( $terms ) {
-	$term = array_shift( $terms );
-	$color = get_term_meta( $term->term_id, 'color', true );
-	echo "<div style=\"margin:0 1px; border-top : 2px solid {$color}\"></div>";
-}
+wpas_color_ticket_header_by_priority();
 
 echo wpas_admin_tabs( 'ticket_main' );

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-03-24 22:49-0500\n"
+"POT-Creation-Date: 2018-03-29 09:33-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1648,6 +1648,14 @@ msgstr ""
 
 #: includes/admin/settings/settings-general.php:386
 msgid "Would you like to show the field in the ticket listing?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:391
+msgid "Color-code Ticket Header?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:394
+msgid "Checking this box will color the top border of the opening post to match the priority color"
 msgstr ""
 
 #: includes/admin/settings/settings-integration.php:13
