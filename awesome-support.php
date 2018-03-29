@@ -444,6 +444,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );			
 			require( WPAS_PATH . 'includes/install.php' );
 
+			/* Simple WooCommerce Integration */
+			require( WPAS_PATH . 'includes/integrations/wc-account.php' );
+
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
 				require( WPAS_PATH . 'includes/functions-admin-bar.php' );
@@ -511,6 +514,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				
 				/* Wisdom Tracking */
 				require( WPAS_PATH . '/tracking/class-plugin-usage-tracker.php' );
+				
 			}
 
 		}
