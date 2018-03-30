@@ -192,17 +192,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 				if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
-					/**
-					 * Redirect to about page.
-					 *
-					 * We don't use the 'was_setup' option for the redirection as
-					 * if the install fails the first time this will create a redirect loop
-					 * on the about page.
-					 */
-					if ( true === boolval( get_option( 'wpas_redirect_about', false ) ) ) {
-						add_action( 'init', array( self::$instance, 'redirect_to_about' ) );
-					}
-
 					add_action( 'plugins_loaded', array( 'WPAS_Upgrade', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Tickets_List', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
@@ -386,19 +375,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		}
 
 		/**
-		 * Redirect to about page.
-		 *
-		 * Redirect the user to the about page after plugin activation.
-		 *
-		 * @return void
-		 */
-		public function redirect_to_about() {
-			delete_option( 'wpas_redirect_about' );
-			wp_redirect( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
-			exit;
-		}
-
-		/**
 		 * Include all files used sitewide
 		 *
 		 * @since 3.2.5
@@ -494,6 +470,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/functions-agent-chat.php' );				
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
+				require( WPAS_PATH . 'includes/admin/class-as-admin-setup-wizard.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-help.php' );
 				require( WPAS_PATH . 'includes/admin/upgrade/class-upgrade.php' );
@@ -534,22 +511,15 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			}
 
 			/**
-			 * Ask for products support.
-			 *
-			 * Still part of the installation process. Ask the user
-			 * if he is going to support multiple products or only one.
-			 * It is important to use the built-in taxonomy for multiple products
-			 * support as it is used by multiple addons.
-			 *
-			 * However, if the products support is already enabled, it means that this is not
-			 * the first activation of the plugin and products support was previously enabled
-			 * (products support is disabled by default). In this case we don't ask again.
+			 * Ask for setup plugin using Setup wizard.
+			 * 
+			 * Older version should not run the wizard.
+			 * It's only for newer install. Compare version
+			 * as additional measure. e.g. 
+			 * if ( ! get_option( 'wpas_plugin_setup', false ) && WPAS_VERSION >= {version relase} ) {
 			 */
-			if ( 'pending' === get_option( 'wpas_support_products' ) ) {
-			    if ( 'wpas-about' !== filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) ) {
-					add_action( 'admin_notices', 'wpas_ask_support_products' );
-				}
-
+			if ( ! get_option( 'wpas_plugin_setup', false ) ) {
+				add_action( 'admin_notices', 'wpas_ask_setup_wizard', 1 );
 			}
 
 		}
