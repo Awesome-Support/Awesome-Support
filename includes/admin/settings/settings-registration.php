@@ -169,6 +169,18 @@ function wpas_core_settings_registration( $def ) {
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 
+				array(
+					'name' => __( 'Other', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Default Role For New Users', 'awesome-support' ),
+					'id'      => 'new_user_role',
+					'type'    => 'text',
+					'desc'    => __( 'The role should be the internal WordPress role id such as wpas_user and is case sensitive.  Do not leave this blank!  This role should have the 5 core Awesome Support capabilities in order for users to be able to submit tickets. Check our documentation for more information.', 'awesome-support' ),
+					'default' => 'wpas_user'
+				),
+
 			)
 		),
 	);

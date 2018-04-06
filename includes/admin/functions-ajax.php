@@ -22,3 +22,15 @@ add_action( 'wp_ajax_wpas_dismiss_free_addon_page', 'wpas_dismiss_free_addon_pag
 function wpas_dismiss_free_addon_page() {
 	return add_option( 'wpas_dismiss_free_addon_page', true );
 }
+
+add_action( 'wp_ajax_wpas_skip_wizard_setup', 'wpas_skip_wizard_setup' );
+/**
+ * Skip Setup Wizard
+ *
+ * @since 3.3.3
+ * @return bool
+ */
+function wpas_skip_wizard_setup() {	
+	add_option( 'wpas_skip_wizard_setup', true );
+	wp_die();
+}

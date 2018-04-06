@@ -202,8 +202,6 @@ function wpas_single_activate() {
 
 	add_option( 'wpas_options', serialize( get_settings_defaults() ) );
 	add_option( 'wpas_setup', 'pending' );
-	add_option( 'wpas_redirect_about', true );
-	add_option( 'wpas_support_products', 'pending' );
 	add_option( 'wpas_db_version', WPAS_DB_VERSION );
 	add_option( 'wpas_version', WPAS_VERSION );
 
@@ -310,35 +308,13 @@ function wpas_flush_rewrite_rules() {
 }
 
 /**
- * Multiple products support.
- *
- * Ask the user to choose if the support site will manage
- * multiple products or not.
- *
- * @since  3.0.0
- * @return void
+ * As Setup Wizard.
+ * Ask the user to setup plugin using Setup Wizard.
  */
-function wpas_ask_support_products() {
-
-	global $pagenow;
-
-	$args_single = $args_multiple = $_GET;
-
-	if ( ! isset( $get ) || ! is_array( $get ) ) {
-		$get = array();
-	}
-
-	$args_single['products']   = 'single';
-	$args_multiple['products'] = 'multiple';
+function wpas_ask_setup_wizard(){
 	?>
-	<div class="updated">
-		<p><?php _e( 'Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>', 'awesome-support' ); ?></p>
-
-		<p>
-			<a href="<?php echo wp_sanitize_redirect( wpas_do_url( admin_url( $pagenow ), 'admin_products_option', $args_single ) ); ?>"
-			   class="button-secondary"><?php _e( 'Single Product', 'awesome-support' ); ?></a>
-			<a href="<?php echo wp_sanitize_redirect( wpas_do_url( admin_url( $pagenow ), 'admin_products_option', $args_multiple ) ); ?>"
-			   class="button-secondary"><?php _e( 'Multiple Products', 'awesome-support' ); ?></a>
-		</p>
-	</div>
+	<div class="updated wpas-wizard-notice">
+		<p><?php _e( 'Thank you for installing Awesome Support. <a href="'. admin_url( 'index.php?page=as-setup' ) .'" class="button button-primary">Click here</a> to get started or <a href="#" class="button" id="wpas-skip-wizard">skip this process</a>', 'awesome-support' ); ?></p>
+		<p><?php _e( 'If this is not the first time you are using Awesome Support then you should skip this process!' , 'awesome-support' ); ?></p>		
+	</div>	
 <?php }
