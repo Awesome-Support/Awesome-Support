@@ -313,7 +313,7 @@ function wpas_flush_rewrite_rules() {
  */
 function wpas_ask_setup_wizard(){
 	?>
-	<div class="updated">
-		<p><?php _e( 'Thank you for installing Awesome Support. <a href="'. admin_url( 'index.php?page=as-setup' ) .'">Click here</a> to get started', 'awesome-support' ); ?></p>
+	<div class="updated wpas-wizard-notice">
+		<p><?php _e( 'Thank you for installing Awesome Support. <a href="'. admin_url( 'index.php?page=as-setup' ) .'" class="button button-primary">Click here</a> to get started or <a href="#" class="button" id="wpas-skip-wizard">skip this process</a>', 'awesome-support' ); ?></p>
 	</div>
 <?php }

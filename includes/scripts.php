@@ -181,6 +181,14 @@ function wpas_register_assets_back_end() {
 		'alertNoTinyMCE' => __( 'No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor', 'awesome-support' ),
 		'alertNoContent' => __( "You can't submit an empty reply", 'awesome-support' )
 	) );
+	
+	// Custom admin notice style and script
+	wp_enqueue_style( 'wpas-admin-wizard-notice', WPAS_URL . 'assets/admin/css/wizard-notice.css', array(), WPAS_VERSION );
+	wp_enqueue_script( 'wpas-admin-wizard-script', WPAS_URL . 'assets/admin/js/admin-wizard.js', array( 'jquery' ), WPAS_VERSION );
+	wp_localize_script( 'wpas-admin-wizard-script', 'WPAS_Wizard', array(
+		'ajax_url' => admin_url( 'admin-ajax.php' ),
+		'about_page' => admin_url( 'edit.php?post_type=ticket&page=wpas-about' )
+	));
 
 }
 

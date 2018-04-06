@@ -512,13 +512,11 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			/**
 			 * Ask for setup plugin using Setup wizard.
-			 * 
-			 * Older version should not run the wizard.
-			 * It's only for newer install. Compare version
-			 * as additional measure. e.g. 
-			 * if ( ! get_option( 'wpas_plugin_setup', false ) && WPAS_VERSION >= {version relase} ) {
+			 * Proceed only if both 'wpas_plugin_setup' & 'wpas_skip_wizard_setup' = false
+			 * 'wpas_plugin_setup' will be added at the end of wizard steps
+			 * 'wpas_skip_wizard_setup' will be set to true if user choose to skip wizrd from admin notice
 			 */
-			if ( ! get_option( 'wpas_plugin_setup', false ) ) {
+			if ( ! get_option( 'wpas_plugin_setup', false ) && ! get_option( 'wpas_skip_wizard_setup', false ) ) {
 				add_action( 'admin_notices', 'wpas_ask_setup_wizard', 1 );
 			}
 
