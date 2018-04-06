@@ -169,10 +169,12 @@ class AS_Admin_Setup_Wizard {
 	 */
 	public function setup_wizard_content() {
 		echo '<div class="as-setup-content">';
+/*		
 		printf(
 			'<p class="sub-heading">%s</p>',
-			__( 'The following wizard will help you configure your support system and get you started quickly.', 'awesome-support' )
+			__( 'Welcome to Awesome Support! This setup wizard will help you to quickly configure your new support system so that you can start processing customer requests right away.  So lets get started with our first question!', 'awesome-support' )
 		);
+*/		
 		if ( ! empty( $this->steps[ $this->step ]['view'] ) ) {
 			call_user_func( $this->steps[ $this->step ]['view'], $this );
 			
@@ -201,9 +203,15 @@ class AS_Admin_Setup_Wizard {
 	 */
 	public function as_product_setup_setup(){
 		$support_products = wpas_get_option( 'support_products' );
+		printf(
+			'<p class="sub-heading">%s</p>',
+			__( 'Welcome to Awesome Support! This setup wizard will help you to quickly configure your new support system so that you can start processing customer requests right away.  So lets get started with our first question!', 'awesome-support' )
+		);		
 		?>
 		<form method="post">			
-			<p><?php _e( 'Would you like to turn on support for multiple products?', 'awesome-support' );?> </p>
+			<p><b><?php _e( 'Would you like to turn on support for multiple products?', 'awesome-support' );?> </b></p>
+			<p><?php _e( 'If you only offer support for one product you do not need to turn on multi-product support. But if you offer support for multiple products then you should respond YES to this question.', 'awesome-support' );?></p>
+			<p><?php _e( 'Note: You can change your mind later by going to the TICKETS->SETTINGS->PRODUCTS MANAGEMENT tab.', 'awesome-support' );?></p>			
 			<label for="product_type_yes">Yes</label>
 			<input type="radio" name="product_type" id='product_type_yes' value="yes" checked />
 			<label for="product_type_no">No</label>
@@ -239,7 +247,9 @@ class AS_Admin_Setup_Wizard {
 	public function as_setup_submit_ticket_page(){
 		?>
 		<form method="post">
-			<p><?php _e( 'Which menu would you like to add the SUBMIT TICKET page to?', 'awesome-support' );?> </p>
+			<p><b><?php _e( 'Which menu would you like to add the SUBMIT TICKET page to?', 'awesome-support' );?> </b></p>
+			<p><?php _e( 'We have created a new page that users can access to submit tickets to your new support system.  However, the page first needs to be added to one of your menus so that the user can easily access it.', 'awesome-support' );?> </p>
+			<p><?php _e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'awesome-support' );?></p>
 			<?php 
 			$menu_lists = wp_get_nav_menus();
 			if( !empty( $menu_lists )){
@@ -251,7 +261,7 @@ class AS_Admin_Setup_Wizard {
 				echo '<input type="submit" name="save_step" value="Continue">';
 				wp_nonce_field( 'as-setup' );
 			} else{
-				echo __( 'Please setup menu first. Click <a href="'. admin_url( 'nav-menus.php').'" class="contrast-link">here</a> to proceed.', 'awesome-support' );
+				echo __( 'It looks like you have a brand new install of WordPress without any menus.  So please setup at least one menu first. Click <a href="'. admin_url( 'nav-menus.php').'" class="contrast-link">here</a> to setup your first menu.', 'awesome-support' );
 			}
 			?>
 		</form>
@@ -280,12 +290,14 @@ class AS_Admin_Setup_Wizard {
 	}
 
 	/**
-	 * Awesome Support my ticket page setup view. 
+	 * Awesome Support my tickets page setup view. 
 	 */
 	public function as_setup_my_ticket_page(){
 		?>
 		<form method="post">
-			<p><?php _e( 'Which menu would you like to add the MY TICKET page to?', 'awesome-support' );?> </p>
+			<p><b><?php _e( 'Which menu would you like to add the MY TICKETS page to?', 'awesome-support' );?> </b></p>
+			<p><?php _e( 'We have created a new page that users can access to view their existing tickets.  This step allows you to add that page to one of your existing menus so users can easily access it.', 'awesome-support' );?></p>
+			<p><?php _e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'awesome-support' );?></p>
 			<?php 
 			$menu_lists = wp_get_nav_menus();
 			echo '<select name="wpas_ticket_list_menu">';
@@ -328,7 +340,10 @@ class AS_Admin_Setup_Wizard {
 		$support_priority = wpas_get_option( 'support_priority' );
 		?>
 		<form method="post">
-			<p><?php _e( 'Would you like to use the priority field in your tickets?', 'awesome-support' );?> </p>
+			<p><b><?php _e( 'Would you like to use the priority field in your tickets?', 'awesome-support' );?> </b></p>
+			<p><?php _e( 'Turn this option on if you would like to assign priorities to your tickets.', 'awesome-support' );?> </p>
+			<p><?php _e( 'After you have finished with the wizard you can configure your priority levels under TICKETS->PRIORITIES.', 'awesome-support' );?> </p>
+			<p><?php _e( 'You can also tweak how priorities work by changing settings under the TICKETS->SETTINGS->GENERAL tab.', 'awesome-support' );?> </p>
 			<label for='property_field_yes'>Yes</label>
 			<input type="radio" name="property_field" id='property_field_yes' value="yes" checked />
 			<label for='property_field_no'>No</label>
@@ -362,7 +377,10 @@ class AS_Admin_Setup_Wizard {
 		$departments = wpas_get_option( 'departments' );
 		?>
 		<form method="post">
-			<p><?php _e( 'Do you want to enable Departments? (Turn on the option in settings)', 'awesome-support' );?> </p>
+			<p><b><?php _e( 'Do you want to enable Departments? (Turn on the option in settings)', 'awesome-support' );?> </b></p>
+			<p><?php _e( 'Turn this option on if you would like to assign departments to your tickets.', 'awesome-support' );?> </p>
+			<p><?php _e( 'After you have finished with the wizard you can configure your list of departments under TICKETS->DEPARTMENTS.', 'awesome-support' );?> </p>
+			<p><?php _e( 'You can turn this off later if you change your mind by going to the TICKETS->SETTINGS->GENERAL tab.', 'awesome-support' );?> </p>			
 			<label for='departments_field_yes'>Yes</label>
 			<input type="radio" name="departments_field" id='departments_field_yes' value="yes" checked />
 			<label for='departments_field_no'>No</label>
@@ -396,7 +414,14 @@ class AS_Admin_Setup_Wizard {
 	 */
 	public function as_setup_lets_go(){?>
 		<form method="post">
-			<p><?php _e( "Thank you for installing Awesome Support and Now Let's Go Build Better Support", "awesome-support" ); ?></p>
+			<p><b><?php _e( "Your new support system is all set up and ready to go!", "awesome-support" ); ?></b></p>
+			<p><?php _e( "If your menus are active in your theme your users will now able to register for an account and submit tickets.", "awesome-support" ); ?></p>
+			<p><b><?php _e( "Do you have existing users in your WordPress System?", "awesome-support" ); ?></b></p>
+			<p><?php
+			echo sprintf( __( 'If so, you will want to read <b><u><a %s>this article</a></b></u> on our website.', 'awesome-support' ), 'href="https://getawesomesupport.com/documentation/awesome-support/admin-handling-existing-users-after-installation/" target="_blank" ' );
+			?></p>
+			<p><b><?php _e( "Where are my support tickets?", "awesome-support" ); ?></b></p>
+			<p><b><?php _e( "You can now access your support tickets and other support options under the new TICKETS menu option.", "awesome-support" ); ?></b></p>
 			<input type="submit" name="save_step" value="Let's Go">
 			<?php wp_nonce_field( 'as-setup' ); ?>
 		</form>
