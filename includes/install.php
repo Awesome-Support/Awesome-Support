@@ -315,5 +315,6 @@ function wpas_ask_setup_wizard(){
 	?>
 	<div class="updated wpas-wizard-notice">
 		<p><?php _e( 'Thank you for installing Awesome Support. <a href="'. admin_url( 'index.php?page=as-setup' ) .'" class="button button-primary">Click here</a> to get started or <a href="#" class="button" id="wpas-skip-wizard">skip this process</a>', 'awesome-support' ); ?></p>
-	</div>
+		<p><?php _e( 'If this is not the first time you are using Awesome Support then you should skip this process!' , 'awesome-support' ); ?></p>		
+	</div>	
 <?php }
