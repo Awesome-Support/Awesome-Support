@@ -377,9 +377,9 @@ class AS_Admin_Setup_Wizard {
 		$departments = wpas_get_option( 'departments' );
 		?>
 		<form method="post">
-			<p><b><?php _e( 'Do you want to enable Departments? (Turn on the option in settings)', 'awesome-support' );?> </b></p>
+			<p><b><?php _e( 'Do you want to enable Departments?', 'awesome-support' );?> </b></p>
 			<p><?php _e( 'Turn this option on if you would like to assign departments to your tickets.', 'awesome-support' );?> </p>
-			<p><?php _e( 'After you have finished with the wizard you can configure your list of departments under TICKETS->DEPARTMENTS.', 'awesome-support' );?> </p>
+			<p><?php _e( 'Once enabled, you can configure your list of departments by going to TICKETS->DEPARTMENTS.', 'awesome-support' );?> </p>
 			<p><?php _e( 'You can turn this off later if you change your mind by going to the TICKETS->SETTINGS->GENERAL tab.', 'awesome-support' );?> </p>			
 			<label for='departments_field_yes'>Yes</label>
 			<input type="radio" name="departments_field" id='departments_field_yes' value="yes" checked />
@@ -421,7 +421,7 @@ class AS_Admin_Setup_Wizard {
 			echo sprintf( __( 'If so, you will want to read <b><u><a %s>this article</a></b></u> on our website.', 'awesome-support' ), 'href="https://getawesomesupport.com/documentation/awesome-support/admin-handling-existing-users-after-installation/" target="_blank" ' );
 			?></p>
 			<p><b><?php _e( "Where are my support tickets?", "awesome-support" ); ?></b></p>
-			<p><b><?php _e( "You can now access your support tickets and other support options under the new TICKETS menu option.", "awesome-support" ); ?></b></p>
+			<p><?php _e( "You can now access your support tickets and other support options under the new TICKETS menu option.", "awesome-support" ); ?></p>
 			<input type="submit" name="save_step" value="Let's Go">
 			<?php wp_nonce_field( 'as-setup' ); ?>
 		</form>
