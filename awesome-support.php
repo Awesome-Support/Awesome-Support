@@ -582,7 +582,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		public function remote_notifications() {
 			if ( wpas_is_asadmin() && function_exists( 'rdnc_add_notification' ) && ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) ) {
-				rdnc_add_notification( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
+				rdnc_add_notification( 2, '77a8b884c6e778b4', 'https://notifications.getawesomesupport.com' );
 			}
 		}
 		
