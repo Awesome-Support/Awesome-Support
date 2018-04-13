@@ -10,6 +10,8 @@
  * using the standard WordPress hooks. A "dismiss" option is added
  * in order to let the user hide the notification.
  *
+ * No data is ever stored on the remote server.
+ *
  * @package   Remote Dashboard Notifications
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
