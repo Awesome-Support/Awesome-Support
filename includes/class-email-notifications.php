@@ -237,7 +237,7 @@ class WPAS_Email_Notification {
 
 		$data['reply_name']  = $data['from_name'];
 
-		$this->data = apply_filters( 'wpas_email_notifications_sender_data', $data );
+		$this->data = apply_filters( 'wpas_email_notifications_sender_data', $data, $this );
 
 		return $this->data;
 
