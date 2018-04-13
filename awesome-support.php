@@ -452,7 +452,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/functions-admin-ticket-detail-toolbars.php' );
 			
 			if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
-				require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
+				if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
+					require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
+				}
 			}			
 
 			// We don't need all this during Ajax processing
@@ -579,7 +581,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		public function remote_notifications() {
-			if ( is_admin() && function_exists( 'rdnc_add_notification' ) && ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) ) {
+			if ( wpas_is_asadmin() && function_exists( 'rdnc_add_notification' ) && ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) ) {
 				rdnc_add_notification( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
 			}
 		}
