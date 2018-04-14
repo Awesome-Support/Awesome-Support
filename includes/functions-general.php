@@ -1308,7 +1308,7 @@ function wpas_is_support_priority_active() {
  * @return boolean
  */
  function wpas_is_asadmin() {
-	return ( current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
+	return ( is_super_admin() || current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
  }
  
  /**
