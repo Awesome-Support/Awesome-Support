@@ -38,9 +38,6 @@ class WPAS_Custom_Fields {
 				/* Save the custom fields. */
 				add_action( 'wpas_open_ticket_before_assigned', array( $this, 'frontend_submission' ), 10, 2 );
 
-				/* Display the custom fields on the submission form */
-				add_action( 'wpas_submission_form_inside_after_subject', array( $this, 'submission_form_fields' ) );
-
 			}
 		}
 
