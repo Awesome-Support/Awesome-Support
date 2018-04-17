@@ -8,3 +8,6 @@
 	font-size: 14px;
 	font-weight: bolder;
 }
+#menu-dashboard .wp-submenu.wp-submenu-wrap li a[href="as-setup"]{
+	display: none;
+}
