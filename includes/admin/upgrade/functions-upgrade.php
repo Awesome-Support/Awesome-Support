@@ -233,111 +233,111 @@ function wpas_upgrade_410() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.4 to 5.0.0. */
-function wpas_upgrade_334_500() {
+/* Execute upgrade functions from 3.3.4 to 5.1.1. */
+function wpas_upgrade_334_511() {
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.3 to 5.0.0. */
-function wpas_upgrade_333_500() {
+/* Execute upgrade functions from 3.3.3 to 5.1.1. */
+function wpas_upgrade_333_511() {
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.2 to 5.0.0. */
-function wpas_upgrade_332_500() {
+/* Execute upgrade functions from 3.3.2 to 5.1.1. */
+function wpas_upgrade_332_511() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.1 to 5.0.0. */
-function wpas_upgrade_331_500() {
+/* Execute upgrade functions from 3.3.1 to 5.1.1. */
+function wpas_upgrade_331_511() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.3.0 to 5.0.0. */
-function wpas_upgrade_330_500() {
+/* Execute upgrade functions from 3.3.0 to 5.1.1. */
+function wpas_upgrade_330_511() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.9 to 5.0.0. */
-function wpas_upgrade_329_500() {
+/* Execute upgrade functions from 3.2.9 to 5.1.1. */
+function wpas_upgrade_329_511() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.8 to 5.0.0. */
-function wpas_upgrade_328_500() {
+/* Execute upgrade functions from 3.2.8 to 5.1.1. */
+function wpas_upgrade_328_511() {
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.7 to 5.0.0. */
-function wpas_upgrade_327_500() {
+/* Execute upgrade functions from 3.2.7 to 5.1.1. */
+function wpas_upgrade_327_511() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.6 to 5.0.0. */
-function wpas_upgrade_326_500() {
+/* Execute upgrade functions from 3.2.6 to 5.1.1. */
+function wpas_upgrade_326_511() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.5 to 5.0.0. */
-function wpas_upgrade_325_500() {
+/* Execute upgrade functions from 3.2.5 to 5.1.1. */
+function wpas_upgrade_325_511() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.4 to 5.0.0. */
-function wpas_upgrade_324_500() {
+/* Execute upgrade functions from 3.2.4 to 5.1.1. */
+function wpas_upgrade_324_511() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.3 to 5.0.0. */
-function wpas_upgrade_323_500() {
+/* Execute upgrade functions from 3.2.3 to 5.1.1. */
+function wpas_upgrade_323_511() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.2 to 5.0.0. */
-function wpas_upgrade_322_500() {
+/* Execute upgrade functions from 3.2.2 to 5.1.1. */
+function wpas_upgrade_322_511() {
 	wpas_upgrade_328();	
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.1 to 5.0.0. */
-function wpas_upgrade_321_500() {
+/* Execute upgrade functions from 3.2.1 to 5.1.1. */
+function wpas_upgrade_321_511() {
 	wpas_upgrade_328();
 	wpas_upgrade_333();
 	wpas_upgrade_406();
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.2.0 to 5.0.0. */
-function wpas_upgrade_320_500() {
+/* Execute upgrade functions from 3.2.0 to 5.1.1. */
+function wpas_upgrade_320_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -345,8 +345,8 @@ function wpas_upgrade_320_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.12 to 5.0.0. */
-function wpas_upgrade_3112_500() {
+/* Execute upgrade functions from 3.1.12 to 5.1.1. */
+function wpas_upgrade_3112_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -354,8 +354,8 @@ function wpas_upgrade_3112_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.11 to 5.0.0. */
-function wpas_upgrade_3111_500() {
+/* Execute upgrade functions from 3.1.11 to 5.1.1. */
+function wpas_upgrade_3111_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -363,8 +363,8 @@ function wpas_upgrade_3111_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.10 to 5.0.0. */
-function wpas_upgrade_3110_500() {
+/* Execute upgrade functions from 3.1.10 to 5.1.1. */
+function wpas_upgrade_3110_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -372,8 +372,8 @@ function wpas_upgrade_3110_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.9 to 5.0.0. */
-function wpas_upgrade_319_500() {
+/* Execute upgrade functions from 3.1.9 to 5.1.1. */
+function wpas_upgrade_319_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -381,8 +381,8 @@ function wpas_upgrade_319_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.8 to 5.0.0. */
-function wpas_upgrade_318_500() {
+/* Execute upgrade functions from 3.1.8 to 5.1.1. */
+function wpas_upgrade_318_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -390,8 +390,8 @@ function wpas_upgrade_318_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.7 to 5.0.0. */
-function wpas_upgrade_317_500() {
+/* Execute upgrade functions from 3.1.7 to 5.1.1. */
+function wpas_upgrade_317_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -399,8 +399,8 @@ function wpas_upgrade_317_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.6 to 5.0.0. */
-function wpas_upgrade_316_500() {
+/* Execute upgrade functions from 3.1.6 to 5.1.1. */
+function wpas_upgrade_316_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -408,8 +408,8 @@ function wpas_upgrade_316_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.5 to 5.0.0. */
-function wpas_upgrade_315_500() {
+/* Execute upgrade functions from 3.1.5 to 5.1.1. */
+function wpas_upgrade_315_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -417,8 +417,8 @@ function wpas_upgrade_315_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.4 to 5.0.0. */
-function wpas_upgrade_314_500() {
+/* Execute upgrade functions from 3.1.4 to 5.1.1. */
+function wpas_upgrade_314_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -426,8 +426,8 @@ function wpas_upgrade_314_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.3 to 5.0.0. */
-function wpas_upgrade_313_500() {
+/* Execute upgrade functions from 3.1.3 to 5.1.1. */
+function wpas_upgrade_313_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -435,8 +435,8 @@ function wpas_upgrade_313_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.2 to 5.0.0. */
-function wpas_upgrade_312_500() {
+/* Execute upgrade functions from 3.1.2 to 5.1.1. */
+function wpas_upgrade_312_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -444,8 +444,8 @@ function wpas_upgrade_312_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.1 to 5.0.0. */
-function wpas_upgrade_311_500() {
+/* Execute upgrade functions from 3.1.1 to 5.1.1. */
+function wpas_upgrade_311_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -453,8 +453,8 @@ function wpas_upgrade_311_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.1.0 to 5.0.0. */
-function wpas_upgrade_310_500() {
+/* Execute upgrade functions from 3.1.0 to 5.1.1. */
+function wpas_upgrade_310_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -462,8 +462,8 @@ function wpas_upgrade_310_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.0.1 to 5.0.0. */
-function wpas_upgrade_301_500() {
+/* Execute upgrade functions from 3.0.1 to 5.1.1. */
+function wpas_upgrade_301_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -471,8 +471,8 @@ function wpas_upgrade_301_500() {
 	wpas_update_last_reply();
 }
 
-/* Execute upgrade functions from 3.0.0 to 5.0.0. */
-function wpas_upgrade_300_500() {
+/* Execute upgrade functions from 3.0.0 to 5.1.1. */
+function wpas_upgrade_300_511() {
 	wpas_upgrade_321();
 	wpas_upgrade_328();
 	wpas_upgrade_333();
@@ -481,38 +481,38 @@ function wpas_upgrade_300_500() {
 }
 
 /**
- * Execute upgrade functions from 4.0.x to 5.0.0.
+ * Execute upgrade functions from 4.0.x to 5.1.1.
  *
- * Normally we would have just a single function called wpas_upgrade_500.  
+ * Normally we would have just a single function called wpas_upgrade_511.  
  * But because the wpas_update_last_reply function is so intensive it is probably best to make sure
  * it only runs when absolutely necessary instead of running on every upgrade.  
  * Upgrades from 4.1.0 are not necessary for it to run. So, we have to make upgrade routines 
  * for all the 4.x to 4.2 versions - gah.
  * 
  */
-function wpas_upgrade_400_500() {
+function wpas_upgrade_400_511() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_401_500() {
+function wpas_upgrade_401_511() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_402_500() {
+function wpas_upgrade_402_511() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_403_500() {
+function wpas_upgrade_403_511() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_404_500() {
+function wpas_upgrade_404_511() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_405_500() {
+function wpas_upgrade_405_511() {
 	wpas_update_last_reply();	
 }
-function wpas_upgrade_406_500() {
+function wpas_upgrade_406_511() {
 	wpas_update_last_reply();	
 }
 
-function wpas_upgrade_421_500() {
+function wpas_upgrade_421_511() {
 	wpas_update_last_reply();	
 }
 
@@ -526,18 +526,18 @@ function wpas_upgrade_421_500() {
  * @return void
  */
 function wpas_upgrade_440() {
-	wpas_upgrade_500();
+	wpas_upgrade_511();
 }
 
 /**
- * Upgrade function for version 5.0.0
+ * Upgrade function for version 5.1.1
  *
  * New capabilities need to be added to all roles.
  *
- * @since 5.0.0
+ * @since 5.1.1
  * @return void
  */
-function wpas_upgrade_500() {
+function wpas_upgrade_511() {
 
 	/* Add new capabilities to these roles and all users assigned these roles:
 	 *

@@ -1,4 +1,4 @@
-<div class="about-text"><b>To get started quickly please click the <em>GETTING STARTED</em> tab to the right of this one for some quick instructions on what to do next!</b></div>
+<div class="about-text"><b>Thanks for choosing Awesome Support!. At this point you should have already completed our setup wizard.  You can now use the tabs to the right to obtain more information, link to documentation and learn more about your new support system!</b></div>
 
 <hr />	
 <div>

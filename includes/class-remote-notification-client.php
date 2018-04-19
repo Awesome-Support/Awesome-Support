@@ -10,6 +10,8 @@
  * using the standard WordPress hooks. A "dismiss" option is added
  * in order to let the user hide the notification.
  *
+ * No data is ever stored on the remote server.
+ *
  * @package   Remote Dashboard Notifications
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
@@ -202,7 +204,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			);
 
 			// Generate the notice unique ID
-			$notification['notice_id'] = $notification['channel_id'] . substr( $channel_key, 0, 5 );
+			$notification['notice_id'] = $notification['channel_id'] . (string) strtotime('today');
 
 			// Double check that the required info is here
 			if ( '' === ( $notification['channel_id'] || $notification['channel_key'] || $notification['server_url'] ) ) {
@@ -282,6 +284,11 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public function show_notices() {
 
+			// Don't put notices on page unless its an admin!
+			if ( ! wpas_is_asadmin() ) {
+				return ;
+			}				
+		
 			foreach ( $this->notifications as $id => $notification ) {
 
 				$rn = $this->get_remote_notification( $notification );
@@ -311,7 +318,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 				}
 
 				// Output the admin notice
-				$this->create_admin_notice( $rn->content, $this->get_notice_class( isset( $rn->style ) ? $rn->style : 'updated' ), $this->get_notice_dismissal_url( $rn->slug ) );
+				$this->create_admin_notice( $rn->message, $this->get_notice_class( isset( $rn->style ) ? $rn->style : 'updated' ), $this->get_notice_dismissal_url( $rn->slug ) );
 
 			}
 
@@ -473,11 +480,11 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			$args  = array();
 			$nonce = wp_create_nonce( 'rn-dismiss' );
 
-			array_push( $args, "rn=$nonce" );
-			array_push( $args, "notification=$slug" );
+			$args['rn'] = $nonce;
+			$args['notification'] = $slug;
 
 			foreach ( $_GET as $key => $value ) {
-				array_push( $args, "$key=$value" );
+				$args[$key] = $value ;
 			}
 
 			return esc_url( add_query_arg( $args, '' ) );
@@ -563,6 +570,11 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 * @return void
 		 */
 		public function script() {
+
+		// Don't put script on page unless its an admin!
+			if ( ! wpas_is_asadmin() ) {
+				return ;
+			}		
 
 			$maybe_fetch = array();
 

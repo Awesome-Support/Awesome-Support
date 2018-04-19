@@ -202,7 +202,7 @@ function wpas_can_view_ai_tab() {
 
 function wpas_color_ticket_header_by_priority() {
 	
-	if ( true === boolval( wpas_get_option( 'support_priority_color_code_ticket_header', false ) ) ) {
+	if ( true === boolval( wpas_get_option( 'support_priority_color_code_ticket_header', false ) ) && true === boolval( wpas_get_option( 'support_priority', false ) )  ) {
 	
 		global $post_id;
 

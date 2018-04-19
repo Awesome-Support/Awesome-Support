@@ -227,7 +227,7 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 			'last_name'    => $user['last_name'],
 			'display_name' => "{$user['first_name']} {$user['last_name']}",
 			'user_pass'    => $user['pwd'],
-			'role'         => 'wpas_user',
+			'role'         => wpas_get_option( 'new_user_role', 'wpas_user' ),
 		) );
 
 		/**

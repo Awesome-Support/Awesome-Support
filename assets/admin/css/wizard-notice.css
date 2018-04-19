@@ -1,0 +1,13 @@
+.wrap .wpas-wizard-notice{
+    background-color: #46b450;
+    color: #ffffff;
+    border-left: 0;
+    border-radius: 5px;
+}
+.wpas-wizard-notice p{
+	font-size: 14px;
+	font-weight: bolder;
+}
+#menu-dashboard .wp-submenu.wp-submenu-wrap li a[href="as-setup"]{
+	display: none;
+}

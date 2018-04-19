@@ -230,14 +230,14 @@ class WPAS_Email_Notification {
 		}
 
 		$data = array(
-			'from_name'   => wpas_get_option( 'sender_name', get_bloginfo( 'name' ) ),
+			'from_name'   => stripslashes( wpas_get_option( 'sender_name', get_bloginfo( 'name' ) ) ),
 			'from_email'  => wpas_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ),
 			'reply_email' => wpas_get_option( 'reply_email', get_bloginfo( 'admin_email' ) ),
 		);
 
 		$data['reply_name']  = $data['from_name'];
 
-		$this->data = apply_filters( 'wpas_email_notifications_sender_data', $data );
+		$this->data = apply_filters( 'wpas_email_notifications_sender_data', $data, $this );
 
 		return $this->data;
 
@@ -566,8 +566,8 @@ class WPAS_Email_Notification {
 		ob_end_clean();
 
 		$template = str_replace( '{content}', wpautop( $content ), $template ); // Inject content
-		$template = str_replace( '{footer}', wpas_get_option( 'email_template_footer', '' ), $template ); // Inject footer
-		$template = str_replace( '{header}', wpas_get_option( 'email_template_header', '' ), $template ); // Inject header
+		$template = str_replace( '{footer}', stripslashes( wpas_get_option( 'email_template_footer', '' ) ), $template ); // Inject footer
+		$template = str_replace( '{header}', stripslashes( wpas_get_option( 'email_template_header', '' ) ), $template ); // Inject header
 
 		if ( '' !== $logo = wpas_get_option( 'email_template_logo', '' ) ) {
 			$logo = wp_get_attachment_image_src( $logo, 'full' );
@@ -696,7 +696,7 @@ class WPAS_Email_Notification {
 		 *
 		 * @var  string
 		 */
-		$subject = $this->get_subject( $case );
+		$subject = stripslashes( $this->get_subject( $case ) );
 
 		/**
 		 * Get the e-mail body and filter it before the template is being applied

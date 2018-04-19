@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 4.4.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-03-29 09:33-0500\n"
+"POT-Creation-Date: 2018-04-13 11:24-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,20 +39,19 @@ msgstr ""
 msgid "Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href=\"%s\" class=\"thickbox\">install the production version</a> of this plugin instead."
 msgstr ""
 
-#: awesome-support.php:239 awesome-support.php:250
+#: awesome-support.php:228 awesome-support.php:239
 #: includes/admin/functions-notices.php:131
-#: includes/class-remote-notification-client.php:126
-#: includes/class-remote-notification-client.php:137
+#: includes/class-remote-notification-client.php:128
+#: includes/class-remote-notification-client.php:139
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: awesome-support.php:660
+#: awesome-support.php:628
 msgid "Would you like a discount on your next Awesome Support purchase?  Help us make a better product for you by allowing us to collect some anonymous statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources."
 msgstr ""
 
 #: includes/admin/class-admin-help.php:61
 #: includes/admin/settings/settings-products-management.php:39
-#: includes/install.php:341
 msgid "Multiple Products"
 msgstr ""
 
@@ -465,6 +464,153 @@ msgstr ""
 msgid "Auto-Assign"
 msgstr ""
 
+#: includes/admin/class-as-admin-setup-wizard.php:62
+msgid "Product Setup"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:67
+msgid "Submit ticket page"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:72
+msgid "My ticket Page"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:77
+#: includes/custom-fields/functions-custom-fields.php:490
+msgid "Priorities"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:82
+#: includes/admin/settings/settings-general.php:91
+#: includes/custom-fields/functions-custom-fields.php:429
+msgid "Departments"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:87
+msgid "Let's Go"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:125
+msgid "Awesome Support &rsaquo; Setup Wizard"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:193
+msgid "Not right now"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:208
+msgid "Welcome to Awesome Support! This setup wizard will help you to quickly configure your new support system so that you can start processing customer requests right away.  So lets get started with our first question!"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:212
+msgid "Would you like to turn on support for multiple products?"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:213
+msgid "If you only offer support for one product you do not need to turn on multi-product support. But if you offer support for multiple products then you should respond YES to this question."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:214
+msgid "Note: You can change your mind later by going to the TICKETS->SETTINGS->PRODUCTS MANAGEMENT tab."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:250
+msgid "Which menu would you like to add the SUBMIT TICKET page to?"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:251
+msgid "We have created a new page that users can access to submit tickets to your new support system.  However, the page first needs to be added to one of your menus so that the user can easily access it."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:252
+#: includes/admin/class-as-admin-setup-wizard.php:300
+msgid "Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:264
+msgid "It looks like you have a brand new install of WordPress without any menus.  So please setup at least one menu first. Click <a href=\""
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:283
+#: includes/admin/gutenberg/blocks/submit-ticket/submit-ticket-block.js:26
+#: includes/install.php:270 includes/install.php:271
+msgid "Submit Ticket"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:298
+msgid "Which menu would you like to add the MY TICKETS page to?"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:299
+msgid "We have created a new page that users can access to view their existing tickets.  This step allows you to add that page to one of your existing menus so users can easily access it."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:327
+#: includes/admin/gutenberg/blocks/my-tickets/my-tickets-block.js:26
+#: includes/install.php:250 includes/install.php:251
+#: themes/default/partials/ticket-navigation.php:2
+msgid "My Tickets"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:343
+#: includes/admin/settings/settings-general.php:362
+msgid "Would you like to use the priority field in your tickets?"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:344
+msgid "Turn this option on if you would like to assign priorities to your tickets."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:345
+msgid "After you have finished with the wizard you can configure your priority levels under TICKETS->PRIORITIES."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:346
+msgid "You can also tweak how priorities work by changing settings under the TICKETS->SETTINGS->GENERAL tab."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:380
+msgid "Do you want to enable Departments?"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:381
+msgid "Turn this option on if you would like to assign departments to your tickets."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:382
+msgid "Once enabled, you can configure your list of departments by going to TICKETS->DEPARTMENTS."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:383
+msgid "You can turn this off later if you change your mind by going to the TICKETS->SETTINGS->GENERAL tab."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:417
+msgid "Your new support system is all set up and ready to go!"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:418
+msgid "If your menus are active in your theme your users will now able to register for an account and submit tickets."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:419
+msgid "Do you have existing users in your WordPress System?"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:421
+#, php-format
+msgid "If so, you will want to read <b><u><a %s>this article</a></b></u> on our website."
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:423
+msgid "Where are my support tickets?"
+msgstr ""
+
+#: includes/admin/class-as-admin-setup-wizard.php:424
+msgid "You can now access your support tickets and other support options under the new TICKETS menu option."
+msgstr ""
+
 #: includes/admin/functions-admin-ticket-detail-toolbars.php:52
 msgid "Re-open Ticket"
 msgstr ""
@@ -622,19 +768,8 @@ msgstr ""
 msgid "Support User since %s"
 msgstr ""
 
-#: includes/admin/gutenberg/blocks/my-tickets/my-tickets-block.js:26
-#: includes/install.php:252 includes/install.php:253
-#: themes/default/partials/ticket-navigation.php:2
-msgid "My Tickets"
-msgstr ""
-
 #: includes/admin/gutenberg/blocks/my-tickets/my-tickets-block.js:33
 msgid "Awesome Support: View My Tickets"
-msgstr ""
-
-#: includes/admin/gutenberg/blocks/submit-ticket/submit-ticket-block.js:26
-#: includes/install.php:272 includes/install.php:273
-msgid "Submit Ticket"
 msgstr ""
 
 #: includes/admin/gutenberg/blocks/submit-ticket/submit-ticket-block.js:33
@@ -1355,11 +1490,6 @@ msgstr ""
 msgid "After how many days should a ticket be considered &laquo;old&raquo;?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:91
-#: includes/custom-fields/functions-custom-fields.php:429
-msgid "Departments"
-msgstr ""
-
 #: includes/admin/settings/settings-general.php:94
 msgid "Enable departments management."
 msgstr ""
@@ -1622,10 +1752,6 @@ msgstr ""
 msgid "Use Priority Field"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:362
-msgid "Would you like to use the priority field in your tickets?"
-msgstr ""
-
 #: includes/admin/settings/settings-general.php:367
 msgid "Mandatory?"
 msgstr ""
@@ -1715,7 +1841,15 @@ msgstr ""
 msgid "If your team is licensed to user teamviewer in a multi-user environment you can use teamviewer chat right inside the Awesome Support ticket screens!"
 msgstr ""
 
-#: includes/admin/settings/settings-licenses.php:26
+#: includes/admin/settings/settings-licenses.php:23
+msgid "Data Sharing Disclosure"
+msgstr ""
+
+#: includes/admin/settings/settings-licenses.php:25
+msgid "Adding one or more license keys will send information about your domain, system and license status to our servers. By adding a license key you CONSENT to transmitting this information to us in order for us to provide the automatic updates and other services that you are entitled to under your license.  To remove consent, simply remove your license key.  If you choose not to add your license keys you can update your software manually by downloading the latest files from your account dashboard on our website."
+msgstr ""
+
+#: includes/admin/settings/settings-licenses.php:32
 msgid "Licenses"
 msgstr ""
 
@@ -2071,6 +2205,18 @@ msgstr ""
 
 #: includes/admin/settings/settings-registration.php:168
 msgid "Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept your terms"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:173
+msgid "Other"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:177
+msgid "Default Role For New Users"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:180
+msgid "The role should be the internal WordPress role id such as wpas_user and is case sensitive.  Do not leave this blank!  This role should have the 5 core Awesome Support capabilities in order for users to be able to submit tickets. Check our documentation for more information."
 msgstr ""
 
 #: includes/admin/settings/settings-style.php:13
@@ -2642,20 +2788,20 @@ msgstr ""
 msgid "Delete all Product Terms not used in any AS ticket."
 msgstr ""
 
-#: includes/class-remote-notification-client.php:500
+#: includes/class-remote-notification-client.php:507
 msgid "Dismiss notification"
 msgstr ""
 
-#: includes/class-remote-notification-client.php:716
+#: includes/class-remote-notification-client.php:728
 #, php-format
 msgid "The server response was invalid (code %s)"
 msgstr ""
 
-#: includes/class-remote-notification-client.php:722
+#: includes/class-remote-notification-client.php:734
 msgid "The server response is empty"
 msgstr ""
 
-#: includes/class-remote-notification-client.php:728
+#: includes/class-remote-notification-client.php:740
 msgid "Cannot decode the response content"
 msgstr ""
 
@@ -2751,10 +2897,6 @@ msgstr ""
 
 #: includes/custom-fields/functions-custom-fields.php:489
 msgid "Priority"
-msgstr ""
-
-#: includes/custom-fields/functions-custom-fields.php:490
-msgid "Priorities"
 msgstr ""
 
 #: includes/custom-fields/functions-custom-fields.php:535
@@ -3463,12 +3605,12 @@ msgstr ""
 msgid "Support User"
 msgstr ""
 
-#: includes/install.php:335
-msgid "Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>"
+#: includes/install.php:317
+msgid "Thank you for installing Awesome Support. <a href=\""
 msgstr ""
 
-#: includes/install.php:339
-msgid "Single Product"
+#: includes/install.php:318
+msgid "If this is not the first time you are using Awesome Support then you should skip this process!"
 msgstr ""
 
 #: includes/integrations/ecommerce.php:67
@@ -3516,26 +3658,26 @@ msgstr ""
 msgid "You can't submit an empty reply"
 msgstr ""
 
-#: includes/scripts.php:330
+#: includes/scripts.php:338
 msgctxt "JavaScript validation error message"
 msgid "You can't submit an empty ticket"
 msgstr ""
 
-#: includes/scripts.php:332
+#: includes/scripts.php:340
 msgctxt "JavaScript validation error message"
 msgid "You can't submit an empty reply"
 msgstr ""
 
-#: includes/scripts.php:342
+#: includes/scripts.php:350
 msgid "The following file(s) are too big to be uploaded:"
 msgstr ""
 
-#: includes/scripts.php:343
+#: includes/scripts.php:351
 #, php-format
 msgid "The maximum file size allowed for one file is %d MB"
 msgstr ""
 
-#: includes/scripts.php:347
+#: includes/scripts.php:355
 msgctxt "ticket submission button text while submitting"
 msgid "Submitting..."
 msgstr ""
