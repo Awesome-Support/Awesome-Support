@@ -9,18 +9,15 @@
 								<table border="0" width="100%" cellspacing="0" cellpadding="0">
 									<tbody>
 										<tr>
-											<td class="padding-copy" style="font-size: 32px; font-family: Helvetica, Arial, sans-serif; color: #333333;" align="center">Reply To Your Support Ticket</td>
+											<td class="padding-copy" style="font-size: 30px; font-family: Helvetica, Arial, sans-serif; color: #333333;" align="center">Ticket Merged And Reply Added</td>
 										</tr>
 										<tr>
 											<td class="padding-copy" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" align="left">Hello {client_name}:
 
-											An agent just replied to your ticket: <strong>{ticket_title}</strong>. Here is what they said on ticket # <strong>{ticket_id}</strong>:</td>
+											Your ticket: <strong>{ticket_title} </strong>with ticket # <strong>{ticket_id} </strong>has has other tickets merged into it.</td>
 											</tr>
 											<tr>
-												<td style="padding: 30px 0px 0px; text-align: left;" align="left">{message}</td>
-											</tr>
-											<tr>
-												<td class="padding-copy" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" align="left">To view the full ticket or add a rely, please click the button below.</td>
+												<td class="padding-copy" style="padding: 20px 0 0 0; font-size: 16px; line-height: 25px; font-family: Helvetica, Arial, sans-serif; color: #666666;" align="left">To view the merged ticket please click the button below</td>
 											</tr>
 											<tr>
 												<td align="center">
@@ -46,6 +43,18 @@
 								</td>
 							</tr>
 							<tr>
+								<td style="padding: 0px 0px 0px; text-align: center;"><u>Additional Options</u></td>
+							</tr>
+							<tr>
+								<td style="padding: 0px 0px 0px; text-align: center;"><a href="{click_to_view_url}">View ticket without logging in</a></td>
+							</tr>
+							<tr>
+								<td style="padding: 0px 0px 0px; text-align: center;"><a href="{click_to_close_url}">Close ticket with one click</a></td>
+							</tr>
+							<tr>
+								<td style="padding: 0px 0px 0px; text-align: center;">How did we do? <span style="color: #339966;"><a style="color: #339966;" href="{satisfaction_survey_close_ticket_with_thumbs_up_url}">Awesome! :)</a></span>   <span style="color: #ff0000;"><a style="color: #ff0000;" href="{satisfaction_survey_close_ticket_with_thumbs_down_url}">Not So Awesome :(</a></span></td>
+							</tr>							
+							<tr>
 								<td style="padding: 0px 0px 0px; text-align: center;">
 
 									<hr />
@@ -59,3 +68,8 @@
 		</tr>
 	</tbody>
 </table>
+Hi <strong><em>{client_name},</em></strong>
+
+The ticket (<a href="{ticket_admin_url}">#{ticket_id}</a>) has had replies from other tickets merged into it.
+
+If you believe that this has been done in error please log into your account on our site directly and respond to the ticket so an agent can address your concerns.
