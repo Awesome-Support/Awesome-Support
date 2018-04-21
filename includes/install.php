@@ -318,3 +318,15 @@ function wpas_ask_setup_wizard(){
 		<p><?php _e( 'If this is not the first time you are using Awesome Support then you should skip this process!' , 'awesome-support' ); ?></p>		
 	</div>	
 <?php }
+
+
+/**
+ * Install the default email templates. 
+ *
+ * Hook: init
+ * Hooked in awesomesupport.php
+ *
+ */
+function wpas_install_default_email_templates() {
+	wpas_install_email_template( 'blue_blocks' );
+}
