@@ -208,7 +208,7 @@ if ( isset( $message ) ) {
 			<td class="row-title"><label for="tablecell"><?php _e( 'Elegant With Satisfaction Survey Elements', 'awesome-support' ); ?></label></td>
 			<td>
 				<a href="<?php echo wpas_tool_link( 'install_elegant_ss_email_template' ); ?>" class="button-secondary"><?php _e( 'Install', 'awesome-support' ); ?></a>
-				<span class="wpas-system-tools-desc"><?php _e( 'Install the Elegant with Satisfaction Survey Elements email template set into the TICKETS->SETTINGS->EMAIL template fields', 'awesome-support' ); ?></span>
+				<span class="wpas-system-tools-desc"><?php _e( 'Install the Elegant email template set with Satisfaction Survey Elements into the TICKETS->SETTINGS->EMAIL template fields', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
 		
