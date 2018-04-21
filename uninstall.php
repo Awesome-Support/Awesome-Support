@@ -53,7 +53,7 @@ function wpas_uninstall() {
 		delete_option( 'wpas_dismiss_free_addon_page' );
 		delete_option( 'wpas_plugin_setup' );
 		delete_option( 'wpas_skip_wizard_setup' );
-		delete_option( 'wpas_setup_email_templates', );
+		delete_option( 'wpas_setup_email_templates' );
 
 		/* Delete the plugin pages.	 */
 		wp_delete_post( intval( $options['ticket_submit'] ), true );
