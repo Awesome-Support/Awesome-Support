@@ -63,7 +63,7 @@ if ( isset( $_GET['done'] ) ) {
 			break;
 	}
 	
-	do_action('wpas_show_done_tool_message',sanitize_text_field( $_GET['done'] ));
+	apply_filters('wpas_show_done_tool_message',$message, sanitize_text_field( $_GET['done'] ));
 
 }
 
