@@ -630,7 +630,7 @@ function wpas_reset_time_fields_to_zero() {
 	return $reset;	
 }
 
-function wpas_install_email_template( $template ) {
+function wpas_install_email_template( $template, $overwrite = true ) {
 	
 	$template_root_path = '';  // the file path to the folder containing the template set
 	
@@ -689,6 +689,15 @@ function wpas_install_email_template( $template ) {
 		$template_contents = file_get_contents( $template_file );
 
 			if ( ! empty( $template_contents ) ) {
+				
+				// Is there any existing value in the option?
+				$existing_contents = wpas_get_option( $key );
+				
+				if ( ! empty( $existing_contents ) && ! $overwrite ) {
+					// do not overwrite existing contents
+					continue ;
+				}
+				
 				wpas_update_option( $key, $template_contents, true ) ;
 			}
 			

@@ -328,8 +328,8 @@ function wpas_ask_setup_wizard(){
  *
  */
 function wpas_install_default_email_templates() {
-	if ( get_option( 'wpas_setup_email_templates' ) <> 'complete' ) {
-		wpas_install_email_template( 'blue_blocks' );
-		add_option( 'wpas_setup_email_templates', 'complete' );
-	}
+
+	wpas_install_email_template( 'blue_blocks', false );
+	add_option( 'wpas_setup_email_templates', 'complete' );
+
 }
