@@ -97,7 +97,6 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_confirmation',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{client_name}</em>,</strong></p><p>Your request (<a href="{ticket_url}">#{ticket_id}</a>) has been received, and is being reviewed by our support staff.</p><p>To add additional comments, follow the link below:</p><h2><a href="{ticket_url}">View Ticket</a></h2><p>or follow this link: {ticket_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* New assignment */
@@ -122,7 +121,6 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_assignment',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p><p>The request <strong>{ticket_title}</strong> (<a href="{ticket_admin_url}">#{ticket_id}</a>) has been assigned to you.</p><h2><a href="{ticket_admin_url}">View  Ticket</a></h2><p>or follow this link: {ticket_admin_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* New reply from agent */
@@ -147,7 +145,6 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_reply_agent',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{client_name}</em>,</strong></p><p>An agent just replied to your ticket "<strong>{ticket_title}</strong>" (<a href="{ticket_url}">#{ticket_id}</a>). To view his reply or add additional comments, click the button below:</p><h2><a href="{ticket_url}">View Ticket</a></h2><p>or follow this link: {ticket_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* New reply from client */
@@ -172,7 +169,6 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_reply_client',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p><p>A client you are in charge of just posted a new reply to his ticket "<strong>{ticket_title}</strong>".</p><h2><a href="{ticket_admin_url}">View  Ticket</a></h2><p>or follow this link: {ticket_admin_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* Ticket will close */
@@ -203,7 +199,6 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_closed',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{client_name},</em></strong></p>Your request (<a href="{ticket_url}">#{ticket_id}</a>) has been closed by <strong>{agent_name}</strong>.</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				array(
@@ -227,7 +222,6 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_closed_client',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p>The ticket (<a href="{ticket_admin_url}">#{ticket_id}</a>) has been closed by <strong>{client_name}</strong>.</p><p>Good job!</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 			)
