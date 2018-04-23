@@ -62,19 +62,19 @@ function wpas_register_account( $data ) {
 		exit;
 	}
 
-	if ( wpas_get_option( 'gdpr_notice_short_desc_01', false ) && ! isset( $data['wpas_gdpr01'] ) ) {
+	if ( wpas_get_option( 'gdpr_notice_short_desc_01', false ) && wpas_get_option( 'gdpr_notice_mandatory_01', true) && ! isset( $data['wpas_gdpr01'] ) ) {
 		wpas_add_error( 'accept_gdpr01_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 	
-	if ( wpas_get_option( 'gdpr_notice_short_desc_02', false ) && ! isset( $data['wpas_gdpr02'] ) ) {
+	if ( wpas_get_option( 'gdpr_notice_short_desc_02', false ) && wpas_get_option( 'gdpr_notice_mandatory_02', true)  && ! isset( $data['wpas_gdpr02'] ) ) {
 		wpas_add_error( 'accept_gdpr02_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 	
-	if ( wpas_get_option( 'gdpr_notice_short_desc_03', false ) && ! isset( $data['wpas_gdpr03'] ) ) {
+	if ( wpas_get_option( 'gdpr_notice_short_desc_03', false ) && wpas_get_option( 'gdpr_notice_mandatory_03', true)  && ! isset( $data['wpas_gdpr03'] ) ) {
 		wpas_add_error( 'accept_gdpr03_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;

@@ -113,6 +113,13 @@ function wpas_core_settings_registration( $def ) {
 					'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
+				array(
+                        'name'    => __( 'Mandatory', 'awesome-support' ),
+                        'id'      => "gdpr_notice_mandatory_01",
+                        'type'    => 'checkbox',
+                        'default' => true,
+                        'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+                ),				
 				
 				array(
 					'name' => __( 'GDPR Notice #2', 'awesome-support' ),
@@ -134,6 +141,14 @@ function wpas_core_settings_registration( $def ) {
 					'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
+				array(
+                        'name'    => __( 'Mandatory', 'awesome-support' ),
+                        'id'      => "gdpr_notice_mandatory_02",
+                        'type'    => 'checkbox',
+                        'default' => true,
+                        'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+                ),				
+				
 				
 				array(
 					'name' => __( 'GDPR Notice #3', 'awesome-support' ),
@@ -154,7 +169,15 @@ function wpas_core_settings_registration( $def ) {
 					'default'  => '',
 					'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),				
+				),
+				array(
+                        'name'    => __( 'Mandatory', 'awesome-support' ),
+                        'id'      => "gdpr_notice_mandatory_03",
+                        'type'    => 'checkbox',
+                        'default' => true,
+                        'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+                ),
+				
 				
 				array(
 					'name' => __( 'Terms & Conditions', 'awesome-support' ),
