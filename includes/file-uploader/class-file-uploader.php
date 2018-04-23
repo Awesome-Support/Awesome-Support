@@ -244,12 +244,26 @@ class WPAS_File_Upload {
 				wp_die( __( 'You are not allowed to view this attachment', 'awesome-support' ) );
 			}
 
+			$render_method = wpas_get_option( 'attachment_render_method', 'inline');  // returns 'inline' or 'attachment'.
 			$filename = basename( $attachment->guid );
 
 			ini_set( 'user_agent', 'Awesome Support/' . WPAS_VERSION . '; ' . get_bloginfo( 'url' ) );
 			header( "Content-Type: $attachment->post_mime_type" );
-			header( "Content-Disposition: inline; filename=\"$filename\"" );
-			readfile( $attachment->guid );
+			header( "Content-Disposition: $render_method; filename=\"$filename\"" );
+			
+			switch ($render_method) {
+				case 'inline':
+					readfile( $attachment->guid );
+					break ;
+					
+				case 'attachment':
+					echo readfile( $_SERVER['DOCUMENT_ROOT'] . parse_url($attachment->guid, PHP_URL_PATH) );
+					break ;
+					
+				default:
+					readfile( $attachment->guid );
+					break ;				
+			};
 
 			die();
 
