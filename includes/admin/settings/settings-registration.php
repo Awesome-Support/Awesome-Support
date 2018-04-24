@@ -119,6 +119,13 @@ function wpas_core_settings_registration( $def ) {
                         'type'    => 'checkbox',
                         'default' => true,
                         'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+                ),
+				array(
+                        'name'    => __( 'Can Opt Out', 'awesome-support' ),
+                        'id'      => "gdpr_notice_opt_out_ok_01",
+                        'type'    => 'checkbox',
+                        'default' => false,
+                        'desc'    => __( 'Is this an option that the user can opt-out from after granting consent?', 'awesome-support' )
                 ),				
 				
 				array(
@@ -147,7 +154,14 @@ function wpas_core_settings_registration( $def ) {
                         'type'    => 'checkbox',
                         'default' => true,
                         'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
-                ),				
+                ),
+				array(
+                        'name'    => __( 'Can Opt Out', 'awesome-support' ),
+                        'id'      => "gdpr_notice_opt_out_ok_02",
+                        'type'    => 'checkbox',
+                        'default' => false,
+                        'desc'    => __( 'Is this an option that the user can opt-out from after granting consent?', 'awesome-support' )
+                ),								
 				
 				
 				array(
@@ -177,6 +191,13 @@ function wpas_core_settings_registration( $def ) {
                         'default' => true,
                         'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
                 ),
+				array(
+                        'name'    => __( 'Can Opt Out', 'awesome-support' ),
+                        'id'      => "gdpr_notice_opt_out_ok_03",
+                        'type'    => 'checkbox',
+                        'default' => false,
+                        'desc'    => __( 'Is this an option that the user can opt-out from after granting consent?', 'awesome-support' )
+                ),								
 				
 				
 				array(
