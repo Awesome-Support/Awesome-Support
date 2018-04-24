@@ -385,7 +385,15 @@ function wpas_get_priority_options() {
 			'type'    => 'checkbox',
 			'desc'    => __( 'Would you like to show the field in the ticket listing?', 'awesome-support' ),
 			'default' => false
-		)		
+		),
+		
+		array(
+			'name'    => __( 'Color-code Ticket Header?', 'awesome-support' ),
+			'id'      => 'support_priority_color_code_ticket_header',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Checking this box will color the top border of the opening post to match the priority color', 'awesome-support' ),
+			'default' => false
+		),				
 		
 	);
 		

@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           4.3.5
+ * Version:           5.1.1
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -192,17 +192,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 				if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
-					/**
-					 * Redirect to about page.
-					 *
-					 * We don't use the 'was_setup' option for the redirection as
-					 * if the install fails the first time this will create a redirect loop
-					 * on the about page.
-					 */
-					if ( true === boolval( get_option( 'wpas_redirect_about', false ) ) ) {
-						add_action( 'init', array( self::$instance, 'redirect_to_about' ) );
-					}
-
 					add_action( 'plugins_loaded', array( 'WPAS_Upgrade', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Tickets_List', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
@@ -257,7 +246,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '4.3.5' );
+			define( 'WPAS_VERSION',           '5.1.1' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -386,19 +375,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		}
 
 		/**
-		 * Redirect to about page.
-		 *
-		 * Redirect the user to the about page after plugin activation.
-		 *
-		 * @return void
-		 */
-		public function redirect_to_about() {
-			delete_option( 'wpas_redirect_about' );
-			wp_redirect( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
-			exit;
-		}
-
-		/**
 		 * Include all files used sitewide
 		 *
 		 * @since 3.2.5
@@ -476,7 +452,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/functions-admin-ticket-detail-toolbars.php' );
 			
 			if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
-				require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
+				if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
+					require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
+				}
 			}			
 
 			// We don't need all this during Ajax processing
@@ -494,6 +472,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/functions-agent-chat.php' );				
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
+				require( WPAS_PATH . 'includes/admin/class-as-admin-setup-wizard.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-help.php' );
 				require( WPAS_PATH . 'includes/admin/upgrade/class-upgrade.php' );
@@ -531,25 +510,17 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
 				add_action( 'admin_init', 'wpas_create_pages', 11, 0 );
 				add_action( 'admin_init', 'wpas_flush_rewrite_rules', 11, 0 );
+				add_action( 'admin_init', 'wpas_install_default_email_templates', 11, 0 );
 			}
 
 			/**
-			 * Ask for products support.
-			 *
-			 * Still part of the installation process. Ask the user
-			 * if he is going to support multiple products or only one.
-			 * It is important to use the built-in taxonomy for multiple products
-			 * support as it is used by multiple addons.
-			 *
-			 * However, if the products support is already enabled, it means that this is not
-			 * the first activation of the plugin and products support was previously enabled
-			 * (products support is disabled by default). In this case we don't ask again.
+			 * Ask for setup plugin using Setup wizard.
+			 * Proceed only if both 'wpas_plugin_setup' & 'wpas_skip_wizard_setup' = false
+			 * 'wpas_plugin_setup' will be added at the end of wizard steps
+			 * 'wpas_skip_wizard_setup' will be set to true if user choose to skip wizrd from admin notice
 			 */
-			if ( 'pending' === get_option( 'wpas_support_products' ) ) {
-			    if ( 'wpas-about' !== filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) ) {
-					add_action( 'admin_notices', 'wpas_ask_support_products' );
-				}
-
+			if ( ! get_option( 'wpas_plugin_setup', false ) && ! get_option( 'wpas_skip_wizard_setup', false ) ) {
+				add_action( 'admin_notices', 'wpas_ask_setup_wizard', 1 );
 			}
 
 		}
@@ -611,8 +582,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		public function remote_notifications() {
-			if ( is_admin() && function_exists( 'rdnc_add_notification' ) && ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) ) {
-				rdnc_add_notification( 89, '01710ef695c7a7fa', 'https://getawesomesupport.com' );
+			if ( wpas_is_asadmin() && function_exists( 'rdnc_add_notification' ) && ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) ) {
+				rdnc_add_notification( 2, '77a8b884c6e778b4', 'https://notifications.getawesomesupport.com' );
 			}
 		}
 		
@@ -657,7 +628,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return text the notice text to be shown to the user
 		 */		
 		function awesome_support_tracking_notification_text( $notice_text ) {
-			$notice_text = __( 'Would you like a discount on your next Awesome Support purchase?  Help us make a better product for you by allowing us to collect some anonymous statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
+			$notice_text = __( '<b>Would you like a discount on your next Awesome Support purchase?</b>  Help us make a better product for you by allowing us to collect some system statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
 			return $notice_text;
 		}
 		

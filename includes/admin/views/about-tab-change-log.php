@@ -1,4 +1,8 @@
-
+<h1>Maintenance and Security Releases</h1>
+<p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
+<p><b>Version 5.1.1</b> Fixes a remote notification issue that left a blank strip across the top of the admin panel with no way to turn it off, added some GDPR related license disclosures and tweaked an internal filter. </p>
+<p><b>Version 5.1.0</b> Introduced a new on-boarding process wizard so that new users can get started quickly and added an option for the admin to set a default role for new users who register using our standard registration form. </p>
+<hr />
 <div class="changelog">
 	<div class="row">
 		<div>

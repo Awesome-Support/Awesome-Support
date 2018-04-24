@@ -158,7 +158,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 	if( ! is_array( $ticket_list ) ) { $ticket_list = (array) $ticket_list; }
 	if( ! is_array( $ticket_submit ) ) { $ticket_submit = (array) $ticket_submit; }
 
-	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'wpas_unassigned_mail', 'wpas_mailbox_config', 'wpas_inbox_rules', 'faq', 'wpas_gadget', 'ruleset', 'trackedtimes', 'wpas_sla', 'wpas_issue_tracking' ) );
+	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'wpas_unassigned_mail', 'wpas_mailbox_config', 'wpas_inbox_rules', 'faq', 'wpas_gadget', 'as_security_profile', 'ruleset', 'trackedtimes', 'wpas_sla', 'wpas_issue_tracking', 'wpas_company_profile' ) );
 	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
 	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
@@ -1308,7 +1308,7 @@ function wpas_is_support_priority_active() {
  * @return boolean
  */
  function wpas_is_asadmin() {
-	return ( current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
+	return ( is_super_admin() || current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
  }
  
  /**

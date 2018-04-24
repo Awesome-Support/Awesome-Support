@@ -113,6 +113,13 @@ function wpas_core_settings_registration( $def ) {
 					'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
+				array(
+                        'name'    => __( 'Mandatory', 'awesome-support' ),
+                        'id'      => "gdpr_notice_mandatory_01",
+                        'type'    => 'checkbox',
+                        'default' => true,
+                        'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+                ),				
 				
 				array(
 					'name' => __( 'GDPR Notice #2', 'awesome-support' ),
@@ -134,6 +141,14 @@ function wpas_core_settings_registration( $def ) {
 					'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
+				array(
+                        'name'    => __( 'Mandatory', 'awesome-support' ),
+                        'id'      => "gdpr_notice_mandatory_02",
+                        'type'    => 'checkbox',
+                        'default' => true,
+                        'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+                ),				
+				
 				
 				array(
 					'name' => __( 'GDPR Notice #3', 'awesome-support' ),
@@ -154,7 +169,15 @@ function wpas_core_settings_registration( $def ) {
 					'default'  => '',
 					'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),				
+				),
+				array(
+                        'name'    => __( 'Mandatory', 'awesome-support' ),
+                        'id'      => "gdpr_notice_mandatory_03",
+                        'type'    => 'checkbox',
+                        'default' => true,
+                        'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+                ),
+				
 				
 				array(
 					'name' => __( 'Terms & Conditions', 'awesome-support' ),
@@ -167,6 +190,18 @@ function wpas_core_settings_registration( $def ) {
 					'default'  => '',
 					'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'awesome-support' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
+				),
+
+				array(
+					'name' => __( 'Other', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Default Role For New Users', 'awesome-support' ),
+					'id'      => 'new_user_role',
+					'type'    => 'text',
+					'desc'    => __( 'The role should be the internal WordPress role id such as wpas_user and is case sensitive.  Do not leave this blank!  This role should have the 5 core Awesome Support capabilities in order for users to be able to submit tickets. Check our documentation for more information.', 'awesome-support' ),
+					'default' => 'wpas_user'
 				),
 
 			)
