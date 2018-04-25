@@ -747,7 +747,7 @@ class WPAS_Custom_Fields {
 		if ( empty( $data ) && ! empty( $_POST ) ) {
 			$data = $_POST;
 		}
-
+		
 		$result = $this->is_field_missing( $data );
 
 		return false === $result ? true : $result;
@@ -785,9 +785,14 @@ class WPAS_Custom_Fields {
 			$field_name = $custom_field->get_field_id();
 
 			if ( true === $field['args']['required'] && false === $field['args']['core'] ) {
+				
+				if( 'upload' === $field['args']['field_type'] && isset( $_FILES[ $field_name ] ) && !empty( $_FILES[ $field_name ] )  ) {
+						$data[ $field_name ] = $_FILES[ $field_name ];
+				}
+				
 
 				if ( ! isset( $data[ $field_name ] ) || empty( $data[ $field_name ] ) ) {
-
+					
 					/* Get field title */
 					$title = ! empty( $field['args']['title'] ) ? $field['args']['title'] : wpas_get_title_from_id( $field['name'] );
 
