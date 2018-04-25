@@ -785,12 +785,16 @@ class WPAS_Custom_Fields {
 			$field_name = $custom_field->get_field_id();
 
 			if ( true === $field['args']['required'] && false === $field['args']['core'] ) {
-				
+
+				/* This if code-block handles the situation where an upload field is mandatory.  Without this block, if the field is mandatory and a file upload */
+				/* we would not see that the filed had been uploaded because the data is stored in a file and not in an actual field. So we set the contents of  */
+				/* the custom field here to the name of the file that was uploaded. 																			 */
+				/* @TODO:  It is possible that this should be handled earlier in the custom fields process? 													 */
 				if( 'upload' === $field['args']['field_type'] && isset( $_FILES[ $field_name ] ) && !empty( $_FILES[ $field_name ] )  ) {
 						$data[ $field_name ] = $_FILES[ $field_name ];
 				}
-				
 
+				/* Set error message if field is mandatory but no data is in the field. */
 				if ( ! isset( $data[ $field_name ] ) || empty( $data[ $field_name ] ) ) {
 					
 					/* Get field title */
