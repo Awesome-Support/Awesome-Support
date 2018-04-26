@@ -705,9 +705,9 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 		}
 	}
 
-	$reply = get_post( $reply_id );
+	$original_reply = get_post( $reply_id );
 
-	if ( is_null( $reply ) ) {
+	if ( is_null( $original_reply ) ) {
 		return false;
 	}
 
@@ -717,12 +717,12 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 		'post_status'    => 'read',
 		'comment_status' => 'closed',
 		'ping_status'    => 'closed',
-		'post_date'      => $reply->post_date,
-		'post_date_gmt'  => $reply->post_date_gmt,
-		'post_name'      => $reply->post_name,
-		'post_parent'    => $reply->post_parent,
-		'post_type'      => $reply->post_type,
-		'post_author'    => $reply->post_author,
+		'post_date'      => $original_reply->post_date,
+		'post_date_gmt'  => $original_reply->post_date_gmt,
+		'post_name'      => $original_reply->post_name,
+		'post_parent'    => $original_reply->post_parent,
+		'post_type'      => $original_reply->post_type,
+		'post_author'    => $original_reply->post_author,
 		), $reply_id
 	);
 
@@ -733,7 +733,7 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 		return $edited;
 	}
 
-	do_action( 'wpas_reply_edited', $reply_id );
+	do_action( 'wpas_reply_edited', $reply_id, $original_reply );
 
 	return $reply_id;
 

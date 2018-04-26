@@ -1475,7 +1475,7 @@ function wpas_get_current_user_roles() {
 		 return false ;
 	 }
 	 
-	$current_roles = wpas_get_current_user_roles();  // note that we are expect an array of roles.
+	$current_roles = wpas_get_current_user_roles();  // note that we are expecting an array of roles.
 	
 	if ( empty( $current_roles ) ) return false ;  // user not logged in for some reason so return false ;
 	
