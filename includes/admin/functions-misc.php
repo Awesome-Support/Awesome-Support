@@ -95,7 +95,6 @@ add_filter( 'wpas_ticket_reply_controls', 'wpas_ticket_reply_controls', 10, 3 );
  */
 function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 
-	//if ( 0 !== $ticket_id && get_current_user_id() == $reply->post_author ) {
 	if ( 0 !== $ticket_id ) {
 
 		// Create a delete link and then add the delete reply icon.
