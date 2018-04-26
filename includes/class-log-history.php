@@ -1,4 +1,35 @@
 <?php
+/**
+ * Awesome Support Log History
+ *
+ * @package   Awesome Support
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
+ * @license   GPL-2.0+
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2018 AwesomeSupport
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Class WPAS_Log_History
+ *
+ * This class is used to log changes to custom fields to the ticket_history CPT.
+ * It can log a single string or it can log a series of before and after changes 
+ * inside the custom fields array object.
+ *
+ * The structure of this is interesting in that the 2nd parameter of the constructor
+ * function can be a string or an array.  When its an string, its the contents 
+ * that should be written directly to the CPT.  But when it is an array,
+ * it is NOT the contents that need to be logged - instead when an array is passed, 
+ * changes to the custom fields object is logged and this array parm is used as 
+ * additional information to be added to the log.
+ *
+ * @since 3.3
+ */
 class WPAS_Log_History {
 
 	/**
@@ -15,6 +46,21 @@ class WPAS_Log_History {
 	 */
 	private $contents = '';
 
+	
+	/**
+	 * WPAS_Log_History Constructor 
+	 *
+	 * This function can handle EITHER a string or 
+	 * an array which will be used when logging custom
+	 * fields changes.
+	 *
+	 * @since 3.3
+	 *
+	 * @param int 			Postid related to the item being logged (usually a ticket id)
+	 * @param string|array	A simple string or an array with information to be included when logging custom field changes.
+	 *
+	 * @return void
+	 */		
 	public function __construct( $post_id = null, $contents = '' ) {
 
 		if ( is_null( $post_id ) || empty( $contents ) ) {
@@ -28,6 +74,15 @@ class WPAS_Log_History {
 
 	}
 
+	/**
+	 * Create a log string out of a custom fields array
+	 *
+	 * @since 3.3
+	 *
+	 * @param void
+	 *
+	 * @return string
+	 */
 	public function create_log() {
 
 		$content = '';
@@ -107,6 +162,19 @@ class WPAS_Log_History {
 
 	}
 
+	/**
+	 * Create a history log entry.
+	 *
+	 * This function can handle either a string or 
+	 * the custom fields object (by calling the 
+	 * $this->create_log() function above)
+	 *
+	 * @since 3.3
+	 *
+	 * @param void
+	 *
+	 * @return boolean|int  ID of log entry in ticket_history CPT or false if unsucessful
+	 */	
 	public function log() {
 
 		/**
@@ -117,13 +185,17 @@ class WPAS_Log_History {
 		$user_id = $current_user->ID;
 
 		if ( is_array( $this->contents ) ) {
+			
 			/**
 			 * If the content is an array we need to build a complex
 			 * content based on custom fields.
 			 */
 			$content = $this->create_log();
+			
 		} else {
+			
 			$content = wp_kses( $this->contents, wp_kses_allowed_html( 'post' ) );
+			
 		}
 
 		if( '' === $content ) {
@@ -155,6 +227,20 @@ class WPAS_Log_History {
 	}
 
 }
+
+/**
+ * Helper function to create a log history entry.
+ *
+ * This function can be called from anywhere inside
+ * Awesome Support.
+ *
+ * @since 3.3
+ *
+ * @param int 			Postid related to the item being logged (usually a ticket id)
+ * @param string|array	A simple string or an array with information to be included when logging custom field changes.
+ *
+ * @return boolean|int  ID of log entry in ticket_history CPT or False if unsucessful
+ */	
 
 function wpas_log( $post_id = null, $content = '' ) {
 
