@@ -18,6 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Class WPAS_Log_History
  *
  * This class is used to log changes to custom fields to the ticket_history CPT.
+ * 
  * It can log a single string or it can log a series of before and after changes 
  * inside the custom fields array object.
  *
