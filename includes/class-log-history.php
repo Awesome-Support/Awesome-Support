@@ -253,3 +253,15 @@ function wpas_log( $post_id = null, $content = '' ) {
 
 	return $log;
 }
+
+/**
+ * Alias function for wpas_log().  Once all the occurences of wpas_log 
+ * has been changed in core and all addons to wpas_log_history() 
+ * we will delete this function and renam wpas_log() to wpas_log_history().
+ *
+ * wpas_log() as a function name is just too generic given the different
+ * types of logs that exist inside of Awesome Support.
+ */
+function wpas_log_history( $post_id = null, $content = '' ) {
+	return wpas_log( $post_id = null, $content = '' );
+}
