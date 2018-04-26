@@ -687,6 +687,16 @@ function wpas_new_reply_submission( $data ) {
 
 }
 
+/**
+ * Update a reply with its edited version
+ *
+ * @since 3.3.0
+ *
+ * @param $int	$reply_id 		- the id of the reply being edited.
+ * @param array $content		- the new content.  If blank, the function will attempt to pull the new content from $_POST.
+ *
+ * @return void
+ */
 function wpas_edit_reply( $reply_id = null, $content = '' ) {
 
 	if ( is_null( $reply_id ) ) {
@@ -739,6 +749,43 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 
 }
 
+add_action( 'wpas_reply_edited', 'wpas_log_reply_edits', 10,2 );
+/**
+ * Log the original contents of a reply after it is edited.
+ *
+ * Action hook: wpas_reply_edited
+ *
+ * @since 5.2.0
+ *
+ * @param $int	$reply_id 		- the id of the reply being edited.
+ * @param array $original_reply	- the original post before the edit reply was added to the database
+ *
+ * @TODO: Somehow this hook is getting called three times for every edit when the logging level is LOW.  3 entries end up in the log for every single edit.
+ *
+ * @return void
+ */
+function wpas_log_reply_edits( $reply_id, $original_reply ) {
+	
+	/* Do we log a summary or detail that includes the original content? */
+	if ( 'low' === wpas_get_option( 'log_content_edit_level', 'low' ) ) {
+		$reply_contents_to_log = '' ;
+	} else {
+		$reply_contents_to_log = $original_reply->post_content ;
+	}
+	
+	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%s was edited', 'awesome-support' ), (string) $reply_id ), $reply_contents_to_log );
+	
+}
+
+/**
+ * Mark a reply as read
+ *
+ * @since 3.3.0
+ *
+ * @param $int	$reply_id 		- the id of the reply being marked as read.
+ *
+ * @return void
+ */
 function wpas_mark_reply_read( $reply_id = null ) {
 
 	if ( is_null( $reply_id ) ) {

@@ -376,7 +376,8 @@ function wpas_delete_ticket_dependencies( $post_id ) {
 		'post_parent'            => $post_id,
 		'post_type'              => apply_filters( 'wpas_replies_post_type', array(
 			'ticket_history',
-			'ticket_reply'
+			'ticket_reply',
+			'ticket_log'
 		) ),
 		'post_status'            => 'any',
 		'posts_per_page'         => - 1,

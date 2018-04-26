@@ -446,7 +446,16 @@ function wpas_get_editing_history_options() {
 			'type'    => 'text',
 			'desc'    => __( 'Enter a comma separated list of roles that should be able to delete any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
 			'default' => '',
-		),
+		),	
+		array(
+			'name'    => __( 'Log content edits', 'awesome-support' ),
+			'id'      => 'log_content_edit_level',
+			'type'    => 'radio',
+			'desc'    => __( 'What level should edits to ticket content and replies be logged?', 'awesome-support' ),
+			'options' => array( 'low' => __( 'Low - only logs whether the ticket or reply was edited. This prevents additional sensitive data from being stored in the log when the intention is to edit out sensitive information.', 'awesome-support' ), 
+								'high' => __( 'High - log the original contents before the reply was edited so that a full history could be maintained', 'awesome-support' ) ),
+			'default' => 'low'
+		),		
 		
 	);
 		
