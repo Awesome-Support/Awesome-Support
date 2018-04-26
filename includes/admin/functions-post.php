@@ -89,7 +89,7 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 			$data['post_status'] = $_POST['post_status_override'];
 
 			if ( isset($postarr['original_post_status']) && $postarr['original_post_status'] !== $_POST['post_status_override'] && isset( $_POST['wpas_post_parent'] ) ) {
-				wpas_log( intval( $_POST['wpas_post_parent'] ), sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), '&laquo;' . $status[ $_POST['post_status_override'] ] . '&raquo;' ) );
+				wpas_log_history( intval( $_POST['wpas_post_parent'] ), sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), '&laquo;' . $status[ $_POST['post_status_override'] ] . '&raquo;' ) );
 			}
 		}
 
@@ -272,7 +272,7 @@ function wpas_save_ticket( $post_id ) {
 
 	/* Log the action */
 	if ( ! empty( $log ) ) {
-		wpas_log( $post_id, $log );
+		wpas_log_history( $post_id, $log );
 	}
 
 	/* If this was a ticket update, we need to fire some action hooks and then figure out where to go next... */

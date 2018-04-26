@@ -1218,7 +1218,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 		);
 	}
 
-	wpas_log( $ticket_id, $log );
+	wpas_log_history( $ticket_id, $log );
 
 	/**
 	 * wpas_ticket_assigned hook
@@ -1331,7 +1331,7 @@ function wpas_update_ticket_status( $post_id, $status ) {
 	$updated = wp_update_post( $my_post );
 
 	if ( 0 !== intval( $updated ) ) {
-		wpas_log( $post_id, sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), $custom_status[$status] ) );
+		wpas_log_history( $post_id, sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), $custom_status[$status] ) );
 	}
 
 	/**
@@ -1386,7 +1386,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 		$agent->ticket_minus();
 
 		/* Log the action */
-		wpas_log( $ticket_id, __( 'The ticket was closed.', 'awesome-support' ) );
+		wpas_log_history( $ticket_id, __( 'The ticket was closed.', 'awesome-support' ) );
 
 		/**
 		 * wpas_after_close_ticket hook
@@ -1453,7 +1453,7 @@ function wpas_reopen_ticket( $ticket_id ) {
 	$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
 
 	/* Log the action */
-	wpas_log( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
+	wpas_log_history( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
 
 	/**
 	 * wpas_after_reopen_ticket hook

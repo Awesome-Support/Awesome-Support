@@ -263,5 +263,5 @@ function wpas_log( $post_id = null, $content = '' ) {
  * types of logs that exist inside of Awesome Support.
  */
 function wpas_log_history( $post_id = null, $content = '' ) {
-	return wpas_log( $post_id = null, $content = '' );
+	return wpas_log( $post_id , $content );
 }

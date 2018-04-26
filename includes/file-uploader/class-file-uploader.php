@@ -816,7 +816,7 @@ class WPAS_File_Upload {
 				$log .= $error . '<br/>';
 			}
 
-			wpas_log( $this->parent_id ? $this->parent_id : $post_id, $log );
+			wpas_log_history( $this->parent_id ? $this->parent_id : $post_id, $log );
 
 		}
 
