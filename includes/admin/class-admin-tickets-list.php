@@ -1147,7 +1147,7 @@ SQL;
 					$selected_value = filter_input( INPUT_GET, 'helpdesk_id', FILTER_SANITIZE_STRING );
 				}
 				$saas_id_label = wpas_get_option( 'importer_id_label', 'Help Desk SaaS Ticket ID');
-				echo '<input type="text" placeholder='.$saas_id_label.'" name="helpdesk_id" id="helpdesk_id" value="' . $selected_value . '" />';
+				echo '<input type="text" placeholder="'.$saas_id_label.'" name="helpdesk_id" id="helpdesk_id" value="' . $selected_value . '" />';
 			}
 		}
 
