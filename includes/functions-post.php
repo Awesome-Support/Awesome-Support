@@ -777,7 +777,7 @@ function wpas_log_reply_edits( $reply_id, $original_reply ) {
 		$reply_contents_to_log = $original_reply->post_content ;
 	}
 	
-	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%s was edited.', 'awesome-support' ), (string) $reply_id ), $reply_contents_to_log );
+	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%s located on ticket #%s was edited.', 'awesome-support' ), (string) $reply_id, (string) $original_reply->post_parent ), $reply_contents_to_log );
 	
 }
 
