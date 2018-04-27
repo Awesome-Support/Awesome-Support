@@ -1759,3 +1759,29 @@ function wpas_show_reply_edited_msg( $reply_id ) {
 	}
 	
 }
+
+add_action( 'wpas_backend_ticket_content_after', 'wpas_show_reply_deleted_msg', 10, 2 );
+/**
+ * Show whether a ticket reply has been deleted.
+ *
+ * Because the reply is deleted, we have to show the message on the opening ticket post.
+ *
+ * Action hook: wpas_backend_ticket_content_after
+ * 				Hook located in metaboxes/message.php.
+ *
+ * @since 5.2.0
+ *
+ * @param string $ticket_id - id of ticket being processed.
+ * @param array  $ticket 	- post object of ticket being processed.
+ *
+ * @return void
+ */
+function wpas_show_reply_deleted_msg( $ticket_id, $ticket ) {
+	
+	$post = get_post_meta( $ticket_id, 'wpas_reply_was_deleted' ) ;
+
+	if ( (int) $post > 0  ) {
+		echo '<br />' . '<div class="wpas_footer_note">' . __('* This ticket has had replies deleted from it.  See the logs for a full history of edits.', 'awesome-support') . '</div>' ;
+	}
+	
+}
