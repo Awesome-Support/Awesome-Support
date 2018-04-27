@@ -1127,6 +1127,7 @@ SQL;
 
 		echo wpas_dropdown( $client_atts, "<option value='" . $selected_value . "'>" . $selected . "</option>" );
 
+		echo '<div style="clear:both;"></div>';
 
 		/* TICKET ID */
 		$selected_value = '';
@@ -1135,6 +1136,20 @@ SQL;
 		}
 
 		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . $selected_value . '" />';
+
+		$show_saas_id = boolval( wpas_get_option( 'importer_id_enable', false) );
+		if ($show_saas_id) {
+			$show_saas_id_in_list = boolval( wpas_get_option( 'importer_id_show_in_tkt_list', false) );
+			if ($show_saas_id_in_list) {
+				/* HELP DESK TICKET ID */
+				$selected_value = '';
+				if ( isset( $_GET[ 'helpdesk_id' ] ) && ! empty( $_GET[ 'helpdesk_id' ] ) ) {
+					$selected_value = filter_input( INPUT_GET, 'helpdesk_id', FILTER_SANITIZE_STRING );
+				}
+				$saas_id_label = wpas_get_option( 'importer_id_label', 'Help Desk SaaS Ticket ID');
+				echo '<input type="text" placeholder='.$saas_id_label.'" name="helpdesk_id" id="helpdesk_id" value="' . $selected_value . '" />';
+			}
+		}
 
 		echo '<div style="clear:both;"></div>';
 
@@ -1297,7 +1312,18 @@ SQL;
 
 		}
 
+		if ( isset( $_GET[ 'helpdesk_id' ] ) && ! empty( $_GET[ 'helpdesk_id' ] ) ) {
 
+			$helpdeskId = (int) $_GET[ 'helpdesk_id' ];
+			
+			$meta_query[] = array(
+				'key'     => '_wpas_help_desk_ticket_id',
+				'value'   => (string)$helpdeskId,
+				'compare' => '=',
+				'type'    => 'CHAR',
+			);
+		}
+		
 		$wpas_activity = isset( $_GET[ 'activity' ] ) && ! empty( $_GET[ 'activity' ] ) ? $_GET[ 'activity' ] : 'any';
 
 			if( 'awaiting_support_reply' === $wpas_activity ) {
