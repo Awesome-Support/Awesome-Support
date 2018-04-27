@@ -687,6 +687,16 @@ function wpas_new_reply_submission( $data ) {
 
 }
 
+/**
+ * Update a reply with its edited version
+ *
+ * @since 3.3.0
+ *
+ * @param $int	$reply_id 		- the id of the reply being edited.
+ * @param array $content		- the new content.  If blank, the function will attempt to pull the new content from $_POST.
+ *
+ * @return void
+ */
 function wpas_edit_reply( $reply_id = null, $content = '' ) {
 
 	if ( is_null( $reply_id ) ) {
@@ -732,13 +742,54 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 		do_action( 'wpas_edit_reply_failed', $reply_id, $content, $edited );
 		return $edited;
 	}
+	
+	/* Add a flag to the reply that shows it was edited */
+	update_post_meta( $edited, 'wpas_reply_was_edited', '1' ) ;
 
+	/* Fire the after-edit action hook */
 	do_action( 'wpas_reply_edited', $reply_id, $original_reply );
 
 	return $reply_id;
 
 }
 
+add_action( 'wpas_reply_edited', 'wpas_log_reply_edits', 10,2 );
+/**
+ * Log the original contents of a reply after it is edited.
+ *
+ * Action hook: wpas_reply_edited
+ *
+ * @since 5.2.0
+ *
+ * @param $int	$reply_id 		- the id of the reply being edited.
+ * @param array $original_reply	- the original post before the edit reply was added to the database
+ *
+ * @TODO: Somehow this hook is getting called three times for every edit when the logging level is LOW.  3 entries end up in the log for every single edit.
+ *
+ * @return void
+ */
+function wpas_log_reply_edits( $reply_id, $original_reply ) {
+	
+	/* Do we log a summary or detail that includes the original content? */
+	if ( 'low' === wpas_get_option( 'log_content_edit_level', 'low' ) ) {
+		$reply_contents_to_log = '' ;
+	} else {
+		$reply_contents_to_log = $original_reply->post_content ;
+	}
+	
+	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%s located on ticket #%s was edited.', 'awesome-support' ), (string) $reply_id, (string) $original_reply->post_parent ), $reply_contents_to_log );
+	
+}
+
+/**
+ * Mark a reply as read
+ *
+ * @since 3.3.0
+ *
+ * @param $int	$reply_id 		- the id of the reply being marked as read.
+ *
+ * @return void
+ */
 function wpas_mark_reply_read( $reply_id = null ) {
 
 	if ( is_null( $reply_id ) ) {
@@ -1218,7 +1269,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 		);
 	}
 
-	wpas_log( $ticket_id, $log );
+	wpas_log_history( $ticket_id, $log );
 
 	/**
 	 * wpas_ticket_assigned hook
@@ -1331,7 +1382,7 @@ function wpas_update_ticket_status( $post_id, $status ) {
 	$updated = wp_update_post( $my_post );
 
 	if ( 0 !== intval( $updated ) ) {
-		wpas_log( $post_id, sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), $custom_status[$status] ) );
+		wpas_log_history( $post_id, sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), $custom_status[$status] ) );
 	}
 
 	/**
@@ -1386,7 +1437,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 		$agent->ticket_minus();
 
 		/* Log the action */
-		wpas_log( $ticket_id, __( 'The ticket was closed.', 'awesome-support' ) );
+		wpas_log_history( $ticket_id, __( 'The ticket was closed.', 'awesome-support' ) );
 
 		/**
 		 * wpas_after_close_ticket hook
@@ -1453,7 +1504,7 @@ function wpas_reopen_ticket( $ticket_id ) {
 	$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
 
 	/* Log the action */
-	wpas_log( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
+	wpas_log_history( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
 
 	/**
 	 * wpas_after_reopen_ticket hook
@@ -1683,4 +1734,54 @@ function wpas_get_ticket_replies_ajax() {
 	echo json_encode( $output );
 	die();
 
+}
+
+
+add_action( 'wpas_backend_reply_content_after', 'wpas_show_reply_edited_msg', 10, 1 );
+/**
+ * Show whether a ticket reply has been edited or not.
+ *
+ * Action hook: wpas_backend_reply_content_after
+ * 				Hook located in metaboxes/replies-published.php.
+ *
+ * @since 5.2.0
+ *
+ * @param string $reply_id - postid of reply being processed.
+ *
+ * @return void
+ */
+function wpas_show_reply_edited_msg( $reply_id ) {
+	
+	$edited = get_post_meta( $reply_id, 'wpas_reply_was_edited' ) ;
+
+	if ( (int) $edited > 0  ) {
+		echo '<br />' . '<div class="wpas_footer_note">' . __('* This reply has been edited.  See the logs for a full history of edits.', 'awesome-support') . '</div>' ;
+	}
+	
+}
+
+add_action( 'wpas_backend_ticket_content_after', 'wpas_show_reply_deleted_msg', 10, 2 );
+/**
+ * Show whether a ticket reply has been deleted.
+ *
+ * Because the reply is deleted, we have to show the message on the opening ticket post.
+ *
+ * Action hook: wpas_backend_ticket_content_after
+ * 				Hook located in metaboxes/message.php.
+ *
+ * @since 5.2.0
+ *
+ * @param string $ticket_id - id of ticket being processed.
+ * @param array  $ticket 	- post object of ticket being processed.
+ *
+ * @return void
+ */
+function wpas_show_reply_deleted_msg( $ticket_id, $ticket ) {
+	
+	$post = get_post_meta( $ticket_id, 'wpas_reply_was_deleted' ) ;
+
+	if ( (int) $post > 0  ) {
+		echo '<br />' . '<div class="wpas_footer_note">' . __('* This ticket has had replies deleted from it.  See the logs for a full history of edits.', 'awesome-support') . '</div>' ;
+	}
+	
 }

@@ -684,7 +684,7 @@ class WPAS_Custom_Fields {
 		 * Log the changes if any.
 		 */
 		if ( ! empty( $log ) ) {
-			wpas_log( $post_id, $log );
+			wpas_log_history( $post_id, $log );
 		}
 
 		/**
