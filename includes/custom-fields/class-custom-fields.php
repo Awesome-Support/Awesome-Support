@@ -349,7 +349,7 @@ class WPAS_Custom_Fields {
 
 		$fields = $this->get_custom_fields();
 		$fields = $this->sort_custom_fields( $fields ) ;		
-
+		
 		if ( ! empty( $fields ) ) {
 
 			// If we're painting the custom fields on the front-end wrap them in a bootstrap container class.		
@@ -555,6 +555,12 @@ class WPAS_Custom_Fields {
 				continue;
 			}
 
+			if( is_admin() ) {
+				if ( !wpas_can_view_custom_field_tab() && ( !$field['args']['hide_front_end'] || $field['args']['backend_only'] ) ) {
+					continue;
+				}
+			}
+			
 			/**
 			 * Get the custom field object.
 			 */

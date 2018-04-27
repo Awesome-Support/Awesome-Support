@@ -160,46 +160,6 @@ function wpas_time_tracking_main_tab_content( $content ) {
 	return $content;
 }
 
-/**
- * Return whether or not the logged in user can view the custom fields tab
- * 
- * @return boolean
- */
-function wpas_can_view_custom_field_tab() {
-	if ( wpas_current_role_in_list( wpas_get_option( 'hide_cf_tab_roles' ) ) ) {
-		return false ;
-	} else {
-		return true ;
-	}
-}
-
-/**
- * Return whether or not the logged in user can view the additional interested parties tab
- * 
- * @return boolean
- */
-function wpas_can_view_ai_tab() {
-	if ( wpas_current_role_in_list( wpas_get_option( 'hide_ai_tab_roles' ) ) ) {
-		
-		return false ;	
-		
-	} else {
-
-		$show_multiple_agents_per_ticket = boolval( wpas_get_option( 'multiple_agents_per_ticket', false ) );
-		$show_third_party_fields = boolval( wpas_get_option( 'show_third_party_fields', false ) );
-		
-		if ( true === $show_multiple_agents_per_ticket or true === $show_third_party_fields ) {
-			
-			return true ;		
-			
-		} else {
-			
-			return false ;		
-			
-		}
-	}
-}
-
 function wpas_color_ticket_header_by_priority() {
 	
 	if ( true === boolval( wpas_get_option( 'support_priority_color_code_ticket_header', false ) ) && true === boolval( wpas_get_option( 'support_priority', false ) )  ) {
