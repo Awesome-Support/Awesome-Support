@@ -145,9 +145,30 @@ function wpas_admin_action_trash_reply( $data ) {
 	}
 
 	$reply_id = (int) $data['reply_id'];
+	
+	/* Get the contents of the post being trashed */
+	$trashed_contents = '';	
+	if ( $reply_id > 0 ) {
 
+		$trashed_post = get_post( $reply_id );
+
+		if ( ! is_null( $reply_id ) ) {
+			$trashed_contents = $trashed_post->post_content ;
+		} else {
+			return false ;
+		}
+		
+	}
+	
+	/* Now trash/delete the post */
 	wp_trash_post( $reply_id, false );
-	do_action( 'wpas_admin_reply_trashed', $reply_id );
+	
+	/* Add a flag to the TICKET that shows one of its replies was deleted */
+	update_post_meta( $trashed_post->post_parent, 'wpas_reply_was_deleted', '1' ) ;
+	
+	
+	/* Fire the after-delete action hook */
+	do_action( 'wpas_admin_reply_trashed', $reply_id, $trashed_post );
 
 	// Read-only redirect
 	$redirect_to = add_query_arg( array(
@@ -158,4 +179,29 @@ function wpas_admin_action_trash_reply( $data ) {
 	wp_redirect( wp_sanitize_redirect( "$redirect_to#wpas-post-$reply_id" ) );
 	exit;
 
+}
+
+add_action( 'wpas_admin_reply_trashed', 'wpas_log_reply_trashed', 10,2 );
+/**
+ * Log the original contents of a deleted reply.
+ *
+ * Action hook: wpas_admin_reply_trashed
+ *
+ * @since 5.2.0
+ * @param $int	$reply_id 		- the id of the reply being edited.
+ * @param array $original_reply - the original post content before tit was deleted.
+ *
+ * @return void
+ */
+function wpas_log_reply_trashed( $reply_id, $original_reply ) {
+	
+	/* Do we log a summary or detail that includes the original content? */
+	if ( 'low' === wpas_get_option( 'log_content_edit_level', 'low' ) ) {
+		$reply_contents_to_log = '' ;
+	} else {
+		$reply_contents_to_log = $original_reply->post_content ;
+	}
+	
+	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%s was deleted from ticket #%s.', 'awesome-support' ), (string) $reply_id, (string) $original_reply->post_parent  ), $reply_contents_to_log );
+	
 }
