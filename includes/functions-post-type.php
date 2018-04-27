@@ -216,8 +216,8 @@ function wpas_register_secondary_post_type() {
 	)	);		
 	
 	register_post_type( 'ticket_reply', array( 'labels' => $ticket_reply_labels, 'public' => false, 'exclude_from_search' => true, 'supports' => array( 'editor' ) ) );
-	register_post_type( 'ticket_history', array( 'labels' => $ticket_history_labels, 'public' => false, 'exclude_from_search' => true,'show_in_menu' => true, 'show_ui' => true ) );
-	register_post_type( 'ticket_log', array( 'labels' => $ticket_log_labels, 'public' => false, 'exclude_from_search' => true,'show_in_menu' => true, 'show_ui' => true ) );
+	register_post_type( 'ticket_history', array( 'labels' => $ticket_history_labels, 'public' => false, 'exclude_from_search' => true ) );
+	register_post_type( 'ticket_log', array( 'labels' => $ticket_log_labels, 'public' => false, 'exclude_from_search' => true ) );
 }
 
 add_action( 'init', 'wpas_register_post_status', 10, 0 );

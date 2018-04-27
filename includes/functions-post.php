@@ -742,7 +742,11 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 		do_action( 'wpas_edit_reply_failed', $reply_id, $content, $edited );
 		return $edited;
 	}
+	
+	/* Add a flag to the reply that shows it was edited */
+	update_post_meta( $edited, 'wpas_reply_was_edited', '1' ) ;
 
+	/* Fire the after-edit action hook */
 	do_action( 'wpas_reply_edited', $reply_id, $original_reply );
 
 	return $reply_id;
@@ -773,7 +777,7 @@ function wpas_log_reply_edits( $reply_id, $original_reply ) {
 		$reply_contents_to_log = $original_reply->post_content ;
 	}
 	
-	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%s was edited', 'awesome-support' ), (string) $reply_id ), $reply_contents_to_log );
+	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%s was edited.', 'awesome-support' ), (string) $reply_id ), $reply_contents_to_log );
 	
 }
 
@@ -1730,4 +1734,28 @@ function wpas_get_ticket_replies_ajax() {
 	echo json_encode( $output );
 	die();
 
+}
+
+
+add_action( 'wpas_backend_reply_content_after', 'wpas_show_reply_edited_msg', 10, 1 );
+/**
+ * Show whether a ticket reply has been edited or not.
+ *
+ * Action hook: wpas_backend_reply_content_after
+ * 				Hook located in metaboxes/replies-published.php.
+ *
+ * @since 5.2.0
+ *
+ * @param string $reply_id - postid of reply being processed.
+ *
+ * @return void
+ */
+function wpas_show_reply_edited_msg( $reply_id ) {
+	
+	$edited = get_post_meta( $reply_id, 'wpas_reply_was_edited' ) ;
+
+	if ( (int) $edited > 0  ) {
+		echo '<br />' . '<div class="wpas_footer_note">' . __('* This reply has been edited.  See the logs for a full history of edits.', 'awesome-support') . '</div>' ;
+	}
+	
 }

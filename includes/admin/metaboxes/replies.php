@@ -171,3 +171,4 @@ elseif( 'closed' == $status ): ?>
 	</div>
 
 <?php endif;
+
