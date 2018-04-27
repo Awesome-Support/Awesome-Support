@@ -555,9 +555,10 @@ class WPAS_Custom_Fields {
 				continue;
 			}
 
-			
-			if ( !wpas_can_view_custom_field_tab() && ( !$field['args']['hide_front_end'] || $field['args']['backend_only'] ) ) {
-				continue;
+			if( is_admin() ) {
+				if ( !wpas_can_view_custom_field_tab() && ( !$field['args']['hide_front_end'] || $field['args']['backend_only'] ) ) {
+					continue;
+				}
 			}
 			
 			/**
