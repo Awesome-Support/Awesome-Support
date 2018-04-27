@@ -37,6 +37,7 @@ function admin_head_post_editing() {
 			//Not allowed to view ticket - write to log file and bail out.
 			wpas_write_log('security', 'A logged in user attempted to access a ticket without the necessary permissions. ' . 'Ticket id: ' . (string) $post_ID . ', Logged In user ID: ' . (string) $current_user->ID ) ;
 			wp_redirect( add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) ) );
+			exit;
 		}
 	}
 
