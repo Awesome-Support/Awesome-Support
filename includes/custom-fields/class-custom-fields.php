@@ -537,7 +537,6 @@ class WPAS_Custom_Fields {
 				if ( isset( $data[ $field_form_id ] ) ) {
 					$this->save_core_field( $post_id, $field, $data[ $field_form_id ] );
 				}
-
 				continue;
 			}
 
@@ -547,7 +546,7 @@ class WPAS_Custom_Fields {
 			 * If we're on the admin and the custom field is set as
 			 * "no edit" (by restricting the capability), then the field
 			 * won't be passed in the $_POST, which as a result would have
-			 * the field deleted.
+			 * the field deleted unless it is skipped.
 			 *
 			 * If the no edit mode is enabled for the current field, we simply ignore it.
 			 */
@@ -555,10 +554,34 @@ class WPAS_Custom_Fields {
 				continue;
 			}
 
+			/**
+			 * Ignore fields if the agent cannot see them in the custom fields tab.
+			 *
+			 * When the agent cannot see the custom fields tab then the field
+			 * won't be passed in the $_POST, which as a result would have
+			 * the field deleted unless it is skipped here.
+			 *
+			 * So, to prevent this, we just ignore most of the custom fields 
+			 * that are normally shown in that tab.
+			 */
 			if( is_admin() ) {
 				if ( !wpas_can_view_custom_field_tab() && ( !$field['args']['hide_front_end'] || $field['args']['backend_only'] ) ) {
 					continue;
 				}
+			}
+
+			/**
+			 * Ignore Additional Interested Party fields if the agent cannot see them 
+			 * in the additional interested parties tab.
+			 *
+			 * When the agent cannot see the then the field  won't be passed 
+			 * in the $_POST, which as a result would have the field deleted 
+			 * unless it is skipped here.
+			 */			
+			if (is_admin() ) {
+				if ( ! wpas_can_view_ai_tab() && wpas_is_field_in_ai_tab( $field['name'] ) ) {
+					continue ;
+				}					
 			}
 			
 			/**

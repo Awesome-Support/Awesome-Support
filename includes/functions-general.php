@@ -1493,11 +1493,11 @@ function wpas_get_current_user_roles() {
 	 
  }
  
- /**
- * Return whether or not the logged in user can view the custom fields tab
- * 
- * @return boolean
- */
+/**
+* Return whether or not the logged in user can view the custom fields tab
+* 
+* @return boolean
+*/
 function wpas_can_view_custom_field_tab() {
 	if ( wpas_current_role_in_list( wpas_get_option( 'hide_cf_tab_roles' ) ) ) {
 		return false ;
@@ -1531,4 +1531,43 @@ function wpas_can_view_ai_tab() {
 			
 		}
 	}
+}
+
+/**
+ * Helper function that list the fields that are in the additional interested parties tab.
+ * This function is used for special processing of these fields by certain routines - 
+ * for example the custom fields routines.
+ *
+ * @return array
+ */
+function wpas_fields_in_ai_tab() {
+	
+	$fields[] = 'secondary_assignee';
+	$fields[] = 'tertiary_assignee';
+	
+	$fields[] = 'first_addl_interested_party_name';
+	$fields[] = 'first_addl_interested_party_email';
+	$fields[] = 'second_addl_interested_party_name';	
+	$fields[] = 'second_addl_interested_party_email';	
+
+	return $fields;
+}
+
+/**
+ * Helper function that checks to see if a custom field is in the additional interested
+ * parties tab. This function is used for special processing of these fields by 
+ * certain routines - for example the custom fields routines.
+ *
+ * @return boolean
+ */
+function wpas_is_field_in_ai_tab( $field_name ) {
+	
+	$found = array_search( $field_name, wpas_fields_in_ai_tab() );
+	
+	if ( false === $found ) {
+		return false ;
+	} else {
+		return true ;
+	}
+	
 }
