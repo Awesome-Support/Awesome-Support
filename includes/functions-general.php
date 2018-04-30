@@ -1300,9 +1300,8 @@ function wpas_is_support_priority_active() {
 	if ( ! $agent_id ) {
 		// assume current user;
 		return current_user_can( 'edit_ticket' ) ;
-	}
-	
-	if ( is_int( $agent_id ) ) {
+	} else {
+		// we got an agent id to check
 		return user_can( $agent_id, 'edit_ticket' ) ;
 	}
 	
