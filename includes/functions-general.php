@@ -1295,8 +1295,18 @@ function wpas_is_support_priority_active() {
  *
  * @return boolean
  */
- function wpas_is_agent() {
-	return current_user_can( 'edit_ticket' ) ;
+ function wpas_is_agent( $agent_id = false ) {
+	
+	if ( ! $agent_id ) {
+		// assume current user;
+		return current_user_can( 'edit_ticket' ) ;
+	}
+	
+	if ( is_int( $agent_id ) ) {
+		return user_can( $agent_id, 'edit_ticket' ) ;
+	}
+	
+	return false ;
  }
  
  /**
