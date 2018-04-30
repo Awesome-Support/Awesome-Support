@@ -1304,9 +1304,8 @@ function wpas_is_support_priority_active() {
 		// we got an agent id to check
 		return user_can( $agent_id, 'edit_ticket' ) ;
 	}
-	
-	return false ;
- }
+
+}
  
  /**
  * Returns TRUE if the current user is an Awesome Support Admin
