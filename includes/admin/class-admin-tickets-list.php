@@ -1127,7 +1127,10 @@ SQL;
 
 		echo wpas_dropdown( $client_atts, "<option value='" . $selected_value . "'>" . $selected . "</option>" );
 
-		echo '<div style="clear:both;"></div>';
+		/* Force a new line if the SAAS/Imported ticket ID is turned on for the list */
+		if ( boolval( wpas_get_option( 'importer_id_enable', false) ) && boolval( wpas_get_option( 'importer_id_show_in_tkt_list', false) ) ) {
+			echo '<div style="clear:both;"></div>';
+		}
 
 		/* TICKET ID */
 		$selected_value = '';
@@ -1137,6 +1140,7 @@ SQL;
 
 		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . $selected_value . '" />';
 
+		/* SAAS TICKET ID */
 		$show_saas_id = boolval( wpas_get_option( 'importer_id_enable', false) );
 		if ($show_saas_id) {
 			$show_saas_id_in_list = boolval( wpas_get_option( 'importer_id_show_in_tkt_list', false) );
