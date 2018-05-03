@@ -212,6 +212,32 @@ function wpas_core_settings_registration( $def ) {
 					'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'awesome-support' ),
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
+				
+				array(
+					'name' => __( 'Privacy', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Privacy Button\'s Label', 'awesome-support' ),
+					'id'      => 'privacy_button_label',
+					'type'    => 'text',
+					'desc'    => __( 'Add custom label for Privacy button in My Tickets page.', 'awesome-support' ),
+					'default' => 'Privacy'
+				),
+				array(
+					'name'    => __( 'Privacy Popup Heading', 'awesome-support' ),
+					'id'      => 'privacy_popup_header',
+					'type'    => 'editor',
+					'desc'    => __( 'Add custom header content for popup when Privacy button in My Tickets page has been clicked.', 'awesome-support' ),
+					'default' => ''
+				),
+				array(
+					'name'    => __( 'Privacy Popup Footer', 'awesome-support' ),
+					'id'      => 'privacy_popup_footer',
+					'type'    => 'editor',
+					'desc'    => __( 'Add custom footer content for popup when Privacy button in My Tickets page has been clicked.', 'awesome-support' ),
+					'default' => ''
+				),
 
 				array(
 					'name' => __( 'Other', 'awesome-support' ),
@@ -223,7 +249,7 @@ function wpas_core_settings_registration( $def ) {
 					'type'    => 'text',
 					'desc'    => __( 'The role should be the internal WordPress role id such as wpas_user and is case sensitive.  Do not leave this blank!  This role should have the 5 core Awesome Support capabilities in order for users to be able to submit tickets. Check our documentation for more information.', 'awesome-support' ),
 					'default' => 'wpas_user'
-				),
+				),				
 
 			)
 		),
