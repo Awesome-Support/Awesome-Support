@@ -1,0 +1,30 @@
+.privacy-container-template {
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	display: none;
+	position: fixed;
+	background-color: rgba(0, 0, 0, 0.85);
+	color: #aaaaaa;
+	opacity: 30;
+	filter: alpha(opacity = 50);
+ }
+ 
+#privacy-option-content {
+	width: 30%;
+	height: 30%;
+	position: absolute;
+	color: #000000;
+	background-color: #ffffff;
+	/* To align popup window at the center of screen*/
+	top: 40%;
+	left: 50%;
+	margin-top: -100px;
+	margin-left: -220px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	padding: 80px;
+}

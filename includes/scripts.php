@@ -231,6 +231,10 @@ function wpas_assets_front_end() {
 			wp_enqueue_style( 'wpas-theme-styles' );
 		}
 
+		// GDPR Privacy options script and style.
+		wp_enqueue_style( 'wpas-privacy-option-style', WPAS_URL . 'assets/public/css/component_privacy-popup.css', array(), WPAS_VERSION );
+		wp_enqueue_script( 'wpas-privacy-option-script', WPAS_URL . 'assets/public/js/component-privacy-popup.js', array( 'jquery' ), WPAS_VERSION );
+		
 		// Our Custom Scripts
 		wp_enqueue_script( 'wpas-plugin-script' );
 
