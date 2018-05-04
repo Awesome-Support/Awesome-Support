@@ -520,7 +520,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			 * 'wpas_skip_wizard_setup' will be set to true if user choose to skip wizrd from admin notice
 			 */
 			if ( ! get_option( 'wpas_plugin_setup', false ) && ! get_option( 'wpas_skip_wizard_setup', false ) ) {
-				add_action( 'admin_notices', 'wpas_ask_setup_wizard', 1 );
+				if ( current_user_can( 'ticket_manage_departments' ) && current_user_can( 'ticket_manage_priorities' ) && current_user_can( 'ticket_manage_products' ) ) {
+					add_action( 'admin_notices', 'wpas_ask_setup_wizard', 1 );
+				}
 			}
 
 		}
