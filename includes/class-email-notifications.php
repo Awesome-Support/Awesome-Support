@@ -213,6 +213,9 @@ class WPAS_Email_Notification {
 		$cases['agent_reply']			= 'enable_reply_agent';
 		$cases['client_reply']			= 'enable_reply_client';
 		$cases['ticket_closed']			= 'enable_closed';
+		
+		$cases['ticket_closed_agent'] = 'enable_closed';
+		$cases['ticket_closed_client'] = 'enable_closed_client';
 
 		return apply_filters( 'wpas_email_notifications_cases_active_option', $cases );
 	}
@@ -615,10 +618,7 @@ class WPAS_Email_Notification {
 			return new WP_Error( 'unknown_notification', __( 'The requested notification does not exist', 'awesome-support' ) );
 		}
 
-		// Only check the higher level 'ticket_closed' for both ticket_closed_agent and ticket_closed_client
-		$check = in_array( $case, array( 'ticket_closed_agent', 'ticket_closed_client' ) ) ? 'ticket_closed' : $case;
-
-		if ( !$this->is_active( $check ) ) {
+		if ( !$this->is_active( $case ) ) {
 			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'awesome-support' ) );
 		}
 
