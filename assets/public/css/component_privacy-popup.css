@@ -13,18 +13,59 @@
  }
  
 #privacy-option-content {
-	width: 30%;
-	height: 30%;
+	width: 65%;
 	position: absolute;
 	color: #000000;
 	background-color: #ffffff;
 	/* To align popup window at the center of screen*/
-	top: 40%;
-	left: 50%;
+	top: 30%;
+	left: 40%;
 	margin-top: -100px;
 	margin-left: -220px;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
-	padding: 80px;
+	padding: 20px;
+}
+
+.active {
+	display: block !important;
+}
+
+.wpas-gdpr-tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+.wpas-gdpr-tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+	transition: 0.3s;
+	color: #000;
+}
+
+.wpas-gdpr-tab button:hover {
+    background-color: #ddd;
+}
+
+.wpas-gdpr-tab button.active {
+    background-color: #ccc;
+}
+
+.wpas-gdpr-tab-content {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+	border-top: none;
+	animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }

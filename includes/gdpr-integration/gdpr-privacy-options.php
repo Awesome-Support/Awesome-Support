@@ -45,34 +45,55 @@ class WPAS_Privacy_Option {
 
 	/**
 	 * Print Template file for privacy popup container.
-	 * 
+	 *
 	 * @return void
 	 */
-	public static function print_privacy_popup_temp(){
+	public static function print_privacy_popup_temp() {
 		?>
 		<div class="privacy-container-template">
 			<div class="entry entry-normal" id="privacy-option-content">
 				<a href="#" class="hide-the-content">close</a>
-				<?php 
+				<?php
 				$entry_header = wpas_get_option( 'privacy_popup_header', 'Privacy' );
-				if( !empty( $entry_header )){
+				if ( ! empty( $entry_header ) ) {
 					echo '<div class="entry-header">' . $entry_header . '</div>';
 				}
 				?>
 				<div class="entry-content">
-					<div class="entry-content-tabs">
-						<label>Add/Remove Existing Consent</label>
+					<div class="wpas-gdpr-tab">
+						<button class="tablinks" onclick="openGDPRTab(event, 'add-remove-consent')" id="wpas-gdpr-tab-default"><?php esc_html_e( 'Add/Remove Existing Consent', 'awesome-support' ); ?></button>
+						<button class="tablinks" onclick="openGDPRTab(event, 'delete-existing-data')"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
+						<button class="tablinks" onclick="openGDPRTab(event, 'export-user-data')"><?php esc_html_e( 'Export tickets and user data', 'awesome-support' ); ?></button>
 					</div>
-					<div class="entry-content-tabs">
-						<a href="#">Export tickets and user data</a>
+
+					<div id="add-remove-consent" class="entry-content-tabs wpas-gdpr-tab-content">
+						<?php
+							/**
+							 * Include tab content for Add/Remove Content data
+							 */
+							include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php' );
+						?>
 					</div>
-					<div class="entry-content-tabs">
-						<a href="#">Delete my existing data</a>
+					<div id="delete-existing-data" class="entry-content-tabs wpas-gdpr-tab-content">
+						<?php
+							/**
+							 * Include tab content for Delete my existing data
+							 */
+							include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php' );
+						?>
 					</div>
+					<div id="export-user-data" class="entry-content-tabs wpas-gdpr-tab-content">
+						<?php
+							/**
+							 * Include tab content for Export tickets and user data
+							 */
+							include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-export-user-data.php' );
+						?>
+					</div>					
 				</div>
-				<?php 
+				<?php
 				$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' );
-				if( !empty( $entry_footer )){
+				if ( ! empty( $entry_footer ) ) {
 					echo '<div class="entry-footer">' . $entry_footer . '</div>';
 				}
 				?>
@@ -91,7 +112,13 @@ class WPAS_Privacy_Option {
 	 */
 	public function frontend_privacy_add_nav_buttons() {
 		$button_title = wpas_get_option( 'privacy_button_label', 'Privacy' );
-		wpas_make_button( __( $button_title, 'awesome-support' ), array( 'type' => 'link', 'link' => '#', 'class' => 'wpas-btn wpas-btn-default wpas-link-privacy' ) );
+		wpas_make_button(
+			$button_title, array(
+				'type'  => 'link',
+				'link'  => '#',
+				'class' => 'wpas-btn wpas-btn-default wpas-link-privacy',
+			)
+		);
 	}
 
 

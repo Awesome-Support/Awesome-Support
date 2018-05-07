@@ -209,6 +209,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			add_action( 'plugins_loaded', array( 'WPAS_File_Upload', 'get_instance' ), 11, 0 );
 			add_action( 'plugins_loaded', array( 'WPAS_Privacy_Option', 'get_instance' ), 11, 0 );
+			add_action( 'plugins_loaded', array( 'WPAS_GDPR_User_Profile', 'get_instance' ), 11, 0 );
 			add_action( 'plugins_loaded', array( self::$instance, 'load_plugin_textdomain' ) );
 			add_action( 'init', array( self::$instance, 'load_theme_functions' ) );
 			add_action( 'plugins_loaded', array( self::$instance, 'remote_notifications' ), 15, 0 );
@@ -395,6 +396,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
 			require( WPAS_PATH . 'includes/custom-fields/functions-custom-fields.php' );
 			require( WPAS_PATH . 'includes/gdpr-integration/gdpr-privacy-options.php' );
+			require( WPAS_PATH . 'includes/gdpr-integration/gdpr-user-profile.php' );
 			require( WPAS_PATH . 'includes/functions-actions.php' );
 			require( WPAS_PATH . 'includes/functions-post.php' );
 			require( WPAS_PATH . 'includes/functions-user.php' );
