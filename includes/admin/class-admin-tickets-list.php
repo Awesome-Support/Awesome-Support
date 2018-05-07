@@ -1038,7 +1038,7 @@ SQL;
 		$activity_options = apply_filters( 'wpas_ticket_list_activity_options', array(
 			'all' =>					__( 'All Activity', 'awesome-support' ),
 			'awaiting_support_reply' => __( 'Awaiting Support Reply', 'awesome-support' ),
-			'old' =>					__( 'Old', 'awesome-support' ) . " (Open > " . wpas_get_option( 'old_ticket' ) . " Days)"
+			'old' =>					__( 'Old', 'awesome-support' ) . " (Last Reply > " . wpas_get_option( 'old_ticket' ) . " Days)"
 			
 		) );
 		
