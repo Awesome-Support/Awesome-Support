@@ -1312,13 +1312,14 @@ SQL;
 			elseif( 'old' === $wpas_activity ) {
 
 				$old_after           = (int) wpas_get_option( 'old_ticket' );
-				$old_after           = strtotime( 'now' ) + ( $old_after * 86400 );
-
+				$old_after           = strtotime( 'now' ) - ( $old_after * 86400 );
+				
+				$old_after = date( 'Y-m-d H:i:s', $old_after ) ;
+				
 				$meta_query[] = array(
 					'key'     => '_wpas_last_reply_date',
 					'value'   => $old_after,
-					'compare' => '<=',
-					'type'    => 'numeric',
+					'compare' => '<='
 				);
 			}
 
