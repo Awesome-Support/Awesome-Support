@@ -1296,3 +1296,33 @@ function wpas_log_consent( $label, $action, $date = "" ) {
 		update_option( 'wpas_consent_log', array( $consent ) );
 	}
 }
+
+/**
+ * Similar to wpas_log_consent()
+ * This function tracks the consent instead of just
+ * logging them. This is the primary function in consent 
+ * table information in both on user profile and on the
+ * GDPR table in the front-end
+ * 
+ * @param {*} data
+ */
+function wpas_track_consent( $data ){
+	// Prepare consent data!
+	$consent = array(
+		'item'		=> isset( $data['item'] ) ? $data['item'] : '',
+		'status' 	=> isset( $data['status'] ) ? $data['status'] : '',
+		'opt_in'  	=> isset( $data['opt_in'] ) ? $data['opt_in'] : '',
+		'opt_out'   => isset( $data['opt_out'] ) ? $data['opt_out'] : '',
+	);
+
+	/**
+	 * Consent logs are stored in wpas_consent_tracking option
+	 */
+	$tracked_consent = get_option( 'wpas_consent_tracking' );
+
+	if( ! empty ( $tracked_consent ) && is_array( $tracked_consent ) ) {
+		update_option( 'wpas_consent_log', array_push( $tracked_consent, $consent ) );
+	}else{
+		update_option( 'wpas_consent_log', array( $consent ) );
+	}
+}
