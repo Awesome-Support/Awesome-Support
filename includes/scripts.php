@@ -232,8 +232,14 @@ function wpas_assets_front_end() {
 		}
 
 		// GDPR Privacy options script and style.
-		wp_enqueue_style( 'wpas-privacy-option-style', WPAS_URL . 'assets/public/css/component_privacy-popup.css', array(), WPAS_VERSION );
-		wp_enqueue_script( 'wpas-privacy-option-script', WPAS_URL . 'assets/public/js/component-privacy-popup.js', array( 'jquery' ), WPAS_VERSION );
+		wp_enqueue_editor();
+		wp_enqueue_style( 'wpas-gdpr-style', WPAS_URL . 'assets/public/css/component_privacy-popup.css', array(), WPAS_VERSION );
+		wp_register_script( 'wpas-gdpr-script', WPAS_URL . 'assets/public/js/component-privacy-popup.js', array( 'jquery' ), WPAS_VERSION );		
+		wp_localize_script( 'wpas-gdpr-script', 'WPAS_GDPR', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'wpas-gdpr-nonce' )
+		) );
+		wp_enqueue_script( 'wpas-gdpr-script' );
 		
 		// Our Custom Scripts
 		wp_enqueue_script( 'wpas-plugin-script' );

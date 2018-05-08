@@ -24,6 +24,8 @@ class WPAS_Privacy_Option {
 	public function __construct() {
 		add_filter( 'wpas_frontend_add_nav_buttons', array( $this, 'frontend_privacy_add_nav_buttons' ) );
 		add_filter( 'wp_footer', array( $this, 'print_privacy_popup_temp' ), 101 );
+		add_action( 'wp_ajax_wpas_gdpr_open_ticket', array( $this, 'wpas_gdpr_open_ticket' ) );
+		add_action( 'wp_ajax_nopriv_wpas_gdpr_open_ticket', array( $this, 'wpas_gdpr_open_ticket' ) );
 	}
 
 	/**
@@ -61,9 +63,9 @@ class WPAS_Privacy_Option {
 				?>
 				<div class="entry-content">
 					<div class="wpas-gdpr-tab">
-						<button class="tablinks" onclick="openGDPRTab(event, 'add-remove-consent')" id="wpas-gdpr-tab-default"><?php esc_html_e( 'Add/Remove Existing Consent', 'awesome-support' ); ?></button>
-						<button class="tablinks" onclick="openGDPRTab(event, 'delete-existing-data')"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
-						<button class="tablinks" onclick="openGDPRTab(event, 'export-user-data')"><?php esc_html_e( 'Export tickets and user data', 'awesome-support' ); ?></button>
+						<button class="tablinks" onclick="wpas_gdpr_open_tab( event, 'add-remove-consent' )" id="wpas-gdpr-tab-default"><?php esc_html_e( 'Add/Remove Existing Consent', 'awesome-support' ); ?></button>
+						<button class="tablinks" onclick="wpas_gdpr_open_tab( event, 'delete-existing-data' )"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
+						<button class="tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )"><?php esc_html_e( 'Export tickets and user data', 'awesome-support' ); ?></button>
 					</div>
 
 					<div id="add-remove-consent" class="entry-content-tabs wpas-gdpr-tab-content">
@@ -119,6 +121,59 @@ class WPAS_Privacy_Option {
 				'class' => 'wpas-btn wpas-btn-default wpas-link-privacy',
 			)
 		);
+	}
+
+	/**
+	 * Ajax based ticket submission
+	 * This is only good for 'Official Request: Please Delete My Existing Data ("Right To Be Forgotten")'
+	 * ticket from the GDPR popup in 'Delete My Existing Data' tab
+	 */
+	public function wpas_gdpr_open_ticket() {
+		/**
+		 * Initialize custom reponse message
+		 */
+		$response = array(
+			'code'    => 403,
+			'message' => __( 'Sorry! Something failed', 'awesome-support' ),
+		);
+
+		/**
+		 * Initiate nonce
+		 */
+		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
+
+		/**
+		 * Security checking
+		 */
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
+			/**
+			 *  Initiate form data parsing
+			 */
+			$form_data = array();
+			parse_str( $_POST['data']['form-data'], $form_data );
+
+			error_log( print_r( $form_data, true ) );
+			/**
+			 * New ticket submission
+			 */
+			$ticket_id = wpas_open_ticket(
+				array(
+					'title'   => $form_data['wpas-gdpr-ded-subject'],
+					'message' => $form_data['wpas-gdpr-ded-subject'],
+				)
+			);
+
+			if ( ! empty( $ticket_id ) ) {
+				$response['code']    = 200;
+				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
+			} else {
+				$response['message'] = __( 'Something went wrong. Please try again!', 'awesome-support' );
+			}
+		} else {
+			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
+		}
+		wp_send_json( $response );
+		wp_die();
 	}
 
 
