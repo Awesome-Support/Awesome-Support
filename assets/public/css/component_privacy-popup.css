@@ -69,3 +69,18 @@
     from {opacity: 0;}
     to {opacity: 1;}
 }
+
+.wpas-gdpr-notice.success {
+	background-color: #46b450;
+    color: #ffffff;
+    border-left: 0;
+}
+.wpas-gdpr-notice.failure {
+	background-color: #8b0000;
+    color: #ffffff;
+    border-left: 0;
+}
+.wpas-gdpr-notice p {
+	margin: .5em 0;
+    padding: 5px;
+}

@@ -152,7 +152,6 @@ class WPAS_Privacy_Option {
 			$form_data = array();
 			parse_str( $_POST['data']['form-data'], $form_data );
 
-			error_log( print_r( $form_data, true ) );
 			/**
 			 * New ticket submission
 			 */
