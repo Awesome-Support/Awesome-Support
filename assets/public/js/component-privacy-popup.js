@@ -1,4 +1,6 @@
 jQuery(document).ready(function ($) {
+	jQuery( '.wpas-gdpr-pre-loader' ).hide();
+
 	jQuery('.wpas-link-privacy').click(function(){
 		jQuery(".privacy-container-template").show();
 		jQuery(document).keyup(function(e) {
@@ -16,7 +18,8 @@ jQuery(document).ready(function ($) {
 	 */
 	jQuery( "#wpas-gdpr-ded-submit" ).click( function(e){
 		e.preventDefault();
-		
+		jQuery( '.wpas-gdpr-pre-loader' ).show();
+
 		var data = {
 			'action': 'wpas_gdpr_open_ticket',
 			'security' : WPAS_GDPR.nonce,
@@ -29,6 +32,7 @@ jQuery(document).ready(function ($) {
 			WPAS_GDPR.ajax_url,
 			data,
 			function( response ) {
+				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				if( response.message && response.code === 200 ) {
 					jQuery( '.wpas-gdpr-notice' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
 					jQuery( '.wpas-gdpr-form-table' ).remove();
