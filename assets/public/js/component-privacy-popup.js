@@ -16,7 +16,7 @@ jQuery(document).ready(function ($) {
 	 * Ajax based ticket submission for "Right To Be Forgotten"
 	 * in "Delete My Existing Data" from GDPR popup
 	 */
-	jQuery( "#wpas-gdpr-ded-submit" ).click( function(e){
+	jQuery( "#wpas-gdpr-ded-submit" ).click( function(e) {
 		e.preventDefault();
 		jQuery( '.wpas-gdpr-pre-loader' ).show();
 
@@ -52,7 +52,7 @@ jQuery(document).ready(function ($) {
 	 * Initiate WP Editor when requesting right
 	 * to be deleted data in GDPR popup
 	 */
-    wpas_init_editor( 'wpas-gdpr-ded-more-info', '' );
+    wpas_init_editor( '#wpas-gdpr-ded-more-info', '' );
 });
 
 /**
