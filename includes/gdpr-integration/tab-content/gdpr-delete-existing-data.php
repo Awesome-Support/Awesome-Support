@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 ?>
 <form name="wpas-gdpr-rtbf-form" id="wpas-gdpr-rtbf-form">
 	<div class="wpas-gdpr-pre-loader">
-		<img id="loader-img" alt="" src="<?php echo WPAS_URL . 'assets/public/images/loading.gif'; ?>" width="50" align="center" />
+		<div class="loader"></div><!-- .loader -->
 	</div>
 	<div class="wpas-gdpr-notice"></div>
 	<table class="form-table wpas-gdpr-form-table">
