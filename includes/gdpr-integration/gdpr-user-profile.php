@@ -54,7 +54,6 @@ class WPAS_GDPR_User_Profile {
 	 * Only visible if the current role is WPAS User
 	 */
 	public function wpas_user_profile_fields( $profileuser ) {
-	
 		/**
 		 * Visible to all WPAS user roles
 		 */
@@ -69,19 +68,75 @@ class WPAS_GDPR_User_Profile {
 				<th><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
 				<th><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
 			</tr>
-			<tr>
-				<td><?php esc_html_e( 'Terms and Conditions', 'awesome-support' ); ?></td>
-				<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
-				<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
-				<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
-				<td></td>
-			</tr>
 			<?php
 			 /**
 			  * For the GDPR labels, this data are stored in
-			  * wpas_gdpr_content option in form of array.
+			  * wpas_consent_tracking user meta in form of array.
 			  * Get the option and if not empty, loop them here
 			  */
+			  $user_consent = get_user_meta( $profileuser->ID, 'wpas_consent_tracking', true );
+			  if( ! empty ( $user_consent ) && is_array( $user_consent ) ) {
+				foreach( $user_consent as $consent ) {
+					/**
+					 * Determine if current loop is TOR
+					 * Display TOR as label instead of content
+					 * There should be no Opt buttons
+					 */
+					$item = isset( $consent['item'] ) ? $consent['item'] : '';
+					if( isset( $consent['is_tor'] ) && $consent['is_tor'] === true ) {
+						$item = __( 'Terms and Conditions', 'awesome-support' );
+					}
+
+					/**
+					 * Determine status
+					 * Raw data is boolean, we convert it into string
+					 */
+					$status = isset( $consent['status'] ) && $consent['status'] === true ? __( 'Checked', 'awesome-support' ) : '';
+
+					/**
+					 * Convert Opt content into date
+					 * We stored Opt data as strtotime value
+					 */
+					$opt_in = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? date( 'm/d/Y', $consent['opt_in'] ) : '';
+					$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? date( 'm/d/Y', $consent['opt_out'] ) : '';
+
+					/**
+					 * Determine 'Action' buttons
+					 * If current loop is TOR, do not give Opt options
+					 */
+					$opt_button = "";
+					if( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
+						/**
+						 * Determine what type of buttons we should render
+						 * If opt_in is not empty, display Opt out button
+						 * otherwise, just vice versa
+						 */
+						if( ! empty ( $opt_in ) ) {
+							$opt_button = sprintf(
+								'<a class="button button-secondary" id="wpas-gdpr-opt-out">%s</a>',
+								__( 'Opt-out', 'awesome-support' )
+							);
+						}elseif( ! empty ( $opt_out ) ) {
+							$opt_button = sprintf(
+								'<a class="button button-secondary" id="wpas-gdpr-opt-in">%s</a>',
+								__( 'Opt-in', 'awesome-support' )
+							);
+						}
+					}
+
+					/**
+					 * Render data
+					 */
+					printf( 
+						'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+						$item,
+						$status,
+						$opt_in,
+						$opt_out,
+						$opt_button
+					);
+				}
+			  }
 			?>
 		</table>
 	<?php

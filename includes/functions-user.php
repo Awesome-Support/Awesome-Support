@@ -118,10 +118,11 @@ function wpas_register_account( $data ) {
 			$opt_in = ! empty ( $status ) ? strtotime( 'NOW' ) : "";
 
 			wpas_track_consent( array( 
-				'item' => wpas_get_option( 'terms_conditions', false ),
-				'status' => $status,
-				'opt_in' => $opt_in,
-				'opt_out' => "",
+				'item' 		=> wpas_get_option( 'terms_conditions', false ),
+				'status' 	=> $status,
+				'opt_in' 	=> $opt_in,
+				'opt_out' 	=> "",
+				'is_tor'	=> true
 			), $user_id );
 		}
 
@@ -134,10 +135,11 @@ function wpas_register_account( $data ) {
 			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 
 			wpas_track_consent( array( 
-				'item' => wpas_get_option( 'gdpr_notice_short_desc_01', false ),
-				'status' => $status,
-				'opt_in' => $opt_in,
-				'opt_out' => $opt_out,
+				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_01', false ),
+				'status' 	=> $status,
+				'opt_in' 	=> $opt_in,
+				'opt_out' 	=> $opt_out,
+				'is_tor'	=> false
 			), $user_id );
 		}
 
@@ -150,10 +152,11 @@ function wpas_register_account( $data ) {
 			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 
 			wpas_track_consent( array( 
-				'item' => wpas_get_option( 'gdpr_notice_short_desc_02', false ),
-				'status' => $status,
-				'opt_in' => $opt_in,
-				'opt_out' => $opt_out,
+				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_02', false ),
+				'status' 	=> $status,
+				'opt_in' 	=> $opt_in,
+				'opt_out' 	=> $opt_out,
+				'is_tor'	=> false
 			), $user_id );
 		}
 
@@ -166,10 +169,11 @@ function wpas_register_account( $data ) {
 			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 
 			wpas_track_consent( array( 
-				'item' => wpas_get_option( 'gdpr_notice_short_desc_03', false ),
-				'status' => $status,
-				'opt_in' => $opt_in,
-				'opt_out' => $opt_out,
+				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_03', false ),
+				'status' 	=> $status,
+				'opt_in' 	=> $opt_in,
+				'opt_out' 	=> $opt_out,
+				'is_tor'	=> false
 			), $user_id );
 		}
 
@@ -1367,15 +1371,7 @@ function wpas_log_consent( $label, $action, $date = "" ) {
  * 
  * @param {*} data
  */
-function wpas_track_consent( $data, $user_id ){
-	// Prepare consent data!
-	$consent = array(
-		'item'		=> isset( $data['item'] ) ? $data['item'] : '',
-		'status' 	=> isset( $data['status'] ) ? $data['status'] : '',
-		'opt_in'  	=> isset( $data['opt_in'] ) ? $data['opt_in'] : '',
-		'opt_out'   => isset( $data['opt_out'] ) ? $data['opt_out'] : '',
-	);
-	
+function wpas_track_consent( $data, $user_id ){	
 	/**
 	 * Consent logs are stored in wpas_consent_tracking option
 	 */
