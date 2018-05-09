@@ -54,6 +54,7 @@ class WPAS_Privacy_Option {
 		?>
 		<div class="privacy-container-template">
 			<div class="entry entry-normal" id="privacy-option-content">
+				<div class="wpas-gdpr-loader-background"></div><!-- .wpas-gdpr-loader-background -->
 				<a href="#" class="hide-the-content"></a>
 				<?php
 				$entry_header = wpas_get_option( 'privacy_popup_header', 'Privacy' );

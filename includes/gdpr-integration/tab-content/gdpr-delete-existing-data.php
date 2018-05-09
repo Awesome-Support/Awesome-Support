@@ -16,7 +16,6 @@ if ( ! defined( 'WPINC' ) ) {
 <form name="wpas-gdpr-rtbf-form" id="wpas-gdpr-rtbf-form">
 	<div class="wpas-gdpr-pre-loader">
 		<div class="loader"></div><!-- .loader -->
-		<div class="loader-background"></div><!-- .loader-background -->
 	</div>
 	<div class="wpas-gdpr-notice"></div>
 	<table class="form-table wpas-gdpr-form-table">

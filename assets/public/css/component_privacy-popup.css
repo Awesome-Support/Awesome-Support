@@ -126,26 +126,22 @@
 }
 
 @media (max-width: 860px) {
-	#privacy-option-content {
-		height: 100%;
-		top: 5px;
-		margin-top: 0;
-		padding: 20px 15px;
+	.privacy-container-template {
 		overflow-y: auto;
 	}
 
-	#privacy-option-content::-webkit-scrollbar-track {
+	.privacy-container-template::-webkit-scrollbar-track {
 		-webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
 		border-radius: 0px;
 		background-color: #fff;
 	}
 
-	#privacy-option-content::-webkit-scrollbar {
+	.privacy-container-template::-webkit-scrollbar {
 		width: 5px;
 		background-color: #c7c7c7c7;
 	}
 
-	#privacy-option-content::-webkit-scrollbar-thumb {
+	.privacy-container-template::-webkit-scrollbar-thumb {
 		border-radius: 1px;
 		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 		background-color: #f1f1f1;
@@ -155,6 +151,12 @@
 		border: none;
 		padding: 0;
 		margin-top: 10px;
+	}
+
+	#privacy-option-content {
+		top: 5px;
+		margin-top: 0;
+		padding: 20px 15px;
 	}
 
 	.wpas-gdpr-tab-content thead {
@@ -207,22 +209,14 @@
 	}
 }
 
-.wpas-gdpr-pre-loader .loader-background {
+.wpas-gdpr-loader-background {
 	position: absolute;
 	top: 0;
 	left: 0;
 	background: rgba(255, 255, 255, 0.65);
 	width: 100%;
 	height: 100%;
-}
-
-.wpas-gdpr-pre-loader .loader-img {
-	z-index: 9999;
-	position: absolute;
-	top: 45%;
-	left: 0;
-	right: 0;
-	margin: 0 auto;
+	display: none;
 }
 
 .wpas-gdpr-pre-loader .loader,
@@ -239,13 +233,17 @@
 	color: #bebebe;
 	text-indent: -9999em;
 	margin: 88px auto;
-	position: relative;
 	font-size: 11px;
 	-webkit-transform: translateZ(0);
 	-ms-transform: translateZ(0);
 	transform: translateZ(0);
 	-webkit-animation-delay: -0.16s;
 	animation-delay: -0.16s;
+
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 99;
 }
 
 .wpas-gdpr-pre-loader .loader:before,
