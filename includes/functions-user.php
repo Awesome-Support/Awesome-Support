@@ -78,7 +78,9 @@ function wpas_register_account( $data ) {
 		wpas_add_error( 'accept_gdpr03_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
-	}	
+	}
+
+
 
 	/**
 	 * wpas_register_account_before hook
@@ -1246,4 +1248,81 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
 	}
 	
 	return $agents;
+}
+
+/**
+ * Log the user consent. Data saved in WP Option
+ * We're not sure yet if custom table is needed but we can
+ * extend in the future version when we see fit
+ * 
+ * @param {*} label 
+ * @param {*} action 
+ * @param {*} date 
+ */
+function wpas_log_consent( $label, $action, $date = "" ) {
+	/**
+	 * Label parameter is required, WP_Error if none given
+	 */
+	if( ! $label ) {
+		return new WP_Error( 'consent_label_missing', __( 'Consent label is required!', 'awesome-support' ) );
+	}
+	if( ! $action ) {
+		return new WP_Error( 'consent_action_missing', __( 'Consent action is required! Options are - "opted-in" or "opted-out"', 'awesome-support' ) );
+	}
+
+	/**
+	 * If date is not given, set it today
+	 */
+	if( empty ( $date ) ) {
+		$date = date( 'm/d/Y', strtotime( 'NOW' ) );
+	}
+
+	/**
+	 * Consent logs are stored in wpas_consent_log option
+	 */
+	$logged_consent = get_option( 'wpas_consent_log' );
+	$consent = sprintf(
+		'%s - %s %s %s %s',
+		$label,
+		__( 'user', 'awesome-support' ),
+		$action,
+		__( 'on', 'awesome-support' ),
+		$date
+	);
+
+	if( ! empty ( $logged_consent ) && is_array( $logged_consent ) ) {
+		update_option( 'wpas_consent_log', array_push( $logged_consent, $consent ) );
+	}else{
+		update_option( 'wpas_consent_log', array( $consent ) );
+	}
+}
+
+/**
+ * Similar to wpas_log_consent()
+ * This function tracks the consent instead of just
+ * logging them. This is the primary function in consent 
+ * table information in both on user profile and on the
+ * GDPR table in the front-end
+ * 
+ * @param {*} data
+ */
+function wpas_track_consent( $data ){
+	// Prepare consent data!
+	$consent = array(
+		'item'		=> isset( $data['item'] ) ? $data['item'] : '',
+		'status' 	=> isset( $data['status'] ) ? $data['status'] : '',
+		'opt_in'  	=> isset( $data['opt_in'] ) ? $data['opt_in'] : '',
+		'opt_out'   => isset( $data['opt_out'] ) ? $data['opt_out'] : '',
+	);
+
+	/**
+	 * Consent logs are stored in wpas_consent_tracking option
+	 */
+	$tracked_consent = get_option( 'wpas_consent_tracking' );
+
+	if( ! empty ( $tracked_consent ) && is_array( $tracked_consent ) ) {
+		update_option( 'wpas_consent_log', array_push( $tracked_consent, $consent ) );
+	}else{
+		update_option( 'wpas_consent_log', array( $consent ) );
+	}
 }
