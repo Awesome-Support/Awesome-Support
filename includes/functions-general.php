@@ -864,7 +864,7 @@ function wpas_get_submission_page_url( $post_id = false ) {
 		$url = get_permalink( (int) $submission[0] );
 	}
 
-	return wp_sanitize_redirect( $url );
+	return wp_sanitize_redirect( apply_filters( 'wpas_submission_page_url', $url, $post_id ) );
 
 }
 
@@ -905,7 +905,7 @@ function wpas_get_tickets_list_page_url() {
 		$list = $list[0];
 	}
 
-	return wp_sanitize_redirect( get_permalink( (int) $list ) );
+	return wp_sanitize_redirect( apply_filters( 'wpas_tickets_list_page_url', get_permalink( (int) $list ) ) );
 
 }
 
