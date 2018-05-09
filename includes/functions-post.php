@@ -772,7 +772,7 @@ function wpas_log_reply_edits( $reply_id, $original_reply ) {
 	
 	/* Do we log a summary or detail that includes the original content? */
 	if ( 'low' === wpas_get_option( 'log_content_edit_level', 'low' ) ) {
-		$reply_contents_to_log = '' ;
+		$reply_contents_to_log = __( 'Original data not available because detailed logging is not turned on or allowed', 'awesome-support' ) ;
 	} else {
 		$reply_contents_to_log = $original_reply->post_content ;
 	}
