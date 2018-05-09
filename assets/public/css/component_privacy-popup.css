@@ -36,7 +36,7 @@
 	}
 }
 
-@media (max-width: 640px) {
+@media (max-width: 860px) {
 	#privacy-option-content {
 		width: calc(100% - 10px);
 	}
@@ -62,7 +62,7 @@
 	transition: 0.3s;
 	color: #000;
 }
-@media (max-width: 640px) {
+@media (max-width: 860px) {
 	.wpas-gdpr-tab button {
 		width: 100%;
 	}
@@ -125,22 +125,34 @@
     padding: 5px;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 860px) {
 	#privacy-option-content {
 		height: 100%;
 		top: 5px;
 		margin-top: 0;
 		padding: 20px 15px;
+		overflow-y: auto;
 	}
 
-	#privacy-option-content .entry-content {
-		height: calc(100% - 50px);
+	#privacy-option-content::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
+		border-radius: 0px;
+		background-color: #fff;
+	}
+
+	#privacy-option-content::-webkit-scrollbar {
+		width: 5px;
+		background-color: #c7c7c7c7;
+	}
+
+	#privacy-option-content::-webkit-scrollbar-thumb {
+		border-radius: 1px;
+		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+		background-color: #f1f1f1;
 	}
 
 	#privacy-option-content .wpas-gdpr-tab-content {
-		overflow-y: auto;
 		border: none;
-		height: 70%;
 		padding: 0;
 		margin-top: 10px;
 	}
@@ -169,13 +181,11 @@
 	}
 
 	.wpas-gdpr-tab-content td {
-		border-bottom: 1px solid #ddd;
 		display: block;
-		font-size: .8em;
-		text-align: right;
-		height: 36px;
-		line-height: 36px;
-		padding: 0 10px;
+		margin: 8px 10px;
+		font-size: 16px;
+		color: #3b3b3b;
+		font-weight: 400;
 	}
 
 	.wpas-gdpr-tab-content .form-table {
@@ -184,29 +194,15 @@
 
 	.wpas-gdpr-tab-content td::before {
 		content: attr(data-label);
-		float: left;
+		margin: 15px 0 0 0;
+		font-size: 12px;
 		font-weight: bold;
 		text-transform: uppercase;
+		color: #969696;
+		display: block;
 	}
 
 	.wpas-gdpr-tab-content td:last-child {
 		border-bottom: 0;
-	}
-
-	.wpas-gdpr-tab-content::-webkit-scrollbar-track {
-		-webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
-		border-radius: 0px;
-		background-color: #fff;
-	}
-
-	.wpas-gdpr-tab-content::-webkit-scrollbar {
-		width: 5px;
-		background-color: #c7c7c7c7;
-	}
-
-	.wpas-gdpr-tab-content::-webkit-scrollbar-thumb {
-		border-radius: 1px;
-		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-		background-color: #f1f1f1;
 	}
 }
