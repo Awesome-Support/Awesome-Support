@@ -54,7 +54,7 @@ class WPAS_Privacy_Option {
 		?>
 		<div class="privacy-container-template">
 			<div class="entry entry-normal" id="privacy-option-content">
-				<a href="#" class="hide-the-content">close</a>
+				<a href="#" class="hide-the-content"></a>
 				<?php
 				$entry_header = wpas_get_option( 'privacy_popup_header', 'Privacy' );
 				if ( ! empty( $entry_header ) ) {

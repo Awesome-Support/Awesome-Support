@@ -14,13 +14,15 @@ if ( ! defined( 'WPINC' ) ) {
 }
 ?>
 <table class="form-table">
-	<tr>
-		<th><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
-		<th><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
-		<th><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
-		<th><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
-		<th><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
-	</tr>
+	<thead>
+		<tr class="headlines">
+			<th><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
+			<th><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
+			<th><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
+			<th><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
+			<th><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
+		</tr>
+	</thead>
 	<tr>
 		<td><?php esc_html_e( 'Terms and Conditions', 'awesome-support' ); ?></td>
 		<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
@@ -40,10 +42,10 @@ if ( ! defined( 'WPINC' ) ) {
 	if ( ! empty( $gdpr_one ) ) {
 		?>
 		<tr>
-			<td><?php echo $gdpr_one; ?></td>
-			<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
-			<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
-			<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
+			<td data-label="<?php esc_html_e( 'Item', 'awesome-support' ); ?>"><?php echo $gdpr_one; ?></td>
+			<td data-label="<?php esc_html_e( 'Status', 'awesome-support' ); ?>"><?php esc_html_e( '', 'awesome-support' ); ?></td>
+			<td data-label="<?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?>"><?php esc_html_e( '', 'awesome-support' ); ?></td>
+			<td data-label="<?php esc_html_e( 'Action', 'awesome-support' ); ?>"><?php esc_html_e( '', 'awesome-support' ); ?></td>
 			<td>
 				<button><?php esc_html_e( 'Opt In', 'awesome-support' ); ?></button>
 				<?php
@@ -61,10 +63,10 @@ if ( ! defined( 'WPINC' ) ) {
 	if ( ! empty( $gdpr_two ) ) {
 		?>
 		<tr>
-			<td><?php echo $gdpr_two; ?></td>
-			<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
-			<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
-			<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
+			<td data-label="<?php esc_html_e( 'Item', 'awesome-support' ); ?>"><?php echo $gdpr_two; ?></td>
+			<td data-label="<?php esc_html_e( 'Status', 'awesome-support' ); ?>"><?php esc_html_e( '', 'awesome-support' ); ?></td>
+			<td data-label="<?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?>"><?php esc_html_e( '', 'awesome-support' ); ?></td>
+			<td data-label="<?php esc_html_e( 'Action', 'awesome-support' ); ?>"><?php esc_html_e( '', 'awesome-support' ); ?></td>
 			<td>
 				<button><?php esc_html_e( 'Opt In', 'awesome-support' ); ?></button>
 				<?php
@@ -82,10 +84,10 @@ if ( ! defined( 'WPINC' ) ) {
 	if ( ! empty( $gdpr_three ) ) {
 		?>
 		<tr>
-			<td><?php echo $gdpr_three; ?></td>
-			<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
-			<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
-			<td><?php esc_html_e( '', 'awesome-support' ); ?></td>
+			<td data-label="<?php esc_html_e( 'Item', 'awesome-support' ); ?>"><?php echo $gdpr_three; ?></td>
+			<td data-label="<?php esc_html_e( 'Status', 'awesome-support' ); ?>"><?php esc_html_e( '', 'awesome-support' ); ?></td>
+			<td data-label="<?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?>"><?php esc_html_e( '', 'awesome-support' ); ?></td>
+			<td data-label="<?php esc_html_e( 'Action', 'awesome-support' ); ?>"><?php esc_html_e( '', 'awesome-support' ); ?></td>
 			<td>
 				<button><?php esc_html_e( 'Opt In', 'awesome-support' ); ?></button>
 				<?php

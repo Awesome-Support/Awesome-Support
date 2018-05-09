@@ -11,7 +11,7 @@
 	opacity: 30;
 	filter: alpha(opacity = 50);
  }
- 
+
 #privacy-option-content {
 	width: 65%;
 	position: absolute;
@@ -19,13 +19,27 @@
 	background-color: #ffffff;
 	/* To align popup window at the center of screen*/
 	top: 30%;
-	left: 40%;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
 	margin-top: -100px;
-	margin-left: -220px;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
 	padding: 20px;
+	position: relative;
+}
+
+@media (max-width: 1024px) {
+	#privacy-option-content {
+		width: calc(100% - 60px);
+	}
+}
+
+@media (max-width: 860px) {
+	#privacy-option-content {
+		width: calc(100% - 10px);
+	}
 }
 
 .active {
@@ -47,6 +61,11 @@
     padding: 14px 16px;
 	transition: 0.3s;
 	color: #000;
+}
+@media (max-width: 860px) {
+	.wpas-gdpr-tab button {
+		width: 100%;
+	}
 }
 
 .wpas-gdpr-tab button:hover {
@@ -70,6 +89,27 @@
     to {opacity: 1;}
 }
 
+.hide-the-content {
+	position: absolute;
+	right: 5px;
+	top: 0;
+}
+
+.hide-the-content:after {
+	color: #777;
+	font: 16px/100% arial, sans-serif;
+	position: absolute;
+	right: 2px;
+	top: 6px;
+	text-decoration: none;
+	text-shadow: 0 1px 0 #fff;
+	content: '✖'; /* UTF-8 symbol */
+}
+
+.wpas-gdpr-tab-content .headlines {
+	text-align: left;
+}
+
 .wpas-gdpr-notice.success {
 	background-color: #46b450;
     color: #ffffff;
@@ -83,4 +123,86 @@
 .wpas-gdpr-notice p {
 	margin: .5em 0;
     padding: 5px;
+}
+
+@media (max-width: 860px) {
+	#privacy-option-content {
+		height: 100%;
+		top: 5px;
+		margin-top: 0;
+		padding: 20px 15px;
+		overflow-y: auto;
+	}
+
+	#privacy-option-content::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
+		border-radius: 0px;
+		background-color: #fff;
+	}
+
+	#privacy-option-content::-webkit-scrollbar {
+		width: 5px;
+		background-color: #c7c7c7c7;
+	}
+
+	#privacy-option-content::-webkit-scrollbar-thumb {
+		border-radius: 1px;
+		-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+		background-color: #f1f1f1;
+	}
+
+	#privacy-option-content .wpas-gdpr-tab-content {
+		border: none;
+		padding: 0;
+		margin-top: 10px;
+	}
+
+	.wpas-gdpr-tab-content thead {
+		border: none;
+		clip: rect(0 0 0 0);
+		height: 1px;
+		margin: -1px;
+		overflow: hidden;
+		padding: 0;
+		position: absolute;
+		width: 1px;
+	}
+
+	.wpas-gdpr-tab-content tr {
+		border: 1px solid #ddd;
+		border-bottom: 3px solid #e2e2e2;
+		display: block;
+		margin-top: .625em;
+		background: #fdfdfd;
+	}
+
+	.wpas-gdpr-tab-content tr:first-child {
+		margin-top: 0;
+	}
+
+	.wpas-gdpr-tab-content td {
+		display: block;
+		margin: 8px 10px;
+		font-size: 16px;
+		color: #3b3b3b;
+		font-weight: 400;
+	}
+
+	.wpas-gdpr-tab-content .form-table {
+		margin-bottom: 0;
+	}
+
+	.wpas-gdpr-tab-content td::before {
+		content: attr(data-label);
+		margin: 15px 0 0 0;
+		font-size: 12px;
+		font-weight: bold;
+		text-transform: uppercase;
+		color: #969696;
+		display: block;
+	}
+
+	.wpas-gdpr-tab-content td:last-child {
+		border-bottom: 0;
+	}
 }
