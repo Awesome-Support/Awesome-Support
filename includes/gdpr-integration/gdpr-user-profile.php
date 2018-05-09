@@ -139,6 +139,20 @@ class WPAS_GDPR_User_Profile {
 			  }
 			?>
 		</table>
+
+		<!-- GDPR Consent logging -->
+		<h2><?php esc_html_e( 'Log', 'awesome-support' ); ?></h2>
+		<?php
+			/**
+			 * Get consent logs
+			 */
+			$consent_log = get_user_meta(  $profileuser->ID, 'wpas_consent_log', true );
+			if( ! empty ( $consent_log ) && is_array( $consent_log ) ) {
+				foreach( $consent_log as $log ) {
+					echo '<p>' . $log . '</p>';
+				}
+			}
+		?>
 	<?php
 		}
 	}

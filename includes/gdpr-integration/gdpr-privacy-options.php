@@ -26,6 +26,18 @@ class WPAS_Privacy_Option {
 		add_filter( 'wp_footer', array( $this, 'print_privacy_popup_temp' ), 101 );
 		add_action( 'wp_ajax_wpas_gdpr_open_ticket', array( $this, 'wpas_gdpr_open_ticket' ) );
 		add_action( 'wp_ajax_nopriv_wpas_gdpr_open_ticket', array( $this, 'wpas_gdpr_open_ticket' ) );
+
+		/**
+		 * Opt in processing
+		 */
+		add_action( 'wp_ajax_wpas_gdpr_user_opt_in', array( $this, 'wpas_gdpr_user_opt_in' ) );
+		add_action( 'wp_ajax_nopriv_wpas_gdpr_user_opt_in', array( $this, 'wpas_gdpr_user_opt_in' ) );
+
+		/**
+		 * Opt out processing
+		 */
+		add_action( 'wp_ajax_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
+		add_action( 'wp_ajax_nopriv_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
 	}
 
 	/**
@@ -169,6 +181,96 @@ class WPAS_Privacy_Option {
 			} else {
 				$response['message'] = __( 'Something went wrong. Please try again!', 'awesome-support' );
 			}
+		} else {
+			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
+		}
+		wp_send_json( $response );
+		wp_die();
+	}
+
+	/**
+	 * Ajax based processing user opted in button
+	 * The button can be found on GDPR popup in front-end
+	 */
+	public function wpas_gdpr_user_opt_in() {
+		/**
+		 * Initialize custom reponse message
+		 */
+		$response = array(
+			'code'    => 403,
+			'message' => __( 'Sorry! Something failed', 'awesome-support' ),
+		);
+
+		/**
+		 * Initiate nonce
+		 */
+		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
+
+		/**
+		 * Security checking
+		 */
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
+
+			$item 		= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : "";
+			$user 		= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : "";
+			$status 	= __( 'Checked', 'awesome-support' );
+			$opt_in 	= strtotime( 'NOW' );
+
+			wpas_track_consent( array( 
+				'item' 		=> $item,
+				'status' 	=> $status,
+				'opt_in' 	=> $opt_in,
+				'opt_out' 	=> '',
+				'is_tor'	=> false
+			), $user );
+
+			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ) );
+			$response['message'] = $user;
+		} else {
+			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
+		}
+		wp_send_json( $response );
+		wp_die();
+	}
+
+	/**
+	 * Ajax based processing user opted out button
+	 * The button can be found on GDPR popup in front-end
+	 */
+	public function wpas_gdpr_user_opt_out() {
+		/**
+		 * Initialize custom reponse message
+		 */
+		$response = array(
+			'code'    => 403,
+			'message' => __( 'Sorry! Something failed', 'awesome-support' ),
+		);
+
+		/**
+		 * Initiate nonce
+		 */
+		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
+
+		/**
+		 * Security checking
+		 */
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
+
+			$item 		= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : "";
+			$user 		= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : "";
+			$status 	= __( 'Checked', 'awesome-support' );
+			$opt_out 	= strtotime( 'NOW' );
+
+			wpas_track_consent( array( 
+				'item' 		=> $item,
+				'status' 	=> $status,
+				'opt_in' 	=> '',
+				'opt_out' 	=> $opt_out,
+				'is_tor'	=> false
+			), $user );
+
+			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ) );
+			$response['message'] = $user;
 		} else {
 			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
 		}

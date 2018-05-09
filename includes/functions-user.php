@@ -1324,7 +1324,7 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
  * @param {*} action 
  * @param {*} date 
  */
-function wpas_log_consent( $label, $action, $date = "" ) {
+function wpas_log_consent( $user_id, $label, $action, $date = "" ) {
 	/**
 	 * Label parameter is required, WP_Error if none given
 	 */
@@ -1345,7 +1345,7 @@ function wpas_log_consent( $label, $action, $date = "" ) {
 	/**
 	 * Consent logs are stored in wpas_consent_log option
 	 */
-	$logged_consent = get_option( 'wpas_consent_log' );
+	$logged_consent = get_user_meta( $user_id, 'wpas_consent_log', true );
 	$consent = sprintf(
 		'%s - %s %s %s %s',
 		$label,
@@ -1356,9 +1356,9 @@ function wpas_log_consent( $label, $action, $date = "" ) {
 	);
 
 	if( ! empty ( $logged_consent ) && is_array( $logged_consent ) ) {
-		update_option( 'wpas_consent_log', array_push( $logged_consent, $consent ) );
+		update_user_meta( $user_id, 'wpas_consent_log', array_merge( $logged_consent, array( $consent ) ) );
 	}else{
-		update_option( 'wpas_consent_log', array( $consent ) );
+		update_user_meta( $user_id, 'wpas_consent_log', array( $consent ) );
 	}
 }
 
