@@ -97,7 +97,7 @@
 
 .hide-the-content:after {
 	color: #777;
-	font: 16px/100% arial, sans-serif;
+	font: 16px/100%;
 	position: absolute;
 	right: 2px;
 	top: 6px;
@@ -204,5 +204,90 @@
 
 	.wpas-gdpr-tab-content td:last-child {
 		border-bottom: 0;
+	}
+}
+
+.wpas-gdpr-pre-loader .loader-background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 0.65);
+	width: 100%;
+	height: 100%;
+}
+
+.wpas-gdpr-pre-loader .loader-img {
+	z-index: 9999;
+	position: absolute;
+	top: 45%;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+}
+
+.wpas-gdpr-pre-loader .loader,
+.wpas-gdpr-pre-loader .loader:before,
+.wpas-gdpr-pre-loader .loader:after {
+	background: #bebebe;
+	-webkit-animation: load1 1s infinite ease-in-out;
+	animation: load1 1s infinite ease-in-out;
+	width: 1em;
+	height: 4em;
+}
+
+.wpas-gdpr-pre-loader .loader {
+	color: #bebebe;
+	text-indent: -9999em;
+	margin: 88px auto;
+	position: relative;
+	font-size: 11px;
+	-webkit-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+}
+
+.wpas-gdpr-pre-loader .loader:before,
+.wpas-gdpr-pre-loader .loader:after {
+	position: absolute;
+	top: 0;
+	content: '';
+}
+
+.wpas-gdpr-pre-loader .loader:before {
+	left: -1.5em;
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+
+.wpas-gdpr-pre-loader .loader:after {
+	left: 1.5em;
+}
+
+@-webkit-keyframes load1 {
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0;
+		height: 4em;
+	}
+
+	40% {
+		box-shadow: 0 -2em;
+		height: 5em;
+	}
+}
+@keyframes load1 {
+	0%,
+	80%,
+	100% {
+		box-shadow: 0 0;
+		height: 4em;
+	}
+
+	40% {
+		box-shadow: 0 -2em;
+		height: 5em;
 	}
 }
