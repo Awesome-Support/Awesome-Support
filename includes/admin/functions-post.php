@@ -319,7 +319,7 @@ function wpas_save_ticket( $post_id ) {
 		}
 	}
 	
-	do_action( 'wpas_tikcet_after_saved', $post_id );
+	do_action( 'wpas_ticket_after_saved', $post_id );
 
 }
 

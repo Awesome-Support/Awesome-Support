@@ -364,7 +364,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 */
 	do_action( 'wpas_open_ticket_after', $ticket_id, $data );
 
-	do_action( 'wpas_tikcet_after_saved', $ticket_id );
+	do_action( 'wpas_ticket_after_saved', $ticket_id );
 	
 	return $ticket_id;
 
