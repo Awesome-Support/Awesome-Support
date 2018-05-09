@@ -54,6 +54,7 @@ class WPAS_GDPR_User_Profile {
 	 * Only visible if the current role is WPAS User
 	 */
 	public function wpas_user_profile_fields( $profileuser ) {
+	
 		/**
 		 * Visible to all WPAS user roles
 		 */

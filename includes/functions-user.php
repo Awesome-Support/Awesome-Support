@@ -80,8 +80,6 @@ function wpas_register_account( $data ) {
 		exit;
 	}
 
-
-
 	/**
 	 * wpas_register_account_before hook
 	 *
@@ -111,6 +109,69 @@ function wpas_register_account( $data ) {
 		exit;
 
 	} else {
+
+		/**
+		 * Record Term and Conditions consent
+		 */
+		if ( wpas_get_option( 'terms_conditions', false ) ) {
+			$status = isset( $data['wpas_terms'] ) ? isset( $data['wpas_terms'] ) : "";
+			$opt_in = ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+
+			wpas_track_consent( array( 
+				'item' => wpas_get_option( 'terms_conditions', false ),
+				'status' => $status,
+				'opt_in' => $opt_in,
+				'opt_out' => "",
+			), $user_id );
+		}
+
+		/**
+		 * Record GDPR 1 consent
+		 */
+		if ( wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) {
+			$status 	= isset( $data['wpas_gdpr01'] ) ? isset( $data['wpas_gdpr01'] ) : "";
+			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
+
+			wpas_track_consent( array( 
+				'item' => wpas_get_option( 'gdpr_notice_short_desc_01', false ),
+				'status' => $status,
+				'opt_in' => $opt_in,
+				'opt_out' => $opt_out,
+			), $user_id );
+		}
+
+		/**
+		 * Record GDPR 2 consent
+		 */
+		if ( wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) {
+			$status 	= isset( $data['wpas_gdpr02'] ) ? isset( $data['wpas_gdpr02'] ) : "";
+			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
+
+			wpas_track_consent( array( 
+				'item' => wpas_get_option( 'gdpr_notice_short_desc_02', false ),
+				'status' => $status,
+				'opt_in' => $opt_in,
+				'opt_out' => $opt_out,
+			), $user_id );
+		}
+
+		/**
+		 * Record GDPR 3 consent
+		 */
+		if ( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) {
+			$status 	= isset( $data['wpas_gdpr03'] ) ? isset( $data['wpas_gdpr03'] ) : "";
+			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
+
+			wpas_track_consent( array( 
+				'item' => wpas_get_option( 'gdpr_notice_short_desc_03', false ),
+				'status' => $status,
+				'opt_in' => $opt_in,
+				'opt_out' => $opt_out,
+			), $user_id );
+		}
 
 		/**
 		 * wpas_register_account_before hook
@@ -1306,7 +1367,7 @@ function wpas_log_consent( $label, $action, $date = "" ) {
  * 
  * @param {*} data
  */
-function wpas_track_consent( $data ){
+function wpas_track_consent( $data, $user_id ){
 	// Prepare consent data!
 	$consent = array(
 		'item'		=> isset( $data['item'] ) ? $data['item'] : '',
@@ -1314,15 +1375,16 @@ function wpas_track_consent( $data ){
 		'opt_in'  	=> isset( $data['opt_in'] ) ? $data['opt_in'] : '',
 		'opt_out'   => isset( $data['opt_out'] ) ? $data['opt_out'] : '',
 	);
-
+	
 	/**
 	 * Consent logs are stored in wpas_consent_tracking option
 	 */
-	$tracked_consent = get_option( 'wpas_consent_tracking' );
+	$tracked_consent = get_user_meta( $user_id, 'wpas_consent_tracking', true );
 
 	if( ! empty ( $tracked_consent ) && is_array( $tracked_consent ) ) {
-		update_option( 'wpas_consent_log', array_push( $tracked_consent, $consent ) );
+		update_user_meta( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
 	}else{
-		update_option( 'wpas_consent_log', array( $consent ) );
+		update_user_meta( $user_id, 'wpas_consent_tracking', array( $data ) );
 	}
+
 }
