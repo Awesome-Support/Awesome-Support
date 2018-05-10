@@ -76,9 +76,9 @@ class WPAS_Privacy_Option {
 				?>
 				<div class="entry-content">
 					<div class="wpas-gdpr-tab">
-						<button class="tablinks" onclick="wpas_gdpr_open_tab( event, 'add-remove-consent' )" id="wpas-gdpr-tab-default"><?php esc_html_e( 'Add/Remove Existing Consent', 'awesome-support' ); ?></button>
-						<button class="tablinks" onclick="wpas_gdpr_open_tab( event, 'delete-existing-data' )"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
-						<button class="tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )"><?php esc_html_e( 'Export tickets and user data', 'awesome-support' ); ?></button>
+						<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'add-remove-consent' )" id="wpas-gdpr-tab-default" data-id="add-remove"><?php esc_html_e( 'Add/Remove Existing Consent', 'awesome-support' ); ?></button>
+						<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'delete-existing-data' )" data-id="delete-existing"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
+						<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets and user data', 'awesome-support' ); ?></button>
 					</div>
 
 					<div id="add-remove-consent" class="entry-content-tabs wpas-gdpr-tab-content">
@@ -225,7 +225,8 @@ class WPAS_Privacy_Option {
 			), $user, 'in' );
 
 			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ) );
-			$response['message'] = $user;
+			$response['code'] = 200;
+			$response['message'] = __( 'You have successfully opted-in', 'awesome-support' );
 		} else {
 			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
 		}
@@ -270,7 +271,8 @@ class WPAS_Privacy_Option {
 			), $user, 'out' );
 
 			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ) );
-			$response['message'] = $user;
+			$response['code'] = 200;
+			$response['message'] = __( 'You have successfully opted-out', 'awesome-support' );
 		} else {
 			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
 		}

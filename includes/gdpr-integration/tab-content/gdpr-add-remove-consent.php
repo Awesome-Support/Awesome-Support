@@ -13,6 +13,11 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 ?>
+<div class="wpas-gdpr-pre-loader">
+	<div class="loader"></div><!-- .loader -->
+</div>
+<div class="wpas-gdpr-notice"></div>
+
 <table class="form-table">
 	<thead>
 		<tr class="headlines">

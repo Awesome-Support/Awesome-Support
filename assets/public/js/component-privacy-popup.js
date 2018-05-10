@@ -52,6 +52,9 @@ jQuery(document).ready(function ($) {
 	 */
 	jQuery( ".wpas-gdpr-opt-in" ).click( function(e) {
 		e.preventDefault();
+		jQuery( '.wpas-gdpr-pre-loader' ).show();
+		jQuery( '.wpas-gdpr-loader-background').show();
+
 		var data = {
 			'action': 'wpas_gdpr_user_opt_in',
 			'security' : WPAS_GDPR.nonce,
@@ -66,7 +69,9 @@ jQuery(document).ready(function ($) {
 			WPAS_GDPR.ajax_url,
 			data,
 			function( response ) {
-				console.log(response);
+				jQuery( '.wpas-gdpr-pre-loader' ).hide();
+				jQuery( '.wpas-gdpr-loader-background').hide();
+				jQuery( '.wpas-gdpr-notice' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
 			}
 		);		
 	});
@@ -77,6 +82,9 @@ jQuery(document).ready(function ($) {
 	 */
 	jQuery( ".wpas-gdpr-opt-out" ).click( function(e) {
 		e.preventDefault();
+		jQuery( '.wpas-gdpr-pre-loader' ).show();
+		jQuery( '.wpas-gdpr-loader-background').show();
+
 		var data = {
 			'action': 'wpas_gdpr_user_opt_out',
 			'security' : WPAS_GDPR.nonce,
@@ -91,7 +99,9 @@ jQuery(document).ready(function ($) {
 			WPAS_GDPR.ajax_url,
 			data,
 			function( response ) {
-				console.log(response);
+				jQuery( '.wpas-gdpr-pre-loader' ).hide();
+				jQuery( '.wpas-gdpr-loader-background').hide();
+				jQuery( '.wpas-gdpr-notice' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
 			}
 		);		
 	});
@@ -105,7 +115,11 @@ jQuery(document).ready(function ($) {
 	 * Initiate WP Editor when requesting right
 	 * to be deleted data in GDPR popup
 	 */
-    wpas_init_editor( 'wpas-gdpr-ded-more-info', '' );
+	jQuery( ".wpas-gdpr-tablinks" ).click( function(e) {
+		if( jQuery(this).data( 'id' ) === 'delete-existing'  ) {
+			wpas_init_editor( 'wpas-gdpr-ded-more-info', '' );
+		}
+	});
 });
 
 /**
