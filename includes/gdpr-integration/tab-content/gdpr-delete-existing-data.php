@@ -36,7 +36,7 @@ if ( ! defined( 'WPINC' ) ) {
 			<td data-label="Additional Information"><textarea name="wpas-gdpr-ded-more-info" id="wpas-gdpr-ded-more-info" ></textarea></td>
 		</tr>
 		<tr>
-			<td><?php submit_button( __( 'Submit', 'awesome-support' ), 'primary', 'wpas-gdpr-ded-submit' ); ?></td>
+			<td><input type="submit" name="wpas-gdpr-ded-submit" id="wpas-gdpr-ded-submit" class="button button-primary" value="Submit"></td>
 		</tr>
 	</table>
 </form>

@@ -138,7 +138,7 @@ function wpas_register_account( $data ) {
 				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_01', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
-				'opt_out' 	=> $opt_out,
+				'opt_out' 	=> '',
 				'is_tor'	=> false
 			), $user_id );
 		}
@@ -155,7 +155,7 @@ function wpas_register_account( $data ) {
 				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_02', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
-				'opt_out' 	=> $opt_out,
+				'opt_out' 	=> '',
 				'is_tor'	=> false
 			), $user_id );
 		}
@@ -172,7 +172,7 @@ function wpas_register_account( $data ) {
 				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_03', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
-				'opt_out' 	=> $opt_out,
+				'opt_out' 	=> '',
 				'is_tor'	=> false
 			), $user_id );
 		}
@@ -1315,6 +1315,10 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
 	return $agents;
 }
 
+function wpas_get_user_meta( ) {
+
+}
+
 /**
  * Log the user consent. Data saved in WP Option
  * We're not sure yet if custom table is needed but we can
@@ -1345,7 +1349,7 @@ function wpas_log_consent( $user_id, $label, $action, $date = "" ) {
 	/**
 	 * Consent logs are stored in wpas_consent_log option
 	 */
-	$logged_consent = get_user_meta( $user_id, 'wpas_consent_log', true );
+	$logged_consent = get_user_option( 'wpas_consent_log', $user_id );
 	$consent = sprintf(
 		'%s - %s %s %s %s',
 		$label,
@@ -1356,9 +1360,9 @@ function wpas_log_consent( $user_id, $label, $action, $date = "" ) {
 	);
 
 	if( ! empty ( $logged_consent ) && is_array( $logged_consent ) ) {
-		update_user_meta( $user_id, 'wpas_consent_log', array_merge( $logged_consent, array( $consent ) ) );
+		update_user_option( $user_id, 'wpas_consent_log', array_merge( $logged_consent, array( $consent ) ) );
 	}else{
-		update_user_meta( $user_id, 'wpas_consent_log', array( $consent ) );
+		update_user_option( $user_id, 'wpas_consent_log', array( $consent ) );
 	}
 }
 
@@ -1375,12 +1379,13 @@ function wpas_track_consent( $data, $user_id ){
 	/**
 	 * Consent logs are stored in wpas_consent_tracking option
 	 */
-	$tracked_consent = get_user_meta( $user_id, 'wpas_consent_tracking', true );
+	$tracked_consent = get_user_option( 'wpas_consent_tracking', $user_id );
 
 	if( ! empty ( $tracked_consent ) && is_array( $tracked_consent ) ) {
-		update_user_meta( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
+		error_log( print_r( $data, true ) );
+		update_user_option( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
 	}else{
-		update_user_meta( $user_id, 'wpas_consent_tracking', array( $data ) );
+		update_user_option( $user_id, 'wpas_consent_tracking', array( $data ) );
 	}
 
 }
