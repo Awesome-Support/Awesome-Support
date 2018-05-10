@@ -104,6 +104,34 @@ jQuery(document).ready(function ($) {
 				jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
 			}
 		);		
+    });
+    
+    /**
+	 * Ajax based export data
+	 */
+	jQuery( "#wpas-gdpr-export-data-submit" ).click( function(e) {
+		e.preventDefault();
+		jQuery( '.wpas-gdpr-pre-loader' ).show();
+		jQuery( '.wpas-gdpr-loader-background').show();
+
+		var data = {
+			'action': 'wpas_gdpr_export_data',
+			'security' : WPAS_GDPR.nonce,
+			'data' 	: {
+				'nonce'		: WPAS_GDPR.nonce,
+				'gdpr-user'	: jQuery(this).data( 'user' )
+			}
+		};
+		
+		jQuery.post(
+			WPAS_GDPR.ajax_url,
+			data,
+			function( response ) {
+				jQuery( '.wpas-gdpr-pre-loader' ).hide();
+				jQuery( '.wpas-gdpr-loader-background').hide();
+				//jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+			}
+		);		
 	});
 
 	/**
@@ -194,4 +222,3 @@ function wpas_gdpr_open_tab(evt, tab) {
     document.getElementById(tab).style.display = "block";
     evt.target.className += " active";
 }
-

@@ -174,7 +174,7 @@ class WPAS_Privacy_Option {
 					'message' => $form_data['wpas-gdpr-ded-subject'],
 				)
 			);
-			
+
 			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
 			if ( ! empty( $ticket_id ) ) {
 				$response['code']    = 200;
@@ -212,21 +212,23 @@ class WPAS_Privacy_Option {
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item 		= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : "";
-			$user 		= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : "";
-			$status 	= __( 'Checked', 'awesome-support' );
-			$opt_in 	= strtotime( 'NOW' );
+			$item   = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
+			$user   = isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+			$status = __( 'Checked', 'awesome-support' );
+			$opt_in = strtotime( 'NOW' );
 
-			wpas_track_consent( array( 
-				'item' 		=> $item,
-				'status' 	=> $status,
-				'opt_in' 	=> $opt_in,
-				'opt_out' 	=> '',
-				'is_tor'	=> false
-			), $user, 'in' );
+			wpas_track_consent(
+				array(
+					'item'    => $item,
+					'status'  => $status,
+					'opt_in'  => $opt_in,
+					'opt_out' => '',
+					'is_tor'  => false,
+				), $user, 'in'
+			);
 
 			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ) );
-			$response['code'] = 200;
+			$response['code']    = 200;
 			$response['message'] = __( 'You have successfully opted-in', 'awesome-support' );
 		} else {
 			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
@@ -258,21 +260,23 @@ class WPAS_Privacy_Option {
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item 		= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : "";
-			$user 		= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : "";
-			$status 	= __( 'Checked', 'awesome-support' );
-			$opt_out 	= strtotime( 'NOW' );
+			$item    = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
+			$user    = isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+			$status  = __( 'Checked', 'awesome-support' );
+			$opt_out = strtotime( 'NOW' );
 
-			wpas_track_consent( array( 
-				'item' 		=> $item,
-				'status' 	=> $status,
-				'opt_in' 	=> '',
-				'opt_out' 	=> $opt_out,
-				'is_tor'	=> false
-			), $user, 'out' );
+			wpas_track_consent(
+				array(
+					'item'    => $item,
+					'status'  => $status,
+					'opt_in'  => '',
+					'opt_out' => $opt_out,
+					'is_tor'  => false,
+				), $user, 'out'
+			);
 
 			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ) );
-			$response['code'] = 200;
+			$response['code']    = 200;
 			$response['message'] = __( 'You have successfully opted-out', 'awesome-support' );
 		} else {
 			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
