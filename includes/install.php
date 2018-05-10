@@ -312,7 +312,7 @@ function wpas_flush_rewrite_rules() {
  * Ask the user to setup plugin using Setup Wizard.
  */
 function wpas_ask_setup_wizard() {
-	if ( current_user_can( 'ticket_manage_departments' ) && current_user_can( 'ticket_manage_priorities' ) && current_user_can( 'ticket_manage_products' ) ) {
+	if ( wpas_is_asadmin() ) {
 	?>
 	<div class="updated wpas-wizard-notice">
 		<p><?php _e( 'Thank you for installing Awesome Support. <a href="'. admin_url( 'index.php?page=as-setup' ) .'" class="button button-primary">Click here</a> to get started or <a href="#" class="button" id="wpas-skip-wizard">skip this process</a>', 'awesome-support' ); ?></p>
