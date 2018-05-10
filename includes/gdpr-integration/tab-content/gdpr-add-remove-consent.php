@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 			  * wpas_consent_tracking user meta in form of array.
 			  * Get the option and if not empty, loop them here
 			  */
-			  $user_consent = get_user_meta( get_current_user_id(), 'wpas_consent_tracking', true );
+			  $user_consent = get_user_option( 'wpas_consent_tracking', get_current_user_id() );
 			  if( ! empty ( $user_consent ) && is_array( $user_consent ) ) {
 				foreach( $user_consent as $consent ) {
 					/**

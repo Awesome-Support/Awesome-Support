@@ -1328,7 +1328,7 @@ function wpas_get_user_meta( ) {
  * @param {*} action 
  * @param {*} date 
  */
-function wpas_log_consent( $user_id, $label, $action, $date = "" ) {
+function wpas_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
 	/**
 	 * Label parameter is required, WP_Error if none given
 	 */
@@ -1347,13 +1347,20 @@ function wpas_log_consent( $user_id, $label, $action, $date = "" ) {
 	}
 
 	/**
+	 * Determine user, we need to log when admin opt out as well
+	 */
+	if( empty ( $user ) ) {
+		$user = __( 'user', 'awesome-support' );
+	}
+
+	/**
 	 * Consent logs are stored in wpas_consent_log option
 	 */
 	$logged_consent = get_user_option( 'wpas_consent_log', $user_id );
 	$consent = sprintf(
 		'%s - %s %s %s %s',
 		$label,
-		__( 'user', 'awesome-support' ),
+		$user,
 		$action,
 		__( 'on', 'awesome-support' ),
 		$date
@@ -1375,15 +1382,36 @@ function wpas_log_consent( $user_id, $label, $action, $date = "" ) {
  * 
  * @param {*} data
  */
-function wpas_track_consent( $data, $user_id ){	
+function wpas_track_consent( $data, $user_id, $opt_type = "" ){	
 	/**
 	 * Consent logs are stored in wpas_consent_tracking option
 	 */
 	$tracked_consent = get_user_option( 'wpas_consent_tracking', $user_id );
 
 	if( ! empty ( $tracked_consent ) && is_array( $tracked_consent ) ) {
-		error_log( print_r( $data, true ) );
-		update_user_option( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
+		/**
+		 * If same item exists, simply update the same row
+		 * instead of merging them on new row
+		 */
+		$found_key = array_search( $data['item'], array_column( $tracked_consent, 'item' ) );		
+		if( $found_key !== false && ! empty ( $opt_type ) ) {
+			/**
+			 * We found something, update the row
+			 */
+			foreach( $tracked_consent as $key => $value ) {
+				if( $found_key === $key ) {
+					if( $opt_type === "in" ) {
+						$tracked_consent[$found_key]['opt_in'] = $data['opt_in'];
+					}elseif( $opt_type === "out" ) {
+						$tracked_consent[$found_key]['opt_out'] = $data['opt_out'];
+
+					}
+				}
+			}
+			update_user_option( $user_id, 'wpas_consent_tracking', $tracked_consent );
+		}else{
+			update_user_option( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
+		}		
 	}else{
 		update_user_option( $user_id, 'wpas_consent_tracking', array( $data ) );
 	}

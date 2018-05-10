@@ -222,7 +222,7 @@ class WPAS_Privacy_Option {
 				'opt_in' 	=> $opt_in,
 				'opt_out' 	=> '',
 				'is_tor'	=> false
-			), $user );
+			), $user, 'in' );
 
 			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ) );
 			$response['message'] = $user;
@@ -267,7 +267,7 @@ class WPAS_Privacy_Option {
 				'opt_in' 	=> '',
 				'opt_out' 	=> $opt_out,
 				'is_tor'	=> false
-			), $user );
+			), $user, 'out' );
 
 			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ) );
 			$response['message'] = $user;

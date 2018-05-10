@@ -146,7 +146,7 @@ class WPAS_GDPR_User_Profile {
 			/**
 			 * Get consent logs
 			 */
-			$consent_log = get_user_option(  $profileuser->ID, 'wpas_consent_log' );
+			$consent_log = get_user_option( 'wpas_consent_log', $profileuser->ID );
 			if( ! empty ( $consent_log ) && is_array( $consent_log ) ) {
 				foreach( $consent_log as $log ) {
 					echo '<p>' . $log . '</p>';
