@@ -37,10 +37,10 @@ jQuery(document).ready(function ($) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
 				if( response.message && response.code === 200 ) {
-					jQuery( '.wpas-gdpr-notice' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+					jQuery( '.wpas-gdpr-notice.delete-existing-data' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
 					jQuery( '.wpas-gdpr-form-table' ).remove();
 				}else{
-					jQuery( '.wpas-gdpr-notice' ).addClass( 'failure' ).html( '<p>' + response.message + '</p>' );
+					jQuery( '.wpas-gdpr-notice.delete-existing-data' ).addClass( 'failure' ).html( '<p>' + response.message + '</p>' );
 				}
 			}
 		);		
@@ -71,7 +71,7 @@ jQuery(document).ready(function ($) {
 			function( response ) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
-				jQuery( '.wpas-gdpr-notice' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+				jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
 			}
 		);		
 	});
@@ -101,7 +101,7 @@ jQuery(document).ready(function ($) {
 			function( response ) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
-				jQuery( '.wpas-gdpr-notice' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+				jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
 			}
 		);		
 	});

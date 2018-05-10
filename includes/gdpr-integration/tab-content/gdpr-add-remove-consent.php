@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 <div class="wpas-gdpr-pre-loader">
 	<div class="loader"></div><!-- .loader -->
 </div>
-<div class="wpas-gdpr-notice"></div>
+<div class="wpas-gdpr-notice add-remove-consent"></div>
 
 <table class="form-table">
 	<thead>
