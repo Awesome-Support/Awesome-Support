@@ -57,7 +57,7 @@ class WPAS_GDPR_User_Profile {
 		/**
 		 * Visible to all WPAS user roles
 		 */
-		if ( current_user_can( 'create_ticket' ) ) {
+		if ( wpas_is_asadmin() ) {
 	?>
 		<h2><?php esc_html_e( 'Awesome Support Consent History', 'awesome-support' ); ?></h2>
 		<table class="form-table">
@@ -74,7 +74,7 @@ class WPAS_GDPR_User_Profile {
 			  * wpas_consent_tracking user meta in form of array.
 			  * Get the option and if not empty, loop them here
 			  */
-			  $user_consent = get_user_meta( $profileuser->ID, 'wpas_consent_tracking', true );
+			  $user_consent = get_user_option( 'wpas_consent_tracking', $profileuser->ID );
 			  if( ! empty ( $user_consent ) && is_array( $user_consent ) ) {
 				foreach( $user_consent as $consent ) {
 					/**
@@ -146,7 +146,7 @@ class WPAS_GDPR_User_Profile {
 			/**
 			 * Get consent logs
 			 */
-			$consent_log = get_user_meta(  $profileuser->ID, 'wpas_consent_log', true );
+			$consent_log = get_user_option(  $profileuser->ID, 'wpas_consent_log' );
 			if( ! empty ( $consent_log ) && is_array( $consent_log ) ) {
 				foreach( $consent_log as $log ) {
 					echo '<p>' . $log . '</p>';
