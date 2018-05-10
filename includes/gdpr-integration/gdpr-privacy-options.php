@@ -174,7 +174,8 @@ class WPAS_Privacy_Option {
 					'message' => $form_data['wpas-gdpr-ded-subject'],
 				)
 			);
-
+			
+			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
 			if ( ! empty( $ticket_id ) ) {
 				$response['code']    = 200;
 				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );

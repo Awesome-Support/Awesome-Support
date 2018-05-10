@@ -18,6 +18,7 @@ if ( ! defined( 'WPINC' ) ) {
 		<div class="loader"></div><!-- .loader -->
 	</div>
 	<div class="wpas-gdpr-notice"></div>
+	<input type="hidden" name="wpas-user" value="<?php echo get_current_user_id(); ?>">
 	<table class="form-table wpas-gdpr-form-table">
 		<thead>
 			<tr class="headlines">
