@@ -13,4 +13,9 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 ?>
+<div class="wpas-gdpr-pre-loader">
+	<div class="loader"></div><!-- .loader -->
+</div>
+<div class="wpas-gdpr-notice export-data"></div>
+
 <input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo get_current_user_id(); ?>" class="button button-primary" value="<?php _e( 'Export my data', 'awesome-suppot' ); ?>">

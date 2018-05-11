@@ -84,7 +84,14 @@ if ( ! defined( 'WPINC' ) ) {
 								__( 'Opt-in', 'awesome-support' )
 							);
 							$opt_button_label = __( 'Opt-in', 'awesome-support' );
+						}elseif( empty ( $opt_in ) && empty ( $opt_out ) ) {
+							$opt_button = sprintf(
+								'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
+								__( 'Opt-in', 'awesome-support' )
+							);
+							$opt_button_label = __( 'Opt-in', 'awesome-support' );
 						}
+
 					}
 
 					/**

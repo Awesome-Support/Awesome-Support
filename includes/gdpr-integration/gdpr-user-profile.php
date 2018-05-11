@@ -15,6 +15,14 @@ if ( ! defined( 'WPINC' ) ) {
 class WPAS_GDPR_User_Profile {
 
 	/**
+	 *  Store the export directory path
+	 * 
+	 * @since     5.1.1
+	 * @var      object
+	 */
+	private $user_export_dir;
+
+	/**
 	 * Instance of this class.
 	 *
 	 * @since     5.1.1
@@ -36,6 +44,33 @@ class WPAS_GDPR_User_Profile {
 		 */
 		add_action( 'wp_ajax_wpas_gdpr_export_data', array( $this, 'wpas_gdpr_export_data' ) );
 		add_action( 'wp_ajax_nopriv_wpas_gdpr_export_data', array( $this, 'wpas_gdpr_export_data' ) );
+
+		add_action( 'init', array( $this, 'download_file' ) );
+	}
+
+	/**
+	 * Download an exported file
+	 *
+	 * @since     5.1.1
+	 */
+	public function download_file() {
+		$current_url = home_url( add_query_arg( null, null ) );
+		if ( isset( $_GET['file'] ) ) {
+			$user = $_GET['file'];
+			if ( ! $this->user_export_dir ) {
+				$this->user_export_dir = $this->set_log_dir( $user );
+			}
+
+			header( 'Content-Description: File Transfer' );
+			header( 'Content-type: text/xml' );
+			header( 'Content-Disposition: attachment; filename="export-data.xml"' );
+			header( 'Expires: 0' );
+			header( 'Cache-Control: must-revalidate' );
+			header( 'Pragma: public' );
+			header( 'Content-Length: ' . filesize( $this->user_export_dir . '/export-data.xml' ) );
+			readfile( $this->user_export_dir . '/export-data.xml' );
+			wp_die();
+		}
 	}
 
 	/**
@@ -63,10 +98,10 @@ class WPAS_GDPR_User_Profile {
 		/**
 		 * Visible to all WPAS user roles
 		 */
-		if ( wpas_is_asadmin() ) {
+		if ( current_user_can( 'create_ticket' ) ) {
 	?>
 		<h2><?php esc_html_e( 'Awesome Support Consent History', 'awesome-support' ); ?></h2>
-		<table class="form-table">
+		<table class="form-table wp-list-table widefat fixed striped posts">
 			<tr>
 				<th><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
 				<th><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
@@ -127,6 +162,11 @@ class WPAS_GDPR_User_Profile {
 								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
 								__( 'Opt-in', 'awesome-support' )
 							);
+						} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
+							$opt_button = sprintf(
+								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
+								__( 'Opt-in', 'awesome-support' )
+							);
 						}
 					}
 
@@ -180,22 +220,24 @@ class WPAS_GDPR_User_Profile {
 		 * Initiate nonce
 		 */
 		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( $_POST['data']['nonce'] ) : '';
-
+		$user  = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
 		/**
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
-			$ticket_data = new WP_Query(
+			/**
+			 * Export ticket data belongs to the current user
+			 */
+			$ticket_data  = new WP_Query(
 				array(
 					'post_type'   => array( 'ticket' ),
-					'author'      => sanitize_text_field( $_POST['data']['gdpr-user'] ),
+					'author'      => $user,
 					'post_status' => wpas_get_post_status(),
 					'post_count'  => -1,
 				)
 			);
-
+			$user_tickets = array();
 			if ( $ticket_data->found_posts > 0 ) {
-				$user_tickets = array();
 				if ( isset( $ticket_data->posts ) ) {
 					foreach ( $ticket_data->posts as $post ) {
 						$user_tickets[] = array(
@@ -208,9 +250,42 @@ class WPAS_GDPR_User_Profile {
 						);
 					}
 				}
-				error_log( print_r( $user_tickets, true ) );
 				wp_reset_postdata();
 			}
+
+			/**
+			 * Export GDPR logs
+			 */
+			$user_consent = get_user_option( 'wpas_consent_tracking', $user );
+
+			/**
+			 * Put them in awesome-support/user_log_$user_id
+			 * folders in uploads dir. This has .htaccess protect to avoid
+			 * direct access
+			 */
+			$this->user_export_dir = $this->set_log_dir( $user );
+			file_put_contents(
+				$this->user_export_dir . '/export-data.xml',
+				$this->xml_conversion(
+					array_merge(
+						array( 'ticket_data' => $user_tickets ),
+						array( 'consent_log' => $user_consent )
+					)
+				)
+			);
+
+			$upload_dir          = wp_upload_dir();
+			$response['message'] = sprintf(
+				'<p>%s. <a href="%s" target="_blank">%s</a></p>',
+				__( 'Exporting data was successful!', 'awesome-support' ),
+				add_query_arg(
+					array(
+						'file' => $user,
+					), home_url()
+				),
+				__( 'Download it now..', 'awesome-support' )
+			);
+
 		} else {
 			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
 		}
@@ -286,5 +361,132 @@ class WPAS_GDPR_User_Profile {
 			$author = $get_author->data->display_name;
 		}
 		return $author;
+	}
+
+	/**
+	 * Create logs dir for user export
+	 */
+	public function set_log_dir( $user ) {
+		/* We sort the uploads in sub-folders per ticket. */
+		$subdir = "/awesome-support/user_$user";
+
+		$upload = wp_upload_dir();
+		/* Create final URL and dir */
+		$dir = $upload['basedir'] . $subdir;
+		$url = $upload['baseurl'] . $subdir;
+
+		/* Update upload params */
+		$upload['path']   = $dir;
+		$upload['url']    = $url;
+		$upload['subdir'] = $subdir;
+
+		/* Create the directory if it doesn't exist yet, make sure it's protected otherwise */
+		if ( ! is_dir( $dir ) ) {
+			$this->create_upload_dir( $dir );
+		} else {
+			$this->protect_upload_dir( $dir );
+		}
+		return $dir;
+	}
+
+	/**
+	 * Create the upload directory for a ticket.
+	 *
+	 * @since 3.1.7
+	 *
+	 * @param string $dir Upload directory
+	 *
+	 * @return boolean Whether or not the directory was created
+	 */
+	public function create_upload_dir( $dir ) {
+
+		$make = wp_mkdir_p( $dir );
+
+		if ( true === $make ) {
+			$this->protect_upload_dir( $dir );
+		}
+
+		return $make;
+
+	}
+
+	/**
+	 * Protects an upload directory by adding an .htaccess file
+	 *
+	 * @since 3.1.7
+	 *
+	 * @param string $dir Upload directory
+	 *
+	 * @return void
+	 */
+	protected function protect_upload_dir( $dir ) {
+
+		if ( is_writable( $dir ) ) {
+
+			$filename = $dir . '/.htaccess';
+
+			$filecontents = 'Options -Indexes';
+
+			if ( ! file_exists( $filename ) ) {
+				$file = fopen( $filename, 'a+' );
+				if ( false <> $file ) {
+					fwrite( $file, $filecontents );
+					fclose( $file );
+				} else {
+					// attempt to record failure...
+					wpas_write_log( 'file-uploader', 'unable to write .htaccess file to folder ' . $dir );
+				}
+			}
+		} else {
+			// folder isn't writable so no point in attempting to do it...
+			// log the error in our log files instead...
+			wpas_write_log( 'file-uploader', 'The folder ' . $dir . ' is not writable.  So we are unable to write a .htaccess file to this folder' );
+		}
+
+	}
+
+	/**
+	 * Convert the ticket and user data
+	 * from array to XML file
+	 */
+	public function xml_conversion( $array, $rootElement = null, $xml = null ) {
+		$_xml = $xml;
+
+		if ( $_xml === null ) {
+			$_xml = new SimpleXMLElement( $rootElement !== null ? $rootElement : '<root/>' );
+		}
+
+		foreach ( $array as $k => $v ) {
+			if ( is_array( $v ) || is_object( $v ) ) {
+				$this->xml_conversion( $v, $k, $_xml->addChild( $k ) );
+			} else {
+				$_xml->addChild( $k, $v );
+			}
+		}
+
+		return $_xml->asXML();
+	}
+
+	/**
+	 * Zip the exported file
+	 */
+	public function data_zip( $file, $destination, $filename = 'exported-data.zip' ) {
+		if ( ! file_exists( $destination ) ) {
+			return new WP_Error( 'file_destination_not_exists', __( 'The destination file does not exists!', 'awesome-support' ) );
+		}
+		if ( file_exists( $destination . '/' . $file ) ) {
+			$zip    = new ZipArchive();
+			$do_zip = $zip->open( './' . $filename, ZipArchive::OVERWRITE | ZipArchive::CREATE );
+			error_log( $destination . '/' . $filename );
+			error_log( $do_zip );
+			if ( is_resource( $do_zip ) ) {
+				$zip->addFile( $file );
+				$zip->close();
+			} else {
+				return new WP_Error( 'cannot_create_zip', __( 'Cannot create zip file', 'awesome-support' ) );
+			}
+		} else {
+			return new WP_Error( 'file_not_exists', __( 'Zip data file not exists!', 'awesome-support' ) );
+		}
 	}
 }

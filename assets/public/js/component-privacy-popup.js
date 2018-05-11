@@ -129,7 +129,7 @@ jQuery(document).ready(function ($) {
 			function( response ) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
-				//jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+				jQuery( '.export-data' ).addClass( 'success' ).html( response.message );
 			}
 		);		
 	});
