@@ -1402,9 +1402,10 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 				if( $found_key === $key ) {
 					if( $opt_type === "in" ) {
 						$tracked_consent[$found_key]['opt_in'] = $data['opt_in'];
+						$tracked_consent[$found_key]['status'] = $data['status'];
 					}elseif( $opt_type === "out" ) {
 						$tracked_consent[$found_key]['opt_out'] = $data['opt_out'];
-
+						$tracked_consent[$found_key]['status'] = $data['status'];
 					}
 				}
 			}

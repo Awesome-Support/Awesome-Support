@@ -274,6 +274,7 @@ class WPAS_GDPR_User_Profile {
 				)
 			);
 
+			$this->data_zip( 'export-data.xml', $this->user_export_dir );
 			$upload_dir          = wp_upload_dir();
 			$response['message'] = sprintf(
 				'<p>%s. <a href="%s" target="_blank">%s</a></p>',
