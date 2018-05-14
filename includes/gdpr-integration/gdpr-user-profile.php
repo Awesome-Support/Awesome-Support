@@ -239,8 +239,8 @@ class WPAS_GDPR_User_Profile {
 			$user_tickets = array();
 			if ( $ticket_data->found_posts > 0 ) {
 				if ( isset( $ticket_data->posts ) ) {
-					foreach ( $ticket_data->posts as $post ) {
-						$user_tickets[] = array(
+					foreach ( $ticket_data->posts as $key => $post ) {
+						$user_tickets['t'.$key] = array(
 							'subject'       => $post->post_title,
 							'description'   => $post->post_content,
 							'attachments'   => $this->get_ticket_attachment( $post->ID ),
@@ -273,7 +273,6 @@ class WPAS_GDPR_User_Profile {
 					)
 				)
 			);
-
 			$this->data_zip( 'export-data.xml', $this->user_export_dir );
 			$upload_dir          = wp_upload_dir();
 			$response['message'] = sprintf(
@@ -313,7 +312,14 @@ class WPAS_GDPR_User_Profile {
 	 */
 	public function get_ticket_meta( $ticket_id ) {
 		global $wpdb;
-		return $wpdb->get_results( "select * from $wpdb->postmeta where post_id = $ticket_id and meta_key like '%_wpas%'" );
+		$meta_data = $wpdb->get_results( "select * from $wpdb->postmeta where post_id = $ticket_id and meta_key like '%_wpas%'" );
+		$meta_field_value = array();
+		if( !empty( $meta_data )){
+			foreach ( $meta_data as $key => $meta_field ) {
+				$meta_field_value['m'.$key] = $meta_field;
+			}
+		}
+		return $meta_field_value;
 	}
 
 	/**
@@ -325,8 +331,8 @@ class WPAS_GDPR_User_Profile {
 		$attachments     = array();
 		$get_attachments = $wpdb->get_results( "select * from $wpdb->posts where post_type='attachment' and post_parent = $ticket_id" );
 		if ( ! empty( $get_attachments ) ) {
-			foreach ( $get_attachments as $attachment ) {
-				$attachments[] = array(
+			foreach ( $get_attachments as $key => $attachment ) {
+				$attachments['a'.$key] = array(
 					'title' => $attachment->post_title,
 					'url'   => $attachment->guid,
 				);
@@ -342,8 +348,8 @@ class WPAS_GDPR_User_Profile {
 		$get_replies = wpas_get_replies( $ticket_id );
 		$replies     = array();
 		if ( ! empty( $get_replies ) ) {
-			foreach ( $get_replies as $reply ) {
-				$replies[] = array(
+			foreach ( $get_replies as $key => $reply ) {
+				$replies['r'.$key] = array(
 					'content' => $reply->post_content,
 					'author'  => $this->get_reply_author( $reply->post_author ),
 				);
