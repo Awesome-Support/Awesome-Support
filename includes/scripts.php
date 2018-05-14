@@ -114,6 +114,7 @@ function wpas_register_assets_back_end() {
 	
 	// Our styles
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
+	wp_register_style( 'wpas-admin-reply-history', WPAS_URL . 'assets/admin/css/admin-reply-history.css', array(), WPAS_VERSION );
 	
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
@@ -139,6 +140,7 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-admin-toolbars-script', WPAS_URL . 'assets/admin/js/admin-toolbars.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-reply', WPAS_URL . 'assets/admin/js/admin-reply.js', array( 'jquery' ), WPAS_VERSION );
+	wp_register_script( 'wpas-admin-reply-history', WPAS_URL . 'assets/admin/js/admin-reply-history.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-autolinker', WPAS_URL . 'assets/public/vendor/Autolinker/Autolinker.min.js', null, '0.19.0', true );
 	wp_register_script( 'wpas-users', WPAS_URL . 'assets/admin/js/admin-users.js', null, WPAS_VERSION, true );
 	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
@@ -181,6 +183,9 @@ function wpas_register_assets_back_end() {
 		'alertNoTinyMCE' => __( 'No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor', 'awesome-support' ),
 		'alertNoContent' => __( "You can't submit an empty reply", 'awesome-support' )
 	) );
+	wp_localize_script( 'wpas-admin-reply-history', 'WPAS_Reply_History', array(
+		'ajax_url' => admin_url( 'admin-ajax.php' )
+	));
 	
 	// Custom admin notice style and script
 	wp_enqueue_style( 'wpas-admin-wizard-notice', WPAS_URL . 'assets/admin/css/wizard-notice.css', array(), WPAS_VERSION );
@@ -315,7 +320,9 @@ function wpas_enqueue_assets_back_end() {
 		wp_enqueue_script( 'wpas-admin-upload' );
 
 		if ( 'edit' === $action && 'ticket' == get_post_type() ) {
+			wp_enqueue_style( 'wpas-admin-reply-history' );
 			wp_enqueue_script( 'wpas-admin-reply' );
+			wp_enqueue_script( 'wpas-admin-reply-history' );
 			wp_enqueue_script( 'wpas-autolinker' );
 		}
 

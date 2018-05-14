@@ -170,5 +170,10 @@ elseif( 'closed' == $status ): ?>
 		<p><?php printf( __( 'This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href="%s">re-open it first</a>.', 'awesome-support' ), wpas_get_open_ticket_url( $post->ID ) ); ?></p>
 	</div>
 
-<?php endif;
+<?php endif; 
 
+/** Reply History popup */
+?>
+<div class="pop">
+	<i class="icon-remove-sign"></i>
+</div>
