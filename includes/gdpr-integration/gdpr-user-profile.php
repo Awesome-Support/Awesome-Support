@@ -258,7 +258,13 @@ class WPAS_GDPR_User_Profile {
 			/**
 			 * Export GDPR logs
 			 */
-			$user_consent = get_user_option( 'wpas_consent_tracking', $user );
+			$user_option_data = get_user_option( 'wpas_consent_tracking', $user );
+			$user_consent = array();
+			if( !empty( $user_option_data )){
+				foreach ( $user_option_data as $key => $option_data ) {
+					$user_consent['o'.$key] = $option_data;
+				}
+			}
 
 			/**
 			 * Put them in awesome-support/user_log_$user_id
