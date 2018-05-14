@@ -55,21 +55,23 @@ class WPAS_GDPR_User_Profile {
 	 */
 	public function download_file() {
 		$current_url = home_url( add_query_arg( null, null ) );
-		if ( isset( $_GET['file'] ) ) {
-			$user = $_GET['file'];
-			if ( ! $this->user_export_dir ) {
-				$this->user_export_dir = $this->set_log_dir( $user );
-			}
 
-			header( 'Content-Description: File Transfer' );
-			header( 'Content-type: text/xml' );
-			header( 'Content-Disposition: attachment; filename="export-data.xml"' );
-			header( 'Expires: 0' );
-			header( 'Cache-Control: must-revalidate' );
-			header( 'Pragma: public' );
-			header( 'Content-Length: ' . filesize( $this->user_export_dir . '/export-data.xml' ) );
-			readfile( $this->user_export_dir . '/export-data.xml' );
-			wp_die();
+		if ( isset( $_GET['file'] ) && isset( $_GET['check'] ) ) {
+			$nonce = ( !empty( $_GET['check'] ))? sanitize_text_field( $_GET['check'] ): '';
+			if( wp_verify_nonce( $nonce, 'as-validate-download-url' ) ){
+				$user = intval($_GET['file']);
+				if ( ! $this->user_export_dir ) {
+					$this->user_export_dir = $this->set_log_dir( $user );
+				}
+				header( 'Content-Description: File Transfer' );
+				header("Content-type: application/zip"); 
+				header("Content-Disposition: attachment; filename=exported-data.zip");
+				header("Content-length: " . filesize($this->user_export_dir . '/exported-data.zip'));
+				header("Pragma: no-cache"); 
+				header("Expires: 0"); 
+				readfile( $this->user_export_dir . '/exported-data.zip' );
+			} else{
+				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );}
 		}
 	}
 
@@ -281,6 +283,7 @@ class WPAS_GDPR_User_Profile {
 				add_query_arg(
 					array(
 						'file' => $user,
+						'check' => wp_create_nonce( 'as-validate-download-url' ),
 					), home_url()
 				),
 				__( 'Download it now..', 'awesome-support' )
@@ -483,11 +486,9 @@ class WPAS_GDPR_User_Profile {
 		}
 		if ( file_exists( $destination . '/' . $file ) ) {
 			$zip    = new ZipArchive();
-			$do_zip = $zip->open( './' . $filename, ZipArchive::OVERWRITE | ZipArchive::CREATE );
-			error_log( $destination . '/' . $filename );
-			error_log( $do_zip );
-			if ( is_resource( $do_zip ) ) {
-				$zip->addFile( $file );
+			$do_zip = $zip->open($destination . '/'.$filename, ZipArchive::OVERWRITE | ZipArchive::CREATE);
+			if ( $do_zip ) {
+				$zip->addFile(  $destination . '/' . $file, $file );
 				$zip->close();
 			} else {
 				return new WP_Error( 'cannot_create_zip', __( 'Cannot create zip file', 'awesome-support' ) );
