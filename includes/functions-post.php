@@ -1785,3 +1785,66 @@ function wpas_show_reply_deleted_msg( $ticket_id, $ticket ) {
 	}
 	
 }
+
+add_action( 'save_post', 'wpas_edit_ticket_content', 10 );
+/**
+ * Edit the ticket content
+ *
+ * @param string $ticket_id - id of ticket being processed.
+ *
+ * @return void
+ */
+function wpas_edit_ticket_content( $ticket_id ) {
+
+	/**
+	 * Make sure we are editing ticket
+	 */
+    $post_type = get_post_type( $ticket_id );
+    if ( $post_type !== 'ticket' ) {
+        return false;
+    }
+
+	/**
+	 * Make sure that this is valid ticket and it exists
+	 */
+    $original_content = get_post( $ticket_id );
+    if ( is_null( $original_content ) ) {
+		return false;
+	}
+
+	/**
+	 * The the updated ticket content is missing, exit
+	 */
+	if( ! isset( $_POST['wpas-main-ticket-message'] ) ) {
+		return false;
+	}
+
+	/**
+	 * Compare the original content vs the updated content
+	 * If they are not same and have differences, log it
+	 * then we update the post content
+	 */
+	if( $original_content->post_content !== wp_kses_post( $_POST['wpas-main-ticket-message'] ) ) {		
+		/**
+		 * Update the content
+		 */
+		$updated_post_id = wp_update_post( array( 'ID' => $ticket_id, 'post_content' => wp_kses_post( $_POST['wpas-main-ticket-message'] ) ) );
+
+		if ( is_wp_error( $updated_post_id ) ) {
+			/**
+			 * Action hook when updating the content failed
+			 */
+			do_action( 'wpas_update_ticket_failed', $updated_post_id->get_error_messages() );
+		} else {
+			/**
+			 * Action hook when updating the content successful
+			 */
+			do_action( 'wpas_update_ticket_success', $updated_post_id );
+
+			/**
+			 * Log the ticket
+			 */
+			wpas_log_edits( $ticket_id, sprintf( __( 'Ticket content #%s located on ticket #%s was edited.', 'awesome-support' ), (string) $original_content->post_parent, (string) $ticket_id ), $original_content->post_content );
+		}
+	}
+}

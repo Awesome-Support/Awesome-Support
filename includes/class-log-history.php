@@ -268,6 +268,7 @@ class WPAS_Log_History {
 		global $current_user;
 
 		$user_id = $current_user->ID;
+		$edit_content = "";
 		
 		/* Put stuff into ticket_log post type if $original was provided */
 		if ( $original && ( ! empty( $original ) ) ) {
