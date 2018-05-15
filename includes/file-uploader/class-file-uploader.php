@@ -38,7 +38,7 @@ class WPAS_File_Upload {
 		if ( ! $this->can_attach_files() ) {
 			return;
 		}
-
+		
 		add_filter( 'upload_dir', array( $this, 'set_upload_dir' ) );
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'limit_upload' ), 10, 1 );
 		add_filter( 'upload_mimes', array( $this, 'custom_mime_types' ), 10, 1 );
@@ -81,7 +81,143 @@ class WPAS_File_Upload {
 			add_filter( 'wpas_cf_wrapper_class', array( $this, 'add_wrapper_class_admin' ), 10, 2 );
 
 		}
+		
+		add_action( 'wp_ajax_wpas_delete_attachment',	array( $this, 'ajax_delete_attachment' ) );
+		add_action( 'wpas_after_close_ticket',			array( $this, 'wpas_maybe_delete_attachments_after_close_ticket' ), 11, 3 );
+		add_action( 'wpas_open_ticket_after',			array( $this, 'wpas_open_ticket_after' ), 11, 2 );
+		add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'add_auto_delete_button' ) );
+		
 	}
+	
+	/**
+	 * Add field to mark auto delete attachments on ticket close
+	 */
+	function add_auto_delete_button() {
+		
+		if( wpas_user_can_set_auto_delete_attachments() ) {
+		?>
+		
+		<div class="wpas-form-group wpas-auto-delete-attachments-container">
+			<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1">
+			<label for="wpas-auto-delete-attachments"><?php _e( 'Automatically delete attachments when a ticket is closed', 'wpas' ); ?></label>
+		</div>
+
+		<?php
+		}
+		
+	}
+	
+	/**
+	 * Check and auto delete attachment after ticket is closed
+	 * 
+	 * @param int $ticket_id
+	 * @param boolean $update
+	 * @param int $user_id
+	 */
+	public function wpas_maybe_delete_attachments_after_close_ticket( $ticket_id, $update, $user_id ) {
+		
+		
+		$delete_attachments = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
+		
+		$attachments = get_attached_media( '', $ticket_id );
+		
+		if( $delete_attachments ) {
+			$replies = wpas_get_replies( $ticket_id );
+			foreach( $replies as $reply ) {
+				$attachments = array_merge( $attachments, get_attached_media( '', $reply->ID ) );
+			}
+		}
+		
+		foreach ( $attachments as $attachment ) {
+			
+			$filename   = explode( '/', $attachment->guid );
+			$name = $filename[ count( $filename ) - 1 ];
+			
+			wp_delete_attachment( $attachment->ID );
+			
+			$logs[] = '<li>' . sprintf( __( '%s attachment auto deleted', 'awesome-support' ), $name ) . '</li>';
+			
+			
+		}
+		
+		if( !empty( $logs ) ) {
+			$log_content = '<ul>'. implode( '', $logs ).'</ul>';
+			wpas_log( $ticket_id, $log_content );
+		}
+	}
+	
+	/**
+	 * Add auto close mark after a new ticket is submitted
+	 * 
+	 * @param int $ticket_id
+	 * @param array $data
+	 */
+	function wpas_open_ticket_after( $ticket_id, $data ) {
+			
+		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+		
+		$auto_delete_by_user = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
+		
+		
+		if( $auto_delete || $auto_delete_by_user ) {
+				$auto_delete_type = $auto_delete_by_user ? 'user' : 'agent';
+				update_post_meta( $ticket_id, 'auto_delete_attachments', '1' );
+				update_post_meta( $ticket_id, 'auto_delete_attachments_type', $auto_delete_type );
+		}
+		
+	}
+	
+	
+	/**
+	 * Delete single attachment from front-end or backend
+	 */
+	function ajax_delete_attachment() {
+		
+		$parent_id = filter_input( INPUT_POST, 'parent_id', FILTER_SANITIZE_NUMBER_INT );
+		$attachment_id = filter_input( INPUT_POST, 'att_id', FILTER_SANITIZE_NUMBER_INT );
+		
+		$user = wp_get_current_user();
+		$deleted = false;
+		
+		if( $user && $parent_id && $attachment_id ) {
+			
+			$ticket_id = $parent_id;
+			
+			$can_delete = wpas_can_delete_attachments();
+			
+			if( $can_delete ) {
+				
+				$parent = get_post( $parent_id );
+				if( 'ticket_reply' === $parent->post_type ) {
+					$ticket_id = $parent->post_parent;
+				}
+			
+				if( 'ticket' === $parent->post_type || 'ticket_reply' === $parent->post_type ) {
+					
+					$attachment = get_post( $attachment_id );
+					$filename   = explode( '/', $attachment->guid );
+					$name = $filename[ count( $filename ) - 1 ];
+					
+					wp_delete_attachment( $attachment_id );
+					
+					wpas_log( $ticket_id, sprintf( __( '%s attachment deleted by %s', 'awesome-support' ), $name, $user->display_name ) );
+					$deleted = true;
+				}
+				
+			}
+			
+		}
+		
+		if( $deleted ) {
+			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'wpas' ) ) );
+		} else {
+			wp_send_json_error();
+		}
+		
+		
+		die();
+	}
+	
 
 	/**
 	 * Filter out tickets and ticket replies attachments
@@ -579,6 +715,9 @@ class WPAS_File_Upload {
 				<strong><?php _e( 'Attachments:', 'awesome-support' ); ?></strong>
 				<ul>
 					<?php
+					
+					$can_delete = wpas_can_delete_attachments();
+					
 					foreach ( $attachments as $attachment_id => $attachment ):
 
 						/**
@@ -615,7 +754,17 @@ class WPAS_File_Upload {
 							}
 
 							?>
-							<li><a href="<?php echo $link; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
+							<li>
+									<?php 
+									if( $can_delete ) {
+										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', $post_id,  $attachment['id'], __( 'X', 'awesome-support' ) );
+									}
+									
+										
+										
+									?>
+									
+									<a href="<?php echo $link; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
 
 						} /**
 						 * Now if we have a different upload source we delegate the computing
