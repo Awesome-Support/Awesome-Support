@@ -102,7 +102,8 @@ function wpas_single_activate() {
 		'ticket_delete_priorities',
 		'ticket_manage_channels',
 		'ticket_edit_channels',
-		'ticket_delete_channels'
+		'ticket_delete_channels',
+		'tickets_manage_privacy',
 	) );
 
 	/**
@@ -131,7 +132,8 @@ function wpas_single_activate() {
 		'ticket_manage_products',
 		'ticket_manage_departments',
 		'ticket_manage_priorities',
-		'ticket_manage_channels'
+		'ticket_manage_channels',
+		'tickets_manage_privacy',
 	) );
 
 	/**

@@ -143,6 +143,24 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 			);
 		}
 
+		/** Add reply history icon */
+		if( get_current_user_id() == $reply->post_author || true === wpas_is_asadmin() ) {
+
+			$controls['reply_history'] = wpas_reply_control_item( 'reply_history' ,array(
+				'title' => esc_html_x( 'History', 'View ticket reply history', 'awesome-support' ),
+				'link'	=> '#',
+				/**
+				 * @TODO: replce this icon into correct version
+				 */
+				'icon' => WPAS_URL . 'assets/admin/images/mark-as-read.png',
+				'classes' => 'wpas-show-reply-history',
+				'data' => array( 
+					'replyid' => $reply->ID
+				)
+			) 
+		);
+		}
+
 	}
 
 	if ( get_current_user_id() !== $reply->post_author && 'unread' === $reply->post_status ) {

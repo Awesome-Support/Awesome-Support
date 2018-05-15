@@ -78,7 +78,7 @@ function wpas_register_account( $data ) {
 		wpas_add_error( 'accept_gdpr03_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
-	}	
+	}
 
 	/**
 	 * wpas_register_account_before hook
@@ -109,6 +109,73 @@ function wpas_register_account( $data ) {
 		exit;
 
 	} else {
+
+		/**
+		 * Record Term and Conditions consent
+		 */
+		if ( wpas_get_option( 'terms_conditions', false ) ) {
+			$status = isset( $data['wpas_terms'] ) ? isset( $data['wpas_terms'] ) : "";
+			$opt_in = ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+
+			wpas_track_consent( array( 
+				'item' 		=> wpas_get_option( 'terms_conditions', false ),
+				'status' 	=> $status,
+				'opt_in' 	=> $opt_in,
+				'opt_out' 	=> "",
+				'is_tor'	=> true
+			), $user_id );
+		}
+
+		/**
+		 * Record GDPR 1 consent
+		 */
+		if ( wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) {
+			$status 	= isset( $data['wpas_gdpr01'] ) ? isset( $data['wpas_gdpr01'] ) : "";
+			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
+
+			wpas_track_consent( array( 
+				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_01', false ),
+				'status' 	=> $status,
+				'opt_in' 	=> $opt_in,
+				'opt_out' 	=> '',
+				'is_tor'	=> false
+			), $user_id );
+		}
+
+		/**
+		 * Record GDPR 2 consent
+		 */
+		if ( wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) {
+			$status 	= isset( $data['wpas_gdpr02'] ) ? isset( $data['wpas_gdpr02'] ) : "";
+			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
+
+			wpas_track_consent( array( 
+				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_02', false ),
+				'status' 	=> $status,
+				'opt_in' 	=> $opt_in,
+				'opt_out' 	=> '',
+				'is_tor'	=> false
+			), $user_id );
+		}
+
+		/**
+		 * Record GDPR 3 consent
+		 */
+		if ( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) {
+			$status 	= isset( $data['wpas_gdpr03'] ) ? isset( $data['wpas_gdpr03'] ) : "";
+			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
+
+			wpas_track_consent( array( 
+				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_03', false ),
+				'status' 	=> $status,
+				'opt_in' 	=> $opt_in,
+				'opt_out' 	=> '',
+				'is_tor'	=> false
+			), $user_id );
+		}
 
 		/**
 		 * wpas_register_account_before hook
@@ -1246,4 +1313,108 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
 	}
 	
 	return $agents;
+}
+
+function wpas_get_user_meta( ) {
+
+}
+
+/**
+ * Log the user consent. Data saved in WP Option
+ * We're not sure yet if custom table is needed but we can
+ * extend in the future version when we see fit
+ * 
+ * @param {*} label 
+ * @param {*} action 
+ * @param {*} date 
+ */
+function wpas_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
+	/**
+	 * Label parameter is required, WP_Error if none given
+	 */
+	if( ! $label ) {
+		return new WP_Error( 'consent_label_missing', __( 'Consent label is required!', 'awesome-support' ) );
+	}
+	if( ! $action ) {
+		return new WP_Error( 'consent_action_missing', __( 'Consent action is required! Options are - "opted-in" or "opted-out"', 'awesome-support' ) );
+	}
+
+	/**
+	 * If date is not given, set it today
+	 */
+	if( empty ( $date ) ) {
+		$date = date( 'm/d/Y', strtotime( 'NOW' ) );
+	}
+
+	/**
+	 * Determine user, we need to log when admin opt out as well
+	 */
+	if( empty ( $user ) ) {
+		$user = __( 'user', 'awesome-support' );
+	}
+
+	/**
+	 * Consent logs are stored in wpas_consent_log option
+	 */
+	$logged_consent = get_user_option( 'wpas_consent_log', $user_id );
+	$consent = sprintf(
+		'%s - %s %s %s %s',
+		$label,
+		$user,
+		$action,
+		__( 'on', 'awesome-support' ),
+		$date
+	);
+
+	if( ! empty ( $logged_consent ) && is_array( $logged_consent ) ) {
+		update_user_option( $user_id, 'wpas_consent_log', array_merge( $logged_consent, array( $consent ) ) );
+	}else{
+		update_user_option( $user_id, 'wpas_consent_log', array( $consent ) );
+	}
+}
+
+/**
+ * Similar to wpas_log_consent()
+ * This function tracks the consent instead of just
+ * logging them. This is the primary function in consent 
+ * table information in both on user profile and on the
+ * GDPR table in the front-end
+ * 
+ * @param {*} data
+ */
+function wpas_track_consent( $data, $user_id, $opt_type = "" ){	
+	/**
+	 * Consent logs are stored in wpas_consent_tracking option
+	 */
+	$tracked_consent = get_user_option( 'wpas_consent_tracking', $user_id );
+
+	if( ! empty ( $tracked_consent ) && is_array( $tracked_consent ) ) {
+		/**
+		 * If same item exists, simply update the same row
+		 * instead of merging them on new row
+		 */
+		$found_key = array_search( $data['item'], array_column( $tracked_consent, 'item' ) );		
+		if( $found_key !== false && ! empty ( $opt_type ) ) {
+			/**
+			 * We found something, update the row
+			 */
+			foreach( $tracked_consent as $key => $value ) {
+				if( $found_key === $key ) {
+					if( $opt_type === "in" ) {
+						$tracked_consent[$found_key]['opt_in'] = $data['opt_in'];
+						$tracked_consent[$found_key]['status'] = $data['status'];
+					}elseif( $opt_type === "out" ) {
+						$tracked_consent[$found_key]['opt_out'] = $data['opt_out'];
+						$tracked_consent[$found_key]['status'] = $data['status'];
+					}
+				}
+			}
+			update_user_option( $user_id, 'wpas_consent_tracking', $tracked_consent );
+		}else{
+			update_user_option( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
+		}		
+	}else{
+		update_user_option( $user_id, 'wpas_consent_tracking', array( $data ) );
+	}
+
 }

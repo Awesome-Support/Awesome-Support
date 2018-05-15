@@ -7,8 +7,12 @@
 	 */
 	do_action( 'wpas_backend_ticket_content_before', $post->ID, $post );
 
-	echo apply_filters( 'the_content', $post->post_content );
-
+	if( wpas_is_asadmin() ) {
+		wp_editor( apply_filters( 'the_content', $post->post_content ), 'wpas-main-ticket-message', array( 'media_buttons' => false ) );
+	}else{
+		echo apply_filters( 'the_content', $post->post_content );
+	}
+	
 	/**
 	 * wpas_backend_ticket_content_after hook
 	 *
