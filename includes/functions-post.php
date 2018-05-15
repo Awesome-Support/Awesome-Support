@@ -1824,11 +1824,22 @@ function wpas_edit_ticket_content( $ticket_id ) {
 	 * If they are not same and have differences, log it
 	 * then we update the post content
 	 */
-	if( $original_content->post_content !== wp_kses_post( $_POST['wpas-main-ticket-message'] ) ) {		
+	if( $original_content->post_content !== wp_kses_post( $_POST['wpas-main-ticket-message'] ) ) {
+
+		/**
+		 * Unhook this function so it doesn't loop infinitely
+		 */
+		remove_action( 'save_post', 'wpas_edit_ticket_content' );
+
 		/**
 		 * Update the content
 		 */
 		$updated_post_id = wp_update_post( array( 'ID' => $ticket_id, 'post_content' => wp_kses_post( $_POST['wpas-main-ticket-message'] ) ) );
+
+		/**
+		 * re-hook this function
+		 */
+		add_action( 'save_post', 'wpas_edit_ticket_content' );
 
 		if ( is_wp_error( $updated_post_id ) ) {
 			/**

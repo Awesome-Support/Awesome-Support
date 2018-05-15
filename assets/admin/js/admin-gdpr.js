@@ -5,7 +5,6 @@ jQuery(document).ready(function ($) {
 	 * in "Add/Remove Consent" from GDPR popup
 	 */
 	jQuery( ".wpas-gdpr-opt-in" ).click( function(e) {
-        console.log( "her " );
         e.preventDefault();
         
 		var data = {
@@ -22,7 +21,7 @@ jQuery(document).ready(function ($) {
 			WPAS_GDPR.ajax_url,
 			data,
 			function( response ) {
-				console.log(response);
+				alert( response.message );
 			}
 		);		
 	});
@@ -47,7 +46,7 @@ jQuery(document).ready(function ($) {
 			WPAS_GDPR.ajax_url,
 			data,
 			function( response ) {
-				console.log(response);
+				alert( response.message );
 			}
 		);		
     });

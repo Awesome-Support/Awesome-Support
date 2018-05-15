@@ -191,7 +191,7 @@ function wpas_init_editor( this_id, content ){
 	    tinymce:	{
 	        toolbar1: 'bold,italic,bullist,numlist,link,blockquote,alignleft,aligncenter,alignright,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,undo,redo'
 	    },
-	    quicktags:		false,
+	    quicktags:		true,
 	};
 	/**
 	 * Initialize editor
