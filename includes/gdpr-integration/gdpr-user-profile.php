@@ -103,14 +103,17 @@ class WPAS_GDPR_User_Profile {
 		if ( current_user_can( 'create_ticket' ) ) {
 	?>
 		<h2><?php esc_html_e( 'Awesome Support Consent History', 'awesome-support' ); ?></h2>
-		<table class="form-table wp-list-table widefat fixed striped posts">
-			<tr>
-				<th><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
-				<th><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
-				<th><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
-				<th><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
-				<th><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
-			</tr>
+		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
+			<thead>
+				<tr>
+					<th class="manage-column"><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
+					<th class="manage-column"><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
+					<th class="manage-column"><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
+					<th class="manage-column"><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
+					<th class="manage-column"><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
+				</tr>
+			</thead>
+			<tbody>
 			<?php
 			 /**
 			  * For the GDPR labels, this data are stored in
@@ -186,21 +189,24 @@ class WPAS_GDPR_User_Profile {
 				}
 			}
 			?>
+			</tbody>
 		</table>
 
 		<!-- GDPR Consent logging -->
 		<h2><?php esc_html_e( 'Log', 'awesome-support' ); ?></h2>
-		<?php
-			/**
-			 * Get consent logs
-			 */
-			$consent_log = get_user_option( 'wpas_consent_log', $profileuser->ID );
-		if ( ! empty( $consent_log ) && is_array( $consent_log ) ) {
-			foreach ( $consent_log as $log ) {
-				echo '<p>' . $log . '</p>';
+		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
+			<?php
+				/**
+				 * Get consent logs
+				 */
+				$consent_log = get_user_option( 'wpas_consent_log', $profileuser->ID );
+			if ( ! empty( $consent_log ) && is_array( $consent_log ) ) {
+				foreach ( $consent_log as $log ) {
+					echo '<tr><td>' . $log . '</td></tr>';
+				}
 			}
-		}
-		?>
+			?>
+		</table>
 	<?php
 		}
 	}
