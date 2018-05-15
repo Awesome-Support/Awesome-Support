@@ -4,13 +4,36 @@
 	$(function () {
         $(".wpas-show-reply-history").click(function(e) {
             e.preventDefault();
-            $(".pop").fadeIn("slow");
-            /**
-             * Display history using Ajax call
-             */
+            $.ajax({
+              url : WPAS_Reply_History.ajax_url,
+              type : 'post',
+              data : {
+                action : 'wpas_load_reply_history',
+                reply_id : $(this).data( 'replyid' )
+              },
+              success : function( response ) {
+                if( response.code === 200 ) {
+                  $( '.wpas-reply-notification' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+                  if( response.data ) {
+                    var responseTable = '<table class="wp-list-table widefat fixed striped">';
+                    $.each( response.data, function(i, item) {
+                      responseTable += '<tr><td><div class="wpas-reply-history-log-table"><div class="row"><div class="title">' + item.post_title + '</div></div><div class="row"><div class="content">' + item.post_content + '</div></div></div></td></tr>';
+                    });
+                    responseTable += '</table>';
+                    $( '.wpas-reply-history-table' ).html( responseTable );
+                  }
+                }else{
+                  $( '.wpas-reply-notification' ).addClass( 'failed' ).html( '<p>' + response.message + '</p>' );
+                  $( '.wpas-reply-history-table' ).html( '' );
+                }
+                $(".pop").fadeIn("slow");
+              }
+            });
           });
           
-          $(".pop i").click(function() {
+          
+          $(".pop .icon-remove-sign a").click(function(e) {
+            e.preventDefault();
             $(".pop").fadeOut("fast");
           });
           

@@ -1848,3 +1848,75 @@ function wpas_edit_ticket_content( $ticket_id ) {
 		}
 	}
 }
+
+add_action( 'wp_ajax_wpas_load_reply_history', 'wpas_load_reply_history' );
+add_action( 'wp_ajax_nopriv_wpas_load_reply_history', 'wpas_load_reply_history' );
+/**
+ * Ajax function that returns a the history of replies
+ *
+ * @since 3.3
+ * @return void
+ */
+function wpas_load_reply_history() {
+	/**
+	 * Default response messages
+	 */
+	$response = array(
+		'code' => 404,
+		'message' => __( 'Invalid request!', 'awesome-support' ),
+		'data' => array( )
+	);
+
+	/**
+	 * Reply ID is required
+	 */
+	if( ! isset( $_POST['reply_id'] ) ) {
+		wp_send_json( $response );
+	}
+
+	/**
+	 * Is a valid reply?
+	 */
+	$reply = get_post( 
+		array( 
+			'ID' => sanitize_text_field( $_POST['reply_id'] ), 
+			'post_type' => 'ticket_log' 
+		) 
+	);
+	
+	/**
+	 * Empty request
+	 */
+	if( ! $reply ) {
+		$response['message'] = __( 'Invalid ticket ID!', 'awesome-support' );
+		wp_send_json( $response );
+	}
+
+	/**
+	 * Get all reply history
+	 */
+	$reply_history = get_posts( 
+		array( 
+			'post_parent' => sanitize_text_field( $_POST['reply_id'] ),
+			'post_type' => 'ticket_log'
+		) 
+	);
+
+	if( ! empty ( $reply_history ) ) {
+		/**
+		 * Update response
+		 */
+		$response = array(
+			'code' => 200,
+			'message' => __( 'Reply history found.', 'awesome-support' ),
+			'data' => $reply_history
+		);
+		wp_send_json( $response );
+	} else {
+		$response['code'] = 404;
+		$response['message'] = __( 'This reply has no edit history!', 'awesome-support' );
+		$response['data'] = "";
+		wp_send_json( $response );
+	}
+	wp_die();
+}
