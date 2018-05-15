@@ -154,27 +154,33 @@ class WPAS_Privacy_Option {
 		 * Initiate nonce
 		 */
 		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
-
+		
 		/**
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
+			
 			/**
 			 *  Initiate form data parsing
 			 */
 			$form_data = array();
 			parse_str( $_POST['data']['form-data'], $form_data );
 
+			$subject = isset( $form_data['wpas-gdpr-ded-subject'] ) ? $form_data['wpas-gdpr-ded-subject'] : '';
+			$content = isset( $form_data['wpas-gdpr-ded-more-info'] ) ? $form_data['wpas-gdpr-ded-more-info'] : $subject; // Fallback to subject to avoid undefined!
 			/**
 			 * New ticket submission
+			 * *
+			 * * NOTE: data sanitization is happening on wpas_open_ticket()
+			 * * We can skip doing it here
 			 */
 			$ticket_id = wpas_open_ticket(
 				array(
-					'title'   => $form_data['wpas-gdpr-ded-subject'],
-					'message' => $form_data['wpas-gdpr-ded-subject'],
+					'title'   => $subject,
+					'message' => $content,
 				)
 			);
-
+			
 			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
 			if ( ! empty( $ticket_id ) ) {
 				$response['code']    = 200;

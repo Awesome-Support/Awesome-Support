@@ -22,6 +22,14 @@ jQuery(document).ready(function ($) {
 		jQuery( '.wpas-gdpr-pre-loader' ).show();
 		jQuery( '.wpas-gdpr-loader-background').show();
 
+		/**
+		 * Get current tinyMCE content
+		 * NOTE: We cannot get the content wpas_set_editor_content()
+		 * on submission. This will be the workaround.
+		 */
+		var activeEditor_content = tinyMCE.activeEditor.getContent();
+		jQuery( '#wpas-gdpr-ded-more-info' ).html( activeEditor_content );
+
 		var data = {
 			'action': 'wpas_gdpr_open_ticket',
 			'security' : WPAS_GDPR.nonce,
