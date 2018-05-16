@@ -1579,3 +1579,52 @@ function wpas_is_field_in_ai_tab( $field_name ) {
 	}
 	
 }
+
+/**
+ * Check if user or agent can delete attachments
+ * 
+ * @return boolean
+ */
+function wpas_can_delete_attachments() {
+	
+	$can = false;
+	
+	if( wpas_is_agent() ) {
+		if( wpas_agent_can_delete_attachments() ) {
+			$can = true;
+		}
+	} else {
+		if( wpas_user_can_delete_attachments() ) {
+			$can = true;
+		}
+	}
+	
+	return apply_filters( 'wpas_can_delete_attachments', $can );
+}
+
+/**
+ * Check if agent can delete attachments
+ * 
+ * @return boolean
+ */
+function wpas_agent_can_delete_attachments() {
+	return wpas_get_option( 'agents_can_delete_attachments' );
+}
+
+/**
+ * Check if user can delete attachments
+ * 
+ * @return boolean
+ */
+function wpas_user_can_delete_attachments() {
+	return wpas_get_option( 'users_can_delete_attachments' );
+}
+
+/**
+ * Check if user can set auto delete attachments flag
+ * 
+ * @return boolean
+ */
+function wpas_user_can_set_auto_delete_attachments() {
+	return wpas_get_option( 'user_can_set_auto_delete_attachments' );
+}
