@@ -97,14 +97,14 @@ function wpas_core_settings_general( $def ) {
 				array(
 					'name' => __( 'Priority Management', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => 'Use these options to control how the priority field is used and shown.  To change the labels used for this field please see our PRODUCTIVITY add-on.',
+					'desc' => 'Use these options to control how the priority field is used and shown.  To change the labels used for this field please see our POWER-PACK add-on.',
 					'options' => wpas_get_priority_options()
 				),
 				
 				array(
 					'name' => __( 'Multiple Agents', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => 'Use these options to control whether multiple agents can actively handle a single ticket. To change the labels please see our PRODUCTIVITY add-on.'
+					'desc' => 'Use these options to control whether multiple agents can actively handle a single ticket. To change the labels please see our POWER-PACK add-on.'
 				),
 				array(
 					'name'    => __( 'Enable Multiple Agents Per Ticket', 'awesome-support' ),
@@ -133,7 +133,7 @@ function wpas_core_settings_general( $def ) {
 				array(
 					'name' => __( 'Third Parties', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => 'Use these options to control whether third parties show in the ticket list.  To change the labels for 3rd party fields please see our PRODUCTIVITY add-on.'
+					'desc' => 'Use these options to control whether third parties show in the ticket list.  To change the labels for 3rd party fields please see our POWER-PACK add-on.'
 				),
 				
 				array(
@@ -263,7 +263,14 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'text',
 					'desc'    => __( 'Enter a comma separated list of roles that should not see the tags metabox. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
 					'default' => ''
-				),	
+				),
+
+				array(
+					'name' => __( 'Editing History', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => 'This section allows you to control whether ticket and ticket replies can be edited by agents. Allowing this can distort the ticket history but might be necessary to comply with certain privacy regulations - for example removing user ids, passwords or other sensitive data.',
+					'options' => wpas_get_editing_history_options()
+				),				
 				
 				array(
 					'name' => __( 'Attachments', 'awesome-support' ),
@@ -427,7 +434,61 @@ function wpas_get_priority_options() {
 		),				
 		
 	);
-		
 	
 	return $priority;
+}
+
+/**
+ * Prepare an array that shows editing history options
+ *
+ * @since 5.2.0
+ * @return array
+ */
+function wpas_get_editing_history_options() {
+
+	$security = array(
+		array(
+			'name'    => __( 'Allow Agents To Edit Their Own Replies', 'awesome-support' ),
+			'id'      => 'agent_edit_own_reply',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Would you like agents to be able to edit their own replies?', 'awesome-support' ),
+			'default' => false
+		),
+
+		array(
+			'name'    => __( 'Roles That Can Edit All Replies', 'awesome-support' ),
+			'id'      => 'roles_edit_all_replies',
+			'type'    => 'text',
+			'desc'    => __( 'Enter a comma separated list of roles that should be able to edit any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+			'default' => '',
+		),
+		
+		array(
+			'name'    => __( 'Allow Agents To Delete Their Own Replies', 'awesome-support' ),
+			'id'      => 'agent_delete_own_reply',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Would you like agents to be able to delete their own replies? (FYI: We really do not recommend allowing deletes but you do have the option if you want it!)', 'awesome-support' ),
+			'default' => false
+		),
+		
+		array(
+			'name'    => __( 'Roles That Can Delete All Replies', 'awesome-support' ),
+			'id'      => 'roles_delete_all_replies',
+			'type'    => 'text',
+			'desc'    => __( 'Enter a comma separated list of roles that should be able to delete any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+			'default' => '',
+		),	
+		array(
+			'name'    => __( 'Log content edits', 'awesome-support' ),
+			'id'      => 'log_content_edit_level',
+			'type'    => 'radio',
+			'desc'    => __( 'What level should edits to ticket content and replies be logged?', 'awesome-support' ),
+			'options' => array( 'low' => __( 'Low - only logs whether the ticket or reply was edited. This prevents additional sensitive data from being stored in the log when the intention is to edit out sensitive information.', 'awesome-support' ), 
+								'high' => __( 'High - log the original contents before the reply was edited so that a full history could be maintained', 'awesome-support' ) ),
+			'default' => 'low'
+		),		
+		
+	);
+		
+	return $security;
 }
