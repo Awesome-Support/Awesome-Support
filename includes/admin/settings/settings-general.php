@@ -273,6 +273,37 @@ function wpas_core_settings_general( $def ) {
 				),				
 				
 				array(
+					'name' => __( 'Attachments', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Control who can delete ticket or reply attachments', 'awesome-support' ),					
+				),
+				
+				array(
+					'name'    => __( 'Agents allowed to delete attachments', 'awesome-support' ),
+					'id'      => 'agents_can_delete_attachments',
+					'type'    => 'checkbox',
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Users allowed to delete attachments', 'awesome-support' ),
+					'id'      => 'users_can_delete_attachments',
+					'type'    => 'checkbox',
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Automatically delete attachments when a ticket is closed', 'awesome-support' ),
+					'id'      => 'auto_delete_attachments',
+					'type'    => 'checkbox',
+					'default' => false
+				),
+				array(
+					'name'    => __( 'User can set auto-delete attachment flag', 'awesome-support' ),
+					'id'      => 'user_can_set_auto_delete_attachments',
+					'type'    => 'checkbox',
+					'default' => false
+				),
+				
+				array(
 					'name' => __( 'Redirects', 'awesome-support' ),
 					'type' => 'heading',
 					'desc'    => __( 'Configure where the user should be sent after certain actions', 'awesome-support' ),					
