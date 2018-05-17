@@ -221,7 +221,7 @@ class WPAS_GDPR_User_Profile {
 		 */
 		$response = array(
 			'code'    => 403,
-			'message' => __( 'Sorry! Something failed', 'awesome-support' ),
+			'message' => array(),
 		);
 
 		/**
@@ -272,34 +272,38 @@ class WPAS_GDPR_User_Profile {
 				}
 			}
 
-			/**
-			 * Put them in awesome-support/user_log_$user_id
-			 * folders in uploads dir. This has .htaccess protect to avoid
-			 * direct access
-			 */
-			$this->user_export_dir = $this->set_log_dir( $user );
-			file_put_contents(
-				$this->user_export_dir . '/export-data.xml',
-				$this->xml_conversion(
-					array_merge(
-						array( 'ticket_data' => $user_tickets ),
-						array( 'consent_log' => $user_consent )
+			if( !empty( $user_consent ) || !empty( $user_tickets )){
+				/**
+				 * Put them in awesome-support/user_log_$user_id
+				 * folders in uploads dir. This has .htaccess protect to avoid
+				 * direct access
+				 */
+				$this->user_export_dir = $this->set_log_dir( $user );
+				file_put_contents(
+					$this->user_export_dir . '/export-data.xml',
+					$this->xml_conversion(
+						array_merge(
+							array( 'ticket_data' => $user_tickets ),
+							array( 'consent_log' => $user_consent )
+						)
 					)
-				)
-			);
-			$this->data_zip( 'export-data.xml', $this->user_export_dir );
-			$upload_dir          = wp_upload_dir();
-			$response['message'] = sprintf(
-				'<p>%s. <a href="%s" target="_blank">%s</a></p>',
-				__( 'Exporting data was successful!', 'awesome-support' ),
-				add_query_arg(
-					array(
-						'file' => $user,
-						'check' => wp_create_nonce( 'as-validate-download-url' ),
-					), home_url()
-				),
-				__( 'Download it now..', 'awesome-support' )
-			);
+				);
+				$this->data_zip( 'export-data.xml', $this->user_export_dir );
+				$upload_dir          = wp_upload_dir();
+				$response['message']['success'] = sprintf(
+					'<p>%s. <a href="%s" target="_blank">%s</a></p>',
+					__( 'Exporting data was successful!', 'awesome-support' ),
+					add_query_arg(
+						array(
+							'file' => $user,
+							'check' => wp_create_nonce( 'as-validate-download-url' ),
+						), home_url()
+					),
+					__( 'Download it now..', 'awesome-support' )
+				);
+			} else{
+				$response['message']['error'] = sprintf( '<p>%s.</p>', __( 'No data exist', 'awesome-support' ) );
+			}
 
 		} else {
 			$response['message'] = __( 'Cheating huh?', 'awesome-support' );

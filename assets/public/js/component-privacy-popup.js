@@ -137,7 +137,11 @@ jQuery(document).ready(function ($) {
 			function( response ) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
-				jQuery( '.export-data' ).addClass( 'success' ).html( response.message );
+				if( undefined !== response.message.success ){
+					jQuery( '.export-data' ).addClass( 'success' ).html( response.message.success );
+				} else if( undefined !== response.message.error  ) {
+					jQuery( '.export-data' ).addClass( 'failure' ).html( response.message.error );
+				}
 			}
 		);		
 	});
