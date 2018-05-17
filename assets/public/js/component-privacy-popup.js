@@ -153,7 +153,12 @@ jQuery(document).ready(function ($) {
 	 */
 	jQuery( ".wpas-gdpr-tablinks" ).click( function(e) {
 		if( jQuery(this).data( 'id' ) === 'delete-existing'  ) {
-			wpas_init_editor( 'wpas-gdpr-ded-more-info', '' );
+			/**
+			 * If the Additional Information is set
+			 */
+			if( jQuery( '#wpas-gdpr-ded-more-info' ).length > 0 ) {
+				wpas_init_editor( 'wpas-gdpr-ded-more-info', '' );
+			}
 		}
 	});
 });

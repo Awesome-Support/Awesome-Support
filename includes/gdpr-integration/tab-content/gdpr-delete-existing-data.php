@@ -12,6 +12,12 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+// Get subject based on settings option!
+$subject = __( 'Official Request: Please Delete My Existing Data ("Right To Be Forgotten").', 'awesome-support' );
+if( wpas_get_option( 'delete_existing_data_subject', false ) ) {
+	$subject = wpas_get_option( 'delete_existing_data_subject', false );
+}
 ?>
 <form name="wpas-gdpr-rtbf-form" id="wpas-gdpr-rtbf-form">
 	<div class="wpas-gdpr-pre-loader">
@@ -26,8 +32,15 @@ if ( ! defined( 'WPINC' ) ) {
 			</tr>
 		</thead>
 		<tr>
-			<td data-label="Subject"><input type="text" name="wpas-gdpr-ded-subject" id="wpas-gdpr-ded-subject" readonly="readonly" value="<?php esc_html_e( 'Official Request: Please Delete My Existing Data ("Right To Be Forgotten")', 'awesome-support' ); ?>" /></td>
+			<td data-label="Subject"><input type="text" name="wpas-gdpr-ded-subject" id="wpas-gdpr-ded-subject" readonly="readonly" value='<?php echo stripslashes_deep( $subject ); ?>' /></td>
 		</tr>
+		<?php
+		/**
+		 * Check if this is enabled in the settings option
+		 * before we can render the markup
+		 */
+		if( wpas_get_option( 'delete_existing_data_add_information', false ) ) {
+		?>
 		<thead>
 			<tr class="headlines">
 				<th><?php esc_html_e( 'Additional Information', 'awesome-support' ); ?></th>
@@ -36,6 +49,9 @@ if ( ! defined( 'WPINC' ) ) {
 		<tr>
 			<td data-label="Additional Information"><textarea name="wpas-gdpr-ded-more-info" id="wpas-gdpr-ded-more-info" ></textarea></td>
 		</tr>
+		<?php
+		}
+		?>
 		<tr>
 			<td><input type="submit" name="wpas-gdpr-ded-submit" id="wpas-gdpr-ded-submit" class="button button-primary" value="Submit"></td>
 		</tr>
