@@ -1396,9 +1396,13 @@ msgstr "Tichetul a fost inchis."
 msgid "The ticket was re-opened."
 msgstr "Tichetul a fost redeschis."
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "Nu ai permisiunea pentru a vizualiza acest tichet."
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
+msgstr "Conectați-vă pentru a vizualiza acest tichet."
 
 #: includes/functions-templating.php:281
 msgid "ID"

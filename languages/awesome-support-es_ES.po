@@ -1297,9 +1297,13 @@ msgstr "El ticket fue cerrado."
 msgid "The ticket was re-opened."
 msgstr "El ticket fue reabierto."
 
-#: includes/functions-templating.php:65 includes/functions-templating.php:69
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "No tienes permisos para ver este ticket."
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
+msgstr "Por favor inicie sesión para ver este ticket."
 
 #: includes/admin/class-admin-tickets-list.php:94
 #: includes/admin/class-admin-tickets-list.php:177

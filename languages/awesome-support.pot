@@ -3737,8 +3737,12 @@ msgstr ""
 msgid "Set priority color."
 msgstr ""
 
-#: includes/functions-templating.php:65 includes/functions-templating.php:69
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
+msgstr ""
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
 msgstr ""
 
 #: includes/functions-templating.php:277 includes/functions-templating.php:576

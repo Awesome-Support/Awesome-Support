@@ -1398,9 +1398,13 @@ msgstr "Supportsagen blev lukket."
 msgid "The ticket was re-opened."
 msgstr "Supportsagen blev genåbnet."
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "Du har ikke ret til at læse denne forespørgsel."
+
+#: includes/functions-templating.php:62 includes/functions-templating.php:66
+msgid "Please log in to view this ticket."
+msgstr "Log venligst ind for at se denne forespørgsel."
 
 #: includes/functions-templating.php:281
 msgid "ID"

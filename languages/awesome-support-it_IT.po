@@ -1404,6 +1404,10 @@ msgstr "Il ticket è stato riaperto."
 msgid "You are not allowed to view this ticket."
 msgstr "Non sei abilitato alla visione di questo ticket."
 
+#: includes/functions-templating.php:62 includes/functions-templating.php:66
+msgid "You are not allowed to view this ticket."
+msgstr "Effettua il login per visualizzare questo ticket."
+
 #: includes/functions-templating.php:281
 msgid "ID"
 msgstr "ID"

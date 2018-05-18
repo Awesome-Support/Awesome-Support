@@ -1397,9 +1397,13 @@ msgstr "تیکت بسته شده"
 msgid "The ticket was re-opened."
 msgstr "تیکت بازشده"
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "شما مجاز به دیدن لیست تیکت نیستید"
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
+msgstr "لطفا برای دیدن این بلیط وارد شوید"
 
 #: includes/functions-templating.php:281
 msgid "ID"

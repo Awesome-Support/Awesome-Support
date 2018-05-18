@@ -1296,9 +1296,13 @@ msgstr ""
 msgid "The ticket was re-opened."
 msgstr ""
 
-#: includes/functions-templating.php:65 includes/functions-templating.php:69
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "Hauruhusiwi Kutazama Tiketi hizi"
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
+msgstr "Tafadhali ingia ili uangalie tiketi hizi"
 
 #: includes/admin/class-admin-tickets-list.php:94
 #: includes/admin/class-admin-tickets-list.php:177

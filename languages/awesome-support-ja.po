@@ -1317,9 +1317,13 @@ msgstr "チケットはクローズされました。"
 msgid "The ticket was re-opened."
 msgstr "チケットが再開されました。"
 
-#: includes/functions-templating.php:65 includes/functions-templating.php:69
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "このチケットを表示することはできません。"
+
+#: includes/functions-templating.php:65
+msgid "Please log in to view this ticket."
+msgstr "このチケットを表示するにはログインしてください。"
 
 #: includes/admin/class-admin-tickets-list.php:165
 #: includes/admin/class-admin-tickets-list.php:248

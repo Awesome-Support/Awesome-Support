@@ -1399,9 +1399,13 @@ msgstr "Карточка была закрыта."
 msgid "The ticket was re-opened."
 msgstr "Карточка была вновь открыта."
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "Вам не разрешено просматривать этот запрос."
+
+#: includes/functions-templating.php:65
+msgid "Please log in to view this ticket."
+msgstr "Пожалуйста, войдите, чтобы увидеть этот запрос."
 
 #: includes/functions-templating.php:281
 msgid "ID"

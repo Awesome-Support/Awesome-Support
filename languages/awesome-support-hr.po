@@ -1395,9 +1395,13 @@ msgstr "Tiket je zatvorem."
 msgid "The ticket was re-opened."
 msgstr "Tiket je ponovo otvoren."
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "Vama nije dopušteno da vidite ovaj tiket."
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
+msgstr "Prijavite se da biste vidjeli ovaj tiket."
 
 #: includes/functions-templating.php:281
 msgid "ID"

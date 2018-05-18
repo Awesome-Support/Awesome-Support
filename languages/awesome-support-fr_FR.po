@@ -1397,9 +1397,13 @@ msgstr "Le ticket a été fermé."
 msgid "The ticket was re-opened."
 msgstr "Le ticket a été ré-ouvert"
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "Vous n'êtes pas autorisé à consulter ce ticket."
+
+#: includes/functions-templating.php:65
+msgid "You are not allowed to view this ticket."
+msgstr "Veuillez vous connecter pour voir ce ticket."
 
 #: includes/functions-templating.php:281
 msgid "ID"

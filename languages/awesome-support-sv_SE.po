@@ -1399,9 +1399,13 @@ msgstr "Ärende är stängt."
 msgid "The ticket was re-opened."
 msgstr "Ärendet har återupptagits."
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "Du får ej se detta ärende."
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
+msgstr "Vänligen logga in för att se detta ärende."
 
 #: includes/functions-templating.php:281
 msgid "ID"

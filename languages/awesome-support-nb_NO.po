@@ -1578,10 +1578,15 @@ msgstr "Henvendelsen er lukket"
 msgid "The ticket was re-opened."
 msgstr "Henvendelsen er åpnet igjen"
 
-#: includes/functions-templating.php:65 includes/functions-templating.php:69
+#: includes/functions-templating.php:65
 #, fuzzy
 msgid "You are not allowed to view this ticket."
 msgstr "Du har ikke tillatelse til å se denne henvendelsen"
+
+#: includes/functions-templating.php:65
+#, fuzzy
+msgid "Please log in to view this ticket."
+msgstr "Vennligst logg inn for å se denne henvendelsen"
 
 #: includes/admin/class-admin-tickets-list.php:165
 #: includes/admin/class-admin-tickets-list.php:248

@@ -1396,9 +1396,13 @@ msgstr "Zgłoszenie zostało zamknięte."
 msgid "The ticket was re-opened."
 msgstr "Otwarto ponownie zgłoszenie."
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "Nie masz uprawnień do obejrzenia zgłoszenia."
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
+msgstr "Zaloguj się, aby wyświetlić ten zgłoszenia."
 
 #: includes/functions-templating.php:281
 msgid "ID"

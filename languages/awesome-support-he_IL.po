@@ -1397,9 +1397,13 @@ msgstr "הקריאה נסגרה."
 msgid "The ticket was re-opened."
 msgstr "הקריאה נפתחה מחדש."
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr ""
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
+msgstr "היכנס כדי להציג את הכרטיס."
 
 #: includes/functions-templating.php:281
 msgid "ID"
