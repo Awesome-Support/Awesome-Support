@@ -1786,37 +1786,65 @@ function wpas_show_reply_deleted_msg( $ticket_id, $ticket ) {
 	
 }
 
-add_action( 'save_post', 'wpas_edit_ticket_content', 10 );
+add_action( 'wp_ajax_wpas_edit_ticket_content', 'wpas_edit_ticket_content' );
+add_action( 'wp_ajax_nopriv_wpas_edit_ticket_content', 'wpas_edit_ticket_content' );
 /**
- * Edit the ticket content
- *
- * @param string $ticket_id - id of ticket being processed.
+ * Save the ticket content from editing
  *
  * @return void
  */
-function wpas_edit_ticket_content( $ticket_id ) {
+function wpas_edit_ticket_content() {
 
 	/**
-	 * Make sure we are editing ticket
+	 * The default response
 	 */
-    $post_type = get_post_type( $ticket_id );
-    if ( $post_type !== 'ticket' ) {
-        return false;
-    }
+	$response = array(
+		'code' 		=> 404,
+		'message'	=> __( 'Nothing found!', 'awesome-support' )
+	);
+
+	/**
+	 * Variables!
+	 */
+	$ticket_id 	= isset( $_POST['post_id'] ) ? sanitize_text_field( $_POST['post_id'] ) : '';
+	$content 	= isset( $_POST['content'] ) ? wp_kses_post( $_POST['content'] ) : '';
+
+	/**
+	 * Make sure we have ticket ID
+	 */
+	if( ! $ticket_id ) {
+		$response['message'] = __( 'Ticket ID missing. Invalid request!', 'awesome-support' );
+		wp_send_json( $response );
+		wp_die();
+	}
+
+	/**
+	 * The the updated ticket content is missing, exit
+	 */
+	if( ! $content ) {
+		$response['message'] = __( 'No ticket message found. Invalid request!', 'awesome-support' );
+		wp_send_json( $response );
+		wp_die();
+	}
+	
+	/**
+	 * Make sure we are on the correct post type
+	 */
+    $is_ticket = get_post_type( $ticket_id );
+    if ( $is_ticket !== 'ticket' ) {
+		$response['message'] = __( 'Id provided is not a valid ticket. Invalid request!', 'awesome-support' );
+		wp_send_json( $response );
+		wp_die();
+	}
 
 	/**
 	 * Make sure that this is valid ticket and it exists
 	 */
     $original_content = get_post( $ticket_id );
     if ( is_null( $original_content ) ) {
-		return false;
-	}
-
-	/**
-	 * The the updated ticket content is missing, exit
-	 */
-	if( ! isset( $_POST['wpas-main-ticket-message'] ) ) {
-		return false;
+		$response['message'] = __( 'No ticket found. Invalid request!', 'awesome-support' );
+		wp_send_json( $response );
+		wp_die();
 	}
 
 	/**
@@ -1824,40 +1852,34 @@ function wpas_edit_ticket_content( $ticket_id ) {
 	 * If they are not same and have differences, log it
 	 * then we update the post content
 	 */
-	if( $original_content->post_content !== wp_kses_post( $_POST['wpas-main-ticket-message'] ) ) {
-
-		/**
-		 * Unhook this function so it doesn't loop infinitely
-		 */
-		remove_action( 'save_post', 'wpas_edit_ticket_content' );
+	if( $original_content->post_content !== $content ) {
 
 		/**
 		 * Update the content
 		 */
-		$updated_post_id = wp_update_post( array( 'ID' => $ticket_id, 'post_content' => wp_kses_post( $_POST['wpas-main-ticket-message'] ) ) );
-
-		/**
-		 * re-hook this function
-		 */
-		add_action( 'save_post', 'wpas_edit_ticket_content' );
+		$updated_post_id = wp_update_post( array( 'ID' => $ticket_id, 'post_content' => $content ) );
 
 		if ( is_wp_error( $updated_post_id ) ) {
-			/**
-			 * Action hook when updating the content failed
-			 */
-			do_action( 'wpas_update_ticket_failed', $updated_post_id->get_error_messages() );
+			$response['message'] = $updated_post_id->get_error_messages();
+			$response['content'] = $original_content->post_content;
 		} else {
-			/**
-			 * Action hook when updating the content successful
-			 */
-			do_action( 'wpas_update_ticket_success', $updated_post_id );
-
+			$response['code'] 		= 200;
+			$response['message'] 	= __( 'You have successfully edited content!', 'awesome-support' );
+			$response['content'] 	= $content;
 			/**
 			 * Log the ticket
 			 */
 			wpas_log_edits( $ticket_id, sprintf( __( 'Ticket content #%s located on ticket #%s was edited.', 'awesome-support' ), (string) $original_content->post_parent, (string) $ticket_id ), $original_content->post_content );
 		}
+	}else{
+		$response['code'] 		= 404;
+		$response['message'] 	= __( 'Nothing has been updated. You have same content as before..', 'awesome-support' );
+		$response['content'] 	= $original_content->post_content;
 	}
+
+	wp_send_json( $response );
+	wp_die();
+
 }
 
 add_action( 'wp_ajax_wpas_load_reply_history', 'wpas_load_reply_history' );
