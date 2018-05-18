@@ -38,13 +38,7 @@ msgstr "Meerdere producten"
 
 #: includes/admin/class-admin-help.php:61
 #: includes/admin/class-admin-help.php:107
-msgid ""
-"<h2>Multiple Products</h2><p>The plugin can handle single product and "
-"multiple products support. If you do need to provide support for multiple "
-"products it is very important that you do NOT use a custom field or taxonomy"
-" and use the &laquo;Multiple Products&raquo; option instead.</p><p>The "
-"reason why it is so important is that many addons for Awesome Support are "
-"using the built-in products management system to work properly.</p>"
+msgid "<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>"
 msgstr "<h2> Meerdere producten </h2><p> De plugin kan omgaan met enkel product en meerdere producten ondersteuning. Als je ondersteuning wilt bieden voor meerdere producten is het zeer belangrijk dat je GEEN gebruik maken van een aangepast veld of taxonomie en gebruik de «Meerdere producten» optie  in de plaats. </p><p> De reden waarom het zo belangrijk is, is dat veel addons voor Awesome Support het ingebouwde producten management systeem gebruiken om het goed te laten werken. </p>"
 
 #: includes/admin/class-admin-help.php:66
@@ -53,10 +47,7 @@ msgid "Default Assignee"
 msgstr "Standaard gemachtigde"
 
 #: includes/admin/class-admin-help.php:67
-msgid ""
-"<h2>Default Assignee</h2><p>Even though the plugin will try to assign new "
-"tickets to the less busy agent, we need to know who to assign to in case we "
-"can't find a perfect fit for the new tickets.</p>"
+msgid "<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agent, we need to know who to assign to in case we can't find a perfect fit for the new tickets.</p>"
 msgstr "<h2> Standaard Gevolmachtigde </h2><p> Ook als de plugin zal proberen om nieuwe tickets toe te wijzen aan de minder drukke agent, moeten we weten wie toe te wijzen in het geval dat we niet een perfecte match vinden voor de nieuwe tickets. </p>"
 
 #: includes/admin/class-admin-help.php:72
@@ -65,15 +56,7 @@ msgid "Allow Registrations"
 msgstr "Sta ​​Registraties toe"
 
 #: includes/admin/class-admin-help.php:73
-msgid ""
-"<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new "
-"registrations or not. By default, it doesn't. However, with closed "
-"registrations, this plugin becomes useless. This is why we added a separate "
-"setting to allow registrations. Users registering through Awesome Support "
-"will be given a specific role (<code>Support User</code>) with very limited "
-"privileges.</p><p>If you allow registrations through the plugin but not "
-"through WordPress, users will only be able to register through our "
-"registration form.</p>"
+msgid "<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn't. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>"
 msgstr "<h2>Staat registraties toe</h2><p>je WordPress site kan nieuwe registraties accepteren of niet. Strandaard niet. Echter, met gesloten registraties, wordt deze plugin nutteloos. Daarom voegden we een aparte instelling toe om registraties toe te staan. Er zal een specifieke rol  (<code>Support User</code>) met heel weinig privileges worden toegekend aan gebruikers die  registreren via Awesome Support. < /p> <p>Als u registraties via de plugin toestaat maar niet via WordPress, dan zullen gebruikers alleen kunnen registreren via ons registratieformulier. < /p>"
 
 #: includes/admin/class-admin-help.php:94
@@ -95,10 +78,7 @@ msgid "Email Template Tags"
 msgstr "E-mail Template Tags"
 
 #: includes/admin/class-admin-help.php:113
-msgid ""
-"<p>When setting up your e-mails templates, you can use a certain number of "
-"template tags allowing you to dynamically add ticket-related information at "
-"the moment the e-mail is sent. Here is the list of available tags:</p>%s"
+msgid "<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s"
 msgstr "<p> Bij het opzetten van je e-mails templates, kun je een bepaald aantal template tags gebruiken zodat je ticket-gerelateerde informatie dynamisch toe kunt voegen op het moment dat de e-mail wordt verzonden. Hier is de lijst met beschikbare tags: </p> %s"
 
 #: includes/admin/class-admin-help.php:133
@@ -106,15 +86,7 @@ msgid "Custom Login Page"
 msgstr "Custom Inloggen Pagina"
 
 #: includes/admin/class-admin-help.php:134
-msgid ""
-"<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to "
-"allow advanced users to create their own login / registration page. If you "
-"don't like our login form, you can replace it by your own.</p><p>To do so, "
-"create a new page containing the form (either with the use of a shortcode or"
-" a page template), then set this newly created page as the \"Custom Login / "
-"Registration Page\" in the setting below.</p><p><strong>Beware</strong>, "
-"setting a wrong page as the custom login page can either show a blank page "
-"or create an infinite loop.</p>"
+msgid "<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don't like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the \"Custom Login / Registration Page\" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>"
 msgstr "<h2 >Meerdere Producten</h2><p>Dit kan een gevaarlijke instelling zijn. Hiermee kunnen geavanceerde gebruikers hun eigen login / registratie pagina maken. Als je ons aanmeldformulier niet mooi vind, kunt u deze vervangen door uw eigen. </p><p> Hiervoor maakt u een nieuwe pagina met het formulier (met het gebruik van een shortcode of een paginasjabloon), zet deze  nieuw aangemaakte pagina als de \"Custom Login / Registratie Pagina\" in de instelling hieronder. < /p><p><strong>Pas Op<strong>, een verkeerde pagina als aangepaste login pagina kan een blanco pagina laten zien of maakt een oneindige lus. </p>"
 
 #: includes/admin/class-admin-tickets-list.php:99
@@ -191,9 +163,7 @@ msgid "Are you sure you want to delete this reply?"
 msgstr "Weet u zeker dat u dit antwoord wilt verwijderen?"
 
 #: includes/admin/class-admin.php:389
-msgid ""
-"No instance of TinyMCE found. Please use wp_editor on this page at least "
-"once: http://codex.wordpress.org/Function_Reference/wp_editor"
+msgid "No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor"
 msgstr "Geen voorbeeld van TinyMCE gevonden. Gebruik wp_editor op deze pagina minstens één keer: http://codex.wordpress.org/Function_Reference/wp_editor"
 
 #: includes/admin/class-admin.php:389
@@ -227,10 +197,7 @@ msgid "The ticket #%s has been closed."
 msgstr "Het ticket #%s is gesloten."
 
 #: includes/admin/class-admin.php:595
-msgid ""
-"Will you be supporting multiple products on this support site? You can "
-"activate multi-products support now. <small>(This setting can be modified "
-"later)</small>"
+msgid "Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>"
 msgstr "Wil je ondersteuning bieden van meerdere producten op deze support site? Je kunt  multi-producten ondersteunen nu activeren. <small>(Deze instelling kan later worden gewijzigd)</small>"
 
 #: includes/admin/class-admin.php:597
@@ -245,7 +212,8 @@ msgstr "Ticket status veranderd naar %s"
 msgid "Debugging Tools"
 msgstr "Hulpmiddelen voor foutopsporing"
 
-#: includes/admin/class-admin.php:674 includes/admin/views/system-tools.php:64
+#: includes/admin/class-admin.php:674
+#: includes/admin/views/system-tools.php:64
 msgid "Tools"
 msgstr "Gereedschap"
 
@@ -286,14 +254,11 @@ msgid "Custom Fields"
 msgstr "Aangepaste velden"
 
 #: includes/admin/class-admin.php:938
-msgid ""
-"An error occurred while registering this metabox. Please contact the "
-"support."
+msgid "An error occurred while registering this metabox. Please contact the support."
 msgstr "Er is een fout opgetreden tijdens het registreren van dit Metabox. Neem contact op met de ondersteuning."
 
 #: includes/admin/class-admin.php:944
-msgid ""
-"An error occured while loading this metabox. Please contact the support."
+msgid "An error occured while loading this metabox. Please contact the support."
 msgstr "Er is een fout opgetreden tijdens het laden van deze Metabox. Neem contact op met de ondersteuning."
 
 #: includes/admin/metaboxes/details.php:47
@@ -392,9 +357,7 @@ msgid "Ticket is closed"
 msgstr "Ticket is gesloten"
 
 #: includes/admin/metaboxes/replies.php:155
-msgid ""
-"This ticket has been closed. If you want to write a new reply to this "
-"ticket, you need to <a href=\"%s\">re-open it first</a>."
+msgid "This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href=\"%s\">re-open it first</a>."
 msgstr "Dit ticket is gesloten. Als je een nieuwe reactie wil plaatsen op dit ticket, moet je <a href=\"%s\">eerst heropenen.</a>"
 
 #: includes/admin/metaboxes/stakeholders.php:31
@@ -418,9 +381,7 @@ msgid "CCs"
 msgstr "CCs"
 
 #: includes/admin/metaboxes/stakeholders.php:105
-msgid ""
-"If you want to send a copy of the e-mails to another person, add the "
-"address(es) separated by a comma."
+msgid "If you want to send a copy of the e-mails to another person, add the address(es) separated by a comma."
 msgstr "Als je een kopie van de e-mails wilt sturen naar een andere persoon, voeg het/de adres(sen) toe, gescheiden door een komma."
 
 #: includes/admin/settings/functions-settings.php:10
@@ -436,11 +397,7 @@ msgid "Custom Login / Registration Page"
 msgstr "Aangepaste Inloggen / Registratie Pagina"
 
 #: includes/admin/settings/settings-advanced.php:19
-msgid ""
-"Only use this option if you know how to create your own registration page, "
-"otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" "
-"target=\"_blank\">start by reading this guide</a>."
+msgid "Only use this option if you know how to create your own registration page, otherwise you might create an infinite redirect. If you need help on creating a registration page you should <a href=\"%s\" target=\"_blank\">start by reading this guide</a>."
 msgstr "Gebruik deze optie alleen als je weet hoe je je eigen registratie pagina kunt maken, anders zou je een oneindige redirect kunnen maken. Als je hulp nodig hebt bij het ​​maken van een registratiepagina moet je  <a href=\"%s\" target=\"_blank\">beginnen met het lezen van deze gids</a> ."
 
 #: includes/admin/settings/settings-advanced.php:24
@@ -448,9 +405,7 @@ msgid "Admins See All"
 msgstr "Admins zien alle"
 
 #: includes/admin/settings/settings-advanced.php:27
-msgid ""
-"Administrators can see all tickets in the tickets list. If unchecked admins "
-"will only see tickets assigned to them."
+msgid "Administrators can see all tickets in the tickets list. If unchecked admins will only see tickets assigned to them."
 msgstr "Beheerders kunnen alle tickets in de lijst tickets  zien. Indien niet aangevinkt zien beheerders alleen aan hen toegewezen tickets."
 
 #: includes/admin/settings/settings-advanced.php:31
@@ -458,9 +413,7 @@ msgid "Agent See All"
 msgstr "Admins zien alle"
 
 #: includes/admin/settings/settings-advanced.php:34
-msgid ""
-"Agents can see all tickets in the tickets list. If unchecked agents will "
-"only see tickets assigned to them."
+msgid "Agents can see all tickets in the tickets list. If unchecked agents will only see tickets assigned to them."
 msgstr "Agenten kunnen alle tickets in de lijst tickets zien. Indien niet aangevinkt zien agenten alleen aan hen toegewezen tickets."
 
 #: includes/admin/settings/settings-advanced.php:38
@@ -480,24 +433,15 @@ msgid "General"
 msgstr "Algemeen"
 
 #: includes/admin/settings/settings-general.php:23
-msgid ""
-"If you need to provide support for multiple products, please enable this "
-"option. You will then be able to add your products."
+msgid "If you need to provide support for multiple products, please enable this option. You will then be able to add your products."
 msgstr "Als je ondersteuning nodig hebt voor meerdere producten, schakelt je deze optie in. Je zult dan in staat zijn om je producten toe te voegen."
 
 #: includes/admin/settings/settings-general.php:30
-msgid ""
-"Who to assign tickets to in the case that auto-assignment wouldn&#039;t "
-"work. This does NOT mean that all tickets will be assigned to this user. "
-"This is a fallback option. To enable/disable auto assignment for an agent, "
-"please do so in the user profile settings."
+msgid "Who to assign tickets to in the case that auto-assignment wouldn&#039;t work. This does NOT mean that all tickets will be assigned to this user. This is a fallback option. To enable/disable auto assignment for an agent, please do so in the user profile settings."
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:38
-msgid ""
-"Allow users to register on the support page. This setting can be enabled "
-"even though the WordPress setting is disabled. Currently, registrations are "
-"%s by WordPress."
+msgid "Allow users to register on the support page. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress."
 msgstr "Sta gebruikers toe om te registreren op de ondersteuning. Deze instelling kan worden ingeschakeld, zelfs al is de instelling in WordPress uitgeschakeld. Momenteel registraties zijn %s door WordPress."
 
 #: includes/admin/settings/settings-general.php:41
@@ -517,9 +461,7 @@ msgid "Replies Order"
 msgstr "Antwoord volgorde"
 
 #: includes/admin/settings/settings-general.php:50
-msgid ""
-"In which order should the replies be displayed (for both client and admin "
-"side)?"
+msgid "In which order should the replies be displayed (for both client and admin side)?"
 msgstr "In welke volgorde moeten de antwoorden worden weergegeven (voor zowel cliënt als admin kant)?"
 
 #: includes/admin/settings/settings-general.php:51
@@ -535,8 +477,7 @@ msgid "Replies Per Page"
 msgstr "Antwoorden Per Pagina"
 
 #: includes/admin/settings/settings-general.php:59
-msgid ""
-"How many replies should be displayed per page on a ticket details screen?"
+msgid "How many replies should be displayed per page on a ticket details screen?"
 msgstr "Hoeveel antwoorden moet per pagina worden weergegeven op een ticket gegevens scherm?"
 
 #: includes/admin/settings/settings-general.php:62
@@ -572,9 +513,7 @@ msgid "Ticket Submission"
 msgstr "Ticket indienen"
 
 #: includes/admin/settings/settings-general.php:91
-msgid ""
-"The page used for ticket submission. This page should contain the shortcode "
-"%s"
+msgid "The page used for ticket submission. This page should contain the shortcode %s"
 msgstr "De pagina die wordt gebruikt voor ticket indienen. Deze pagina zou de shortcode %s moeten bevatten"
 
 #: includes/admin/settings/settings-general.php:96
@@ -582,9 +521,7 @@ msgid "Tickets List"
 msgstr "Tickets Lijst"
 
 #: includes/admin/settings/settings-general.php:100
-msgid ""
-"The page that will list all tickets for a client. This page should contain "
-"the shortcode %s"
+msgid "The page that will list all tickets for a client. This page should contain the shortcode %s"
 msgstr "De pagina die een lijst van alle tickets voor een klant maakt. Deze pagina zou de shortcode %s moeten bevatten"
 
 #: includes/admin/settings/settings-general.php:105
@@ -601,10 +538,7 @@ msgid "Content"
 msgstr "Inhoud"
 
 #: includes/admin/settings/settings-general.php:113
-msgid ""
-"Terms & conditions are not mandatory. If you add terms, a mandatory checkbox"
-" will be added in the registration form. Users won't be able to register if "
-"they don't accept your terms"
+msgid "Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept your terms"
 msgstr "Algemene voorwaarden zijn niet verplicht. Als je algemene voorwaarde toevoegt, zal een mendatory checkbox toegevoegd worden in het registratieformulier. Gebruikers zullen niet in staat zijn om te registreren als ze niet je algemene voorwaarde accepteren."
 
 #: includes/admin/settings/settings-general.php:117
@@ -616,9 +550,7 @@ msgid "Show Credit"
 msgstr "Toon Credit"
 
 #: includes/admin/settings/settings-general.php:124
-msgid ""
-"Do you like this plugin? Please help us spread the word by displaying a "
-"credit link at the bottom of your ticket submission page."
+msgid "Do you like this plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page."
 msgstr "Je houdt van de plugin? Help ons de plugin bekend te maken door een credit-link aan de onderkant van uw ticket pagina weer te geven."
 
 #: includes/admin/settings/settings-licenses.php:19
@@ -630,10 +562,7 @@ msgid "E-Mails"
 msgstr "E-mails:"
 
 #: includes/admin/settings/settings-notifications.php:17
-msgid ""
-"For more information about the template tags that can be used in e-mail "
-"templates please click the &laquo;Help&raquo; button in the top right hand "
-"corner of this screen."
+msgid "For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen."
 msgstr "Voor meer informatie over de template tags die kunnen worden gebruikt in e-mail templates klik je op de «Help» knop in de rechter bovenhoek van dit scherm."
 
 #: includes/admin/settings/settings-notifications.php:20
@@ -734,8 +663,7 @@ msgid "Theme Stylesheet"
 msgstr "Thema-stylesheet"
 
 #: includes/admin/settings/settings-style.php:27
-msgid ""
-"Load the theme stylesheet. Don't uncheck if you don't know what this means"
+msgid "Load the theme stylesheet. Don't uncheck if you don't know what this means"
 msgstr "Laad het thema stylesheet. Niet uitschakelen als je niet weet wat dit betekent"
 
 #: includes/admin/settings/settings-style.php:31
@@ -743,8 +671,7 @@ msgid "Use editor in front-end"
 msgstr "Gebruik editor in front-end"
 
 #: includes/admin/settings/settings-style.php:34
-msgid ""
-"Show a editor editor for the ticket description when user submits a ticket."
+msgid "Show a editor editor for the ticket description when user submits a ticket."
 msgstr "Toon een  editor voor de ticket beschrijving wanneer de gebruiker een ticket indient."
 
 #: includes/admin/settings/settings-style.php:38
@@ -796,9 +723,7 @@ msgid "All products have been deleted"
 msgstr "Alle producten zijn verwijderd"
 
 #: includes/admin/views/system-tools.php:60
-msgid ""
-"These tool are intended for advanced users or for use on the support staff "
-"request. Be aware that some of these tools can definitively erase data."
+msgid "These tool are intended for advanced users or for use on the support staff request. Be aware that some of these tools can definitively erase data."
 msgstr "Deze functie is bedoeld voor gevorderde gebruikers of voor gebruik op verzoek van ondersteunend personeel. Wees ervan bewust dat een aantal van deze tools definitief gegevens kunnen wissen."
 
 #: includes/admin/views/system-tools.php:70
@@ -840,9 +765,7 @@ msgid "The user exists but is not a support agent"
 msgstr "De gebruiker bestaat maar is geen support agent"
 
 #: includes/class-awesome-support.php:184
-msgid ""
-"The authenticity of your submission could not be validated. If this ticket "
-"is legitimate please try submitting again."
+msgid "The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again."
 msgstr "De authenticiteit van uw inzending niet kon worden gevalideerd. Indien dit ticket is legitiem is probeer het dan opnieuw in te dienen."
 
 #: includes/class-awesome-support.php:200
@@ -850,9 +773,7 @@ msgid "The ticket couldn't be submitted for an unknown reason."
 msgstr "Het ticket kon niet worden ingediend wegens een onbekende reden."
 
 #: includes/class-awesome-support.php:238
-msgid ""
-"Something went wrong. We couldn&#039;t identify your ticket. Please try "
-"again."
+msgid "Something went wrong. We couldn&#039;t identify your ticket. Please try again."
 msgstr ""
 
 #: includes/class-awesome-support.php:263
@@ -952,8 +873,7 @@ msgid "Displays a link to public ticket"
 msgstr "Geeft een link naar de openbare ticket weer"
 
 #: includes/class-email-notifications.php:314
-msgid ""
-"Displays the URL <strong>only</strong> (not a link link) to public ticket"
+msgid "Displays the URL <strong>only</strong> (not a link link) to public ticket"
 msgstr "Geeft de URL <strong>alleen</strong> (geen link link) van een openbare ticket weer "
 
 #: includes/class-email-notifications.php:318
@@ -961,9 +881,7 @@ msgid "Displays a link to ticket details in admin (for agents)"
 msgstr "Geeft een link weer naar ticket details in admin (naar agenten)"
 
 #: includes/class-email-notifications.php:322
-msgid ""
-"Displays the URL <strong>only</strong> (not a link link) to ticket details "
-"in admin (for agents)"
+msgid "Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)"
 msgstr "Geeft <strong>alleen</strong> de URL (geen link link) naar ticket informatie in admin (voor agenten) weer"
 
 #: includes/class-email-notifications.php:326
@@ -995,12 +913,7 @@ msgid "E-Mail Checking"
 msgstr "E-mail controleren"
 
 #: includes/class-mailgun-email-check.php:46
-msgid ""
-"You can enable e-mail checking on the registration page. When enabled, the "
-"plugin will make sure the e-mail address used is valid and can receive "
-"e-mails. The verification is done using <a href=\"%s\">Email validation "
-"API</a> and requires a (free) MailGun account. This helps reducing typos in "
-"email addresses during sign ups."
+msgid "You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href=\"%s\">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups."
 msgstr "Je kunt e-mail controleren inschakelen op de registratiepagina. Wanneer ingeschakeld, zal de plugin ervoor zorgen dat het e-mailadres geldig is en e-mails kanontvangen. De controle gebeurt met behulp van <a href=\"%s\">e-mail validatie API</a> en vereist een (gratis) MailGun account. Dit helpt bij het verminderen van typefouten in e-mailadressen tijdens aanmeldingen."
 
 #: includes/class-mailgun-email-check.php:52
@@ -1016,9 +929,7 @@ msgid "MailGun Public API Key"
 msgstr "MailGun Public API Key"
 
 #: includes/class-mailgun-email-check.php:65
-msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
-"target=\"_blank\">create one for free here</a>."
+msgid "If you don&#39;t have a MailGun account you can <a href=\"%s\" target=\"_blank\">create one for free here</a>."
 msgstr "Als je niet beschikt over een MailGun account kun je <a href=\"%s\" target=\"_blank\">een gratis aanmaken</a> ."
 
 #: includes/class-mailgun-email-check.php:76
@@ -1120,9 +1031,7 @@ msgid "Preview ticket"
 msgstr "Preview-ticket"
 
 #: includes/class-product-sync.php:766 includes/class-product-sync.php:788
-msgid ""
-"You cannot edit this term from here because it is linked to a post (of the "
-"%s post type). Please edit the post directly instead."
+msgid "You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead."
 msgstr "Je kunt deze term niet bewerken vanuit hier, want het is gekoppeld aan een post (van de %s post type). Gelieve het bericht rechtstreeks bewerken."
 
 #: includes/class-product-sync.php:791
@@ -1262,9 +1171,7 @@ msgid "Attachments"
 msgstr "Bijlages"
 
 #: includes/file-uploader/class-file-uploader.php:342
-msgid ""
-" You can upload up to %d files (maximum %d MB each) of the following types: "
-"%s"
+msgid " You can upload up to %d files (maximum %d MB each) of the following types: %s"
 msgstr "Je kunt tot  %d bestanden (maximaal %d MB elk) uploaden van de volgende typen: %s"
 
 #: includes/file-uploader/class-file-uploader.php:441
@@ -1272,9 +1179,7 @@ msgid "Attachments:"
 msgstr "Bijlagen:"
 
 #: includes/file-uploader/class-file-uploader.php:607
-msgid ""
-"Your reply has been correctly submitted but the attachment was not uploaded."
-" %s"
+msgid "Your reply has been correctly submitted but the attachment was not uploaded. %s"
 msgstr "Je antwoord is correct ingediend, maar de bijlage is niet geüpload. %s"
 
 #: includes/file-uploader/class-file-uploader.php:674
@@ -1298,9 +1203,7 @@ msgid "Enable File Upload"
 msgstr "Bestanden uploaden toestaan"
 
 #: includes/file-uploader/settings-file-upload.php:20
-msgid ""
-"Do you want to allow your users (and agents) to upload attachments to "
-"tickets and replies?"
+msgid "Do you want to allow your users (and agents) to upload attachments to tickets and replies?"
 msgstr "Wil je toestaan ​​dat je gebruikers (en agenten) bijlagen uploaden met tickets en antwoorden?"
 
 #: includes/file-uploader/settings-file-upload.php:23
@@ -1316,9 +1219,7 @@ msgid "Maximum File Size"
 msgstr "Maximale bestandsgrootte"
 
 #: includes/file-uploader/settings-file-upload.php:34
-msgid ""
-"What is the maximum size allowed for one file (in <code>MB</code>)? Your "
-"server allows up to %s"
+msgid "What is the maximum size allowed for one file (in <code>MB</code>)? Your server allows up to %s"
 msgstr "Wat is de maximaal toegestane grootte voor een bestand (in <code>Mo</code> )? Je server staat tot %s toe."
 
 #: includes/file-uploader/settings-file-upload.php:37
@@ -1326,9 +1227,7 @@ msgid "Allowed Files Types"
 msgstr "Toegestane bestandstypen"
 
 #: includes/file-uploader/settings-file-upload.php:41
-msgid ""
-"Which file types do you allow your users to attach? Please separate each "
-"extension by a comma (%s)"
+msgid "Which file types do you allow your users to attach? Please separate each extension by a comma (%s)"
 msgstr "Welke bestandstypen laat je je gebruikers toevoegen? Scheid elk extensie met een komma (%s)"
 
 #: includes/functions-addons.php:74
@@ -1344,11 +1243,7 @@ msgid "Submit"
 msgstr "Indienen"
 
 #: includes/functions-general.php:451
-msgid ""
-"Awesome Support dependencies are missing. The plugin can’t be loaded "
-"properly. Please run %s before anything else. If you don’t know what this is"
-" you should <a href=\"%s\" class=\"thickbox\">install the production "
-"version</a> of this plugin instead."
+msgid "Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href=\"%s\" class=\"thickbox\">install the production version</a> of this plugin instead."
 msgstr "Awesome Support afhankelijkheden ontbreken. De plugin kan niet goed worden geladen. Draai %s voordatje iets anders doet. Als je niet weet wat dit is moet je in plaats daarvan<a href=\"%s\" class=\"thickbox\">de productie versie installeren</a> van deze plugin "
 
 #: includes/functions-post.php:33
@@ -1377,9 +1272,7 @@ msgid "The given post ID is not a ticket"
 msgstr "De gegeven post ID is niet een ticket"
 
 #: includes/functions-post.php:877
-msgid ""
-"The chosen agent does not have the sufficient capabilities to be assigned a "
-"ticket"
+msgid "The chosen agent does not have the sufficient capabilities to be assigned a ticket"
 msgstr "De gekozen agent heeft niet voldoende bevoegdheden om te worden toegewezen aan een ticket."
 
 #: includes/functions-post.php:1033
@@ -1398,27 +1291,30 @@ msgstr "Het ticket was gesloten."
 msgid "The ticket was re-opened."
 msgstr "Het ticket werd heropend."
 
-#: includes/functions-templating.php:62 includes/functions-templating.php:66
+#: includes/functions-templating.php:65
 msgid "You are not allowed to view this ticket."
 msgstr "Het is niet toegestaan ​​om dit ticket te bekijken."
+
+#: includes/functions-templating.php:69
+msgid "Please log in to view this ticket."
+msgstr "Meld je aan om dit ticket te bekijken."
 
 #: includes/functions-templating.php:281
 msgid "ID"
 msgstr "ID"
 
-#: includes/functions-templating.php:282 includes/functions-templating.php:562
+#: includes/functions-templating.php:282
+#: includes/functions-templating.php:562
 msgid "Status"
 msgstr "Status"
 
-#: includes/functions-templating.php:283 includes/functions-templating.php:564
+#: includes/functions-templating.php:283
+#: includes/functions-templating.php:564
 msgid "Date"
 msgstr "Datum"
 
 #: includes/functions-templating.php:383
-msgid ""
-"The ticket has been closed. If you feel that your issue has not been solved "
-"yet or something new came up in relation to this ticket, <a href=\"%s\">you "
-"can re-open it by clicking this link</a>."
+msgid "The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href=\"%s\">you can re-open it by clicking this link</a>."
 msgstr "Het ticket is gesloten. Als je het gevoel hebt dat je probleem nog niet is opgelost of iets nieuws kwam in verband met dit ticket, <a href=\"%s\">dan kun je opnieuw het openen door te klikken op deze link.</a>"
 
 #: includes/functions-templating.php:439
@@ -1478,33 +1374,23 @@ msgid "We were unable to log you in for an unknown reason."
 msgstr "We waren niet in staat om je in te loggen om een ​​onbekende reden."
 
 #: includes/integrations/class-product-edd.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to an EDD product. "
-"<a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to an EDD product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "Je kunt deze term niet bewerken vanuit hier, want het is gekoppeld aan een EDD product. <a href=\"%s\">Gelieve het product direct bewerken</a> ."
 
 #: includes/integrations/class-product-exchange.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to an Exchange "
-"product. <a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to an Exchange product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "Je kunt deze term niet bewerken vanuit hier, want het is gekoppeld aan een Exchange-product. <a href=\"%s\">Gelieve het product direct bewerkent</a> ."
 
 #: includes/integrations/class-product-jigoshop.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to a Jigoshop "
-"product. <a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to a Jigoshop product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "Je kunt deze term niet bewerken vanuit hier, want het is gekoppeld aan een JigoShop product. <a href=\"%s\">Gelieve het product direct bewerken</a> ."
 
 #: includes/integrations/class-product-woocommerce.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to a WooCommerce "
-"product. <a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to a WooCommerce product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "Je kunt deze term niet bewerken vanuit hier, want het is gekoppeld aan een WooCommerce product. <a href=\"%s\">Gelieve het product direct bewerken</a> ."
 
 #: includes/integrations/class-product-wp-ecommerce.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to a WP eCommerce "
-"product. <a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to a WP eCommerce product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "Je kunt deze term niet bewerken vanuit hier, want het is gekoppeld aan een WP eCommerce product. <a href=\"%s\">Gelieve het product direct bewerken</a> ."
 
 #: includes/shortcodes/shortcode-submit.php:35
@@ -1521,10 +1407,7 @@ msgid "You are not allowed to submit a ticket."
 msgstr "Je hebt geen toestemming om een ticket toe te voegen."
 
 #: includes/shortcodes/shortcode-submit.php:104
-msgid ""
-"Sorry, support team members cannot submit tickets from here. If you need to "
-"open a ticket, please go to your admin panel or <a href=\"%s\">click here to"
-" open a new ticket</a>."
+msgid "Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href=\"%s\">click here to open a new ticket</a>."
 msgstr "Sorry, support team leden kunnen geen tickets indienen vanaf hier. Als je een ticket wil openen, ga dan naar je admin panel of <a href=\"%s\">klik hier om een nieuw ticket te openen.</a>"
 
 #: themes/default/details.php:116
@@ -1548,9 +1431,7 @@ msgid "Open a ticket"
 msgstr "Open een ticket"
 
 #: themes/default/list.php:55
-msgid ""
-"You haven't submitted a ticket yet. <a href=\"%s\">Click here to submit your"
-" first ticket</a>."
+msgid "You haven't submitted a ticket yet. <a href=\"%s\">Click here to submit your first ticket</a>."
 msgstr "Je hebt nog geen ticket ingediend. <a href=\"%s\">Klik hier om je eerste ticket in te dienen.</a>"
 
 #: themes/default/partials/ticket-origin.php:28
@@ -1615,9 +1496,7 @@ msgid "Submit ticket"
 msgstr "Ticket Indienen"
 
 #. Description of the plugin/theme
-msgid ""
-"Awesome Support is a great ticketing system that will help you improve your "
-"customer satisfaction by providing a unique customer support experience."
+msgid "Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience."
 msgstr "Awesome Support is een geweldig ticketing systeem dat zal u helpen uw klanttevredenheid te verbeteren door middel van een unieke customer support ervaring."
 
 #: includes/admin/class-admin-tickets-list.php:184
@@ -1771,16 +1650,12 @@ msgid "On Hold"
 msgstr "Gepauzeerd"
 
 #: includes/custom-fields/class-custom-fields.php:166
-msgctxt ""
-"Parent term in a taxonomy where %s is dynamically replaced by the taxonomy "
-"(eg. \"book\")"
+msgctxt "Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. \"book\")"
 msgid "Parent %s:"
 msgstr "Bovenliggend %s:"
 
 #: includes/custom-fields/class-custom-fields.php:170
-msgctxt ""
-"A new taxonomy term name where %s is dynamically replaced by the taxonomy "
-"(eg. \"book\")"
+msgctxt "A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. \"book\")"
 msgid "New %s Name"
 msgstr "Nieuwe %s Naam"
 
