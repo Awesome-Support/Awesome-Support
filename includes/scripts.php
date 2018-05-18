@@ -195,6 +195,13 @@ function wpas_register_assets_back_end() {
 		'about_page' => admin_url( 'edit.php?post_type=ticket&page=wpas-about' )
 	));
 
+	// Edit ticket content!
+	wp_enqueue_editor();
+	wp_enqueue_script( 'wpas-admin-edit-ticket-content-script', WPAS_URL . 'assets/admin/js/admin-edit-ticket-content.js', array( 'jquery' ), WPAS_VERSION );
+	wp_localize_script( 'wpas-admin-edit-ticket-content-script', 'WPAS_Edit_Ticket_Content', array(
+		'ajax_url' => admin_url( 'admin-ajax.php' )
+	));
+
 }
 
 add_action( 'wp_enqueue_scripts', 'wpas_assets_front_end', 10 );

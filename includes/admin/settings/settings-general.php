@@ -448,6 +448,14 @@ function wpas_get_editing_history_options() {
 
 	$security = array(
 		array(
+			'name'    => __( 'Roles That Can Edit Ticket Content', 'awesome-support' ),
+			'id'      => 'roles_edit_ticket_content',
+			'type'    => 'text',
+			'desc'    => __( 'Enter a comma separated list of roles that should be able to edit ticket content. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+			'default' => '',
+		),
+
+		array(
 			'name'    => __( 'Allow Agents To Edit Their Own Replies', 'awesome-support' ),
 			'id'      => 'agent_edit_own_reply',
 			'type'    => 'checkbox',
