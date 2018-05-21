@@ -1341,9 +1341,10 @@
 
 		$gdpr_short_desc_01 = wpas_get_option( 'gdpr_notice_short_desc_01', '' );
 		$gdpr_long_desc_01 = wpas_get_option( 'gdpr_notice_long_desc_01', '' );
+		$gdpr_opt_out_ok_01 = wpas_get_option('gdpr_notice_opt_out_ok_01', '' );
 		$gdpr_required_01 = boolval( wpas_get_option( 'gdpr_notice_mandatory_01', true ) );
 
-		if ( ! empty( $gdpr_short_desc_01 ) || ! empty( $gdpr_short_desc_01 ) ) {
+		if ( ( ! empty( $gdpr_short_desc_01 ) || ! empty( $gdpr_short_desc_01 ) ) && !empty( $gdpr_opt_out_ok_01 ) ) {
 
 			$gdpr01 = new WPAS_Custom_Field( 'gdpr01', array(
 				'name' => 'gdpr01',
@@ -1361,9 +1362,10 @@
 		
 		$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
 		$gdpr_long_desc_02 = wpas_get_option( 'gdpr_notice_long_desc_02', '' );
+		$gdpr_opt_out_ok_02 = wpas_get_option('gdpr_notice_opt_out_ok_02', '' );
 		$gdpr_required_02 = boolval( wpas_get_option( 'gdpr_notice_mandatory_02', true ) );
 
-		if ( ! empty( $gdpr_short_desc_02 ) || ! empty( $gdpr_short_desc_02 ) ) {
+		if ( ( ! empty( $gdpr_short_desc_02 ) || ! empty( $gdpr_short_desc_02 ) ) && !empty( $gdpr_opt_out_ok_02 )  ) {
 
 			$gdpr02 = new WPAS_Custom_Field( 'gdpr02', array(
 				'name' => 'gdpr02',
@@ -1382,8 +1384,9 @@
 		$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
 		$gdpr_long_desc_03 = wpas_get_option( 'gdpr_notice_long_desc_03', '' );
 		$gdpr_required_03 = boolval( wpas_get_option( 'gdpr_notice_mandatory_03', true ) );
+		$gdpr_opt_out_ok_03 = wpas_get_option('gdpr_notice_opt_out_ok_03', '' );
 
-		if ( ! empty( $gdpr_short_desc_03 ) || ! empty( $gdpr_short_desc_03 ) ) {
+		if ( ( ! empty( $gdpr_short_desc_03 ) || ! empty( $gdpr_short_desc_03 ) ) && !empty( $gdpr_opt_out_ok_03 ) ) {
 
 			$gdpr03 = new WPAS_Custom_Field( 'gdpr03', array(
 				'name' => 'gdpr03',
