@@ -1943,8 +1943,11 @@ function wpas_load_reply_history() {
 	 */
 	$reply_history = get_posts(
 		array(
-			'post_parent' => sanitize_text_field( $_POST['reply_id'] ),
-			'post_type'   => 'ticket_log',
+			'post_parent' 		=> sanitize_text_field( $_POST['reply_id'] ),
+			'post_type'   		=> 'ticket_log',
+			'posts_per_page'	=> 10,  //Maybe this should an option?!
+			'orderby'			=> 'ID',
+			'order'				=> 'DESC'
 		)
 	);
 

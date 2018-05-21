@@ -16,8 +16,7 @@
                   $( '.wpas-reply-notification' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
                   if( response.data ) {
                     var responseTable = '<table class="wp-list-table widefat fixed striped">';
-                    $.each( response.data, function(i, item) {
-                      console.log(item);
+                    $.each( response.data, function(i, item) {                      
                       responseTable += '<tr><td><div class="wpas-reply-history-log-table"><div class="row"><div class="title">' + WPAS_Reply_History.date_label + ' : ' + item.post_date + '</div></div><div class="row"><div class="title">' + item.post_title + '</div></div><div class="row"><div class="content">' + item.post_content + '</div></div></div></td></tr>';
                     });
                     responseTable += '</table>';
