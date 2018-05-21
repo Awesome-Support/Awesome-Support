@@ -16,7 +16,7 @@ class WPAS_GDPR_User_Profile {
 
 	/**
 	 *  Store the export directory path
-	 * 
+	 *
 	 * @since     5.1.1
 	 * @var      object
 	 */
@@ -57,20 +57,20 @@ class WPAS_GDPR_User_Profile {
 		$current_url = home_url( add_query_arg( null, null ) );
 
 		if ( isset( $_GET['file'] ) && isset( $_GET['check'] ) ) {
-			$nonce = ( !empty( $_GET['check'] ))? sanitize_text_field( $_GET['check'] ): '';
-			if( wp_verify_nonce( $nonce, 'as-validate-download-url' ) ){
-				$user = intval($_GET['file']);
+			$nonce = ( ! empty( $_GET['check'] ) ) ? sanitize_text_field( $_GET['check'] ) : '';
+			if ( wp_verify_nonce( $nonce, 'as-validate-download-url' ) ) {
+				$user = intval( $_GET['file'] );
 				if ( ! $this->user_export_dir ) {
 					$this->user_export_dir = $this->set_log_dir( $user );
 				}
 				header( 'Content-Description: File Transfer' );
-				header("Content-type: application/zip"); 
-				header("Content-Disposition: attachment; filename=exported-data.zip");
-				header("Content-length: " . filesize($this->user_export_dir . '/exported-data.zip'));
-				header("Pragma: no-cache"); 
-				header("Expires: 0"); 
+				header( 'Content-type: application/zip' );
+				header( 'Content-Disposition: attachment; filename=exported-data.zip' );
+				header( 'Content-length: ' . filesize( $this->user_export_dir . '/exported-data.zip' ) );
+				header( 'Pragma: no-cache' );
+				header( 'Expires: 0' );
 				readfile( $this->user_export_dir . '/exported-data.zip' );
-			} else{
+			} else {
 				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );}
 		}
 	}
@@ -248,7 +248,7 @@ class WPAS_GDPR_User_Profile {
 			if ( $ticket_data->found_posts > 0 ) {
 				if ( isset( $ticket_data->posts ) ) {
 					foreach ( $ticket_data->posts as $key => $post ) {
-						$user_tickets['t'.$key] = array(
+						$user_tickets[ 't' . $key ] = array(
 							'subject'       => $post->post_title,
 							'description'   => $post->post_content,
 							'attachments'   => $this->get_ticket_attachment( $post->ID ),
@@ -265,14 +265,14 @@ class WPAS_GDPR_User_Profile {
 			 * Export GDPR logs
 			 */
 			$user_option_data = get_user_option( 'wpas_consent_tracking', $user );
-			$user_consent = array();
-			if( !empty( $user_option_data )){
+			$user_consent     = array();
+			if ( ! empty( $user_option_data ) ) {
 				foreach ( $user_option_data as $key => $option_data ) {
-					$user_consent['o'.$key] = $option_data;
+					$user_consent[ 'o' . $key ] = $option_data;
 				}
 			}
 
-			if( !empty( $user_consent ) || !empty( $user_tickets )){
+			if ( ! empty( $user_consent ) || ! empty( $user_tickets ) ) {
 				/**
 				 * Put them in awesome-support/user_log_$user_id
 				 * folders in uploads dir. This has .htaccess protect to avoid
@@ -288,23 +288,24 @@ class WPAS_GDPR_User_Profile {
 						)
 					)
 				);
+
 				$this->data_zip( 'export-data.xml', $this->user_export_dir );
-				$upload_dir          = wp_upload_dir();
+				$upload_dir                     = wp_upload_dir();
 				$response['message']['success'] = sprintf(
 					'<p>%s. <a href="%s" target="_blank">%s</a></p>',
 					__( 'Exporting data was successful!', 'awesome-support' ),
 					add_query_arg(
 						array(
-							'file' => $user,
+							'file'  => $user,
 							'check' => wp_create_nonce( 'as-validate-download-url' ),
 						), home_url()
 					),
 					__( 'Download it now..', 'awesome-support' )
 				);
-			} else{
+
+			} else {
 				$response['message']['error'] = sprintf( '<p>%s.</p>', __( 'No data exist', 'awesome-support' ) );
 			}
-
 		} else {
 			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
 		}
@@ -331,11 +332,11 @@ class WPAS_GDPR_User_Profile {
 	 */
 	public function get_ticket_meta( $ticket_id ) {
 		global $wpdb;
-		$meta_data = $wpdb->get_results( "select * from $wpdb->postmeta where post_id = $ticket_id and meta_key like '%_wpas%'" );
+		$meta_data        = $wpdb->get_results( "select * from $wpdb->postmeta where post_id = $ticket_id and meta_key like '%_wpas%'" );
 		$meta_field_value = array();
-		if( !empty( $meta_data )){
+		if ( ! empty( $meta_data ) ) {
 			foreach ( $meta_data as $key => $meta_field ) {
-				$meta_field_value['m'.$key] = $meta_field;
+				$meta_field_value[ 'm' . $key ] = $meta_field;
 			}
 		}
 		return $meta_field_value;
@@ -351,7 +352,7 @@ class WPAS_GDPR_User_Profile {
 		$get_attachments = $wpdb->get_results( "select * from $wpdb->posts where post_type='attachment' and post_parent = $ticket_id" );
 		if ( ! empty( $get_attachments ) ) {
 			foreach ( $get_attachments as $key => $attachment ) {
-				$attachments['a'.$key] = array(
+				$attachments[ 'a' . $key ] = array(
 					'title' => $attachment->post_title,
 					'url'   => $attachment->guid,
 				);
@@ -368,7 +369,7 @@ class WPAS_GDPR_User_Profile {
 		$replies     = array();
 		if ( ! empty( $get_replies ) ) {
 			foreach ( $get_replies as $key => $reply ) {
-				$replies['r'.$key] = array(
+				$replies[ 'r' . $key ] = array(
 					'content' => $reply->post_content,
 					'author'  => $this->get_reply_author( $reply->post_author ),
 				);
@@ -502,9 +503,9 @@ class WPAS_GDPR_User_Profile {
 		}
 		if ( file_exists( $destination . '/' . $file ) ) {
 			$zip    = new ZipArchive();
-			$do_zip = $zip->open($destination . '/'.$filename, ZipArchive::OVERWRITE | ZipArchive::CREATE);
+			$do_zip = $zip->open( $destination . '/' . $filename, ZipArchive::OVERWRITE | ZipArchive::CREATE );
 			if ( $do_zip ) {
-				$zip->addFile(  $destination . '/' . $file, $file );
+				$zip->addFile( $destination . '/' . $file, $file );
 				$zip->close();
 			} else {
 				return new WP_Error( 'cannot_create_zip', __( 'Cannot create zip file', 'awesome-support' ) );
