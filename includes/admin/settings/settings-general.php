@@ -273,6 +273,37 @@ function wpas_core_settings_general( $def ) {
 				),				
 				
 				array(
+					'name' => __( 'Attachments', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Control who can delete ticket or reply attachments', 'awesome-support' ),					
+				),
+				
+				array(
+					'name'    => __( 'Agents allowed to delete attachments', 'awesome-support' ),
+					'id'      => 'agents_can_delete_attachments',
+					'type'    => 'checkbox',
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Users allowed to delete attachments', 'awesome-support' ),
+					'id'      => 'users_can_delete_attachments',
+					'type'    => 'checkbox',
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Automatically delete attachments when a ticket is closed', 'awesome-support' ),
+					'id'      => 'auto_delete_attachments',
+					'type'    => 'checkbox',
+					'default' => false
+				),
+				array(
+					'name'    => __( 'User can set auto-delete attachment flag', 'awesome-support' ),
+					'id'      => 'user_can_set_auto_delete_attachments',
+					'type'    => 'checkbox',
+					'default' => false
+				),
+				
+				array(
 					'name' => __( 'Redirects', 'awesome-support' ),
 					'type' => 'heading',
 					'desc'    => __( 'Configure where the user should be sent after certain actions', 'awesome-support' ),					
@@ -416,6 +447,14 @@ function wpas_get_priority_options() {
 function wpas_get_editing_history_options() {
 
 	$security = array(
+		array(
+			'name'    => __( 'Roles That Can Edit Ticket Content', 'awesome-support' ),
+			'id'      => 'roles_edit_ticket_content',
+			'type'    => 'text',
+			'desc'    => __( 'Enter a comma separated list of roles that should be able to edit ticket content. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+			'default' => '',
+		),
+
 		array(
 			'name'    => __( 'Allow Agents To Edit Their Own Replies', 'awesome-support' ),
 			'id'      => 'agent_edit_own_reply',

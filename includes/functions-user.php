@@ -1393,20 +1393,16 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 		 * If same item exists, simply update the same row
 		 * instead of merging them on new row
 		 */
-		$found_key = array_search( $data['item'], array_column( $tracked_consent, 'item' ) );		
+		$found_key = array_search( $data['item'], array_column( $tracked_consent, 'item' ) );	
 		if( $found_key !== false && ! empty ( $opt_type ) ) {
 			/**
 			 * We found something, update the row
 			 */
 			foreach( $tracked_consent as $key => $value ) {
 				if( $found_key === $key ) {
-					if( $opt_type === "in" ) {
-						$tracked_consent[$found_key]['opt_in'] = $data['opt_in'];
-						$tracked_consent[$found_key]['status'] = $data['status'];
-					}elseif( $opt_type === "out" ) {
-						$tracked_consent[$found_key]['opt_out'] = $data['opt_out'];
-						$tracked_consent[$found_key]['status'] = $data['status'];
-					}
+					$tracked_consent[$found_key]['opt_out']= $data['opt_out'];
+					$tracked_consent[$found_key]['opt_in'] = $data['opt_in'];
+					$tracked_consent[$found_key]['status'] = $data['status'];
 				}
 			}
 			update_user_option( $user_id, 'wpas_consent_tracking', $tracked_consent );

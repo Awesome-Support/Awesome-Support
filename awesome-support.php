@@ -633,7 +633,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */		
 		function awesome_support_tracking_notification_text( $notice_text ) {
 			$notice_text = __( '<b>Would you like a discount on your next Awesome Support purchase?</b>  Help us make a better product for you by allowing us to collect some system statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
-			$notice_text = $notice_text . sprintf( __( ' <a %s>Find out more about what data we collect and how its used.</a>', 'awesome-support' ), 'a href="https://getawesomesupport.com/legal/tracking-statistics/" target="_blank"' );
+			$notice_text = $notice_text . sprintf( __( ' <a %s>Find out more about what data we collect and how its used.</a> <a %s>View our privacy policy.</a>'  , 'awesome-support' ), 'a href="https://getawesomesupport.com/legal/tracking-statistics/" target="_blank"', 'a href="https://getawesomesupport.com/legal/privacy-policy/" target="_blank"' );
 			return $notice_text;
 		}
 		

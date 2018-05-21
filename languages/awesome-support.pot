@@ -2,16 +2,16 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Awesome Support 4.4.0\n"
+"Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-04-13 11:24-0500\n"
+"POT-Creation-Date: 2018-05-09 00:42-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Awesome Support (https://getawesomesupport.com/)\n"
 "Language-Team: Awesome Support <contact@awesomesupport.com>\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -46,8 +46,13 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: awesome-support.php:628
-msgid "Would you like a discount on your next Awesome Support purchase?  Help us make a better product for you by allowing us to collect some anonymous statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources."
+#: awesome-support.php:631
+msgid "<b>Would you like a discount on your next Awesome Support purchase?</b>  Help us make a better product for you by allowing us to collect some system statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources."
+msgstr ""
+
+#: awesome-support.php:632
+#, php-format
+msgid " <a %s>Find out more about what data we collect and how its used.</a>"
 msgstr ""
 
 #: includes/admin/class-admin-help.php:61
@@ -186,17 +191,17 @@ msgid "Ticket was opened for: "
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:499
-#: includes/admin/functions-misc.php:392
+#: includes/admin/functions-misc.php:406
 msgid " day(s)"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:500
-#: includes/admin/functions-misc.php:393
+#: includes/admin/functions-misc.php:407
 msgid " hour(s)"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:501
-#: includes/admin/functions-misc.php:394
+#: includes/admin/functions-misc.php:408
 msgid " minute(s)"
 msgstr ""
 
@@ -355,11 +360,11 @@ msgstr ""
 msgid "All Clients"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1179
+#: includes/admin/class-admin-tickets-list.php:1198
 msgid "All "
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1696
+#: includes/admin/class-admin-tickets-list.php:1727
 msgid "NOTE: Please be aware that when you sort on a column, tickets that have never had a value entered into that column will not appear on your sorted list (null fields). This can reduce the number of tickets in your sorted list.  This reduced number of tickets is NOT a bug - it is a deliberate design decision. You should also be aware that deliberately entering a blank into a ticket field is considered data so those tickets will show up in the sorted list."
 msgstr ""
 
@@ -381,11 +386,11 @@ msgstr ""
 
 #: includes/admin/class-admin-user.php:101
 #: includes/admin/settings/settings-notifications.php:84
-#: includes/admin/settings/settings-notifications.php:109
-#: includes/admin/settings/settings-notifications.php:134
-#: includes/admin/settings/settings-notifications.php:159
-#: includes/admin/settings/settings-notifications.php:190
-#: includes/admin/settings/settings-notifications.php:214
+#: includes/admin/settings/settings-notifications.php:108
+#: includes/admin/settings/settings-notifications.php:132
+#: includes/admin/settings/settings-notifications.php:156
+#: includes/admin/settings/settings-notifications.php:186
+#: includes/admin/settings/settings-notifications.php:209
 msgid "Enable"
 msgstr ""
 
@@ -400,9 +405,10 @@ msgstr ""
 
 #: includes/admin/class-admin-user.php:128
 #: includes/admin/settings/settings-advanced.php:42
-#: includes/admin/settings/settings-advanced.php:141
-#: includes/admin/settings/settings-advanced.php:202
+#: includes/admin/settings/settings-advanced.php:153
+#: includes/admin/settings/settings-advanced.php:214
 #: includes/admin/views/system-status.php:137
+#: includes/admin/views/system-tools.php:224
 msgid "Default"
 msgstr ""
 
@@ -554,7 +560,7 @@ msgid "My Tickets"
 msgstr ""
 
 #: includes/admin/class-as-admin-setup-wizard.php:343
-#: includes/admin/settings/settings-general.php:362
+#: includes/admin/settings/settings-general.php:369
 msgid "Would you like to use the priority field in your tickets?"
 msgstr ""
 
@@ -611,6 +617,16 @@ msgstr ""
 msgid "You can now access your support tickets and other support options under the new TICKETS menu option."
 msgstr ""
 
+#: includes/admin/functions-admin-actions.php:201
+#: includes/functions-post.php:775
+msgid "Original data not available because detailed logging is not turned on or allowed"
+msgstr ""
+
+#: includes/admin/functions-admin-actions.php:206
+#, php-format
+msgid "Reply #%s was deleted from ticket #%s."
+msgstr ""
+
 #: includes/admin/functions-admin-ticket-detail-toolbars.php:52
 msgid "Re-open Ticket"
 msgstr ""
@@ -653,7 +669,6 @@ msgid "Debugging Tools"
 msgstr ""
 
 #: includes/admin/functions-menu.php:24
-#: includes/admin/views/system-tools.php:78
 msgid "Tools"
 msgstr ""
 
@@ -723,32 +738,32 @@ msgstr ""
 msgid "The ticket #%s has been closed."
 msgstr ""
 
-#: includes/admin/functions-misc.php:112
+#: includes/admin/functions-misc.php:118
 msgctxt "Link to delete a ticket reply"
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/functions-misc.php:120
+#: includes/admin/functions-misc.php:132
 msgctxt "Link to edit a ticket reply"
 msgid "Edit"
 msgstr ""
 
-#: includes/admin/functions-misc.php:138
+#: includes/admin/functions-misc.php:152
 msgctxt "Mark a user reply as read"
 msgid "Mark as Read"
 msgstr ""
 
-#: includes/admin/functions-misc.php:422
+#: includes/admin/functions-misc.php:436
 #, php-format
 msgid "If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)"
 msgstr ""
 
-#: includes/admin/functions-misc.php:474
+#: includes/admin/functions-misc.php:488
 #, php-format
 msgid "Hey! Did you know you can get a <strong>free add-on for unlimited sites</strong> (a $61.00 USD value) for Awesome Support? <a href=\"%1$s\">Click here to read more</a>."
 msgstr ""
 
-#: includes/admin/functions-misc.php:518
+#: includes/admin/functions-misc.php:532
 #, php-format
 msgid "Wow! It looks like you have closed a lot of tickets which is pretty awesome! We guess you must really like Awesome Support, huh? Could you please do us a favor and leave a 5 star rating on WordPress? It will only take a minute and helps to motivate our developers and volunteers. <a href=\"%1$s\">Yes, you deserve it!</a>."
 msgstr ""
@@ -758,7 +773,7 @@ msgctxt "Dismiss link for admin notices"
 msgid "Dismiss"
 msgstr ""
 
-#: includes/admin/functions-post.php:92 includes/functions-post.php:1334
+#: includes/admin/functions-post.php:92 includes/functions-post.php:1385
 #, php-format
 msgid "Ticket state changed to %s"
 msgstr ""
@@ -925,33 +940,33 @@ msgid "The agent currently responsible for this ticket"
 msgstr ""
 
 #: includes/admin/metaboxes/stakeholders.php:82
-#: includes/functions-post.php:1215
+#: includes/functions-post.php:1266
 msgid "Support Staff"
 msgstr ""
 
-#: includes/admin/metaboxes/ticket-additional-parties.php:26
+#: includes/admin/metaboxes/ticket-additional-parties.php:28
 msgid "Note: Email notifications to these agents will be under the name of the PRIMARY agent."
 msgstr ""
 
-#: includes/admin/metaboxes/ticket-additional-parties.php:51
+#: includes/admin/metaboxes/ticket-additional-parties.php:53
 msgid "First additional agent who has an interest this ticket"
 msgstr ""
 
-#: includes/admin/metaboxes/ticket-additional-parties.php:51
+#: includes/admin/metaboxes/ticket-additional-parties.php:53
 #: includes/custom-fields/functions-custom-fields.php:590
 msgid "Additional Support Staff #1"
 msgstr ""
 
-#: includes/admin/metaboxes/ticket-additional-parties.php:77
+#: includes/admin/metaboxes/ticket-additional-parties.php:79
 msgid "Second additional agent who has an interest this ticket"
 msgstr ""
 
-#: includes/admin/metaboxes/ticket-additional-parties.php:77
+#: includes/admin/metaboxes/ticket-additional-parties.php:79
 #: includes/custom-fields/functions-custom-fields.php:605
 msgid "Additional Support Staff #2"
 msgstr ""
 
-#: includes/admin/metaboxes/ticket-additional-parties.php:110
+#: includes/admin/metaboxes/ticket-additional-parties.php:112
 msgid "Note: These fields are notational only. They do not participate in notifications!"
 msgstr ""
 
@@ -1109,230 +1124,247 @@ msgid "There are some server configurations that do not work with our masked lin
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:87
-msgid ".htaccess Contents"
+msgid "Render Method"
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:90
-msgid "The contents of your ticket uploads folder can be protected by an htaccess file on apache servers. <br />If this is left empty then the value of <b>options -Indexes</b> is automatically added to the file to prevent others from browsing the directory. <br />Add to this only if you are a super-duper apache server expert! <br /> No technical support is available for modifications to this setting!"
+msgid "How should the attachment be rendered when attachments are using masked links? In-line will try to show attachments in the browser. Download will always download the attachment, regardless of what type it is."
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:93
+msgid "Inline"
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:94
+#: includes/admin/views/system-logs.php:378
+msgid "Download"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:99
+msgid ".htaccess Contents"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:102
+msgid "The contents of your ticket uploads folder can be protected by an htaccess file on apache servers. <br />If this is left empty then the value of <b>options -Indexes</b> is automatically added to the file to prevent others from browsing the directory. <br />Add to this only if you are a super-duper apache server expert! <br /> No technical support is available for modifications to this setting!"
+msgstr ""
+
+#: includes/admin/settings/settings-advanced.php:106
 msgid "Compatibility"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:96
+#: includes/admin/settings/settings-advanced.php:108
 msgid "Settings in this section might help with compatibility with certain themes and plugins - please experiment to see if one of these settings work for you before contacting our support center. NOTE: Changing ANYTHING in this section will require ALL CACHES to be flushed including CDNs, BROWSER CACHES.  Also, its possible that you would need a restart of the PHP service or your WEB SERVER in order to become fully activated!"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:100
+#: includes/admin/settings/settings-advanced.php:112
 msgid "Select2 JS File"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:103
+#: includes/admin/settings/settings-advanced.php:115
 msgid "Which select2 file should be loaded? Minimized version of files will load faster but cannot be used for debugging."
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:104
-#: includes/admin/settings/settings-advanced.php:113
+#: includes/admin/settings/settings-advanced.php:116
+#: includes/admin/settings/settings-advanced.php:125
 msgid "Full"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:104
+#: includes/admin/settings/settings-advanced.php:116
 msgid "Full - Minimized"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:104
+#: includes/admin/settings/settings-advanced.php:116
 msgid "Partial"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:104
+#: includes/admin/settings/settings-advanced.php:116
 msgid "Partial Minimized"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:109
+#: includes/admin/settings/settings-advanced.php:121
 msgid "Select2 CSS File"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:112
+#: includes/admin/settings/settings-advanced.php:124
 msgid "Which select2 css file should be loaded? Minimized version of files will load faster but cannot be used for debugging."
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:113
+#: includes/admin/settings/settings-advanced.php:125
 msgid "Minimized"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:118
+#: includes/admin/settings/settings-advanced.php:130
 msgid "Bootstrap Support (Experimental)"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:120
+#: includes/admin/settings/settings-advanced.php:132
 msgid "Options for loading bootstrap files. While you can enable this now please be aware that not all elements in the plugin renders properly."
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:123
+#: includes/admin/settings/settings-advanced.php:135
 msgid "Load BootStrap Files on Front-end?"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:126
-#: includes/admin/settings/settings-advanced.php:133
+#: includes/admin/settings/settings-advanced.php:138
+#: includes/admin/settings/settings-advanced.php:145
 msgid "Do not load bootstrap files"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:126
-#: includes/admin/settings/settings-advanced.php:133
+#: includes/admin/settings/settings-advanced.php:138
+#: includes/admin/settings/settings-advanced.php:145
 msgid "Load bootstrap 4 files located on maxcdn"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:126
-#: includes/admin/settings/settings-advanced.php:133
+#: includes/admin/settings/settings-advanced.php:138
+#: includes/admin/settings/settings-advanced.php:145
 msgid "Load bootstrap 3 files located on maxcdn"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:130
+#: includes/admin/settings/settings-advanced.php:142
 msgid "Load BootStrap Files on Back-end?"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:138
+#: includes/admin/settings/settings-advanced.php:150
 msgid "Bootstrap 4 Theme"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:142
+#: includes/admin/settings/settings-advanced.php:154
 msgid "Future Awesome Support BS4 Theme"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:143
+#: includes/admin/settings/settings-advanced.php:155
 msgid "Cerulean"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:144
+#: includes/admin/settings/settings-advanced.php:156
 msgid "Cosmo"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:145
+#: includes/admin/settings/settings-advanced.php:157
 msgid "Cyborg"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:146
+#: includes/admin/settings/settings-advanced.php:158
 msgid "Darkly"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:147
+#: includes/admin/settings/settings-advanced.php:159
 msgid "Flatly"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:148
+#: includes/admin/settings/settings-advanced.php:160
 msgid "Journal"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:149
+#: includes/admin/settings/settings-advanced.php:161
 msgid "Litera"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:150
+#: includes/admin/settings/settings-advanced.php:162
 msgid "Lumen"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:151
+#: includes/admin/settings/settings-advanced.php:163
 msgid "Lux"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:152
+#: includes/admin/settings/settings-advanced.php:164
 msgid "Materia"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:153
+#: includes/admin/settings/settings-advanced.php:165
 msgid "Minty"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:154
+#: includes/admin/settings/settings-advanced.php:166
 msgid "Pulse"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:155
+#: includes/admin/settings/settings-advanced.php:167
 msgid "Sandstone"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:156
+#: includes/admin/settings/settings-advanced.php:168
 msgid "Simplex"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:157
+#: includes/admin/settings/settings-advanced.php:169
 msgid "Slate"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:158
+#: includes/admin/settings/settings-advanced.php:170
 msgid "Solar"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:159
+#: includes/admin/settings/settings-advanced.php:171
 msgid "spacelab"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:160
+#: includes/admin/settings/settings-advanced.php:172
 msgid "United"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:161
+#: includes/admin/settings/settings-advanced.php:173
 msgid "Yeti"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:162
+#: includes/admin/settings/settings-advanced.php:174
 msgid "Custom theme"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:168
+#: includes/admin/settings/settings-advanced.php:180
 msgid "Sessions and Cookie Management"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:172
+#: includes/admin/settings/settings-advanced.php:184
 msgid "Secure Cookies"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:178
+#: includes/admin/settings/settings-advanced.php:190
 msgid "HTTP Only"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:184
+#: includes/admin/settings/settings-advanced.php:196
 msgid "Expired Sessions Cleanup Batch Size"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:193
+#: includes/admin/settings/settings-advanced.php:205
 msgid "Log Files"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:195
+#: includes/admin/settings/settings-advanced.php:207
 msgid "Awesome Support creates log files for certain events.  These are different from WordPress, PHP and your webserver log files.  Please tell us where you would like these files to be placed."
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:199
+#: includes/admin/settings/settings-advanced.php:211
 msgid "Where Should Log Files Be Stored?"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:202
+#: includes/admin/settings/settings-advanced.php:214
 msgid "WordPress Uploads Folder"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:202
+#: includes/admin/settings/settings-advanced.php:214
 msgid "In The Absolute Path Specified Below"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:206
+#: includes/admin/settings/settings-advanced.php:218
 msgid "None Of The Above - Place Log Files Here "
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:209
+#: includes/admin/settings/settings-advanced.php:221
 msgid "The absolute path to the log file location.  This must be relative to the server user account and must NOT end in a forward slash!"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:213
+#: includes/admin/settings/settings-advanced.php:225
 msgid "Danger Zone"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:217
+#: includes/admin/settings/settings-advanced.php:229
 msgid "Delete Data"
 msgstr ""
 
-#: includes/admin/settings/settings-advanced.php:221
+#: includes/admin/settings/settings-advanced.php:233
 msgid "Delete ALL plugin data on uninstall? This cannot be undone."
 msgstr ""
 
@@ -1667,121 +1699,173 @@ msgid "Enter a comma separated list of roles that should not see the tags metabo
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:269
+msgid "Editing History"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:276
 msgid "Redirects"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:271
+#: includes/admin/settings/settings-general.php:278
 msgid "Configure where the user should be sent after certain actions"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:274
+#: includes/admin/settings/settings-general.php:281
 msgid "Logout Redirect"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:277
+#: includes/admin/settings/settings-general.php:284
 msgid "When the user clicks the logout button on an Awesome Support page, where should they be redirected to?  Enter the FULL url starting with http or https."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:280
+#: includes/admin/settings/settings-general.php:287
 msgid "New Ticket Redirect"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:283
+#: includes/admin/settings/settings-general.php:290
 msgid "When the user enters a new ticket they are usually taken to the newly entered ticket.  But, if you would like to redirect them someplace else, enter that location here. Enter the FULL url starting with http or https."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:288
+#: includes/admin/settings/settings-general.php:295
 msgid "Toolbars"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:290
+#: includes/admin/settings/settings-general.php:297
 msgid "Control whether certain toolbars are visible"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:293
+#: includes/admin/settings/settings-general.php:300
 msgid "Show Ticket Details Toolbar"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:297
+#: includes/admin/settings/settings-general.php:304
 msgid "Show the toolbar on the ticket detail screen when an agent is viewing the ticket?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:301
+#: includes/admin/settings/settings-general.php:308
 msgid "Plugin Pages"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:305
+#: includes/admin/settings/settings-general.php:312
 msgid "Ticket Submission"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:309
+#: includes/admin/settings/settings-general.php:316
 #, php-format
 msgid "The page used for ticket submission. This page should contain the shortcode %s"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:314
+#: includes/admin/settings/settings-general.php:321
 msgid "Tickets List"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:318
+#: includes/admin/settings/settings-general.php:325
 #, php-format
 msgid "The page that will list all tickets for a client. This page should contain the shortcode %s"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:324
+#: includes/admin/settings/settings-general.php:331
 msgid "Credit"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:328
+#: includes/admin/settings/settings-general.php:335
 msgid "Show Credit"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:331
+#: includes/admin/settings/settings-general.php:338
 msgid "Do you like this plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:335
+#: includes/admin/settings/settings-general.php:342
 msgid "Admin Rating Request"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:338
+#: includes/admin/settings/settings-general.php:345
 msgid "Remove the rating request footer in the admin screen."
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:359
+#: includes/admin/settings/settings-general.php:366
 msgid "Use Priority Field"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:367
+#: includes/admin/settings/settings-general.php:374
 msgid "Mandatory?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:370
+#: includes/admin/settings/settings-general.php:377
 msgid "Would you like to make the priority field mandatory in your tickets?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:375
+#: includes/admin/settings/settings-general.php:382
 msgid "Show On Front End?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:378
+#: includes/admin/settings/settings-general.php:385
 msgid "Would you like to show the field to the end user (unchecked restricts it to admin use only)?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:383
+#: includes/admin/settings/settings-general.php:390
 msgid "Show In Column List?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:386
+#: includes/admin/settings/settings-general.php:393
 msgid "Would you like to show the field in the ticket listing?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:391
+#: includes/admin/settings/settings-general.php:398
 msgid "Color-code Ticket Header?"
 msgstr ""
 
-#: includes/admin/settings/settings-general.php:394
+#: includes/admin/settings/settings-general.php:401
 msgid "Checking this box will color the top border of the opening post to match the priority color"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:420
+msgid "Allow Agents To Edit Their Own Replies"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:423
+msgid "Would you like agents to be able to edit their own replies?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:428
+msgid "Roles That Can Edit All Replies"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:431
+msgid "Enter a comma separated list of roles that should be able to edit any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:436
+msgid "Allow Agents To Delete Their Own Replies"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:439
+msgid "Would you like agents to be able to delete their own replies? (FYI: We really do not recommend allowing deletes but you do have the option if you want it!)"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:444
+msgid "Roles That Can Delete All Replies"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:447
+msgid "Enter a comma separated list of roles that should be able to delete any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:451
+msgid "Log content edits"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:454
+msgid "What level should edits to ticket content and replies be logged?"
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:455
+msgid "Low - only logs whether the ticket or reply was edited. This prevents additional sensitive data from being stored in the log when the intention is to edit out sensitive information."
+msgstr ""
+
+#: includes/admin/settings/settings-general.php:456
+msgid "High - log the original contents before the reply was edited so that a full history could be maintained"
 msgstr ""
 
 #: includes/admin/settings/settings-integration.php:13
@@ -1915,20 +1999,20 @@ msgid "Submission Confirmation"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:88
-#: includes/admin/settings/settings-notifications.php:113
-#: includes/admin/settings/settings-notifications.php:138
-#: includes/admin/settings/settings-notifications.php:163
-#: includes/admin/settings/settings-notifications.php:194
-#: includes/admin/settings/settings-notifications.php:218
+#: includes/admin/settings/settings-notifications.php:112
+#: includes/admin/settings/settings-notifications.php:136
+#: includes/admin/settings/settings-notifications.php:160
+#: includes/admin/settings/settings-notifications.php:190
+#: includes/admin/settings/settings-notifications.php:213
 msgid "Do you want to activate this e-mail template?"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:91
-#: includes/admin/settings/settings-notifications.php:116
-#: includes/admin/settings/settings-notifications.php:141
-#: includes/admin/settings/settings-notifications.php:166
-#: includes/admin/settings/settings-notifications.php:197
-#: includes/admin/settings/settings-notifications.php:221
+#: includes/admin/settings/settings-notifications.php:115
+#: includes/admin/settings/settings-notifications.php:139
+#: includes/admin/settings/settings-notifications.php:163
+#: includes/admin/settings/settings-notifications.php:193
+#: includes/admin/settings/settings-notifications.php:216
 #: themes/default/submission-pre-440.php:38 themes/default/submission.php:49
 msgid "Subject"
 msgstr ""
@@ -1938,53 +2022,53 @@ msgid "Request received: {ticket_title}"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:97
-#: includes/admin/settings/settings-notifications.php:122
-#: includes/admin/settings/settings-notifications.php:147
-#: includes/admin/settings/settings-notifications.php:172
-#: includes/admin/settings/settings-notifications.php:203
-#: includes/admin/settings/settings-notifications.php:227
-#: includes/admin/settings/settings-registration.php:164
+#: includes/admin/settings/settings-notifications.php:121
+#: includes/admin/settings/settings-notifications.php:145
+#: includes/admin/settings/settings-notifications.php:169
+#: includes/admin/settings/settings-notifications.php:199
+#: includes/admin/settings/settings-notifications.php:222
+#: includes/admin/settings/settings-registration.php:208
 msgid "Content"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:105
+#: includes/admin/settings/settings-notifications.php:104
 msgid "New Assignment"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:119
+#: includes/admin/settings/settings-notifications.php:118
 msgid "Ticket #{ticket_id} assigned"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:130
+#: includes/admin/settings/settings-notifications.php:128
 msgid "New Reply from Agent"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:144
+#: includes/admin/settings/settings-notifications.php:142
 msgid "New reply to: {ticket_title}"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:155
+#: includes/admin/settings/settings-notifications.php:152
 msgid "New Reply from Client"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:169
+#: includes/admin/settings/settings-notifications.php:166
 msgid "Ticket #{ticket_id}"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:180
+#: includes/admin/settings/settings-notifications.php:176
 msgid "Ticket Will Be Closed"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:186
+#: includes/admin/settings/settings-notifications.php:182
 msgid "Ticket Closed (by agent)"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:200
-#: includes/admin/settings/settings-notifications.php:224
+#: includes/admin/settings/settings-notifications.php:196
+#: includes/admin/settings/settings-notifications.php:219
 msgid "Request closed: {ticket_title}"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:210
+#: includes/admin/settings/settings-notifications.php:205
 msgid "Ticket Closed (by client)"
 msgstr ""
 
@@ -2163,59 +2247,83 @@ msgid "The GDPR requires that you provide explicit notice about what you will do
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:102
-#: includes/admin/settings/settings-registration.php:123
-#: includes/admin/settings/settings-registration.php:144
+#: includes/admin/settings/settings-registration.php:137
+#: includes/admin/settings/settings-registration.php:173
 msgid "GDPR Notice: Short Description"
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:106
-#: includes/admin/settings/settings-registration.php:127
-#: includes/admin/settings/settings-registration.php:148
+#: includes/admin/settings/settings-registration.php:141
+#: includes/admin/settings/settings-registration.php:177
 msgid "If you fill this in, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?"
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:109
-#: includes/admin/settings/settings-registration.php:130
-#: includes/admin/settings/settings-registration.php:151
+#: includes/admin/settings/settings-registration.php:144
+#: includes/admin/settings/settings-registration.php:180
 msgid "GDPR Notice: Long Description"
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:113
-#: includes/admin/settings/settings-registration.php:134
-#: includes/admin/settings/settings-registration.php:155
+#: includes/admin/settings/settings-registration.php:148
+#: includes/admin/settings/settings-registration.php:184
 msgid "If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept these notice terms.  It is best to keep this notice to one or two lines."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:118
+#: includes/admin/settings/settings-registration.php:117
+#: includes/admin/settings/settings-registration.php:152
+#: includes/admin/settings/settings-registration.php:188
+msgid "Mandatory"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:121
+#: includes/admin/settings/settings-registration.php:156
+#: includes/admin/settings/settings-registration.php:192
+msgid "Does the user need to check this option before being able to register?"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:124
+#: includes/admin/settings/settings-registration.php:159
+#: includes/admin/settings/settings-registration.php:195
+msgid "Can Opt Out"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:128
+#: includes/admin/settings/settings-registration.php:163
+#: includes/admin/settings/settings-registration.php:199
+msgid "Is this an option that the user can opt-out from after granting consent?"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:132
 msgid "GDPR Notice #2"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:120
-#: includes/admin/settings/settings-registration.php:141
+#: includes/admin/settings/settings-registration.php:134
+#: includes/admin/settings/settings-registration.php:170
 msgid "If personal data will be used in any additional context add that here. It is best to keep this brief."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:139
+#: includes/admin/settings/settings-registration.php:168
 msgid "GDPR Notice #3"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:160
+#: includes/admin/settings/settings-registration.php:204
 msgid "Terms & Conditions"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:168
+#: includes/admin/settings/settings-registration.php:212
 msgid "Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept your terms"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:173
+#: includes/admin/settings/settings-registration.php:217
 msgid "Other"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:177
+#: includes/admin/settings/settings-registration.php:221
 msgid "Default Role For New Users"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:180
+#: includes/admin/settings/settings-registration.php:224
 msgid "The role should be the internal WordPress role id such as wpas_user and is case sensitive.  Do not leave this blank!  This role should have the 5 core Awesome Support capabilities in order for users to be able to submit tickets. Check our documentation for more information."
 msgstr ""
 
@@ -2317,15 +2425,11 @@ msgid "Server Logs"
 msgstr ""
 
 #: includes/admin/views/system-logs.php:369
-#: includes/admin/views/system-tools.php:86
-#: includes/admin/views/system-tools.php:93
-#: includes/admin/views/system-tools.php:100
-#: includes/admin/views/system-tools.php:107
+#: includes/admin/views/system-tools.php:118
+#: includes/admin/views/system-tools.php:125
+#: includes/admin/views/system-tools.php:132
+#: includes/admin/views/system-tools.php:139
 msgid "Clear"
-msgstr ""
-
-#: includes/admin/views/system-logs.php:378
-msgid "Download"
 msgstr ""
 
 #: includes/admin/views/system-logs.php:387 includes/class-product-sync.php:978
@@ -2434,146 +2538,260 @@ msgstr ""
 msgid "Callback"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:34
+#: includes/admin/views/system-tools.php:36
 msgid "Tickets metas were cleared"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:38
+#: includes/admin/views/system-tools.php:40
 msgid "Agents metas were cleared"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:42
+#: includes/admin/views/system-tools.php:44
 msgid "All custom taxonomies terms were cleared"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:46
+#: includes/admin/views/system-tools.php:48
 msgid "All products have been re-synchronized"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:50
+#: includes/admin/views/system-tools.php:52
 msgid "All products have been deleted"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:54
+#: includes/admin/views/system-tools.php:56
 msgid "Last reply date has been updated on all tickets."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:58
+#: includes/admin/views/system-tools.php:60
 msgid "All unclaimed ticket attachment folders have been deleted"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:62
+#: includes/admin/views/system-tools.php:64
 msgid "All channels have been reset"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:74
-msgid "These tool are intended for advanced users or for use on the support staff request. Be aware that some of these tools can definitively erase data."
+#: includes/admin/views/system-tools.php:68
+msgid "The Blue Blocks Email Template Set Has Been Installed"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:72
+msgid "The Blue Blocks With Satisfaction Survey Elements Email Template Set Has Been Installed"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:76
+msgid "The Elegant Email Template Set Has Been Installed"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:80
+msgid "The Elegant With Satisfaction Survey Elements Email Template Set Has Been Installed"
 msgstr ""
 
 #: includes/admin/views/system-tools.php:84
+msgid "The Simple Email Template Set Has Been Installed"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:88
+msgid "The Default Email Template Set Has Been Installed"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:92
+msgid "The Debug Email Template Set Has Been Installed"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:106
+msgid "These tool are intended for advanced users or for use on the support staff request. Be aware that some of these tools can definitively erase data."
+msgstr ""
+
+#: includes/admin/views/system-tools.php:110
+msgid "General Tools"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:116
 msgid "Tickets Metas"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:87
+#: includes/admin/views/system-tools.php:119
 msgid "Clear all transients for all tickets."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:91
+#: includes/admin/views/system-tools.php:123
 msgid "Agents Metas"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:94
+#: includes/admin/views/system-tools.php:126
 msgid "Clear all agents metas."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:98
+#: includes/admin/views/system-tools.php:130
 msgid "Custom Taxonomies"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:101
+#: includes/admin/views/system-tools.php:133
 msgid "Clear all terms from all custom taxonomies."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:105
+#: includes/admin/views/system-tools.php:137
 msgid "Ticket Attachments"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:108
+#: includes/admin/views/system-tools.php:140
 msgid "Clear unclaimed ticket attachment folders."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:112
+#: includes/admin/views/system-tools.php:144
 msgid "Update last reply date on tickets"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:114
+#: includes/admin/views/system-tools.php:146
 msgid "Update"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:115
+#: includes/admin/views/system-tools.php:147
 msgid "Update last reply date on tickets."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:119
+#: includes/admin/views/system-tools.php:151
 msgid "Reset replies count"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:121
+#: includes/admin/views/system-tools.php:153
 msgid "Count"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:122
+#: includes/admin/views/system-tools.php:154
 msgid "Count all ticket replies."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:126
+#: includes/admin/views/system-tools.php:158
 msgid "Reset channels"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:128
-#: includes/admin/views/system-tools.php:135
+#: includes/admin/views/system-tools.php:160
+#: includes/admin/views/system-tools.php:167
 msgid "Reset"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:129
+#: includes/admin/views/system-tools.php:161
 msgid "Reset channels."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:133
+#: includes/admin/views/system-tools.php:165
 msgid "Zero Out All Time Fields"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:136
+#: includes/admin/views/system-tools.php:168
 msgid "Reset time fields by setting them all to zero on ALL tickets!"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:140
+#: includes/admin/views/system-tools.php:175
+msgid "Install an email template set"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:176
+msgid "Warning: Using these options will overwrite your email templates in TICKETS->SETTINGS->EMAILS!"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:180
+msgid "Email Template Sets"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:186
+msgid "Blue Blocks"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:188
+#: includes/admin/views/system-tools.php:195
+#: includes/admin/views/system-tools.php:203
+#: includes/admin/views/system-tools.php:210
+#: includes/admin/views/system-tools.php:218
+#: includes/admin/views/system-tools.php:226
+#: includes/admin/views/system-tools.php:234
+msgid "Install"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:189
+msgid "Install the Blue Blocks email template set into the TICKETS->SETTINGS->EMAIL template fields"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:193
+msgid "Blue Blocks With Satisfaction Survey Elements"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:196
+msgid "Install the Blue Blocks with Satisfaction Survey Elements email template set into the TICKETS->SETTINGS->EMAIL template fields"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:201
+msgid "Elegant"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:204
+msgid "Install the Elegant email template set into the TICKETS->SETTINGS->EMAIL template fields"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:208
+msgid "Elegant With Satisfaction Survey Elements"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:211
+msgid "Install the Elegant email template set with Satisfaction Survey Elements into the TICKETS->SETTINGS->EMAIL template fields"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:216
+msgid "Simple"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:219
+msgid "Install the Simple email template set into the TICKETS->SETTINGS->EMAIL template fields"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:227
+msgid "Install the Default email template set into the TICKETS->SETTINGS->EMAIL template fields"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:232
+msgid "Debug"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:235
+msgid "Install a debugging email template set into the TICKETS->SETTINGS->EMAIL template fields"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:243
+msgid "Tools to re-run conversion of data after upgrading from an earlier version"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:247
+msgid "Data Conversion Tools"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:253
 msgid "Re-run conversion from 3.3.x to 4.0.0"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:142
-#: includes/admin/views/system-tools.php:149
-#: includes/admin/views/system-tools.php:156
+#: includes/admin/views/system-tools.php:255
+#: includes/admin/views/system-tools.php:262
+#: includes/admin/views/system-tools.php:269
 msgid "Rerun Conversion"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:143
+#: includes/admin/views/system-tools.php:256
 msgid "If your CAPABILITIES are not installed, re-run the 3.3.x to 4.0.0 conversion process. Make sure you have a BACKUP!"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:147
+#: includes/admin/views/system-tools.php:260
 msgid "Re-run conversion from 4.0.x to 4.4.0"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:150
+#: includes/admin/views/system-tools.php:263
 msgid "If your CAPABILITIES are not installed, re-run the 4.x.x to 4.4.0 conversion process. Make sure you have a BACKUP!"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:154
+#: includes/admin/views/system-tools.php:267
 msgid "Re-run conversion from 4.x.x to 5.0.0"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:157
+#: includes/admin/views/system-tools.php:270
 msgid "If your CAPABILITIES are not installed, re-run the 4.x.x to 5.0.0 conversion process. Make sure you have a BACKUP!"
 msgstr ""
 
@@ -2581,64 +2799,64 @@ msgstr ""
 msgid "The post ID provided does not match any of the plugin post types"
 msgstr ""
 
-#: includes/class-email-notifications.php:287
+#: includes/class-email-notifications.php:290
 msgid "Converts into ticket ID"
 msgstr ""
 
-#: includes/class-email-notifications.php:291
+#: includes/class-email-notifications.php:294
 msgid "Converts into website name"
 msgstr ""
 
-#: includes/class-email-notifications.php:295
+#: includes/class-email-notifications.php:298
 msgid "Converts into agent name"
 msgstr ""
 
-#: includes/class-email-notifications.php:299
+#: includes/class-email-notifications.php:302
 msgid "Converts into agent e-mail address"
 msgstr ""
 
-#: includes/class-email-notifications.php:303
+#: includes/class-email-notifications.php:306
 msgid "Converts into client name"
 msgstr ""
 
-#: includes/class-email-notifications.php:307
+#: includes/class-email-notifications.php:310
 msgid "Converts into client e-mail address"
 msgstr ""
 
-#: includes/class-email-notifications.php:311
+#: includes/class-email-notifications.php:314
 msgid "Converts into current ticket title"
 msgstr ""
 
-#: includes/class-email-notifications.php:315
+#: includes/class-email-notifications.php:318
 msgid "Displays a link to the ticket"
 msgstr ""
 
-#: includes/class-email-notifications.php:319
+#: includes/class-email-notifications.php:322
 msgid "Displays the URL <strong>only</strong> (not a link) to the ticket"
 msgstr ""
 
-#: includes/class-email-notifications.php:323
+#: includes/class-email-notifications.php:326
 msgid "Displays a link to ticket details in admin (for agents)"
 msgstr ""
 
-#: includes/class-email-notifications.php:327
+#: includes/class-email-notifications.php:330
 msgid "Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)"
 msgstr ""
 
-#: includes/class-email-notifications.php:331
+#: includes/class-email-notifications.php:334
 msgid "Converts into current date"
 msgstr ""
 
-#: includes/class-email-notifications.php:335
+#: includes/class-email-notifications.php:338
 #, php-format
 msgid "Converts into WordPress admin e-mail (<em>currently: %s</em>)"
 msgstr ""
 
-#: includes/class-email-notifications.php:339
+#: includes/class-email-notifications.php:342
 msgid "Converts into ticket content or reply content"
 msgstr ""
 
-#: includes/class-email-notifications.php:615
+#: includes/class-email-notifications.php:618
 msgid "The requested notification does not exist"
 msgstr ""
 
@@ -2686,19 +2904,19 @@ msgstr ""
 msgid "View the code on <a href=\"%s\">Gist</a>."
 msgstr ""
 
-#: includes/class-log-history.php:79
+#: includes/class-log-history.php:125
 #, php-format
 msgctxt "Custom field value was updated"
 msgid "updated %s to %s"
 msgstr ""
 
-#: includes/class-log-history.php:83
+#: includes/class-log-history.php:129
 #, php-format
 msgctxt "Custom field value was deleted"
 msgid "deleted %s"
 msgstr ""
 
-#: includes/class-log-history.php:87
+#: includes/class-log-history.php:133
 #, php-format
 msgctxt "Custom field value was added"
 msgid "added %s to %s"
@@ -2817,55 +3035,55 @@ msgstr ""
 msgid "The type of custom field you are trying to use does not exist"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:154
+#: includes/custom-fields/class-custom-fields.php:151
 #, php-format
 msgid "Please use %s to register your custom field type"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:241
+#: includes/custom-fields/class-custom-fields.php:238
 #, php-format
 msgid "Search %s"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:242
+#: includes/custom-fields/class-custom-fields.php:239
 #, php-format
 msgid "All %s"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:243
+#: includes/custom-fields/class-custom-fields.php:240
 #, php-format
 msgid "Parent %s"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:244
+#: includes/custom-fields/class-custom-fields.php:241
 #, php-format
 msgctxt "Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. \"book\")"
 msgid "Parent %s:"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:245
+#: includes/custom-fields/class-custom-fields.php:242
 #, php-format
 msgid "Edit %s"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:246
+#: includes/custom-fields/class-custom-fields.php:243
 #, php-format
 msgid "Update %s"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:247
+#: includes/custom-fields/class-custom-fields.php:244
 #, php-format
 msgid "Add New %s"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:248
+#: includes/custom-fields/class-custom-fields.php:245
 #, php-format
 msgctxt "A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. \"book\")"
 msgid "New %s Name"
 msgstr ""
 
-#: includes/custom-fields/class-custom-fields.php:799
-#: includes/custom-fields/class-custom-fields.php:801
+#: includes/custom-fields/class-custom-fields.php:834
+#: includes/custom-fields/class-custom-fields.php:836
 #, php-format
 msgid "The field %s is required."
 msgstr ""
@@ -2983,44 +3201,44 @@ msgstr ""
 msgid "You are not allowed to view this attachment"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:437
-#: includes/file-uploader/class-file-uploader.php:457
+#: includes/file-uploader/class-file-uploader.php:451
+#: includes/file-uploader/class-file-uploader.php:471
 msgid "Attachments"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:438
+#: includes/file-uploader/class-file-uploader.php:452
 #, php-format
 msgid " You can upload up to %d files (maximum %d MB each) of the following types: %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:565
+#: includes/file-uploader/class-file-uploader.php:579
 msgid "Attachments:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:748
+#: includes/file-uploader/class-file-uploader.php:762
 #, php-format
 msgid "%s -> Max files (%d) exceeded."
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:799
+#: includes/file-uploader/class-file-uploader.php:813
 msgid "Attachment Errors:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:829
+#: includes/file-uploader/class-file-uploader.php:843
 #, php-format
 msgid "Your reply has been correctly submitted but the attachment was not uploaded. %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:898
+#: includes/file-uploader/class-file-uploader.php:912
 #, php-format
 msgid "You are not allowed to upload files of this type (%s)"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:902
+#: includes/file-uploader/class-file-uploader.php:916
 msgid "You cannot upload empty attachments. You attachments weights 0 bytes"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:906
+#: includes/file-uploader/class-file-uploader.php:920
 #, php-format
 msgid "Your attachment is too big. You are allowed to attach files up to %s"
 msgstr ""
@@ -3429,7 +3647,7 @@ msgid "The ticket couldn't be submitted for an unknown reason."
 msgstr ""
 
 #: includes/functions-post.php:591 includes/functions-post.php:592
-#: includes/functions-post.php:851 includes/functions-post.php:852
+#: includes/functions-post.php:902 includes/functions-post.php:903
 #, php-format
 msgid "Reply to ticket %s"
 msgstr ""
@@ -3454,48 +3672,61 @@ msgstr ""
 msgid "Your reply has been submitted. Your agent will reply ASAP."
 msgstr ""
 
-#: includes/functions-post.php:1186
+#: includes/functions-post.php:780
+#, php-format
+msgid "Reply #%s located on ticket #%s was edited."
+msgstr ""
+
+#: includes/functions-post.php:1237
 msgid "The given post ID is not a ticket"
 msgstr ""
 
-#: includes/functions-post.php:1194
+#: includes/functions-post.php:1245
 msgid "The chosen agent does not have the sufficient capabilities to be assigned a ticket"
 msgstr ""
 
-#: includes/functions-post.php:1369
+#: includes/functions-post.php:1420
 msgid "You do not have the capacity to close this ticket"
 msgstr ""
 
-#: includes/functions-post.php:1369
+#: includes/functions-post.php:1420
 msgid "Can’t close ticket"
 msgstr ""
 
-#: includes/functions-post.php:1389
+#: includes/functions-post.php:1440
 msgid "The ticket was closed."
 msgstr ""
 
-#: includes/functions-post.php:1456
+#: includes/functions-post.php:1507
 msgid "The ticket was re-opened."
 msgstr ""
 
-#: includes/functions-post.php:1488
+#: includes/functions-post.php:1539
 msgid "You are not allowed to re-open this ticket"
 msgstr ""
 
-#: includes/functions-post.php:1496
+#: includes/functions-post.php:1547
 msgid "The ticket has been successfully re-opened."
 msgstr ""
 
-#: includes/functions-post.php:1619
+#: includes/functions-post.php:1670
 msgid "No ticket ID given"
 msgstr ""
 
-#: includes/functions-post.php:1629
+#: includes/functions-post.php:1680
 msgid "Invalid ticket ID"
 msgstr ""
 
-#: includes/functions-post.php:1635
+#: includes/functions-post.php:1686
 msgid "Given ID is not a ticket"
+msgstr ""
+
+#: includes/functions-post.php:1758
+msgid "* This reply has been edited.  See the logs for a full history of edits."
+msgstr ""
+
+#: includes/functions-post.php:1784
+msgid "* This ticket has had replies deleted from it.  See the logs for a full history of edits."
 msgstr ""
 
 #: includes/functions-priority.php:38 includes/functions-priority.php:58

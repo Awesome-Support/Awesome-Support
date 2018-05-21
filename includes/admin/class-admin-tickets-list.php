@@ -1038,7 +1038,7 @@ SQL;
 		$activity_options = apply_filters( 'wpas_ticket_list_activity_options', array(
 			'all' =>					__( 'All Activity', 'awesome-support' ),
 			'awaiting_support_reply' => __( 'Awaiting Support Reply', 'awesome-support' ),
-			'old' =>					__( 'Old', 'awesome-support' ) . " (Open > " . wpas_get_option( 'old_ticket' ) . " Days)"
+			'old' =>					__( 'Old', 'awesome-support' ) . " (Last Reply > " . wpas_get_option( 'old_ticket' ) . " Days)"
 			
 		) );
 		
@@ -1342,13 +1342,14 @@ SQL;
 			elseif( 'old' === $wpas_activity ) {
 
 				$old_after           = (int) wpas_get_option( 'old_ticket' );
-				$old_after           = strtotime( 'now' ) + ( $old_after * 86400 );
-
+				$old_after           = strtotime( 'now' ) - ( $old_after * 86400 );
+				
+				$old_after = date( 'Y-m-d H:i:s', $old_after ) ;
+				
 				$meta_query[] = array(
 					'key'     => '_wpas_last_reply_date',
 					'value'   => $old_after,
-					'compare' => '<=',
-					'type'    => 'numeric',
+					'compare' => '<='
 				);
 			}
 

@@ -100,7 +100,14 @@ class WPAS_GDPR_User_Profile {
 		/**
 		 * Visible to all WPAS user roles
 		 */
-		if ( current_user_can( 'create_ticket' ) ) {
+		if ( current_user_can( 'tickets_manage_privacy' ) ) {
+			/**
+			  * For the GDPR labels, this data are stored in
+			  * wpas_consent_tracking user meta in form of array.
+			  * Get the option and if not empty, loop them here
+			  */
+			$user_consent = get_user_option( 'wpas_consent_tracking', $profileuser->ID );
+			if ( ! empty( $user_consent ) && is_array( $user_consent ) ) {
 	?>
 		<h2><?php esc_html_e( 'Awesome Support Consent History', 'awesome-support' ); ?></h2>
 		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
@@ -115,99 +122,100 @@ class WPAS_GDPR_User_Profile {
 			</thead>
 			<tbody>
 			<?php
-			 /**
-			  * For the GDPR labels, this data are stored in
-			  * wpas_consent_tracking user meta in form of array.
-			  * Get the option and if not empty, loop them here
-			  */
-			  $user_consent = get_user_option( 'wpas_consent_tracking', $profileuser->ID );
-			if ( ! empty( $user_consent ) && is_array( $user_consent ) ) {
-				foreach ( $user_consent as $consent ) {
-					/**
+				/**
+				 * Loop the consent
+				 */
+			foreach ( $user_consent as $consent ) {
+				/**
 					 * Determine if current loop is TOR
 					 * Display TOR as label instead of content
 					 * There should be no Opt buttons
 					 */
-					$item = isset( $consent['item'] ) ? $consent['item'] : '';
-					if ( isset( $consent['is_tor'] ) && $consent['is_tor'] === true ) {
-						$item = __( 'Terms and Conditions', 'awesome-support' );
-					}
+				$item = isset( $consent['item'] ) ? $consent['item'] : '';
+				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] === true ) {
+					$item = __( 'Terms and Conditions', 'awesome-support' );
+				}
 
-					/**
+				/**
 					 * Determine status
 					 * Raw data is boolean, we convert it into string
 					 */
-					$status = isset( $consent['status'] ) && $consent['status'] === true ? __( 'Checked', 'awesome-support' ) : '';
+				$status = isset( $consent['status'] ) && $consent['status'] === true ? __( 'Checked', 'awesome-support' ) : '';
 
-					/**
+				/**
 					 * Convert Opt content into date
 					 * We stored Opt data as strtotime value
 					 */
-					$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? date( 'm/d/Y', $consent['opt_in'] ) : '';
-					$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? date( 'm/d/Y', $consent['opt_out'] ) : '';
+				$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? date( 'm/d/Y', $consent['opt_in'] ) : '';
+				$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? date( 'm/d/Y', $consent['opt_out'] ) : '';
 
-					/**
+				/**
 					 * Determine 'Action' buttons
 					 * If current loop is TOR, do not give Opt options
 					 */
-					$opt_button = '';
-					if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
-						/**
+				$opt_button = '';
+				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
+					/**
 						 * Determine what type of buttons we should render
 						 * If opt_in is not empty, display Opt out button
 						 * otherwise, just vice versa
 						 */
-						if ( ! empty( $opt_in ) ) {
-							$opt_button = sprintf(
-								'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
-								__( 'Opt-out', 'awesome-support' )
-							);
-						} elseif ( ! empty( $opt_out ) ) {
-							$opt_button = sprintf(
-								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
-								__( 'Opt-in', 'awesome-support' )
-							);
-						} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
-							$opt_button = sprintf(
-								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
-								__( 'Opt-in', 'awesome-support' )
-							);
-						}
+					if ( ! empty( $opt_in ) ) {
+						$opt_button = sprintf(
+							'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
+							__( 'Opt-out', 'awesome-support' )
+						);
+					} elseif ( ! empty( $opt_out ) ) {
+						$opt_button = sprintf(
+							'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
+							__( 'Opt-in', 'awesome-support' )
+						);
+					} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
+						$opt_button = sprintf(
+							'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
+							__( 'Opt-in', 'awesome-support' )
+						);
 					}
+				}
 
-					/**
+				/**
 					 * Render data
 					 */
-					printf(
-						'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-						$item,
-						$status,
-						$opt_in,
-						$opt_out,
-						$opt_button
-					);
-				}
+				printf(
+					'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+					$item,
+					$status,
+					$opt_in,
+					$opt_out,
+					$opt_button
+				);
 			}
 			?>
 			</tbody>
 		</table>
+		<?php
+			}
+			/**
+			 * Get consent logs
+			 */
+			$consent_log = get_user_option( 'wpas_consent_log', $profileuser->ID );
+			if ( ! empty( $consent_log ) && is_array( $consent_log ) ) {
+		?>
 
 		<!-- GDPR Consent logging -->
 		<h2><?php esc_html_e( 'Log', 'awesome-support' ); ?></h2>
 		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
 			<?php
 				/**
-				 * Get consent logs
+				 * Loop the consent log
 				 */
-				$consent_log = get_user_option( 'wpas_consent_log', $profileuser->ID );
-			if ( ! empty( $consent_log ) && is_array( $consent_log ) ) {
-				foreach ( $consent_log as $log ) {
-					echo '<tr><td>' . $log . '</td></tr>';
-				}
+			foreach ( $consent_log as $log ) {
+				echo '<tr><td>' . $log . '</td></tr>';
 			}
 			?>
 		</table>
-	<?php
+		<?php
+			}
 		}
 	}
 
