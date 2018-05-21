@@ -81,7 +81,6 @@ jQuery(document).ready(function ($) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
 				if( undefined !== response.message.success ){
-					console.log(response.message.button);
 					if( undefined !== response.message.date ){
 						optin_handle.parent('td').siblings('td:nth-child(3)').html(response.message.date);
 						optin_handle.parent('td').siblings('td:nth-child(4)').html('');
@@ -124,12 +123,8 @@ jQuery(document).ready(function ($) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
 				if( undefined !== response.message.success ){
-					if( undefined !== response.message.date ){
-						handle.parent('td').siblings('td:nth-child(3)').html(' ');
+					if( undefined !== response.message.date ){						
 						handle.parent('td').siblings('td:nth-child(4)').html( response.message.date );
-					}
-					if( undefined !== response.message.button ){
-						handle.parent('td').html( response.message.button );
 					}
 					jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message.success + '</p>' );
 				} else if( undefined !== response.message.error ){

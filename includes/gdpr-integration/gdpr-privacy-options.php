@@ -221,7 +221,7 @@ class WPAS_Privacy_Option {
 
 			$item   = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
 			$user   = isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
-			$status = __( 'Checked', 'awesome-support' );
+			$status = __( 'Opted-in', 'awesome-support' );
 			$opt_in = strtotime( 'NOW' );
 
 			wpas_track_consent(
@@ -235,10 +235,10 @@ class WPAS_Privacy_Option {
 			);
 
 			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ) );
-			$response['code']    = 200;
+			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-in', 'awesome-support' );
-			$response['message']['date'] = date( 'm/d/Y', $opt_in );
-			$response['message']['button'] = sprintf(
+			$response['message']['date']    = date( 'm/d/Y', $opt_in );
+			$response['message']['button']  = sprintf(
 				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
 				__( 'Opt-out', 'awesome-support' )
 			);
@@ -274,7 +274,7 @@ class WPAS_Privacy_Option {
 
 			$item    = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
 			$user    = isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
-			$status  = __( 'Checked', 'awesome-support' );
+			$status  = __( 'Opted-Out', 'awesome-support' );
 			$opt_out = strtotime( 'NOW' );
 			wpas_track_consent(
 				array(
@@ -286,10 +286,10 @@ class WPAS_Privacy_Option {
 				), $user, 'out'
 			);
 			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ) );
-			$response['code']    = 200;
+			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-out', 'awesome-support' );
-			$response['message']['date'] = date( 'm/d/Y', $opt_out );
-			$response['message']['button'] = sprintf(
+			$response['message']['date']    = date( 'm/d/Y', $opt_out );
+			$response['message']['button']  = sprintf(
 				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
 				__( 'Opt-in', 'awesome-support' )
 			);

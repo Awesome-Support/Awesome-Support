@@ -1966,3 +1966,24 @@ function wpas_load_reply_history() {
 	}
 	wp_die();
 }
+
+/**
+ * There an issue with the WPAS Options data
+ * in which we cannot determine the GDPRs hierarchy IDs
+ * This function will attempt to have workaround.
+ * 
+ * Returns GDPR Id's
+ * NOTE: If the short description is identical, this
+ * function will return the first ID
+ */
+function wpas_get_gdpr_data( $short_description ) {
+	if( $short_description === wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) {
+		return 1;
+	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) {
+		return 2;
+	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) {
+		return 3;
+	}else{
+		return false;
+	}
+}

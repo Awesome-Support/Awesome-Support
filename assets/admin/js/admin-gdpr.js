@@ -60,11 +60,7 @@ jQuery(document).ready(function ($) {
 			function( response ) {
 				if( undefined !== response.message.success ){
 					if( undefined !== response.message.date ){
-						handle.parent('td').siblings('td:nth-child(3)').html(' ');
 						handle.parent('td').siblings('td:nth-child(4)').html( response.message.date );
-					}
-					if( undefined !== response.message.button ){
-						handle.parent('td').html( response.message.button );
 					}
 					alert( response.message.success );
 				} else if( undefined !== response.message.error ){

@@ -1400,11 +1400,16 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 			 */
 			foreach( $tracked_consent as $key => $value ) {
 				if( $found_key === $key ) {
-					$tracked_consent[$found_key]['opt_out']= $data['opt_out'];
-					$tracked_consent[$found_key]['opt_in'] = $data['opt_in'];
+					if( ! empty ( $data['opt_out'] ) ) {
+						$tracked_consent[$found_key]['opt_out']= $data['opt_out'];
+					}
+					if( ! empty ( $data['opt_in'] ) ) {
+						$tracked_consent[$found_key]['opt_in'] = $data['opt_in'];
+					}
 					$tracked_consent[$found_key]['status'] = $data['status'];
 				}
 			}
+			
 			update_user_option( $user_id, 'wpas_consent_tracking', $tracked_consent );
 		}else{
 			update_user_option( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );

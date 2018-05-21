@@ -184,7 +184,8 @@ function wpas_register_assets_back_end() {
 		'alertNoContent' => __( "You can't submit an empty reply", 'awesome-support' )
 	) );
 	wp_localize_script( 'wpas-admin-reply-history', 'WPAS_Reply_History', array(
-		'ajax_url' => admin_url( 'admin-ajax.php' )
+		'ajax_url' => admin_url( 'admin-ajax.php' ),
+		'date_label' => __( 'Edited on', 'awesome-support' )
 	));
 	
 	// Custom admin notice style and script

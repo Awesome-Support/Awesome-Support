@@ -137,10 +137,17 @@ class WPAS_GDPR_User_Profile {
 				}
 
 				/**
-					 * Determine status
-					 * Raw data is boolean, we convert it into string
-					 */
-				$status = isset( $consent['status'] ) && $consent['status'] === true ? __( 'Checked', 'awesome-support' ) : '';
+				 * Determine status
+				 * Raw data is boolean, we convert it into string
+				 */
+				$status = '';
+				if ( isset( $consent['status'] ) && ! empty( $consent['status'] ) ) {
+					if ( $consent['status'] == 1 ) {
+						$status = __( 'Opted-in', 'awesome-support' );
+					} else {
+						$status = $consent['status'];
+					}
+				}
 
 				/**
 					 * Convert Opt content into date
