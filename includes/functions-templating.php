@@ -66,7 +66,7 @@
 			} else {
 
 				$output = '';
-				$output .= wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'awesome-support' ) );
+				$output .= wpas_get_notification_markup( 'info', __( 'You are currently logged out.  To view tickets you must first login.', 'awesome-support' ) );
 
 				ob_start();
 				wpas_get_template( 'registration' );
