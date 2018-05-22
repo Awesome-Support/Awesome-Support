@@ -123,7 +123,8 @@ jQuery(document).ready(function ($) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
 				if( undefined !== response.message.success ){
-					if( undefined !== response.message.date ){						
+					if( undefined !== response.message.date ){
+						handle.parent('td').siblings('td:nth-child(2)').html( 'Opted-Out' );
 						handle.parent('td').siblings('td:nth-child(4)').html( response.message.date );
 					}
 					jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message.success + '</p>' );
