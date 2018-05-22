@@ -184,7 +184,8 @@ function wpas_register_assets_back_end() {
 		'alertNoContent' => __( "You can't submit an empty reply", 'awesome-support' )
 	) );
 	wp_localize_script( 'wpas-admin-reply-history', 'WPAS_Reply_History', array(
-		'ajax_url' => admin_url( 'admin-ajax.php' )
+		'ajax_url' => admin_url( 'admin-ajax.php' ),
+		'date_label' => __( 'Edited on', 'awesome-support' )
 	));
 	
 	// Custom admin notice style and script
@@ -193,6 +194,13 @@ function wpas_register_assets_back_end() {
 	wp_localize_script( 'wpas-admin-wizard-script', 'WPAS_Wizard', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'about_page' => admin_url( 'edit.php?post_type=ticket&page=wpas-about' )
+	));
+
+	// Edit ticket content!
+	wp_enqueue_editor();
+	wp_enqueue_script( 'wpas-admin-edit-ticket-content-script', WPAS_URL . 'assets/admin/js/admin-edit-ticket-content.js', array( 'jquery' ), WPAS_VERSION );
+	wp_localize_script( 'wpas-admin-edit-ticket-content-script', 'WPAS_Edit_Ticket_Content', array(
+		'ajax_url' => admin_url( 'admin-ajax.php' )
 	));
 
 }

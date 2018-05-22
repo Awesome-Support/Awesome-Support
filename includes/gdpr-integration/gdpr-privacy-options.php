@@ -154,12 +154,12 @@ class WPAS_Privacy_Option {
 		 * Initiate nonce
 		 */
 		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
-		
+
 		/**
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
-			
+
 			/**
 			 *  Initiate form data parsing
 			 */
@@ -167,8 +167,8 @@ class WPAS_Privacy_Option {
 			parse_str( $_POST['data']['form-data'], $form_data );
 
 			$subject = isset( $form_data['wpas-gdpr-ded-subject'] ) ? $form_data['wpas-gdpr-ded-subject'] : '';
-			$content = isset( $form_data['wpas-gdpr-ded-more-info'] ) ? $form_data['wpas-gdpr-ded-more-info'] : $subject; // Fallback to subject to avoid undefined!
-			
+			$content = isset( $form_data['wpas-gdpr-ded-more-info'] ) && ! empty( $form_data['wpas-gdpr-ded-more-info'] ) ? $form_data['wpas-gdpr-ded-more-info'] : $subject; // Fallback to subject to avoid undefined!
+
 			/**
 			 * New ticket submission
 			 * *
@@ -181,7 +181,7 @@ class WPAS_Privacy_Option {
 					'message' => $content,
 				)
 			);
-			
+
 			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
 			if ( ! empty( $ticket_id ) ) {
 				$response['code']    = 200;
@@ -206,7 +206,7 @@ class WPAS_Privacy_Option {
 		 */
 		$response = array(
 			'code'    => 403,
-			'message' => __( 'Sorry! Something failed', 'awesome-support' ),
+			'message' => array(),
 		);
 
 		/**
@@ -221,7 +221,7 @@ class WPAS_Privacy_Option {
 
 			$item   = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
 			$user   = isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
-			$status = __( 'Checked', 'awesome-support' );
+			$status = __( 'Opted-in', 'awesome-support' );
 			$opt_in = strtotime( 'NOW' );
 
 			wpas_track_consent(
@@ -235,10 +235,15 @@ class WPAS_Privacy_Option {
 			);
 
 			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ) );
-			$response['code']    = 200;
-			$response['message'] = __( 'You have successfully opted-in', 'awesome-support' );
+			$response['code']               = 200;
+			$response['message']['success'] = __( 'You have successfully opted-in', 'awesome-support' );
+			$response['message']['date']    = date( 'm/d/Y', $opt_in );
+			$response['message']['button']  = sprintf(
+				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
+				__( 'Opt-out', 'awesome-support' )
+			);
 		} else {
-			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
+			$response['message']['error'] = __( 'Cheating huh?', 'awesome-support' );
 		}
 		wp_send_json( $response );
 		wp_die();
@@ -254,7 +259,7 @@ class WPAS_Privacy_Option {
 		 */
 		$response = array(
 			'code'    => 403,
-			'message' => __( 'Sorry! Something failed', 'awesome-support' ),
+			'message' => array(),
 		);
 
 		/**
@@ -269,9 +274,8 @@ class WPAS_Privacy_Option {
 
 			$item    = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
 			$user    = isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
-			$status  = __( 'Checked', 'awesome-support' );
+			$status  = __( 'Opted-Out', 'awesome-support' );
 			$opt_out = strtotime( 'NOW' );
-
 			wpas_track_consent(
 				array(
 					'item'    => $item,
@@ -281,12 +285,16 @@ class WPAS_Privacy_Option {
 					'is_tor'  => false,
 				), $user, 'out'
 			);
-
 			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ) );
-			$response['code']    = 200;
-			$response['message'] = __( 'You have successfully opted-out', 'awesome-support' );
+			$response['code']               = 200;
+			$response['message']['success'] = __( 'You have successfully opted-out', 'awesome-support' );
+			$response['message']['date']    = date( 'm/d/Y', $opt_out );
+			$response['message']['button']  = sprintf(
+				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
+				__( 'Opt-in', 'awesome-support' )
+			);
 		} else {
-			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
+			$response['message']['error'] = __( 'Cheating huh?', 'awesome-support' );
 		}
 		wp_send_json( $response );
 		wp_die();

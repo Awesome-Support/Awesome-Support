@@ -24,7 +24,7 @@ function wpas_open_ticket( $data ) {
 	}
 
 	// Verify user capability
-	if ( !current_user_can( 'create_ticket' ) ) {
+	if ( ! current_user_can( 'create_ticket' ) ) {
 
 		// Save the input
 		wpas_save_values();
@@ -122,19 +122,21 @@ function wpas_open_ticket( $data ) {
 	 * Now that all the verifications are passed
 	 * we can proceed to the actual ticket submission.
 	 */
-	$post = apply_filters( 'wpas_open_ticket_data', array(
-		'post_content'   => $content,
-		'post_name'      => $title,
-		'post_title'     => $title,
-		'post_status'    => 'queued',
-		'post_type'      => 'ticket',
-		'post_author'    => $user_id,
-		'ping_status'    => 'closed',
-		'comment_status' => 'closed',
-	) );
+	$post = apply_filters(
+		'wpas_open_ticket_data', array(
+			'post_content'   => $content,
+			'post_name'      => $title,
+			'post_title'     => $title,
+			'post_status'    => 'queued',
+			'post_type'      => 'ticket',
+			'post_author'    => $user_id,
+			'ping_status'    => 'closed',
+			'comment_status' => 'closed',
+		)
+	);
 
 	return wpas_insert_ticket( $post, false, false, 'standard-ticket-form' );
-	
+
 }
 
 add_action( 'wpas_do_submit_new_ticket', 'wpas_new_ticket_submission' );
@@ -166,7 +168,12 @@ function wpas_new_ticket_submission( $data ) {
 			exit;
 		}
 
-		$ticket_id = wpas_open_ticket( array( 'title' => $data['wpas_title'], 'message' => $data['wpas_message'] ) );
+		$ticket_id = wpas_open_ticket(
+			array(
+				'title'   => $data['wpas_title'],
+				'message' => $data['wpas_message'],
+			)
+		);
 
 		/* Submission failure */
 		if ( false === $ticket_id ) {
@@ -192,12 +199,12 @@ function wpas_new_ticket_submission( $data ) {
 			/**
 			 * Redirect to the newly created ticket
 			 */
-			if ( ! empty( wpas_get_option( 'new_ticket_redirect_fe','' ) ) ) {
-				wpas_redirect( 'ticket_added', wpas_get_option( 'new_ticket_redirect_fe','' ), $ticket_id );
+			if ( ! empty( wpas_get_option( 'new_ticket_redirect_fe', '' ) ) ) {
+				wpas_redirect( 'ticket_added', wpas_get_option( 'new_ticket_redirect_fe', '' ), $ticket_id );
 			} else {
 				wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
 			}
-			
+
 			exit;
 
 		}
@@ -211,17 +218,17 @@ function wpas_new_ticket_submission( $data ) {
  * This function is a wrapper function for wp_insert_post
  * with additional checks specific to the ticketing system
  *
- * @param array    $data     		Ticket (post) data
- * @param bool|int $post_id  		Post ID for an update
- * @param bool|int $agent_id		ID of the agent to assign ticket to
- * @param string   $channel_term	Source of the ticket
+ * @param array    $data            Ticket (post) data
+ * @param bool|int $post_id         Post ID for an update
+ * @param bool|int $agent_id        ID of the agent to assign ticket to
+ * @param string   $channel_term    Source of the ticket
  *
  * @return bool|int|WP_Error
  */
 function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false, $channel_term = 'other' ) {
-	
+
 	// Save the original data array
-	$incoming_data = $data ;
+	$incoming_data = $data;
 
 	// First of all we want to set the ticket author so that we can check if (s)he is allowed to open a ticket or not.
 	if ( empty( $data['post_author'] ) ) {
@@ -277,33 +284,31 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	/**
 	* Sanitize the slug
 	*/
-	if ( isset( $data['post_name'] ) && !empty( $data['post_name'] ) ) {
+	if ( isset( $data['post_name'] ) && ! empty( $data['post_name'] ) ) {
 		$data['post_name'] = sanitize_text_field( $data['post_name'] );
 	}
 
 	/**
 	 * Filter the data right before inserting it in the post.
-	 * 
+	 *
 	 * @var array
 	 */
 	$data = apply_filters( 'wpas_open_ticket_data', $data, $incoming_data );
-	
-	
+
 	/**
 	 * Fire wpas_before_open_ticket just before the post is actually
 	 * inserted in the database.
 	 */
 	do_action( 'wpas_open_ticket_before', $data, $post_id, $incoming_data );
-	
 
 	/**
 	 * Insert the post in database using the regular WordPress wp_insert_post
 	 * function with default values corresponding to our post type structure.
-	 * 
+	 *
 	 * @var boolean
 	 */
 	$ticket_id = wp_insert_post( $data, false );
-	
+
 	if ( false === $ticket_id ) {
 
 		/**
@@ -316,18 +321,18 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	}
 
 	/**
-	* Change the slug to the postid if that's the option the admin set in the TICKETS->SETTINGS->Advanced tab.  
+	* Change the slug to the postid if that's the option the admin set in the TICKETS->SETTINGS->Advanced tab.
 	* Note that we only do this if $update is false signifying a new ticket!
-	*/	
-	If ( ! $update ) {
-		wpas_set_ticket_slug($ticket_id);
+	*/
+	if ( ! $update ) {
+		wpas_set_ticket_slug( $ticket_id );
 	}
-	
+
 	/* Update the channel on the ticket so that hooks can access it - but only if the $update is false which means we've got a new ticket */
 	/* It will need to be re-added to the ticket at the bottom of this routine because some hooks overwrite it with a blank. */
-	If (! empty( $channel_term ) && ( ! $update ) ) {
-		wpas_set_ticket_channel( $ticket_id , $channel_term, false );
-	}		
+	if ( ! empty( $channel_term ) && ( ! $update ) ) {
+		wpas_set_ticket_channel( $ticket_id, $channel_term, false );
+	}
 
 	/* Set the ticket as open. */
 	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
@@ -336,36 +341,35 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	/* need to do the same thing in the /includes/admin/functions-post.php file */
 	add_post_meta( $ticket_id, '_wpas_last_reply_date', null, true );
 	add_post_meta( $ticket_id, '_wpas_last_reply_date_gmt', null, true );
-	add_post_meta( $ticket_id, '_wpas_is_waiting_client_reply', ! user_can( $data['post_author'], 'edit_ticket' ), true  );
+	add_post_meta( $ticket_id, '_wpas_is_waiting_client_reply', ! user_can( $data['post_author'], 'edit_ticket' ), true );
 
 	if ( false === $agent_id ) {
 		$agent_id = wpas_find_agent( $ticket_id );
 	}
-				
-	
+
 	/**
 	 * Fire wpas_open_ticket_before_assigned after the post is successfully submitted but before it has been assigned to an agent.
 	 *
 	 * @since 3.2.6
 	 */
-	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data, $incoming_data );	
-	
+	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data, $incoming_data );
+
 	/* Assign an agent to the ticket */
 	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
 	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
 	/* Need to update it here again because some of the action hooks fired above will overwrite the term.			  */
-	If (! empty( $channel_term ) && ( ! $update ) ) {
-		wpas_set_ticket_channel( $ticket_id , $channel_term, false );
-	}	
-	
+	if ( ! empty( $channel_term ) && ( ! $update ) ) {
+		wpas_set_ticket_channel( $ticket_id, $channel_term, false );
+	}
+
 	/**
 	 * Fire wpas_after_open_ticket just after the post is successfully submitted and assigned.
 	 */
 	do_action( 'wpas_open_ticket_after', $ticket_id, $data );
 
 	do_action( 'wpas_ticket_after_saved', $ticket_id );
-	
+
 	return $ticket_id;
 
 }
@@ -375,99 +379,99 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
  *
  * @since 3.4.0
  *
- * @param numeric		$ticket_id
- * @param string		$channel_term
- * @param string		$overwrite	whether or not to overwrite existing channel on the ticket - set to false by default 
+ * @param numeric       $ticket_id
+ * @param string        $channel_term
+ * @param string        $overwrite  whether or not to overwrite existing channel on the ticket - set to false by default
  *
  * @return void
  */
- function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other', $overwrite = false ) {
-	 
-	 /* Does a term already exist on the ticket?  If so, do not overwrite it if $overwrite is false */
-	 if ( false === $overwrite ) {
-		 $existing_channel = wp_get_post_terms($ticket_id,'ticket_channel');
-		 if ( ! empty( $existing_channel ) ) {
-			 return ;
-		 }
-	 }	 
+function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other', $overwrite = false ) {
+
+	/* Does a term already exist on the ticket?  If so, do not overwrite it if $overwrite is false */
+	if ( false === $overwrite ) {
+		$existing_channel = wp_get_post_terms( $ticket_id, 'ticket_channel' );
+		if ( ! empty( $existing_channel ) ) {
+			return;
+		}
+	}
 
 	/* Get the term id because wp_set_object_terms require an id instead of just a string */
 	$arr_the_term_id = term_exists( $channel_term, 'ticket_channel' );
 
-	If ( $arr_the_term_id ) {
-			
+	if ( $arr_the_term_id ) {
+
 		// Need to get array keys first so we can index and extract the first element in the wp_set_object_terms below.
-		$arr_the_term_id_keys = array_keys($arr_the_term_id);  
-		$int_the_term_id = (int) $arr_the_term_id[ $arr_the_term_id_keys[0] ];
+		$arr_the_term_id_keys = array_keys( $arr_the_term_id );
+		$int_the_term_id      = (int) $arr_the_term_id[ $arr_the_term_id_keys[0] ];
 
 		// Now add the terms (this function call doesn't work consistently for some reason!)
-		$term_taxonomy_ids = wp_set_object_terms( $ticket_id, (int) $int_the_term_id , 'ticket_channel' );
+		$term_taxonomy_ids = wp_set_object_terms( $ticket_id, (int) $int_the_term_id, 'ticket_channel' );
 
-	} 
-	
+	}
+
 	return;
- }
+}
 
 /**
  * Set ticket slug on new tickets if the admin chooses anything other than the default slug.
  *
  * @since 3.4.0
  *
- * @param numeric		$ticket_id
+ * @param numeric       $ticket_id
  *
  * @return void
  */
- function wpas_set_ticket_slug( $ticket_id = -1 ) {
- 	$use_ticket_id_for_slug = wpas_get_option('ticket_topic_slug');  
+function wpas_set_ticket_slug( $ticket_id = -1 ) {
+	$use_ticket_id_for_slug = wpas_get_option( 'ticket_topic_slug' );
 
 	/* Set ticket slug to the post id / ticket id */
-	If ( isset( $use_ticket_id_for_slug ) &&  ('ticketid' == $use_ticket_id_for_slug ) ) {
-		
+	if ( isset( $use_ticket_id_for_slug ) && ( 'ticketid' == $use_ticket_id_for_slug ) ) {
+
 		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
 		$newdata = array(
-				'ID'			=> $ticket_id,
-				'post_name'		=> (string) $ticket_id
+			'ID'        => $ticket_id,
+			'post_name' => (string) $ticket_id,
 		);
-		
+
 		/* Update the post with the new slug */
-		wp_update_post ($newdata);
-	} 	
-	
+		wp_update_post( $newdata );
+	}
+
 	/* Set ticket slug to a random number  */
-	If ( isset( $use_ticket_id_for_slug ) &&  ('randomnumber' == $use_ticket_id_for_slug ) ) {
-		
+	if ( isset( $use_ticket_id_for_slug ) && ( 'randomnumber' == $use_ticket_id_for_slug ) ) {
+
 		/*Calculate a random number */
 		$randomslug = mt_rand();
 
 		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
 		$newdata = array(
-				'ID'			=> $ticket_id,
-				'post_name'		=> (string) $randomslug
+			'ID'        => $ticket_id,
+			'post_name' => (string) $randomslug,
 		);
-		
+
 		/* Update the post with the new slug */
-		wp_update_post ($newdata);
-	} 		
+		wp_update_post( $newdata );
+	}
 
 	/* Set ticket slug to a GUID  */
-	If ( isset( $use_ticket_id_for_slug ) &&  ('guid' == $use_ticket_id_for_slug ) ) {
-		
+	if ( isset( $use_ticket_id_for_slug ) && ( 'guid' == $use_ticket_id_for_slug ) ) {
+
 		/*Calculate a guid */
 		$randomguid = wpas_create_pseudo_guid();
-		
+
 		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
 		$newdata = array(
-				'ID'			=> $ticket_id,
-				'post_name'		=> $randomguid
+			'ID'        => $ticket_id,
+			'post_name' => $randomguid,
 		);
-		
+
 		/* Update the post with the new slug */
-		wp_update_post ($newdata);
-	} 		
-	
-	return ;
+		wp_update_post( $newdata );
+	}
+
+	return;
 }
- 
+
 /**
  * Get tickets.
  *
@@ -526,15 +530,15 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 		'wpas_query'             => true, // We use this parameter to identify our own queries so that we can remove the author parameter
 	);
 
-	$args  = wp_parse_args( $args, $defaults );
+	$args = wp_parse_args( $args, $defaults );
 
 	if ( 'any' !== $ticket_status ) {
 		if ( in_array( $ticket_status, array( 'open', 'closed' ) ) ) {
 			$args['meta_query'][] = array(
-					'key'     => '_wpas_status',
-					'value'   => $ticket_status,
-					'compare' => '=',
-					'type'    => 'CHAR'
+				'key'     => '_wpas_status',
+				'value'   => $ticket_status,
+				'compare' => '=',
+				'type'    => 'CHAR',
 			);
 		}
 	}
@@ -546,7 +550,6 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 	} else {
 		return $query->posts;
 	}
-	
 
 }
 
@@ -573,11 +576,9 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 			if ( is_null( $parent ) ) {
 				return false;
 			}
-
 		} else {
 			return false;
 		}
-
 	}
 
 	/**
@@ -660,7 +661,6 @@ function wpas_new_reply_submission( $data ) {
 			wpas_redirect( 'ticket_closed', get_permalink( $parent_id ) );
 			exit;
 		}
-
 	}
 
 	if ( isset( $reply_id ) ) {
@@ -682,7 +682,6 @@ function wpas_new_reply_submission( $data ) {
 				exit;
 			}
 		}
-
 	}
 
 }
@@ -692,8 +691,8 @@ function wpas_new_reply_submission( $data ) {
  *
  * @since 3.3.0
  *
- * @param $int	$reply_id 		- the id of the reply being edited.
- * @param array $content		- the new content.  If blank, the function will attempt to pull the new content from $_POST.
+ * @param $int  $reply_id       - the id of the reply being edited.
+ * @param array $content        - the new content.  If blank, the function will attempt to pull the new content from $_POST.
  *
  * @return void
  */
@@ -721,18 +720,19 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 		return false;
 	}
 
-	$data = apply_filters( 'wpas_edit_reply_data', array(
-		'ID'             => $reply_id,
-		'post_content'   => $content,
-		'post_status'    => 'read',
-		'comment_status' => 'closed',
-		'ping_status'    => 'closed',
-		'post_date'      => $original_reply->post_date,
-		'post_date_gmt'  => $original_reply->post_date_gmt,
-		'post_name'      => $original_reply->post_name,
-		'post_parent'    => $original_reply->post_parent,
-		'post_type'      => $original_reply->post_type,
-		'post_author'    => $original_reply->post_author,
+	$data = apply_filters(
+		'wpas_edit_reply_data', array(
+			'ID'             => $reply_id,
+			'post_content'   => $content,
+			'post_status'    => 'read',
+			'comment_status' => 'closed',
+			'ping_status'    => 'closed',
+			'post_date'      => $original_reply->post_date,
+			'post_date_gmt'  => $original_reply->post_date_gmt,
+			'post_name'      => $original_reply->post_name,
+			'post_parent'    => $original_reply->post_parent,
+			'post_type'      => $original_reply->post_type,
+			'post_author'    => $original_reply->post_author,
 		), $reply_id
 	);
 
@@ -742,9 +742,9 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 		do_action( 'wpas_edit_reply_failed', $reply_id, $content, $edited );
 		return $edited;
 	}
-	
+
 	/* Add a flag to the reply that shows it was edited */
-	update_post_meta( $edited, 'wpas_reply_was_edited', '1' ) ;
+	update_post_meta( $edited, 'wpas_reply_was_edited', '1' );
 
 	/* Fire the after-edit action hook */
 	do_action( 'wpas_reply_edited', $reply_id, $original_reply );
@@ -753,7 +753,7 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 
 }
 
-add_action( 'wpas_reply_edited', 'wpas_log_reply_edits', 10,2 );
+add_action( 'wpas_reply_edited', 'wpas_log_reply_edits', 10, 2 );
 /**
  * Log the original contents of a reply after it is edited.
  *
@@ -761,24 +761,24 @@ add_action( 'wpas_reply_edited', 'wpas_log_reply_edits', 10,2 );
  *
  * @since 5.2.0
  *
- * @param $int	$reply_id 		- the id of the reply being edited.
- * @param array $original_reply	- the original post before the edit reply was added to the database
+ * @param $int  $reply_id       - the id of the reply being edited.
+ * @param array $original_reply - the original post before the edit reply was added to the database
  *
  * @TODO: Somehow this hook is getting called three times for every edit when the logging level is LOW.  3 entries end up in the log for every single edit.
  *
  * @return void
  */
 function wpas_log_reply_edits( $reply_id, $original_reply ) {
-	
+
 	/* Do we log a summary or detail that includes the original content? */
 	if ( 'low' === wpas_get_option( 'log_content_edit_level', 'low' ) ) {
-		$reply_contents_to_log = __( 'Original data not available because detailed logging is not turned on or allowed', 'awesome-support' ) ;
+		$reply_contents_to_log = __( 'Original data not available because detailed logging is not turned on or allowed', 'awesome-support' );
 	} else {
-		$reply_contents_to_log = $original_reply->post_content ;
+		$reply_contents_to_log = $original_reply->post_content;
 	}
-	
-	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%s located on ticket #%s was edited.', 'awesome-support' ), (string) $reply_id, (string) $original_reply->post_parent ), $reply_contents_to_log );
-	
+
+	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%1$s located on ticket #%2$s was edited.', 'awesome-support' ), (string) $reply_id, (string) $original_reply->post_parent ), $reply_contents_to_log );
+
 }
 
 /**
@@ -786,7 +786,7 @@ function wpas_log_reply_edits( $reply_id, $original_reply ) {
  *
  * @since 3.3.0
  *
- * @param $int	$reply_id 		- the id of the reply being marked as read.
+ * @param $int  $reply_id       - the id of the reply being marked as read.
  *
  * @return void
  */
@@ -810,18 +810,19 @@ function wpas_mark_reply_read( $reply_id = null ) {
 		return $reply_id;
 	}
 
-	$data = apply_filters( 'wpas_mark_reply_read_data', array(
-		'ID'             => $reply_id,
-		'post_status'    => 'read',
-		'comment_status' => 'closed',
-		'ping_status'    => 'closed',
-		'post_content'   => $reply->post_content,
-		'post_date'      => $reply->post_date,
-		'post_date_gmt'  => $reply->post_date_gmt,
-		'post_name'      => $reply->post_name,
-		'post_parent'    => $reply->post_parent,
-		'post_type'      => $reply->post_type,
-		'post_author'    => $reply->post_author,
+	$data = apply_filters(
+		'wpas_mark_reply_read_data', array(
+			'ID'             => $reply_id,
+			'post_status'    => 'read',
+			'comment_status' => 'closed',
+			'ping_status'    => 'closed',
+			'post_content'   => $reply->post_content,
+			'post_date'      => $reply->post_date,
+			'post_date_gmt'  => $reply->post_date_gmt,
+			'post_name'      => $reply->post_name,
+			'post_parent'    => $reply->post_parent,
+			'post_type'      => $reply->post_type,
+			'post_author'    => $reply->post_author,
 		), $reply_id
 	);
 
@@ -894,7 +895,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		return false;
 	}
 
-	if ( !current_user_can( 'reply_ticket' ) ) {
+	if ( ! current_user_can( 'reply_ticket' ) ) {
 		return false;
 	}
 
@@ -1079,17 +1080,17 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		do_action( 'wpas_add_reply_public_after', $reply_id, $data );
 
 	}
-	
+
 	/**
 	 * Fire wpas_add_reply_complete after the reply and attachments was successfully added.
 	 */
 	do_action( 'wpas_add_reply_complete', $reply_id, $data );
 
 	/* . */
-	update_post_meta( $data[ 'post_parent' ], '_wpas_last_reply_date', current_time( 'mysql' ) );
-	update_post_meta( $data[ 'post_parent' ], '_wpas_last_reply_date_gmt', current_time( 'mysql', 1 ) );
+	update_post_meta( $data['post_parent'], '_wpas_last_reply_date', current_time( 'mysql' ) );
+	update_post_meta( $data['post_parent'], '_wpas_last_reply_date_gmt', current_time( 'mysql', 1 ) );
 
-	update_post_meta( $data[ 'post_parent' ], '_wpas_is_waiting_client_reply', ! current_user_can( 'edit_ticket' )  );
+	update_post_meta( $data['post_parent'], '_wpas_is_waiting_client_reply', ! current_user_can( 'edit_ticket' ) );
 
 	return $reply_id;
 
@@ -1110,7 +1111,7 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array(), $output =
 	$allowed_status = array(
 		'any',
 		'read',
-		'unread'
+		'unread',
 	);
 
 	if ( ! is_array( $status ) ) {
@@ -1187,15 +1188,19 @@ function wpas_find_agent( $ticket_id = false ) {
 		$count = $wpas_agent->open_tickets(); // Total number of open tickets for this agent
 
 		if ( empty( $agent ) ) {
-			$agent = array( 'tickets' => $count, 'user_id' => $user->ID );
+			$agent = array(
+				'tickets' => $count,
+				'user_id' => $user->ID,
+			);
 		} else {
 
 			if ( $count < $agent['tickets'] ) {
-				$agent = array( 'tickets' => $count, 'user_id' => $user->ID );
+				$agent = array(
+					'tickets' => $count,
+					'user_id' => $user->ID,
+				);
 			}
-
 		}
-
 	}
 
 	if ( is_array( $agent ) && isset( $agent['user_id'] ) ) {
@@ -1265,7 +1270,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 			'action'   => 'updated',
 			'label'    => __( 'Support Staff', 'awesome-support' ),
 			'value'    => $agent_id,
-			'field_id' => 'assignee'
+			'field_id' => 'assignee',
 		);
 	}
 
@@ -1313,10 +1318,9 @@ function wpas_save_values() {
 
 	foreach ( $_POST as $key => $value ) {
 
-		if ( !empty( $value ) ) {
-			$fields[$key] = $value;
+		if ( ! empty( $value ) ) {
+			$fields[ $key ] = $value;
 		}
-
 	}
 
 	WPAS()->session->add( 'submission_form', $fields );
@@ -1364,25 +1368,25 @@ function wpas_update_ticket_status( $post_id, $status ) {
 
 	$custom_status = wpas_get_post_status();
 
-	if ( !array_key_exists( $status, $custom_status ) ) {
+	if ( ! array_key_exists( $status, $custom_status ) ) {
 		return false;
 	}
 
 	$post = get_post( $post_id );
 
-	if( !$post || $post->post_status === $status ) {
+	if ( ! $post || $post->post_status === $status ) {
 		return false;
 	}
 
 	$my_post = array(
 		'ID'          => $post_id,
-		'post_status' => $status
+		'post_status' => $status,
 	);
 
 	$updated = wp_update_post( $my_post );
 
 	if ( 0 !== intval( $updated ) ) {
-		wpas_log_history( $post_id, sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), $custom_status[$status] ) );
+		wpas_log_history( $post_id, sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), $custom_status[ $status ] ) );
 	}
 
 	/**
@@ -1530,7 +1534,7 @@ add_action( 'wpas_do_reopen_ticket', 'wpas_reopen_ticket_trigger' );
  * @return void
  */
 function wpas_reopen_ticket_trigger( $data ) {
- 
+
 	if ( isset( $data['ticket_id'] ) ) {
 
 		$ticket_id = (int) $data['ticket_id'];
@@ -1540,9 +1544,9 @@ function wpas_reopen_ticket_trigger( $data ) {
 			wpas_redirect( 'ticket_reopen', wpas_get_tickets_list_page_url() );
 			exit;
 		}
-		
+
 		do_action( 'wpas_before_customer_reopen_ticket', $ticket_id );
-		
+
 		wpas_reopen_ticket( $ticket_id );
 		wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'awesome-support' ) );
 		wpas_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );
@@ -1580,11 +1584,11 @@ function wpas_edit_reply_editor_ajax() {
 
 	$settings = array(
 		'media_buttons' => false,
-		'teeny' 		=> true,
-		'quicktags' 	=> false,
-		'editor_class' 	=> 'wpas-edittextarea',
+		'teeny'         => true,
+		'quicktags'     => false,
+		'editor_class'  => 'wpas-edittextarea',
 		'textarea_name' => 'wpas_edit_reply[' . $reply_id . ']',
-		'textarea_rows' => 20
+		'textarea_rows' => 20,
 	);
 
 	wp_editor( $editor_content, $editor_id, $settings );
@@ -1688,11 +1692,13 @@ function wpas_get_ticket_replies_ajax() {
 	}
 
 	$number_replies = apply_filters( 'wpas_get_ticket_replies_ajax_replies', wpas_get_option( 'replies_per_page', 10 ) );
-	$replies        = wpas_get_replies( $ticket_id, 'any', array(
-		'posts_per_page' => $number_replies,
-		'no_found_rows'  => false,
-		'offset'         => $offset
-	), 'wp_query' );
+	$replies        = wpas_get_replies(
+		$ticket_id, 'any', array(
+			'posts_per_page' => $number_replies,
+			'no_found_rows'  => false,
+			'offset'         => $offset,
+		), 'wp_query'
+	);
 
 	if ( empty( $replies->posts ) ) {
 		echo json_encode( array() );
@@ -1715,11 +1721,13 @@ function wpas_get_ticket_replies_ajax() {
 
 		ob_start();
 
-		wpas_get_template( 'partials/ticket-reply', array(
-			'time_ago' => $time_ago,
-			'user'     => $user,
-			'post'     => $replies->post
-		) );
+		wpas_get_template(
+			'partials/ticket-reply', array(
+				'time_ago' => $time_ago,
+				'user'     => $user,
+				'post'     => $replies->post,
+			)
+		);
 
 		$reply = ob_get_contents();
 
@@ -1742,7 +1750,7 @@ add_action( 'wpas_backend_reply_content_after', 'wpas_show_reply_edited_msg', 10
  * Show whether a ticket reply has been edited or not.
  *
  * Action hook: wpas_backend_reply_content_after
- * 				Hook located in metaboxes/replies-published.php.
+ *              Hook located in metaboxes/replies-published.php.
  *
  * @since 5.2.0
  *
@@ -1751,13 +1759,13 @@ add_action( 'wpas_backend_reply_content_after', 'wpas_show_reply_edited_msg', 10
  * @return void
  */
 function wpas_show_reply_edited_msg( $reply_id ) {
-	
-	$edited = get_post_meta( $reply_id, 'wpas_reply_was_edited' ) ;
 
-	if ( (int) $edited > 0  ) {
-		echo '<br />' . '<div class="wpas_footer_note">' . __('* This reply has been edited.  See the logs for a full history of edits.', 'awesome-support') . '</div>' ;
+	$edited = get_post_meta( $reply_id, 'wpas_reply_was_edited' );
+
+	if ( (int) $edited > 0 ) {
+		echo '<br />' . '<div class="wpas_footer_note">' . __( '* This reply has been edited.  See the logs for a full history of edits.', 'awesome-support' ) . '</div>';
 	}
-	
+
 }
 
 add_action( 'wpas_backend_ticket_content_after', 'wpas_show_reply_deleted_msg', 10, 2 );
@@ -1767,56 +1775,84 @@ add_action( 'wpas_backend_ticket_content_after', 'wpas_show_reply_deleted_msg', 
  * Because the reply is deleted, we have to show the message on the opening ticket post.
  *
  * Action hook: wpas_backend_ticket_content_after
- * 				Hook located in metaboxes/message.php.
+ *              Hook located in metaboxes/message.php.
  *
  * @since 5.2.0
  *
  * @param string $ticket_id - id of ticket being processed.
- * @param array  $ticket 	- post object of ticket being processed.
+ * @param array  $ticket    - post object of ticket being processed.
  *
  * @return void
  */
 function wpas_show_reply_deleted_msg( $ticket_id, $ticket ) {
-	
-	$post = get_post_meta( $ticket_id, 'wpas_reply_was_deleted' ) ;
 
-	if ( (int) $post > 0  ) {
-		echo '<br />' . '<div class="wpas_footer_note">' . __('* This ticket has had replies deleted from it.  See the logs for a full history of edits.', 'awesome-support') . '</div>' ;
+	$post = get_post_meta( $ticket_id, 'wpas_reply_was_deleted' );
+
+	if ( (int) $post > 0 ) {
+		echo '<br />' . '<div class="wpas_footer_note">' . __( '* This ticket has had replies deleted from it.  See the logs for a full history of edits.', 'awesome-support' ) . '</div>';
 	}
-	
+
 }
 
-add_action( 'save_post', 'wpas_edit_ticket_content', 10 );
+add_action( 'wp_ajax_wpas_edit_ticket_content', 'wpas_edit_ticket_content' );
+add_action( 'wp_ajax_nopriv_wpas_edit_ticket_content', 'wpas_edit_ticket_content' );
 /**
- * Edit the ticket content
- *
- * @param string $ticket_id - id of ticket being processed.
+ * Save the ticket content from editing
  *
  * @return void
  */
-function wpas_edit_ticket_content( $ticket_id ) {
+function wpas_edit_ticket_content() {
 
 	/**
-	 * Make sure we are editing ticket
+	 * The default response
 	 */
-    $post_type = get_post_type( $ticket_id );
-    if ( $post_type !== 'ticket' ) {
-        return false;
-    }
+	$response = array(
+		'code'    => 404,
+		'message' => __( 'Nothing found!', 'awesome-support' ),
+	);
 
 	/**
-	 * Make sure that this is valid ticket and it exists
+	 * Variables!
 	 */
-    $original_content = get_post( $ticket_id );
-    if ( is_null( $original_content ) ) {
-		return false;
+	$ticket_id = isset( $_POST['post_id'] ) ? sanitize_text_field( $_POST['post_id'] ) : '';
+	$content   = isset( $_POST['content'] ) ? wp_kses_post( $_POST['content'] ) : '';
+
+	/**
+	 * Make sure we have ticket ID
+	 */
+	if ( ! $ticket_id ) {
+		$response['message'] = __( 'Ticket ID missing. Invalid request!', 'awesome-support' );
+		wp_send_json( $response );
+		wp_die();
 	}
 
 	/**
 	 * The the updated ticket content is missing, exit
 	 */
-	if( ! isset( $_POST['wpas-main-ticket-message'] ) ) {
-		return false;
+	if ( ! $content ) {
+		$response['message'] = __( 'No ticket message found. Invalid request!', 'awesome-support' );
+		wp_send_json( $response );
+		wp_die();
+	}
+
+	/**
+	 * Make sure we are on the correct post type
+	 */
+	$is_ticket = get_post_type( $ticket_id );
+	if ( $is_ticket !== 'ticket' ) {
+		$response['message'] = __( 'Id provided is not a valid ticket. Invalid request!', 'awesome-support' );
+		wp_send_json( $response );
+		wp_die();
+	}
+
+	/**
+	 * Make sure that this is valid ticket and it exists
+	 */
+	$original_content = get_post( $ticket_id );
+	if ( is_null( $original_content ) ) {
+		$response['message'] = __( 'No ticket found. Invalid request!', 'awesome-support' );
+		wp_send_json( $response );
+		wp_die();
 	}
 
 	/**
@@ -1824,40 +1860,39 @@ function wpas_edit_ticket_content( $ticket_id ) {
 	 * If they are not same and have differences, log it
 	 * then we update the post content
 	 */
-	if( $original_content->post_content !== wp_kses_post( $_POST['wpas-main-ticket-message'] ) ) {
-
-		/**
-		 * Unhook this function so it doesn't loop infinitely
-		 */
-		remove_action( 'save_post', 'wpas_edit_ticket_content' );
+	if ( $original_content->post_content !== $content ) {
 
 		/**
 		 * Update the content
 		 */
-		$updated_post_id = wp_update_post( array( 'ID' => $ticket_id, 'post_content' => wp_kses_post( $_POST['wpas-main-ticket-message'] ) ) );
-
-		/**
-		 * re-hook this function
-		 */
-		add_action( 'save_post', 'wpas_edit_ticket_content' );
+		$updated_post_id = wp_update_post(
+			array(
+				'ID'           => $ticket_id,
+				'post_content' => $content,
+			)
+		);
 
 		if ( is_wp_error( $updated_post_id ) ) {
-			/**
-			 * Action hook when updating the content failed
-			 */
-			do_action( 'wpas_update_ticket_failed', $updated_post_id->get_error_messages() );
+			$response['message'] = $updated_post_id->get_error_messages();
+			$response['content'] = $original_content->post_content;
 		} else {
-			/**
-			 * Action hook when updating the content successful
-			 */
-			do_action( 'wpas_update_ticket_success', $updated_post_id );
-
+			$response['code']    = 200;
+			$response['message'] = __( 'You have successfully edited content!', 'awesome-support' );
+			$response['content'] = $content;
 			/**
 			 * Log the ticket
 			 */
-			wpas_log_edits( $ticket_id, sprintf( __( 'Ticket content #%s located on ticket #%s was edited.', 'awesome-support' ), (string) $original_content->post_parent, (string) $ticket_id ), $original_content->post_content );
+			wpas_log_edits( $ticket_id, sprintf( __( 'Ticket content #%1$s located on ticket #%2$s was edited.', 'awesome-support' ), (string) $original_content->post_parent, (string) $ticket_id ), $original_content->post_content );
 		}
+	} else {
+		$response['code']    = 404;
+		$response['message'] = __( 'Nothing has been updated. You have same content as before..', 'awesome-support' );
+		$response['content'] = $original_content->post_content;
 	}
+
+	wp_send_json( $response );
+	wp_die();
+
 }
 
 add_action( 'wp_ajax_wpas_load_reply_history', 'wpas_load_reply_history' );
@@ -1873,32 +1908,32 @@ function wpas_load_reply_history() {
 	 * Default response messages
 	 */
 	$response = array(
-		'code' => 404,
+		'code'    => 404,
 		'message' => __( 'Invalid request!', 'awesome-support' ),
-		'data' => array( )
+		'data'    => array(),
 	);
 
 	/**
 	 * Reply ID is required
 	 */
-	if( ! isset( $_POST['reply_id'] ) ) {
+	if ( ! isset( $_POST['reply_id'] ) ) {
 		wp_send_json( $response );
 	}
 
 	/**
 	 * Is a valid reply?
 	 */
-	$reply = get_post( 
-		array( 
-			'ID' => sanitize_text_field( $_POST['reply_id'] ), 
-			'post_type' => 'ticket_log' 
-		) 
+	$reply = get_post(
+		array(
+			'ID'        => sanitize_text_field( $_POST['reply_id'] ),
+			'post_type' => 'ticket_log',
+		)
 	);
-	
+
 	/**
 	 * Empty request
 	 */
-	if( ! $reply ) {
+	if ( ! $reply ) {
 		$response['message'] = __( 'Invalid ticket ID!', 'awesome-support' );
 		wp_send_json( $response );
 	}
@@ -1906,28 +1941,52 @@ function wpas_load_reply_history() {
 	/**
 	 * Get all reply history
 	 */
-	$reply_history = get_posts( 
-		array( 
-			'post_parent' => sanitize_text_field( $_POST['reply_id'] ),
-			'post_type' => 'ticket_log'
-		) 
+	$reply_history = get_posts(
+		array(
+			'post_parent' 		=> sanitize_text_field( $_POST['reply_id'] ),
+			'post_type'   		=> 'ticket_log',
+			'posts_per_page'	=> 10,  //Maybe this should an option?!
+			'orderby'			=> 'ID',
+			'order'				=> 'DESC'
+		)
 	);
 
-	if( ! empty ( $reply_history ) ) {
+	if ( ! empty( $reply_history ) ) {
 		/**
 		 * Update response
 		 */
 		$response = array(
-			'code' => 200,
+			'code'    => 200,
 			'message' => __( 'Reply history found.', 'awesome-support' ),
-			'data' => $reply_history
+			'data'    => $reply_history,
 		);
 		wp_send_json( $response );
 	} else {
-		$response['code'] = 404;
+		$response['code']    = 404;
 		$response['message'] = __( 'This reply has no edit history!', 'awesome-support' );
-		$response['data'] = "";
+		$response['data']    = '';
 		wp_send_json( $response );
 	}
 	wp_die();
+}
+
+/**
+ * There an issue with the WPAS Options data
+ * in which we cannot determine the GDPRs hierarchy IDs
+ * This function will attempt to have workaround.
+ * 
+ * Returns GDPR Id's
+ * NOTE: If the short description is identical, this
+ * function will return the first ID
+ */
+function wpas_get_gdpr_data( $short_description ) {
+	if( $short_description === wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) {
+		return 1;
+	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) {
+		return 2;
+	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) {
+		return 3;
+	}else{
+		return false;
+	}
 }

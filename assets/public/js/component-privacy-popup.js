@@ -58,8 +58,9 @@ jQuery(document).ready(function ($) {
 	 * Ajax based Opted in button processing
 	 * in "Add/Remove Consent" from GDPR popup
 	 */
-	jQuery( ".wpas-gdpr-opt-in" ).click( function(e) {
+	jQuery( ".privacy-container-template" ).on( "click", ".wpas-gdpr-opt-in", function(e) {	
 		e.preventDefault();
+		var optin_handle = jQuery(this);
 		jQuery( '.wpas-gdpr-pre-loader' ).show();
 		jQuery( '.wpas-gdpr-loader-background').show();
 
@@ -79,7 +80,18 @@ jQuery(document).ready(function ($) {
 			function( response ) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
-				jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+				if( undefined !== response.message.success ){
+					if( undefined !== response.message.date ){
+						optin_handle.parent('td').siblings('td:nth-child(3)').html(response.message.date);
+						optin_handle.parent('td').siblings('td:nth-child(4)').html('');
+					}
+					if( undefined !== response.message.button ){
+						optin_handle.parent('td').html( response.message.button );
+					}
+					jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message.success + '</p>' );
+				} else if( undefined !== response.message.error ){
+					jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'failure' ).html( '<p>' + response.message.error + '</p>' );
+				}
 			}
 		);		
 	});
@@ -88,8 +100,9 @@ jQuery(document).ready(function ($) {
 	 * Ajax based Opted out button processing
 	 * in "Add/Remove Consent" from GDPR popup
 	 */
-	jQuery( ".wpas-gdpr-opt-out" ).click( function(e) {
+	jQuery( ".privacy-container-template" ).on( "click", ".wpas-gdpr-opt-out", function(e) {
 		e.preventDefault();
+		var handle = jQuery(this);
 		jQuery( '.wpas-gdpr-pre-loader' ).show();
 		jQuery( '.wpas-gdpr-loader-background').show();
 
@@ -109,7 +122,15 @@ jQuery(document).ready(function ($) {
 			function( response ) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
-				jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+				if( undefined !== response.message.success ){
+					if( undefined !== response.message.date ){
+						handle.parent('td').siblings('td:nth-child(2)').html( 'Opted-Out' );
+						handle.parent('td').siblings('td:nth-child(4)').html( response.message.date );
+					}
+					jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message.success + '</p>' );
+				} else if( undefined !== response.message.error ){
+					jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'failure' ).html( '<p>' + response.message.error + '</p>' );
+				}
 			}
 		);		
     });
@@ -137,7 +158,11 @@ jQuery(document).ready(function ($) {
 			function( response ) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
-				jQuery( '.export-data' ).addClass( 'success' ).html( response.message );
+				if( undefined !== response.message.success ){
+					jQuery( '.export-data' ).addClass( 'success' ).html( response.message.success );
+				} else if( undefined !== response.message.error  ) {
+					jQuery( '.export-data' ).addClass( 'failure' ).html( response.message.error );
+				}
 			}
 		);		
 	});
@@ -153,7 +178,12 @@ jQuery(document).ready(function ($) {
 	 */
 	jQuery( ".wpas-gdpr-tablinks" ).click( function(e) {
 		if( jQuery(this).data( 'id' ) === 'delete-existing'  ) {
-			wpas_init_editor( 'wpas-gdpr-ded-more-info', '' );
+			/**
+			 * If the Additional Information is set
+			 */
+			if( jQuery( '#wpas-gdpr-ded-more-info' ).length > 0 ) {
+				wpas_init_editor( 'wpas-gdpr-ded-more-info', '' );
+			}
 		}
 	});
 });

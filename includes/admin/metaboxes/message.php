@@ -7,12 +7,11 @@
 	 */
 	do_action( 'wpas_backend_ticket_content_before', $post->ID, $post );
 
-	if( wpas_is_asadmin() ) {
-		wp_editor( apply_filters( 'the_content', $post->post_content ), 'wpas-main-ticket-message', array( 'media_buttons' => false ) );
-	}else{
-		echo apply_filters( 'the_content', $post->post_content );
-	}
-	
+	printf(
+		'<div class="wpas-main-ticket-message" id="wpas-main-ticket-message">%s</div>',
+		apply_filters( 'the_content', $post->post_content ) 
+	);
+
 	/**
 	 * wpas_backend_ticket_content_after hook
 	 *
@@ -20,5 +19,47 @@
 	 */
 	do_action( 'wpas_backend_ticket_content_after', $post->ID, $post );
 
+	/**
+	 * Allows certain user roles from Settings -> General -> History
+	 *
+	 * Administrator should be always on. Both site admin and Super Admin
+	 */
+	$excluded_roles = wpas_get_option( 'roles_edit_ticket_content', false );
+	$current_user_role = wpas_get_current_user_role();
+	$role_passed = true;
+
+	/**
+	 * Check if the settings has comma separated string for roles
+	 * NOTE: If the 'roles_edit_ticket_content' contains 'administrator'
+	 * it will be surpassed by is_admin()
+	 */
+	if( strpos( $excluded_roles, ',' ) !== false ) {
+		/**
+		 * This should be an array
+		 */
+		$roles = explode( ',', $excluded_roles );
+		if( in_array( $current_user_role, $roles ) ) {
+			$role_passed = false;
+		}
+	}elseif( wpas_get_current_user_role() === $excluded_roles ){
+		$role_passed = false;
+	}
+
+	/**
+	 * Determine if we should allow current user to edit ticket opening content
+	 */
+	if( wpas_is_asadmin() || $role_passed ) {
+		printf( 
+			'<div class="wpas-edit-ticket-actions"><a href="#" class="button button-primary wpas-edit-main-ticket-message" id="wpas-edit-main-ticket-message" data-ticketid="%s">%s</a>' .
+			'<a href="#" class="button button-primary wpas-save-edit-main-ticket-message" id="wpas-save-edit-main-ticket-message" data-ticketid="%s">%s</a> ' .
+			'<a href="#" class="button button-secondary wpas-cancel-edit-main-ticket-message" id="wpas-cancel-edit-main-ticket-message" data-ticketid="%s">%s</a></div>', 
+			$post->ID,
+			__( 'Edit', 'awesome-support' ),
+			$post->ID,
+			__( 'Save', 'awesome-support' ),
+			$post->ID,
+			__( 'Cancel', 'awesome-support' )
+		);
+	}
 	?>
 </div>

@@ -240,6 +240,25 @@ function wpas_core_settings_registration( $def ) {
 				),
 
 				array(
+					'name' => __( 'Delete Existing Data', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Subject', 'awesome-support' ),
+					'id'      => 'delete_existing_data_subject',
+					'type'    => 'editor',
+					'desc'    => __( 'Customize ticket subject on "Delete Existing Data" form in privacy lightbox.', 'awesome-support' ),
+					'default' => __( 'Official Request: Please Delete My Existing Data ("Right To Be Forgotten").', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable Additional Information?', 'awesome-support' ),
+					'id'      => 'delete_existing_data_add_information',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Do you want to enable "Additional Information" on "Delete Existing Data" form in privacy lightbox?', 'awesome-support' )
+				),
+
+				array(
 					'name' => __( 'Other', 'awesome-support' ),
 					'type' => 'heading',
 				),
