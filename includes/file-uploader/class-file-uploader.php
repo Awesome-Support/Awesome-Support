@@ -87,24 +87,147 @@ class WPAS_File_Upload {
 		add_action( 'wpas_open_ticket_after',			array( $this, 'wpas_open_ticket_after' ), 11, 2 );
 		add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'add_auto_delete_button' ) );
 		
+		add_action( 'wpas_frontend_ticket_content_after',		 array( $this, 'add_auto_delete_button' ) );
+		add_action( 'wp_ajax_wpas_auto_delete_attachment_flag',  array( $this, 'auto_delete_attachment_flag' ) );
+		add_action( 'wpas_ticket_after_saved',					 array( $this, 'ticket_after_saved' ) );
+		add_action( 'wpas_backend_ticket_status_before_actions', array( $this, 'admin_add_auto_delete_button'), 100 );
+		
+		
+		
+	}
+	
+	
+	/**
+	 * From backend tools add or remove auto delete attachments flag for open, closed or all tickets
+	 * 
+	 * @global object $wpdb
+	 * 
+	 * @param string $type
+	 * @param boolean $auto_delete
+	 */
+	public static function mark_tickets_auto_delete_attachments( $type = 'all', $auto_delete = true ) {
+		
+		global $wpdb;
+		
+		$type_clause = "pm.meta_value IN ('open', 'closed')";
+		
+		if( 'all' !== $type ) {
+			$type_clause = 'pm.meta_value = "' . $type . '"';
+		}
+		
+		$meta_value = $auto_delete ? '1' : '';
+		
+		
+		
+		$select_q = "SELECT pm.post_id, 'auto_delete_attachments' as meta_key, '{$meta_value}' as meta_value from $wpdb->postmeta pm 
+					LEFT JOIN $wpdb->postmeta pm2 ON pm2.post_id = pm.post_id AND pm2.meta_key = 'auto_delete_attachments'
+					INNER JOIN $wpdb->posts p ON p.ID = pm.post_id AND p.post_type='ticket'
+					WHERE pm.meta_key = '_wpas_status' AND $type_clause";
+		
+		$update_query = "UPDATE $wpdb->postmeta SET meta_value = %s WHERE meta_key = %s AND post_id IN( 
+					select post_ids.post_id from ( $select_q AND !isnull( pm2.meta_id ) group by pm.post_id ) as post_ids
+				)";
+		
+		
+		
+		
+		$wpdb->query( $wpdb->prepare( $update_query, $meta_value, 'auto_delete_attachments' ));
+		
+		
+		$q = "INSERT INTO $wpdb->postmeta( post_id, meta_key, meta_value ) ( $select_q AND isnull( pm2.meta_id ) group by pm.post_id )";
+		$wpdb->query( $q );
+	}
+	
+	
+	/**
+	 * Save auto delete attachments flag from backend after ticket is saved 
+	 * 
+	 * @param int $ticket_id
+	 * 
+	 * @return void
+	 */
+	function ticket_after_saved( $ticket_id ) {
+		
+		if( !wpas_get_option( 'auto_delete_attachments' ) ) {
+			return;
+		}
+		
+		$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
+		$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
+		
+	}
+	
+	/**
+	 * Save auto delete attachments flag from front-end
+	 */
+	function auto_delete_attachment_flag() {
+		
+		$ticket_id = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
+		$auto_delete = filter_input( INPUT_POST, 'auto_delete', FILTER_SANITIZE_NUMBER_INT );
+		
+		if( $ticket_id && ( 0 == $auto_delete || 1 == $auto_delete ) ) {
+			$this->update_auto_delete_flag( $ticket_id, $auto_delete );
+		}
+	}
+	
+	/**
+	 * update auto delete attachments flag
+	 * 
+	 * @param int $ticket_id
+	 * @param boolean $auto_delete
+	 * @param string $type
+	 */
+	function update_auto_delete_flag( $ticket_id, $auto_delete, $type = 'user' ) {
+		
+		$auto_delete = $auto_delete ? '1' : '';
+		
+		update_post_meta( $ticket_id, 'auto_delete_attachments', $auto_delete );
+		update_post_meta( $ticket_id, 'auto_delete_attachments_type', $type );
 	}
 	
 	/**
 	 * Add field to mark auto delete attachments on ticket close
 	 */
 	function add_auto_delete_button() {
+		global $post_id;
 		
 		if( wpas_user_can_set_auto_delete_attachments() ) {
-		?>
-		
-		<div class="wpas-form-group wpas-auto-delete-attachments-container">
-			<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1">
-			<label for="wpas-auto-delete-attachments"><?php _e( 'Automatically delete attachments when a ticket is closed', 'wpas' ); ?></label>
-		</div>
-
-		<?php
+			$flag_on = get_post_meta( $post_id, 'auto_delete_attachments', true );
+			$this->auto_delete_field( $flag_on );
 		}
 		
+	}
+	
+	
+	/**
+	 * Add field to mark auto delete attachments on ticket close
+	 */
+	function admin_add_auto_delete_button() {
+		global $post_id;
+		
+		if( !wpas_get_option( 'auto_delete_attachments' ) ) {
+			return;
+		}
+		
+		$flag_on = get_post_meta( $post_id, 'auto_delete_attachments', true );
+		
+		echo '<p>';
+		
+		$this->auto_delete_field( $flag_on );
+		echo '</p>';
+		
+	}
+	
+	function auto_delete_field( $flag_on = false ) {
+		?>
+
+		<div class="wpas-form-group wpas-auto-delete-attachments-container">
+			<label for="wpas-auto-delete-attachments">
+				<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1" <?php checked(1, $flag_on); ?>>
+				<?php _e( 'Automatically delete attachments when a ticket is closed', 'wpas' ); ?>
+			</label>
+		</div>
+		<?php
 	}
 	
 	/**
