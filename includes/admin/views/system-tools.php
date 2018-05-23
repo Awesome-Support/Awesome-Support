@@ -90,9 +90,21 @@ if ( isset( $_GET['done'] ) ) {
 
 		case 'install_debug_email_template':
 			$message = __( 'The Debug Email Template Set Has Been Installed', 'awesome-support' );
-			break;				
+			break;
+		
+		case 'mark_all_auto_del_attchmnts':
+		case 'remove_mark_all_auto_del_attchmnts':
+		case 'mark_open_auto_del_attchmnts':
+		case 'remove_mark_open_auto_del_attchmnts':
+		case 'mark_closed_auto_del_attchmnts':
+		case 'remove_mark_closed_auto_del_attchmnts':
 			
+			$done_parts = explode( '_', $_GET['done'] );
+			$flag_added_removed = 'remove' === substr( $_GET['done'], 0, 6 ) ? 'removed' : 'added';
+			$flag_ticket_types = 'removed' === $flag_added_removed ? $done_parts[2] : $done_parts[1];
 			
+			$message = sprintf( __( 'Auto delete attachments flag %s on %s tickets', 'awesome-support' ), $flag_added_removed, $flag_ticket_types );
+			break;
 	}
 	
 	apply_filters('wpas_show_done_tool_message',$message, sanitize_text_field( $_GET['done'] ));
@@ -271,6 +283,44 @@ if ( isset( $message ) ) {
 			</td>
 		</tr>				
 		<?php do_action( 'wpas_system_data_conversion_tools_table_after' ); ?>
+	</tbody>
+</table>
+
+<p><h3><?php _e( 'Tools to handle ticket and reply attachments', 'awesome-support' ); ?></h3></p>
+<table class="widefat wpas-system-tools-table" id="wpas-system-tools-attachments">
+	<thead>
+		<tr>
+			<th data-override="key" class="row-title"><?php _e( 'Auto Delete Attachments Flag', 'awesome-support' ); ?></th>
+			<th data-override="value"></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'All Tickets', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'mark_all_auto_del_attchmnts' ); ?>" class="button-secondary"><?php _e( 'Add', 'awesome-support' ); ?></a>
+				<a href="<?php echo wpas_tool_link( 'remove_mark_all_auto_del_attchmnts' ); ?>" class="button-secondary"><?php _e( 'Remove', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Add or Remove auto delete attachments flag on all tickets.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Open Tickets', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'mark_open_auto_del_attchmnts' ); ?>" class="button-secondary"><?php _e( 'Add', 'awesome-support' ); ?></a>
+				<a href="<?php echo wpas_tool_link( 'remove_mark_open_auto_del_attchmnts' ); ?>" class="button-secondary"><?php _e( 'Remove', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Add or Remove auto delete attachments flag on open tickets.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Closed Tickets', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'mark_closed_auto_del_attchmnts' ); ?>" class="button-secondary"><?php _e( 'Add', 'awesome-support' ); ?></a>
+				<a href="<?php echo wpas_tool_link( 'remove_mark_closed_auto_del_attchmnts' ); ?>" class="button-secondary"><?php _e( 'Remove', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Add or Remove auto delete attachments flag on closed tickets.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>
+						
+		
 	</tbody>
 </table>
 

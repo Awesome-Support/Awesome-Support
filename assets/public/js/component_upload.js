@@ -64,6 +64,28 @@
                         
                     });
             });
+            
+            /* front end update auto delete attachments flag */
+            $('.wpas-reply-single .wpas-auto-delete-attachments-container input[type=checkbox]').change( function() {
+                    var btn = $(this);
+                    
+                    var loader = $('<span class="spinner" style="visibility: visible;margin-left: 0;float: left;margin-top: 0;"></span>');
+                        loader.insertAfter( btn );
+                    
+                    btn.hide();
+                    
+                    
+                    var data = {
+                        action   : 'wpas_auto_delete_attachment_flag',
+                        ticket_id : wpas.ticket_id,
+                        auto_delete : btn.is(':checked') ? '1' : '0'
+                    };
+
+                    $.post( ajaxurl, data, function (response) {
+                        btn.show();
+                        loader.remove();
+                    });
+            });
 
 	});
 

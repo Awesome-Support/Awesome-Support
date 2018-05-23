@@ -96,8 +96,23 @@ function wpas_system_tools() {
 			
 		case 'install_debug_email_template':
 			wpas_install_email_template( 'debug' );
-			break;			
+			break;		
+		
+		case 'mark_all_auto_del_attchmnts':
+		case 'remove_mark_all_auto_del_attchmnts':
+		case 'mark_open_auto_del_attchmnts':
+		case 'remove_mark_open_auto_del_attchmnts':
+		case 'mark_closed_auto_del_attchmnts':
+		case 'remove_mark_closed_auto_del_attchmnts':
 			
+			$act = sanitize_text_field( $_GET['tool'] );
+			$act_parts = explode( '_', $act );
+			$flag_added = 'remove' === substr( $act, 0, 6 ) ? false : true;
+			$flag_ticket_type = $flag_added ? $act_parts[1] : $act_parts[2];
+			
+			WPAS_File_Upload::mark_tickets_auto_delete_attachments( $flag_ticket_type, $flag_added );
+			
+			break;
 	}
 
 	do_action('execute_additional_tools',sanitize_text_field( $_GET['tool'] ));
