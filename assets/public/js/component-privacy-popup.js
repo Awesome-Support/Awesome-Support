@@ -83,11 +83,14 @@ jQuery(document).ready(function ($) {
 				if( undefined !== response.message.success ){
 					if( undefined !== response.message.date ){
 						optin_handle.parent('td').siblings('td:nth-child(3)').html(response.message.date);
-						optin_handle.parent('td').siblings('td:nth-child(4)').html('');
+					}
+					if( undefined !== response.message.status ){
+						optin_handle.parent('td').siblings('td:nth-child(2)').html(response.message.status);
 					}
 					if( undefined !== response.message.button ){
 						optin_handle.parent('td').html( response.message.button );
 					}
+
 					jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message.success + '</p>' );
 				} else if( undefined !== response.message.error ){
 					jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'failure' ).html( '<p>' + response.message.error + '</p>' );
@@ -124,8 +127,13 @@ jQuery(document).ready(function ($) {
 				jQuery( '.wpas-gdpr-loader-background').hide();
 				if( undefined !== response.message.success ){
 					if( undefined !== response.message.date ){
-						handle.parent('td').siblings('td:nth-child(2)').html( 'Opted-Out' );
 						handle.parent('td').siblings('td:nth-child(4)').html( response.message.date );
+					}
+					if( undefined !== response.message.status ){
+						handle.parent('td').siblings('td:nth-child(2)').html(response.message.status);
+					}
+					if( undefined !== response.message.button ){
+						handle.parent('td').html( response.message.button );
 					}
 					jQuery( '.wpas-gdpr-notice.add-remove-consent' ).addClass( 'success' ).html( '<p>' + response.message.success + '</p>' );
 				} else if( undefined !== response.message.error ){

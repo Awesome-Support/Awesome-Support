@@ -238,6 +238,7 @@ class WPAS_Privacy_Option {
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-in', 'awesome-support' );
 			$response['message']['date']    = date( 'm/d/Y', $opt_in );
+			$response['message']['status']    = $status;
 			$response['message']['button']  = sprintf(
 				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
 				__( 'Opt-out', 'awesome-support' )
@@ -289,6 +290,7 @@ class WPAS_Privacy_Option {
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-out', 'awesome-support' );
 			$response['message']['date']    = date( 'm/d/Y', $opt_out );
+			$response['message']['status']    = $status;
 			$response['message']['button']  = sprintf(
 				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
 				__( 'Opt-in', 'awesome-support' )
