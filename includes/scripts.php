@@ -246,7 +246,6 @@ function wpas_assets_front_end() {
 
 		// GDPR Privacy options script and style.
 		wp_enqueue_editor();
-		wp_enqueue_style( 'wpas-gdpr-style', WPAS_URL . 'assets/public/css/component_privacy-popup.css', array(), WPAS_VERSION );
 		wp_register_script( 'wpas-gdpr-script', WPAS_URL . 'assets/public/js/component-privacy-popup.js', array( 'jquery' ), WPAS_VERSION );		
 		wp_localize_script( 'wpas-gdpr-script', 'WPAS_GDPR', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -258,6 +257,14 @@ function wpas_assets_front_end() {
 		wp_enqueue_script( 'wpas-plugin-script' );
 
 	}
+
+	/**
+	 * @TODO: We need better place of the GDPR pop-up instead in global footer
+	 * 
+	 * Enqueue the style here to avoid GDPR popup
+	 * from showing in the footer
+	 */
+	wp_enqueue_style( 'wpas-gdpr-style', WPAS_URL . 'assets/public/css/component_privacy-popup.css', array(), WPAS_VERSION );
 
 }
 
