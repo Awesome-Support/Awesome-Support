@@ -148,12 +148,13 @@ class WPAS_File_Upload {
 	 */
 	function ticket_after_saved( $ticket_id ) {
 		
-		if( !wpas_get_option( 'auto_delete_attachments' ) ) {
-			return;
-		}
 		
+		$old_auto_save = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
 		$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
-		$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
+		
+		if( $auto_delete !== $old_auto_save ) {
+			$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
+		}
 		
 	}
 	
@@ -189,10 +190,10 @@ class WPAS_File_Upload {
 	 * Add field to mark auto delete attachments on ticket close
 	 */
 	function add_auto_delete_button() {
-		global $post_id;
+		global $post;
 		
 		if( wpas_user_can_set_auto_delete_attachments() ) {
-			$flag_on = get_post_meta( $post_id, 'auto_delete_attachments', true );
+			$flag_on = get_post_meta( $post->ID, 'auto_delete_attachments', true );
 			$this->auto_delete_field( $flag_on );
 		}
 		
@@ -205,9 +206,6 @@ class WPAS_File_Upload {
 	function admin_add_auto_delete_button() {
 		global $post_id;
 		
-		if( !wpas_get_option( 'auto_delete_attachments' ) ) {
-			return;
-		}
 		
 		$flag_on = get_post_meta( $post_id, 'auto_delete_attachments', true );
 		
@@ -277,17 +275,23 @@ class WPAS_File_Upload {
 	 */
 	function wpas_open_ticket_after( $ticket_id, $data ) {
 			
-		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+		
 		
 		$auto_delete_by_user = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
 		
 		
-		if( $auto_delete || $auto_delete_by_user ) {
-				$auto_delete_type = $auto_delete_by_user ? 'user' : 'agent';
-				update_post_meta( $ticket_id, 'auto_delete_attachments', '1' );
-				update_post_meta( $ticket_id, 'auto_delete_attachments_type', $auto_delete_type );
+		if( wpas_user_can_set_auto_delete_attachments() ) {
+			$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
+			$auto_delete_type = 'user';
+		} else {
+			$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+			$auto_delete_type = 'auto';
 		}
 		
+		$auto_delete = $auto_delete ? '1' : '';
+		
+		update_post_meta( $ticket_id, 'auto_delete_attachments', $auto_delete );
+		update_post_meta( $ticket_id, 'auto_delete_attachments_type', $auto_delete_type );
 	}
 	
 	
