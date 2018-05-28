@@ -316,6 +316,8 @@ class WPAS_File_Upload {
 		if( !$auto_delete && !$user_can_set_flag ) {
 			return;
 		}
+
+		$auto_delete_type = '';
 		
 		if( $user_can_set_flag ) {
 			$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
