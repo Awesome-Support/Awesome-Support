@@ -322,3 +322,82 @@ function wpas_upgrade_511() {
 	}
 
 }
+
+
+/**
+ * Upgrade function for version 5.2.1
+ *
+ * New capabilities need to be added to certain roles.
+ *
+ * @since 5.2.1
+ * @return void
+ */
+function wpas_upgrade_521() {
+
+	/* Add new capabilities to these roles and all users assigned these roles:
+	 *
+	 *  WordPress Administrator
+	 *  AS Support Manager
+	 *
+	 */
+	$admin_caps = array(
+		'tickets_manage_privacy'
+	);
+	
+	$agent_caps = array(
+		'tickets_manage_privacy'
+	);
+	
+	$manager_caps = array(
+		'tickets_manage_privacy'
+	);
+	
+	$supportmanager_caps = array(
+		'tickets_manage_privacy'
+	);	
+
+	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
+	$supportmanager = get_role( 'wpas_support_manager' );
+	$admin   		= get_role( 'administrator' );
+	$as_admin		= get_role( 'as_admin' );
+	$agent	 		= get_role( 'wpas_agent' );
+	
+
+	/**
+	 * Add new capacities to admin roles
+	 */
+	foreach ( $admin_caps as $cap ) {
+
+		// Add all the capacities to admin in addition to full WP capacities
+		if ( null != $admin )
+			$admin->add_cap( $cap );
+		
+		// Add all the capacities to as_admin in addition to full WP capacities
+		if ( null != $as_admin )
+			$as_admin->add_cap( $cap );
+
+		// Add full plugin capacities to manager in addition to the editor capacities
+		if ( null != $manager )
+			$manager->add_cap( $cap );
+
+	}
+	
+	/**
+	 * Add certain new capacities to agents
+	 */
+	foreach ( $agent_caps as $cap ) {
+		if ( null != $agent ) {
+			$agent->add_cap( $cap );
+		}
+	}
+	
+	/**
+	 * Add certain new capacities to support managers
+	 */
+	foreach ( $supportmanager_caps as $cap ) {
+		if ( null != $supportmanager ) {
+			$supportmanager->add_cap( $cap );
+		}
+	}
+
+}
