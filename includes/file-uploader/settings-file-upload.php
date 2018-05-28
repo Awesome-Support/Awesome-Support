@@ -40,6 +40,42 @@ function wpas_addon_settings_file_upload( $def ) {
 					'default' => 'jpg,jpeg,png,gif,pdf,doc,docx,ppt,pptx,pps,ppsx,odt,xls,xlsx,mp3,m4a,ogg,wav,mp4,m4v,mov,wmv,avi,mpg,ogv,3gp,3g2,zip',
 					'desc'    => sprintf( __( 'Which file types do you allow your users to attach? Please separate each extension by a comma (%s)', 'awesome-support' ), '<code>,</code>' )
 				),
+				
+				array(
+					'name' => __( 'Permissions', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Control who can delete ticket or reply attachments', 'awesome-support' ),					
+				),
+				
+				array(
+					'name'    => __( 'Agents Can Delete?', 'awesome-support' ),
+					'id'      => 'agents_can_delete_attachments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Check this to allow agents to delete attachments', 'awesome-support' ),
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Users Can Delete?', 'awesome-support' ),
+					'id'      => 'users_can_delete_attachments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Check this to allow users to delete attachments', 'awesome-support' ),
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Auto-delete On Close?', 'awesome-support' ),
+					'id'      => 'auto_delete_attachments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Automatically delete ALL attachments on a ticket when the ticket is closed', 'awesome-support' ),
+					'default' => false
+				),
+				array(
+					'name'    => __( 'User Controls Auto-delete Flag?', 'awesome-support' ),
+					'id'      => 'user_can_set_auto_delete_attachments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Can the user control whether or not attachments should be automatically deleted on close?', 'awesome-support' ),					
+					'default' => false
+				),
+				
 			)
 		),
 	);
