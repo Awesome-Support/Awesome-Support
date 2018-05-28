@@ -84,7 +84,7 @@ class WPAS_File_Upload {
 		
 		
 		add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'add_auto_delete_button_fe_submission' ) );		
-		add_action( 'wpas_frontend_ticket_content_after',		 array( $this, 'add_auto_delete_button_fe_ticket' ) );
+		add_action( 'wpas_ticket_details_reply_close_checkbox_after',		 array( $this, 'add_auto_delete_button_fe_ticket' ) );
 		add_action( 'wpas_backend_ticket_status_before_actions', array( $this, 'admin_add_auto_delete_button'), 100 );
 		
 		add_action( 'wp_ajax_wpas_auto_delete_attachment_flag',  array( $this, 'auto_delete_attachment_flag' ) );
@@ -252,7 +252,7 @@ class WPAS_File_Upload {
 	function auto_delete_field( $flag_on = false ) {
 		?>
 
-		<div class="wpas-form-group wpas-auto-delete-attachments-container">
+		<div class="wpas-auto-delete-attachments-container">
 			<label for="wpas-auto-delete-attachments">
 				<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1" <?php checked(1, $flag_on); ?>>
 				<?php _e( 'Automatically delete attachments when a ticket is closed', 'wpas' ); ?>
