@@ -158,9 +158,9 @@ class WPAS_Help {
 		$screen = get_current_screen();
 
 		$screen->add_help_tab( array(
-			'id'      => 'general',
-			'title'   => __( 'General Settings', 'awesome-support' ),
-			'content' => __( '<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>', 'awesome-support' )
+			'id'      => 'email-html-template',
+			'title'   => __( 'Use HTML Template', 'awesome-support' ),
+			'content' => __( '<h2>Use HTML Template</h2><p>Wrap all outgoing emails in a set of pretty HTML forms and tags.  With this option turned on you can set a LOGO and create fancy header and footers around your outgoing email alerts.</p><p>However, if you have another plugin installed that already wraps all WordPress outgoing emails in a fancy HTML template then you should turn this option OFF.</p>', 'awesome-support' )
 		) );
 		
 		$screen->add_help_tab( array(
@@ -168,6 +168,7 @@ class WPAS_Help {
 			'title'   => __( 'Email Template Tags', 'awesome-support' ),
 			'content' => sprintf( __( '<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s', 'awesome-support' ), $tags )
 		) );
+
 	}
 
 	/**

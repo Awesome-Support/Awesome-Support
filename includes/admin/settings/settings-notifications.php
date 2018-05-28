@@ -22,11 +22,11 @@ function wpas_core_settings_notifications( $def ) {
 					'type' => 'heading',
 				),
 				array(
-					'name'    => __( 'Use Template', 'awesome-support' ),
+					'name'    => __( 'Use HTML Template', 'awesome-support' ),
 					'id'      => 'use_email_template',
 					'type'    => 'checkbox',
 					'default' => true,
-					'desc'    => __( 'Outgoing notifications are styled with a built-in template. If you are using an e-mail templating plugin you should deactivate this option.', 'awesome-support' )
+					'desc'    => __( 'Outgoing notifications are styled with a built-in html template. If you are using an e-mail templating plugin you should deactivate this option.', 'awesome-support' )
 				),
 				array(
 					'type' => 'note',
@@ -78,6 +78,7 @@ function wpas_core_settings_notifications( $def ) {
 				/* Submission confirmation */
 				array(
 					'name' => __( 'Submission Confirmation', 'awesome-support' ),
+					'desc' => __( 'This is sent to the user when they open a new ticket.', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -102,6 +103,7 @@ function wpas_core_settings_notifications( $def ) {
 				/* New assignment */
 				array(
 					'name' => __( 'New Assignment', 'awesome-support' ),
+					'desc' => __( 'This is sent to the agent when they are assigned to a ticket.', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -126,6 +128,7 @@ function wpas_core_settings_notifications( $def ) {
 				/* New reply from agent */
 				array(
 					'name' => __( 'New Reply from Agent', 'awesome-support' ),
+					'desc' => __( 'This is sent to the user when an agent replies to a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -150,6 +153,7 @@ function wpas_core_settings_notifications( $def ) {
 				/* New reply from client */
 				array(
 					'name' => __( 'New Reply from Client', 'awesome-support' ),
+					'desc' => __( 'This is sent to agents when a new reply is received from a user.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -174,12 +178,13 @@ function wpas_core_settings_notifications( $def ) {
 				/* Ticket will close */
 				array(
 					'name' => __( 'Ticket Will Be Closed', 'awesome-support' ),
+					'desc' => __( 'These are sent as alerts to the user before a ticket is automatically closed (requires auto-close add-on otherwise this section is blank).', 'awesome-support' ),					
 					'type' => 'heading',
 				),
-
-				/* Ticket closed */
+				/* Ticket closed by agent */
 				array(
 					'name' => __( 'Ticket Closed (by agent)', 'awesome-support' ),
+					'desc' => __( 'This is sent to the user when an agent closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -201,8 +206,10 @@ function wpas_core_settings_notifications( $def ) {
 					'type'     => 'editor',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
+				/* Ticket closed by client*/				
 				array(
 					'name' => __( 'Ticket Closed (by client)', 'awesome-support' ),
+					'desc' => __( 'This is sent to the agent when a user closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
