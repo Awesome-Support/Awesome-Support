@@ -528,6 +528,8 @@ class WPAS_GDPR_User_Profile {
 			$zip    = new ZipArchive();
 			$do_zip = $zip->open( $destination . '/' . $filename, ZipArchive::OVERWRITE | ZipArchive::CREATE );
 			if ( $do_zip ) {
+				// Add xml data file here.
+				$zip->addFile( $destination . '/' . $file, $file );
 				if( !empty( $user_tickets )) {
 				    foreach ($user_tickets as $key => $ticket) {
 				        if( isset( $ticket['ticket_id'] ) && !empty( $ticket['ticket_id'] )){
@@ -559,12 +561,7 @@ class WPAS_GDPR_User_Profile {
 				            return new WP_Error( 'invalid_ticket_id', __( 'Ticket ID is empty', 'awesome-support' ) );
 				        }
 				    }
-				} else{
-				    return new WP_Error( 'ticket_not_found', __( 'No Ticket found', 'awesome-support' ) );
 				}
-
-				// Add xml data file here.
-				$zip->addFile( $destination . '/' . $file, $file );
 				$zip->close();
 			} else {
 				return new WP_Error( 'cannot_create_zip', __( 'Cannot create zip file', 'awesome-support' ) );
