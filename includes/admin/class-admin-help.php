@@ -21,6 +21,8 @@ class WPAS_Help {
 	
 	public function __construct() {
 		add_filter( 'contextual_help', array( $this, 'settings_general_contextual_help' ), 10, 3 );
+		add_filter( 'contextual_help', array( $this, 'settings_registration_help' ), 10, 3 );
+		add_filter( 'contextual_help', array( $this, 'settings_products_management_help' ), 10, 3 );
 		add_filter( 'contextual_help', array( $this, 'settings_notifications_contextual_help' ), 10, 3 );
 		add_filter( 'contextual_help', array( $this, 'settings_advanced_contextual_help' ), 10, 3 );
 	}
@@ -57,23 +59,75 @@ class WPAS_Help {
 		$screen = get_current_screen();
 
 		$screen->add_help_tab( array(
-			'id'      => 'multiple_products',
-			'title'   => __( 'Multiple Products', 'awesome-support' ),
-			'content' => __( '<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>', 'awesome-support' )
-		) );
-
-		$screen->add_help_tab( array(
 			'id'      => 'default_assignee',
 			'title'   => __( 'Default Assignee', 'awesome-support' ),
-			'content' => __( '<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agent, we need to know who to assign to in case we can\'t find a perfect fit for the new tickets.</p>', 'awesome-support' )
+			'content' => __( '<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agents, we need to know who to assign to in case we can\'t find a perfect fit for the new tickets.</p>', 'awesome-support' )
 		) );
+		
+		$screen->add_help_tab( array(
+			'id'      => 'assignee_use_select2',
+			'title'   => __( 'Use Select2', 'awesome-support' ),
+			'content' => __( '<h2>Use SELECT2 For Staff Drop-downs</h2><p>A SELECT2 drop-down is used when you have a large list of items which would take a long time to render on the screen.  Instead, the user gets to limit the list by searching and seeing the results show up in real-time.  Most sites will not hav a large number of agents so this option is usually turned off.</p>', 'awesome-support' )
+		) );		
+
+	}
+	
+	/**
+	 * Registration settings contextual help.
+	 *
+	 * @since  5.2.0
+	 * @return void
+	 */
+	public function settings_registration_help() {
+
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
+		    'registration' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
+			return;
+		}
+		
+		$screen = get_current_screen();
 
 		$screen->add_help_tab( array(
 			'id'      => 'allow_registrations',
 			'title'   => __( 'Allow Registrations', 'awesome-support' ),
 			'content' => __( '<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn\'t. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>', 'awesome-support' )
 		) );
-	}
+	}	
+	
+	/**
+	 * Products management contextual help.
+	 *
+	 * @since  5.2.0
+	 * @return void
+	 */
+	public function settings_products_management_help() {
+
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
+		    'products-management' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
+			return;
+		}
+		
+		$screen = get_current_screen();
+
+		$screen->add_help_tab( array(
+			'id'      => 'multiple_products',
+			'title'   => __( 'Multiple Products', 'awesome-support' ),
+			'content' => __( '<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>', 'awesome-support' )
+		) );
+		
+		$screen->add_help_tab( array(
+			'id'      => 'products_synchronize',
+			'title'   => __( 'Synchronize Products', 'awesome-support' ),
+			'content' => __( '<h2>Synchronize WooCommerce or EDD Products</h2><p>If you have WooCommerce or EDD installed, you will see an option allowing you to turn on synchronization between those plugins and the Awesome Support product list.  But, you cannot synchronize your product list to both simultanously.  If you have both WC and EDD installed and active for some reason then you will be synchronizing with WooCommerce.</p>', 'awesome-support' )
+		) );		
+		
+		$screen->add_help_tab( array(
+			'id'      => 'products_slug',
+			'title'   => __( 'Slug', 'awesome-support' ),
+			'content' => __( '<h2>Slug</h2><p>Change this if you would like the URL for your products to include something other than PRODUCT.</p>', 'awesome-support' )
+		) );
+
+	}	
 
 	/**
 	 * Notifications settings contextual help.
