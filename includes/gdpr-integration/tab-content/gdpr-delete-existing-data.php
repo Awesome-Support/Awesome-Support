@@ -39,7 +39,7 @@ if( wpas_get_option( 'delete_existing_data_subject', false ) ) {
 		 * Check if this is enabled in the settings option
 		 * before we can render the markup
 		 */
-		if( wpas_get_option( 'delete_existing_data_add_information', false ) && true !== wpas_get_option( 'delete_existing_data_add_information', false ) ) {
+		if( wpas_get_option( 'delete_existing_data_add_information', false ) ) {
 		?>
 		<thead>
 			<tr class="headlines">
