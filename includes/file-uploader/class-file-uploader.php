@@ -82,17 +82,19 @@ class WPAS_File_Upload {
 
 		}
 		
-		add_action( 'wp_ajax_wpas_delete_attachment',	array( $this, 'ajax_delete_attachment' ) );
-		add_action( 'wpas_after_close_ticket',			array( $this, 'wpas_maybe_delete_attachments_after_close_ticket' ), 11, 3 );
-		add_action( 'wpas_open_ticket_after',			array( $this, 'wpas_open_ticket_after' ), 11, 2 );
-		add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'add_auto_delete_button' ) );
 		
-		add_action( 'wpas_frontend_ticket_content_after',		 array( $this, 'add_auto_delete_button' ) );
-		add_action( 'wp_ajax_wpas_auto_delete_attachment_flag',  array( $this, 'auto_delete_attachment_flag' ) );
-		add_action( 'wpas_ticket_after_saved',					 array( $this, 'ticket_after_saved' ) );
+		add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'add_auto_delete_button_fe_submission' ) );		
+		add_action( 'wpas_frontend_ticket_content_after',		 array( $this, 'add_auto_delete_button_fe_ticket' ) );
 		add_action( 'wpas_backend_ticket_status_before_actions', array( $this, 'admin_add_auto_delete_button'), 100 );
 		
+		add_action( 'wp_ajax_wpas_auto_delete_attachment_flag',  array( $this, 'auto_delete_attachment_flag' ) );
 		
+		add_action( 'wp_ajax_wpas_delete_attachment',			 array( $this, 'ajax_delete_attachment' ) );
+		
+		add_action( 'wpas_ticket_after_saved',					 array( $this, 'ticket_after_saved' ) );
+		add_action( 'wpas_open_ticket_after',			array( $this, 'wpas_open_ticket_after' ), 11, 2 );
+		
+		add_action( 'wpas_after_close_ticket',			array( $this, 'wpas_maybe_delete_attachments_after_close_ticket' ), 11, 3 );
 		
 	}
 	
@@ -148,6 +150,9 @@ class WPAS_File_Upload {
 	 */
 	function ticket_after_saved( $ticket_id ) {
 		
+		if( !is_admin() ) {
+			return;
+		}
 		
 		$old_auto_save = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
 		$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
@@ -187,9 +192,37 @@ class WPAS_File_Upload {
 	}
 	
 	/**
-	 * Add field to mark auto delete attachments on ticket close
+	 * Add field to mark auto delete attachments on ticket submission form
 	 */
-	function add_auto_delete_button() {
+	function add_auto_delete_button_fe_submission() {
+		global $post;
+		
+		$flag_on = '';
+		
+		
+		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+		
+		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
+		
+		if( !$auto_delete && !$user_can_set_flag ) {
+			return;
+		}
+		
+		
+		if( $auto_delete ) {
+			$flag_on = '1';
+		} 
+		
+		
+		$this->auto_delete_field( $flag_on );
+		
+	}
+	
+	
+	/**
+	 * Add field to mark auto delete attachments on ticket edit page front end
+	 */
+	function add_auto_delete_button_fe_ticket() {
 		global $post;
 		
 		if( wpas_user_can_set_auto_delete_attachments() ) {
@@ -274,24 +307,29 @@ class WPAS_File_Upload {
 	 * @param array $data
 	 */
 	function wpas_open_ticket_after( $ticket_id, $data ) {
-			
 		
 		
-		$auto_delete_by_user = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
+		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
 		
+		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
 		
-		if( wpas_user_can_set_auto_delete_attachments() ) {
+		if( !$auto_delete && !$user_can_set_flag ) {
+			return;
+		}
+		
+		if( $user_can_set_flag ) {
 			$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
 			$auto_delete_type = 'user';
-		} else {
-			$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+		} elseif( $auto_delete ) {
 			$auto_delete_type = 'auto';
 		}
 		
 		$auto_delete = $auto_delete ? '1' : '';
 		
-		update_post_meta( $ticket_id, 'auto_delete_attachments', $auto_delete );
-		update_post_meta( $ticket_id, 'auto_delete_attachments_type', $auto_delete_type );
+		if( $auto_delete ) {
+			update_post_meta( $ticket_id, 'auto_delete_attachments', $auto_delete );
+			update_post_meta( $ticket_id, 'auto_delete_attachments_type', $auto_delete_type );
+		}
 	}
 	
 	
