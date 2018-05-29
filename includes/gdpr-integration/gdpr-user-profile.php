@@ -100,7 +100,7 @@ class WPAS_GDPR_User_Profile {
 		/**
 		 * Visible to all WPAS user roles
 		 */
-		if ( current_user_can( 'tickets_manage_privacy' ) ) {
+		if ( current_user_can( 'create_ticket' ) ) {
 			/**
 			  * For the GDPR labels, this data are stored in
 			  * wpas_consent_tracking user meta in form of array.
@@ -161,7 +161,7 @@ class WPAS_GDPR_User_Profile {
 					 * If current loop is TOR, do not give Opt options
 					 */
 				$opt_button = '';
-				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
+				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false && current_user_can( 'tickets_manage_privacy' ) ) {
 					/**
 						 * Determine what type of buttons we should render
 						 * If opt_in is not empty, display Opt out button
