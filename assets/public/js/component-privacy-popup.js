@@ -70,7 +70,8 @@ jQuery(document).ready(function ($) {
 			'data' 	: {
 				'nonce'		: WPAS_GDPR.nonce,
 				'gdpr-data'	: jQuery(this).data( 'gdpr' ),
-				'gdpr-user'	: jQuery(this).data( 'user' )
+				'gdpr-user'	: jQuery(this).data( 'user' ),
+				'gdpr-optout'	: jQuery(this).data( 'optout-date' )
 			}
 		};
 		

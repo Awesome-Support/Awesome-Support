@@ -220,17 +220,18 @@ class WPAS_Privacy_Option {
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item   = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
-			$user   = isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
-			$status = __( 'Opted-in', 'awesome-support' );
-			$opt_in = strtotime( 'NOW' );
+			$item   	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
+			$user   	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+			$status 	= __( 'Opted-in', 'awesome-support' );
+			$opt_in 	= strtotime( 'NOW' );
+			$opt_out   	= isset( $_POST['data']['gdpr-optout'] ) ? strtotime( sanitize_text_field( $_POST['data']['gdpr-optout'] ) ) : '';
 
 			wpas_track_consent(
 				array(
 					'item'    => $item,
 					'status'  => $status,
 					'opt_in'  => $opt_in,
-					'opt_out' => '',
+					'opt_out' => $opt_out,
 					'is_tor'  => false,
 				), $user, 'in'
 			);
@@ -274,15 +275,16 @@ class WPAS_Privacy_Option {
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item    = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
-			$user    = isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
-			$status  = __( 'Opted-Out', 'awesome-support' );
-			$opt_out = strtotime( 'NOW' );
+			$item    	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
+			$user    	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+			$status  	= __( 'Opted-Out', 'awesome-support' );
+			$opt_out 	= strtotime( 'NOW' );
+			$opt_in   	= isset( $_POST['data']['gdpr-optin'] ) ? strtotime( sanitize_text_field( $_POST['data']['gdpr-optin'] ) ) : '';
 			wpas_track_consent(
 				array(
 					'item'    => $item,
 					'status'  => $status,
-					'opt_in'  => '',
+					'opt_in'  => $opt_in,
 					'opt_out' => $opt_out,
 					'is_tor'  => false,
 				), $user, 'out'
