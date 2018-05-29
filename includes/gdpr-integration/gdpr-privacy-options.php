@@ -231,7 +231,7 @@ class WPAS_Privacy_Option {
 					'item'    => $item,
 					'status'  => $status,
 					'opt_in'  => $opt_in,
-					'opt_out' => $opt_out,
+					'opt_out' => '',
 					'is_tor'  => false,
 				), $user, 'in'
 			);
@@ -284,7 +284,7 @@ class WPAS_Privacy_Option {
 				array(
 					'item'    => $item,
 					'status'  => $status,
-					'opt_in'  => $opt_in,
+					'opt_in'  => '',
 					'opt_out' => $opt_out,
 					'is_tor'  => false,
 				), $user, 'out'
