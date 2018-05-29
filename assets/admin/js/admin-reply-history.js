@@ -44,7 +44,6 @@
                 reply_id : $(this).data( 'ticketid' )
               },
               success : function( response ) {
-                console.log(response);
                 if( response.code === 200 ) {
                   $( '.wpas-reply-notification' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
                   if( response.data ) {
