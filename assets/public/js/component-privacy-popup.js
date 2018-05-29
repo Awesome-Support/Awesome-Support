@@ -233,6 +233,8 @@ function wpas_init_editor( this_id, content ){
 	    },
 	    quicktags:		true,
 	};
+	
+	wp.editor.remove(this_id);
 	/**
 	 * Initialize editor
 	*/
