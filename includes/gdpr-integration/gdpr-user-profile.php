@@ -253,10 +253,10 @@ class WPAS_GDPR_User_Profile {
 			 */
 			$ticket_data  = new WP_Query(
 				array(
-					'post_type'   => array( 'ticket' ),
-					'author'      => $user,
-					'post_status' => wpas_get_post_status(),
-					'posts_per_page'  => -1,
+					'post_type'      => array( 'ticket' ),
+					'author'         => $user,
+					'post_status'    => wpas_get_post_status(),
+					'posts_per_page' => -1,
 				)
 			);
 			$user_tickets = array();
@@ -307,7 +307,7 @@ class WPAS_GDPR_User_Profile {
 
 				$this->data_zip( $user_tickets, 'export-data.xml', $this->user_export_dir );
 
-                $upload_dir                     = wp_upload_dir();
+				$upload_dir                     = wp_upload_dir();
 				$response['message']['success'] = sprintf(
 					'<p>%s. <a href="%s" target="_blank">%s</a></p>',
 					__( 'Exporting data was successful!', 'awesome-support' ),
@@ -518,7 +518,7 @@ class WPAS_GDPR_User_Profile {
 	* @file string Name of xml data file.
 	* @filename string name of zip file.
 	*
-	* return WP_Error 
+	* return WP_Error
 	*/
 	public function data_zip( $user_tickets, $file, $destination, $filename = 'exported-data.zip' ) {
 		if ( ! file_exists( $destination ) ) {
@@ -530,37 +530,37 @@ class WPAS_GDPR_User_Profile {
 			if ( $do_zip ) {
 				// Add xml data file here.
 				$zip->addFile( $destination . '/' . $file, $file );
-				if( !empty( $user_tickets )) {
-				    foreach ($user_tickets as $key => $ticket) {
-				        if( isset( $ticket['ticket_id'] ) && !empty( $ticket['ticket_id'] )){
-				            $subdir = "/awesome-support/ticket_" . $ticket['ticket_id'];
-				            $upload = wp_upload_dir();
-				            /* Create final URL and dir */
-				            $dir = $upload['basedir'] . $subdir;
-				            if (is_dir($dir)) {
-				                if ($dh = opendir($dir)) {
-				                    while (($file2 = readdir($dh)) !== false) {
-				                        if (file_exists($dir . '/' . $file2)) {
-				                            $mimetype = mime_content_type($dir . '/' . $file2);
-				                            if ('text/plain' !== $mimetype) {
-				                                if (!is_dir( $dir . '/' . $file2 ) ) {
-				                                    // Add attachment file here.
-				                                    $zip->addFile( $dir . '/' . $file2, '/ticket_' . $ticket['ticket_id'] . '/' . basename( $file2 ) );
-				                                } 
-				                            }
-				                        } else{
-				                            return new WP_Error( 'file_not_exist', __( 'Attachment not exist', 'awesome-support' ) );
-				                        }
-				                    }
-				                } else{
-				                    return new WP_Error( 'dir_not_found', __( 'Attachment Folder Directory Not Found', 'awesome-support' ) );
-				                }
-				                closedir($dh);
-				            }
-				        } else{
-				            return new WP_Error( 'invalid_ticket_id', __( 'Ticket ID is empty', 'awesome-support' ) );
-				        }
-				    }
+				if ( ! empty( $user_tickets ) ) {
+					foreach ( $user_tickets as $key => $ticket ) {
+						if ( isset( $ticket['ticket_id'] ) && ! empty( $ticket['ticket_id'] ) ) {
+							$subdir = '/awesome-support/ticket_' . $ticket['ticket_id'];
+							$upload = wp_upload_dir();
+							/* Create final URL and dir */
+							$dir = $upload['basedir'] . $subdir;
+							if ( is_dir( $dir ) ) {
+								if ( $dh = opendir( $dir ) ) {
+									while ( ( $file2 = readdir( $dh ) ) !== false ) {
+										if ( file_exists( $dir . '/' . $file2 ) ) {
+											$mimetype = mime_content_type( $dir . '/' . $file2 );
+											if ( 'text/plain' !== $mimetype ) {
+												if ( ! is_dir( $dir . '/' . $file2 ) ) {
+													// Add attachment file here.
+													$zip->addFile( $dir . '/' . $file2, '/ticket_' . $ticket['ticket_id'] . '/' . basename( $file2 ) );
+												}
+											}
+										} else {
+											return new WP_Error( 'file_not_exist', __( 'Attachment not exist', 'awesome-support' ) );
+										}
+									}
+								} else {
+									return new WP_Error( 'dir_not_found', __( 'Attachment Folder Directory Not Found', 'awesome-support' ) );
+								}
+								closedir( $dh );
+							}
+						} else {
+							return new WP_Error( 'invalid_ticket_id', __( 'Ticket ID is empty', 'awesome-support' ) );
+						}
+					}
 				}
 				$zip->close();
 			} else {
