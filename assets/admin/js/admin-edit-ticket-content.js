@@ -25,6 +25,7 @@
 			$(document).on('click', '#wpas-edit-main-ticket-message', function (event) {
                 event.preventDefault();
                 $('#wpas-edit-main-ticket-message').hide();
+                $('#wpas-view-edit-main-ticket-message').hide();
                 $('#wpas-cancel-edit-main-ticket-message').show();
                 $('#wpas-save-edit-main-ticket-message').show();
 
@@ -64,6 +65,7 @@
 
                 $.post(ajaxurl, data, function (response) {
                     $('#wpas-edit-main-ticket-message').show();
+                    $('#wpas-view-edit-main-ticket-message').show();
                     $('#wpas-cancel-edit-main-ticket-message').hide();
                     $('#wpas-save-edit-main-ticket-message').hide();
 
@@ -100,6 +102,7 @@
 
                 $.post(ajaxurl, data, function (response) {
                     $('#wpas-edit-main-ticket-message').show();
+                    $('#wpas-view-edit-main-ticket-message').show();
                     $('#wpas-cancel-edit-main-ticket-message').hide();
                     $('#wpas-save-edit-main-ticket-message').hide();                    
 
