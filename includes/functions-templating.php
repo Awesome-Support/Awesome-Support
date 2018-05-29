@@ -655,7 +655,11 @@
 
 				$id    = get_the_ID();
 				$title = get_the_title();
-				$title .= " (#$id)";
+				
+				/* Maybe add the ticket id to the title string */
+				if ( ! boolval( wpas_get_option( 'hide_ticket_id_title_fe', false ) ) ) {
+					$title .= " (#$id)";
+				}
 
 				?><a href="<?php echo $link; ?>"><?php echo $title; ?></a><?php
 				break;

@@ -17,7 +17,7 @@ function wpas_core_settings_general( $def ) {
 			'name'    => __( 'General', 'awesome-support' ),
 			'options' => array(
 				array(
-					'name' => __( 'General', 'awesome-support' ),
+					'name' => __( 'General Admin Options', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -28,7 +28,6 @@ function wpas_core_settings_general( $def ) {
 					'options' => isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] && isset( $_GET['page'] ) && 'wpas-settings' === $_GET['page'] ? wpas_list_users( 'edit_ticket' ) : array(),
 					'default' => ''
 				),
-				
 				array(
                         'name'    => __( 'Use SELECT2 For Staff Drop-downs', 'awesome-support' ),
                         'id'      => "support_staff_select2_enabled",
@@ -36,14 +35,6 @@ function wpas_core_settings_general( $def ) {
                         'default' => false,
                         'desc'    => __( 'On ticket screen turn the staff dropdown into select2 box.', 'awesome-support' )
                 ),
-
-				array(
-					'name'    => __( 'Tickets Per Page (Front End)', 'awesome-support' ),
-					'id'      => 'tickets_per_page_front_end',
-					'type'    => 'text',
-					'default' => 5,
-					'desc'    => __( 'How many tickets per page should be displayed to the customer/client/end-user?', 'awesome-support' ),
-				),				
 				array(
 					'name'    => __( 'Replies Order', 'awesome-support' ),
 					'id'      => 'replies_order',
@@ -60,19 +51,12 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'How many replies should be displayed per page on a ticket details screen?', 'awesome-support' )
 				),
 				array(
-					'name'    => __( 'Hide Closed (Admin)', 'awesome-support' ),
+					'name'    => __( 'Hide Closed Tickets', 'awesome-support' ),
 					'id'      => 'hide_closed',
 					'type'    => 'checkbox',
 					'desc'    => __( 'Only show open tickets when agents click the "All Tickets" link.', 'awesome-support' ),
 					'default' => true
 				),
-				array(
-					'name'    => __( 'Hide Closed (Front End)', 'awesome-support' ),
-					'id'      => 'hide_closed_fe',
-					'type'    => 'checkbox',
-					'desc'    => __( 'Only show open tickets to clients on the front-end.', 'awesome-support' ),
-					'default' => false
-				),				
 				array(
 					'name'    => __( 'Show Count', 'awesome-support' ),
 					'id'      => 'show_count',
@@ -88,6 +72,33 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'After how many days should a ticket be considered &laquo;old&raquo;?', 'awesome-support' )
 				),
 
+				array(
+					'name' => __( 'Front-end Options', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => __( 'These settings control the user experience when they submit or view their tickets', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'Tickets Per Page', 'awesome-support' ),
+					'id'      => 'tickets_per_page_front_end',
+					'type'    => 'text',
+					'default' => 5,
+					'desc'    => __( 'How many tickets per page should be displayed to the customer/client/end-user?', 'awesome-support' ),
+				),								
+				array(
+					'name'    => __( 'Hide Closed Tickets', 'awesome-support' ),
+					'id'      => 'hide_closed_fe',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Only show open tickets to clients on the front-end.', 'awesome-support' ),
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Hide Ticket ID', 'awesome-support' ),
+					'id'      => 'hide_ticket_id_title_fe',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Do not show the ticket id in the title when viewing the ticket list', 'awesome-support' ),
+					'default' => false
+				),
+				
 				array(
 					'name' => __( 'Redirects', 'awesome-support' ),
 					'type' => 'heading',
@@ -110,7 +121,7 @@ function wpas_core_settings_general( $def ) {
 				array(
 					'name' => __( 'Toolbars', 'awesome-support' ),
 					'type' => 'heading',
-					'desc'    => __( 'Control whether certain toolbars are visible', 'awesome-support' ),					
+					'desc'    => __( 'Control whether certain toolbars are visible to agents', 'awesome-support' ),					
 				),
 				array(
 					'name'    => __( 'Show Ticket Details Toolbar', 'awesome-support' ),
@@ -123,6 +134,7 @@ function wpas_core_settings_general( $def ) {
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
 					'type' => 'heading',
+					'desc' => __( 'Configure pages where tickets will be displayed - we take special actions when these pages are viewed by the user', 'awesome-support' ),
 				),
 				array(
 					'name'     => __( 'Ticket Submission', 'awesome-support' ),
@@ -142,6 +154,11 @@ function wpas_core_settings_general( $def ) {
 					'options'  => wpas_list_pages(),
 					'default'  => ''
 				),
+
+				array(
+					'name' => __( 'Misc', 'awesome-support' ),
+					'type' => 'heading',
+				),				
 
 				array(
 					'name' => __( 'Credit', 'awesome-support' ),
