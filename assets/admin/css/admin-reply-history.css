@@ -44,8 +44,16 @@
       transform: translate(-50%, -50%);
       width: 70%;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-    }
   }
+}
+
+@media (max-width: 768px) {
+  .pop {
+    position: absolute;
+    top: 25%;
+  }
+}
+ 
 .wpas-reply-history-table table{
 width: 100%;
 }
