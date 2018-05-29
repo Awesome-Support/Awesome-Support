@@ -1,6 +1,6 @@
 .pop {
   display: none;
-  position: absolute;
+  position: fixed;
   z-index: 9999;
   top: 0;
   left: 0;
@@ -37,7 +37,7 @@
 @media only screen and (min-width: 481px) {
   .pop {
       left: 50%;
-      top: 30%;
+      top: 40%;
       -moz-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
       -webkit-transform: translate(-50%, -50%);
@@ -124,4 +124,8 @@ background-color: #F5F5F5;
 .wpas-reply-history-wrapper::-webkit-scrollbar-thumb {
 border-radius: 0px;
 background-color: #d2d2d2;
+}
+
+#adminmenuback {
+  z-index: 2; // Increasing by 1 to change stacking order. Do not apply large sums here
 }

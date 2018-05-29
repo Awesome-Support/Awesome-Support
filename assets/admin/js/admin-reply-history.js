@@ -1,8 +1,15 @@
 (function ($) {
 	"use strict";
 
+
 	$(function () {
         $(".wpas-show-reply-history").click(function(e) {
+            if( ! $('.wpas-show-history-popup').length ) {
+              $('#wpcontent').append('<div class="wpas-show-history-popup"></div>');
+            }
+
+            $('.wpas-show-history-popup').addClass('is-visible');
+
             e.preventDefault();
             $.ajax({
               url : WPAS_Reply_History.ajax_url,
@@ -67,6 +74,7 @@
           $(".pop .icon-remove-sign a").click(function(e) {
             e.preventDefault();
             $(".pop").fadeOut("fast");
+            $('.wpas-show-history-popup').removeClass('is-visible');
           });
           
           //Thanks for Iphone titlebar fix http://coding.smashingmagazine.com/2013/05/02/truly-responsive-lightbox/
