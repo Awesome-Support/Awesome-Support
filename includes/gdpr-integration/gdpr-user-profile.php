@@ -169,12 +169,12 @@ class WPAS_GDPR_User_Profile {
 						 */
 					if ( ! empty( $opt_in ) ) {
 						$opt_button = sprintf(
-							'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
+							'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optin-date="' . $opt_in . '">%s</a>',
 							__( 'Opt-out', 'awesome-support' )
 						);
 					} elseif ( ! empty( $opt_out ) ) {
 						$opt_button = sprintf(
-							'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
+							'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optout-date="' . $opt_out . '">%s</a>',
 							__( 'Opt-in', 'awesome-support' )
 						);
 					} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
