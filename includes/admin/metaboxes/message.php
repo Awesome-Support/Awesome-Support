@@ -49,17 +49,19 @@
 	 * Determine if we should allow current user to edit ticket opening content
 	 */
 	if( wpas_is_asadmin() || $role_passed ) {
-		printf( 
-			'<div class="wpas-edit-ticket-actions"><a href="#" class="button button-primary wpas-edit-main-ticket-message" id="wpas-edit-main-ticket-message" data-ticketid="%s">%s</a>' .
-			'<a href="#" class="button button-primary wpas-save-edit-main-ticket-message" id="wpas-save-edit-main-ticket-message" data-ticketid="%s">%s</a> ' .
-			'<a href="#" class="button button-secondary wpas-cancel-edit-main-ticket-message" id="wpas-cancel-edit-main-ticket-message" data-ticketid="%s">%s</a></div>', 
-			$post->ID,
-			__( 'Edit', 'awesome-support' ),
-			$post->ID,
-			__( 'Save', 'awesome-support' ),
-			$post->ID,
-			__( 'Cancel', 'awesome-support' )
-		);
+	?>
+		<div class="wpas-edit-ticket-actions">
+			<a href="#" class="button button-primary wpas-edit-main-ticket-message" id="wpas-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'Edit', 'awesome-support' ); ?></a>
+			<?php
+				/**
+				 * @TODO: If has history, display this button
+				 */
+			?>
+			<a href="#" class="button button-primary wpas-view-edit-main-ticket-message" id="wpas-view-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'View History', 'awesome-support' ); ?></a>
+			<a href="#" class="button button-primary wpas-save-edit-main-ticket-message" id="wpas-save-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'Save', 'awesome-support' ); ?></a>
+			<a href="#" class="button button-secondary wpas-cancel-edit-main-ticket-message" id="wpas-cancel-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'Cancel', 'awesome-support' ); ?></a>
+		</div>
+	<?php
 	}
 	?>
 </div>

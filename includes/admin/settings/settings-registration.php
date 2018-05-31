@@ -246,7 +246,7 @@ function wpas_core_settings_registration( $def ) {
 				array(
 					'name'    => __( 'Subject', 'awesome-support' ),
 					'id'      => 'delete_existing_data_subject',
-					'type'    => 'editor',
+					'type'    => 'text',
 					'desc'    => __( 'Customize ticket subject on "Delete Existing Data" form in privacy lightbox.', 'awesome-support' ),
 					'default' => __( 'Official Request: Please Delete My Existing Data ("Right To Be Forgotten").', 'awesome-support' )
 				),

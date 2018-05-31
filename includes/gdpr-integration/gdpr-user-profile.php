@@ -100,7 +100,7 @@ class WPAS_GDPR_User_Profile {
 		/**
 		 * Visible to all WPAS user roles
 		 */
-		if ( current_user_can( 'tickets_manage_privacy' ) ) {
+		if ( current_user_can( 'create_ticket' ) ) {
 			/**
 			  * For the GDPR labels, this data are stored in
 			  * wpas_consent_tracking user meta in form of array.
@@ -161,7 +161,7 @@ class WPAS_GDPR_User_Profile {
 					 * If current loop is TOR, do not give Opt options
 					 */
 				$opt_button = '';
-				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
+				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false && current_user_can( 'tickets_manage_privacy' ) ) {
 					/**
 						 * Determine what type of buttons we should render
 						 * If opt_in is not empty, display Opt out button
@@ -169,12 +169,12 @@ class WPAS_GDPR_User_Profile {
 						 */
 					if ( ! empty( $opt_in ) ) {
 						$opt_button = sprintf(
-							'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
+							'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optin-date="' . $opt_in . '">%s</a>',
 							__( 'Opt-out', 'awesome-support' )
 						);
 					} elseif ( ! empty( $opt_out ) ) {
 						$opt_button = sprintf(
-							'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
+							'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optout-date="' . $opt_out . '">%s</a>',
 							__( 'Opt-in', 'awesome-support' )
 						);
 					} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
@@ -253,10 +253,10 @@ class WPAS_GDPR_User_Profile {
 			 */
 			$ticket_data  = new WP_Query(
 				array(
-					'post_type'   => array( 'ticket' ),
-					'author'      => $user,
-					'post_status' => wpas_get_post_status(),
-					'post_count'  => -1,
+					'post_type'      => array( 'ticket' ),
+					'author'         => $user,
+					'post_status'    => wpas_get_post_status(),
+					'posts_per_page' => -1,
 				)
 			);
 			$user_tickets = array();
@@ -264,6 +264,7 @@ class WPAS_GDPR_User_Profile {
 				if ( isset( $ticket_data->posts ) ) {
 					foreach ( $ticket_data->posts as $key => $post ) {
 						$user_tickets[ 't' . $key ] = array(
+							'ticket_id'     => $post->ID,
 							'subject'       => $post->post_title,
 							'description'   => $post->post_content,
 							'attachments'   => $this->get_ticket_attachment( $post->ID ),
@@ -304,7 +305,8 @@ class WPAS_GDPR_User_Profile {
 					)
 				);
 
-				$this->data_zip( 'export-data.xml', $this->user_export_dir );
+				$this->data_zip( $user_tickets, 'export-data.xml', $this->user_export_dir );
+
 				$upload_dir                     = wp_upload_dir();
 				$response['message']['success'] = sprintf(
 					'<p>%s. <a href="%s" target="_blank">%s</a></p>',
@@ -510,9 +512,15 @@ class WPAS_GDPR_User_Profile {
 	}
 
 	/**
-	 * Zip the exported file
-	 */
-	public function data_zip( $file, $destination, $filename = 'exported-data.zip' ) {
+	* Zip the exported file and attachemnts
+	*
+	* @user_tickets array Users Ticket data
+	* @file string Name of xml data file.
+	* @filename string name of zip file.
+	*
+	* return WP_Error
+	*/
+	public function data_zip( $user_tickets, $file, $destination, $filename = 'exported-data.zip' ) {
 		if ( ! file_exists( $destination ) ) {
 			return new WP_Error( 'file_destination_not_exists', __( 'The destination file does not exists!', 'awesome-support' ) );
 		}
@@ -520,7 +528,40 @@ class WPAS_GDPR_User_Profile {
 			$zip    = new ZipArchive();
 			$do_zip = $zip->open( $destination . '/' . $filename, ZipArchive::OVERWRITE | ZipArchive::CREATE );
 			if ( $do_zip ) {
+				// Add xml data file here.
 				$zip->addFile( $destination . '/' . $file, $file );
+				if ( ! empty( $user_tickets ) ) {
+					foreach ( $user_tickets as $key => $ticket ) {
+						if ( isset( $ticket['ticket_id'] ) && ! empty( $ticket['ticket_id'] ) ) {
+							$subdir = '/awesome-support/ticket_' . $ticket['ticket_id'];
+							$upload = wp_upload_dir();
+							/* Create final URL and dir */
+							$dir = $upload['basedir'] . $subdir;
+							if ( is_dir( $dir ) ) {
+								if ( $dh = opendir( $dir ) ) {
+									while ( ( $file2 = readdir( $dh ) ) !== false ) {
+										if ( file_exists( $dir . '/' . $file2 ) ) {
+											$mimetype = mime_content_type( $dir . '/' . $file2 );
+											if ( 'text/plain' !== $mimetype ) {
+												if ( ! is_dir( $dir . '/' . $file2 ) ) {
+													// Add attachment file here.
+													$zip->addFile( $dir . '/' . $file2, '/ticket_' . $ticket['ticket_id'] . '/' . basename( $file2 ) );
+												}
+											}
+										} else {
+											return new WP_Error( 'file_not_exist', __( 'Attachment not exist', 'awesome-support' ) );
+										}
+									}
+								} else {
+									return new WP_Error( 'dir_not_found', __( 'Attachment Folder Directory Not Found', 'awesome-support' ) );
+								}
+								closedir( $dh );
+							}
+						} else {
+							return new WP_Error( 'invalid_ticket_id', __( 'Ticket ID is empty', 'awesome-support' ) );
+						}
+					}
+				}
 				$zip->close();
 			} else {
 				return new WP_Error( 'cannot_create_zip', __( 'Cannot create zip file', 'awesome-support' ) );

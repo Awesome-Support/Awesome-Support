@@ -13,7 +13,8 @@ jQuery(document).ready(function ($) {
 			'data' 	: {
 				'nonce'		: WPAS_GDPR.nonce,
 				'gdpr-data'	: jQuery(this).data( 'gdpr' ),
-				'gdpr-user'	: jQuery(this).data( 'user' )
+				'gdpr-user'	: jQuery(this).data( 'user' ),
+				'gdpr-optout'	: jQuery(this).data( 'optout-date' )
 			}
 		};
 		
@@ -24,7 +25,6 @@ jQuery(document).ready(function ($) {
 				if( undefined !== response.message.success ){
 					if( undefined !== response.message.date ){
 						optin_handle.parent('td').siblings('td:nth-child(3)').html(response.message.date);
-						optin_handle.parent('td').siblings('td:nth-child(4)').html('');
 					}
 					if( undefined !== response.message.button ){
 						optin_handle.parent('td').html( response.message.button );
@@ -50,7 +50,8 @@ jQuery(document).ready(function ($) {
 			'data' 	: {
 				'nonce'		: WPAS_GDPR.nonce,
 				'gdpr-data'	: jQuery(this).data( 'gdpr' ),
-				'gdpr-user'	: jQuery(this).data( 'user' )
+				'gdpr-user'	: jQuery(this).data( 'user' ),
+				'gdpr-optin'	: jQuery(this).data( 'optin-date' )
 			}
 		};
 		
@@ -62,6 +63,10 @@ jQuery(document).ready(function ($) {
 					if( undefined !== response.message.date ){
 						handle.parent('td').siblings('td:nth-child(4)').html( response.message.date );
 					}
+					if( undefined !== response.message.button ){
+						handle.parent('td').html( response.message.button );
+					}
+
 					alert( response.message.success );
 				} else if( undefined !== response.message.error ){
 					alert( response.message.error );

@@ -1957,13 +1957,13 @@ function wpas_load_reply_history() {
 		 */
 		$response = array(
 			'code'    => 200,
-			'message' => __( 'Reply history found.', 'awesome-support' ),
+			'message' => __( 'Edit history found.', 'awesome-support' ),
 			'data'    => $reply_history,
 		);
 		wp_send_json( $response );
 	} else {
 		$response['code']    = 404;
-		$response['message'] = __( 'This reply has no edit history!', 'awesome-support' );
+		$response['message'] = __( 'No edit history found!', 'awesome-support' );
 		$response['data']    = '';
 		wp_send_json( $response );
 	}
