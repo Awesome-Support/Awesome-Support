@@ -101,9 +101,11 @@ function wpas_get_tickets_for_shortcode() {
 	if ( true === boolval( wpas_get_option( 'hide_closed_fe', false) ) ) {
 		$args_meta = array( 
 			'meta_query' => array(
-				'meta_key'     => '_wpas_status',
-				'meta_value'   => 'closed',
-				'meta_compare' => '!=',
+				array(
+					'key'     => '_wpas_status',
+					'value'   => 'closed',
+					'compare' => '!=',
+				),
 			),		
 		) ;
 		
