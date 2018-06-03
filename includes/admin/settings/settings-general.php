@@ -102,7 +102,7 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'Show Close Ticket Checkbox', 'awesome-support' ),
 					'id'      => 'allow_user_to_close_tickets',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show the checkbox that allow users to close tickets', 'awesome-support' ),
+					'desc'    => __( 'Show the checkbox that allow users to close tickets. This affects ALL users. (If you would like to restrict closing tickets to only some users, use WordPress roles and the close_ticket capability instead.)', 'awesome-support' ),
 					'default' => true
 				),				
 				
