@@ -17,7 +17,7 @@ function wpas_core_settings_general( $def ) {
 			'name'    => __( 'General', 'awesome-support' ),
 			'options' => array(
 				array(
-					'name' => __( 'General Admin Options', 'awesome-support' ),
+					'name' => __( 'General Admin and Agent Options', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -98,6 +98,13 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'Do not show the ticket id in the title when viewing the ticket list', 'awesome-support' ),
 					'default' => false
 				),
+				array(
+					'name'    => __( 'Show Close Ticket Checkbox', 'awesome-support' ),
+					'id'      => 'allow_user_to_close_tickets',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the checkbox that allow users to close tickets', 'awesome-support' ),
+					'default' => true
+				),				
 				
 				array(
 					'name' => __( 'Redirects', 'awesome-support' ),
