@@ -202,7 +202,6 @@ function wpas_register_assets_back_end() {
 	wp_localize_script( 'wpas-admin-edit-ticket-content-script', 'WPAS_Edit_Ticket_Content', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' )
 	));
-
 }
 
 add_action( 'wp_enqueue_scripts', 'wpas_assets_front_end', 10 );
