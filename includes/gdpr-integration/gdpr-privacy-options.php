@@ -231,6 +231,7 @@ class WPAS_Privacy_Option {
 			 * Who is the current user right now?
 			 */	
 			$logged_user = wp_get_current_user();
+			$current_user = isset( $logged_user->data->display_name ) ? $logged_user->data->display_name : __( 'user', 'awesome-support');
 
 			wpas_track_consent(
 				array(
@@ -242,7 +243,7 @@ class WPAS_Privacy_Option {
 				), $user, 'in'
 			);
 
-			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ), "", $logged_user->data->display_name );
+			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ), '', $current_user );
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-in', 'awesome-support' );
 			$response['message']['date']    = date( 'm/d/Y', $opt_in );
@@ -299,6 +300,7 @@ class WPAS_Privacy_Option {
 			 * Who is the current user right now?
 			 */	
 			$logged_user = wp_get_current_user();
+			$current_user = isset( $logged_user->data->display_name ) ? $logged_user->data->display_name : __( 'user', 'awesome-support');
 
 			wpas_track_consent(
 				array(
@@ -309,7 +311,7 @@ class WPAS_Privacy_Option {
 					'is_tor'  => false,
 				), $user, 'out'
 			);
-			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ), "", $logged_user->data->display_name );
+			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ), '', $current_user );
 
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-out', 'awesome-support' );
