@@ -154,7 +154,7 @@ if ( class_exists( 'TitanFrameworkOption' ) ) {
 						$url                = esc_url( add_query_arg( $get, admin_url( $pagenow ) ) );
 						?>
 						<a href="<?php echo $url; ?>" class="button-secondary"><?php esc_html_e( 'Activate', TF_I18NDOMAIN ); ?></a>
-						<p class="description"><?php esc_html_e( 'Your license is valid but inactive. Click the button above to activate it.', TF_I18NDOMAIN ); ?></p><?php
+						<p class="description"><?php esc_html_e( 'Your license is valid but inactive. Click the button above to activate it. If you see this message after attempting activation then please make sure that your license is not already active on another site.', TF_I18NDOMAIN ); ?></p><?php
 
 					break;
 
