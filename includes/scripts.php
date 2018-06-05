@@ -190,6 +190,7 @@ function wpas_register_assets_back_end() {
 	
 	// Custom admin notice style and script
 	wp_enqueue_style( 'wpas-admin-wizard-notice', WPAS_URL . 'assets/admin/css/wizard-notice.css', array(), WPAS_VERSION );
+	wp_enqueue_style( 'wpas-admin-gdpr', WPAS_URL . 'assets/admin/css/admin-gdpr.css', array(), WPAS_VERSION );
 	wp_enqueue_script( 'wpas-admin-wizard-script', WPAS_URL . 'assets/admin/js/admin-wizard.js', array( 'jquery' ), WPAS_VERSION );
 	wp_localize_script( 'wpas-admin-wizard-script', 'WPAS_Wizard', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),

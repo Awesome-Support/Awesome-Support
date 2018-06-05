@@ -113,11 +113,11 @@ class WPAS_GDPR_User_Profile {
 		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
 			<thead>
 				<tr>
-					<th class="manage-column"><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
-					<th class="manage-column"><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
-					<th class="manage-column"><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
-					<th class="manage-column"><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
-					<th class="manage-column"><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
+					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
+					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
+					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
+					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
+					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -162,12 +162,13 @@ class WPAS_GDPR_User_Profile {
 					 */
 				$opt_button = '';
 				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false && current_user_can( 'tickets_manage_privacy' ) ) {
+					$gdpr_id = wpas_get_gdpr_data( $item );
 					/**
-						 * Determine what type of buttons we should render
-						 * If opt_in is not empty, display Opt out button
-						 * otherwise, just vice versa
-						 */
-					if ( ! empty( $opt_in ) ) {
+					 * Determine what type of buttons we should render
+					 * If opt_in is not empty, display Opt out button
+					 * otherwise, just vice versa
+					*/
+					if ( ! empty( $opt_in ) && wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
 						$opt_button = sprintf(
 							'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optin-date="' . $opt_in . '">%s</a>',
 							__( 'Opt-out', 'awesome-support' )
