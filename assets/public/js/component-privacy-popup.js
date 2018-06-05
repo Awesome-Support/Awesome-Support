@@ -19,6 +19,7 @@ jQuery(document).ready(function ($) {
 	 */
 	jQuery( "#wpas-gdpr-ded-submit" ).click( function(e) {
 		e.preventDefault();
+		e.stopImmediatePropagation();
 		jQuery( '.wpas-gdpr-pre-loader' ).show();
 		jQuery( '.wpas-gdpr-loader-background').show();
 

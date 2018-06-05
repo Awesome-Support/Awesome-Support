@@ -225,6 +225,13 @@ class WPAS_Privacy_Option {
 			$status 	= __( 'Opted-in', 'awesome-support' );
 			$opt_in 	= strtotime( 'NOW' );
 			$opt_out   	= isset( $_POST['data']['gdpr-optout'] ) ? strtotime( sanitize_text_field( $_POST['data']['gdpr-optout'] ) ) : '';
+			$gdpr_id 	= wpas_get_gdpr_data( $item );
+
+			/**
+			 * Who is the current user right now?
+			 */	
+			$logged_user = wp_get_current_user();
+			$current_user = isset( $logged_user->data->display_name ) ? $logged_user->data->display_name : __( 'user', 'awesome-support');
 
 			wpas_track_consent(
 				array(
@@ -236,15 +243,23 @@ class WPAS_Privacy_Option {
 				), $user, 'in'
 			);
 
-			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ) );
+			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ), '', $current_user );
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-in', 'awesome-support' );
 			$response['message']['date']    = date( 'm/d/Y', $opt_in );
 			$response['message']['status']    = $status;
-			$response['message']['button']  = sprintf(
-				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
-				__( 'Opt-out', 'awesome-support' )
-			);
+			/**
+			 * return buttons markup based on settings
+			 * If can opt-out, then display the button
+			 */
+			if( wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
+				$response['message']['button']  = sprintf(
+					'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
+					__( 'Opt-out', 'awesome-support' )
+				);
+			} else {
+				$response['message']['button']  = '';
+			}
 		} else {
 			$response['message']['error'] = __( 'Cheating huh?', 'awesome-support' );
 		}
@@ -280,6 +295,13 @@ class WPAS_Privacy_Option {
 			$status  	= __( 'Opted-Out', 'awesome-support' );
 			$opt_out 	= strtotime( 'NOW' );
 			$opt_in   	= isset( $_POST['data']['gdpr-optin'] ) ? strtotime( sanitize_text_field( $_POST['data']['gdpr-optin'] ) ) : '';
+
+			/**
+			 * Who is the current user right now?
+			 */	
+			$logged_user = wp_get_current_user();
+			$current_user = isset( $logged_user->data->display_name ) ? $logged_user->data->display_name : __( 'user', 'awesome-support');
+
 			wpas_track_consent(
 				array(
 					'item'    => $item,
@@ -289,7 +311,8 @@ class WPAS_Privacy_Option {
 					'is_tor'  => false,
 				), $user, 'out'
 			);
-			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ) );
+			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ), '', $current_user );
+
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-out', 'awesome-support' );
 			$response['message']['date']    = date( 'm/d/Y', $opt_out );

@@ -76,10 +76,10 @@ if ( ! defined( 'WPINC' ) ) {
 			if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
 				$gdpr_id = wpas_get_gdpr_data( $item );
 				/**
-						 * Determine what type of buttons we should render
-						 * If opt_in is not empty, display Opt out button
-						 * otherwise, just vice versa
-						 */
+				 * Determine what type of buttons we should render
+				 * If opt_in is not empty, display Opt out button
+				 * otherwise, just vice versa
+				*/
 				if ( ! empty( $opt_in ) && wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
 					$opt_button       = sprintf(
 						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '" data-optin-date="' . $opt_in . '">%s</a>',

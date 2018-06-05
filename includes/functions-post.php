@@ -1921,24 +1921,6 @@ function wpas_load_reply_history() {
 	}
 
 	/**
-	 * Is a valid reply?
-	 */
-	$reply = get_post(
-		array(
-			'ID'        => sanitize_text_field( $_POST['reply_id'] ),
-			'post_type' => 'ticket_log',
-		)
-	);
-
-	/**
-	 * Empty request
-	 */
-	if ( ! $reply ) {
-		$response['message'] = __( 'Invalid ticket ID!', 'awesome-support' );
-		wp_send_json( $response );
-	}
-
-	/**
 	 * Get all reply history
 	 */
 	$reply_history = get_posts(
