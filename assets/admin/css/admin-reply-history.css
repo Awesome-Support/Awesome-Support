@@ -37,7 +37,7 @@
 @media only screen and (min-width: 481px) {
   .pop {
       left: 50%;
-      top: 40%;
+      top: 50%;
       -moz-transform: translate(-50%, -50%);
       -ms-transform: translate(-50%, -50%);
       -webkit-transform: translate(-50%, -50%);
