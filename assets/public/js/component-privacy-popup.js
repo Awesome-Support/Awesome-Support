@@ -181,7 +181,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Set tab default
 	 */
-	jQuery( "#wpas-gdpr-tab-default" ).click();
+	jQuery( ".wpas-gdpr-tablinks" ).first().click();
 	
 	/**
 	 * Initiate WP Editor when requesting right

@@ -19,6 +19,14 @@ function wpas_core_settings_privacy( $def ) {
 					'desc'    => __( 'Control how the PRIVACY button appears to the user and the options available with it', 'awesome-support' ),					
 					'type' => 'heading',
 				),
+				
+				array(
+					'name'    => __( 'Show Button', 'awesome-support' ),
+					'id'      => 'privacy_show_button',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the PRIVACY button on the front-end where users can request deletion of their data, export their data and modify their opt-in selections', 'awesome-support' ),
+					'default' => true,
+				),								
 				array(
 					'name'    => __( 'Button Label', 'awesome-support' ),
 					'id'      => 'privacy_button_label',

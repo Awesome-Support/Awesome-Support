@@ -76,9 +76,7 @@ class WPAS_Privacy_Option {
 					?>
 					<div class="entry-content">
 						<div class="wpas-gdpr-tab">
-							<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'add-remove-consent' )" id="wpas-gdpr-tab-default" data-id="add-remove"><?php esc_html_e( 'Add/Remove Existing Consent', 'awesome-support' ); ?></button>
-							<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'delete-existing-data' )" data-id="delete-existing"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
-							<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets and user data', 'awesome-support' ); ?></button>
+							<?php $this->render_tabs(); ?>
 						</div>
 
 						<div id="add-remove-consent" class="entry-content-tabs wpas-gdpr-tab-content">
@@ -117,6 +115,36 @@ class WPAS_Privacy_Option {
 		<?php
 		}
 	}
+	
+	/**
+	 * Render one or more tabs on the privacy popup
+	 * * Maybe render the Add/Remove Existing Consent tab
+	 * * Maybe render the Export tickets and user data tab
+	 * * Maybe render the Delete my existing data tab
+	 *
+	 * @return void
+	 */
+	public function render_tabs() {
+		
+		if ( true === boolval( wpas_get_option( 'privacy_show_consent_tab', true) ) ) {
+			?>
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'add-remove-consent' )" id="wpas-gdpr-tab-default" data-id="add-remove"><?php esc_html_e( 'Add/Remove Existing Consent', 'awesome-support' ); ?></button>
+			<?php			
+		}
+		
+		if ( true === boolval( wpas_get_option( 'privacy_show_delete_data_tab', true) ) ) {
+			?>
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'delete-existing-data' )" data-id="delete-existing"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
+			<?php			
+		}
+		
+		if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {
+			?>		
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets and user data', 'awesome-support' ); ?></button>
+			<?php
+		}
+		
+	}	
 
 	/**
 	 * Add GDPR privacy options to
@@ -127,6 +155,13 @@ class WPAS_Privacy_Option {
 	 * @return void
 	 */
 	public function frontend_privacy_add_nav_buttons() {
+		
+		/* Do not render button if option is turned off */
+		if ( ! boolval( wpas_get_option( 'privacy_show_button', true) ) ) {
+			return ;
+		}
+		
+		/* Option is on so render the button */
 		$button_title = wpas_get_option( 'privacy_button_label', 'Privacy' );
 		wpas_make_button(
 			$button_title, array(
