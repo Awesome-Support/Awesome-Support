@@ -38,14 +38,14 @@ function wpas_core_settings_privacy( $def ) {
 					'name'    => __( 'Privacy Popup Heading', 'awesome-support' ),
 					'id'      => 'privacy_popup_header',
 					'type'    => 'editor',
-					'desc'    => __( 'Enter content that the user should see at the top of the popup when the Privacy button in My Tickets page is clicked.', 'awesome-support' ),
+					'desc'    => __( 'Enter content that the user should see at the top of the popup when the Privacy button in the My Tickets page is clicked.', 'awesome-support' ),
 					'default' => ''
 				),
 				array(
 					'name'    => __( 'Privacy Popup Footer', 'awesome-support' ),
 					'id'      => 'privacy_popup_footer',
 					'type'    => 'editor',
-					'desc'    => __( 'Enter content that the user should see at the bottom of the popup when the Privacy button in My Tickets page is clicked.', 'awesome-support' ),
+					'desc'    => __( 'Enter content that the user should see at the bottom of the popup when the Privacy button in the My Tickets page is clicked.', 'awesome-support' ),
 					'default' => ''
 				),
 				
