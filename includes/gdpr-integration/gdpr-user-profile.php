@@ -256,10 +256,11 @@ class WPAS_GDPR_User_Profile {
 				array(
 					'post_type'      => array( 'ticket' ),
 					'author'         => $user,
-					'post_status'    => wpas_get_post_status(),
+					'post_status'    => array_keys( wpas_get_post_status() ),
 					'posts_per_page' => -1,
 				)
 			);
+			
 			$user_tickets = array();
 			if ( $ticket_data->found_posts > 0 ) {
 				if ( isset( $ticket_data->posts ) ) {
