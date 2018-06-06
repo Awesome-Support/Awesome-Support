@@ -26,6 +26,14 @@ function wpas_register_submenu_items() {
 	
 	if ( ! defined( 'WPAS_SAAS' ) || ( defined( 'WPAS_SAAS' ) && false === WPAS_SAAS ) ) {
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Get a Free Addon', 'awesome-support' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'awesome-support' ) . '</span>', 'administrator', 'wpas-optin', 'wpas_display_optin_page' );
+		/**
+		 * Provides a hook for Addons to add their menu item in the right location, i.e. above the "About" page.
+		 *
+		 * @since 4.3.3
+		 *
+		 * @param string Passes the Awesome Support parent slug to the addon.
+		 */
+		do_action( 'wpas_addon_submenu_page',  'edit.php?post_type=ticket' );
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'awesome-support' ), __( 'About', 'awesome-support' ), 'edit_posts', 'wpas-about', 'wpas_display_about_page' );	
 	}				
 
