@@ -640,7 +640,7 @@ function wpas_new_reply_submission( $data ) {
 	// Define if the ticket must be closed
 	$close = isset( $data['wpas_close_ticket'] ) ? true : false;
 
-	if ( ! empty( $data['wpas_user_reply'] ) && apply_filters( 'wpas_user_can_reply_ticket', true, $ticket_id ) ) {
+	if ( ! empty( $data['wpas_user_reply'] ) && apply_filters( 'wpas_user_can_reply_ticket', true, $parent_id ) ) {
 
 		/* Sanitize the data */
 		$data = array( 'post_content' => wp_kses( $data['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
