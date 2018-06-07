@@ -23,6 +23,9 @@ jQuery(document).ready(function ($) {
 			data,
 			function( response ) {
 				if( undefined !== response.message.success ){
+					if( undefined !== response.message.status ){
+						optin_handle.parent('td').siblings('td:nth-child(2)').html(response.message.status);
+					}
 					if( undefined !== response.message.date ){
 						optin_handle.parent('td').siblings('td:nth-child(3)').html(response.message.date);
 					}
@@ -60,6 +63,9 @@ jQuery(document).ready(function ($) {
 			data,
 			function( response ) {
 				if( undefined !== response.message.success ){
+					if( undefined !== response.message.status ){
+						handle.parent('td').siblings('td:nth-child(2)').html(response.message.status);
+					}
 					if( undefined !== response.message.date ){
 						handle.parent('td').siblings('td:nth-child(4)').html( response.message.date );
 					}
