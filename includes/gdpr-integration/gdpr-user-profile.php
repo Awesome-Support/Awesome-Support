@@ -556,7 +556,7 @@ class WPAS_GDPR_User_Profile {
 											if ( 'text/plain' !== $mimetype ) {
 												if ( ! is_dir( $dir . '/' . $file2 ) ) {
 													// Add attachment file here.
-													$zip->addFile( $dir . '/' . $file2, '/ticket_' . $ticket['ticket_id'] . '/' . basename( $file2 ) );
+													$zip->addFile( $dir . '/' . $file2, 'ticket_' . $ticket['ticket_id'] . '/' . basename( $file2 ) );
 												}
 											}
 										} else {
