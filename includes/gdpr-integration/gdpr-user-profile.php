@@ -109,7 +109,7 @@ class WPAS_GDPR_User_Profile {
 			$user_consent = get_user_option( 'wpas_consent_tracking', $profileuser->ID );
 			if ( ! empty( $user_consent ) && is_array( $user_consent ) ) {
 	?>
-		<h2><?php esc_html_e( 'Awesome Support Consent History', 'awesome-support' ); ?></h2>
+		<h2><?php esc_html_e( 'Awesome Support Consent History', 'awesome-support' ); ?></h2>		
 		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
 			<thead>
 				<tr>
@@ -201,6 +201,15 @@ class WPAS_GDPR_User_Profile {
 			?>
 			</tbody>
 		</table>
+
+		<div class="wpas-gdpr-export-wrapper">
+			<div class="wpas-gdpr-notice export-data"></div>
+			<?php
+				$data_user = isset( $_GET['user_id'] ) ? $_GET['user_id'] : '';
+			?>
+			<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo $data_user; ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
+		</div>
+
 		<?php
 			}
 			/**
@@ -547,7 +556,7 @@ class WPAS_GDPR_User_Profile {
 											if ( 'text/plain' !== $mimetype ) {
 												if ( ! is_dir( $dir . '/' . $file2 ) ) {
 													// Add attachment file here.
-													$zip->addFile( $dir . '/' . $file2, '/ticket_' . $ticket['ticket_id'] . '/' . basename( $file2 ) );
+													$zip->addFile( $dir . '/' . $file2, 'ticket_' . $ticket['ticket_id'] . '/' . basename( $file2 ) );
 												}
 											}
 										} else {

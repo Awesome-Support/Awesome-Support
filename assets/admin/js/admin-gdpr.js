@@ -23,6 +23,9 @@ jQuery(document).ready(function ($) {
 			data,
 			function( response ) {
 				if( undefined !== response.message.success ){
+					if( undefined !== response.message.status ){
+						optin_handle.parent('td').siblings('td:nth-child(2)').html(response.message.status);
+					}
 					if( undefined !== response.message.date ){
 						optin_handle.parent('td').siblings('td:nth-child(3)').html(response.message.date);
 					}
@@ -60,6 +63,9 @@ jQuery(document).ready(function ($) {
 			data,
 			function( response ) {
 				if( undefined !== response.message.success ){
+					if( undefined !== response.message.status ){
+						handle.parent('td').siblings('td:nth-child(2)').html(response.message.status);
+					}
 					if( undefined !== response.message.date ){
 						handle.parent('td').siblings('td:nth-child(4)').html( response.message.date );
 					}
@@ -73,6 +79,35 @@ jQuery(document).ready(function ($) {
 				}
 			}
 		);		
-    });
+	});
+	
+	/**
+	 * Ajax based export data
+	 */
+	jQuery( "#wpas-gdpr-export-data-submit" ).click( function(e) {
+		e.preventDefault();
+		jQuery( "#wpas-gdpr-export-data-submit" ).removeClass('button-primary').prop('disabled',true).val( 'Processing..' );
+		var data = {
+			'action': 'wpas_gdpr_export_data',
+			'security' : WPAS_GDPR.nonce,
+			'data' 	: {
+				'nonce'		: WPAS_GDPR.nonce,
+				'gdpr-user'	: jQuery(this).data( 'user' )
+			}
+		};
+		
+		jQuery.post(
+			WPAS_GDPR.ajax_url,
+			data,
+			function( response ) {
+				if( undefined !== response.message.success ){
+					jQuery( "#wpas-gdpr-export-data-submit" ).addClass('button-primary').prop('disabled',false).val( 'Export Data' );
+					jQuery( '.export-data' ).addClass( 'success' ).html( response.message.success );
+				} else if( undefined !== response.message.error  ) {
+					jQuery( '.export-data' ).addClass( 'failure' ).html( response.message.error );
+				}
+			}
+		);		
+	});
     
 });
