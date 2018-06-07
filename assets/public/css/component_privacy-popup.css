@@ -115,7 +115,11 @@
     color: #ffffff;
     border-left: 0;
 }
-.wpas-gdpr-notice.success a, a:visited, a:focus, a:active, a:hover{
+.wpas-gdpr-notice.success a,
+.wpas-gdpr-notice.success a:visited,
+.wpas-gdpr-notice.success a:focus,
+.wpas-gdpr-notice.success a:active,
+.wpas-gdpr-notice.success a:hover{
 	color: #ffc425;
 }
 .wpas-gdpr-notice.failure {
