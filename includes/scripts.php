@@ -115,6 +115,7 @@ function wpas_register_assets_back_end() {
 	// Our styles
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
 	wp_register_style( 'wpas-admin-reply-history', WPAS_URL . 'assets/admin/css/admin-reply-history.css', array(), WPAS_VERSION );
+	wp_register_style( 'wpas-admin-print-ticket', WPAS_URL . 'assets/admin/css/admin-print-ticket.css', null, WPAS_VERSION );
 	
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
@@ -145,6 +146,7 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-users', WPAS_URL . 'assets/admin/js/admin-users.js', null, WPAS_VERSION, true );
 	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
 	wp_register_script( 'wpas-admin-upload', WPAS_URL . 'assets/public/js/component_upload.js', array( 'jquery' ), WPAS_VERSION );
+	wp_register_script( 'wpas-admin-print-ticket', WPAS_URL . 'assets/admin/js/admin-print-ticket.js', array( 'jquery' ), WPAS_VERSION );
 
 	// @TODO: Why is the version set to TIME() below instead of WPAS_VERSION?
 	wp_register_script(
@@ -343,6 +345,9 @@ function wpas_enqueue_assets_back_end() {
 		}
 
 	}
+
+	wp_enqueue_style( 'wpas-admin-print-ticket' );
+	wp_enqueue_script( 'wpas-admin-print-ticket' );
 
 	wp_register_script( 'wpas-gdpr-admin-script', WPAS_URL . 'assets/admin/js/admin-gdpr.js', array( 'jquery' ), WPAS_VERSION );		
 	wp_localize_script( 'wpas-gdpr-admin-script', 'WPAS_GDPR', array(
