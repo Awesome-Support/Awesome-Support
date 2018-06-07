@@ -100,7 +100,6 @@ jQuery(document).ready(function ($) {
 			WPAS_GDPR.ajax_url,
 			data,
 			function( response ) {
-				console.log(response);
 				if( undefined !== response.message.success ){
 					jQuery( "#wpas-gdpr-export-data-submit" ).addClass('button-primary').prop('disabled',false).val( 'Export Data' );
 					jQuery( '.export-data' ).addClass( 'success' ).html( response.message.success );
