@@ -230,3 +230,23 @@ function wpas_manage_ticket_bulk_actions( $bulk_actions ) {
 	
 	return $bulk_actions;
 }
+
+
+add_filter( 'post_row_actions', 'wpas_add_print_quick_action', 10, 2 );
+/**
+ * Add print quick action to tickets list table
+ * 
+ * @since 5.1.1
+ * 
+ * @param array $actions
+ * @param object $post
+ * 
+ * @return array
+ */
+function wpas_add_print_quick_action( $actions, $post ) {
+
+	$actions['wpas_print'] = sprintf( '<a href="#" class="wpas-admin-quick-action-print" data-id="%s">%s</a>', $post->ID, __( 'Print', 'awesome-support' ) );
+	
+	return $actions;
+	
+}
