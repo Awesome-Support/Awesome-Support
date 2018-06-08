@@ -189,6 +189,19 @@ function wpas_register_assets_back_end() {
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'date_label' => __( 'Edited on', 'awesome-support' )
 	));
+
+	// Print ticket vars
+	wp_localize_script( 'wpas-admin-print-ticket', 'WPAS_Print', array(
+		'admin_url'             => admin_url(),
+		'nonce'                 => wp_create_nonce( 'wpas_print_ticket' ),
+		'print'                 => __( 'Print', 'awesome-support' ),
+		'cancel'                => __( 'Cancel', 'awesome-support' ),
+		'print_ticket'          => __( 'Print ticket', 'awesome-support' ),
+		'include_replies'       => __( 'Include replies', 'awesome-support' ),
+		'include_history'       => __( 'Include history', 'awesome-support' ),
+		'include_private_notes' => __( 'Include private notes', 'awesome-support' ),
+	) );
+
 	
 	// Custom admin notice style and script
 	wp_enqueue_style( 'wpas-admin-wizard-notice', WPAS_URL . 'assets/admin/css/wizard-notice.css', array(), WPAS_VERSION );
