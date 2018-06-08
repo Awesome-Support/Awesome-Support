@@ -104,6 +104,7 @@ jQuery(document).ready(function ($) {
 					jQuery( "#wpas-gdpr-export-data-submit" ).addClass('button-primary').prop('disabled',false).val( 'Export Data' );
 					jQuery( '.export-data' ).addClass( 'success' ).html( response.message.success );
 				} else if( undefined !== response.message.error  ) {
+					jQuery( "#wpas-gdpr-export-data-submit" ).addClass('button-primary').prop('disabled',false).val( 'Export Data' );
 					jQuery( '.export-data' ).addClass( 'failure' ).html( response.message.error );
 				}
 			}

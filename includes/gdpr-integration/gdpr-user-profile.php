@@ -101,6 +101,15 @@ class WPAS_GDPR_User_Profile {
 		 * Visible to all WPAS user roles
 		 */
 		if ( current_user_can( 'create_ticket' ) ) {
+			?>
+			<div class="wpas-gdpr-export-wrapper">
+				<div class="wpas-gdpr-notice export-data"></div>
+				<?php
+					$data_user = isset( $_GET['user_id'] ) ? $_GET['user_id'] : '';
+				?>
+				<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo $data_user; ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
+			</div>
+			<?php
 			/**
 			  * For the GDPR labels, this data are stored in
 			  * wpas_consent_tracking user meta in form of array.
@@ -201,15 +210,6 @@ class WPAS_GDPR_User_Profile {
 			?>
 			</tbody>
 		</table>
-
-		<div class="wpas-gdpr-export-wrapper">
-			<div class="wpas-gdpr-notice export-data"></div>
-			<?php
-				$data_user = isset( $_GET['user_id'] ) ? $_GET['user_id'] : '';
-			?>
-			<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo $data_user; ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
-		</div>
-
 		<?php
 			}
 			/**
