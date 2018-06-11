@@ -47,21 +47,8 @@ function wpas_get_ticket_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
 
-	$query = new WP_Query( [
-		'p'          => intval( $_POST[ 'id' ] ),
-		'post_type'  => 'ticket',
-		'meta_query' => [
-			[
-				'key'   => '_wpas_assignee',
-				'value' => get_current_user_id()
-			]
-		]
-	] );
-
-	if ( ! empty( $query->posts ) ) {
+	if ( ! empty( $ticket = wpas_get_ticket_by_id( $_POST['id'] ) ) ) {
 		
-		$ticket  = $query->posts[0];
-
 		$replies = wpas_get_replies( $ticket->ID, 'any', [
             'posts_per_page' => - 1,
             'orderby'        => 'post_date',
