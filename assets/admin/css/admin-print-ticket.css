@@ -8,7 +8,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+   /*  background-color: rgba(0, 0, 0, 0.8); */
+    background-color: #f1f1f1;
 }
 
 /**
@@ -23,7 +24,7 @@
 
 #wpas-print-ticket-box-close i {
     font-size: 30px;
-    color: white;
+    color: rgba(65, 65, 65);
 }
 
 /**
@@ -38,7 +39,7 @@
     padding: 25px;
     max-width: 45%;
     width: 100%;
-    background-color: #f1f1f1;;
+    background-color: #f1f1f1;
 
 }
 
@@ -78,6 +79,10 @@
 #wpas-print-ticket-box-ticket-content td {
     text-align: left;
     padding: 5px 0;
+}
+#wpas-print-ticket-box-ticket-content ul {
+    padding: 0;
+    margin: 0;
 }
 
 /**
@@ -141,4 +146,34 @@
         font-size: 13px;
     }
 
+}
+
+
+
+/*
+* Print
+*/
+@media print {
+    
+    @page {
+        margin: 0;
+    }
+
+    html, body {
+        overflow: hidden;
+    }
+
+    body * {
+        visibility: hidden;
+     }
+
+    #wpas-print-ticket-box-content {
+        max-width: 95%;
+    }
+
+    #wpas-print-ticket-box-ticket-content * {
+        visibility: visible; 
+    }
+
+    
 }
