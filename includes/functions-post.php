@@ -554,16 +554,12 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 }
 
 /**
- * Get ticket.
+ * Get ticket by ticket id and user id.
  *
- * Get a list of tickets matching the arguments passed.
- * This function is basically a wrapper for WP_Query with
- * the addition of the ticket status.
- *
- * @since  3.0.0
+ * @since 5.1.1
  *
  * @param int       $id Ticket ID
- * @param int       $user_id  User ID, default is current logged in user
+ * @param int       $user_id  User ID, default is current logged in user id
  * @param bool      $cache    Whether or not to cache the results
  *
  * @return array  
