@@ -26,12 +26,12 @@
 
         $('body').append(html);
 
-        $.post( ajaxurl, {
-            action : 'wpas_get_ticket_for_print',
+        $.post(ajaxurl, {
+            action: 'wpas_get_ticket_for_print',
             id: ticket_id,
             nonce: WPAS_Print.nonce,
             dataType: 'json'
-        }).done(function( data ) {
+        }).done(function (data) {
 
             $('#wpas-print-ticket-box-ticket-content').html(data);
 
@@ -40,16 +40,30 @@
     });
 
     /**
-     * Close print window
+     * Close print window function
      */
-    $(document).on('click', '#wpas-print-ticket-box-close, #wpas-print-btn-cancel', function (e) {
-
-        e.preventDefault();
+    function closeWindow() {
 
         $('#wpas-print-ticket-box').fadeOut(function () {
             $(this).remove();
         });
+    }
 
+    /**
+     * Close print window
+     */
+    $(document).on('click', '#wpas-print-ticket-box-close, #wpas-print-btn-cancel', function (e) {
+        e.preventDefault();
+        closeWindow();
+    });
+
+    /**
+     * Close print window on ESC
+     */
+    $(document).on('keyup', function (e) {
+        if (e.keyCode == 27) {
+            closeWindow();
+        }
     });
 
     /**
@@ -57,7 +71,7 @@
      */
     $(document).on('click', '#wpas-print-toggle-history', function (e) {
 
-        if ( $(this).is(':checked') ) {
+        if ($(this).is(':checked')) {
             $('.wpas-print-ticket-history').show();
         } else {
             $('.wpas-print-ticket-history').hide();
@@ -70,12 +84,37 @@
      */
     $(document).on('click', '#wpas-print-toggle-replies', function (e) {
 
-        if ( $(this).is(':checked') ) {
+        if ($(this).is(':checked')) {
             $('.wpas-print-ticket-reply').show();
         } else {
             $('.wpas-print-ticket-reply').hide();
         }
 
     });
+
+    /**
+     * Toggle notes
+     */
+    $(document).on('click', '#wpas-print-toggle-private-notes', function (e) {
+
+        if ($(this).is(':checked')) {
+            $('.wpas-print-ticket-notes').show();
+        } else {
+            $('.wpas-print-ticket-notes').hide();
+        }
+
+    });
+
+
+    /**
+     * Print Ticket
+     */
+     $(document).on('click', '#wpas-print-btn', function(e){
+
+        e.preventDefault();
+
+        window.print();
+
+     });
 
 }(jQuery));
