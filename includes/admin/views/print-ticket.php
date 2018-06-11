@@ -48,6 +48,26 @@
     </tr>
 </table>
 
+<?php
+    
+    $custom_fields = WPAS()->custom_fields->get_custom_fields(); 
+
+    if( isset( $custom_fields['time_notes']) ) : ?>
+
+    <table class="wpas-print-ticket-notes" style="display:none;">
+        <tr>
+            <th><?php _e( $custom_fields[ 'time_notes' ][ 'args' ][ 'title' ], 'awesome-support' ); ?></th>
+        </tr>
+        <tr>
+            <td>
+                <?php echo wpas_cf_value( $custom_fields[ 'time_notes' ][ 'name' ], $ticket->ID );  ?>
+            </td>
+        </tr>
+    </table>
+
+<?php endif; ?>
+
+
 <table>
     <tr>
         <td>
