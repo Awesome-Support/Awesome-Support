@@ -554,6 +554,54 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 }
 
 /**
+ * Get ticket.
+ *
+ * Get a list of tickets matching the arguments passed.
+ * This function is basically a wrapper for WP_Query with
+ * the addition of the ticket status.
+ *
+ * @since  3.0.0
+ *
+ * @param int       $id Ticket ID
+ * @param int       $user_id  User ID, default is current logged in user
+ * @param bool      $cache    Whether or not to cache the results
+ *
+ * @return array  
+ */
+function wpas_get_ticket_by_id( $id, $user_id = 0, $cache = false ) {
+
+	$user = ( $user_id === 0 ) ? get_current_user_id() : $user_id;
+
+	$defaults = [
+		'p'          => intval( $id ),
+		'post_type'  => 'ticket',
+		'meta_query' => [
+			[
+				'key'   => '_wpas_assignee',
+				'value' => intval( $user )
+			]
+		],
+		'no_found_rows'          => ! (bool) $cache,
+		'cache_results'          => (bool) $cache,
+		'update_post_term_cache' => (bool) $cache,
+		'update_post_meta_cache' => (bool) $cache,
+		'wpas_query'             => true, // We use this parameter to identify our own queries so that we can remove the author parameter
+			
+	];
+
+	$args = wp_parse_args( $args, $defaults );
+
+	$query = new WP_Query( $args );
+
+	if ( empty( $query->posts ) ) {
+		return array();
+	} else {
+		return $query->posts[0];
+	}
+
+}
+
+/**
  * Add a new reply to a ticket.
  *
  * @param array           $data      The reply data to insert
