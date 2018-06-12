@@ -558,12 +558,13 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
  *
  * @since 5.1.1
  *
- * @param int       $id Ticket ID
+ * @param int       $id    Ticket ID
+ * @param array     $args  Additional arguments (see WP_Query)
  * @param bool      $cache Whether or not to cache the results
  *
  * @return array  
  */
-function wpas_get_ticket_by_id( $id, $cache = false ) {
+function wpas_get_ticket_by_id( $id, $args = array(), $cache = false ) {
 
 	$defaults = [
 		'p'                      => intval( $id ),
