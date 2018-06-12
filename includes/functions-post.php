@@ -559,24 +559,15 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
  * @since 5.1.1
  *
  * @param int       $id Ticket ID
- * @param int       $user_id  User ID, default is current logged in user id
- * @param bool      $cache    Whether or not to cache the results
+ * @param bool      $cache Whether or not to cache the results
  *
  * @return array  
  */
-function wpas_get_ticket_by_id( $id, $user_id = 0, $cache = false ) {
-
-	$user = ( $user_id === 0 ) ? get_current_user_id() : $user_id;
+function wpas_get_ticket_by_id( $id, $cache = false ) {
 
 	$defaults = [
-		'p'          => intval( $id ),
-		'post_type'  => 'ticket',
-		'meta_query' => [
-			[
-				'key'   => '_wpas_assignee',
-				'value' => intval( $user )
-			]
-		],
+		'p'                      => intval( $id ),
+		'post_type'              => 'ticket',
 		'no_found_rows'          => ! (bool) $cache,
 		'cache_results'          => (bool) $cache,
 		'update_post_term_cache' => (bool) $cache,
