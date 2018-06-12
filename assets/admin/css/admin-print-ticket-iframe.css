@@ -1,0 +1,32 @@
+@page {
+    margin: 0;
+    size: A4;
+}
+
+body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    padding: 25px;
+    margin: 0;
+    font-size: 13px;
+}
+
+table {
+    width: 100%;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+th {
+    text-align: left;
+}
+td {
+    text-align: left;
+    padding: 5px 0;
+}
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+.wpas-print-ticket-history td {
+    text-align: center !important;
+}

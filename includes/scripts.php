@@ -115,6 +115,7 @@ function wpas_register_assets_back_end() {
 	// Our styles
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
 	wp_register_style( 'wpas-admin-reply-history', WPAS_URL . 'assets/admin/css/admin-reply-history.css', array(), WPAS_VERSION );
+	wp_register_style( 'wpas-admin-print-ticket', WPAS_URL . 'assets/admin/css/admin-print-ticket.css', null, WPAS_VERSION );
 	
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
@@ -145,6 +146,7 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-users', WPAS_URL . 'assets/admin/js/admin-users.js', null, WPAS_VERSION, true );
 	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
 	wp_register_script( 'wpas-admin-upload', WPAS_URL . 'assets/public/js/component_upload.js', array( 'jquery' ), WPAS_VERSION );
+	wp_register_script( 'wpas-admin-print-ticket', WPAS_URL . 'assets/admin/js/admin-print-ticket.js', array( 'jquery' ), WPAS_VERSION );
 
 	// @TODO: Why is the version set to TIME() below instead of WPAS_VERSION?
 	wp_register_script(
@@ -187,6 +189,20 @@ function wpas_register_assets_back_end() {
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'date_label' => __( 'Edited on', 'awesome-support' )
 	));
+
+	// Print ticket vars
+	wp_localize_script( 'wpas-admin-print-ticket', 'WPAS_Print', array(
+		'admin_url'             => admin_url(),
+		'plugin_url'            => WPAS_URL,
+		'nonce'                 => wp_create_nonce( 'wpas_print_ticket' ),
+		'print'                 => __( 'Print', 'awesome-support' ),
+		'cancel'                => __( 'Cancel', 'awesome-support' ),
+		'print_ticket'          => __( 'Print ticket', 'awesome-support' ),
+		'include_replies'       => __( 'Include replies', 'awesome-support' ),
+		'include_history'       => __( 'Include history', 'awesome-support' ),
+		'include_private_notes' => __( 'Include private notes', 'awesome-support' ),
+	) );
+
 	
 	// Custom admin notice style and script
 	wp_enqueue_style( 'wpas-admin-wizard-notice', WPAS_URL . 'assets/admin/css/wizard-notice.css', array(), WPAS_VERSION );
@@ -341,6 +357,9 @@ function wpas_enqueue_assets_back_end() {
 		}
 
 	}
+
+	wp_enqueue_style( 'wpas-admin-print-ticket' );
+	wp_enqueue_script( 'wpas-admin-print-ticket' );
 
 	wp_register_script( 'wpas-gdpr-admin-script', WPAS_URL . 'assets/admin/js/admin-gdpr.js', array( 'jquery' ), WPAS_VERSION );		
 	wp_localize_script( 'wpas-gdpr-admin-script', 'WPAS_GDPR', array(
