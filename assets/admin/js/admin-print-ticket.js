@@ -113,7 +113,21 @@
 
         e.preventDefault();
 
-        window.print();
+        var frame   = document.createElement('iframe');
+        var content = $('#wpas-print-ticket-box-ticket-content')[0].outerHTML;
+
+        frame.id = 'wpas-print-ticket-frame';
+        document.body.appendChild(frame);
+
+        frame.contentDocument.write(content);
+        frame.focus();
+
+        $('#' + frame.id).contents().find('head').append('<link rel="stylesheet" href="' + WPAS_Print.plugin_url + 'assets/admin/css/admin-print-ticket-iframe.css">');
+
+        window.setTimeout(function(){
+            frame.contentWindow.print();
+            $('#' + frame.id).remove();
+        }, 1000);
 
      });
 
