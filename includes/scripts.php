@@ -193,6 +193,7 @@ function wpas_register_assets_back_end() {
 	// Print ticket vars
 	wp_localize_script( 'wpas-admin-print-ticket', 'WPAS_Print', array(
 		'admin_url'             => admin_url(),
+		'plugin_url'            => WPAS_URL,
 		'nonce'                 => wp_create_nonce( 'wpas_print_ticket' ),
 		'print'                 => __( 'Print', 'awesome-support' ),
 		'cancel'                => __( 'Cancel', 'awesome-support' ),
