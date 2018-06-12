@@ -271,7 +271,7 @@ class WPAS_GDPR_User_Profile {
 					'posts_per_page' => -1,
 				)
 			);
-			
+
 			$user_tickets = array();
 			if ( $ticket_data->found_posts > 0 ) {
 				if ( isset( $ticket_data->posts ) ) {
