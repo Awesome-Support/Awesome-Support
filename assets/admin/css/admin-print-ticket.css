@@ -109,6 +109,9 @@
     text-align: center !important;
 }
 
+#wpas-print-ticket-frame {
+    display: none;
+}
 
 /**
 * Responsive
@@ -146,34 +149,4 @@
         font-size: 13px;
     }
 
-}
-
-
-
-/*
-* Print
-*/
-@media print {
-    
-    @page {
-        margin: 0;
-    }
-
-    html, body {
-        overflow: hidden;
-    }
-
-    body * {
-        visibility: hidden;
-     }
-
-    #wpas-print-ticket-box-content {
-        max-width: 95%;
-    }
-
-    #wpas-print-ticket-box-ticket-content * {
-        visibility: visible; 
-    }
-
-    
 }
