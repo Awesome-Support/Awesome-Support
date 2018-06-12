@@ -105,7 +105,8 @@ class WPAS_GDPR_User_Profile {
 			<div class="wpas-gdpr-export-wrapper">
 				<div class="wpas-gdpr-notice export-data"></div>
 				<?php
-					$data_user = isset( $_GET['user_id'] ) ? $_GET['user_id'] : '';
+					global $user_id;
+					$data_user = (int) $user_id;
 				?>
 				<h2><?php esc_html_e( 'Awesome Support Data Export', 'awesome-support' ); ?></h2>
 				<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo $data_user; ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
@@ -270,7 +271,7 @@ class WPAS_GDPR_User_Profile {
 					'posts_per_page' => -1,
 				)
 			);
-			
+
 			$user_tickets = array();
 			if ( $ticket_data->found_posts > 0 ) {
 				if ( isset( $ticket_data->posts ) ) {
