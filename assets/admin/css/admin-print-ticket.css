@@ -113,6 +113,12 @@
     display: none;
 }
 
+.wpas-print-ticket-container {
+    border-bottom: 3px dotted #c2c2c2;
+    margin-bottom: 80px;
+    padding-bottom: 80px;
+}
+
 /**
 * Responsive
 */
