@@ -198,6 +198,7 @@ function wpas_register_assets_back_end() {
 		'print'                 => __( 'Print', 'awesome-support' ),
 		'cancel'                => __( 'Cancel', 'awesome-support' ),
 		'print_ticket'          => __( 'Print ticket', 'awesome-support' ),
+		'print_tickets'         => __( 'Print tickets', 'awesome-support' ),
 		'include_replies'       => __( 'Include replies', 'awesome-support' ),
 		'include_history'       => __( 'Include history', 'awesome-support' ),
 		'include_private_notes' => __( 'Include private notes', 'awesome-support' ),
