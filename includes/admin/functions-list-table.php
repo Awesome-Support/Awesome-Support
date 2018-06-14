@@ -250,3 +250,21 @@ function wpas_add_print_quick_action( $actions, $post ) {
 	return $actions;
 	
 }
+
+
+add_filter( 'bulk_actions-edit-ticket', 'wpas_add_print_bulk_action' );
+/**
+ * Add print tickets bulk action to tickets list table
+ * 
+ * @since 5.1.1
+ * 
+ * @param array $actions
+ * 
+ * @return array
+ */
+function wpas_add_print_bulk_action( $actions ) {
+
+	$actions['wpas_print_tickets'] = __( 'Print Tickets', 'awesome-support' );
+
+	return $actions;
+}

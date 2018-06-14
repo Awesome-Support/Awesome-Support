@@ -1,154 +1,158 @@
 <?php defined('WPINC') or exit; ?>
 
-<table>
-    <tr>
-        <td colspan="5">
-            <h3><?php echo $ticket->post_title; ?></h3>
-        </td>
-    </tr>
-    <tr>
-        <th>
-            <?php _e( 'ID', 'awesome-support' ); ?>
-        </th>
-        <th>
-            <?php _e( 'Status', 'awesome-support' ); ?>
-        </th>
-        <th>
-            <?php _e( 'Created by', 'awesome-support' ); ?>
-        </th>
-        <th>
-            <?php _e( 'Agent', 'awesome-support' ); ?>
-        </th>
-        <th>
-            <?php _e( 'Date', 'awesome-support' ); ?>
-        </th>
-    </tr>
-    <tr>
-        <td>
-            #<?php echo $ticket->ID; ?>
-        </td>
-        <td>
-            <?php wpas_cf_display_status( 'status', $ticket->ID ); ?>
-        </td>
-        <td>
-            <?php $user = get_user_by( 'id', $ticket->post_author )->display_name; ?>
-            <?php echo $user; ?>
-        </td>
-        <td>
-            <?php
+<div class="wpas-print-ticket-container">
 
-                $agent_id = wpas_get_cf_value( 'assignee', $ticket->ID );
-                echo get_user_by( 'id', $agent_id )->display_name;
-
-            ?>
-        </td>
-        <td>
-            <?php echo date( get_option( 'date_format' ), strtotime( $ticket->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $ticket->post_date ) ); ?>
-        </td>
-    </tr>
-</table>
-
-<?php
-    
-    $custom_fields = WPAS()->custom_fields->get_custom_fields(); 
-
-    if( isset( $custom_fields['time_notes']) ) : ?>
-
-    <table class="wpas-print-ticket-notes" style="display:none;">
+    <table>
         <tr>
-            <th><?php _e( $custom_fields[ 'time_notes' ][ 'args' ][ 'title' ], 'awesome-support' ); ?></th>
+            <td colspan="5">
+                <h3><?php echo $ticket->post_title; ?></h3>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                <?php _e( 'ID', 'awesome-support' ); ?>
+            </th>
+            <th>
+                <?php _e( 'Status', 'awesome-support' ); ?>
+            </th>
+            <th>
+                <?php _e( 'Created by', 'awesome-support' ); ?>
+            </th>
+            <th>
+                <?php _e( 'Agent', 'awesome-support' ); ?>
+            </th>
+            <th>
+                <?php _e( 'Date', 'awesome-support' ); ?>
+            </th>
         </tr>
         <tr>
             <td>
-                <?php echo wpas_cf_value( $custom_fields[ 'time_notes' ][ 'name' ], $ticket->ID );  ?>
+                #<?php echo $ticket->ID; ?>
+            </td>
+            <td>
+                <?php wpas_cf_display_status( 'status', $ticket->ID ); ?>
+            </td>
+            <td>
+                <?php $user = get_user_by( 'id', $ticket->post_author )->display_name; ?>
+                <?php echo $user; ?>
+            </td>
+            <td>
+                <?php
+
+                    $agent_id = wpas_get_cf_value( 'assignee', $ticket->ID );
+                    echo get_user_by( 'id', $agent_id )->display_name;
+
+                ?>
+            </td>
+            <td>
+                <?php echo date( get_option( 'date_format' ), strtotime( $ticket->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $ticket->post_date ) ); ?>
             </td>
         </tr>
     </table>
 
-<?php endif; ?>
-
-
-<table>
-    <tr>
-        <td>
-            <strong><?php echo $user; ?></strong>, 
-            <?php echo date( get_option( 'date_format' ), strtotime( $ticket->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $ticket->post_date ) ); ?>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <?php echo $ticket->post_content; ?>
-        </td>
-    </tr>
-</table>
-
-
-<?php if ( $replies ): ?>
-
-    <?php foreach ($replies as $reply): ?>
-
-        <?php 
+    <?php
         
-        // Set the author data (if author is known)
-        if ( $reply->post_author != 0 ) {
-            $user_data = get_userdata( $reply->post_author );
-            $user_id   = $user_data->data->ID;
-            $user_name = $user_data->data->display_name;
-        }
+        $custom_fields = WPAS()->custom_fields->get_custom_fields(); 
 
-        // In case the post author is unknown, we set this as an anonymous post
-        else {
-            $user_name = __( 'Anonymous', 'awesome-support' );
-            $user_id   = 0;
-        }
+        if( isset( $custom_fields['time_notes']) ) : ?>
 
-        ?>
+        <table class="wpas-print-ticket-notes" style="display:none;">
+            <tr>
+                <th><?php _e( $custom_fields[ 'time_notes' ][ 'args' ][ 'title' ], 'awesome-support' ); ?></th>
+            </tr>
+            <tr>
+                <td>
+                    <?php echo wpas_cf_value( $custom_fields[ 'time_notes' ][ 'name' ], $ticket->ID );  ?>
+                </td>
+            </tr>
+        </table>
 
-        <?php if ( $reply->post_type == 'ticket_history' ): ?>
+    <?php endif; ?>
 
-            <table class="wpas-print-ticket-history" style="display:none;">
-                <tr>
-                    <td>
-                        <strong><?php echo $user_name; ?></strong>, 
-                        <?php echo date( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $reply->post_date ) ); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <?php echo $reply->post_content; ?>
-                    </td>
-                </tr>
-            </table>
 
-        <?php else: ?>
+    <table>
+        <tr>
+            <td>
+                <strong><?php echo $user; ?></strong>, 
+                <?php echo date( get_option( 'date_format' ), strtotime( $ticket->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $ticket->post_date ) ); ?>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <?php echo $ticket->post_content; ?>
+            </td>
+        </tr>
+    </table>
 
-            <table class="wpas-print-ticket-reply">
-                <tr>
-                    <td>
-                        <strong><?php echo $user_name; ?></strong>, 
-                        <?php echo date( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $reply->post_date ) ); ?>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <?php
 
-                            $content = apply_filters( 'the_content', $reply->post_content );
+    <?php if ( $replies ): ?>
 
-                            do_action( 'wpas_backend_reply_content_before', $reply->ID );
+        <?php foreach ($replies as $reply): ?>
 
-                            echo wp_kses( $content, wp_kses_allowed_html( 'post' ) );
-
-                            do_action( 'wpas_backend_reply_content_after', $reply->ID );
-
-                        ?>
-                    </td>
-                </tr>
-            </table>
-
+            <?php 
             
-        <?php endif; ?>
+            // Set the author data (if author is known)
+            if ( $reply->post_author != 0 ) {
+                $user_data = get_userdata( $reply->post_author );
+                $user_id   = $user_data->data->ID;
+                $user_name = $user_data->data->display_name;
+            }
 
-    <?php endforeach; ?>
+            // In case the post author is unknown, we set this as an anonymous post
+            else {
+                $user_name = __( 'Anonymous', 'awesome-support' );
+                $user_id   = 0;
+            }
 
-<?php endif; ?>
+            ?>
+
+            <?php if ( $reply->post_type == 'ticket_history' ): ?>
+
+                <table class="wpas-print-ticket-history" style="display:none;">
+                    <tr>
+                        <td>
+                            <strong><?php echo $user_name; ?></strong>, 
+                            <?php echo date( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $reply->post_date ) ); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php echo $reply->post_content; ?>
+                        </td>
+                    </tr>
+                </table>
+
+            <?php else: ?>
+
+                <table class="wpas-print-ticket-reply">
+                    <tr>
+                        <td>
+                            <strong><?php echo $user_name; ?></strong>, 
+                            <?php echo date( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $reply->post_date ) ); ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <?php
+
+                                $content = apply_filters( 'the_content', $reply->post_content );
+
+                                do_action( 'wpas_backend_reply_content_before', $reply->ID );
+
+                                echo wp_kses( $content, wp_kses_allowed_html( 'post' ) );
+
+                                do_action( 'wpas_backend_reply_content_after', $reply->ID );
+
+                            ?>
+                        </td>
+                    </tr>
+                </table>
+
+                
+            <?php endif; ?>
+
+        <?php endforeach; ?>
+
+    <?php endif; ?>
+
+</div>
