@@ -144,7 +144,7 @@
 
      $(document).on('submit', '#posts-filter', function(e){
 
-        if ( $('select[name="action2"]', this).val() == 'wpas_print_tickets' ) {
+        if ( $('select[name="action2"]', this).val() == 'wpas_print_tickets' || $('select[name="action"]', this).val() == 'wpas_print_tickets' ) {
 
             e.preventDefault();
 
