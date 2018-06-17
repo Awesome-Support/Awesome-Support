@@ -387,7 +387,7 @@ function wpas_get_javascript_object() {
 		return array();
 	}
 
-	$upload_max_files = (int) wpas_get_option( 'attachments_max' );
+	$upload_max_files = (int) wpas_get_option( 'attachments_max', 2 );
 	$upload_max_size  = (int) wpas_get_option( 'filesize_max' );
 
 	// Editors translations

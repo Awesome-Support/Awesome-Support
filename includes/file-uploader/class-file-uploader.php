@@ -1011,7 +1011,7 @@ class WPAS_File_Upload {
 				return false;
 			}
 
-			$max = wpas_get_option( 'attachments_max' );
+			$max = wpas_get_option( 'attachments_max', 2 );
 			$id  = false; // Declare a default value for $id
 
 			if ( $this->individualize_files() ) {
@@ -1060,7 +1060,7 @@ class WPAS_File_Upload {
 	 */
 	public function process_attachments( $post_id, $attachments ) {
 
-		$max           = wpas_get_option( 'attachments_max' );      // Core AS Max Files (File Upload settings)
+		$max           = wpas_get_option( 'attachments_max', 2 );   // Core AS Max Files (File Upload settings)
 		$cnt           = 0;                                         // Initialize count of current attachments
 		$errors        = false;                                     // No errors/rejections yet
 		$this->post_id = $post_id;                                  // Set post id for /ticket_nnnn folder creation
