@@ -116,6 +116,10 @@ function wpas_register_assets_back_end() {
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
 	wp_register_style( 'wpas-admin-reply-history', WPAS_URL . 'assets/admin/css/admin-reply-history.css', array(), WPAS_VERSION );
 	wp_register_style( 'wpas-admin-print-ticket', WPAS_URL . 'assets/admin/css/admin-print-ticket.css', null, WPAS_VERSION );
+
+	if ( wpas_get_option( 'ajax_upload' ) ) {
+		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/dropzone.css', null, WPAS_VERSION );
+	}
 	
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
@@ -147,6 +151,13 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
 	wp_register_script( 'wpas-admin-upload', WPAS_URL . 'assets/public/js/component_upload.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-print-ticket', WPAS_URL . 'assets/admin/js/admin-print-ticket.js', array( 'jquery' ), WPAS_VERSION );
+
+	// ajax uploader
+	if ( wpas_get_option( 'ajax_upload' ) ) {
+		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/dropzone.js', array( 'jquery' ), WPAS_VERSION );
+		wp_register_script( 'wpas-ajax-upload', WPAS_URL . 'assets/admin/js/admin-ajax-upload.js', array( 'jquery' ), WPAS_VERSION, true );
+	}
+
 
 	// @TODO: Why is the version set to TIME() below instead of WPAS_VERSION?
 	wp_register_script(
@@ -363,6 +374,32 @@ function wpas_enqueue_assets_back_end() {
 
 	wp_enqueue_style( 'wpas-admin-print-ticket' );
 	wp_enqueue_script( 'wpas-admin-print-ticket' );
+
+	if ( wpas_get_option( 'ajax_upload' ) ) {
+
+		wp_enqueue_style( 'wpas-dropzone' );
+		wp_enqueue_script( 'wpas-dropzone' );
+
+		$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+		$accept    = array();
+
+		foreach ( $filetypes as $key => $type ) {
+			array_push( $accept, ".$type" );
+		}
+
+		$accept = implode( ',', $accept );
+
+		wp_localize_script( 'wpas-ajax-upload', 'WPAS_AJAX', array(
+			'nonce'     => wp_create_nonce( 'wpas-gdpr-nonce' ),
+			'accept'    => $accept,
+			'max_files' => wpas_get_option( 'attachments_max' ),
+			'max_size'  => wpas_get_option( 'filesize_max' ),
+			'exceeded'  => sprintf( __( 'Max files (%s) exceeded.', 'awesome-support' ), wpas_get_option( 'attachments_max' ) )
+		) );
+
+		wp_enqueue_script( 'wpas-ajax-upload' );
+
+	}
 
 	wp_register_script( 'wpas-gdpr-admin-script', WPAS_URL . 'assets/admin/js/admin-gdpr.js', array( 'jquery' ), WPAS_VERSION );		
 	wp_localize_script( 'wpas-gdpr-admin-script', 'WPAS_GDPR', array(
