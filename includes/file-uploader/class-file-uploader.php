@@ -87,22 +87,26 @@ class WPAS_File_Upload {
 		// If Ajax upload is enabled
 		if ( wpas_get_option( 'ajax_upload' ) ) {
 
-			// Schedule cleanup of unused attachments directories
-			add_action( 'wp', array( $this, 'attachments_dir_cleanup_schedule' ) );
-
 			// Cleanup action
 			add_action( 'attachments_dir_cleanup_action', array( $this, 'attachments_dir_cleanup' ) );
 
+			// Schedule cleanup of unused attachments directories
+			add_action( 'wp', array( $this, 'attachments_dir_cleanup_schedule' ) );
+
+
 			// After Add Reply action hook
 			if ( is_admin() ) {
-				add_action( 'wpas_add_reply_admin_after', array( $this, 'check_ajax_uploaded_attachments' ), 20, 2 );
+				add_action( 'admin_enqueue_scripts', array( $this, 'load_ajax_uploader_assets' ), 10 );
 			} else {
-				add_action( 'wpas_add_reply_public_after', array( $this, 'check_ajax_uploaded_attachments' ), 20, 2 );
+				add_action( 'wp_enqueue_scripts',    array( $this, 'load_ajax_uploader_assets' ), 10 );
 			}
+
+			add_action( 'wpas_add_reply_after', array( $this, 'check_ajax_uploaded_attachments' ), 20, 2 );
 
 			add_action( 'wp_ajax_wpas_upload_attachment',      array( $this, 'ajax_upload_attachment' ) );
 			add_action( 'wp_ajax_wpas_delete_temp_attachment', array( $this, 'ajax_delete_temp_attachment' ) );
 			add_action( 'wp_ajax_wpas_delete_temp_directory',  array( $this, 'ajax_delete_temp_directory' ) );
+
 		}
 
 
@@ -1487,6 +1491,41 @@ class WPAS_File_Upload {
 
 	}
 
+	/**
+	 * Load dropzone assets
+	 */
+
+	public function load_ajax_uploader_assets() {
+
+		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/dropzone.css', null, WPAS_VERSION );
+		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/dropzone.js', array( 'jquery' ), WPAS_VERSION );
+		wp_register_script( 'wpas-ajax-upload', WPAS_URL . 'assets/admin/js/admin-ajax-upload.js', array( 'jquery' ), WPAS_VERSION, true );
+
+		wp_enqueue_style( 'wpas-dropzone' );
+		wp_enqueue_script( 'wpas-dropzone' );
+
+		$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+		$accept    = array();
+
+		foreach ( $filetypes as $key => $type ) {
+			array_push( $accept, ".$type" );
+		}
+
+		$accept = implode( ',', $accept );
+
+		wp_localize_script( 'wpas-ajax-upload', 'WPAS_AJAX', array(
+			'nonce'     => wp_create_nonce( 'wpas-gdpr-nonce' ),
+			'ajax_url'  => admin_url( 'admin-ajax.php' ),
+ 			'accept'    => $accept,
+			'max_files' => wpas_get_option( 'attachments_max' ),
+			'max_size'  => wpas_get_option( 'filesize_max' ),
+			'exceeded'  => sprintf( __( 'Max files (%s) exceeded.', 'awesome-support' ), wpas_get_option( 'attachments_max' ) )
+		) );
+
+		wp_enqueue_script( 'wpas-ajax-upload' );
+
+	}
+
 
 	/**
 	 * Upload attachment using ajax
@@ -1529,6 +1568,8 @@ class WPAS_File_Upload {
 			move_uploaded_file( $_FILES[ 'wpas_' . $this->index ][ 'tmp_name' ], trailingslashit( $dir ) . $_FILES[ 'wpas_' . $this->index ][ 'name' ] );
 		}
 
+		wp_die();
+
 	}
 
 
@@ -1543,12 +1584,12 @@ class WPAS_File_Upload {
 		
 		if ( wpas_can_delete_attachments() ) {
 
-			$parent_id  = filter_input( INPUT_POST, 'parent_id', FILTER_SANITIZE_NUMBER_INT );
+			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
 			$attachment = filter_input( INPUT_POST, 'attachment', FILTER_SANITIZE_STRING );
 			$upload     = wp_upload_dir();
 			$user_id    = get_current_user_id();
 
-			$file = sprintf( '%s/awesome-support/temp_%d_%d/%s', $upload['basedir'], $parent_id, $user_id, $attachment );
+			$file = sprintf( '%s/awesome-support/temp_%d_%d/%s', $upload['basedir'], $ticket_id, $user_id, $attachment );
 
 			/**
 			 * wpas_before_delete_temp_attachment fires before deleting temp attachment
@@ -1559,7 +1600,7 @@ class WPAS_File_Upload {
 			 * @param int $user_id       ID of the current logged in user
 			 * @param string $attachment Attachment filename
 			 */
-			do_action( 'wpas_before_delete_temp_attachment', $parent_id, $user_id, $attachment );
+			do_action( 'wpas_before_delete_temp_attachment', $ticket_id, $user_id, $attachment );
 
 			if ( file_exists( $file ) ) {
 				unlink( $file );
@@ -1581,7 +1622,7 @@ class WPAS_File_Upload {
 	public function ajax_delete_temp_directory() {	
 	
 		$upload     = wp_upload_dir();
-		$temp_dir   = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], intval( $_POST[ 'parent_id' ] ), get_current_user_id() );
+		$temp_dir   = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], intval( $_POST[ 'ticket_id' ] ), get_current_user_id() );
 
 		if ( is_dir( $temp_dir ) ) {
 			$this->remove_directory( $temp_dir );
