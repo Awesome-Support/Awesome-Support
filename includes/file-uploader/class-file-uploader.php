@@ -365,7 +365,7 @@ class WPAS_File_Upload {
 					$filename   = explode( '/', $attachment->guid );
 					$name = $filename[ count( $filename ) - 1 ];
 					
-					wp_delete_attachment( $attachment_id );
+					wp_delete_attachment( $attachment_id, true );
 					
 					wpas_log( $ticket_id, sprintf( __( '%s attachment deleted by %s', 'awesome-support' ), $name, $user->display_name ) );
 					$deleted = true;
