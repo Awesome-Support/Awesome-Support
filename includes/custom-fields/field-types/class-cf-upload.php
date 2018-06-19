@@ -16,8 +16,8 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 			$this->field_args['multiple'] = false;
 		}
 
-		if ( ! isset( $this->field_args['ajax'] ) ) {
-			$this->field_args['ajax'] = false;
+		if ( ! isset( $this->field_args['use_ajax_uploader'] ) ) {
+			$this->field_args['use_ajax_uploader'] = false;
 		}
 
 		/* Change the field name if multiple upload is enabled */
@@ -66,7 +66,7 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 	public function display() {
 
 		// Ajax uploader?
-		$ajax = ( $this->field_args['ajax'] === true ) ? true : false;
+		$ajax = ( $this->field_args['use_ajax_uploader'] === true ) ? true : false;
 
 		if ( wpas_get_option( 'ajax_upload' ) && $ajax ) {
 			return '<div class="wpas-uploader-dropzone dropzone" id="dropzone-' . $this->field_id . '" data-ticket-id="' . get_the_ID() . '"><div class="dz-message" data-dz-message><span>' . __( 'Drop files here to upload', 'awesome-support' ). '</span></div></div>';
