@@ -40,6 +40,7 @@ class WPAS_Privacy_Option {
 		add_action( 'wp_ajax_nopriv_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
 
 		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'wp_register_asdata_personal_data_eraser' ) );
+		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'wp_privacy_personal_asdata_exporters' ), 10, 1 );
 	}
 
 
@@ -122,6 +123,126 @@ class WPAS_Privacy_Option {
 			'items_retained' => $items_retained,
 			'messages'       => $messages,
 			'done'           => $done,
+		);
+	}
+
+	public function wp_privacy_personal_asdata_exporters( $exporters ){
+		$exporters['awesome-support-data-test'] = array(
+			'exporter_friendly_name' => __( 'Awesome Support Data' ),
+			'callback'               => array( $this, 'as_users_personal_data_exporter' ),
+		);
+
+		return $exporters;
+	}
+
+
+	/**
+	 * Finds and exports personal Awesome Support data associated with an email address from the post table.
+	 *
+	 * @since 4.9.6
+	 *
+	 * @param string $email_address The comment author email address.
+	 * @param int    $page          Comment page.
+	 * @return array $return An array of personal data.
+	 */
+	public function as_users_personal_data_exporter( $email_address, $page = 1 ){
+		
+		$number = 500;
+		$page   = (int) $page;
+		$data_to_export = array();
+		$user_data_to_export = array();
+		$done = false;
+		$author = get_user_by( 'email', $email_address );
+		if ( ! $author ) {
+			return array(
+				'data' => array(),
+				'done' => true,
+			);
+		}
+		$instance = WPAS_GDPR_User_Profile::get_instance();
+		if( isset( $author->ID ) && !empty( $author->ID )){
+			$user_tickets_data = $instance->wpas_gdpr_ticket_data( $author->ID, $number );
+			$user_consent_data = $instance->wpas_gdpr_consent_data( $author->ID );
+			if( !empty( $user_consent_data )){
+				// foreach ( $user_consent_data as $consent_key => $consent_value ) {
+					
+				// }
+			}
+			if( !empty( $user_tickets_data )){
+				$name = '';
+				$value = '';
+				$item_id = "as-{$user->ID}";
+				$data_to_export[] = array(
+					'group_id'    => 'awesome-support',
+					'group_label' => __( 'Awesome Support' ),
+					'item_id'     => $item_id,
+					'data'        => array(),
+				);
+				$ticket_count = 0;
+ 				foreach ( $user_tickets_data as $key2 => $ticket ) {
+ 					$ticket_count ++;
+					foreach ( $ticket as $key => $value ) {
+						switch ( $key ) {
+							case 'ticket_id':
+								$item_id = 'as-ticket-{$value}';
+								$name = __( 'Ticket ID', 'awesome-support' );
+							break;
+							case 'subject':
+								$name = __( 'Ticket Subject', 'awesome-support' );
+							break;
+							case 'description':
+								$name = __( 'Ticket Description', 'awesome-support' );
+							break;
+							case 'replies':
+
+								if( !empty( $value ) && is_array( $value ) ){
+									$reply_count = 0;
+									foreach ( $value as $reply_key => $reply_data ) {
+										$reply_count ++;
+										if( isset( $reply_data['content'] ) && !empty( $reply_data['content'] )){
+											$name = __( 'Reply ' . $reply_count . ' Content', 'awesome-support' );
+											if ( ! empty( $value ) ) {
+												$user_data_to_export[] = array(
+													'name'  => $name,
+													'value' => $reply_data['content'],
+												);
+											}
+										}
+									}
+								}
+								$value = '';
+							break;
+							case 'ticket_status':
+								$name = __( 'Ticket Status', 'awesome-support' );
+							break;
+							default:
+								$value = '';
+							break;
+
+						}	
+						if ( ! empty( $value ) ) {
+							$user_data_to_export[] = array(
+								'name'  => $name,
+								'value' => $value,
+							);
+						}
+					}
+					$data_to_export[] = array(
+						'group_id'    => 'ticket_' . $ticket_count,
+						'group_label' => __( $ticket['subject'] ),
+						'item_id'     => $item_id,
+						'data'        => $user_data_to_export,
+					);
+					$user_data_to_export = array();
+				}
+			}
+			$done = count( $user_tickets_data ) < $number;
+		}
+		
+		
+		return array(
+			'data' => $data_to_export,
+			'done' => $done,
 		);
 	}
 
