@@ -87,24 +87,27 @@ class WPAS_Privacy_Option {
 		$items_removed  = false;
 		$items_retained = false;
 		$author = get_user_by( 'email', $email_address );
-		$tickets = wpas_get_tickets(
+		/**
+		 * Delete ticket data belongs to the mention email id.
+		 */
+		$ticket_data  = new WP_Query(
 			array(
-				'author'			 => $author->ID,
-				'number'             => $number,
-				'paged'              => $page
+				'post_type'      => array( 'ticket' ),
+				'author'         => $author->ID,
+				'post_status'    => array_keys( wpas_get_post_status() ),
+				'number'         => $number,
+				'paged'          => $page
 			)
 		);
 
 		$messages  = array();
-		if( !empty( $tickets )){
-			foreach ( (array) $tickets as $ticket ) {
+		if( !empty( $ticket_data )){
+			foreach ( (array) $ticket_data as $ticket ) {
 				if( isset( $ticket->ID ) && !empty( $ticket->ID )){
 					$ticket_id = (int) $ticket->ID;
 					if ( $ticket_id ) {
 						$items_removed = true;
 						wp_delete_post( $ticket_id, true );
-					} else {
-						$items_retained = true;
 					}
 				}
 			}
@@ -112,7 +115,7 @@ class WPAS_Privacy_Option {
 			$messages[] = __( 'No Awesome Support data was found.' );
 		}
 
-		$done = count( $comments ) < $number;
+		$done = count( $ticket_data ) < $number;
 
 		return array(
 			'items_removed'  => $items_removed,
