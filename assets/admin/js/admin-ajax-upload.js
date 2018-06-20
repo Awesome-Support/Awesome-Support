@@ -8,7 +8,9 @@
     $('.wpas-uploader-dropzone').each(function(i, e){
 
         var id    = $(e).attr('id');
+        var paste = $(this).data('enable-paste');
         ticket_id = (  $('#post_ID').length ) ? $('#post_ID').val() : $(this).data('ticket-id');
+
 
         $('#' + id).dropzone({ 
             url: WPAS_AJAX.ajax_url,
@@ -18,6 +20,8 @@
             maxFilesize : WPAS_AJAX.max_size,
             addRemoveLinks: true,
             init: function() {
+
+                var that = this;
                 
                 this.on('sending', function(file, xhr, formData){
                     formData.append('action', 'wpas_upload_attachment');
@@ -31,6 +35,23 @@
                         alert( WPAS_AJAX.exceeded );
                     }
                 });
+
+                // Check if paste is enabled
+                if( paste === 1 ) {
+
+                    document.onpaste = function(e){
+
+                        var items = (e.clipboardData || e.originalEvent.clipboardData).items;
+
+                        for (var j in items) {
+                            if (items[j].kind === 'file') {
+                                that.addFile( items[j].getAsFile() ); 
+                            }
+                        }
+
+                    };
+      
+                } 
         
             },
             removedfile: function(file) {

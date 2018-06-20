@@ -236,7 +236,11 @@
 
 				// @since 5.1.1
 				// Use ajax for uploading files - used by upload custom field
-				'use_ajax_uploader' => true,								
+				'use_ajax_uploader' => true,
+				
+				// @since 5.1.1
+				// Enable paste using ctrl+v commands
+				'enable_paste' => true,	
 
 			);
 
