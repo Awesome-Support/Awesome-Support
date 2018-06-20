@@ -75,6 +75,8 @@ function wpas_register_assets_front_end() {
 			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.3.1111', 'all' );
 			break ;						
 	}
+
+
 	
 	// JS Objects
 	wp_localize_script( 'wpas-plugin-script', 'wpas', wpas_get_javascript_object() );

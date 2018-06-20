@@ -70,6 +70,8 @@ class WPAS_File_Upload {
 		if ( is_admin() ) {
 
 			add_action( 'wpas_add_reply_admin_after', array( $this, 'new_reply_backend_attachment' ), 10, 2 );
+
+			
 			add_action( 'post_edit_form_tag', array( $this, 'add_form_enctype' ), 10, 1 );
 			
 			add_filter( 'wpas_admin_tabs_after_reply_wysiwyg', array( $this, 'upload_field_add_tab' ) , 11, 1 ); // Register attachments tab under reply wysiwyg
@@ -81,6 +83,33 @@ class WPAS_File_Upload {
 			add_filter( 'wpas_cf_wrapper_class', array( $this, 'add_wrapper_class_admin' ), 10, 2 );
 
 		}
+
+		// If Ajax upload is enabled
+		if ( wpas_get_option( 'ajax_upload' ) ) {
+
+			// Cleanup action
+			add_action( 'attachments_dir_cleanup_action', array( $this, 'attachments_dir_cleanup' ) );
+
+			// Schedule cleanup of unused attachments directories
+			add_action( 'wp', array( $this, 'attachments_dir_cleanup_schedule' ) );
+
+
+			// After Add Reply action hook
+			if ( is_admin() ) {
+				add_action( 'admin_enqueue_scripts', array( $this, 'load_ajax_uploader_assets' ), 10 );
+			} else {
+				add_action( 'wp_enqueue_scripts',    array( $this, 'load_ajax_uploader_assets' ), 10 );
+			}
+
+			add_action( 'wpas_add_reply_after', array( $this, 'check_ajax_uploaded_attachments' ), 20, 2 );
+
+			add_action( 'wp_ajax_wpas_upload_attachment',      array( $this, 'ajax_upload_attachment' ) );
+			add_action( 'wp_ajax_wpas_delete_temp_attachment', array( $this, 'ajax_delete_temp_attachment' ) );
+			add_action( 'wp_ajax_wpas_delete_temp_directory',  array( $this, 'ajax_delete_temp_directory' ) );
+
+		}
+
+
 		
 		
 		add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'add_auto_delete_button_fe_submission' ) );		
@@ -1458,6 +1487,270 @@ class WPAS_File_Upload {
 			do_action( 'wpas_attachments_after_delete', $post_id, $attachments, $args );
 
 		}
+
+	}
+
+	/**
+	 * Load dropzone assets
+	 */
+
+	public function load_ajax_uploader_assets() {
+
+		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/dropzone.css', null, WPAS_VERSION );
+		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/dropzone.js', array( 'jquery' ), WPAS_VERSION );
+		wp_register_script( 'wpas-ajax-upload', WPAS_URL . 'assets/admin/js/admin-ajax-upload.js', array( 'jquery' ), WPAS_VERSION, true );
+
+		wp_enqueue_style( 'wpas-dropzone' );
+		wp_enqueue_script( 'wpas-dropzone' );
+
+		$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+		$accept    = array();
+
+		foreach ( $filetypes as $key => $type ) {
+			array_push( $accept, ".$type" );
+		}
+
+		$accept = implode( ',', $accept );
+
+		wp_localize_script( 'wpas-ajax-upload', 'WPAS_AJAX', array(
+			'nonce'     => wp_create_nonce( 'wpas-gdpr-nonce' ),
+			'ajax_url'  => admin_url( 'admin-ajax.php' ),
+ 			'accept'    => $accept,
+			'max_files' => wpas_get_option( 'attachments_max' ),
+			'max_size'  => wpas_get_option( 'filesize_max' ),
+			'exceeded'  => sprintf( __( 'Max files (%s) exceeded.', 'awesome-support' ), wpas_get_option( 'attachments_max' ) )
+		) );
+
+		wp_enqueue_script( 'wpas-ajax-upload' );
+
+	}
+
+
+	/**
+	 * Upload attachment using ajax
+	 *
+	 * @since  5.1.1
+	 * 
+	 * @return void
+	 */
+	public function ajax_upload_attachment() {
+
+		if ( ! $this->can_attach_files() ) {
+			return false;
+		}
+
+		$upload    = wp_upload_dir();
+		$ticket_id = intval( $_POST[ 'ticket_id' ] );
+		$user_id   = get_current_user_id();
+
+		/**
+		 * wpas_before_ajax_file_upload fires before uploading attachments
+		 *
+		 * @since 5.1.1
+		 *
+		 * @param int $ticket_id   ID of the ticket
+		 * @param int $user_id     ID of the current logged in user
+		 */
+		do_action( 'wpas_before_ajax_file_upload', $ticket_id, $user_id );
+
+		
+		$dir = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . $user_id;
+
+		// Create temp directory if not exists
+		if ( ! is_dir( $dir ) ) {
+			$this->create_upload_dir( $dir );
+		}
+
+		// Check if file is set
+		if ( ! empty( $_FILES[ 'wpas_' . $this->index ] ) ) {
+			// Upload file
+			move_uploaded_file( $_FILES[ 'wpas_' . $this->index ][ 'tmp_name' ], trailingslashit( $dir ) . $_FILES[ 'wpas_' . $this->index ][ 'name' ] );
+		}
+
+		wp_die();
+
+	}
+
+
+	/**
+	 * Delete temporary attachment using ajax
+	 *
+	 * @since  5.1.1
+	 * 
+	 * @return void
+	 */
+	public function ajax_delete_temp_attachment() {	
+		
+		if ( wpas_can_delete_attachments() ) {
+
+			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
+			$attachment = filter_input( INPUT_POST, 'attachment', FILTER_SANITIZE_STRING );
+			$upload     = wp_upload_dir();
+			$user_id    = get_current_user_id();
+
+			$file = sprintf( '%s/awesome-support/temp_%d_%d/%s', $upload['basedir'], $ticket_id, $user_id, $attachment );
+
+			/**
+			 * wpas_before_delete_temp_attachment fires before deleting temp attachment
+			 *
+			 * @since 5.1.1
+			 *
+			 * @param int $ticket_id     ID of the ticket
+			 * @param int $user_id       ID of the current logged in user
+			 * @param string $attachment Attachment filename
+			 */
+			do_action( 'wpas_before_delete_temp_attachment', $ticket_id, $user_id, $attachment );
+
+			if ( file_exists( $file ) ) {
+				unlink( $file );
+			}
+			
+		}
+
+		wp_die();
+
+	}
+
+	/**
+	 * Delete temporary attachment folder
+	 *
+	 * @since  5.1.1
+	 * 
+	 * @return void
+	 */
+	public function ajax_delete_temp_directory() {	
+	
+		$upload     = wp_upload_dir();
+		$temp_dir   = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], intval( $_POST[ 'ticket_id' ] ), get_current_user_id() );
+
+		if ( is_dir( $temp_dir ) ) {
+			$this->remove_directory( $temp_dir );
+		}
+
+		wp_die();
+
+	}
+
+
+	/**
+	 * Proccess attachments uploaded via ajax
+	 *
+	 * @param int $reply_id
+	 * @param array $data
+	 * 
+	 * @since  5.1.1
+	 * 
+	 * @return void
+	 */
+	public function check_ajax_uploaded_attachments( $reply_id, $data ) {
+
+		$upload = wp_upload_dir();
+		$dir    = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $data[ 'post_parent' ] . '_' . $data[ 'post_author' ] . '/';
+
+		// If temp directory exists, it means that user is uploaded attachments
+		if ( is_dir( $dir ) ) {
+
+			$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+			$accept    = array();
+	
+			foreach ( $filetypes as $key => $type ) {
+				array_push( $accept, '*.' . $type );
+			}
+	
+			$accept = implode( ',', $accept );
+
+			foreach( glob( $dir . '{' . $accept . '}', GLOB_BRACE ) as $file ) {
+
+				// Prepare an array of post data for the attachment.
+				$attachment = array(
+					'guid'           => trailingslashit( $upload['url'] ) . basename( $file ), 
+					'post_mime_type' => mime_content_type( $file ),
+					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file ) ),
+					'post_content'   => '',
+					'post_status'    => 'inherit'
+				);
+
+				// Insert the attachment.
+				wp_insert_attachment( $attachment, $file, $reply_id );
+
+				$new_file_dir = trailingslashit( $upload['basedir'] ) . 'awesome-support/ticket_' . $data[ 'post_parent' ] ;
+
+				// Create ticket attachment directory if not exists
+				if ( ! file_exists( $new_file_dir ) ) {
+					$this->create_upload_dir( $new_file_dir );
+				}
+
+				// Move file from temp dir to ticket dir
+				rename( $file, trailingslashit( $new_file_dir ) . basename( $file ) );
+
+			} 
+
+			// Remove directoty
+			$this->remove_directory( $dir );
+
+		}
+
+	}
+
+	/**
+	 * Schedule cleanup of unused attachments dir 
+	 * 
+	 * @since  5.1.1
+	 *
+	 * @return void
+	 */
+	public function attachments_dir_cleanup_schedule() {
+
+		if ( ! wp_next_scheduled( 'attachments_dir_cleanup_action' ) ) {
+			wp_schedule_event( time(), 'daily', 'attachments_dir_cleanup_action');
+		}
+
+	}
+
+	/**
+	 * Attachments dir cleanup action.
+	 * Removes temporary attachment folders
+	 * 
+	 * @since  5.1.1
+	 *
+	 * @return void
+	 */
+	public function attachments_dir_cleanup() {
+
+		$upload  = wp_get_upload_dir();
+		$folders = glob( trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_*' );
+	
+		foreach ( $folders as $folder ) {
+			$this->remove_directory( $folder );
+		}
+
+	}
+
+	/**
+	 * Remove directory
+	 * 
+	 * @since  5.1.1
+	 *
+	 * @return void
+	 */
+	public function remove_directory( $directory ) {
+
+		if ( ! is_dir( $directory ) ) {
+			return false;
+		}
+
+		$it    = new RecursiveDirectoryIterator( $directory, RecursiveDirectoryIterator::SKIP_DOTS );
+		$files = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
+
+		foreach ( $files as $file ) {
+			if ( $file->isDir() ) {
+				rmdir( $file->getRealPath() );
+			} else {
+				unlink( $file->getRealPath() );
+			}
+		}
+
+		rmdir( $directory );
 
 	}
 

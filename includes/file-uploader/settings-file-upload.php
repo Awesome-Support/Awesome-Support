@@ -20,6 +20,13 @@ function wpas_addon_settings_file_upload( $def ) {
 					'desc'    => __( 'Do you want to allow your users (and agents) to upload attachments to tickets and replies?', 'awesome-support' )
 				),
 				array(
+					'name'    => __( 'Enable Ajax File Upload', 'awesome-support' ),
+					'id'      => 'ajax_upload',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Enable ajax uploader', 'awesome-support' )
+				),
+				array(
 					'name'    => __( 'Maximum Files', 'awesome-support' ),
 					'id'      => 'attachments_max',
 					'type'    => 'text',
