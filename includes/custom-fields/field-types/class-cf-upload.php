@@ -83,7 +83,7 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 		$ajax = ( $this->field_args['use_ajax_uploader'] === true ) ? true : false;
 
 		if ( $ajax ) {
-			return '<div class="wpas-uploader-dropzone dropzone" id="dropzone-' . $this->field_id . '" data-ticket-id="' . get_the_ID() . '" data-enable-paste="' . boolval( $this->field_args['enable_paste'] ). '"><div class="dz-message" data-dz-message><span>' . __( 'Drop files here to upload', 'awesome-support' ). '</span></div></div>';
+			return '<label {{label_atts}}>{{label}}</label><div class="wpas-uploader-dropzone dropzone" id="dropzone-' . $this->field_id . '" data-ticket-id="' . get_the_ID() . '" data-enable-paste="' . boolval( $this->field_args['enable_paste'] ). '"><div class="dz-message" data-dz-message><span>' . __( 'Drop files here to upload', 'awesome-support' ). '</span></div></div>';
 		}
 
 		// Non ajax uploader
