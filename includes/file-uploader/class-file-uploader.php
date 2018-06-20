@@ -780,7 +780,6 @@ class WPAS_File_Upload {
 				'capability' => 'edit_ticket',
 				'field_type' => 'upload',
 				'multiple'   => true,
-				'ajax'       => true,
 				'label'      => __( 'Attachments', 'awesome-support' ),
 				'desc'       => sprintf( __( ' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'awesome-support' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) ),
 			),
