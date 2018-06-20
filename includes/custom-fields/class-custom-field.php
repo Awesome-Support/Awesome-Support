@@ -236,7 +236,7 @@
 
 				// @since 5.1.1
 				// Use ajax for uploading files - used by upload custom field
-				'use_ajax_uploader' => false,								
+				'use_ajax_uploader' => true,								
 
 			);
 
