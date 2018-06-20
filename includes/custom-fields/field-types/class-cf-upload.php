@@ -28,6 +28,11 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 			$this->field_args['use_ajax_uploader'] = $defaults['use_ajax_uploader'];
 
 		}
+		
+		/* Force ajax upload if option to enable in settings is turned on... */
+		if ( boolval( wpas_get_option( 'ajax_upload_all', false ) ) ) {
+			$this->field_args['use_ajax_uploader'] = true;
+		}
 
 		/* Change the field name if multiple upload is enabled */
 		add_filter( 'wpas_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 3 );
@@ -77,10 +82,11 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 		// Ajax uploader?
 		$ajax = ( $this->field_args['use_ajax_uploader'] === true ) ? true : false;
 
-		if ( wpas_get_option( 'ajax_upload' ) && $ajax ) {
+		if ( $ajax ) {
 			return '<div class="wpas-uploader-dropzone dropzone" id="dropzone-' . $this->field_id . '" data-ticket-id="' . get_the_ID() . '" data-enable-paste="' . boolval( $this->field_args['enable_paste'] ). '"><div class="dz-message" data-dz-message><span>' . __( 'Drop files here to upload', 'awesome-support' ). '</span></div></div>';
 		}
 
+		// Non ajax uploader
 		$multiple  = true === $this->field_args['multiple'] ? 'multiple' : '';
 		$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
 		$accept    = array();

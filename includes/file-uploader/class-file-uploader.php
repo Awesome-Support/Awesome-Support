@@ -85,7 +85,7 @@ class WPAS_File_Upload {
 		}
 
 		// If Ajax upload is enabled
-		if ( wpas_get_option( 'ajax_upload' ) ) {
+		if ( boolval( wpas_get_option( 'ajax_upload', false ) ) || boolval( wpas_get_option( 'ajax_upload_all', false ) ) ) {
 
 			// Cleanup action
 			add_action( 'attachments_dir_cleanup_action', array( $this, 'attachments_dir_cleanup' ) );
@@ -780,6 +780,7 @@ class WPAS_File_Upload {
 				'capability' => 'edit_ticket',
 				'field_type' => 'upload',
 				'multiple'   => true,
+				'use_ajax_uploader' => ( boolval( wpas_get_option( 'ajax_upload', false ) ) ),
 				'label'      => __( 'Attachments', 'awesome-support' ),
 				'desc'       => sprintf( __( ' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'awesome-support' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) ),
 			),
@@ -1529,7 +1530,7 @@ class WPAS_File_Upload {
 	/**
 	 * Upload attachment using ajax
 	 *
-	 * @since  5.1.1
+	 * @since  5.2.0
 	 * 
 	 * @return void
 	 */
@@ -1575,7 +1576,7 @@ class WPAS_File_Upload {
 	/**
 	 * Delete temporary attachment using ajax
 	 *
-	 * @since  5.1.1
+	 * @since  5.2.0
 	 * 
 	 * @return void
 	 */
@@ -1614,7 +1615,7 @@ class WPAS_File_Upload {
 	/**
 	 * Delete temporary attachment folder
 	 *
-	 * @since  5.1.1
+	 * @since  5.2.0
 	 * 
 	 * @return void
 	 */
@@ -1638,7 +1639,7 @@ class WPAS_File_Upload {
 	 * @param int $reply_id
 	 * @param array $data
 	 * 
-	 * @since  5.1.1
+	 * @since  5.2.0
 	 * 
 	 * @return void
 	 */
@@ -1695,7 +1696,7 @@ class WPAS_File_Upload {
 	/**
 	 * Schedule cleanup of unused attachments dir 
 	 * 
-	 * @since  5.1.1
+	 * @since  5.2.0
 	 *
 	 * @return void
 	 */
@@ -1729,7 +1730,7 @@ class WPAS_File_Upload {
 	/**
 	 * Remove directory
 	 * 
-	 * @since  5.1.1
+	 * @since  5.2.0
 	 *
 	 * @return void
 	 */

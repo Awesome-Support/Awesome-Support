@@ -23,9 +23,16 @@ function wpas_addon_settings_file_upload( $def ) {
 					'name'    => __( 'Enable Ajax File Upload', 'awesome-support' ),
 					'id'      => 'ajax_upload',
 					'type'    => 'checkbox',
-					'default' => true,
-					'desc'    => __( 'Enable ajax uploader', 'awesome-support' )
+					'default' => false,
+					'desc'    => __( 'Enable ajax uploader for ticket form', 'awesome-support' )
 				),
+				array(
+					'name'    => __( 'Enable Ajax For All', 'awesome-support' ),
+					'id'      => 'ajax_upload_all',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable ajax uploader for all custom upload fields', 'awesome-support' )
+				),				
 				array(
 					'name'    => __( 'Maximum Files', 'awesome-support' ),
 					'id'      => 'attachments_max',
