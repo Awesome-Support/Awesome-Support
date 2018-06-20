@@ -17,7 +17,11 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 		}
 
 		if ( ! isset( $this->field_args['use_ajax_uploader'] ) ) {
-			$this->field_args['use_ajax_uploader'] = false;
+			// Get default value for this parameter
+			$defaults = $this->get_field_defaults();
+
+			$this->field_args['use_ajax_uploader'] = $defaults['use_ajax_uploader'];
+
 		}
 
 		/* Change the field name if multiple upload is enabled */
