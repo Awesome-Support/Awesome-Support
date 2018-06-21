@@ -1431,8 +1431,9 @@
 			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $readonly ) ) ) {
 				$readonly = true;
 
-				// Disable tiny mce editor
-				add_filter( 'tiny_mce_before_init', 'wpas_cf_field_time_tracking_disable_tiny_mce' );
+				// Disable tiny mce editor for notes field
+				//@Todo: Need to find a way to do this without affecting all other editors on the page.
+				// Theoretically, this really should be done in the custom field itself when the readonly attrtibute is set/reset to true.
 
 			}
 
@@ -1442,23 +1443,6 @@
 
 	}
 
-	/**
-	 * Disable tiny mce editor for Time Tracking Notes when readonly
-	 *
-	 * @since 3.3.5
-	 *
-	 * @param $args
-	 *
-	 * @return mixed
-	 */
-	function wpas_cf_field_time_tracking_disable_tiny_mce( $args ) {
-
-		$args[ 'readonly' ] = true;
-
-		return $args;
-
-	}
-	
 	/**
 	 * Returns the URL that the user should be redirected to when the logout button is pushed
 	 *
