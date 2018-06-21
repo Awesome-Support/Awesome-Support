@@ -163,18 +163,14 @@ class WPAS_Privacy_Option {
 		if( isset( $author->ID ) && !empty( $author->ID )){
 			$user_tickets_data = $instance->wpas_gdpr_ticket_data( $author->ID, $number );
 			$user_consent_data = $instance->wpas_gdpr_consent_data( $author->ID );
-			if( !empty( $user_consent_data )){
-				// foreach ( $user_consent_data as $consent_key => $consent_value ) {
-					
-				// }
-			}
+
 			if( !empty( $user_tickets_data )){
 				$name = '';
 				$value = '';
 				$item_id = "as-{$user->ID}";
 				$data_to_export[] = array(
 					'group_id'    => 'awesome-support',
-					'group_label' => __( 'Awesome Support' ),
+					'group_label' => __( 'Awesome Support', 'awesome-support' ),
 					'item_id'     => $item_id,
 					'data'        => array(),
 				);
@@ -229,12 +225,48 @@ class WPAS_Privacy_Option {
 					}
 					$data_to_export[] = array(
 						'group_id'    => 'ticket_' . $ticket_count,
-						'group_label' => __( $ticket['subject'] ),
+						'group_label' => __( $ticket['subject'], 'awesome-support' ),
 						'item_id'     => $item_id,
 						'data'        => $user_data_to_export,
 					);
 					$user_data_to_export = array();
 				}
+			}
+			if( !empty( $user_consent_data )){
+				$consent_count = 0;
+				foreach ( $user_consent_data as $consent_key => $consent_value ) {
+					$consent_count ++;
+					if( isset( $consent_value['item'] ) && !empty( $consent_value['item'] ) ){
+						$user_data_to_export[] = array(
+							'name'  => __( 'Item', 'awesome-support' ),
+							'value' => $consent_value['item'],
+						);
+						if( isset( $consent_value['status'] ) && !empty( $consent_value['status'] ) ){
+							$user_data_to_export[] = array(
+								'name'  => __( 'Status', 'awesome-support' ),
+								'value' => $consent_value['status'],
+							);
+						}
+						if( isset( $consent_value['opt_in'] ) && !empty( $consent_value['opt_in'] ) ){
+							$user_data_to_export[] = array(
+								'name'  => __( 'Opt In', 'awesome-support' ),
+								'value' => $consent_value['opt_in'],
+							);
+						}
+						if( isset( $consent_value['opt_out'] ) && !empty( $consent_value['opt_out'] ) ){
+							$user_data_to_export[] = array(
+								'name'  => __( 'Opt Out', 'awesome-support' ),
+								'value' => $consent_value['opt_out'],
+							);
+						}
+					}
+				}
+				$data_to_export[] = array(
+					'group_id'    => 'ticket_consent_' . $consent_count,
+					'group_label' => __( 'Consent Data', 'awesome-support' ),
+					'item_id'     => $item_id,
+					'data'        => $user_data_to_export,
+				);
 			}
 			$done = count( $user_tickets_data ) < $number;
 		}
