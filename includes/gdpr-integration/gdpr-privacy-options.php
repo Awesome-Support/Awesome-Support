@@ -92,7 +92,7 @@ class WPAS_Privacy_Option {
 			'post_type'      => array( 'ticket' ),
 			'author'         => $author->ID,
 			'post_status'    => array_keys( wpas_get_post_status() ),
-			'number'         => $number,
+			'posts_per_page' => $number,
 			'paged'          => $page
 		);
 		/**
