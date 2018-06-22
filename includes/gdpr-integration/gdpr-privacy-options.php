@@ -305,6 +305,11 @@ class WPAS_Privacy_Option {
 
 			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
 			if ( ! empty( $ticket_id ) ) {
+				// send erase data request.
+				$current_user = wp_get_current_user();
+				if( isset( $current_user->user_email ) && !empty( $current_user->user_email )){
+					wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
+				}
 				$response['code']    = 200;
 				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
 			} else {
