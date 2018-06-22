@@ -781,6 +781,7 @@ class WPAS_File_Upload {
 				'field_type' => 'upload',
 				'multiple'   => true,
 				'use_ajax_uploader' => ( boolval( wpas_get_option( 'ajax_upload', false ) ) ),
+				'enable_paste' => ( boolval( wpas_get_option( 'ajax_upload_paste_image', false ) ) ),
 				'label'      => __( 'Attachments', 'awesome-support' ),
 				'desc'       => sprintf( __( ' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'awesome-support' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) ),
 			),
