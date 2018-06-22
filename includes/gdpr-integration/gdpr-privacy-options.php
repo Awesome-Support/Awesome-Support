@@ -88,22 +88,20 @@ class WPAS_Privacy_Option {
 		$items_removed  = false;
 		$items_retained = false;
 		$author = get_user_by( 'email', $email_address );
+		$args = array(
+			'post_type'      => array( 'ticket' ),
+			'author'         => $author->ID,
+			'post_status'    => array_keys( wpas_get_post_status() ),
+			'number'         => $number,
+			'paged'          => $page
+		);
 		/**
 		 * Delete ticket data belongs to the mention email id.
 		 */
-		$ticket_data  = new WP_Query(
-			array(
-				'post_type'      => array( 'ticket' ),
-				'author'         => $author->ID,
-				'post_status'    => array_keys( wpas_get_post_status() ),
-				'number'         => $number,
-				'paged'          => $page
-			)
-		);
-
+		$ticket_data  = get_posts( $args );
 		$messages  = array();
 		if( !empty( $ticket_data )){
-			foreach ( (array) $ticket_data as $ticket ) {
+			foreach ( $ticket_data as $ticket ) {
 				if( isset( $ticket->ID ) && !empty( $ticket->ID )){
 					$ticket_id = (int) $ticket->ID;
 					if ( $ticket_id ) {
@@ -458,6 +456,14 @@ class WPAS_Privacy_Option {
 
 			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
 			if ( ! empty( $ticket_id ) ) {
+				// send erase data request.
+				$current_user = wp_get_current_user();
+				if( isset( $current_user->user_email ) && !empty( $current_user->user_email )){
+					$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
+					if( $request_id ) {
+						wp_send_user_request( $request_id );
+					}
+				}
 				$response['code']    = 200;
 				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
 			} else {
