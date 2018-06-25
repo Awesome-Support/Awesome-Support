@@ -4,6 +4,7 @@
     var ticket_id = false;
     Dropzone.autoDiscover = false;
 
+    var submitButtons = $('button[name="wpas_do"], button[name="wpas-submit"]');
 
     function attachDropZones() {
 
@@ -34,6 +35,11 @@
                         formData.append('action', 'wpas_upload_attachment');
                         formData.append('ticket_id', ticket_id );
                         uploaded = true;
+                        submitButtons.attr('disabled', 'disabled');
+                    });
+
+                    this.on('complete', function(e) {
+                        submitButtons.removeAttr('disabled');
                     });
             
                     this.on('addedfile', function(e) {
@@ -107,7 +113,7 @@
 
 
     // Reset uploaded var on reply submit
-    $('button[name="wpas_do"], button[name="wpas-submit"]').on('click', function(e){
+    submitButtons.on('click', function(e){
         uploaded = false;
     });
 
