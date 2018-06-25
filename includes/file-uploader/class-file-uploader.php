@@ -1501,8 +1501,8 @@ class WPAS_File_Upload {
 
 	public function load_ajax_uploader_assets() {
 
-		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/dropzone.css', null, WPAS_VERSION );
-		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/dropzone.js', array( 'jquery' ), WPAS_VERSION );
+		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/vendor/dropzone.css', null, WPAS_VERSION );
+		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/vendor/dropzone.js', array( 'jquery' ), WPAS_VERSION );
 		wp_register_script( 'wpas-ajax-upload', WPAS_URL . 'assets/admin/js/admin-ajax-upload.js', array( 'jquery' ), WPAS_VERSION, true );
 
 		wp_enqueue_style( 'wpas-dropzone' );
