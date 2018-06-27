@@ -1648,6 +1648,8 @@ class WPAS_File_Upload {
 	public function new_ticket_ajax_attachments( $ticket_id, $data ) {
 		if( isset( $_POST['ticket_id'] ) ){
 			$submission_ticket_id = intval( $_POST['ticket_id'] );
+		} else {
+			return;
 		}
 		$this->process_ajax_upload($submission_ticket_id, $ticket_id, $data);
 	}
