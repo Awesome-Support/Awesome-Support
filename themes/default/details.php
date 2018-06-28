@@ -127,7 +127,13 @@ $author = get_user_by( 'id', $post->post_author );
 		<div class="wpas-alert wpas-alert-info wpas-pagi">
 			<div class="wpas-pagi-loader"><?php _e( 'Loading...', 'awesome-support' ); ?></div>
 			<p class="wpas-pagi-text"><?php echo wp_kses_post( sprintf( _x( 'Showing %s replies of %s.', 'Showing X replies out of a total of X replies', 'awesome-support' ), "<span class='wpas-replies-current'>$current</span>", "<span class='wpas-replies-total'>$total</span>" ) ); ?>
-				<?php if ( -1 !== $replies_per_page ): ?><a href="#" class="wpas-pagi-loadmore"><?php _e( 'Load newer replies', 'awesome-support' ); ?></a><?php endif; ?>
+				<?php 
+				if ( 'ASC' == wpas_get_option( 'replies_order', 'ASC' ) ) {
+					$load_msg = __( 'Load newer replies', 'awesome-support' );
+				} else {
+					$load_msg = __( 'Load older replies', 'awesome-support' );
+				} ?>
+				<?php if ( -1 !== $replies_per_page ): ?><a href="#" class="wpas-pagi-loadmore"><?php echo $load_msg; ?></a><?php endif; ?>
 			</p>
 		</div>
 
