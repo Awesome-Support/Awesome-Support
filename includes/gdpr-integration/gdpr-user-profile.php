@@ -327,16 +327,19 @@ class WPAS_GDPR_User_Profile {
 	 *
 	 * @param $user User ID.
 	 */
-	public function  wpas_gdpr_ticket_data( $user, $number = -1 ){
-		$ticket_data  = new WP_Query(
-			array(
+	public function  wpas_gdpr_ticket_data( $user, $number = -1, $paged ='' ){
+
+		$args = array(
 				'post_type'      => array( 'ticket' ),
 				'author'         => $user,
 				'post_status'    => array_keys( wpas_get_post_status() ),
-				'posts_per_page' => -1,
-			)
-		);
-		
+				'posts_per_page' => $number,
+			);
+		if( !empty( $paged ) ){
+			$args['paged'] = $paged;
+		} 
+
+		$ticket_data  = new WP_Query( $args );
 		$user_tickets = array();
 		if ( $ticket_data->found_posts > 0 ) {
 			if ( isset( $ticket_data->posts ) ) {

@@ -159,7 +159,7 @@ class WPAS_Privacy_Option {
 		}
 		$instance = WPAS_GDPR_User_Profile::get_instance();
 		if( isset( $author->ID ) && !empty( $author->ID )){
-			$user_tickets_data = $instance->wpas_gdpr_ticket_data( $author->ID, $number );
+			$user_tickets_data = $instance->wpas_gdpr_ticket_data( $author->ID, $number, $page );
 			$user_consent_data = $instance->wpas_gdpr_consent_data( $author->ID );
 
 			if( !empty( $user_tickets_data )){
@@ -172,13 +172,12 @@ class WPAS_Privacy_Option {
 					'item_id'     => $item_id,
 					'data'        => array(),
 				);
-				$ticket_count = 0;
  				foreach ( $user_tickets_data as $key2 => $ticket ) {
- 					$ticket_count ++;
+ 					
 					foreach ( $ticket as $key => $value ) {
 						switch ( $key ) {
 							case 'ticket_id':
-								$item_id = 'as-ticket-{$value}';
+								$item_id = 'as-ticket-{' . $value . '}';
 								$name = __( 'Ticket ID', 'awesome-support' );
 							break;
 							case 'subject':
@@ -221,8 +220,9 @@ class WPAS_Privacy_Option {
 							);
 						}
 					}
+
 					$data_to_export[] = array(
-						'group_id'    => 'ticket_' . $ticket_count,
+						'group_id'    => 'ticket_' . $item_id,
 						'group_label' => __( $ticket['subject'], 'awesome-support' ),
 						'item_id'     => $item_id,
 						'data'        => $user_data_to_export,
@@ -268,7 +268,6 @@ class WPAS_Privacy_Option {
 			}
 			$done = count( $user_tickets_data ) < $number;
 		}
-		
 		
 		return array(
 			'data' => $data_to_export,
