@@ -38,6 +38,99 @@ class WPAS_Privacy_Option {
 		 */
 		add_action( 'wp_ajax_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
 		add_action( 'wp_ajax_nopriv_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
+		
+		add_action( 'wpas_system_tools_after', array( $this, 'wpas_system_tools_after_gdpr_callback' ) );
+		
+		add_filter( 'wpas_show_done_tool_message', array( $this, 'wpas_show_done_tool_message_gdpr_callback' ), 10, 2 );
+
+		add_filter( 'execute_additional_tools', array( $this, 'execute_additional_tools_gdpr_callback' ), 10, 1 );
+		
+		
+	}
+
+	/**
+	 * 
+	 */
+	function execute_additional_tools_gdpr_callback( $tool ){
+
+		if ( ! isset( $tool ) || ! isset( $_GET['_nonce'] ) ) {
+			return false;
+		}
+
+		if ( ! wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
+			return false;
+		}
+
+		switch ( sanitize_text_field( $tool ) ) {
+
+			case 'remove_all_user_consent':
+				// WP_User_Query arguments
+				$args = array (
+				    'order' => 'ASC',
+				    'orderby' => 'display_name',
+				);
+
+				// Create the WP_User_Query object
+				$wp_user_query = new WP_User_Query($args);
+
+				// Get the results
+				$authors = $wp_user_query->get_results();
+				
+				// Check for results
+				if (!empty($authors)) {
+
+				    // loop through each author
+				    foreach ($authors as $author) {
+
+				        // get all the user's data
+				        if( isset( $author->ID ) && !empty( $author->ID )){
+				        	delete_user_option( $author->ID, 'wpas_consent_tracking' );
+				        }
+				    }
+				}
+
+				break;
+		}
+
+	}
+	/**
+	 * Update data on clean up tool click.
+	 */
+	function wpas_show_done_tool_message_gdpr_callback( $message, $status ){
+		switch( $status ) {
+
+			case 'remove_all_user_consent':
+				$message = __( 'User Consent cleared', 'awesome-support' );
+				break;
+
+		}
+		return $message;
+	}
+
+	/**
+	 * 
+	 */
+	function wpas_system_tools_after_gdpr_callback(){
+		?>
+		<p><h3><?php _e( 'GDPR/Privacy', 'awesome-support' ); ?></h3></p>
+		<table class="widefat wpas-system-tools-table" id="wpas-system-tools-gdpr">
+			<thead>
+				<tr>
+					<th data-override="key" class="row-title"><?php _e( 'GDPR Consent Bulk Action', 'awesome-support' ); ?></th>
+					<th data-override="value"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="row-title"><label for="tablecell"><?php _e( 'GDPR Consent', 'awesome-support' ); ?></label></td>
+					<td>
+						<a href="<?php echo wpas_tool_link( 'remove_all_user_consent' ); ?>" class="button-secondary"><?php _e( 'Remove', 'awesome-support' ); ?></a>
+						<span class="wpas-system-tools-desc"><?php _e( 'Clear User Consent data for all Awesome support Users', 'awesome-support' ); ?></span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<?php 
 	}
 
 	/**
