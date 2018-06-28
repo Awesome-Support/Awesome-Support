@@ -46,6 +46,7 @@ class WPAS_GDPR_User_Profile {
 		add_action( 'wp_ajax_nopriv_wpas_gdpr_export_data', array( $this, 'wpas_gdpr_export_data' ) );
 
 		add_action( 'init', array( $this, 'download_file' ) );
+		
 	}
 
 	/**
@@ -260,47 +261,9 @@ class WPAS_GDPR_User_Profile {
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
-			/**
-			 * Export ticket data belongs to the current user
-			 */
-			$ticket_data  = new WP_Query(
-				array(
-					'post_type'      => array( 'ticket' ),
-					'author'         => $user,
-					'post_status'    => array_keys( wpas_get_post_status() ),
-					'posts_per_page' => -1,
-				)
-			);
 
-			$user_tickets = array();
-			if ( $ticket_data->found_posts > 0 ) {
-				if ( isset( $ticket_data->posts ) ) {
-					foreach ( $ticket_data->posts as $key => $post ) {
-						$user_tickets[ 't' . $key ] = array(
-							'ticket_id'     => $post->ID,
-							'subject'       => $post->post_title,
-							'description'   => $post->post_content,
-							'attachments'   => $this->get_ticket_attachment( $post->ID ),
-							'replies'       => $this->get_ticket_replies( $post->ID ),
-							'ticket_status' => $this->convert_status( $post->ID ),
-							'ticket_meta'   => $this->get_ticket_meta( $post->ID ),
-						);
-					}
-				}
-				wp_reset_postdata();
-			}
-
-			/**
-			 * Export GDPR logs
-			 */
-			$user_option_data = get_user_option( 'wpas_consent_tracking', $user );
-			$user_consent     = array();
-			if ( ! empty( $user_option_data ) ) {
-				foreach ( $user_option_data as $key => $option_data ) {
-					$user_consent[ 'o' . $key ] = $option_data;
-				}
-			}
-
+			$user_tickets = $this->wpas_gdpr_ticket_data( $user );
+			$user_consent = $this->wpas_gdpr_consent_data( $user );
 			if ( ! empty( $user_consent ) || ! empty( $user_tickets ) ) {
 				/**
 				 * Put them in awesome-support/user_log_$user_id
@@ -341,6 +304,60 @@ class WPAS_GDPR_User_Profile {
 		}
 		wp_send_json( $response );
 		wp_die();
+	}
+
+	/**
+	 * Export GDPR logs
+	 *
+	 * @param $user User ID.
+	 */
+	public function wpas_gdpr_consent_data( $user ){
+		$user_option_data = get_user_option( 'wpas_consent_tracking', $user );
+		$user_consent     = array();
+		if ( ! empty( $user_option_data ) ) {
+			foreach ( $user_option_data as $key => $option_data ) {
+				$user_consent[ 'o' . $key ] = $option_data;
+			}
+		}
+		return $user_consent;
+	}
+
+	/**
+	 * Export ticket data belongs to the current user
+	 *
+	 * @param $user User ID.
+	 */
+	public function  wpas_gdpr_ticket_data( $user, $number = -1, $paged ='' ){
+
+		$args = array(
+				'post_type'      => array( 'ticket' ),
+				'author'         => $user,
+				'post_status'    => array_keys( wpas_get_post_status() ),
+				'posts_per_page' => $number,
+			);
+		if( !empty( $paged ) ){
+			$args['paged'] = $paged;
+		} 
+
+		$ticket_data  = new WP_Query( $args );
+		$user_tickets = array();
+		if ( $ticket_data->found_posts > 0 ) {
+			if ( isset( $ticket_data->posts ) ) {
+				foreach ( $ticket_data->posts as $key => $post ) {
+					$user_tickets[ 't' . $key ] = array(
+						'ticket_id'     => $post->ID,
+						'subject'       => $post->post_title,
+						'description'   => $post->post_content,
+						'attachments'   => $this->get_ticket_attachment( $post->ID ),
+						'replies'       => $this->get_ticket_replies( $post->ID ),
+						'ticket_status' => $this->convert_status( $post->ID ),
+						'ticket_meta'   => $this->get_ticket_meta( $post->ID ),
+					);
+				}
+			}
+			wp_reset_postdata();
+		}
+		return $user_tickets;
 	}
 
 	/**
