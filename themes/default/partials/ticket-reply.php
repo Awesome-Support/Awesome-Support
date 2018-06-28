@@ -63,7 +63,7 @@ $user_role = $user->roles[0];
 			do_action( 'wpas_frontend_reply_content_before', get_the_ID() );
 			?>
 
-			<div class="wpas-reply-content"><?php the_content(); ?></div>
+			<div class="wpas-reply-content wpas-break-words"><?php the_content(); ?></div>
 
 			<?php
 			/**
