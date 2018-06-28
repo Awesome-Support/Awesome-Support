@@ -11,6 +11,11 @@
     padding: 30px;
  }
 
+ .wpas-uploader-dropzone:hover  {
+   border-color: #ffbb00;
+ }
+
+
  @-webkit-keyframes passing-through {
     0% {
       opacity: 0;
@@ -192,7 +197,7 @@
     .dropzone.dz-started .dz-message {
       display: none; }
     .dropzone.dz-drag-hover {
-      border-style: solid; }
+      border-color: #ffbb00; }
       .dropzone.dz-drag-hover .dz-message {
         opacity: 0.5; }
     .dropzone .dz-message {
