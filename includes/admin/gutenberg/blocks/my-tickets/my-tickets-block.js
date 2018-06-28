@@ -5,7 +5,7 @@
 	
 	var el = wp.element.createElement,
 		registerBlockType = wp.blocks.registerBlockType,
-		blockStyle = { backgroundColor: '#900', color: '#fff', padding: '20px' };
+		blockStyle = { backgroundColor: '#fff', color: '#000', padding: '20px' };
 		blockStyleSave = { } ;
 
 	var __ = wp.i18n.__; // The __() for internationalization.	
