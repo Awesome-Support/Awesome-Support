@@ -26,6 +26,7 @@ function wpas_register_submenu_items() {
 	
 	if ( ! defined( 'WPAS_SAAS' ) || ( defined( 'WPAS_SAAS' ) && false === WPAS_SAAS ) ) {
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Get a Free Addon', 'awesome-support' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'awesome-support' ) . '</span>', 'administrator', 'wpas-optin', 'wpas_display_optin_page' );
+		add_submenu_page( 'edit.php?post_type=ticket', __( 'Help & Support', 'awesome-support' ), '<span style="color:#4CBBA7;">' . esc_html__( 'Help & Support', 'awesome-support' ) . '</span>', 'administrator', 'wpas-help-and-support', 'wpas_display_help_and_support_page' );		
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'awesome-support' ), __( 'About', 'awesome-support' ), 'edit_posts', 'wpas-about', 'wpas_display_about_page' );	
 	}				
 
@@ -102,6 +103,15 @@ function wpas_display_addons_page() {
  */
 function wpas_display_optin_page() {
 	include_once( WPAS_PATH . 'includes/admin/views/opt-in.php' );
+}
+
+/**
+ * Render the help & support options page
+ *
+ * @since    5.2.0
+ */
+function wpas_display_help_and_support_page() {
+	include_once( WPAS_PATH . 'includes/admin/views/wpas-help-and-support.php' );
 }
 
 /**

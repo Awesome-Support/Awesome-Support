@@ -714,6 +714,21 @@ function wpas_get_settings_page_url( $tab = '' ) {
 
 }
 
+/**
+ * Get plugin ABOUT page URL.
+ *
+ * @since  5.2.0
+ * @return string      URL to the about page
+ */
+function wpas_get_about_page_url() {
+
+	$admin_url  = admin_url( 'edit.php' );
+	$query_args = array( 'post_type' => 'ticket', 'page' => 'wpas-about' );
+
+	return add_query_arg( $query_args, $admin_url );
+
+}
+
 if ( ! function_exists( 'shuffle_assoc' ) ) {
 	/**
 	 * Shuffle an associative array.
