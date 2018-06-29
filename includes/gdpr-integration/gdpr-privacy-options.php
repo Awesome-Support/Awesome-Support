@@ -38,6 +38,241 @@ class WPAS_Privacy_Option {
 		 */
 		add_action( 'wp_ajax_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
 		add_action( 'wp_ajax_nopriv_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
+
+		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'wp_register_asdata_personal_data_eraser' ) );
+		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'wp_privacy_personal_asdata_exporters' ), 10, 1 );
+	}
+
+
+	/**
+	 * Registers the personal data eraser for Awesome Support data.
+	 *
+	 * @since  5.1.1
+	 *
+	 * @param  array $erasers An array of personal data erasers.
+	 * @return array $erasers An array of personal data erasers.
+	 */
+	public function wp_register_asdata_personal_data_eraser( $erasers ){
+		$erasers['awesome-support-data'] = array(
+			'eraser_friendly_name' => __( 'Awesome Support Data' ),
+			'callback'             => array( $this, 'as_users_personal_data_eraser' ),
+		);
+
+		return $erasers;
+	}
+
+	/**
+	 * Erases Awesome Support related personal data associated with an email address.
+	 *
+	 * @since 4.9.6
+	 *
+	 * @param  string $email_address The As Users email address.
+	 * @param  int    $page          Ticket page.
+	 * @return array
+	 */
+	public function as_users_personal_data_eraser( $email_address, $page = 1 ){
+		global $wpdb;
+
+		if ( empty( $email_address ) ) {
+			return array(
+				'items_removed'  => false,
+				'items_retained' => false,
+				'messages'       => array(),
+				'done'           => true,
+			);
+		}
+
+		// Limit us to 500 comments at a time to avoid timing out.
+		$number         = 500;
+		$page           = (int) $page;
+		$items_removed  = false;
+		$items_retained = false;
+		$author = get_user_by( 'email', $email_address );
+		$args = array(
+			'post_type'      => array( 'ticket' ),
+			'author'         => $author->ID,
+			'post_status'    => array_keys( wpas_get_post_status() ),
+			'posts_per_page' => $number,
+			'paged'          => $page
+		);
+		/**
+		 * Delete ticket data belongs to the mention email id.
+		 */
+		$ticket_data  = get_posts( $args );
+		$messages  = array();
+		if( !empty( $ticket_data )){
+			foreach ( $ticket_data as $ticket ) {
+				if( isset( $ticket->ID ) && !empty( $ticket->ID )){
+					$ticket_id = (int) $ticket->ID;
+					if ( $ticket_id ) {
+						$items_removed = true;
+						wp_delete_post( $ticket_id, true );
+					}
+				}
+			}
+		} else{
+			$messages[] = __( 'No Awesome Support data was found.' );
+		}
+
+		$done = count( $ticket_data ) < $number;
+
+		return array(
+			'items_removed'  => $items_removed,
+			'items_retained' => $items_retained,
+			'messages'       => $messages,
+			'done'           => $done,
+		);
+	}
+
+	public function wp_privacy_personal_asdata_exporters( $exporters ){
+		$exporters['awesome-support-data-test'] = array(
+			'exporter_friendly_name' => __( 'Awesome Support Data' ),
+			'callback'               => array( $this, 'as_users_personal_data_exporter' ),
+		);
+
+		return $exporters;
+	}
+
+
+	/**
+	 * Finds and exports personal Awesome Support data associated with an email address from the post table.
+	 *
+	 * @since 4.9.6
+	 *
+	 * @param string $email_address The comment author email address.
+	 * @param int    $page          Comment page.
+	 * @return array $return An array of personal data.
+	 */
+	public function as_users_personal_data_exporter( $email_address, $page = 1 ){
+		
+		$number = 500;
+		$page   = (int) $page;
+		$data_to_export = array();
+		$user_data_to_export = array();
+		$done = false;
+		$author = get_user_by( 'email', $email_address );
+		if ( ! $author ) {
+			return array(
+				'data' => array(),
+				'done' => true,
+			);
+		}
+		$instance = WPAS_GDPR_User_Profile::get_instance();
+		if( isset( $author->ID ) && !empty( $author->ID )){
+			$user_tickets_data = $instance->wpas_gdpr_ticket_data( $author->ID, $number, $page );
+			$user_consent_data = $instance->wpas_gdpr_consent_data( $author->ID );
+
+			if( !empty( $user_tickets_data )){
+				$name = '';
+				$value = '';
+				$item_id = "as-{$user->ID}";
+				$data_to_export[] = array(
+					'group_id'    => 'awesome-support',
+					'group_label' => __( 'Awesome Support', 'awesome-support' ),
+					'item_id'     => $item_id,
+					'data'        => array(),
+				);
+ 				foreach ( $user_tickets_data as $key2 => $ticket ) {
+ 					
+					foreach ( $ticket as $key => $value ) {
+						switch ( $key ) {
+							case 'ticket_id':
+								$item_id = 'as-ticket-{' . $value . '}';
+								$name = __( 'Ticket ID', 'awesome-support' );
+							break;
+							case 'subject':
+								$name = __( 'Ticket Subject', 'awesome-support' );
+							break;
+							case 'description':
+								$name = __( 'Ticket Description', 'awesome-support' );
+							break;
+							case 'replies':
+
+								if( !empty( $value ) && is_array( $value ) ){
+									$reply_count = 0;
+									foreach ( $value as $reply_key => $reply_data ) {
+										$reply_count ++;
+										if( isset( $reply_data['content'] ) && !empty( $reply_data['content'] )){
+											$name = __( 'Reply ' . $reply_count . ' Content', 'awesome-support' );
+											if ( ! empty( $value ) ) {
+												$user_data_to_export[] = array(
+													'name'  => $name,
+													'value' => $reply_data['content'],
+												);
+											}
+										}
+									}
+								}
+								$value = '';
+							break;
+							case 'ticket_status':
+								$name = __( 'Ticket Status', 'awesome-support' );
+							break;
+							default:
+								$value = '';
+							break;
+
+						}	
+						if ( ! empty( $value ) ) {
+							$user_data_to_export[] = array(
+								'name'  => $name,
+								'value' => $value,
+							);
+						}
+					}
+
+					$data_to_export[] = array(
+						'group_id'    => 'ticket_' . $item_id,
+						'group_label' => __( $ticket['subject'], 'awesome-support' ),
+						'item_id'     => $item_id,
+						'data'        => $user_data_to_export,
+					);
+					$user_data_to_export = array();
+				}
+			}
+			if( !empty( $user_consent_data )){
+				$consent_count = 0;
+				foreach ( $user_consent_data as $consent_key => $consent_value ) {
+					$consent_count ++;
+					if( isset( $consent_value['item'] ) && !empty( $consent_value['item'] ) ){
+						$user_data_to_export[] = array(
+							'name'  => __( 'Item', 'awesome-support' ),
+							'value' => $consent_value['item'],
+						);
+						if( isset( $consent_value['status'] ) && !empty( $consent_value['status'] ) ){
+							$user_data_to_export[] = array(
+								'name'  => __( 'Status', 'awesome-support' ),
+								'value' => $consent_value['status'],
+							);
+						}
+						if( isset( $consent_value['opt_in'] ) && !empty( $consent_value['opt_in'] ) ){
+							$user_data_to_export[] = array(
+								'name'  => __( 'Opt In', 'awesome-support' ),
+								'value' => $consent_value['opt_in'],
+							);
+						}
+						if( isset( $consent_value['opt_out'] ) && !empty( $consent_value['opt_out'] ) ){
+							$user_data_to_export[] = array(
+								'name'  => __( 'Opt Out', 'awesome-support' ),
+								'value' => $consent_value['opt_out'],
+							);
+						}
+					}
+				}
+				$data_to_export[] = array(
+					'group_id'    => 'ticket_consent_' . $consent_count,
+					'group_label' => __( 'Consent Data', 'awesome-support' ),
+					'item_id'     => $item_id,
+					'data'        => $user_data_to_export,
+				);
+			}
+			$done = count( $user_tickets_data ) < $number;
+		}
+		
+		return array(
+			'data' => $data_to_export,
+			'done' => $done,
+		);
 	}
 
 	/**
@@ -220,6 +455,16 @@ class WPAS_Privacy_Option {
 
 			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
 			if ( ! empty( $ticket_id ) ) {
+				// send erase data request.
+				if ( function_exists( 'wp_create_user_request' )  && function_exists( 'wp_send_user_request' ) ) {
+					$current_user = wp_get_current_user();
+					if( isset( $current_user->user_email ) && !empty( $current_user->user_email )){
+						$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
+						if( $request_id ) {
+							wp_send_user_request( $request_id );
+						}
+					}
+				}
 				$response['code']    = 200;
 				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
 			} else {
