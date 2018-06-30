@@ -12,7 +12,7 @@ class WPAS_Privacy_Option {
 	/**
 	 * Instance of this class.
 	 *
-	 * @since     5.1.1
+	 * @since     5.2.0
 	 * @var      object
 	 */
 	protected static $instance = null;
@@ -47,7 +47,7 @@ class WPAS_Privacy_Option {
 	/**
 	 * Registers the personal data eraser for Awesome Support data.
 	 *
-	 * @since  5.1.1
+	 * @since  5.2.0
 	 *
 	 * @param  array $erasers An array of personal data erasers.
 	 * @return array $erasers An array of personal data erasers.
@@ -55,7 +55,7 @@ class WPAS_Privacy_Option {
 	public function wp_register_asdata_personal_data_eraser( $erasers ){
 		$erasers['awesome-support-data'] = array(
 			'eraser_friendly_name' => __( 'Awesome Support Data' ),
-			'callback'             => array( $this, 'as_users_personal_data_eraser' ),
+			'callback'             => array( $this, 'wpas_users_personal_data_eraser' ),
 		);
 
 		return $erasers;
@@ -64,26 +64,40 @@ class WPAS_Privacy_Option {
 	/**
 	 * Erases Awesome Support related personal data associated with an email address.
 	 *
-	 * @since 4.9.6
+	 * @since 5.2.0
 	 *
 	 * @param  string $email_address The As Users email address.
 	 * @param  int    $page          Ticket page.
 	 * @return array
 	 */
-	public function as_users_personal_data_eraser( $email_address, $page = 1 ){
+	public function wpas_users_personal_data_eraser( $email_address, $page = 1 ){
 		global $wpdb;
 
-		if ( empty( $email_address ) ) {
-			return array(
+		// Evaluate whether conditions exist to allow deletion to proceed		
+		$empty_return = array(
 				'items_removed'  => false,
 				'items_retained' => false,
 				'messages'       => array(),
 				'done'           => true,
 			);
+			
+		if ( empty( $email_address ) ) {
+			return $empty_return;
+		}
+		
+		/**
+		* Filter for other add-ons to hook into to prevent personal ticket data from being erased.
+		*
+		* For example, time tracking might have its DO NOT ALLOW option set to delete so if it 
+		* hooks into this filter it can return FALSE to prevent further data deletion.
+		*
+		*/
+		if ( ! apply_filters( 'wpas_allow_personal_data_eraser', true ) ) {
+			return $empty_return;
 		}
 
-		// Limit us to 500 comments at a time to avoid timing out.
-		$number         = 500;
+		/* All pre-conditions good, so ok to proceed */
+		$number         = 500; // Limit us to 500 comments at a time to avoid timing out.
 		$page           = (int) $page;
 		$items_removed  = false;
 		$items_retained = false;
@@ -104,14 +118,16 @@ class WPAS_Privacy_Option {
 			foreach ( $ticket_data as $ticket ) {
 				if( isset( $ticket->ID ) && !empty( $ticket->ID )){
 					$ticket_id = (int) $ticket->ID;
-					if ( $ticket_id ) {
-						$items_removed = true;
-						wp_delete_post( $ticket_id, true );
+					if ( $ticket_id ) {						
+						if ( wp_delete_post( $ticket_id, true ) ) {
+							$items_removed = true;
+							$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+						}
 					}
 				}
 			}
 		} else{
-			$messages[] = __( 'No Awesome Support data was found.' );
+			$messages[] = __( 'No Awesome Support data was found.', 'awesome-support' );
 		}
 
 		$done = count( $ticket_data ) < $number;
@@ -124,10 +140,18 @@ class WPAS_Privacy_Option {
 		);
 	}
 
+	/**
+	 * Registers a personal data exporter for Awesome Support
+	 *
+	 * @since  5.2.0
+	 *
+	 * @param  array $exporters An array of personal data exporters.
+	 * @return array $exporters An array of personal data exporters.
+	 */	
 	public function wp_privacy_personal_asdata_exporters( $exporters ){
 		$exporters['awesome-support-data-test'] = array(
 			'exporter_friendly_name' => __( 'Awesome Support Data' ),
-			'callback'               => array( $this, 'as_users_personal_data_exporter' ),
+			'callback'               => array( $this, 'wpas_users_personal_data_exporter' ),
 		);
 
 		return $exporters;
@@ -137,13 +161,13 @@ class WPAS_Privacy_Option {
 	/**
 	 * Finds and exports personal Awesome Support data associated with an email address from the post table.
 	 *
-	 * @since 4.9.6
+	 * @since 5.2.0
 	 *
 	 * @param string $email_address The comment author email address.
 	 * @param int    $page          Comment page.
 	 * @return array $return An array of personal data.
 	 */
-	public function as_users_personal_data_exporter( $email_address, $page = 1 ){
+	public function wpas_users_personal_data_exporter( $email_address, $page = 1 ){
 		
 		$number = 500;
 		$page   = (int) $page;
@@ -278,7 +302,7 @@ class WPAS_Privacy_Option {
 	/**
 	 * Return an instance of this class.
 	 *
-	 * @since     5.1.1
+	 * @since     5.2.0.
 	 *
 	 * @return    object    A single instance of this class.
 	 */
@@ -607,6 +631,5 @@ class WPAS_Privacy_Option {
 		wp_send_json( $response );
 		wp_die();
 	}
-
 
 }
