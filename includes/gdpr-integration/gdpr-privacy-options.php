@@ -118,11 +118,24 @@ class WPAS_Privacy_Option {
 			foreach ( $ticket_data as $ticket ) {
 				if( isset( $ticket->ID ) && !empty( $ticket->ID )){
 					$ticket_id = (int) $ticket->ID;
-					if ( $ticket_id ) {						
-						if ( wp_delete_post( $ticket_id, true ) ) {
-							$items_removed = true;
-							$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+					if ( $ticket_id ) {
+						
+						/* Apply a filter check, passing an array object so we can get messages back from the filter */
+						$wpas_pe_msgs['ok_to_erase'] = true ;
+						$wpas_pe_msgs['messages'] = array() ;						
+						$wpas_pe_msgs = apply_filters( 'wpas_before_delete_ticket_via_personal_eraser', $wpas_pe_msgs, $ticket_id );
+						
+						/* Proceed with attempting to delete the ticket if filter returned ok */	
+						if ( true === $wpas_pe_msgs['ok_to_erase'] ) {
+							if ( wp_delete_post( $ticket_id, true ) ) {
+								$items_removed = true;
+								$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+							} 
+						} else {
+							$messages[] = sprintf( __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' ), (string) $ticket_id ) ;
+							$messages = array_merge( $messages, $wpas_pe_msgs['messages'] ) ;
 						}
+						
 					}
 				}
 			}
