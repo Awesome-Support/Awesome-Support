@@ -97,7 +97,7 @@ class WPAS_Privacy_Option {
 		}
 
 		/* All pre-conditions good, so ok to proceed */
-		$number         = 500; // Limit us to 500 comments at a time to avoid timing out.
+		$number         = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
 		$page           = (int) $page;
 		$items_removed  = false;
 		$items_retained = false;
