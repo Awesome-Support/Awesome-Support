@@ -232,7 +232,15 @@
 				// Action hook to declare just after rendering the field on the back-end
 				// Future use only since we don't have a back-end only rendering function yet.
 				// Use the front-end hook above for everything for now.				
-				'post_render_action_hook_be' => '',								
+				'post_render_action_hook_be' => '',	
+
+				// @since 5.2.0
+				// Use ajax for uploading files - used by upload custom field
+				'use_ajax_uploader' => false,
+				
+				// @since 5.1.1
+				// Enable paste using ctrl+v commands
+				'enable_paste' => true,	
 
 			);
 

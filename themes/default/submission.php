@@ -11,8 +11,13 @@ global $post;
 
 <div class="wpas wpas-submit-ticket">
 
-	<?php wpas_get_template( 'partials/ticket-navigation' ); ?>
-
+	<?php 
+	
+	wpas_get_template( 'partials/ticket-navigation' );
+		
+	do_action( 'wpas_ticket_submission_form_outside_top' ); 
+	?>
+		
 	<form class="wpas-form" role="form" method="post" action="<?php echo get_permalink( $post->ID ); ?>" id="wpas-new-ticket" enctype="multipart/form-data">
 
 		<?php

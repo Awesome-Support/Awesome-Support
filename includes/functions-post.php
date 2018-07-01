@@ -554,6 +554,42 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 }
 
 /**
+ * Get ticket by ticket id and user id.
+ *
+ * @since 5.1.1
+ *
+ * @param int       $id    Ticket ID
+ * @param array     $args  Additional arguments (see WP_Query)
+ * @param bool      $cache Whether or not to cache the results
+ *
+ * @return array  
+ */
+function wpas_get_ticket_by_id( $id, $args = array(), $cache = false ) {
+
+	$defaults = [
+		'p'                      => intval( $id ),
+		'post_type'              => 'ticket',
+		'no_found_rows'          => ! (bool) $cache,
+		'cache_results'          => (bool) $cache,
+		'update_post_term_cache' => (bool) $cache,
+		'update_post_meta_cache' => (bool) $cache,
+		'wpas_query'             => true, // We use this parameter to identify our own queries so that we can remove the author parameter
+			
+	];
+
+	$args = wp_parse_args( $args, $defaults );
+
+	$query = new WP_Query( $args );
+
+	if ( empty( $query->posts ) ) {
+		return array();
+	} else {
+		return $query->posts[0];
+	}
+
+}
+
+/**
  * Add a new reply to a ticket.
  *
  * @param array           $data      The reply data to insert
@@ -640,7 +676,7 @@ function wpas_new_reply_submission( $data ) {
 	// Define if the ticket must be closed
 	$close = isset( $data['wpas_close_ticket'] ) ? true : false;
 
-	if ( ! empty( $data['wpas_user_reply'] ) && apply_filters( 'wpas_user_can_reply_ticket', true, $ticket_id ) ) {
+	if ( ! empty( $data['wpas_user_reply'] ) && apply_filters( 'wpas_user_can_reply_ticket', true, $parent_id ) ) {
 
 		/* Sanitize the data */
 		$data = array( 'post_content' => wp_kses( $data['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
@@ -1917,24 +1953,6 @@ function wpas_load_reply_history() {
 	 * Reply ID is required
 	 */
 	if ( ! isset( $_POST['reply_id'] ) ) {
-		wp_send_json( $response );
-	}
-
-	/**
-	 * Is a valid reply?
-	 */
-	$reply = get_post(
-		array(
-			'ID'        => sanitize_text_field( $_POST['reply_id'] ),
-			'post_type' => 'ticket_log',
-		)
-	);
-
-	/**
-	 * Empty request
-	 */
-	if ( ! $reply ) {
-		$response['message'] = __( 'Invalid ticket ID!', 'awesome-support' );
 		wp_send_json( $response );
 	}
 

@@ -1357,20 +1357,26 @@ function wpas_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
 	 * Consent logs are stored in wpas_consent_log option
 	 */
 	$logged_consent = get_user_option( 'wpas_consent_log', $user_id );
-	$consent = sprintf(
+	$consent = apply_filters( 'wpas_logged_consent_new', sprintf(
 		'%s - %s %s %s %s',
 		$label,
 		$user,
 		$action,
 		__( 'on', 'awesome-support' ),
 		$date
-	);
+	) );
 
 	if( ! empty ( $logged_consent ) && is_array( $logged_consent ) ) {
 		update_user_option( $user_id, 'wpas_consent_log', array_merge( $logged_consent, array( $consent ) ) );
 	}else{
 		update_user_option( $user_id, 'wpas_consent_log', array( $consent ) );
 	}
+	
+	/**
+	 * After logging consent action hook
+	 */
+	do_action( 'wpas_log_consent_after', $user_id, $label, $action, $date , $user, $consent );
+	
 }
 
 /**
@@ -1413,11 +1419,32 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 			}
 			
 			update_user_option( $user_id, 'wpas_consent_tracking', $tracked_consent );
+			
+			/**
+			 * After consent tracking update existing meta action hook
+			 */	
+			do_action( 'wpas_track_consent_update_existing_after', $data, $user_id, $opt_type, $tracked_consent ) ;
+			
 		}else{
 			update_user_option( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
+			
+			/**
+			 * After new consent tracking action hook
+			 */	
+			do_action( 'wpas_track_consent_update_new_too', $data, $user_id, $opt_type, $tracked_consent ) ;
 		}		
 	}else{
 		update_user_option( $user_id, 'wpas_consent_tracking', array( $data ) );
+		
+		/**
+		 * After new consent tracking action hook
+		 */	
+		do_action( 'wpas_track_consent_update_new', $data, $user_id, $opt_type, $tracked_consent ) ;								
 	}
+	
+	/**
+	 * After consent tracking action hook
+	 */	
+	do_action( 'wpas_track_consent_after', $data, $user_id, $opt_type ) ;
 
 }
