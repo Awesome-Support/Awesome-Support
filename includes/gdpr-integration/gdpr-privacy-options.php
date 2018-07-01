@@ -60,22 +60,23 @@ class WPAS_Privacy_Option {
 		if ( ! wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
 			return false;
 		}
+		$authors = array();
+		if( !empty( $tool ) ){
+			// WP_User_Query arguments
+			$args = array (
+			    'order' => 'ASC',
+			    'orderby' => 'display_name',
+			);
+			// Create the WP_User_Query object
+			$wp_user_query = new WP_User_Query($args);
 
+			// Get the results
+			$authors = $wp_user_query->get_results();
+		}
 		switch ( sanitize_text_field( $tool ) ) {
 
 			case 'remove_all_user_consent':
-				// WP_User_Query arguments
-				$args = array (
-				    'order' => 'ASC',
-				    'orderby' => 'display_name',
-				);
 
-				// Create the WP_User_Query object
-				$wp_user_query = new WP_User_Query($args);
-
-				// Get the results
-				$authors = $wp_user_query->get_results();
-				
 				// Check for results
 				if (!empty($authors)) {
 
@@ -88,8 +89,58 @@ class WPAS_Privacy_Option {
 				        }
 				    }
 				}
-
 				break;
+			case 'add_user_consent':
+
+				$_status = (isset( $_GET['_status'] ) && !empty( isset( $_GET['_status'] ) ))? sanitize_text_field( $_GET['_status'] ): '';
+				$consent = ( isset( $_GET['_consent'] ) && !empty( isset( $_GET['_consent'] ) ) )? sanitize_text_field( $_GET['_consent'] ): '';
+				if( empty( $_status ) || empty( $consent ) ){
+					return false;
+				}
+				// Check for results
+				if (!empty($authors)) {
+
+				    // loop through each author
+				    foreach ($authors as $author) {
+				    	$opt_type = '';
+				        // get all the user's data
+				        if( isset( $author->ID ) && !empty( $author->ID )){
+
+							$status 	= ( 'opt-in' === $_status )? true : false;
+							$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+							$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
+							$opt_type = ( isset( $opt_in ) && !empty( $opt_in ))? 'in' : 'out';
+							$args = array( 
+								'item' 		=> wpas_get_option( $consent, false ),
+								'status' 	=> $status,
+								'opt_in' 	=> $opt_in,
+								'opt_out' 	=> $opt_out,
+								'is_tor'	=> false
+							);
+
+							if( 'terms_conditions' === $consent ){
+								$args['is_tor'] = true;
+							}
+
+							$user_consent = get_user_option( 'wpas_consent_tracking', 
+								$author->ID );
+							if( !empty( $user_consent )){
+								$found_key = array_search( $args['item'], array_column( $user_consent, 'item' ) );	
+								// If GDPR option not already enabled, then add it.
+								if( false === $found_key ){
+									wpas_track_consent( $args , $author->ID, $opt_type );									
+								}
+								
+							} else{
+
+								wpas_track_consent( $args , $author->ID, $opt_type );
+
+							}
+				        }
+				    }
+				}
+				break;
+
 		}
 
 	}
@@ -103,6 +154,9 @@ class WPAS_Privacy_Option {
 				$message = __( 'User Consent cleared', 'awesome-support' );
 				break;
 
+			case 'add_user_consent':
+				$message = __( 'Added User Consent', 'awesome-support' );
+				break;
 		}
 		return $message;
 	}
@@ -128,8 +182,55 @@ class WPAS_Privacy_Option {
 						<span class="wpas-system-tools-desc"><?php _e( 'Clear User Consent data for all Awesome support Users', 'awesome-support' ); ?></span>
 					</td>
 				</tr>
+				<?php 
+					$terms = wpas_get_option( 'terms_conditions', '' );
+					$gdpr_short_desc_01 = wpas_get_option( 'gdpr_notice_short_desc_01', '' );
+					$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
+					$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
+
+					$consent_array = array(
+						'terms_conditions',
+						'gdpr_notice_short_desc_01',
+						'gdpr_notice_short_desc_02',
+						'gdpr_notice_short_desc_03'
+					);
+					if( !empty( $consent_array ) ){
+						foreach ( $consent_array as $key => $consent ) {
+							$consent_name = wpas_get_option( $consent, '' );
+							if( 'terms_conditions' === $consent ){
+								$consent_name = 'Terms';
+							}
+							if( !empty( $consent_name ) ){
+								?>
+								<tr>
+									<td class="row-title"><label for="tablecell"><?php _e( $consent_name , 'awesome-support' ); ?></label></td>
+									<td>
+										<?php 
+											$opt_in = array(
+												'_consent' => $consent,
+												'_status' => 'opt-in'
+											);
+										?>
+										<a href="<?php echo wpas_tool_link( 'add_user_consent', $opt_in ); ?>" class="button-secondary"><?php _e( 'OPT-IN', 'awesome-support' ); ?></a>
+										<?php 
+										$opt_out = array(
+											'_consent' => $consent,
+											'_status' => 'opt-out'
+										);
+										?>
+										<a href="<?php echo wpas_tool_link( 'add_user_consent', $opt_out ); ?>" class="button-secondary"><?php _e( 'OPT-OUT', 'awesome-support' ); ?></a>
+										<span class="wpas-system-tools-desc"><?php _e( 'Set ' . $consent_name . ' Consent status for all Awesome support Users', 'awesome-support' ); ?></span>
+									</td>
+								</tr>
+								<?php 
+							}
+						}
+					}
+				?>
 			</tbody>
 		</table>
+
+
 		<?php 
 	}
 
