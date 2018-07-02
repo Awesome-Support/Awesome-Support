@@ -303,31 +303,39 @@ class WPAS_File_Upload {
 		
 		$delete_attachments = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
 		
-		$attachments = get_attached_media( '', $ticket_id );
-		
 		if( $delete_attachments ) {
+			
+			// Get attachments on ticket
+			$attachments = get_attached_media( '', $ticket_id );
+			
+			// Create array of attachments from replies..
 			$replies = wpas_get_replies( $ticket_id );
 			foreach( $replies as $reply ) {
 				$attachments = array_merge( $attachments, get_attached_media( '', $reply->ID ) );
 			}
+
+			// Now delete them all
+			$logs = array() ; // hold log messages to be written later to ticket
+			foreach ( $attachments as $attachment ) {
+				
+				$filename   = explode( '/', $attachment->guid );
+				$name = $filename[ count( $filename ) - 1 ];
+				
+				wp_delete_attachment( $attachment->ID );
+				
+				$logs[] = '<li>' . sprintf( __( '%s attachment auto deleted', 'awesome-support' ), $name ) . '</li>';				
+				
+			}			
+			
+			// Write logs to ticket
+			if( !empty( $logs ) ) {
+				$log_content = '<ul>'. implode( '', $logs ).'</ul>';
+				wpas_log( $ticket_id, $log_content );
+			}							
+			
 		}
 		
-		foreach ( $attachments as $attachment ) {
-			
-			$filename   = explode( '/', $attachment->guid );
-			$name = $filename[ count( $filename ) - 1 ];
-			
-			wp_delete_attachment( $attachment->ID );
-			
-			$logs[] = '<li>' . sprintf( __( '%s attachment auto deleted', 'awesome-support' ), $name ) . '</li>';
-			
-			
-		}
-		
-		if( !empty( $logs ) ) {
-			$log_content = '<ul>'. implode( '', $logs ).'</ul>';
-			wpas_log( $ticket_id, $log_content );
-		}
+
 	}
 	
 	/**
@@ -1499,8 +1507,8 @@ class WPAS_File_Upload {
 
 	public function load_ajax_uploader_assets() {
 
-		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/dropzone.css', null, WPAS_VERSION );
-		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/dropzone.js', array( 'jquery' ), WPAS_VERSION );
+		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/vendor/dropzone.css', null, WPAS_VERSION );
+		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/vendor/dropzone.js', array( 'jquery' ), WPAS_VERSION );
 		wp_register_script( 'wpas-ajax-upload', WPAS_URL . 'assets/admin/js/admin-ajax-upload.js', array( 'jquery' ), WPAS_VERSION, true );
 
 		wp_enqueue_style( 'wpas-dropzone' );
@@ -1647,6 +1655,8 @@ class WPAS_File_Upload {
 	public function new_ticket_ajax_attachments( $ticket_id, $data ) {
 		if( isset( $_POST['ticket_id'] ) ){
 			$submission_ticket_id = intval( $_POST['ticket_id'] );
+		} else {
+			return;
 		}
 		$this->process_ajax_upload($submission_ticket_id, $ticket_id, $data);
 	}
