@@ -41,3 +41,8 @@ h3 {
     margin-bottom: 50px;
     page-break-after: always;
 }
+
+
+img.emoji {
+    width: 22px;
+}
