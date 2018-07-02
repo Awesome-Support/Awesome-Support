@@ -49,7 +49,7 @@ class WPAS_Privacy_Option {
 	}
 
 	/**
-	 * 
+	 * Add or Remove User consent based on action call.
 	 */
 	function execute_additional_tools_gdpr_callback( $tool ){
 
@@ -162,7 +162,7 @@ class WPAS_Privacy_Option {
 	}
 
 	/**
-	 * 
+	 * GDPR add consent html in cleanup section.
 	 */
 	function wpas_system_tools_after_gdpr_callback(){
 		?>
