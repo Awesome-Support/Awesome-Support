@@ -2,21 +2,21 @@
 
 	<h1><?php esc_html_e( 'Help and Support Options', 'awesome-support' ); ?></h1>
 
-	<div class="about-text"><?php esc_html_e( 'Here are three ways to get help and support for your new helpdesk!', 'awesome-support' ); ?></div>
+	<div class="about-text" style="margin-bottom:0px;"><?php esc_html_e( 'Here are three ways to get help and support for your new helpdesk!', 'awesome-support' ); ?></div>
 
 	<div class="changelog">
 
-		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+		<div class="row" style="margin-top: 0px;">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="margin-top: 0px;">
 				<div class="about-body">
-					<h3><?php esc_attr_e( 'Licensed Users', 'awesome-support' ); ?></h3>
+					<h2 style="margin-top: 0px;"><?php esc_attr_e( 'Licensed Users', 'awesome-support' ); ?></h2>
 					<p><?php esc_attr_e( 'Users with an active subscription license to one or more of our addons or bundles can open a ticket directly with us.', 'awesome-support' ); ?></p>
 					<p><?php echo sprintf( __( '<a href="%s">Open a ticket directly with us</a>', 'awesome-support' ), 'https://getawesomesupport.com/submit-ticket', 'target="_blank"' ) ; ?></p>
 				</div>
 			</div>
-			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" style="margin-top: 0px;">
 				<div class="about-body">
-					<h3><?php esc_attr_e( 'Unlicensed  and Trial Users', 'awesome-support' ); ?></h3>
+					<h2 style="margin-top: 0px;"><?php esc_attr_e( 'Unlicensed  and Trial Users', 'awesome-support' ); ?></h2>
 					<p><?php esc_attr_e( 'Users without a license can open a ticket on our free community supported WordPress.org forum.', 'awesome-support' ); ?></p>
 					<p><?php echo sprintf( __( '<a href="%s">Ask for help on WordPress.org</a>', 'awesome-support' ), 'https://wordpress.org/support/plugin/awesome-support/', 'target="_blank"' ) ; ?></p>
 				</div>

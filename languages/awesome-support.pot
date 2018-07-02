@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-06-25 19:25-0500\n"
+"POT-Creation-Date: 2018-06-29 22:56-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -166,7 +166,8 @@ msgstr ""
 #: includes/admin/views/print-ticket.php:16
 #: includes/custom-fields/functions-custom-fields.php:329
 #: includes/functions-templating.php:276 includes/functions-templating.php:570
-#: includes/gdpr-integration/gdpr-user-profile.php:128
+#: includes/gdpr-integration/gdpr-privacy-options.php:281
+#: includes/gdpr-integration/gdpr-user-profile.php:129
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:25
 msgid "Status"
 msgstr ""
@@ -266,6 +267,7 @@ msgid "Preferences"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:808
+#: includes/admin/views/wpas-help-and-support.php:32
 msgid "Documentation"
 msgstr ""
 
@@ -737,10 +739,14 @@ msgid "Get a Free Addon!"
 msgstr ""
 
 #: includes/admin/functions-menu.php:29
+msgid "Help & Support"
+msgstr ""
+
+#: includes/admin/functions-menu.php:30
 msgid "About Awesome Support"
 msgstr ""
 
-#: includes/admin/functions-menu.php:29
+#: includes/admin/functions-menu.php:30
 msgid "About"
 msgstr ""
 
@@ -1135,6 +1141,7 @@ msgid "What to use for the indivdual ticket slug.  The default is the ticket top
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:42
+#: includes/gdpr-integration/gdpr-privacy-options.php:218
 msgid "Ticket ID"
 msgstr ""
 
@@ -3113,6 +3120,62 @@ msgstr ""
 msgid "Add or Remove auto delete attachments flag on closed tickets."
 msgstr ""
 
+#: includes/admin/views/wpas-help-and-support.php:3
+msgid "Help and Support Options"
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:5
+msgid "Here are three ways to get help and support for your new helpdesk!"
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:12
+msgid "Licensed Users"
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:13
+msgid "Users with an active subscription license to one or more of our addons or bundles can open a ticket directly with us."
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:14
+#, php-format
+msgid "<a href=\"%s\">Open a ticket directly with us</a>"
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:19
+msgid "Unlicensed  and Trial Users"
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:20
+msgid "Users without a license can open a ticket on our free community supported WordPress.org forum."
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:21
+#, php-format
+msgid "<a href=\"%s\">Ask for help on WordPress.org</a>"
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:26
+msgid "Do you need help and support for other plugins and themes or do you need emergency help for your site?"
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:27
+msgid "If so, check out our partners at ValiusWP.com where you can get unlimited 30 minute website fixes and support for one low price per month."
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:28
+msgid "Fast, friendly support for all things WordPress at one low monthly price!"
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:29
+#, php-format
+msgid "<a href=\"%s\">Get started with unlimited fixes with a 10 day trial at ValiusWP.com</a>"
+msgstr ""
+
+#: includes/admin/views/wpas-help-and-support.php:34
+#, php-format
+msgid "Documentation links are located in our <a href=\"%s\">About Page</a>"
+msgstr ""
+
 #: includes/class-email-notifications.php:48
 msgid "The post ID provided does not match any of the plugin post types"
 msgstr ""
@@ -4303,8 +4366,8 @@ msgid "Consent action is required! Options are - \"opted-in\" or \"opted-out\""
 msgstr ""
 
 #: includes/functions-user.php:1353
-#: includes/gdpr-integration/gdpr-privacy-options.php:269
-#: includes/gdpr-integration/gdpr-privacy-options.php:338
+#: includes/gdpr-integration/gdpr-privacy-options.php:551
+#: includes/gdpr-integration/gdpr-privacy-options.php:620
 msgid "user"
 msgstr ""
 
@@ -4312,81 +4375,138 @@ msgstr ""
 msgid "on"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:131
-msgid "Add/Remove Existing Consent"
+#: includes/gdpr-integration/gdpr-privacy-options.php:57
+#: includes/gdpr-integration/gdpr-privacy-options.php:166
+msgid "Awesome Support Data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:137
-msgid "Delete my existing data"
+#: includes/gdpr-integration/gdpr-privacy-options.php:132
+#, php-format
+msgid "Removed Awesome Support Ticket #: %s"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:135
+#, php-format
+msgid "Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity."
 msgstr ""
 
 #: includes/gdpr-integration/gdpr-privacy-options.php:143
-msgid "Export tickets and user data"
+msgid "No Awesome Support data was found."
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:186
-msgid "Sorry! Something failed"
-msgstr ""
-
-#: includes/gdpr-integration/gdpr-privacy-options.php:221
-msgid "Right to be forgotten mail"
+#: includes/gdpr-integration/gdpr-privacy-options.php:208
+msgid "Awesome Support"
 msgstr ""
 
 #: includes/gdpr-integration/gdpr-privacy-options.php:221
-msgid "requested"
+msgid "Ticket Subject"
 msgstr ""
 
 #: includes/gdpr-integration/gdpr-privacy-options.php:224
+msgid "Ticket Description"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:233
+msgid "Reply "
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:246
+msgid "Ticket Status"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:276
+#: includes/gdpr-integration/gdpr-user-profile.php:128
+#: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:24
+msgid "Item"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:287
+msgid "Opt In"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:293
+msgid "Opt Out"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:301
+msgid "Consent Data"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:403
+msgid "Add/Remove Existing Consent"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:409
+msgid "Delete my existing data"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:415
+msgid "Export tickets and user data"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:458
+msgid "Sorry! Something failed"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:493
+msgid "Right to be forgotten mail"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:493
+msgid "requested"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:506
 msgid "We have received your \"Right To Be Forgotten\" request!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:226
+#: includes/gdpr-integration/gdpr-privacy-options.php:508
 msgid "Something went wrong. Please try again!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:229
-#: includes/gdpr-integration/gdpr-privacy-options.php:299
-#: includes/gdpr-integration/gdpr-privacy-options.php:360
-#: includes/gdpr-integration/gdpr-user-profile.php:340
+#: includes/gdpr-integration/gdpr-privacy-options.php:511
+#: includes/gdpr-integration/gdpr-privacy-options.php:581
+#: includes/gdpr-integration/gdpr-privacy-options.php:642
+#: includes/gdpr-integration/gdpr-user-profile.php:303
 msgid "Cheating huh?"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:260
-#: includes/gdpr-integration/gdpr-user-profile.php:157
+#: includes/gdpr-integration/gdpr-privacy-options.php:542
+#: includes/gdpr-integration/gdpr-user-profile.php:158
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:57
 msgid "Opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:281
+#: includes/gdpr-integration/gdpr-privacy-options.php:563
 msgid "opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:283
+#: includes/gdpr-integration/gdpr-privacy-options.php:565
 msgid "You have successfully opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:293
-#: includes/gdpr-integration/gdpr-user-profile.php:185
+#: includes/gdpr-integration/gdpr-privacy-options.php:575
+#: includes/gdpr-integration/gdpr-user-profile.php:186
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:86
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:88
 msgid "Opt-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:330
+#: includes/gdpr-integration/gdpr-privacy-options.php:612
 msgid "Opted-Out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:349
+#: includes/gdpr-integration/gdpr-privacy-options.php:631
 msgid "opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:352
+#: includes/gdpr-integration/gdpr-privacy-options.php:634
 msgid "You have successfully opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:357
-#: includes/gdpr-integration/gdpr-user-profile.php:190
-#: includes/gdpr-integration/gdpr-user-profile.php:195
+#: includes/gdpr-integration/gdpr-privacy-options.php:639
+#: includes/gdpr-integration/gdpr-user-profile.php:191
+#: includes/gdpr-integration/gdpr-user-profile.php:196
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:92
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:94
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:98
@@ -4394,84 +4514,79 @@ msgstr ""
 msgid "Opt-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:74
+#: includes/gdpr-integration/gdpr-user-profile.php:75
 msgid "Request not identified, Invalid request"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:111
+#: includes/gdpr-integration/gdpr-user-profile.php:112
 msgid "Awesome Support Data Export"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:112
+#: includes/gdpr-integration/gdpr-user-profile.php:113
 msgid "Export data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:123
+#: includes/gdpr-integration/gdpr-user-profile.php:124
 msgid "Awesome Support Consents"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:127
-#: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:24
-msgid "Item"
-msgstr ""
-
-#: includes/gdpr-integration/gdpr-user-profile.php:129
+#: includes/gdpr-integration/gdpr-user-profile.php:130
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:26
 msgid "Opt-in Date"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:130
+#: includes/gdpr-integration/gdpr-user-profile.php:131
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:27
 msgid "Opt-out Date"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:131
+#: includes/gdpr-integration/gdpr-user-profile.php:132
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:28
 msgid "Action"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:147
+#: includes/gdpr-integration/gdpr-user-profile.php:148
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:47
 msgid "Terms and Conditions"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:225
+#: includes/gdpr-integration/gdpr-user-profile.php:226
 msgid "Awesome Support Consent Logs"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:326
+#: includes/gdpr-integration/gdpr-user-profile.php:289
 msgid "Exporting data was successful!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:333
+#: includes/gdpr-integration/gdpr-user-profile.php:296
 msgid "Download it now.."
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:337
+#: includes/gdpr-integration/gdpr-user-profile.php:300
 msgid "No data exist"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:538
+#: includes/gdpr-integration/gdpr-user-profile.php:555
 msgid "The destination file does not exists!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:565
+#: includes/gdpr-integration/gdpr-user-profile.php:582
 msgid "Attachment not exist"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:569
+#: includes/gdpr-integration/gdpr-user-profile.php:586
 msgid "Attachment Folder Directory Not Found"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:574
+#: includes/gdpr-integration/gdpr-user-profile.php:591
 msgid "Ticket ID is empty"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:580
+#: includes/gdpr-integration/gdpr-user-profile.php:597
 msgid "Cannot create zip file"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:583
+#: includes/gdpr-integration/gdpr-user-profile.php:600
 msgid "Zip data file not exists!"
 msgstr ""
 
@@ -4629,11 +4744,15 @@ msgctxt "Showing X replies out of a total of X replies"
 msgid "Showing %s replies of %s."
 msgstr ""
 
-#: themes/default/details.php:130
+#: themes/default/details.php:132
 msgid "Load newer replies"
 msgstr ""
 
-#: themes/default/details.php:143
+#: themes/default/details.php:134
+msgid "Load older replies"
+msgstr ""
+
+#: themes/default/details.php:149
 msgid "Write a reply"
 msgstr ""
 

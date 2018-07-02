@@ -173,7 +173,7 @@ class WPAS_GDPR_User_Profile {
 					 * If current loop is TOR, do not give Opt options
 					 */
 				$opt_button = '';
-				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false && current_user_can( 'tickets_manage_privacy' ) ) {
+				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false && current_user_can( 'ticket_manage_privacy' ) ) {
 					$gdpr_id = wpas_get_gdpr_data( $item );
 					/**
 					 * Determine what type of buttons we should render

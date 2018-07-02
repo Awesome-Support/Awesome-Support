@@ -303,31 +303,39 @@ class WPAS_File_Upload {
 		
 		$delete_attachments = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
 		
-		$attachments = get_attached_media( '', $ticket_id );
-		
 		if( $delete_attachments ) {
+			
+			// Get attachments on ticket
+			$attachments = get_attached_media( '', $ticket_id );
+			
+			// Create array of attachments from replies..
 			$replies = wpas_get_replies( $ticket_id );
 			foreach( $replies as $reply ) {
 				$attachments = array_merge( $attachments, get_attached_media( '', $reply->ID ) );
 			}
+
+			// Now delete them all
+			$logs = array() ; // hold log messages to be written later to ticket
+			foreach ( $attachments as $attachment ) {
+				
+				$filename   = explode( '/', $attachment->guid );
+				$name = $filename[ count( $filename ) - 1 ];
+				
+				wp_delete_attachment( $attachment->ID );
+				
+				$logs[] = '<li>' . sprintf( __( '%s attachment auto deleted', 'awesome-support' ), $name ) . '</li>';				
+				
+			}			
+			
+			// Write logs to ticket
+			if( !empty( $logs ) ) {
+				$log_content = '<ul>'. implode( '', $logs ).'</ul>';
+				wpas_log( $ticket_id, $log_content );
+			}							
+			
 		}
 		
-		foreach ( $attachments as $attachment ) {
-			
-			$filename   = explode( '/', $attachment->guid );
-			$name = $filename[ count( $filename ) - 1 ];
-			
-			wp_delete_attachment( $attachment->ID );
-			
-			$logs[] = '<li>' . sprintf( __( '%s attachment auto deleted', 'awesome-support' ), $name ) . '</li>';
-			
-			
-		}
-		
-		if( !empty( $logs ) ) {
-			$log_content = '<ul>'. implode( '', $logs ).'</ul>';
-			wpas_log( $ticket_id, $log_content );
-		}
+
 	}
 	
 	/**
