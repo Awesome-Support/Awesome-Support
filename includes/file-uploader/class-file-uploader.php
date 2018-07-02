@@ -798,9 +798,7 @@ class WPAS_File_Upload {
 
 		$attachments = new WPAS_Custom_Field( $this->index, $attachments_args );
 		echo $attachments->get_output();
-		
-		$post = get_post();
-		echo '<input type="hidden" name="ticket_id" value="'.$post->ID.'"/>';
+	
 	}
 	
 	/**

@@ -830,6 +830,8 @@
 
 			$this->output = str_replace( '{{field}}', $field, $wrapper );
 
+			$this->output .= sprintf( '<input type="hidden" name="ticket_id" value="%d" />', get_the_ID() );
+
 			return $this->output;
 
 		}
