@@ -19,7 +19,6 @@
  * @return string       URL that triggers the tool function
  */
 function wpas_tool_link( $tool, $args = array() ) {
-
 	$args['tool']   = $tool;
 	$args['_nonce'] = wp_create_nonce( 'system_tool' );
 
@@ -107,11 +106,11 @@ if ( isset( $_GET['done'] ) ) {
 			break;
 	}
 	
-	apply_filters('wpas_show_done_tool_message',$message, sanitize_text_field( $_GET['done'] ));
+	$message = apply_filters('wpas_show_done_tool_message',$message, sanitize_text_field( $_GET['done'] ));
 
 }
 
-if ( isset( $message ) ) {
+if ( isset( $message ) && !empty( $message ) ) {
 	echo "<div class='updated below-h2'><p>$message</p></div>";
 }
 ?>
