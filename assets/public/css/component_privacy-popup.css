@@ -111,9 +111,16 @@
 }
 
 .wpas-gdpr-notice.success {
-	background-color: #46b450;
+	background-color: #66b266;
     color: #ffffff;
     border-left: 0;
+}
+.wpas-gdpr-notice.success a,
+.wpas-gdpr-notice.success a:visited,
+.wpas-gdpr-notice.success a:focus,
+.wpas-gdpr-notice.success a:active,
+.wpas-gdpr-notice.success a:hover{
+	color: #ffc425;
 }
 .wpas-gdpr-notice.failure {
 	background-color: #8b0000;

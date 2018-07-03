@@ -42,6 +42,40 @@ function wpas_addon_settings_file_upload( $def ) {
 				),
 				
 				array(
+					'name' => __( 'Drag and Drop Uploads', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Enable or disable drag-and-drop uploads as well as pasting of images', 'awesome-support' ),					
+				),				
+				array(
+					'name'    => __( 'Enable', 'awesome-support' ),
+					'id'      => 'ajax_upload',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable drag-n-drop uploader for ticket form', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable For All', 'awesome-support' ),
+					'id'      => 'ajax_upload_all',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable drag-n-drop uploader for all custom upload fields', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable Image Paste', 'awesome-support' ),
+					'id'      => 'ajax_upload_paste_image',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable pasting of images into drag-n-drop uploader for ticket form when the drag-n-drop uploader is enabled', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable Image Paste For All', 'awesome-support' ),
+					'id'      => 'ajax_upload_paste_image_all',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable pasting of images into drag-n-drop uploader for all custom upload fields when the drag-n-drop uploader is enabled', 'awesome-support' )
+				),
+				
+				array(
 					'name' => __( 'Permissions', 'awesome-support' ),
 					'type' => 'heading',
 					'desc'    => __( 'Control who can delete ticket or reply attachments', 'awesome-support' ),					
