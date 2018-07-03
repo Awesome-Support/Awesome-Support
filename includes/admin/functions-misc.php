@@ -605,7 +605,7 @@ function wpas_admin_tabs( $type, $tabs = array() ) {
 	<div class="wpas_admin_tabs" id="<?php echo $id; ?>">
 		<div class="wpas_admin_tabs_names_wrapper">
 			<ul>
-			    <?php echo implode( '', $tab_content_items_ar ); ?>
+				<?php echo implode( '', $tab_content_items_ar ); ?>
 				<li class="moreTab">
 					<ul class="dropdown-menu tabs_collapsed"></ul>
 				</li>
@@ -618,8 +618,9 @@ function wpas_admin_tabs( $type, $tabs = array() ) {
 	<?php
 	
 	
-	return ob_get_clean();
-	
+	$output = ob_get_contents();
+	ob_end_clean();
+	return apply_filters( 'wpas_admin_tabs', $output, $tab_content_items_ar, $tab_content_ar, $id, $tabs );
 }
 
 
