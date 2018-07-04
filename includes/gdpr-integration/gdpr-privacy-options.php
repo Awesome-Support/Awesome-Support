@@ -288,7 +288,7 @@ class WPAS_Privacy_Option {
 		}
 
 		/* All pre-conditions good, so ok to proceed */
-		$number         = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
+		$number = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
 		$page           = (int) $page;
 		$items_removed  = false;
 		$items_retained = false;
@@ -300,6 +300,33 @@ class WPAS_Privacy_Option {
 			'posts_per_page' => $number,
 			'paged'          => $page
 		);
+		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
+		if( $anonymize_existing_data ){
+			//1. create a anonymous user with username anno-xxxx 
+			$random_number = wp_rand( 1, 10000000 );
+			$user_name = 'anno-'.$random_number;
+			
+			$user_id = username_exists( $user_name );
+			$url = get_site_url();
+			$urlobj = parse_url($url);
+			$site_name = 'domain.com';
+			$domain = ($urlobj['host'])? $urlobj['host']: '';
+			if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+				$site_name = $regs['domain'];
+			}
+
+			$user_email = $user_name.'@'.$site_name;
+			if ( !$user_id and email_exists($user_email) == false ) {
+				$random_password = wp_generate_password( $length=12, $include_standard_special_chars=false );
+				$userdata = array(
+				    'user_login'  => $user_name,
+				    'user_email'  => $user_email,
+				    'role'        => wpas_get_option( 'new_user_role', 'wpas_user' ),
+				    'user_pass'   => $random_password 
+				);
+				$user_id = wp_insert_user( $userdata ) ;
+			}
+		}
 		/**
 		 * Delete ticket data belongs to the mention email id.
 		 */
@@ -318,10 +345,54 @@ class WPAS_Privacy_Option {
 						
 						/* Proceed with attempting to delete the ticket if filter returned ok */	
 						if ( true === $wpas_pe_msgs['ok_to_erase'] ) {
-							if ( wp_delete_post( $ticket_id, true ) ) {
-								$items_removed = true;
-								$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
-							} 
+							/**
+							 * if anonymize data instead of delete is checked 
+							 * 		dont delete 
+							 * else 
+							 * 		delete data
+							 */
+							
+							if( $anonymize_existing_data ){
+								//2. Update ticket data and set author as Anonymous user
+								$arg = array(
+								    'ID' => $ticket_id,
+								    'post_author' => $user_id,
+								);
+								wp_update_post( $arg );
+								$args = array(
+									'post_parent'            => $ticket_id,
+									'post_type'              => apply_filters( 'wpas_replies_post_type', array(
+										'ticket_history',
+										'ticket_reply',
+										'ticket_log'
+									) ),
+									'post_status'            => 'any',
+									'posts_per_page'         => - 1,
+									'no_found_rows'          => true,
+									'cache_results'          => false,
+									'update_post_term_cache' => false,
+									'update_post_meta_cache' => false,
+								);
+
+								$posts = new WP_Query( $args );
+								foreach ( $posts->posts as $id => $post ) {
+
+									do_action( 'wpas_before_anonymize_dependency', $post->ID, $post );
+									$arg = array(
+									    'ID' => $post->ID,
+									    'post_author' => $user_id,
+									);
+									wp_update_post( $arg );
+
+									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
+								}
+								$messages[] = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+							} else{
+								if ( wp_delete_post( $ticket_id, true ) ) {
+									$items_removed = true;
+									$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+								} 
+							}
 						} else {
 							$messages[] = sprintf( __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' ), (string) $ticket_id ) ;
 							$messages = array_merge( $messages, $wpas_pe_msgs['messages'] ) ;
