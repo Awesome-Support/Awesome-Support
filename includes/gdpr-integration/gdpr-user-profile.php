@@ -71,8 +71,15 @@ class WPAS_GDPR_User_Profile {
 				header( 'Pragma: no-cache' );
 				header( 'Expires: 0' );
 				readfile( $this->user_export_dir . '/exported-data.zip' );
+				if (!unlink($this->user_export_dir . '/exported-data.zip') ){
+					return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/exported-data.zip', 'awesome-support' ) );
+				}
+				if (!unlink($this->user_export_dir . '/export-data.xml') ){
+					return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/export-data.xml', 'awesome-support' ) );
+				}
 			} else {
-				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );}
+				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );
+			}
 		}
 	}
 
@@ -285,7 +292,7 @@ class WPAS_GDPR_User_Profile {
 
 				$upload_dir                     = wp_upload_dir();
 				$response['message']['success'] = sprintf(
-					'<p>%s. <a href="%s" target="_blank">%s</a></p>',
+					'<p>%s. <a href="%s" target="_blank" class="download-file-link">%s</a></p>',
 					__( 'Exporting data was successful!', 'awesome-support' ),
 					add_query_arg(
 						array(
