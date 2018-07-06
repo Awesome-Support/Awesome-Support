@@ -674,7 +674,7 @@ function wpas_get_user_nice_role( $role ) {
 	
 	/* Get first role if role is an array */
 	if ( is_array($role) ) {
-		// The two lines below have to be separate instead of embededd inside each other in order to avoid an "Only variables shoudl be passed by reference" error 
+		// The two lines below have to be separate instead of embedded inside each other in order to avoid an "Only variables should be passed by reference" error 
 		$role = array_values( $role );
 		$role = array_shift( $role ) ;
 	}
