@@ -110,5 +110,9 @@ jQuery(document).ready(function ($) {
 			}
 		);		
 	});
+
+	jQuery( ".wpas-gdpr-export-wrapper" ).on( "click", ".download-file-link", function(e) {	
+		 jQuery(this).parent('p').remove();
+	});
     
 });
