@@ -390,9 +390,11 @@ class WPAS_Privacy_Option {
 
 		if( !empty( $ticket_age )){
 			$cronjob_max_age = intval($ticket_age);
-			$args[ 'date_query' ] = array(
+			if( $cronjob_max_age >= 1 ){
+				$args[ 'date_query' ] = array(
 			        'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days')) 
 			    );
+			}
 		}
 
 		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
