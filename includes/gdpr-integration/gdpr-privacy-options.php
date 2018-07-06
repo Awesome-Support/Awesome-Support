@@ -226,6 +226,7 @@ class WPAS_Privacy_Option {
 		if( !empty( $all_support_users ) && isset( $all_support_users->members ) && !empty( $all_support_users->members ) ){
 			foreach ( $all_support_users->members as $key => $as_user ) {
 				if( !empty( $as_user->ID ) && !in_array( $as_user->ID , $exclude )){
+					$ticket_age = wpas_get_option( 'anonymize_cronjob_max_age', '' );
 					$this->wpas_users_personal_data_eraser( $as_user->user_email, 1, $ticket_age );
 				}
 			}
@@ -388,7 +389,7 @@ class WPAS_Privacy_Option {
 		);
 
 		if( !empty( $ticket_age )){
-			$cronjob_max_age = intval($cronjob_max_age);
+			$cronjob_max_age = intval($ticket_age);
 			$args[ 'date_query' ] = array(
 			        'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days')) 
 			    );
