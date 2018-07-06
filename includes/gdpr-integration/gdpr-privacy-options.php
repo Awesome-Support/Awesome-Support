@@ -154,6 +154,13 @@ class WPAS_Privacy_Option {
 
 	}
 
+	/**
+	 * GDPR Cron job schedule 
+	 * 
+	 * @param  array $schedules Cron schedules 
+	 * 
+	 * @return array $schedules Cron schedules with GDPR cron job schedule included.
+	 */
 	function gdpr_cron_job_schedule( $schedules ) {
 		$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
 		if( !empty( $trigger_time )){
@@ -194,27 +201,27 @@ class WPAS_Privacy_Option {
 		 */
 		// get all anonymous users and exclude them. 
 		$anonymous_users = get_users(
-            array(
-                'meta_query' => array(
-                    array(
-                        'key' => 'is_anonymous',
-                        'value' => true,
-                        'compare' => '=='
-                    ),
-                )
-            )
-        );
-        $exclude = array();
-        if( !empty( $anonymous_users )){
-        	foreach ($anonymous_users as $user_key => $user ) {
-        		$exclude[] = $user->data->ID;
-        	}
-        }
-        // get all user can create tickets
-        $args = array( 
-        	'cap' => 'create_ticket', 
-        	// 'exclude' => $exclude  
-       	);
+		    array(
+		        'meta_query' => array(
+		            array(
+		                'key' => 'is_anonymous',
+		                'value' => true,
+		                'compare' => '=='
+		            ),
+		        )
+		    )
+		);
+		$exclude = array();
+		if( !empty( $anonymous_users )){
+			foreach ($anonymous_users as $user_key => $user ) {
+				$exclude[] = $user->data->ID;
+			}
+		}
+		// get all user can create tickets
+		$args = array( 
+			'cap' => 'create_ticket', 
+			// 'exclude' => $exclude  
+		);
 		$all_support_users = wpas_get_users( $args );
 		if( !empty( $all_support_users ) && isset( $all_support_users->members ) && !empty( $all_support_users->members ) ){
 			foreach ( $all_support_users->members as $key => $as_user ) {
