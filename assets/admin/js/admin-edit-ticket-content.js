@@ -160,7 +160,7 @@
             };
 
             /**
-             * Copy settings from reply editor
+             * Copy settings from reply editor - this is because the editor settings might be changed by options in POWERPACK and other add-ons.
             */
             var replyEditor = tinyMCE.get("wpas_reply");
             if ((replyEditor != null) && (replyEditor.hasOwnProperty("settings"))) {
@@ -183,7 +183,10 @@
                     settings.tinymce.wordpress_adv_hidden = replyEditor.settings.wordpress_adv_hidden;
                 }
             }
-
+			
+            /**
+             * If no editor toolbar settings available then use some common-sense defaults
+            */			
             if (settings.tinymce.toolbar.length == 0) {
                 settings.tinymce.toolbar.push('bold,italic,bullist,numlist,link,blockquote,alignleft,aligncenter,alignright,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,undo,redo');
             }
