@@ -48,6 +48,13 @@ class WPAS_Privacy_Option {
 		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'wp_register_asdata_personal_data_eraser' ) );
 
 		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'wp_privacy_personal_asdata_exporters' ), 10, 1 );
+
+		// Schedule cleanup of older tickets
+		add_action( 'wp', array( $this, 'tickets_cleanup_schedule' ) );
+		// Cleanup action
+		add_action( 'as_tickets_cleanup_action', array( $this, 'as_tickets_cleanup_action_callback' ) );
+
+		add_filter( 'cron_schedules', array( $this, 'gdpr_cron_job_schedule' ) ); 
 	}
 
 	/**
@@ -146,6 +153,86 @@ class WPAS_Privacy_Option {
 		}
 
 	}
+
+	/**
+	 * GDPR Cron job schedule 
+	 * 
+	 * @param  array $schedules Cron schedules 
+	 * 
+	 * @return array $schedules Cron schedules with GDPR cron job schedule included.
+	 */
+	function gdpr_cron_job_schedule( $schedules ) {
+		$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
+		if( !empty( $trigger_time )){
+			$trigger_time = intval($trigger_time);
+			$schedules['min_'. $trigger_time ] = array(
+				'interval' => $trigger_time,
+				'display' => __('GDPR Ticket cleanup cron', 'awesome-support' )
+			);
+			return $schedules;
+		}
+	}
+
+	/**
+	 * Schedule cleanup of older tickets
+	 * 
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	function tickets_cleanup_schedule(){
+		
+		if ( ! wp_next_scheduled( 'attachments_dir_cleanup_action' ) ) {
+			$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
+			if( !empty( $trigger_time )){
+				$trigger_time = intval($trigger_time);
+				wp_schedule_event( time(), 'min_' . $trigger_time, 'as_tickets_cleanup_action');
+			}
+		}
+
+	}
+	/**
+	 * Anonymize ticket if delete ticket option is not checked.
+	 * @return [type] [description]
+	 */
+	function as_tickets_cleanup_action_callback(){
+		/**
+		 * Loop all support users and run the function below and pass user email address and page count in 1 attempt. 
+		 */
+		// get all anonymous users and exclude them. 
+		$anonymous_users = get_users(
+		    array(
+		        'meta_query' => array(
+		            array(
+		                'key' => 'is_anonymous',
+		                'value' => true,
+		                'compare' => '=='
+		            ),
+		        )
+		    )
+		);
+		$exclude = array();
+		if( !empty( $anonymous_users )){
+			foreach ($anonymous_users as $user_key => $user ) {
+				$exclude[] = $user->data->ID;
+			}
+		}
+		// get all user can create tickets
+		$args = array( 
+			'cap' => 'create_ticket', 
+			// 'exclude' => $exclude  
+		);
+		$all_support_users = wpas_get_users( $args );
+		if( !empty( $all_support_users ) && isset( $all_support_users->members ) && !empty( $all_support_users->members ) ){
+			foreach ( $all_support_users->members as $key => $as_user ) {
+				if( !empty( $as_user->ID ) && !in_array( $as_user->ID , $exclude )){
+					$ticket_age = wpas_get_option( 'anonymize_cronjob_max_age', '' );
+					$this->wpas_users_personal_data_eraser( $as_user->user_email, 1, $ticket_age );
+				}
+			}
+		}
+	}
+
 	/**
 	 * Update data on clean up tool click.
 	 */
@@ -261,7 +348,7 @@ class WPAS_Privacy_Option {
 	 * @param  int    $page          Ticket page.
 	 * @return array
 	 */
-	public function wpas_users_personal_data_eraser( $email_address, $page = 1 ){
+	public function wpas_users_personal_data_eraser( $email_address, $page = 1, $ticket_age = '' ){
 		global $wpdb;
 
 		// Evaluate whether conditions exist to allow deletion to proceed		
@@ -288,7 +375,7 @@ class WPAS_Privacy_Option {
 		}
 
 		/* All pre-conditions good, so ok to proceed */
-		$number         = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
+		$number = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
 		$page           = (int) $page;
 		$items_removed  = false;
 		$items_retained = false;
@@ -300,6 +387,46 @@ class WPAS_Privacy_Option {
 			'posts_per_page' => $number,
 			'paged'          => $page
 		);
+
+		if( !empty( $ticket_age )){
+			$cronjob_max_age = intval($ticket_age);
+			if( $cronjob_max_age >= 1 ){
+				$args[ 'date_query' ] = array(
+			        'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days')) 
+			    );
+			}
+		}
+
+		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
+		if( $anonymize_existing_data ){
+			//1. create a anonymous user with username anno-xxxx 
+			$random_number = wp_rand( 1, 10000000 );
+			$user_name = 'anno-'.$random_number;
+			
+			$user_id = username_exists( $user_name );
+			$url = get_site_url();
+			$urlobj = parse_url($url);
+			$site_name = 'domain.com';
+			$domain = ($urlobj['host'])? $urlobj['host']: '';
+			if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+				$site_name = $regs['domain'];
+			}
+
+			$user_email = $user_name.'@'.$site_name;
+			if ( !$user_id and email_exists($user_email) == false ) {
+				$random_password = wp_generate_password( $length=12, $include_standard_special_chars=false );
+				$userdata = array(
+				    'user_login'  => $user_name,
+				    'user_email'  => $user_email,
+				    'role'        => wpas_get_option( 'new_user_role', 'wpas_user' ),
+				    'user_pass'   => $random_password,
+				);
+				$user_id = wp_insert_user( $userdata ) ;
+				if( !empty( $user_id ) ){
+					update_user_meta( $user_id, 'is_anonymous', true );
+				}
+			}
+		}
 		/**
 		 * Delete ticket data belongs to the mention email id.
 		 */
@@ -318,10 +445,54 @@ class WPAS_Privacy_Option {
 						
 						/* Proceed with attempting to delete the ticket if filter returned ok */	
 						if ( true === $wpas_pe_msgs['ok_to_erase'] ) {
-							if ( wp_delete_post( $ticket_id, true ) ) {
-								$items_removed = true;
-								$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
-							} 
+							/**
+							 * if anonymize data instead of delete is checked 
+							 * 		dont delete 
+							 * else 
+							 * 		delete data
+							 */
+							
+							if( $anonymize_existing_data ){
+								//2. Update ticket data and set author as Anonymous user
+								$arg = array(
+								    'ID' => $ticket_id,
+								    'post_author' => $user_id,
+								);
+								wp_update_post( $arg );
+								$args = array(
+									'post_parent'            => $ticket_id,
+									'post_type'              => apply_filters( 'wpas_replies_post_type', array(
+										'ticket_history',
+										'ticket_reply',
+										'ticket_log'
+									) ),
+									'post_status'            => 'any',
+									'posts_per_page'         => - 1,
+									'no_found_rows'          => true,
+									'cache_results'          => false,
+									'update_post_term_cache' => false,
+									'update_post_meta_cache' => false,
+								);
+
+								$posts = new WP_Query( $args );
+								foreach ( $posts->posts as $id => $post ) {
+
+									do_action( 'wpas_before_anonymize_dependency', $post->ID, $post );
+									$arg = array(
+									    'ID' => $post->ID,
+									    'post_author' => $user_id,
+									);
+									wp_update_post( $arg );
+
+									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
+								}
+								$messages[] = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+							} else{
+								if ( wp_delete_post( $ticket_id, true ) ) {
+									$items_removed = true;
+									$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+								} 
+							}
 						} else {
 							$messages[] = sprintf( __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' ), (string) $ticket_id ) ;
 							$messages = array_merge( $messages, $wpas_pe_msgs['messages'] ) ;
