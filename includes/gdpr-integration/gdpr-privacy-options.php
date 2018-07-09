@@ -774,7 +774,7 @@ class WPAS_Privacy_Option {
 		
 		if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {
 			?>		
-			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets and user data', 'awesome-support' ); ?></button>
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets', 'awesome-support' ); ?></button>
 			<?php
 		}
 		

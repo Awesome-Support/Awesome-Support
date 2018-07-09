@@ -1,6 +1,6 @@
 <?php
 /**
- * Awesome Support Add/Remove Consent
+ * Awesome Support Export Tickets Template
  *
  * @package   Awesome_Support
  * @author    DevriX
@@ -18,4 +18,4 @@ if ( ! defined( 'WPINC' ) ) {
 </div>
 <div class="wpas-gdpr-notice export-data"></div>
 
-<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo get_current_user_id(); ?>" class="button button-primary" value="<?php _e( 'Export my data', 'awesome-suppot' ); ?>">
+<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo get_current_user_id(); ?>" class="button button-primary" value="<?php _e( 'Export my tickets', 'awesome-suppot' ); ?>">
