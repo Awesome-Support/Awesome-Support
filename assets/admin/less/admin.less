@@ -147,6 +147,13 @@ Ticket Replies
 */
 
 .wpas-table-replies {
+	table-layout: fixed;
+	.col1 {
+		width: 80px;
+	}
+	.col2 {
+		width: 100%;
+	}
 	tr > td {
 		vertical-align: top;
 		padding-top: 2.25em;
@@ -383,6 +390,11 @@ Ticket Controls
 	img {
 		max-width: 100%;
 		height: auto;
+	}
+	// Force responsive preformatted
+	pre {
+		width: 100%;
+		overflow: auto;
 	}
 }
 
