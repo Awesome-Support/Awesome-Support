@@ -461,8 +461,12 @@ class WPAS_Privacy_Option {
 
 		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
 		if( $anonymize_existing_data ){
-			$user_id = $this->as_create_anonymous_user();
-			update_user_option( $author->ID, 'related_anonymous_user', $user_id, true );
+			$user_id = get_user_option( 'related_anonymous_user', $author->ID );
+			$related_author = get_userdata( $user_id );
+			if( empty( $related_author ) ){
+				$user_id = $this->as_create_anonymous_user();
+				update_user_option( $author->ID, 'related_anonymous_user', $user_id, true );
+			} 
 		}
 		/**
 		 * Delete ticket data belongs to the mention email id.
