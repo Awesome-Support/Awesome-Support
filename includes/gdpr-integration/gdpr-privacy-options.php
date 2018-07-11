@@ -196,41 +196,114 @@ class WPAS_Privacy_Option {
 	 * @return [type] [description]
 	 */
 	function as_tickets_cleanup_action_callback(){
-		/**
-		 * Loop all support users and run the function below and pass user email address and page count in 1 attempt. 
-		 */
-		// get all anonymous users and exclude them. 
-		$anonymous_users = get_users(
-		    array(
-		        'meta_query' => array(
-		            array(
-		                'key' => 'is_anonymous',
-		                'value' => true,
-		                'compare' => '=='
-		            ),
-		        )
-		    )
-		);
-		$exclude = array();
-		if( !empty( $anonymous_users )){
-			foreach ($anonymous_users as $user_key => $user ) {
-				$exclude[] = $user->data->ID;
-			}
+
+		$ticket_age = wpas_get_option( 'anonymize_cronjob_max_age', '' );
+		$ticket_data = array();
+		if( !empty( $ticket_age )){
+			$cronjob_max_age = intval($ticket_age);
+			$args = array(
+				'post_type'      => array( 'ticket' ),
+				'post_status'    => array_keys( wpas_get_post_status() ),
+				'posts_per_page' => 50,
+				'meta_query' => array(
+			        array(
+			            'key'   => 'is_anonymize',
+			            'compare' => 'NOT EXISTS',
+			        )
+			    ),
+			    'date_query' => array(
+					'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days') )
+				) 
+			);
+			$ticket_data = get_posts( $args );
 		}
-		// get all user can create tickets
-		$args = array( 
-			'cap' => 'create_ticket', 
-			// 'exclude' => $exclude  
-		);
-		$all_support_users = wpas_get_users( $args );
-		if( !empty( $all_support_users ) && isset( $all_support_users->members ) && !empty( $all_support_users->members ) ){
-			foreach ( $all_support_users->members as $key => $as_user ) {
-				if( !empty( $as_user->ID ) && !in_array( $as_user->ID , $exclude )){
-					$ticket_age = wpas_get_option( 'anonymize_cronjob_max_age', '' );
-					$this->wpas_users_personal_data_eraser( $as_user->user_email, 1, $ticket_age );
+		if( !empty( $ticket_data ) ){
+			$author_array = array();
+			foreach ( $ticket_data as $key => $ticket_value ) {
+				if( array_key_exists( $ticket_value->post_author ,$author_array ) ){
+					$author_array[ $ticket_value->post_author ][] = $ticket_value->ID;
+				} else{
+					$author_array[ $ticket_value->post_author ] = array( $ticket_value->ID );
+				}
+			}
+
+			if( !empty( $author_array )){
+				foreach ( $author_array as $author_id => $author_tickets ) {
+					/**
+					 * 
+					 ** 1. create an anonymous user if it is not created for author yet. to maintain a single and unique anonymous author per support user.  
+					 *
+					 ** 2. Loop author tickets and set them anonymous and set meta key is_anonymous = true, to exclude already anonymize tickets.
+					 *
+					 ** 3. set author user_meta key with related anonymous user_id if not exist.
+					 *
+					 */
+					$related_author_id = get_user_option( 'related_anonymous_user', $author_id );
+					$related_author = get_userdata( $related_author_id );
+					if( empty( $related_author ) ){
+						// create anonymous user and set related_anonymous_user user meta key.
+						$related_author_id = $this->as_create_anonymous_user();
+						// update related anonymous user.
+						update_user_option( $author_id, 'related_anonymous_user', $user_id, true );
+
+					} 
+					$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
+					// Assign Author tickets to anonymous user. 
+					// also set is_anonymize key in ticket meta.
+					if( !empty( $author_tickets )){
+						foreach ( $author_tickets as $key => $ticket_id ) {
+							if( $anonymize_existing_data && !empty( $related_author_id ) ){
+								//2. Update ticket data and set author as Anonymous user
+								$arg = array(
+								    'ID' => $ticket_id,
+								    'post_author' => $related_author_id,
+								);
+								error_log('Ticket anonymize'. $ticket_id );
+								error_log('Ticket Author'. $related_author_id );
+								wp_update_post( $arg );
+								update_post_meta( $ticket_id, 'is_anonymize', true );
+								$args = array(
+									'post_parent'            => $ticket_id,
+									'post_type'              => apply_filters( 'wpas_replies_post_type', array(
+										'ticket_history',
+										'ticket_reply',
+										'ticket_log'
+									) ),
+									'post_status'            => 'any',
+									'posts_per_page'         => - 1,
+									'no_found_rows'          => true,
+									'cache_results'          => false,
+									'update_post_term_cache' => false,
+									'update_post_meta_cache' => false,
+								);
+
+								$posts = new WP_Query( $args );
+								foreach ( $posts->posts as $id => $post ) {
+
+									do_action( 'wpas_before_anonymize_dependency', $post->ID, $post );
+									$arg = array(
+									    'ID' => $post->ID,
+									    'post_author' => $related_author_id,
+									);
+									wp_update_post( $arg );
+									update_post_meta( $post->ID, 'is_anonymize', true );
+									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
+									$messages = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+									wpas_write_log( 'anonymize_ticket', $messages );
+								}
+							} else{
+								if ( wp_delete_post( $ticket_id, true ) ) {
+									$items_removed = true;
+									$messages = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+									wpas_write_log( 'anonymize_ticket_delete', $messages );
+								} 
+							}
+						}
+					}
 				}
 			}
 		}
+
 	}
 
 	/**
@@ -348,7 +421,7 @@ class WPAS_Privacy_Option {
 	 * @param  int    $page          Ticket page.
 	 * @return array
 	 */
-	public function wpas_users_personal_data_eraser( $email_address, $page = 1, $ticket_age = '' ){
+	public function wpas_users_personal_data_eraser( $email_address, $page = 1 ){
 		global $wpdb;
 
 		// Evaluate whether conditions exist to allow deletion to proceed		
@@ -388,44 +461,9 @@ class WPAS_Privacy_Option {
 			'paged'          => $page
 		);
 
-		if( !empty( $ticket_age )){
-			$cronjob_max_age = intval($ticket_age);
-			if( $cronjob_max_age >= 1 ){
-				$args[ 'date_query' ] = array(
-			        'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days')) 
-			    );
-			}
-		}
-
 		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
 		if( $anonymize_existing_data ){
-			//1. create a anonymous user with username anno-xxxx 
-			$random_number = wp_rand( 1, 10000000 );
-			$user_name = 'anno-'.$random_number;
-			
-			$user_id = username_exists( $user_name );
-			$url = get_site_url();
-			$urlobj = parse_url($url);
-			$site_name = 'domain.com';
-			$domain = ($urlobj['host'])? $urlobj['host']: '';
-			if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
-				$site_name = $regs['domain'];
-			}
-
-			$user_email = $user_name.'@'.$site_name;
-			if ( !$user_id and email_exists($user_email) == false ) {
-				$random_password = wp_generate_password( $length=12, $include_standard_special_chars=false );
-				$userdata = array(
-				    'user_login'  => $user_name,
-				    'user_email'  => $user_email,
-				    'role'        => wpas_get_option( 'new_user_role', 'wpas_user' ),
-				    'user_pass'   => $random_password,
-				);
-				$user_id = wp_insert_user( $userdata ) ;
-				if( !empty( $user_id ) ){
-					update_user_meta( $user_id, 'is_anonymous', true );
-				}
-			}
+			$user_id = $this->as_create_anonymous_user();
 		}
 		/**
 		 * Delete ticket data belongs to the mention email id.
@@ -515,6 +553,40 @@ class WPAS_Privacy_Option {
 		);
 	}
 
+
+	/**
+	 * create anonymous user.
+	 */
+	function as_create_anonymous_user(){
+		//1. create a anonymous user with username anno-xxxx 
+		$random_number = wp_rand( 1, 10000000 );
+		$user_name = 'anno-'.$random_number;
+		
+		$user_id = username_exists( $user_name );
+		$url = get_site_url();
+		$urlobj = parse_url($url);
+		$site_name = 'domain.com';
+		$domain = ($urlobj['host'])? $urlobj['host']: '';
+		if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+			$site_name = $regs['domain'];
+		}
+
+		$user_email = $user_name.'@'.$site_name;
+		if ( !$user_id and email_exists($user_email) == false ) {
+			$random_password = wp_generate_password( $length=12, $include_standard_special_chars=false );
+			$userdata = array(
+			    'user_login'  => $user_name,
+			    'user_email'  => $user_email,
+			    'role'        => wpas_get_option( 'new_user_role', 'wpas_user' ),
+			    'user_pass'   => $random_password,
+			);
+			$user_id = wp_insert_user( $userdata ) ;
+			if( !empty( $user_id ) ){
+				update_user_option( $user_id, 'is_anonymous', true );
+			}
+		}
+		return $user_id;
+	}
 	/**
 	 * Registers a personal data exporter for Awesome Support
 	 *
