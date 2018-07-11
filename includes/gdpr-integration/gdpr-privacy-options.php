@@ -244,9 +244,10 @@ class WPAS_Privacy_Option {
 						// create anonymous user and set related_anonymous_user user meta key.
 						$related_author_id = $this->as_create_anonymous_user();
 						// update related anonymous user.
-						update_user_option( $author_id, 'related_anonymous_user', $user_id, true );
+						update_user_option( $author_id, 'related_anonymous_user', $related_author_id, true );
 
-					} 
+					}
+
 					$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
 					// Assign Author tickets to anonymous user. 
 					// also set is_anonymize key in ticket meta.
@@ -258,8 +259,6 @@ class WPAS_Privacy_Option {
 								    'ID' => $ticket_id,
 								    'post_author' => $related_author_id,
 								);
-								error_log('Ticket anonymize'. $ticket_id );
-								error_log('Ticket Author'. $related_author_id );
 								wp_update_post( $arg );
 								update_post_meta( $ticket_id, 'is_anonymize', true );
 								$args = array(
@@ -286,7 +285,6 @@ class WPAS_Privacy_Option {
 									    'post_author' => $related_author_id,
 									);
 									wp_update_post( $arg );
-									update_post_meta( $post->ID, 'is_anonymize', true );
 									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
 									$messages = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
 									wpas_write_log( 'anonymize_ticket', $messages );
@@ -464,6 +462,7 @@ class WPAS_Privacy_Option {
 		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
 		if( $anonymize_existing_data ){
 			$user_id = $this->as_create_anonymous_user();
+			update_user_option( $author->ID, 'related_anonymous_user', $user_id, true );
 		}
 		/**
 		 * Delete ticket data belongs to the mention email id.
