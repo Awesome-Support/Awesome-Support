@@ -19,7 +19,7 @@ function wpas_core_settings_cronjob( $def ) {
 				),
 				array(
 					'name'    => __( 'Cron Job', 'awesome-support' ),
-					'id'      => 'cron_job',
+					'id'      => 'anonymize_cron_job',
 					'type'    => 'checkbox',
 					'desc'    => __( 'Enable Cron management.', 'awesome-support' ),
 					'default' => false
@@ -39,6 +39,24 @@ function wpas_core_settings_cronjob( $def ) {
 					'desc'    => __( 'Cron job Max Age in days', 'awesome-support' ),
 					'default' => false
 				),
+				array(
+					'name' => __( 'Tickets to Anonymize', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Closed Tickets', 'awesome-support' ),
+					'id'      => 'closed_tickets_anonmyize',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Anonymize only Closed Tickets', 'awesome-support' ),
+					'default' => false
+				),	
+				array(
+					'name'    => __( 'Open Tickets', 'awesome-support' ),
+					'id'      => 'open_tickets_anonmyize',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Anonymize only Open Tickets', 'awesome-support' ),
+					'default' => false
+				),	
 
 			),
 	
