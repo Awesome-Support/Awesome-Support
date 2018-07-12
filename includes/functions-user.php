@@ -671,9 +671,12 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
  * @return string       Nicely formatted user role
  */
 function wpas_get_user_nice_role( $role ) {
+	
 	/* Get first role if role is an array */
 	if ( is_array($role) ) {
-		$role = array_shift( array_values($role) );
+		// The two lines below have to be separate instead of embedded inside each other in order to avoid an "Only variables should be passed by reference" error 
+		$role = array_values( $role );
+		$role = array_shift( $role ) ;
 	}
 	
 	/* Remove the prefix on WPAS roles */

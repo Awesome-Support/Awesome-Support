@@ -20,20 +20,6 @@ function wpas_addon_settings_file_upload( $def ) {
 					'desc'    => __( 'Do you want to allow your users (and agents) to upload attachments to tickets and replies?', 'awesome-support' )
 				),
 				array(
-					'name'    => __( 'Enable Ajax File Upload', 'awesome-support' ),
-					'id'      => 'ajax_upload',
-					'type'    => 'checkbox',
-					'default' => false,
-					'desc'    => __( 'Enable ajax uploader for ticket form', 'awesome-support' )
-				),
-				array(
-					'name'    => __( 'Enable Ajax For All', 'awesome-support' ),
-					'id'      => 'ajax_upload_all',
-					'type'    => 'checkbox',
-					'default' => false,
-					'desc'    => __( 'Enable ajax uploader for all custom upload fields', 'awesome-support' )
-				),				
-				array(
 					'name'    => __( 'Maximum Files', 'awesome-support' ),
 					'id'      => 'attachments_max',
 					'type'    => 'text',
@@ -53,6 +39,40 @@ function wpas_addon_settings_file_upload( $def ) {
 					'type'    => 'textarea',
 					'default' => 'jpg,jpeg,png,gif,pdf,doc,docx,ppt,pptx,pps,ppsx,odt,xls,xlsx,mp3,m4a,ogg,wav,mp4,m4v,mov,wmv,avi,mpg,ogv,3gp,3g2,zip',
 					'desc'    => sprintf( __( 'Which file types do you allow your users to attach? Please separate each extension by a comma (%s)', 'awesome-support' ), '<code>,</code>' )
+				),
+				
+				array(
+					'name' => __( 'Drag and Drop Uploads', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Enable or disable drag-and-drop uploads as well as pasting of images', 'awesome-support' ),					
+				),				
+				array(
+					'name'    => __( 'Enable', 'awesome-support' ),
+					'id'      => 'ajax_upload',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable drag-n-drop uploader for ticket form', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable For All', 'awesome-support' ),
+					'id'      => 'ajax_upload_all',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable drag-n-drop uploader for all custom upload fields', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable Image Paste', 'awesome-support' ),
+					'id'      => 'ajax_upload_paste_image',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable pasting of images into drag-n-drop uploader for ticket form when the drag-n-drop uploader is enabled', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable Image Paste For All', 'awesome-support' ),
+					'id'      => 'ajax_upload_paste_image_all',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable pasting of images into drag-n-drop uploader for all custom upload fields when the drag-n-drop uploader is enabled', 'awesome-support' )
 				),
 				
 				array(

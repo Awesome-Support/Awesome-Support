@@ -10,6 +10,9 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 
 		/* Call the parent constructor */
 		parent::__construct( $field_id, $field );
+		
+		// Get default value for this field
+		$defaults = $this->get_field_defaults();		
 
 		/* Set the additional parameters */
 		if ( ! isset( $this->field_args['multiple'] ) ) {
@@ -17,22 +20,24 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 		}
 
 		if ( ! isset( $this->field_args['use_ajax_uploader'] ) ) {
-			// Get default value for this parameter
-			$defaults = $this->get_field_defaults();
-
-			// Paste option
-			if ( ! isset( $this->field_args['enable_paste'] ) ) {
-				$this->field_args['enable_paste'] = $defaults['enable_paste'];
-			}
-
-			$this->field_args['use_ajax_uploader'] = $defaults['use_ajax_uploader'];
-
+			$this->field_args['use_ajax_uploader'] = $defaults['use_ajax_uploader'];			
 		}
 		
 		/* Force ajax upload if option to enable in settings is turned on... */
 		if ( boolval( wpas_get_option( 'ajax_upload_all', false ) ) ) {
 			$this->field_args['use_ajax_uploader'] = true;
 		}
+		
+		/* Paste option */
+		if ( ! isset( $this->field_args['enable_paste'] ) ) {			
+			$this->field_args['enable_paste'] = $defaults['enable_paste'];
+		}
+		
+		/* Force paste if option to enable in settings is turned on */
+		if ( boolval( wpas_get_option( 'ajax_upload_paste_image_all', false ) ) ) {
+			$this->field_args['enable_paste'] = true;
+		}
+		
 
 		/* Change the field name if multiple upload is enabled */
 		add_filter( 'wpas_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 3 );

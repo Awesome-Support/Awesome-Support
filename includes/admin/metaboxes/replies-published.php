@@ -98,7 +98,7 @@ if ( ! defined( 'WPINC' ) ) {
 	$content = apply_filters( 'the_content', $row->post_content );
 
 	/* The content displayed to agents */
-	echo '<div class="wpas-reply-content" id="wpas-reply-' . $row->ID . '">';
+	echo '<div class="wpas-reply-content wpas-break-words" id="wpas-reply-' . $row->ID . '">';
 
 	/**
 	 * wpas_backend_reply_content_before hook

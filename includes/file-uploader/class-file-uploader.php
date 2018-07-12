@@ -303,31 +303,39 @@ class WPAS_File_Upload {
 		
 		$delete_attachments = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
 		
-		$attachments = get_attached_media( '', $ticket_id );
-		
 		if( $delete_attachments ) {
+			
+			// Get attachments on ticket
+			$attachments = get_attached_media( '', $ticket_id );
+			
+			// Create array of attachments from replies..
 			$replies = wpas_get_replies( $ticket_id );
 			foreach( $replies as $reply ) {
 				$attachments = array_merge( $attachments, get_attached_media( '', $reply->ID ) );
 			}
+
+			// Now delete them all
+			$logs = array() ; // hold log messages to be written later to ticket
+			foreach ( $attachments as $attachment ) {
+				
+				$filename   = explode( '/', $attachment->guid );
+				$name = $filename[ count( $filename ) - 1 ];
+				
+				wp_delete_attachment( $attachment->ID );
+				
+				$logs[] = '<li>' . sprintf( __( '%s attachment auto deleted', 'awesome-support' ), $name ) . '</li>';				
+				
+			}			
+			
+			// Write logs to ticket
+			if( !empty( $logs ) ) {
+				$log_content = '<ul>'. implode( '', $logs ).'</ul>';
+				wpas_log( $ticket_id, $log_content );
+			}							
+			
 		}
 		
-		foreach ( $attachments as $attachment ) {
-			
-			$filename   = explode( '/', $attachment->guid );
-			$name = $filename[ count( $filename ) - 1 ];
-			
-			wp_delete_attachment( $attachment->ID );
-			
-			$logs[] = '<li>' . sprintf( __( '%s attachment auto deleted', 'awesome-support' ), $name ) . '</li>';
-			
-			
-		}
-		
-		if( !empty( $logs ) ) {
-			$log_content = '<ul>'. implode( '', $logs ).'</ul>';
-			wpas_log( $ticket_id, $log_content );
-		}
+
 	}
 	
 	/**
@@ -782,6 +790,7 @@ class WPAS_File_Upload {
 				'field_type' => 'upload',
 				'multiple'   => true,
 				'use_ajax_uploader' => ( boolval( wpas_get_option( 'ajax_upload', false ) ) ),
+				'enable_paste' => ( boolval( wpas_get_option( 'ajax_upload_paste_image', false ) ) ),
 				'label'      => __( 'Attachments', 'awesome-support' ),
 				'desc'       => sprintf( __( ' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'awesome-support' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) ),
 			),
@@ -789,9 +798,7 @@ class WPAS_File_Upload {
 
 		$attachments = new WPAS_Custom_Field( $this->index, $attachments_args );
 		echo $attachments->get_output();
-		
-		$post = get_post();
-		echo '<input type="hidden" name="ticket_id" value="'.$post->ID.'"/>';
+	
 	}
 	
 	/**
@@ -1500,8 +1507,8 @@ class WPAS_File_Upload {
 
 	public function load_ajax_uploader_assets() {
 
-		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/dropzone.css', null, WPAS_VERSION );
-		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/dropzone.js', array( 'jquery' ), WPAS_VERSION );
+		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/vendor/dropzone.css', null, WPAS_VERSION );
+		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/vendor/dropzone.js', array( 'jquery' ), WPAS_VERSION );
 		wp_register_script( 'wpas-ajax-upload', WPAS_URL . 'assets/admin/js/admin-ajax-upload.js', array( 'jquery' ), WPAS_VERSION, true );
 
 		wp_enqueue_style( 'wpas-dropzone' );

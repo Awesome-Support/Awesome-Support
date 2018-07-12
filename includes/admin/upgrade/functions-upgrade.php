@@ -341,19 +341,19 @@ function wpas_upgrade_521() {
 	 *
 	 */
 	$admin_caps = array(
-		'tickets_manage_privacy'
+		'ticket_manage_privacy'
 	);
 	
 	$agent_caps = array(
-		'tickets_manage_privacy'
+		'ticket_manage_privacy'
 	);
 	
 	$manager_caps = array(
-		'tickets_manage_privacy'
+		'ticket_manage_privacy'
 	);
 	
 	$supportmanager_caps = array(
-		'tickets_manage_privacy'
+		'ticket_manage_privacy'
 	);	
 
 	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors

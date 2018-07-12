@@ -46,6 +46,7 @@ class WPAS_GDPR_User_Profile {
 		add_action( 'wp_ajax_nopriv_wpas_gdpr_export_data', array( $this, 'wpas_gdpr_export_data' ) );
 
 		add_action( 'init', array( $this, 'download_file' ) );
+		
 	}
 
 	/**
@@ -70,8 +71,15 @@ class WPAS_GDPR_User_Profile {
 				header( 'Pragma: no-cache' );
 				header( 'Expires: 0' );
 				readfile( $this->user_export_dir . '/exported-data.zip' );
+				if (!unlink($this->user_export_dir . '/exported-data.zip') ){
+					return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/exported-data.zip', 'awesome-support' ) );
+				}
+				if (!unlink($this->user_export_dir . '/export-data.xml') ){
+					return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/export-data.xml', 'awesome-support' ) );
+				}
 			} else {
-				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );}
+				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );
+			}
 		}
 	}
 
@@ -172,7 +180,7 @@ class WPAS_GDPR_User_Profile {
 					 * If current loop is TOR, do not give Opt options
 					 */
 				$opt_button = '';
-				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false && current_user_can( 'tickets_manage_privacy' ) ) {
+				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false && current_user_can( 'ticket_manage_privacy' ) ) {
 					$gdpr_id = wpas_get_gdpr_data( $item );
 					/**
 					 * Determine what type of buttons we should render
@@ -260,47 +268,9 @@ class WPAS_GDPR_User_Profile {
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
-			/**
-			 * Export ticket data belongs to the current user
-			 */
-			$ticket_data  = new WP_Query(
-				array(
-					'post_type'      => array( 'ticket' ),
-					'author'         => $user,
-					'post_status'    => array_keys( wpas_get_post_status() ),
-					'posts_per_page' => -1,
-				)
-			);
 
-			$user_tickets = array();
-			if ( $ticket_data->found_posts > 0 ) {
-				if ( isset( $ticket_data->posts ) ) {
-					foreach ( $ticket_data->posts as $key => $post ) {
-						$user_tickets[ 't' . $key ] = array(
-							'ticket_id'     => $post->ID,
-							'subject'       => $post->post_title,
-							'description'   => $post->post_content,
-							'attachments'   => $this->get_ticket_attachment( $post->ID ),
-							'replies'       => $this->get_ticket_replies( $post->ID ),
-							'ticket_status' => $this->convert_status( $post->ID ),
-							'ticket_meta'   => $this->get_ticket_meta( $post->ID ),
-						);
-					}
-				}
-				wp_reset_postdata();
-			}
-
-			/**
-			 * Export GDPR logs
-			 */
-			$user_option_data = get_user_option( 'wpas_consent_tracking', $user );
-			$user_consent     = array();
-			if ( ! empty( $user_option_data ) ) {
-				foreach ( $user_option_data as $key => $option_data ) {
-					$user_consent[ 'o' . $key ] = $option_data;
-				}
-			}
-
+			$user_tickets = $this->wpas_gdpr_ticket_data( $user );
+			$user_consent = $this->wpas_gdpr_consent_data( $user );
 			if ( ! empty( $user_consent ) || ! empty( $user_tickets ) ) {
 				/**
 				 * Put them in awesome-support/user_log_$user_id
@@ -322,7 +292,7 @@ class WPAS_GDPR_User_Profile {
 
 				$upload_dir                     = wp_upload_dir();
 				$response['message']['success'] = sprintf(
-					'<p>%s. <a href="%s" target="_blank">%s</a></p>',
+					'<p>%s. <a href="%s" target="_blank" class="download-file-link">%s</a></p>',
 					__( 'Exporting data was successful!', 'awesome-support' ),
 					add_query_arg(
 						array(
@@ -341,6 +311,60 @@ class WPAS_GDPR_User_Profile {
 		}
 		wp_send_json( $response );
 		wp_die();
+	}
+
+	/**
+	 * Export GDPR logs
+	 *
+	 * @param $user User ID.
+	 */
+	public function wpas_gdpr_consent_data( $user ){
+		$user_option_data = get_user_option( 'wpas_consent_tracking', $user );
+		$user_consent     = array();
+		if ( ! empty( $user_option_data ) ) {
+			foreach ( $user_option_data as $key => $option_data ) {
+				$user_consent[ 'o' . $key ] = $option_data;
+			}
+		}
+		return $user_consent;
+	}
+
+	/**
+	 * Export ticket data belongs to the current user
+	 *
+	 * @param $user User ID.
+	 */
+	public function  wpas_gdpr_ticket_data( $user, $number = -1, $paged ='' ){
+
+		$args = array(
+				'post_type'      => array( 'ticket' ),
+				'author'         => $user,
+				'post_status'    => array_keys( wpas_get_post_status() ),
+				'posts_per_page' => $number,
+			);
+		if( !empty( $paged ) ){
+			$args['paged'] = $paged;
+		} 
+
+		$ticket_data  = new WP_Query( $args );
+		$user_tickets = array();
+		if ( $ticket_data->found_posts > 0 ) {
+			if ( isset( $ticket_data->posts ) ) {
+				foreach ( $ticket_data->posts as $key => $post ) {
+					$user_tickets[ 't' . $key ] = array(
+						'ticket_id'     => $post->ID,
+						'subject'       => $post->post_title,
+						'description'   => $post->post_content,
+						'attachments'   => $this->get_ticket_attachment( $post->ID ),
+						'replies'       => $this->get_ticket_replies( $post->ID ),
+						'ticket_status' => $this->convert_status( $post->ID ),
+						'ticket_meta'   => $this->get_ticket_meta( $post->ID ),
+					);
+				}
+			}
+			wp_reset_postdata();
+		}
+		return $user_tickets;
 	}
 
 	/**
@@ -366,7 +390,11 @@ class WPAS_GDPR_User_Profile {
 		$meta_field_value = array();
 		if ( ! empty( $meta_data ) ) {
 			foreach ( $meta_data as $key => $meta_field ) {
-				$meta_field_value[ 'm' . $key ] = $meta_field;
+				$meta = new stdClass();
+				foreach( $meta_field as $key => $value ) {
+					$meta->$key = html_entity_decode( $value );
+				}
+				$meta_field_value[ 'm' . $key ] = $meta;
 			}
 		}
 		return $meta_field_value;
@@ -383,7 +411,7 @@ class WPAS_GDPR_User_Profile {
 		if ( ! empty( $get_attachments ) ) {
 			foreach ( $get_attachments as $key => $attachment ) {
 				$attachments[ 'a' . $key ] = array(
-					'title' => $attachment->post_title,
+					'title' => html_entity_decode( $attachment->post_title ),
 					'url'   => $attachment->guid,
 				);
 			}
@@ -400,7 +428,7 @@ class WPAS_GDPR_User_Profile {
 		if ( ! empty( $get_replies ) ) {
 			foreach ( $get_replies as $key => $reply ) {
 				$replies[ 'r' . $key ] = array(
-					'content' => $reply->post_content,
+					'content' => html_entity_decode( $reply->post_content ),
 					'author'  => $this->get_reply_author( $reply->post_author ),
 				);
 			}

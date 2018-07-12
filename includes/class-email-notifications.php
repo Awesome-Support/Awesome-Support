@@ -295,7 +295,15 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{agent_name}',
-				'desc' 	=> __( 'Converts into agent name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into agent name (WordPress Display Name)', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{agent_first_name}',
+				'desc' 	=> __( 'Converts into the first name of the agent', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{agent_last_name}',
+				'desc' 	=> __( 'Converts into the last name of the agent', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{agent_email}',
@@ -303,8 +311,16 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{client_name}',
-				'desc' 	=> __( 'Converts into client name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into client name (WordPress Display Name)', 'awesome-support' )
 			),
+			array(
+				'tag' 	=> '{client_first_name}',
+				'desc' 	=> __( 'Converts into the first name of the client', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{client_last_name}',
+				'desc' 	=> __( 'Converts into the last name of the client', 'awesome-support' )
+			),			
 			array(
 				'tag' 	=> '{client_email}',
 				'desc' 	=> __( 'Converts into client e-mail address', 'awesome-support' )
@@ -398,6 +414,14 @@ class WPAS_Email_Notification {
 					$tag['value'] = !empty($agent) ? $agent->display_name : '';
 					break;
 
+				case 'agent_first_name':
+					$tag['value'] = !empty($agent) ? $agent->first_name : '';
+					break;
+
+				case 'agent_last_name':
+					$tag['value'] = !empty($agent) ? $agent->first_name : '';
+					break;
+					
 				/* E-mail of the agent assigned to this ticket */
 				case 'agent_email':
 					$tag['value'] = !empty($agent) ? $agent->user_email : '';
@@ -406,7 +430,15 @@ class WPAS_Email_Notification {
 				case 'client_name':
 					$tag['value'] = !empty($client) ? $client->display_name : '';
 					break;
-
+					
+				case 'client_first_name':
+					$tag['value'] = !empty($client) ? $client->first_name : '';
+					break;					
+				
+				case 'client_last_name':
+					$tag['value'] = !empty($client) ? $client->last_name : '';
+					break;
+					
 				case 'client_email':
 					$tag['value'] = !empty($client) ? $client->user_email : '';
 					break;
