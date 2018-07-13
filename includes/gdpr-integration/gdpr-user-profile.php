@@ -462,33 +462,13 @@ class WPAS_GDPR_User_Profile {
 		$upload['subdir'] = $subdir;
 
 		/* Create the directory if it doesn't exist yet, make sure it's protected otherwise */
+		$wpas_file_upload_instance = WPAS_File_Upload::get_instance();
 		if ( ! is_dir( $dir ) ) {
-			$this->create_upload_dir( $dir );
+			$wpas_file_upload_instance->create_upload_dir( $dir );
 		} else {
 			$this->protect_upload_dir( $dir );
 		}
 		return $dir;
-	}
-
-	/**
-	 * Create the upload directory for a ticket.
-	 *
-	 * @since 3.1.7
-	 *
-	 * @param string $dir Upload directory
-	 *
-	 * @return boolean Whether or not the directory was created
-	 */
-	public function create_upload_dir( $dir ) {
-
-		$make = wp_mkdir_p( $dir );
-
-		if ( true === $make ) {
-			$this->protect_upload_dir( $dir );
-		}
-
-		return $make;
-
 	}
 
 	/**
