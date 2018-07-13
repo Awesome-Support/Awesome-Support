@@ -8,6 +8,8 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 
 <!-- Table of replies, notes and logs -->
 <table class="form-table wpas-table-replies">
+	<col class="col1"/>
+	<col class="col2"/>
 	<tbody>
 
 		<?php
