@@ -44,7 +44,7 @@ class WPAS_Email_Notification {
 	public function __construct( $post_id ) {
 
 		/* Make sure the given post belongs to our plugin. */
-		if ( !in_array( get_post_type( $post_id ), array( 'ticket', 'ticket_reply' ) ) ) {
+		if ( !in_array( get_post_type( $post_id ), array( 'ticket', 'ticket_reply', 'ticket_note' ) ) ) {
 			return new WP_Error( 'incorrect_post_type', __( 'The post ID provided does not match any of the plugin post types', 'awesome-support' ) );
 		}
 
@@ -90,7 +90,8 @@ class WPAS_Email_Notification {
 			return $this->reply;
 		}
 
-		if ( 'ticket_reply' !== get_post_type( $this->post_id ) ) {
+		if ( 'ticket_reply' !== get_post_type( $this->post_id ) &&
+			 'ticket_note' !== get_post_type($this->post_id) ) {
 			return false;
 		}
 
@@ -694,19 +695,22 @@ class WPAS_Email_Notification {
 		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id );
 
 		$recipients = $recipient_emails = array();
-		$recipients[] = $user;
+		if (is_array($user)) {
+			$recipients = array_merge($recipients, $user);
+		} else {
+			$recipients[] = $user;
+		}
 		
 		if( wpas_is_multi_agent_active() ) {
 			// We need to notify other agents
-			
 			if( $case == 'agent_reply' ) {
-				$recipients = wpas_get_ticket_agents( $this->ticket_id, array($this->get_reply()->post_author) );
-				$recipients[] = $user;
+				$recipients = array_merge($recipients,
+					wpas_get_ticket_agents( $this->ticket_id, array($this->get_reply()->post_author) ) );
 			} elseif( $case == 'client_reply' ) {
 				$recipients = wpas_get_ticket_agents( $this->ticket_id );
 			}
 		}
-				
+
 		foreach( $recipients as $recipient ) {
 			if( $recipient instanceof WP_User ) {
 				$recipient_emails[] = array( 'user_id' => $recipient->ID, 'email' => $recipient->user_email );
