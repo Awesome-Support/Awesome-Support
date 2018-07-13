@@ -91,7 +91,7 @@ class WPAS_Email_Notification {
 		}
 
 		if ( 'ticket_reply' !== get_post_type( $this->post_id ) &&
-			 'ticket_note' !== get_post_type($this->post_id) ) {
+		     'ticket_note' !== get_post_type($this->post_id) ) {
 			return false;
 		}
 
@@ -691,8 +691,9 @@ class WPAS_Email_Notification {
 		 * @param WP_User $user
 		 * @param string  $case
 		 * @param int     $ticket_id
+		 * @param int     $post_id
 		 */
-		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id );
+		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id, $this->post_id );
 
 		$recipients = $recipient_emails = array();
 		if (is_array($user)) {
