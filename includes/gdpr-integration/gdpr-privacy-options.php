@@ -166,7 +166,7 @@ class WPAS_Privacy_Option {
 		if( !empty( $trigger_time )){
 			$trigger_time = intval($trigger_time);
 			$schedules['min_'. $trigger_time ] = array(
-				'interval' => $trigger_time,
+				'interval' => ($trigger_time * 60),
 				'display' => __('GDPR Ticket cleanup cron', 'awesome-support' )
 			);
 			return $schedules;
@@ -181,15 +181,19 @@ class WPAS_Privacy_Option {
 	 * @return void
 	 */
 	function tickets_cleanup_schedule(){
-		
-		if ( ! wp_next_scheduled( 'attachments_dir_cleanup_action' ) ) {
-			$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
-			if( !empty( $trigger_time )){
-				$trigger_time = intval($trigger_time);
-				wp_schedule_event( time(), 'min_' . $trigger_time, 'as_tickets_cleanup_action');
-			}
-		}
+		$anonymize_cron_job = wpas_get_option( 'anonymize_cron_job', '' );
 
+		if( !empty( $anonymize_cron_job )){
+			if ( ! wp_next_scheduled( 'as_tickets_cleanup_action' ) ) {
+				$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
+				if( !empty( $trigger_time )){
+					$trigger_time = intval($trigger_time);
+					wp_schedule_event( time(), 'min_' . $trigger_time, 'as_tickets_cleanup_action');
+				}
+			}
+		} else{
+			wp_clear_scheduled_hook("as_tickets_cleanup_action"); 
+		}
 	}
 	/**
 	 * Anonymize ticket if delete ticket option is not checked.
@@ -215,8 +219,28 @@ class WPAS_Privacy_Option {
 					'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days') )
 				) 
 			);
+
+			$closed_tickets = wpas_get_option( 'closed_tickets_anonmyize', '' );
+			$open_tickets = wpas_get_option( 'open_tickets_anonmyize', '' );
+			// if both option are not enable at the same time
+			if( !( !empty( $closed_tickets ) && !empty( $open_tickets ) ) ){
+				if( !empty( $closed_tickets ) ){
+					$args['meta_query'][] = array(
+						'key'   => '_wpas_status',
+						'value' => 'closed',
+						'compare' => '=',
+					);
+				} elseif( !empty( $open_tickets ) ){
+					$args['meta_query'][] = array(
+						'key'   => '_wpas_status',
+						'value' => 'open',
+						'compare' => '=',
+					);
+				}
+			}
 			$ticket_data = get_posts( $args );
 		}
+		
 		if( !empty( $ticket_data ) ){
 			$author_array = array();
 			foreach ( $ticket_data as $key => $ticket_value ) {
