@@ -385,6 +385,14 @@ class WPAS_Email_Notification {
 		if ( empty( $agent_id ) ) {
 			$agent_id = wpas_get_option( 'assignee_default', 1 );
 		}
+		
+		// If reply check if from agent
+		if ($this->ticket_id !== $this->post_id) {
+			$author_id = $this->get_reply()->post_author;
+			if ( user_can($author_id, 'edit_ticket') ) {
+				$agent_id = $author_id;
+			}
+		}
 
 		$agent  = get_user_by( 'id', (int) $agent_id  );
 		$client = get_user_by( 'id', $this->get_ticket()->post_author );
