@@ -24,6 +24,14 @@ function wpas_core_settings_moderated_registration( $def ) {
 				),			
 			
 				array(
+					'name'    => __( 'Registration Success Message', 'awesome-support' ),
+					'id'      => 'mr_success_message',
+					'type'    => 'text',
+					'desc'    => __( 'This is the message that we show to user once they register.', 'awesome-support' ),
+					'default' => __( 'Your account has been created. Admin will review and activate your account.', 'awesome-support' )
+				),
+				
+				array(
 					'name' => __( 'Roles', 'awesome-support' ),
 					'type' => 'heading'
 				),
