@@ -45,8 +45,7 @@ class WPAS_Email_Notification {
 
 		/* Make sure the given post belongs to our plugin. */
 
-		$post_types = 
-			apply_filters( 'wpas_email_notifications_post_types', array( 'ticket', 'ticket_reply' ) );
+		$post_types = apply_filters( 'wpas_email_notifications_post_types', array( 'ticket', 'ticket_reply' ) );
 
 		if ( !in_array( get_post_type( $post_id ), $post_types ) ) {
 			return new WP_Error( 'incorrect_post_type', __( 'The post ID provided does not match any of the plugin post types', 'awesome-support' ) );
@@ -94,8 +93,9 @@ class WPAS_Email_Notification {
 			return $this->reply;
 		}
 
-		if ( 'ticket_reply' !== get_post_type( $this->post_id ) &&
-		     'ticket_note' !== get_post_type($this->post_id) ) {
+		$reply_types = apply_filters( 'wpas_email_notifications_reply_types', array( 'ticket_reply' ) );
+
+		if ( !in_array( get_post_type( $this->post_id ), $reply_types ) ) {
 			return false;
 		}
 
