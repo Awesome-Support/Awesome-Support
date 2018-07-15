@@ -112,7 +112,7 @@ function wpas_register_account( $data ) {
 
 		// Mark new user if registration type is moderated
 		if( 'moderated' === $registration ) {
-			update_user_meta( $user_id, 'mr_user_not_activeated', 'yes' );
+			update_user_option( $user_id, 'mr_user_not_activated', 'yes' );
 		}
 
 		/**
@@ -193,7 +193,7 @@ function wpas_register_account( $data ) {
 
 		// For moderated registration print message and redirect, so we don't auto login.
 		if( 'moderated' === $registration ) {
-			update_user_meta( $user_id, 'mr_user_not_activeated', 'yes' );
+			update_user_option( $user_id, 'mr_user_not_activated', 'yes' );
 			
 			wpas_add_notification( 'moderated_account_created', esc_html( wpas_get_option( 'mr_success_message' ) ) );
 			wp_safe_redirect( $redirect_to );
@@ -534,7 +534,7 @@ function wpas_try_login( $data ) {
 
 		} elseif ( $login instanceof WP_User ) {
 
-			$user_not_activated = get_user_meta( $login->ID, 'mr_user_not_activeated', true );
+			$user_not_activated = get_user_option( 'mr_user_not_activated', $login->ID );
 			// Logout if user is not activated and print message
 			if( 'yes' === $user_not_activated ) {
 				wp_logout();
@@ -1348,10 +1348,6 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
 	return $agents;
 }
 
-function wpas_get_user_meta( ) {
-
-}
-
 /**
  * Log the user consent. Data saved in WP Option
  * We're not sure yet if custom table is needed but we can
@@ -1592,8 +1588,8 @@ add_action( 'show_user_profile', 'wpas_add_activate_user_button' , 9, 1 ); // Di
  */
 function wpas_add_activate_user_button( $user ) {
 	
-	$not_activated = get_user_meta( $user->ID, 'mr_user_not_activeated', true );
-	$user_denied   = get_user_meta( $user->ID, 'mr_user_denied', true );
+	$not_activated = get_user_option( 'mr_user_not_activated', $user->ID );
+	$user_denied   = get_user_option( 'mr_user_denied', $user->ID );
 	
 	
 	if( 'yes' === $not_activated && 'yes' !== $user_denied ) {
@@ -1621,8 +1617,7 @@ add_action( 'wpas_do_mr_activate_user', 'wpas_do_mr_activate_user' );
  * @param array $data
  */
 function wpas_do_mr_activate_user( $data ) {
-	
-	
+		
 	$user_id = $data['user_id'];
 	
 	if( $user_id ) {
@@ -1637,7 +1632,7 @@ function wpas_do_mr_activate_user( $data ) {
 				'wpas-mr-message' => 'failed'
 			), admin_url( 'user-edit.php' ) );
 		} else {
-			delete_user_meta( $user_id, 'mr_user_not_activeated' );
+			delete_user_meta( $user_id, 'mr_user_not_activated' );
 			$redirect_to = add_query_arg( array(
 				'user_id'         => $user_id,
 				'wpas-mr-message' => 'success'
@@ -1662,7 +1657,7 @@ function wpas_do_mr_deny_user( $data ) {
 	
 	if( $user_id ) {
 		
-		update_user_meta( $user_id, 'mr_user_denied', 'yes' );
+		update_user_option( $user_id, 'mr_user_denied', 'yes' );
 		$redirect_to = add_query_arg( array(
 			'user_id'         => $user_id,
 			'wpas-mr-deny-message' => 'success'
