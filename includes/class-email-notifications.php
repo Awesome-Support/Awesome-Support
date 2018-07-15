@@ -42,14 +42,14 @@ class WPAS_Email_Notification {
 	 *
 	 * Holds the contents of a reply.
 	 *
-	 * @var  string
+	 * @var  boolean|object
 	 */	
 	protected $reply;
 	
 	/**
 	 * The entire contents of a ticket post
 	 *
-	 * @var  array|object
+	 * @var  boolean|object
 	 */	
 	protected $ticket;	
 	
