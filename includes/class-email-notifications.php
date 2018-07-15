@@ -30,11 +30,28 @@ class WPAS_Email_Notification {
 	 * ID of the related ticket.
 	 *
 	 * The ticket ID can be the same as the post ID if the provided post ID
-	 * is a new ticket. Otherwise $post_id is a reply.
+	 * is a new ticket. Otherwise $post_id is a reply or some other post type 
+	 * registered an add-on such as private notes.
 	 *
 	 * @var  integer
 	 */
 	protected $ticket_id;
+	
+	/**
+	 * Contents of a reply 
+	 *
+	 * Holds the contents of a reply.
+	 *
+	 * @var  string
+	 */	
+	protected $reply;
+	
+	/**
+	 * The entire contents of a ticket post
+	 *
+	 * @var  array|object
+	 */	
+	protected $ticket;	
 	
 	/**
 	 * Class constructor.
@@ -43,8 +60,7 @@ class WPAS_Email_Notification {
 	 */
 	public function __construct( $post_id ) {
 
-		/* Make sure the given post belongs to our plugin. */
-
+		/* Make sure the given post belongs to our plugin. Private notes will likely be one of the post types that gets registered using the filter below. */
 		$post_types = apply_filters( 'wpas_email_notifications_post_types', array( 'ticket', 'ticket_reply' ) );
 
 		if ( !in_array( get_post_type( $post_id ), $post_types ) ) {
@@ -210,17 +226,16 @@ class WPAS_Email_Notification {
 	 */
 	private function cases_active_option() {
 
-		$cases					= $this->get_cases();
-		$cases['submission_confirmation']	= 'enable_confirmation';
-		$cases['new_ticket_assigned']		= 'enable_assignment';
+		$cases = $this->get_cases();
+		$cases['submission_confirmation']		= 'enable_confirmation';
+		$cases['new_ticket_assigned']			= 'enable_assignment';
 		$cases['new_ticket_assigned_secondary'] = 'multiple_agents_per_ticket';
 		$cases['new_ticket_assigned_tertiary']	= 'multiple_agents_per_ticket';
-		$cases['agent_reply']			= 'enable_reply_agent';
-		$cases['client_reply']			= 'enable_reply_client';
-		$cases['ticket_closed']			= 'enable_closed';
-		
-		$cases['ticket_closed_agent'] = 'enable_closed';
-		$cases['ticket_closed_client'] = 'enable_closed_client';
+		$cases['agent_reply']					= 'enable_reply_agent';
+		$cases['client_reply']					= 'enable_reply_client';
+		$cases['ticket_closed']					= 'enable_closed';
+		$cases['ticket_closed_agent'] 			= 'enable_closed';
+		$cases['ticket_closed_client'] 			= 'enable_closed_client';
 
 		return apply_filters( 'wpas_email_notifications_cases_active_option', $cases );
 	}
@@ -847,8 +862,6 @@ class WPAS_Email_Notification {
 				$mail = true;
 			}
 		}		
-		
-		
 		
 		return $mail;
 
