@@ -78,7 +78,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 	</form>
 	
 	<?php
-	if ( 'allow' === $registration ): ?>
+	if ( 'allow' === $registration || 'moderated' === $registration ): ?>
 
 		<form class="wpas-form" id="wpas_form_registration" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
 			<h3><?php _e( 'Register', 'awesome-support' ); ?></h3>
