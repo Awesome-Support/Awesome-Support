@@ -239,6 +239,14 @@ class WPAS_User_Email_Notification {
 				'desc' 	=> __( 'Converts into agent name (WordPress Display Name)', 'awesome-support' )
 			),
 			array(
+				'tag' 	=> '{display_name}',
+				'desc' 	=> __( 'Converts into user name (WordPress Display Name)', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{user_profile_link}',
+				'desc' 	=> __( 'Displays a link to user profile page', 'awesome-support' )
+			),
+			array(
 				'tag' 	=> '{email}',
 				'desc' 	=> __( 'Converts into the first name of the agent', 'awesome-support' )
 			),
@@ -301,6 +309,18 @@ class WPAS_User_Email_Notification {
 					$tag['value'] = $this->user->last_name;
 					break;
 
+				case 'display_name':
+					$tag['value'] = $this->user->display_name;
+					break;
+			
+				case 'user_profile_link':
+					
+					$tag['value'] = add_query_arg( array(
+						'user_id'         => $this->user->ID
+						), admin_url( 'user-edit.php' ) );
+					
+					break;
+			
 				case 'email':
 					$tag['value'] = $this->user->user_email;
 					break;
