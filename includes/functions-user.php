@@ -1593,14 +1593,21 @@ add_action( 'show_user_profile', 'wpas_add_activate_user_button' , 9, 1 ); // Di
 function wpas_add_activate_user_button( $user ) {
 	
 	$not_activated = get_user_meta( $user->ID, 'mr_user_not_activeated', true );
+	$user_denied   = get_user_meta( $user->ID, 'mr_user_denied', true );
 	
-	if( 'yes' === $not_activated ) {
+	
+	if( 'yes' === $not_activated && 'yes' !== $user_denied ) {
 		
 		$edit_user_link = add_query_arg( 'user_id', $user->ID, self_admin_url( 'user-edit.php' ) );
-		$url = wpas_do_url( $edit_user_link, 'mr_activate_user' );
+		$activate_url = wpas_do_url( $edit_user_link, 'mr_activate_user' );
+		$deny_url = wpas_do_url( $edit_user_link, 'mr_deny_user' );
 		
-		printf( '<a href="%s" class="button button-primary">%s</a>', $url ,__( 'Activate User', 'awesome-support' ) );
+		printf( '<a href="%s" class="button button-primary">%s</a>', $activate_url ,__( 'Activate User', 'awesome-support' ) );
 		
+		printf( '<a href="%s" class="button button-primary mr-deny-user-btn">%s</a>', $deny_url ,__( 'Deny User', 'awesome-support' ) );
+		
+	} elseif( 'yes' === $user_denied ) {
+		printf( '<div><p>%s</p></div>', __( 'User has been denied.', 'awesome-support' ) );
 	}
 	
 }
@@ -1642,6 +1649,30 @@ function wpas_do_mr_activate_user( $data ) {
 			
 }
 
+add_action( 'wpas_do_mr_deny_user', 'wpas_do_mr_deny_user' );
+
+/**
+ * Deny moderated user registration
+ * 
+ * @param array $data
+ */
+function wpas_do_mr_deny_user( $data ) {
+	
+	$user_id = $data['user_id'];
+	
+	if( $user_id ) {
+		
+		update_user_meta( $user_id, 'mr_user_denied', 'yes' );
+		$redirect_to = add_query_arg( array(
+			'user_id'         => $user_id,
+			'wpas-mr-deny-message' => 'success'
+		), admin_url( 'user-edit.php' ) );
+		
+		
+		wpas_redirect( 'mr_activation', $redirect_to );
+	}
+}
+
 
 add_action( 'admin_init', 'wpas_mr_activation_notices', 10, 0 );
 
@@ -1658,6 +1689,14 @@ function wpas_mr_activation_notices() {
 			add_action( 'admin_notices', 'wpas_mr_activation_success_notice' );
 		} else {
 			add_action( 'admin_notices', 'wpas_mr_activation_failed_notice' );
+		}
+		
+	} elseif ( isset( $_GET['wpas-mr-deny-message'] ) ) {
+
+		$_SERVER['REQUEST_URI'] = remove_query_arg( 'wpas-mr-deny-message' );
+		
+		if ( 'success' === $_GET['wpas-mr-deny-message'] ) {
+			add_action( 'admin_notices', 'wpas_mr_deny_success_notice' );
 		}
 		
 	}
@@ -1678,5 +1717,14 @@ function wpas_mr_activation_success_notice() {
 function wpas_mr_activation_failed_notice() {
 	
 	printf( '<div class="updated error"><p>%s</p></div>', __( 'Error while activating user, try again later.', 'awesome-support' ) );
+	
+}
+
+/**
+ * Print notice once a moderated user registration denied
+ */
+function wpas_mr_deny_success_notice() {
+	
+	printf( '<div class="updated error"><p>%s</p></div>', __( 'User successfully denied.', 'awesome-support' ) );
 	
 }
