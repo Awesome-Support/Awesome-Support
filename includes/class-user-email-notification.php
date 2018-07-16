@@ -138,7 +138,9 @@ class WPAS_User_Email_Notification {
 
 		$cases = array(
 			'moderated_registration_admin',
-			'moderated_registration_user'
+			'moderated_registration_user',
+			'moderated_registration_approved_user',
+			'moderated_registration_denied_user'
 		);
 
 		return apply_filters( 'wpas__user_email_notifications_cases', $cases );
@@ -156,6 +158,8 @@ class WPAS_User_Email_Notification {
 		$cases					= $this->get_cases();
 		$cases['moderated_registration_admin']	= 'enable_moderated_registration_admin_email';
 		$cases['moderated_registration_user']	= 'enable_moderated_registration_user_email';
+		$cases['moderated_registration_approved_user'] = 'enable_moderated_registration_approved_user_email';
+		$cases['moderated_registration_denied_user']   = 'enable_moderated_registration_denied_user_email';
 		
 		
 		return apply_filters( 'wpas__user_email_notifications_cases_active_option', $cases );

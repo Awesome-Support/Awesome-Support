@@ -1513,7 +1513,9 @@ function wpas_mr_notification_cases() {
 	
 	return array(
 		'moderated_registration_admin',
-		'moderated_registration_user'
+		'moderated_registration_user',
+		'moderated_registration_approved_user',
+		'moderated_registration_denied_user'
 	);
 }
 
@@ -1632,7 +1634,13 @@ function wpas_do_mr_activate_user( $data ) {
 				'wpas-mr-message' => 'failed'
 			), admin_url( 'user-edit.php' ) );
 		} else {
-			delete_user_meta( $user_id, 'mr_user_not_activated' );
+			delete_user_option( $user_id, 'mr_user_not_activated' );
+			
+			// Notify to user
+			$user = get_user_by( 'id', $user_id );
+			$user_notify = new WPAS_User_Email_Notification( $user_id, $user->user_email );
+			$user_notify->notify( 'moderated_registration_approved_user' );
+			
 			$redirect_to = add_query_arg( array(
 				'user_id'         => $user_id,
 				'wpas-mr-message' => 'success'
@@ -1658,6 +1666,12 @@ function wpas_do_mr_deny_user( $data ) {
 	if( $user_id ) {
 		
 		update_user_option( $user_id, 'mr_user_denied', 'yes' );
+		
+		// Notify to user
+		$user = get_user_by( 'id', $user_id );
+		$user_notify = new WPAS_User_Email_Notification( $user_id, $user->user_email );
+		$user_notify->notify( 'moderated_registration_denied_user' );
+		
 		$redirect_to = add_query_arg( array(
 			'user_id'         => $user_id,
 			'wpas-mr-deny-message' => 'success'

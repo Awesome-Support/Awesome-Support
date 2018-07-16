@@ -59,7 +59,7 @@ function wpas_core_settings_moderated_registration( $def ) {
 				),
 				
                 array(
-                        'name'    => __( 'Admin Emails', 'awesome-support' ),
+                        'name'    => __( 'Email to admin once a user register', 'awesome-support' ),
                         'type'    => 'heading'
                 ),
 				
@@ -86,7 +86,7 @@ function wpas_core_settings_moderated_registration( $def ) {
                         'desc'    => __( 'Email Content', 'awesome-support' )
                 ),
 				array(
-                        'name'    => __( 'User Email', 'awesome-support' ),
+                        'name'    => __( 'Email to users once they registration', 'awesome-support' ),
                         'type'    => 'heading'
                 ),
 
@@ -108,6 +108,64 @@ function wpas_core_settings_moderated_registration( $def ) {
                 array(
                         'name'    => __( 'Content', 'awesome-support' ),
                         'id'      => "moderated_registration_user_email__content",
+                        'type'    => 'editor',
+                        'default' => 'Hello {first_name}: <br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
+                        'desc'    => __( 'Email Content', 'awesome-support' )
+                ),
+				
+				
+				array(
+                        'name'    => __( 'Email to Users once Registration Approved', 'awesome-support' ),
+                        'type'    => 'heading'
+                ),
+
+                array(
+                        'name'    => __( 'Enable', 'awesome-support' ),
+                        'id'      => "enable_moderated_registration_approved_user_email",
+                        'type'    => 'checkbox',
+                        'default' => true,
+                        'desc'    => __( 'Send email to user once their registration request approved', 'awesome-support' )
+                ),
+				
+                array(
+                        'name'    => __( 'Subject', 'awesome-support' ),
+                        'id'      => "moderated_registration_approved_user_email__subject",
+                        'type'    => 'text',
+                        'default' => 'Your registration on {site_name} has been submitted and is waiting for approval'
+                ),
+
+                array(
+                        'name'    => __( 'Content', 'awesome-support' ),
+                        'id'      => "moderated_registration_approved_user_email__content",
+                        'type'    => 'editor',
+                        'default' => 'Hello {first_name}: <br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
+                        'desc'    => __( 'Email Content', 'awesome-support' )
+                ),
+				
+				
+				array(
+                        'name'    => __( 'Email to Users once Registration Denied', 'awesome-support' ),
+                        'type'    => 'heading'
+                ),
+
+                array(
+                        'name'    => __( 'Enable', 'awesome-support' ),
+                        'id'      => "enable_moderated_registration_denied_user_email",
+                        'type'    => 'checkbox',
+                        'default' => true,
+						'desc'    => __( 'Send email to user once their registration request denied', 'awesome-support' )
+                ),
+				
+                array(
+                        'name'    => __( 'Subject', 'awesome-support' ),
+                        'id'      => "moderated_registration_denied_user_email__subject",
+                        'type'    => 'text',
+                        'default' => 'Your registration on {site_name} has been submitted and is waiting for approval'
+                ),
+
+                array(
+                        'name'    => __( 'Content', 'awesome-support' ),
+                        'id'      => "moderated_registration_denied_user_email__content",
                         'type'    => 'editor',
                         'default' => 'Hello {first_name}: <br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
                         'desc'    => __( 'Email Content', 'awesome-support' )
