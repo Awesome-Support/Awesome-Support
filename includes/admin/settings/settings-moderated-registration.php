@@ -55,11 +55,11 @@ function wpas_core_settings_moderated_registration( $def ) {
 				array(
 					'name' => __( 'Moderated Registration Email Templates', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => __( 'Notify admins and user about pending and approved registrations', 'awesome-support' ),
+					'desc' => __( 'Notify admins and users about pending and approved registrations', 'awesome-support' ),
 				),
 				
                 array(
-                        'name'    => __( 'Email to admin once a user register', 'awesome-support' ),
+                        'name'    => __( 'Email to admin when a user registers', 'awesome-support' ),
                         'type'    => 'heading'
                 ),
 				
@@ -68,7 +68,7 @@ function wpas_core_settings_moderated_registration( $def ) {
                         'id'      => "enable_moderated_registration_admin_email",
                         'type'    => 'checkbox',
                         'default' => true,
-                        'desc'    => __( 'Send email to admin about new pending registration', 'awesome-support' )
+                        'desc'    => __( 'Send email to admin when a new user makes a registration request', 'awesome-support' )
                 ),
 				
                 array(
@@ -82,11 +82,11 @@ function wpas_core_settings_moderated_registration( $def ) {
                         'name'    => __( 'Content', 'awesome-support' ),
                         'id'      => "moderated_registration_admin_email__content",
                         'type'    => 'editor',
-                        'default' => 'You have received a new registration from your Awesome Support registration screen. <br /> User Name: {first_name} {last_name} <br />User Email: {email}',
+                        'default' => 'You have received a new registration from your Awesome Support registration screen. <br /><br /> User Name: {first_name} {last_name} <br />User Email: {email} <br /> User Profile: {user_profile_link}<br /><br />You can click on the user profile link shown above to go directly to the user profile where you can approve or deny the registration.',
                         'desc'    => __( 'Email Content', 'awesome-support' )
                 ),
 				array(
-                        'name'    => __( 'Email to users once they registration', 'awesome-support' ),
+                        'name'    => __( 'Email to users when they register', 'awesome-support' ),
                         'type'    => 'heading'
                 ),
 
@@ -95,7 +95,7 @@ function wpas_core_settings_moderated_registration( $def ) {
                         'id'      => "enable_moderated_registration_user_email",
                         'type'    => 'checkbox',
                         'default' => true,
-                        'desc'    => __( 'Send email to user about new moderated registration', 'awesome-support' )
+                        'desc'    => __( 'Send email to users when their regisration request is waiting for approval', 'awesome-support' )
                 ),
 				
                 array(
@@ -109,13 +109,13 @@ function wpas_core_settings_moderated_registration( $def ) {
                         'name'    => __( 'Content', 'awesome-support' ),
                         'id'      => "moderated_registration_user_email__content",
                         'type'    => 'editor',
-                        'default' => 'Hello {first_name}: <br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
+                        'default' => 'Hello {first_name}: <br /><br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
                         'desc'    => __( 'Email Content', 'awesome-support' )
                 ),
 				
 				
 				array(
-                        'name'    => __( 'Email to Users once Registration Approved', 'awesome-support' ),
+                        'name'    => __( 'Email to users when registration has been approved', 'awesome-support' ),
                         'type'    => 'heading'
                 ),
 
@@ -124,27 +124,27 @@ function wpas_core_settings_moderated_registration( $def ) {
                         'id'      => "enable_moderated_registration_approved_user_email",
                         'type'    => 'checkbox',
                         'default' => true,
-                        'desc'    => __( 'Send email to user once their registration request approved', 'awesome-support' )
+                        'desc'    => __( 'Send email to user if their registration request is approved', 'awesome-support' )
                 ),
 				
                 array(
                         'name'    => __( 'Subject', 'awesome-support' ),
                         'id'      => "moderated_registration_approved_user_email__subject",
                         'type'    => 'text',
-                        'default' => 'Your registration on {site_name} has been submitted and is waiting for approval'
+                        'default' => 'Your registration on {site_name} has been approved'
                 ),
 
                 array(
                         'name'    => __( 'Content', 'awesome-support' ),
                         'id'      => "moderated_registration_approved_user_email__content",
                         'type'    => 'editor',
-                        'default' => 'Hello {first_name}: <br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
+                        'default' => 'Hello {first_name}: <br /><br />We just wanted to let you know that your registration request has been approved. You can now log in and submit your first ticket.<br /><br /> - Your friends at {site_name} ',
                         'desc'    => __( 'Email Content', 'awesome-support' )
                 ),
 				
 				
 				array(
-                        'name'    => __( 'Email to Users once Registration Denied', 'awesome-support' ),
+                        'name'    => __( 'Email to users when registration is denied', 'awesome-support' ),
                         'type'    => 'heading'
                 ),
 
@@ -153,21 +153,21 @@ function wpas_core_settings_moderated_registration( $def ) {
                         'id'      => "enable_moderated_registration_denied_user_email",
                         'type'    => 'checkbox',
                         'default' => true,
-						'desc'    => __( 'Send email to user once their registration request denied', 'awesome-support' )
+						'desc'    => __( 'Send email to user if their registration request is denied', 'awesome-support' )
                 ),
 				
                 array(
                         'name'    => __( 'Subject', 'awesome-support' ),
                         'id'      => "moderated_registration_denied_user_email__subject",
                         'type'    => 'text',
-                        'default' => 'Your registration on {site_name} has been submitted and is waiting for approval'
+                        'default' => 'Your registration on {site_name} has been denied'
                 ),
 
                 array(
                         'name'    => __( 'Content', 'awesome-support' ),
                         'id'      => "moderated_registration_denied_user_email__content",
                         'type'    => 'editor',
-                        'default' => 'Hello {first_name}: <br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
+                        'default' => 'Hello {first_name}: <br /><br />We just wanted to let you know that your registration request has not been approved. If you have questions about this decision please use our contact form to follow up.<br /><br /> - Your friends at {site_name} ',
                         'desc'    => __( 'Email Content', 'awesome-support' )
                 ),
 			)
