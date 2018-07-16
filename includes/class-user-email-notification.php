@@ -138,7 +138,9 @@ class WPAS_User_Email_Notification {
 
 		$cases = array(
 			'moderated_registration_admin',
-			'moderated_registration_user'
+			'moderated_registration_user',
+			'moderated_registration_approved_user',
+			'moderated_registration_denied_user'
 		);
 
 		return apply_filters( 'wpas__user_email_notifications_cases', $cases );
@@ -156,6 +158,8 @@ class WPAS_User_Email_Notification {
 		$cases					= $this->get_cases();
 		$cases['moderated_registration_admin']	= 'enable_moderated_registration_admin_email';
 		$cases['moderated_registration_user']	= 'enable_moderated_registration_user_email';
+		$cases['moderated_registration_approved_user'] = 'enable_moderated_registration_approved_user_email';
+		$cases['moderated_registration_denied_user']   = 'enable_moderated_registration_denied_user_email';
 		
 		
 		return apply_filters( 'wpas__user_email_notifications_cases_active_option', $cases );
@@ -232,11 +236,11 @@ class WPAS_User_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{first_name}',
-				'desc' 	=> __( 'Converts into website name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into user\'s first name', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{last_name}',
-				'desc' 	=> __( 'Converts into agent name (WordPress Display Name)', 'awesome-support' )
+				'desc' 	=> __( 'Converts into user\'s last name', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{display_name}',
@@ -248,7 +252,7 @@ class WPAS_User_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{email}',
-				'desc' 	=> __( 'Converts into the first name of the agent', 'awesome-support' )
+				'desc' 	=> __( 'Converts into the user\'s email address', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{site_name}',
