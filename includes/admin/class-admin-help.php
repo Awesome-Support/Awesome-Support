@@ -25,6 +25,8 @@ class WPAS_Help {
 		add_filter( 'contextual_help', array( $this, 'settings_products_management_help' ), 10, 3 );
 		add_filter( 'contextual_help', array( $this, 'settings_notifications_contextual_help' ), 10, 3 );
 		add_filter( 'contextual_help', array( $this, 'settings_advanced_contextual_help' ), 10, 3 );
+		
+		add_filter( 'contextual_help', array( $this, 'settings_moderated_registration_help' ), 10, 3 );
 	}
 
 	/**
@@ -93,6 +95,41 @@ class WPAS_Help {
 			'content' => __( '<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn\'t. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>', 'awesome-support' )
 		) );
 	}	
+	
+	/**
+	 * Moderated registration contextual help.
+	 * 
+	 * @return void
+	 */
+	public function settings_moderated_registration_help() {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
+		    'modregistration' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
+			return;
+		}
+		
+		/**
+		 * Gather the list of e-mail template tags and their description
+		 */
+		$list_tags = WPAS_User_Email_Notification::get_tags();
+
+		$tags = '<table class="widefat"><thead><th class="row-title">' . __( 'Tag', 'awesome-support' ) . '</th><th>' . __( 'Description', 'awesome-support' ) . '</th></thead><tbody>';
+
+		foreach ( $list_tags as $the_tag ) {
+			$tags .= '<tr><td class="row-title"><strong>' . $the_tag['tag'] . '</strong></td><td>' . $the_tag['desc'] . '</td></tr>';
+		}
+
+		$tags .= '</tbody></table>';
+		
+		$screen = get_current_screen();
+
+		
+		$screen->add_help_tab( array(
+			'id'      => 'user-email-template-tags',
+			'title'   => __( 'Email Template Tags', 'awesome-support' ),
+			'content' => sprintf( __( '<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add user-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s', 'awesome-support' ), $tags )
+		) );
+		
+	}
 	
 	/**
 	 * Products management contextual help.

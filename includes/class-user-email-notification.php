@@ -236,11 +236,11 @@ class WPAS_User_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{first_name}',
-				'desc' 	=> __( 'Converts into website name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into user\'s first name', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{last_name}',
-				'desc' 	=> __( 'Converts into agent name (WordPress Display Name)', 'awesome-support' )
+				'desc' 	=> __( 'Converts into user\'s last name', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{display_name}',
@@ -252,7 +252,7 @@ class WPAS_User_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{email}',
-				'desc' 	=> __( 'Converts into the first name of the agent', 'awesome-support' )
+				'desc' 	=> __( 'Converts into the user\'s email address', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{site_name}',
