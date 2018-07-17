@@ -89,6 +89,12 @@ function wpas_core_settings_privacy( $def ) {
 					'default' => __( 'Official Request: Please Delete My Existing Data ("Right To Be Forgotten").', 'awesome-support' )
 				),
 				array(
+					'name'    => __( 'Anonymize instead of Delete', 'awesome-support' ),
+					'id'      => 'anonymize_existing_data',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Option to anonymize the user data instead of deleting it to keep record.', 'awesome-support' ),
+				),
+				array(
 					'name'    => __( 'User Can Submit Additional Information', 'awesome-support' ),
 					'id'      => 'delete_existing_data_add_information',
 					'type'    => 'checkbox',

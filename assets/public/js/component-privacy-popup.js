@@ -1,4 +1,9 @@
 jQuery(document).ready(function ($) {
+
+	jQuery( ".privacy-container-template" ).on( "click", ".download-file-link", function(e) {	
+		 jQuery(this).parent('p').remove();
+	});
+
 	jQuery( '.wpas-gdpr-pre-loader' ).hide();
 	jQuery( '.wpas-gdpr-loader-background' ).hide();
 
