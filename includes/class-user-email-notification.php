@@ -1,10 +1,10 @@
 <?php
 /**
- * E-Mail Notifications.
+ * User E-Mail Notifications.
  *
- * This class handles all e-mail notifications. One instance of this class
- * relates to one and one only post, but can handle multiple notifications
- * for the same post.
+ * This class handles all e-mail notifications related to users. One instance of this class
+ * relates to one and one only user, but can handle multiple notifications
+ * for the same user.
  *
  * The available notifications can be extended with the use of a few filters
  * available throughout the class and the dispatch of e-mails is handled by
@@ -20,32 +20,49 @@
 class WPAS_User_Email_Notification {
 
 	/**
-	 * ID of the post to notify about.
+	 * ID of the user to notify about.
 	 * 
 	 * @var integer
 	 */
 	protected $user_id;
 	
-	
+	/**
+	 * Email address of recipient
+	 * 
+	 * @var string
+	 */
 	protected $recipient_email;
 	
+	/**
+	 * Recipient user id
+	 * 
+	 * @var int
+	 */
 	protected $recipient_id;
 
 
-
+	/**
+	 * User object
+	 * 
+	 * @var WP_User
+	 */
 	protected $user;
 	
 	/**
 	 * Class constructor.
 	 * 
-	 * @param integer $post_id ID of the post to notify about
+	 * @param int $user_id
+	 * @param string $recipient_email
+	 * @param int $recipient_id
+	 * 
+	 * @return \WP_Error|void
 	 */
 	public function __construct( $user_id, $recipient_email, $recipient_id = 0 ) {
 		
 		
 		$user = get_user_by( 'id', $user_id );
 		
-		/* Make sure the given post belongs to our plugin. */
+		/* Make sure the given user exists. */
 		if ( !$user ) {
 			return new WP_Error( 'user_does_not_exist', __( 'The user ID provided does not exists', 'awesome-support' ) );
 		}
@@ -53,11 +70,9 @@ class WPAS_User_Email_Notification {
 		/* Set the e-mail content type to HTML */
 		add_filter( 'wp_mail_content_type', array( $this, 'set_html_mime_type' ) );
 
-		/* Set the post ID */
+		/* Set the user ID */
 		$this->user_id = $user_id;
-		
 		$this->user = $user;
-		
 		
 		$this->recipient_id = $recipient_id;
 		$this->recipient_email = $recipient_email;
@@ -69,7 +84,7 @@ class WPAS_User_Email_Notification {
 		/**
 		 * Reset the e-mail content type to text as recommended by WordPress
 		 *
-		 * @since  3.1.1
+		 * @since  5.1.1
 		 * @link   http://codex.wordpress.org/Function_Reference/wp_mail
 		 */
 		add_filter( 'wp_mail_content_type', array( $this, 'set_text_mime_type' ) );
@@ -85,8 +100,9 @@ class WPAS_User_Email_Notification {
 	 * We need to check that the requested notification hasn't been
 	 * disabled by the user before sending it out.
 	 *
-	 * @since  3.0.2
+	 * @since  5.1.1
 	 * @param  string  $case The notification case requested
+	 * 
 	 * @return boolean       True if the notification is enabled for this case, false otherwise
 	 */
 	public function is_active( $case ) {
@@ -131,7 +147,7 @@ class WPAS_User_Email_Notification {
 	/**
 	 * Get available notification cases.
 	 *
-	 * @since  3.0.2
+	 * @since  5.1.1
 	 * @return array Array of the available cases
 	 */
 	public function get_cases() {
@@ -150,7 +166,7 @@ class WPAS_User_Email_Notification {
 	/**
 	 * Get notification cases active option name.
 	 *
-	 * @since  3.0.2
+	 * @since  5.1.1
 	 * @return array Array of available cases with their activation option name
 	 */
 	private function cases_active_option() {
@@ -168,7 +184,7 @@ class WPAS_User_Email_Notification {
 	/**
 	 * Get sender data.
 	 *
-	 * @since  3.0.2
+	 * @since  5.1.1
 	 * @return array Array containing the sender name and e-mail as well as the reply address
 	 */
 	public function get_sender() {
@@ -197,7 +213,7 @@ class WPAS_User_Email_Notification {
 	 * Takes a string (subject or body) and replace the tags
 	 * with their current value if any.
 	 *
-	 * @since  3.0.0
+	 * @since  5.1.1
 	 * @param  string $contents String to convert tags from
 	 * @return string           String with tags converted into their corresponding value
 	 */
@@ -224,7 +240,7 @@ class WPAS_User_Email_Notification {
 	 * This list is used both for value attribution and in the contextual help
 	 * in the plugin settings page.
 	 *
-	 * @since  3.0.2
+	 * @since  5.1.1
 	 * @return array Array of tags with their description
 	 */
 	public static function get_tags() {
@@ -276,7 +292,7 @@ class WPAS_User_Email_Notification {
 	/**
 	 * Get tags and their value in the current context.
 	 *
-	 * @since  3.0.0
+	 * @since  5.1.1
 	 * @return array Array of tag / value pairs
 	 */
 	public function get_tags_values() {
@@ -355,7 +371,7 @@ class WPAS_User_Email_Notification {
 	 *
 	 * @param $case string The type of e-mail notification that's being sent
 	 *
-	 * @since  3.0.2
+	 * @since  5.1.1
 	 * @return string E-mail subject
 	 */
 	private function get_subject( $case ) {
@@ -368,7 +384,7 @@ class WPAS_User_Email_Notification {
 	 *
 	 * @param $case string The type of e-mail notification that's being sent
 	 *
-	 * @since  3.0.2
+	 * @since  5.1.1
 	 * @return string E-mail body
 	 */
 	private function get_body( $case ) {
@@ -380,7 +396,7 @@ class WPAS_User_Email_Notification {
 	 *
 	 * Get the content for the given part.
 	 *
-	 * @since  3.0.2
+	 * @since  5.1.1
 	 *
 	 * @param  string $part Part of the e-mail to retrieve
 	 * @param  string $case Which notification is requested
@@ -408,7 +424,7 @@ class WPAS_User_Email_Notification {
 	/**
 	 * Retrieve the e-mail template to use and input the content
 	 *
-	 * @since 3.3.3
+	 * @since 5.1.1
 	 *
 	 * @param string $content The e-mail contents to inject into the template
 	 *
@@ -449,7 +465,7 @@ class WPAS_User_Email_Notification {
 	/**
 	 * Set the e-mail content type to HTML.
 	 *
-	 * @since  3.1.1
+	 * @since  5.1.1
 	 *
 	 * @return string               HTML content type
 	 */
@@ -460,7 +476,7 @@ class WPAS_User_Email_Notification {
 	/**
 	 * Set the e-mail content type to plain text.
 	 *
-	 * @since  3.1.1
+	 * @since  5.1.1
 	 *
 	 * @return string               Text content type
 	 */
@@ -471,7 +487,7 @@ class WPAS_User_Email_Notification {
 	/**
 	 * Send out the e-mail notification.
 	 *
-	 * @since  3.0.2
+	 * @since  5.1.1
 	 * @param  string         $case The notification case
 	 * @return boolean|object       True if the notification was sent, WP_Error otherwise
 	 */
@@ -522,7 +538,7 @@ class WPAS_User_Email_Notification {
 		/**
 		 * Filter the e-mail body after the template has been applied
 		 *
-		 * @since 3.3.3
+		 * @since 5.1.1
 		 * @var string
 		 */
 		$body = apply_filters( 'wpas__user_email_notification_body_after_template', $this->get_formatted_email( $body ), $case, $this->user_id );
