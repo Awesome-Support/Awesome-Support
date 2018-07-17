@@ -399,5 +399,41 @@ function wpas_upgrade_521() {
 			$supportmanager->add_cap( $cap );
 		}
 	}
+	
+	
+	/**
+	 * Add moderated registration settings
+	 */
+	$morerated_registration_settings = array(
+		
+		'mr_success_message' => __( 'Your account has been created and submitted for review. The administrator will review it and notify you when it has been approved.', 'awesome-support' ),
+		'moderated_pending_user_role' => '',
+		'moderated_activated_user_role' => 'wpas_user',
+		
+		'enable_moderated_registration_admin_email' => true,
+		'moderated_registration_admin_email__subject' => 'New registration is waiting for approval.',
+		'moderated_registration_admin_email__content' => 'You have received a new registration from your Awesome Support registration screen. <br /> User Name: {first_name} {last_name} <br />User Email: {email}',
+		
+		'enable_moderated_registration_user_email' => true,
+		'moderated_registration_user_email__subject' => 'Your registration on {site_name} has been submitted and is waiting for approval',
+		'moderated_registration_user_email__content' => 'Hello {first_name}: <br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
+		
+		'enable_moderated_registration_approved_user_email' => true,
+        'moderated_registration_approved_user_email__subject' => 'Your registration on {site_name} has been submitted and is waiting for approval',
+        'moderated_registration_approved_user_email__content' => 'Hello {first_name}: <br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
+        
+		'enable_moderated_registration_denied_user_email' => true,
+		'moderated_registration_denied_user_email__subject' => 'Your registration on {site_name} has been submitted and is waiting for approval',
+        'moderated_registration_denied_user_email__content' => 'Hello {first_name}: <br />We just wanted to let you know that your registration request has been successfully submitted and is waiting for approval.<br /><br /> - Your friends at {site_name} ',
+        
+		
+	);
+	
+	
+	foreach ( $morerated_registration_settings as $mr_setting_name => $mr_setting_value ) {
+		wpas_update_option( $mr_setting_name, $mr_setting_value );
+	}
+			
+			
 
 }
