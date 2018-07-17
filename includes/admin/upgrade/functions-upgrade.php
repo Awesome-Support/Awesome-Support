@@ -399,5 +399,37 @@ function wpas_upgrade_521() {
 			$supportmanager->add_cap( $cap );
 		}
 	}
+	
+	
+	/**
+	 * Add moderated registration settings
+	 */
+	$morerated_registration_settings = array(
+		
+		'mr_success_message',
+		'moderated_pending_user_role',
+		'moderated_activated_user_role',
+		
+		'enable_moderated_registration_admin_email',
+		'moderated_registration_admin_email__subject',
+		'moderated_registration_admin_email__content',
+		
+		'enable_moderated_registration_user_email',
+		'moderated_registration_user_email__subject',
+		'moderated_registration_user_email__content',
+		
+		'enable_moderated_registration_approved_user_email',
+        'moderated_registration_approved_user_email__subject',
+        'moderated_registration_approved_user_email__content',
+        
+		'enable_moderated_registration_denied_user_email',
+		'moderated_registration_denied_user_email__subject',
+        'moderated_registration_denied_user_email__content'
+	);
+	
+	
+	foreach ( $morerated_registration_settings as $mr_setting_name ) {
+		wpas_update_option( $mr_setting_name, get_settings_defaults( $mr_setting_name ), true );
+	}
 
 }
