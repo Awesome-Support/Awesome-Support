@@ -1523,13 +1523,16 @@ class WPAS_File_Upload {
 
 		$accept = implode( ',', $accept );
 
+		$max_execution_time = ini_get('max_execution_time');
+
 		wp_localize_script( 'wpas-ajax-upload', 'WPAS_AJAX', array(
-			'nonce'     => wp_create_nonce( 'wpas-gdpr-nonce' ),
-			'ajax_url'  => admin_url( 'admin-ajax.php' ),
- 			'accept'    => $accept,
-			'max_files' => wpas_get_option( 'attachments_max' ),
-			'max_size'  => wpas_get_option( 'filesize_max' ),
-			'exceeded'  => sprintf( __( 'Max files (%s) exceeded.', 'awesome-support' ), wpas_get_option( 'attachments_max' ) )
+			'nonce'              => wp_create_nonce( 'wpas-gdpr-nonce' ),
+			'ajax_url'           => admin_url( 'admin-ajax.php' ),
+			'accept'             => $accept,
+			'max_execution_time' => ( $max_execution_time * 1000 ), // Convert to miliseconds
+			'max_files'          => wpas_get_option( 'attachments_max' ),
+			'max_size'           => wpas_get_option( 'filesize_max' ),
+			'exceeded'           => sprintf( __( 'Max files (%s) exceeded.', 'awesome-support' ), wpas_get_option( 'attachments_max' ) )
 		) );
 
 		wp_enqueue_script( 'wpas-ajax-upload' );

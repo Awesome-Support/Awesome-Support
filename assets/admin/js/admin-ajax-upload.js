@@ -24,6 +24,7 @@
                 url: WPAS_AJAX.ajax_url,
                 paramName: 'wpas_files',
                 acceptedFiles : WPAS_AJAX.accept,
+                timeout : WPAS_AJAX.max_execution_time,
                 maxFiles : WPAS_AJAX.max_files,
                 maxFilesize : WPAS_AJAX.max_size,
                 addRemoveLinks: true,
