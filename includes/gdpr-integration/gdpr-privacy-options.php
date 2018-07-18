@@ -38,9 +38,382 @@ class WPAS_Privacy_Option {
 		 */
 		add_action( 'wp_ajax_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
 		add_action( 'wp_ajax_nopriv_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
+		
+		add_action( 'wpas_system_tools_after', array( $this, 'wpas_system_tools_after_gdpr_callback' ) );
+		
+		add_filter( 'wpas_show_done_tool_message', array( $this, 'wpas_show_done_tool_message_gdpr_callback' ), 10, 2 );
 
+		add_filter( 'execute_additional_tools', array( $this, 'execute_additional_tools_gdpr_callback' ), 10, 1 );
+		
 		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'wp_register_asdata_personal_data_eraser' ) );
+
 		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'wp_privacy_personal_asdata_exporters' ), 10, 1 );
+
+		// Schedule cleanup of older tickets
+		add_action( 'wp', array( $this, 'tickets_cleanup_schedule' ) );
+		// Cleanup action
+		add_action( 'as_tickets_cleanup_action', array( $this, 'as_tickets_cleanup_action_callback' ) );
+
+		add_filter( 'cron_schedules', array( $this, 'gdpr_cron_job_schedule' ) ); 
+	}
+
+	/**
+	 * Add or Remove User consent based on action call.
+	 */
+	function execute_additional_tools_gdpr_callback( $tool ){
+
+		if ( ! isset( $tool ) || ! isset( $_GET['_nonce'] ) ) {
+			return false;
+		}
+
+		if ( ! wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
+			return false;
+		}
+		$authors = array();
+		if( !empty( $tool ) ){
+			// WP_User_Query arguments
+			$args = array (
+			    'order' => 'ASC',
+			    'orderby' => 'display_name',
+			);
+			// Create the WP_User_Query object
+			$wp_user_query = new WP_User_Query($args);
+
+			// Get the results
+			$authors = $wp_user_query->get_results();
+		}
+		switch ( sanitize_text_field( $tool ) ) {
+
+			case 'remove_all_user_consent':
+
+				// Check for results
+				if (!empty($authors)) {
+
+				    // loop through each author
+				    foreach ($authors as $author) {
+
+				        // get all the user's data
+				        if( isset( $author->ID ) && !empty( $author->ID )){
+				        	delete_user_option( $author->ID, 'wpas_consent_tracking' );
+				        }
+				    }
+				}
+				break;
+			case 'add_user_consent':
+
+				$_status = (isset( $_GET['_status'] ) && !empty( isset( $_GET['_status'] ) ))? sanitize_text_field( $_GET['_status'] ): '';
+				$consent = ( isset( $_GET['_consent'] ) && !empty( isset( $_GET['_consent'] ) ) )? sanitize_text_field( $_GET['_consent'] ): '';
+				if( empty( $_status ) || empty( $consent ) ){
+					return false;
+				}
+				// Check for results
+				if (!empty($authors)) {
+
+				    // loop through each author
+				    foreach ($authors as $author) {
+				    	$opt_type = '';
+				        // get all the user's data
+				        if( isset( $author->ID ) && !empty( $author->ID )){
+
+							$status 	= ( 'opt-in' === $_status )? true : false;
+							$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
+							$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
+							$opt_type = ( isset( $opt_in ) && !empty( $opt_in ))? 'in' : 'out';
+							$args = array( 
+								'item' 		=> wpas_get_option( $consent, false ),
+								'status' 	=> $status,
+								'opt_in' 	=> $opt_in,
+								'opt_out' 	=> $opt_out,
+								'is_tor'	=> false
+							);
+
+							if( 'terms_conditions' === $consent ){
+								$args['is_tor'] = true;
+							}
+
+							$user_consent = get_user_option( 'wpas_consent_tracking', 
+								$author->ID );
+							if( !empty( $user_consent )){
+								$found_key = array_search( $args['item'], array_column( $user_consent, 'item' ) );	
+								// If GDPR option not already enabled, then add it.
+								if( false === $found_key ){
+									wpas_track_consent( $args , $author->ID, $opt_type );									
+								}
+								
+							} else{
+
+								wpas_track_consent( $args , $author->ID, $opt_type );
+
+							}
+				        }
+				    }
+				}
+				break;
+
+		}
+
+	}
+
+	/**
+	 * GDPR Cron job schedule 
+	 * 
+	 * @param  array $schedules Cron schedules 
+	 * 
+	 * @return array $schedules Cron schedules with GDPR cron job schedule included.
+	 */
+	function gdpr_cron_job_schedule( $schedules ) {
+		$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
+		if( !empty( $trigger_time )){
+			$trigger_time = intval($trigger_time);
+			$schedules['min_'. $trigger_time ] = array(
+				'interval' => ($trigger_time * 60),
+				'display' => __('GDPR Ticket cleanup cron', 'awesome-support' )
+			);
+			return $schedules;
+		}
+	}
+
+	/**
+	 * Schedule cleanup of older tickets
+	 * 
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	function tickets_cleanup_schedule(){
+		$anonymize_cron_job = wpas_get_option( 'anonymize_cron_job', '' );
+
+		if( !empty( $anonymize_cron_job )){
+			if ( ! wp_next_scheduled( 'as_tickets_cleanup_action' ) ) {
+				$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
+				if( !empty( $trigger_time )){
+					$trigger_time = intval($trigger_time);
+					wp_schedule_event( time(), 'min_' . $trigger_time, 'as_tickets_cleanup_action');
+				}
+			}
+		} else{
+			wp_clear_scheduled_hook("as_tickets_cleanup_action"); 
+		}
+	}
+	/**
+	 * Anonymize ticket if delete ticket option is not checked.
+	 * @return [type] [description]
+	 */
+	function as_tickets_cleanup_action_callback(){
+
+		$ticket_age = wpas_get_option( 'anonymize_cronjob_max_age', '' );
+		$ticket_data = array();
+		if( !empty( $ticket_age )){
+			$cronjob_max_age = intval($ticket_age);
+			$args = array(
+				'post_type'      => array( 'ticket' ),
+				'post_status'    => array_keys( wpas_get_post_status() ),
+				'posts_per_page' => 50,
+				'meta_query' => array(
+			        array(
+			            'key'   => 'is_anonymize',
+			            'compare' => 'NOT EXISTS',
+			        )
+			    ),
+			    'date_query' => array(
+					'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days') )
+				) 
+			);
+
+			$closed_tickets = wpas_get_option( 'closed_tickets_anonmyize', '' );
+			$open_tickets = wpas_get_option( 'open_tickets_anonmyize', '' );
+			// if both option are not enable at the same time
+			if( !( !empty( $closed_tickets ) && !empty( $open_tickets ) ) ){
+				if( !empty( $closed_tickets ) ){
+					$args['meta_query'][] = array(
+						'key'   => '_wpas_status',
+						'value' => 'closed',
+						'compare' => '=',
+					);
+				} elseif( !empty( $open_tickets ) ){
+					$args['meta_query'][] = array(
+						'key'   => '_wpas_status',
+						'value' => 'open',
+						'compare' => '=',
+					);
+				}
+			}
+			$ticket_data = get_posts( $args );
+		}
+		
+		if( !empty( $ticket_data ) ){
+			$author_array = array();
+			foreach ( $ticket_data as $key => $ticket_value ) {
+				if( array_key_exists( $ticket_value->post_author ,$author_array ) ){
+					$author_array[ $ticket_value->post_author ][] = $ticket_value->ID;
+				} else{
+					$author_array[ $ticket_value->post_author ] = array( $ticket_value->ID );
+				}
+			}
+
+			if( !empty( $author_array )){
+				foreach ( $author_array as $author_id => $author_tickets ) {
+					/**
+					 * 
+					 ** 1. create an anonymous user if it is not created for author yet. to maintain a single and unique anonymous author per support user.  
+					 *
+					 ** 2. Loop author tickets and set them anonymous and set meta key is_anonymous = true, to exclude already anonymize tickets.
+					 *
+					 ** 3. set author user_meta key with related anonymous user_id if not exist.
+					 *
+					 */
+					$related_author_id = get_user_option( 'related_anonymous_user', $author_id );
+					$related_author = get_userdata( $related_author_id );
+					if( empty( $related_author ) ){
+						// create anonymous user and set related_anonymous_user user meta key.
+						$related_author_id = $this->as_create_anonymous_user();
+						// update related anonymous user.
+						update_user_option( $author_id, 'related_anonymous_user', $related_author_id, true );
+
+					}
+
+					$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
+					// Assign Author tickets to anonymous user. 
+					// also set is_anonymize key in ticket meta.
+					if( !empty( $author_tickets )){
+						foreach ( $author_tickets as $key => $ticket_id ) {
+							if( $anonymize_existing_data && !empty( $related_author_id ) ){
+								//2. Update ticket data and set author as Anonymous user
+								$arg = array(
+								    'ID' => $ticket_id,
+								    'post_author' => $related_author_id,
+								);
+								wp_update_post( $arg );
+								update_post_meta( $ticket_id, 'is_anonymize', true );
+								$args = array(
+									'post_parent'            => $ticket_id,
+									'post_type'              => apply_filters( 'wpas_replies_post_type', array(
+										'ticket_history',
+										'ticket_reply',
+										'ticket_log'
+									) ),
+									'post_status'            => 'any',
+									'posts_per_page'         => - 1,
+									'no_found_rows'          => true,
+									'cache_results'          => false,
+									'update_post_term_cache' => false,
+									'update_post_meta_cache' => false,
+								);
+
+								$posts = new WP_Query( $args );
+								foreach ( $posts->posts as $id => $post ) {
+
+									do_action( 'wpas_before_anonymize_dependency', $post->ID, $post );
+									$arg = array(
+									    'ID' => $post->ID,
+									    'post_author' => $related_author_id,
+									);
+									wp_update_post( $arg );
+									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
+									$messages = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+									wpas_write_log( 'anonymize_ticket', $messages );
+								}
+							} else{
+								if ( wp_delete_post( $ticket_id, true ) ) {
+									$items_removed = true;
+									$messages = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+									wpas_write_log( 'anonymize_ticket_delete', $messages );
+								} 
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Update data on clean up tool click.
+	 */
+	function wpas_show_done_tool_message_gdpr_callback( $message, $status ){
+		switch( $status ) {
+
+			case 'remove_all_user_consent':
+				$message = __( 'User Consent cleared', 'awesome-support' );
+				break;
+
+			case 'add_user_consent':
+				$message = __( 'Added User Consent', 'awesome-support' );
+				break;
+		}
+		return $message;
+	}
+
+	/**
+	 * GDPR add consent html in cleanup section.
+	 */
+	function wpas_system_tools_after_gdpr_callback(){
+		?>
+		<p><h3><?php _e( 'GDPR/Privacy', 'awesome-support' ); ?></h3></p>
+		<table class="widefat wpas-system-tools-table" id="wpas-system-tools-gdpr">
+			<thead>
+				<tr>
+					<th data-override="key" class="row-title"><?php _e( 'GDPR Consent Bulk Action', 'awesome-support' ); ?></th>
+					<th data-override="value"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="row-title"><label for="tablecell"><?php _e( 'GDPR Consent', 'awesome-support' ); ?></label></td>
+					<td>
+						<a href="<?php echo wpas_tool_link( 'remove_all_user_consent' ); ?>" class="button-secondary"><?php _e( 'Remove', 'awesome-support' ); ?></a>
+						<span class="wpas-system-tools-desc"><?php _e( 'Clear User Consent data for all Awesome support Users', 'awesome-support' ); ?></span>
+					</td>
+				</tr>
+				<?php 
+					$terms = wpas_get_option( 'terms_conditions', '' );
+					$gdpr_short_desc_01 = wpas_get_option( 'gdpr_notice_short_desc_01', '' );
+					$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
+					$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
+
+					$consent_array = array(
+						'terms_conditions',
+						'gdpr_notice_short_desc_01',
+						'gdpr_notice_short_desc_02',
+						'gdpr_notice_short_desc_03'
+					);
+					if( !empty( $consent_array ) ){
+						foreach ( $consent_array as $key => $consent ) {
+							$consent_name = wpas_get_option( $consent, '' );
+							if( 'terms_conditions' === $consent ){
+								$consent_name = 'Terms';
+							}
+							if( !empty( $consent_name ) ){
+								?>
+								<tr>
+									<td class="row-title"><label for="tablecell"><?php _e( $consent_name , 'awesome-support' ); ?></label></td>
+									<td>
+										<?php 
+											$opt_in = array(
+												'_consent' => $consent,
+												'_status' => 'opt-in'
+											);
+										?>
+										<a href="<?php echo wpas_tool_link( 'add_user_consent', $opt_in ); ?>" class="button-secondary"><?php _e( 'OPT-IN', 'awesome-support' ); ?></a>
+										<?php 
+										$opt_out = array(
+											'_consent' => $consent,
+											'_status' => 'opt-out'
+										);
+										?>
+										<a href="<?php echo wpas_tool_link( 'add_user_consent', $opt_out ); ?>" class="button-secondary"><?php _e( 'OPT-OUT', 'awesome-support' ); ?></a>
+										<span class="wpas-system-tools-desc"><?php _e( 'Set ' . $consent_name . ' Consent status for all Awesome support Users', 'awesome-support' ); ?></span>
+									</td>
+								</tr>
+								<?php 
+							}
+						}
+					}
+				?>
+			</tbody>
+		</table>
+		<?php 
 	}
 
 
@@ -97,7 +470,7 @@ class WPAS_Privacy_Option {
 		}
 
 		/* All pre-conditions good, so ok to proceed */
-		$number         = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
+		$number = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
 		$page           = (int) $page;
 		$items_removed  = false;
 		$items_retained = false;
@@ -109,6 +482,16 @@ class WPAS_Privacy_Option {
 			'posts_per_page' => $number,
 			'paged'          => $page
 		);
+
+		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
+		if( $anonymize_existing_data ){
+			$user_id = get_user_option( 'related_anonymous_user', $author->ID );
+			$related_author = get_userdata( $user_id );
+			if( empty( $related_author ) ){
+				$user_id = $this->as_create_anonymous_user();
+				update_user_option( $author->ID, 'related_anonymous_user', $user_id, true );
+			} 
+		}
 		/**
 		 * Delete ticket data belongs to the mention email id.
 		 */
@@ -127,10 +510,54 @@ class WPAS_Privacy_Option {
 						
 						/* Proceed with attempting to delete the ticket if filter returned ok */	
 						if ( true === $wpas_pe_msgs['ok_to_erase'] ) {
-							if ( wp_delete_post( $ticket_id, true ) ) {
-								$items_removed = true;
-								$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
-							} 
+							/**
+							 * if anonymize data instead of delete is checked 
+							 * 		dont delete 
+							 * else 
+							 * 		delete data
+							 */
+							
+							if( $anonymize_existing_data ){
+								//2. Update ticket data and set author as Anonymous user
+								$arg = array(
+								    'ID' => $ticket_id,
+								    'post_author' => $user_id,
+								);
+								wp_update_post( $arg );
+								$args = array(
+									'post_parent'            => $ticket_id,
+									'post_type'              => apply_filters( 'wpas_replies_post_type', array(
+										'ticket_history',
+										'ticket_reply',
+										'ticket_log'
+									) ),
+									'post_status'            => 'any',
+									'posts_per_page'         => - 1,
+									'no_found_rows'          => true,
+									'cache_results'          => false,
+									'update_post_term_cache' => false,
+									'update_post_meta_cache' => false,
+								);
+
+								$posts = new WP_Query( $args );
+								foreach ( $posts->posts as $id => $post ) {
+
+									do_action( 'wpas_before_anonymize_dependency', $post->ID, $post );
+									$arg = array(
+									    'ID' => $post->ID,
+									    'post_author' => $user_id,
+									);
+									wp_update_post( $arg );
+
+									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
+								}
+								$messages[] = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+							} else{
+								if ( wp_delete_post( $ticket_id, true ) ) {
+									$items_removed = true;
+									$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+								} 
+							}
 						} else {
 							$messages[] = sprintf( __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' ), (string) $ticket_id ) ;
 							$messages = array_merge( $messages, $wpas_pe_msgs['messages'] ) ;
@@ -153,6 +580,40 @@ class WPAS_Privacy_Option {
 		);
 	}
 
+
+	/**
+	 * create anonymous user.
+	 */
+	function as_create_anonymous_user(){
+		//1. create a anonymous user with username anno-xxxx 
+		$random_number = wp_rand( 1, 10000000 );
+		$user_name = 'anno-'.$random_number;
+		
+		$user_id = username_exists( $user_name );
+		$url = get_site_url();
+		$urlobj = parse_url($url);
+		$site_name = 'domain.com';
+		$domain = ($urlobj['host'])? $urlobj['host']: '';
+		if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+			$site_name = $regs['domain'];
+		}
+
+		$user_email = $user_name.'@'.$site_name;
+		if ( !$user_id and email_exists($user_email) == false ) {
+			$random_password = wp_generate_password( $length=12, $include_standard_special_chars=false );
+			$userdata = array(
+			    'user_login'  => $user_name,
+			    'user_email'  => $user_email,
+			    'role'        => wpas_get_option( 'new_user_role', 'wpas_user' ),
+			    'user_pass'   => $random_password,
+			);
+			$user_id = wp_insert_user( $userdata ) ;
+			if( !empty( $user_id ) ){
+				update_user_option( $user_id, 'is_anonymous', true );
+			}
+		}
+		return $user_id;
+	}
 	/**
 	 * Registers a personal data exporter for Awesome Support
 	 *
@@ -412,7 +873,7 @@ class WPAS_Privacy_Option {
 		
 		if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {
 			?>		
-			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets and user data', 'awesome-support' ); ?></button>
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets', 'awesome-support' ); ?></button>
 			<?php
 		}
 		

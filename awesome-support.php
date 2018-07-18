@@ -404,6 +404,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/functions-deprecated.php' );
 			require( WPAS_PATH . 'includes/class-log-history.php' );
 			require( WPAS_PATH . 'includes/class-email-notifications.php' );
+			require( WPAS_PATH . 'includes/class-user-email-notification.php' );
 			require( WPAS_PATH . 'includes/functions-general.php' );
 			require( WPAS_PATH . 'includes/functions-error.php' );
 			require( WPAS_PATH . 'includes/functions-notification.php' );
@@ -484,7 +485,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				/* Load settings files */
 				require( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-registration.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-moderated-registration.php' );				
 				require( WPAS_PATH . 'includes/admin/settings/settings-privacy.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-cronjob.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-fields.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-permissions.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-style.php' );

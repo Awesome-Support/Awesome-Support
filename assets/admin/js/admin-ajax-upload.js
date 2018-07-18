@@ -40,7 +40,9 @@
                     });
 
                     this.on('complete', function(e) {
-                        submitButtons.removeAttr('disabled');
+                        if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                            submitButtons.removeAttr('disabled');
+                        }
                     });
             
                     this.on('addedfile', function(e) {

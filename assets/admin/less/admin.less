@@ -147,6 +147,13 @@ Ticket Replies
 */
 
 .wpas-table-replies {
+	table-layout: fixed;
+	.col1 {
+		width: 80px;
+	}
+	.col2 {
+		width: 100%;
+	}
 	tr > td {
 		vertical-align: top;
 		padding-top: 2.25em;
@@ -254,6 +261,7 @@ Ticket Detail Toolbar
 	/* Show some sort of an effect when the user hovers over a toolbar item */
 	border-color: #0073AA ;
 	border-width: 2px;
+        padding: 9px;
 }
 
 #wpas-mb-toolbar .ui-sortable-handle,
@@ -383,6 +391,11 @@ Ticket Controls
 	img {
 		max-width: 100%;
 		height: auto;
+	}
+	// Force responsive preformatted
+	pre {
+		width: 100%;
+		overflow: auto;
 	}
 }
 
@@ -985,4 +998,9 @@ Ticket Page : Main tabs
     	display: block;
     	z-index: 1;
     }
+}
+
+
+.mr-deny-user-btn {
+        margin-left: 20px !important;
 }
