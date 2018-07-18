@@ -182,8 +182,7 @@ class WPAS_Privacy_Option {
 	 */
 	function tickets_cleanup_schedule(){
 		$anonymize_cron_job = wpas_get_option( 'anonymize_cron_job', '' );
-
-		if( !empty( $anonymize_cron_job )){
+		if( ! empty( $anonymize_cron_job ) ){
 			if ( ! wp_next_scheduled( 'as_tickets_cleanup_action' ) ) {
 				$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
 				if( !empty( $trigger_time )){
@@ -200,7 +199,6 @@ class WPAS_Privacy_Option {
 	 * @return [type] [description]
 	 */
 	function as_tickets_cleanup_action_callback(){
-
 		$ticket_age = wpas_get_option( 'anonymize_cronjob_max_age', '' );
 		$ticket_data = array();
 		if( !empty( $ticket_age )){
@@ -262,15 +260,7 @@ class WPAS_Privacy_Option {
 					 ** 3. set author user_meta key with related anonymous user_id if not exist.
 					 *
 					 */
-					$related_author_id = get_user_option( 'related_anonymous_user', $author_id );
-					$related_author = get_userdata( $related_author_id );
-					if( empty( $related_author ) ){
-						// create anonymous user and set related_anonymous_user user meta key.
-						$related_author_id = $this->as_create_anonymous_user();
-						// update related anonymous user.
-						update_user_option( $author_id, 'related_anonymous_user', $related_author_id, true );
-
-					}
+					$related_author_id = $this->as_create_anonymous_user();
 
 					$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
 					// Assign Author tickets to anonymous user. 
@@ -485,12 +475,7 @@ class WPAS_Privacy_Option {
 
 		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
 		if( $anonymize_existing_data ){
-			$user_id = get_user_option( 'related_anonymous_user', $author->ID );
-			$related_author = get_userdata( $user_id );
-			if( empty( $related_author ) ){
-				$user_id = $this->as_create_anonymous_user();
-				update_user_option( $author->ID, 'related_anonymous_user', $user_id, true );
-			} 
+			$user_id = $this->as_create_anonymous_user();
 		}
 		/**
 		 * Delete ticket data belongs to the mention email id.
