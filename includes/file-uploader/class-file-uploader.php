@@ -1523,7 +1523,9 @@ class WPAS_File_Upload {
 
 		$accept = implode( ',', $accept );
 
-		$max_execution_time = ini_get('max_execution_time');
+		if ( ! $max_execution_time = ini_get('max_execution_time') ) {
+			$max_execution_time = 30;
+		}
 
 		wp_localize_script( 'wpas-ajax-upload', 'WPAS_AJAX', array(
 			'nonce'              => wp_create_nonce( 'wpas-gdpr-nonce' ),
