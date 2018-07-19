@@ -568,8 +568,12 @@ class WPAS_Privacy_Option {
 
 	/**
 	 * create anonymous user.
+	 *
+	 * @since  5.2.0
+	 *
+	 * @param  int $author_id The id of the author/user we're creating the anonymous user for.
 	 */
-	function as_create_anonymous_user( $author_id ){
+	public function as_create_anonymous_user( $author_id ){
 		
 		$uid_method = wpas_get_option( 'anonmyize_user_creation_method', '1');
 		
