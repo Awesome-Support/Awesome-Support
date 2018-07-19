@@ -105,7 +105,7 @@ function wpas_core_settings_privacy( $def ) {
 				array(
 					'name' => __( 'Periodic Anonymization', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => __( 'Use the options in this section to enable a periodic cron process to anoymize or delete old tickets', 'awesome-support' ),
+					'desc' => __( 'Use the options in this section to enable a periodic cron process to anonymize or delete old tickets', 'awesome-support' ),
 				),
 				array(
 					'name'    => __( 'Enable Periodic Anonymization', 'awesome-support' ),
