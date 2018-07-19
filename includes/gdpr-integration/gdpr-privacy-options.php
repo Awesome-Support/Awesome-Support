@@ -51,8 +51,9 @@ class WPAS_Privacy_Option {
 
 		// Schedule cleanup of older tickets
 		add_action( 'wp', array( $this, 'tickets_cleanup_schedule' ) );
+		
 		// Cleanup action
-		add_action( 'as_tickets_cleanup_action', array( $this, 'as_tickets_cleanup_action_callback' ) );
+		add_action( 'wpas_tickets_cleanup_action', array( $this, 'as_tickets_cleanup_action_callback' ) );
 
 		add_filter( 'cron_schedules', array( $this, 'gdpr_cron_job_schedule' ) ); 
 	}
@@ -99,6 +100,7 @@ class WPAS_Privacy_Option {
 				    }
 				}
 				break;
+				
 			case 'add_user_consent':
 
 				$_status = (isset( $_GET['_status'] ) && !empty( isset( $_GET['_status'] ) ))? sanitize_text_field( $_GET['_status'] ): '';
@@ -183,15 +185,15 @@ class WPAS_Privacy_Option {
 	function tickets_cleanup_schedule(){
 		$anonymize_cron_job = wpas_get_option( 'anonymize_cron_job', '' );
 		if( ! empty( $anonymize_cron_job ) ){
-			if ( ! wp_next_scheduled( 'as_tickets_cleanup_action' ) ) {
+			if ( ! wp_next_scheduled( 'wpas_tickets_cleanup_action' ) ) {
 				$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
 				if( !empty( $trigger_time )){
 					$trigger_time = intval($trigger_time);
-					wp_schedule_event( time(), 'min_' . $trigger_time, 'as_tickets_cleanup_action');
+					wp_schedule_event( time(), 'min_' . $trigger_time, 'wpas_tickets_cleanup_action');
 				}
 			}
 		} else{
-			wp_clear_scheduled_hook("as_tickets_cleanup_action"); 
+			wp_clear_scheduled_hook('wpas_tickets_cleanup_action'); 
 		}
 	}
 	/**
@@ -218,17 +220,17 @@ class WPAS_Privacy_Option {
 				) 
 			);
 
-			$closed_tickets = wpas_get_option( 'closed_tickets_anonmyize', '' );
-			$open_tickets = wpas_get_option( 'open_tickets_anonmyize', '' );
-			// if both option are not enable at the same time
-			if( !( !empty( $closed_tickets ) && !empty( $open_tickets ) ) ){
-				if( !empty( $closed_tickets ) ){
+			$closed_tickets = boolval( wpas_get_option( 'closed_tickets_anonmyize', true ) );
+			$open_tickets = boolval( wpas_get_option( 'open_tickets_anonmyize', false ) );
+			// if both option are not enabled at the same time
+			if( !( ! $closed_tickets && ! $open_tickets ) ){
+				if( $closed_tickets ){
 					$args['meta_query'][] = array(
 						'key'   => '_wpas_status',
 						'value' => 'closed',
 						'compare' => '=',
 					);
-				} elseif( !empty( $open_tickets ) ){
+				} elseif( $open_tickets ){
 					$args['meta_query'][] = array(
 						'key'   => '_wpas_status',
 						'value' => 'open',
@@ -253,21 +255,19 @@ class WPAS_Privacy_Option {
 				foreach ( $author_array as $author_id => $author_tickets ) {
 					/**
 					 * 
-					 ** 1. create an anonymous user if it is not created for author yet. to maintain a single and unique anonymous author per support user.  
+					 ** 1. create an anonymous user if it is not created for author yet. This maintain a single and unique anonymous author per support user for this run only.
 					 *
-					 ** 2. Loop author tickets and set them anonymous and set meta key is_anonymous = true, to exclude already anonymize tickets.
-					 *
-					 ** 3. set author user_meta key with related anonymous user_id if not exist.
+					 ** 2. Loop author tickets and set them anonymous and set meta key is_anonymous = true, to exclude already anonymized tickets.
 					 *
 					 */
-					$related_author_id = $this->as_create_anonymous_user();
+					$related_author_id = $this->as_create_anonymous_user( $author_id );
 
-					$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
+					$delete_existing_data = wpas_get_option( 'anonymize_cronjob_delete_tickets', false );
 					// Assign Author tickets to anonymous user. 
 					// also set is_anonymize key in ticket meta.
 					if( !empty( $author_tickets )){
 						foreach ( $author_tickets as $key => $ticket_id ) {
-							if( $anonymize_existing_data && !empty( $related_author_id ) ){
+							if( !$delete_existing_data && !empty( $related_author_id ) ){
 								//2. Update ticket data and set author as Anonymous user
 								$arg = array(
 								    'ID' => $ticket_id,
@@ -325,11 +325,11 @@ class WPAS_Privacy_Option {
 		switch( $status ) {
 
 			case 'remove_all_user_consent':
-				$message = __( 'User Consent cleared', 'awesome-support' );
+				$message = __( 'User Consents cleared', 'awesome-support' );
 				break;
 
 			case 'add_user_consent':
-				$message = __( 'Added User Consent', 'awesome-support' );
+				$message = __( 'Added User Consents', 'awesome-support' );
 				break;
 		}
 		return $message;
@@ -475,7 +475,7 @@ class WPAS_Privacy_Option {
 
 		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
 		if( $anonymize_existing_data ){
-			$user_id = $this->as_create_anonymous_user();
+			$user_id = $this->as_create_anonymous_user( $author->ID );
 		}
 		/**
 		 * Delete ticket data belongs to the mention email id.
@@ -569,11 +569,40 @@ class WPAS_Privacy_Option {
 	/**
 	 * create anonymous user.
 	 */
-	function as_create_anonymous_user(){
-		//1. create a anonymous user with username anno-xxxx 
-		$random_number = wp_rand( 1, 10000000 );
-		$user_name = 'anno-'.$random_number;
+	function as_create_anonymous_user( $author_id ){
 		
+		$uid_method = wpas_get_option( 'anonmyize_user_creation_method', '1');
+		
+		switch( $uid_method ) {
+			
+			case '2':
+				// 2. Use a one-way hash;
+				if ( $author_id ) {
+					$hash = wp_hash( $author_id );
+				} else {
+					$hash = wp_hash( (string) wp_rand( 1, 10000000 ) );
+				}
+				$user_name = (string) $hash;
+				break ;
+			
+			case '3':
+				if ( ! empty( wpas_get_option( 'anonmyize_user_id' ) ) ) {
+					$user_obj = get_user_by( 'ID', wpas_get_option( 'anonmyize_user_id' ) );
+					if ( $user_obj ) {
+						$user_name = $user_obj->user_login;
+						break ;
+					}
+				}
+				// note the lack of a break statement here - its deliberate because if nothing is processed here then we drop through to the default below!
+			
+			default:
+				//1. create a anonymous user with username anno-xxxx 
+				$random_number = wp_rand( 1, 10000000 );
+				$user_name = 'anno-'.$random_number;
+				break ;
+
+		}
+				
 		$user_id = username_exists( $user_name );
 		$url = get_site_url();
 		$urlobj = parse_url($url);

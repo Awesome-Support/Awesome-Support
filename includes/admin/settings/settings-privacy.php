@@ -92,7 +92,7 @@ function wpas_core_settings_privacy( $def ) {
 					'name'    => __( 'Anonymize instead of Delete', 'awesome-support' ),
 					'id'      => 'anonymize_existing_data',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Option to anonymize the user data instead of deleting it to keep record.', 'awesome-support' ),
+					'desc'    => __( 'Option to anonymize the user data instead of deleting it - this helps to keep statistics accurate.  New anonymous users will be created and attached to existing tickets.', 'awesome-support' ),
 				),
 				array(
 					'name'    => __( 'User Can Submit Additional Information', 'awesome-support' ),
@@ -101,6 +101,84 @@ function wpas_core_settings_privacy( $def ) {
 					'default' => true,
 					'desc'    => __( 'Do you want to allow the user to enter a longer description related to their request to delete their data?', 'awesome-support' )
 				),
+				
+				array(
+					'name' => __( 'Periodic Anonymization', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => __( 'Use the options in this section to enable a periodic cron process to anoymize or delete old tickets', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'Enable Periodic Anonymization', 'awesome-support' ),
+					'id'      => 'anonymize_cron_job',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Enable the periodic process that will anonymize or delete old tickets', 'awesome-support' ),
+					'default' => false
+				),	
+				array(
+					'name'    => __( 'Cron Job Interval', 'awesome-support' ),
+					'id'      => 'anonymize_cronjob_trigger_time',
+					'type'    => 'number',
+					'desc'    => __( 'How often should we run the anonymization process?  The value entered here is in minutes - 1440 minutes is one day.', 'awesome-support' ),
+					'max'	  => 10000,
+					'default' => 1440
+				),
+				array(
+					'name'    => __( 'Ticket Age', 'awesome-support' ),
+					'id'      => 'anonymize_cronjob_max_age',
+					'type'    => 'number',
+					'desc'    => __( 'How old should tickets be before they are anonymized or deleted?  Enter a value in days - default is 180 days or approximately six months.', 'awesome-support' ),
+					'default' => 180
+				),
+				array(
+					'name'    => __( 'Delete Tickets', 'awesome-support' ),
+					'id'      => 'anonymize_cronjob_delete_tickets',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Delete tickets instead of anonymizing them.  WARNING: Deleted tickets CANNOT be recovered!', 'awesome-support' )
+				),
+				
+				array(
+					'name' => __( 'Tickets to Anonymize', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Closed Tickets', 'awesome-support' ),
+					'id'      => 'closed_tickets_anonmyize',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Anonymize only Closed Tickets', 'awesome-support' ),
+					'default' => true
+				),	
+				array(
+					'name'    => __( 'Open Tickets', 'awesome-support' ),
+					'id'      => 'open_tickets_anonmyize',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Anonymize only Open Tickets', 'awesome-support' ),
+					'default' => false
+				),
+				
+				array(
+					'name' => __( 'Anonymized User ID Options', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => __( 'When anonymizing tickets a random user is created to replace the existing user.  These options control how you create the anonymized user names', 'awesome-support' ),
+				),
+
+				array(
+					'name'    => __( 'How should we create the anonymized user?', 'awesome-support' ),
+					'id'      => 'anonmyize_user_creation_method',
+					'type'    => 'radio',
+					'default' => '1',
+					'options' => array(
+						'1' => __( 'Default', 'awesome-support' ),
+						'2' => __( 'Random One-way Hash', 'awesome-support' ),
+						'3' => __( 'Use the user id below', 'awesome-support' ),
+					)
+				),
+				array(
+					'name'    => __( 'Anonymized User ID', 'awesome-support' ),
+					'id'      => 'anonmyize_user_id',
+					'type'    => 'text',
+					'desc'    => __( 'Use this user id for all anonymized tickets. Warning: This should be a VALID user id otherwise you will corrupt your database.  This only applies if the above option is set to USE THE USER ID BELOW.', 'awesome-support' ),
+				),				
 
 			)
 		),

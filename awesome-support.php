@@ -487,7 +487,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/settings/settings-registration.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-moderated-registration.php' );				
 				require( WPAS_PATH . 'includes/admin/settings/settings-privacy.php' );
-				require( WPAS_PATH . 'includes/admin/settings/settings-cronjob.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-fields.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-permissions.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
