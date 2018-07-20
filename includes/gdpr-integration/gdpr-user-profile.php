@@ -545,7 +545,7 @@ class WPAS_GDPR_User_Profile {
 			if ( is_array( $v ) || is_object( $v ) ) {
 				$this->xml_conversion( $v, $k, $_xml->addChild( $k ) );
 			} else {
-				$_xml->addChild( $k, $v );
+				$_xml->addChild( $k, htmlspecialchars( $v ) );
 			}
 		}
 
