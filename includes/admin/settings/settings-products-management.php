@@ -47,7 +47,7 @@ function wpas_get_products_options() {
 			'name'    => __( 'Slug', 'awesome-support' ),
 			'id'      => 'products_slug',
 			'type'    => 'text',
-			'desc'    => __( 'Enter the slug you would like to use for your product urls. If you change this, please to to the WordPress SETTINGS->PERMALINKS page and click the save button to force WP to update its configuration with your new value', 'awesome-support' ),
+			'desc'    => __( 'Enter the slug you would like to use for your product urls. If you change this, please go to the WordPress SETTINGS->PERMALINKS page and click the save button to force WP to update its configuration with your new value', 'awesome-support' ),
 			'default' => 'product'
 		),		
 	);
