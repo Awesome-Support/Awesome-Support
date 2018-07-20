@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-07-19 06:05-0500\n"
+"POT-Creation-Date: 2018-07-19 20:46-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -174,7 +174,7 @@ msgstr ""
 #: includes/admin/views/print-ticket.php:16
 #: includes/custom-fields/functions-custom-fields.php:329
 #: includes/functions-templating.php:276 includes/functions-templating.php:570
-#: includes/gdpr-integration/gdpr-privacy-options.php:783
+#: includes/gdpr-integration/gdpr-privacy-options.php:794
 #: includes/gdpr-integration/gdpr-user-profile.php:136
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:25
 msgid "Status"
@@ -1154,7 +1154,7 @@ msgid "What to use for the indivdual ticket slug.  The default is the ticket top
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:42
-#: includes/gdpr-integration/gdpr-privacy-options.php:720
+#: includes/gdpr-integration/gdpr-privacy-options.php:731
 msgid "Ticket ID"
 msgstr ""
 
@@ -2507,7 +2507,7 @@ msgid "Closed Tickets"
 msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:148
-msgid "Anonymize only Closed Tickets"
+msgid "Anonymize CLOSED tickets"
 msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:152
@@ -2516,7 +2516,7 @@ msgid "Open Tickets"
 msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:155
-msgid "Anonymize only Open Tickets"
+msgid "Anonymize OPEN tickets"
 msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:160
@@ -2532,7 +2532,7 @@ msgid "How should we create the anonymized user?"
 msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:172
-msgid "Random One-way Hash"
+msgid "Random one-way hash"
 msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:173
@@ -3308,7 +3308,7 @@ msgstr ""
 #: includes/admin/views/system-tools.php:301
 #: includes/admin/views/system-tools.php:309
 #: includes/admin/views/system-tools.php:317
-#: includes/gdpr-integration/gdpr-privacy-options.php:355
+#: includes/gdpr-integration/gdpr-privacy-options.php:365
 msgid "Remove"
 msgstr ""
 
@@ -4623,8 +4623,8 @@ msgid "Consent action is required! Options are - \"opted-in\" or \"opted-out\""
 msgstr ""
 
 #: includes/functions-user.php:1382
-#: includes/gdpr-integration/gdpr-privacy-options.php:1053
-#: includes/gdpr-integration/gdpr-privacy-options.php:1122
+#: includes/gdpr-integration/gdpr-privacy-options.php:1064
+#: includes/gdpr-integration/gdpr-privacy-options.php:1133
 msgid "user"
 msgstr ""
 
@@ -4660,179 +4660,184 @@ msgstr ""
 msgid "GDPR Ticket cleanup cron"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:303
-#: includes/gdpr-integration/gdpr-privacy-options.php:539
+#: includes/gdpr-integration/gdpr-privacy-options.php:283
+#: includes/gdpr-integration/gdpr-privacy-options.php:550
 #, php-format
 msgid "Anonymize Awesome Support Ticket #: %s"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:309
-#: includes/gdpr-integration/gdpr-privacy-options.php:543
+#: includes/gdpr-integration/gdpr-privacy-options.php:313
+#, php-format
+msgid "Anonymize Reply on Awesome Support Ticket #: %s. The reply id is: %s"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:319
+#: includes/gdpr-integration/gdpr-privacy-options.php:554
 #, php-format
 msgid "Removed Awesome Support Ticket #: %s"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:328
+#: includes/gdpr-integration/gdpr-privacy-options.php:338
 msgid "User Consents cleared"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:332
+#: includes/gdpr-integration/gdpr-privacy-options.php:342
 msgid "Added User Consents"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:343
+#: includes/gdpr-integration/gdpr-privacy-options.php:353
 msgid "GDPR/Privacy"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:347
+#: includes/gdpr-integration/gdpr-privacy-options.php:357
 msgid "GDPR Consent Bulk Action"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:353
+#: includes/gdpr-integration/gdpr-privacy-options.php:363
 msgid "GDPR Consent"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:356
+#: includes/gdpr-integration/gdpr-privacy-options.php:366
 msgid "Clear User Consent data for all Awesome support Users"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:388
+#: includes/gdpr-integration/gdpr-privacy-options.php:398
 msgid "OPT-IN"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:395
+#: includes/gdpr-integration/gdpr-privacy-options.php:405
 msgid "OPT-OUT"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:396
+#: includes/gdpr-integration/gdpr-privacy-options.php:406
 msgid "Set "
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:420
-#: includes/gdpr-integration/gdpr-privacy-options.php:668
+#: includes/gdpr-integration/gdpr-privacy-options.php:430
+#: includes/gdpr-integration/gdpr-privacy-options.php:679
 msgid "Awesome Support Data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:547
+#: includes/gdpr-integration/gdpr-privacy-options.php:558
 #, php-format
 msgid "Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity."
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:555
+#: includes/gdpr-integration/gdpr-privacy-options.php:566
 msgid "No Awesome Support data was found."
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:710
+#: includes/gdpr-integration/gdpr-privacy-options.php:721
 msgid "Awesome Support"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:723
+#: includes/gdpr-integration/gdpr-privacy-options.php:734
 msgid "Ticket Subject"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:726
+#: includes/gdpr-integration/gdpr-privacy-options.php:737
 msgid "Ticket Description"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:735
+#: includes/gdpr-integration/gdpr-privacy-options.php:746
 msgid "Reply "
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:748
+#: includes/gdpr-integration/gdpr-privacy-options.php:759
 msgid "Ticket Status"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:778
+#: includes/gdpr-integration/gdpr-privacy-options.php:789
 #: includes/gdpr-integration/gdpr-user-profile.php:135
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:24
 msgid "Item"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:789
+#: includes/gdpr-integration/gdpr-privacy-options.php:800
 msgid "Opt In"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:795
+#: includes/gdpr-integration/gdpr-privacy-options.php:806
 msgid "Opt Out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:803
+#: includes/gdpr-integration/gdpr-privacy-options.php:814
 msgid "Consent Data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:905
+#: includes/gdpr-integration/gdpr-privacy-options.php:916
 msgid "Add/Remove Existing Consent"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:911
+#: includes/gdpr-integration/gdpr-privacy-options.php:922
 msgid "Delete my existing data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:917
+#: includes/gdpr-integration/gdpr-privacy-options.php:928
 msgid "Export tickets"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:960
+#: includes/gdpr-integration/gdpr-privacy-options.php:971
 msgid "Sorry! Something failed"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:995
+#: includes/gdpr-integration/gdpr-privacy-options.php:1006
 msgid "Right to be forgotten mail"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:995
+#: includes/gdpr-integration/gdpr-privacy-options.php:1006
 msgid "requested"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1008
+#: includes/gdpr-integration/gdpr-privacy-options.php:1019
 msgid "We have received your \"Right To Be Forgotten\" request!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1010
+#: includes/gdpr-integration/gdpr-privacy-options.php:1021
 msgid "Something went wrong. Please try again!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1013
-#: includes/gdpr-integration/gdpr-privacy-options.php:1083
-#: includes/gdpr-integration/gdpr-privacy-options.php:1144
+#: includes/gdpr-integration/gdpr-privacy-options.php:1024
+#: includes/gdpr-integration/gdpr-privacy-options.php:1094
+#: includes/gdpr-integration/gdpr-privacy-options.php:1155
 #: includes/gdpr-integration/gdpr-user-profile.php:310
 msgid "Cheating huh?"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1044
+#: includes/gdpr-integration/gdpr-privacy-options.php:1055
 #: includes/gdpr-integration/gdpr-user-profile.php:165
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:57
 msgid "Opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1065
+#: includes/gdpr-integration/gdpr-privacy-options.php:1076
 msgid "opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1067
+#: includes/gdpr-integration/gdpr-privacy-options.php:1078
 msgid "You have successfully opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1077
+#: includes/gdpr-integration/gdpr-privacy-options.php:1088
 #: includes/gdpr-integration/gdpr-user-profile.php:193
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:86
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:88
 msgid "Opt-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1114
+#: includes/gdpr-integration/gdpr-privacy-options.php:1125
 msgid "Opted-Out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1133
+#: includes/gdpr-integration/gdpr-privacy-options.php:1144
 msgid "opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1136
+#: includes/gdpr-integration/gdpr-privacy-options.php:1147
 msgid "You have successfully opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1141
+#: includes/gdpr-integration/gdpr-privacy-options.php:1152
 #: includes/gdpr-integration/gdpr-user-profile.php:198
 #: includes/gdpr-integration/gdpr-user-profile.php:203
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:92
