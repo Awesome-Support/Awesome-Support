@@ -34,6 +34,8 @@ $author = get_user_by( 'id', $post->post_author );
 	?>
 
 	<table class="wpas-table wpas-ticket-replies">
+		<col class="col1"/>
+		<col class="col2"/>
 		<tbody>
 			<tr class="wpas-reply-single" valign="top">
 				<td style="width: 64px;">
