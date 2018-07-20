@@ -222,23 +222,27 @@ class WPAS_Privacy_Option {
 
 			$closed_tickets = boolval( wpas_get_option( 'closed_tickets_anonmyize', true ) );
 			$open_tickets = boolval( wpas_get_option( 'open_tickets_anonmyize', false ) );
-			// if both option are not enabled at the same time
-			if( !( ! $closed_tickets && ! $open_tickets ) ){
-				if( $closed_tickets ){
-					$args['meta_query'][] = array(
-						'key'   => '_wpas_status',
-						'value' => 'closed',
-						'compare' => '=',
-					);
-				} elseif( $open_tickets ){
-					$args['meta_query'][] = array(
-						'key'   => '_wpas_status',
-						'value' => 'open',
-						'compare' => '=',
-					);
-				}
+			
+			// Closed tickets only?
+			if( $closed_tickets && ! $open_tickets )  {
+				$args['meta_query'][] = array(
+					'key'   => '_wpas_status',
+					'value' => 'closed',
+					'compare' => '=',
+				);
 			}
+			
+			// Open tickets only?
+			if( ! $closed_tickets && $open_tickets )  {
+				$args['meta_query'][] = array(
+					'key'   => '_wpas_status',
+					'value' => 'open',
+					'compare' => '=',
+				);
+			}
+			
 			$ticket_data = get_posts( $args );
+			
 		}
 		
 		if( !empty( $ticket_data ) ){
@@ -268,16 +272,22 @@ class WPAS_Privacy_Option {
 					if( !empty( $author_tickets )){
 						foreach ( $author_tickets as $key => $ticket_id ) {
 							if( !$delete_existing_data && !empty( $related_author_id ) ){
-								//2. Update ticket data and set author as Anonymous user
+								
+								//2a. Update ticket data and set author as Anonymous user
 								$arg = array(
 								    'ID' => $ticket_id,
 								    'post_author' => $related_author_id,
 								);
 								wp_update_post( $arg );
 								update_post_meta( $ticket_id, 'is_anonymize', true );
+								$messages = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+								wpas_write_log( 'anonymize_ticket', $messages );
+
+								//2b. Now handle the replies
 								$args = array(
-									'post_parent'            => $ticket_id,
-									'post_type'              => apply_filters( 'wpas_replies_post_type', array(
+									'post_parent'           => $ticket_id,
+									'author' 			 	=> $author_id,
+									'post_type'             => apply_filters( 'wpas_replies_post_type', array(
 										'ticket_history',
 										'ticket_reply',
 										'ticket_log'
@@ -300,7 +310,7 @@ class WPAS_Privacy_Option {
 									);
 									wp_update_post( $arg );
 									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
-									$messages = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+									$messages = sprintf( __( 'Anonymize Reply on Awesome Support Ticket #: %s. The reply id is: %s', 'awesome-support' ), (string) $ticket_id, (string) $post->ID ) ;
 									wpas_write_log( 'anonymize_ticket', $messages );
 								}
 							} else{
@@ -511,6 +521,7 @@ class WPAS_Privacy_Option {
 								wp_update_post( $arg );
 								$args = array(
 									'post_parent'            => $ticket_id,
+									'author'				 => $author->ID,
 									'post_type'              => apply_filters( 'wpas_replies_post_type', array(
 										'ticket_history',
 										'ticket_reply',
@@ -572,6 +583,8 @@ class WPAS_Privacy_Option {
 	 * @since  5.2.0
 	 *
 	 * @param  int $author_id The id of the author/user we're creating the anonymous user for.
+	 *
+	 * @return int
 	 */
 	public function as_create_anonymous_user( $author_id ){
 		
@@ -606,7 +619,25 @@ class WPAS_Privacy_Option {
 				break ;
 
 		}
-				
+
+		return $this->as_create_anonymous_user_by_user_name( $user_name ) ;
+
+	}
+	
+	/**
+	 * create anonymous user by user name
+	 *
+	 * Accepts a user name and returns the id of the user if they exist or 
+	 * the id of a new user that is created with that user name.
+	 *
+	 * @since  5.2.0
+	 *
+	 * @param  string $user_name The id of the author/user we're creating the anonymous user for.
+	 *
+	 * @return int
+	 */
+	public function as_create_anonymous_user_by_user_name( $user_name ){
+		
 		$user_id = username_exists( $user_name );
 		$url = get_site_url();
 		$urlobj = parse_url($url);
@@ -630,8 +661,11 @@ class WPAS_Privacy_Option {
 				update_user_option( $user_id, 'is_anonymous', true );
 			}
 		}
-		return $user_id;
+		
+		return $user_id;		
+		
 	}
+	
 	/**
 	 * Registers a personal data exporter for Awesome Support
 	 *

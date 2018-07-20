@@ -145,14 +145,14 @@ function wpas_core_settings_privacy( $def ) {
 					'name'    => __( 'Closed Tickets', 'awesome-support' ),
 					'id'      => 'closed_tickets_anonmyize',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Anonymize only Closed Tickets', 'awesome-support' ),
+					'desc'    => __( 'Anonymize CLOSED tickets', 'awesome-support' ),
 					'default' => true
 				),	
 				array(
 					'name'    => __( 'Open Tickets', 'awesome-support' ),
 					'id'      => 'open_tickets_anonmyize',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Anonymize only Open Tickets', 'awesome-support' ),
+					'desc'    => __( 'Anonymize OPEN tickets', 'awesome-support' ),
 					'default' => false
 				),
 				
@@ -169,7 +169,7 @@ function wpas_core_settings_privacy( $def ) {
 					'default' => '1',
 					'options' => array(
 						'1' => __( 'Default', 'awesome-support' ),
-						'2' => __( 'Random One-way Hash', 'awesome-support' ),
+						'2' => __( 'Random one-way hash', 'awesome-support' ),
 						'3' => __( 'Use the user id below', 'awesome-support' ),
 					)
 				),
