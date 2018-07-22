@@ -52,8 +52,104 @@ class WPAS_Tickets_List {
 			add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2 );
 			add_filter( 'post_class', array( $this, 'ticket_row_class' ), 10, 3 );
 			add_filter( 'manage_posts_extra_tablenav', array( $this, 'manage_posts_extra_tablenav' ), 10, 1 );
-
+			
+			add_filter( 'posts_search', array( $this, 'ticket_listing_search_query' ), 2 , 11 );
+			add_filter( 'posts_join',   array( $this, 'ticket_listing_search_join_query' ), 2, 11 );
 		}
+	}
+	
+	/**
+	 * Set join query for ticket listing page for search based on selected search criteria
+	 * 
+	 * @global string $post_type
+	 * @global object $wpdb
+	 * 
+	 * @param string $joins
+	 * @param object $query
+	 * 
+	 * @return string
+	 */
+	public function ticket_listing_search_join_query( $joins, $query ) {
+		
+		global $post_type, $wpdb;
+		
+		$search = $query->get('s');
+		
+		if( 'ticket' !== $post_type || !$query->is_main_query() || !$query->is_search || !$search ) {
+			return $joins;
+		}
+		
+			
+		$search_params = isset( $_GET['search_by'] ) && !empty( $_GET['search_by'] ) ? $_GET['search_by'] : array( 'subject', 'opening_post' );
+		
+
+		$search_joins = array();
+		
+		if( in_array( 'replies', $search_params ) ) {
+			$search_joins[] = " LEFT JOIN {$wpdb->posts} wprp ON ({$wpdb->posts}.ID = wprp.post_parent) AND wprp.post_type='ticket_reply'";
+		}
+
+		if( post_type_exists( 'ticket_note' ) && in_array( 'private_notes', $search_params ) ) {
+			$search_joins[] = " LEFT JOIN {$wpdb->posts} wptnp ON ({$wpdb->posts}.ID = wptnp.post_parent) AND wptnp.post_type='ticket_note'";
+		}
+
+		$search_joins_query = implode( ' ', $search_joins );
+
+		$joins .= $search_joins_query;
+			
+		
+		return $joins;
+	}
+	
+	
+	/**
+	 * Set search query for ticket listing page based on selected search criteria
+	 * 
+	 * @global string $post_type
+	 * @global object $wpdb
+	 * 
+	 * @param string $search_query
+	 * @param object $query
+	 * 
+	 * @return string
+	 */
+	public function ticket_listing_search_query( $search_query, $query ) {
+		global $post_type, $wpdb;
+		
+		$search = $query->get('s');
+		
+		if( 'ticket' !== $post_type || !$query->is_main_query() || !$query->is_search || !$search ) {
+			return $search_query;
+		}
+		
+		
+		$search_clauses = array();
+		$search_params = isset( $_GET['search_by'] ) && !empty( $_GET['search_by'] ) ? $_GET['search_by'] : array( 'subject', 'opening_post' );
+		
+		
+		$like = '%' . $wpdb->esc_like( $search ) . '%';
+		
+		if( in_array( 'subject', $search_params ) ) {
+			$search_clauses[] = $wpdb->prepare( "({$wpdb->posts}.post_title LIKE %s)", $like );
+		}
+
+		if( in_array( 'opening_post', $search_params ) ) {
+			$search_clauses[] = $wpdb->prepare( "({$wpdb->posts}.post_excerpt LIKE %s) OR ({$wpdb->posts}.post_content LIKE %s)", $like, $like );
+		}
+
+		if( in_array( 'replies', $search_params ) ) {
+			$search_clauses[] = $wpdb->prepare( '(wprp.post_excerpt LIKE %s) OR (wprp.post_content LIKE %s)', $like, $like );
+		}
+
+		if( post_type_exists( 'ticket_note' ) && in_array( 'private_notes', $search_params ) ) {
+			$search_clauses[] = $wpdb->prepare( '(wptnp.post_excerpt LIKE %s) OR (wptnp.post_content LIKE %s)', $like, $like );
+		}
+
+		$search_clauses_query = implode( ' OR ', $search_clauses );
+		
+		$search_query = ' AND (' . $search_clauses_query . ')';
+		
+		return $search_query;
 	}
 
 	/**
@@ -64,7 +160,7 @@ class WPAS_Tickets_List {
 	public function set_filtering_query_var( $query ) {
 
 		global $post_type;
-
+		
 	    if ( 'ticket' !== $post_type
 	        || ! $query->is_main_query()
 	        || empty ($_GET[ 'id' ])
@@ -877,9 +973,32 @@ SQL;
 	 * @return string
 	 */
 	public function search_tab_content( $content ) {
+		
+		
+		$search_params = isset( $_GET['search_by'] ) ? $_GET['search_by'] : array();
+		
+		$subject_checked		= in_array( 'subject',		 $search_params )	? true : false;
+		$opening_post_checked	= in_array( 'opening_post',  $search_params )	? true : false;
+		$replies_checked		= in_array( 'replies',		 $search_params )	? true : false;
+		$private_notes_checked  = in_array( 'private_notes', $search_params )	? true : false;
+		
+		
+		ob_start();
 
-		return '<div id="search_tab_content_placeholder"></div>';
+		?>
+		
+		<div id="search_tab_content_placeholder"></div>
+		
+		<div class="ticket_listing_search_types">
+			<label><input type="checkbox" name="search_by[]" value="subject" <?php checked( true, $subject_checked ); ?> /> <?php _e( 'Subject', 'awesome-support' ); ?></label>
+			<label><input type="checkbox" name="search_by[]" value="opening_post" <?php checked( true, $opening_post_checked ); ?> /> <?php _e( 'Opening Post', 'awesome-support' ); ?></label>
+			<label><input type="checkbox" name="search_by[]" value="replies" <?php checked( true, $replies_checked ); ?> /> <?php _e( 'Replies', 'awesome-support' ); ?></label>
+			<label><input type="checkbox" name="search_by[]" value="private_notes" <?php checked( true, $private_notes_checked ); ?> /> <?php _e( 'Private Notes', 'awesome-support' ); ?></label>
+		</div>
 
+		<?php
+		
+		return ob_get_clean();
 	}
 
 	/**
@@ -1487,7 +1606,7 @@ SQL;
 		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
 
 			global $wpdb;
-
+			
 			$order = ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
 
 			if ( 'taxonomy' == $fields[ $orderby ][ 'args' ][ 'field_type' ] && ! $fields[ $orderby ][ 'args' ][ 'taxo_std' ] ) {
@@ -1532,7 +1651,7 @@ SQL;
 			}
 
 		}
-
+		
 		return $clauses;
 	}
 
