@@ -89,10 +89,8 @@ class WPAS_Tickets_List {
 			$search_joins[] = " LEFT JOIN {$wpdb->posts} wprp ON ({$wpdb->posts}.ID = wprp.post_parent) AND wprp.post_type='ticket_reply'";
 		}
 
-		if( post_type_exists( 'ticket_note' ) && in_array( 'private_notes', $search_params ) ) {
-			$search_joins[] = " LEFT JOIN {$wpdb->posts} wptnp ON ({$wpdb->posts}.ID = wptnp.post_parent) AND wptnp.post_type='ticket_note'";
-		}
-
+		$search_joins = apply_filters( 'ticket_listing_search_joins', $search_joins );
+		
 		$search_joins_query = implode( ' ', $search_joins );
 
 		$joins .= $search_joins_query;
@@ -141,10 +139,9 @@ class WPAS_Tickets_List {
 			$search_clauses[] = $wpdb->prepare( '(wprp.post_excerpt LIKE %s) OR (wprp.post_content LIKE %s)', $like, $like );
 		}
 
-		if( post_type_exists( 'ticket_note' ) && in_array( 'private_notes', $search_params ) ) {
-			$search_clauses[] = $wpdb->prepare( '(wptnp.post_excerpt LIKE %s) OR (wptnp.post_content LIKE %s)', $like, $like );
-		}
-
+		
+		$search_clauses = apply_filters( 'ticket_listing_search_clauses', $search_clauses );
+		
 		$search_clauses_query = implode( ' OR ', $search_clauses );
 		
 		$search_query = ' AND (' . $search_clauses_query . ')';
@@ -975,12 +972,11 @@ SQL;
 	public function search_tab_content( $content ) {
 		
 		
-		$search_params = isset( $_GET['search_by'] ) ? $_GET['search_by'] : array();
+		$search_params = isset( $_GET['search_by'] ) ? $_GET['search_by'] : array( 'subject', 'opening_post' );
 		
 		$subject_checked		= in_array( 'subject',		 $search_params )	? true : false;
 		$opening_post_checked	= in_array( 'opening_post',  $search_params )	? true : false;
 		$replies_checked		= in_array( 'replies',		 $search_params )	? true : false;
-		$private_notes_checked  = in_array( 'private_notes', $search_params )	? true : false;
 		
 		
 		ob_start();
@@ -993,7 +989,7 @@ SQL;
 			<label><input type="checkbox" name="search_by[]" value="subject" <?php checked( true, $subject_checked ); ?> /> <?php _e( 'Subject', 'awesome-support' ); ?></label>
 			<label><input type="checkbox" name="search_by[]" value="opening_post" <?php checked( true, $opening_post_checked ); ?> /> <?php _e( 'Opening Post', 'awesome-support' ); ?></label>
 			<label><input type="checkbox" name="search_by[]" value="replies" <?php checked( true, $replies_checked ); ?> /> <?php _e( 'Replies', 'awesome-support' ); ?></label>
-			<label><input type="checkbox" name="search_by[]" value="private_notes" <?php checked( true, $private_notes_checked ); ?> /> <?php _e( 'Private Notes', 'awesome-support' ); ?></label>
+			<?php do_action( 'ticket_listing_after_search_controls' ); ?>
 		</div>
 
 		<?php
