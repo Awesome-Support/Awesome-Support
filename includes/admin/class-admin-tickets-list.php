@@ -140,7 +140,7 @@ class WPAS_Tickets_List {
 		}
 
 		
-		$search_clauses = apply_filters( 'ticket_listing_search_clauses', $search_clauses );
+		$search_clauses = apply_filters( 'ticket_listing_search_clauses', $search_clauses, $query );
 		
 		$search_clauses_query = implode( ' OR ', $search_clauses );
 		
