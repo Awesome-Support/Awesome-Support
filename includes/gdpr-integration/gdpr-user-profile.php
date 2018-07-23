@@ -401,8 +401,7 @@ class WPAS_GDPR_User_Profile {
 	}
 
 	/**
-	 * Get ticket attachment. It does not include
-	 * attachments from ticket replies
+	 * Get ticket attachment.
 	 */
 	public function get_ticket_attachment( $ticket_id ) {
 		global $wpdb;
@@ -430,6 +429,7 @@ class WPAS_GDPR_User_Profile {
 				$replies[ 'r' . $key ] = array(
 					'content' => html_entity_decode( $reply->post_content ),
 					'author'  => $this->get_reply_author( $reply->post_author ),
+					'attachment' => $this->get_ticket_attachment( $reply->ID )
 				);
 			}
 		}
