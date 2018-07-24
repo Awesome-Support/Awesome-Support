@@ -1000,6 +1000,7 @@ class WPAS_Privacy_Option {
 				array(
 					'title'   => $subject,
 					'message' => $content,
+					'bypass_pre_checks' => true,					
 				)
 			);
 
