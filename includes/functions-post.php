@@ -76,7 +76,7 @@ function wpas_open_ticket( $data ) {
 	 *
 	 * @since  3.0.0
 	 */
-	if ( ! bypass_pre_checks ) {
+	if ( ! $bypass_pre_checks ) {
 		$go = apply_filters( 'wpas_before_submit_new_ticket_checks', true );
 	}
 
