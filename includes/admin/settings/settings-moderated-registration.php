@@ -40,7 +40,7 @@ function wpas_core_settings_moderated_registration( $def ) {
 					'name'    => __( 'Pending Registration Role', 'awesome-support' ),
 					'id'      => 'moderated_pending_user_role',
 					'type'    => 'text',
-					'desc'    => __( 'This is the role that the user will have while a registration is waiting for admin approval. The role should be the internal WordPress role id such as wpas_user and is case sensitive. If you leave this blank the user will have no role on the site while waiting for regisration approval.', 'awesome-support' ),
+					'desc'    => __( 'This is the role that the user will have while a registration is waiting for admin approval. The role should be the internal WordPress role id such as wpas_user and is case sensitive. If you leave this blank the user will have no role on the site while waiting for registration approval.', 'awesome-support' ),
 					'default' => ''
 				),
 				
