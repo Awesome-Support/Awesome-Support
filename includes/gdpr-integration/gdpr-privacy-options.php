@@ -856,7 +856,7 @@ class WPAS_Privacy_Option {
 					<?php
 					$entry_header = wpas_get_option( 'privacy_popup_header', 'Privacy' );
 					if ( ! empty( $entry_header ) ) {
-						echo '<div class="entry-header">' . $entry_header . '</div>';
+						echo '<div class="entry-header">' . wpautop( stripslashes( $entry_header ) ) . '</div>';
 					}
 					?>
 					<div class="entry-content">
@@ -892,7 +892,7 @@ class WPAS_Privacy_Option {
 					<?php
 					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' );
 					if ( ! empty( $entry_footer ) ) {
-						echo '<div class="entry-footer">' . $entry_footer . '</div>';
+						echo '<div class="entry-footer">' . wpautop( stripslashes( $entry_footer ) )  . '</div>';
 					}
 					?>
 				</div> <!--  .entry entry-regular -->
