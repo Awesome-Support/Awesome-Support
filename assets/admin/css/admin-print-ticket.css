@@ -109,6 +109,11 @@
     text-align: center !important;
 }
 
+.wpas-print-ticket-notes {
+    display: none;
+    background-color: #F0F8FF;;
+}
+
 #wpas-print-ticket-frame {
     display: none;
 }

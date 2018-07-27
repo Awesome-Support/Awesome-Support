@@ -50,26 +50,6 @@
         </tr>
     </table>
 
-    <?php
-        
-        $custom_fields = WPAS()->custom_fields->get_custom_fields(); 
-
-        if( isset( $custom_fields['time_notes']) ) : ?>
-
-        <table class="wpas-print-ticket-notes" style="display:none;">
-            <tr>
-                <th><?php _e( $custom_fields[ 'time_notes' ][ 'args' ][ 'title' ], 'awesome-support' ); ?></th>
-            </tr>
-            <tr>
-                <td>
-                    <?php echo wpas_cf_value( $custom_fields[ 'time_notes' ][ 'name' ], $ticket->ID );  ?>
-                </td>
-            </tr>
-        </table>
-
-    <?php endif; ?>
-
-
     <table>
         <tr>
             <td>
@@ -124,11 +104,12 @@
 
             <?php else: ?>
 
-                <table class="wpas-print-ticket-reply">
+                <table class="<?php echo ( $reply->post_type == 'ticket_note' ) ? 'wpas-print-ticket-notes' : 'wpas-print-ticket-reply'; ?>">
                     <tr>
                         <td>
                             <strong><?php echo $user_name; ?></strong>, 
                             <?php echo date( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $reply->post_date ) ); ?>
+                            <?php if ( $reply->post_type == 'ticket_note' ) printf( ' - <strong>%s</strong>', __( 'Private note', 'awesome-support' ) ); ?>
                         </td>
                     </tr>
                     <tr>
