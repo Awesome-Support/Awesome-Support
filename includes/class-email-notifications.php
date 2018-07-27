@@ -749,11 +749,7 @@ class WPAS_Email_Notification {
 		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id, $this->post_id );
 
 		$recipients = $recipient_emails = array();
-		if (is_array($user)) {
-			$recipients = array_merge($recipients, $user);
-		} else {
-			$recipients[] = $user;
-		}
+		$recipients[] = $user;
 		
 		if( wpas_is_multi_agent_active() ) {
 			// We need to notify other agents
@@ -828,7 +824,8 @@ class WPAS_Email_Notification {
 			'attachments'     => ''
 			),
 			$case,
-			$this->ticket_id
+			$this->ticket_id, 
+			$this->post_id
 		);
 		
 		$attachments = array();
