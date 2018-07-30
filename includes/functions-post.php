@@ -8,8 +8,9 @@
  */
 function wpas_open_ticket( $data ) {
 
-	$title   = isset( $data['title'] ) ? wp_strip_all_tags( $data['title'] ) : false;
-	$content = isset( $data['message'] ) ? wp_kses( $data['message'], wp_kses_allowed_html( 'post' ) ) : false;
+	$title   			= isset( $data['title'] ) ? wp_strip_all_tags( $data['title'] ) : false;
+	$content 			= isset( $data['message'] ) ? wp_kses( $data['message'], wp_kses_allowed_html( 'post' ) ) : false;
+	$bypass_pre_checks  = isset( $data['bypass_pre_checks'] ) ? boolval(wp_kses( $data['bypass_pre_checks'], false ) ) : false;  // Bypass pre-submission filter checks?
 
 	/**
 	 * Prepare vars
@@ -75,7 +76,9 @@ function wpas_open_ticket( $data ) {
 	 *
 	 * @since  3.0.0
 	 */
-	$go = apply_filters( 'wpas_before_submit_new_ticket_checks', true );
+	if ( ! $bypass_pre_checks ) {
+		$go = apply_filters( 'wpas_before_submit_new_ticket_checks', true );
+	}
 
 	/* Check for the green light */
 	if ( is_wp_error( $go ) ) {

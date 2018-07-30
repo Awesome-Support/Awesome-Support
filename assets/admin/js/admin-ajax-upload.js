@@ -24,6 +24,7 @@
                 url: WPAS_AJAX.ajax_url,
                 paramName: 'wpas_files',
                 acceptedFiles : WPAS_AJAX.accept,
+                timeout : WPAS_AJAX.max_execution_time,
                 maxFiles : WPAS_AJAX.max_files,
                 maxFilesize : WPAS_AJAX.max_size,
                 addRemoveLinks: true,
@@ -39,7 +40,9 @@
                     });
 
                     this.on('complete', function(e) {
-                        submitButtons.removeAttr('disabled');
+                        if (this.getUploadingFiles().length === 0 && this.getQueuedFiles().length === 0) {
+                            submitButtons.removeAttr('disabled');
+                        }
                     });
             
                     this.on('addedfile', function(e) {

@@ -31,6 +31,7 @@ function wpas_core_settings_registration( $def ) {
 						'allow'           => __( 'Allow registrations', 'awesome-support' ),
 						'disallow'        => __( 'Disallow registrations', 'awesome-support' ),
 						'disallow_silent' => __( 'Disallow registrations without notice (just show the login form)', 'awesome-support' ),
+						'moderated'		  => __( 'Moderated registrations', 'awesome-support' ),
 					)
 				),
 				

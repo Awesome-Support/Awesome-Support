@@ -390,15 +390,18 @@ class WPAS_GDPR_User_Profile {
 		$meta_field_value = array();
 		if ( ! empty( $meta_data ) ) {
 			foreach ( $meta_data as $key => $meta_field ) {
-				$meta_field_value[ 'm' . $key ] = $meta_field;
+				$meta = new stdClass();
+				foreach( $meta_field as $key => $value ) {
+					$meta->$key = html_entity_decode( $value );
+				}
+				$meta_field_value[ 'm' . $key ] = $meta;
 			}
 		}
 		return $meta_field_value;
 	}
 
 	/**
-	 * Get ticket attachment. It does not include
-	 * attachments from ticket replies
+	 * Get ticket attachment.
 	 */
 	public function get_ticket_attachment( $ticket_id ) {
 		global $wpdb;
@@ -407,7 +410,7 @@ class WPAS_GDPR_User_Profile {
 		if ( ! empty( $get_attachments ) ) {
 			foreach ( $get_attachments as $key => $attachment ) {
 				$attachments[ 'a' . $key ] = array(
-					'title' => $attachment->post_title,
+					'title' => html_entity_decode( $attachment->post_title ),
 					'url'   => $attachment->guid,
 				);
 			}
@@ -424,8 +427,9 @@ class WPAS_GDPR_User_Profile {
 		if ( ! empty( $get_replies ) ) {
 			foreach ( $get_replies as $key => $reply ) {
 				$replies[ 'r' . $key ] = array(
-					'content' => $reply->post_content,
+					'content' => html_entity_decode( $reply->post_content ),
 					'author'  => $this->get_reply_author( $reply->post_author ),
+					'attachment' => $this->get_ticket_attachment( $reply->ID )
 				);
 			}
 		}
@@ -521,7 +525,7 @@ class WPAS_GDPR_User_Profile {
 			if ( is_array( $v ) || is_object( $v ) ) {
 				$this->xml_conversion( $v, $k, $_xml->addChild( $k ) );
 			} else {
-				$_xml->addChild( $k, $v );
+				$_xml->addChild( $k, htmlspecialchars( $v ) );
 			}
 		}
 

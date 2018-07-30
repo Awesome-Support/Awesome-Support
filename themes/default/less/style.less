@@ -140,6 +140,8 @@ textarea.wpas-form-control {
 .wpas-btn {
 	display: inline-block;
 	padding: 6px 12px;
+	margin-right: 8px;
+	margin-top: 6px;	
 	margin-bottom: 0;
 	font-size: @font-size-base;
 	font-weight: 400;
@@ -316,6 +318,13 @@ Pages
 	margin-bottom: 0px;
 }
 .wpas-ticket-replies {
+	table-layout: fixed;
+	.col1 {
+		width: 90px;
+	}
+	.col2 {
+		width: 100%;
+	}
 	> tbody {
 		> tr {
 			> td {
@@ -341,6 +350,11 @@ Pages
 				}
 			}
 		}
+	}
+	// Force responsive preformatted
+	pre {
+		width: 100%;
+		overflow: auto;
 	}
 }
 .wpas-reply-meta {

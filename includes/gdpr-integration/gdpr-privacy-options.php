@@ -48,6 +48,14 @@ class WPAS_Privacy_Option {
 		add_filter( 'wp_privacy_personal_data_erasers', array( $this, 'wp_register_asdata_personal_data_eraser' ) );
 
 		add_filter( 'wp_privacy_personal_data_exporters', array( $this, 'wp_privacy_personal_asdata_exporters' ), 10, 1 );
+
+		// Schedule cleanup of older tickets
+		add_action( 'wp', array( $this, 'tickets_cleanup_schedule' ) );
+		
+		// Cleanup action
+		add_action( 'wpas_tickets_cleanup_action', array( $this, 'as_tickets_cleanup_action_callback' ) );
+
+		add_filter( 'cron_schedules', array( $this, 'gdpr_cron_job_schedule' ) ); 
 	}
 
 	/**
@@ -92,6 +100,7 @@ class WPAS_Privacy_Option {
 				    }
 				}
 				break;
+				
 			case 'add_user_consent':
 
 				$_status = (isset( $_GET['_status'] ) && !empty( isset( $_GET['_status'] ) ))? sanitize_text_field( $_GET['_status'] ): '';
@@ -146,6 +155,179 @@ class WPAS_Privacy_Option {
 		}
 
 	}
+
+	/**
+	 * GDPR Cron job schedule 
+	 * 
+	 * @param  array $schedules Cron schedules 
+	 * 
+	 * @return array $schedules Cron schedules with GDPR cron job schedule included.
+	 */
+	function gdpr_cron_job_schedule( $schedules ) {
+		$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
+		if( !empty( $trigger_time )){
+			$trigger_time = intval($trigger_time);
+			$schedules['min_'. $trigger_time ] = array(
+				'interval' => ($trigger_time * 60),
+				'display' => __('GDPR Ticket cleanup cron', 'awesome-support' )
+			);
+			return $schedules;
+		}
+	}
+
+	/**
+	 * Schedule cleanup of older tickets
+	 * 
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	function tickets_cleanup_schedule(){
+		$anonymize_cron_job = wpas_get_option( 'anonymize_cron_job', '' );
+		if( ! empty( $anonymize_cron_job ) ){
+			if ( ! wp_next_scheduled( 'wpas_tickets_cleanup_action' ) ) {
+				$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
+				if( !empty( $trigger_time )){
+					$trigger_time = intval($trigger_time);
+					wp_schedule_event( time(), 'min_' . $trigger_time, 'wpas_tickets_cleanup_action');
+				}
+			}
+		} else{
+			wp_clear_scheduled_hook('wpas_tickets_cleanup_action'); 
+		}
+	}
+	/**
+	 * Anonymize ticket if delete ticket option is not checked.
+	 * @return [type] [description]
+	 */
+	function as_tickets_cleanup_action_callback(){
+		$ticket_age = wpas_get_option( 'anonymize_cronjob_max_age', '' );
+		$ticket_data = array();
+		if( !empty( $ticket_age )){
+			$cronjob_max_age = intval($ticket_age);
+			$args = array(
+				'post_type'      => array( 'ticket' ),
+				'post_status'    => array_keys( wpas_get_post_status() ),
+				'posts_per_page' => 50,
+				'meta_query' => array(
+			        array(
+			            'key'   => 'is_anonymize',
+			            'compare' => 'NOT EXISTS',
+			        )
+			    ),
+			    'date_query' => array(
+					'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days') )
+				) 
+			);
+
+			$closed_tickets = boolval( wpas_get_option( 'closed_tickets_anonmyize', true ) );
+			$open_tickets = boolval( wpas_get_option( 'open_tickets_anonmyize', false ) );
+			
+			// Closed tickets only?
+			if( $closed_tickets && ! $open_tickets )  {
+				$args['meta_query'][] = array(
+					'key'   => '_wpas_status',
+					'value' => 'closed',
+					'compare' => '=',
+				);
+			}
+			
+			// Open tickets only?
+			if( ! $closed_tickets && $open_tickets )  {
+				$args['meta_query'][] = array(
+					'key'   => '_wpas_status',
+					'value' => 'open',
+					'compare' => '=',
+				);
+			}
+			
+			$ticket_data = get_posts( $args );
+			
+		}
+		
+		if( !empty( $ticket_data ) ){
+			$author_array = array();
+			foreach ( $ticket_data as $key => $ticket_value ) {
+				if( array_key_exists( $ticket_value->post_author ,$author_array ) ){
+					$author_array[ $ticket_value->post_author ][] = $ticket_value->ID;
+				} else{
+					$author_array[ $ticket_value->post_author ] = array( $ticket_value->ID );
+				}
+			}
+
+			if( !empty( $author_array )){
+				foreach ( $author_array as $author_id => $author_tickets ) {
+					/**
+					 * 
+					 ** 1. create an anonymous user if it is not created for author yet. This maintain a single and unique anonymous author per support user for this run only.
+					 *
+					 ** 2. Loop author tickets and set them anonymous and set meta key is_anonymous = true, to exclude already anonymized tickets.
+					 *
+					 */
+					$related_author_id = $this->as_create_anonymous_user( $author_id );
+
+					$delete_existing_data = wpas_get_option( 'anonymize_cronjob_delete_tickets', false );
+					// Assign Author tickets to anonymous user. 
+					// also set is_anonymize key in ticket meta.
+					if( !empty( $author_tickets )){
+						foreach ( $author_tickets as $key => $ticket_id ) {
+							if( !$delete_existing_data && !empty( $related_author_id ) ){
+								
+								//2a. Update ticket data and set author as Anonymous user
+								$arg = array(
+								    'ID' => $ticket_id,
+								    'post_author' => $related_author_id,
+								);
+								wp_update_post( $arg );
+								update_post_meta( $ticket_id, 'is_anonymize', true );
+								$messages = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+								wpas_write_log( 'anonymize_ticket', $messages );
+
+								//2b. Now handle the replies
+								$args = array(
+									'post_parent'           => $ticket_id,
+									'author' 			 	=> $author_id,
+									'post_type'             => apply_filters( 'wpas_replies_post_type', array(
+										'ticket_history',
+										'ticket_reply',
+										'ticket_log'
+									) ),
+									'post_status'            => 'any',
+									'posts_per_page'         => - 1,
+									'no_found_rows'          => true,
+									'cache_results'          => false,
+									'update_post_term_cache' => false,
+									'update_post_meta_cache' => false,
+								);
+
+								$posts = new WP_Query( $args );
+								foreach ( $posts->posts as $id => $post ) {
+
+									do_action( 'wpas_before_anonymize_dependency', $post->ID, $post );
+									$arg = array(
+									    'ID' => $post->ID,
+									    'post_author' => $related_author_id,
+									);
+									wp_update_post( $arg );
+									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
+									$messages = sprintf( __( 'Anonymize Reply on Awesome Support Ticket #: %s. The reply id is: %s', 'awesome-support' ), (string) $ticket_id, (string) $post->ID ) ;
+									wpas_write_log( 'anonymize_ticket', $messages );
+								}
+							} else{
+								if ( wp_delete_post( $ticket_id, true ) ) {
+									$items_removed = true;
+									$messages = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+									wpas_write_log( 'anonymize_ticket_delete', $messages );
+								} 
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+
 	/**
 	 * Update data on clean up tool click.
 	 */
@@ -153,11 +335,11 @@ class WPAS_Privacy_Option {
 		switch( $status ) {
 
 			case 'remove_all_user_consent':
-				$message = __( 'User Consent cleared', 'awesome-support' );
+				$message = __( 'User Consents cleared', 'awesome-support' );
 				break;
 
 			case 'add_user_consent':
-				$message = __( 'Added User Consent', 'awesome-support' );
+				$message = __( 'Added User Consents', 'awesome-support' );
 				break;
 		}
 		return $message;
@@ -288,7 +470,7 @@ class WPAS_Privacy_Option {
 		}
 
 		/* All pre-conditions good, so ok to proceed */
-		$number         = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
+		$number = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
 		$page           = (int) $page;
 		$items_removed  = false;
 		$items_retained = false;
@@ -300,6 +482,11 @@ class WPAS_Privacy_Option {
 			'posts_per_page' => $number,
 			'paged'          => $page
 		);
+
+		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
+		if( $anonymize_existing_data ){
+			$user_id = $this->as_create_anonymous_user( $author->ID );
+		}
 		/**
 		 * Delete ticket data belongs to the mention email id.
 		 */
@@ -318,10 +505,55 @@ class WPAS_Privacy_Option {
 						
 						/* Proceed with attempting to delete the ticket if filter returned ok */	
 						if ( true === $wpas_pe_msgs['ok_to_erase'] ) {
-							if ( wp_delete_post( $ticket_id, true ) ) {
-								$items_removed = true;
-								$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
-							} 
+							/**
+							 * if anonymize data instead of delete is checked 
+							 * 		dont delete 
+							 * else 
+							 * 		delete data
+							 */
+							
+							if( $anonymize_existing_data ){
+								//2. Update ticket data and set author as Anonymous user
+								$arg = array(
+								    'ID' => $ticket_id,
+								    'post_author' => $user_id,
+								);
+								wp_update_post( $arg );
+								$args = array(
+									'post_parent'            => $ticket_id,
+									'author'				 => $author->ID,
+									'post_type'              => apply_filters( 'wpas_replies_post_type', array(
+										'ticket_history',
+										'ticket_reply',
+										'ticket_log'
+									) ),
+									'post_status'            => 'any',
+									'posts_per_page'         => - 1,
+									'no_found_rows'          => true,
+									'cache_results'          => false,
+									'update_post_term_cache' => false,
+									'update_post_meta_cache' => false,
+								);
+
+								$posts = new WP_Query( $args );
+								foreach ( $posts->posts as $id => $post ) {
+
+									do_action( 'wpas_before_anonymize_dependency', $post->ID, $post );
+									$arg = array(
+									    'ID' => $post->ID,
+									    'post_author' => $user_id,
+									);
+									wp_update_post( $arg );
+
+									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
+								}
+								$messages[] = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+							} else{
+								if ( wp_delete_post( $ticket_id, true ) ) {
+									$items_removed = true;
+									$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+								} 
+							}
 						} else {
 							$messages[] = sprintf( __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' ), (string) $ticket_id ) ;
 							$messages = array_merge( $messages, $wpas_pe_msgs['messages'] ) ;
@@ -344,6 +576,96 @@ class WPAS_Privacy_Option {
 		);
 	}
 
+
+	/**
+	 * create anonymous user.
+	 *
+	 * @since  5.2.0
+	 *
+	 * @param  int $author_id The id of the author/user we're creating the anonymous user for.
+	 *
+	 * @return int
+	 */
+	public function as_create_anonymous_user( $author_id ){
+		
+		$uid_method = wpas_get_option( 'anonmyize_user_creation_method', '1');
+		
+		switch( $uid_method ) {
+			
+			case '2':
+				// 2. Use a one-way hash;
+				if ( $author_id ) {
+					$hash = wp_hash( $author_id );
+				} else {
+					$hash = wp_hash( (string) wp_rand( 1, 10000000 ) );
+				}
+				$user_name = (string) $hash;
+				break ;
+			
+			case '3':
+				if ( ! empty( wpas_get_option( 'anonmyize_user_id' ) ) ) {
+					$user_obj = get_user_by( 'ID', wpas_get_option( 'anonmyize_user_id' ) );
+					if ( $user_obj ) {
+						$user_name = $user_obj->user_login;
+						break ;
+					}
+				}
+				// note the lack of a break statement here - its deliberate because if nothing is processed here then we drop through to the default below!
+			
+			default:
+				//1. create a anonymous user with username anno-xxxx 
+				$random_number = wp_rand( 1, 10000000 );
+				$user_name = 'anno-'.$random_number;
+				break ;
+
+		}
+
+		return $this->as_create_anonymous_user_by_user_name( $user_name ) ;
+
+	}
+	
+	/**
+	 * create anonymous user by user name
+	 *
+	 * Accepts a user name and returns the id of the user if they exist or 
+	 * the id of a new user that is created with that user name.
+	 *
+	 * @since  5.2.0
+	 *
+	 * @param  string $user_name The id of the author/user we're creating the anonymous user for.
+	 *
+	 * @return int
+	 */
+	public function as_create_anonymous_user_by_user_name( $user_name ){
+		
+		$user_id = username_exists( $user_name );
+		$url = get_site_url();
+		$urlobj = parse_url($url);
+		$site_name = 'domain.com';
+		$domain = ($urlobj['host'])? $urlobj['host']: '';
+		if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
+			$site_name = $regs['domain'];
+		}
+
+		$user_email = $user_name.'@'.$site_name;
+		if ( !$user_id and email_exists($user_email) == false ) {
+			$random_password = wp_generate_password( $length=12, $include_standard_special_chars=false );
+			$userdata = array(
+			    'user_login'  => $user_name,
+			    'user_email'  => $user_email,
+			    'role'        => wpas_get_option( 'new_user_role', 'wpas_user' ),
+			    'user_pass'   => $random_password,
+			);
+			$user_id = wp_insert_user( $userdata ) ;
+			if( !empty( $user_id ) ){
+				update_user_option( $user_id, 'is_anonymous', true );
+			}
+		}
+		
+		return $user_id;		
+		
+	}
+	
 	/**
 	 * Registers a personal data exporter for Awesome Support
 	 *
@@ -534,7 +856,7 @@ class WPAS_Privacy_Option {
 					<?php
 					$entry_header = wpas_get_option( 'privacy_popup_header', 'Privacy' );
 					if ( ! empty( $entry_header ) ) {
-						echo '<div class="entry-header">' . $entry_header . '</div>';
+						echo '<div class="entry-header">' . wpautop( stripslashes( $entry_header ) ) . '</div>';
 					}
 					?>
 					<div class="entry-content">
@@ -570,7 +892,7 @@ class WPAS_Privacy_Option {
 					<?php
 					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' );
 					if ( ! empty( $entry_footer ) ) {
-						echo '<div class="entry-footer">' . $entry_footer . '</div>';
+						echo '<div class="entry-footer">' . wpautop( stripslashes( $entry_footer ) )  . '</div>';
 					}
 					?>
 				</div> <!--  .entry entry-regular -->
@@ -678,6 +1000,7 @@ class WPAS_Privacy_Option {
 				array(
 					'title'   => $subject,
 					'message' => $content,
+					'bypass_pre_checks' => true,					
 				)
 			);
 

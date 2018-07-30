@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-06-29 22:56-0500\n"
+"POT-Creation-Date: 2018-07-19 20:46-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -46,102 +46,110 @@ msgstr ""
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: awesome-support.php:638
+#: awesome-support.php:640
 msgid "<b>Would you like a discount on your next Awesome Support purchase?</b>  Help us make a better product for you by allowing us to collect some system statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources."
 msgstr ""
 
-#: awesome-support.php:639
+#: awesome-support.php:641
 #, php-format
 msgid " <a %s>Find out more about what data we collect and how its used.</a> <a %s>View our privacy policy.</a>"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:63
+#: includes/admin/class-admin-help.php:65
 #: includes/admin/settings/settings-general.php:24
 msgid "Default Assignee"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:64
+#: includes/admin/class-admin-help.php:66
 msgid "<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agents, we need to know who to assign to in case we can't find a perfect fit for the new tickets.</p>"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:69
+#: includes/admin/class-admin-help.php:71
 msgid "Use Select2"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:70
+#: includes/admin/class-admin-help.php:72
 msgid "<h2>Use SELECT2 For Staff Drop-downs</h2><p>A SELECT2 drop-down is used when you have a large list of items which would take a long time to render on the screen.  Instead, the user gets to limit the list by searching and seeing the results show up in real-time.  Most sites will not hav a large number of agents so this option is usually turned off.</p>"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:92
+#: includes/admin/class-admin-help.php:94
 #: includes/admin/settings/settings-registration.php:25
 msgid "Allow Registrations"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:93
+#: includes/admin/class-admin-help.php:95
 msgid "<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn't. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:114
-#: includes/admin/settings/settings-products-management.php:39
-msgid "Multiple Products"
-msgstr ""
-
 #: includes/admin/class-admin-help.php:115
-msgid "<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>"
-msgstr ""
-
-#: includes/admin/class-admin-help.php:120
-msgid "Synchronize Products"
-msgstr ""
-
-#: includes/admin/class-admin-help.php:121
-msgid "<h2>Synchronize WooCommerce or EDD Products</h2><p>If you have WooCommerce or EDD installed, you will see an option allowing you to turn on synchronization between those plugins and the Awesome Support product list.  But, you cannot synchronize your product list to both simultanously.  If you have both WC and EDD installed and active for some reason then you will be synchronizing with WooCommerce.</p>"
-msgstr ""
-
-#: includes/admin/class-admin-help.php:126
-#: includes/admin/settings/settings-products-management.php:47
-msgid "Slug"
-msgstr ""
-
-#: includes/admin/class-admin-help.php:127
-msgid "<h2>Slug</h2><p>Change this if you would like the URL for your products to include something other than PRODUCT.</p>"
-msgstr ""
-
-#: includes/admin/class-admin-help.php:150
+#: includes/admin/class-admin-help.php:187
 #: includes/admin/tinymce/langs/wpas_editor_langs.php:16
 #: includes/custom-fields/functions-custom-fields.php:349
 msgid "Tag"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:150
+#: includes/admin/class-admin-help.php:115
+#: includes/admin/class-admin-help.php:187
 #: includes/admin/tinymce/langs/wpas_editor_langs.php:17
-#: themes/default/submission-pre-440.php:67 themes/default/submission.php:69
+#: themes/default/submission-pre-440.php:67 themes/default/submission.php:74
 msgid "Description"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:162
+#: includes/admin/class-admin-help.php:128
+#: includes/admin/class-admin-help.php:205
+msgid "Email Template Tags"
+msgstr ""
+
+#: includes/admin/class-admin-help.php:129
+#, php-format
+msgid "<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add user-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s"
+msgstr ""
+
+#: includes/admin/class-admin-help.php:151
+#: includes/admin/settings/settings-products-management.php:39
+msgid "Multiple Products"
+msgstr ""
+
+#: includes/admin/class-admin-help.php:152
+msgid "<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>"
+msgstr ""
+
+#: includes/admin/class-admin-help.php:157
+msgid "Synchronize Products"
+msgstr ""
+
+#: includes/admin/class-admin-help.php:158
+msgid "<h2>Synchronize WooCommerce or EDD Products</h2><p>If you have WooCommerce or EDD installed, you will see an option allowing you to turn on synchronization between those plugins and the Awesome Support product list.  But, you cannot synchronize your product list to both simultanously.  If you have both WC and EDD installed and active for some reason then you will be synchronizing with WooCommerce.</p>"
+msgstr ""
+
+#: includes/admin/class-admin-help.php:163
+#: includes/admin/settings/settings-products-management.php:47
+msgid "Slug"
+msgstr ""
+
+#: includes/admin/class-admin-help.php:164
+msgid "<h2>Slug</h2><p>Change this if you would like the URL for your products to include something other than PRODUCT.</p>"
+msgstr ""
+
+#: includes/admin/class-admin-help.php:199
 #: includes/admin/settings/settings-notifications.php:25
 msgid "Use HTML Template"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:163
+#: includes/admin/class-admin-help.php:200
 msgid "<h2>Use HTML Template</h2><p>Wrap all outgoing emails in a set of pretty HTML forms and tags.  With this option turned on you can set a LOGO and create fancy header and footers around your outgoing email alerts.</p><p>However, if you have another plugin installed that already wraps all WordPress outgoing emails in a fancy HTML template then you should turn this option OFF.</p>"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:168
-msgid "Email Template Tags"
-msgstr ""
-
-#: includes/admin/class-admin-help.php:169
+#: includes/admin/class-admin-help.php:206
 #, php-format
 msgid "<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:191
+#: includes/admin/class-admin-help.php:228
 msgid "Custom Login Page"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:192
+#: includes/admin/class-admin-help.php:229
 msgid "<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don't like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the \"Custom Login / Registration Page\" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>"
 msgstr ""
 
@@ -166,8 +174,8 @@ msgstr ""
 #: includes/admin/views/print-ticket.php:16
 #: includes/custom-fields/functions-custom-fields.php:329
 #: includes/functions-templating.php:276 includes/functions-templating.php:570
-#: includes/gdpr-integration/gdpr-privacy-options.php:281
-#: includes/gdpr-integration/gdpr-user-profile.php:129
+#: includes/gdpr-integration/gdpr-privacy-options.php:794
+#: includes/gdpr-integration/gdpr-user-profile.php:136
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:25
 msgid "Status"
 msgstr ""
@@ -421,6 +429,10 @@ msgid "Smart Tickets Order"
 msgstr ""
 
 #: includes/admin/class-admin-user.php:101
+#: includes/admin/settings/settings-moderated-registration.php:67
+#: includes/admin/settings/settings-moderated-registration.php:94
+#: includes/admin/settings/settings-moderated-registration.php:123
+#: includes/admin/settings/settings-moderated-registration.php:152
 #: includes/admin/settings/settings-notifications.php:85
 #: includes/admin/settings/settings-notifications.php:110
 #: includes/admin/settings/settings-notifications.php:135
@@ -444,8 +456,9 @@ msgstr ""
 #: includes/admin/settings/settings-advanced.php:42
 #: includes/admin/settings/settings-advanced.php:153
 #: includes/admin/settings/settings-advanced.php:214
+#: includes/admin/settings/settings-privacy.php:171
 #: includes/admin/views/system-status.php:137
-#: includes/admin/views/system-tools.php:236
+#: includes/admin/views/system-tools.php:235
 msgid "Default"
 msgstr ""
 
@@ -682,11 +695,11 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: includes/admin/functions-list-table.php:248 includes/scripts.php:200
+#: includes/admin/functions-list-table.php:249 includes/scripts.php:200
 msgid "Print"
 msgstr ""
 
-#: includes/admin/functions-list-table.php:267
+#: includes/admin/functions-list-table.php:270
 msgid "Print Tickets"
 msgstr ""
 
@@ -910,7 +923,7 @@ msgid "Save"
 msgstr ""
 
 #: includes/admin/metaboxes/message.php:62
-#: includes/admin/metaboxes/replies.php:125 includes/scripts.php:201
+#: includes/admin/metaboxes/replies.php:127 includes/scripts.php:201
 msgid "Cancel"
 msgstr ""
 
@@ -967,41 +980,41 @@ msgstr ""
 msgid "This reply has been deleted by %s <em class=\"wpas-time\">%s ago.</em>"
 msgstr ""
 
-#: includes/admin/metaboxes/replies.php:18
+#: includes/admin/metaboxes/replies.php:20
 msgid "Create Ticket"
 msgstr ""
 
-#: includes/admin/metaboxes/replies.php:19
+#: includes/admin/metaboxes/replies.php:21
 msgid "Please save this ticket to reveal all options."
 msgstr ""
 
-#: includes/admin/metaboxes/replies.php:61
+#: includes/admin/metaboxes/replies.php:63
 #: includes/admin/views/print-ticket.php:103
 msgid "Anonymous"
 msgstr ""
 
-#: includes/admin/metaboxes/replies.php:124
+#: includes/admin/metaboxes/replies.php:126
 msgid "Save changes"
 msgstr ""
 
-#: includes/admin/metaboxes/replies.php:149
+#: includes/admin/metaboxes/replies.php:151
 msgid "Toggle Replies"
 msgstr ""
 
-#: includes/admin/metaboxes/replies.php:161
+#: includes/admin/metaboxes/replies.php:163
 msgid "Sorry, you don't have sufficient permissions to reply to tickets."
 msgstr ""
 
-#: includes/admin/metaboxes/replies.php:169
+#: includes/admin/metaboxes/replies.php:171
 msgid "Ticket is closed"
 msgstr ""
 
-#: includes/admin/metaboxes/replies.php:170
+#: includes/admin/metaboxes/replies.php:172
 #, php-format
 msgid "This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href=\"%s\">re-open it first</a>."
 msgstr ""
 
-#: includes/admin/metaboxes/replies.php:178
+#: includes/admin/metaboxes/replies.php:180
 msgid "CLOSE"
 msgstr ""
 
@@ -1141,7 +1154,7 @@ msgid "What to use for the indivdual ticket slug.  The default is the ticket top
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:42
-#: includes/gdpr-integration/gdpr-privacy-options.php:218
+#: includes/gdpr-integration/gdpr-privacy-options.php:731
 msgid "Ticket ID"
 msgstr ""
 
@@ -1953,6 +1966,124 @@ msgstr ""
 msgid "Licenses"
 msgstr ""
 
+#: includes/admin/settings/settings-moderated-registration.php:14
+#: includes/admin/settings/settings-moderated-registration.php:18
+msgid "Moderated Registration"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:23
+msgid "Moderated registrations allow you to approve each user before they can use the ticketing system. <br />If moderated registration is turned on in the Registration Settings tab then the options shown below will allow you to fine-tune the behavior of registrations."
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:27
+msgid "Registration Submission Message"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:30
+msgid "This is the message that we show to the user after they submit their registration request."
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:31
+msgid "Your account has been created and submitted for review. The administrator will review it and notify you when it has been approved."
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:35
+msgid "Roles"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:40
+msgid "Pending Registration Role"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:43
+msgid "This is the role that the user will have while a registration is waiting for admin approval. The role should be the internal WordPress role id such as wpas_user and is case sensitive. If you leave this blank the user will have no role on the site while waiting for regisration approval."
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:48
+msgid "Approved User Role"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:51
+msgid "This is the role the user will receive after a user registration request is approved. The role should be the internal WordPress role id such as wpas_user and is case sensitive.  Do not leave this blank."
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:56
+msgid "Moderated Registration Email Templates"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:58
+msgid "Notify admins and users about pending and approved registrations"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:62
+msgid "Email to admin when a user registers"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:71
+msgid "Send email to admin when a new user makes a registration request"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:75
+#: includes/admin/settings/settings-moderated-registration.php:102
+#: includes/admin/settings/settings-moderated-registration.php:131
+#: includes/admin/settings/settings-moderated-registration.php:160
+#: includes/admin/settings/settings-notifications.php:92
+#: includes/admin/settings/settings-notifications.php:117
+#: includes/admin/settings/settings-notifications.php:142
+#: includes/admin/settings/settings-notifications.php:167
+#: includes/admin/settings/settings-notifications.php:198
+#: includes/admin/settings/settings-notifications.php:223
+#: includes/admin/settings/settings-privacy.php:85
+#: includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php:31
+#: themes/default/submission-pre-440.php:38 themes/default/submission.php:54
+msgid "Subject"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:82
+#: includes/admin/settings/settings-moderated-registration.php:109
+#: includes/admin/settings/settings-moderated-registration.php:138
+#: includes/admin/settings/settings-moderated-registration.php:167
+#: includes/admin/settings/settings-notifications.php:98
+#: includes/admin/settings/settings-notifications.php:123
+#: includes/admin/settings/settings-notifications.php:148
+#: includes/admin/settings/settings-notifications.php:173
+#: includes/admin/settings/settings-notifications.php:204
+#: includes/admin/settings/settings-notifications.php:229
+#: includes/admin/settings/settings-registration.php:209
+msgid "Content"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:86
+#: includes/admin/settings/settings-moderated-registration.php:113
+#: includes/admin/settings/settings-moderated-registration.php:142
+#: includes/admin/settings/settings-moderated-registration.php:171
+msgid "Email Content"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:89
+msgid "Email to users when they register"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:98
+msgid "Send email to users when their regisration request is waiting for approval"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:118
+msgid "Email to users when registration has been approved"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:127
+msgid "Send email to user if their registration request is approved"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:147
+msgid "Email to users when registration is denied"
+msgstr ""
+
+#: includes/admin/settings/settings-moderated-registration.php:156
+msgid "Send email to user if their registration request is denied"
+msgstr ""
+
 #: includes/admin/settings/settings-notifications.php:14
 msgid "E-Mails"
 msgstr ""
@@ -2023,30 +2154,8 @@ msgstr ""
 msgid "Do you want to activate this e-mail template?"
 msgstr ""
 
-#: includes/admin/settings/settings-notifications.php:92
-#: includes/admin/settings/settings-notifications.php:117
-#: includes/admin/settings/settings-notifications.php:142
-#: includes/admin/settings/settings-notifications.php:167
-#: includes/admin/settings/settings-notifications.php:198
-#: includes/admin/settings/settings-notifications.php:223
-#: includes/admin/settings/settings-privacy.php:85
-#: includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php:31
-#: themes/default/submission-pre-440.php:38 themes/default/submission.php:49
-msgid "Subject"
-msgstr ""
-
 #: includes/admin/settings/settings-notifications.php:95
 msgid "Request received: {ticket_title}"
-msgstr ""
-
-#: includes/admin/settings/settings-notifications.php:98
-#: includes/admin/settings/settings-notifications.php:123
-#: includes/admin/settings/settings-notifications.php:148
-#: includes/admin/settings/settings-notifications.php:173
-#: includes/admin/settings/settings-notifications.php:204
-#: includes/admin/settings/settings-notifications.php:229
-#: includes/admin/settings/settings-registration.php:208
-msgid "Content"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:105
@@ -2333,11 +2442,109 @@ msgid "Official Request: Please Delete My Existing Data (\"Right To Be Forgotten
 msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:92
+msgid "Anonymize instead of Delete"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:95
+msgid "Option to anonymize the user data instead of deleting it - this helps to keep statistics accurate.  New anonymous users will be created and attached to existing tickets."
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:98
 msgid "User Can Submit Additional Information"
 msgstr ""
 
-#: includes/admin/settings/settings-privacy.php:96
+#: includes/admin/settings/settings-privacy.php:102
 msgid "Do you want to allow the user to enter a longer description related to their request to delete their data?"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:106
+msgid "Periodic Anonymization"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:108
+msgid "Use the options in this section to enable a periodic cron process to anonymize or delete old tickets"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:111
+msgid "Enable Periodic Anonymization"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:114
+msgid "Enable the periodic process that will anonymize or delete old tickets"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:118
+msgid "Cron Job Interval"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:121
+msgid "How often should we run the anonymization process?  The value entered here is in minutes - 1440 minutes is one day."
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:126
+msgid "Ticket Age"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:129
+msgid "How old should tickets be before they are anonymized or deleted?  Enter a value in days - default is 180 days or approximately six months."
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:133
+msgid "Delete Tickets"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:137
+msgid "Delete tickets instead of anonymizing them.  WARNING: Deleted tickets CANNOT be recovered!"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:141
+msgid "Tickets to Anonymize"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:145
+#: includes/admin/views/system-tools.php:314
+msgid "Closed Tickets"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:148
+msgid "Anonymize CLOSED tickets"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:152
+#: includes/admin/views/system-tools.php:306
+msgid "Open Tickets"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:155
+msgid "Anonymize OPEN tickets"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:160
+msgid "Anonymized User ID Options"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:162
+msgid "When anonymizing tickets a random user is created to replace the existing user.  These options control how you create the anonymized user names"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:166
+msgid "How should we create the anonymized user?"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:172
+msgid "Random one-way hash"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:173
+msgid "Use the user id below"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:177
+msgid "Anonymized User ID"
+msgstr ""
+
+#: includes/admin/settings/settings-privacy.php:180
+msgid "Use this user id for all anonymized tickets. Warning: This should be a VALID user id otherwise you will corrupt your database.  This only applies if the above option is set to USE THE USER ID BELOW."
 msgstr ""
 
 #: includes/admin/settings/settings-products-management.php:14
@@ -2410,184 +2617,188 @@ msgstr ""
 msgid "Disallow registrations without notice (just show the login form)"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:38
+#: includes/admin/settings/settings-registration.php:34
+msgid "Moderated registrations"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:39
 msgid "Registration Alerts"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:40
+#: includes/admin/settings/settings-registration.php:41
 msgid "Who should receive the standard WordPress notifications when a new user registers on the site?"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:43
+#: includes/admin/settings/settings-registration.php:44
 msgid "Who Should Receive New User Notifications?"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:46
+#: includes/admin/settings/settings-registration.php:47
 msgid "No One"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:46
+#: includes/admin/settings/settings-registration.php:47
 msgid "Only The Customer"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:46
+#: includes/admin/settings/settings-registration.php:47
 msgid "Only The Site Admin"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:46
+#: includes/admin/settings/settings-registration.php:47
 msgid "Customer and Admin"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:51
+#: includes/admin/settings/settings-registration.php:52
 msgid "User Names"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:53
+#: includes/admin/settings/settings-registration.php:54
 msgid "How should user names be determined?"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:56
+#: includes/admin/settings/settings-registration.php:57
 msgid "User Name Construction"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:60
+#: includes/admin/settings/settings-registration.php:61
 msgid "How should we construct the user name?"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:62
+#: includes/admin/settings/settings-registration.php:63
 msgid "Default - Uses the first part of email address"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:63
+#: includes/admin/settings/settings-registration.php:64
 msgid "Use the entire email address"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:64
+#: includes/admin/settings/settings-registration.php:65
 msgid "Use a random number"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:65
+#: includes/admin/settings/settings-registration.php:66
 msgid "Use a GUID"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:66
+#: includes/admin/settings/settings-registration.php:67
 msgid "Use the first name"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:67
+#: includes/admin/settings/settings-registration.php:68
 msgid "Use the last name"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:68
+#: includes/admin/settings/settings-registration.php:69
 msgid "Concatenate the first and last name"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:73
+#: includes/admin/settings/settings-registration.php:74
 msgid "Registration Field Descriptions"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:75
+#: includes/admin/settings/settings-registration.php:76
 msgid "Add a description to each of the registration fields which will appear beneath the field. You can use this to add GDPR related information indicating what each field is used for."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:78
+#: includes/admin/settings/settings-registration.php:79
 msgid "First name description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:84
+#: includes/admin/settings/settings-registration.php:85
 msgid "Last name description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:90
+#: includes/admin/settings/settings-registration.php:91
 msgid "Email address description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:97
+#: includes/admin/settings/settings-registration.php:98
 msgid "GDPR Notice #1"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:99
+#: includes/admin/settings/settings-registration.php:100
 msgid "The GDPR requires that you provide explicit notice about what you will do with the data you collect from users. This section allows you to describe how any personal data collected will be used and require consent from the user before they can register."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:102
-#: includes/admin/settings/settings-registration.php:137
-#: includes/admin/settings/settings-registration.php:173
+#: includes/admin/settings/settings-registration.php:103
+#: includes/admin/settings/settings-registration.php:138
+#: includes/admin/settings/settings-registration.php:174
 msgid "GDPR Notice: Short Description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:106
-#: includes/admin/settings/settings-registration.php:141
-#: includes/admin/settings/settings-registration.php:177
+#: includes/admin/settings/settings-registration.php:107
+#: includes/admin/settings/settings-registration.php:142
+#: includes/admin/settings/settings-registration.php:178
 msgid "If you fill this in, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:109
-#: includes/admin/settings/settings-registration.php:144
-#: includes/admin/settings/settings-registration.php:180
+#: includes/admin/settings/settings-registration.php:110
+#: includes/admin/settings/settings-registration.php:145
+#: includes/admin/settings/settings-registration.php:181
 msgid "GDPR Notice: Long Description"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:113
-#: includes/admin/settings/settings-registration.php:148
-#: includes/admin/settings/settings-registration.php:184
+#: includes/admin/settings/settings-registration.php:114
+#: includes/admin/settings/settings-registration.php:149
+#: includes/admin/settings/settings-registration.php:185
 msgid "If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept these notice terms.  It is best to keep this notice to one or two lines."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:117
-#: includes/admin/settings/settings-registration.php:152
-#: includes/admin/settings/settings-registration.php:188
+#: includes/admin/settings/settings-registration.php:118
+#: includes/admin/settings/settings-registration.php:153
+#: includes/admin/settings/settings-registration.php:189
 msgid "Mandatory"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:121
-#: includes/admin/settings/settings-registration.php:156
-#: includes/admin/settings/settings-registration.php:192
+#: includes/admin/settings/settings-registration.php:122
+#: includes/admin/settings/settings-registration.php:157
+#: includes/admin/settings/settings-registration.php:193
 msgid "Does the user need to check this option before being able to register?"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:124
-#: includes/admin/settings/settings-registration.php:159
-#: includes/admin/settings/settings-registration.php:195
+#: includes/admin/settings/settings-registration.php:125
+#: includes/admin/settings/settings-registration.php:160
+#: includes/admin/settings/settings-registration.php:196
 msgid "Can Opt Out"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:128
-#: includes/admin/settings/settings-registration.php:163
-#: includes/admin/settings/settings-registration.php:199
+#: includes/admin/settings/settings-registration.php:129
+#: includes/admin/settings/settings-registration.php:164
+#: includes/admin/settings/settings-registration.php:200
 msgid "Is this an option that the user can opt-out from after granting consent?"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:132
+#: includes/admin/settings/settings-registration.php:133
 msgid "GDPR Notice #2"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:134
-#: includes/admin/settings/settings-registration.php:170
+#: includes/admin/settings/settings-registration.php:135
+#: includes/admin/settings/settings-registration.php:171
 msgid "If personal data will be used in any additional context add that here. It is best to keep this brief."
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:168
+#: includes/admin/settings/settings-registration.php:169
 msgid "GDPR Notice #3"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:204
+#: includes/admin/settings/settings-registration.php:205
 msgid "Terms & Conditions"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:212
+#: includes/admin/settings/settings-registration.php:213
 msgid "Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept your terms"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:217
+#: includes/admin/settings/settings-registration.php:218
 msgid "Other"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:221
+#: includes/admin/settings/settings-registration.php:222
 msgid "Default Role For New Users"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:224
+#: includes/admin/settings/settings-registration.php:225
 msgid "The role should be the internal WordPress role id such as wpas_user and is case sensitive.  Do not leave this blank!  This role should have the 5 core Awesome Support capabilities in order for users to be able to submit tickets. Check our documentation for more information."
 msgstr ""
 
@@ -2700,10 +2911,10 @@ msgid "Server Logs"
 msgstr ""
 
 #: includes/admin/views/system-logs.php:369
-#: includes/admin/views/system-tools.php:130
-#: includes/admin/views/system-tools.php:137
-#: includes/admin/views/system-tools.php:144
-#: includes/admin/views/system-tools.php:151
+#: includes/admin/views/system-tools.php:129
+#: includes/admin/views/system-tools.php:136
+#: includes/admin/views/system-tools.php:143
+#: includes/admin/views/system-tools.php:150
 msgid "Clear"
 msgstr ""
 
@@ -2813,310 +3024,303 @@ msgstr ""
 msgid "Callback"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:36
+#: includes/admin/views/system-tools.php:35
 msgid "Tickets metas were cleared"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:40
+#: includes/admin/views/system-tools.php:39
 msgid "Agents metas were cleared"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:44
+#: includes/admin/views/system-tools.php:43
 msgid "All custom taxonomies terms were cleared"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:48
+#: includes/admin/views/system-tools.php:47
 msgid "All products have been re-synchronized"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:52
+#: includes/admin/views/system-tools.php:51
 msgid "All products have been deleted"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:56
+#: includes/admin/views/system-tools.php:55
 msgid "Last reply date has been updated on all tickets."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:60
+#: includes/admin/views/system-tools.php:59
 msgid "All unclaimed ticket attachment folders have been deleted"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:64
+#: includes/admin/views/system-tools.php:63
 msgid "All channels have been reset"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:68
+#: includes/admin/views/system-tools.php:67
 msgid "The Blue Blocks Email Template Set Has Been Installed"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:72
+#: includes/admin/views/system-tools.php:71
 msgid "The Blue Blocks With Satisfaction Survey Elements Email Template Set Has Been Installed"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:76
+#: includes/admin/views/system-tools.php:75
 msgid "The Elegant Email Template Set Has Been Installed"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:80
+#: includes/admin/views/system-tools.php:79
 msgid "The Elegant With Satisfaction Survey Elements Email Template Set Has Been Installed"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:84
+#: includes/admin/views/system-tools.php:83
 msgid "The Simple Email Template Set Has Been Installed"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:88
+#: includes/admin/views/system-tools.php:87
 msgid "The Default Email Template Set Has Been Installed"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:92
+#: includes/admin/views/system-tools.php:91
 msgid "The Debug Email Template Set Has Been Installed"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:106
+#: includes/admin/views/system-tools.php:105
 #, php-format
 msgid "Auto delete attachments flag %s on %s tickets"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:118
+#: includes/admin/views/system-tools.php:117
 msgid "These tool are intended for advanced users or for use on the support staff request. Be aware that some of these tools can definitively erase data."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:122
+#: includes/admin/views/system-tools.php:121
 msgid "General Tools"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:128
+#: includes/admin/views/system-tools.php:127
 msgid "Tickets Metas"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:131
+#: includes/admin/views/system-tools.php:130
 msgid "Clear all transients for all tickets."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:135
+#: includes/admin/views/system-tools.php:134
 msgid "Agents Metas"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:138
+#: includes/admin/views/system-tools.php:137
 msgid "Clear all agents metas."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:142
+#: includes/admin/views/system-tools.php:141
 msgid "Custom Taxonomies"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:145
+#: includes/admin/views/system-tools.php:144
 msgid "Clear all terms from all custom taxonomies."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:149
+#: includes/admin/views/system-tools.php:148
 msgid "Ticket Attachments"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:152
+#: includes/admin/views/system-tools.php:151
 msgid "Clear unclaimed ticket attachment folders."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:156
+#: includes/admin/views/system-tools.php:155
 msgid "Update last reply date on tickets"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:158
+#: includes/admin/views/system-tools.php:157
 msgid "Update"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:159
+#: includes/admin/views/system-tools.php:158
 msgid "Update last reply date on tickets."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:163
+#: includes/admin/views/system-tools.php:162
 msgid "Reset replies count"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:165
+#: includes/admin/views/system-tools.php:164
 msgid "Count"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:166
+#: includes/admin/views/system-tools.php:165
 msgid "Count all ticket replies."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:170
+#: includes/admin/views/system-tools.php:169
 msgid "Reset channels"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:172
-#: includes/admin/views/system-tools.php:179
+#: includes/admin/views/system-tools.php:171
+#: includes/admin/views/system-tools.php:178
 msgid "Reset"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:173
+#: includes/admin/views/system-tools.php:172
 msgid "Reset channels."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:177
+#: includes/admin/views/system-tools.php:176
 msgid "Zero Out All Time Fields"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:180
+#: includes/admin/views/system-tools.php:179
 msgid "Reset time fields by setting them all to zero on ALL tickets!"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:187
+#: includes/admin/views/system-tools.php:186
 msgid "Install an email template set"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:188
+#: includes/admin/views/system-tools.php:187
 msgid "Warning: Using these options will overwrite your email templates in TICKETS->SETTINGS->EMAILS!"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:192
+#: includes/admin/views/system-tools.php:191
 msgid "Email Template Sets"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:198
+#: includes/admin/views/system-tools.php:197
 msgid "Blue Blocks"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:200
-#: includes/admin/views/system-tools.php:207
-#: includes/admin/views/system-tools.php:215
-#: includes/admin/views/system-tools.php:222
-#: includes/admin/views/system-tools.php:230
-#: includes/admin/views/system-tools.php:238
-#: includes/admin/views/system-tools.php:246
+#: includes/admin/views/system-tools.php:199
+#: includes/admin/views/system-tools.php:206
+#: includes/admin/views/system-tools.php:214
+#: includes/admin/views/system-tools.php:221
+#: includes/admin/views/system-tools.php:229
+#: includes/admin/views/system-tools.php:237
+#: includes/admin/views/system-tools.php:245
 msgid "Install"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:201
+#: includes/admin/views/system-tools.php:200
 msgid "Install the Blue Blocks email template set into the TICKETS->SETTINGS->EMAIL template fields"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:205
+#: includes/admin/views/system-tools.php:204
 msgid "Blue Blocks With Satisfaction Survey Elements"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:208
+#: includes/admin/views/system-tools.php:207
 msgid "Install the Blue Blocks with Satisfaction Survey Elements email template set into the TICKETS->SETTINGS->EMAIL template fields"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:213
+#: includes/admin/views/system-tools.php:212
 msgid "Elegant"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:216
+#: includes/admin/views/system-tools.php:215
 msgid "Install the Elegant email template set into the TICKETS->SETTINGS->EMAIL template fields"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:220
+#: includes/admin/views/system-tools.php:219
 msgid "Elegant With Satisfaction Survey Elements"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:223
+#: includes/admin/views/system-tools.php:222
 msgid "Install the Elegant email template set with Satisfaction Survey Elements into the TICKETS->SETTINGS->EMAIL template fields"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:228
+#: includes/admin/views/system-tools.php:227
 msgid "Simple"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:231
+#: includes/admin/views/system-tools.php:230
 msgid "Install the Simple email template set into the TICKETS->SETTINGS->EMAIL template fields"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:239
+#: includes/admin/views/system-tools.php:238
 msgid "Install the Default email template set into the TICKETS->SETTINGS->EMAIL template fields"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:244
+#: includes/admin/views/system-tools.php:243
 msgid "Debug"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:247
+#: includes/admin/views/system-tools.php:246
 msgid "Install a debugging email template set into the TICKETS->SETTINGS->EMAIL template fields"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:255
+#: includes/admin/views/system-tools.php:254
 msgid "Tools to re-run conversion of data after upgrading from an earlier version"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:259
+#: includes/admin/views/system-tools.php:258
 msgid "Data Conversion Tools"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:265
+#: includes/admin/views/system-tools.php:264
 msgid "Re-run conversion from 3.3.x to 4.0.0"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:267
-#: includes/admin/views/system-tools.php:274
-#: includes/admin/views/system-tools.php:281
+#: includes/admin/views/system-tools.php:266
+#: includes/admin/views/system-tools.php:273
+#: includes/admin/views/system-tools.php:280
 msgid "Rerun Conversion"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:268
+#: includes/admin/views/system-tools.php:267
 msgid "If your CAPABILITIES are not installed, re-run the 3.3.x to 4.0.0 conversion process. Make sure you have a BACKUP!"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:272
+#: includes/admin/views/system-tools.php:271
 msgid "Re-run conversion from 4.0.x to 4.4.0"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:275
+#: includes/admin/views/system-tools.php:274
 msgid "If your CAPABILITIES are not installed, re-run the 4.x.x to 4.4.0 conversion process. Make sure you have a BACKUP!"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:279
+#: includes/admin/views/system-tools.php:278
 msgid "Re-run conversion from 4.x.x to 5.0.0"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:282
+#: includes/admin/views/system-tools.php:281
 msgid "If your CAPABILITIES are not installed, re-run the 4.x.x to 5.0.0 conversion process. Make sure you have a BACKUP!"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:289
+#: includes/admin/views/system-tools.php:288
 msgid "Tools to handle ticket and reply attachments"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:293
+#: includes/admin/views/system-tools.php:292
 msgid "Auto Delete Attachments Flag"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:299
+#: includes/admin/views/system-tools.php:298
 #: includes/functions-post-type.php:51
 msgid "All Tickets"
+msgstr ""
+
+#: includes/admin/views/system-tools.php:300
+#: includes/admin/views/system-tools.php:308
+#: includes/admin/views/system-tools.php:316
+msgid "Add"
 msgstr ""
 
 #: includes/admin/views/system-tools.php:301
 #: includes/admin/views/system-tools.php:309
 #: includes/admin/views/system-tools.php:317
-msgid "Add"
-msgstr ""
-
-#: includes/admin/views/system-tools.php:302
-#: includes/admin/views/system-tools.php:310
-#: includes/admin/views/system-tools.php:318
+#: includes/gdpr-integration/gdpr-privacy-options.php:365
 msgid "Remove"
 msgstr ""
 
-#: includes/admin/views/system-tools.php:303
+#: includes/admin/views/system-tools.php:302
 msgid "Add or Remove auto delete attachments flag on all tickets."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:307
-msgid "Open Tickets"
-msgstr ""
-
-#: includes/admin/views/system-tools.php:311
+#: includes/admin/views/system-tools.php:310
 msgid "Add or Remove auto delete attachments flag on open tickets."
 msgstr ""
 
-#: includes/admin/views/system-tools.php:315
-msgid "Closed Tickets"
-msgstr ""
-
-#: includes/admin/views/system-tools.php:319
+#: includes/admin/views/system-tools.php:318
 msgid "Add or Remove auto delete attachments flag on closed tickets."
 msgstr ""
 
@@ -3176,88 +3380,109 @@ msgstr ""
 msgid "Documentation links are located in our <a href=\"%s\">About Page</a>"
 msgstr ""
 
-#: includes/class-email-notifications.php:48
+#: includes/class-email-notifications.php:67
 msgid "The post ID provided does not match any of the plugin post types"
 msgstr ""
 
-#: includes/class-email-notifications.php:290
+#: includes/class-email-notifications.php:310
 msgid "Converts into ticket ID"
 msgstr ""
 
-#: includes/class-email-notifications.php:294
+#: includes/class-email-notifications.php:314
+#: includes/class-user-email-notification.php:275
 msgid "Converts into website name"
 msgstr ""
 
-#: includes/class-email-notifications.php:298
+#: includes/class-email-notifications.php:318
 msgid "Converts into agent name (WordPress Display Name)"
 msgstr ""
 
-#: includes/class-email-notifications.php:302
+#: includes/class-email-notifications.php:322
 msgid "Converts into the first name of the agent"
 msgstr ""
 
-#: includes/class-email-notifications.php:306
+#: includes/class-email-notifications.php:326
 msgid "Converts into the last name of the agent"
 msgstr ""
 
-#: includes/class-email-notifications.php:310
+#: includes/class-email-notifications.php:330
 msgid "Converts into agent e-mail address"
 msgstr ""
 
-#: includes/class-email-notifications.php:314
+#: includes/class-email-notifications.php:334
 msgid "Converts into client name (WordPress Display Name)"
 msgstr ""
 
-#: includes/class-email-notifications.php:318
+#: includes/class-email-notifications.php:338
 msgid "Converts into the first name of the client"
 msgstr ""
 
-#: includes/class-email-notifications.php:322
+#: includes/class-email-notifications.php:342
 msgid "Converts into the last name of the client"
 msgstr ""
 
-#: includes/class-email-notifications.php:326
+#: includes/class-email-notifications.php:346
 msgid "Converts into client e-mail address"
 msgstr ""
 
-#: includes/class-email-notifications.php:330
-msgid "Converts into current ticket title"
-msgstr ""
-
-#: includes/class-email-notifications.php:334
-msgid "Displays a link to the ticket"
-msgstr ""
-
-#: includes/class-email-notifications.php:338
-msgid "Displays the URL <strong>only</strong> (not a link) to the ticket"
-msgstr ""
-
-#: includes/class-email-notifications.php:342
-msgid "Displays a link to ticket details in admin (for agents)"
-msgstr ""
-
-#: includes/class-email-notifications.php:346
-msgid "Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)"
-msgstr ""
-
 #: includes/class-email-notifications.php:350
-msgid "Converts into current date"
+msgid "Converts into author name (WordPress Display Name)"
 msgstr ""
 
 #: includes/class-email-notifications.php:354
+msgid "Converts into the first name of the author"
+msgstr ""
+
+#: includes/class-email-notifications.php:358
+msgid "Converts into the last name of the author"
+msgstr ""
+
+#: includes/class-email-notifications.php:362
+msgid "Converts into author e-mail address"
+msgstr ""
+
+#: includes/class-email-notifications.php:366
+msgid "Converts into current ticket title"
+msgstr ""
+
+#: includes/class-email-notifications.php:370
+msgid "Displays a link to the ticket"
+msgstr ""
+
+#: includes/class-email-notifications.php:374
+msgid "Displays the URL <strong>only</strong> (not a link) to the ticket"
+msgstr ""
+
+#: includes/class-email-notifications.php:378
+msgid "Displays a link to ticket details in admin (for agents)"
+msgstr ""
+
+#: includes/class-email-notifications.php:382
+msgid "Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)"
+msgstr ""
+
+#: includes/class-email-notifications.php:386
+#: includes/class-user-email-notification.php:279
+msgid "Converts into current date"
+msgstr ""
+
+#: includes/class-email-notifications.php:390
+#: includes/class-user-email-notification.php:283
 #, php-format
 msgid "Converts into WordPress admin e-mail (<em>currently: %s</em>)"
 msgstr ""
 
-#: includes/class-email-notifications.php:358
+#: includes/class-email-notifications.php:394
 msgid "Converts into ticket content or reply content"
 msgstr ""
 
-#: includes/class-email-notifications.php:650
+#: includes/class-email-notifications.php:704
+#: includes/class-user-email-notification.php:497
 msgid "The requested notification does not exist"
 msgstr ""
 
-#: includes/class-email-notifications.php:654
+#: includes/class-email-notifications.php:708
+#: includes/class-user-email-notification.php:501
 msgid "The requested notification is disabled"
 msgstr ""
 
@@ -3418,6 +3643,34 @@ msgstr ""
 
 #: includes/class-remote-notification-client.php:740
 msgid "Cannot decode the response content"
+msgstr ""
+
+#: includes/class-user-email-notification.php:67
+msgid "The user ID provided does not exists"
+msgstr ""
+
+#: includes/class-user-email-notification.php:251
+msgid "Converts into user ID"
+msgstr ""
+
+#: includes/class-user-email-notification.php:255
+msgid "Converts into user's first name"
+msgstr ""
+
+#: includes/class-user-email-notification.php:259
+msgid "Converts into user's last name"
+msgstr ""
+
+#: includes/class-user-email-notification.php:263
+msgid "Converts into user name (WordPress Display Name)"
+msgstr ""
+
+#: includes/class-user-email-notification.php:267
+msgid "Displays a link to user profile page"
+msgstr ""
+
+#: includes/class-user-email-notification.php:271
+msgid "Converts into the user's email address"
 msgstr ""
 
 #: includes/class-wpas-editor-ajax.php:108
@@ -3590,79 +3843,79 @@ msgstr ""
 msgid "Automatically delete attachments when a ticket is closed"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:322
+#: includes/file-uploader/class-file-uploader.php:326
 #, php-format
 msgid "%s attachment auto deleted"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:400
+#: includes/file-uploader/class-file-uploader.php:408
 #, php-format
 msgid "%s attachment deleted by %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:409
+#: includes/file-uploader/class-file-uploader.php:417
 msgid "Attachment deleted."
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:566
+#: includes/file-uploader/class-file-uploader.php:574
 msgid "The file you requested is not a valid attachment"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:570
+#: includes/file-uploader/class-file-uploader.php:578
 msgid "The attachment you requested is not attached to any ticket"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:577
+#: includes/file-uploader/class-file-uploader.php:585
 msgid "You are not allowed to view this attachment"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:786
-#: includes/file-uploader/class-file-uploader.php:808
+#: includes/file-uploader/class-file-uploader.php:794
+#: includes/file-uploader/class-file-uploader.php:814
 msgid "Attachments"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:787
+#: includes/file-uploader/class-file-uploader.php:795
 #, php-format
 msgid " You can upload up to %d files (maximum %d MB each) of the following types: %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:916
+#: includes/file-uploader/class-file-uploader.php:922
 msgid "Attachments:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:961
+#: includes/file-uploader/class-file-uploader.php:967
 msgid "X"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1112
+#: includes/file-uploader/class-file-uploader.php:1118
 #, php-format
 msgid "%s -> Max files (%d) exceeded."
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1163
+#: includes/file-uploader/class-file-uploader.php:1169
 msgid "Attachment Errors:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1193
+#: includes/file-uploader/class-file-uploader.php:1199
 #, php-format
 msgid "Your reply has been correctly submitted but the attachment was not uploaded. %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1262
+#: includes/file-uploader/class-file-uploader.php:1268
 #, php-format
 msgid "You are not allowed to upload files of this type (%s)"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1266
+#: includes/file-uploader/class-file-uploader.php:1272
 msgid "You cannot upload empty attachments. You attachments weights 0 bytes"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1270
+#: includes/file-uploader/class-file-uploader.php:1276
 #, php-format
 msgid "Your attachment is too big. You are allowed to attach files up to %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1526
+#: includes/file-uploader/class-file-uploader.php:1537
 #, php-format
 msgid "Max files (%s) exceeded."
 msgstr ""
@@ -4339,174 +4592,254 @@ msgstr ""
 msgid "You must check the <b>%s</b> box in order to register a support account on this site."
 msgstr ""
 
-#: includes/functions-user.php:190
+#: includes/functions-user.php:204
 msgid "Your account has been created. Please log-in."
 msgstr ""
 
-#: includes/functions-user.php:246
+#: includes/functions-user.php:260
 #, php-format
 msgid "The %s field is mandatory for registering an account"
 msgstr ""
 
-#: includes/functions-user.php:527
+#: includes/functions-user.php:541
+msgid "Your account is not activated yet. Try again later"
+msgstr ""
+
+#: includes/functions-user.php:553
 msgid "We were unable to log you in for an unknown reason."
 msgstr ""
 
-#: includes/functions-user.php:1176
+#: includes/functions-user.php:1209
 #, php-format
 msgid "Did you mean %s"
 msgstr ""
 
-#: includes/functions-user.php:1336
+#: includes/functions-user.php:1365
 msgid "Consent label is required!"
 msgstr ""
 
-#: includes/functions-user.php:1339
+#: includes/functions-user.php:1368
 msgid "Consent action is required! Options are - \"opted-in\" or \"opted-out\""
 msgstr ""
 
-#: includes/functions-user.php:1353
-#: includes/gdpr-integration/gdpr-privacy-options.php:551
-#: includes/gdpr-integration/gdpr-privacy-options.php:620
+#: includes/functions-user.php:1382
+#: includes/gdpr-integration/gdpr-privacy-options.php:1064
+#: includes/gdpr-integration/gdpr-privacy-options.php:1133
 msgid "user"
 msgstr ""
 
-#: includes/functions-user.php:1365
+#: includes/functions-user.php:1394
 msgid "on"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:57
-#: includes/gdpr-integration/gdpr-privacy-options.php:166
-msgid "Awesome Support Data"
+#: includes/functions-user.php:1603
+msgid "Activate User"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:132
+#: includes/functions-user.php:1605
+msgid "Deny User"
+msgstr ""
+
+#: includes/functions-user.php:1608
+msgid "User has been denied."
+msgstr ""
+
+#: includes/functions-user.php:1719
+msgid "User successfully activated."
+msgstr ""
+
+#: includes/functions-user.php:1728
+msgid "Error while activating user, try again later."
+msgstr ""
+
+#: includes/functions-user.php:1737
+msgid "User successfully denied."
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:172
+msgid "GDPR Ticket cleanup cron"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:283
+#: includes/gdpr-integration/gdpr-privacy-options.php:550
+#, php-format
+msgid "Anonymize Awesome Support Ticket #: %s"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:313
+#, php-format
+msgid "Anonymize Reply on Awesome Support Ticket #: %s. The reply id is: %s"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:319
+#: includes/gdpr-integration/gdpr-privacy-options.php:554
 #, php-format
 msgid "Removed Awesome Support Ticket #: %s"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:135
+#: includes/gdpr-integration/gdpr-privacy-options.php:338
+msgid "User Consents cleared"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:342
+msgid "Added User Consents"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:353
+msgid "GDPR/Privacy"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:357
+msgid "GDPR Consent Bulk Action"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:363
+msgid "GDPR Consent"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:366
+msgid "Clear User Consent data for all Awesome support Users"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:398
+msgid "OPT-IN"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:405
+msgid "OPT-OUT"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:406
+msgid "Set "
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:430
+#: includes/gdpr-integration/gdpr-privacy-options.php:679
+msgid "Awesome Support Data"
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-privacy-options.php:558
 #, php-format
 msgid "Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity."
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:143
+#: includes/gdpr-integration/gdpr-privacy-options.php:566
 msgid "No Awesome Support data was found."
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:208
+#: includes/gdpr-integration/gdpr-privacy-options.php:721
 msgid "Awesome Support"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:221
+#: includes/gdpr-integration/gdpr-privacy-options.php:734
 msgid "Ticket Subject"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:224
+#: includes/gdpr-integration/gdpr-privacy-options.php:737
 msgid "Ticket Description"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:233
+#: includes/gdpr-integration/gdpr-privacy-options.php:746
 msgid "Reply "
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:246
+#: includes/gdpr-integration/gdpr-privacy-options.php:759
 msgid "Ticket Status"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:276
-#: includes/gdpr-integration/gdpr-user-profile.php:128
+#: includes/gdpr-integration/gdpr-privacy-options.php:789
+#: includes/gdpr-integration/gdpr-user-profile.php:135
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:24
 msgid "Item"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:287
+#: includes/gdpr-integration/gdpr-privacy-options.php:800
 msgid "Opt In"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:293
+#: includes/gdpr-integration/gdpr-privacy-options.php:806
 msgid "Opt Out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:301
+#: includes/gdpr-integration/gdpr-privacy-options.php:814
 msgid "Consent Data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:403
+#: includes/gdpr-integration/gdpr-privacy-options.php:916
 msgid "Add/Remove Existing Consent"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:409
+#: includes/gdpr-integration/gdpr-privacy-options.php:922
 msgid "Delete my existing data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:415
-msgid "Export tickets and user data"
+#: includes/gdpr-integration/gdpr-privacy-options.php:928
+msgid "Export tickets"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:458
+#: includes/gdpr-integration/gdpr-privacy-options.php:971
 msgid "Sorry! Something failed"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:493
+#: includes/gdpr-integration/gdpr-privacy-options.php:1006
 msgid "Right to be forgotten mail"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:493
+#: includes/gdpr-integration/gdpr-privacy-options.php:1006
 msgid "requested"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:506
+#: includes/gdpr-integration/gdpr-privacy-options.php:1019
 msgid "We have received your \"Right To Be Forgotten\" request!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:508
+#: includes/gdpr-integration/gdpr-privacy-options.php:1021
 msgid "Something went wrong. Please try again!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:511
-#: includes/gdpr-integration/gdpr-privacy-options.php:581
-#: includes/gdpr-integration/gdpr-privacy-options.php:642
-#: includes/gdpr-integration/gdpr-user-profile.php:303
+#: includes/gdpr-integration/gdpr-privacy-options.php:1024
+#: includes/gdpr-integration/gdpr-privacy-options.php:1094
+#: includes/gdpr-integration/gdpr-privacy-options.php:1155
+#: includes/gdpr-integration/gdpr-user-profile.php:310
 msgid "Cheating huh?"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:542
-#: includes/gdpr-integration/gdpr-user-profile.php:158
+#: includes/gdpr-integration/gdpr-privacy-options.php:1055
+#: includes/gdpr-integration/gdpr-user-profile.php:165
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:57
 msgid "Opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:563
+#: includes/gdpr-integration/gdpr-privacy-options.php:1076
 msgid "opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:565
+#: includes/gdpr-integration/gdpr-privacy-options.php:1078
 msgid "You have successfully opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:575
-#: includes/gdpr-integration/gdpr-user-profile.php:186
+#: includes/gdpr-integration/gdpr-privacy-options.php:1088
+#: includes/gdpr-integration/gdpr-user-profile.php:193
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:86
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:88
 msgid "Opt-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:612
+#: includes/gdpr-integration/gdpr-privacy-options.php:1125
 msgid "Opted-Out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:631
+#: includes/gdpr-integration/gdpr-privacy-options.php:1144
 msgid "opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:634
+#: includes/gdpr-integration/gdpr-privacy-options.php:1147
 msgid "You have successfully opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:639
-#: includes/gdpr-integration/gdpr-user-profile.php:191
-#: includes/gdpr-integration/gdpr-user-profile.php:196
+#: includes/gdpr-integration/gdpr-privacy-options.php:1152
+#: includes/gdpr-integration/gdpr-user-profile.php:198
+#: includes/gdpr-integration/gdpr-user-profile.php:203
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:92
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:94
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:98
@@ -4515,78 +4848,83 @@ msgid "Opt-in"
 msgstr ""
 
 #: includes/gdpr-integration/gdpr-user-profile.php:75
+#: includes/gdpr-integration/gdpr-user-profile.php:78
+msgid "Error deleting "
+msgstr ""
+
+#: includes/gdpr-integration/gdpr-user-profile.php:81
 msgid "Request not identified, Invalid request"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:112
+#: includes/gdpr-integration/gdpr-user-profile.php:119
 msgid "Awesome Support Data Export"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:113
+#: includes/gdpr-integration/gdpr-user-profile.php:120
 msgid "Export data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:124
+#: includes/gdpr-integration/gdpr-user-profile.php:131
 msgid "Awesome Support Consents"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:130
+#: includes/gdpr-integration/gdpr-user-profile.php:137
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:26
 msgid "Opt-in Date"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:131
+#: includes/gdpr-integration/gdpr-user-profile.php:138
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:27
 msgid "Opt-out Date"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:132
+#: includes/gdpr-integration/gdpr-user-profile.php:139
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:28
 msgid "Action"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:148
+#: includes/gdpr-integration/gdpr-user-profile.php:155
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:47
 msgid "Terms and Conditions"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:226
+#: includes/gdpr-integration/gdpr-user-profile.php:233
 msgid "Awesome Support Consent Logs"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:289
+#: includes/gdpr-integration/gdpr-user-profile.php:296
 msgid "Exporting data was successful!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:296
+#: includes/gdpr-integration/gdpr-user-profile.php:303
 msgid "Download it now.."
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:300
+#: includes/gdpr-integration/gdpr-user-profile.php:307
 msgid "No data exist"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:555
+#: includes/gdpr-integration/gdpr-user-profile.php:566
 msgid "The destination file does not exists!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:582
+#: includes/gdpr-integration/gdpr-user-profile.php:593
 msgid "Attachment not exist"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:586
+#: includes/gdpr-integration/gdpr-user-profile.php:597
 msgid "Attachment Folder Directory Not Found"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:591
+#: includes/gdpr-integration/gdpr-user-profile.php:602
 msgid "Ticket ID is empty"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:597
+#: includes/gdpr-integration/gdpr-user-profile.php:608
 msgid "Cannot create zip file"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-user-profile.php:600
+#: includes/gdpr-integration/gdpr-user-profile.php:611
 msgid "Zip data file not exists!"
 msgstr ""
 
@@ -4595,7 +4933,7 @@ msgid "Additional Information"
 msgstr ""
 
 #: includes/gdpr-integration/tab-content/gdpr-export-user-data.php:21
-msgid "Export my data"
+msgid "Export my tickets"
 msgstr ""
 
 #: includes/install.php:158
@@ -4691,26 +5029,26 @@ msgstr ""
 msgid "Include private notes"
 msgstr ""
 
-#: includes/scripts.php:397
+#: includes/scripts.php:396
 msgctxt "JavaScript validation error message"
 msgid "You can't submit an empty ticket"
 msgstr ""
 
-#: includes/scripts.php:399
+#: includes/scripts.php:398
 msgctxt "JavaScript validation error message"
 msgid "You can't submit an empty reply"
 msgstr ""
 
-#: includes/scripts.php:409
+#: includes/scripts.php:408
 msgid "The following file(s) are too big to be uploaded:"
 msgstr ""
 
-#: includes/scripts.php:410
+#: includes/scripts.php:409
 #, php-format
 msgid "The maximum file size allowed for one file is %d MB"
 msgstr ""
 
-#: includes/scripts.php:414
+#: includes/scripts.php:413
 msgctxt "ticket submission button text while submitting"
 msgid "Submitting..."
 msgstr ""
@@ -4858,7 +5196,7 @@ msgstr ""
 msgid "Creating Account..."
 msgstr ""
 
-#: themes/default/submission-pre-440.php:84 themes/default/submission.php:102
+#: themes/default/submission-pre-440.php:84 themes/default/submission.php:107
 msgid "Submit ticket"
 msgstr ""
 

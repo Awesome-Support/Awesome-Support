@@ -14,7 +14,7 @@
         };
 
     $(function () {
-		
+
 		/* Hide the ticket slug on the ticket details page  */
 		function hideTicketSlug() {
 			var slug = $('.post-type-ticket #edit-slug-box');  // Get all the slug rows - should only be one though.

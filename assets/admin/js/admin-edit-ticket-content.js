@@ -85,7 +85,7 @@
                         if(response.content){
                             $('.wpas-main-ticket-message').html(response.content);
                         }
-                    }                    
+                    } 
                 });
 
             });
@@ -154,10 +154,43 @@
             var settings = {
                 mediaButtons:	false,
                 tinymce:	{
-                    toolbar1: 'bold,italic,bullist,numlist,link,blockquote,alignleft,aligncenter,alignright,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,undo,redo'
+                    toolbar:	[]
                 },
-                quicktags:		true,
+                quicktags:		true
             };
+
+            /**
+             * Copy settings from reply editor - this is because the editor settings might be changed by options in POWERPACK and other add-ons.
+            */
+            var replyEditor = tinyMCE.get("wpas_reply");
+            if ((replyEditor != null) && (replyEditor.hasOwnProperty("settings"))) {
+                if (replyEditor.settings.hasOwnProperty("toolbar1")) {
+                    settings.tinymce.toolbar.push(replyEditor.settings.toolbar1);
+                }
+                if (replyEditor.settings.hasOwnProperty("toolbar2")) {
+                    settings.tinymce.toolbar.push(replyEditor.settings.toolbar2);
+                }
+                if (replyEditor.settings.hasOwnProperty("toolbar3")) {
+                    settings.tinymce.toolbar.push(replyEditor.settings.toolbar3);
+                }
+                if (replyEditor.settings.hasOwnProperty("toolbar4")) {
+                    settings.tinymce.toolbar.push(replyEditor.settings.toolbar4);
+                }
+                if (replyEditor.settings.hasOwnProperty("plugins")) {
+                    settings.tinymce.plugins = replyEditor.settings.plugins;
+                }
+                if (replyEditor.settings.hasOwnProperty("wordpress_adv_hidden")) {
+                    settings.tinymce.wordpress_adv_hidden = replyEditor.settings.wordpress_adv_hidden;
+                }
+            }
+			
+            /**
+             * If no editor toolbar settings available then use some common-sense defaults
+            */			
+            if (settings.tinymce.toolbar.length == 0) {
+                settings.tinymce.toolbar.push('bold,italic,bullist,numlist,link,blockquote,alignleft,aligncenter,alignright,strikethrough,hr,forecolor,pastetext,removeformat,codeformat,undo,redo');
+            }
+
             /**
              * Initialize editor
             */
