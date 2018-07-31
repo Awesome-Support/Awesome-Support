@@ -230,7 +230,7 @@ class WPAS_GDPR_User_Profile {
 		?>
 
 		<!-- GDPR Consent logging -->
-		<h2><?php esc_html_e( 'Awesome Support Consent Logs', 'awesome-support' ); ?></h2>
+		<h2><?php esc_html_e( 'Awesome Support: Consent Logs', 'awesome-support' ); ?></h2>
 		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
 			<?php
 				/**
