@@ -427,6 +427,7 @@ class WPAS_GDPR_User_Profile {
 		if ( ! empty( $get_replies ) ) {
 			foreach ( $get_replies as $key => $reply ) {
 				$replies[ 'r' . $key ] = array(
+					'reply_id'     => $reply->ID,
 					'content' => html_entity_decode( $reply->post_content ),
 					'author'  => $this->get_reply_author( $reply->post_author ),
 					'attachment' => $this->get_ticket_attachment( $reply->ID )
@@ -466,33 +467,13 @@ class WPAS_GDPR_User_Profile {
 		$upload['subdir'] = $subdir;
 
 		/* Create the directory if it doesn't exist yet, make sure it's protected otherwise */
+		$wpas_file_upload_instance = WPAS_File_Upload::get_instance();
 		if ( ! is_dir( $dir ) ) {
-			$this->create_upload_dir( $dir );
+			$wpas_file_upload_instance->create_upload_dir( $dir );
 		} else {
 			$this->protect_upload_dir( $dir );
 		}
 		return $dir;
-	}
-
-	/**
-	 * Create the upload directory for a ticket.
-	 *
-	 * @since 3.1.7
-	 *
-	 * @param string $dir Upload directory
-	 *
-	 * @return boolean Whether or not the directory was created
-	 */
-	public function create_upload_dir( $dir ) {
-
-		$make = wp_mkdir_p( $dir );
-
-		if ( true === $make ) {
-			$this->protect_upload_dir( $dir );
-		}
-
-		return $make;
-
 	}
 
 	/**
@@ -569,34 +550,18 @@ class WPAS_GDPR_User_Profile {
 			$zip    = new ZipArchive();
 			$do_zip = $zip->open( $destination . '/' . $filename, ZipArchive::OVERWRITE | ZipArchive::CREATE );
 			if ( $do_zip ) {
-				// Add xml data file here.
+				// Add json data file here.
 				$zip->addFile( $destination . '/' . $file, $file );
 				if ( ! empty( $user_tickets ) ) {
 					foreach ( $user_tickets as $key => $ticket ) {
 						if ( isset( $ticket['ticket_id'] ) && ! empty( $ticket['ticket_id'] ) ) {
-							$subdir = '/awesome-support/ticket_' . $ticket['ticket_id'];
-							$upload = wp_upload_dir();
-							/* Create final URL and dir */
-							$dir = $upload['basedir'] . $subdir;
-							if ( is_dir( $dir ) ) {
-								if ( $dh = opendir( $dir ) ) {
-									while ( ( $file2 = readdir( $dh ) ) !== false ) {
-										if ( file_exists( $dir . '/' . $file2 ) ) {
-											$mimetype = mime_content_type( $dir . '/' . $file2 );
-											if ( 'text/plain' !== $mimetype ) {
-												if ( ! is_dir( $dir . '/' . $file2 ) ) {
-													// Add attachment file here.
-													$zip->addFile( $dir . '/' . $file2, 'ticket_' . $ticket['ticket_id'] . '/' . basename( $file2 ) );
-												}
-											}
-										} else {
-											return new WP_Error( 'file_not_exist', __( 'Attachment not exist', 'awesome-support' ) );
-										}
-									}
-								} else {
-									return new WP_Error( 'dir_not_found', __( 'Attachment Folder Directory Not Found', 'awesome-support' ) );
-								}
-								closedir( $dh );
+							$ticket_ids = array();
+							$ticket_ids[] = $ticket['ticket_id'];
+							foreach ( $ticket['replies'] as $key => $reply ) {
+								$ticket_ids[] = $reply['reply_id'];	
+							}
+							foreach ( $ticket_ids as $key => $tickets_id ) {
+								$this->add_attachments( $zip, $tickets_id, $ticket['ticket_id'] );
 							}
 						} else {
 							return new WP_Error( 'invalid_ticket_id', __( 'Ticket ID is empty', 'awesome-support' ) );
@@ -609,6 +574,40 @@ class WPAS_GDPR_User_Profile {
 			}
 		} else {
 			return new WP_Error( 'file_not_exists', __( 'Zip data file not exists!', 'awesome-support' ) );
+		}
+	}
+
+
+	/**
+	 * Add attachment in zip
+	 * 
+	 * @param int $zip Zip instance.
+	 * @param int $ticket_id Ticket ID.
+	 */
+	public function add_attachments( $zip, $ticket_id, $folder_id ){
+		$subdir = '/awesome-support/ticket_' . $ticket_id;
+		$upload = wp_upload_dir();
+		/* Create final URL and dir */
+		$dir = $upload['basedir'] . $subdir;
+		if ( is_dir( $dir ) ) {
+			if ( $dh = opendir( $dir ) ) {
+				while ( ( $file2 = readdir( $dh ) ) !== false ) {
+					if ( file_exists( $dir . '/' . $file2 ) ) {
+						$mimetype = mime_content_type( $dir . '/' . $file2 );
+						if ( 'text/plain' !== $mimetype ) {
+							if ( ! is_dir( $dir . '/' . $file2 ) ) {
+								// Add attachment file here.
+								$zip->addFile( $dir . '/' . $file2, 'ticket_' . $folder_id . '/' . basename( $file2 ) );
+							}
+						}
+					} else {
+						return new WP_Error( 'file_not_exist', __( 'Attachment not exist', 'awesome-support' ) );
+					}
+				}
+			} else {
+				return new WP_Error( 'dir_not_found', __( 'Attachment Folder Directory Not Found', 'awesome-support' ) );
+			}
+			closedir( $dh );
 		}
 	}
 }
