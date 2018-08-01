@@ -116,7 +116,7 @@ class WPAS_GDPR_User_Profile {
 					global $user_id;
 					$data_user = (int) $user_id;
 				?>
-				<h2><?php esc_html_e( 'Awesome Support Data Export', 'awesome-support' ); ?></h2>
+				<h2><?php esc_html_e( 'Awesome Support: Data Export', 'awesome-support' ); ?></h2>
 				<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo $data_user; ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
 			</div>
 			<?php
@@ -128,7 +128,7 @@ class WPAS_GDPR_User_Profile {
 			$user_consent = get_user_option( 'wpas_consent_tracking', $profileuser->ID );
 			if ( ! empty( $user_consent ) && is_array( $user_consent ) ) {
 	?>
-		<h2><?php esc_html_e( 'Awesome Support Consents', 'awesome-support' ); ?></h2>		
+		<h2><?php esc_html_e( 'Awesome Support: Consents Granted', 'awesome-support' ); ?></h2>		
 		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
 			<thead>
 				<tr>
