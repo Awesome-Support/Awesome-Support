@@ -4,7 +4,7 @@
     var ticket_id = false;
     Dropzone.autoDiscover = false;
 
-    var submitButtons = $('button[name="wpas_do"], button[name="wpas-submit"], #wpas-new-note input[type=submit]');
+    var submitButtons = $('button[name="wpas_do"], button[name="wpas-submit"]');
 
     function attachDropZones() {
 
