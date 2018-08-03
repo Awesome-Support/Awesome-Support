@@ -596,13 +596,13 @@ class WPAS_GDPR_User_Profile {
 						$mimetype = mime_content_type( $dir . '/' . $file2 );
 						if ( 'text/plain' !== $mimetype ) {
 							if ( ! is_dir( $dir . '/' . $file2 ) ) {
-								$folder_prifix = 'ticket_';
+								$folder_prefix = 'ticket_';
 								$is_ticket = get_post_type( $ticket_id );
 								if ( $is_ticket !== 'ticket' ) {
-									$folder_prifix = 'reply_';
+									$folder_prefix = 'reply_';
 								}
 								// Add attachment file here.
-								$zip->addFile( $dir . '/' . $file2, $folder_prifix . $ticket_id . '/' . basename( $file2 ) );
+								$zip->addFile( $dir . '/' . $file2, $folder_prefix . $ticket_id . '/' . basename( $file2 ) );
 							}
 						}
 					} else {
