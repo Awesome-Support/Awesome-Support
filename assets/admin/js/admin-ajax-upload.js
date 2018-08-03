@@ -19,6 +19,7 @@
             var id    = $(e).attr('id');
             var paste = $(this).data('enable-paste');
             ticket_id = (  $('#post_ID').length ) ? $('#post_ID').val() : $(this).data('ticket-id');
+            var dropzone_id = $(this).attr('id').substr(9);
 
             $('#' + id).dropzone({ 
                 url: WPAS_AJAX.ajax_url,
@@ -35,6 +36,7 @@
                     this.on('sending', function(file, xhr, formData){
                         formData.append('action', 'wpas_upload_attachment');
                         formData.append('ticket_id', ticket_id );
+                        formData.append('dz_id', dropzone_id );
                         uploaded = true;
                         submitButtons.attr('disabled', 'disabled');
                     });

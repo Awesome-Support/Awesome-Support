@@ -68,7 +68,7 @@ class WPAS_User {
 			return false;
 		} ?>
 
-		<h3><?php _e( 'Awesome Support Preferences', 'awesome-support' ); ?></h3>
+		<h3><?php _e( 'Awesome Support: Preferences', 'awesome-support' ); ?></h3>
 
 		<table class="form-table">
 			<tbody>
