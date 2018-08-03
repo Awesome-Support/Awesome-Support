@@ -54,7 +54,7 @@ function wpas_register_account( $data ) {
 	 *
 	 * @since  3.0.1
 	 */
-	do_action( 'wpas_pre_register_account', $user );
+	do_action( 'wpas_pre_register_account', $user, $redirect_to, $data );
 
 	if ( wpas_get_option( 'terms_conditions', false ) && ! isset( $data['wpas_terms'] ) ) {
 		wpas_add_error( 'accept_terms_conditions', esc_html__( 'You did not accept the terms and conditions.', 'awesome-support' ) );
@@ -189,7 +189,7 @@ function wpas_register_account( $data ) {
 		 *
 		 * @since  3.0.1
 		 */
-		do_action( 'wpas_register_account_after', $user_id, $user );
+		do_action( 'wpas_register_account_after', $user_id, $user, $data );
 
 		// For moderated registration print message and redirect, so we don't auto login.
 		if( 'moderated' === $registration ) {
@@ -1422,7 +1422,7 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 	 * Consent logs are stored in wpas_consent_tracking option
 	 */
 	$tracked_consent = get_user_option( 'wpas_consent_tracking', $user_id );
-
+	
 	if( ! empty ( $tracked_consent ) && is_array( $tracked_consent ) ) {
 		/**
 		 * If same item exists, simply update the same row
@@ -1446,7 +1446,6 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 					$tracked_consent[$found_key]['status'] = $data['status'];
 				}
 			}
-			
 			update_user_option( $user_id, 'wpas_consent_tracking', $tracked_consent );
 			
 			/**
@@ -1456,7 +1455,6 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 			
 		}else{
 			update_user_option( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
-			
 			/**
 			 * After new consent tracking action hook
 			 */	
@@ -1470,7 +1468,6 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 		 */	
 		do_action( 'wpas_track_consent_update_new', $data, $user_id, $opt_type, $tracked_consent ) ;								
 	}
-	
 	/**
 	 * After consent tracking action hook
 	 */	
