@@ -581,8 +581,8 @@ class WPAS_GDPR_User_Profile {
 	/**
 	 * Add attachment in zip
 	 * 
-	 * @param int $zip Zip instance.
-	 * @param int $ticket_id Ticket ID.
+	 * @param object $zip Zip instance.
+	 * @param int 	 $ticket_id Ticket ID.
 	 */
 	public function add_attachments( $zip, $ticket_id ){
 		$subdir = '/awesome-support/ticket_' . $ticket_id;
