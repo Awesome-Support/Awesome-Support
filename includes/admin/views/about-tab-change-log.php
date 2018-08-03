@@ -4,8 +4,8 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 5.2</h1>
-				<h3>5.2 Introduces a number of new changes, tweaks and fixes! Among them are the following:</h3>
+				<h1>What's New In 5.5</h1>
+				<h3>5.5 Introduces a number of new changes, tweaks and fixes! Among them are the following:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
 					<li>New designs for the six core email alerts</li>
 					<li>Email template sets</li>
@@ -21,7 +21,7 @@
 					<li>Bug Fixes  </li>
 					<li>Internal and developer related changes  </li>
 				</ul>
-				<p>Read all about these changes on our website: <a href="https://getawesomesupport.com/coming-soon-in-awesome-support-5-2-0/">What's New In Version 5.2</a> </p>
+				<p>Read all about these changes on our website: <a href="https://getawesomesupport.com/coming-soon-in-awesome-support-5-2-0/">What's New In Version 5.5</a> </p>
 			</div>		
 		</div>
 	</div>

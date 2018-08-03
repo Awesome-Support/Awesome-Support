@@ -316,6 +316,9 @@ class WPAS_File_Upload {
 
 			// Now delete them all
 			$logs = array() ; // hold log messages to be written later to ticket
+			
+			$attachments = apply_filters( 'attachments_list_for_auto_delete', $attachments, $ticket_id );
+			
 			foreach ( $attachments as $attachment ) {
 				
 				$filename   = explode( '/', $attachment->guid );
