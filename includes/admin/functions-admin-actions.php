@@ -19,8 +19,6 @@ add_action( 'admin_head-post.php', 'admin_head_post_editing' );
  *
  * @since 3.3
  *
- * @param obj $data
- *
  * @return void
  */
 function admin_head_post_editing() {
