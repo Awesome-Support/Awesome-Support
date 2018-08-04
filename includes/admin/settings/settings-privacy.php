@@ -69,6 +69,13 @@ function wpas_core_settings_privacy( $def ) {
 					'default' => true,
 				),
 				array(
+					'name'    => __( 'Show Export Data Tab', 'awesome-support' ),
+					'id'      => 'privacy_show_export_data_tab',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the tab that allows users to request export of their data', 'awesome-support' ),
+					'default' => true,
+				),
+				array(
 					'name'    => __( 'Show Export Tab', 'awesome-support' ),
 					'id'      => 'privacy_show_export_tab',
 					'type'    => 'checkbox',
@@ -100,6 +107,26 @@ function wpas_core_settings_privacy( $def ) {
 					'type'    => 'checkbox',
 					'default' => true,
 					'desc'    => __( 'Do you want to allow the user to enter a longer description related to their request to delete their data?', 'awesome-support' )
+				),
+
+				array(
+					'name' => __( 'Export Tickets', 'awesome-support' ),
+					'desc' => __( 'Options when allowing users to request export of their tickets data', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Subject', 'awesome-support' ),
+					'id'      => 'export_existing_data_subject',
+					'type'    => 'text',
+					'desc'    => __( 'This is the subject of the ticket that will be submitted when the user opens a ticket to request export of their data', 'awesome-support' ),
+					'default' => __( 'Official Request: Please Export My Existing Data.', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'User Can Submit Additional Information', 'awesome-support' ),
+					'id'      => 'export_existing_data_add_information',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Do you want to allow the user to enter a longer description related to their request to export their data?', 'awesome-support' )
 				),
 				
 				array(

@@ -887,7 +887,15 @@ class WPAS_Privacy_Option {
 								 */
 								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-export-user-data.php' );
 							?>
-						</div>					
+						</div>
+						<div id="export-existing-data" class="entry-content-tabs wpas-gdpr-tab-content">
+							<?php
+								/**
+								 * Include tab content for Export tickets and user data
+								 */
+								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-wpexport-user-data.php' );
+							?>
+						</div>
 					</div>
 					<?php
 					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' );
@@ -923,11 +931,18 @@ class WPAS_Privacy_Option {
 			<?php			
 		}
 		
+		if ( true === boolval( wpas_get_option( 'privacy_show_export_data_tab', true) ) ) {
+			?>
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-existing-data' )" data-id="export-existing"><?php esc_html_e( 'Export my data', 'awesome-support' ); ?></button>
+			<?php			
+		}
+
 		if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {
 			?>		
 			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets', 'awesome-support' ); ?></button>
 			<?php
 		}
+
 		
 	}	
 
@@ -989,6 +1004,7 @@ class WPAS_Privacy_Option {
 
 			$subject = isset( $form_data['wpas-gdpr-ded-subject'] ) ? $form_data['wpas-gdpr-ded-subject'] : '';
 			$content = isset( $form_data['wpas-gdpr-ded-more-info'] ) && ! empty( $form_data['wpas-gdpr-ded-more-info'] ) ? $form_data['wpas-gdpr-ded-more-info'] : $subject; // Fallback to subject to avoid undefined!
+			$request_type = ( isset( $_POST['data']['request_type'] ) && !empty( $_POST['data']['request_type'] ))? sanitize_text_field( $_POST['data']['request_type'] ): '';
 
 			/**
 			 * New ticket submission
@@ -1010,14 +1026,20 @@ class WPAS_Privacy_Option {
 				if ( function_exists( 'wp_create_user_request' )  && function_exists( 'wp_send_user_request' ) ) {
 					$current_user = wp_get_current_user();
 					if( isset( $current_user->user_email ) && !empty( $current_user->user_email )){
-						$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
+						if( 'delete' === $request_type ){
+							$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
+							$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
+						}
+						if( 'export' === $request_type ){
+							$request_id = wp_create_user_request( $current_user->user_email, 'export_personal_data' );
+							$response['message'] = __( 'We have received your Export data request!', 'awesome-support' );
+						}
 						if( $request_id ) {
 							wp_send_user_request( $request_id );
 						}
 					}
 				}
 				$response['code']    = 200;
-				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
 			} else {
 				$response['message'] = __( 'Something went wrong. Please try again!', 'awesome-support' );
 			}
