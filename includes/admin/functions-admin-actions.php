@@ -147,6 +147,7 @@ function wpas_admin_action_trash_reply( $data ) {
 
 	$reply_id = (int) $data['reply_id'];
 	$ticket_id = ''; // will populated this below...
+	$trashed_post = null ; // will populate this below
 	
 	/* Get the contents of the post being trashed */
 	$trashed_contents = '';	
