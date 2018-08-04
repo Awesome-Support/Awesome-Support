@@ -19,7 +19,7 @@ add_action( 'admin_head-post.php', 'admin_head_post_editing' );
  *
  * @since 3.3
  *
- * @param $data
+ * @param obj $data
  *
  * @return void
  */
@@ -49,7 +49,7 @@ add_action( 'wpas_do_admin_close_ticket', 'wpas_admin_action_close_ticket' );
  *
  * @since 3.3
  *
- * @param $data
+ * @param obj $data
  *
  * @return void
  */
@@ -95,7 +95,7 @@ add_action( 'wpas_do_admin_open_ticket', 'wpas_admin_action_open_ticket' );
  *
  * @since 3.3
  *
- * @param $data
+ * @param obj $data
  *
  * @return void
  */
@@ -131,7 +131,7 @@ add_action( 'wpas_do_admin_trash_reply', 'wpas_admin_action_trash_reply' );
  *
  * @since 3.3
  *
- * @param $data
+ * @param obj $data
  *
  * @return void
  */
@@ -196,9 +196,9 @@ add_action( 'wpas_admin_reply_trashed', 'wpas_log_reply_trashed', 10,3 );
  * Action hook: wpas_admin_reply_trashed
  *
  * @since 5.2.0
- * @param $int	$reply_id 		- the id of the reply being edited.
+ * @param int	$reply_id 		- the id of the reply being edited.
  * @param array $original_reply - the original post content before tit was deleted.
- * @param $int	$ticket_id		- ticket id that the reply belongs to
+ * @param int	$ticket_id		- ticket id that the reply belongs to
  *
  * @return void
  */
