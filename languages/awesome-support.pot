@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-08-03 03:19-0500\n"
+"POT-Creation-Date: 2018-08-05 00:22-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -693,12 +693,13 @@ msgstr ""
 msgid "You can now access your support tickets and other support options under the new TICKETS menu option."
 msgstr ""
 
-#: includes/admin/functions-admin-actions.php:201
+#: includes/admin/functions-admin-actions.php:207
 #: includes/functions-post.php:814
 msgid "Original data not available because detailed logging is not turned on or allowed"
 msgstr ""
 
-#: includes/admin/functions-admin-actions.php:206
+#: includes/admin/functions-admin-actions.php:213
+#: includes/admin/functions-admin-actions.php:216
 #, php-format
 msgid "Reply #%s was deleted from ticket #%s."
 msgstr ""
@@ -2344,19 +2345,27 @@ msgstr ""
 msgid "Enter a comma separated list of roles that should be able to delete any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:144
-msgid "Log content edits"
-msgstr ""
-
-#: includes/admin/settings/settings-permissions.php:147
-msgid "What level should edits to ticket content and replies be logged?"
+#: includes/admin/settings/settings-permissions.php:145
+msgid "Permanently Delete Replies"
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:148
+msgid "Check this to allow replies to be permanently deleted. If you do not check this option, deleted items will end up in the WordPress trash bin which will allow you to see the deletion in-line.  They can be permanently deleted later with most third-party clean-up plugins."
+msgstr ""
+
+#: includes/admin/settings/settings-permissions.php:153
+msgid "Log content edits"
+msgstr ""
+
+#: includes/admin/settings/settings-permissions.php:156
+msgid "What level should edits to ticket content and replies be logged?"
+msgstr ""
+
+#: includes/admin/settings/settings-permissions.php:157
 msgid "Low - only logs whether the ticket or reply was edited. This prevents additional sensitive data from being stored in the log when the intention is to edit out sensitive information."
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:149
+#: includes/admin/settings/settings-permissions.php:158
 msgid "High - log the original contents before the reply was edited so that a full history could be maintained"
 msgstr ""
 
