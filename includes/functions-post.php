@@ -2011,3 +2011,18 @@ function wpas_get_gdpr_data( $short_description ) {
 		return false;
 	}
 }
+
+/**
+ * Delete post attachments
+ * 
+ * @param int $post_id
+ */
+function wpas_delete_post_attachments( $post_id ) {
+	
+	$attachments = get_attached_media( '', $post_id );
+	
+	foreach ( $attachments as $attachment ) {
+	  wp_delete_attachment( $attachment->ID, true );
+	}
+	
+}
