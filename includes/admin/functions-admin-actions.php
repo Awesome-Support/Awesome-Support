@@ -162,11 +162,21 @@ function wpas_admin_action_trash_reply( $data ) {
 		
 	}
 	
+	/* 
+	 * Remove the attachments from the post before trashing the post 
+	 * Note that even if we restore the post from the trash, 
+	 * the attachments will not be restored - they are permanently deleted here. 
+	 * There is no UI provision in Awesome Support to restore a reply from the trash 
+	 * anyway and no anticipated future need where we would need to.  So no harm 
+	 * deleting the attachments permanently here.
+	 */
+	wpas_delete_post_attachments( $reply_id ) ;
+	
 	/* Now trash/delete the post */
 	if ( boolval( wpas_get_option( 'permanently_trash_replies', false ) ) ) {
 		wp_delete_post( $reply_id, true ); // Permanentaly delete		
 	} else {
-		wp_trash_post( $reply_id );  // Move to trash		
+		wp_trash_post( $reply_id );  // Move to trash - having it in trash allows the UI to post a "reply was deleted" alert in the ticket.
 	}
 	
 	/* Add a flag to the TICKET that shows one of its replies was deleted */
