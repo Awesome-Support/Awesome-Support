@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-08-05 00:22-0500\n"
+"POT-Creation-Date: 2018-08-06 22:12-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -693,13 +693,13 @@ msgstr ""
 msgid "You can now access your support tickets and other support options under the new TICKETS menu option."
 msgstr ""
 
-#: includes/admin/functions-admin-actions.php:207
+#: includes/admin/functions-admin-actions.php:217
 #: includes/functions-post.php:814
 msgid "Original data not available because detailed logging is not turned on or allowed"
 msgstr ""
 
-#: includes/admin/functions-admin-actions.php:213
-#: includes/admin/functions-admin-actions.php:216
+#: includes/admin/functions-admin-actions.php:223
+#: includes/admin/functions-admin-actions.php:226
 #, php-format
 msgid "Reply #%s was deleted from ticket #%s."
 msgstr ""
@@ -2282,7 +2282,7 @@ msgid "Roles That Are NOT Allowed Access To The Custom Fields Tab"
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:63
-msgid "Enter a comma separated list of roles that should not see the CUSTOM FIELDS tab. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
+msgid "Enter a comma separated list of roles that should not see the CUSTOM FIELDS tab. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:67
@@ -2290,7 +2290,7 @@ msgid "Roles That Are NOT Allowed Access To The Additional Interested Parties Ta
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:70
-msgid "Enter a comma separated list of roles that should not see the ADDITIONAL INTERESTED PARTIES tab. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
+msgid "Enter a comma separated list of roles that should not see the ADDITIONAL INTERESTED PARTIES tab. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:74
@@ -2298,7 +2298,7 @@ msgid "Roles That Are NOT Allowed Access To The Tags Metabox"
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:77
-msgid "Enter a comma separated list of roles that should not see the tags metabox. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
+msgid "Enter a comma separated list of roles that should not see the tags metabox. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:82
@@ -2310,7 +2310,7 @@ msgid "Roles That Are NOT Allowed to Edit Ticket Content"
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:108
-msgid "Enter a comma separated list of roles that should NOT be able to edit ticket content. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
+msgid "Enter a comma separated list of roles that should NOT be able to edit ticket content. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:113
@@ -2326,7 +2326,7 @@ msgid "Roles That Can Edit All Replies"
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:124
-msgid "Enter a comma separated list of roles that should be able to edit any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
+msgid "Enter a comma separated list of roles that should be able to edit any agent and user reply. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:129
@@ -2342,7 +2342,7 @@ msgid "Roles That Can Delete All Replies"
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:140
-msgid "Enter a comma separated list of roles that should be able to delete any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
+msgid "Enter a comma separated list of roles that should be able to delete any agent and user reply. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles."
 msgstr ""
 
 #: includes/admin/settings/settings-permissions.php:145
@@ -3879,65 +3879,65 @@ msgstr ""
 msgid "Attachment deleted."
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:577
+#: includes/file-uploader/class-file-uploader.php:586
 msgid "The file you requested is not a valid attachment"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:581
+#: includes/file-uploader/class-file-uploader.php:590
 msgid "The attachment you requested is not attached to any ticket"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:588
+#: includes/file-uploader/class-file-uploader.php:597
 msgid "You are not allowed to view this attachment"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:797
-#: includes/file-uploader/class-file-uploader.php:817
+#: includes/file-uploader/class-file-uploader.php:806
+#: includes/file-uploader/class-file-uploader.php:826
 msgid "Attachments"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:798
+#: includes/file-uploader/class-file-uploader.php:807
 #, php-format
 msgid " You can upload up to %d files (maximum %d MB each) of the following types: %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:925
+#: includes/file-uploader/class-file-uploader.php:934
 msgid "Attachments:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:970
+#: includes/file-uploader/class-file-uploader.php:979
 msgid "X"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1121
+#: includes/file-uploader/class-file-uploader.php:1130
 #, php-format
 msgid "%s -> Max files (%d) exceeded."
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1172
+#: includes/file-uploader/class-file-uploader.php:1181
 msgid "Attachment Errors:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1202
+#: includes/file-uploader/class-file-uploader.php:1211
 #, php-format
 msgid "Your reply has been correctly submitted but the attachment was not uploaded. %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1271
+#: includes/file-uploader/class-file-uploader.php:1280
 #, php-format
 msgid "You are not allowed to upload files of this type (%s)"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1275
+#: includes/file-uploader/class-file-uploader.php:1284
 msgid "You cannot upload empty attachments. You attachments weights 0 bytes"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1279
+#: includes/file-uploader/class-file-uploader.php:1288
 #, php-format
 msgid "Your attachment is too big. You are allowed to attach files up to %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1540
+#: includes/file-uploader/class-file-uploader.php:1549
 #, php-format
 msgid "Max files (%s) exceeded."
 msgstr ""
@@ -4493,7 +4493,7 @@ msgid "* This reply has been edited.  See the logs for a full history of edits."
 msgstr ""
 
 #: includes/functions-post.php:1831
-msgid "* This ticket has had replies deleted from it.  See the logs for a full history of edits."
+msgid "* This ticket has had replies deleted from it.  Depending on your settings at the time of deletion, the logs might have a full history of these edits."
 msgstr ""
 
 #: includes/functions-post.php:1850
