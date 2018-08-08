@@ -404,6 +404,10 @@ Ticket Controls
 	pre {
 		width: 100%;
 		overflow: auto;
+		max-width: 50vw;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		word-break: break-all;
 	}
 }
 
@@ -456,6 +460,15 @@ Ticket Controls
 			line-height: 1.6;
 		}
 	}
+	
+	.wpas-ticket-content,
+	.wpas-reply-content {
+		// Force responsive preformatted
+		pre {
+			max-width: 80vw;
+		}
+	}	
+	
 	.wpas-reply-meta {
 		.wpas-reply-user,
 		.wpas-reply-time {
