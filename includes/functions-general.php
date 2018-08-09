@@ -1643,3 +1643,165 @@ function wpas_user_can_delete_attachments() {
 function wpas_user_can_set_auto_delete_attachments() {
 	return wpas_get_option( 'user_can_set_auto_delete_attachments' );
 }
+
+
+/**
+ * Returns a ticket id related to the provided post id.
+ *
+ * Given a post id which could be a child id of a ticket, return the ticket id.
+ *
+ * @since 5.2.0
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ *
+ * @return int|boolean
+ */
+function wpas_get_ticket_id( $post_id ) {
+	
+	$ticket_id = false ;
+
+	// Is the post id passed in ticket id?  If so, use that as the ticket id.
+	$maybe_ticket = get_post($post_id) ;
+	if ( $maybe_ticket && ! is_wp_error( $maybe_ticket) && 'ticket' === get_post_type( $maybe_ticket ) ) {
+		$ticket_id = $maybe_ticket->ID ;
+	}
+	
+	// If we still don't have a ticket id yet, the id passed in is likely a child where the ticket id is in the parent...
+	if ( ! $ticket_id && ! is_wp_error( $maybe_ticket) ) {
+		
+		$maybe_parent = wp_get_post_parent_id( $post_id );
+		if ( $maybe_parent && ! is_wp_error( $maybe_parent) ) {
+			$maybe_ticket2 = get_post( $maybe_parent  ) ;
+			
+			if ( $maybe_ticket2 && ! is_wp_error( $maybe_ticket2) && 'ticket' === get_post_type( $maybe_ticket2 ) ) {
+				$ticket_id = $maybe_ticket2->ID ;
+			}
+			
+		}
+	}
+
+	return $ticket_id ;
+	
+}
+
+/**
+ * Returns a list of users involved in a ticket
+ *
+ * The list of agents will include only those with the specified capabilities.
+ *
+ * @since 5.2.0
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ * @param string $cap - the capabilities to restrict the user list to.
+ *
+ * @return array<int>|boolean
+ */
+function wpas_get_all_users_on_ticket( $post_id, $cap = 'edit_ticket' ) {
+	
+	$users = array();
+	$ticket_id = wpas_get_ticket_id( $post_id) ;
+	
+	// If we have a ticket id get all the children of the ticket and extract the agents...
+	if ( $ticket_id ) {
+		
+		$args = array(
+			'post_parent'            => $ticket_id,
+			'post_type'              => apply_filters( 'wpas_get_users_on_ticket_post_types', array( 'ticket_reply' ) ),
+			'post_status'            => 'any',
+			'order'                  => wpas_get_option( 'replies_order', 'ASC' ),
+			'orderby'                => 'date',
+			'posts_per_page'         => - 1,
+			'no_found_rows'          => true,
+			'cache_results'          => false,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);	
+		
+		$query = new WP_Query( $args );
+			
+		if (!is_wp_error( $query )) {
+			foreach ($query->posts as $reply) {
+				if (!in_array($reply->post_author, $users) && user_can( $reply->post_author, $cap )) {
+					$users[] = $reply->post_author;
+				}
+			}
+		}
+		
+	} else {
+		
+		return false ;
+		
+	}
+	
+	return $users ;
+	
+}
+
+/**
+ * Returns a list of agents involved in a ticket
+ *
+ * The list of agents will include those assigned 
+ * to the ticket or who have replied to the ticket
+ * in some way.
+ *
+ * @since 5.2.0
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ *
+ * @return array<int>|boolean
+ */
+function wpas_get_all_agents_on_ticket( $post_id ) {
+	
+	$agents = wpas_get_all_users_on_ticket( $post_id, 'edit_ticket' );
+
+	if ( ! $agents or empty( $agents ) ) {
+		$agents = array();
+	}
+	
+	// Now get the assigned agents and other agents on the ticket.
+	$ticket_id = wpas_get_ticket_id( $post_id) ;	
+	$formal_agents = wpas_get_assigned_agents( $ticket_id) ;
+	
+	// Merge the different arrays...
+	$all_agents = array_unique( array_merge( $agents, $formal_agents ) ) ;
+
+	// Return the unique array of agent ids.
+	return $all_agents ;
+	
+}
+
+
+/**
+ * Returns a list of agents formally assigned to the ticket.
+ *
+ * @since 5.2.0
+ *
+ * @param int $ticket_id - the ID of a ticket
+ *
+ * @return array<int>
+ */
+function wpas_get_assigned_agents( $ticket_id ) {
+	
+	$agents = array();
+	
+	if ( ! empty( $ticket_id ) ) {
+		
+		$ticket = get_post( $ticket_id ) ;
+		
+		if ( $ticket && ! is_wp_error( $ticket) ) {
+		
+			$agent_id = intval(get_post_meta( $ticket->ID, '_wpas_assignee', true ));
+			$agent_id2 = intval(get_post_meta( $ticket->ID, '_wpas_secondary_assignee', true ));
+			$agent_id3 = intval(get_post_meta( $ticket->ID, '_wpas_tertiary_assignee', true ));
+			
+			if ( !empty($agent_id) )  $agents[] = $agent_id;
+			if ( !empty($agent_id2) ) $agents[] = $agent_id2;
+			if ( !empty($agent_id3) ) $agents[] = $agent_id3;
+			
+		}
+		
+	}
+	
+	return $agents ;
+	
+}
