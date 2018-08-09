@@ -1737,3 +1737,14 @@ function wpas_mr_deny_success_notice() {
 	printf( '<div class="updated error"><p>%s</p></div>', __( 'User successfully denied.', 'awesome-support' ) );
 	
 }
+
+/**
+ * Takes a one dimensional array of user ids and returns an array of user objects
+ */
+function wpas_id_to_user_object( $user_ids ) {
+	$user_objects = array();
+	foreach ($user_ids as $id) {
+		$user_objects[] = get_user_by('id', $id);
+	}
+	return $user_objects;
+}
