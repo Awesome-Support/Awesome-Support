@@ -1760,48 +1760,17 @@ function wpas_get_all_agents_on_ticket( $post_id ) {
 	
 	// Now get the assigned agents and other agents on the ticket.
 	$ticket_id = wpas_get_ticket_id( $post_id) ;	
-	$formal_agents = wpas_get_assigned_agents( $ticket_id) ;
+	$formal_agents = wpas_get_ticket_agents( $ticket_id) ;
+	$formal_agent_ids = array();
+	
+	foreach ($formal_agents as $agent) {
+		$formal_agent_ids[] = $agent->ID;
+	}
 	
 	// Merge the different arrays...
-	$all_agents = array_unique( array_merge( $agents, $formal_agents ) ) ;
+	$all_agents = array_unique( array_merge( $agents, $formal_agent_ids ) ) ;
 
 	// Return the unique array of agent ids.
 	return $all_agents ;
-	
-}
-
-
-/**
- * Returns a list of agents formally assigned to the ticket.
- *
- * @since 5.2.0
- *
- * @param int $ticket_id - the ID of a ticket
- *
- * @return array<int>
- */
-function wpas_get_assigned_agents( $ticket_id ) {
-	
-	$agents = array();
-	
-	if ( ! empty( $ticket_id ) ) {
-		
-		$ticket = get_post( $ticket_id ) ;
-		
-		if ( $ticket && ! is_wp_error( $ticket) ) {
-		
-			$agent_id = intval(get_post_meta( $ticket->ID, '_wpas_assignee', true ));
-			$agent_id2 = intval(get_post_meta( $ticket->ID, '_wpas_secondary_assignee', true ));
-			$agent_id3 = intval(get_post_meta( $ticket->ID, '_wpas_tertiary_assignee', true ));
-			
-			if ( !empty($agent_id) )  $agents[] = $agent_id;
-			if ( !empty($agent_id2) ) $agents[] = $agent_id2;
-			if ( !empty($agent_id3) ) $agents[] = $agent_id3;
-			
-		}
-		
-	}
-	
-	return $agents ;
 	
 }
