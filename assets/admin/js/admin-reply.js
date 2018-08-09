@@ -94,7 +94,17 @@
 
 							// Revert to save button
 							btnSave.prop('disabled', false).val('Save changes');
+                                                        
+                                                        var attachmentsEle = reply.find('.wpas-reply-attachements')
+                                                                .clone()
+                                                                .wrapAll("<div/>")
+                                                                .parent()
+                                                                .html();
+                                                        
 							reply.html(tinyMCEContent).show();
+                                                        
+                                                        reply.append( attachmentsEle );
+                                                        
 							editorRow.hide();
 						} else {
 							alert(response);
