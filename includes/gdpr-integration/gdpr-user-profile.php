@@ -561,7 +561,7 @@ class WPAS_GDPR_User_Profile {
 								$ticket_ids[] = $reply['reply_id'];	
 							}
 							foreach ( $ticket_ids as $key => $tickets_id ) {
-								$this->add_attachments( $zip, $tickets_id, $ticket['ticket_id'] );
+								$this->add_attachments( $zip, $tickets_id );
 							}
 						} else {
 							return new WP_Error( 'invalid_ticket_id', __( 'Ticket ID is empty', 'awesome-support' ) );
@@ -581,10 +581,10 @@ class WPAS_GDPR_User_Profile {
 	/**
 	 * Add attachment in zip
 	 * 
-	 * @param int $zip Zip instance.
-	 * @param int $ticket_id Ticket ID.
+	 * @param object $zip Zip instance.
+	 * @param int 	 $ticket_id Ticket ID.
 	 */
-	public function add_attachments( $zip, $ticket_id, $folder_id ){
+	public function add_attachments( $zip, $ticket_id ){
 		$subdir = '/awesome-support/ticket_' . $ticket_id;
 		$upload = wp_upload_dir();
 		/* Create final URL and dir */
@@ -596,8 +596,13 @@ class WPAS_GDPR_User_Profile {
 						$mimetype = mime_content_type( $dir . '/' . $file2 );
 						if ( 'text/plain' !== $mimetype ) {
 							if ( ! is_dir( $dir . '/' . $file2 ) ) {
+								$folder_prefix = 'ticket_';
+								$is_ticket = get_post_type( $ticket_id );
+								if ( $is_ticket !== 'ticket' ) {
+									$folder_prefix = 'reply_';
+								}
 								// Add attachment file here.
-								$zip->addFile( $dir . '/' . $file2, 'ticket_' . $folder_id . '/' . basename( $file2 ) );
+								$zip->addFile( $dir . '/' . $file2, $folder_prefix . $ticket_id . '/' . basename( $file2 ) );
 							}
 						}
 					} else {
