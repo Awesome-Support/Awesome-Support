@@ -226,7 +226,7 @@ class WPAS_Help {
 		$screen->add_help_tab( array(
 			'id'      => 'custom_login',
 			'title'   => __( 'Custom Login Page', 'awesome-support' ),
-			'content' => __( '<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don\'t like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the "Custom Login / Registration Page" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>', 'awesome-support' )
+			'content' => __( '<h2>Custom Login Page</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don\'t like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the "Custom Login / Registration Page" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>', 'awesome-support' )
 		) );
 
 	}

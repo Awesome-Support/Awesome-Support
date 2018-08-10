@@ -1828,7 +1828,7 @@ function wpas_show_reply_deleted_msg( $ticket_id, $ticket ) {
 	$post = get_post_meta( $ticket_id, 'wpas_reply_was_deleted' );
 
 	if ( (int) $post > 0 ) {
-		echo '<br />' . '<div class="wpas_footer_note">' . __( '* This ticket has had replies deleted from it.  See the logs for a full history of edits.', 'awesome-support' ) . '</div>';
+		echo '<br />' . '<div class="wpas_footer_note">' . __( '* This ticket has had replies deleted from it.  Depending on your settings at the time of deletion, the logs might have a full history of these edits.', 'awesome-support' ) . '</div>';
 	}
 
 }
@@ -2010,4 +2010,19 @@ function wpas_get_gdpr_data( $short_description ) {
 	}else{
 		return false;
 	}
+}
+
+/**
+ * Delete post attachments
+ * 
+ * @param int $post_id
+ */
+function wpas_delete_post_attachments( $post_id ) {
+	
+	$attachments = get_attached_media( '', $post_id );
+	
+	foreach ( $attachments as $attachment ) {
+	  wp_delete_attachment( $attachment->ID, true );
+	}
+	
 }

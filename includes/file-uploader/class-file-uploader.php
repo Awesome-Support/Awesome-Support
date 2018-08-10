@@ -465,9 +465,18 @@ class WPAS_File_Upload {
 		if ( 'attachment' !== $wp_query->query_vars['post_type'] ) {
 			return $clauses;
 		}
-
-		$clauses['join'] .= " LEFT OUTER JOIN $wpdb->posts daddy ON daddy.ID = $wpdb->posts.post_parent";
-		$clauses['where'] .= " AND ( daddy.post_type NOT IN ( 'ticket', 'ticket_reply' ) OR daddy.ID IS NULL )";
+		
+		$post_types = apply_filters( 'wpas_filter_out_media_attachment_post_types', array(
+			'ticket', 'ticket_reply'
+		) );
+		
+		if( !empty( $post_types ) ) {
+			
+			$post_types_list  = "'". implode( "', '", $post_types ) . "'";
+			
+			$clauses['join'] .= " LEFT OUTER JOIN $wpdb->posts daddy ON daddy.ID = $wpdb->posts.post_parent";
+			$clauses['where'] .= " AND ( daddy.post_type NOT IN ( $post_types_list ) OR daddy.ID IS NULL )";
+		}
 
 		return $clauses;
 
@@ -1726,7 +1735,7 @@ class WPAS_File_Upload {
 					'post_content'   => '',
 					'post_status'    => 'inherit'
 				);
-
+				
 				// Insert the attachment.
 				$attachment_id = wp_insert_attachment( $attachment, $file, $reply_id );
 				

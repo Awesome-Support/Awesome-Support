@@ -60,21 +60,21 @@ function wpas_core_settings_permissions( $def ) {
 					'name'    => __( 'Roles That Are NOT Allowed Access To The Custom Fields Tab', 'awesome-support' ),
 					'id'      => 'hide_cf_tab_roles',
 					'type'    => 'text',
-					'desc'    => __( 'Enter a comma separated list of roles that should not see the CUSTOM FIELDS tab. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+					'desc'    => __( 'Enter a comma separated list of roles that should not see the CUSTOM FIELDS tab. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
 					'default' => ''
 				),
 				array(
 					'name'    => __( 'Roles That Are NOT Allowed Access To The Additional Interested Parties Tab', 'awesome-support' ),
 					'id'      => 'hide_ai_tab_roles',
 					'type'    => 'text',
-					'desc'    => __( 'Enter a comma separated list of roles that should not see the ADDITIONAL INTERESTED PARTIES tab. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+					'desc'    => __( 'Enter a comma separated list of roles that should not see the ADDITIONAL INTERESTED PARTIES tab. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
 					'default' => ''
 				),
 				array(
 					'name'    => __( 'Roles That Are NOT Allowed Access To The Tags Metabox', 'awesome-support' ),
 					'id'      => 'hide_tags_mb_roles',
 					'type'    => 'text',
-					'desc'    => __( 'Enter a comma separated list of roles that should not see the tags metabox. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+					'desc'    => __( 'Enter a comma separated list of roles that should not see the tags metabox. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
 					'default' => ''
 				),
 
@@ -105,7 +105,7 @@ function wpas_get_editing_history_options() {
 			'name'    => __( 'Roles That Are NOT Allowed to Edit Ticket Content', 'awesome-support' ),
 			'id'      => 'roles_edit_ticket_content',
 			'type'    => 'text',
-			'desc'    => __( 'Enter a comma separated list of roles that should NOT be able to edit ticket content. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+			'desc'    => __( 'Enter a comma separated list of roles that should NOT be able to edit ticket content. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
 			'default' => '',
 		),
 
@@ -121,7 +121,7 @@ function wpas_get_editing_history_options() {
 			'name'    => __( 'Roles That Can Edit All Replies', 'awesome-support' ),
 			'id'      => 'roles_edit_all_replies',
 			'type'    => 'text',
-			'desc'    => __( 'Enter a comma separated list of roles that should be able to edit any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+			'desc'    => __( 'Enter a comma separated list of roles that should be able to edit any agent and user reply. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
 			'default' => '',
 		),
 		
@@ -131,15 +131,24 @@ function wpas_get_editing_history_options() {
 			'type'    => 'checkbox',
 			'desc'    => __( 'Would you like agents to be able to delete their own replies? (FYI: We really do not recommend allowing deletes but you do have the option if you want it!)', 'awesome-support' ),
 			'default' => false
-		),
+		),		
 		
 		array(
 			'name'    => __( 'Roles That Can Delete All Replies', 'awesome-support' ),
 			'id'      => 'roles_delete_all_replies',
 			'type'    => 'text',
-			'desc'    => __( 'Enter a comma separated list of roles that should be able to delete any agent and user reply. Roles should be the internal WordPress role id such as wpas_support_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
+			'desc'    => __( 'Enter a comma separated list of roles that should be able to delete any agent and user reply. Roles should be the internal WordPress role id such as wpas_agent and are case sensitive. There should be no spaces between the commas and role names when entering multiple roles.', 'awesome-support' ),
 			'default' => '',
-		),	
+		),
+
+		array(
+			'name'    => __( 'Permanently Delete Replies', 'awesome-support' ),
+			'id'      => 'permanently_trash_replies',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Check this to allow replies to be permanently deleted. If you do not check this option, deleted items will end up in the WordPress trash bin which will allow you to see the deletion in-line.  They can be permanently deleted later with most third-party clean-up plugins.', 'awesome-support' ),
+			'default' => false
+		),
+		
 		array(
 			'name'    => __( 'Log content edits', 'awesome-support' ),
 			'id'      => 'log_content_edit_level',

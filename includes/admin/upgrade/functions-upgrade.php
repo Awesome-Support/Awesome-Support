@@ -325,14 +325,14 @@ function wpas_upgrade_511() {
 
 
 /**
- * Upgrade function for version 5.2.1
+ * Upgrade function for version 5.2.0
  *
  * New capabilities need to be added to certain roles.
  *
- * @since 5.2.1
+ * @since 5.2.0
  * @return void
  */
-function wpas_upgrade_521() {
+function wpas_upgrade_520() {
 
 	/* Add new capabilities to these roles and all users assigned these roles:
 	 *
@@ -432,4 +432,21 @@ function wpas_upgrade_521() {
 		wpas_update_option( $mr_setting_name, get_settings_defaults( $mr_setting_name ), true );
 	}
 
+}
+
+/**
+ * Upgrade function for version 5.5.0
+ *
+ * New capabilities need to be added to certain roles.
+ *
+ * @since 5.5.0
+ * @return void
+ */
+function wpas_upgrade_550() {
+	// Run the 520 upgrade option for version 550.
+	// The 520 upgrade was the internal upgrade option during testing of the 550 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 550 routine.
+	// But we do want early 520 adopters to get the later changes to the update routine.  So
+	// we create this 550 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_520();
 }
