@@ -930,12 +930,6 @@ class WPAS_Privacy_Option {
 			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'delete-existing-data' )" data-id="delete-existing"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
 			<?php			
 		}
-		
-		if ( true === boolval( wpas_get_option( 'privacy_show_export_data_tab', true) ) ) {
-			?>
-			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-existing-data' )" data-id="export-existing"><?php esc_html_e( 'Export my data', 'awesome-support' ); ?></button>
-			<?php			
-		}
 
 		if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {
 			?>		
@@ -943,6 +937,11 @@ class WPAS_Privacy_Option {
 			<?php
 		}
 
+		if ( true === boolval( wpas_get_option( 'privacy_show_export_data_tab', true) ) ) {
+			?>
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-existing-data' )" data-id="export-existing"><?php esc_html_e( 'Export All Data', 'awesome-support' ); ?></button>
+			<?php			
+		}
 		
 	}	
 

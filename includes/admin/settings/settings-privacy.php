@@ -110,7 +110,7 @@ function wpas_core_settings_privacy( $def ) {
 				),
 
 				array(
-					'name' => __( 'Export Tickets', 'awesome-support' ),
+					'name' => __( 'Export All Data', 'awesome-support' ),
 					'desc' => __( 'Options when allowing users to request export of their tickets data', 'awesome-support' ),
 					'type' => 'heading',
 				),
