@@ -30,11 +30,28 @@ class WPAS_Email_Notification {
 	 * ID of the related ticket.
 	 *
 	 * The ticket ID can be the same as the post ID if the provided post ID
-	 * is a new ticket. Otherwise $post_id is a reply.
+	 * is a new ticket. Otherwise $post_id is a reply or some other post type 
+	 * registered an add-on such as private notes.
 	 *
 	 * @var  integer
 	 */
 	protected $ticket_id;
+	
+	/**
+	 * Contents of a reply 
+	 *
+	 * Holds the contents of a reply.
+	 *
+	 * @var  boolean|object
+	 */	
+	protected $reply;
+	
+	/**
+	 * The entire contents of a ticket post
+	 *
+	 * @var  boolean|object
+	 */	
+	protected $ticket;	
 	
 	/**
 	 * Class constructor.
@@ -43,8 +60,10 @@ class WPAS_Email_Notification {
 	 */
 	public function __construct( $post_id ) {
 
-		/* Make sure the given post belongs to our plugin. */
-		if ( !in_array( get_post_type( $post_id ), array( 'ticket', 'ticket_reply' ) ) ) {
+		/* Make sure the given post belongs to our plugin. Private notes will likely be one of the post types that gets registered using the filter below. */
+		$post_types = apply_filters( 'wpas_email_notifications_post_types', array( 'ticket', 'ticket_reply' ) );
+
+		if ( !in_array( get_post_type( $post_id ), $post_types ) ) {
 			return new WP_Error( 'incorrect_post_type', __( 'The post ID provided does not match any of the plugin post types', 'awesome-support' ) );
 		}
 
@@ -90,7 +109,9 @@ class WPAS_Email_Notification {
 			return $this->reply;
 		}
 
-		if ( 'ticket_reply' !== get_post_type( $this->post_id ) ) {
+		$reply_types = apply_filters( 'wpas_email_notifications_reply_types', array( 'ticket_reply' ) );
+
+		if ( !in_array( get_post_type( $this->post_id ), $reply_types ) ) {
 			return false;
 		}
 
@@ -205,14 +226,16 @@ class WPAS_Email_Notification {
 	 */
 	private function cases_active_option() {
 
-		$cases					= $this->get_cases();
-		$cases['submission_confirmation']	= 'enable_confirmation';
-		$cases['new_ticket_assigned']		= 'enable_assignment';
+		$cases = $this->get_cases();
+		$cases['submission_confirmation']		= 'enable_confirmation';
+		$cases['new_ticket_assigned']			= 'enable_assignment';
 		$cases['new_ticket_assigned_secondary'] = 'multiple_agents_per_ticket';
 		$cases['new_ticket_assigned_tertiary']	= 'multiple_agents_per_ticket';
-		$cases['agent_reply']			= 'enable_reply_agent';
-		$cases['client_reply']			= 'enable_reply_client';
-		$cases['ticket_closed']			= 'enable_closed';
+		$cases['agent_reply']					= 'enable_reply_agent';
+		$cases['client_reply']					= 'enable_reply_client';
+		$cases['ticket_closed']					= 'enable_closed';
+		$cases['ticket_closed_agent'] 			= 'enable_closed';
+		$cases['ticket_closed_client'] 			= 'enable_closed_client';
 
 		return apply_filters( 'wpas_email_notifications_cases_active_option', $cases );
 	}
@@ -292,7 +315,15 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{agent_name}',
-				'desc' 	=> __( 'Converts into agent name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into agent name (WordPress Display Name)', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{agent_first_name}',
+				'desc' 	=> __( 'Converts into the first name of the agent', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{agent_last_name}',
+				'desc' 	=> __( 'Converts into the last name of the agent', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{agent_email}',
@@ -300,11 +331,35 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{client_name}',
-				'desc' 	=> __( 'Converts into client name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into client name (WordPress Display Name)', 'awesome-support' )
 			),
+			array(
+				'tag' 	=> '{client_first_name}',
+				'desc' 	=> __( 'Converts into the first name of the client', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{client_last_name}',
+				'desc' 	=> __( 'Converts into the last name of the client', 'awesome-support' )
+			),			
 			array(
 				'tag' 	=> '{client_email}',
 				'desc' 	=> __( 'Converts into client e-mail address', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{author_name}',
+				'desc' 	=> __( 'Converts into author name (WordPress Display Name)', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{author_first_name}',
+				'desc' 	=> __( 'Converts into the first name of the author', 'awesome-support' )
+			),
+			array(
+				'tag' 	=> '{author_last_name}',
+				'desc' 	=> __( 'Converts into the last name of the author', 'awesome-support' )
+			),			
+			array(
+				'tag' 	=> '{author_email}',
+				'desc' 	=> __( 'Converts into author e-mail address', 'awesome-support' )
 			),
 			array(
 				'tag' 	=> '{ticket_title}',
@@ -368,6 +423,8 @@ class WPAS_Email_Notification {
 
 		$agent  = get_user_by( 'id', (int) $agent_id  );
 		$client = get_user_by( 'id', $this->get_ticket()->post_author );
+		$author = get_user_by( 'id', $this->ticket_id === $this->post_id ? 
+			$this->get_ticket()->post_author : $this->get_reply()->post_author);
 
 		/* Get the ticket links */
 		$url_public  = get_permalink( $this->get_ticket()->ID );
@@ -395,6 +452,14 @@ class WPAS_Email_Notification {
 					$tag['value'] = !empty($agent) ? $agent->display_name : '';
 					break;
 
+				case 'agent_first_name':
+					$tag['value'] = !empty($agent) ? $agent->first_name : '';
+					break;
+
+				case 'agent_last_name':
+					$tag['value'] = !empty($agent) ? $agent->first_name : '';
+					break;
+					
 				/* E-mail of the agent assigned to this ticket */
 				case 'agent_email':
 					$tag['value'] = !empty($agent) ? $agent->user_email : '';
@@ -403,9 +468,33 @@ class WPAS_Email_Notification {
 				case 'client_name':
 					$tag['value'] = !empty($client) ? $client->display_name : '';
 					break;
-
+					
+				case 'client_first_name':
+					$tag['value'] = !empty($client) ? $client->first_name : '';
+					break;					
+				
+				case 'client_last_name':
+					$tag['value'] = !empty($client) ? $client->last_name : '';
+					break;
+					
 				case 'client_email':
 					$tag['value'] = !empty($client) ? $client->user_email : '';
+					break;
+
+				case 'author_name':
+					$tag['value'] = !empty($author) ? $author->display_name : '';
+					break;
+					
+				case 'author_first_name':
+					$tag['value'] = !empty($author) ? $author->first_name : '';
+					break;					
+				
+				case 'author_last_name':
+					$tag['value'] = !empty($author) ? $author->last_name : '';
+					break;
+					
+				case 'author_email':
+					$tag['value'] = !empty($author) ? $author->user_email : '';
 					break;
 
 				case 'ticket_title':
@@ -615,10 +704,7 @@ class WPAS_Email_Notification {
 			return new WP_Error( 'unknown_notification', __( 'The requested notification does not exist', 'awesome-support' ) );
 		}
 
-		// Only check the higher level 'ticket_closed' for both ticket_closed_agent and ticket_closed_client
-		$check = in_array( $case, array( 'ticket_closed_agent', 'ticket_closed_client' ) ) ? 'ticket_closed' : $case;
-
-		if ( !$this->is_active( $check ) ) {
+		if ( !$this->is_active( $case ) ) {
 			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'awesome-support' ) );
 		}
 
@@ -658,23 +744,27 @@ class WPAS_Email_Notification {
 		 * @param WP_User $user
 		 * @param string  $case
 		 * @param int     $ticket_id
+		 * @param int     $post_id
 		 */
-		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id );
+		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id, $this->post_id );
 
 		$recipients = $recipient_emails = array();
-		$recipients[] = $user;
+		if (is_array($user)) {
+			$recipients = array_merge($recipients, $user);
+		} else {
+			$recipients[] = $user;
+		}
 		
 		if( wpas_is_multi_agent_active() ) {
 			// We need to notify other agents
-			
 			if( $case == 'agent_reply' ) {
-				$recipients = wpas_get_ticket_agents( $this->ticket_id, array($this->get_reply()->post_author) );
-				$recipients[] = $user;
+				$recipients = array_merge($recipients,
+					wpas_get_ticket_agents( $this->ticket_id, array($this->get_reply()->post_author) ) );
 			} elseif( $case == 'client_reply' ) {
 				$recipients = wpas_get_ticket_agents( $this->ticket_id );
 			}
 		}
-				
+
 		foreach( $recipients as $recipient ) {
 			if( $recipient instanceof WP_User ) {
 				$recipient_emails[] = array( 'user_id' => $recipient->ID, 'email' => $recipient->user_email );
@@ -772,8 +862,6 @@ class WPAS_Email_Notification {
 				$mail = true;
 			}
 		}		
-		
-		
 		
 		return $mail;
 

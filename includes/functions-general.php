@@ -158,7 +158,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 	if( ! is_array( $ticket_list ) ) { $ticket_list = (array) $ticket_list; }
 	if( ! is_array( $ticket_submit ) ) { $ticket_submit = (array) $ticket_submit; }
 
-	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'wpas_unassigned_mail', 'wpas_mailbox_config', 'wpas_inbox_rules', 'faq', 'wpas_gadget', 'as_security_profile', 'ruleset', 'trackedtimes', 'wpas_sla', 'wpas_issue_tracking', 'wpas_company_profile' ) );
+	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'faq', 'wpas_gadget', 'as_security_profile', 'ruleset', 'trackedtimes', 'wpas_sla', 'wpas_issue_tracking', 'wpas_company_profile' ) );
 	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
 	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
@@ -714,6 +714,21 @@ function wpas_get_settings_page_url( $tab = '' ) {
 
 }
 
+/**
+ * Get plugin ABOUT page URL.
+ *
+ * @since  5.2.0
+ * @return string      URL to the about page
+ */
+function wpas_get_about_page_url() {
+
+	$admin_url  = admin_url( 'edit.php' );
+	$query_args = array( 'post_type' => 'ticket', 'page' => 'wpas-about' );
+
+	return add_query_arg( $query_args, $admin_url );
+
+}
+
 if ( ! function_exists( 'shuffle_assoc' ) ) {
 	/**
 	 * Shuffle an associative array.
@@ -864,7 +879,7 @@ function wpas_get_submission_page_url( $post_id = false ) {
 		$url = get_permalink( (int) $submission[0] );
 	}
 
-	return wp_sanitize_redirect( $url );
+	return wp_sanitize_redirect( apply_filters( 'wpas_submission_page_url', $url, $post_id ) );
 
 }
 
@@ -905,7 +920,7 @@ function wpas_get_tickets_list_page_url() {
 		$list = $list[0];
 	}
 
-	return wp_sanitize_redirect( get_permalink( (int) $list ) );
+	return wp_sanitize_redirect( apply_filters( 'wpas_tickets_list_page_url', get_permalink( (int) $list ) ) );
 
 }
 
@@ -1295,9 +1310,17 @@ function wpas_is_support_priority_active() {
  *
  * @return boolean
  */
- function wpas_is_agent() {
-	return current_user_can( 'edit_ticket' ) ;
- }
+ function wpas_is_agent( $agent_id = false ) {
+	
+	if ( ! $agent_id ) {
+		// assume current user;
+		return current_user_can( 'edit_ticket' ) ;
+	} else {
+		// we got an agent id to check
+		return user_can( $agent_id, 'edit_ticket' ) ;
+	}
+
+}
  
  /**
  * Returns TRUE if the current user is an Awesome Support Admin
@@ -1475,7 +1498,7 @@ function wpas_get_current_user_roles() {
 		 return false ;
 	 }
 	 
-	$current_roles = wpas_get_current_user_roles();  // note that we are expect an array of roles.
+	$current_roles = wpas_get_current_user_roles();  // note that we are expecting an array of roles.
 	
 	if ( empty( $current_roles ) ) return false ;  // user not logged in for some reason so return false ;
 	
@@ -1493,3 +1516,261 @@ function wpas_get_current_user_roles() {
 	 
  }
  
+/**
+* Return whether or not the logged in user can view the custom fields tab
+* 
+* @return boolean
+*/
+function wpas_can_view_custom_field_tab() {
+	if ( wpas_current_role_in_list( wpas_get_option( 'hide_cf_tab_roles' ) ) ) {
+		return false ;
+	} else {
+		return true ;
+	}
+}
+
+/**
+ * Return whether or not the logged in user can view the additional interested parties tab
+ * 
+ * @return boolean
+ */
+function wpas_can_view_ai_tab() {
+	if ( wpas_current_role_in_list( wpas_get_option( 'hide_ai_tab_roles' ) ) ) {
+		
+		return false ;	
+		
+	} else {
+
+		$show_multiple_agents_per_ticket = boolval( wpas_get_option( 'multiple_agents_per_ticket', false ) );
+		$show_third_party_fields = boolval( wpas_get_option( 'show_third_party_fields', false ) );
+		
+		if ( true === $show_multiple_agents_per_ticket or true === $show_third_party_fields ) {
+			
+			return true ;		
+			
+		} else {
+			
+			return false ;		
+			
+		}
+	}
+}
+
+/**
+ * Helper function that list the fields that are in the additional interested parties tab.
+ * This function is used for special processing of these fields by certain routines - 
+ * for example the custom fields routines.
+ *
+ * @return array
+ */
+function wpas_fields_in_ai_tab() {
+	
+	$fields[] = 'secondary_assignee';
+	$fields[] = 'tertiary_assignee';
+	
+	$fields[] = 'first_addl_interested_party_name';
+	$fields[] = 'first_addl_interested_party_email';
+	$fields[] = 'second_addl_interested_party_name';	
+	$fields[] = 'second_addl_interested_party_email';	
+
+	return $fields;
+}
+
+/**
+ * Helper function that checks to see if a custom field is in the additional interested
+ * parties tab. This function is used for special processing of these fields by 
+ * certain routines - for example the custom fields routines.
+ *
+ * @return boolean
+ */
+function wpas_is_field_in_ai_tab( $field_name ) {
+	
+	$found = array_search( $field_name, wpas_fields_in_ai_tab() );
+	
+	if ( false === $found ) {
+		return false ;
+	} else {
+		return true ;
+	}
+	
+}
+
+/**
+ * Check if user or agent can delete attachments
+ * 
+ * @return boolean
+ */
+function wpas_can_delete_attachments() {
+	
+	$can = false;
+	
+	if( wpas_is_agent() ) {
+		if( wpas_agent_can_delete_attachments() ) {
+			$can = true;
+		}
+	} else {
+		if( wpas_user_can_delete_attachments() ) {
+			$can = true;
+		}
+	}
+	
+	return apply_filters( 'wpas_can_delete_attachments', $can );
+}
+
+/**
+ * Check if agent can delete attachments
+ * 
+ * @return boolean
+ */
+function wpas_agent_can_delete_attachments() {
+	return wpas_get_option( 'agents_can_delete_attachments' );
+}
+
+/**
+ * Check if user can delete attachments
+ * 
+ * @return boolean
+ */
+function wpas_user_can_delete_attachments() {
+	return wpas_get_option( 'users_can_delete_attachments' );
+}
+
+/**
+ * Check if user can set auto delete attachments flag
+ * 
+ * @return boolean
+ */
+function wpas_user_can_set_auto_delete_attachments() {
+	return wpas_get_option( 'user_can_set_auto_delete_attachments' );
+}
+
+
+/**
+ * Returns a ticket id related to the provided post id.
+ *
+ * Given a post id which could be a child id of a ticket, return the ticket id.
+ *
+ * @since 5.2.0
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ *
+ * @return int|boolean
+ */
+function wpas_get_ticket_id( $post_id ) {
+	
+	$ticket_id = false ;
+
+	// Is the post id passed in ticket id?  If so, use that as the ticket id.
+	$maybe_ticket = get_post($post_id) ;
+	if ( $maybe_ticket && ! is_wp_error( $maybe_ticket) && 'ticket' === get_post_type( $maybe_ticket ) ) {
+		$ticket_id = $maybe_ticket->ID ;
+	}
+	
+	// If we still don't have a ticket id yet, the id passed in is likely a child where the ticket id is in the parent...
+	if ( ! $ticket_id && ! is_wp_error( $maybe_ticket) ) {
+		
+		$maybe_parent = wp_get_post_parent_id( $post_id );
+		if ( $maybe_parent && ! is_wp_error( $maybe_parent) ) {
+			$maybe_ticket2 = get_post( $maybe_parent  ) ;
+			
+			if ( $maybe_ticket2 && ! is_wp_error( $maybe_ticket2) && 'ticket' === get_post_type( $maybe_ticket2 ) ) {
+				$ticket_id = $maybe_ticket2->ID ;
+			}
+			
+		}
+	}
+
+	return $ticket_id ;
+	
+}
+
+/**
+ * Returns a list of users involved in a ticket
+ *
+ * The list of agents will include only those with the specified capabilities.
+ *
+ * @since 5.2.0
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ * @param string $cap - the capabilities to restrict the user list to.
+ *
+ * @return array<int>|boolean
+ */
+function wpas_get_all_users_on_ticket( $post_id, $cap = 'edit_ticket' ) {
+	
+	$users = array();
+	$ticket_id = wpas_get_ticket_id( $post_id) ;
+	
+	// If we have a ticket id get all the children of the ticket and extract the agents...
+	if ( $ticket_id ) {
+		
+		$args = array(
+			'post_parent'            => $ticket_id,
+			'post_type'              => apply_filters( 'wpas_get_users_on_ticket_post_types', array( 'ticket_reply' ) ),
+			'post_status'            => 'any',
+			'order'                  => wpas_get_option( 'replies_order', 'ASC' ),
+			'orderby'                => 'date',
+			'posts_per_page'         => - 1,
+			'no_found_rows'          => true,
+			'cache_results'          => false,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);	
+		
+		$query = new WP_Query( $args );
+			
+		if (!is_wp_error( $query )) {
+			foreach ($query->posts as $reply) {
+				if (!in_array($reply->post_author, $users) && user_can( $reply->post_author, $cap )) {
+					$users[] = $reply->post_author;
+				}
+			}
+		}
+		
+	} else {
+		
+		return false ;
+		
+	}
+	
+	return $users ;
+	
+}
+
+/**
+ * Returns a list of agents involved in a ticket
+ *
+ * The list of agents will include those assigned 
+ * to the ticket or who have replied to the ticket
+ * in some way.
+ *
+ * @since 5.2.0
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ *
+ * @return array<int>|boolean
+ */
+function wpas_get_all_agents_on_ticket( $post_id ) {
+	
+	$agents = wpas_get_all_users_on_ticket( $post_id, 'edit_ticket' );
+
+	if ( ! $agents or empty( $agents ) ) {
+		$agents = array();
+	}
+	
+	// Now get the assigned agents and other agents on the ticket.
+	$ticket_id = wpas_get_ticket_id( $post_id) ;	
+	$formal_agents = wpas_get_ticket_agents( $ticket_id) ;
+	$formal_agent_ids = array();
+	
+	foreach ($formal_agents as $agent) {
+		$formal_agent_ids[] = $agent->ID;
+	}
+	
+	// Merge the different arrays...
+	$all_agents = array_unique( array_merge( $agents, $formal_agent_ids ) ) ;
+
+	// Return the unique array of agent ids.
+	return $all_agents ;
+	
+}

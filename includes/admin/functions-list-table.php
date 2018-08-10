@@ -230,3 +230,45 @@ function wpas_manage_ticket_bulk_actions( $bulk_actions ) {
 	
 	return $bulk_actions;
 }
+
+
+add_filter( 'post_row_actions', 'wpas_add_print_quick_action', 10, 2 );
+/**
+ * Add print quick action to tickets list table
+ * 
+ * @since 5.1.1
+ * 
+ * @param array $actions
+ * @param object $post
+ * 
+ * @return array
+ */
+function wpas_add_print_quick_action( $actions, $post ) {
+
+	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' ) {
+		$actions['wpas_print'] = sprintf( '<a href="#" class="wpas-admin-quick-action-print" data-id="%s">%s</a>', $post->ID, __( 'Print', 'awesome-support' ) );
+	}
+	
+	return $actions;
+	
+}
+
+
+add_filter( 'bulk_actions-edit-ticket', 'wpas_add_print_bulk_action' );
+/**
+ * Add print tickets bulk action to tickets list table
+ * 
+ * @since 5.1.1
+ * 
+ * @param array $actions
+ * 
+ * @return array
+ */
+function wpas_add_print_bulk_action( $actions ) {
+
+	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' ) {
+		$actions['wpas_print_tickets'] = __( 'Print Tickets', 'awesome-support' );
+	}
+
+	return $actions;
+}

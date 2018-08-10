@@ -22,11 +22,11 @@ function wpas_core_settings_notifications( $def ) {
 					'type' => 'heading',
 				),
 				array(
-					'name'    => __( 'Use Template', 'awesome-support' ),
+					'name'    => __( 'Use HTML Template', 'awesome-support' ),
 					'id'      => 'use_email_template',
 					'type'    => 'checkbox',
 					'default' => true,
-					'desc'    => __( 'Outgoing notifications are styled with a built-in template. If you are using an e-mail templating plugin you should deactivate this option.', 'awesome-support' )
+					'desc'    => __( 'Outgoing notifications are styled with a built-in html template. If you are using an e-mail templating plugin you should deactivate this option.', 'awesome-support' )
 				),
 				array(
 					'type' => 'note',
@@ -78,6 +78,7 @@ function wpas_core_settings_notifications( $def ) {
 				/* Submission confirmation */
 				array(
 					'name' => __( 'Submission Confirmation', 'awesome-support' ),
+					'desc' => __( 'This is sent to the user when they open a new ticket.', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -97,12 +98,12 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_confirmation',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{client_name}</em>,</strong></p><p>Your request (<a href="{ticket_url}">#{ticket_id}</a>) has been received, and is being reviewed by our support staff.</p><p>To add additional comments, follow the link below:</p><h2><a href="{ticket_url}">View Ticket</a></h2><p>or follow this link: {ticket_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* New assignment */
 				array(
 					'name' => __( 'New Assignment', 'awesome-support' ),
+					'desc' => __( 'This is sent to the agent when they are assigned to a ticket.', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -122,12 +123,12 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_assignment',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p><p>The request <strong>{ticket_title}</strong> (<a href="{ticket_admin_url}">#{ticket_id}</a>) has been assigned to you.</p><h2><a href="{ticket_admin_url}">View  Ticket</a></h2><p>or follow this link: {ticket_admin_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* New reply from agent */
 				array(
 					'name' => __( 'New Reply from Agent', 'awesome-support' ),
+					'desc' => __( 'This is sent to the user when an agent replies to a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -147,12 +148,12 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_reply_agent',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{client_name}</em>,</strong></p><p>An agent just replied to your ticket "<strong>{ticket_title}</strong>" (<a href="{ticket_url}">#{ticket_id}</a>). To view his reply or add additional comments, click the button below:</p><h2><a href="{ticket_url}">View Ticket</a></h2><p>or follow this link: {ticket_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* New reply from client */
 				array(
 					'name' => __( 'New Reply from Client', 'awesome-support' ),
+					'desc' => __( 'This is sent to agents when a new reply is received from a user.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -172,18 +173,18 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_reply_client',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p><p>A client you are in charge of just posted a new reply to his ticket "<strong>{ticket_title}</strong>".</p><h2><a href="{ticket_admin_url}">View  Ticket</a></h2><p>or follow this link: {ticket_admin_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* Ticket will close */
 				array(
 					'name' => __( 'Ticket Will Be Closed', 'awesome-support' ),
+					'desc' => __( 'These are sent as alerts to the user before a ticket is automatically closed (requires auto-close add-on otherwise this section is blank).', 'awesome-support' ),					
 					'type' => 'heading',
 				),
-
-				/* Ticket closed */
+				/* Ticket closed by agent */
 				array(
 					'name' => __( 'Ticket Closed (by agent)', 'awesome-support' ),
+					'desc' => __( 'This is sent to the user when an agent closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -203,11 +204,12 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_closed',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{client_name},</em></strong></p>Your request (<a href="{ticket_url}">#{ticket_id}</a>) has been closed by <strong>{agent_name}</strong>.</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
+				/* Ticket closed by client*/				
 				array(
 					'name' => __( 'Ticket Closed (by client)', 'awesome-support' ),
+					'desc' => __( 'This is sent to the agent when a user closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -227,7 +229,6 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_closed_client',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p>The ticket (<a href="{ticket_admin_url}">#{ticket_id}</a>) has been closed by <strong>{client_name}</strong>.</p><p>Good job!</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 			)

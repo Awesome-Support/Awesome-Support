@@ -102,7 +102,8 @@ function wpas_single_activate() {
 		'ticket_delete_priorities',
 		'ticket_manage_channels',
 		'ticket_edit_channels',
-		'ticket_delete_channels'
+		'ticket_delete_channels',
+		'ticket_manage_privacy',
 	) );
 
 	/**
@@ -131,7 +132,8 @@ function wpas_single_activate() {
 		'ticket_manage_products',
 		'ticket_manage_departments',
 		'ticket_manage_priorities',
-		'ticket_manage_channels'
+		'ticket_manage_channels',
+		'ticket_manage_privacy',
 	) );
 
 	/**
@@ -311,10 +313,28 @@ function wpas_flush_rewrite_rules() {
  * As Setup Wizard.
  * Ask the user to setup plugin using Setup Wizard.
  */
-function wpas_ask_setup_wizard(){
+function wpas_ask_setup_wizard() {
+	if ( wpas_is_asadmin() ) {
 	?>
 	<div class="updated wpas-wizard-notice">
 		<p><?php _e( 'Thank you for installing Awesome Support. <a href="'. admin_url( 'index.php?page=as-setup' ) .'" class="button button-primary">Click here</a> to get started or <a href="#" class="button" id="wpas-skip-wizard">skip this process</a>', 'awesome-support' ); ?></p>
 		<p><?php _e( 'If this is not the first time you are using Awesome Support then you should skip this process!' , 'awesome-support' ); ?></p>		
 	</div>	
-<?php }
+	<?php
+	}
+}
+
+
+/**
+ * Install the default email templates. 
+ *
+ * Hook: init
+ * Hooked in awesomesupport.php
+ *
+ */
+function wpas_install_default_email_templates() {
+
+	wpas_install_email_template( 'blue_blocks', false );
+	add_option( 'wpas_setup_email_templates', 'complete' );
+
+}

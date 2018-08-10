@@ -77,6 +77,14 @@ Ticket List
 ==========================================================================
 */
 
+
+.ticket_listing_search_types {
+        margin-top: 20px;
+        label {
+                margin-right: 20px;
+        }
+}
+
 table.wp-list-table {
 	table-layout: auto;
 
@@ -147,6 +155,13 @@ Ticket Replies
 */
 
 .wpas-table-replies {
+	table-layout: auto;
+	.col1 {
+		width: 90px;
+	}
+	.col2 {
+		width: 100%;
+	}
 	tr > td {
 		vertical-align: top;
 		padding-top: 2.25em;
@@ -226,6 +241,11 @@ Ticket Replies
 	}
 }
 
+/*
+==========================================================================
+Ticket Detail Toolbar
+==========================================================================
+*/
 .wpas-middle-toolbar-links {
 	/* Style the images for the toolbar images and links in the ticket detail screen in admin */
 	cursor: pointer ;
@@ -249,6 +269,7 @@ Ticket Replies
 	/* Show some sort of an effect when the user hovers over a toolbar item */
 	border-color: #0073AA ;
 	border-width: 2px;
+        padding: 9px;
 }
 
 #wpas-mb-toolbar .ui-sortable-handle,
@@ -273,6 +294,11 @@ Ticket Replies
 	color: #0074A2;
 }
 
+/*
+==========================================================================
+Ticket Controls
+==========================================================================
+*/
 .wpas-ticket-controls {
 	position: absolute;
 	top: auto;
@@ -374,6 +400,15 @@ Ticket Replies
 		max-width: 100%;
 		height: auto;
 	}
+	// Force responsive preformatted
+	pre {
+		width: 100%;
+		overflow: auto;
+		max-width: 50vw;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		word-break: break-all;
+	}
 }
 
 .wpas-reply-content {
@@ -390,6 +425,13 @@ Ticket Replies
 #wp-wpas_reply-wrap {
 	margin-bottom: 15px;
 }
+
+.wpas_footer_note {
+	/* Make text smaller and less gray - usually used for things that go at the bottom of a reply or ticket	*/
+	font-size: 0.75em;
+	font-color: light-gray;
+}
+
 .wp-core-ui {
 	.wpas-reply-actions {
 
@@ -418,6 +460,15 @@ Ticket Replies
 			line-height: 1.6;
 		}
 	}
+	
+	.wpas-ticket-content,
+	.wpas-reply-content {
+		// Force responsive preformatted
+		pre {
+			max-width: 80vw;
+		}
+	}	
+	
 	.wpas-reply-meta {
 		.wpas-reply-user,
 		.wpas-reply-time {
@@ -940,4 +991,37 @@ Ticket Page : Main tabs
 /* Tabs on ticket listing page */
 #wpas_admin_tabs_tickets_tablenav {
         margin-top: 20px;
+}
+
+.btn_delete_attachment {
+        margin-right: 10px;
+        width: 20px;
+        display: inline-block;
+        color: red;
+        text-decoration: none;
+        box-shadow: none;
+        &:hover {
+                font-weight: bold;
+                color: red;
+        }
+}
+
+.wpas-show-history-popup {
+	background: rgba(0, 0, 0, 0.70);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: none;
+
+    &.is-visible {
+    	display: block;
+    	z-index: 1;
+    }
+}
+
+
+.mr-deny-user-btn {
+        margin-left: 20px !important;
 }

@@ -68,8 +68,51 @@ function wpas_system_tools() {
 
 		case 'rerun_400_to_500_conversion':
 			wpas_upgrade_500();
-			break;			
+			break;	
+
+		case 'install_blue_blocks_email_template':
+			wpas_install_email_template( 'blue_blocks' );
+			break;
 			
+		case 'install_blue_blocks_ss_email_template':
+			wpas_install_email_template( 'blue_blocks-ss' );
+			break;
+			
+		case 'install_elegant_email_template':
+			wpas_install_email_template( 'elegant' );
+			break;						
+
+		case 'install_elegant_ss_email_template':
+			wpas_install_email_template( 'elegant-ss' );
+			break;
+			
+		case 'install_simple_email_template':
+			wpas_install_email_template( 'simple' );
+			break;						
+			
+		case 'install_default_email_template':
+			wpas_install_email_template( 'default' );
+			break;
+			
+		case 'install_debug_email_template':
+			wpas_install_email_template( 'debug' );
+			break;		
+		
+		case 'mark_all_auto_del_attchmnts':
+		case 'remove_mark_all_auto_del_attchmnts':
+		case 'mark_open_auto_del_attchmnts':
+		case 'remove_mark_open_auto_del_attchmnts':
+		case 'mark_closed_auto_del_attchmnts':
+		case 'remove_mark_closed_auto_del_attchmnts':
+			
+			$act = sanitize_text_field( $_GET['tool'] );
+			$act_parts = explode( '_', $act );
+			$flag_added = 'remove' === substr( $act, 0, 6 ) ? false : true;
+			$flag_ticket_type = $flag_added ? $act_parts[1] : $act_parts[2];
+			
+			WPAS_File_Upload::mark_tickets_auto_delete_attachments( $flag_ticket_type, $flag_added );
+			
+			break;
 	}
 
 	do_action('execute_additional_tools',sanitize_text_field( $_GET['tool'] ));
@@ -600,4 +643,81 @@ function wpas_reset_time_fields_to_zero() {
 	}
 	
 	return $reset;	
+}
+
+function wpas_install_email_template( $template, $overwrite = true ) {
+	
+	$template_root_path = '';  // the file path to the folder containing the template set
+	
+	// Set the variable to the template set path based on which template we need
+	switch ( $template ) {
+
+		case 'blue_blocks' : 
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block/';		
+			break;
+	
+		case 'blue_blocks-ss' : 
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block-with-satisfaction-surveys/';		
+			break;
+			
+		case 'elegant' : 
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant/';		
+			break;
+			
+		case 'elegant-ss' : 
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant-with-with-satisfaction-surveys/';		
+			break;			
+
+		case 'simple' : 
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/simple/';		
+			break;						
+			
+		case 'default' : 
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/default/';		
+			break;
+			
+		case 'debug' : 
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/debug/';		
+			break;					
+	}
+	
+	// Allow other add-ons to set this path
+	apply_filters( 'wpas_email_template_root_path', $template_root_path ) ;
+	
+	// Create array with option names and corresponding file names
+	$template_files['content_confirmation'] 	= $template_root_path . 'New-Ticket-Confirmation-Going-To-End-User.html';
+	$template_files['content_assignment'] 		= $template_root_path . 'New-Ticket-Assigned-To-Agent.html';
+	$template_files['content_reply_agent'] 		= $template_root_path . 'Agent-Reply-Going-To-End-User.html';
+	
+	$template_files['content_reply_client'] 	= $template_root_path . 'New-Reply-From-Client-Going-To-Agent.html';
+	$template_files['content_closed'] 			= $template_root_path . 'Ticket-Closed-By-Agent.html';
+	$template_files['content_closed_client'] 	= $template_root_path . 'Ticket-Closed-By-Client.html';
+	
+	// Allow other add-ons to update this array 
+	apply_filters( 'wpas_email_template_map_to_files', $template_files );
+	
+	// Read the template files into the appropriate option based on the key-fiile mapping array above.
+	foreach ( $template_files as $key => $template_file ) {
+
+	if ( file_exists( $template_file ) ) {
+		
+		$template_contents = file_get_contents( $template_file );
+
+			if ( ! empty( $template_contents ) ) {
+				
+				// Is there any existing value in the option?
+				$existing_contents = wpas_get_option( $key );
+				
+				if ( ! empty( $existing_contents ) && ! $overwrite ) {
+					// do not overwrite existing contents
+					continue ;
+				}
+				
+				wpas_update_option( $key, $template_contents, true ) ;
+			}
+			
+		}
+	}
+	
+	
 }

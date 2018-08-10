@@ -1,9 +1,41 @@
-<h1>Maintenance and Security Releases</h1>
 <p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
-<p><b>Version 5.1.1</b> Fixes a remote notification issue that left a blank strip across the top of the admin panel with no way to turn it off, added some GDPR related license disclosures and tweaked an internal filter. </p>
-<p><b>Version 5.1.0</b> Introduced a new on-boarding process wizard so that new users can get started quickly and added an option for the admin to set a default role for new users who register using our standard registration form. </p>
-<hr />
+
 <div class="changelog">
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 5.5</h1>
+				<h3>5.5 Introduces a number of new changes, tweaks and fixes! Among them are the following:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>New designs for the six core email alerts</li>
+					<li>Email template sets</li>
+					<li>Printing enhancements</li>					
+					<li>A NEW registration type: Moderated Registration</li>
+					<li>Drag-and-drop attachments </li>
+					<li>Paste images as attachments </li>
+					<li>GDPR and privacy related enhancements </li>
+					<li>Improved audit trails </li>
+					<li>Options for automatically and manually deleting attachments </li>
+					<li>New email template tags  </li>
+					<li>UI changes in the settings area (new tabs for fields and permissions)  </li>
+					<li>Bug Fixes  </li>
+					<li>Internal and developer related changes  </li>
+				</ul>
+				<p>Read all about these changes on our website: <a href="https://getawesomesupport.com/coming-soon-in-awesome-support-5-2-0/">What's New In Version 5.5</a> </p>
+			</div>		
+		</div>
+	</div>
+	
+	<hr />
+	
+	<div>	
+		<h2>Minor Releases Between 5.0.0 and 5.5.0</h2>
+		<p><b>Version 5.1.1</b> Fixes a remote notification issue that left a blank strip across the top of the admin panel with no way to turn it off, added some GDPR related license disclosures and tweaked an internal filter. </p>
+		<p><b>Version 5.1.0</b> Introduced a new on-boarding process wizard so that new users can get started quickly and added an option for the admin to set a default role for new users who register using our standard registration form. </p>
+	</div>	
+	
+	<hr />	
+	
 	<div class="row">
 		<div>
 			<div class="about-body">

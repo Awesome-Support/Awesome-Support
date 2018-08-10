@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           5.1.1
+ * Version:           5.4.0
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -208,6 +208,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			}
 
 			add_action( 'plugins_loaded', array( 'WPAS_File_Upload', 'get_instance' ), 11, 0 );
+			add_action( 'plugins_loaded', array( 'WPAS_Privacy_Option', 'get_instance' ), 11, 0 );
+			add_action( 'plugins_loaded', array( 'WPAS_GDPR_User_Profile', 'get_instance' ), 11, 0 );
 			add_action( 'plugins_loaded', array( self::$instance, 'load_plugin_textdomain' ) );
 			add_action( 'init', array( self::$instance, 'load_theme_functions' ) );
 			add_action( 'plugins_loaded', array( self::$instance, 'remote_notifications' ), 15, 0 );
@@ -246,7 +248,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '5.1.1' );
+			define( 'WPAS_VERSION',           '5.4.0' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -393,6 +395,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/custom-fields/class-custom-field.php' );
 			require( WPAS_PATH . 'includes/custom-fields/class-custom-fields.php' );
 			require( WPAS_PATH . 'includes/custom-fields/functions-custom-fields.php' );
+			require( WPAS_PATH . 'includes/gdpr-integration/gdpr-privacy-options.php' );
+			require( WPAS_PATH . 'includes/gdpr-integration/gdpr-user-profile.php' );
 			require( WPAS_PATH . 'includes/functions-actions.php' );
 			require( WPAS_PATH . 'includes/functions-post.php' );
 			require( WPAS_PATH . 'includes/functions-user.php' );
@@ -400,6 +404,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/functions-deprecated.php' );
 			require( WPAS_PATH . 'includes/class-log-history.php' );
 			require( WPAS_PATH . 'includes/class-email-notifications.php' );
+			require( WPAS_PATH . 'includes/class-user-email-notification.php' );
 			require( WPAS_PATH . 'includes/functions-general.php' );
 			require( WPAS_PATH . 'includes/functions-error.php' );
 			require( WPAS_PATH . 'includes/functions-notification.php' );
@@ -480,6 +485,10 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				/* Load settings files */
 				require( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-registration.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-moderated-registration.php' );				
+				require( WPAS_PATH . 'includes/admin/settings/settings-privacy.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-fields.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-permissions.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
@@ -510,6 +519,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
 				add_action( 'admin_init', 'wpas_create_pages', 11, 0 );
 				add_action( 'admin_init', 'wpas_flush_rewrite_rules', 11, 0 );
+				add_action( 'admin_init', 'wpas_install_default_email_templates', 11, 0 );
 			}
 
 			/**
@@ -627,7 +637,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return text the notice text to be shown to the user
 		 */		
 		function awesome_support_tracking_notification_text( $notice_text ) {
-			$notice_text = __( 'Would you like a discount on your next Awesome Support purchase?  Help us make a better product for you by allowing us to collect some anonymous statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
+			$notice_text = __( '<b>Would you like a discount on your next Awesome Support purchase?</b>  Help us make a better product for you by allowing us to collect some system statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
+			$notice_text = $notice_text . sprintf( __( ' <a %s>Find out more about what data we collect and how its used.</a> <a %s>View our privacy policy.</a>'  , 'awesome-support' ), 'a href="https://getawesomesupport.com/legal/tracking-statistics/" target="_blank"', 'a href="https://getawesomesupport.com/legal/privacy-policy/" target="_blank"' );
 			return $notice_text;
 		}
 		

@@ -343,7 +343,7 @@ class AS_Admin_Setup_Wizard {
 			<p><b><?php _e( 'Would you like to use the priority field in your tickets?', 'awesome-support' );?> </b></p>
 			<p><?php _e( 'Turn this option on if you would like to assign priorities to your tickets.', 'awesome-support' );?> </p>
 			<p><?php _e( 'After you have finished with the wizard you can configure your priority levels under TICKETS->PRIORITIES.', 'awesome-support' );?> </p>
-			<p><?php _e( 'You can also tweak how priorities work by changing settings under the TICKETS->SETTINGS->GENERAL tab.', 'awesome-support' );?> </p>
+			<p><?php _e( 'You can also tweak how priorities work by changing settings under the TICKETS->SETTINGS->FIELDS tab.', 'awesome-support' );?> </p>
 			<label for='property_field_yes'>Yes</label>
 			<input type="radio" name="property_field" id='property_field_yes' value="yes" checked />
 			<label for='property_field_no'>No</label>
@@ -380,7 +380,7 @@ class AS_Admin_Setup_Wizard {
 			<p><b><?php _e( 'Do you want to enable Departments?', 'awesome-support' );?> </b></p>
 			<p><?php _e( 'Turn this option on if you would like to assign departments to your tickets.', 'awesome-support' );?> </p>
 			<p><?php _e( 'Once enabled, you can configure your list of departments by going to TICKETS->DEPARTMENTS.', 'awesome-support' );?> </p>
-			<p><?php _e( 'You can turn this off later if you change your mind by going to the TICKETS->SETTINGS->GENERAL tab.', 'awesome-support' );?> </p>			
+			<p><?php _e( 'You can turn this off later if you change your mind by going to the TICKETS->SETTINGS->FIELDS tab.', 'awesome-support' );?> </p>			
 			<label for='departments_field_yes'>Yes</label>
 			<input type="radio" name="departments_field" id='departments_field_yes' value="yes" checked />
 			<label for='departments_field_no'>No</label>

@@ -66,7 +66,7 @@
 			} else {
 
 				$output = '';
-				$output .= wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'awesome-support' ) );
+				$output .= wpas_get_notification_markup( 'info', __( 'You are currently logged out.  To view tickets you must first login.', 'awesome-support' ) );
 
 				ob_start();
 				wpas_get_template( 'registration' );
@@ -448,7 +448,7 @@
 			 */
 			do_action( 'wpas_ticket_details_reply_textarea_after' );
 
-			if ( current_user_can( 'close_ticket' ) && apply_filters( 'wpas_user_can_close_ticket', true, $post_id ) ): ?>
+			if ( current_user_can( 'close_ticket' ) && boolval( wpas_get_option( 'allow_user_to_close_tickets', true ) ) && apply_filters( 'wpas_user_can_close_ticket', true, $post_id ) ): ?>
 
                 <div class="checkbox">
                     <label for="close_ticket" data-toggle="tooltip" data-placement="right" title=""
@@ -655,7 +655,11 @@
 
 				$id    = get_the_ID();
 				$title = get_the_title();
-				$title .= " (#$id)";
+				
+				/* Maybe add the ticket id to the title string */
+				if ( ! boolval( wpas_get_option( 'hide_ticket_id_title_fe', false ) ) ) {
+					$title .= " (#$id)";
+				}
 
 				?><a href="<?php echo $link; ?>"><?php echo $title; ?></a><?php
 				break;
@@ -1341,13 +1345,15 @@
 
 		$gdpr_short_desc_01 = wpas_get_option( 'gdpr_notice_short_desc_01', '' );
 		$gdpr_long_desc_01 = wpas_get_option( 'gdpr_notice_long_desc_01', '' );
+		$gdpr_opt_out_ok_01 = wpas_get_option('gdpr_notice_opt_out_ok_01', '' );
+		$gdpr_required_01 = boolval( wpas_get_option( 'gdpr_notice_mandatory_01', true ) );
 
 		if ( ! empty( $gdpr_short_desc_01 ) || ! empty( $gdpr_short_desc_01 ) ) {
 
 			$gdpr01 = new WPAS_Custom_Field( 'gdpr01', array(
 				'name' => 'gdpr01',
 				'args' => array(
-					'required'   => true,
+					'required'   => $gdpr_required_01,
 					'field_type' => 'checkbox',
 					'sanitize'   => 'sanitize_text_field',
 					'options'    => array( '1' => $gdpr_short_desc_01 ),
@@ -1360,13 +1366,15 @@
 		
 		$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
 		$gdpr_long_desc_02 = wpas_get_option( 'gdpr_notice_long_desc_02', '' );
+		$gdpr_opt_out_ok_02 = wpas_get_option('gdpr_notice_opt_out_ok_02', '' );
+		$gdpr_required_02 = boolval( wpas_get_option( 'gdpr_notice_mandatory_02', true ) );
 
 		if ( ! empty( $gdpr_short_desc_02 ) || ! empty( $gdpr_short_desc_02 ) ) {
 
 			$gdpr02 = new WPAS_Custom_Field( 'gdpr02', array(
 				'name' => 'gdpr02',
 				'args' => array(
-					'required'   => true,
+					'required'   => $gdpr_required_02,
 					'field_type' => 'checkbox',
 					'sanitize'   => 'sanitize_text_field',
 					'options'    => array( '1' => $gdpr_short_desc_02 ),
@@ -1379,13 +1387,15 @@
 
 		$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
 		$gdpr_long_desc_03 = wpas_get_option( 'gdpr_notice_long_desc_03', '' );
+		$gdpr_required_03 = boolval( wpas_get_option( 'gdpr_notice_mandatory_03', true ) );
+		$gdpr_opt_out_ok_03 = wpas_get_option('gdpr_notice_opt_out_ok_03', '' );
 
 		if ( ! empty( $gdpr_short_desc_03 ) || ! empty( $gdpr_short_desc_03 ) ) {
 
 			$gdpr03 = new WPAS_Custom_Field( 'gdpr03', array(
 				'name' => 'gdpr03',
 				'args' => array(
-					'required'   => true,
+					'required'   => $gdpr_required_03,
 					'field_type' => 'checkbox',
 					'sanitize'   => 'sanitize_text_field',
 					'options'    => array( '1' => $gdpr_short_desc_03 ),
@@ -1421,8 +1431,9 @@
 			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $readonly ) ) ) {
 				$readonly = true;
 
-				// Disable tiny mce editor
-				add_filter( 'tiny_mce_before_init', 'wpas_cf_field_time_tracking_disable_tiny_mce' );
+				// Disable tiny mce editor for notes field
+				//@Todo: Need to find a way to do this without affecting all other editors on the page.
+				// Theoretically, this really should be done in the custom field itself when the readonly attrtibute is set/reset to true.
 
 			}
 
@@ -1432,23 +1443,6 @@
 
 	}
 
-	/**
-	 * Disable tiny mce editor for Time Tracking Notes when readonly
-	 *
-	 * @since 3.3.5
-	 *
-	 * @param $args
-	 *
-	 * @return mixed
-	 */
-	function wpas_cf_field_time_tracking_disable_tiny_mce( $args ) {
-
-		$args[ 'readonly' ] = true;
-
-		return $args;
-
-	}
-	
 	/**
 	 * Returns the URL that the user should be redirected to when the logout button is pushed
 	 *

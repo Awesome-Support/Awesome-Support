@@ -349,7 +349,7 @@ class WPAS_Custom_Fields {
 
 		$fields = $this->get_custom_fields();
 		$fields = $this->sort_custom_fields( $fields ) ;		
-
+		
 		if ( ! empty( $fields ) ) {
 
 			// If we're painting the custom fields on the front-end wrap them in a bootstrap container class.		
@@ -537,7 +537,6 @@ class WPAS_Custom_Fields {
 				if ( isset( $data[ $field_form_id ] ) ) {
 					$this->save_core_field( $post_id, $field, $data[ $field_form_id ] );
 				}
-
 				continue;
 			}
 
@@ -547,7 +546,7 @@ class WPAS_Custom_Fields {
 			 * If we're on the admin and the custom field is set as
 			 * "no edit" (by restricting the capability), then the field
 			 * won't be passed in the $_POST, which as a result would have
-			 * the field deleted.
+			 * the field deleted unless it is skipped.
 			 *
 			 * If the no edit mode is enabled for the current field, we simply ignore it.
 			 */
@@ -555,6 +554,36 @@ class WPAS_Custom_Fields {
 				continue;
 			}
 
+			/**
+			 * Ignore fields if the agent cannot see them in the custom fields tab.
+			 *
+			 * When the agent cannot see the custom fields tab then the field
+			 * won't be passed in the $_POST, which as a result would have
+			 * the field deleted unless it is skipped here.
+			 *
+			 * So, to prevent this, we just ignore most of the custom fields 
+			 * that are normally shown in that tab.
+			 */
+			if( is_admin() ) {
+				if ( !wpas_can_view_custom_field_tab() && ( !$field['args']['hide_front_end'] || $field['args']['backend_only'] ) ) {
+					continue;
+				}
+			}
+
+			/**
+			 * Ignore Additional Interested Party fields if the agent cannot see them 
+			 * in the additional interested parties tab.
+			 *
+			 * When the agent cannot see the then the field  won't be passed 
+			 * in the $_POST, which as a result would have the field deleted 
+			 * unless it is skipped here.
+			 */			
+			if (is_admin() ) {
+				if ( ! wpas_can_view_ai_tab() && wpas_is_field_in_ai_tab( $field['name'] ) ) {
+					continue ;
+				}					
+			}
+			
 			/**
 			 * Get the custom field object.
 			 */
@@ -684,7 +713,7 @@ class WPAS_Custom_Fields {
 		 * Log the changes if any.
 		 */
 		if ( ! empty( $log ) ) {
-			wpas_log( $post_id, $log );
+			wpas_log_history( $post_id, $log );
 		}
 
 		/**
@@ -747,7 +776,7 @@ class WPAS_Custom_Fields {
 		if ( empty( $data ) && ! empty( $_POST ) ) {
 			$data = $_POST;
 		}
-
+		
 		$result = $this->is_field_missing( $data );
 
 		return false === $result ? true : $result;
@@ -786,8 +815,17 @@ class WPAS_Custom_Fields {
 
 			if ( true === $field['args']['required'] && false === $field['args']['core'] ) {
 
-				if ( ! isset( $data[ $field_name ] ) || empty( $data[ $field_name ] ) ) {
+				/* This if code-block handles the situation where an upload field is mandatory.  Without this block, if the field is mandatory and a file upload */
+				/* we would not see that the filed had been uploaded because the data is stored in a file and not in an actual field. So we set the contents of  */
+				/* the custom field here to the name of the file that was uploaded. 																			 */
+				/* @TODO:  It is possible that this should be handled earlier in the custom fields process? 													 */
+				if( 'upload' === $field['args']['field_type'] && isset( $_FILES[ $field_name ] ) && !empty( $_FILES[ $field_name ] )  ) {
+						$data[ $field_name ] = $_FILES[ $field_name ];
+				}
 
+				/* Set error message if field is mandatory but no data is in the field. */
+				if ( ! isset( $data[ $field_name ] ) || empty( $data[ $field_name ] ) ) {
+					
 					/* Get field title */
 					$title = ! empty( $field['args']['title'] ) ? $field['args']['title'] : wpas_get_title_from_id( $field['name'] );
 

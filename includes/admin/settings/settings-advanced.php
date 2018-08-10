@@ -84,6 +84,18 @@ function wpas_core_settings_advanced( $def ) {
 					'default' => false
 				),
 				array(
+					'name'    => __( 'Render Method', 'awesome-support' ),
+					'id'      => 'attachment_render_method',
+					'type'    => 'radio',
+					'desc'    => __( 'How should the attachment be rendered when attachments are using masked links? In-line will try to show attachments in the browser. Download will always download the attachment, regardless of what type it is.', 'awesome-support' ),
+					'default' => 'inline',
+					'options' => array(
+						'inline'           => __( 'Inline', 'awesome-support' ),
+						'attachment'       => __( 'Download', 'awesome-support' ),
+					),
+				),
+				
+				array(
 					'name'    => __( '.htaccess Contents', 'awesome-support' ),
 					'id'      => 'htaccess_contents_for_attachment_folders',
 					'type'    => 'textarea',

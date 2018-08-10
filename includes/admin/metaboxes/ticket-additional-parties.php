@@ -4,6 +4,8 @@
  *
  * This metabox is used to display additional interested parties
  *
+ * Note: Any changes made here should also be made in the wpas_fields_in_ai_tab() function.
+ *
  *
  * @since 3.3.5
  */

@@ -14,7 +14,7 @@ global $post;
 $submit        = get_permalink( wpas_get_option( 'ticket_list' ) );
 $registration  = wpas_get_option( 'allow_registrations', 'allow' ); // Make sure registrations are open
 $redirect_to   = get_permalink( $post->ID );
-$wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-register';
+$wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'wpas-login-only' : 'wpas-login-register';
 ?>
 
 <div class="wpas <?php echo $wrapper_class; ?>">
@@ -78,7 +78,7 @@ $wrapper_class = 'allow' !== $registration ? 'wpas-login-only' : 'wpas-login-reg
 	</form>
 	
 	<?php
-	if ( 'allow' === $registration ): ?>
+	if ( 'allow' === $registration || 'moderated' === $registration ): ?>
 
 		<form class="wpas-form" id="wpas_form_registration" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
 			<h3><?php _e( 'Register', 'awesome-support' ); ?></h3>

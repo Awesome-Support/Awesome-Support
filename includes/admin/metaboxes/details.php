@@ -114,5 +114,8 @@ if ( isset( $post ) ) {
 		<?php endif; ?>
 		<div class="clear"></div>
 	</div>
+	
+	<?php do_action( 'wpas_backend_ticket_status_after_actions', $post->ID ); ?>
+	
 </div>
 

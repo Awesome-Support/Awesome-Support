@@ -26,6 +26,14 @@ General Scaffolding / Reset
 		width: 100%;
 	}
 }
+/*
+* Break words when they are too long
+*/
+.wpas-break-words {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
 /* Avoid TinyMCE overrides */
 .mce-toolbar .mce-btn button:hover {
 	background: inherit;
@@ -102,4 +110,22 @@ Attachments on the front end
 */
 #wpas_files_wrapper #wpas_files {
         height: auto;
+}
+
+
+.btn_delete_attachment {
+        margin-right: 10px;
+        width: 20px;
+        display: inline-block;
+        color: red;
+        text-decoration: none;
+        box-shadow: none !important;
+        &:hover {
+                font-weight: bold;
+                color: red;
+        }
+}
+
+.wpas-reply-single .wpas-auto-delete-attachments-container label {
+        display: inline;
 }

@@ -141,7 +141,7 @@ function wpas_admin_tabs_wpas_about_credits_content( $content ) {
 <div class="wrap about-wrap">
 
 	<h1>Welcome to Awesome Support&nbsp;<?php echo WPAS_VERSION; ?></h1>
-	<div class="about-text">Trusted by over 7000+ Happy Users, Awesome Support is the most versatile WordPress support plugin.</div>	
+	<div class="about-text">Trusted by over 8000+ Happy Users, Awesome Support is the most versatile WordPress support plugin.</div>	
 	<hr />	
 	
 	<?php echo wpas_admin_tabs( 'wpas_about' ); ?>

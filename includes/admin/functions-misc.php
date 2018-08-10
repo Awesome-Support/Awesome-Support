@@ -95,39 +95,71 @@ add_filter( 'wpas_ticket_reply_controls', 'wpas_ticket_reply_controls', 10, 3 );
  */
 function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 
-	if ( 0 !== $ticket_id && get_current_user_id() == $reply->post_author ) {
+	if ( 0 !== $ticket_id ) {
 
-		$_GET['del_id'] = $reply->ID;
-		$url            = add_query_arg( $_GET, admin_url( 'post.php' ) );
-		remove_query_arg( 'message', $url );
-		$delete         = wpas_do_url( admin_url( 'post.php' ), 'admin_trash_reply', array( 'post' => $ticket_id, 'action' => 'edit', 'reply_id' => $reply->ID ) );
-		wp_nonce_url( add_query_arg( array(
-				'post'   => $ticket_id,
-				'rid'    => $reply->ID,
-				'action' => 'edit_reply'
-		), admin_url( 'post.php' ) ), 'delete_reply_' . $reply->ID );
+		// Create a delete link and then add the delete reply icon.
+		if ( ( ( true === boolval( wpas_get_option( 'agent_delete_own_reply', false ) ) && get_current_user_id() == $reply->post_author ) ) 
+				|| true === wpas_is_asadmin() 
+				|| true === wpas_current_role_in_list( wpas_get_option( 'roles_delete_all_replies', '' ) )  ) {
+			
+			// Create delete link
+			$_GET['del_id'] = $reply->ID;
+			$url            = add_query_arg( $_GET, admin_url( 'post.php' ) );
+			remove_query_arg( 'message', $url );
+			$delete         = wpas_do_url( admin_url( 'post.php' ), 'admin_trash_reply', array( 'post' => $ticket_id, 'action' => 'edit', 'reply_id' => $reply->ID ) );
+			wp_nonce_url( add_query_arg( array(
+					'post'   => $ticket_id,
+					'rid'    => $reply->ID,
+					'action' => 'edit_reply'
+			), admin_url( 'post.php' ) ), 'delete_reply_' . $reply->ID );
 
-		/* Add delete reply icon */
-		$controls['delete_reply'] = wpas_reply_control_item( 'delete_reply' ,array(
-			'title' => esc_html_x( 'Delete', 'Link to delete a ticket reply', 'awesome-support' ),
-			'link'	=> esc_url( $delete ),
-			'icon'  => WPAS_URL . 'assets/admin/images/delete-ticket-reply.png',
-			'classes' => 'wpas-delete'
-		));
+			/* Add delete reply icon */
+			$controls['delete_reply'] = wpas_reply_control_item( 'delete_reply' ,array(
+					'title' => esc_html_x( 'Delete', 'Link to delete a ticket reply', 'awesome-support' ),
+					'link'	=> esc_url( $delete ),
+					'icon'  => WPAS_URL . 'assets/admin/images/delete-ticket-reply.png',
+					'classes' => 'wpas-delete'
+				)
+			);
+		}
 		
 		/* Add edit reply icon */
-		$controls['edit_reply'] = wpas_reply_control_item( 'edit_reply' ,array(
-			'title' => esc_html_x( 'Edit', 'Link to edit a ticket reply', 'awesome-support' ),
-			'link'	=> '#',
-			'icon' => WPAS_URL . 'assets/admin/images/edit-ticket-reply.png',
-			'classes' => 'wpas-edit',
-			'data' => array( 
-				'origin'=> "#wpas-reply-{$reply->ID}",
-				'replyid' => $reply->ID,
-				'reply' => "wpas-editwrap-{$reply->ID}",
-				'wysiwygid'=> "wpas-editreply-{$reply->ID}"
-			)
-		));
+		if ( ( ( true === boolval( wpas_get_option( 'agent_edit_own_reply', false ) ) && get_current_user_id() == $reply->post_author ) ) 
+				|| true === wpas_is_asadmin() 
+				|| true === wpas_current_role_in_list( wpas_get_option( 'roles_edit_all_replies', '' ) )  ) {
+					
+			$controls['edit_reply'] = wpas_reply_control_item( 'edit_reply' ,array(
+					'title' => esc_html_x( 'Edit', 'Link to edit a ticket reply', 'awesome-support' ),
+					'link'	=> '#',
+					'icon' => WPAS_URL . 'assets/admin/images/edit-ticket-reply.png',
+					'classes' => 'wpas-edit',
+					'data' => array( 
+						'origin'=> "#wpas-reply-{$reply->ID}",
+						'replyid' => $reply->ID,
+						'reply' => "wpas-editwrap-{$reply->ID}",
+						'wysiwygid'=> "wpas-editreply-{$reply->ID}"
+					)
+				) 
+			);
+		}
+
+		/** Add reply history icon */
+		if( get_current_user_id() == $reply->post_author || true === wpas_is_asadmin() ) {
+
+			$controls['reply_history'] = wpas_reply_control_item( 'reply_history' ,array(
+				'title' => esc_html_x( 'History', 'View ticket reply history', 'awesome-support' ),
+				'link'	=> '#',
+				/**
+				 * @TODO: replce this icon into correct version
+				 */
+				'icon' => WPAS_URL . 'assets/admin/images/mark-as-read.png',
+				'classes' => 'wpas-show-reply-history',
+				'data' => array( 
+					'replyid' => $reply->ID
+				)
+			) 
+		);
+		}
 
 	}
 
@@ -573,7 +605,7 @@ function wpas_admin_tabs( $type, $tabs = array() ) {
 	<div class="wpas_admin_tabs" id="<?php echo $id; ?>">
 		<div class="wpas_admin_tabs_names_wrapper">
 			<ul>
-			    <?php echo implode( '', $tab_content_items_ar ); ?>
+				<?php echo implode( '', $tab_content_items_ar ); ?>
 				<li class="moreTab">
 					<ul class="dropdown-menu tabs_collapsed"></ul>
 				</li>
@@ -586,8 +618,9 @@ function wpas_admin_tabs( $type, $tabs = array() ) {
 	<?php
 	
 	
-	return ob_get_clean();
-	
+	$output = ob_get_contents();
+	ob_end_clean();
+	return apply_filters( 'wpas_admin_tabs', $output, $tab_content_items_ar, $tab_content_ar, $id, $tabs );
 }
 
 

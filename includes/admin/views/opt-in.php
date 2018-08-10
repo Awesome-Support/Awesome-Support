@@ -23,8 +23,8 @@
 
 		<h2><?php esc_html_e( 'How to Get Your Free Addon', 'awesome-support' ); ?></h2>
 
-		<p><?php esc_attr_e( 'Getting your addon is dead simple: just subscribe to our newsletter hereafter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new major features in Awesome Support or when new addons are being released. That&#039;s it.', 'awesome-support' ); ?></p>
-
+		<p><?php echo sprintf( __( 'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in Awesome Support, let you know when new or updated addons are being released and provide informative articles that show you how to use Awesome Support to its full potential. <a href="%s" %s>View our privacy policy</a>', 'awesome-support' ), 'https://getawesomesupport.com/legal/privacy-policy/', 'target="_blank"' ) ; ?></p>
+		
 		<div id="wpas-mailchimp-signup-form-wrapper">
 			<form action="<?php echo add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-optin' ), admin_url( 'edit.php' ) ); ?>" method="post" id="wpas-mailchimp-signup-form" name="wpas-mailchimp-signup-form">
 				<table class="form-table">

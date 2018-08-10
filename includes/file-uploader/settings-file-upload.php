@@ -40,6 +40,76 @@ function wpas_addon_settings_file_upload( $def ) {
 					'default' => 'jpg,jpeg,png,gif,pdf,doc,docx,ppt,pptx,pps,ppsx,odt,xls,xlsx,mp3,m4a,ogg,wav,mp4,m4v,mov,wmv,avi,mpg,ogv,3gp,3g2,zip',
 					'desc'    => sprintf( __( 'Which file types do you allow your users to attach? Please separate each extension by a comma (%s)', 'awesome-support' ), '<code>,</code>' )
 				),
+				
+				array(
+					'name' => __( 'Drag and Drop Uploads', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Enable or disable drag-and-drop uploads as well as pasting of images', 'awesome-support' ),					
+				),				
+				array(
+					'name'    => __( 'Enable', 'awesome-support' ),
+					'id'      => 'ajax_upload',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable drag-n-drop uploader for ticket form', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable For All', 'awesome-support' ),
+					'id'      => 'ajax_upload_all',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable drag-n-drop uploader for all custom upload fields', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable Image Paste', 'awesome-support' ),
+					'id'      => 'ajax_upload_paste_image',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable pasting of images into drag-n-drop uploader for ticket form when the drag-n-drop uploader is enabled', 'awesome-support' )
+				),
+				array(
+					'name'    => __( 'Enable Image Paste For All', 'awesome-support' ),
+					'id'      => 'ajax_upload_paste_image_all',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( 'Enable pasting of images into drag-n-drop uploader for all custom upload fields when the drag-n-drop uploader is enabled', 'awesome-support' )
+				),
+				
+				array(
+					'name' => __( 'Permissions', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Control who can delete ticket or reply attachments', 'awesome-support' ),					
+				),
+				
+				array(
+					'name'    => __( 'Agents Can Delete?', 'awesome-support' ),
+					'id'      => 'agents_can_delete_attachments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Check this to allow agents to delete attachments', 'awesome-support' ),
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Users Can Delete?', 'awesome-support' ),
+					'id'      => 'users_can_delete_attachments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Check this to allow users to delete attachments', 'awesome-support' ),
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Auto-delete On Close?', 'awesome-support' ),
+					'id'      => 'auto_delete_attachments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Automatically delete ALL attachments on a ticket when the ticket is closed', 'awesome-support' ),
+					'default' => false
+				),
+				array(
+					'name'    => __( 'User Controls Auto-delete Flag?', 'awesome-support' ),
+					'id'      => 'user_can_set_auto_delete_attachments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Can the user control whether or not attachments should be automatically deleted on close?', 'awesome-support' ),					
+					'default' => false
+				),
+				
 			)
 		),
 	);

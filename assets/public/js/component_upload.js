@@ -31,6 +31,61 @@
 				}
 			});
 		}
+                
+                /* Delete single attachment from front-end or back-end  */
+                $('body').delegate( '.btn_delete_attachment', 'click', function( e ) {
+                    
+                    e.preventDefault();
+                    
+                    var btn = $(this);
+                    
+                    var loader = $('<span class="spinner" style="visibility: visible;margin-left: 0;float: left;margin-top: 0;"></span>');
+                        loader.insertAfter( btn );
+                    
+                    btn.hide();
+                    
+                    var parent_id = $(this).data('parent_id');
+                    var att_id = $(this).data('att_id');
+                    
+                    var data = {
+                        action   : 'wpas_delete_attachment',
+                        parent_id : parent_id,
+                        att_id : att_id
+                    };
+
+                    $.post( ajaxurl, data, function (response) {
+
+                        btn.show();
+                        loader.remove();
+                        
+                        if( response.success ) {
+                                btn.closest('li').html(response.data.msg)
+                        }
+                        
+                    });
+            });
+            
+            /* front end update auto delete attachments flag */
+            $('#wpas-new-reply .wpas-auto-delete-attachments-container input[type=checkbox]').change( function() {
+                    var btn = $(this);
+                    
+                    var loader = $('<span class="spinner" style="visibility: visible;margin-left: 0;float: left;margin-top: 0;"></span>');
+                        loader.insertAfter( btn );
+                    
+                    btn.hide();
+                    
+                    
+                    var data = {
+                        action   : 'wpas_auto_delete_attachment_flag',
+                        ticket_id : wpas.ticket_id,
+                        auto_delete : btn.is(':checked') ? '1' : '0'
+                    };
+
+                    $.post( ajaxurl, data, function (response) {
+                        btn.show();
+                        loader.remove();
+                    });
+            });
 
 	});
 
