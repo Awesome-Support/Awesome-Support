@@ -28,6 +28,10 @@
 	-webkit-border-radius: 3px;
 	padding: 20px;
 	position: relative;
+	/* Scrollable */
+	max-height: 100%;
+	overflow-y: scroll;
+	box-sizing: border-box;
 }
 
 @media (max-width: 1024px) {
