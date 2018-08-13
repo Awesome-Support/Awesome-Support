@@ -1,6 +1,11 @@
 <p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
 
 <div class="changelog">
+<div>	
+	<h2>Maintenance Releases since 5.5.0</h2>
+	<p><b>Version 5.5.1</b> includes two bug fixes - one for a cron issue and another for better handling of attachments with empty replies. </p>
+</div>	
+
 	<div class="row">
 		<div>
 			<div class="about-body">

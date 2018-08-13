@@ -171,8 +171,8 @@ class WPAS_Privacy_Option {
 				'interval' => ($trigger_time * 60),
 				'display' => __('GDPR Ticket cleanup cron', 'awesome-support' )
 			);
-			return $schedules;
 		}
+		return $schedules;		
 	}
 
 	/**
