@@ -178,7 +178,7 @@ function wpas_save_ticket( $post_id ) {
 	}
 
 	/* Save the possible ticket reply */
-	if ( isset( $_POST['wpas_reply'] ) && isset( $_POST['wpas_reply_ticket'] ) && '' !== $_POST['wpas_reply'] ) {
+	if ( ! wpas_is_new_reply_empty( $post_id ) ) {
 
 		/* Check for the nonce */
 		if ( wp_verify_nonce( $_POST['wpas_reply_ticket'], 'reply_ticket' ) ) {
@@ -688,4 +688,49 @@ function wpas_reply_control_item( $id , $args = array() ) {
 	
 	
 	return $markup;
+}
+
+
+/**
+ * Check if reply content or attachments provided with new reply
+ */
+function wpas_is_new_reply_empty( $ticket_id ) {
+		
+	$content_empty = isset( $_POST['wpas_reply'] ) && isset( $_POST['wpas_reply_ticket'] ) && '' !== $_POST['wpas_reply'] ? false : true;
+	
+	$attachments_empty = true;
+	
+	// Check if agent uploaded attachments
+	if( $content_empty ) {
+		
+		if ( boolval( wpas_get_option( 'ajax_upload', false ) ) || boolval( wpas_get_option( 'ajax_upload_all', false ) ) ) {
+			
+			$upload = wp_upload_dir();
+			$dir    = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . get_current_user_id() .'/';
+			
+			// If temp directory exists, it means that user is uploaded attachments
+			if ( is_dir( $dir ) ) {
+
+				$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+				$accept    = array();
+
+				foreach ( $filetypes as $key => $type ) {
+					array_push( $accept, '*.' . $type );
+				}
+
+				$accept = implode( ',', $accept );
+				
+				
+				$files = glob( $dir . '{' . $accept . '}', GLOB_BRACE );
+				$attachments_empty = empty( $files ) ? true : false;
+			}
+			
+			
+		} else {
+			$attachments_empty = $_FILES && isset( $_FILES['wpas_files'] ) && !empty( $_FILES['wpas_files']['name'][0] ) ? false : true;
+		}
+		
+	}
+	
+	return ( $content_empty && $attachments_empty );
 }
