@@ -857,7 +857,7 @@ class WPAS_Email_Notification {
 				$to_email = $r_email['email'];
 			}
 			
-			
+			/* Make sure that the email is not already in the array - don't want dupes! */
 			if( in_array( $to_email, $email_sent_recipients ) ) {
 				continue;
 			}
