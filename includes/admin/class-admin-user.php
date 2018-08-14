@@ -35,6 +35,8 @@ class WPAS_User {
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_smart_tickets_order' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_after_reply' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_user_view_all_tickets' ), 10, 1 );
+		
+		add_action( 'wpas_all_user_profile_fields', array( $this, 'profile_phone_fields' ), 10, 1 );
 	}
 
 	/**
@@ -52,26 +54,19 @@ class WPAS_User {
 
 		return self::$instance;
 	}
-
+	
 	/**
-	 * Add user preferences to the profile page.
-	 *
-	 * @since  3.0.0
-	 *
+	 * Add user phone fields to the profile page.
+	 * 
 	 * @param WP_User $user
-	 *
-	 * @return bool|void
 	 */
-	public function user_profile_custom_fields( $user ) {
-		
+	public function profile_phone_fields( $user ) {
 		
 		$mobile_phone = esc_attr( get_user_option( 'wpas_mobile_phone', $user->ID ) );
 		$office_phone = esc_attr( get_user_option( 'wpas_office_phone', $user->ID ) );
 		$home_phone   = esc_attr( get_user_option( 'wpas_home_phone',   $user->ID ) );
 		$other_phone  = esc_attr( get_user_option( 'wpas_other_phone',  $user->ID ) );
-		
 		?>
-		
 		
 		<h3><?php _e( 'Awesome Support: Additional User Data', 'awesome-support') ?></h3>
 
@@ -99,7 +94,22 @@ class WPAS_User {
 
 		</table>
 		
+		
 		<?php
+	}
+
+	/**
+	 * Add user preferences to the profile page.
+	 *
+	 * @since  3.0.0
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return bool|void
+	 */
+	public function user_profile_custom_fields( $user ) {
+		
+		do_action( 'wpas_all_user_profile_fields', $user );
 
 		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
 			return false;
