@@ -949,7 +949,7 @@ class WPAS_Privacy_Option {
 		/* Option is on so render the button */
 		$button_title = wpas_get_option( 'privacy_button_label', 'Privacy' );
 		wpas_make_button(
-			$button_title, array(
+			stripslashes_deep( $button_title ), array(
 				'type'  => 'link',
 				'link'  => '#',
 				'class' => 'wpas-btn wpas-btn-default wpas-link-privacy',
