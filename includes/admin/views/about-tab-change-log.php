@@ -3,6 +3,7 @@
 <div class="changelog">
 <div>	
 	<h2>Maintenance Releases since 5.5.0</h2>
+	<p><b>Version 5.5.2</b> includes a new check to prevent users from receiving duplicate alerts, another for a user-name fix, added four phone number fields to the user profile screen and includes a new function for internal use.</p>		
 	<p><b>Version 5.5.1</b> includes two bug fixes - one for a cron issue and another for better handling of attachments with empty replies. </p>
 </div>	
 
