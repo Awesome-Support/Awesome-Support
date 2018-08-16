@@ -848,9 +848,9 @@ class WPAS_Privacy_Option {
 	 * @return void
 	 */
 	public static function print_privacy_popup_temp() {
-		if ( wpas_is_plugin_page() && ! is_search() ){ ?>
-			<div class="privacy-container-template" id="privacy-container-template">
-				<div class="privacy-option-content entry entry-normal" id="privacy-option-content">
+		if ( wpas_is_front_end_plugin_page() ) { ?>
+			<div class="privacy-container-template">
+				<div class="entry entry-normal" id="privacy-option-content">
 					<div class="wpas-gdpr-loader-background"></div><!-- .wpas-gdpr-loader-background -->
 					<a href="#" class="hide-the-content"></a>
 					<?php
