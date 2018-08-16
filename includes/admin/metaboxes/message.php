@@ -5,6 +5,11 @@
 	 *
 	 * @since  3.0.0
 	 */
+	
+	
+	// Include ticket toolbar
+	include_once( WPAS_PATH . "includes/admin/metaboxes/toolbar-middle.php" );
+	
 	do_action( 'wpas_backend_ticket_content_before', $post->ID, $post );
 
 	printf(
@@ -51,13 +56,6 @@
 	if( wpas_is_asadmin() || $role_passed ) {
 	?>
 		<div class="wpas-edit-ticket-actions">
-			<a href="#" class="button button-primary wpas-edit-main-ticket-message" id="wpas-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'Edit', 'awesome-support' ); ?></a>
-			<?php
-				/**
-				 * @TODO: If has history, display this button
-				 */
-			?>
-			<a href="#" class="button button-primary wpas-view-edit-main-ticket-message" id="wpas-view-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'View History', 'awesome-support' ); ?></a>
 			<a href="#" class="button button-primary wpas-save-edit-main-ticket-message" id="wpas-save-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'Save', 'awesome-support' ); ?></a>
 			<a href="#" class="button button-secondary wpas-cancel-edit-main-ticket-message" id="wpas-cancel-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'Cancel', 'awesome-support' ); ?></a>
 		</div>
