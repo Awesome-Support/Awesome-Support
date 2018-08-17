@@ -848,7 +848,7 @@ class WPAS_Privacy_Option {
 	 * @return void
 	 */
 	public static function print_privacy_popup_temp() {
-		if ( wpas_is_plugin_page() && ! is_search() ){ ?>
+		if ( wpas_is_front_end_plugin_page() ) { ?>
 			<div class="privacy-container-template">
 				<div class="entry entry-normal" id="privacy-option-content">
 					<div class="wpas-gdpr-loader-background"></div><!-- .wpas-gdpr-loader-background -->
@@ -864,7 +864,7 @@ class WPAS_Privacy_Option {
 							<?php $this->render_tabs(); ?>
 						</div>
 
-						<div id="add-remove-consent" class="entry-content-tabs wpas-gdpr-tab-content">
+						<div id="add-remove-consent" class="add-remove-consent entry-content-tabs wpas-gdpr-tab-content">
 							<?php
 								/**
 								 * Include tab content for Add/Remove Content data
@@ -872,7 +872,7 @@ class WPAS_Privacy_Option {
 								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php' );
 							?>
 						</div>
-						<div id="delete-existing-data" class="entry-content-tabs wpas-gdpr-tab-content">
+						<div id="delete-existing-data" class="delete-existing-data entry-content-tabs wpas-gdpr-tab-content">
 							<?php
 								/**
 								 * Include tab content for Delete my existing data
@@ -880,7 +880,7 @@ class WPAS_Privacy_Option {
 								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php' );
 							?>
 						</div>
-						<div id="export-user-data" class="entry-content-tabs wpas-gdpr-tab-content">
+						<div id="export-user-data" class="export-user-data entry-content-tabs wpas-gdpr-tab-content">
 							<?php
 								/**
 								 * Include tab content for Export tickets and user data
@@ -949,7 +949,7 @@ class WPAS_Privacy_Option {
 		/* Option is on so render the button */
 		$button_title = wpas_get_option( 'privacy_button_label', 'Privacy' );
 		wpas_make_button(
-			$button_title, array(
+			stripslashes_deep( $button_title ), array(
 				'type'  => 'link',
 				'link'  => '#',
 				'class' => 'wpas-btn wpas-btn-default wpas-link-privacy',

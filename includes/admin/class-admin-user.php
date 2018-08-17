@@ -35,6 +35,8 @@ class WPAS_User {
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_smart_tickets_order' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_after_reply' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_user_view_all_tickets' ), 10, 1 );
+		
+		add_action( 'wpas_all_user_profile_fields', array( $this, 'profile_phone_fields' ), 10, 1 );
 	}
 
 	/**
@@ -52,6 +54,49 @@ class WPAS_User {
 
 		return self::$instance;
 	}
+	
+	/**
+	 * Add user phone fields to the profile page.
+	 * 
+	 * @param WP_User $user
+	 */
+	public function profile_phone_fields( $user ) {
+		
+		$mobile_phone = esc_attr( get_user_option( 'wpas_mobile_phone', $user->ID ) );
+		$office_phone = esc_attr( get_user_option( 'wpas_office_phone', $user->ID ) );
+		$home_phone   = esc_attr( get_user_option( 'wpas_home_phone',   $user->ID ) );
+		$other_phone  = esc_attr( get_user_option( 'wpas_other_phone',  $user->ID ) );
+		?>
+		
+		<h3><?php _e( 'Awesome Support: Additional User Data', 'awesome-support') ?></h3>
+
+
+		<table class="form-table">
+
+			<tbody>
+				<tr>
+					<th><label><?php _e( 'Mobile Phone', 'awesome-support' ); ?></label></th>
+					<td><input type="text" name="wpas_mobile_phone" id="wpas_mobile_phone" value="<?php echo $mobile_phone; ?>" class="regular-text code"></td>
+				</tr>
+				<tr>
+					<th><label><?php _e( 'Office Phone', 'awesome-support' ); ?></label></th>
+					<td><input type="text" name="wpas_office_phone" id="wpas_office_phone" value="<?php echo $office_phone; ?>" class="regular-text code"></td>
+				</tr>
+				<tr>
+					<th><label><?php _e( 'Home Phone', 'awesome-support' ); ?></label></th>
+					<td><input type="text" name="wpas_home_phone" id="wpas_home_phone" value="<?php echo $home_phone; ?>" class="regular-text code"></td>
+				</tr>
+				<tr>
+					<th><label><?php _e( 'Other Phone', 'awesome-support' ); ?></label></th>
+					<td><input type="text" name="wpas_other_phone" id="wpas_other_phone" value="<?php echo $other_phone; ?>" class="regular-text code"></td>
+				</tr>
+			</tbody>
+
+		</table>
+		
+		
+		<?php
+	}
 
 	/**
 	 * Add user preferences to the profile page.
@@ -63,6 +108,8 @@ class WPAS_User {
 	 * @return bool|void
 	 */
 	public function user_profile_custom_fields( $user ) {
+		
+		do_action( 'wpas_all_user_profile_fields', $user );
 
 		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
 			return false;
@@ -263,6 +310,13 @@ class WPAS_User {
 		$smart            = filter_input( INPUT_POST, 'wpas_smart_tickets_order' );
 		$view_all_tickets = filter_input( INPUT_POST, 'wpas_view_all_tickets' );
 		$department       = isset( $_POST['wpas_department'] ) ? array_map( 'intval', $_POST['wpas_department'] ) : array();
+		
+		
+		$mobile_phone = filter_input( INPUT_POST, 'wpas_mobile_phone' );
+		$office_phone = filter_input( INPUT_POST, 'wpas_office_phone' );
+		$home_phone   = filter_input( INPUT_POST, 'wpas_home_phone' );
+		$other_phone  = filter_input( INPUT_POST, 'wpas_other_phone' );
+		
 
 		if ( $wpas_after_reply ) {
 			update_user_option( $user_id, 'wpas_after_reply', $wpas_after_reply );
@@ -272,6 +326,11 @@ class WPAS_User {
 		update_user_option( $user_id, 'wpas_smart_tickets_order', $smart );
 		update_user_option( $user_id, 'wpas_department', $department );
 		update_user_option( $user_id, 'wpas_view_all_tickets', $view_all_tickets );
+		
+		update_user_option( $user_id, 'wpas_mobile_phone', $mobile_phone );
+		update_user_option( $user_id, 'wpas_office_phone', $office_phone );
+		update_user_option( $user_id, 'wpas_home_phone',   $home_phone );
+		update_user_option( $user_id, 'wpas_other_phone',  $other_phone );
 
 	}
 

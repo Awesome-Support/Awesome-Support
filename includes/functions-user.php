@@ -290,9 +290,9 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 		// Let's create the user username and make sure it's unique
 		if ( isset( $data['user_login'] ) ) {
 			$username = $data['user_login'];
+			$username = wpas_check_duplicate_user_name( $username ) ;
 		} else {
-			$username = wpas_create_user_name( $user ) ;
-			//$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
+			$username = wpas_create_user_name( $user ) ;  // This function will create a user name AND automatically check and fix duplicates
 		}
 		
 		$registration_type = wpas_get_option( 'allow_registrations', 'allow' );

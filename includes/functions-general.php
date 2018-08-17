@@ -1774,3 +1774,72 @@ function wpas_get_all_agents_on_ticket( $post_id ) {
 	return $all_agents ;
 	
 }
+
+
+/**
+ * Returns a list of end users involved in a ticket
+ *
+ * The list of end users/clients/customers will include the user
+ * that opened the ticket.
+ *
+ * @since 5.2.2
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ *
+ * @return array<int>|boolean
+ */
+function wpas_get_support_users_on_ticket( $post_id ) {
+	
+	$users = wpas_get_all_users_on_ticket( $post_id, 'view_ticket' );
+
+	if ( ! $users or empty( $users ) ) {
+		$users = array();
+	}
+	
+	$agents = wpas_get_all_agents_on_ticket( $post_id ) ;
+	
+	if ( ! $agents or empty( $agents ) ) {
+		$agents = array();
+	}
+
+	// Need to take the difference between the users and the agents because users will include agents.
+	$all_users = array_unique( array_diff ($users, $agents ) );
+
+	// Return the unique array of user ids.
+	return $all_users ;
+	
+}
+
+/**
+ * Determine if the current page is front-end
+ *
+ * It will return true if the current page is for Submit Ticket & My Ticket page
+ *
+ * @since 5.2.2
+ *
+ * @return boolean
+ */
+function wpas_is_front_end_plugin_page() {
+	global $post;
+
+	if ( ! $post ) {
+		return false;
+	}
+
+	/**
+	 * Check if the current page/post has the following shortcode
+	 *
+	 * [ticket-submit] | [tickets]
+	 *
+	 * ticket-submit is for submission while tickets for list of submission
+	 */
+
+	/**
+	 * Check if the current page is 'ticket submission'
+	 */
+	if ( has_shortcode( $post->post_content, 'ticket-submit' ) || has_shortcode( $post->post_content, 'tickets' ) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
