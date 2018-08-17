@@ -41,7 +41,7 @@
           /**
            * Ticket content history
            */
-          $(".wpas-view-edit-main-ticket-message").click(function(e) {
+          $("#wpas-view-edit-main-ticket-message").click(function(e) {
             e.preventDefault();
             $.ajax({
               url : WPAS_Reply_History.ajax_url,
