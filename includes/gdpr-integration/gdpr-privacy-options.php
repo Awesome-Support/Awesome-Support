@@ -378,7 +378,7 @@ class WPAS_Privacy_Option {
 						'gdpr_notice_short_desc_02',
 						'gdpr_notice_short_desc_03'
 					);
-					$consent_array = apply_filters( 'gdpr_consent_list_array',$consent_array );
+					$consent_array = apply_filters( 'wpas_gdpr_consent_list_array',$consent_array );
 					if( !empty( $consent_array ) ){
 						foreach ( $consent_array as $key => $consent ) {
 							$consent_name = wpas_get_option( $consent, '' );
