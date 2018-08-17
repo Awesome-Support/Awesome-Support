@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-08-09 23:43-0500\n"
+"POT-Creation-Date: 2018-08-16 23:44-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -291,7 +291,7 @@ msgstr ""
 #: includes/admin/settings/settings-notifications.php:198
 #: includes/admin/settings/settings-notifications.php:223
 #: includes/admin/settings/settings-privacy.php:85
-#: includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php:31
+#: includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php:32
 #: themes/default/submission-pre-440.php:38 themes/default/submission.php:54
 msgid "Subject"
 msgstr ""
@@ -398,7 +398,7 @@ msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:1114
 #: includes/admin/functions-list-table.php:151
-#: includes/admin/metaboxes/details.php:92
+#: includes/admin/metaboxes/details.php:93
 #: includes/admin/metaboxes/user-profile.php:105
 #: includes/admin/views/system-status.php:129
 #: includes/functions-general.php:340 includes/functions-templating.php:1019
@@ -446,14 +446,34 @@ msgid "Awesome Support Settings"
 msgstr ""
 
 #: includes/admin/class-admin-user.php:71
+msgid "Awesome Support: Additional User Data"
+msgstr ""
+
+#: includes/admin/class-admin-user.php:78
+msgid "Mobile Phone"
+msgstr ""
+
+#: includes/admin/class-admin-user.php:82
+msgid "Office Phone"
+msgstr ""
+
+#: includes/admin/class-admin-user.php:86
+msgid "Home Phone"
+msgstr ""
+
+#: includes/admin/class-admin-user.php:90
+msgid "Other Phone"
+msgstr ""
+
+#: includes/admin/class-admin-user.php:118
 msgid "Awesome Support: Preferences"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:98
+#: includes/admin/class-admin-user.php:145
 msgid "Smart Tickets Order"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:101
+#: includes/admin/class-admin-user.php:148
 #: includes/admin/settings/settings-moderated-registration.php:67
 #: includes/admin/settings/settings-moderated-registration.php:94
 #: includes/admin/settings/settings-moderated-registration.php:123
@@ -468,16 +488,16 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:102
+#: includes/admin/class-admin-user.php:149
 msgid "If Smart Tickets Order is enabled, Awesome Support will display tickets that need immediate attention at the top."
 msgstr ""
 
-#: includes/admin/class-admin-user.php:124
+#: includes/admin/class-admin-user.php:171
 msgctxt "Action after replying to a ticket"
 msgid "After Reply"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:128
+#: includes/admin/class-admin-user.php:175
 #: includes/admin/settings/settings-advanced.php:42
 #: includes/admin/settings/settings-advanced.php:153
 #: includes/admin/settings/settings-advanced.php:214
@@ -487,29 +507,29 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:129
+#: includes/admin/class-admin-user.php:176
 msgid "Stay on screen"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:130
+#: includes/admin/class-admin-user.php:177
 #: includes/admin/metaboxes/replies-form.php:123
 msgid "Back to list"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:131
+#: includes/admin/class-admin-user.php:178
 msgid "Always ask"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:133
+#: includes/admin/class-admin-user.php:180
 msgid "Where do you want to go after replying to a ticket?"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:159
+#: includes/admin/class-admin-user.php:206
 msgid "Can Be Assigned"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:162
-#: includes/admin/class-admin-user.php:189
+#: includes/admin/class-admin-user.php:209
+#: includes/admin/class-admin-user.php:236
 #: includes/admin/views/system-status.php:31
 #: includes/admin/views/system-status.php:39
 #: includes/admin/views/system-status.php:183
@@ -521,27 +541,27 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:163
+#: includes/admin/class-admin-user.php:210
 msgid "Can the system assign new tickets to this user?"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:186
+#: includes/admin/class-admin-user.php:233
 msgid "View All Tickets"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:190
+#: includes/admin/class-admin-user.php:237
 msgid "If agents role is allowed to view all tickets, turn on the option to do so?"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:232
+#: includes/admin/class-admin-user.php:279
 msgid "Department(s)"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:240
+#: includes/admin/class-admin-user.php:287
 msgid "Which department(s) does this agent belong to?"
 msgstr ""
 
-#: includes/admin/class-admin-user.php:325
+#: includes/admin/class-admin-user.php:384
 msgid "Auto-Assign"
 msgstr ""
 
@@ -717,7 +737,7 @@ msgid "Ticket not found"
 msgstr ""
 
 #: includes/admin/functions-list-table.php:149
-#: includes/admin/metaboxes/details.php:94
+#: includes/admin/metaboxes/details.php:95
 msgid "Close"
 msgstr ""
 
@@ -912,27 +932,27 @@ msgstr ""
 msgid "%s ago"
 msgstr ""
 
-#: includes/admin/metaboxes/details.php:68
+#: includes/admin/metaboxes/details.php:69
 msgid "Current Status"
 msgstr ""
 
-#: includes/admin/metaboxes/details.php:90
+#: includes/admin/metaboxes/details.php:91
 msgid "Re-open"
 msgstr ""
 
-#: includes/admin/metaboxes/details.php:105
+#: includes/admin/metaboxes/details.php:106
 msgid "Updating"
 msgstr ""
 
-#: includes/admin/metaboxes/details.php:106
+#: includes/admin/metaboxes/details.php:107
 msgid "Update Ticket"
 msgstr ""
 
-#: includes/admin/metaboxes/details.php:109
+#: includes/admin/metaboxes/details.php:110
 msgid "Creating"
 msgstr ""
 
-#: includes/admin/metaboxes/details.php:110
+#: includes/admin/metaboxes/details.php:111
 msgid "Open Ticket"
 msgstr ""
 
@@ -4950,7 +4970,7 @@ msgstr ""
 msgid "Attachment Folder Directory Not Found"
 msgstr ""
 
-#: includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php:46
+#: includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php:47
 msgid "Additional Information"
 msgstr ""
 
@@ -5051,26 +5071,26 @@ msgstr ""
 msgid "Include private notes"
 msgstr ""
 
-#: includes/scripts.php:396
+#: includes/scripts.php:390
 msgctxt "JavaScript validation error message"
 msgid "You can't submit an empty ticket"
 msgstr ""
 
-#: includes/scripts.php:398
+#: includes/scripts.php:392
 msgctxt "JavaScript validation error message"
 msgid "You can't submit an empty reply"
 msgstr ""
 
-#: includes/scripts.php:408
+#: includes/scripts.php:402
 msgid "The following file(s) are too big to be uploaded:"
 msgstr ""
 
-#: includes/scripts.php:409
+#: includes/scripts.php:403
 #, php-format
 msgid "The maximum file size allowed for one file is %d MB"
 msgstr ""
 
-#: includes/scripts.php:413
+#: includes/scripts.php:407
 msgctxt "ticket submission button text while submitting"
 msgid "Submitting..."
 msgstr ""
