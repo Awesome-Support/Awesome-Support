@@ -1978,7 +1978,7 @@ function wpas_load_reply_history() {
 		 */
 		$response = array(
 			'code'    => 200,
-			'message' => __( 'Edit history found.', 'awesome-support' ),
+			'message' => __( 'Edit history', 'awesome-support' ),
 			'data'    => $reply_history,
 		);
 		wp_send_json( $response );
