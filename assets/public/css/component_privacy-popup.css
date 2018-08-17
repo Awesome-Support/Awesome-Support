@@ -47,10 +47,6 @@
 	}
 }
 
-.active {
-	display: block !important;
-}
-
 .wpas-gdpr-tab {
 	margin-top: 2em;
     overflow: hidden;

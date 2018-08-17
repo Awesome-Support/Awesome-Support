@@ -275,12 +275,6 @@ function wpas_assets_front_end() {
 		// Our Custom Scripts
 		wp_enqueue_script( 'wpas-plugin-script' );
 
-		/**
-		 * Enqueue the style here to avoid GDPR popup
-		 * from showing in the footer
-		 */
-		wp_enqueue_style( 'wpas-gdpr-style', WPAS_URL . 'assets/public/css/component_privacy-popup.css', array(), WPAS_VERSION );
-
 	}
 
 }
