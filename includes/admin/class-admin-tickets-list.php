@@ -38,9 +38,9 @@ class WPAS_Tickets_List {
 			add_filter( 'parse_query', array( $this, 'custom_taxonomy_filter_convert_id_term' ), 10, 1 );
 			add_filter( 'parse_query', array( $this, 'custom_meta_query' ), 11, 1 );
 			add_filter( 'posts_clauses', array( $this, 'post_clauses_orderby' ), 5, 2 );
-			//add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
-			//add_action( 'parse_request', array( $this, 'parse_request' ), 10, 1 );
-//			add_action( 'pre_get_posts', array( $this, 'set_filtering_query_var' ), 1, 1 );
+			add_filter( 'posts_where', array( $this, 'posts_where' ), 10, 2 );
+			add_action( 'parse_request', array( $this, 'parse_request' ), 10, 1 );
+			add_action( 'pre_get_posts', array( $this, 'set_filtering_query_var' ), 1, 1 );
 			add_action( 'pre_get_posts', array( $this, 'set_ordering_query_var' ), 100, 1 );
 			add_filter( 'posts_results', array( $this, 'apply_ordering_criteria' ), 10, 2 );
 			add_filter( 'posts_results', array( $this, 'filter_the_posts' ), 10, 2 );
