@@ -109,6 +109,13 @@ function wpas_addon_settings_file_upload( $def ) {
 					'desc'    => __( 'Can the user control whether or not attachments should be automatically deleted on close?', 'awesome-support' ),					
 					'default' => false
 				),
+				array(
+					'name'    => __( 'Agent Controls Auto-delete Flag?', 'awesome-support' ),
+					'id'      => 'agent_can_set_auto_delete_attachments',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Can agents control whether or not attachments should be automatically deleted on close?', 'awesome-support' ),					
+					'default' => true
+				),				
 				
 			)
 		),
