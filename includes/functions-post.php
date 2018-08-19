@@ -1978,7 +1978,7 @@ function wpas_load_reply_history() {
 		 */
 		$response = array(
 			'code'    => 200,
-			'message' => __( 'Edit history found.', 'awesome-support' ),
+			'message' => __( 'Edit history', 'awesome-support' ),
 			'data'    => $reply_history,
 		);
 		wp_send_json( $response );
@@ -2001,15 +2001,18 @@ function wpas_load_reply_history() {
  * function will return the first ID
  */
 function wpas_get_gdpr_data( $short_description ) {
+	$return_id = false;
 	if( $short_description === wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) {
-		return 1;
+		$return_id = 1;
 	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) {
-		return 2;
+		$return_id = 2;
 	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) {
-		return 3;
-	}else{
-		return false;
+		$return_id = 3;
 	}
+	
+	$return_id = apply_filters('gdpr_consent_data_id', $return_id, $short_description );
+
+	return $return_id;
 }
 
 /**
@@ -2024,5 +2027,4 @@ function wpas_delete_post_attachments( $post_id ) {
 	foreach ( $attachments as $attachment ) {
 	  wp_delete_attachment( $attachment->ID, true );
 	}
-	
 }

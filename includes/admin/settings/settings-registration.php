@@ -95,126 +95,6 @@ function wpas_core_settings_registration( $def ) {
 				),				
 
 				array(
-					'name' => __( 'GDPR Notice #1', 'awesome-support' ),
-					'type' => 'heading',
-					'desc' => __( 'The GDPR requires that you provide explicit notice about what you will do with the data you collect from users. This section allows you to describe how any personal data collected will be used and require consent from the user before they can register.', 'awesome-support' ),
-				),
-				array(
-					'name'     => __( 'GDPR Notice: Short Description', 'awesome-support' ),
-					'id'       => 'gdpr_notice_short_desc_01',
-					'type'     => 'text',
-					'default'  => '',
-					'desc'     => __( 'If you fill this in, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?', 'awesome-support' ),
-				),				
-				array(
-					'name'     => __( 'GDPR Notice: Long Description', 'awesome-support' ),
-					'id'       => 'gdpr_notice_long_desc_01',
-					'type'     => 'editor',
-					'default'  => '',
-					'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
-					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),
-				array(
-                        'name'    => __( 'Mandatory', 'awesome-support' ),
-                        'id'      => "gdpr_notice_mandatory_01",
-                        'type'    => 'checkbox',
-                        'default' => true,
-                        'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
-                ),
-				array(
-                        'name'    => __( 'Can Opt Out', 'awesome-support' ),
-                        'id'      => "gdpr_notice_opt_out_ok_01",
-                        'type'    => 'checkbox',
-                        'default' => false,
-                        'desc'    => __( 'Is this an option that the user can opt-out from after granting consent?', 'awesome-support' )
-                ),				
-				
-				array(
-					'name' => __( 'GDPR Notice #2', 'awesome-support' ),
-					'type' => 'heading',
-					'desc' => __( 'If personal data will be used in any additional context add that here. It is best to keep this brief.', 'awesome-support' ),
-				),
-				array(
-					'name'     => __( 'GDPR Notice: Short Description', 'awesome-support' ),
-					'id'       => 'gdpr_notice_short_desc_02',
-					'type'     => 'text',
-					'default'  => '',
-					'desc'     => __( 'If you fill this in, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?', 'awesome-support' ),
-				),				
-				array(
-					'name'     => __( 'GDPR Notice: Long Description', 'awesome-support' ),
-					'id'       => 'gdpr_notice_long_desc_02',
-					'type'     => 'editor',
-					'default'  => '',
-					'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
-					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),
-				array(
-                        'name'    => __( 'Mandatory', 'awesome-support' ),
-                        'id'      => "gdpr_notice_mandatory_02",
-                        'type'    => 'checkbox',
-                        'default' => true,
-                        'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
-                ),
-				array(
-                        'name'    => __( 'Can Opt Out', 'awesome-support' ),
-                        'id'      => "gdpr_notice_opt_out_ok_02",
-                        'type'    => 'checkbox',
-                        'default' => false,
-                        'desc'    => __( 'Is this an option that the user can opt-out from after granting consent?', 'awesome-support' )
-                ),								
-				
-				
-				array(
-					'name' => __( 'GDPR Notice #3', 'awesome-support' ),
-					'type' => 'heading',
-					'desc' => __( 'If personal data will be used in any additional context add that here. It is best to keep this brief.', 'awesome-support' ),
-				),
-				array(
-					'name'     => __( 'GDPR Notice: Short Description', 'awesome-support' ),
-					'id'       => 'gdpr_notice_short_desc_03',
-					'type'     => 'text',
-					'default'  => '',
-					'desc'     => __( 'If you fill this in, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?', 'awesome-support' ),
-				),				
-				array(
-					'name'     => __( 'GDPR Notice: Long Description', 'awesome-support' ),
-					'id'       => 'gdpr_notice_long_desc_03',
-					'type'     => 'editor',
-					'default'  => '',
-					'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
-					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),
-				array(
-                        'name'    => __( 'Mandatory', 'awesome-support' ),
-                        'id'      => "gdpr_notice_mandatory_03",
-                        'type'    => 'checkbox',
-                        'default' => true,
-                        'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
-                ),
-				array(
-                        'name'    => __( 'Can Opt Out', 'awesome-support' ),
-                        'id'      => "gdpr_notice_opt_out_ok_03",
-                        'type'    => 'checkbox',
-                        'default' => false,
-                        'desc'    => __( 'Is this an option that the user can opt-out from after granting consent?', 'awesome-support' )
-                ),								
-				
-				
-				array(
-					'name' => __( 'Terms & Conditions', 'awesome-support' ),
-					'type' => 'heading',
-				),
-				array(
-					'name'     => __( 'Content', 'awesome-support' ),
-					'id'       => 'terms_conditions',
-					'type'     => 'editor',
-					'default'  => '',
-					'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'awesome-support' ),
-					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),
-
-				array(
 					'name' => __( 'Other', 'awesome-support' ),
 					'type' => 'heading',
 				),
@@ -224,11 +104,137 @@ function wpas_core_settings_registration( $def ) {
 					'type'    => 'text',
 					'desc'    => __( 'The role should be the internal WordPress role id such as wpas_user and is case sensitive.  Do not leave this blank!  This role should have the 5 core Awesome Support capabilities in order for users to be able to submit tickets. Check our documentation for more information.', 'awesome-support' ),
 					'default' => 'wpas_user'
-				),				
+				),	
 
 			)
 		),
 	);
+	
+	$gdpr_consent_options = array( 
+			array(
+			'name' => __( 'GDPR Notice #1', 'awesome-support' ),
+			'type' => 'heading',
+			'desc' => __( 'The GDPR requires that you provide explicit notice about what you will do with the data you collect from users. This section allows you to describe how any personal data collected will be used and require consent from the user before they can register.', 'awesome-support' ),
+			),
+			array(
+			'name'     => __( 'GDPR Notice: Short Description', 'awesome-support' ),
+			'id'       => 'gdpr_notice_short_desc_01',
+			'type'     => 'text',
+			'default'  => '',
+			'desc'     => __( 'If you fill this in, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?', 'awesome-support' ),
+			),				
+			array(
+			'name'     => __( 'GDPR Notice: Long Description', 'awesome-support' ),
+			'id'       => 'gdpr_notice_long_desc_01',
+			'type'     => 'editor',
+			'default'  => '',
+			'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
+			'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
+			),
+			array(
+			    'name'    => __( 'Mandatory', 'awesome-support' ),
+			    'id'      => "gdpr_notice_mandatory_01",
+			    'type'    => 'checkbox',
+			    'default' => true,
+			    'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+			),
+			array(
+			    'name'    => __( 'Can Opt Out', 'awesome-support' ),
+			    'id'      => "gdpr_notice_opt_out_ok_01",
+			    'type'    => 'checkbox',
+			    'default' => false,
+			    'desc'    => __( 'Is this an option that the user can opt-out from after granting consent?', 'awesome-support' )
+			),				
+
+			array(
+			'name' => __( 'GDPR Notice #2', 'awesome-support' ),
+			'type' => 'heading',
+			'desc' => __( 'If personal data will be used in any additional context add that here. It is best to keep this brief.', 'awesome-support' ),
+			),
+			array(
+			'name'     => __( 'GDPR Notice: Short Description', 'awesome-support' ),
+			'id'       => 'gdpr_notice_short_desc_02',
+			'type'     => 'text',
+			'default'  => '',
+			'desc'     => __( 'If you fill this in, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?', 'awesome-support' ),
+			),				
+			array(
+			'name'     => __( 'GDPR Notice: Long Description', 'awesome-support' ),
+			'id'       => 'gdpr_notice_long_desc_02',
+			'type'     => 'editor',
+			'default'  => '',
+			'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
+			'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
+			),
+			array(
+			    'name'    => __( 'Mandatory', 'awesome-support' ),
+			    'id'      => "gdpr_notice_mandatory_02",
+			    'type'    => 'checkbox',
+			    'default' => true,
+			    'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+			),
+			array(
+			    'name'    => __( 'Can Opt Out', 'awesome-support' ),
+			    'id'      => "gdpr_notice_opt_out_ok_02",
+			    'type'    => 'checkbox',
+			    'default' => false,
+			    'desc'    => __( 'Is this an option that the user can opt-out from after granting consent?', 'awesome-support' )
+			),								
+
+
+			array(
+			'name' => __( 'GDPR Notice #3', 'awesome-support' ),
+			'type' => 'heading',
+			'desc' => __( 'If personal data will be used in any additional context add that here. It is best to keep this brief.', 'awesome-support' ),
+			),
+			array(
+			'name'     => __( 'GDPR Notice: Short Description', 'awesome-support' ),
+			'id'       => 'gdpr_notice_short_desc_03',
+			'type'     => 'text',
+			'default'  => '',
+			'desc'     => __( 'If you fill this in, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?', 'awesome-support' ),
+			),				
+			array(
+			'name'     => __( 'GDPR Notice: Long Description', 'awesome-support' ),
+			'id'       => 'gdpr_notice_long_desc_03',
+			'type'     => 'editor',
+			'default'  => '',
+			'desc'     => __( 'If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept these notice terms.  It is best to keep this notice to one or two lines.', 'awesome-support' ),
+			'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
+			),
+			array(
+			    'name'    => __( 'Mandatory', 'awesome-support' ),
+			    'id'      => "gdpr_notice_mandatory_03",
+			    'type'    => 'checkbox',
+			    'default' => true,
+			    'desc'    => __( 'Does the user need to check this option before being able to register?', 'awesome-support' )
+			),
+			array(
+			    'name'    => __( 'Can Opt Out', 'awesome-support' ),
+			    'id'      => "gdpr_notice_opt_out_ok_03",
+			    'type'    => 'checkbox',
+			    'default' => false,
+			    'desc'    => __( 'Is this an option that the user can opt-out from after granting consent?', 'awesome-support' )
+			),								
+
+
+			array(
+			'name' => __( 'Terms & Conditions', 'awesome-support' ),
+			'type' => 'heading',
+			),
+			array(
+			'name'     => __( 'Content', 'awesome-support' ),
+			'id'       => 'terms_conditions',
+			'type'     => 'editor',
+			'default'  => '',
+			'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'awesome-support' ),
+			'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
+			),	
+		);
+	$gdpr_consent_options = apply_filters('wpas_gdpr_consents', $gdpr_consent_options );
+	foreach ($gdpr_consent_options as $key => $gdpr_option ) {
+		$settings['registration']['options'][] = $gdpr_option;
+	}
 
 	return array_merge( $def, $settings );
 

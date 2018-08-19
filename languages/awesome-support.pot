@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-08-16 23:44-0500\n"
+"POT-Creation-Date: 2018-08-19 18:58-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>."
 msgstr ""
 
-#: awesome-support.php:168 includes/functions-general.php:468
+#: awesome-support.php:168 includes/functions-general.php:515
 #, php-format
 msgid "Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href=\"%s\" class=\"thickbox\">install the production version</a> of this plugin instead."
 msgstr ""
@@ -174,7 +174,7 @@ msgstr ""
 #: includes/admin/views/print-ticket.php:16
 #: includes/custom-fields/functions-custom-fields.php:329
 #: includes/functions-templating.php:276 includes/functions-templating.php:570
-#: includes/gdpr-integration/gdpr-privacy-options.php:794
+#: includes/gdpr-integration/gdpr-privacy-options.php:795
 #: includes/gdpr-integration/gdpr-user-profile.php:136
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:25
 msgid "Status"
@@ -249,12 +249,12 @@ msgid " minute(s)"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:605
-#: includes/admin/class-admin-tickets-list.php:1155
+#: includes/admin/class-admin-tickets-list.php:1157
 msgid "Awaiting Support Reply"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:611
-#: includes/admin/class-admin-tickets-list.php:1156
+#: includes/admin/class-admin-tickets-list.php:1158
 msgid "Old"
 msgstr ""
 
@@ -279,7 +279,7 @@ msgstr ""
 msgid "Documentation"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:989
+#: includes/admin/class-admin-tickets-list.php:991
 #: includes/admin/settings/settings-moderated-registration.php:75
 #: includes/admin/settings/settings-moderated-registration.php:102
 #: includes/admin/settings/settings-moderated-registration.php:131
@@ -296,144 +296,144 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:990
+#: includes/admin/class-admin-tickets-list.php:992
 msgid "Opening Post"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:991
+#: includes/admin/class-admin-tickets-list.php:993
 msgid "Replies"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1029
+#: includes/admin/class-admin-tickets-list.php:1031
 msgid "Edit ticket in new Window when the ticket ID is clicked"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1051
+#: includes/admin/class-admin-tickets-list.php:1053
 msgid "Awesome Support Core Documentation"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1052
+#: includes/admin/class-admin-tickets-list.php:1054
 msgid "1. User Guide"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1053
+#: includes/admin/class-admin-tickets-list.php:1055
 msgid "The end user guide covers topics such as instructions for installation, entering tickets, adding agents, navigation, replying to and closing tickets and more."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1055
+#: includes/admin/class-admin-tickets-list.php:1057
 msgid "2. Administration Guide"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1056
+#: includes/admin/class-admin-tickets-list.php:1058
 msgid "The admin guide covers topics such as configuring products, departments, priorities and channels. It also includes guides for security using roles and capabilities along with time tracking, email alerts and known incompatibilities."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1058
+#: includes/admin/class-admin-tickets-list.php:1060
 msgid "3. Troubleshooting"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1059
+#: includes/admin/class-admin-tickets-list.php:1061
 msgid "Having an issue? Your answer might be in here."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1061
+#: includes/admin/class-admin-tickets-list.php:1063
 msgid "4. FAQ and More Troubleshooting Tips"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1062
+#: includes/admin/class-admin-tickets-list.php:1064
 msgid "Even more trouble-shooting tips and other frequently asked questions. 404 pages, missing tabs, PHP errors and conflicts are just some of the topics covered here!"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1064
+#: includes/admin/class-admin-tickets-list.php:1066
 msgid "5. Customization"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1065
+#: includes/admin/class-admin-tickets-list.php:1067
 msgid "Need to change the look of your ticket pages?  Maybe add some custom fields? Then this is the guide you need!"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1067
+#: includes/admin/class-admin-tickets-list.php:1069
 msgid "Awesome Support Add-ons and Extensions Documentation"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1068
+#: includes/admin/class-admin-tickets-list.php:1070
 msgid "1. All Extensions"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1069
+#: includes/admin/class-admin-tickets-list.php:1071
 msgid "Links to documentation for all extensions and add-ons."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1071
+#: includes/admin/class-admin-tickets-list.php:1073
 msgid "2. REST API"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1072
+#: includes/admin/class-admin-tickets-list.php:1074
 msgid "Documentation for the REST API."
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1074
+#: includes/admin/class-admin-tickets-list.php:1076
 msgid "Import Tickets (Zendesk, Ticksy, Helpscout)"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1075
+#: includes/admin/class-admin-tickets-list.php:1077
 msgid "1. Install The FREE Importer"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1076
+#: includes/admin/class-admin-tickets-list.php:1078
 msgid "The link above will direct you to the page with the importer add-on"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1078
+#: includes/admin/class-admin-tickets-list.php:1080
 msgid "2. Importer Documentation"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1079
+#: includes/admin/class-admin-tickets-list.php:1081
 msgid "Read the documentation to learn how to import tickets from Zendesk, Ticksy and Helpscout"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1113
+#: includes/admin/class-admin-tickets-list.php:1115
 msgid "All States"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1114
+#: includes/admin/class-admin-tickets-list.php:1116
 #: includes/admin/functions-list-table.php:151
 #: includes/admin/metaboxes/details.php:93
 #: includes/admin/metaboxes/user-profile.php:105
 #: includes/admin/views/system-status.php:129
-#: includes/functions-general.php:340 includes/functions-templating.php:1019
+#: includes/functions-general.php:387 includes/functions-templating.php:1019
 msgid "Open"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1115
+#: includes/admin/class-admin-tickets-list.php:1117
 #: includes/admin/metaboxes/user-profile.php:109
 #: includes/admin/metaboxes/user-profile.php:141
 #: includes/admin/views/system-status.php:129
-#: includes/functions-general.php:332 includes/functions-templating.php:1004
+#: includes/functions-general.php:379 includes/functions-templating.php:1004
 msgid "Closed"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1130
+#: includes/admin/class-admin-tickets-list.php:1132
 msgid "All Status"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1154
+#: includes/admin/class-admin-tickets-list.php:1156
 msgid "All Activity"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1180
+#: includes/admin/class-admin-tickets-list.php:1182
 msgid "All Agents"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1217
+#: includes/admin/class-admin-tickets-list.php:1219
 msgid "All Clients"
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1313
+#: includes/admin/class-admin-tickets-list.php:1315
 msgid "All "
 msgstr ""
 
-#: includes/admin/class-admin-tickets-list.php:1842
+#: includes/admin/class-admin-tickets-list.php:1844
 msgid "NOTE: Please be aware that when you sort on a column, tickets that have never had a value entered into that column will not appear on your sorted list (null fields). This can reduce the number of tickets in your sorted list.  This reduced number of tickets is NOT a bug - it is a deliberate design decision. You should also be aware that deliberately entering a blank into a ticket field is considered data so those tickets will show up in the sorted list."
 msgstr ""
 
@@ -809,35 +809,31 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:46
-msgid "Ticket Toolbar"
-msgstr ""
-
-#: includes/admin/functions-metaboxes.php:52
+#: includes/admin/functions-metaboxes.php:43
 msgid "Main Tabs"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:56
+#: includes/admin/functions-metaboxes.php:47
 msgid "Ticket Replies"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:60
+#: includes/admin/functions-metaboxes.php:51
 msgid "Ticket Details"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:65
+#: includes/admin/functions-metaboxes.php:56
 msgid "User Profile"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:69
+#: includes/admin/functions-metaboxes.php:60
 msgid "Misc and Debug"
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:89
+#: includes/admin/functions-metaboxes.php:80
 msgid "An error occurred while registering this metabox. Please contact support."
 msgstr ""
 
-#: includes/admin/functions-metaboxes.php:95
+#: includes/admin/functions-metaboxes.php:86
 msgid "An error occured while loading this metabox. Please contact support."
 msgstr ""
 
@@ -956,19 +952,11 @@ msgstr ""
 msgid "Open Ticket"
 msgstr ""
 
-#: includes/admin/metaboxes/message.php:54
-msgid "Edit"
-msgstr ""
-
-#: includes/admin/metaboxes/message.php:60
-msgid "View History"
-msgstr ""
-
-#: includes/admin/metaboxes/message.php:61
+#: includes/admin/metaboxes/message.php:59
 msgid "Save"
 msgstr ""
 
-#: includes/admin/metaboxes/message.php:62
+#: includes/admin/metaboxes/message.php:60
 #: includes/admin/metaboxes/replies.php:127 includes/scripts.php:201
 msgid "Cancel"
 msgstr ""
@@ -1061,7 +1049,8 @@ msgid "This ticket has been closed. If you want to write a new reply to this tic
 msgstr ""
 
 #: includes/admin/metaboxes/replies.php:180
-msgid "CLOSE"
+#: includes/file-uploader/class-file-uploader.php:985
+msgid "X"
 msgstr ""
 
 #: includes/admin/metaboxes/stakeholders.php:59
@@ -1127,12 +1116,21 @@ msgstr ""
 msgid "Note: Read-only Configuration - You Are Not Permitted To Edit Time Data"
 msgstr ""
 
-#: includes/admin/metaboxes/toolbar-middle.php:18
+#: includes/admin/metaboxes/toolbar-middle.php:20
 msgid "Toggle Replies (Hide All Replies Except The Last 3)"
 msgstr ""
 
-#: includes/admin/metaboxes/toolbar-middle.php:21
+#: includes/admin/metaboxes/toolbar-middle.php:23
 msgid "Show/Hide The Ticket Slug"
+msgstr ""
+
+#: includes/admin/metaboxes/toolbar-middle.php:27
+#: includes/functions-post-type.php:49
+msgid "Edit Ticket"
+msgstr ""
+
+#: includes/admin/metaboxes/toolbar-middle.php:29
+msgid "View History"
 msgstr ""
 
 #: includes/admin/metaboxes/user-profile.php:101
@@ -1200,7 +1198,7 @@ msgid "What to use for the indivdual ticket slug.  The default is the ticket top
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:42
-#: includes/gdpr-integration/gdpr-privacy-options.php:731
+#: includes/gdpr-integration/gdpr-privacy-options.php:732
 msgid "Ticket ID"
 msgstr ""
 
@@ -2079,7 +2077,7 @@ msgstr ""
 #: includes/admin/settings/settings-notifications.php:173
 #: includes/admin/settings/settings-notifications.php:204
 #: includes/admin/settings/settings-notifications.php:229
-#: includes/admin/settings/settings-registration.php:209
+#: includes/admin/settings/settings-registration.php:226
 msgid "Content"
 msgstr ""
 
@@ -2752,92 +2750,92 @@ msgid "Email address description"
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:98
-msgid "GDPR Notice #1"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:100
-msgid "The GDPR requires that you provide explicit notice about what you will do with the data you collect from users. This section allows you to describe how any personal data collected will be used and require consent from the user before they can register."
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:103
-#: includes/admin/settings/settings-registration.php:138
-#: includes/admin/settings/settings-registration.php:174
-msgid "GDPR Notice: Short Description"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:107
-#: includes/admin/settings/settings-registration.php:142
-#: includes/admin/settings/settings-registration.php:178
-msgid "If you fill this in, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:110
-#: includes/admin/settings/settings-registration.php:145
-#: includes/admin/settings/settings-registration.php:181
-msgid "GDPR Notice: Long Description"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:114
-#: includes/admin/settings/settings-registration.php:149
-#: includes/admin/settings/settings-registration.php:185
-msgid "If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept these notice terms.  It is best to keep this notice to one or two lines."
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:118
-#: includes/admin/settings/settings-registration.php:153
-#: includes/admin/settings/settings-registration.php:189
-msgid "Mandatory"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:122
-#: includes/admin/settings/settings-registration.php:157
-#: includes/admin/settings/settings-registration.php:193
-msgid "Does the user need to check this option before being able to register?"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:125
-#: includes/admin/settings/settings-registration.php:160
-#: includes/admin/settings/settings-registration.php:196
-msgid "Can Opt Out"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:129
-#: includes/admin/settings/settings-registration.php:164
-#: includes/admin/settings/settings-registration.php:200
-msgid "Is this an option that the user can opt-out from after granting consent?"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:133
-msgid "GDPR Notice #2"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:135
-#: includes/admin/settings/settings-registration.php:171
-msgid "If personal data will be used in any additional context add that here. It is best to keep this brief."
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:169
-msgid "GDPR Notice #3"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:205
-msgid "Terms & Conditions"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:213
-msgid "Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept your terms"
-msgstr ""
-
-#: includes/admin/settings/settings-registration.php:218
 msgid "Other"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:222
+#: includes/admin/settings/settings-registration.php:102
 msgid "Default Role For New Users"
 msgstr ""
 
-#: includes/admin/settings/settings-registration.php:225
+#: includes/admin/settings/settings-registration.php:105
 msgid "The role should be the internal WordPress role id such as wpas_user and is case sensitive.  Do not leave this blank!  This role should have the 5 core Awesome Support capabilities in order for users to be able to submit tickets. Check our documentation for more information."
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:115
+msgid "GDPR Notice #1"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:117
+msgid "The GDPR requires that you provide explicit notice about what you will do with the data you collect from users. This section allows you to describe how any personal data collected will be used and require consent from the user before they can register."
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:120
+#: includes/admin/settings/settings-registration.php:155
+#: includes/admin/settings/settings-registration.php:191
+msgid "GDPR Notice: Short Description"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:124
+#: includes/admin/settings/settings-registration.php:159
+#: includes/admin/settings/settings-registration.php:195
+msgid "If you fill this in, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't tick the checkbox.  It is best to keep this brief - eg: Receive Emails? or Join Email List?"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:127
+#: includes/admin/settings/settings-registration.php:162
+#: includes/admin/settings/settings-registration.php:198
+msgid "GDPR Notice: Long Description"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:131
+#: includes/admin/settings/settings-registration.php:166
+#: includes/admin/settings/settings-registration.php:202
+msgid "If you add notice terms in this box, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept these notice terms.  It is best to keep this notice to one or two lines."
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:135
+#: includes/admin/settings/settings-registration.php:170
+#: includes/admin/settings/settings-registration.php:206
+msgid "Mandatory"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:139
+#: includes/admin/settings/settings-registration.php:174
+#: includes/admin/settings/settings-registration.php:210
+msgid "Does the user need to check this option before being able to register?"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:142
+#: includes/admin/settings/settings-registration.php:177
+#: includes/admin/settings/settings-registration.php:213
+msgid "Can Opt Out"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:146
+#: includes/admin/settings/settings-registration.php:181
+#: includes/admin/settings/settings-registration.php:217
+msgid "Is this an option that the user can opt-out from after granting consent?"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:150
+msgid "GDPR Notice #2"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:152
+#: includes/admin/settings/settings-registration.php:188
+msgid "If personal data will be used in any additional context add that here. It is best to keep this brief."
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:186
+msgid "GDPR Notice #3"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:222
+msgid "Terms & Conditions"
+msgstr ""
+
+#: includes/admin/settings/settings-registration.php:230
+msgid "Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept your terms"
 msgstr ""
 
 #: includes/admin/settings/settings-style.php:13
@@ -3781,7 +3779,7 @@ msgid "The field %s is required."
 msgstr ""
 
 #: includes/custom-fields/field-types/class-cf-taxonomy.php:71
-#: includes/functions-general.php:556
+#: includes/functions-general.php:603
 msgid "Please select"
 msgstr ""
 
@@ -3881,83 +3879,79 @@ msgstr ""
 msgid "Help Desk SaaS Ticket ID"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:288
+#: includes/file-uploader/class-file-uploader.php:294
 msgid "Automatically delete attachments when a ticket is closed"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:329
+#: includes/file-uploader/class-file-uploader.php:335
 #, php-format
 msgid "%s attachment auto deleted"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:411
+#: includes/file-uploader/class-file-uploader.php:417
 #, php-format
 msgid "%s attachment deleted by %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:420
+#: includes/file-uploader/class-file-uploader.php:426
 msgid "Attachment deleted."
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:586
+#: includes/file-uploader/class-file-uploader.php:592
 msgid "The file you requested is not a valid attachment"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:590
+#: includes/file-uploader/class-file-uploader.php:596
 msgid "The attachment you requested is not attached to any ticket"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:597
+#: includes/file-uploader/class-file-uploader.php:603
 msgid "You are not allowed to view this attachment"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:806
-#: includes/file-uploader/class-file-uploader.php:826
+#: includes/file-uploader/class-file-uploader.php:812
+#: includes/file-uploader/class-file-uploader.php:832
 msgid "Attachments"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:807
+#: includes/file-uploader/class-file-uploader.php:813
 #, php-format
 msgid " You can upload up to %d files (maximum %d MB each) of the following types: %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:934
+#: includes/file-uploader/class-file-uploader.php:940
 msgid "Attachments:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:979
-msgid "X"
-msgstr ""
-
-#: includes/file-uploader/class-file-uploader.php:1130
+#: includes/file-uploader/class-file-uploader.php:1136
 #, php-format
 msgid "%s -> Max files (%d) exceeded."
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1181
+#: includes/file-uploader/class-file-uploader.php:1187
 msgid "Attachment Errors:"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1211
+#: includes/file-uploader/class-file-uploader.php:1217
 #, php-format
 msgid "Your reply has been correctly submitted but the attachment was not uploaded. %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1280
+#: includes/file-uploader/class-file-uploader.php:1286
 #, php-format
 msgid "You are not allowed to upload files of this type (%s)"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1284
+#: includes/file-uploader/class-file-uploader.php:1290
 msgid "You cannot upload empty attachments. You attachments weights 0 bytes"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1288
+#: includes/file-uploader/class-file-uploader.php:1294
 #, php-format
 msgid "Your attachment is too big. You are allowed to attach files up to %s"
 msgstr ""
 
-#: includes/file-uploader/class-file-uploader.php:1549
+#: includes/file-uploader/class-file-uploader.php:1555
 #, php-format
 msgid "Max files (%s) exceeded."
 msgstr ""
@@ -4072,6 +4066,14 @@ msgstr ""
 msgid "Can the user control whether or not attachments should be automatically deleted on close?"
 msgstr ""
 
+#: includes/file-uploader/settings-file-upload.php:113
+msgid "Agent Controls Auto-delete Flag?"
+msgstr ""
+
+#: includes/file-uploader/settings-file-upload.php:116
+msgid "Can agents control whether or not attachments should be automatically deleted on close?"
+msgstr ""
+
 #: includes/functions-addons.php:70
 #, php-format
 msgid "An addon with the ID %s is already registered"
@@ -4085,7 +4087,7 @@ msgstr ""
 msgid "Describe your problem as accurately as possible"
 msgstr ""
 
-#: includes/functions-general.php:270
+#: includes/functions-general.php:317
 msgid "Submit"
 msgstr ""
 
@@ -4125,10 +4127,6 @@ msgstr ""
 
 #: includes/functions-post-type.php:48
 msgid "New Ticket"
-msgstr ""
-
-#: includes/functions-post-type.php:49
-msgid "Edit Ticket"
 msgstr ""
 
 #: includes/functions-post-type.php:50
@@ -4554,7 +4552,7 @@ msgid "Invalid request!"
 msgstr ""
 
 #: includes/functions-post.php:1981
-msgid "Edit history found."
+msgid "Edit history"
 msgstr ""
 
 #: includes/functions-post.php:1987
@@ -4665,8 +4663,8 @@ msgid "Consent action is required! Options are - \"opted-in\" or \"opted-out\""
 msgstr ""
 
 #: includes/functions-user.php:1382
-#: includes/gdpr-integration/gdpr-privacy-options.php:1065
-#: includes/gdpr-integration/gdpr-privacy-options.php:1134
+#: includes/gdpr-integration/gdpr-privacy-options.php:1066
+#: includes/gdpr-integration/gdpr-privacy-options.php:1135
 msgid "user"
 msgstr ""
 
@@ -4674,27 +4672,27 @@ msgstr ""
 msgid "on"
 msgstr ""
 
-#: includes/functions-user.php:1603
+#: includes/functions-user.php:1600
 msgid "Activate User"
 msgstr ""
 
-#: includes/functions-user.php:1605
+#: includes/functions-user.php:1602
 msgid "Deny User"
 msgstr ""
 
-#: includes/functions-user.php:1608
+#: includes/functions-user.php:1605
 msgid "User has been denied."
 msgstr ""
 
-#: includes/functions-user.php:1719
+#: includes/functions-user.php:1716
 msgid "User successfully activated."
 msgstr ""
 
-#: includes/functions-user.php:1728
+#: includes/functions-user.php:1725
 msgid "Error while activating user, try again later."
 msgstr ""
 
-#: includes/functions-user.php:1737
+#: includes/functions-user.php:1734
 msgid "User successfully denied."
 msgstr ""
 
@@ -4703,7 +4701,7 @@ msgid "GDPR Ticket cleanup cron"
 msgstr ""
 
 #: includes/gdpr-integration/gdpr-privacy-options.php:283
-#: includes/gdpr-integration/gdpr-privacy-options.php:550
+#: includes/gdpr-integration/gdpr-privacy-options.php:551
 #, php-format
 msgid "Anonymize Awesome Support Ticket #: %s"
 msgstr ""
@@ -4714,7 +4712,7 @@ msgid "Anonymize Reply on Awesome Support Ticket #: %s. The reply id is: %s"
 msgstr ""
 
 #: includes/gdpr-integration/gdpr-privacy-options.php:319
-#: includes/gdpr-integration/gdpr-privacy-options.php:554
+#: includes/gdpr-integration/gdpr-privacy-options.php:555
 #, php-format
 msgid "Removed Awesome Support Ticket #: %s"
 msgstr ""
@@ -4743,143 +4741,143 @@ msgstr ""
 msgid "Clear User Consent data for all Awesome support Users"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:398
+#: includes/gdpr-integration/gdpr-privacy-options.php:399
 msgid "OPT-IN"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:405
+#: includes/gdpr-integration/gdpr-privacy-options.php:406
 msgid "OPT-OUT"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:406
+#: includes/gdpr-integration/gdpr-privacy-options.php:407
 msgid "Set "
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:430
-#: includes/gdpr-integration/gdpr-privacy-options.php:679
+#: includes/gdpr-integration/gdpr-privacy-options.php:431
+#: includes/gdpr-integration/gdpr-privacy-options.php:680
 msgid "Awesome Support Data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:558
+#: includes/gdpr-integration/gdpr-privacy-options.php:559
 #, php-format
 msgid "Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity."
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:566
+#: includes/gdpr-integration/gdpr-privacy-options.php:567
 msgid "No Awesome Support data was found."
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:721
+#: includes/gdpr-integration/gdpr-privacy-options.php:722
 msgid "Awesome Support"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:734
+#: includes/gdpr-integration/gdpr-privacy-options.php:735
 msgid "Ticket Subject"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:737
+#: includes/gdpr-integration/gdpr-privacy-options.php:738
 msgid "Ticket Description"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:746
+#: includes/gdpr-integration/gdpr-privacy-options.php:747
 msgid "Reply "
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:759
+#: includes/gdpr-integration/gdpr-privacy-options.php:760
 msgid "Ticket Status"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:789
+#: includes/gdpr-integration/gdpr-privacy-options.php:790
 #: includes/gdpr-integration/gdpr-user-profile.php:135
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:24
 msgid "Item"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:800
+#: includes/gdpr-integration/gdpr-privacy-options.php:801
 msgid "Opt In"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:806
+#: includes/gdpr-integration/gdpr-privacy-options.php:807
 msgid "Opt Out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:814
+#: includes/gdpr-integration/gdpr-privacy-options.php:815
 msgid "Consent Data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:916
+#: includes/gdpr-integration/gdpr-privacy-options.php:917
 msgid "Add/Remove Existing Consent"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:922
+#: includes/gdpr-integration/gdpr-privacy-options.php:923
 msgid "Delete my existing data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:928
+#: includes/gdpr-integration/gdpr-privacy-options.php:929
 msgid "Export tickets"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:971
+#: includes/gdpr-integration/gdpr-privacy-options.php:972
 msgid "Sorry! Something failed"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1007
+#: includes/gdpr-integration/gdpr-privacy-options.php:1008
 msgid "Right to be forgotten mail"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1007
+#: includes/gdpr-integration/gdpr-privacy-options.php:1008
 msgid "requested"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1020
+#: includes/gdpr-integration/gdpr-privacy-options.php:1021
 msgid "We have received your \"Right To Be Forgotten\" request!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1022
+#: includes/gdpr-integration/gdpr-privacy-options.php:1023
 msgid "Something went wrong. Please try again!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1025
-#: includes/gdpr-integration/gdpr-privacy-options.php:1095
-#: includes/gdpr-integration/gdpr-privacy-options.php:1156
+#: includes/gdpr-integration/gdpr-privacy-options.php:1026
+#: includes/gdpr-integration/gdpr-privacy-options.php:1096
+#: includes/gdpr-integration/gdpr-privacy-options.php:1157
 #: includes/gdpr-integration/gdpr-user-profile.php:310
 msgid "Cheating huh?"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1056
+#: includes/gdpr-integration/gdpr-privacy-options.php:1057
 #: includes/gdpr-integration/gdpr-user-profile.php:165
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:57
 msgid "Opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1077
+#: includes/gdpr-integration/gdpr-privacy-options.php:1078
 msgid "opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1079
+#: includes/gdpr-integration/gdpr-privacy-options.php:1080
 msgid "You have successfully opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1089
+#: includes/gdpr-integration/gdpr-privacy-options.php:1090
 #: includes/gdpr-integration/gdpr-user-profile.php:193
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:86
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:88
 msgid "Opt-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1126
+#: includes/gdpr-integration/gdpr-privacy-options.php:1127
 msgid "Opted-Out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1145
+#: includes/gdpr-integration/gdpr-privacy-options.php:1146
 msgid "opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1148
+#: includes/gdpr-integration/gdpr-privacy-options.php:1149
 msgid "You have successfully opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1153
+#: includes/gdpr-integration/gdpr-privacy-options.php:1154
 #: includes/gdpr-integration/gdpr-user-profile.php:198
 #: includes/gdpr-integration/gdpr-user-profile.php:203
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:92

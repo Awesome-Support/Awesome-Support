@@ -83,7 +83,7 @@ function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, 
 	$name = str_replace( '-', '_', $item_css_id );  // convert the passed ids into text to be used for classnames.  For convention we're using classnames with underscores (_) and ids with dashes (-)
 
 	$echoout = '';
-	$echoout = $echoout . '<span data-hint=' . '"' . $tool_tip_text . '"' . 'class="wpas-replies-middle-toolbar-item hint-bottom hint-anim">';
+	$echoout = $echoout . '<span data-hint=' . '"' . $tool_tip_text . '"' . 'id="' . $item_css_id  . '-middle-toolbar-item'  .'"' . 'class="wpas-replies-middle-toolbar-item hint-bottom hint-anim">';
 	$echoout = $echoout . ' ' . '<' . $html_element_type . ' ' ;  		// opening tag such as <a> or <img>
 	$echoout = $echoout . ' ' . 'name = ' . '"' . $name . '"' ; 		// name attribute
 	$echoout = $echoout . ' ' . 'id = ' . '"' . $item_css_id . '"' ;	// css ID
