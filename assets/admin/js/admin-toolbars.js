@@ -42,8 +42,8 @@
 		function hideToggleReplyLinks() {	
 			var rows = $('.wpas-table-replies .wpas-table-row');  // Get all the reply rows
 			if ( rows.length <= 3 ) {
-				$('#wpas-collapse-replies-top').hide();
-				$('#wpas-collapse-replies-bottom').hide();
+				$('#wpas-collapse-replies-top-middle-toolbar-item').hide();
+				$('#wpas-collapse-replies-top-middle-toolbar-item').hide();
 			}
 		}
 		hideToggleReplyLinks();
