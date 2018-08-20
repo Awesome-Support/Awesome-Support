@@ -1866,7 +1866,7 @@ function wpas_edit_ticket_content() {
 	}
 
 	/**
-	 * The the updated ticket content is missing, exit
+	 * The updated ticket content is missing, exit
 	 */
 	if ( ! $content ) {
 		$response['message'] = __( 'No ticket message found. Invalid request!', 'awesome-support' );
@@ -1919,9 +1919,9 @@ function wpas_edit_ticket_content() {
 			$response['message'] = __( 'You have successfully edited content!', 'awesome-support' );
 			$response['content'] = $content;
 			/**
-			 * Log the ticket
+			 * Log the edits to ticket
 			 */
-			wpas_log_edits( $ticket_id, sprintf( __( 'Ticket content #%1$s located on ticket #%2$s was edited.', 'awesome-support' ), (string) $original_content->post_parent, (string) $ticket_id ), $original_content->post_content );
+			wpas_log_ticket_edits( $ticket_id, $original_content );
 		}
 	} else {
 		$response['code']    = 404;
@@ -1932,6 +1932,28 @@ function wpas_edit_ticket_content() {
 	wp_send_json( $response );
 	wp_die();
 
+}
+
+/**
+ * Log the original contents of a ticket after it is edited.
+ *
+ * @since 5.7.1
+ *
+ * @param $int  $ticket_id       - the id of the ticket being edited.
+ * @param array $original_ticket - the original post before the edited ticket was added to the database
+ *
+ * @return void
+ */
+function wpas_log_ticket_edits( $ticket_id, $original_ticket ) {
+	
+	if ( 'low' === wpas_get_option( 'log_content_edit_level', 'low' ) ) {
+		$contents_to_log = __( 'Original data not available because detailed logging is not turned on or allowed', 'awesome-support' );
+	} else {
+		$contents_to_log = $original_ticket->post_content;
+	}
+	
+	wpas_log_edits( $ticket_id, sprintf( __( 'Ticket content located on ticket #%1$s was edited.', 'awesome-support' ), (string) $ticket_id ), $contents_to_log );	
+	
 }
 
 add_action( 'wp_ajax_wpas_load_reply_history', 'wpas_load_reply_history' );
