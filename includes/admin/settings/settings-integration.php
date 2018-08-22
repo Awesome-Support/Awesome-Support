@@ -54,7 +54,7 @@ function wpas_core_settings_integration( $def ) {
 					'name'    => __( 'Enable Teamviewer Chat', 'awesome-support' ),
 					'id'      => 'enable_teamviewer_chat',
 					'type'    => 'checkbox',
-					'desc'    => __( 'If your team is licensed to user teamviewer in a multi-user environment you can use teamviewer chat right inside the Awesome Support ticket screens!', 'awesome-support' ),
+					'desc'    => __( 'If your team is licensed to use teamviewer in a multi-user environment you can use teamviewer chat right inside the Awesome Support ticket screens!', 'awesome-support' ),
 					'default' => false
 				),
 			)
