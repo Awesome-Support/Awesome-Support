@@ -67,7 +67,7 @@ function wpas_rest_api_add_settings_options ( $defaults ) {
 				'name'    => __( 'Enable REST API', 'awesome-support' ),
 				'id'      => 'enable_rest_api',
 				'type'    => 'checkbox',
-				'default' => true,
+				'default' => false,
 				'desc'    => __( 'Enable Awesome Support REST API', 'awesome-support' ),
 			)
 		),
