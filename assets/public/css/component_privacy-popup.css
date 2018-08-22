@@ -133,6 +133,9 @@
 	background-color: #8b0000;
     color: #ffffff;
     border-left: 0;
+	padding: 1em;
+	font-size: 1.25em;
+	margin-bottom: 0.25em;	
 }
 .wpas-gdpr-notice p {
 	margin: .5em 0;
