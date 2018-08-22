@@ -987,19 +987,29 @@ class WPAS_Privacy_Option {
 			);
 
 			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
+			
 			if ( ! empty( $ticket_id ) ) {
+				
+				$response['code']    = 200;
+				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );				
+				
 				// send erase data request.
 				if ( function_exists( 'wp_create_user_request' )  && function_exists( 'wp_send_user_request' ) ) {
 					$current_user = wp_get_current_user();
 					if( isset( $current_user->user_email ) && !empty( $current_user->user_email )){
 						$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
-						if( $request_id ) {
+						if( $request_id && ! is_wp_error( $request_id ) ) {
 							wp_send_user_request( $request_id );
+						} else {
+							// if you've gotten here chances are the error is a duplicate request.
+							if ( is_wp_error( $request_id ) ){
+								$response['message'] = $request_id->get_error_message() ;
+								unset( $response['code'] ) ;
+							}
 						}
 					}
 				}
-				$response['code']    = 200;
-				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
+
 			} else {
 				$response['message'] = __( 'Something went wrong. Please try again!', 'awesome-support' );
 			}
