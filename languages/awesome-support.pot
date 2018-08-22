@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2018-08-19 18:58-0500\n"
+"POT-Creation-Date: 2018-08-21 20:16-0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -714,7 +714,7 @@ msgid "You can now access your support tickets and other support options under t
 msgstr ""
 
 #: includes/admin/functions-admin-actions.php:217
-#: includes/functions-post.php:814
+#: includes/functions-post.php:814 includes/functions-post.php:1950
 msgid "Original data not available because detailed logging is not turned on or allowed"
 msgstr ""
 
@@ -1995,7 +1995,7 @@ msgid "Enable Teamviewer Chat"
 msgstr ""
 
 #: includes/admin/settings/settings-integration.php:57
-msgid "If your team is licensed to user teamviewer in a multi-user environment you can use teamviewer chat right inside the Awesome Support ticket screens!"
+msgid "If your team is licensed to use teamviewer in a multi-user environment you can use teamviewer chat right inside the Awesome Support ticket screens!"
 msgstr ""
 
 #: includes/admin/settings/settings-licenses.php:23
@@ -4538,24 +4538,24 @@ msgstr ""
 msgid "You have successfully edited content!"
 msgstr ""
 
-#: includes/functions-post.php:1924
-#, php-format
-msgid "Ticket content #%1$s located on ticket #%2$s was edited."
-msgstr ""
-
 #: includes/functions-post.php:1928
 msgid "Nothing has been updated. You have same content as before.."
 msgstr ""
 
-#: includes/functions-post.php:1951
+#: includes/functions-post.php:1955
+#, php-format
+msgid "Ticket content located on ticket #%1$s was edited."
+msgstr ""
+
+#: includes/functions-post.php:1973
 msgid "Invalid request!"
 msgstr ""
 
-#: includes/functions-post.php:1981
+#: includes/functions-post.php:2003
 msgid "Edit history"
 msgstr ""
 
-#: includes/functions-post.php:1987
+#: includes/functions-post.php:2009
 msgid "No edit history found!"
 msgstr ""
 
@@ -4663,8 +4663,8 @@ msgid "Consent action is required! Options are - \"opted-in\" or \"opted-out\""
 msgstr ""
 
 #: includes/functions-user.php:1382
-#: includes/gdpr-integration/gdpr-privacy-options.php:1066
-#: includes/gdpr-integration/gdpr-privacy-options.php:1135
+#: includes/gdpr-integration/gdpr-privacy-options.php:1047
+#: includes/gdpr-integration/gdpr-privacy-options.php:1116
 msgid "user"
 msgstr ""
 
@@ -4805,79 +4805,67 @@ msgstr ""
 msgid "Consent Data"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:917
-msgid "Add/Remove Existing Consent"
-msgstr ""
-
-#: includes/gdpr-integration/gdpr-privacy-options.php:923
-msgid "Delete my existing data"
-msgstr ""
-
-#: includes/gdpr-integration/gdpr-privacy-options.php:929
-msgid "Export tickets"
-msgstr ""
-
-#: includes/gdpr-integration/gdpr-privacy-options.php:972
+#: includes/gdpr-integration/gdpr-privacy-options.php:953
 msgid "Sorry! Something failed"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1008
+#: includes/gdpr-integration/gdpr-privacy-options.php:989
 msgid "Right to be forgotten mail"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1008
+#: includes/gdpr-integration/gdpr-privacy-options.php:989
 msgid "requested"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1021
+#: includes/gdpr-integration/gdpr-privacy-options.php:1002
 msgid "We have received your \"Right To Be Forgotten\" request!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1023
+#: includes/gdpr-integration/gdpr-privacy-options.php:1004
 msgid "Something went wrong. Please try again!"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1026
-#: includes/gdpr-integration/gdpr-privacy-options.php:1096
-#: includes/gdpr-integration/gdpr-privacy-options.php:1157
+#: includes/gdpr-integration/gdpr-privacy-options.php:1007
+#: includes/gdpr-integration/gdpr-privacy-options.php:1077
+#: includes/gdpr-integration/gdpr-privacy-options.php:1138
 #: includes/gdpr-integration/gdpr-user-profile.php:310
 msgid "Cheating huh?"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1057
+#: includes/gdpr-integration/gdpr-privacy-options.php:1038
 #: includes/gdpr-integration/gdpr-user-profile.php:165
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:57
 msgid "Opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1078
+#: includes/gdpr-integration/gdpr-privacy-options.php:1059
 msgid "opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1080
+#: includes/gdpr-integration/gdpr-privacy-options.php:1061
 msgid "You have successfully opted-in"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1090
+#: includes/gdpr-integration/gdpr-privacy-options.php:1071
 #: includes/gdpr-integration/gdpr-user-profile.php:193
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:86
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:88
 msgid "Opt-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1127
+#: includes/gdpr-integration/gdpr-privacy-options.php:1108
 msgid "Opted-Out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1146
+#: includes/gdpr-integration/gdpr-privacy-options.php:1127
 msgid "opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1149
+#: includes/gdpr-integration/gdpr-privacy-options.php:1130
 msgid "You have successfully opted-out"
 msgstr ""
 
-#: includes/gdpr-integration/gdpr-privacy-options.php:1154
+#: includes/gdpr-integration/gdpr-privacy-options.php:1135
 #: includes/gdpr-integration/gdpr-user-profile.php:198
 #: includes/gdpr-integration/gdpr-user-profile.php:203
 #: includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php:92
@@ -4974,6 +4962,18 @@ msgstr ""
 
 #: includes/gdpr-integration/tab-content/gdpr-export-user-data.php:21
 msgid "Export my tickets"
+msgstr ""
+
+#: includes/gdpr-integration/tab-content/gdpr-tabs.php:25
+msgid "Add/Remove Existing Consent"
+msgstr ""
+
+#: includes/gdpr-integration/tab-content/gdpr-tabs.php:31
+msgid "Delete my existing data"
+msgstr ""
+
+#: includes/gdpr-integration/tab-content/gdpr-tabs.php:37
+msgid "Export tickets"
 msgstr ""
 
 #: includes/install.php:158
