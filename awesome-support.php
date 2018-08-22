@@ -425,6 +425,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );			
 			require( WPAS_PATH . 'includes/install.php' );
 
+			/* Load Rest API */
+			require( 'includes/rest-api/awesome-support-api.php' );
+
 			/* Simple WooCommerce Integration */
 			require( WPAS_PATH . 'includes/integrations/wc-account.php' );
 
