@@ -35,7 +35,12 @@ function wpas_rest_api_load() {
 
 		// Add options page
 		if ( is_admin() ) {
-			add_filter( 'wpas_plugin_settings', 'wpas_rest_api_add_settings_options' );
+
+			/**
+			 * Load the rest-api settings
+			 */
+			require_once( WPAS_PATH . 'includes/rest-api/includes/settings-api.php' );
+
 		}
 
 		if ( boolval( wpas_get_option( 'enable_rest_api' ) ) ) {
@@ -48,35 +53,6 @@ function wpas_rest_api_load() {
 	}
 
 }
-
-/**
- * Add REST API tab to Awesome Support Settings
- * 
- * @param  array $defaults Array of existing settings
- *
- * @return array Updated settings
- */
-function wpas_rest_api_add_settings_options ( $defaults ) {
-
-	$settings  = array();
-
-	$settings['rest-api'] = array(
-		'name'    => __( 'REST API', 'awesome-support' ),
-		'options' => array(
-			array(
-				'name'    => __( 'Enable REST API', 'awesome-support' ),
-				'id'      => 'enable_rest_api',
-				'type'    => 'checkbox',
-				'default' => false,
-				'desc'    => __( 'Enable Awesome Support REST API', 'awesome-support' ),
-			)
-		),
-	);
-
-	return array_merge ( $defaults, $settings );
-
-}
-
 
 /**
  * Notify user 
