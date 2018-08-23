@@ -131,8 +131,8 @@ class WPAS_API {
 		 * @var string $get_locale The locale to use. Uses get_user_locale()` in WordPress 4.7 or greater,
 		 *                  otherwise uses `get_locale()`.
 		 */
-		$locale = apply_filters( 'plugin_locale', $get_locale, 'awesome-support-api' );
-		$mofile = sprintf( '%1$s-%2$s.mo', 'awesome-support-api', $locale );
+		$locale = apply_filters( 'plugin_locale', $get_locale, 'awesome-support' );
+		$mofile = sprintf( '%1$s-%2$s.mo', 'awesome-support', $locale );
 
 		// Setup paths to current locale file
 		$mofile_local  = $wpas_api_lang_dir . $mofile;
@@ -140,13 +140,13 @@ class WPAS_API {
 
 		if ( file_exists( $mofile_global ) ) {
 			// Look in global /wp-content/languages/awesome-support-api folder
-			load_textdomain( 'awesome-support-api', $mofile_global );
+			load_textdomain( 'awesome-support', $mofile_global );
 		} elseif ( file_exists( $mofile_local ) ) {
 			// Look in local /wp-content/plugins/awesome-support-api/languages/ folder
-			load_textdomain( 'awesome-support-api', $mofile_local );
+			load_textdomain( 'awesome-support', $mofile_local );
 		} else {
 			// Load the default language files
-			load_plugin_textdomain( 'awesome-support-api', false, $wpas_api_lang_dir );
+			load_plugin_textdomain( 'awesome-support', false, $wpas_api_lang_dir );
 		}
 
 	}

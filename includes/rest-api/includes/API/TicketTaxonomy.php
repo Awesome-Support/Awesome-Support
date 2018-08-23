@@ -38,7 +38,7 @@ class TicketTaxonomy extends WP_REST_Terms_Controller {
 	protected function add_additional_fields_schema( $schema ) {
 		if ( 'ticket_priority' === $this->taxonomy ) {
 			$schema['properties']['color'] = array(
-				'descriptions' => __( 'The color for this priority', 'awesome-support-api' ),
+				'descriptions' => __( 'The color for this priority', 'awesome-support' ),
 				'type'         => 'string',
 				'context'      => array( 'view', 'embed', 'edit' )
 			);

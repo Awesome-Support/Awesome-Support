@@ -41,13 +41,13 @@ class Attachments extends WP_REST_Attachments_Controller {
 	public function create_item_permissions_check( $request ) {
 
 		if ( ! current_user_can( 'create_ticket' ) ) {
-			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to upload media on this site.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to upload media on this site.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		/*
 		// Attaching media to a post requires ability to edit said post.
 		if ( empty( $request['post'] ) ) {
-			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are only allowed to upload media to a ticket.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are only allowed to upload media to a ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 		*/
 
@@ -56,7 +56,7 @@ class Attachments extends WP_REST_Attachments_Controller {
 			$parent = get_post( (int) $request['post'] );
 
 			if ( $parent->post_author != get_current_user_id() ) {
-				return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to upload media to this ticket.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+				return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to upload media to this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
 			}
 
 		} 

@@ -42,7 +42,7 @@ class Passwords extends WP_REST_Controller {
 		register_rest_route( $this->namespace, '/users/(?P<user_id>[\d]+)/' . $this->rest_base, array(
 			'args' => array(
 				'user_id' => array(
-					'description' => __( 'The ID of the requested user.', 'awesome-support-api' ),
+					'description' => __( 'The ID of the requested user.', 'awesome-support' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -69,12 +69,12 @@ class Passwords extends WP_REST_Controller {
 		register_rest_route( $this->namespace, '/users/(?P<user_id>[\d]+)/' . $this->rest_base . '/(?P<slug>[\da-fA-F]{12})', array(
 			'args' => array(
 				'user_id' => array(
-					'description' => __( 'The ID of the requested user.', 'awesome-support-api' ),
+					'description' => __( 'The ID of the requested user.', 'awesome-support' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
 				'slug' => array(
-					'description' => __( 'The slug of the password to delete.', 'awesome-support-api' ),
+					'description' => __( 'The slug of the password to delete.', 'awesome-support' ),
 					'type'        => 'string',
 					'required'    => true,
 				),
@@ -153,7 +153,7 @@ class Passwords extends WP_REST_Controller {
 		$user = new User( $request['user_id'] );
 
 		if ( empty( $request['name'] ) ) {
-			return new WP_Error( 'no-name', __( 'Please provide a name to use for the new password.', 'awesome-support-api' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-name', __( 'Please provide a name to use for the new password.', 'awesome-support' ), array( 'status' => 404 ) );
 		}
 
 		$new_item = $user->create_new_api_password( $request['name'] );
@@ -177,13 +177,13 @@ class Passwords extends WP_REST_Controller {
 		$slug = $request['slug'];
 
 		if ( ! $item = $user->get_api_password( $slug ) ) {
-			return new WP_Error( 'no-item-found', __( 'No password was found with that slug.', 'awesome-support-api' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-item-found', __( 'No password was found with that slug.', 'awesome-support' ), array( 'status' => 404 ) );
 		}
 
 		if ( $user->delete_api_password( $slug ) ) {
 			return array( 'deleted' => true, 'previous' => $item );
 		} else {
-			return new WP_Error( 'no-item-found', __( 'No password was found with that slug.', 'awesome-support-api' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-item-found', __( 'No password was found with that slug.', 'awesome-support' ), array( 'status' => 404 ) );
 		}
 
 	}
@@ -274,11 +274,11 @@ class Passwords extends WP_REST_Controller {
 			'type'       => 'object',
 			'properties' => array(
 				'PHP_AUTH_USER' => array(
-					'description' => __( 'The user to be authenticated', 'awesome-support-api' ),
+					'description' => __( 'The user to be authenticated', 'awesome-support' ),
 					'type'        => 'string'
 				),
 				'PHP_AUTH_PW'   => array(
-					'description' => __( 'The authentication password', 'awesome-support-api' ),
+					'description' => __( 'The authentication password', 'awesome-support' ),
 					'type'        => 'string'
 				),
 			),
@@ -303,7 +303,7 @@ class Passwords extends WP_REST_Controller {
 		}
 
 		if ( empty( $response ) ) {
-			return new WP_Error( 'no-credentials', __( 'No HTTP Basic Authorization credentials were found submitted with this request.', 'awesome-support-api' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-credentials', __( 'No HTTP Basic Authorization credentials were found submitted with this request.', 'awesome-support' ), array( 'status' => 404 ) );
 		}
 
 		return $response;

@@ -46,7 +46,7 @@ class TicketBase extends WP_REST_Posts_Controller {
 
 		$query_params['status'] = array(
 			'default'           => 'any',
-			'description'       => __( 'Limit result set to items assigned one or more statuses.', 'awesome-support-api' ),
+			'description'       => __( 'Limit result set to items assigned one or more statuses.', 'awesome-support' ),
 			'type'              => 'array',
 			'items'             => array(
 				'enum'          =>  array( 'read', 'unread' ),
@@ -134,15 +134,15 @@ class TicketBase extends WP_REST_Posts_Controller {
 		$post_type = get_post_type_object( $this->post_type );
 
 		if ( ! empty( $request['author'] ) && get_current_user_id() !== $request['author'] && ! current_user_can( $post_type->cap->edit_others_posts ) ) {
-			return new WP_Error( 'rest_cannot_edit_others', __( 'Sorry, you are not allowed to create tickets as this user.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_edit_others', __( 'Sorry, you are not allowed to create tickets as this user.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		if ( ! current_user_can( 'create_ticket' ) ) {
-			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to create tickets as this user.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to create tickets as this user.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		if ( ! $this->check_assign_terms_permission( $request ) ) {
-			return new WP_Error( 'rest_cannot_assign_term', __( 'Sorry, you are not allowed to assign the provided terms.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_assign_term', __( 'Sorry, you are not allowed to assign the provided terms.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return true;

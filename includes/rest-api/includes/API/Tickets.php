@@ -162,8 +162,8 @@ class Tickets extends TicketBase {
 		}
 
 		if ( isset( $_GET['context'] ) && 'help' == $_GET['context'] ) {
-			$query_params['assignee']['default'] = __( 'The ID of the current logged in agent if applicable.', 'awesome-support-api' );
-			$query_params['author']['default'] = __( 'The ID of the current logged in client if applicable.', 'awesome-support-api' );
+			$query_params['assignee']['default'] = __( 'The ID of the current logged in agent if applicable.', 'awesome-support' );
+			$query_params['author']['default'] = __( 'The ID of the current logged in client if applicable.', 'awesome-support' );
 		}
 
 		$query_params['status']['items']['enum'] = array_merge( array_keys( wpas_get_post_status() ), array( 'read', 'unread', 'any' ) );
@@ -206,14 +206,14 @@ class Tickets extends TicketBase {
 				$get_field = is_numeric( $term ) ? 'id' : 'slug';
 
 				if ( ! $term = get_term_by( $get_field, $request[ $base ], $base ) ) {
-					return new WP_Error( 'invalid_term', sprintf( __( 'That %s term does not exist.', 'awesome-support-api' ), $base ) );
+					return new WP_Error( 'invalid_term', sprintf( __( 'That %s term does not exist.', 'awesome-support' ), $base ) );
 				}
 
 				$field  = new WPAS_Custom_Field( $base, $custom_fields[ $base ] );
 				$result = $field->update_value( $term->term_id, $post_id );
 
 				if ( 4 == $result ) {
-					return new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit this post.', 'awesome-support-api' ), array( 'status' => 401 ) );
+					return new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit this post.', 'awesome-support' ), array( 'status' => 401 ) );
 				}
 
 				$this->maybe_update_log( $field, $result, $post_id );
@@ -579,7 +579,7 @@ class Tickets extends TicketBase {
 		$this->maybe_update_log( $field, $result, $ticket_id );
 
 		if ( 4 == $result ) {
-			$result = new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit this ticket.', 'awesome-support-api' ), array( 'status' => 401 ) );
+			$result = new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit this ticket.', 'awesome-support' ), array( 'status' => 401 ) );
 		}
 
 		return $result;
@@ -780,7 +780,7 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['assignee'] = array(
-			'description' => __( 'The agent assigned to this ticket', 'awesome-support-api' ),
+			'description' => __( 'The agent assigned to this ticket', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit', 'embed' ),
 			'field_key'   => 'assignee',
@@ -792,42 +792,42 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['secondary-assignee'] = array(
-			'description' => __( 'The secondary assignee for this ticket', 'awesome-support-api' ),
+			'description' => __( 'The secondary assignee for this ticket', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'secondary_assignee',
 		);
 
 		$fields['tertiary-assignee'] = array(
-			'description' => __( 'The tertiary assignee for this ticket', 'awesome-support-api' ),
+			'description' => __( 'The tertiary assignee for this ticket', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'tertiary_assignee',
 		);
 
 		$fields['customer-reply-count'] = array(
-			'description' => __( 'The number of customer replies to this ticket', 'awesome-support-api' ),
+			'description' => __( 'The number of customer replies to this ticket', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'ttl_replies_by_customer',
 		);
 
 		$fields['agent-reply-count'] = array(
-			'description' => __( 'The number of agent replies to this ticket', 'awesome-support-api' ),
+			'description' => __( 'The number of agent replies to this ticket', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'ttl_replies_by_agent',
 		);
 
 		$fields['total-reply-count'] = array(
-			'description' => __( 'The number of total replies to this ticket', 'awesome-support-api' ),
+			'description' => __( 'The number of total replies to this ticket', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'ttl_replies',
 		);
 
 		$fields['time-calculated'] = array(
-			'description'       => __( 'The gross time calculated for ticket in minutes', 'awesome-support-api' ),
+			'description'       => __( 'The gross time calculated for ticket in minutes', 'awesome-support' ),
 			'type'              => 'integer',
 			'context'           => array( 'view', 'edit' ),
 			'field_key'         => 'ttl_calculated_time_spent_on_ticket',
@@ -835,7 +835,7 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['time-adjustments'] = array(
-			'description' => __( 'The time adjustments for ticket in minutes', 'awesome-support-api' ),
+			'description' => __( 'The time adjustments for ticket in minutes', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'ttl_adjustments_to_time_spent_on_ticket',
@@ -843,7 +843,7 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['time-final'] = array(
-			'description' => __( 'The final adjusted time for ticket in minutes', 'awesome-support-api' ),
+			'description' => __( 'The final adjusted time for ticket in minutes', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'readonly'    => true,
@@ -851,7 +851,7 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['time-adjustments-type'] = array(
-			'description' => __( 'The type of time adjustment, positive or negative.', 'awesome-support-api' ),
+			'description' => __( 'The type of time adjustment, positive or negative.', 'awesome-support' ),
 			'type'        => 'string',
 			'items'       => array(
 				'enum' => array( '+', '-' ),
@@ -862,7 +862,7 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['time-notes'] = array(
-			'description' => __( 'The notes for the time', 'awesome-support-api' ),
+			'description' => __( 'The notes for the time', 'awesome-support' ),
 			'type'        => 'string',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'time_notes',

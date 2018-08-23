@@ -69,19 +69,19 @@ class UserData {
 
 		// Check if username is set
 		if ( ! isset( $request[ 'username' ] ) ) {
-			return new WP_Error( 'invalid_username', __( 'Invalid username.', 'awesome-support-api' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_username', __( 'Invalid username.', 'awesome-support' ), array( 'status' => 400 ) );
 		}
 
 		$user = get_user_by( 'login',  $request[ 'username' ] );
 		
 		// Check result
         if ( ! $user ) {
-            return new WP_Error( 'invalid_username', __( 'Invalid username.', 'awesome-support-api' ), array( 'status' => 400 ) );
+            return new WP_Error( 'invalid_username', __( 'Invalid username.', 'awesome-support' ), array( 'status' => 400 ) );
 		}
 
 		// Check user ID
 		if ( $user->ID != get_current_user_id() ) {
-            return new WP_Error( 'invalid_username_access', __( 'You are not allowed to get user data', 'awesome-support-api' ), array( 'status' => 400 ) );
+            return new WP_Error( 'invalid_username_access', __( 'You are not allowed to get user data', 'awesome-support' ), array( 'status' => 400 ) );
 		}
 		
 		return array(
@@ -98,7 +98,7 @@ class UserData {
 
 		// Check if username and password are set
 		if ( ! isset( $request[ 'username' ] ) || ! isset( $request[ 'password' ] ) ) {
-			return new WP_Error( 'invalid_user_credentials', __( 'Invalid username or password.', 'awesome-support-api' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_user_credentials', __( 'Invalid username or password.', 'awesome-support' ), array( 'status' => 400 ) );
 		}
 
 		// Get user by username
@@ -106,7 +106,7 @@ class UserData {
 
 		// Check the password for current logged in user
 		if ( ! $user || ! wp_check_password( $request[ 'password' ], $user->data->user_pass, get_current_user_id() ) ) {
-			return new WP_Error( 'invalid_user_credentials', __( 'Invalid username or password.', 'awesome-support-api' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_user_credentials', __( 'Invalid username or password.', 'awesome-support' ), array( 'status' => 400 ) );
 		}
 
 		// Return user ID on success

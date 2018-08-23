@@ -94,7 +94,7 @@ class PasswordList extends \WP_List_Table {
 
 			<?php if ( 'bottom' === $which ) : ?>
 			<div class="alignright">
-				<?php submit_button( __( 'Revoke all api passwords', 'awesome-support-api' ), 'delete', 'revoke-all-wpas-api-passwords', false ); ?>
+				<?php submit_button( __( 'Revoke all api passwords', 'awesome-support' ), 'delete', 'revoke-all-wpas-api-passwords', false ); ?>
 			</div>
 			<?php endif; ?>
 

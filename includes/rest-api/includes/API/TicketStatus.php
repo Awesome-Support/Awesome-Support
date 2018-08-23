@@ -76,13 +76,13 @@ class TicketStatus extends TicketBase {
 	public function update_status( $request ) {
 
 		if ( ! isset( $request['status'] ) ) {
-			return new WP_Error( 'invalid_status_parameter', __( 'Invalid status parameter', 'awesome-support-api' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_status_parameter', __( 'Invalid status parameter', 'awesome-support' ), array( 'status' => 400 ) );
 		}
 
 		$post = get_post( intval( $request['ticket_id'] ) );
 
 		if ( $post->post_author != get_current_user_id() ) {
-			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update status of this ticket.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update status of this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		$status = ( $request['status'] == 'open' ) 
@@ -90,7 +90,7 @@ class TicketStatus extends TicketBase {
 				: wpas_close_ticket( $request[ 'ticket_id' ] );
 
 		if ( ! $status ) {
-			return new WP_Error( 'ticket_status_error', __( 'Cannot change ticket status', 'awesome-support-api' ), array( 'status' => 400 ) );
+			return new WP_Error( 'ticket_status_error', __( 'Cannot change ticket status', 'awesome-support' ), array( 'status' => 400 ) );
 		}
 
 		return true;

@@ -53,13 +53,13 @@ class Users extends WP_REST_Users_Controller {
 			),
 		);
 
-		$args['schema']['description']  = __( 'Can the system assign new tickets to this user?', 'awesome-support-api' );
+		$args['schema']['description']  = __( 'Can the system assign new tickets to this user?', 'awesome-support' );
 		$fields['wpas_can_be_assigned'] = $args;
 
-		$args['schema']['description']      = __( 'If Smart Tickets Order is enabled, Awesome Support will display tickets that need immediate attention at the top.', 'awesome-support-api' );
+		$args['schema']['description']      = __( 'If Smart Tickets Order is enabled, Awesome Support will display tickets that need immediate attention at the top.', 'awesome-support' );
 		$fields['wpas_smart_tickets_order'] = $args;
 
-		$args['schema']['description'] = __( 'If Smart Tickets Order is enabled, Awesome Support will display tickets that need immediate attention at the top.', 'awesome-support-api' );
+		$args['schema']['description'] = __( 'If Smart Tickets Order is enabled, Awesome Support will display tickets that need immediate attention at the top.', 'awesome-support' );
 		$args['schema']['enum']        = array( 'stay', 'back', 'ask' );
 		$args['schema']['type']        = 'string';
 		$fields['wpas_after_reply']    = $args;

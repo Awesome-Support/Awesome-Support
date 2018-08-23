@@ -125,7 +125,7 @@ class Init {
 		$user = new User( $data['user_id'] );
 
 		if ( empty( $data['name'] ) ) {
-			return new WP_Error( 'no-name', __( 'Please provide a name to use for the new password.', 'awesome-support-api' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-name', __( 'Please provide a name to use for the new password.', 'awesome-support' ), array( 'status' => 404 ) );
 		}
 
 		list( $new_password, $new_item ) = $user->create_new_api_password( $data['name'] );
@@ -233,7 +233,7 @@ class Init {
 		}
 
 		if ( empty( $response ) ) {
-			return new WP_Error( 'no-credentials', __( 'No HTTP Basic Authorization credentials were found submitted with this request.', 'awesome-support-api' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-credentials', __( 'No HTTP Basic Authorization credentials were found submitted with this request.', 'awesome-support' ), array( 'status' => 404 ) );
 		}
 
 		return $response;
@@ -303,9 +303,9 @@ class Init {
 		?>
 		<div class="wpas-api hide-if-no-js" id="wpas-api-section">
 			<h2 id="wpas-api"><?php esc_html_e( 'API Passwords' ); ?></h2>
-			<p><?php esc_html_e( 'API passwords allow authentication via the REST API without providing your actual password. API passwords can be easily revoked. They cannot be used for traditional logins to your website.', 'awesome-support-api' ); ?></p>
+			<p><?php esc_html_e( 'API passwords allow authentication via the REST API without providing your actual password. API passwords can be easily revoked. They cannot be used for traditional logins to your website.', 'awesome-support' ); ?></p>
 			<div class="create-wpas-api-password">
-				<input type="text" size="30" name="new_wp_api_password_name" placeholder="<?php esc_attr_e( 'New API Password Name', 'awesome-support-api' ); ?>" class="input" />
+				<input type="text" size="30" name="new_wp_api_password_name" placeholder="<?php esc_attr_e( 'New API Password Name', 'awesome-support' ); ?>" class="input" />
 				<?php submit_button( __( 'Add New' ), 'secondary', 'do_new_wp_api_password', false ); ?>
 			</div>
 

@@ -140,7 +140,7 @@ class CustomFields {
         if ( isset( $request['ticket_id'] ) ) {
 
             if ( ! $this->is_user_ticket(  $request[ 'ticket_id' ] ) ) {
-                return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to get custom fields of this ticket.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+                return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to get custom fields of this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
             }    
 
         } else {
@@ -175,11 +175,11 @@ class CustomFields {
     public function update_custom_fields( $request ) {
 
         if ( ! isset( $request[ 'custom_fields' ] ) || empty( $request[ 'custom_fields' ] ) ) {
-            return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter cannot be empty.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+            return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter cannot be empty.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
         }
 
         if ( ! $this->is_user_ticket( $request[ 'ticket_id' ] ) ) {
-            return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update custom fields for this ticket.', 'awesome-support-api' ), array( 'status' => rest_authorization_required_code() ) );
+            return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update custom fields for this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
         } 
 
         foreach ( $this->get_fields() as $field => $data ) {
