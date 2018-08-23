@@ -189,8 +189,9 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		return false;
 
-	} elseif ( defined( 'WP_CLI' ) && WP_CLI ) {
-
+	} elseif ( wpas_is_wp_cli() ) {
+		
+		/* running from wp_cli so just return false */
 		return false;
 
 	} else {
@@ -1861,3 +1862,12 @@ function wpas_get_support_users_on_ticket( $post_id ) {
 	
 }
 
+/**
+ * Checks to see if we're being called by wp_cli
+ *
+ * @return boolean
+ *
+ */
+function wpas_is_wp_cli() {
+	return ( defined( 'WP_CLI' ) && WP_CLI ) ;
+}
