@@ -189,6 +189,10 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		return false;
 
+	} elseif ( defined( 'WP_CLI' ) && WP_CLI ) {
+
+		return false;
+
 	} else {
 
 		global $post;
