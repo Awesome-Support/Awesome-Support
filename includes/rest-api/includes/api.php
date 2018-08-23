@@ -72,8 +72,6 @@ class WPAS_API {
 	 */
 	private function load() {
 
-		require_once( AS_API_PATH . '/vendor/autoload.php' );
-
 		$this->includes();
 		$this->actions();
 		$this->filters();

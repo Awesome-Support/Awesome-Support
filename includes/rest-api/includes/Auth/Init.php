@@ -287,8 +287,9 @@ class Init {
 		// convert \WP_User into Auth\User
 		$user = new User( $user );
 
-		wp_enqueue_style( 'wpas-api-css', wpas_api()->plugin_url() . 'assets/admin/css/admin.css', array() );
-		wp_enqueue_script( 'wpas-api-js', wpas_api()->plugin_url() . 'assets/admin/js/admin.js', array() );
+		wp_enqueue_style( 'wpas-api-css', WPAS_URL . 'includes/rest-api/assets/admin/css/admin.css', array() );
+		wp_enqueue_script( 'wpas-api-js', WPAS_URL . 'includes/rest-api/assets/admin/js/admin.js', array() );
+
 		wp_localize_script( 'wpas-api-js', 'wpasAPI', array(
 			'root'       => esc_url_raw( rest_url() ),
 			'namespace'  => wpas_api()->get_api_namespace(),

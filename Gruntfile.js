@@ -41,7 +41,8 @@ module.exports = function (grunt) {
 				files: {
 					'assets/public/css/public.css': 'assets/public/less/public.less',
 					'assets/admin/css/admin.css': 'assets/admin/less/admin.less',
-					'themes/default/css/style.css': 'themes/default/less/style.less'
+					'themes/default/css/style.css': 'themes/default/less/style.less',
+					'includes/rest-api/assets/admin/css/admin.css': 'includes/rest-api/assets/admin/less/admin.less'
 				}
 			}
 		},
