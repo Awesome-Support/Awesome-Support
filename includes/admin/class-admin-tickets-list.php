@@ -942,6 +942,8 @@ SQL;
 
 		// Add custom field filters
 		$this->custom_filters();
+		
+		do_action( 'wpas_custom_field_filters_after' );
 
 		// Add texonomy filters
 		$this->custom_taxonomy_filter();

@@ -224,6 +224,53 @@ function wpas_is_plugin_page( $slug = '' ) {
 }
 
 /**
+ * Determine if the current page is front-end
+ *
+ * It will return true if the current page is for Submit Ticket & My Ticket page
+ *
+ * @since 5.2.2
+ *
+ * @return boolean
+ */
+function wpas_is_front_end_plugin_page() {
+	global $post;
+
+	if ( ! $post ) {
+		return false;
+	}
+
+	/**
+	 * Check if the current page/post has the following shortcode
+	 *
+	 * [ticket-submit] | [tickets]
+	 *
+	 * ticket-submit is for submission while tickets for list of submission
+	 */
+
+	/**
+	 * Check if the current page is 'ticket submission'
+	 */
+	if ( has_shortcode( $post->post_content, 'ticket-submit' ) || has_shortcode( $post->post_content, 'tickets' ) ) {
+		return true;
+	} 
+
+	/**
+	 * Check if we're viewing a 'ticket' single page'.
+	 */	
+	if ( empty( $post ) ) {
+		$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
+		$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
+		$post     = get_post( $post_id );
+	}	
+	
+	if ( is_singular( 'ticket' ) ) {
+		return true;
+	}	
+	
+	return false ;
+}
+
+/**
  * Get field title from ID.
  *
  * Just a stupid function that converts an ID into
@@ -1809,3 +1856,4 @@ function wpas_get_support_users_on_ticket( $post_id ) {
 	return $all_users ;
 	
 }
+

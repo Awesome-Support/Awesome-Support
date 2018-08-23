@@ -267,8 +267,14 @@ class WPAS_File_Upload {
 	 * Add field to mark auto delete attachments on ticket close
 	 */
 	function admin_add_auto_delete_button() {
-		global $post_id;
 		
+		/* Exit if agents are not allowed to set auto-delete flag */
+		if ( ! wpas_is_asadmin() &&  ! boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments', true ) ) ) {
+			return ;
+		}
+
+		/* Got here so ok to paint the field */
+		global $post_id;
 		
 		$flag_on = get_post_meta( $post_id, 'auto_delete_attachments', true );
 		
