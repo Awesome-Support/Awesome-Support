@@ -171,8 +171,8 @@ class WPAS_Privacy_Option {
 				'interval' => ($trigger_time * 60),
 				'display' => __('GDPR Ticket cleanup cron', 'awesome-support' )
 			);
-			return $schedules;
 		}
+		return $schedules;		
 	}
 
 	/**
@@ -378,6 +378,7 @@ class WPAS_Privacy_Option {
 						'gdpr_notice_short_desc_02',
 						'gdpr_notice_short_desc_03'
 					);
+					$consent_array = apply_filters( 'wpas_gdpr_consent_list_array',$consent_array );
 					if( !empty( $consent_array ) ){
 						foreach ( $consent_array as $key => $consent ) {
 							$consent_name = wpas_get_option( $consent, '' );
@@ -848,7 +849,7 @@ class WPAS_Privacy_Option {
 	 * @return void
 	 */
 	public static function print_privacy_popup_temp() {
-		if ( wpas_is_plugin_page() ) { ?>
+		if ( wpas_is_front_end_plugin_page() ) { ?>
 			<div class="privacy-container-template">
 				<div class="entry entry-normal" id="privacy-option-content">
 					<div class="wpas-gdpr-loader-background"></div><!-- .wpas-gdpr-loader-background -->
@@ -861,31 +862,42 @@ class WPAS_Privacy_Option {
 					?>
 					<div class="entry-content">
 						<div class="wpas-gdpr-tab">
-							<?php $this->render_tabs(); ?>
+							<?php 
+								/**
+								 * Include file to generate the tabs
+								 */
+								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-tabs.php' );
+							?>
 						</div>
 
-						<div id="add-remove-consent" class="entry-content-tabs wpas-gdpr-tab-content">
+						<div id="add-remove-consent" class="add-remove-consent entry-content-tabs wpas-gdpr-tab-content">
 							<?php
 								/**
 								 * Include tab content for Add/Remove Content data
 								 */
-								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php' );
+								 if ( true === boolval( wpas_get_option( 'privacy_show_consent_tab', true) ) ) {
+									include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php' );
+								 }
 							?>
 						</div>
-						<div id="delete-existing-data" class="entry-content-tabs wpas-gdpr-tab-content">
+						<div id="delete-existing-data" class="delete-existing-data entry-content-tabs wpas-gdpr-tab-content">
 							<?php
 								/**
 								 * Include tab content for Delete my existing data
 								 */
-								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php' );
+								if ( true === boolval( wpas_get_option( 'privacy_show_delete_data_tab', true) ) ) {								 
+									include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php' );
+								}
 							?>
 						</div>
-						<div id="export-user-data" class="entry-content-tabs wpas-gdpr-tab-content">
+						<div id="export-user-data" class="export-user-data entry-content-tabs wpas-gdpr-tab-content">
 							<?php
 								/**
 								 * Include tab content for Export tickets and user data
 								 */
-								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-export-user-data.php' );
+								if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {								 
+									include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-export-user-data.php' );
+								}
 							?>
 						</div>
 						<div id="export-existing-data" class="entry-content-tabs wpas-gdpr-tab-content">
@@ -963,7 +975,7 @@ class WPAS_Privacy_Option {
 		/* Option is on so render the button */
 		$button_title = wpas_get_option( 'privacy_button_label', 'Privacy' );
 		wpas_make_button(
-			$button_title, array(
+			stripslashes_deep( $button_title ), array(
 				'type'  => 'link',
 				'link'  => '#',
 				'class' => 'wpas-btn wpas-btn-default wpas-link-privacy',
@@ -1020,11 +1032,17 @@ class WPAS_Privacy_Option {
 			);
 
 			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
+			
 			if ( ! empty( $ticket_id ) ) {
+				
+				$response['code']    = 200;
+				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );				
+				
 				// send erase data request.
 				if ( function_exists( 'wp_create_user_request' )  && function_exists( 'wp_send_user_request' ) ) {
 					$current_user = wp_get_current_user();
 					if( isset( $current_user->user_email ) && !empty( $current_user->user_email )){
+
 						if( 'delete' === $request_type ){
 							$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
 							$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
@@ -1035,10 +1053,18 @@ class WPAS_Privacy_Option {
 						}
 						if( $request_id ) {
 							wp_send_user_request( $request_id );
+						} else {
+							// if you've gotten here chances are the error is a duplicate request.
+							if ( is_wp_error( $request_id ) ){
+								$response['message'] = $request_id->get_error_message() ;
+								unset( $response['code'] ) ;
+							}
 						}
 					}
 				}
+				
 				$response['code']    = 200;
+
 			} else {
 				$response['message'] = __( 'Something went wrong. Please try again!', 'awesome-support' );
 			}

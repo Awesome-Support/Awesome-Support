@@ -844,6 +844,9 @@ class WPAS_Email_Notification {
 		
 		// We need to send notifications separately per recipient.
 		$mail = false;
+		
+		$email_sent_recipients = array();
+		
 		foreach( $email['recipient_email'] as $r_email ) {
 			
 			$email_headers = $email['headers'];
@@ -853,6 +856,13 @@ class WPAS_Email_Notification {
 			if( is_array( $r_email ) &&  isset( $r_email['email'] ) && $r_email['email'] ) {
 				$to_email = $r_email['email'];
 			}
+			
+			/* Make sure that the email is not already in the array - don't want dupes! */
+			if( in_array( $to_email, $email_sent_recipients ) ) {
+				continue;
+			}
+			
+			$email_sent_recipients[] = $to_email;
 			
 			if( is_array( $r_email ) && isset( $r_email['cc_addresses'] ) && !empty( $r_email['cc_addresses'] ) ) {
 				$email_headers[] = 'Cc: ' . implode( ',', $r_email['cc_addresses'] );

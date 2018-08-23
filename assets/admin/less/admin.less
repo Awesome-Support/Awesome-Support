@@ -155,7 +155,7 @@ Ticket Replies
 */
 
 .wpas-table-replies {
-	table-layout: fixed;
+	table-layout: auto;
 	.col1 {
 		width: 90px;
 	}
@@ -246,30 +246,36 @@ Ticket Replies
 Ticket Detail Toolbar
 ==========================================================================
 */
+
+#wpas_ticekt_main_toolbar {
+    display: none;
+    position: absolute;
+    top: 48px;
+    right: 12px;
+}
+
+#wpas_admin_tabs_ticket_main_ticket:hover #wpas_ticekt_main_toolbar {
+        display: block;
+}
+
 .wpas-middle-toolbar-links {
 	/* Style the images for the toolbar images and links in the ticket detail screen in admin */
 	cursor: pointer ;
 	text-decoration: none;
 }
 
-.wpas-middle-toolbar-links img,
-.wpas-middle-toolbar-links a,
-.wpas-replies-middle-toolbar-item img {
-	/* Put a round border around the toolbar images in he ticket detail screen admin */
-	border-radius: 50%;
-	border-color: #80BAD1 ;
+.wpas-replies-middle-toolbar-item {
+    border: 1px solid #cacfd3;
+    width: 24px;
+    height: 24px;
+    border-radius: 15px;
+    margin: 0 6px;
+    display: inline-block;
+    
+    &:hover {
+        border-color: #0073AA ;
 	border-width: 1px;
-	border-style:solid;
-	padding: 10px;
-}
-
-.wpas-middle-toolbar-links img:hover,
-.wpas-middle-toolbar-links a:hover,
-.wpas-replies-middle-toolbar-item img:hover {
-	/* Show some sort of an effect when the user hovers over a toolbar item */
-	border-color: #0073AA ;
-	border-width: 2px;
-        padding: 9px;
+    }
 }
 
 #wpas-mb-toolbar .ui-sortable-handle,
@@ -404,6 +410,10 @@ Ticket Controls
 	pre {
 		width: 100%;
 		overflow: auto;
+		max-width: 50vw;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		word-break: break-all;
 	}
 }
 
@@ -456,6 +466,15 @@ Ticket Controls
 			line-height: 1.6;
 		}
 	}
+	
+	.wpas-ticket-content,
+	.wpas-reply-content {
+		// Force responsive preformatted
+		pre {
+			max-width: 80vw;
+		}
+	}	
+	
 	.wpas-reply-meta {
 		.wpas-reply-user,
 		.wpas-reply-time {

@@ -159,7 +159,8 @@ class WPAS_Upgrade {
 			$upgrade_functions[410] = 'wpas_upgrade_410';
 			$upgrade_functions[440] = 'wpas_upgrade_440';
 			$upgrade_functions[511] = 'wpas_upgrade_511';
-			$upgrade_functions[521] = 'wpas_upgrade_521';			
+			$upgrade_functions[520] = 'wpas_upgrade_520';			
+			$upgrade_functions[550] = 'wpas_upgrade_550';			
 			
 			foreach(  $upgrade_functions as $version => $function_name ) {
 				

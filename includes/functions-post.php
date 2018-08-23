@@ -76,6 +76,7 @@ function wpas_open_ticket( $data ) {
 	 *
 	 * @since  3.0.0
 	 */
+	$go = true ; 
 	if ( ! $bypass_pre_checks ) {
 		$go = apply_filters( 'wpas_before_submit_new_ticket_checks', true );
 	}
@@ -1828,7 +1829,7 @@ function wpas_show_reply_deleted_msg( $ticket_id, $ticket ) {
 	$post = get_post_meta( $ticket_id, 'wpas_reply_was_deleted' );
 
 	if ( (int) $post > 0 ) {
-		echo '<br />' . '<div class="wpas_footer_note">' . __( '* This ticket has had replies deleted from it.  See the logs for a full history of edits.', 'awesome-support' ) . '</div>';
+		echo '<br />' . '<div class="wpas_footer_note">' . __( '* This ticket has had replies deleted from it.  Depending on your settings at the time of deletion, the logs might have a full history of these edits.', 'awesome-support' ) . '</div>';
 	}
 
 }
@@ -1866,7 +1867,7 @@ function wpas_edit_ticket_content() {
 	}
 
 	/**
-	 * The the updated ticket content is missing, exit
+	 * The updated ticket content is missing, exit
 	 */
 	if ( ! $content ) {
 		$response['message'] = __( 'No ticket message found. Invalid request!', 'awesome-support' );
@@ -1919,9 +1920,9 @@ function wpas_edit_ticket_content() {
 			$response['message'] = __( 'You have successfully edited content!', 'awesome-support' );
 			$response['content'] = $content;
 			/**
-			 * Log the ticket
+			 * Log the edits to ticket
 			 */
-			wpas_log_edits( $ticket_id, sprintf( __( 'Ticket content #%1$s located on ticket #%2$s was edited.', 'awesome-support' ), (string) $original_content->post_parent, (string) $ticket_id ), $original_content->post_content );
+			wpas_log_ticket_edits( $ticket_id, $original_content );
 		}
 	} else {
 		$response['code']    = 404;
@@ -1932,6 +1933,28 @@ function wpas_edit_ticket_content() {
 	wp_send_json( $response );
 	wp_die();
 
+}
+
+/**
+ * Log the original contents of a ticket after it is edited.
+ *
+ * @since 5.7.1
+ *
+ * @param $int  $ticket_id       - the id of the ticket being edited.
+ * @param array $original_ticket - the original post before the edited ticket was added to the database
+ *
+ * @return void
+ */
+function wpas_log_ticket_edits( $ticket_id, $original_ticket ) {
+	
+	if ( 'low' === wpas_get_option( 'log_content_edit_level', 'low' ) ) {
+		$contents_to_log = __( 'Original data not available because detailed logging is not turned on or allowed', 'awesome-support' );
+	} else {
+		$contents_to_log = $original_ticket->post_content;
+	}
+	
+	wpas_log_edits( $ticket_id, sprintf( __( 'Ticket content located on ticket #%1$s was edited.', 'awesome-support' ), (string) $ticket_id ), $contents_to_log );	
+	
 }
 
 add_action( 'wp_ajax_wpas_load_reply_history', 'wpas_load_reply_history' );
@@ -1978,7 +2001,7 @@ function wpas_load_reply_history() {
 		 */
 		$response = array(
 			'code'    => 200,
-			'message' => __( 'Edit history found.', 'awesome-support' ),
+			'message' => __( 'Edit history', 'awesome-support' ),
 			'data'    => $reply_history,
 		);
 		wp_send_json( $response );
@@ -2001,13 +2024,30 @@ function wpas_load_reply_history() {
  * function will return the first ID
  */
 function wpas_get_gdpr_data( $short_description ) {
+	$return_id = false;
 	if( $short_description === wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) {
-		return 1;
+		$return_id = 1;
 	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) {
-		return 2;
+		$return_id = 2;
 	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) {
-		return 3;
-	}else{
-		return false;
+		$return_id = 3;
+	}
+	
+	$return_id = apply_filters('gdpr_consent_data_id', $return_id, $short_description );
+
+	return $return_id;
+}
+
+/**
+ * Delete post attachments
+ * 
+ * @param int $post_id
+ */
+function wpas_delete_post_attachments( $post_id ) {
+	
+	$attachments = get_attached_media( '', $post_id );
+	
+	foreach ( $attachments as $attachment ) {
+	  wp_delete_attachment( $attachment->ID, true );
 	}
 }

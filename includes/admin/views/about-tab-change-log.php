@@ -1,6 +1,14 @@
 <p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
 
 <div class="changelog">
+<div>	
+	<h2>Maintenance Releases since 5.5.0</h2>
+	<p><b>Version 5.7.1</b> includes a couple of bug fixes for editing the opening ticket post and rendering the privacy popup. </p>				
+	<p><b>Version 5.7.0</b> includes minor enhancements to the privacy popups, a new settings option for auto-deleting attachments, some bug fixes and some new dev related filters. </p>			
+	<p><b>Version 5.6.0</b> includes a new check to prevent users from receiving duplicate alerts, another for a user-name fix, added four phone number fields to the user profile screen and includes a new function for internal use.</p>		
+	<p><b>Version 5.5.1</b> includes two bug fixes - one for a cron issue and another for better handling of attachments with empty replies. </p>
+</div>	
+
 	<div class="row">
 		<div>
 			<div class="about-body">

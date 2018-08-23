@@ -37,16 +37,7 @@ function wpas_metaboxes() {
 
 	/**
 	 * Register the metaboxes.
-	 */
-	
-	/* Issue details, only available for existing tickets */	
-	if ( '' !== $status ) {		
-		/* Ticket toolbar */
-		if ( true == boolval( wpas_get_option( 'ticket_detail_show_toolbar', true ) ) ) {
-			add_meta_box( 'wpas-mb-toolbar', __( 'Ticket Toolbar', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'toolbar-middle' ) );
-		}
-	}
-		
+	 */	
 	
 	/* Metabox to add main tabs */
 	add_meta_box( 'wpas-mb-ticket-main-tabs', __( 'Main Tabs', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'ticket-main-tabs' ) );
