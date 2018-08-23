@@ -43,6 +43,11 @@
             "/vendor"
         ]
     },
+    "autoload": {
+	  "psr-4": {
+	    "WPAS_API\\": "includes/rest-api/includes"
+	  }
+    },	
     "scripts": {
         "post-install-cmd": "npm install",
         "pre-archive-cmd": "composer install"
