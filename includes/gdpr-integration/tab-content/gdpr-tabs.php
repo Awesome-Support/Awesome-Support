@@ -38,3 +38,8 @@ if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {
 	<?php
 }
 
+if ( true === boolval( wpas_get_option( 'privacy_show_export_data_tab', true) ) ) {
+	?>
+	<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-existing-data' )" data-id="export-existing"><?php esc_html_e( 'Export All Data', 'awesome-support' ); ?></button>
+	<?php			
+}

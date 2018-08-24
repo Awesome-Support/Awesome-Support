@@ -922,42 +922,6 @@ class WPAS_Privacy_Option {
 	}
 	
 	/**
-	 * Render one or more tabs on the privacy popup
-	 * * Maybe render the Add/Remove Existing Consent tab
-	 * * Maybe render the Export tickets and user data tab
-	 * * Maybe render the Delete my existing data tab
-	 *
-	 * @return void
-	 */
-	public function render_tabs() {
-		
-		if ( true === boolval( wpas_get_option( 'privacy_show_consent_tab', true) ) ) {
-			?>
-			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'add-remove-consent' )" id="wpas-gdpr-tab-default" data-id="add-remove"><?php esc_html_e( 'Add/Remove Existing Consent', 'awesome-support' ); ?></button>
-			<?php			
-		}
-		
-		if ( true === boolval( wpas_get_option( 'privacy_show_delete_data_tab', true) ) ) {
-			?>
-			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'delete-existing-data' )" data-id="delete-existing"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
-			<?php			
-		}
-
-		if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {
-			?>		
-			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets', 'awesome-support' ); ?></button>
-			<?php
-		}
-
-		if ( true === boolval( wpas_get_option( 'privacy_show_export_data_tab', true) ) ) {
-			?>
-			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-existing-data' )" data-id="export-existing"><?php esc_html_e( 'Export All Data', 'awesome-support' ); ?></button>
-			<?php			
-		}
-		
-	}	
-
-	/**
 	 * Add GDPR privacy options to
 	 * * Add/Remove Existing Consent
 	 * * Export tickets and user data
@@ -1051,7 +1015,8 @@ class WPAS_Privacy_Option {
 							$request_id = wp_create_user_request( $current_user->user_email, 'export_personal_data' );
 							$response['message'] = __( 'We have received your Export data request!', 'awesome-support' );
 						}
-						if( $request_id ) {
+
+						if( isset( $request_id) && $request_id ) {
 							wp_send_user_request( $request_id );
 						} else {
 							// if you've gotten here chances are the error is a duplicate request.
