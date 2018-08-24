@@ -71,6 +71,10 @@ function wpas_rest_api_addon_notice() {
  */
 function wpas_rest_api_addon_check() {
 
+	if ( ! function_exists( 'get_plugins' ) ) {
+        require_once ABSPATH . 'wp-admin/includes/plugin.php';
+    }
+
 	foreach( get_plugins() as $basename => $data ) {
 		if ( stristr( $basename, 'awesome-support-api.php' ) ) {
 			return true;
