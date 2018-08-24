@@ -89,6 +89,8 @@ if ( false === $items ) {
 						$price = number_format( $item->pricing->singlesite, 0 );
 					} elseif ( isset( $item->pricing->{'2sites'} ) ) {
 						$price = number_format( $item->pricing->{'2sites'}, 0 );
+					} elseif ( isset( $item->pricing->{'singleserver'} ) ) {
+						$price = number_format( $item->pricing->{'singleserver'}, 0 );						
 					} elseif ( isset( $item->pricing->singlesiteupdatesonlynosupport ) ) {
 						$price = number_format( $item->pricing->singlesiteupdatesonlynosupport, 0 );
 					}
