@@ -899,7 +899,15 @@ class WPAS_Privacy_Option {
 									include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-export-user-data.php' );
 								}
 							?>
-						</div>					
+						</div>
+						<div id="export-existing-data" class="entry-content-tabs wpas-gdpr-tab-content">
+							<?php
+								/**
+								 * Include tab content for Export tickets and user data
+								 */
+								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-wpexport-user-data.php' );
+							?>
+						</div>
 					</div>
 					<?php
 					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' );
@@ -913,6 +921,42 @@ class WPAS_Privacy_Option {
 		}
 	}
 	
+	/**
+	 * Render one or more tabs on the privacy popup
+	 * * Maybe render the Add/Remove Existing Consent tab
+	 * * Maybe render the Export tickets and user data tab
+	 * * Maybe render the Delete my existing data tab
+	 *
+	 * @return void
+	 */
+	public function render_tabs() {
+		
+		if ( true === boolval( wpas_get_option( 'privacy_show_consent_tab', true) ) ) {
+			?>
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'add-remove-consent' )" id="wpas-gdpr-tab-default" data-id="add-remove"><?php esc_html_e( 'Add/Remove Existing Consent', 'awesome-support' ); ?></button>
+			<?php			
+		}
+		
+		if ( true === boolval( wpas_get_option( 'privacy_show_delete_data_tab', true) ) ) {
+			?>
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'delete-existing-data' )" data-id="delete-existing"><?php esc_html_e( 'Delete my existing data', 'awesome-support' ); ?></button>
+			<?php			
+		}
+
+		if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {
+			?>		
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-user-data' )" data-id="export"><?php esc_html_e( 'Export tickets', 'awesome-support' ); ?></button>
+			<?php
+		}
+
+		if ( true === boolval( wpas_get_option( 'privacy_show_export_data_tab', true) ) ) {
+			?>
+			<button class="tablinks wpas-gdpr-tablinks" onclick="wpas_gdpr_open_tab( event, 'export-existing-data' )" data-id="export-existing"><?php esc_html_e( 'Export All Data', 'awesome-support' ); ?></button>
+			<?php			
+		}
+		
+	}	
+
 	/**
 	 * Add GDPR privacy options to
 	 * * Add/Remove Existing Consent
@@ -971,6 +1015,7 @@ class WPAS_Privacy_Option {
 
 			$subject = isset( $form_data['wpas-gdpr-ded-subject'] ) ? $form_data['wpas-gdpr-ded-subject'] : '';
 			$content = isset( $form_data['wpas-gdpr-ded-more-info'] ) && ! empty( $form_data['wpas-gdpr-ded-more-info'] ) ? $form_data['wpas-gdpr-ded-more-info'] : $subject; // Fallback to subject to avoid undefined!
+			$request_type = ( isset( $_POST['data']['request_type'] ) && !empty( $_POST['data']['request_type'] ))? sanitize_text_field( $_POST['data']['request_type'] ): '';
 
 			/**
 			 * New ticket submission
@@ -997,8 +1042,16 @@ class WPAS_Privacy_Option {
 				if ( function_exists( 'wp_create_user_request' )  && function_exists( 'wp_send_user_request' ) ) {
 					$current_user = wp_get_current_user();
 					if( isset( $current_user->user_email ) && !empty( $current_user->user_email )){
-						$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
-						if( $request_id && ! is_wp_error( $request_id ) ) {
+
+						if( 'delete' === $request_type ){
+							$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
+							$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
+						}
+						if( 'export' === $request_type ){
+							$request_id = wp_create_user_request( $current_user->user_email, 'export_personal_data' );
+							$response['message'] = __( 'We have received your Export data request!', 'awesome-support' );
+						}
+						if( $request_id ) {
 							wp_send_user_request( $request_id );
 						} else {
 							// if you've gotten here chances are the error is a duplicate request.
@@ -1009,6 +1062,8 @@ class WPAS_Privacy_Option {
 						}
 					}
 				}
+				
+				$response['code']    = 200;
 
 			} else {
 				$response['message'] = __( 'Something went wrong. Please try again!', 'awesome-support' );
