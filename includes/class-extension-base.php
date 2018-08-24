@@ -556,6 +556,13 @@ abstract class WPAS_Extension_Base {
 		if ( ! current_user_can( 'administrator' ) ) {
 			return;
 		}
+		
+		/**
+		 * We only want to display the notice if an item id has been set.
+		 */
+		if ( ! $this->item_id ) {
+			return;
+		}
 
 		$license = wpas_get_option( "license_{$this->slug}", '' );
 
