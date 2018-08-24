@@ -1,3 +1,6 @@
+/* Handles the front-end logic for the privacy popup. */
+/* Will NOT be included in the public-dist.js because of an exclusion in gruntfile.js */
+
 jQuery(document).ready(function ($) {
 
 	jQuery( ".privacy-container-template" ).on( "click", ".download-file-link", function(e) {	
@@ -85,7 +88,7 @@ jQuery(document).ready(function ($) {
 			'data' 	: {
 				'nonce'		: WPAS_GDPR.nonce,
 				'request_type': 'export',
-				'form-data'	: $( '#wpas-gdpr-rtbf-form' ).serialize()
+				'form-data'	: $( '#wpas-gdpr-rted-form' ).serialize()
 			}
 		};
 		jQuery.post(

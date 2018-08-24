@@ -23,7 +23,8 @@ module.exports = function (grunt) {
 				src: [
 					'assets/public/vendor/**/*.js',
 					'assets/public/js/*.js',
-					'!assets/public/js/public-dist.js'
+					'!assets/public/js/public-dist.js',
+					'!assets/public/js/component-privacy-popup.js'
 				],
 				dest: 'assets/public/js/public-dist.js'
 			}

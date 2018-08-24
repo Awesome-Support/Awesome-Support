@@ -19,7 +19,7 @@ if( wpas_get_option( 'export_existing_data_subject', false ) ) {
 	$subject = wpas_get_option( 'export_existing_data_subject', false );
 }
 ?>
-<form name="wpas-gdpr-rtbf-form" id="wpas-gdpr-rtbf-form">
+<form name="wpas-gdpr-rted-form" id="wpas-gdpr-rted-form">
 	<div class="wpas-gdpr-pre-loader">
 		<div class="loader"></div><!-- .loader -->
 	</div>
