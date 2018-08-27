@@ -455,6 +455,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/functions-ajax.php' );
 			require( WPAS_PATH . 'includes/admin/functions-log-viewer.php' );
 			require( WPAS_PATH . 'includes/admin/functions-admin-ticket-detail-toolbars.php' );
+			require( WPAS_PATH . 'includes/admin/functions-toolbar.php' );
 			
 			if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
 				if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
