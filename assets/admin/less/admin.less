@@ -1,5 +1,56 @@
 @charset "UTF-8";
 
+/*
+==========================================================================
+Toolbar
+==========================================================================
+*/
+.wpas-toolbar {
+        list-style-type: none !important;
+        margin : 0;
+        
+        li {
+                float: left;
+                margin: 0 6px;
+                
+                
+                &.clear {
+                        float: none !important;
+                }
+                
+                a {
+                        display: block;
+                        margin: 0;
+                }
+                
+                .wpas-icon {
+        
+                        cursor: pointer;
+                        border: 1px solid #cacfd3;
+                        border-radius: 20px;
+                        display: inline-block;
+
+                        &:hover {
+                                border-color: #14a1e4;
+                                
+                                &:before {
+                                        color: #14a1e4;
+                                }
+                                
+                        }
+                }
+        }
+}
+
+.wpas_btn_msg {
+        position: relative;
+}
+
+#wp-wpas-main-ticket-message-editor-wrap {
+        margin-top: 30px;
+}
+
+
 .wpas-cf {
 	&:before,
 	&:after {

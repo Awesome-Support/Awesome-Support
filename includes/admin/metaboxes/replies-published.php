@@ -68,18 +68,9 @@ if ( ! defined( 'WPINC' ) ) {
 		 *
 		 * @since 3.2.6
 		 */
-		$controls = apply_filters( 'wpas_ticket_reply_controls', array(), $ticket_id, $row );
-
-		if ( ! empty( $controls ) ) {
-
-			$output = array();
-
-			foreach ( $controls as $control_id => $control ) {
-				array_push( $output, $control );
-			}
-
-			echo implode( ' ', $output );
-		}
+		
+		wpas_ticket_reply_toolbar( $ticket_id, $row );
+		
 
 		/**
 		 * Fires after the ticket reply controls (mark as read, delete, edit...) are displayed
