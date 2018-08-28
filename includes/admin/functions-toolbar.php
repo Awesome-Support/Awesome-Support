@@ -135,18 +135,18 @@ add_filter( 'wpas_toolbar_ticket', 'wpas_toolbar_ticket_items', 11, 2 );
 function wpas_toolbar_ticket_items( $items, $ticket_id ) {
 	
 	$items['wpas-collapse-replies-top'] = array(
-			'icon' => 'icon-hide-ticket-reply',
+			'icon' => 'icon-hide-ticket-replies',
 			'tool_tip_text' => __( 'Toggle Replies (Hide All Replies Except The Last 3)', 'awesome-support' )
 		);
 	
 	
 	$items['wpas-toggle-ticket-slug'] = array(
-			'icon' => 'icon-hide-ticket-url',
+			'icon' => 'icon-hide-ticket-urls',
 			'tool_tip_text' => __( 'Show/Hide The Ticket Slug', 'awesome-support' )
 		);
 	
 	$items['wpas-edit-main-ticket-message'] = array(
-			'icon' => 'icon-edit-reply',
+			'icon' => 'icon-edit-ticket-replies',
 			'tool_tip_text' => __( 'Edit Ticket', 'awesome-support' ),
 		);
 	

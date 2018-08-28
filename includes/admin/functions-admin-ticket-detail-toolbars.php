@@ -81,6 +81,8 @@ function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $items, $ticket_id
 /**
  * Adds an item to the tool-bar in the ticket detail in wp-admin or
  * returns a markup suitable for adding an item to the toolbar screen.
+ *
+ * *** Deprecated as of 5.8.0 - ok to remove later ***
  * 
  * Note that if you choose to have the menu item echoed directly to the screen this
  * function should be called using a do_action hook tied into the menu (such as wpas_ticket_detail_toolbar01_before)

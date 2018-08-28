@@ -118,7 +118,7 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 					'tool_tip_text' => esc_html_x( 'Delete', 'Link to delete a ticket reply', 'awesome-support' ),
 					'type' => 'link',
 					'link'	=> esc_url( $delete ),
-					'icon'  => 'icon-delete-reply',
+					'icon'  => 'icon-delete-ticket-replies',
 					'id_param' => 'css',
 					'classes' => 'wpas-delete'
 				);
@@ -131,7 +131,7 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 					
 			$controls['edit_reply'] = array(
 					'tool_tip_text' => esc_html_x( 'Edit', 'Link to edit a ticket reply', 'awesome-support' ),
-					'icon' => 'icon-edit-reply',
+					'icon' => 'icon-edit-ticket-replies',
 					'id_param' => 'css',
 					'classes' => 'wpas-edit',
 					'data' => array( 
@@ -148,10 +148,7 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 
 			$controls['reply_history'] = array(
 				'tool_tip_text' => esc_html_x( 'History', 'View ticket reply history', 'awesome-support' ),
-				/**
-				 * @TODO: replce this icon into correct version
-				 */
-				'icon' => 'icon-signature',
+				'icon' => 'icon-due-date',
 				'id_param' => 'css',
 				'classes' => 'wpas-show-reply-history',
 				'data' => array( 
@@ -167,7 +164,7 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 		/* Add mark as read icon */
 		$controls['mark_read'] = array(
 			'tool_tip_text' => esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ),
-			'icon' => 'icon-signature',
+			'icon' => 'prewriten-responses',
 			'id_param' => 'css',
 			'classes' => 'wpas-mark-read',
 			'data' => array( 
