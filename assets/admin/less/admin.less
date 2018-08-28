@@ -26,11 +26,13 @@ Toolbar
                 .wpas-icon {
         
                         cursor: pointer;
-                        border: 1px solid #cacfd3;
-                        border-radius: 20px;
+                        /* border: 1px solid #cacfd3; */
+                        /* border-radius: 20px; */
                         display: inline-block;
 
                         &:hover {
+								border-top: 1px solid #cacfd3;
+								/* border-radius: 20px; */
                                 border-color: #14a1e4;
                                 
                                 &:before {
@@ -423,7 +425,8 @@ Ticket Controls
 	opacity: 0.5;
 }
 .wpas-reply-attachements {
-	margin-top: 2em;
+	margin-top: 1em;
+	margin-bottom: 1em;
 	background-color: #f1f1f1;
 	border: 1px solid #ddd;
 	padding: 1.5em;
@@ -1051,8 +1054,7 @@ Ticket Page : Main tabs
 }
 
 .btn_delete_attachment {
-        margin-right: 10px;
-        width: 20px;
+        margin-right: 3px;        
         display: inline-block;
         color: red;
         text-decoration: none;
