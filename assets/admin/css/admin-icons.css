@@ -33,33 +33,8 @@
 }
 
 
-
-.icon-add-ticket-to-favorite:before {
-  content: "\e900";
-  color: #a0a8b0;
-}
-.icon-add-ticket-to-urgent:before {
-  content: "\e901";
-  color: #a0a8b0;
-}
 .icon-close-ticket:before {
   content: "\e902";
-  color: #a0a8b0;
-}
-.icon-copy-to-new-ticket:before {
-  content: "\e903";
-  color: #a0a8b0;
-}
-.icon-create-documentation:before {
-  content: "\e904";
-  color: #a0a8b0;
-}
-.icon-create-faq:before {
-  content: "\e905";
-  color: #a0a8b0;
-}
-.icon-create-smart-reply:before {
-  content: "\e906";
   color: #a0a8b0;
 }
 .icon-delete-reply:before {
@@ -78,20 +53,8 @@
   content: "\e90a";
   color: #a0a8b0;
 }
-.icon-quick-custom-faq-link:before {
-  content: "\e90b";
-  color: #a0a8b0;
-}
 .icon-recently-closed-tickets:before {
   content: "\e90c";
-  color: #a0a8b0;
-}
-.icon-remove-ticket-from-favorite:before {
-  content: "\e90d";
-  color: #a0a8b0;
-}
-.icon-remove-ticket-from-urgent:before {
-  content: "\e90e";
   color: #a0a8b0;
 }
 .icon-split-ticket:before {
@@ -100,9 +63,5 @@
 }
 .icon-signature:before {
   content: "\e910";
-  color: #a0a8b0;
-}
-.icon-create-custom-faq:before {
-  content: "\e911";
   color: #a0a8b0;
 }
