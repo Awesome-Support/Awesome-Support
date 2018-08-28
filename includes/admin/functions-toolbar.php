@@ -152,7 +152,7 @@ function wpas_toolbar_ticket_items( $items, $ticket_id ) {
 	
 	
 	$items['wpas-view-edit-main-ticket-message'] = array(
-			'icon' => 'icon-recently-closed-tickets',
+			'icon' => 'icon-due-date',
 			'tool_tip_text' => __( 'View History', 'awesome-support' ),
 			'data' => array(
 				'ticketid' => $ticket_id
