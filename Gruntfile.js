@@ -43,6 +43,7 @@ module.exports = function (grunt) {
 					'assets/public/css/public.css': 'assets/public/less/public.less',
 					'assets/admin/css/admin.css': 'assets/admin/less/admin.less',
 					'themes/default/css/style.css': 'themes/default/less/style.less',
+					'themes/default/css/overlay-subtle.css': 'themes/default/less/overlay-subtle.less',
 					'includes/rest-api/assets/admin/css/admin.css': 'includes/rest-api/assets/admin/less/admin.less'
 				}
 			}
@@ -107,7 +108,8 @@ module.exports = function (grunt) {
 				files: {
 					'assets/public/css/public.css': 'assets/public/css/public.css',
 					'assets/admin/css/admin.css': 'assets/admin/css/admin.css',
-					'themes/default/css/style.css': 'themes/default/css/style.css'
+					'themes/default/css/style.css': 'themes/default/css/style.css',
+					'themes/default/css/overlay-subtle.css': 'themes/default/css/overlay-subtle.css'
 				},
 				options: {
 					report: 'min',
