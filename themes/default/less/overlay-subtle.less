@@ -97,10 +97,21 @@ the baseline css.
 		font-size: @font-size-small;		
 	}
 
-	/* Make sure the logout button doesn't hang out on the right side of the screen */
-	.wpas-ticket-buttons-top .wpas-link-logout{
-		float:inherit;
-	}	
+	/* Make sure the logout button doesn't hang out on the right side of the screen and remove image */
+	.wpas-ticket-buttons-top {
+		
+		.wpas-link-logout{
+			
+			float:inherit;
+			
+				&:after {
+					background-image: none ;
+					width: inherit;					
+				}
+				
+		}
+		
+	}
 
 	/* Make all other input elements have a bit of roundedness and font size smaller */
 	input, select {
