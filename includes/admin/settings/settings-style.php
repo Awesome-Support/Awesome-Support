@@ -21,6 +21,14 @@ function wpas_core_settings_style( $def ) {
 					'default' => 'default'
 				),
 				array(
+					'name'    => __( 'Overlay', 'awesome-support' ),
+					'id'      => 'theme_overlay',
+					'type'    => 'select',
+					'desc'    => __( 'Which style overlay to use for the front-end. An overlay is generally a css based variation on the theme selected above', 'awesome-support' ),
+					'options' => wpas_list_overlays(),
+					'default' => 'style.css'
+				),				
+				array(
 					'name'    => __( 'Theme Stylesheet', 'awesome-support' ),
 					'id'      => 'theme_stylesheet',
 					'type'    => 'checkbox',

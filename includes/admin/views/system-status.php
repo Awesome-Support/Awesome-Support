@@ -287,6 +287,32 @@
 				<?php echo true === boolval( wpas_get_option( 'enable_closed' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
 			</td>
 		</tr>
+		
+		<tr>
+			<td class="row-title">Moderated Registration: Admin Alert</td>
+			<td>
+				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_admin_email' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+			</td>
+		</tr>		
+		<tr>
+			<td class="row-title">Moderated Registration: User Waiting Approval</td>
+			<td>
+				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_user_email' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title">Moderated Registration: User Approved</td>
+			<td>
+				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_approved_user_email' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+			</td>
+		</tr>
+		<tr>
+			<td class="row-title">Moderated Registration: User Denied</td>
+			<td>
+				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_denied_user_email' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+			</td>
+		</tr>				
+		
 	</tbody>
 </table>
 <table class="widefat wpas-system-status-table" id="wpas-system-status-custom-fields">
@@ -451,7 +477,19 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title">Overrides:</td>
+			<td class="row-title">Template:</td>
+			<td><?php
+				echo wpas_get_theme();
+			?></td>
+		</tr>
+		<tr>
+			<td class="row-title">Template Theme Overlay:</td>
+			<td><?php
+				echo wpas_get_Overlay();
+			?></td>
+		</tr>		
+		<tr>
+			<td class="row-title">Template Overrides:</td>
 			<td>
 				<?php
 				$theme_directory       = trailingslashit( get_template_directory() ) . 'awesome-support';
