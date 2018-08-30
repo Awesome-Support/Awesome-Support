@@ -91,6 +91,7 @@ function wpas_list_overlays() {
 	
 	$overlay['style.css'] = 'Default';
 	$overlay['overlay-subtle.css'] = 'Subtle';
+	$overlay['overlay-angle.css'] = 'Angle';
 
 	return $overlay;
 	
