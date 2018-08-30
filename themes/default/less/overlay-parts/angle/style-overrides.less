@@ -78,7 +78,10 @@ the overlay parts are put together!
 		td, th {
 			border-right:solid;
 			border-right-width: 1px;
-			border-right-color:@brand-misc;
+			border-right-color: @table-cell-border-right-color;
+			border-left-color: @table-cell-border-left-color;
+			border-top-color: @table-cell-border-top-color;
+			border-bottom-color:@table-cell-border-bottom-color;
 			padding-left: 2em !important;
 			padding-right: 2em !important;		
 		}
@@ -97,11 +100,20 @@ the overlay parts are put together!
 		
 		/* Alternating background colors in table */
 		tr:nth-child(odd) {
-			background: white;
+			background: @table-row-odd;
 		}		  
 		tr:nth-child(even) {
-			background: white ;
+			background: @table-row-even ;
 		}				  
+		
+		/* Pagination Footers */
+		.wpas_table_pagination > li > a {
+			background-color: @brand-misc;
+			border-right-color: @table-cell-border-right-color;
+			border-left-color: @table-cell-border-left-color;
+			border-top-color: @table-cell-border-top-color;
+			border-bottom-color:@table-cell-border-bottom-color;
+		}
 		
 	}
 	

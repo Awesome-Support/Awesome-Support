@@ -92,6 +92,8 @@ function wpas_list_overlays() {
 	$overlay['style.css'] = 'Default';
 	$overlay['overlay-subtle.css'] = 'Subtle';
 	$overlay['overlay-angle.css'] = 'Angle';
+	$overlay['overlay-dark.css'] = 'Dark';	
+	$overlay['overlay-orange-blend.css'] = 'Orange Blend';	
 
 	return $overlay;
 	
