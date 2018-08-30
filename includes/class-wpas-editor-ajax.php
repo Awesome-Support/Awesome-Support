@@ -130,7 +130,7 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Force QuickTags to false due to the WordPress bug
 		 */
-		$settings['quicktags'] = false;
+		$settings['quicktags'] = true;
 
 		/**
 		 * Make sure we have a textarea name
