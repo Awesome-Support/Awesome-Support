@@ -29,14 +29,16 @@ Toolbar
                         /* border: 1px solid #cacfd3; */
                         /* border-radius: 20px; */
                         display: inline-block;
+						color: black;
 
                         &:hover {
-								border-top: 1px solid #cacfd3;
+								/* border-top: 1px solid #cacfd3; */
 								/* border-radius: 20px; */
-                                border-color: #14a1e4;
-                                
+                                /* border-color: #14a1e4; */
+                                color: #D0D0D0;
+								
                                 &:before {
-                                        color: #14a1e4;
+                                        /* color: #14a1e4; */
                                 }
                                 
                         }
@@ -783,12 +785,12 @@ Admin Tabs
                 padding: 10px;
                 cursor: pointer;
                 background: #FFF;
-                color : #898989;
+                color:rgb(68,68,68);
 
                 &:hover, &.active {
                     
                     position: relative;
-                    color : #565656;
+					background: #F5F5F5;  // This color creates the 'tab' effect
                     &::after {
                         content: "";
                         width: 100%;
