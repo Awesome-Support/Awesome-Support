@@ -148,6 +148,9 @@ function wpas_toolbar_ticket_items( $items, $ticket_id ) {
 	$items['wpas-edit-main-ticket-message'] = array(
 			'icon' => 'icon-edit-reply',
 			'tool_tip_text' => __( 'Edit Ticket', 'awesome-support' ),
+			'data' => array(
+				'ticketid' => $ticket_id
+			)
 		);
 	
 	
