@@ -819,9 +819,12 @@ class WPAS_Privacy_Option {
 			}
 			$done = count( $user_tickets_data ) < $number;
 		}
+
+
+		$data = apply_filters( 'wpas_users_personal_data_export', $data_to_export, $author->ID );
 		
 		return array(
-			'data' => $data_to_export,
+			'data' => $data,
 			'done' => $done,
 		);
 	}
