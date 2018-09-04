@@ -1,0 +1,105 @@
+/*
+
+Dark: Inherits from the angle overlay
+
+1) Import
+2) Variables
+3) Mixins
+4) General Scaffolding
+5) Forms + Buttons + Labels
+6) Tables
+7) Pages
+8) Pagination
+9) Ticket List
+10) Overlay Media Queries
+
+*/
+
+
+/*
+==========================================================================
+Import
+==========================================================================
+*/
+
+@import 'style.less';
+
+/*
+==========================================================================
+Variables - many of these override those in preboot.less
+==========================================================================
+*/
+
+@import 'overlay-parts/orange-blend/brand-colors.less';
+
+/*
+==========================================================================
+Mixins
+==========================================================================
+*/
+
+
+/*
+==========================================================================
+General Scaffolding
+==========================================================================
+*/
+
+/*
+==========================================================================
+Forms + Buttons + Labels
+==========================================================================
+*/
+
+/*
+==========================================================================
+Tables
+==========================================================================
+*/
+
+
+/*
+==========================================================================
+Pages
+==========================================================================
+
+/*
+==========================================================================
+Pagination for ticket replies
+==========================================================================
+
+/*
+==========================================================================
+Ticket List
+==========================================================================
+
+/*
+==========================================================================
+Overlay Media Queries - by using a minimum width of 1px defined in the
+@grid-start variable we force these overrides since media queries override
+the baseline css.
+
+Note that this is inheriting the angle overlay parts!
+==========================================================================
+*/
+
+@import 'overlay-parts/angle/style-overrides.less';
+
+@media (min-width: @grid-start	) {
+	
+	.wpas-ticket-list {
+		/* Add an image gradient to the ticket list table */
+		background-image: linear-gradient(#A63C30, #4A191F);
+	}
+	
+	#wpas_ticketlist {
+		td {
+			/* set table cell colors default font to white */
+			color: white ;
+		}
+		th {
+			/* set table header cell colors to an off-white blend */
+			color: #C7B9BB
+		}
+	}
+}

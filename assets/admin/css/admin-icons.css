@@ -1,0 +1,191 @@
+@font-face {
+  font-family: 'wpas_icon';
+  src:  url('fonts/wpas_icon.eot?j7lai8');
+  src:  url('fonts/wpas_icon.eot?j7lai8#iefix') format('embedded-opentype'),
+    url('fonts/wpas_icon.ttf?j7lai8') format('truetype'),
+    url('fonts/wpas_icon.woff?j7lai8') format('woff'),
+    url('fonts/wpas_icon.svg?j7lai8#wpas_icon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'wpas_icon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  font-size: 2em;    
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add-new-ticket:before {
+  content: "\e900";
+  /* color: black; */
+}
+.icon-add-ticket-to-my-favorite-list:before {
+  content: "\e901";
+  /* color: black; */
+}
+.icon-add-ticket-to-my-urgent-list:before {
+  content: "\e902";
+  /* color: black; */
+}
+.icon-attachment:before {
+  content: "\e903";
+  /* color: black; */
+}
+.icon-close-ticket:before {
+  content: "\e904";
+  /* color: black; */
+}
+.icon-copy-to-new-ticket:before {
+  content: "\e905";
+  /* color: black; */
+}
+.icon-create-custom-faq:before {
+  content: "\e906";
+  /* color: black; */
+}
+.icon-create-documentation:before {
+  content: "\e907";
+  /* color: black; */
+}
+.icon-create-faq:before {
+  content: "\e908";
+  /* color: black; */
+}
+.icon-create-smart-reply:before {
+  content: "\e909";
+  /* color: black; */
+}
+.icon-customer-support-notes:before {
+  content: "\e90a";
+  /* color: black; */
+}
+.icon-delete-ticket:before {
+  content: "\e90b";
+  /* color: black; */
+}
+.icon-delete-ticket-replies:before {
+  content: "\e90c";
+  /* color: black; */
+}
+.icon-dots:before {
+  content: "\e90d";
+  /* color: black; */
+}
+.icon-due-date:before {
+  content: "\e90e";
+  /* color: black; */
+}
+.icon-edit-ticket-replies:before {
+  content: "\e90f";
+  /* color: black; */
+}
+.icon-e-mail-adresses:before {
+  content: "\e910";
+  /* color: black; */
+}
+.icon-favorite-tickets:before {
+  content: "\e911";
+  /* color: black; */
+}
+.icon-hide-ticket-replies:before {
+  content: "\e912";
+  /* color: black; */
+}
+.icon-hide-ticket-urls:before {
+  content: "\e913";
+  /* color: black; */
+}
+.icon-issue-list:before {
+  content: "\e914";
+  /* color: black; */
+}
+.icon-mark-ticket-as-private:before {
+  content: "\e915";
+  /* color: black; */
+}
+.icon-mark-ticket-as-public:before {
+  content: "\e916";
+  /* color: black; */
+}
+.icon-menu-burger:before {
+  content: "\e917";
+  /* color: black; */
+}
+.icon-next:before {
+  content: "\e918";
+  /* color: black; */
+}
+.icon-personal-notes:before {
+  content: "\e919";
+  /* color: black; */
+}
+.icon-personal-todos:before {
+  content: "\e91a";
+  /* color: black; */
+}
+.icon-previous:before {
+  content: "\e91b";
+  /* color: black; */
+}
+.icon-prewriten-responses:before {
+  content: "\e91c";
+  /* color: black; */
+}
+.icon-quick-custom-faq-links:before {
+  content: "\e91d";
+  /* color: black; */
+}
+.icon-quick-doc-links:before {
+  content: "\e91e";
+  /* color: black; */
+}
+.icon-quick-faq-links:before {
+  content: "\e91f";
+  /* color: black; */
+}
+.icon-recently-closed-tickets:before {
+  content: "\e920";
+  /* color: black; */
+}
+.icon-remove-ticket-from-my-urgent-list:before {
+  content: "\e921";
+  /* color: black; */
+}
+.icon-remove-ticket-to-from-favourite-list:before {
+  content: "\e922";
+  /* color: black; */
+}
+.icon-show-ticket-url:before {
+  content: "\e923";
+  /* color: black; */
+}
+.icon-signatures:before {
+  content: "\e924";
+  /* color: black; */
+}
+.icon-split-ticket:before {
+  content: "\e925";
+  /* color: black; */
+}
+.icon-ticket:before {
+  content: "\e926";
+  /* color: black; */
+}
+.icon-urgent-list:before {
+  content: "\e927";
+  /* color: black; */
+}
+.icon-user-contacts:before {
+  content: "\e928";
+  /* color: black; */
+}

@@ -7,6 +7,10 @@
 5) Forms + Buttons + Labels
 6) Tables
 7) Pages
+8) Pagination
+9) Ticket List
+10) Media Queries
+
 
 */
 
@@ -34,7 +38,13 @@ Variables
 
 @grid-columns:            12;
 @grid-column-padding:     @spacing;
-@grid-float-breakpoint:   768px;
+@grid-start:				  1px;
+@grid-small:		  	  768px;
+@grid-medium:			  992px;
+@grid-large:			  1200px;
+@grid-extra-large:		  1600px;
+
+@grid-float-breakpoint:   @grid-small;
 
 /*
 ==========================================================================
@@ -608,4 +618,51 @@ https://github.com/Awesome-Support/Awesome-Support/issues/302
 .wpas_table_pagination-sm > li:last-child > a, .wpas_table_pagination-sm > li:last-child > span {
 	border-bottom-right-radius: 3px;
 	border-top-right-radius: 3px;
+}
+
+/*
+==========================================================================
+Responsive Overrides
+==========================================================================
+*/
+
+@media (max-width: @grid-medium) {
+	/* Make sure the logout button doesn't hang out on the side in a weird fashion */
+	.wpas-ticket-buttons-top .wpas-link-logout{
+		float:inherit;
+	}	
+	
+	/* Only show the first five columns in the table */
+	.wpas-table td:nth-child(n+5){
+		display: none ;
+	}	
+	.wpas-table th:nth-child(n+5){
+		display: none ;
+	}	
+}
+
+@media (max-width: @grid-small) {
+	/* On really small screens the search box will be under the status dropdown so give it some vertical space between them */
+	#wpas_filter {
+		margin-top: 0.5em;
+	}	
+	
+	/* Only show the first couple of columns in the table */
+	.wpas-table td:nth-child(n+3){
+		display: none ;
+	}	
+	.wpas-table th:nth-child(n+3){
+		display: none ;
+	}	
+	
+}
+
+@media (max-width: @grid-large) {	
+	/* Only show the first eight columns in the table */
+	.wpas-table td:nth-child(n+8){
+		display: none ;
+	}	
+	.wpas-table th:nth-child(n+8){
+		display: none ;
+	}	
 }

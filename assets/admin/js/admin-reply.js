@@ -68,6 +68,7 @@
 						// Will not work because of https://core.trac.wordpress.org/ticket/26183
 						try {
 							quicktags(tinyMCEPreInit.qtInit[data.editor_id]);
+                                                        $( '#wp-' + data.editor_id + '-wrap' ).removeClass('html-active').addClass('tmce-active');
 						} catch (e) {}
 					});
 

@@ -124,6 +124,16 @@
 	}
 
 	/**
+	 * Get the current theme overlay file
+	 *
+	 * @since  5.8.0
+	 * @return string The overlay stylesheet filename without the directory
+	 */	
+	function wpas_get_overlay() {		
+		return ( '' != ( $t = wpas_get_option( 'theme_overlay', 'style.css' ) ) ) ? $t : 'style.css';		
+	}
+
+	/**
 	 * Get plugin template.
 	 *
 	 * The function takes a template file name and loads it
@@ -199,19 +209,23 @@
 	/**
 	 * Get the plugin's theme stylesheet path.
 	 *
+	 * Returns path of theme stylesheet or overlay.
+	 * Always returns stylesheet from the awesome-support folder.
+	 * Will not handle overrides that are placed in the users theme folder.
+	 *
 	 * @since  3.1.6
 	 * @return string Stylesheet path
 	 */
 	function wpas_get_theme_stylesheet() {
 
 		$theme = wpas_get_theme();
+		$overlay = wpas_get_overlay();
+		
+		if ( empty( $overlay ) ) {
+			$overlay = 'style.css' ;
+		}
 
-		$template = locate_template(
-			array(
-				WPAS_TEMPLATE_PATH . 'style.css',
-				WPAS_TEMPLATE_PATH . 'css/style.css',
-			)
-		);
+		$template = WPAS_PATH . 'themes/' . $theme . '/css/' . $overlay;
 
 		if ( ! $template ) {
 			$template = WPAS_PATH . "themes/$theme/css/style.css";

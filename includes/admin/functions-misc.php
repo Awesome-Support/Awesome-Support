@@ -81,7 +81,7 @@ function wpas_admin_notices() {
 	}
 }
 
-add_filter( 'wpas_ticket_reply_controls', 'wpas_ticket_reply_controls', 10, 3 );
+add_filter( 'wpas_toolbar_ticket_reply', 'wpas_ticket_reply_controls', 10, 3 );
 /**
  * Add ticket reply controls
  *
@@ -114,13 +114,14 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 			), admin_url( 'post.php' ) ), 'delete_reply_' . $reply->ID );
 
 			/* Add delete reply icon */
-			$controls['delete_reply'] = wpas_reply_control_item( 'delete_reply' ,array(
-					'title' => esc_html_x( 'Delete', 'Link to delete a ticket reply', 'awesome-support' ),
+			$controls['delete_reply'] = array(
+					'tool_tip_text' => esc_html_x( 'Delete', 'Link to delete a ticket reply', 'awesome-support' ),
+					'type' => 'link',
 					'link'	=> esc_url( $delete ),
-					'icon'  => WPAS_URL . 'assets/admin/images/delete-ticket-reply.png',
+					'icon'  => 'icon-delete-ticket-replies',
+					'id_param' => 'css',
 					'classes' => 'wpas-delete'
-				)
-			);
+				);
 		}
 		
 		/* Add edit reply icon */
@@ -128,10 +129,10 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 				|| true === wpas_is_asadmin() 
 				|| true === wpas_current_role_in_list( wpas_get_option( 'roles_edit_all_replies', '' ) )  ) {
 					
-			$controls['edit_reply'] = wpas_reply_control_item( 'edit_reply' ,array(
-					'title' => esc_html_x( 'Edit', 'Link to edit a ticket reply', 'awesome-support' ),
-					'link'	=> '#',
-					'icon' => WPAS_URL . 'assets/admin/images/edit-ticket-reply.png',
+			$controls['edit_reply'] = array(
+					'tool_tip_text' => esc_html_x( 'Edit', 'Link to edit a ticket reply', 'awesome-support' ),
+					'icon' => 'icon-edit-ticket-replies',
+					'id_param' => 'css',
 					'classes' => 'wpas-edit',
 					'data' => array( 
 						'origin'=> "#wpas-reply-{$reply->ID}",
@@ -139,26 +140,21 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 						'reply' => "wpas-editwrap-{$reply->ID}",
 						'wysiwygid'=> "wpas-editreply-{$reply->ID}"
 					)
-				) 
 			);
 		}
 
 		/** Add reply history icon */
 		if( get_current_user_id() == $reply->post_author || true === wpas_is_asadmin() ) {
 
-			$controls['reply_history'] = wpas_reply_control_item( 'reply_history' ,array(
-				'title' => esc_html_x( 'History', 'View ticket reply history', 'awesome-support' ),
-				'link'	=> '#',
-				/**
-				 * @TODO: replce this icon into correct version
-				 */
-				'icon' => WPAS_URL . 'assets/admin/images/mark-as-read.png',
+			$controls['reply_history'] = array(
+				'tool_tip_text' => esc_html_x( 'History', 'View ticket reply history', 'awesome-support' ),
+				'icon' => 'icon-due-date',
+				'id_param' => 'css',
 				'classes' => 'wpas-show-reply-history',
 				'data' => array( 
 					'replyid' => $reply->ID
 				)
-			) 
-		);
+			);
 		}
 
 	}
@@ -166,15 +162,15 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 	if ( get_current_user_id() !== $reply->post_author && 'unread' === $reply->post_status ) {
 		
 		/* Add mark as read icon */
-		$controls['mark_read'] = wpas_reply_control_item( 'mark_read' ,array(
-			'title' => esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ),
-			'link'	=> '#',
-			'icon' => WPAS_URL . 'assets/admin/images/mark-as-read.png',
+		$controls['mark_read'] = array(
+			'tool_tip_text' => esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ),
+			'icon' => 'prewriten-responses',
+			'id_param' => 'css',
 			'classes' => 'wpas-mark-read',
 			'data' => array( 
 				'replyid' => $reply->ID
 			)
-		));
+		);
 		
 	}
 
