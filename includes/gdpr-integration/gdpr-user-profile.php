@@ -278,14 +278,17 @@ class WPAS_GDPR_User_Profile {
 				 * direct access
 				 */
 				$this->user_export_dir = $this->set_log_dir( $user );
+
+				$content = array_merge(
+					array( 'ticket_data' => $user_tickets ),
+					array( 'consent_log' => $user_consent )
+				);
+
+				$data = apply_filters( 'wpas_gdpr_export_data_profile', $content, $user );
+
 				file_put_contents(
 					$this->user_export_dir . '/export-data.xml',
-					$this->xml_conversion(
-						array_merge(
-							array( 'ticket_data' => $user_tickets ),
-							array( 'consent_log' => $user_consent )
-						)
-					)
+					$this->xml_conversion( $data )
 				);
 
 				$this->data_zip( $user_tickets, 'export-data.xml', $this->user_export_dir );
