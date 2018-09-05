@@ -1820,7 +1820,13 @@ class WPAS_File_Upload {
 		$folders = glob( trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_*' );
 	
 		foreach ( $folders as $folder ) {
-			$this->remove_directory( $folder );
+
+			$mtime = filemtime( $folder );
+
+			if ( ( time() - $mtime ) > 60 * 60 * 24 ) { // Delete temp folder after 24 hours
+				$this->remove_directory( $folder );
+			}
+
 		}
 
 	}
