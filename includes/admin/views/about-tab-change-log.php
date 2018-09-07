@@ -1,6 +1,27 @@
 <p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
 
 <div class="changelog">
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 5.8</h1>
+				<h3>5.8 Introduces a number of new changes, tweaks and fixes! Among them are the following:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>The Awesome Support REST API is now integrated into the core. Turn it on using the new settings tab in TICKETS->SETTINGS->REST API</li>
+					<li>Add new tab on privacy screen to submit a request to export ALL system data to the admin (not just tickets)</li>
+					<li>Replace icon images on ticket screen in wp-admin with a true icon file - helps scale up properly on higher resolution screens</li>					
+					<li>Added the concept of an OVERLAY to the AS theme</li>
+					<li>Added four overlays - "Subtle", "Angle", "Dark" and "Orange"</li>
+					<li>More than a half dozen tweaks related to CSS, Add-ons and Licensing</li>
+					<li>Bug fixes related to editing replies, drag-and-drop uploads and more</li>
+					<li>Internal and developer related changes</li>
+				</ul>
+				<p>Read all about these changes on our website: <a href="https://getawesomesupport.com/coming-soon-in-awesome-support-5-8/">What's New In Version 5.8</a> </p>
+			</div>		
+		</div>
+	</div>
+
 <div>	
 	<h2>Maintenance Releases since 5.5.0</h2>
 	<p><b>Version 5.7.1</b> includes a couple of bug fixes for editing the opening ticket post and rendering the privacy popup. </p>				
@@ -29,7 +50,7 @@
 					<li>Bug Fixes  </li>
 					<li>Internal and developer related changes  </li>
 				</ul>
-				<p>Read all about these changes on our website: <a href="https://getawesomesupport.com/coming-soon-in-awesome-support-5-2-0/">What's New In Version 5.5</a> </p>
+				<p>Read all about these changes on our website: <a href="https://getawesomesupport.com/awesome-support-5-5-0-new-and-enhanced-features/">What's New In Version 5.5</a> </p>
 			</div>		
 		</div>
 	</div>
