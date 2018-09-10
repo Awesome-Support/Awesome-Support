@@ -502,6 +502,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-products-management.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-language.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-integration.php' );
 				
 				/* Load Gutenberg related files */
