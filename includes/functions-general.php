@@ -211,7 +211,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 		/**
 		 * Check if the current page has our shortcodes
 		 */
-		if ( $post && $post->post_content && has_shortcode( $post->post_content, 'ticket-submit' ) || has_shortcode( $post->post_content, 'tickets' ) ) {
+		if ( $post && isset( $post->post_content ) && $post->post_content && ( has_shortcode( $post->post_content, 'ticket-submit' ) || has_shortcode( $post->post_content, 'tickets' ) ) ) {
 			return true;
 		} 		
 
