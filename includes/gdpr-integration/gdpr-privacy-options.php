@@ -470,12 +470,19 @@ class WPAS_Privacy_Option {
 			return $empty_return;
 		}
 
+		/**
+		* Make sure the email address is valid!
+		*/
+		$author = get_user_by( 'email', $email_address );		
+		if ( empty( $author ) || true === is_wp_error( $author ) ) {
+			return $empty_return;
+		}
+		
 		/* All pre-conditions good, so ok to proceed */
 		$number = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
 		$page           = (int) $page;
 		$items_removed  = false;
 		$items_retained = false;
-		$author = get_user_by( 'email', $email_address );
 		$args = array(
 			'post_type'      => array( 'ticket' ),
 			'author'         => $author->ID,
