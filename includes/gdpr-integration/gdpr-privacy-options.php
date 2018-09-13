@@ -470,12 +470,19 @@ class WPAS_Privacy_Option {
 			return $empty_return;
 		}
 
+		/**
+		* Make sure the email address is valid!
+		*/
+		$author = get_user_by( 'email', $email_address );		
+		if ( empty( $author ) || true === is_wp_error( $author ) ) {
+			return $empty_return;
+		}
+		
 		/* All pre-conditions good, so ok to proceed */
 		$number = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
 		$page           = (int) $page;
 		$items_removed  = false;
 		$items_retained = false;
-		$author = get_user_by( 'email', $email_address );
 		$args = array(
 			'post_type'      => array( 'ticket' ),
 			'author'         => $author->ID,
@@ -819,9 +826,12 @@ class WPAS_Privacy_Option {
 			}
 			$done = count( $user_tickets_data ) < $number;
 		}
+
+
+		$data = apply_filters( 'wpas_users_personal_data_export', $data_to_export, $author->ID );
 		
 		return array(
-			'data' => $data_to_export,
+			'data' => $data,
 			'done' => $done,
 		);
 	}
@@ -899,7 +909,15 @@ class WPAS_Privacy_Option {
 									include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-export-user-data.php' );
 								}
 							?>
-						</div>					
+						</div>
+						<div id="export-existing-data" class="entry-content-tabs wpas-gdpr-tab-content">
+							<?php
+								/**
+								 * Include tab content for Export tickets and user data
+								 */
+								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-wpexport-user-data.php' );
+							?>
+						</div>
 					</div>
 					<?php
 					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' );
@@ -971,6 +989,7 @@ class WPAS_Privacy_Option {
 
 			$subject = isset( $form_data['wpas-gdpr-ded-subject'] ) ? $form_data['wpas-gdpr-ded-subject'] : '';
 			$content = isset( $form_data['wpas-gdpr-ded-more-info'] ) && ! empty( $form_data['wpas-gdpr-ded-more-info'] ) ? $form_data['wpas-gdpr-ded-more-info'] : $subject; // Fallback to subject to avoid undefined!
+			$request_type = ( isset( $_POST['data']['request_type'] ) && !empty( $_POST['data']['request_type'] ))? sanitize_text_field( $_POST['data']['request_type'] ): '';
 
 			/**
 			 * New ticket submission
@@ -997,8 +1016,17 @@ class WPAS_Privacy_Option {
 				if ( function_exists( 'wp_create_user_request' )  && function_exists( 'wp_send_user_request' ) ) {
 					$current_user = wp_get_current_user();
 					if( isset( $current_user->user_email ) && !empty( $current_user->user_email )){
-						$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
-						if( $request_id && ! is_wp_error( $request_id ) ) {
+
+						if( 'delete' === $request_type ){
+							$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
+							$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
+						}
+						if( 'export' === $request_type ){
+							$request_id = wp_create_user_request( $current_user->user_email, 'export_personal_data' );
+							$response['message'] = __( 'We have received your Export data request!', 'awesome-support' );
+						}
+
+						if( isset( $request_id) && $request_id ) {
 							wp_send_user_request( $request_id );
 						} else {
 							// if you've gotten here chances are the error is a duplicate request.
@@ -1009,6 +1037,8 @@ class WPAS_Privacy_Option {
 						}
 					}
 				}
+				
+				$response['code']    = 200;
 
 			} else {
 				$response['message'] = __( 'Something went wrong. Please try again!', 'awesome-support' );

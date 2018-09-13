@@ -23,7 +23,8 @@ module.exports = function (grunt) {
 				src: [
 					'assets/public/vendor/**/*.js',
 					'assets/public/js/*.js',
-					'!assets/public/js/public-dist.js'
+					'!assets/public/js/public-dist.js',
+					'!assets/public/js/component-privacy-popup.js'
 				],
 				dest: 'assets/public/js/public-dist.js'
 			}
@@ -41,7 +42,12 @@ module.exports = function (grunt) {
 				files: {
 					'assets/public/css/public.css': 'assets/public/less/public.less',
 					'assets/admin/css/admin.css': 'assets/admin/less/admin.less',
-					'themes/default/css/style.css': 'themes/default/less/style.less'
+					'themes/default/css/style.css': 'themes/default/less/style.less',
+					'themes/default/css/overlay-subtle.css': 'themes/default/less/overlay-subtle.less',
+					'themes/default/css/overlay-angle.css': 'themes/default/less/overlay-angle.less',
+					'themes/default/css/overlay-dark.css': 'themes/default/less/overlay-dark.less',
+					'themes/default/css/overlay-orange-blend.css': 'themes/default/less/overlay-orange-blend.less',
+					'includes/rest-api/assets/admin/css/admin.css': 'includes/rest-api/assets/admin/less/admin.less'
 				}
 			}
 		},
@@ -105,7 +111,9 @@ module.exports = function (grunt) {
 				files: {
 					'assets/public/css/public.css': 'assets/public/css/public.css',
 					'assets/admin/css/admin.css': 'assets/admin/css/admin.css',
-					'themes/default/css/style.css': 'themes/default/css/style.css'
+					'themes/default/css/style.css': 'themes/default/css/style.css',
+					'themes/default/css/overlay-subtle.css': 'themes/default/css/overlay-subtle.css',
+					'themes/default/css/overlay-angle.css': 'themes/default/css/overlay-angle.css'
 				},
 				options: {
 					report: 'min',
@@ -160,10 +168,12 @@ module.exports = function (grunt) {
 						'!node_modules/**',
 						'!vendor-overrides/**',
 						'!vendor/freemius/**',
+						'!languages/*.po',
 						'!tests/**',
 						'!.tx/**',
+						'!*.zip',
 						'!.gitignore',
-						'!.travis.yml',
+						'!.travis.yml',						
 						'!apigen.neon',
 						'!composer.json',
 						'!composer.lock',
@@ -294,7 +304,7 @@ module.exports = function (grunt) {
 		  vendoroverrides: {
 			files: [
 			  { src:"vendor-overrides/titan-framework-overrides/class-option-edd-license.php", dest:"vendor/gambitph/titan-framework/lib/class-option-edd-license.php" },
-			  { src:"vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php", dest:"vendor/gambitph/titan-framework/inc/edd-licensingEDD_SL_Plugin_Updater.php" },
+			  { src:"vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php", dest:"vendor/gambitph/titan-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php" },
 			  { src:"vendor-overrides/titan-framework-overrides/wp-color-picker-alpha-min.js", dest:"vendor/gambitph/titan-framework/js/min/wp-color-picker-alpha-min.js" },
 			  { src:"vendor-overrides/titan-framework-overrides/wp-color-picker-alpha.js", dest:"vendor/gambitph/titan-framework/js/wp-color-picker-alpha.js" }
 			]

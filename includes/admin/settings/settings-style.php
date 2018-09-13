@@ -21,6 +21,14 @@ function wpas_core_settings_style( $def ) {
 					'default' => 'default'
 				),
 				array(
+					'name'    => __( 'Overlay', 'awesome-support' ),
+					'id'      => 'theme_overlay',
+					'type'    => 'select',
+					'desc'    => __( 'An overlay is generally a pure css variation on the theme selected above that overides the colors of the selected theme.  The default overlay is the most widely compatible overlay - other overlays may or may not work with your theme.  There is limited technical support for overlays other than the default.', 'awesome-support' ),
+					'options' => wpas_list_overlays(),
+					'default' => 'style.css'
+				),				
+				array(
 					'name'    => __( 'Theme Stylesheet', 'awesome-support' ),
 					'id'      => 'theme_stylesheet',
 					'type'    => 'checkbox',

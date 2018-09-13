@@ -425,6 +425,12 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );			
 			require( WPAS_PATH . 'includes/install.php' );
 
+			/* Composer autoload */
+			require( WPAS_PATH . 'vendor/autoload.php' );
+			
+			/* Load Rest API */
+			require( WPAS_PATH . 'includes/rest-api/awesome-support-api.php' );
+
 			/* Simple WooCommerce Integration */
 			require( WPAS_PATH . 'includes/integrations/wc-account.php' );
 
@@ -455,6 +461,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/functions-ajax.php' );
 			require( WPAS_PATH . 'includes/admin/functions-log-viewer.php' );
 			require( WPAS_PATH . 'includes/admin/functions-admin-ticket-detail-toolbars.php' );
+			require( WPAS_PATH . 'includes/admin/functions-toolbar.php' );
 			
 			if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
 				if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
@@ -495,6 +502,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-products-management.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-language.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-integration.php' );
 				
 				/* Load Gutenberg related files */

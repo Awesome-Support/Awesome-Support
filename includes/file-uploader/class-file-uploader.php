@@ -1596,11 +1596,20 @@ class WPAS_File_Upload {
 		}
 
 		// Check if file is set
-		if ( ! empty( $_FILES[ 'wpas_' . $this->index ] ) ) {
-			// Upload file
-			move_uploaded_file( $_FILES[ 'wpas_' . $this->index ][ 'tmp_name' ], trailingslashit( $dir ) . $_FILES[ 'wpas_' . $this->index ][ 'name' ] );
-		}
+		if ( ! empty( $file = $_FILES[ 'wpas_' . $this->index ] ) ) {
+			// Get file extension
+			$extension = pathinfo( $file[ 'name' ], PATHINFO_EXTENSION );
+			// Get allowed file extensions
+			$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
 
+			// Check file extension
+			if ( in_array( $extension, $filetypes ) ) {
+				// Upload file
+				move_uploaded_file( $file[ 'tmp_name' ], trailingslashit( $dir ) . basename( $file[ 'name' ] ) );
+			}
+
+		}
+		
 		wp_die();
 
 	}
@@ -1820,7 +1829,13 @@ class WPAS_File_Upload {
 		$folders = glob( trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_*' );
 	
 		foreach ( $folders as $folder ) {
-			$this->remove_directory( $folder );
+
+			$mtime = filemtime( $folder );
+
+			if ( ( time() - $mtime ) > 60 * 60 * 24 ) { // Delete temp folder after 24 hours
+				$this->remove_directory( $folder );
+			}
+
 		}
 
 	}

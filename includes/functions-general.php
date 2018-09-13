@@ -189,6 +189,11 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		return false;
 
+	} elseif ( wpas_is_wp_cli() ) {
+		
+		/* running from wp_cli so just return false */
+		return false;
+
 	} else {
 
 		global $post;
@@ -202,6 +207,13 @@ function wpas_is_plugin_page( $slug = '' ) {
 		if ( is_singular( 'ticket' ) ) {
 			return true;
 		}
+		
+		/**
+		 * Check if the current page has our shortcodes
+		 */
+		if ( $post && isset( $post->post_content ) && $post->post_content && ( has_shortcode( $post->post_content, 'ticket-submit' ) || has_shortcode( $post->post_content, 'tickets' ) ) ) {
+			return true;
+		} 		
 
 		if ( isset( $post ) && is_object( $post ) && is_a( $post, 'WP_Post' ) ) {
 
@@ -246,23 +258,13 @@ function wpas_is_front_end_plugin_page() {
 	 *
 	 * ticket-submit is for submission while tickets for list of submission
 	 */
-
-	/**
-	 * Check if the current page is 'ticket submission'
-	 */
 	if ( has_shortcode( $post->post_content, 'ticket-submit' ) || has_shortcode( $post->post_content, 'tickets' ) ) {
 		return true;
 	} 
 
 	/**
 	 * Check if we're viewing a 'ticket' single page'.
-	 */	
-	if ( empty( $post ) ) {
-		$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-		$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
-		$post     = get_post( $post_id );
-	}	
-	
+	 */		
 	if ( is_singular( 'ticket' ) ) {
 		return true;
 	}	
@@ -1857,3 +1859,12 @@ function wpas_get_support_users_on_ticket( $post_id ) {
 	
 }
 
+/**
+ * Checks to see if we're being called by wp_cli
+ *
+ * @return boolean
+ *
+ */
+function wpas_is_wp_cli() {
+	return ( defined( 'WP_CLI' ) && WP_CLI ) ;
+}

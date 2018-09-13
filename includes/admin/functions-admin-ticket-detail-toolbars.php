@@ -32,15 +32,20 @@ function get_ticket_details_action_link( $post ) {
 	return $action ;
 }
 
-add_action( 'wpas_ticket_detail_toolbar01_before', 'wpas_add_close_ticket_item_to_ticket_detail_toolbar', 10, 1 );
+add_filter( 'wpas_toolbar_ticket', 'wpas_add_close_ticket_item_to_ticket_detail_toolbar', 10, 2 );
 /**
  * Add a CLOSE TICKET button to the ticket detail toolbar
  * 
- * Action Hook: wpas_ticket_detail_toolbar01_before
+ * Filter Hook: wpas_toolbar_ticket
  *
- * @params post $post the current post/ticket being worked on
+ * @params array $items
+ * @param int $ticket_id the current post/ticket being worked on
+ * 
+ * return array
  */
-function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $post ) {
+function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $items, $ticket_id ) {
+	
+	$post = get_post( $ticket_id );
 	
 	/* Current status of ticket */
 	$ticket_status = get_post_meta( get_the_ID(), '_wpas_status', true );
@@ -49,17 +54,35 @@ function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $post ) {
 	$action = get_ticket_details_action_link( $post );
 	
 	if ( 'closed' === $ticket_status ) {
-		echo wpas_add_ticket_detail_toolbar_item( 'a', 'wpas-close-ticket-top', __( 'Re-open Ticket', 'awesome-support' ), WPAS_URL . "assets/admin/images/icons/re-open-ticket.png", $action );
+		
+		$items['wpas-close-ticket-top'] = array(
+				'type' => 'link',
+				'link' => $action,
+				'icon' => 'icon-close-ticket',
+				'tool_tip_text' => __( 'Re-open Ticket', 'awesome-support' )
+			);
+		
 	} elseif( '' === $ticket_status ) {
 		// do nothing...
 	} else {
-		echo wpas_add_ticket_detail_toolbar_item( 'a', 'wpas-close-ticket-top', __( 'Close Ticket', 'awesome-support' ), WPAS_URL . "assets/admin/images/icons/close-ticket.png", $action );
+		
+		$items['wpas-close-ticket-top'] = array(
+				'type' => 'link',
+				'link' => $action,
+				'icon' => 'icon-close-ticket',
+				'tool_tip_text' => __( 'Close Ticket', 'awesome-support' )
+			);
+		
 	}	
+	
+	return $items;
 }
 
 /**
  * Adds an item to the tool-bar in the ticket detail in wp-admin or
  * returns a markup suitable for adding an item to the toolbar screen.
+ *
+ * *** Deprecated as of 5.8.0 - ok to remove later ***
  * 
  * Note that if you choose to have the menu item echoed directly to the screen this
  * function should be called using a do_action hook tied into the menu (such as wpas_ticket_detail_toolbar01_before)

@@ -1,3 +1,6 @@
+/* Handles the front-end logic for the privacy popup. */
+/* Will NOT be included in the public-dist.js because of an exclusion in gruntfile.js */
+
 jQuery(document).ready(function ($) {
 
 	jQuery( ".privacy-container-template" ).on( "click", ".download-file-link", function(e) {	
@@ -41,6 +44,7 @@ jQuery(document).ready(function ($) {
 			'security' : WPAS_GDPR.nonce,
 			'data' 	: {
 				'nonce'		: WPAS_GDPR.nonce,
+				'request_type': 'delete',
 				'form-data'	: $( '#wpas-gdpr-rtbf-form' ).serialize()
 			}
 		};
@@ -55,6 +59,49 @@ jQuery(document).ready(function ($) {
 					jQuery( '.wpas-gdpr-form-table' ).remove();
 				}else{
 					jQuery( '.wpas-gdpr-notice.delete-existing-data' ).addClass( 'failure' ).html( '<p>' + response.message + '</p>' );
+				}
+			}
+		);		
+	});
+
+	/**
+	 * Ajax based ticket submission
+	 * in "Export My Existing Data" from GDPR popup
+	 */
+	jQuery( "#wpas-gdpr-export-submit" ).click( function(e) {
+		e.preventDefault();
+		e.stopImmediatePropagation();
+		jQuery( '.wpas-gdpr-pre-loader' ).show();
+		jQuery( '.wpas-gdpr-loader-background').show();
+
+		/**
+		 * Get current tinyMCE content
+		 * NOTE: We cannot get the content wpas_set_editor_content()
+		 * on submission. This will be the workaround.
+		 */
+		var activeEditor_content = tinyMCE.activeEditor.getContent();
+		jQuery( '#wpas-gdpr-export-more-info' ).html( activeEditor_content );
+
+		var data = {
+			'action': 'wpas_gdpr_open_ticket',
+			'security' : WPAS_GDPR.nonce,
+			'data' 	: {
+				'nonce'		: WPAS_GDPR.nonce,
+				'request_type': 'export',
+				'form-data'	: $( '#wpas-gdpr-rted-form' ).serialize()
+			}
+		};
+		jQuery.post(
+			WPAS_GDPR.ajax_url,
+			data,
+			function( response ) {
+				jQuery( '.wpas-gdpr-pre-loader' ).hide();
+				jQuery( '.wpas-gdpr-loader-background').hide();
+				if( response.message && response.code === 200 ) {
+					jQuery( '.wpas-gdpr-notice.export-existing-data' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+					jQuery( '.wpas-gdpr-form-table' ).remove();
+				}else{
+					jQuery( '.wpas-gdpr-notice.export-existing-data' ).addClass( 'failure' ).html( '<p>' + response.message + '</p>' );
 				}
 			}
 		);		
@@ -199,6 +246,14 @@ jQuery(document).ready(function ($) {
 			 */
 			if( jQuery( '#wpas-gdpr-ded-more-info' ).length > 0 ) {
 				wpas_init_editor( 'wpas-gdpr-ded-more-info', '' );
+			}
+		}
+		if( jQuery(this).data( 'id' ) === 'export-existing'  ) {
+			/**
+			 * If the Additional Information is set
+			 */
+			if( jQuery( '#wpas-gdpr-export-more-info' ).length > 0 ) {
+				wpas_init_editor( 'wpas-gdpr-export-more-info', '' );
 			}
 		}
 	});

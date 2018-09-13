@@ -118,6 +118,7 @@ function wpas_register_assets_back_end() {
 	wp_register_style( 'wpas-admin-styles', WPAS_URL . 'assets/admin/css/admin.css', array( 'wpas-select2' ), WPAS_VERSION );
 	wp_register_style( 'wpas-admin-reply-history', WPAS_URL . 'assets/admin/css/admin-reply-history.css', array(), WPAS_VERSION );
 	wp_register_style( 'wpas-admin-print-ticket', WPAS_URL . 'assets/admin/css/admin-print-ticket.css', null, WPAS_VERSION );
+	wp_register_style( 'wpas-admin-icons', WPAS_URL . 'assets/admin/css/admin-icons.css', array(), WPAS_VERSION );
 	
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
@@ -265,7 +266,7 @@ function wpas_assets_front_end() {
 
 		// GDPR Privacy options script and style.
 		wp_enqueue_editor();
-		wp_register_script( 'wpas-gdpr-script', WPAS_URL . 'assets/public/js/component-privacy-popup.js', array( 'jquery' ), WPAS_VERSION );		
+		wp_register_script( 'wpas-gdpr-script', WPAS_URL . 'assets/public/js/component-privacy-popup.js', array( 'jquery' ), WPAS_VERSION );
 		wp_localize_script( 'wpas-gdpr-script', 'WPAS_GDPR', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'wpas-gdpr-nonce' )
@@ -311,6 +312,7 @@ function wpas_enqueue_assets_back_end() {
 		wp_enqueue_style( 'wpas-datepicker' );
 		wp_enqueue_style( 'wpas-flexboxgrid' );
 		wp_enqueue_style( 'wpas-admin-styles' );
+		wp_enqueue_style( 'wpas-admin-icons' );
 
 		if ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) {
 			wp_enqueue_style( 'wpas-simple-hint' );

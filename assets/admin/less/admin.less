@@ -1,5 +1,60 @@
 @charset "UTF-8";
 
+/*
+==========================================================================
+Toolbar
+==========================================================================
+*/
+.wpas-toolbar {
+        list-style-type: none !important;
+        margin : 0;
+        
+        li {
+                float: left;
+                margin: 0 6px;
+                
+                
+                &.clear {
+                        float: none !important;
+                }
+                
+                a {
+                        display: block;
+                        margin: 0;
+                }
+                
+                .wpas-icon {
+        
+                        cursor: pointer;
+                        /* border: 1px solid #cacfd3; */
+                        /* border-radius: 20px; */
+                        display: inline-block;
+						color: black;
+
+                        &:hover {
+								/* border-top: 1px solid #cacfd3; */
+								/* border-radius: 20px; */
+                                /* border-color: #14a1e4; */
+                                color: #D0D0D0;
+								
+                                &:before {
+                                        /* color: #14a1e4; */
+                                }
+                                
+                        }
+                }
+        }
+}
+
+.wpas_btn_msg {
+        position: relative;
+}
+
+#wp-wpas-main-ticket-message-editor-wrap {
+        margin-top: 30px;
+}
+
+
 .wpas-cf {
 	&:before,
 	&:after {
@@ -372,7 +427,8 @@ Ticket Controls
 	opacity: 0.5;
 }
 .wpas-reply-attachements {
-	margin-top: 2em;
+	margin-top: 1em;
+	margin-bottom: 1em;
 	background-color: #f1f1f1;
 	border: 1px solid #ddd;
 	padding: 1.5em;
@@ -729,12 +785,12 @@ Admin Tabs
                 padding: 10px;
                 cursor: pointer;
                 background: #FFF;
-                color : #898989;
+                color:rgb(68,68,68);
 
                 &:hover, &.active {
                     
                     position: relative;
-                    color : #565656;
+					background: #F5F5F5;  // This color creates the 'tab' effect
                     &::after {
                         content: "";
                         width: 100%;
@@ -1000,8 +1056,7 @@ Ticket Page : Main tabs
 }
 
 .btn_delete_attachment {
-        margin-right: 10px;
-        width: 20px;
+        margin-right: 3px;        
         display: inline-block;
         color: red;
         text-decoration: none;
