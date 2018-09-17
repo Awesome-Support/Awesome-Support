@@ -3,6 +3,7 @@
 namespace WPAS_API\API;
 
 use WP_REST_Controller;
+use WP_REST_Users_Controller;
 use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -15,11 +16,13 @@ use WP_Error;
  *
  * @see WP_REST_Controller
  */
-class UserData {
+class UserData extends WP_REST_Users_Controller {
 
 	public function __construct() {
+
+		parent::__construct();
 		$this->namespace = wpas_api()->get_api_namespace();
-		$this->rest_base = 'user';
+		$this->rest_base = 'users';
     }
 
 	
@@ -31,15 +34,38 @@ class UserData {
 	public function register_routes() {
 
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/username', array(
-			'methods'             => WP_REST_Server::CREATABLE,
-			'callback'            => array( $this, 'get_user' ),
-			'permission_callback' => array( $this, 'get_user_permissions_check' ),
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'get_user' ),
+				'permission_callback' => array( $this, 'get_user_permissions_check' ),
+				'args' => array(
+					'username' => array(
+						'type'        => 'string',
+						'description' =>  __( 'User name', 'awesome-support' ),
+						'required'    => true
+					)
+				)
+			)
         ) );
 
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/check', array(
-			'methods'             => WP_REST_Server::CREATABLE,
-			'callback'            => array( $this, 'check_credentials' ),
-			'permission_callback' => array( $this, 'get_user_permissions_check' ),
+			array(
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => array( $this, 'check_credentials' ),
+				'permission_callback' => array( $this, 'get_user_permissions_check' ),
+				'args' => array(
+					'username' => array(
+						'type'        => 'string',
+						'description' => __( 'User name', 'awesome-support' ),
+						'required'    => true
+					),
+					'password' => array(
+						'type'        => 'string',
+						'description' => __( 'User password', 'awesome-support' ),
+						'required'    => true
+					)
+				)
+			)
 		) );
 
     }
@@ -115,6 +141,5 @@ class UserData {
 		);
 
 	}
-
     
 }
