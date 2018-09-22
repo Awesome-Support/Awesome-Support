@@ -2,6 +2,13 @@
 
 <div class="changelog">
 
+	<div>	
+		<h2>Maintenance Releases since 5.8.0</h2>
+		<p><b>Version 5.8.1</b> was updated to include a few changes to the rest api. </p>
+	</div>	
+
+	<hr />	
+
 	<div class="row">
 		<div>
 			<div class="about-body">
