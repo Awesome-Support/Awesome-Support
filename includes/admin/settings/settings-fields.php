@@ -157,7 +157,7 @@ function wpas_core_settings_fields( $def ) {
 		),
 	);
 
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_fields', $settings )  );
 
 }
 

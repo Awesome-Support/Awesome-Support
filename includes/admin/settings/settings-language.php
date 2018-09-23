@@ -24,6 +24,6 @@ function wpas_core_settings_language( $def ) {
 		),
 	);
 
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_language', $settings )  );
 
 }

@@ -22,7 +22,7 @@ function wpas_core_basic_time_tracking( $def ) {
 		),
 	);
 
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_basic_time_tracking', $settings )  );
 
 }
 

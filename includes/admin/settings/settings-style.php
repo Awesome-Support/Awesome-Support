@@ -95,6 +95,6 @@ function wpas_core_settings_style( $def ) {
 		array_push( $settings['style']['options'], $option );
 	}
 	
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_style', $settings )  );
 
 }
