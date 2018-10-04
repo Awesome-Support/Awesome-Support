@@ -828,7 +828,8 @@ class WPAS_Email_Notification {
 			'attachments'     => ''
 			),
 			$case,
-			$this->ticket_id
+			$this->ticket_id, 
+			$this->post_id
 		);
 		
 		$attachments = array();
