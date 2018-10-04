@@ -4,7 +4,7 @@
 
 	<div>	
 		<h2>Maintenance Releases since 5.8.0</h2>
-		<p><b>Version 5.8.1</b> was updated to include a few changes to the rest api. </p>
+		<p><b>Version 5.8.1</b> includes a few changes to the rest api, updates the version of the Titan Framework to 1.12.0, fixes a couple of bugs related to the auto-delete attachments function and added a few dev related filters. </p>
 	</div>	
 
 	<hr />	
