@@ -234,7 +234,7 @@ class WPAS_File_Upload {
 		
 		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
 		
-		if( !$auto_delete && !$user_can_set_flag ) {
+		if( !$auto_delete || !$user_can_set_flag ) {
 			return;
 		}
 		
@@ -255,7 +255,9 @@ class WPAS_File_Upload {
 	function add_auto_delete_button_fe_ticket() {
 		global $post;
 		
-		if( wpas_user_can_set_auto_delete_attachments() ) {
+		$auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
+		
+		if( wpas_user_can_set_auto_delete_attachments()  && true == $auto_delete ) {
 			$flag_on = get_post_meta( $post->ID, 'auto_delete_attachments', true );
 			$this->auto_delete_field( $flag_on );
 		}
