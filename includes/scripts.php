@@ -145,9 +145,7 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-reply', WPAS_URL . 'assets/admin/js/admin-reply.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-reply-history', WPAS_URL . 'assets/admin/js/admin-reply-history.js', array( 'jquery' ), WPAS_VERSION );
-	if (true === boolval( wpas_get_option('use_autolinker', true))) {
-		wp_register_script( 'wpas-autolinker', WPAS_URL . 'assets/public/vendor/Autolinker/Autolinker.min.js', null, '0.19.0', true );
-	}
+	wp_register_script( 'wpas-autolinker', WPAS_URL . 'assets/public/vendor/Autolinker/Autolinker.min.js', null, '0.19.0', true );
 	wp_register_script( 'wpas-users', WPAS_URL . 'assets/admin/js/admin-users.js', null, WPAS_VERSION, true );
 	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
 	wp_register_script( 'wpas-admin-upload', WPAS_URL . 'assets/public/js/component_upload.js', array( 'jquery' ), WPAS_VERSION );
@@ -353,9 +351,7 @@ function wpas_enqueue_assets_back_end() {
 			wp_enqueue_style( 'wpas-admin-reply-history' );
 			wp_enqueue_script( 'wpas-admin-reply' );
 			wp_enqueue_script( 'wpas-admin-reply-history' );
-			if (true === boolval( wpas_get_option('use_autolinker', true))) {
-				wp_enqueue_script( 'wpas-autolinker' );
-			}
+			wp_enqueue_script( 'wpas-autolinker' );
 		}
 
 	}
@@ -401,6 +397,7 @@ function wpas_get_javascript_object() {
 	$object = array(
 		'ajaxurl'                => admin_url( 'admin-ajax.php' ),
 		'emailCheck'             => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
+		'useAutolinker'          => true === boolval( wpas_get_option( 'use_autolinker', true ) ) ? 'true' : 'false',
 		'fileUploadMax'          => $upload_max_files,
 		'fileUploadSize'         => $upload_max_size * 1048576, // We base our calculation on binary prefixes
 		'fileUploadMaxError'     => __( sprintf( 'You can only upload a maximum of %d files', $upload_max_files ), 'awesome-support' ),
