@@ -46,7 +46,7 @@ function wpas_core_settings_style( $def ) {
 					'name'    => __( 'Use automatic linker', 'awesome-support' ),
 					'id'      => 'use_autolinker',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Automatically link URLs, email addresses, phone numbers, twitter handles, and hashtags' ),
+					'desc'    => __( 'Automatically link URLs, email addresses, phone numbers, twitter handles, and hashtags', 'awesome-support' ),
 					'default' => true
 				),
 				array(
