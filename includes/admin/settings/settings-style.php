@@ -43,6 +43,13 @@ function wpas_core_settings_style( $def ) {
 					'default' => true
 				),
 				array(
+					'name'    => __( 'Use automatic linker', 'awesome-support' ),
+					'id'      => 'use_autolinker',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Automatically link URLs, email addresses, phone numbers, twitter handles, and hashtags', 'awesome-support' ),
+					'default' => true
+				),
+				array(
 					'name' => __( 'Colors', 'awesome-support' ),
 					'type' => 'heading',
 				),

@@ -36,7 +36,9 @@
          */
         if ($('.wpas-ticket-content').length && $('.wpas-reply-content').length) {
             $('.wpas-ticket-content, .wpas-reply-content').each(function (index, el) {
-                el.innerHTML = Autolinker.link(el.innerHTML);
+                if (typeof(Autolinker) !== 'undefined') {
+                    el.innerHTML = Autolinker.link(el.innerHTML);
+                }
             });
         }
 
