@@ -238,23 +238,30 @@
 	/**
 	 * Get plugin's theme stylesheet URI.
 	 *
+	 * Returns the URL to the them stylesheet or overlay.
+	 * Always returns the URL to the stylesheet/overaly in
+	 * the awesome-support folder - not any overrides
+	 * in the users's THEME folder.
+	 * This function is similar to wpas_get_theme_stylesheet()
+	 * except that it returns the URL and not the absolute path.
+	 *
 	 * @since  3.1.6
 	 * @return string Stylesheet URI
 	 */
 	function wpas_get_theme_stylesheet_uri() {
 
-		$template = wpas_get_theme_stylesheet();
-
-		/* Remove the root path and replace backslashes by slashes */
-		$truncate = str_replace( '\\', '/', str_replace( untrailingslashit( ABSPATH ), '', $template ) );
-
-		/* Make sure the truncated string doesn't start with a slash because we trailing slash the home URL) */
-		if ( '/' === substr( $truncate, 0, 1 ) ) {
-			$truncate = substr( $truncate, 1 );
+		$theme = wpas_get_theme();
+		$overlay = wpas_get_overlay();
+		
+		if ( empty( $overlay ) ) {
+			$overlay = 'style.css' ;
 		}
 
-		/* Build the final URL to the resource */
-		$uri = trailingslashit( site_url() ) . $truncate;
+		$uri = WPAS_URL . 'themes/' . $theme . '/css/' . $overlay;
+
+		if ( ! $uri ) {
+			$uri = WPAS_PATH . "themes/$theme/css/style.css";
+		}
 
 		return apply_filters( 'wpas_get_theme_stylesheet_uri', $uri );
 
