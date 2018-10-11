@@ -163,11 +163,6 @@ function wpas_core_settings_general( $def ) {
 				),
 
 				array(
-					'name' => __( 'Misc', 'awesome-support' ),
-					'type' => 'heading',
-				),				
-
-				array(
 					'name' => __( 'Credit', 'awesome-support' ),
 					'type' => 'heading',
 				),
