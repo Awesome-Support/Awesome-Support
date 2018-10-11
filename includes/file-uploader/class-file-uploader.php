@@ -1161,6 +1161,13 @@ class WPAS_File_Upload {
 					continue;
 
 				} else {
+					
+					// Make sure a required function exists - for some reason
+					// sometimes it does not, especially when called from our 
+					// gravity forms add-on.
+					if ( ! function_exists('wp_generate_attachment_metadata') ) {
+						require_once( ABSPATH . 'wp-admin/includes/image.php' );
+					}					
 
 					$attach_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
 
