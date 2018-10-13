@@ -53,6 +53,10 @@ function wpas_system_tools() {
 		case 'reset_channels':
 			wpas_reset_channel_terms();
 			break;
+			
+		case 'reset_ticket_types':
+			wpas_reset_ticket_types();
+			break;			
 
 		case 'reset_time_fields':
 			wpas_reset_time_fields_to_zero();
@@ -150,6 +154,16 @@ require_once( WPAS_PATH . 'includes/admin/upgrade/functions-upgrade.php' );
  */
 function wpas_reset_channel_terms() {
 	return wpas_add_default_channel_terms(true);
+}
+
+/**
+ * Add default ticket types.
+ * 
+ * @return boolean
+ * 
+ */
+function wpas_reset_ticket_types() {
+	return wpas_add_default_ticket_types(true);
 }
 
 /**

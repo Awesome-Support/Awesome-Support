@@ -62,6 +62,10 @@ if ( isset( $_GET['done'] ) ) {
 		case 'reset_channels':
 			$message = __( 'All channels have been reset', 'awesome-support' );
 			break;
+			
+		case 'reset_ticket_types':
+			$message = __( 'All ticket types have been reset', 'awesome-support' );
+			break;
 		
 		case 'install_blue_blocks_email_template':
 			$message = __( 'The Blue Blocks Email Template Set Has Been Installed', 'awesome-support' );
@@ -172,6 +176,13 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Reset channels.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Reset ticket types', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'reset_ticket_types' ); ?>" class="button-secondary"><?php _e( 'Reset', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Reset ticket_types.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>		
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php _e( 'Zero Out All Time Fields', 'awesome-support' ); ?></label></td>
 			<td>
