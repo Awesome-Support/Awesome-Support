@@ -434,7 +434,7 @@ function wpas_register_core_fields() {
 			'filterable'            => true,
 			'required'              => $show_ticket_type_required,
 			'title'           		=> $as_label_for_ticket_type_singular,
-			'order'           		=> 10
+			'order'           		=> -10  // Yes, -10 for this one so that it appears by default above the subject and description fields on the front-end form.
 		) );
 
 	}	
