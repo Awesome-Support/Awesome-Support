@@ -349,7 +349,7 @@ class WPAS_Tickets_List {
 				}
 
 				if ( array_key_exists( 'ticket_type', $custom ) ) {
-					$new[ 'ticket_type' ] = $this->get_cf_title( 'ticket_priority', 'Ticket Type' );
+					$new[ 'ticket_type' ] = $this->get_cf_title( 'ticket_type', 'Ticket Type' );
 				}
 				
 				if ( array_key_exists( 'ticket_channel', $custom ) ) {
