@@ -1249,6 +1249,20 @@ function wpas_is_support_priority_active() {
 }
 
 /**
+ * Check if ticket type is active
+ * @return boolean
+ */
+function wpas_is_support_ticket_type_active() {
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	
+	if ( isset( $options['support_ticket_type'] ) && true === boolval( $options['support_ticket_type'] ) ) {
+		return true;
+	}
+	
+	return false;
+}
+
+/**
  * Create a pseduo GUID
  *
  * @return string
