@@ -1097,6 +1097,39 @@
 		echo $tag;
 
 	}
+	
+	/**
+	 * Display the ticket type.
+	 *
+	 * Gets the ticket type and formats it according to the plugin settings.
+	 *
+	 * @since  5.8.1
+	 *
+	 * @param string $name Field / column name. This parameter is important as it is automatically passed by some
+	 *                          filters
+	 * @param  integer $post_id ID of the post being processed
+	 *
+	 * @return string           Formatted ticket priority
+	 */
+	function wpas_cf_display_ticket_type( $name, $post_id ) {
+
+		global $pagenow;
+
+		$terms = array();
+
+		if ( ! $terms = get_the_terms( $post_id, $name ) ) {
+			return;
+		}
+
+		$term = array_shift( $terms ); // Will get first term, and remove it from $terms array
+
+		$label = __( $term->name, 'awesome-support' );
+		$color = get_term_meta( $term->term_id, 'color', true );
+		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
+
+		echo $tag;
+
+	}	
 
 	/**
 	 * Get the notification wrapper markup

@@ -263,10 +263,10 @@ function wpas_get_ticket_type_options() {
 		),
 		
 		array(
-			'name'    => __( 'Color-code Ticket Border?', 'awesome-support' ),
-			'id'      => 'support_ticket_type_color_code_ticket_header',
+			'name'    => __( 'Color-code Bottom Border?', 'awesome-support' ),
+			'id'      => 'support_ticket_type_color_code_ticket',
 			'type'    => 'checkbox',
-			'desc'    => __( '[Not Enabled - Future Use Only] Checking this box will color the top border of the opening post to match the Ticket Type color', 'awesome-support' ),
+			'desc'    => __( 'Checking this box will color the bottom border of the opening post to match the Ticket Type color', 'awesome-support' ),
 			'default' => false
 		),				
 		
