@@ -281,6 +281,15 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'If your CAPABILITIES are not installed, re-run the 4.x.x to 5.0.0 conversion process. Make sure you have a BACKUP!', 'awesome-support' ); ?></span>
 			</td>
 		</tr>				
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Re-run conversion from 5.8.0 to 5.9.0', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'rerun_580_to_590_conversion' ); ?>" class="button-secondary"><?php _e( 'Rerun Conversion', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'If your CAPABILITIES are not installed, re-run the 5.8.0 to 5.9.0 conversion process. Make sure you have a BACKUP!', 'awesome-support' ); ?></span>
+			</td>
+		</tr>						
+		
+		
 		<?php do_action( 'wpas_system_data_conversion_tools_table_after' ); ?>
 	</tbody>
 </table>

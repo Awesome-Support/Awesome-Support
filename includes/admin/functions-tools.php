@@ -69,6 +69,10 @@ function wpas_system_tools() {
 		case 'rerun_400_to_500_conversion':
 			wpas_upgrade_500();
 			break;	
+			
+		case 'rerun_580_to_590_conversion':
+			wpas_upgrade_590();
+			break;
 
 		case 'install_blue_blocks_email_template':
 			wpas_install_email_template( 'blue_blocks' );
