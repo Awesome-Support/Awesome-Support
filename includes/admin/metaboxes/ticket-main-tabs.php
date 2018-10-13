@@ -160,6 +160,16 @@ function wpas_time_tracking_main_tab_content( $content ) {
 	return $content;
 }
 
+/**
+ * Inject the border color to the top of the ticket in wp-admin based on the priority of the ticket.
+ * 
+ * We are not actually coloring the ticket border but putting a tiny div above the ticket 
+ * with a zero margin.
+ *
+ * @param none
+ * 
+ * @return void
+ */
 function wpas_color_ticket_header_by_priority() {
 	
 	if ( true === boolval( wpas_get_option( 'support_priority_color_code_ticket_header', false ) ) && true === boolval( wpas_get_option( 'support_priority', false ) )  ) {
@@ -177,6 +187,16 @@ function wpas_color_ticket_header_by_priority() {
 
 }
 
+/**
+ * Inject the border color to the bottom of the ticket in wp-admin based on the ticket type.
+ *
+ * We are not actually coloring the ticket border but putting a tiny div below the ticket 
+ * with a zero margin.
+ * 
+ * @param none
+ * 
+ * @return void
+ */
 function wpas_color_ticket_header_by_ticket_type() {
 	
 	if ( true === boolval( wpas_get_option( 'support_ticket_type_color_code_ticket', false ) ) && true === boolval( wpas_get_option( 'support_ticket_type', false ) )  ) {
