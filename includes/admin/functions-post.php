@@ -254,12 +254,15 @@ function wpas_save_ticket( $post_id ) {
 						do_action( 'wpas_ticket_before_close_by_agent', $post_id );
 
 						/* Close */
-						wpas_close_ticket( $post_id );
+						$closed = wpas_close_ticket( $post_id );
 
 						/**
 						 * wpas_ticket_closed_by_agent hook
 						 */
-						do_action( 'wpas_ticket_closed_by_agent', $post_id );
+						
+						if( $closed ) {
+							do_action( 'wpas_ticket_closed_by_agent', $post_id );
+						}
 					}
 
 				}
