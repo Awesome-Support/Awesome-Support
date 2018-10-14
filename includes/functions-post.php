@@ -689,11 +689,13 @@ function wpas_new_reply_submission( $data ) {
 		$reply_id = wpas_add_reply( $data, $parent_id );
 
 	}
+	
+	$closed = false;
 
 	/* Possibly close the ticket */
-	if ( $close && apply_filters( 'wpas_user_can_close_ticket', true, $ticket_id ) ) {
+	if ( $close && apply_filters( 'wpas_user_can_close_ticket', true, $parent_id ) ) {
 
-		wpas_close_ticket( $parent_id );
+		$closed = wpas_close_ticket( $parent_id );
 
 		// Redirect now if no reply was posted
 		if ( ! isset( $reply_id ) ) {
@@ -711,7 +713,7 @@ function wpas_new_reply_submission( $data ) {
 			exit;
 		} else {
 
-			if ( $close ) {
+			if ( $closed ) {
 				wpas_add_notification( 'reply_added_closed', __( 'Thanks for your reply. The ticket is now closed.', 'awesome-support' ) );
 			} else {
 				wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'awesome-support' ) );
@@ -1468,6 +1470,19 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 	$ticket_id = intval( $ticket_id );
 
 	if ( 'ticket' == get_post_type( $ticket_id ) ) {
+		
+		$close_ticket = true;
+		
+		if ( is_admin() ) {
+			$close_ticket = apply_filters( 'wpas_before_close_ticket_admin', $close_ticket, $ticket_id );
+		} else {
+			$close_ticket = apply_filters( 'wpas_before_close_ticket_public', $close_ticket, $ticket_id );
+		}
+		
+		if( !$close_ticket ) {
+			return false;
+		}
+		
 
 		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'closed' );
 
