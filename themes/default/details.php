@@ -142,6 +142,9 @@ $author = get_user_by( 'id', $post->post_author );
 	<?php endif; ?>
 
 	<?php 
+	
+	do_action( 'wpas_ticket_details_replies_after', $post );
+	
 	/**
 	* Prepare to show the reply form.
 	*/
