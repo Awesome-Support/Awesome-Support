@@ -373,6 +373,73 @@ function wpas_register_core_fields() {
 
 
 	/*******************************************************************/
+	/* Add ticket type fields                                             */
+	/*******************************************************************/
+	if ( isset( $options[ 'support_ticket_type' ] ) && true === boolval( $options[ 'support_ticket_type' ] ) ) {
+
+		$slug = defined( 'WPAS_TICKET_TYPE_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_type';
+
+		$show_ticket_type_column_in_list = false;
+		$show_ticket_type_column_in_list = ( isset( $options[ 'support_ticket_type_show_in_ticket_list' ] ) && true === boolval( $options[ 'support_ticket_type_show_in_ticket_list' ] ) );
+
+		$show_ticket_type_required = false;
+		$show_ticket_type_required = ( isset( $options[ 'support_ticket_type_mandatory' ] ) && true === boolval( $options[ 'support_ticket_type_mandatory' ] ) );
+
+		$show_ticket_type_on_front_end = false;
+		$show_ticket_type_on_front_end = ( isset( $options[ 'support_ticket_type_show_fe' ] ) && true === boolval( $options[ 'support_ticket_type_show_fe' ] ) );
+
+		/* Now, depending on if the user specifies whether to show the field on the front end or not, we'll set a flag for the back-end only attribute of the custom field. */
+		/* This way the field always show up in the back-end.  It will show up as an admin only field if the user elects not to turn it on for the front end. Otherwise		*/
+		/* if turned on for the front-end it will show up in the regular custom fields metabox.																				*/
+		$show_ticket_type_on_back_end_only = false;
+		if ( false === $show_ticket_type_on_front_end ) {
+
+			$show_ticket_type_on_back_end_only = true;
+		}
+
+		/** Get the labels for the priority field if they are provided */
+		$as_label_for_ticket_type_singular 	= isset( $options[ 'label_for_ticket_type_singular' ] ) ? $options[ 'label_for_ticket_type_singular' ] : __( 'Ticket Type', 'awesome-support' );
+		$as_label_for_ticket_type_plural 	= isset( $options[ 'label_for_ticket_type_plural' ] ) ? $options[ 'label_for_ticket_type_plural' ] : __( 'Ticket Types', 'awesome-support' );
+
+
+		/* Filter the priority taxonomy labels */
+		$labels = apply_filters( 'wpas_priority_taxonomy_labels', array(
+				'label'        => $as_label_for_ticket_type_singular,
+				'name'         => $as_label_for_ticket_type_singular,
+				'label_plural' => $as_label_for_ticket_type_plural
+		) );
+
+
+		/** Create the custom field for ticket types */
+		wpas_add_custom_field( 'ticket_type', array(
+			'core'                  => false,
+			'show_column'           => $show_ticket_type_column_in_list,
+			'hide_front_end'        => !$show_ticket_type_on_front_end,  //inverse of what the user specificed in settings because of how this attribute works...
+			'backend_only'          => $show_ticket_type_on_back_end_only,
+			'log'                   => true,
+			'field_type'            => 'taxonomy',
+			'taxo_std'              => false,
+			'column_callback'       => 'wpas_cf_display_ticket_type',
+			'label'                 => $labels[ 'label' ],
+			'name'                  => $labels[ 'name' ],
+			'label_plural'          => $labels[ 'label_plural' ],
+			'taxo_hierarchical'     => true,
+			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'rewrite'               => array( 'slug' => $slug ),
+			'sortable_column'       => true,
+			'select2'               => false,
+			'taxo_manage_terms' 	=> 'ticket_manage_ticket_type',
+			'taxo_edit_terms'   	=> 'ticket_edit_ticket_type',
+			'taxo_delete_terms' 	=> 'ticket_delete_ticket_type',			
+			'filterable'            => true,
+			'required'              => $show_ticket_type_required,
+			'title'           		=> $as_label_for_ticket_type_singular,
+			'order'           		=> -10  // Yes, -10 for this one so that it appears by default above the subject and description fields on the front-end form.
+		) );
+
+	}	
+	
+	/*******************************************************************/
 	/* Add Product fields                                              */
 	/*******************************************************************/
 
@@ -412,7 +479,8 @@ function wpas_register_core_fields() {
 			'taxo_manage_terms' 	=> 'ticket_manage_products',
 			'taxo_edit_terms'   	=> 'ticket_edit_products',
 			'taxo_delete_terms' 	=> 'ticket_delete_products',
-			'title'           		=> $as_label_for_product_singular
+			'title'           		=> $as_label_for_product_singular,
+			'order'           		=> 30			
 		) );
 
 	}
@@ -455,7 +523,8 @@ function wpas_register_core_fields() {
 			'taxo_manage_terms' 	=> 'ticket_manage_departments',
 			'taxo_edit_terms'   	=> 'ticket_edit_departments',
 			'taxo_delete_terms' 	=> 'ticket_delete_departments',			
-			'title'           		=> $as_label_for_department_singular
+			'title'           		=> $as_label_for_department_singular,
+			'order'           		=> 20			
 		) );
 
 	}
@@ -521,11 +590,12 @@ function wpas_register_core_fields() {
 			'taxo_delete_terms' 	=> 'ticket_delete_priorities',			
 			'filterable'            => true,
 			'required'              => $show_priority_required,
-			'title'           		=> $as_label_for_priority_singular
+			'title'           		=> $as_label_for_priority_singular,
+			'order'           		=> 40			
 		) );
 
 	}
-
+	
 	/*******************************************************************/
 	/* Add ticket channel field (where did the ticket originate from?) */
 	/*******************************************************************/

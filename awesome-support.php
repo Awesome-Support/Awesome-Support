@@ -421,6 +421,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/class-wpas-session.php' );
 			require( WPAS_PATH . 'includes/functions-reply.php' );
 			require( WPAS_PATH . 'includes/functions-channels.php' );
+			require( WPAS_PATH . 'includes/functions-ticket-type.php' );
 			require( WPAS_PATH . 'includes/functions-priority.php' );
 			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );			
 			require( WPAS_PATH . 'includes/install.php' );

@@ -209,9 +209,8 @@
 	/**
 	 * Get the plugin's theme stylesheet path.
 	 *
-	 * Returns path of theme stylesheet or overlay.
-	 * Always returns stylesheet from the awesome-support folder.
-	 * Will not handle overrides that are placed in the users theme folder.
+	 * Returns the style.css from the theme folder if it exists
+	 * otherwise returns from our standard aweesome-support folder.
 	 *
 	 * @since  3.1.6
 	 * @return string Stylesheet path
@@ -220,7 +219,21 @@
 
 		$theme = wpas_get_theme();
 		$overlay = wpas_get_overlay();
+
+		/* Try to find a style.css file of higher priority */
+		$template = locate_template(
+			array(
+				WPAS_TEMPLATE_PATH . 'css/style.css'
+			)
+		);
 		
+		if ( $template && $template <> WPAS_PATH . 'themes/' . $theme . '/css/style.css' ) {
+			/* We found something that isn't in the standard AS path so use that */
+			return apply_filters( 'wpas_get_theme_stylesheet', $template );
+		}
+		/* End try to find a style.css file of higher priority */
+		
+		/* If we're here then we're working from files in the standard AS path */		
 		if ( empty( $overlay ) ) {
 			$overlay = 'style.css' ;
 		}
@@ -239,9 +252,10 @@
 	 * Get plugin's theme stylesheet URI.
 	 *
 	 * Returns the URL to the them stylesheet or overlay.
-	 * Always returns the URL to the stylesheet/overaly in
-	 * the awesome-support folder - not any overrides
-	 * in the users's THEME folder.
+	 *
+	 * Returns the style.css from the theme folder if it exists
+	 * otherwise returns from our standard aweesome-support folder.
+	 *
 	 * This function is similar to wpas_get_theme_stylesheet()
 	 * except that it returns the URL and not the absolute path.
 	 *
@@ -253,6 +267,23 @@
 		$theme = wpas_get_theme();
 		$overlay = wpas_get_overlay();
 		
+		/* Try to find a style.css file of higher priority */
+		$template = locate_template(
+			array(
+				WPAS_TEMPLATE_PATH . 'css/style.css'
+			)
+		);
+		
+		if ( $template && $template <> WPAS_PATH . 'themes/' . $theme . '/css/style.css' ) {
+			/* We found something that isn't in the standard AS path so use that */
+			/* But first we need to convert to the URI, NOT the absolute file path */
+			$template = get_stylesheet_directory_uri() . '/' . WPAS_TEMPLATE_PATH . 'css/style.css';			
+			return apply_filters( 'wpas_get_theme_stylesheet_uri', $template );
+		}
+		/* End try to find a style.css file of higher priority */
+		
+		
+		/* If we're here then we're working from files in the standard AS path */				
 		if ( empty( $overlay ) ) {
 			$overlay = 'style.css' ;
 		}
@@ -1097,6 +1128,39 @@
 		echo $tag;
 
 	}
+	
+	/**
+	 * Display the ticket type.
+	 *
+	 * Gets the ticket type and formats it according to the plugin settings.
+	 *
+	 * @since  5.8.1
+	 *
+	 * @param string $name Field / column name. This parameter is important as it is automatically passed by some
+	 *                          filters
+	 * @param  integer $post_id ID of the post being processed
+	 *
+	 * @return string           Formatted ticket priority
+	 */
+	function wpas_cf_display_ticket_type( $name, $post_id ) {
+
+		global $pagenow;
+
+		$terms = array();
+
+		if ( ! $terms = get_the_terms( $post_id, $name ) ) {
+			return;
+		}
+
+		$term = array_shift( $terms ); // Will get first term, and remove it from $terms array
+
+		$label = __( $term->name, 'awesome-support' );
+		$color = get_term_meta( $term->term_id, 'color', true );
+		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
+
+		echo $tag;
+
+	}	
 
 	/**
 	 * Get the notification wrapper markup

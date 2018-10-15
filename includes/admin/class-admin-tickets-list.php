@@ -348,6 +348,10 @@ class WPAS_Tickets_List {
 					$new[ 'department' ] = $this->get_cf_title( 'department', 'Department' );
 				}
 
+				if ( array_key_exists( 'ticket_type', $custom ) ) {
+					$new[ 'ticket_type' ] = $this->get_cf_title( 'ticket_type', 'Ticket Type' );
+				}
+				
 				if ( array_key_exists( 'ticket_channel', $custom ) ) {
 					$new[ 'ticket_channel' ] = $this->get_cf_title( 'ticket_channel', 'Channel' );
 				}
@@ -546,15 +550,22 @@ class WPAS_Tickets_List {
 
 						// Maybe add close date
 						$close_date = wpas_get_close_date( $post_id );
+						
 						if ( ! empty( $close_date ) ) {
-
+						
 							$close_date_string        = (string) date_i18n( $close_date );  // Convert date to string
 							$close_date_string_tokens = explode( ' ', $close_date_string );    // Separate date/time
-
-							if ( ! empty( $close_date_string_tokens ) ) {
+								
+							if ( 'closed' == wpas_get_ticket_status( $post_id ) ) {
+								if ( ! empty( $close_date_string_tokens ) ) {
+									echo '<br>';
+									echo __( 'Closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
+								}
+							} else {
 								echo '<br>';
-								echo __( 'Closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
+								echo __( 'This ticket was re-opened but had been closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
 							}
+							
 						}
 
 						// Maybe add gmt close date

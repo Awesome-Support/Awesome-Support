@@ -53,6 +53,10 @@ function wpas_system_tools() {
 		case 'reset_channels':
 			wpas_reset_channel_terms();
 			break;
+			
+		case 'reset_ticket_types':
+			wpas_reset_ticket_types();
+			break;			
 
 		case 'reset_time_fields':
 			wpas_reset_time_fields_to_zero();
@@ -69,6 +73,10 @@ function wpas_system_tools() {
 		case 'rerun_400_to_500_conversion':
 			wpas_upgrade_500();
 			break;	
+			
+		case 'rerun_580_to_590_conversion':
+			wpas_upgrade_590();
+			break;
 
 		case 'install_blue_blocks_email_template':
 			wpas_install_email_template( 'blue_blocks' );
@@ -146,6 +154,16 @@ require_once( WPAS_PATH . 'includes/admin/upgrade/functions-upgrade.php' );
  */
 function wpas_reset_channel_terms() {
 	return wpas_add_default_channel_terms(true);
+}
+
+/**
+ * Add default ticket types.
+ * 
+ * @return boolean
+ * 
+ */
+function wpas_reset_ticket_types() {
+	return wpas_add_default_ticket_types(true);
 }
 
 /**
