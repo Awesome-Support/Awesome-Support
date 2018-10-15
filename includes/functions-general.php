@@ -1882,3 +1882,24 @@ function wpas_get_support_users_on_ticket( $post_id ) {
 function wpas_is_wp_cli() {
 	return ( defined( 'WP_CLI' ) && WP_CLI ) ;
 }
+
+/**
+ * Returns the primary agent on a ticket
+ *
+ *
+ * @since 5.8.1
+ *
+ * @param int $ticket_id - the ID of the ticket
+ *
+ * @return int|boolean
+ */
+function wpas_get_primary_agent_by_ticket_id( $ticket_id ){
+	
+	$agent_id = get_post_meta( $ticket_id, '_wpas_assignee', true );
+	if ( ! is_wp_error( $agent_id) && agent_id && wpas_is_agent( $agent_id ) ) {
+		return $agent_id;
+	} else {
+		return false ;
+	}
+	
+}

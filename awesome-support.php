@@ -386,7 +386,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			require( WPAS_PATH . 'includes/functions-fallback.php' );
 			require( WPAS_PATH . 'includes/class-logger.php' );
-			require( WPAS_PATH . 'includes/integrations/ecommerce.php' );
+			require( WPAS_PATH . 'includes/integrations/ecommerce.php' );			
 			require( WPAS_PATH . 'includes/scripts.php' );
 			require( WPAS_PATH . 'includes/shortcodes/shortcode-tickets.php' );
 			require( WPAS_PATH . 'includes/shortcodes/shortcode-submit.php' );
@@ -434,7 +434,10 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			/* Simple WooCommerce Integration */
 			require( WPAS_PATH . 'includes/integrations/wc-account.php' );
-
+			
+			/* myCRED Integration */
+			require( WPAS_PATH . 'includes/integrations/my-cred/my-cred.php' );
+			
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
 				require( WPAS_PATH . 'includes/functions-admin-bar.php' );
