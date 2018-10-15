@@ -78,18 +78,19 @@
 		if ( function_exists('mycred_add') ) {
 			
 			$ticket_id = wpas_get_ticket_id( $reply_id ) ;
-			$user_id = wp_get_current_user()->ID;
+			$user_id = get_post($reply_id)->post_author;
 			
-			// Add points for agent sending a reply ticket.
-			if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
-				mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_reply'), __('Points for agent replying to ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+			if ( $user_id && ! is_wp_error( $user_id ) ) {
+				// Add points for agent sending a reply ticket.
+				if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
+					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_reply'), __('Points for agent replying to ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+				}
+				
+				// Add points for user replying to a ticket
+				if ( false == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_user_point_type' ) ) ) {
+					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_user_points_ticket_reply'), __('Points for user replying to ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_user_point_type') );
+				}
 			}
-			
-			// Add points for user replying to a ticket
-			if ( false == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_user_point_type' ) ) ) {
-				mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_user_points_ticket_reply'), __('Points for user replying to ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_user_point_type') );
-			}
-			
 		}
 		
 	}
@@ -108,18 +109,19 @@
 
 		if ( function_exists('mycred_add') ) {
 
-			$user_id = wp_get_current_user()->ID;
+			$user_id = get_post($ticket_id)->post_author;
 
-			// Add points for agent opening ticket. Normally they open it on the back-end but if using the agent-front-end, might open ticket from there.
-			if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
-				mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_submit'), __('Points for agent opening ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+			if ( $user_id && ! is_wp_error( $user_id ) ) {
+				// Add points for agent opening ticket. Normally they open it on the back-end but if using the agent-front-end, might open ticket from there.
+				if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
+					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_submit'), __('Points for agent opening ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+				}
+				
+				// Add points for user opening a ticket
+				if ( false == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_user_point_type' ) ) ) {
+					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_user_points_ticket_submit'), __('Points for user opening a ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_user_point_type') );
+				}
 			}
-			
-			// Add points for user opening a ticket
-			if ( false == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_user_point_type' ) ) ) {
-				mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_user_points_ticket_submit'), __('Points for user opening a ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_user_point_type') );
-			}
-			
 		}
 		
 	}
@@ -137,13 +139,15 @@
 
 		if ( function_exists('mycred_add') ) {
 
-			$user_id = wp_get_current_user()->ID;
+			//$user_id = get_post($ticket_id)->post_author;
+			$user_id = wpas_get_primary_agent_by_ticket_id( $ticket_id ) ;
 			
-			// Add points for agent opening a ticket
-			if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
-				mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_submit'), __('Points for agent opening ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+			if ( $user_id && ! is_wp_error( $user_id ) ) {
+				// Add points for agent opening a ticket
+				if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
+					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_submit'), __('Points for agent opening ticket #', 'awesome-support') . (string) $ticket_id, $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+				}
 			}
-			
 		}
 		
 	}	
