@@ -65,6 +65,13 @@ function wpas_core_settings_integration( $def ) {
 					'default' => false,
 				),
 				array(
+					'name'    => __( 'myCRED Agent Points: Submit Ticket', 'awesome-support' ),
+					'id'      => 'myCRED_agent_points_ticket_submit',
+					'type'    => 'number',
+					'desc'    => __( 'How many point should an agent get when they submit or open a ticket?', 'awesome-support' ),					
+					'default' => 1,
+				),				
+				array(
 					'name'    => __( 'myCRED Agent Points: Closing Tickets', 'awesome-support' ),
 					'id'      => 'myCRED_agent_points_ticket_close',
 					'type'    => 'number',
