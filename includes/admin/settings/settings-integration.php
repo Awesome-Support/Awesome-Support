@@ -82,7 +82,7 @@ function wpas_core_settings_integration( $def ) {
 					'name'    => __( 'myCRED Agent Points: Replies', 'awesome-support' ),
 					'id'      => 'myCRED_agent_points_ticket_reply',
 					'type'    => 'number',
-					'desc'    => __( 'How many point should an agent get when a ticket is closed?', 'awesome-support' ),					
+					'desc'    => __( 'How many point should an agent get when they add a reply to a ticket?', 'awesome-support' ),					
 					'default' => 1,
 				),
 				array(
