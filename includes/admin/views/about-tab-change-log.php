@@ -2,10 +2,23 @@
 
 <div class="changelog">
 
-	<div>	
-		<h2>Maintenance Releases since 5.8.0</h2>
-		<p><b>Version 5.8.1</b> includes a few changes to the rest api, updates the version of the Titan Framework to 1.12.0, fixes a couple of bugs related to the auto-delete attachments function and added a few dev related filters. </p>
-	</div>	
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 5.9</h1>
+				<h3>5.9 includes a few changes to the rest api, updates the version of the Titan Framework to 1.12.0 and more. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>New: Ticket Types</li>
+					<li>New: Integration with myCRED</li>
+					<li>Tweak: Added schemas to some REST API routes that did not have them</li>
+					<li>Tweak: Updated the Titan Framework library that is used internally to manage settings - using version 1.12.1 now</li>
+					<li>Bug fixes related to stylesheets, autodelete of attachments, file-uploader and more</li>
+					<li>Internal and developer related changes including the introduction of more than 20 new filters and action hooks</li>
+				</ul>
+				<p>Read all about these changes on our website: <a href="https://getawesomesupport.com/coming-in-early-2019-awesome-support-v-5-9-0/">What's New In Version 5.9</a> </p>
+			</div>		
+		</div>
+	</div>
 
 	<hr />	
 
