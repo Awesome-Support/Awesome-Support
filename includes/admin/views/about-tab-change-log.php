@@ -6,7 +6,7 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 5.9</h1>
-				<h3>5.9 includes a few changes to the rest api, updates the version of the Titan Framework to 1.12.0 and more. Here is a more comprehensive list:</h3>
+				<h3>5.9 includes a few changes to the rest api, updates to a new version of the Titan Framework to 1.12.0 and more. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
 					<li>New: Ticket Types</li>
 					<li>New: Integration with myCRED</li>
