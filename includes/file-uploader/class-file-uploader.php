@@ -271,7 +271,7 @@ class WPAS_File_Upload {
 	function admin_add_auto_delete_button() {
 		
 		/* Exit if agents are not allowed to set auto-delete flag */
-		if ( ! wpas_is_asadmin() &&  ! boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments', true ) ) ) {
+		if ( ! wpas_is_asadmin() &&  ! boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments', false ) ) ) {
 			return ;
 		}
 
