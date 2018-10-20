@@ -42,13 +42,14 @@ function wpas_register_assets_front_end() {
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the back-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
 	$which_select2_css = wpas_get_option('select2_css_file', 'min') ;
+	$which_select2_version = wpas_get_option('select2_version', 'select2-4-0-5') ;
 	switch ( $which_select2_css ) {
 		case 'min': 
-			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.min.css', null, '4.0.3.1', 'all' );
+			wp_register_style( 'wpas-select2', WPAS_URL . "assets/admin/css/vendor/select2/$which_select2_version/select2.min.css", null, WPAS_VERSION.'.1', 'all' );
 			break ;
 		
 		case 'full':
-			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.css', null, '4.0.3.1', 'all' );
+			wp_register_style( 'wpas-select2', WPAS_URL . "assets/admin/css/vendor/select2/$which_select2_version/select2.css", null, WPAS_VERSION.'.2', 'all' );
 			break ;
 	}	
 
@@ -58,21 +59,22 @@ function wpas_register_assets_front_end() {
 	// Select2 scripts are loaded based on a setting.  This asset is also duplicated on the back-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.
 	$which_select2_js = wpas_get_option('select2_js_file', 'full-min') ;
+	$which_select2_version = wpas_get_option('select2_version', 'select2-4-0-5') ;	
 	switch ( $which_select2_js ) {
 		case 'full': 
-			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.js', array( 'jquery' ), '4.0.3.1', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.full.js", array( 'jquery' ), WPAS_VERSION.'.1', 'all' );
 			break ;
 		
 		case 'full-min':
-			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.min.js', array( 'jquery' ), '4.0.3.11', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.full.min.js", array( 'jquery' ), WPAS_VERSION.'.2', 'all' );
 			break ;
 			
 		case 'partial': 
-			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.js', array( 'jquery' ), '4.0.3.11', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.js", array( 'jquery' ), WPAS_VERSION.'.3', 'all' );
 			break ;
 
 		case 'partial-min': 
-			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.3.1111', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.min.js", array( 'jquery' ), WPAS_VERSION.'.4', 'all' );
 			break ;						
 	}
 
@@ -123,13 +125,14 @@ function wpas_register_assets_back_end() {
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
 	$which_select2_css = wpas_get_option('select2_css_file', 'min') ;
+	$which_select2_version = wpas_get_option('select2_version', 'select2-4-0-5') ;	
 	switch ( $which_select2_css ) {
 		case 'min': 
-			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.min.css', null, '4.0.3.1', 'all' );
+			wp_register_style( 'wpas-select2', WPAS_URL . "assets/admin/css/vendor/select2/$which_select2_version/select2.min.css", null, WPAS_VERSION.'.1', 'all' );
 			break ;
 		
 		case 'full':
-			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.css', null, '4.0.3.1', 'all' );
+			wp_register_style( 'wpas-select2', WPAS_URL . "assets/admin/css/vendor/select2/$which_select2_version/select2.css", null, WPAS_VERSION.'.2', 'all' );
 			break ;
 	}
 	
@@ -163,21 +166,22 @@ function wpas_register_assets_back_end() {
 	// Select2 scripts are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
 	$which_select2_js = wpas_get_option('select2_js_file', 'partial-min') ;
+	$which_select2_version = wpas_get_option('select2_version', 'select2-4-0-5') ;	
 	switch ( $which_select2_js ) {
 		case 'full': 
-			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.js', array( 'jquery' ), '4.0.3.1', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.full.js", array( 'jquery' ), WPAS_VERSION.'.1', 'all' );
 			break ;
 		
 		case 'full-min':
-			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.min.js', array( 'jquery' ), '4.0.3.11', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.full.min.js", array( 'jquery' ), WPAS_VERSION.'.2', 'all' );
 			break ;
 			
 		case 'partial': 
-			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.js', array( 'jquery' ), '4.0.3.111', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.js", array( 'jquery' ), WPAS_VERSION.'.3', 'all' );
 			break ;
 
 		case 'partial-min': 
-			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.3.1111', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.min.js", array( 'jquery' ), WPAS_VERSION.'.4', 'all' );
 			break ;						
 	}	
 
