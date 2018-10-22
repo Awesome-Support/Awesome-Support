@@ -1903,3 +1903,110 @@ function wpas_get_primary_agent_by_ticket_id( $ticket_id ){
 	}
 	
 }
+
+
+/**
+ * Enqueue magnific popup
+ */
+function wpas_add_magnific() {
+	
+	
+	wp_register_style( 'wpas-magnific', WPAS_URL . 'assets/admin/css/vendor/magnific-popup.css', null, WPAS_VERSION );
+	wp_register_script( 'wpas-magnific', WPAS_URL . 'assets/admin/js/vendor/jquery.magnific-popup.min.js', array( 'jquery' ), WPAS_VERSION );
+	
+	wp_register_script( 'wpas-admin-popup', WPAS_URL . 'assets/admin/js/admin-popup.js', array( 'jquery', 'wpas-magnific' ), WPAS_VERSION );
+	wp_register_style( 'wpas-admin-popup', WPAS_URL . 'assets/admin/css/admin-popup.css', null, WPAS_VERSION );
+	
+	wp_enqueue_script( 'wpas-magnific' );
+	wp_enqueue_style( 'wpas-magnific' );
+	wp_enqueue_script( 'wpas-admin-popup' );
+	wp_enqueue_style( 'wpas-admin-popup' );
+}
+
+/**
+ * Prepare content for a popup window
+ * 
+ * @param string $id
+ * @param string $content
+ * @param array $args
+ */
+function wpas_get_popup_window( $id, $content = '', $args = array() ) {
+	 
+	 
+	$theme = isset( $args['theme'] )  ? $args['theme'] : 'white-popup';
+	$hide  = isset( $args['hide'] )  ? $args['hide'] : 'mfp-hide';
+	
+	$title = isset( $args['title'] ) ? $args['title'] : '';
+	
+	$classes = array();
+	
+	if( $theme ) {
+		 $classes[] = $theme;
+	}
+	
+	if( $hide ) {
+		 $classes[] = $hide;
+	}
+	
+	?>
+	
+	<div class="<?php echo implode( ' ', $classes ); ?>" id="<?php echo $id ?>">
+		<div class="main_heading"><?php echo $title; ?></div>
+		<div class="wpas_mfp_window_wrapper">
+			<div class="wpas_msg"></div>
+			<div class="wpas_window_content"><?php echo $content; ?></div>
+		</div>
+
+	</div>
+	
+	<?php
+}
+
+if( !function_exists( 'wpas_window_link' ) ) {
+
+	/**
+	 * Generate link for popup window
+	 * 
+	 * @param array $args
+	 * 
+	 * @return string
+	 */
+	function wpas_window_link( $args ) {
+
+		$defaults = array(
+			'type'  => 'inline',
+			'data'  => array(),
+			'label' => '',
+			'title' => '',
+			'ajax_params' => array()
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$class = 'wpas_win_link ' . $args['class'];
+		$title = isset( $args['title'] ) ? $args['title'] : "";
+
+		$link = '#';
+
+		$data_attrs = array_merge( $args['data'],  array( 'win_type' => $args['type'] ) );
+
+		if( !empty( $args['ajax_params'] ) ) {
+			$data_attrs['ajax_params'] = json_encode( $args['ajax_params']);
+		}
+
+		$data_attr_list = array();
+
+		foreach( $data_attrs as $attr_name => $attr_val ) {
+			$data_attr_list[] = "data-{$attr_name}=\"" . esc_attr($attr_val) . '"';
+		}
+
+		$data_params = implode( ' ', $data_attr_list );
+
+
+		$label = $args['label'];
+
+		return sprintf( '<a href="%s" %s title="%s" class="%s">%s</a>', $link, $data_params, $title, $class, $label );
+
+	}
+	
+}

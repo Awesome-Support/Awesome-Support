@@ -77,6 +77,9 @@ function wpas_register_assets_front_end() {
 			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.min.js", array( 'jquery' ), WPAS_VERSION.'.4', 'all' );
 			break ;						
 	}
+	
+	// Include magnific popup
+	wpas_add_magnific();
 
 
 	
@@ -220,6 +223,9 @@ function wpas_register_assets_back_end() {
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'about_page' => admin_url( 'edit.php?post_type=ticket&page=wpas-about' )
 	));
+	
+	// Include magnific popup
+	wpas_add_magnific();
 
 	// Edit ticket content!
 	wp_enqueue_editor();

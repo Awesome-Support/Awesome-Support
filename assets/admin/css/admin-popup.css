@@ -1,0 +1,30 @@
+.mfp-content .main_heading {
+        max-width: 1200px;
+        margin: auto;
+        font-size: 1.6em;
+        color: #626060;
+}
+
+.mfp-wrap {
+        background: #F1F1F1;
+        z-index: 100099;
+}
+
+.mfp-bg {
+        z-index: 9992;
+}
+
+.white-popup .wpas_mfp_window_wrapper {
+        position: relative;
+        background: #FFF;
+        padding: 20px;
+        width:auto;
+        max-width: 1200px;
+        margin: 20px auto;
+}
+
+
+.mfp-close {
+        right: 10px !important;
+        top: 40px !important;
+}
