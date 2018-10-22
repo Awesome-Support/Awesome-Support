@@ -184,10 +184,14 @@ class WPAS_File_Upload {
 			return;
 		}
 		
-		$old_auto_save = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
+		//$old_auto_save = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
 		$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
 		
-		if( $auto_delete !== $old_auto_save ) {
+		//if( $auto_delete !== $old_auto_save ) {
+		//	$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
+		//}
+		
+		if ( wpas_agent_can_set_auto_delete_attachments() || wpas_is_asadmin() ) {
 			$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
 		}
 		

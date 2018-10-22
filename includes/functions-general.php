@@ -1686,7 +1686,7 @@ function wpas_can_delete_attachments() {
  * @return boolean
  */
 function wpas_agent_can_delete_attachments() {
-	return wpas_get_option( 'agents_can_delete_attachments' );
+	return boolval( wpas_get_option( 'agents_can_delete_attachments' ) );
 }
 
 /**
@@ -1695,7 +1695,16 @@ function wpas_agent_can_delete_attachments() {
  * @return boolean
  */
 function wpas_user_can_delete_attachments() {
-	return wpas_get_option( 'users_can_delete_attachments' );
+	return boolval( wpas_get_option( 'users_can_delete_attachments' ) );
+}
+
+/**
+ * Check if agent can set auto delete attachments flag
+ * 
+ * @return boolean
+ */
+function wpas_agent_can_set_auto_delete_attachments() { 
+	return boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments' ) );
 }
 
 /**
@@ -1704,7 +1713,7 @@ function wpas_user_can_delete_attachments() {
  * @return boolean
  */
 function wpas_user_can_set_auto_delete_attachments() {
-	return wpas_get_option( 'user_can_set_auto_delete_attachments' );
+	return boolval( wpas_get_option( 'user_can_set_auto_delete_attachments' ) );
 }
 
 
