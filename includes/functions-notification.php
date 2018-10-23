@@ -220,12 +220,17 @@ function wpas_frontend_add_notifications_nav_button() {
 	}
 	
 	
-	$ajax_params = json_encode( array(
-		'action' => 'wpas_ticket_notifications_window',
-		'id'	 => $post->ID,
-	) );
-	
-	printf( '<a href="#" data-win_type="ajax" data-ajax_params="%s" data-win_src="" class="wpas-btn wpas-btn-default wpas-link-notifications mfp_window">%s</a>', esc_attr( $ajax_params ), __( 'Notifications', 'awesome-support' ) );
+	echo wpas_full_screen_window_link( array(
+		'type'  => 'ajax',
+		'title' => __( 'Notifications', 'awesome-support' ),
+		'class'	=> 'wpas-btn wpas-btn-default wpas-link-notifications',
+		'ajax_params' => array(
+			'action' => 'wpas_ticket_notifications_window',
+			'id'	 => $post->ID,
+		),
+		'label' => __( 'Notifications', 'awesome-support' ),
+		));
+
 		
 }
 
@@ -250,7 +255,7 @@ function wpas_ticket_notifications_window() {
 
 	$content = apply_filters( 'wpas_ticket_notifications_window_content', $content, $ticket_id );
 
-	wpas_get_popup_window( 'wpas_ticket_notifications_window', $content, array(
+	wpas_get_full_screen_popup_window( 'wpas_ticket_notifications_window', $content, array(
 		'title' => __( 'Notifications', 'awesome-support' )
 	) );
 	

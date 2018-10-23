@@ -49,6 +49,8 @@
                         var type = $(this).data('win_type') || 'inline';
                         var src = $(this).data('win_src') || $(this).attr('href');
                         
+                        var mainClass = $(this).data('window_class');
+                        
                         if( !( type && src ) ) {
                                 return;
                         }
@@ -70,8 +72,7 @@
                         if( 'ajax' === type ) {
 
                                 settings.items.src = ajaxurl;
-                                settings.mainClass = 'wpas-mfp-fullscreen-popup';
-
+                                
                                 var ajax_data = $(this).data('ajax_params');
 
                                 settings.ajax = {};
@@ -80,6 +81,8 @@
                                         data : ajax_data
                                 }
                         }
+                        
+                        settings.mainClass = mainClass;
 
                         $.magnificPopup.open( settings );
 

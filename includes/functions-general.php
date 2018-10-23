@@ -1924,6 +1924,17 @@ function wpas_add_magnific() {
 }
 
 /**
+ * Prepare content for full screen popup window
+ * 
+ * @param string $id
+ * @param string $content
+ * @param array $args
+ */
+function wpas_get_full_screen_popup_window( $id, $content = '', $args = array() ) {
+	wpas_get_popup_window( $id, $content, $args );
+}
+
+/**
  * Prepare content for a popup window
  * 
  * @param string $id
@@ -1962,6 +1973,20 @@ function wpas_get_popup_window( $id, $content = '', $args = array() ) {
 	<?php
 }
 
+/**
+ * Generate link for full screen popup window
+ * 
+ * @param array $args
+ * 
+ * @return string
+ */
+function wpas_full_screen_window_link( $args ) {
+	
+	$args['window_class'] = 'wpas-mfp-fullscreen-popup';
+	
+	return wpas_window_link( $args );
+}
+
 if( !function_exists( 'wpas_window_link' ) ) {
 
 	/**
@@ -1978,7 +2003,8 @@ if( !function_exists( 'wpas_window_link' ) ) {
 			'data'  => array(),
 			'label' => '',
 			'title' => '',
-			'ajax_params' => array()
+			'ajax_params' => array(),
+			'window_class' => 'wpas-mfp-fullscreen-popup' // for now full screen window is default
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -1994,6 +2020,10 @@ if( !function_exists( 'wpas_window_link' ) ) {
 			$data_attrs['ajax_params'] = json_encode( $args['ajax_params']);
 		}
 
+		if( $args['window_class'] ) {
+			$data_attrs['window_class'] = $args['window_class'];
+		}
+		
 		$data_attr_list = array();
 
 		foreach( $data_attrs as $attr_name => $attr_val ) {
