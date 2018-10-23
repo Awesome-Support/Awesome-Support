@@ -44,11 +44,17 @@ function wpas_sc_submit_form() {
 		else:
 		
 			/**
-			 * redirect to an alternate new ticket form if specified in settings...
+			 * Redirect to an alternate new ticket form if specified in settings.
+			 * But only do so if there is no query string in the url that forces
+			 * use of the standard ticket form.
+			 * We will be looking for a force_standard_form=1 in the url query string to 
+			 * see if we should force the standard form to show up.
 			 */
 			if ( ! empty( wpas_get_option( 'new_ticket_form_redirect_fe', '' ) ) ) {
-				wpas_redirect( 'new_ticket_custom_form', wpas_get_option( 'new_ticket_form_redirect_fe', '' ) );
-				exit ;
+				if ( 1 <> filter_input( INPUT_GET, 'force_standard_form', FILTER_SANITIZE_NUMBER_INT ) ) {
+					wpas_redirect( 'new_ticket_custom_form', wpas_get_option( 'new_ticket_form_redirect_fe', '' ) );
+					exit ;
+				}
 			}
 
 			/**
