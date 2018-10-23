@@ -121,9 +121,14 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'New Ticket Redirect', 'awesome-support' ),
 					'id'      => 'new_ticket_redirect_fe',
 					'type'    => 'text',
-					'desc' 	  => __( 'When the user enters a new ticket they are usually taken to the newly entered ticket.  But, if you would like to redirect them someplace else, enter that location here. Enter the FULL url starting with http or https.', 'awesome-support' ),
+					'desc' 	  => __( 'After the user enters a new ticket they are usually taken to the newly entered ticket.  But, if you would like to redirect them someplace else, enter that location here. Enter the FULL url starting with http or https.', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'New Ticket Form Redirect', 'awesome-support' ),
+					'id'      => 'new_ticket_form_redirect_fe',
+					'type'    => 'text',
+					'desc' 	  => __( 'If you would like to use a custom form for your new ticket form but still use our login screen then enter the full URL to the custom form. An example where this would be useful would be if you are using a Gravity Form in conjunction with our Gravity Form bridge. Enter the FULL url starting with http or https. Note that if you use this option you will never be able to see or use our standard ticket form! ', 'awesome-support' ),
 				),				
-				
 				
 				array(
 					'name' => __( 'Toolbars', 'awesome-support' ),

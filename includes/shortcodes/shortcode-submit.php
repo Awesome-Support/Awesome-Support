@@ -42,6 +42,14 @@ function wpas_sc_submit_form() {
 		 * If user is logged in we display the ticket submission form
 		 */
 		else:
+		
+			/**
+			 * redirect to an alternate new ticket form if specified in settings...
+			 */
+			if ( ! empty( wpas_get_option( 'new_ticket_form_redirect_fe', '' ) ) ) {
+				wpas_redirect( 'new_ticket_custom_form', wpas_get_option( 'new_ticket_form_redirect_fe', '' ) );
+				exit ;
+			}
 
 			/**
 			 * wpas_before_ticket_submission_form hook
