@@ -70,6 +70,7 @@
                         if( 'ajax' === type ) {
 
                                 settings.items.src = ajaxurl;
+                                settings.mainClass = 'wpas-mfp-fullscreen-popup';
 
                                 var ajax_data = $(this).data('ajax_params');
 

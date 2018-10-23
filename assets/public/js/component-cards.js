@@ -17,7 +17,7 @@
                 /**
                  * Expand a card once clicked
                  */
-                $('body').delegate( '.cards .card .js-expander', 'click' , function() {
+                $('body').delegate( '.wpas_cards .card .js-expander', 'click' , function() {
                         var thisCell = $(this).closest('.card');
                         
                         var cell = $('.card');

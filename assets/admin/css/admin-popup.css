@@ -1,20 +1,20 @@
-.mfp-content .main_heading {
+.wpas-mfp-fullscreen-popup .mfp-content .main_heading {
         max-width: 1200px;
         margin: auto;
         font-size: 1.6em;
         color: #626060;
 }
 
-.mfp-wrap {
+.wpas-mfp-fullscreen-popup.mfp-wrap {
         background: #F1F1F1;
         z-index: 100099;
 }
 
-.mfp-bg {
+.wpas-mfp-fullscreen-popup .mfp-bg {
         z-index: 9992;
 }
 
-.white-popup .wpas_mfp_window_wrapper {
+.wpas-mfp-fullscreen-popup .white-popup .wpas_mfp_window_wrapper {
         position: relative;
         background: #FFF;
         padding: 20px;
@@ -24,7 +24,7 @@
 }
 
 
-.mfp-close {
+.wpas-mfp-fullscreen-popup .mfp-close {
         right: 10px !important;
         top: 40px !important;
 }
