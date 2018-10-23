@@ -201,3 +201,63 @@ function wpas_display_notifications() {
 	echo wpas_get_display_notifications();
 	wpas_clean_notifications();
 }
+
+
+add_action( 'wpas_frontend_add_nav_buttons', 'wpas_frontend_add_notifications_nav_button', 8 );
+
+/**
+ * Add new notifications nav option on front-end ticket page
+ * 
+ * @global object $post
+ * 
+ * @return void
+ */
+function wpas_frontend_add_notifications_nav_button() {
+	global $post;
+
+	if( 'ticket' !== get_post_type( $post ) ) {
+		return;
+	}
+	
+	
+	echo wpas_full_screen_window_link( array(
+		'type'  => 'ajax',
+		'title' => __( 'Notifications', 'awesome-support' ),
+		'class'	=> 'wpas-btn wpas-btn-default wpas-link-notifications',
+		'ajax_params' => array(
+			'action' => 'wpas_ticket_notifications_window',
+			'id'	 => $post->ID,
+		),
+		'label' => __( 'Notifications', 'awesome-support' ),
+		));
+
+		
+}
+
+
+add_action( 'wp_ajax_wpas_ticket_notifications_window', 'wpas_ticket_notifications_window', 11 );
+
+/**
+ * Generate content for notification popup window
+ * 
+ * @return void
+ */
+function wpas_ticket_notifications_window() {
+		
+	$ticket_id = filter_input( INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT );
+	
+	if( !$ticket_id || 'ticket' !== get_post_type( $ticket_id ) ) {
+		return;
+	}
+
+	$content = '<div>' . __( 'You are receiving standard notifications.', 'awesome-support' ) . '</div>';
+
+
+	$content = apply_filters( 'wpas_ticket_notifications_window_content', $content, $ticket_id );
+
+	wpas_get_full_screen_popup_window( 'wpas_ticket_notifications_window', $content, array(
+		'title' => __( 'Notifications', 'awesome-support' )
+	) );
+	
+	die();
+}
