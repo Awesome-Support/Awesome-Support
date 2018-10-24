@@ -10,7 +10,7 @@
         z-index: 100099;
 }
 
-.wpas-mfp-fullscreen-popup .mfp-bg {
+.wpas-mfp-fullscreen-popup.mfp-bg {
         z-index: 9992;
 }
 
