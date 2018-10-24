@@ -134,6 +134,9 @@ Attachments on the front end
 @slate: darken(#eceef1, 70%);
 @turquoise: #1abc9c;
 
+@normal : #1ABC9C;
+@selected : #333A45;
+
 
 
 
@@ -166,7 +169,7 @@ Attachments on the front end
 
   &:hover {
     .card__inner {
-      background-color: @turquoise;
+      background-color: @selected;
       transform: scale(1.05);
     }
   }
@@ -177,7 +180,7 @@ Attachments on the front end
     position: relative;
     cursor: pointer;
     
-    background-color: @gray;
+    background-color: @normal;
     color: @light-gray;
     font-size: 1.5em;
     text-transform: uppercase;
@@ -243,7 +246,7 @@ Attachments on the front end
   &.is-expanded {
 
     .card__inner {
-      background-color: @turquoise;
+      background-color: @selected;
       
       &:after{
         content: "";
