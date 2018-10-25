@@ -698,7 +698,7 @@ function wpas_new_reply_submission( $data ) {
 		$closed = wpas_close_ticket( $parent_id );
 
 		// Redirect now if no reply was posted
-		if ( ! isset( $reply_id ) ) {
+		if ( ! isset( $reply_id ) && $closed ) {
 			wpas_add_notification( 'ticket_closed', __( 'The ticket was successfully closed', 'awesome-support' ) );
 			wpas_redirect( 'ticket_closed', get_permalink( $parent_id ) );
 			exit;
