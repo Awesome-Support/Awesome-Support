@@ -350,6 +350,9 @@ function wpas_delete_synced_products( $resync = false ) {
 			$unsync_term = false;
 			
 			/* Does the product taxonmy exist as a product post? */
+			/* Note even sure this section is needed - it seems  */
+			/* to be unnecessary given what comes in the next    */
+			/* section. */
 			foreach ( $posts->posts as $post ) {
 				if($product_term->name == $post->ID){
 					$unsync_term = true;
