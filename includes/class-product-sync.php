@@ -319,6 +319,13 @@ class WPAS_Product_Sync {
 		if ( ! is_object( $post ) ) {
 			return false;
 		}
+		
+		/* If $post is not set to one of the approved statuses return false as well */
+		$statuses = explode( ',' , wpas_get_option( 'support_products_statuses', 'publish' ) );
+		if ( ! in_array( get_post_status( $post->ID ), $statuses, true  ) ) {
+			return false ;
+		}
+		
 
 		/* Try to get the term data from the post meta */
 		$term_data = get_post_meta( $post->ID, '_wpas_product_term', true );

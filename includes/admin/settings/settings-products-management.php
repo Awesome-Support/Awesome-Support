@@ -111,6 +111,14 @@ function wpas_get_products_options() {
 			'type' => 'note',
 			'desc' => esc_html__( 'You cannot use the include and exclude options at the same time. Please use one or the other. You should use the option where you need to select the least amount of products.', 'awesome-support' )
 		);
+		
+		$products[] = array(
+			'name'     => __( 'Product Statuses To Sync', 'awesome-support' ),
+			'id'       => 'support_products_statuses',
+			'type'     => 'text',
+			'desc'     => esc_html__( 'Which statuses would you liked synced? By default only published products will be synced. For multiple statuses separate by commas with no spaces.', 'awesome-support' ),
+			'default'  => 'publish'
+		);		
 
 	}
 
