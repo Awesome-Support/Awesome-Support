@@ -349,14 +349,17 @@ function wpas_delete_synced_products( $resync = false ) {
 			
 			$unsync_term = false;
 			
+			/* Does the product taxonmy exist as a product post? */
 			foreach ( $posts->posts as $post ) {
 				if($product_term->name == $post->ID){
 					$unsync_term = true;
 				}
 			}
 			
-			if($unsync_term == false){
+			/* Product taxonomy item exists in the product posts so process this section */
+			if($unsync_term == true){
 				
+				/* Is the product term on a ticket?  Only if its not used on a ticket should we remove it from the product taxonomy */
 				if( wpas_product_has_tickets($product_term->term_id) === false ){
 					
 					wp_delete_term( (int) $product_term->term_id, 'product' );
