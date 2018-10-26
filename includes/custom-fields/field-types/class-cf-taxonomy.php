@@ -42,7 +42,7 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 			wpas_sort_terms_hierarchicaly( $this->terms, $this->ordered_terms );
 
 			// Filter the terms to allow manipulation
-			$this->ordered_terms = apply_filters( 'wpas_cf_taxonomy_oredered_terms', $this->ordered_terms );
+			$this->ordered_terms = apply_filters( 'wpas_cf_taxonomy_ordered_terms', $this->ordered_terms );
 		}
 
 		if ( true === $this->field_args['select2'] ) {
