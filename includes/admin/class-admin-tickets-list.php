@@ -24,6 +24,11 @@ class WPAS_Tickets_List {
 		if ( is_admin() ) {
 
 			/**
+			 * Set some options on the PRODUCT custom field that depends on if if products can be synced or not;
+			 */
+			add_filter( 'wpas_get_custom_fields', array( $this, 'show_product_filters' ), 10, 1 );	// Show product filter options if product syncing is not enabled.	
+		
+			/**
 			 * Add custom columns
 			 */
 			add_action( 'manage_ticket_posts_columns', array( $this, 'add_custom_columns' ), 10, 1 );
@@ -55,6 +60,7 @@ class WPAS_Tickets_List {
 			
 			add_filter( 'posts_search', array( $this, 'ticket_listing_search_query' ), 2 , 11 );
 			add_filter( 'posts_join',   array( $this, 'ticket_listing_search_join_query' ), 2, 11 );
+			
 		}
 	}
 	
@@ -1396,7 +1402,7 @@ SQL;
 	}
 
 	/**
-	 * Set meta_query cor custom columns
+	 * Set meta_query for custom columns
 	 *
 	 * @param $wp_query
 	 *
@@ -1898,6 +1904,37 @@ SQL;
 		}
 
 		return $classes;
+
+	}
+	
+	
+	/**
+	 * Turn on product filtering if product syncing is not enabled.
+	 *
+	 * Filter Hook: wpas_get_custom_fields
+	 *
+	 * @param array $custom_fields Registered custom fields
+	 *
+	 * @return array
+	 */	
+	public function show_product_filters($custom_fields ) {
+		
+		// What e-commerce plugin are we syncing with?
+		$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->plugin;
+
+		if ( ! is_null( $ecommerce_synced ) ) {
+
+			// Get the option value to see if product sycncing is turned on.
+			$product_sync = boolval( wpas_get_option( 'support_products_' . $ecommerce_synced ) );
+
+			if (false === $product_sync) {
+				if ( isset( $custom_fields['product'] ) ) {					
+					$custom_fields['product']['args']['filterable'] = true;
+				}
+			}
+		}
+		
+		return $custom_fields;
 
 	}
 
