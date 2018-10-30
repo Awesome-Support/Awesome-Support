@@ -31,6 +31,15 @@
                         destroy_editors( this.content );
                 }
                 
+                // Fix select2 with magnificPopup
+                $.magnificPopup.instance._onFocusIn = function(e) {
+                        // Do nothing if target element is select2 input
+                        if( $(e.target).hasClass('select2-search__field') ) {
+                          return true;
+                        } 
+                        // Else call parent method
+                        $.magnificPopup.proto._onFocusIn.call(this,e);
+                };
                 
                 /**
                  * Trigger once close button is pressed from poopup
