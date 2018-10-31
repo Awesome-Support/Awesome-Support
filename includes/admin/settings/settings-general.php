@@ -120,6 +120,13 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'Show the notification button on the front-end?', 'awesome-support' )
 				),
 				array(
+					'name'     => __( 'Button Label', 'awesome-support' ),
+					'desc'    => __( 'This is the label for the button', 'awesome-support' ),										
+					'id'       => 'notifications_button_label',
+					'type'     => 'text',
+					'default'  => __( 'Notifications', 'awesome-support' ),					
+				),				
+				array(
 					'name'     => __( 'Content', 'awesome-support' ),
 					'desc'    => __( 'This is the message that the user will see when they click the notifications button', 'awesome-support' ),										
 					'id'       => 'notifications_button_msg',

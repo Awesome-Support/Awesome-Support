@@ -221,6 +221,11 @@ function wpas_frontend_add_notifications_nav_button() {
 			return;
 		}
 		
+		/* Set button label - if set to blank in settings, it will go through the normal translation functions */
+		$button_label = wpas_get_option('notifications_button_label','');
+		if ( true == empty( $button_label ) ) {
+			$button_label = __('Notifications', 'awesome-support');
+		}
 		
 		echo wpas_full_screen_window_link( array(
 			'type'  => 'ajax',
@@ -230,7 +235,7 @@ function wpas_frontend_add_notifications_nav_button() {
 				'action' => 'wpas_ticket_notifications_window',
 				'id'	 => $post->ID,
 			),
-			'label' => __( 'Notifications', 'awesome-support' ),
+			'label' => $button_label,
 			));
 			
 	}
