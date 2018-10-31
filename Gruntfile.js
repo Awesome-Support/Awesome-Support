@@ -48,6 +48,7 @@ module.exports = function (grunt) {
 					'themes/default/css/overlay-dark.css': 'themes/default/less/overlay-dark.less',
 					'themes/default/css/overlay-orange-blend.css': 'themes/default/less/overlay-orange-blend.less',
 					'themes/default/css/overlay-royal-blend.css': 'themes/default/less/overlay-royal-blend.less',
+					'themes/default/css/overlay-purple-haze.css': 'themes/default/less/overlay-purple-haze.less',
 					'includes/rest-api/assets/admin/css/admin.css': 'includes/rest-api/assets/admin/less/admin.less'
 				}
 			}
