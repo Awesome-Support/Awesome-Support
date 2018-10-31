@@ -1,6 +1,6 @@
 /*
 
-Orange Blend: Inherits from the angle overlay
+Royal Blend: Inherits from the angle overlay
 
 1) Import
 2) Variables
@@ -30,7 +30,7 @@ Variables - many of these override those in preboot.less
 ==========================================================================
 */
 
-@import 'overlay-parts/orange-blend/brand-colors.less';
+@import 'overlay-parts/royal-blend/brand-colors.less';
 
 /*
 ==========================================================================
@@ -89,17 +89,57 @@ Note that this is inheriting the angle overlay parts!
 	
 	.wpas-ticket-list {
 		/* Add an image gradient to the ticket list table */
-		background-image: linear-gradient(#A63C30, #4A191F);
+		background-image: linear-gradient(#4902FF, #A42CE6);
 	}
 	
 	#wpas_ticketlist {
+	
+		/* Put a border on the top of the table */
+		border-top: solid;
+		border-top-width: 1px;
+		border-top-color: @table-cell-border-top-color;		
+	
 		td {
 			/* set table cell colors default font to white */
 			color: white ;
 		}
 		th {
 			/* set table header cell colors to an off-white blend */
-			color: #C7B9BB
+			color: #C7B9BB;
 		}
+		tr {
+			/* set the left border color on the row */
+			border-left:solid;
+			border-left-width: 1px;
+			border-left-color: @table-cell-border-left-color;
+		}
+		
+		.wpas_clear_filter {
+			/* Attempt to make the "X" on the filter white */
+			/* Need to load up white background "X" image here */
+		}
+	
 	}
+	
+	#wpas_ticketlist_filters {
+		input, select {
+			/* Set colors for input elements at top of ticket list page */
+			background-color: transparent !important ;
+			border-color: #C7B9BB !important ;
+			color: #ffffff !important ;
+		}
+	}	
+	
+	.wpas-ticket-buttons-top {
+	
+		/* Style logout button */
+		.wpas-link-logout{
+			
+			/* Color background */
+			background-color: transparent !important;
+			color: @brand-warning !important;
+		}
+		
+	}		
+	
 }
