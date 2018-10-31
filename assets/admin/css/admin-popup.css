@@ -1,3 +1,11 @@
+.white-popup {
+        background: none !important;
+        padding: 0px !important;
+        width: auto !important;
+        max-width: none !important;
+        margin: 0 !important;
+}
+
 .wpas-mfp-fullscreen-popup .mfp-content .main_heading {
         max-width: 1200px;
         margin: auto;
