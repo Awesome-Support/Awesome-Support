@@ -230,7 +230,7 @@ function wpas_core_settings_notifications( $def ) {
 					'id'       => 'content_closed_client',
 					'type'     => 'editor',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),
+				),				
 			)
 		),
 	);

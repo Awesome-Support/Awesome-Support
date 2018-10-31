@@ -106,6 +106,28 @@ function wpas_core_settings_general( $def ) {
 					'default' => true
 				),				
 				
+				/* Notification buttons */
+				array(
+					'name' => __( 'Notification Button', 'awesome-support' ),
+					'desc' => __( 'Options for the notification button at the top of the single ticket screen on the front-end', 'awesome-support' ),					
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Enable', 'awesome-support' ),
+					'id'      => 'enable_notification_button',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Show the notification button on the front-end?', 'awesome-support' )
+				),
+				array(
+					'name'     => __( 'Content', 'awesome-support' ),
+					'desc'    => __( 'This is the message that the user will see when they click the notifications button', 'awesome-support' ),										
+					'id'       => 'notifications_button_msg',
+					'type'     => 'editor',
+					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 ),
+					'default'  => __( 'You are receiving the default standard notifications for this ticket. Among others, they include replies from agents, a notification when the ticket is closed, a notification if the ticket is reopened by the agent and a confirmation when the ticket was first submitted. ', 'awesome-support' ),					
+				),
+				
 				array(
 					'name' => __( 'Redirects', 'awesome-support' ),
 					'type' => 'heading',

@@ -213,23 +213,27 @@ add_action( 'wpas_frontend_add_nav_buttons', 'wpas_frontend_add_notifications_na
  * @return void
  */
 function wpas_frontend_add_notifications_nav_button() {
-	global $post;
+	
+	if ( true === boolval( wpas_get_option( 'enable_notification_button', true ) ) ) {
+		global $post;
 
-	if( 'ticket' !== get_post_type( $post ) ) {
-		return;
+		if( 'ticket' !== get_post_type( $post ) ) {
+			return;
+		}
+		
+		
+		echo wpas_full_screen_window_link( array(
+			'type'  => 'ajax',
+			'title' => __( 'Notifications', 'awesome-support' ),
+			'class'	=> 'wpas-btn wpas-btn-default wpas-link-notifications',
+			'ajax_params' => array(
+				'action' => 'wpas_ticket_notifications_window',
+				'id'	 => $post->ID,
+			),
+			'label' => __( 'Notifications', 'awesome-support' ),
+			));
+			
 	}
-	
-	
-	echo wpas_full_screen_window_link( array(
-		'type'  => 'ajax',
-		'title' => __( 'Notifications', 'awesome-support' ),
-		'class'	=> 'wpas-btn wpas-btn-default wpas-link-notifications',
-		'ajax_params' => array(
-			'action' => 'wpas_ticket_notifications_window',
-			'id'	 => $post->ID,
-		),
-		'label' => __( 'Notifications', 'awesome-support' ),
-		));
 
 		
 }
@@ -250,7 +254,9 @@ function wpas_ticket_notifications_window() {
 		return;
 	}
 
-	$content = '<div>' . __( 'You are receiving standard notifications.', 'awesome-support' ) . '</div>';
+	$text = wpas_get_option( 'notifications_button_msg', __( 'Standard notifications are enabled.', 'awesome-support' ) ) ;
+
+	$content = '<div>' . $text . '</div>';
 
 
 	$content = apply_filters( 'wpas_ticket_notifications_window_content', $content, $ticket_id );
