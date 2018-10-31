@@ -89,7 +89,7 @@ Note that this is inheriting the angle overlay parts!
 	
 	.wpas-ticket-list {
 		/* Add an image gradient to the ticket list table */
-		background-image: linear-gradient(#4902FF, #A42CE6);
+		background-image: linear-gradient(@table-linear-gradient-start, @table-linear-gradient-end);
 	}
 	
 	#wpas_ticketlist {
@@ -105,7 +105,7 @@ Note that this is inheriting the angle overlay parts!
 		}
 		th {
 			/* set table header cell colors to an off-white blend */
-			color: #C7B9BB;
+			color: @table-column-title-color;
 		}
 		tr {
 			/* set the left border color on the row */
@@ -125,10 +125,10 @@ Note that this is inheriting the angle overlay parts!
 		input, select {
 			/* Set colors for input elements at top of ticket list page */
 			background-color: transparent !important ;
-			border-color: #C7B9BB !important ;
+			border-color: @table-column-title-color !important ;
 			color: #ffffff !important ;
 		}
-	}	
+	}
 	
 	.wpas-ticket-buttons-top {
 	
