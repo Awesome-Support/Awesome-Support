@@ -6,6 +6,7 @@
                 
                 function ajaxContentAdded() {
                         $('.mfp-wrap').prepend( $('.mfp-close').get(0) );
+                        $(window).trigger( 'onPopupWindowLoaded', ['ajax', this.content] );
                 }
                 
                 
@@ -25,11 +26,17 @@
                         
                         $('.mfp-wrap').prepend( $('.mfp-close').get(0) );
                         
+                        if( 'inline' === this.currItem.type ) {
+                                $(window).trigger( 'onPopupWindowLoaded', [ 'inline', this.content ] );
+                        }
+                        
                 }
                 
                 function close() {
                         destroy_editors( this.content );
                 }
+                
+                Window.destroy_editors = destroy_editors;
                 
                 // Fix select2 with magnificPopup
                 $.magnificPopup.instance._onFocusIn = function(e) {
