@@ -230,7 +230,7 @@ class WPAS_Custom_Fields {
 				$taxo_manage_terms 	= $option['args']['taxo_manage_terms'];
 				$taxo_edit_terms 	= $option['args']['taxo_edit_terms'];
 				$taxo_delete_terms 	= $option['args']['taxo_delete_terms'];
-				$taxo_assign_terms 	= $option['args']['taxo_assign_terms'];				
+				$taxo_assign_terms 	= $option['args']['taxo_assign_terms'];
 				
 				$labels = array(
 					'name'              => $plural,
@@ -243,6 +243,7 @@ class WPAS_Custom_Fields {
 					'update_item'       => sprintf( __( 'Update %s', 'awesome-support' ), $name ),
 					'add_new_item'      => sprintf( __( 'Add New %s', 'awesome-support' ), $name ),
 					'new_item_name'     => sprintf( _x( 'New %s Name', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' ), $name ),
+					'back_to_items'     => sprintf( _x( 'Back to %s', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' ), $plural ),
 					'menu_name'         => $plural,
 				);
 
