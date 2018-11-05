@@ -1922,17 +1922,20 @@ SQL;
 		// What e-commerce plugin are we syncing with?
 		$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->plugin;
 
+		$product_sync = false ;
+		
 		if ( ! is_null( $ecommerce_synced ) ) {
 
 			// Get the option value to see if product sycncing is turned on.
 			$product_sync = boolval( wpas_get_option( 'support_products_' . $ecommerce_synced ) );
-
-			if (false === $product_sync) {
-				if ( isset( $custom_fields['product'] ) ) {					
-					$custom_fields['product']['args']['filterable'] = true;
-				}
+		}
+		
+		if (false === $product_sync) {
+			if ( isset( $custom_fields['product'] ) ) {					
+				$custom_fields['product']['args']['filterable'] = true;
 			}
 		}
+
 		
 		return $custom_fields;
 
