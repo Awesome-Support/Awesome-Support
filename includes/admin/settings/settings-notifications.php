@@ -14,11 +14,8 @@ function wpas_core_settings_notifications( $def ) {
 			'name'    => __( 'E-Mails', 'awesome-support' ),
 			'options' => array(
 				array(
-					'type' => 'note',
-					'desc' => __( 'For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen.', 'awesome-support' )
-				),
-				array(
-					'name' => __( 'E-Mail Template', 'awesome-support' ),
+					'name' => __( 'Global E-Mail Template', 'awesome-support' ),
+					'desc' => __( 'The HTML E-Mail Template options below controls how the logo, header and footer appear in ALL your outgoing Awesome Support emails.  You can completely disable this global template if necessary.', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -30,7 +27,7 @@ function wpas_core_settings_notifications( $def ) {
 				),
 				array(
 					'type' => 'note',
-					'desc' => wp_kses( sprintf( __( 'Please note that the <a href="%1$s" target="%2$s">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add fancy styling through the editors hereafter, we cannot guarantee full compatibility anymore.', 'awesome-support' ), 'https://github.com/mailgun/transactional-email-templates', '_blank' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) )
+					'desc' => wp_kses( sprintf( __( 'Please note that the <a href="%1$s" target="%2$s">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add additional fancy styling through the editors you should do so with caution in order to avoid breaking the layouts on some devices.', 'awesome-support' ), 'https://github.com/mailgun/transactional-email-templates', '_blank' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) )
 				),
 				array(
 					'name'    => __( 'Logo', 'awesome-support' ),
@@ -75,6 +72,24 @@ function wpas_core_settings_notifications( $def ) {
 					'type'    => 'text',
 					'default' => get_bloginfo( 'admin_email' )
 				),
+				
+				array(
+					'name' => __( 'Email Contents', 'awesome-support' ),
+					'desc' => __( 'Configure the contents of your emails below.', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Design Notes', 'awesome-support' ),
+					'id'      => 'reply_design_notes',
+					'type'    => 'note',
+					'desc' => sprintf( __( 'We include a default set of designs for the six core emails below.  You can use these designs in other email templates by simply copying them to the target email template editor and modifying them there.  You can also install new designs from the TICKETS->TOOLS->CLEANUP area. Samples of some of the email templates can be found in our <a href="%s">documentation</a>.', 'awesome-support' ), 'https://getawesomesupport.com/documentation/awesome-support/admin-email-template-sets/' ),
+				),				
+				array(				
+					'name'    => __( 'Template Tags', 'awesome-support' ),				
+					'type' => 'note',
+					'desc' => __( 'Email template tags allow you to insert real-time information into your outgoing emails.  For example you can use tags to refer to the users name or the agent name.  For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen.  You can also click on the <b>{ }</b> icon in each of the editors for a pop-up list.', 'awesome-support' )
+				),				
+				
 				/* Submission confirmation */
 				array(
 					'name' => __( 'Submission Confirmation', 'awesome-support' ),
