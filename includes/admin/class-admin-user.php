@@ -137,9 +137,12 @@ class WPAS_User {
 	 */
 	public function profile_field_smart_tickets_order( $user ) {
 
-		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
-			return;
-		} ?>
+		/* If this user is not an agent, then don't allow this field to be set/shown */
+		if ( ! wpas_is_agent( $user->ID ) ) {
+			return ;
+		}
+		
+		?>
 
 		<tr class="wpas-after-reply-wrap">
 			<th><label><?php esc_attr_e( 'Smart Tickets Order', 'awesome-support' ); ?></label></th>
@@ -163,9 +166,12 @@ class WPAS_User {
 	 */
 	public function profile_field_after_reply( $user ) {
 
-		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
-			return;
-		} ?>
+		/* If this user is not an agent, then don't allow this field to be set/shown */
+		if ( ! wpas_is_agent( $user->ID ) ) {
+			return ;
+		}
+		
+		?>
 
 		<tr class="wpas-after-reply-wrap">
 			<th><label for="wpas_after_reply"><?php echo _x( 'After Reply', 'Action after replying to a ticket', 'awesome-support' ); ?></label></th>
@@ -194,9 +200,15 @@ class WPAS_User {
 	 */
 	public function profile_field_user_can_be_assigned( $user ) {
 
+		/* Only admins can set this field for an agent */
 		if ( ! wpas_is_asadmin() ) {
 			return;
 		}
+		
+		/* If this user is not an agent, then don't allow this field to be set/shown */
+		if ( ! wpas_is_agent( $user->ID ) ) {
+			return ;
+		}		
 
 		?>
 
@@ -251,10 +263,16 @@ class WPAS_User {
 	 */
 	public function profile_field_agent_department( $user ) {
 
+		/* Only admins can set the dept field for an agent */	
 		if ( ! wpas_is_asadmin() ) {
 			return;
 		}
-
+				
+		/* If this user is not an agent, then don't allow this field to be set/shown */
+		if ( ! wpas_is_agent( $user->ID ) ) {
+			return ;
+		}
+		
 		if ( false === wpas_get_option( 'departments', false ) ) {
 			return;
 		}
