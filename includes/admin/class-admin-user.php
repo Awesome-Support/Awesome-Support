@@ -251,11 +251,7 @@ class WPAS_User {
 	 */
 	public function profile_field_agent_department( $user ) {
 
-		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
-			return;
-		}
-
-		if ( ! current_user_can( 'administrator' ) ) {
+		if ( ! wpas_is_asadmin() ) {
 			return;
 		}
 
