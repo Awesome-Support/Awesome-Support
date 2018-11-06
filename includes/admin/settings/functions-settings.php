@@ -99,7 +99,9 @@ function wpas_list_overlays() {
 	$overlay['overlay-green-envy.css'] = 'Green Envy';
 	$overlay['overlay-plain-gray.css'] = 'Plain Gray';
 	$overlay['overlay-basic-blue.css'] = 'Basic Blue';
-
+	$overlay['overlay-basic-green.css'] = 'Basic Green';
+	$overlay['overlay-basic-red.css'] = 'Basic Red';
+	
 	return apply_filters('wpas_list_overlays',$overlay);
 	
 

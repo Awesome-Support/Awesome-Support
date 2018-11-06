@@ -51,6 +51,8 @@ module.exports = function (grunt) {
 					'themes/default/css/overlay-green-envy.css': 'themes/default/less/overlay-green-envy.less',
 					'themes/default/css/overlay-plain-gray.css': 'themes/default/less/overlay-plain-gray.less',
 					'themes/default/css/overlay-basic-blue.css': 'themes/default/less/overlay-basic-blue.less',
+					'themes/default/css/overlay-basic-red.css': 'themes/default/less/overlay-basic-red.less',
+					'themes/default/css/overlay-basic-green.css': 'themes/default/less/overlay-basic-green.less',
 					'includes/rest-api/assets/admin/css/admin.css': 'includes/rest-api/assets/admin/less/admin.less'
 				}
 			}
