@@ -194,13 +194,11 @@ class WPAS_User {
 	 */
 	public function profile_field_user_can_be_assigned( $user ) {
 
-		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
+		if ( ! wpas_is_asadmin() ) {
 			return;
 		}
 
-		if ( ! current_user_can( 'administrator' ) ) {
-			return;
-		} ?>
+		?>
 
 		<tr class="wpas-after-reply-wrap">
 			<th><label><?php _e( 'Can Be Assigned', 'awesome-support' ); ?></label></th>
@@ -211,7 +209,8 @@ class WPAS_User {
 			</td>
 		</tr>
 
-	<?php }
+		<?php 
+	}
 
 	
 	/**
