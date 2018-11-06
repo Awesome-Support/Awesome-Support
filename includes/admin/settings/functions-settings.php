@@ -98,7 +98,7 @@ function wpas_list_overlays() {
 	$overlay['overlay-purple-haze.css'] = 'Purple Haze';
 	$overlay['overlay-green-envy.css'] = 'Green Envy';
 
-	return $overlay;
+	return apply_filters('wpas_list_overlays',$overlay);
 	
 
 }
