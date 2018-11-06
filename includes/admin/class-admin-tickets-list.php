@@ -1909,7 +1909,7 @@ SQL;
 	
 	
 	/**
-	 * Turn on product filtering if product syncing is not enabled.
+	 * Turn on product filtering if we're not syncing products with WC.
 	 *
 	 * Filter Hook: wpas_get_custom_fields
 	 *
@@ -1924,11 +1924,10 @@ SQL;
 
 		$product_sync = false ;
 		
-		if ( ! is_null( $ecommerce_synced ) ) {
-
-			// Get the option value to see if product sycncing is turned on.
-			$product_sync = boolval( wpas_get_option( 'support_products_' . $ecommerce_synced ) );
-		}
+		/* Do not turn on product filtering if we're syncing with WC */
+		if ( ! is_null( $ecommerce_synced ) && 'woocommerce' === $ecommerce_synced ) {
+			$product_sync = true ;
+		}		
 		
 		if (false === $product_sync) {
 			if ( isset( $custom_fields['product'] ) ) {					
