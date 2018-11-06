@@ -526,7 +526,8 @@ class WPAS_Email_Notification {
 					break;
 
 				case 'message':
-					$tag['value'] = $this->ticket_id === $this->post_id ? $this->get_ticket()->post_content : $this->get_reply()->post_content;
+					$message_value = $this->ticket_id === $this->post_id ? $this->get_ticket()->post_content : $this->get_reply()->post_content;
+					$tag['value'] = addslashes( $message_value );
 					break;
 
 			}
