@@ -68,32 +68,33 @@ class WPAS_User {
 		$other_phone  = esc_attr( get_user_option( 'wpas_other_phone',  $user->ID ) );
 		?>
 		
-		<h3><?php _e( 'Awesome Support: Additional User Data', 'awesome-support') ?></h3>
+		<div id="wpas_user_profile_segment">		
+			<h3><?php _e( 'Awesome Support: Additional User Data', 'awesome-support') ?></h3>
 
 
-		<table class="form-table">
+			<table class="form-table">
 
-			<tbody>
-				<tr>
-					<th><label><?php _e( 'Mobile Phone', 'awesome-support' ); ?></label></th>
-					<td><input type="text" name="wpas_mobile_phone" id="wpas_mobile_phone" value="<?php echo $mobile_phone; ?>" class="regular-text code"></td>
-				</tr>
-				<tr>
-					<th><label><?php _e( 'Office Phone', 'awesome-support' ); ?></label></th>
-					<td><input type="text" name="wpas_office_phone" id="wpas_office_phone" value="<?php echo $office_phone; ?>" class="regular-text code"></td>
-				</tr>
-				<tr>
-					<th><label><?php _e( 'Home Phone', 'awesome-support' ); ?></label></th>
-					<td><input type="text" name="wpas_home_phone" id="wpas_home_phone" value="<?php echo $home_phone; ?>" class="regular-text code"></td>
-				</tr>
-				<tr>
-					<th><label><?php _e( 'Other Phone', 'awesome-support' ); ?></label></th>
-					<td><input type="text" name="wpas_other_phone" id="wpas_other_phone" value="<?php echo $other_phone; ?>" class="regular-text code"></td>
-				</tr>
-			</tbody>
+				<tbody>
+					<tr>
+						<th><label><?php _e( 'Mobile Phone', 'awesome-support' ); ?></label></th>
+						<td><input type="text" name="wpas_mobile_phone" id="wpas_mobile_phone" value="<?php echo $mobile_phone; ?>" class="regular-text code"></td>
+					</tr>
+					<tr>
+						<th><label><?php _e( 'Office Phone', 'awesome-support' ); ?></label></th>
+						<td><input type="text" name="wpas_office_phone" id="wpas_office_phone" value="<?php echo $office_phone; ?>" class="regular-text code"></td>
+					</tr>
+					<tr>
+						<th><label><?php _e( 'Home Phone', 'awesome-support' ); ?></label></th>
+						<td><input type="text" name="wpas_home_phone" id="wpas_home_phone" value="<?php echo $home_phone; ?>" class="regular-text code"></td>
+					</tr>
+					<tr>
+						<th><label><?php _e( 'Other Phone', 'awesome-support' ); ?></label></th>
+						<td><input type="text" name="wpas_other_phone" id="wpas_other_phone" value="<?php echo $other_phone; ?>" class="regular-text code"></td>
+					</tr>
+				</tbody>
 
-		</table>
-		
+			</table>
+		</div>
 		
 		<?php
 	}
@@ -115,13 +116,15 @@ class WPAS_User {
 			return false;
 		} ?>
 
-		<h3><?php _e( 'Awesome Support: Preferences', 'awesome-support' ); ?></h3>
+		<div id="wpas_user_profile_segment">
+			<h3><?php _e( 'Awesome Support: Preferences', 'awesome-support' ); ?></h3>
 
-		<table class="form-table">
-			<tbody>
-				<?php do_action( 'wpas_user_profile_fields', $user ); ?>
-			</tbody>
-		</table>
+			<table class="form-table">
+				<tbody>
+					<?php do_action( 'wpas_user_profile_fields', $user ); ?>
+				</tbody>
+			</table>
+		</div>
 	<?php }
 
 	/**
