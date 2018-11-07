@@ -614,6 +614,15 @@ class WPAS_Product_Sync {
 			return $term;
 		}
 
+		/* Lets cache real term data */
+		
+		$term_data = array(
+			'name'        => $term->name,     
+			'slug'        => $term->slug,      
+			'description' => $term->description,
+			'post_id'     => $term->post_id,
+		);
+		
 		/* Get the post data */
 		$post = get_post( $post_id );
 
@@ -622,11 +631,12 @@ class WPAS_Product_Sync {
 		$term->slug        = $post->post_name;
 		$term->description = wp_trim_words( $post->post_content, 55, ' [...]' );
 		$term->post_id     = $post_id;
+		$term->term_data   = $term_data;
 
 		//$x = wp_cache_get( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
 
 		//$x = wp_cache_add( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
-
+		
 		return $term;
 
 	}

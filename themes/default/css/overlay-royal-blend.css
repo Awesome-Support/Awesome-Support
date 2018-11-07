@@ -1,6 +1,6 @@
 /*
 
-Dark: Inherits from the angle overlay
+Royal Blend: Inherits from the angle overlay
 
 1) Import
 2) Variables
@@ -806,7 +806,7 @@ the overlay parts are put together!
   }
   .wpas-ticket-buttons-top .wpas-link-logout {
     /* Color foreground and background */
-    background-color: #2d2d2d;
+    background-color: #5005fd;
     color: #5cb85c;
     /* Remove Image */
   }
@@ -822,12 +822,12 @@ the overlay parts are put together!
   .wpas-ticket-list {
     font-size: 11.9px;
     /* This section creates a nice main background */
-    background-color: #474747;
+    background-color: #7338fd;
     padding: 2em;
     border: solid;
     border-width: 1px;
     border-radius: 4px;
-    border-color: #2d2d2d;
+    border-color: #5005fd;
     /* Style all other input elements on the ticketlist page */
   }
   .wpas-ticket-list input,
@@ -836,9 +836,9 @@ the overlay parts are put together!
     border-radius: 3px;
     font-size: 11.9px;
     /* Set colors for input elements */
-    background-color: #2d2d2d !important;
-    border-color: #2d2d2d !important;
-    color: #ffffff !important;
+    background-color: transparent !important;
+    border-color: inherit !important;
+    color: inherit !important;
   }
   /* Ticketlist: table background color when user hovers over row and some other stuff */
   #wpas_ticketlist {
@@ -849,7 +849,7 @@ the overlay parts are put together!
     border-left-width: 1px;
     border-right-width: 1px;
     border-radius: 3px;
-    border-color: #2d2d2d;
+    border-color: #5005fd;
     /* Put border on each cell and add some padding around contents */
     /* Row hover */
     /* Alternating background colors in table */
@@ -859,10 +859,10 @@ the overlay parts are put together!
   #wpas_ticketlist th {
     border-right: solid;
     border-right-width: 1px;
-    border-right-color: #2d2d2d;
-    border-left-color: #2d2d2d;
-    border-top-color: #2d2d2d;
-    border-bottom-color: #2d2d2d;
+    border-right-color: #526e93;
+    border-left-color: #526e93;
+    border-top-color: #526e93;
+    border-bottom-color: #526e93;
     padding-left: 2em !important;
     padding-right: 2em !important;
   }
@@ -876,16 +876,61 @@ the overlay parts are put together!
     border-left-color: #65beff;
   }
   #wpas_ticketlist tr:nth-child(odd) {
-    background: #242424;
+    background: transparent;
   }
   #wpas_ticketlist tr:nth-child(even) {
-    background: #212121;
+    background: transparent;
   }
   #wpas_ticketlist .wpas_table_pagination > li > a {
-    background-color: #2d2d2d;
-    border-right-color: #2d2d2d;
-    border-left-color: #2d2d2d;
-    border-top-color: #2d2d2d;
-    border-bottom-color: #2d2d2d;
+    background-color: #5005fd;
+    border-right-color: #526e93;
+    border-left-color: #526e93;
+    border-top-color: #526e93;
+    border-bottom-color: #526e93;
+  }
+}
+@media (min-width: 1px) {
+  .wpas-ticket-list {
+    /* Add an image gradient to the ticket list table */
+    background-image: linear-gradient(#4902ff, #a42ce6);
+  }
+  #wpas_ticketlist {
+    /* Put a border on the top of the table */
+    border-top: solid;
+    border-top-width: 1px;
+    border-top-color: #526e93;
+  }
+  #wpas_ticketlist td {
+    /* set table cell colors default font to white */
+    color: white ;
+  }
+  #wpas_ticketlist th {
+    /* set table header cell colors to an off-white blend */
+    color: #c7b9bb;
+  }
+  #wpas_ticketlist tr {
+    /* set the left border color on the row */
+    border-left: solid;
+    border-left-width: 1px;
+    border-left-color: #526e93;
+  }
+  #wpas_ticketlist .wpas_clear_filter {
+    /* Attempt to make the "X" on the filter white */
+    /* Need to load up white background "X" image here */
+  }
+  #wpas_ticketlist_filters input,
+  #wpas_ticketlist_filters select {
+    /* Set colors for input elements at top of ticket list page */
+    background-color: transparent !important ;
+    border-color: #c7b9bb !important;
+    color: #ffffff !important ;
+  }
+  .wpas-ticket-buttons-top {
+    /* Style logout button */
+  }
+  .wpas-ticket-buttons-top .wpas-link-logout {
+    /* Color background */
+    background-color: transparent !important;
+    color: #f0ad4e !important;
   }
 }
