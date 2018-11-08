@@ -1,6 +1,6 @@
 /*
 
-Dark: Inherits from the angle overlay
+Orange Blend: Inherits from the angle overlay
 
 1) Import
 2) Variables
@@ -818,18 +818,6 @@ the overlay parts are put together!
     background-color: #5cb85c;
     color: white ;
   }
-  /* Style all other input elements */
-  /* If these start to conflict with other page elements from the users theme we will need to add a qualifying class to it. */
-  input,
-  select {
-    /* Make all other input elements have a bit of roundedness and font size smaller */
-    border-radius: 3px;
-    font-size: 11.9px;
-    /* Set colors for input elements */
-    background-color: #902e27 !important;
-    border-color: #902e27 !important;
-    color: #ffffff !important;
-  }
   /* Ticketlist: All elements - make font size smaller and some other stuff */
   .wpas-ticket-list {
     font-size: 11.9px;
@@ -840,6 +828,17 @@ the overlay parts are put together!
     border-width: 1px;
     border-radius: 4px;
     border-color: #902e27;
+    /* Style all other input elements on the ticketlist page */
+  }
+  .wpas-ticket-list input,
+  .wpas-ticket-list select {
+    /* Make all other input elements have a bit of roundedness and font size smaller */
+    border-radius: 3px;
+    font-size: 11.9px;
+    /* Set colors for input elements */
+    background-color: #902e27 !important;
+    border-color: #902e27 !important;
+    color: #ffffff !important;
   }
   /* Ticketlist: table background color when user hovers over row and some other stuff */
   #wpas_ticketlist {

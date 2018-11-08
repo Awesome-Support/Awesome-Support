@@ -1391,7 +1391,14 @@ SQL;
 					}
 
 					if ( ! empty( $term ) ) {
-						$query->query_vars[ $arg ] = $term->slug;
+						
+						if( 'product' === $arg && property_exists( $term, 'term_data' ) && !empty( $term->term_data ) ) {
+							$query->query_vars[ $arg ] = $term->term_data['slug'];
+						} else {
+							$query->query_vars[ $arg ] = $term->slug;
+						}
+						
+						
 					}
 
 				}
