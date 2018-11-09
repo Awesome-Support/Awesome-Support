@@ -1087,7 +1087,7 @@ SQL;
 		echo '<a href = "https://getawesomesupport.com/documentation-new/">' . __( '1. All Extensions', 'awesome-support' ) . '</a>' . '<br />';
 		echo __( 'Links to documentation for all extensions and add-ons.', 'awesome-support' ) . '<br /><br />';
 		
-		echo '<a href = "http://restapidocs.getawesomesupport.com/">' . __( '2. REST API', 'awesome-support' ) . '</a>' . '<br />';
+		echo '<a href = "https://developer.getawesomesupport.com/documentation/rest-api/introduction-to-the-awesome-support-rest-api/">' . __( '2. REST API', 'awesome-support' ) . '</a>' . '<br />';
 		echo __( 'Documentation for the REST API.', 'awesome-support' ) . '<br /><br />';
 		
 		echo '<h2>' . __( 'Import Tickets (Zendesk, Ticksy, Helpscout)', 'awesome-support' ) . '</h2>' . '<br />';		
