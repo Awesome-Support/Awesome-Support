@@ -10,6 +10,10 @@
 				<ul style="padding-left: 3em; list-style-type: disc;">
 					<li>New: Ticket Types</li>
 					<li>New: Integration with myCRED</li>
+					<li>New: Five more theme overlays</li>
+					<li>New: A notifications button that can be hooked into by add-ons</li>					
+					<li>New: Option to redirect the standard ticket form to another page</li>
+					<li>Enh: Choose which product statuses should be synced with Awesome Support</li>
 					<li>Tweak: Added schemas to some REST API routes that did not have them</li>
 					<li>Tweak: Updated the Titan Framework library that is used internally to manage settings - using version 1.12.1 now</li>
 					<li>Bug fixes related to stylesheets, autodelete of attachments, file-uploader and more</li>
