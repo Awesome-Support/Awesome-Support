@@ -23,10 +23,10 @@ if ( ! defined( 'WPINC' ) ) {
  */
 function wpas_blocked_gutenberg_post_types() {
 	
-	$allowed[] = 'ticket';
-	$allowed[] = 'ticket_reply';
+	$blocked[] = 'ticket';
+	$blocked[] = 'ticket_reply';
 	
-	return apply_filters( 'wpas_blocked_gutenberg_post_types', $allowed ) ;
+	return apply_filters( 'wpas_blocked_gutenberg_post_types', $blocked ) ;
 	
 }
 
