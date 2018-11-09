@@ -214,6 +214,9 @@
 				// The sort order of the field - used only by the custom-fields add-on!
 				'order'	=> '99999',
 				
+				// Sort taxonomy terms
+				'sortorder' => '',
+				
 				// @since 4.4.0
 				// Action hook to declare just before rendering the field on the front-end
 				'pre_render_action_hook_fe' => '',

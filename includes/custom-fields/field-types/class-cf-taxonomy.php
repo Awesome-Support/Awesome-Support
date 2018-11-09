@@ -30,8 +30,17 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 		$args = func_get_args();
 
 		call_user_func_array( array( $this, 'parent::__construct' ), $args );
+		
+		$term_args = array( 'hide_empty' => 0 );
+		
+		
+		$sort_order = isset( $this->field_args['sortorder'] ) ? $this->field_args['sortorder'] : '';
+		$order_types = array( 'asc', 'desc' );
+		if( $sort_order && in_array( $sort_order, $order_types ) ) {
+			$term_args['order'] = $sort_order;
+		}
 
-		$this->terms                 = get_terms( $this->field_id, array( 'hide_empty' => 0 ) );
+		$this->terms                 = get_terms( $this->field_id, $term_args );
 		$this->ordered_terms         = array();
 		$this->field_args['select2'] = isset( $this->field_args['select2'] ) ? (bool) $this->field_args['select2'] : false;
 
