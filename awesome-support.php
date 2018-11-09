@@ -510,6 +510,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/settings/settings-integration.php' );
 				
 				/* Load Gutenberg related files */
+				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg-post-type.php' );
 				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg.php' );
 				
 				/* Wisdom Tracking */

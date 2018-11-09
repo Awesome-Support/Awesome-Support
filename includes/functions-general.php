@@ -1341,6 +1341,10 @@ function wpas_is_support_ticket_type_active() {
  * Returns FALSE if not.  The default is FALSE - we are not
  * compatible
  *
+ * Deprecated as of Version 5.8.1.  We are using the use_block_editor_for_post_type
+ * and Gutenberg_can_edit_post_type filters instead to disable Gutenberge on the 
+ * the ticket pages.  See file admin/gutenberg/functions-gutenberg-post-type.php.
+ *
  * @since 4.4.0
  *
  * @return boolean
