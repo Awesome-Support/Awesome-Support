@@ -166,6 +166,9 @@
 				'taxo_edit_terms'   	=> 'settings_tickets',
 				'taxo_delete_terms' 	=> 'settings_tickets',
 				'taxo_assign_terms' 	=> 'create_ticket',
+				
+				// Sort taxonomy terms
+				'taxo_sortorder' => '',
 
 				// @since 3.3.5
 				'readonly'              => false,
@@ -213,9 +216,6 @@
 				// @since 4.4.0
 				// The sort order of the field - used only by the custom-fields add-on!
 				'order'	=> '99999',
-				
-				// Sort taxonomy terms
-				'sortorder' => '',
 				
 				// @since 4.4.0
 				// Action hook to declare just before rendering the field on the front-end

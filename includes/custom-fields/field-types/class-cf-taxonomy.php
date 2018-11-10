@@ -34,7 +34,7 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 		$term_args = array( 'hide_empty' => 0 );
 		
 		
-		$sort_order = isset( $this->field_args['sortorder'] ) ? $this->field_args['sortorder'] : '';
+		$sort_order = isset( $this->field_args['taxo_sortorder'] ) ? $this->field_args['taxo_sortorder'] : '';
 		$order_types = array( 'asc', 'desc' );
 		if( $sort_order && in_array( $sort_order, $order_types ) ) {
 			$term_args['order'] = $sort_order;

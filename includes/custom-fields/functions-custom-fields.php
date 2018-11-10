@@ -481,7 +481,7 @@ function wpas_register_core_fields() {
 			'taxo_delete_terms' 	=> 'ticket_delete_products',
 			'title'           		=> $as_label_for_product_singular,
 			'order'           		=> 30,
-			'sortorder'				=> 'asc'
+			'taxo_sortorder'		=> 'asc'
 		) );
 
 	}
