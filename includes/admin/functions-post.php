@@ -145,6 +145,11 @@ function wpas_save_ticket( $post_id ) {
 	
 	/* Now we can save the custom fields */
 	WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
+	
+	
+	$prevent_client_notification = filter_input( INPUT_POST, 'close_ticket_prevent_client_notification', FILTER_SANITIZE_NUMBER_INT );
+	update_post_meta( $post_id, 'close_ticket_prevent_client_notification', $prevent_client_notification );
+	
 
 	/**
 	 * If no ticket status is found we are in the situation where
@@ -736,4 +741,28 @@ function wpas_is_new_reply_empty( $ticket_id ) {
 	}
 	
 	return ( $content_empty && $attachments_empty );
+}
+
+add_action( 'wpas_backend_ticket_status_before_actions', 'wpas_close_ticket_prevent_client_notification_field', 12 );
+
+
+/**
+ * Add Checkbox to prevent client notification about ticket close
+ * 
+ * @param int $ticket_id
+ */
+function wpas_close_ticket_prevent_client_notification_field( $ticket_id ) {
+	
+	$close_ticket_prevent_client_notification = get_post_meta( $ticket_id, 'close_ticket_prevent_client_notification', true );
+	?>
+
+	<div>
+	<p>
+		<label>
+			<input type="checkbox" value="1" name="close_ticket_prevent_client_notification" <?php checked( '1', $close_ticket_prevent_client_notification); ?> />
+			<strong><?php _e( 'Prevent email notification to customers on ticket close', 'awesome-support' ); ?></strong>
+		</label>
+	</p>
+	</div>
+	<?php
 }
