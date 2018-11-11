@@ -480,7 +480,8 @@ function wpas_register_core_fields() {
 			'taxo_edit_terms'   	=> 'ticket_edit_products',
 			'taxo_delete_terms' 	=> 'ticket_delete_products',
 			'title'           		=> $as_label_for_product_singular,
-			'order'           		=> 30			
+			'order'           		=> 30,
+			'taxo_sortorder'		=> 'asc'
 		) );
 
 	}

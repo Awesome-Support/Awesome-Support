@@ -30,12 +30,32 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 		$args = func_get_args();
 
 		call_user_func_array( array( $this, 'parent::__construct' ), $args );
+		
+		$term_args = array( 'hide_empty' => 0 );
+		
+		
+		$sort_order = isset( $this->field_args['taxo_sortorder'] ) ? $this->field_args['taxo_sortorder'] : '';
+		$order_types = array( 'asc', 'desc' );
+		if( $sort_order && in_array( $sort_order, $order_types ) ) {
+			$term_args['order'] = $sort_order;
+		}
 
-		$this->terms                 = get_terms( $this->field_id, array( 'hide_empty' => 0 ) );
+		$this->terms                 = get_terms( $this->field_id, $term_args );
 		$this->ordered_terms         = array();
 		$this->field_args['select2'] = isset( $this->field_args['select2'] ) ? (bool) $this->field_args['select2'] : false;
 
 		if ( ! is_wp_error( $this->terms ) ) {
+			
+			if( $sort_order && in_array( $sort_order, $order_types ) ) {
+
+				if( 'asc' === strtolower( $sort_order ) ) {
+					usort( $this->terms, array( $this, 'sortByDescriptionASC' ) );
+				} else {
+					usort( $this->terms, array( $this, 'sortByDescriptionDESC' ) );
+				}
+			
+			}
+			
 			/**
 			 * Re-order the terms hierarchically.
 			 */
@@ -49,6 +69,30 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 			add_filter( 'wpas_cf_field_class', array( $this, 'add_select2_class' ), 10, 2 );
 		}
 
+	}
+	
+	/**
+	 * Ascending order terms by term description 
+	 * 
+	 * @param WP_Term $termA
+	 * @param WP_Term $termB
+	 * 
+	 * @return boolean
+	 */
+	function sortByDescriptionASC( $termA, $termB ) {
+		return $termA->description > $termB->description;
+	}
+	
+	/**
+	 * Descending order terms by description 
+	 * 
+	 * @param WP_Term $termA
+	 * @param WP_Term $termB
+	 * 
+	 * @return boolean
+	 */
+	function sortByDescriptionDESC( $termA, $termB ) {
+		return $termA->description < $termB->description;
 	}
 
 	/**
