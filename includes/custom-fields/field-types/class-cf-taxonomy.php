@@ -46,6 +46,15 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 		if ( ! is_wp_error( $this->terms ) ) {
 			
+			if( $sort_order && in_array( $sort_order, $order_types ) ) {
+				
+				if( 'asc' === strtolower( $sort_order ) ) {
+					usort( $this->terms, array( $this, 'sortByNameASC' ) );
+				} else {
+					usort( $this->terms, array( $this, 'sortByNameDESC' ) );
+				}
+			}
+			
 			/**
 			 * Re-order the terms hierarchically.
 			 */
@@ -61,6 +70,32 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 	}
 	
+	/**
+	 * Ascending order terms by term name 
+	 * 
+	 * @param WP_Term $termA
+	 * @param WP_Term $termB
+	 * 
+	 * @return boolean
+	 */
+	function sortByNameASC( $termA, $termB ) {
+		
+		return strtolower( $termA->name ) > strtolower( $termB->name );
+	}
+	
+	/**
+	 * Descending order terms by name 
+	 * 
+	 * @param WP_Term $termA
+	 * @param WP_Term $termB
+	 * 
+	 * @return boolean
+	 */
+	function sortByNameDESC( $termA, $termB ) {
+		
+		return strtolower( $termA->name ) < strtolower( $termB->name );
+	}
+
 	/**
 	 * Return the field markup for the front-end.
 	 *
