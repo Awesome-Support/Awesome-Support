@@ -423,6 +423,7 @@ class AS_Admin_Setup_Wizard {
 		
 		$selected_roles = filter_input( INPUT_POST, 'roles' , FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 		
+		$selected_roles = $selected_roles && is_array( $selected_roles ) ? $selected_roles : array();
 		
 		$capabilities = array(
 			'view_ticket',
