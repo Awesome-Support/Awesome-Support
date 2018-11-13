@@ -84,7 +84,7 @@ class AS_Admin_Setup_Wizard {
 				'handler' => array( $this, 'as_setup_departments_save' ),
 			),
 			'ticket_submit_user_roles'    => array(
-				'name'    => __( 'Ticket Submit', 'awesome-support' ),
+				'name'    => __( 'Existing Users', 'awesome-support' ),
 				'view'    => array( $this, 'as_setup_ticket_submit_user_roles' ),
 				'handler' => array( $this, 'as_setup_ticket_submit_user_roles_save' ),
 			),
@@ -382,7 +382,12 @@ class AS_Admin_Setup_Wizard {
 		
 		?>
 		<form method="post">
-			<p><b><?php _e( 'Which additional user roles should be allowed to submit tickets?', 'awesome-support' );?> </b></p>
+			
+			<h2><?php _e( 'Important! How do you want to handle your existing users?', 'awesome-support' );?></h2>
+			<p><em><?php _e( 'By default, none of your existing users will be allowed to submit ticket. However, you can adjust this based on your existing user roles.', 'awesome-support' );?></em></p>
+			<p><b><?php _e( 'Any of the user roles you check below will automatically be allowed to submit tickets.', 'awesome-support' );?></b>
+			<span><em><?php _e( ' If you do not choose any roles then only new users will be allowed to submit tickets!  If this is a new installation of WordPress with no existing users then you can just skip to the next step by clicking the CONTINUE button. ', 'awesome-support' );?></em></span>
+			</p>
 			
 			<?php
 			
