@@ -393,10 +393,17 @@ class AS_Admin_Setup_Wizard {
 			
 			$all_roles = get_editable_roles();
 			
+			$skip_roles = array(
+				'wpas_manager',
+				'wpas_support_manager',
+				'wpas_agent',
+				'wpas_user'
+			);
+			
 			foreach( $all_roles as $r_name => $r ) {
-				
-				printf( '<label><input type="checkbox" name="roles[]" value="%s" /> %s</label><br />', $r_name, $r['name'] );
-				
+				if( !in_array( $r_name, $skip_roles ) ) {
+					printf( '<label><input type="checkbox" name="roles[]" value="%s" /> %s</label><br />', $r_name, $r['name'] );
+				}
 			}
 			
 			?>
