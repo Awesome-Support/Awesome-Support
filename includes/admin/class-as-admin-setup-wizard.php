@@ -83,6 +83,11 @@ class AS_Admin_Setup_Wizard {
 				'view'    => array( $this, 'as_setup_departments' ),
 				'handler' => array( $this, 'as_setup_departments_save' ),
 			),
+			'ticket_submit_user_roles'    => array(
+				'name'    => __( 'Ticket Submit', 'awesome-support' ),
+				'view'    => array( $this, 'as_setup_ticket_submit_user_roles' ),
+				'handler' => array( $this, 'as_setup_ticket_submit_user_roles_save' ),
+			),
 			'lets_go'    => array(
 				'name'    => __( "Let's Go", 'awesome-support' ),
 				'view'    => array( $this, 'as_setup_lets_go' ),
@@ -369,6 +374,68 @@ class AS_Admin_Setup_Wizard {
 		update_option( 'wpas_options', serialize( $options ) );
 		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
 	}
+	
+	/**
+	 * Awesome Support ticket submit allowed roles setup view. 
+	 */
+	public function as_setup_ticket_submit_user_roles(){
+		
+		?>
+		<form method="post">
+			<p><b><?php _e( 'Which additional user roles should be allowed to submit tickets?', 'awesome-support' );?> </b></p>
+			
+			<?php
+			
+			$all_roles = get_editable_roles();
+			
+			foreach( $all_roles as $r_name => $r ) {
+				
+				printf( '<label><input type="checkbox" name="roles[]" value="%s" /> %s</label><br />', $r_name, $r['name'] );
+				
+			}
+			
+			?>
+			<br />
+			<input type="submit" name="save_step" value="Continue">
+			<?php wp_nonce_field( 'as-setup' ); ?>
+		</form>
+		<?php
+	}
+
+	/**
+	 * Awesome Support ticket submit allowed roles setup on save.
+	 */
+	public function as_setup_ticket_submit_user_roles_save(){
+		
+		check_admin_referer( 'as-setup' );
+		
+		$selected_roles = filter_input( INPUT_POST, 'roles' , FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+		
+		
+		$capabilities = array(
+			'view_ticket',
+			'create_ticket',
+			'close_ticket',
+			'reply_ticket',
+			'attach_files'
+			);
+		
+		foreach( $selected_roles as $role_name ) {
+			$role = get_role( $role_name );
+			
+			foreach ( $capabilities as $capability ) {
+				$role->add_cap( $capability );
+			}
+			
+		}
+		
+		// Don't show setup wizard link on plug-in activation.
+		update_option('wpas_plugin_setup', 'done');
+		
+		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
+	}
+	
+	
 
 		/**
 	 * Awesome Support departments setup view. 
@@ -404,8 +471,7 @@ class AS_Admin_Setup_Wizard {
 			$options['departments'] = '0';
 		}
 		update_option( 'wpas_options', serialize( $options ) );
-		// Don't show setup wizard link on plug-in activation.
-		update_option('wpas_plugin_setup', 'done');
+		
 		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
 	}
 
