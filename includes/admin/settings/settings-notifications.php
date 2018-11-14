@@ -198,7 +198,7 @@ function wpas_core_settings_notifications( $def ) {
 				),
 				/* Ticket closed by agent */
 				array(
-					'name' => __( 'Ticket Closed (by agent)', 'awesome-support' ),
+					'name' => __( 'Ticket Closed (By Agent)', 'awesome-support' ),
 					'desc' => __( 'This is sent to the user when an agent closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
@@ -221,9 +221,16 @@ function wpas_core_settings_notifications( $def ) {
 					'type'     => 'editor',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
+				array(
+					'name'    => __( 'Agents Can Suppress?', 'awesome-support' ),
+					'id'      => 'agents_can_suppress_closing_emails',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => __( '<em>Can agents prevent a closing confirmation email from being sent to a customer? Note: If this enabled it only applies to the emails defined in the core plugin and not to emails created by add-ons such as our Notification or Business Rules Engine add-ons</em>', 'awesome-support' )
+				),					
 				/* Ticket closed by client*/				
 				array(
-					'name' => __( 'Ticket Closed (by client)', 'awesome-support' ),
+					'name' => __( 'Ticket Closed (By Client)', 'awesome-support' ),
 					'desc' => __( 'This is sent to the agent when a user closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
@@ -245,7 +252,7 @@ function wpas_core_settings_notifications( $def ) {
 					'id'       => 'content_closed_client',
 					'type'     => 'editor',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),				
+				),			
 			)
 		),
 	);

@@ -80,8 +80,6 @@ function wpas_get_ticket_for_print_ajax() {
 	
 }
 
-
-
 add_action( 'wp_ajax_wpas_get_tickets_for_print', 'wpas_get_tickets_for_print_ajax' );
 /**
  * Get tickets for print
@@ -135,7 +133,6 @@ function wpas_get_tickets_for_print_ajax() {
 
 
 add_action( 'wp_ajax_wpas_close_ticket_prevent_client_notification', 'wpas_ajax_close_ticket_prevent_client_notification' );
-
 /**
  * Handle request to set client notification flag about ticket close
  */
