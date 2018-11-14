@@ -116,7 +116,7 @@ add_action( 'wpas_ticket_closed_by_agent', 'wpas_notify_ticket_closed_by_agent',
  */
 function wpas_notify_ticket_closed_by_agent( $ticket_id) {
 	
-	$prevent = get_post_meta( $ticket_id, 'close_ticket_prevent_client_notification', true );
+	$prevent = get_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', true );
 	
 	if( !$prevent ) {
 		wpas_email_notify( $ticket_id, 'closed' );
@@ -147,7 +147,7 @@ function wpas_notify_close( $ticket_id, $update, $user_id ) {
 		$case = 'ticket_closed';
 	}
 	
-	$prevent = get_post_meta( $ticket_id, 'close_ticket_prevent_client_notification', true );
+	$prevent = get_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', true );
 	if( $prevent && 'ticket_closed_agent' === $case ) {
 		return;
 	}

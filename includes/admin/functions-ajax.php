@@ -150,7 +150,7 @@ function wpas_ajax_close_ticket_prevent_client_notification() {
 		die();
 	}
 	
-	update_post_meta( $ticket_id, 'close_ticket_prevent_client_notification', $prevent_client_notification );
+	update_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', $prevent_client_notification );
 	
 	wp_send_json_success();
 }

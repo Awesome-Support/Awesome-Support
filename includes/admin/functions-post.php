@@ -145,8 +145,6 @@ function wpas_save_ticket( $post_id ) {
 	
 	/* Now we can save the custom fields */
 	WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
-	
-	
 
 	/**
 	 * If no ticket status is found we are in the situation where
@@ -750,7 +748,7 @@ add_action( 'wpas_backend_ticket_status_before_actions', 'wpas_close_ticket_prev
  */
 function wpas_close_ticket_prevent_client_notification_field( $ticket_id ) {
 	
-	$close_ticket_prevent_client_notification = get_post_meta( $ticket_id, 'close_ticket_prevent_client_notification', true );
+	$close_ticket_prevent_client_notification = get_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', true );
 	?>
 
 	<div>
