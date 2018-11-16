@@ -1710,7 +1710,7 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
 
 	}
 
-	return count( wpas_get_tickets( $status, $args ) );
+	return count( wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ) ) );
 
 }
 
