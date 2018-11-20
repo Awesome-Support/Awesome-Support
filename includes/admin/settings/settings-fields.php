@@ -272,5 +272,5 @@ function wpas_get_ticket_type_options() {
 		
 	);
 	
-	return $ticket_type;
+	return apply_filters( 'wpas_ticket_type_options', $ticket_type );
 }
