@@ -930,7 +930,19 @@ function wpas_register_core_fields() {
 			'backend_only' 		=> true,
 			'log'            	=> true,
 			'title'          	=> __( 'Ticket Template?', 'awesome-support' ),
+		) );
+		
+		wpas_add_custom_field( 'ticket_template_short_desc', array(
+			'field_type'		=> 'text',
+			'core'           	=> false,
+			'show_column'    	=> false,
+			'sortable_column'	=> false,
+			'filterable'        => false,
+			'backend_only' 		=> true,
+			'log'            	=> true,
+			'title'          	=> __( 'Ticket Template Description', 'awesome-support' ),
 		) );			
+				
 		
 	}
 	
