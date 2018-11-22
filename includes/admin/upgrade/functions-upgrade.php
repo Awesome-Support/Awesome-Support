@@ -404,7 +404,7 @@ function wpas_upgrade_520() {
 	/**
 	 * Add moderated registration settings
 	 */
-	$morerated_registration_settings = array(
+	$moderated_registration_settings = array(
 		
 		'mr_success_message',
 		'moderated_pending_user_role',
@@ -428,7 +428,7 @@ function wpas_upgrade_520() {
 	);
 	
 	
-	foreach ( $morerated_registration_settings as $mr_setting_name ) {
+	foreach ( $moderated_registration_settings as $mr_setting_name ) {
 		wpas_update_option( $mr_setting_name, get_settings_defaults( $mr_setting_name ), true );
 	}
 
