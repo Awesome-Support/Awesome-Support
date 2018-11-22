@@ -918,7 +918,7 @@ function wpas_register_core_fields() {
 	$show_ticket_template_in_list = ( isset( $options[ 'show_ticket_template_in_ticket_list' ] ) && true === boolval( $options[ 'show_ticket_template_in_ticket_list' ] ) );	
 	
 	
-	if ( true === $show_ticket_template_option ) {
+	if ( true === $show_ticket_template_option && ( current_user_can('ticket_manage_ticket_templates') || wpas_is_asadmin() ) ) {
 		
 		wpas_add_custom_field( 'is_ticket_template', array(
 			'field_type'		=> 'select',		

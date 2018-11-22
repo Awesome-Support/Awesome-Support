@@ -470,7 +470,8 @@ function wpas_upgrade_581() {
 	$admin_caps = array(
 		'ticket_manage_ticket_type',
 		'ticket_edit_ticket_type',
-		'ticket_delete_ticket_type'
+		'ticket_delete_ticket_type',
+		'ticket_manage_ticket_templates'
 	);
 	
 	$agent_caps = array(
@@ -480,7 +481,8 @@ function wpas_upgrade_581() {
 	$manager_caps = array(
 		'ticket_manage_ticket_type',
 		'ticket_edit_ticket_type',
-		'ticket_delete_ticket_type'
+		'ticket_delete_ticket_type',
+		'ticket_manage_ticket_templates'
 	);
 	
 	$supportmanager_caps = array(
