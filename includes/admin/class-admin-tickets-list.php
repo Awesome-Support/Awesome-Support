@@ -628,6 +628,14 @@ class WPAS_Tickets_List {
 							array_push( $tags, "<span class='wpas-label' style='background-color:$old_color;'>" . __( 'Old', 'awesome-support' ) . "</span>" );
 						}
 						
+						// Maybe add the "Ticket Template" tag
+						if ( true === wpas_is_ticket_template( $post_id ) ) {
+							$ticket_template_color = wpas_get_option( 'color_ticket_template_type' );
+							array_push( $tags, "<span class='wpas-label' style='background-color:$ticket_template_color;'>" . __( 'Template', 'awesome-support' ) . "</span>" );
+						}						
+						
+						
+						
 						$tags = apply_filters( 'wpas_ticket_listing_activity_tags', $tags, $post_id );
 
 						if ( ! empty( $tags ) ) {

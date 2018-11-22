@@ -739,8 +739,6 @@ function wpas_is_new_reply_empty( $ticket_id ) {
 }
 
 add_action( 'wpas_backend_ticket_status_before_actions', 'wpas_close_ticket_prevent_client_notification_field', 12 );
-
-
 /**
  * Add Checkbox to prevent client notification about ticket close
  * 

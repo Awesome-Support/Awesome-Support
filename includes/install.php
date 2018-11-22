@@ -106,7 +106,8 @@ function wpas_single_activate() {
 		'ticket_manage_privacy',
 		'ticket_manage_ticket_type',
 		'ticket_edit_ticket_type',
-		'ticket_delete_ticket_type'		
+		'ticket_delete_ticket_type',
+		'ticket_manage_ticket_templates'
 	) );
 
 	/**

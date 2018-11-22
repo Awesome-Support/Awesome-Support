@@ -77,6 +77,12 @@ function wpas_core_settings_style( $def ) {
 					'type'    => 'color',
 					'default' => '#0074a2',
 				),
+				array(
+					'name'    => __( 'Ticket Template Type', 'awesome-support' ),
+					'id'      => 'color_ticket_template_type',
+					'type'    => 'color',
+					'default' => '#1383D9',
+				),				
 			)
 		),
 	);

@@ -886,7 +886,6 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 	/* Add the IMPORTER fields - in this case only one.                */
 	/*******************************************************************/	
-	//if ( true === ( isset( $options[ 'importer_id_enable' ] ) && ( true === boolval( $options[ 'importer_id_enable' ] ) ) ) ) {
 	$show_saas_id = false;
 	$show_saas_id = ( isset( $options[ 'importer_id_enable' ] ) && ( true === boolval( $options[ 'importer_id_enable' ] ) ) ) ;
 	
@@ -908,6 +907,47 @@ function wpas_register_core_fields() {
 			'title'          	=> $saas_id_label,
 		) );	
 	}
+	
+	/*******************************************************************/
+	/* Add the TICKET TEMPLATE option field if its enabled             */
+	/*******************************************************************/	
+	$show_ticket_template_option = false;
+	$show_ticket_template_option = ( isset( $options[ 'enable_ticket_templates' ] ) && ( true === boolval( $options[ 'enable_ticket_templates' ] ) ) ) ;	
+	
+	$show_ticket_template_in_list = false;
+	$show_ticket_template_in_list = ( isset( $options[ 'show_ticket_template_in_ticket_list' ] ) && true === boolval( $options[ 'show_ticket_template_in_ticket_list' ] ) );	
+	
+	
+	if ( true === $show_ticket_template_option && ( current_user_can('ticket_manage_ticket_templates') || wpas_is_asadmin() ) ) {
+		
+		wpas_add_custom_field( 'is_ticket_template', array(
+			'field_type'		=> 'select',		
+			'core'           	=> false,
+			'show_column'    	=> $show_ticket_template_in_list,
+			'options'			=> array( 0 => 'This is not a ticket template', 1 => 'This is a ticket template' ),
+			'sortable_column'	=> true,
+			'filterable'        => true,
+			'backend_only' 		=> true,
+			'log'            	=> true,
+			'title'          	=> __( 'Ticket Template?', 'awesome-support' ),
+		) );
+		
+		wpas_add_custom_field( 'ticket_template_short_desc', array(
+			'field_type'		=> 'text',
+			'core'           	=> false,
+			'show_column'    	=> false,
+			'sortable_column'	=> false,
+			'filterable'        => false,
+			'backend_only' 		=> true,
+			'log'            	=> true,
+			'title'          	=> __( 'Ticket Template Description', 'awesome-support' ),
+		) );			
+				
+		
+	}
+	
+	
+	
 	
 	/* Trigger backend custom ticket list columns */
 	if ( is_admin() ) {
