@@ -1662,7 +1662,7 @@ function wpas_edit_reply_editor_ajax() {
  *
  * @return int Tickets count
  */
-function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
+function wpas_get_ticket_count_by_status( $state = '', $status = 'open' , $query = array() ) {
 
 	$args        = array();
 	$post_status = wpas_get_post_status();
@@ -1709,7 +1709,9 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
 		);
 
 	}
-
+	if( is_array( $query ) &&  count( $query ) > 0 ) {
+		$args['tax_query'] = $query['tax_query'];
+	}
 	return count( wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ) ) );
 
 }
