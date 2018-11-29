@@ -71,7 +71,8 @@ function wpas_system_tools() {
 			break;
 
 		case 'rerun_400_to_500_conversion':
-			wpas_upgrade_500();
+			wpas_upgrade_511();
+			wpas_upgrade_520();
 			break;	
 			
 		case 'rerun_580_to_590_conversion':
