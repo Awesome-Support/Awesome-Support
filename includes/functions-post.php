@@ -1709,7 +1709,10 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
 		);
 
 	}
-
+	// if query arguments are set then combine query argument with $args varible
+	if( is_array( $query ) &&  count( $query ) > 0 ) {
+		$args = array_merge( $args, $query );
+	}
 	return count( wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ) ) );
 
 }
