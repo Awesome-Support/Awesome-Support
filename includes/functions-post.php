@@ -1662,7 +1662,7 @@ function wpas_edit_reply_editor_ajax() {
  *
  * @return int Tickets count
  */
-function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
+function wpas_get_ticket_count_by_status( $state = '', $status = 'open', $query = array() ) {
 
 	$args        = array();
 	$post_status = wpas_get_post_status();
