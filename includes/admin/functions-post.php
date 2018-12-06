@@ -764,6 +764,58 @@ function wpas_close_ticket_prevent_client_notification_field( $ticket_id ) {
 	<?php
 }
 
+
+/**
+ * Add custom fields data in cloned ticket
+ * 
+ * @param int $ticket_id
+ * @param array $data
+ * @param array $incoming_data
+ */
+function wpas_clone_ticket_before_assigned( $new_ticket_id, $data, $incoming_data ) {
+	
+	// Clone custom fields
+	$clone_custom_fields_list = is_array( $incoming_data['custom_fields'] ) ? $incoming_data['custom_fields'] : array();
+	
+	$ticket_id = isset( $incoming_data['clone_ticket_id'] ) ? $incoming_data['clone_ticket_id'] : '';
+	
+	
+	if( !$ticket_id || empty( $clone_custom_fields_list ) ) {
+		return;
+	}
+	
+	
+	$custom_fields =  WPAS()->custom_fields->get_custom_fields();
+	
+	foreach( $clone_custom_fields_list as $cf_name )  {
+		
+		if( !array_key_exists( $cf_name, $custom_fields ) ) {
+			continue;
+		}
+		
+		$cf_field = new WPAS_Custom_Field( $cf_name, $custom_fields[ $cf_name ] );
+		$cf_value = $cf_field->get_field_value( false, $ticket_id );
+		
+		
+		if( 'taxonomy' ===  $cf_field->field_type ) {
+			
+			$tax_terms = get_the_terms( $ticket_id, $cf_field->field_id );
+		
+			if ( is_array( $tax_terms ) ) {
+				foreach ( $tax_terms as $term ) {
+					$cf_value = $term->term_id;
+				}
+			}
+			
+		}
+		
+		$cf_field->update_value( $cf_value, $new_ticket_id );
+	}
+	
+}
+
+
+
 /**
  * Clone a ticket 
  * 
@@ -824,6 +876,9 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 	$agent_id = $clone_agent ?  get_post_meta( $ticket_id, '_wpas_assignee', true ) : false;
 	
 	
+	$ticket_data['custom_fields'] = is_array( $args['clone_custom_fields_list'] ) ? $args['clone_custom_fields_list'] : array();
+	$ticket_data['clone_ticket_id'] = $ticket_id;
+	
 	// Prevent notification while cloning ticket
 	if( $args['suppress_notifications'] ) {
 		remove_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 11 );
@@ -831,7 +886,11 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 	}
 	
 	
+	add_action( 'wpas_open_ticket_before_assigned', 'wpas_clone_ticket_before_assigned', 11, 3 );
+	
 	$new_ticket_id = wpas_insert_ticket( $ticket_data, false, $agent_id );
+	
+	remove_action( 'wpas_open_ticket_before_assigned', 'wpas_clone_ticket_before_assigned', 11 );
 	
 	// Add removed notification hooks back
 	if( $args['suppress_notifications'] ) {
@@ -842,38 +901,6 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 	if( !$new_ticket_id ) {
 		return new WP_Error( 'ticket_clone_failed', __( 'Ticket cloning failed', 'awesome-support' ) );
 	}
-	
-	
-	// Clone custom fields
-	$clone_custom_fields_list = is_array( $args['clone_custom_fields_list'] ) ? $args['clone_custom_fields_list'] : array();
-	
-	$custom_fields =  WPAS()->custom_fields->get_custom_fields();
-	
-	foreach( $clone_custom_fields_list as $cf_name )  {
-		
-		if( !array_key_exists( $cf_name, $custom_fields ) ) {
-			continue;
-		}
-		
-		$cf_field = new WPAS_Custom_Field( $cf_name, $custom_fields[ $cf_name ] );
-		$cf_value = $cf_field->get_field_value( false, $ticket_id );
-		
-		
-		if( 'taxonomy' ===  $cf_field->field_type ) {
-			
-			$tax_terms = get_the_terms( $ticket_id, $cf_field->field_id );
-		
-			if ( is_array( $tax_terms ) ) {
-				foreach ( $tax_terms as $term ) {
-					$cf_value = $term->term_id;
-				}
-			}
-			
-		}
-		
-		$cf_field->update_value( $cf_value, $new_ticket_id );
-	}
-	
 	
 	do_action( 'wpas_clone_ticket_added_after', $new_ticket_id, $ticket, $args );
 	
