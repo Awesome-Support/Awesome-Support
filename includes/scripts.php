@@ -94,6 +94,9 @@ add_action( 'admin_enqueue_scripts', 'wpas_register_assets_back_end', 5 );
  *
  * @since 3.3
  * @return void
+ *
+ * @TODO: It is possible that most of the function below should be wrapped in a conditional similar to this:
+ *		if ( true == wpas_is_plugin_page() )
  */
 function wpas_register_assets_back_end() {
 	
@@ -225,10 +228,15 @@ function wpas_register_assets_back_end() {
 	));
 	
 	// Include magnific popup
-	wpas_add_magnific();
+	if ( true == wpas_is_plugin_page() ) {	
+		wpas_add_magnific();
+	}
 
 	// Edit ticket content!
-	wp_enqueue_editor();
+	if ( true == wpas_is_plugin_page() ) {
+		wp_enqueue_editor();
+	}
+	
 	wp_enqueue_script( 'wpas-admin-edit-ticket-content-script', WPAS_URL . 'assets/admin/js/admin-edit-ticket-content.js', array( 'jquery' ), WPAS_VERSION );
 	wp_localize_script( 'wpas-admin-edit-ticket-content-script', 'WPAS_Edit_Ticket_Content', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' )
