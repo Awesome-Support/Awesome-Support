@@ -877,6 +877,9 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 	$agent_id = $clone_agent ?  get_post_meta( $ticket_id, '_wpas_assignee', true ) : false;
 	
 	
+	$agent_id = apply_filters( 'wpas_clone_ticket_agent_id', $agent_id, $ticket, $args );
+	
+	
 	$ticket_data['custom_fields'] = is_array( $args['clone_custom_fields_list'] ) ? $args['clone_custom_fields_list'] : array();
 	$ticket_data['clone_ticket_id'] = $ticket_id;
 	
