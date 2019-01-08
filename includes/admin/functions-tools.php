@@ -707,7 +707,7 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	}
 	
 	// Allow other add-ons to set this path
-	apply_filters( 'wpas_email_template_root_path', $template_root_path ) ;
+	$template_root_path = apply_filters( 'wpas_email_template_root_path', $template_root_path ) ;
 	
 	// Create array with option names and corresponding file names
 	$template_files['content_confirmation'] 	= $template_root_path . 'New-Ticket-Confirmation-Going-To-End-User.html';
@@ -719,7 +719,7 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	$template_files['content_closed_client'] 	= $template_root_path . 'Ticket-Closed-By-Client.html';
 	
 	// Allow other add-ons to update this array 
-	apply_filters( 'wpas_email_template_map_to_files', $template_files );
+	$template_files = apply_filters( 'wpas_email_template_map_to_files', $template_files );
 	
 	// Read the template files into the appropriate option based on the key-fiile mapping array above.
 	foreach ( $template_files as $key => $template_file ) {
