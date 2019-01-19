@@ -564,7 +564,7 @@ class WPAS_Email_Notification {
 	 * @return string E-mail body
 	 */
 	private function get_body( $case ) {
-		return apply_filters( 'wpas_email_notifications_body', stripcslashes ( $this->get_content( 'content', $case ) ), $this->post_id, $case );
+		return apply_filters( 'wpas_email_notifications_body', $this->get_content( 'content', $case ), $this->post_id, $case );
 	}
 
 	/**
@@ -625,7 +625,7 @@ class WPAS_Email_Notification {
 			$this->link_attachments = true;
 		}
 
-		return $this->fetch( $pre_fetch_content );
+		return $this->fetch( stripcslashes( $pre_fetch_content ) );
 		
 	}
 
