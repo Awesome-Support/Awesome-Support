@@ -742,6 +742,12 @@ function wpas_register_core_fields() {
 	
 	$allow_agents_to_enter_time = true;
 	$allow_agents_to_enter_time = ! ( isset( $options[ 'allow_agents_to_enter_time' ] ) && true === boolval( $options[ 'allow_agents_to_enter_time' ] ) );
+	
+	$show_final_time_in_fe_list = false;
+	$show_final_time_in_fe_list = ( isset( $options[ 'show_final_time_in_fe_ticket_list' ] ) && true === boolval( $options[ 'show_final_time_in_fe_ticket_list' ] ) );	
+	
+	$show_final_time_in_fe_ticket = false;
+	$show_final_time_in_fe_ticket = ( isset( $options[ 'show_final_time_in_fe_ticket' ] ) && true === boolval( $options[ 'show_final_time_in_fe_ticket' ] ) );		
 
 	/** Get the labels for these time related fields if they are provided */
 	$as_label_for_gross_time_singular 			= isset( $options[ 'label_for_gross_time_singular' ] ) ? $options[ 'label_for_gross_time_singular' ] : __( 'Gross Time', 'awesome-support' );
@@ -807,6 +813,8 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,		
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
+		'show_frontend_list' 	=> $show_final_time_in_fe_list,
+		'show_frontend_detail'	=> $show_final_time_in_fe_ticket,
 		'column_callback'   => 'wpas_cf_display_time_hhmm',
 		'sortable_column'	=> true,
 		'title'       		=> $as_label_for_final_time_singular,
