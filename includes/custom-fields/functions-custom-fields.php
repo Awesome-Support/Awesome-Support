@@ -748,6 +748,11 @@ function wpas_register_core_fields() {
 	
 	$show_final_time_in_fe_ticket = false;
 	$show_final_time_in_fe_ticket = ( isset( $options[ 'show_final_time_in_fe_ticket' ] ) && true === boolval( $options[ 'show_final_time_in_fe_ticket' ] ) );		
+	
+	$final_time_hide_front_end = true;
+	if ( $show_final_time_in_fe_ticket_list || $show_final_time_in_fe_ticket ) {
+		$final_time_hide_front_end = false ;
+	}
 
 	/** Get the labels for these time related fields if they are provided */
 	$as_label_for_gross_time_singular 			= isset( $options[ 'label_for_gross_time_singular' ] ) ? $options[ 'label_for_gross_time_singular' ] : __( 'Gross Time', 'awesome-support' );
@@ -810,8 +815,8 @@ function wpas_register_core_fields() {
 		'log'         		=> $audit_log_for_time_tracking_fields,
 		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){1}',
 		'placeholder'		=> 'hh:mm',
-		'hide_front_end'	=> true,		
-		'backend_only'		=> true,
+		'hide_front_end'	=> $final_time_hide_front_end,		
+		'backend_only'		=> $final_time_hide_front_end,
 		'backend_display_type'	=> 'custom',
 		'show_frontend_list' 	=> $show_final_time_in_fe_list,
 		'show_frontend_detail'	=> $show_final_time_in_fe_ticket,
