@@ -20,8 +20,11 @@ function wpas_open_ticket( $data ) {
 	// Fallback in case the referrer failed
 	if ( empty( $submit ) ) {
 		$submission_pages = wpas_get_option( 'ticket_submit' );
-		$submit           = $submission_pages[0];
-		$submit           = wp_sanitize_redirect( get_permalink( $submit ) );
+
+		if( $submission_pages ) {
+			$submit           = $submission_pages[0];
+			$submit           = wp_sanitize_redirect( get_permalink( $submit ) );
+		}
 	}
 
 	// Verify user capability
@@ -357,9 +360,16 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 * @since 3.2.6
 	 */
 	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data, $incoming_data );
-
-	/* Assign an agent to the ticket */
-	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
+	
+	/**
+	 * We might want to assign agent manually
+	 */
+	if( apply_filters( 'wpas_open_ticket_should_agent_assign', true, $ticket_id ) ) {
+		
+		/* Assign an agent to the ticket */
+		wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
+	
+	}
 
 	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
 	/* Need to update it here again because some of the action hooks fired above will overwrite the term.			  */

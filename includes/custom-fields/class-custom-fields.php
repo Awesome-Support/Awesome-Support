@@ -749,7 +749,10 @@ class WPAS_Custom_Fields {
 			case 'assignee':
 
 				if ( $value !== get_post_meta( $post_id, '_wpas_assignee', true ) ) {
-					wpas_assign_ticket( $post_id, $value, $field['args']['log'] );
+					
+					if( apply_filters( 'wpas_allow_agent_assign', true, $post_id ) ) {
+						wpas_assign_ticket( $post_id, $value, $field['args']['log'] );
+					}
 				}
 
 				break;

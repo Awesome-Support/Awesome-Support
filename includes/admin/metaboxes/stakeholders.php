@@ -83,6 +83,11 @@ if (! empty( $staff ) ) {
 	<p>
 		<?php
 		
+		
+		
+		$support_staff_dropdown = "";
+		
+		
 		if ( wpas_get_option( 'support_staff_select2_enabled', false ) ) {
 		
 			$staff_atts = array(
@@ -95,15 +100,15 @@ if (! empty( $staff ) ) {
 
 			if (! empty( $staff ) ) {
 				// We have a valid staff id
-				echo wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );		
+				$support_staff_dropdown = wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );		
 			} else {
 				// Oops - no valid staff id...
-				echo wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );					
+				$support_staff_dropdown = wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );					
 			}
 		} else {
 			
 			
-			echo wpas_users_dropdown( array( 
+			$support_staff_dropdown = wpas_users_dropdown( array( 
 				'cap'	=> 'edit_ticket',
 				'orderby' => 'display_name',
 				'order' => 'ASC',
@@ -114,6 +119,11 @@ if (! empty( $staff ) ) {
 				'selected' => $staff_id
 			) );
 		}
+		
+		
+		$support_staff_dropdown = apply_filters( 'ticket_support_staff_dropdown', $support_staff_dropdown, $post->ID, $staff_id, $staff_name );
+		
+		echo $support_staff_dropdown;
 		?>
 	</p>
 </div>
