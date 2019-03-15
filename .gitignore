@@ -73,3 +73,5 @@ assets/public/js/public-dist.js.map
 themes/default/css/style.css
 /phpdocs/
 /docs/
+awesome-support-*.zip
+/dist
