@@ -1,0 +1,9 @@
+{
+  "name": "awesome-support",
+  "version": "3.3.3",
+  "private": true,
+  "devDependencies": {
+    "grunt": "~1.0.1",
+    "grunt-poeditor-at": "~0.0.2"
+  }
+}
