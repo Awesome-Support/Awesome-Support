@@ -729,7 +729,7 @@
 				$list  = array();
 
 				if ( empty( $terms ) ) {
-					continue;
+					break;
 				}
 
 				foreach ( $terms as $term ) {
