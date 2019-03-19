@@ -908,6 +908,25 @@ class WPAS_Product_Sync {
 	 */
 	public function run_initial_sync() {
 
+		$slug = WPAS_eCommerce_Integration::get_instance()->plugin;
+
+		// Get the list of products to include/exclude
+		$raw_include = wpas_get_option( 'support_products_' . $slug . '_include', array() );
+		$raw_exclude = wpas_get_option( 'support_products_' . $slug . '_exclude', array() );
+
+		// Initialize empty arrays just in case the if statements below turn out to be true.
+		// $raw_exclude/include in the if statements below can be empty if the user did not click SAVE on the PRODUCTS configuration tab.
+		$include = array();
+		$exclude = array();
+
+		if ( ! empty( $raw_include ) ) {
+			$include = array_filter( $raw_include ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+		}
+
+		if ( ! empty( $raw_exclude ) ) {
+			$exclude = array_filter( $raw_exclude );  // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+		}
+
 		$args = array(
 			'post_type'              => $this->post_type,
 			'post_status'            => 'publish',
@@ -921,6 +940,14 @@ class WPAS_Product_Sync {
 			'update_post_term_cache' => false,
 			'update_post_meta_cache' => false,
 		);
+
+		if ( ! empty( $include ) ) {
+			$args['post__in'] = $include;
+		}
+
+		if ( ! empty( $exclude ) ) {
+			$args['post__not_in'] = $exclude;
+		}
 
 		$query = new WP_Query( $args );
 		$count = 0;
