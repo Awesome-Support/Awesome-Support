@@ -542,6 +542,28 @@ class WPAS_Product_Sync {
 			return $terms;
 		}
 
+		$index = array();
+		$sort  = array(); // Used to store the orderby field from the term object.
+
+		// Set the array_multisort() arg flags based on the supplied orderby and order args.
+		if ( 'id' === $args['orderby'] ) {
+
+			$sort_flag = SORT_NUMERIC;
+
+		} else {
+
+			$sort_flag = SORT_REGULAR;
+		}
+
+		if ( 'DESC' === $args['order'] ) {
+
+			$sort_order = SORT_DESC;
+
+		} else {
+
+			$sort_order = SORT_ASC;
+		}
+
 		foreach ( $query->posts as $post ) {
 			if( isset( $post->ID ) ) {
 				$index[ $post->ID ] = $post;
@@ -569,10 +591,24 @@ class WPAS_Product_Sync {
 		    }
 
 			if ( false !== $term ) {
+
 				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $this->taxonomy );
+
+				if ( 'id' === $args['orderby'] ) {
+
+					$sort[] = (int) $term->{$args['orderby']};
+
+				} else {
+
+					$sort[] = strtolower( $term->{$args['orderby']} ); // Make lower case to get a natural sort since mixed case yields undesired results.
+				}
+
 			}
 
 		}
+
+		// Ensure terms are sorted according to the supplied args.
+		array_multisort( $sort, $sort_order, $sort_flag, $new_terms );
 
 		return apply_filters( 'wpas_get_terms', $new_terms );
 
