@@ -872,7 +872,7 @@ class WPAS_Product_Sync {
 
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
 
-		if ( $this->is_tax_screen() && true === $this->is_synced_term() ) { ?>
+		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) { ?>
 			<div class="error">
 				<p><?php echo $message; ?></p>
 			</div>
@@ -894,7 +894,7 @@ class WPAS_Product_Sync {
 
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
 
-		if ( $this->is_tax_screen() && true === $this->is_synced_term() ) {
+		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) {
 			wp_die( $message, __( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );
 		}
 
@@ -937,12 +937,14 @@ class WPAS_Product_Sync {
 
 			/* If the term was successfully created we increment our counter */
 			if ( false !== $term ) {
-				++$count;
+				$count = get_option( "wpas_sync_$this->post_type", 0 );
+				//++$count;
+				update_option( "wpas_sync_$this->post_type", ++$count );
 			}
 
 		}
 
-		add_option( "wpas_sync_$this->post_type", $count );
+		// add_option( "wpas_sync_$this->post_type", $count );
 
 		return $count;
 
