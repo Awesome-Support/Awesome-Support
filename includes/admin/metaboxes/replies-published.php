@@ -32,6 +32,22 @@ if ( ! defined( 'WPINC' ) ) {
 		do_action( 'wpas_mb_replies_under_avatar', $row->ID, $user_id );
 
 	}
+	
+	// Check Support User anonymity on each row against parent post.
+	$privacy = 0;
+	$at_user = wp_get_current_user();
+	$current_user_role = ($at_user->roles) ? $at_user->roles[0] : false;
+	$at_field_for_anonymity = get_post_meta($post->ID, '_wpas_at_field_for_anonymity', true);
+	if (
+		is_array($at_field_for_anonymity) && count($at_field_for_anonymity) == 1
+		&& $at_field_for_anonymity[0] == 1 && 'wpas_agent' == $current_user_role
+	) {
+		$privacy = 1;
+	}
+	$user_nice_role = wpas_get_user_nice_role($user_data->roles);
+	if ($privacy == 1 && $user_nice_role == "User") {
+		$user_name = "Anonymous";
+	}
 	?>
 
 </td>
