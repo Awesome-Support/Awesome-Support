@@ -52,18 +52,9 @@ function wpas_metaboxes() {
 	
 	
 	/* Client profile */
-	if ( 'post-new.php' !== $pagenow ) {
-		// Check for Support User anonymity.
-		$privacy = 0;
-		$at_user = wp_get_current_user();
-		$current_user_role = ($at_user->roles) ? $at_user->roles[0] : false;
-		$at_field_for_anonymity = get_post_meta(intval($_GET['post']), '_wpas_at_field_for_anonymity', true);
-		if (
-			is_array($at_field_for_anonymity) && count($at_field_for_anonymity) == 1
-			&& $at_field_for_anonymity[0] == 1 && 'wpas_agent' == $current_user_role
-		) {
-			$privacy = 1;
-		}
+	if ( 'post-new.php' !== $pagenow ) {		
+		// Filter hook to check Support User anonymity
+		$privacy = apply_filters('wpas_support_user_hide_profile', 0);
 		if ($privacy == 0) {
 			add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
 		}

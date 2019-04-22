@@ -35,16 +35,8 @@ if ( isset( $post ) && is_a( $post, 'WP_Post' ) && 'auto-draft' !== $post->post_
 
 	// Staff
 	$staff_id = wpas_get_cf_value( 'assignee', get_the_ID() );
-	$privacy = 0;
-	$at_user = wp_get_current_user();
-	$current_user_role = ($at_user->roles) ? $at_user->roles[0] : false;
-	$at_field_for_anonymity = get_post_meta($post->ID, '_wpas_at_field_for_anonymity', true);
-	if (
-		is_array($at_field_for_anonymity) && count($at_field_for_anonymity) == 1
-		&& $at_field_for_anonymity[0] == 1 && 'wpas_agent' == $current_user_role
-	) {
-		$privacy = 1;
-	}
+	// Check for Support User anonymity.
+	$privacy = apply_filters('wpas_support_user_hide_profile', 0);
 
 } else {
 
