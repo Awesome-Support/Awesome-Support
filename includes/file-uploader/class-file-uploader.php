@@ -606,6 +606,9 @@ class WPAS_File_Upload {
 			$render_method = wpas_get_option( 'attachment_render_method', 'inline');  // returns 'inline' or 'attachment'.
 			$filename = basename( $attachment->guid );
 
+			ob_clean();
+			ob_end_flush();
+
 			ini_set( 'user_agent', 'Awesome Support/' . WPAS_VERSION . '; ' . get_bloginfo( 'url' ) );
 			header( "Content-Type: $attachment->post_mime_type" );
 			header( "Content-Disposition: $render_method; filename=\"$filename\"" );
