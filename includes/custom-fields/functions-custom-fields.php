@@ -750,7 +750,7 @@ function wpas_register_core_fields() {
 	$show_final_time_in_fe_ticket = ( isset( $options[ 'show_final_time_in_fe_ticket' ] ) && true === boolval( $options[ 'show_final_time_in_fe_ticket' ] ) );		
 	
 	$final_time_hide_front_end = true;
-	if ( $show_final_time_in_fe_ticket_list || $show_final_time_in_fe_ticket ) {
+	if ( $show_final_time_in_fe_list || $show_final_time_in_fe_ticket ) {
 		$final_time_hide_front_end = false ;
 	}
 
