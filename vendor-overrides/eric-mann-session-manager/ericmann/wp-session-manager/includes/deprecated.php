@@ -3,6 +3,13 @@
  * Deprecated methods for WP Session Manager
  *
  * @since 3.0
+ * 
+ /**
+ *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * This file now overrides the official version that is in github.  Needed
+ * to do this so that we can remove warnings from the debug.log file
+ * that are thown by all the functions in this file!
+ *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 
 if (!function_exists('wp_session_cache_expire')) :
