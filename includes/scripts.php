@@ -159,7 +159,7 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
 	wp_register_script( 'wpas-admin-upload', WPAS_URL . 'assets/public/js/component_upload.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-print-ticket', WPAS_URL . 'assets/admin/js/admin-print-ticket.js', array( 'jquery' ), WPAS_VERSION );
-
+	wp_register_script( 'wpas-admin-edit-ticket-content-script', WPAS_URL . 'assets/admin/js/admin-edit-ticket-content.js', array( 'jquery' ), WPAS_VERSION );
 	// @TODO: Why is the version set to TIME() below instead of WPAS_VERSION?
 	wp_register_script(
 		'wpas-datepicker',
@@ -237,10 +237,7 @@ function wpas_register_assets_back_end() {
 		wp_enqueue_editor();
 	}
 	
-	wp_enqueue_script( 'wpas-admin-edit-ticket-content-script', WPAS_URL . 'assets/admin/js/admin-edit-ticket-content.js', array( 'jquery' ), WPAS_VERSION );
-	wp_localize_script( 'wpas-admin-edit-ticket-content-script', 'WPAS_Edit_Ticket_Content', array(
-		'ajax_url' => admin_url( 'admin-ajax.php' )
-	));
+	
 }
 
 add_action( 'wp_enqueue_scripts', 'wpas_assets_front_end', 10 );
@@ -371,6 +368,11 @@ function wpas_enqueue_assets_back_end() {
 			wp_enqueue_script( 'wpas-admin-reply-history' );
 			wp_enqueue_script( 'wpas-autolinker' );
 		}
+
+		wp_enqueue_script( 'wpas-admin-edit-ticket-content-script');
+		wp_localize_script( 'wpas-admin-edit-ticket-content-script', 'WPAS_Edit_Ticket_Content', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' )
+		));
 
 	}
 
