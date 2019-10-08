@@ -190,7 +190,6 @@ class WPAS_Product_Sync {
 				case 'hide_empty':
 				case 'hierarchical':
 				case 'cache_domain':
-					continue;
 					break;
 
 				case 'exclude':
@@ -217,7 +216,7 @@ class WPAS_Product_Sync {
 					if ( 'count' === $value ) {
 						$clean_args['fields']              = 'ids';
 						$clean_args['wpas_get_post_count'] = true; // We set wpas_get_post_count in order to know that we just need the post count
-						continue;
+						break;
 					}
 
 					/* Use the given arg if supported by WP_Query */
@@ -239,7 +238,7 @@ class WPAS_Product_Sync {
 
 					/* Overwrite the child_of argument */
 					if ( isset( $args['get'] ) && 'all' === $args['get'] ) {
-						continue;
+						break;
 					}
 
 					$clean_args['post_parent'] = $value;
