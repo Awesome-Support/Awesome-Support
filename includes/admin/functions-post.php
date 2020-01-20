@@ -48,6 +48,12 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 	if ( 'auto-draft' === $data['post_status'] ) {
 		return $data;
 	}
+	
+	/**
+	 * Sanitize the title of the ticket post
+	 */
+	$data['post_title'] = wp_kses_post( $data['post_title'] );
+	$data['post_title'] = sanitize_text_field( $data['post_title'] );	
 
 	/**
 	 * Automatically set the ticket as processing if this is the first reply.
