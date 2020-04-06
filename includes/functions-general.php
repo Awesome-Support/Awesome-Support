@@ -645,7 +645,7 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	$options = '';
 
 	foreach ( $tickets as $ticket ) {
-		$options .= "<option value='$ticket->ID' " . selected( $args['selected'], $ticket->ID, false ) . ">$ticket->post_title</option>";
+		$options .= "<option value='$ticket->ID' " . selected( $args['selected'], $ticket->ID ) . ">$ticket->post_title</option>";
 	}
 
 	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
@@ -1249,20 +1249,6 @@ function wpas_is_support_priority_active() {
 }
 
 /**
- * Check if ticket type is active
- * @return boolean
- */
-function wpas_is_support_ticket_type_active() {
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
-	
-	if ( isset( $options['support_ticket_type'] ) && true === boolval( $options['support_ticket_type'] ) ) {
-		return true;
-	}
-	
-	return false;
-}
-
-/**
  * Create a pseduo GUID
  *
  * @return string
@@ -1340,10 +1326,6 @@ function wpas_is_support_ticket_type_active() {
  * Returns TRUE if we are declaring compatibility with GUTENBERG.
  * Returns FALSE if not.  The default is FALSE - we are not
  * compatible
- *
- * Deprecated as of Version 5.8.1.  We are using the use_block_editor_for_post_type
- * and Gutenberg_can_edit_post_type filters instead to disable Gutenberge on the 
- * the ticket pages.  See file admin/gutenberg/functions-gutenberg-post-type.php.
  *
  * @since 4.4.0
  *
@@ -1690,7 +1672,7 @@ function wpas_can_delete_attachments() {
  * @return boolean
  */
 function wpas_agent_can_delete_attachments() {
-	return boolval( wpas_get_option( 'agents_can_delete_attachments' ) );
+	return wpas_get_option( 'agents_can_delete_attachments' );
 }
 
 /**
@@ -1699,16 +1681,7 @@ function wpas_agent_can_delete_attachments() {
  * @return boolean
  */
 function wpas_user_can_delete_attachments() {
-	return boolval( wpas_get_option( 'users_can_delete_attachments' ) );
-}
-
-/**
- * Check if agent can set auto delete attachments flag
- * 
- * @return boolean
- */
-function wpas_agent_can_set_auto_delete_attachments() { 
-	return boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments' ) );
+	return wpas_get_option( 'users_can_delete_attachments' );
 }
 
 /**
@@ -1717,7 +1690,7 @@ function wpas_agent_can_set_auto_delete_attachments() {
  * @return boolean
  */
 function wpas_user_can_set_auto_delete_attachments() {
-	return boolval( wpas_get_option( 'user_can_set_auto_delete_attachments' ) );
+	return wpas_get_option( 'user_can_set_auto_delete_attachments' );
 }
 
 
@@ -1894,162 +1867,4 @@ function wpas_get_support_users_on_ticket( $post_id ) {
  */
 function wpas_is_wp_cli() {
 	return ( defined( 'WP_CLI' ) && WP_CLI ) ;
-}
-
-/**
- * Returns the primary agent on a ticket
- *
- *
- * @since 5.8.1
- *
- * @param int $ticket_id - the ID of the ticket
- *
- * @return int|boolean
- */
-function wpas_get_primary_agent_by_ticket_id( $ticket_id ){
-	
-	$agent_id = get_post_meta( $ticket_id, '_wpas_assignee', true );
-	if ( ! is_wp_error( $agent_id) && agent_id && wpas_is_agent( $agent_id ) ) {
-		return $agent_id;
-	} else {
-		return false ;
-	}
-	
-}
-
-
-/**
- * Enqueue magnific popup
- */
-function wpas_add_magnific() {
-	
-	
-	wp_register_style( 'wpas-magnific', WPAS_URL . 'assets/admin/css/vendor/magnific-popup.css', null, WPAS_VERSION );
-	wp_register_script( 'wpas-magnific', WPAS_URL . 'assets/admin/js/vendor/jquery.magnific-popup.min.js', array( 'jquery' ), WPAS_VERSION );
-	
-	wp_register_script( 'wpas-admin-popup', WPAS_URL . 'assets/admin/js/admin-popup.js', array( 'jquery', 'wpas-magnific' ), WPAS_VERSION );
-	wp_register_style( 'wpas-admin-popup', WPAS_URL . 'assets/admin/css/admin-popup.css', null, WPAS_VERSION );
-	
-	wp_enqueue_script( 'wpas-magnific' );
-	wp_enqueue_style( 'wpas-magnific' );
-	wp_enqueue_script( 'wpas-admin-popup' );
-	wp_enqueue_style( 'wpas-admin-popup' );
-}
-
-/**
- * Prepare content for full screen popup window
- * 
- * @param string $id
- * @param string $content
- * @param array $args
- */
-function wpas_get_full_screen_popup_window( $id, $content = '', $args = array() ) {
-	wpas_get_popup_window( $id, $content, $args );
-}
-
-/**
- * Prepare content for a popup window
- * 
- * @param string $id
- * @param string $content
- * @param array $args
- */
-function wpas_get_popup_window( $id, $content = '', $args = array() ) {
-	 
-	 
-	$theme = isset( $args['theme'] )  ? $args['theme'] : 'white-popup';
-	$hide  = isset( $args['hide'] )  ? $args['hide'] : 'mfp-hide';
-	
-	$title = isset( $args['title'] ) ? $args['title'] : '';
-	
-	$classes = array();
-	
-	if( $theme ) {
-		 $classes[] = $theme;
-	}
-	
-	if( $hide ) {
-		 $classes[] = $hide;
-	}
-	
-	?>
-	
-	<div class="<?php echo implode( ' ', $classes ); ?>" id="<?php echo $id ?>">
-		<div class="main_heading"><?php echo $title; ?></div>
-		<div class="wpas_mfp_window_wrapper">
-			<div class="wpas_msg"></div>
-			<div class="wpas_window_content"><?php echo $content; ?></div>
-		</div>
-
-	</div>
-	
-	<?php
-}
-
-/**
- * Generate link for full screen popup window
- * 
- * @param array $args
- * 
- * @return string
- */
-function wpas_full_screen_window_link( $args ) {
-	
-	$args['window_class'] = 'wpas-mfp-fullscreen-popup';
-	
-	return wpas_window_link( $args );
-}
-
-if( !function_exists( 'wpas_window_link' ) ) {
-
-	/**
-	 * Generate link for popup window
-	 * 
-	 * @param array $args
-	 * 
-	 * @return string
-	 */
-	function wpas_window_link( $args ) {
-
-		$defaults = array(
-			'type'  => 'inline',
-			'data'  => array(),
-			'label' => '',
-			'title' => '',
-			'ajax_params' => array(),
-			'window_class' => 'wpas-mfp-fullscreen-popup' // for now full screen window is default
-		);
-
-		$args = wp_parse_args( $args, $defaults );
-
-		$class = 'wpas_win_link ' . $args['class'];
-		$title = isset( $args['title'] ) ? $args['title'] : "";
-
-		$link = '#';
-
-		$data_attrs = array_merge( $args['data'],  array( 'win_type' => $args['type'] ) );
-
-		if( !empty( $args['ajax_params'] ) ) {
-			$data_attrs['ajax_params'] = json_encode( $args['ajax_params']);
-		}
-
-		if( $args['window_class'] ) {
-			$data_attrs['window_class'] = $args['window_class'];
-		}
-		
-		$data_attr_list = array();
-
-		foreach( $data_attrs as $attr_name => $attr_val ) {
-			$data_attr_list[] = "data-{$attr_name}=\"" . esc_attr($attr_val) . '"';
-		}
-
-		$data_params = implode( ' ', $data_attr_list );
-
-
-		$label = $args['label'];
-
-		return sprintf( '<a href="%s" %s title="%s" class="%s">%s</a>', $link, $data_params, $title, $class, $label );
-
-	}
-	
 }

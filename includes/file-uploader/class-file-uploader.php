@@ -184,14 +184,10 @@ class WPAS_File_Upload {
 			return;
 		}
 		
-		//$old_auto_save = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
+		$old_auto_save = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
 		$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
 		
-		//if( $auto_delete !== $old_auto_save ) {
-		//	$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
-		//}
-		
-		if ( wpas_agent_can_set_auto_delete_attachments() || wpas_is_asadmin() ) {
+		if( $auto_delete !== $old_auto_save ) {
 			$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
 		}
 		
@@ -238,7 +234,7 @@ class WPAS_File_Upload {
 		
 		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
 		
-		if( !$auto_delete || !$user_can_set_flag ) {
+		if( !$auto_delete && !$user_can_set_flag ) {
 			return;
 		}
 		
@@ -259,9 +255,7 @@ class WPAS_File_Upload {
 	function add_auto_delete_button_fe_ticket() {
 		global $post;
 		
-		$auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
-		
-		if( wpas_user_can_set_auto_delete_attachments()  && true == $auto_delete ) {
+		if( wpas_user_can_set_auto_delete_attachments() ) {
 			$flag_on = get_post_meta( $post->ID, 'auto_delete_attachments', true );
 			$this->auto_delete_field( $flag_on );
 		}
@@ -275,7 +269,7 @@ class WPAS_File_Upload {
 	function admin_add_auto_delete_button() {
 		
 		/* Exit if agents are not allowed to set auto-delete flag */
-		if ( ! wpas_is_asadmin() &&  ! boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments', false ) ) ) {
+		if ( ! wpas_is_asadmin() &&  ! boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments', true ) ) ) {
 			return ;
 		}
 
@@ -611,9 +605,6 @@ class WPAS_File_Upload {
 
 			$render_method = wpas_get_option( 'attachment_render_method', 'inline');  // returns 'inline' or 'attachment'.
 			$filename = basename( $attachment->guid );
-
-			ob_clean();
-			ob_end_flush();
 
 			ini_set( 'user_agent', 'Awesome Support/' . WPAS_VERSION . '; ' . get_bloginfo( 'url' ) );
 			header( "Content-Type: $attachment->post_mime_type" );
@@ -1168,13 +1159,6 @@ class WPAS_File_Upload {
 					continue;
 
 				} else {
-					
-					// Make sure a required function exists - for some reason
-					// sometimes it does not, especially when called from our 
-					// gravity forms add-on.
-					if ( ! function_exists('wp_generate_attachment_metadata') ) {
-						require_once( ABSPATH . 'wp-admin/includes/image.php' );
-					}					
 
 					$attach_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
 

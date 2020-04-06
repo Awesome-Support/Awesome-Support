@@ -123,12 +123,7 @@ function wpas_uninstall() {
 		/**
 		* Delete Priority taxonomy
 		*/
-		wpas_delete_taxonomy( 'ticket_priority' );
-		
-		/**
-		* Delete ticket type taxonomy
-		*/
-		wpas_delete_taxonomy( 'ticket_type' );				
+		wpas_delete_taxonomy( 'ticket_priority' );		
 		
 		/**
 		* Delete Channel taxonomy

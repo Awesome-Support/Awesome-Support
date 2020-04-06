@@ -38,6 +38,21 @@ the overlay parts are put together!
 		}
 		
 	}
+
+	/* Style all other input elements */
+	/* If these start to conflict with other page elements from the users theme we will need to add a qualifying class to it. */
+	input, select {
+		
+		/* Make all other input elements have a bit of roundedness and font size smaller */
+		border-radius: 3px;
+		font-size: @font-size-small;	
+
+		/* Set colors for input elements */
+		background-color: @form-control-background-color !important ;
+		border-color: @form-control-border-color !important ;
+		color: @form-control-color !important ;
+		
+	}    
 	
 	/* Ticketlist: All elements - make font size smaller and some other stuff */
 	.wpas-ticket-list {
@@ -50,29 +65,7 @@ the overlay parts are put together!
 		border: solid;
 		border-width: 1px;
 		border-radius: 4px;
-		border-color: @brand-misc;	
-
-		/* Style all other input elements on the ticketlist page */
-		input, select {
-			
-			/* Make all other input elements have a bit of roundedness and font size smaller */
-			border-radius: 3px;
-			font-size: @font-size-small;	
-
-			/* Set colors for input elements */
-			background-color: @form-control-background-color !important ;
-			border-color: @form-control-border-color !important ;
-			color: @form-control-color !important ;
-			
-		}
-		
-		/* Link colors*/
-		a {
-			color: @link-color;
-		}
-		a:hover {
-			color: @link-color-hover;
-		}		
+		border-color: @brand-misc;		
 		
 	}
 
@@ -118,7 +111,7 @@ the overlay parts are put together!
 		}		  
 		tr:nth-child(even) {
 			background: @table-row-even ;
-		}
+		}				  
 		
 		/* Pagination Footers */
 		.wpas_table_pagination > li > a {
@@ -128,7 +121,7 @@ the overlay parts are put together!
 			border-top-color: @table-cell-border-top-color;
 			border-bottom-color:@table-cell-border-bottom-color;
 		}
-
+		
 	}
 	
 }

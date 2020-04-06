@@ -301,20 +301,6 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 }
 
 /**
- * Check if the ticket is a ticket template.
- *
- *
- * @since  5.9.0
- *
- * @param  integer       $post_id The ID of the ticket to check
- *
- * @return boolean       True if the ticket is a ticket template, false otherwise
- */
-function wpas_is_ticket_template( $post_id ) {
-	return boolval( get_post_meta( $post_id, '_wpas_is_ticket_template', true ) ) ;
-}
-
-/**
  * Returns the close date of the ticket based on the ticket/post id passed
  *
  * @since  4.0.4

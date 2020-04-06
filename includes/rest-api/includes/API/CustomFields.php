@@ -14,10 +14,9 @@ use WPAS_Custom_Field;
  * Class used to get custom fields
  * 
  */
-class CustomFields extends WP_REST_Controller {
+class CustomFields {
 
 	public function __construct() {
-
 		$this->namespace = wpas_api()->get_api_namespace();
 		$this->rest_base = 'tickets';
     }
@@ -30,19 +29,14 @@ class CustomFields extends WP_REST_Controller {
 	 */
 	public function register_routes() {
 
-        // Get all custom fields
+
         register_rest_route( $this->namespace, '/custom-fields', array(
-            array(
-                'methods'             => WP_REST_Server::READABLE,
-                'callback'            => array( $this, 'get_custom_fields' ),
-                'permission_callback' => array( $this, 'get_custom_fields_permissions_check' ),
-                'args'                => $this->get_endpoint_args_for_item_schema( WP_REST_Server::READABLE ) 
-            ),
-            'schema' => array( $this, 'get_public_item_schema' )
+            'methods'             => WP_REST_Server::READABLE,
+            'callback'            => array( $this, 'get_custom_fields' ),
+            'permission_callback' => array( $this, 'get_custom_fields_permissions_check' )
         ) );
 
 
-        // Get ticket custom fields
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<ticket_id>[\d]+)/custom-fields', array(
             'args' => array(
 				'ticket_id' => array(
@@ -55,12 +49,11 @@ class CustomFields extends WP_REST_Controller {
                 'methods'             => WP_REST_Server::READABLE,
                 'callback'            => array( $this, 'get_custom_fields' ),
                 'permission_callback' => array( $this, 'get_custom_fields_permissions_check' ),
-                'args'                => $this->get_endpoint_args_for_item_schema( WP_REST_Server::READABLE ) 
-            ),
-            'schema' => array( $this, 'get_public_item_schema' ) 
+            ) 
+            
         ) );
 
-        // Update custom fields
+
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<ticket_id>[\d]+)/custom-fields', array(
             'args' => array(
 				'ticket_id' => array(
@@ -73,14 +66,8 @@ class CustomFields extends WP_REST_Controller {
                 'methods'             => WP_REST_Server::CREATABLE,
                 'callback'            => array( $this, 'update_custom_fields' ),
                 'permission_callback' => array( $this, 'get_custom_fields_permissions_check' ),
-                'args' => array( 
-                    'custom_fields' => array(
-                        'required'    => true,
-                        'description' => 'List of custom fields',
-                        'type'        => 'array'
-                    )
-                )
-            )
+            ) 
+            
         ) );
 
     }
@@ -132,36 +119,8 @@ class CustomFields extends WP_REST_Controller {
                 continue;
             }
 
-            switch( $data[ 'args' ][ 'field_type' ] ) {
-				case 'text' :
-				case 'url' :
-				case 'email' :
-				case 'number' :
-				case 'date-field' :
-				case 'password' :
-				case 'upload' :
-				case 'select' :
-				case 'radio' :
-				case 'textarea' :
-				case 'wysiwyg' :
-				case 'taxonomy' :
-					$type = 'string';
-					break;
-				case 'checkbox' :
-					$type = 'boolean';
-					break;
-				default:
-					$type = false;
-            }
-            
-
-            $data[ 'schema' ] = array(
-				'type'        => $type,
-				'description' => empty( $data[ 'args' ]['desc'] ) ? '' : $data[ 'args' ]['desc'],
-				'default'     => isset( $data[ 'args' ]['default']  ) ? $data[ 'args' ]['default']  : null,
-			);
-
             $fields[ $field ] = $data;
+
         }
 
         return $fields;
@@ -255,53 +214,5 @@ class CustomFields extends WP_REST_Controller {
 
     }
     
-
-    /**
-	 * Retrieves the custom fields schema
-	 *
-	 * @return array.
-	 */
-	public function get_item_schema() {
-
-		$fields = $this->get_fields();
-
-		$schema = array(
-			'$schema'    => 'http://json-schema.org/schema#',
-			'title'      => 'custom-field',
-			'type'       => 'object',
-			'properties' => array(),
-		);
-
-		foreach ( $fields as $field_name => $option ) {
-
-			$schema['properties'][ $field_name ] = $option['schema'];
-			$schema['properties'][ $field_name ]['arg_options'] = array(
-				'sanitize_callback' => array( $this, 'sanitize_callback' ),
-			);
-		}
-
-		return $this->add_additional_fields_schema( $schema );
-	}
-    
-	/**
-	 * Custom sanitize callback used for all options to allow the use of 'null'.
-	 *
-	 * By default, the schema of settings will throw an error if a value is set to
-	 * `null` as it's not a valid value for something like "type => string". We
-	 * provide a wrapper sanitizer to whitelist the use of `null`.
-	 *
-	 * @param  mixed           $value   The value for the setting.
-	 * @param  WP_REST_Request $request The request object.
-	 * @param  string          $param   The parameter name.
-	 * @return mixed|WP_Error
-	 */
-	public function sanitize_callback( $value, $request, $param ) {
-
-		if ( is_null( $value ) ) {
-			return $value;
-		}
-
-		return rest_parse_request_arg( $value, $request, $param );
-	}
     
 }

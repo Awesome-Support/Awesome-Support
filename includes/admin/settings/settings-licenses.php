@@ -36,6 +36,6 @@ function wpas_core_settings_licenses( $def ) {
 		),
 	);
 
-	return array_merge( $def, apply_filters('wpas_settings_licenses', $settings )  );
+	return array_merge( $def, $settings );
 
 }

@@ -44,19 +44,12 @@ function wpas_add_default_channel_terms($reset = false) {
 			return;
 		}
 	}
-
-
-	if ( true === taxonomy_exists('ticket_channel') ) {	
 	
-		$channels = wpas_default_channels();
-		
-		foreach($channels as $channel) {
-			wp_insert_term($channel, 'ticket_channel');
-		}
-		
-		update_option('wpas_default_channels_added', true);
-		
+	$channels = wpas_default_channels();
+	foreach($channels as $channel) {
+		wp_insert_term($channel, 'ticket_channel');
 	}
+	update_option('wpas_default_channels_added', true);
 	
 	return true;
 	

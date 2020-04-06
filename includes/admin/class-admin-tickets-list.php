@@ -24,11 +24,6 @@ class WPAS_Tickets_List {
 		if ( is_admin() ) {
 
 			/**
-			 * Set some options on the PRODUCT custom field that depends on if if products can be synced or not;
-			 */
-			add_filter( 'wpas_get_custom_fields', array( $this, 'show_product_filters' ), 10, 1 );	// Show product filter options if product syncing is not enabled.	
-		
-			/**
 			 * Add custom columns
 			 */
 			add_action( 'manage_ticket_posts_columns', array( $this, 'add_custom_columns' ), 10, 1 );
@@ -60,7 +55,6 @@ class WPAS_Tickets_List {
 			
 			add_filter( 'posts_search', array( $this, 'ticket_listing_search_query' ), 2 , 11 );
 			add_filter( 'posts_join',   array( $this, 'ticket_listing_search_join_query' ), 2, 11 );
-			
 		}
 	}
 	
@@ -354,10 +348,6 @@ class WPAS_Tickets_List {
 					$new[ 'department' ] = $this->get_cf_title( 'department', 'Department' );
 				}
 
-				if ( array_key_exists( 'ticket_type', $custom ) ) {
-					$new[ 'ticket_type' ] = $this->get_cf_title( 'ticket_type', 'Ticket Type' );
-				}
-				
 				if ( array_key_exists( 'ticket_channel', $custom ) ) {
 					$new[ 'ticket_channel' ] = $this->get_cf_title( 'ticket_channel', 'Channel' );
 				}
@@ -556,22 +546,15 @@ class WPAS_Tickets_List {
 
 						// Maybe add close date
 						$close_date = wpas_get_close_date( $post_id );
-						
 						if ( ! empty( $close_date ) ) {
-						
+
 							$close_date_string        = (string) date_i18n( $close_date );  // Convert date to string
 							$close_date_string_tokens = explode( ' ', $close_date_string );    // Separate date/time
-								
-							if ( 'closed' == wpas_get_ticket_status( $post_id ) ) {
-								if ( ! empty( $close_date_string_tokens ) ) {
-									echo '<br>';
-									echo __( 'Closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
-								}
-							} else {
+
+							if ( ! empty( $close_date_string_tokens ) ) {
 								echo '<br>';
-								echo __( 'This ticket was re-opened but had been closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
+								echo __( 'Closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
 							}
-							
 						}
 
 						// Maybe add gmt close date
@@ -627,14 +610,6 @@ class WPAS_Tickets_List {
 							$old_color = wpas_get_option( 'color_old' );
 							array_push( $tags, "<span class='wpas-label' style='background-color:$old_color;'>" . __( 'Old', 'awesome-support' ) . "</span>" );
 						}
-						
-						// Maybe add the "Ticket Template" tag
-						if ( true === wpas_is_ticket_template( $post_id ) ) {
-							$ticket_template_color = wpas_get_option( 'color_ticket_template_type' );
-							array_push( $tags, "<span class='wpas-label' style='background-color:$ticket_template_color;'>" . __( 'Template', 'awesome-support' ) . "</span>" );
-						}						
-						
-						
 						
 						$tags = apply_filters( 'wpas_ticket_listing_activity_tags', $tags, $post_id );
 
@@ -1095,7 +1070,7 @@ SQL;
 		echo '<a href = "https://getawesomesupport.com/documentation-new/">' . __( '1. All Extensions', 'awesome-support' ) . '</a>' . '<br />';
 		echo __( 'Links to documentation for all extensions and add-ons.', 'awesome-support' ) . '<br /><br />';
 		
-		echo '<a href = "https://developer.getawesomesupport.com/documentation/rest-api/introduction-to-the-awesome-support-rest-api/">' . __( '2. REST API', 'awesome-support' ) . '</a>' . '<br />';
+		echo '<a href = "http://restapidocs.getawesomesupport.com/">' . __( '2. REST API', 'awesome-support' ) . '</a>' . '<br />';
 		echo __( 'Documentation for the REST API.', 'awesome-support' ) . '<br /><br />';
 		
 		echo '<h2>' . __( 'Import Tickets (Zendesk, Ticksy, Helpscout)', 'awesome-support' ) . '</h2>' . '<br />';		
@@ -1399,14 +1374,7 @@ SQL;
 					}
 
 					if ( ! empty( $term ) ) {
-						
-						if( 'product' === $arg && property_exists( $term, 'term_data' ) && !empty( $term->term_data ) ) {
-							$query->query_vars[ $arg ] = $term->term_data['slug'];
-						} else {
-							$query->query_vars[ $arg ] = $term->slug;
-						}
-						
-						
+						$query->query_vars[ $arg ] = $term->slug;
 					}
 
 				}
@@ -1417,7 +1385,7 @@ SQL;
 	}
 
 	/**
-	 * Set meta_query for custom columns
+	 * Set meta_query cor custom columns
 	 *
 	 * @param $wp_query
 	 *
@@ -1919,39 +1887,6 @@ SQL;
 		}
 
 		return $classes;
-
-	}
-	
-	
-	/**
-	 * Turn on product filtering if we're not syncing products with WC.
-	 *
-	 * Filter Hook: wpas_get_custom_fields
-	 *
-	 * @param array $custom_fields Registered custom fields
-	 *
-	 * @return array
-	 */	
-	public function show_product_filters($custom_fields ) {
-		
-		// What e-commerce plugin are we syncing with?
-		$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->plugin;
-
-		$product_sync = false ;
-		
-		/* Do not turn on product filtering if we're syncing with WC */
-		if ( ! is_null( $ecommerce_synced ) && 'woocommerce' === $ecommerce_synced ) {
-			$product_sync = true ;
-		}		
-		
-		if (false === $product_sync) {
-			if ( isset( $custom_fields['product'] ) ) {					
-				$custom_fields['product']['args']['filterable'] = true;
-			}
-		}
-
-		
-		return $custom_fields;
 
 	}
 

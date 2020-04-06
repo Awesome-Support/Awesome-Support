@@ -39,8 +39,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				'sanitize'    => 'sanitize_user'
 			)
 		) );
-		
-		$username = apply_filters( 'wpas_login_form_user_name', $username ) ;
 
 		echo $username->get_output();
 
@@ -55,8 +53,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 			)
 		) );
 
-		$password = apply_filters( 'wpas_login_form_password', $password ) ;
-		
 		echo $password->get_output();
 
 		/**
@@ -74,7 +70,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 			)
 		) );
 
-		$rememberme = apply_filters( 'wpas_login_form_rememberme', $rememberme ) ;
 		echo $rememberme->get_output();
 
 		wpas_do_field( 'login', $redirect_to );
@@ -102,8 +97,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				)
 			) );
 
-			$first_name = apply_filters( 'wpas_registration_form_first_name', $first_name ) ;			
-			
 			echo $first_name->get_output();
 
 			$last_name_desc = wpas_get_option( 'reg_last_name_desc', '' ) ;
@@ -119,8 +112,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				)
 			) );
 
-			$last_name = apply_filters( 'wpas_registration_form_last_name', $last_name ) ;						
-			
 			echo $last_name->get_output();
 
 			$email_desc = wpas_get_option( 'reg_email_desc', '' ) ;
@@ -136,8 +127,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				)
 			) );
 
-			$email = apply_filters( 'wpas_registration_form_email', $email ) ;						
-			
 			echo $email->get_output();
 
 			$pwd = new WPAS_Custom_Field( 'password', array(
@@ -151,8 +140,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				)
 			) );
 
-			$pwd = apply_filters( 'wpas_registration_form_password', $pwd ) ;
-			
 			echo $pwd->get_output();
 
 			$showpwd = new WPAS_Custom_Field( 'pwdshow', array(

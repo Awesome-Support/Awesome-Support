@@ -231,13 +231,11 @@ function wpas_core_settings_registration( $def ) {
 			'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 			),	
 		);
-
 	$gdpr_consent_options = apply_filters('wpas_gdpr_consents', $gdpr_consent_options );
-
 	foreach ($gdpr_consent_options as $key => $gdpr_option ) {
 		$settings['registration']['options'][] = $gdpr_option;
 	}
 
-	return array_merge( $def, apply_filters('wpas_settings_registration', $settings )  );
+	return array_merge( $def, $settings );
 
 }

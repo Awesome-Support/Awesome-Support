@@ -7,7 +7,7 @@
 
             $.ajax({
                 type: 'POST',
-				url: '//getawesomesupport.us20.list-manage.com/subscribe/post-json?u=09dd5f0b3d4bbf5d0fb653d87&id=45d2b3e19b&c=?',
+                url: '//getawesomesupport.us2.list-manage.com/subscribe/post-json?u=46b50a9678918ccf5eb64131a&id=3beeab4d90&c=?',
                 data: $('#wpas-mailchimp-signup-form').serialize(),
                 dataType: 'jsonp',
                 contentType: "application/json; charset=utf-8",

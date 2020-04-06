@@ -174,6 +174,6 @@ function wpas_core_settings_moderated_registration( $def ) {
 		),
 	);
 
-	return array_merge( $def, apply_filters('wpas_settings_mod_registration', $settings )  );
+	return array_merge( $def, $settings );
 
 }

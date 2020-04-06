@@ -53,10 +53,6 @@ function wpas_system_tools() {
 		case 'reset_channels':
 			wpas_reset_channel_terms();
 			break;
-			
-		case 'reset_ticket_types':
-			wpas_reset_ticket_types();
-			break;			
 
 		case 'reset_time_fields':
 			wpas_reset_time_fields_to_zero();
@@ -71,13 +67,8 @@ function wpas_system_tools() {
 			break;
 
 		case 'rerun_400_to_500_conversion':
-			wpas_upgrade_511();
-			wpas_upgrade_520();
+			wpas_upgrade_500();
 			break;	
-			
-		case 'rerun_580_to_590_conversion':
-			wpas_upgrade_590();
-			break;
 
 		case 'install_blue_blocks_email_template':
 			wpas_install_email_template( 'blue_blocks' );
@@ -155,16 +146,6 @@ require_once( WPAS_PATH . 'includes/admin/upgrade/functions-upgrade.php' );
  */
 function wpas_reset_channel_terms() {
 	return wpas_add_default_channel_terms(true);
-}
-
-/**
- * Add default ticket types.
- * 
- * @return boolean
- * 
- */
-function wpas_reset_ticket_types() {
-	return wpas_add_default_ticket_types(true);
 }
 
 /**
@@ -350,20 +331,14 @@ function wpas_delete_synced_products( $resync = false ) {
 			
 			$unsync_term = false;
 			
-			/* Does the product taxonmy exist as a product post? */
-			/* Note even sure this section is needed - it seems  */
-			/* to be unnecessary given what comes in the next    */
-			/* section. */
 			foreach ( $posts->posts as $post ) {
 				if($product_term->name == $post->ID){
 					$unsync_term = true;
 				}
 			}
 			
-			/* Product taxonomy item exists in the product posts so process this section */
-			if($unsync_term == true){
+			if($unsync_term == false){
 				
-				/* Is the product term on a ticket?  Only if its not used on a ticket should we remove it from the product taxonomy */
 				if( wpas_product_has_tickets($product_term->term_id) === false ){
 					
 					wp_delete_term( (int) $product_term->term_id, 'product' );
@@ -707,7 +682,7 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	}
 	
 	// Allow other add-ons to set this path
-	$template_root_path = apply_filters( 'wpas_email_template_root_path', $template_root_path ) ;
+	apply_filters( 'wpas_email_template_root_path', $template_root_path ) ;
 	
 	// Create array with option names and corresponding file names
 	$template_files['content_confirmation'] 	= $template_root_path . 'New-Ticket-Confirmation-Going-To-End-User.html';
@@ -719,7 +694,7 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	$template_files['content_closed_client'] 	= $template_root_path . 'Ticket-Closed-By-Client.html';
 	
 	// Allow other add-ons to update this array 
-	$template_files = apply_filters( 'wpas_email_template_map_to_files', $template_files );
+	apply_filters( 'wpas_email_template_map_to_files', $template_files );
 	
 	// Read the template files into the appropriate option based on the key-fiile mapping array above.
 	foreach ( $template_files as $key => $template_file ) {

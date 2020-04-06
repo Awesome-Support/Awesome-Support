@@ -23,14 +23,14 @@
 	 *                             registered; otherwise `undefined`.
 	 */	
 	registerBlockType( 'awesome-support/submit-ticket', {
-		title: __( 'Submit Ticket' ) ,
+		title: __( 'Submit Ticket', 'awesome-support' ) ,
 
 		icon: 'forms',
 
 		category: 'widgets',
 
 		edit: function( props ) {
-			return el( 'p', { style: blockStyle }, __( 'Awesome Support: Submit Ticket' ) );
+			return el( 'p', { style: blockStyle }, __( 'Awesome Support: Submit Ticket', 'awesome-support' ) );
 		},
 
 		save: function( props ) {

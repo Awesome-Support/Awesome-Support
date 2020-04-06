@@ -20,11 +20,8 @@ function wpas_open_ticket( $data ) {
 	// Fallback in case the referrer failed
 	if ( empty( $submit ) ) {
 		$submission_pages = wpas_get_option( 'ticket_submit' );
-
-		if( $submission_pages ) {
-			$submit           = $submission_pages[0];
-			$submit           = wp_sanitize_redirect( get_permalink( $submit ) );
-		}
+		$submit           = $submission_pages[0];
+		$submit           = wp_sanitize_redirect( get_permalink( $submit ) );
 	}
 
 	// Verify user capability
@@ -360,16 +357,9 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 * @since 3.2.6
 	 */
 	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data, $incoming_data );
-	
-	/**
-	 * We might want to assign agent manually
-	 */
-	if( apply_filters( 'wpas_open_ticket_should_agent_assign', true, $ticket_id ) ) {
-		
-		/* Assign an agent to the ticket */
-		wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
-	
-	}
+
+	/* Assign an agent to the ticket */
+	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
 	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
 	/* Need to update it here again because some of the action hooks fired above will overwrite the term.			  */
@@ -699,16 +689,14 @@ function wpas_new_reply_submission( $data ) {
 		$reply_id = wpas_add_reply( $data, $parent_id );
 
 	}
-	
-	$closed = false;
 
 	/* Possibly close the ticket */
-	if ( $close && apply_filters( 'wpas_user_can_close_ticket', true, $parent_id ) ) {
+	if ( $close && apply_filters( 'wpas_user_can_close_ticket', true, $ticket_id ) ) {
 
-		$closed = wpas_close_ticket( $parent_id );
+		wpas_close_ticket( $parent_id );
 
 		// Redirect now if no reply was posted
-		if ( ! isset( $reply_id ) && $closed ) {
+		if ( ! isset( $reply_id ) ) {
 			wpas_add_notification( 'ticket_closed', __( 'The ticket was successfully closed', 'awesome-support' ) );
 			wpas_redirect( 'ticket_closed', get_permalink( $parent_id ) );
 			exit;
@@ -723,7 +711,7 @@ function wpas_new_reply_submission( $data ) {
 			exit;
 		} else {
 
-			if ( $closed ) {
+			if ( $close ) {
 				wpas_add_notification( 'reply_added_closed', __( 'Thanks for your reply. The ticket is now closed.', 'awesome-support' ) );
 			} else {
 				wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'awesome-support' ) );
@@ -1480,19 +1468,6 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 	$ticket_id = intval( $ticket_id );
 
 	if ( 'ticket' == get_post_type( $ticket_id ) ) {
-		
-		$close_ticket = true;
-		
-		if ( is_admin() ) {
-			$close_ticket = apply_filters( 'wpas_before_close_ticket_admin', $close_ticket, $ticket_id );
-		} else {
-			$close_ticket = apply_filters( 'wpas_before_close_ticket_public', $close_ticket, $ticket_id );
-		}
-		
-		if( !$close_ticket ) {
-			return false;
-		}
-		
 
 		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'closed' );
 
@@ -1672,7 +1647,7 @@ function wpas_edit_reply_editor_ajax() {
  *
  * @return int Tickets count
  */
-function wpas_get_ticket_count_by_status( $state = '', $status = 'open', $query = array() ) {
+function wpas_get_ticket_count_by_status( $state = '', $status = 'open' ) {
 
 	$args        = array();
 	$post_status = wpas_get_post_status();
@@ -1719,11 +1694,8 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open', $query 
 		);
 
 	}
-	// if query arguments are set then combine query argument with $args varible
-	if( is_array( $query ) &&  count( $query ) > 0 ) {
-		$args = array_merge( $args, $query );
-	}
-	return count( wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ) ) );
+
+	return count( wpas_get_tickets( $status, $args ) );
 
 }
 
@@ -2078,189 +2050,4 @@ function wpas_delete_post_attachments( $post_id ) {
 	foreach ( $attachments as $attachment ) {
 	  wp_delete_attachment( $attachment->ID, true );
 	}
-}
-
-/**
- * Add custom fields data in cloned ticket
- * 
- * @param int $ticket_id
- * @param array $data
- * @param array $incoming_data
- */
-function wpas_clone_ticket_before_assigned( $new_ticket_id, $data, $incoming_data ) {
-	
-	// Clone custom fields
-	$clone_custom_fields_list = is_array( $incoming_data['custom_fields'] ) ? $incoming_data['custom_fields'] : array();
-	
-	$ticket_id = isset( $incoming_data['clone_ticket_id'] ) ? $incoming_data['clone_ticket_id'] : '';
-	
-	
-	if( !$ticket_id || empty( $clone_custom_fields_list ) ) {
-		return;
-	}
-	
-	
-	$custom_fields =  WPAS()->custom_fields->get_custom_fields();
-	
-	foreach( $clone_custom_fields_list as $cf_name )  {
-		
-		if( !array_key_exists( $cf_name, $custom_fields ) ) {
-			continue;
-		}
-		
-		$cf_field = new WPAS_Custom_Field( $cf_name, $custom_fields[ $cf_name ] );
-		$cf_value = $cf_field->get_field_value( false, $ticket_id );
-		
-		
-		if( 'taxonomy' ===  $cf_field->field_type ) {
-			
-			$tax_terms = get_the_terms( $ticket_id, $cf_field->field_id );
-		
-			if ( is_array( $tax_terms ) ) {
-				foreach ( $tax_terms as $term ) {
-					$cf_value = $term->term_id;
-				}
-			}
-			
-		}
-		
-		$cf_field->update_value( $cf_value, $new_ticket_id );
-	}
-	
-}
-
-
-
-/**
- * Clone a ticket 
- * 
- * @param int $ticket_id			  Ticket ID to clone
- * @param array $args				  Setting to clone ticket
- * @return integer|WP_Error           New ticket ID on success or WP_Error on failure
- */
-function wpas_clone_ticket( $ticket_id, $args = array() ) {
-	
-	
-	$defaults = array(
-		'clone_replies'				=> true,
-		'clone_custom_fields_list'	=> array( "product", "department", "ticket_priority" ),
-		'clone_agent'				=> true,
-		'cloned_ticket_status'		=> 'queued',
-		'suppress_notifications'	=> false,
-	);
-	
-	
-	
-	$args = wp_parse_args( $args, $defaults );
-	
-	$args = apply_filters( 'wpas_clone_ticket_args', $args, $ticket_id );
-	
-	
-	
-	$ticket = get_post( $ticket_id );
-	
-	// Check if source ticket id is valid
-	if( !$ticket || 'ticket' !== get_post_type( $ticket ) ) {
-		return new WP_Error( 'invalid_source_ticket_id', __( 'Source ticket id is not valid.', 'awesome-support' ) );
-	}
-	
-	
-	$title = $ticket->post_title;
-	
-	// Process tags in ticket content
-	$emails = new WPAS_Email_Notification( $ticket_id );
-	$content = wpautop( str_replace( '\'', '&apos;', $emails->fetch( $ticket->post_content ) ) );
-	
-	$customer = $ticket->post_author;
-	
-	$ticket_status = $args['cloned_ticket_status'];
-	
-	$ticket_data = apply_filters( 'wpas_clone_ticket_data', array(
-		'post_content'   => $content,
-		'post_name'      => $title,
-		'post_title'     => $title,
-		'post_status'    => $ticket_status,
-		'post_type'      => 'ticket',
-		'post_author'    => $customer,
-		'ping_status'    => 'closed',
-		'comment_status' => 'closed',
-	), $ticket_id, $args );
-	
-	
-	$clone_agent   = $args['clone_agent'];
-	$agent_id = $clone_agent ?  get_post_meta( $ticket_id, '_wpas_assignee', true ) : false;
-	
-	
-	$agent_id = apply_filters( 'wpas_clone_ticket_agent_id', $agent_id, $ticket, $args );
-	
-	
-	$ticket_data['custom_fields'] = is_array( $args['clone_custom_fields_list'] ) ? $args['clone_custom_fields_list'] : array();
-	$ticket_data['clone_ticket_id'] = $ticket_id;
-	
-	// Prevent notification while cloning ticket
-	if( $args['suppress_notifications'] ) {
-		remove_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 11 );
-		remove_action( 'wpas_open_ticket_after', 'wpas_notify_assignment', 12 );
-	}
-	
-	
-	add_action( 'wpas_open_ticket_before_assigned', 'wpas_clone_ticket_before_assigned', 11, 3 );
-	
-	$new_ticket_id = wpas_insert_ticket( $ticket_data, false, $agent_id );
-	
-	remove_action( 'wpas_open_ticket_before_assigned', 'wpas_clone_ticket_before_assigned', 11 );
-	
-	// Add removed notification hooks back
-	if( $args['suppress_notifications'] ) {
-		add_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 11, 2 );
-		add_action( 'wpas_open_ticket_after', 'wpas_notify_assignment', 12, 2 );
-	}
-	
-	if( !$new_ticket_id ) {
-		return new WP_Error( 'ticket_clone_failed', __( 'Ticket cloning failed', 'awesome-support' ) );
-	}
-	
-	do_action( 'wpas_clone_ticket_added_after', $new_ticket_id, $ticket, $args );
-	
-	
-	// Clone replies
-	$clone_replies = $args['clone_replies'];
-	if( $clone_replies ) {
-		
-		$replies = wpas_get_replies( $ticket_id );
-		
-		if( $args['suppress_notifications'] ) {
-			remove_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10 );
-		}
-		
-		foreach( $replies as $reply ) {
-			
-			$reply_data = array(
-				'post_content'   => $reply->post_content,
-				'post_name'      => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$new_ticket_id" ),
-				'post_title'     => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$new_ticket_id" ),
-				'post_status'    => 'unread',
-				'post_type'      => 'ticket_reply',
-				'ping_status'    => 'closed',
-				'comment_status' => 'closed',
-				'post_parent'    => $new_ticket_id,
-				'post_author'	 => $reply->post_author
-			);
-
-			$reply_id = wpas_insert_reply( $reply_data, $new_ticket_id );
-			
-			do_action( 'wpas_clone_ticket_reply_added_after', $reply_id, $new_ticket_id, $ticket, $args );
-		}
-		
-		if( $args['suppress_notifications'] ) {
-			add_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10, 2 );
-		}
-		
-	}
-	
-	
-	do_action( 'wpas_clone_ticket_completed_after', $new_ticket_id, $ticket, $args );
-	
-	return $new_ticket_id;
-	
 }

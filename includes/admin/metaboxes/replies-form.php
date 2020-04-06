@@ -145,7 +145,7 @@ wp_nonce_field( 'reply_ticket', 'wpas_reply_ticket', false, true );
 	do_action( 'wpas_post_reply_buttons_after', $post->ID );
 
 	// Link to close the ticket
-	if ( 'open' === get_post_meta( get_the_ID(), '_wpas_status', true ) && current_user_can( 'close_ticket' ) ) : ?>
+	if ( 'open' === get_post_meta( get_the_ID(), '_wpas_status', true ) ) : ?>
 		<a class="wpas_btn_close_bottom" href="<?php echo wpas_get_close_ticket_url( $post->ID ); ?>"><?php echo esc_html_x( 'Close', 'Close the ticket', 'awesome-support' ); ?></a>
 	<?php endif; ?>
 </div>

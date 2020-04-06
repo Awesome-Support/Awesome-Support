@@ -65,27 +65,21 @@ function wpas_admin_action_close_ticket( $data ) {
 
 	$post_id = (int) $data['post'];
 
-	$closed = wpas_close_ticket( $post_id );
+	wpas_close_ticket( $post_id );
 
-	
-	if( $closed ) {
-	
-		// Read-only redirect
-		if ( 'post.php' === $pagenow ) {
-			$redirect_to = add_query_arg( array(
-				'action'       => 'edit',
-				'post'         => $post_id,
-				'wpas-message' => 'closed'
-			), admin_url( 'post.php' ) );
-		} else {
-			$redirect_to = add_query_arg( array(
-				'post_type'    => 'ticket',
-				'post'         => $post_id,
-				'wpas-message' => 'closed'
-			), admin_url( 'edit.php' ) );
-		}
+	// Read-only redirect
+	if ( 'post.php' === $pagenow ) {
+		$redirect_to = add_query_arg( array(
+			'action'       => 'edit',
+			'post'         => $post_id,
+			'wpas-message' => 'closed'
+		), admin_url( 'post.php' ) );
 	} else {
-		$redirect_to = WPAS()->session->get( 'redirect' );
+		$redirect_to = add_query_arg( array(
+			'post_type'    => 'ticket',
+			'post'         => $post_id,
+			'wpas-message' => 'closed'
+		), admin_url( 'edit.php' ) );
 	}
 
 	wp_redirect( wp_sanitize_redirect( $redirect_to ) );

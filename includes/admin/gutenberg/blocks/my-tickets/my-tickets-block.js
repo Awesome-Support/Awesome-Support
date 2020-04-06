@@ -23,14 +23,14 @@
 	 *                             registered; otherwise `undefined`.
 	 */	
 	registerBlockType( 'awesome-support/my-tickets', {
-		title: __( 'My Tickets' ),
+		title: __( 'My Tickets', 'awesome-support' ),
 
 		icon: 'schedule',
 
 		category: 'widgets',
 
 		edit: function( props ) {
-			return el( 'p', { style: blockStyle }, __( 'Awesome Support: View My Tickets' ) );
+			return el( 'p', { style: blockStyle }, __( 'Awesome Support: View My Tickets', 'awesome-support' ) );
 		},
 
 		save: function( props ) {

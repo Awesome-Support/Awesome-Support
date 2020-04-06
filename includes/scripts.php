@@ -42,14 +42,13 @@ function wpas_register_assets_front_end() {
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the back-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
 	$which_select2_css = wpas_get_option('select2_css_file', 'min') ;
-	$which_select2_version = wpas_get_option('select2_version', 'select2-4-0-5') ;
 	switch ( $which_select2_css ) {
 		case 'min': 
-			wp_register_style( 'wpas-select2', WPAS_URL . "assets/admin/css/vendor/select2/$which_select2_version/select2.min.css", null, WPAS_VERSION.'.1', 'all' );
+			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.min.css', null, '4.0.3.1', 'all' );
 			break ;
 		
 		case 'full':
-			wp_register_style( 'wpas-select2', WPAS_URL . "assets/admin/css/vendor/select2/$which_select2_version/select2.css", null, WPAS_VERSION.'.2', 'all' );
+			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.css', null, '4.0.3.1', 'all' );
 			break ;
 	}	
 
@@ -59,27 +58,23 @@ function wpas_register_assets_front_end() {
 	// Select2 scripts are loaded based on a setting.  This asset is also duplicated on the back-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.
 	$which_select2_js = wpas_get_option('select2_js_file', 'full-min') ;
-	$which_select2_version = wpas_get_option('select2_version', 'select2-4-0-5') ;	
 	switch ( $which_select2_js ) {
 		case 'full': 
-			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.full.js", array( 'jquery' ), WPAS_VERSION.'.1', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.js', array( 'jquery' ), '4.0.3.1', 'all' );
 			break ;
 		
 		case 'full-min':
-			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.full.min.js", array( 'jquery' ), WPAS_VERSION.'.2', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.min.js', array( 'jquery' ), '4.0.3.11', 'all' );
 			break ;
 			
 		case 'partial': 
-			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.js", array( 'jquery' ), WPAS_VERSION.'.3', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.js', array( 'jquery' ), '4.0.3.11', 'all' );
 			break ;
 
 		case 'partial-min': 
-			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.min.js", array( 'jquery' ), WPAS_VERSION.'.4', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.3.1111', 'all' );
 			break ;						
 	}
-	
-	// Include magnific popup
-	wpas_add_magnific();
 
 
 	
@@ -94,9 +89,6 @@ add_action( 'admin_enqueue_scripts', 'wpas_register_assets_back_end', 5 );
  *
  * @since 3.3
  * @return void
- *
- * @TODO: It is possible that most of the function below should be wrapped in a conditional similar to this:
- *		if ( true == wpas_is_plugin_page() )
  */
 function wpas_register_assets_back_end() {
 	
@@ -131,14 +123,13 @@ function wpas_register_assets_back_end() {
 	// Select2 styles are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
 	$which_select2_css = wpas_get_option('select2_css_file', 'min') ;
-	$which_select2_version = wpas_get_option('select2_version', 'select2-4-0-5') ;	
 	switch ( $which_select2_css ) {
 		case 'min': 
-			wp_register_style( 'wpas-select2', WPAS_URL . "assets/admin/css/vendor/select2/$which_select2_version/select2.min.css", null, WPAS_VERSION.'.1', 'all' );
+			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.min.css', null, '4.0.3.1', 'all' );
 			break ;
 		
 		case 'full':
-			wp_register_style( 'wpas-select2', WPAS_URL . "assets/admin/css/vendor/select2/$which_select2_version/select2.css", null, WPAS_VERSION.'.2', 'all' );
+			wp_register_style( 'wpas-select2', WPAS_URL . 'assets/admin/css/vendor/select2/select2.css', null, '4.0.3.1', 'all' );
 			break ;
 	}
 	
@@ -159,7 +150,7 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-admin-helpers_functions', WPAS_URL . 'assets/public/js/helpers_functions.js', null, WPAS_VERSION );
 	wp_register_script( 'wpas-admin-upload', WPAS_URL . 'assets/public/js/component_upload.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-print-ticket', WPAS_URL . 'assets/admin/js/admin-print-ticket.js', array( 'jquery' ), WPAS_VERSION );
-	wp_register_script( 'wpas-admin-edit-ticket-content-script', WPAS_URL . 'assets/admin/js/admin-edit-ticket-content.js', array( 'jquery' ), WPAS_VERSION );
+
 	// @TODO: Why is the version set to TIME() below instead of WPAS_VERSION?
 	wp_register_script(
 		'wpas-datepicker',
@@ -172,22 +163,21 @@ function wpas_register_assets_back_end() {
 	// Select2 scripts are loaded based on a setting.  This asset is also duplicated on the front-end.
 	// Note that we are hardcoding a version number into the wp_register_script call so that we can force caches to update when switching between options.	
 	$which_select2_js = wpas_get_option('select2_js_file', 'partial-min') ;
-	$which_select2_version = wpas_get_option('select2_version', 'select2-4-0-5') ;	
 	switch ( $which_select2_js ) {
 		case 'full': 
-			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.full.js", array( 'jquery' ), WPAS_VERSION.'.1', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.js', array( 'jquery' ), '4.0.3.1', 'all' );
 			break ;
 		
 		case 'full-min':
-			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.full.min.js", array( 'jquery' ), WPAS_VERSION.'.2', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.full.min.js', array( 'jquery' ), '4.0.3.11', 'all' );
 			break ;
 			
 		case 'partial': 
-			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.js", array( 'jquery' ), WPAS_VERSION.'.3', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.js', array( 'jquery' ), '4.0.3.111', 'all' );
 			break ;
 
 		case 'partial-min': 
-			wp_register_script( 'wpas-select2', WPAS_URL . "assets/admin/js/vendor/select2/$which_select2_version/select2.min.js", array( 'jquery' ), WPAS_VERSION.'.4', 'all' );
+			wp_register_script( 'wpas-select2', WPAS_URL . 'assets/admin/js/vendor/select2/select2.min.js', array( 'jquery' ), '4.0.3.1111', 'all' );
 			break ;						
 	}	
 
@@ -226,18 +216,13 @@ function wpas_register_assets_back_end() {
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
 		'about_page' => admin_url( 'edit.php?post_type=ticket&page=wpas-about' )
 	));
-	
-	// Include magnific popup
-	if ( true == wpas_is_plugin_page() ) {	
-		wpas_add_magnific();
-	}
 
 	// Edit ticket content!
-	if ( true == wpas_is_plugin_page() ) {
-		wp_enqueue_editor();
-	}
-	
-	
+	wp_enqueue_editor();
+	wp_enqueue_script( 'wpas-admin-edit-ticket-content-script', WPAS_URL . 'assets/admin/js/admin-edit-ticket-content.js', array( 'jquery' ), WPAS_VERSION );
+	wp_localize_script( 'wpas-admin-edit-ticket-content-script', 'WPAS_Edit_Ticket_Content', array(
+		'ajax_url' => admin_url( 'admin-ajax.php' )
+	));
 }
 
 add_action( 'wp_enqueue_scripts', 'wpas_assets_front_end', 10 );
@@ -369,11 +354,6 @@ function wpas_enqueue_assets_back_end() {
 			wp_enqueue_script( 'wpas-autolinker' );
 		}
 
-		wp_enqueue_script( 'wpas-admin-edit-ticket-content-script');
-		wp_localize_script( 'wpas-admin-edit-ticket-content-script', 'WPAS_Edit_Ticket_Content', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' )
-		));
-
 	}
 
 	wp_enqueue_style( 'wpas-admin-print-ticket' );
@@ -417,7 +397,6 @@ function wpas_get_javascript_object() {
 	$object = array(
 		'ajaxurl'                => admin_url( 'admin-ajax.php' ),
 		'emailCheck'             => true === boolval( wpas_get_option( 'enable_mail_check', false ) ) ? 'true' : 'false',
-		'useAutolinker'          => true === boolval( wpas_get_option( 'use_autolinker', true ) ) ? 'true' : 'false',
 		'fileUploadMax'          => $upload_max_files,
 		'fileUploadSize'         => $upload_max_size * 1048576, // We base our calculation on binary prefixes
 		'fileUploadMaxError'     => __( sprintf( 'You can only upload a maximum of %d files', $upload_max_files ), 'awesome-support' ),

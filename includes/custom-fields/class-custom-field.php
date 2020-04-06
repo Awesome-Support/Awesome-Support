@@ -166,9 +166,6 @@
 				'taxo_edit_terms'   	=> 'settings_tickets',
 				'taxo_delete_terms' 	=> 'settings_tickets',
 				'taxo_assign_terms' 	=> 'create_ticket',
-				
-				// Sort taxonomy terms
-				'taxo_sortorder' => '',
 
 				// @since 3.3.5
 				'readonly'              => false,

@@ -30,12 +30,6 @@ function wpas_core_settings_fields( $def ) {
 					'desc' => 'Use these options to control how the priority field is used and shown.  To change the labels used for this field please see our POWER-PACK add-on.',
 					'options' => wpas_get_priority_options()
 				),
-				array(
-					'name' => __( 'Ticket Type Management', 'awesome-support' ),
-					'type' => 'heading',
-					'desc' => 'Use these options to control how the Ticket Type options are used and shown.  To change the labels used for this field please see our POWER-PACK add-on.',
-					'options' => wpas_get_ticket_type_options()
-				),				
 				
 				array(
 					'name' => __( 'Multiple Agents', 'awesome-support' ),
@@ -163,7 +157,7 @@ function wpas_core_settings_fields( $def ) {
 		),
 	);
 
-	return array_merge( $def, apply_filters('wpas_settings_fields', $settings )  );
+	return array_merge( $def, $settings );
 
 }
 
@@ -196,7 +190,7 @@ function wpas_get_priority_options() {
 			'name'    => __( 'Show On Front End?', 'awesome-support' ),
 			'id'      => 'support_priority_show_fe',
 			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to show the field to the end user (unchecked restricts it to agent/admin use only)?', 'awesome-support' ),
+			'desc'    => __( 'Would you like to show the field to the end user (unchecked restricts it to admin use only)?', 'awesome-support' ),
 			'default' => true
 		),		
 
@@ -219,58 +213,4 @@ function wpas_get_priority_options() {
 	);
 	
 	return $priority;
-}
-
-/**
- * Prepare the available options for ticket-type
- *
- * @since 5.8.1
- * @return array
- */
-function wpas_get_ticket_type_options() {
-
-	$ticket_type = array(
-		array(
-			'name'    => __( 'Enable Ticket Types', 'awesome-support' ),
-			'id'      => 'support_ticket_type',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to show the Ticket Type options in your tickets?', 'awesome-support' ),
-			'default' => false
-		),
-
-		array(
-			'name'    => __( 'Mandatory?', 'awesome-support' ),
-			'id'      => 'support_ticket_type_mandatory',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to make the Ticket Type options mandatory in your tickets?', 'awesome-support' ),
-			'default' => false
-		),
-
-		array(
-			'name'    => __( 'Show On Front End?', 'awesome-support' ),
-			'id'      => 'support_ticket_type_show_fe',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to show the field to the end user (unchecked restricts it to agent/admin use only)?', 'awesome-support' ),
-			'default' => true
-		),		
-
-		array(
-			'name'    => __( 'Show In Column List?', 'awesome-support' ),
-			'id'      => 'support_ticket_type_show_in_ticket_list',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to show the field in the ticket listing?', 'awesome-support' ),
-			'default' => false
-		),
-		
-		array(
-			'name'    => __( 'Color-code Bottom Border?', 'awesome-support' ),
-			'id'      => 'support_ticket_type_color_code_ticket',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Checking this box will color the bottom border of the opening post to match the Ticket Type color', 'awesome-support' ),
-			'default' => false
-		),				
-		
-	);
-	
-	return apply_filters( 'wpas_ticket_type_options', $ticket_type );
 }

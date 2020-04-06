@@ -22,18 +22,6 @@ add_action( 'enqueue_block_editor_assets', 'wpas_gutenberg_enqueue_block_editor_
  * @since 4.4.0
  */
 function wpas_gutenberg_enqueue_block_editor_assets() {
-
-	if ( function_exists( 'gutenberg_get_jed_locale_data' ) ) {
-
-		$locale_data = gutenberg_get_jed_locale_data( 'awesome-support' );
-
-		wp_add_inline_script(
-			'wp-i18n',
-			'wp.i18n.setLocaleData( ' . json_encode( $locale_data ) . ' );'
-		);	
-
-	}
-	
     wp_enqueue_script( 'wpas-gutenberg-block-submit-ticket',  WPAS_URL . 'includes/admin/gutenberg/blocks/submit-ticket/submit-ticket-block.js', array( 'wp-blocks', 'wp-element' ) );
 	wp_enqueue_script( 'wpas-gutenberg-block-my-tickets',     WPAS_URL . 'includes/admin/gutenberg/blocks/my-tickets/my-tickets-block.js',       array( 'wp-blocks', 'wp-element' ) );	
 }

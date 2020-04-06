@@ -44,13 +44,6 @@ class TicketStatus extends TicketBase {
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'update_status' ),
 				'permission_callback' => array( $this, 'update_status_user_permissions_check' ),
-				'args' => array(
-					'status' => array(
-						'type'        => 'string',
-						'description' => __( 'Ticket status', 'awesome-support' ),
-						'required'    => true
-					)
-				)
 			)
 
 		) );

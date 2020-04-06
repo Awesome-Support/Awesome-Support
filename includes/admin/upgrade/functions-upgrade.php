@@ -404,7 +404,7 @@ function wpas_upgrade_520() {
 	/**
 	 * Add moderated registration settings
 	 */
-	$moderated_registration_settings = array(
+	$morerated_registration_settings = array(
 		
 		'mr_success_message',
 		'moderated_pending_user_role',
@@ -428,7 +428,7 @@ function wpas_upgrade_520() {
 	);
 	
 	
-	foreach ( $moderated_registration_settings as $mr_setting_name ) {
+	foreach ( $morerated_registration_settings as $mr_setting_name ) {
 		wpas_update_option( $mr_setting_name, get_settings_defaults( $mr_setting_name ), true );
 	}
 
@@ -449,108 +449,4 @@ function wpas_upgrade_550() {
 	// But we do want early 520 adopters to get the later changes to the update routine.  So
 	// we create this 550 routine to make sure it runs for early 520 adopters.
 	wpas_upgrade_520();
-}
-
-/**
- * Upgrade function for version 5.8.1
- *
- * New capabilities need to be added to all roles.
- *
- * @since 5.8.1
- * @return void
- */
-function wpas_upgrade_581() {
-
-	/* Add new capabilities to these roles and all users assigned these roles:
-	 *
-	 *  WordPress Administrator
-	 *  AS Support Manager
-	 *
-	 */
-	$admin_caps = array(
-		'ticket_manage_ticket_type',
-		'ticket_edit_ticket_type',
-		'ticket_delete_ticket_type',
-		'ticket_manage_ticket_templates'
-	);
-	
-	$agent_caps = array(
-		'ticket_manage_ticket_type'
-	);
-	
-	$manager_caps = array(
-		'ticket_manage_ticket_type',
-		'ticket_edit_ticket_type',
-		'ticket_delete_ticket_type',
-		'ticket_manage_ticket_templates'
-	);
-	
-	$supportmanager_caps = array(
-		'ticket_manage_ticket_type',
-		'ticket_edit_ticket_type',
-		'ticket_delete_ticket_type'
-	);	
-
-	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
-	$supportmanager = get_role( 'wpas_support_manager' );
-	$admin   		= get_role( 'administrator' );
-	$as_admin  		= get_role( 'as_admin' );	
-	$agent	 		= get_role( 'wpas_agent' );
-	
-
-	/**
-	 * Add new capacities to admin roles
-	 */
-	foreach ( $admin_caps as $cap ) {
-
-		// Add all the capacities to admin in addition to full WP capacities
-		if ( null != $admin )
-			$admin->add_cap( $cap );
-		
-		// Add all the capacities to as_admin in addition to full WP capacities
-		if ( null != $as_admin )
-			$as_admin->add_cap( $cap );
-		
-
-		// Add full plugin capacities to manager in addition to the editor capacities
-		if ( null != $manager )
-			$manager->add_cap( $cap );
-
-	}
-	
-	/**
-	 * Add certain new capacities to agents
-	 */
-	foreach ( $agent_caps as $cap ) {
-		if ( null != $agent ) {
-			$agent->add_cap( $cap );
-		}
-	}
-	
-	/**
-	 * Add certain new capacities to support managers
-	 */
-	foreach ( $supportmanager_caps as $cap ) {
-		if ( null != $supportmanager ) {
-			$supportmanager->add_cap( $cap );
-		}
-	}
-
-}
-
-/**
- * Upgrade function for version 5.9.0
- *
- * New capabilities need to be added to certain roles.
- *
- * @since 6.0.0
- * @return void
- */
-function wpas_upgrade_600() {
-	// Run the 581 upgrade option for version 600.
-	// The 581 upgrade was the internal upgrade option during testing of the 590/600 release.
-	// Therefore the two routines are the same and there is no reason to write a separate 600 routine.
-	// But we do want early 581 adopters to get the later changes to the update routine.  So
-	// we create this 600 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
 }
