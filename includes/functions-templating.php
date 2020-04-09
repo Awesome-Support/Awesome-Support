@@ -691,7 +691,9 @@
 				$list  = array();
 
 				if ( empty( $terms ) ) {
-					continue;
+					// Comment out `continue` and replaced with `break` because of a fix in PHP version 7.3
+					// continue;
+					break;
 				}
 
 				foreach ( $terms as $term ) {
