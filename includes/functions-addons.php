@@ -35,7 +35,7 @@ function wpas_load_addons() {
 		/**
 		 * Define the addon's instance.
 		 */
-		$wpas_addon_{$id} = false;
+		$wpas_addon_[$id] = false;
 
 		/* We assume it's a class */
 		if ( is_array( WPAS()->addons[$id]['callback'] ) ) {
@@ -43,22 +43,22 @@ function wpas_load_addons() {
 			if ( isset( WPAS()->addons[$id]['callback'][0] ) && isset( WPAS()->addons[$id]['callback'][1] ) ) {
 
 				if ( is_object( WPAS()->addons[$id]['callback'][0] ) && method_exists( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] ) ) {
-					$wpas_addon_{$id} = call_user_func( array( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] ) );
+					$wpas_addon_[$id] = call_user_func( array( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] ) );
 				}
 				
 				elseif ( class_exists( WPAS()->addons[$id]['callback'][0] ) ) {
-					$wpas_addon_{$id} = call_user_func( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] );
+					$wpas_addon_[$id] = call_user_func( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] );
 				}
 
 			}
 
 		} else {
 			if ( function_exists( WPAS()->addons[$id]['callback'] ) ) {
-				$wpas_addon_{$id} = call_user_func( WPAS()->addons[$id]['callback'] );
+				$wpas_addon_[$id] = call_user_func( WPAS()->addons[$id]['callback'] );
 			}
 		}
 
-		WPAS()->addons[$id]['status'] = false === $wpas_addon_{$id} ? 'error' : 'loaded';
+		WPAS()->addons[$id]['status'] = false === $wpas_addon_[$id] ? 'error' : 'loaded';
 
 	}
 
