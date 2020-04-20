@@ -21,16 +21,13 @@ class WPAS_Help {
 	
 	public function __construct()
 	{
-		$page_hook = get_plugin_page_hook('wpas-settings', 'edit.php');
-		if (isset($page_hook) && $page_hook) {
-			add_action('load-' . $page_hook, array($this, 'settings_general_contextual_help'));
-			add_action('load-' . $page_hook, array($this, 'settings_registration_help'));
-			add_action('load-' . $page_hook, array($this, 'settings_products_management_help'));
-			add_action('load-' . $page_hook, array($this, 'settings_notifications_contextual_help'));
-			add_action('load-' . $page_hook, array($this, 'settings_advanced_contextual_help'));
-			
-			add_action('load-' . $page_hook, array($this, 'settings_moderated_registration_help'));
-		}
+		add_filter( 'admin_head', array( $this, 'settings_general_contextual_help' ), 10, 3 );
+		add_filter( 'admin_head', array( $this, 'settings_registration_help' ), 10, 3 );
+		add_filter( 'admin_head', array( $this, 'settings_products_management_help' ), 10, 3 );
+		add_filter( 'admin_head', array( $this, 'settings_notifications_contextual_help' ), 10, 3 );
+		add_filter( 'admin_head', array( $this, 'settings_advanced_contextual_help' ), 10, 3 );
+		
+		add_filter( 'admin_head', array( $this, 'settings_moderated_registration_help' ), 10, 3 );
 	}
 
 	/**
