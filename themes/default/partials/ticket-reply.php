@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 $user_role = $user->roles[0];
 ?>
 
-<tr id="reply-<?php echo the_ID(); ?>" class="wpas-reply-single wpas-status-<?php echo get_post_status(); ?> wpas_user_<?php echo $user_role; ?>" valign="top">
+<tr id="reply-<?php echo the_ID(); ?>" class="wpas-reply-single wpas-status-<?php echo get_post_status(); ?> wpas_user_<?php echo $user_role; ?> wpas-<?php echo str_replace("_", "-", get_post_type()); ?>" valign="top">
 
 	<?php
 	/**
