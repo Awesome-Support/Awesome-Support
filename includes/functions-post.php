@@ -1182,7 +1182,9 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array(), $output =
 
 	$defaults = array(
 		'post_parent'            => $post_id,
-		'post_type'              => 'ticket_reply',
+		'post_type'              => apply_filters( 'wpas_frontend_replies_post_type', [
+			'ticket_reply'
+		] ),
 		'post_status'            => $status,
 		'order'                  => wpas_get_option( 'replies_order', 'ASC' ),
 		'orderby'                => 'date',
