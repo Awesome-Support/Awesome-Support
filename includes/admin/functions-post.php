@@ -260,12 +260,15 @@ function wpas_save_ticket( $post_id ) {
 						do_action( 'wpas_ticket_before_close_by_agent', $post_id );
 
 						/* Close */
-						wpas_close_ticket( $post_id );
+						$closed = wpas_close_ticket( $post_id );
 
 						/**
 						 * wpas_ticket_closed_by_agent hook
 						 */
-						do_action( 'wpas_ticket_closed_by_agent', $post_id );
+						
+						if( $closed ) {
+							do_action( 'wpas_ticket_closed_by_agent', $post_id );
+						}
 					}
 
 				}
@@ -739,4 +742,31 @@ function wpas_is_new_reply_empty( $ticket_id ) {
 	}
 	
 	return ( $content_empty && $attachments_empty );
+}
+
+add_action( 'wpas_backend_ticket_status_before_actions', 'wpas_close_ticket_prevent_client_notification_field', 12 );
+/**
+ * Add Checkbox to prevent client notification about ticket close
+ * 
+ * @param int $ticket_id
+ */
+function wpas_close_ticket_prevent_client_notification_field( $ticket_id ) {
+	
+	/* Do not show the checkbox if not enabled in settings */
+	if ( ! boolval( wpas_get_option( 'agents_can_suppress_closing_emails', false ) ) ) {
+		return ;
+	}
+	
+	$close_ticket_prevent_client_notification = get_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', true );
+	?>
+
+	<div>
+	<p>
+		<label>
+			<input type="checkbox" value="1" data-nonce="<?php echo wp_create_nonce( 'prevent_client_notification' ); ?>" name="close_ticket_prevent_client_notification" <?php checked( '1', $close_ticket_prevent_client_notification); ?> />
+			<?php _e( 'Do NOT send closing ticket email to customer', 'awesome-support' ); ?>
+		</label>
+	</p>
+	</div>
+	<?php
 }

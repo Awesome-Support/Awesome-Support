@@ -109,6 +109,15 @@ function wpas_core_settings_advanced( $def ) {
 				),
 				
 				array(
+					'name'    => __( 'Select2 Version', 'awesome-support' ),
+					'id'      => 'select2_version',
+					'type'    => 'radio',
+					'desc'    => __( 'Which version of the select2 library should we load?', 'awesome-support' ),					
+					'options' => array( 'select2-4-0-5' => __( '4.0.5', 'awesome-support' ), 'select2-4-0-4' => __( '4.0.4', 'awesome-support' ), 'select2-4-0-3' => __( '4.0.3', 'awesome-support' ), 'select2-4-0-2' => __( '4.0.2', 'awesome-support' )   ),
+					'default' => 'select2-4-0-5'
+				),				
+				
+				array(
 					'name'    => __( 'Select2 JS File', 'awesome-support' ),
 					'id'      => 'select2_js_file',
 					'type'    => 'radio',
@@ -236,6 +245,6 @@ function wpas_core_settings_advanced( $def ) {
 		),
 	);
 
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_advanced', $settings ) );
 
 }

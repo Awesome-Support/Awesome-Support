@@ -52,6 +52,24 @@ function wpas_core_settings_permissions( $def ) {
 				),
 				
 				array(
+					'name' => __( 'Ticket Templates', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Ticket templates are tickets that can be copied by add-ons to make new tickets. The options in this section offers control of this feature.', 'awesome-support' ),					
+				),
+				array(
+					'name'    => __( 'Enable Ticket Templates', 'awesome-support' ),
+					'id'      => 'enable_ticket_templates',
+					'type'    => 'checkbox',
+					'default' => false
+				),
+				array(
+					'name'    => __( 'Show Flag In Ticket List', 'awesome-support' ),
+					'id'      => 'show_ticket_template_in_ticket_list',
+					'type'    => 'checkbox',
+					'default' => false
+				),				
+				
+				array(
 					'name' => __( 'Ticket Details Tabs And Metaboxes', 'awesome-support' ),
 					'type' => 'heading',
 					'desc'    => __( 'Control who can view certain ticket tabs on the ticket detail screen in wp-admin', 'awesome-support' ),					
@@ -88,7 +106,7 @@ function wpas_core_settings_permissions( $def ) {
 		),
 	);
 
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_permission', $settings )  );
 
 }
 

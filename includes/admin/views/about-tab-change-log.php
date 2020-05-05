@@ -5,6 +5,31 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.0</h1>
+				<h3>6.0 includes a few changes to the rest api, updates to a new version of the Titan Framework to 1.12.0 and more. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>New: Ticket Types</li>
+					<li>New: Integration with myCRED</li>
+					<li>New: Five more theme overlays</li>
+					<li>New: A notifications button that can be hooked into by add-ons</li>					
+					<li>New: Option to redirect the standard ticket form to another page</li>
+					<li>Enh: Choose which product statuses should be synced with Awesome Support</li>
+					<li>Tweak: Added schemas to some REST API routes that did not have them</li>
+					<li>Tweak: Updated the Titan Framework library that is used internally to manage settings - using version 1.12.1 now</li>
+					<li>Tweak: Updated the session manager library that is used internally to manage sessions - using version 4.2.0 now</li>
+					<li>Bug fixes related to stylesheets, autodelete of attachments, file-uploader and more</li>
+					<li>Internal and developer related changes including the introduction of more than 20 new filters and action hooks</li>
+				</ul>
+				<p>Read all about these changes on our website: <a href="https://getawesomesupport.com/coming-in-early-2019-awesome-support-v-5-9-0/">What's New In Version 6.0</a> </p>
+			</div>		
+		</div>
+	</div>
+
+	<hr />	
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 5.8</h1>
 				<h3>5.8 Introduces a number of new changes, tweaks and fixes! Among them are the following:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">

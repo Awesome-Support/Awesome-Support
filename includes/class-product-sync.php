@@ -92,7 +92,7 @@ class WPAS_Product_Sync {
 			/**
 			 * We need to run an initial synchronization of products
 			 * for large products lists. The get_terms used in the taxonomy page
-			 * only queries 10 terms per page, which means that only hte first 10 items
+			 * only queries 10 terms per page, which means that only the first 10 items
 			 * will be synced
 			 */
 			$sync_init = get_option( "wpas_sync_$this->post_type" );
@@ -324,6 +324,13 @@ class WPAS_Product_Sync {
 		if ( ! is_object( $post ) ) {
 			return false;
 		}
+		
+		/* If $post is not set to one of the approved statuses return false as well */
+		$statuses = $this->get_valid_post_statuses();
+		if ( ! in_array( get_post_status( $post->ID ), $statuses, true  ) ) {
+			return false ;
+		}
+		
 
 		/* Try to get the term data from the post meta */
 		$term_data = get_post_meta( $post->ID, '_wpas_product_term', true );
@@ -511,7 +518,7 @@ class WPAS_Product_Sync {
 
 		$query_defaults = array(
 			'post_type'              => $this->post_type,
-			'post_status'            => 'publish',
+			'post_status'            => $this->get_valid_post_statuses(),
 			'order'                  => 'ASC',
 			'orderby'                => 'title',
 			'ignore_sticky_posts'    => false,
@@ -612,6 +619,15 @@ class WPAS_Product_Sync {
 			return $term;
 		}
 
+		/* Lets cache real term data */
+		
+		$term_data = array(
+			'name'        => $term->name,     
+			'slug'        => $term->slug,      
+			'description' => $term->description,
+			'post_id'     => $term->post_id,
+		);
+		
 		/* Get the post data */
 		$post = get_post( $post_id );
 
@@ -620,11 +636,12 @@ class WPAS_Product_Sync {
 		$term->slug        = $post->post_name;
 		$term->description = wp_trim_words( $post->post_content, 55, ' [...]' );
 		$term->post_id     = $post_id;
+		$term->term_data   = $term_data;
 
 		//$x = wp_cache_get( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
 
 		//$x = wp_cache_add( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
-
+		
 		return $term;
 
 	}
@@ -842,7 +859,7 @@ class WPAS_Product_Sync {
 		$args = array(
 			'name'                   => $slug,
 			'post_type'              => $this->post_type,
-			'post_status'            => 'publish',
+			'post_status'            => $this->get_valid_post_statuses(),
 			'posts_per_page'         => 1,
 			'no_found_rows'          => true,
 			'cache_results'          => false,
@@ -915,7 +932,7 @@ class WPAS_Product_Sync {
 
 		$args = array(
 			'post_type'              => $this->post_type,
-			'post_status'            => 'publish',
+			'post_status'            => $this->get_valid_post_statuses(),
 			'order'                  => 'ASC',
 			'orderby'                => 'title',
 			'ignore_sticky_posts'    => false,
@@ -1003,5 +1020,17 @@ class WPAS_Product_Sync {
 			</td>
 		</tr>
 	<?php }
+	
+
+	/**
+	 * Gets a list of valid post statuses to sync.
+	 *
+	 * @since 5.8.1
+	 *
+	 * @return array 
+	 */	
+	public function get_valid_post_statuses() {
+		return explode( ',' , wpas_get_option( 'support_products_statuses', 'publish' ) );
+	}
 
 }

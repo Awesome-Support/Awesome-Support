@@ -106,6 +106,35 @@ function wpas_core_settings_general( $def ) {
 					'default' => true
 				),				
 				
+				/* Notification buttons */
+				array(
+					'name' => __( 'Notification Button', 'awesome-support' ),
+					'desc' => __( 'Options for the notification button at the top of the single ticket screen on the front-end', 'awesome-support' ),					
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Enable', 'awesome-support' ),
+					'id'      => 'enable_notification_button',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Show the notification button on the front-end?', 'awesome-support' )
+				),
+				array(
+					'name'     => __( 'Button Label', 'awesome-support' ),
+					'desc'    => __( 'This is the label for the button', 'awesome-support' ),										
+					'id'       => 'notifications_button_label',
+					'type'     => 'text',
+					'default'  => __( 'Notifications', 'awesome-support' ),					
+				),				
+				array(
+					'name'     => __( 'Content', 'awesome-support' ),
+					'desc'    => __( 'This is the message that the user will see when they click the notifications button', 'awesome-support' ),										
+					'id'       => 'notifications_button_msg',
+					'type'     => 'editor',
+					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 ),
+					'default'  => __( 'You are receiving the default standard notifications for this ticket. Among others, they include replies from agents, a notification when the ticket is closed, a notification if the ticket is reopened by the agent and a confirmation when the ticket was first submitted. ', 'awesome-support' ),					
+				),
+				
 				array(
 					'name' => __( 'Redirects', 'awesome-support' ),
 					'type' => 'heading',
@@ -121,9 +150,14 @@ function wpas_core_settings_general( $def ) {
 					'name'    => __( 'New Ticket Redirect', 'awesome-support' ),
 					'id'      => 'new_ticket_redirect_fe',
 					'type'    => 'text',
-					'desc' 	  => __( 'When the user enters a new ticket they are usually taken to the newly entered ticket.  But, if you would like to redirect them someplace else, enter that location here. Enter the FULL url starting with http or https.', 'awesome-support' ),
+					'desc' 	  => __( 'After the user enters a new ticket they are usually taken to the newly entered ticket.  But, if you would like to redirect them someplace else, enter that location here. Enter the FULL url starting with http or https.', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'New Ticket Form Redirect', 'awesome-support' ),
+					'id'      => 'new_ticket_form_redirect_fe',
+					'type'    => 'text',
+					'desc' 	  => __( 'If you would like to use a custom form for your new ticket form but still use our login screen then enter the full URL to the custom form. An example where this would be useful would be if you are using a Gravity Form in conjunction with our Gravity Form bridge. Enter the FULL url starting with http or https. Note that if you use this option you will never be able to see or use our standard ticket form! ', 'awesome-support' ),
 				),				
-				
 				
 				array(
 					'name' => __( 'Toolbars', 'awesome-support' ),
@@ -189,6 +223,6 @@ function wpas_core_settings_general( $def ) {
 		),
 	);
 
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_general', $settings )  );
 
 }

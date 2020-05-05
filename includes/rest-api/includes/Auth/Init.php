@@ -301,24 +301,25 @@ class Init {
 		) );
 
 		?>
-		<div class="wpas-api hide-if-no-js" id="wpas-api-section">
-			<h2 id="wpas-api"><?php esc_html_e( 'API Passwords' ); ?></h2>
-			<p><?php esc_html_e( 'API passwords allow authentication via the REST API without providing your actual password. API passwords can be easily revoked. They cannot be used for traditional logins to your website.', 'awesome-support' ); ?></p>
-			<div class="create-wpas-api-password">
-				<input type="text" size="30" name="new_wp_api_password_name" placeholder="<?php esc_attr_e( 'New API Password Name', 'awesome-support' ); ?>" class="input" />
-				<?php submit_button( __( 'Add New' ), 'secondary', 'do_new_wp_api_password', false ); ?>
-			</div>
+		<div id="wpas_user_profile_segment">
+			<div class="wpas-api hide-if-no-js" id="wpas-api-section">
+				<h2 id="wpas-api"><?php esc_html_e( 'API Passwords' ); ?></h2>
+				<p><?php esc_html_e( 'API passwords allow authentication via the REST API without providing your actual password. API passwords can be easily revoked. They cannot be used for traditional logins to your website.', 'awesome-support' ); ?></p>
+				<div class="create-wpas-api-password">
+					<input type="text" size="30" name="new_wp_api_password_name" placeholder="<?php esc_attr_e( 'New API Password Name', 'awesome-support' ); ?>" class="input" />
+					<?php submit_button( __( 'Add New' ), 'secondary', 'do_new_wp_api_password', false ); ?>
+				</div>
 
-			<div class="wpas-api-list-table-wrapper">
-			<?php
-				$wp_api_passwords_list_table = new PasswordList();
-				$wp_api_passwords_list_table->items = array_reverse( $user->get_api_passwords() );
-				$wp_api_passwords_list_table->prepare_items();
-				$wp_api_passwords_list_table->display();
-			?>
+				<div class="wpas-api-list-table-wrapper">
+				<?php
+					$wp_api_passwords_list_table = new PasswordList();
+					$wp_api_passwords_list_table->items = array_reverse( $user->get_api_passwords() );
+					$wp_api_passwords_list_table->prepare_items();
+					$wp_api_passwords_list_table->display();
+				?>
+				</div>
 			</div>
 		</div>
-
 		<script type="text/html" id="tmpl-new-wpas-api-password">
 			<div class="new-wpas-api-password notification-dialog-wrap">
 				<div class="app-pass-dialog-background notification-dialog-background">

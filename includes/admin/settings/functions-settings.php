@@ -94,8 +94,15 @@ function wpas_list_overlays() {
 	$overlay['overlay-angle.css'] = 'Angle';
 	$overlay['overlay-dark.css'] = 'Dark';	
 	$overlay['overlay-orange-blend.css'] = 'Orange Blend';	
-
-	return $overlay;
+	$overlay['overlay-royal-blend.css'] = 'Royal Blend';	
+	$overlay['overlay-purple-haze.css'] = 'Purple Haze';
+	$overlay['overlay-green-envy.css'] = 'Green Envy';
+	$overlay['overlay-plain-gray.css'] = 'Plain Gray';
+	$overlay['overlay-basic-blue.css'] = 'Basic Blue';
+	$overlay['overlay-basic-green.css'] = 'Basic Green';
+	$overlay['overlay-basic-red.css'] = 'Basic Red';
+	
+	return apply_filters('wpas_list_overlays',$overlay);
 	
 
 }

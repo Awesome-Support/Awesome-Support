@@ -104,6 +104,10 @@ function wpas_single_activate() {
 		'ticket_edit_channels',
 		'ticket_delete_channels',
 		'ticket_manage_privacy',
+		'ticket_manage_ticket_type',
+		'ticket_edit_ticket_type',
+		'ticket_delete_ticket_type',
+		'ticket_manage_ticket_templates'
 	) );
 
 	/**
@@ -134,6 +138,7 @@ function wpas_single_activate() {
 		'ticket_manage_priorities',
 		'ticket_manage_channels',
 		'ticket_manage_privacy',
+		'ticket_manage_ticket_type',
 	) );
 
 	/**
@@ -317,8 +322,12 @@ function wpas_ask_setup_wizard() {
 	if ( wpas_is_asadmin() ) {
 	?>
 	<div class="updated wpas-wizard-notice">
-		<p><?php _e( 'Thank you for installing Awesome Support. <a href="'. admin_url( 'index.php?page=as-setup' ) .'" class="button button-primary">Click here</a> to get started or <a href="#" class="button" id="wpas-skip-wizard">skip this process</a>', 'awesome-support' ); ?></p>
-		<p><?php _e( 'If this is not the first time you are using Awesome Support then you should skip this process!' , 'awesome-support' ); ?></p>		
+		<h1 class="wizard-main-heading"><?php _e( 'Awesome Support: First Time Install' , 'awesome-support' ); ?></h1>
+		<p class="wizard-first-line"><?php _e( 'Thank you for installing Awesome Support. Please choose an option below to get started.' , 'awesome-support' ); ?></p>
+		<p class="wizard-normal wizard-second-line"><?php _e( 'If this is not the first time you are using Awesome Support or you would like to manually configure your initial settings, then you should choose to skip this process. Otherwise proceed by clicking the orange button.' , 'awesome-support' ); ?></p>		
+		<p><span class="wpas-button-wizard-primary"><?php _e( '<a href="'. admin_url( 'index.php?page=as-setup' ) .'">Click here To Get Started Now</a>', 'awesome-support' ); ?></span>		
+			<span class="wpas-button-wizard-skip"><?php _e( '<a href="#" id="wpas-skip-wizard">Or skip this process</a>', 'awesome-support' ); ?>
+		</p>		
 	</div>	
 	<?php
 	}
@@ -334,7 +343,7 @@ function wpas_ask_setup_wizard() {
  */
 function wpas_install_default_email_templates() {
 
-	wpas_install_email_template( 'blue_blocks', false );
+	wpas_install_email_template( 'elegant', false );
 	add_option( 'wpas_setup_email_templates', 'complete' );
 
 }

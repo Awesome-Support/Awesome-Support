@@ -829,6 +829,7 @@ the overlay parts are put together!
     border-radius: 4px;
     border-color: #5005fd;
     /* Style all other input elements on the ticketlist page */
+    /* Link colors*/
   }
   .wpas-ticket-list input,
   .wpas-ticket-list select {
@@ -839,6 +840,12 @@ the overlay parts are put together!
     background-color: transparent !important;
     border-color: inherit !important;
     color: inherit !important;
+  }
+  .wpas-ticket-list a {
+    color: #428bca;
+  }
+  .wpas-ticket-list a:hover {
+    color: #2a6496;
   }
   /* Ticketlist: table background color when user hovers over row and some other stuff */
   #wpas_ticketlist {
