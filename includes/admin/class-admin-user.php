@@ -68,7 +68,7 @@ class WPAS_User {
 		$other_phone  = esc_attr( get_user_option( 'wpas_other_phone',  $user->ID ) );
 		?>
 		
-		<div id="wpas_user_profile_segment">		
+		<div id="wpas_user_profile_segment">
 			<h3><?php _e( 'Awesome Support: Additional User Data', 'awesome-support') ?></h3>
 
 
@@ -94,7 +94,7 @@ class WPAS_User {
 				</tbody>
 
 			</table>
-		</div>
+		</div>		
 		
 		<?php
 	}
@@ -224,7 +224,7 @@ class WPAS_User {
 			</td>
 		</tr>
 
-		<?php 
+		<?php
 	}
 
 	
@@ -275,7 +275,7 @@ class WPAS_User {
 		if ( ! wpas_is_agent( $user->ID ) ) {
 			return ;
 		}
-		
+
 		if ( false === wpas_get_option( 'departments', false ) ) {
 			return;
 		}

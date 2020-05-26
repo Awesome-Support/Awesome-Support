@@ -1545,3 +1545,81 @@
 		
 	}
 	
+	/**
+	 * Alter page title for single ticket.
+	 *
+	 * In order to ensure maximum compatibility with all themes,
+	 * we hook onto the_title instead of changing the entire template
+	 * for ticket single.
+	 *
+	 * However, if the theme author has customized the single ticket template
+	 * we do not apply those modifications as the custom template will do the job.
+	 *
+	 * @since  5.8.3
+	 *
+	 * @param  string $title Post title
+	 *
+	 * @return string          Ticket single
+	 */
+	function wpas_single_ticket_title( $title = '' )
+	{
+
+		global $post;
+
+		$slug = 'ticket';
+
+		/* Don't touch the admin */
+		if ( is_admin() ) {
+			return $title;
+		}
+
+		/* Only apply this on the ticket single. */
+		if ( $post && $slug !== $post->post_type ) {
+			return $title;
+		}
+
+		/* Only apply this on the main query. */
+		if ( ! is_main_query() ) {
+			return $title;
+		}
+
+		/* Only apply this if it's inside of a loop. */
+		if ( ! in_the_loop() ) {
+			return $title;
+		}
+
+		/* Remove the filter to avoid infinite loops. */
+		remove_filter( 'the_title', 'wpas_single_ticket_title' );
+
+		/* Check if the current user can view the ticket */
+		if ( ! wpas_can_view_ticket( $post->ID ) ) {
+
+			if ( is_user_logged_in() ) {
+				return wpas_get_notification_markup( 'failure', __( 'No tickets found.', 'awesome-support' ) );
+			} else {
+
+				$output = '';
+				$output .= wpas_get_notification_markup( 'info', __( 'No tickets found.', 'awesome-support' ) );
+
+				return $output;
+
+			}
+		}
+
+		/* Get template name */
+		$template_path = get_page_template();
+		$template      = explode( '/', $template_path );
+		$count         = count( $template );
+		$template      = $template[ $count - 1 ];
+
+		/* Don't apply the modifications on a custom template */
+		if ( "single-$slug.php" === $template ) {
+			return $title;
+		}
+
+		return $title;
+
+	}
+	// Add filter to `the_title` hook.
+	add_filter( 'the_title', 'wpas_single_ticket_title', 10, 1 );
+	

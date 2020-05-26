@@ -57,8 +57,8 @@ function wpas_metaboxes() {
 	}
 	
 	/* Add a dummy metabox to force gutenberg to render in old-style mode... */
-	//add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version', '__block_editor_compatible_meta_box' => wpas_gutenberg_meta_box_compatible() ) );	
-	add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version' ) );		
+	// add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version', '__block_editor_compatible_meta_box' => wpas_gutenberg_meta_box_compatible() ) );	
+	add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version' ) );
 }
 
 /**
@@ -90,4 +90,25 @@ function wpas_metabox_callback( $post, $args ) {
 	/* Include the metabox content */
 	include_once( WPAS_PATH . "includes/admin/metaboxes/$template.php" );
 
+}
+
+// Add a filter to the_content to remove http and https
+add_filter( 'the_content', 'wpas_the_content_remove_https', 7, 1 );
+if ( ! function_exists( 'wpas_the_content_remove_https' ) ) {
+	/**
+	 * Remove http and https from the_content if content starts with it.
+	 *
+	 * @param  string $content String of post content
+	 *
+	 * @return string      Updated content
+	 */
+	function wpas_the_content_remove_https( $content )
+	{
+		// filter $content and replace http or https
+		if ( strpos($content, 'http://') === 0 || strpos($content, 'https://') === 0 ) {
+			$content = str_replace( array( 'http://', 'https://' ), '', $content );
+		}
+		
+		return $content;
+	}
 }

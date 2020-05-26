@@ -302,4 +302,3 @@ function wpas_redirect_ticket_archive() {
 	}
 
 }
- 

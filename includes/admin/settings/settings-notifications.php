@@ -14,6 +14,10 @@ function wpas_core_settings_notifications( $def ) {
 			'name'    => __( 'E-Mails', 'awesome-support' ),
 			'options' => array(
 				array(
+					'type' => 'note',
+					'desc' => __( 'For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen.', 'awesome-support' )
+				),
+				array(
 					'name' => __( 'Global E-Mail Template', 'awesome-support' ),
 					'desc' => __( 'The HTML E-Mail Template options below controls how the logo, header and footer appear in ALL your outgoing Awesome Support emails.  You can completely disable this global template if necessary.', 'awesome-support' ),
 					'type' => 'heading',
@@ -88,8 +92,7 @@ function wpas_core_settings_notifications( $def ) {
 					'name'    => __( 'Template Tags', 'awesome-support' ),				
 					'type' => 'note',
 					'desc' => __( 'Email template tags allow you to insert real-time information into your outgoing emails.  For example you can use tags to refer to the users name or the agent name.  For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen.  You can also click on the <b>{ }</b> icon in each of the editors for a pop-up list.', 'awesome-support' )
-				),				
-				
+				),
 				/* Submission confirmation */
 				array(
 					'name' => __( 'Submission Confirmation', 'awesome-support' ),
@@ -198,7 +201,7 @@ function wpas_core_settings_notifications( $def ) {
 				),
 				/* Ticket closed by agent */
 				array(
-					'name' => __( 'Ticket Closed (By Agent)', 'awesome-support' ),
+					'name' => __( 'Ticket Closed (by Agent)', 'awesome-support' ),
 					'desc' => __( 'This is sent to the user when an agent closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
@@ -227,10 +230,10 @@ function wpas_core_settings_notifications( $def ) {
 					'type'    => 'checkbox',
 					'default' => false,
 					'desc'    => __( '<em>Can agents prevent a closing confirmation email from being sent to a customer? Note: If this enabled it only applies to the emails defined in the core plugin and not to emails created by add-ons such as our Notification or Business Rules Engine add-ons</em>', 'awesome-support' )
-				),					
+				),
 				/* Ticket closed by client*/				
 				array(
-					'name' => __( 'Ticket Closed (By Client)', 'awesome-support' ),
+					'name' => __( 'Ticket Closed (by client)', 'awesome-support' ),
 					'desc' => __( 'This is sent to the agent when a user closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
@@ -252,7 +255,7 @@ function wpas_core_settings_notifications( $def ) {
 					'id'       => 'content_closed_client',
 					'type'     => 'editor',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),			
+				),
 			)
 		),
 	);

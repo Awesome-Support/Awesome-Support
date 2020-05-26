@@ -4,7 +4,7 @@ Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreativ
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
 Tested up to: 5.0
-Stable tag: 5.8.0
+Stable tag: 5.8.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -446,6 +446,11 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 5.8.2 =
+
+* Security Fixes
+  * Sanitize the ticket post title when tickets are submitted from the admin area by agents and admins.
 
 = 5.8.0 =
 ***This version requires upgrades to some of your add-ons: Custom FAQ, Documentation, FAQs, Smart Replies, Powerpack and Public Tickets***

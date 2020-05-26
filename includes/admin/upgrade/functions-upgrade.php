@@ -543,14 +543,14 @@ function wpas_upgrade_581() {
  *
  * New capabilities need to be added to certain roles.
  *
- * @since 6.0.0
+ * @since 5.9.0
  * @return void
  */
-function wpas_upgrade_600() {
-	// Run the 581 upgrade option for version 600.
-	// The 581 upgrade was the internal upgrade option during testing of the 590/600 release.
-	// Therefore the two routines are the same and there is no reason to write a separate 600 routine.
+function wpas_upgrade_590() {
+	// Run the 581 upgrade option for version 590.
+	// The 581 upgrade was the internal upgrade option during testing of the 590 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 590 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
-	// we create this 600 routine to make sure it runs for early 520 adopters.
+	// we create this 590 routine to make sure it runs for early 520 adopters.
 	wpas_upgrade_581();
 }

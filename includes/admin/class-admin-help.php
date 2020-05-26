@@ -19,14 +19,15 @@ class WPAS_Help {
 	 */
 	protected static $instance = null;
 	
-	public function __construct() {
-		add_filter( 'contextual_help', array( $this, 'settings_general_contextual_help' ), 10, 3 );
-		add_filter( 'contextual_help', array( $this, 'settings_registration_help' ), 10, 3 );
-		add_filter( 'contextual_help', array( $this, 'settings_products_management_help' ), 10, 3 );
-		add_filter( 'contextual_help', array( $this, 'settings_notifications_contextual_help' ), 10, 3 );
-		add_filter( 'contextual_help', array( $this, 'settings_advanced_contextual_help' ), 10, 3 );
+	public function __construct()
+	{
+		add_filter( 'admin_head', array( $this, 'settings_general_contextual_help' ), 10, 3 );
+		add_filter( 'admin_head', array( $this, 'settings_registration_help' ), 10, 3 );
+		add_filter( 'admin_head', array( $this, 'settings_products_management_help' ), 10, 3 );
+		add_filter( 'admin_head', array( $this, 'settings_notifications_contextual_help' ), 10, 3 );
+		add_filter( 'admin_head', array( $this, 'settings_advanced_contextual_help' ), 10, 3 );
 		
-		add_filter( 'contextual_help', array( $this, 'settings_moderated_registration_help' ), 10, 3 );
+		add_filter( 'admin_head', array( $this, 'settings_moderated_registration_help' ), 10, 3 );
 	}
 
 	/**

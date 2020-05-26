@@ -484,7 +484,8 @@ class AS_Admin_Setup_Wizard {
 			$options['departments'] = '0';
 		}
 		update_option( 'wpas_options', serialize( $options ) );
-		
+		// Don't show setup wizard link on plug-in activation.
+		update_option('wpas_plugin_setup', 'done');
 		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
 	}
 

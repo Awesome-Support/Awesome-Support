@@ -38,6 +38,21 @@ the overlay parts are put together!
 		}
 		
 	}
+
+	/* Style all other input elements */
+	/* If these start to conflict with other page elements from the users theme we will need to add a qualifying class to it. */
+	input, select {
+		
+		/* Make all other input elements have a bit of roundedness and font size smaller */
+		border-radius: 3px;
+		font-size: @font-size-small;	
+
+		/* Set colors for input elements */
+		background-color: @form-control-background-color !important ;
+		border-color: @form-control-border-color !important ;
+		color: @form-control-color !important ;
+		
+	}    
 	
 	/* Ticketlist: All elements - make font size smaller and some other stuff */
 	.wpas-ticket-list {

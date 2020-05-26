@@ -190,6 +190,8 @@ class WPAS_Product_Sync {
 				case 'hide_empty':
 				case 'hierarchical':
 				case 'cache_domain':
+					// Comment out `continue` and replaced with `break` because of a fix in PHP version 7.3
+					// continue;
 					break;
 
 				case 'exclude':
@@ -216,6 +218,8 @@ class WPAS_Product_Sync {
 					if ( 'count' === $value ) {
 						$clean_args['fields']              = 'ids';
 						$clean_args['wpas_get_post_count'] = true; // We set wpas_get_post_count in order to know that we just need the post count
+						// Comment out `continue` and replaced with `break` because of a fix in PHP version 7.3
+						// continue;
 						break;
 					}
 
@@ -238,6 +242,8 @@ class WPAS_Product_Sync {
 
 					/* Overwrite the child_of argument */
 					if ( isset( $args['get'] ) && 'all' === $args['get'] ) {
+						// Comment out `continue` and replaced with `break` because of a fix in PHP version 7.3
+						// continue;
 						break;
 					}
 

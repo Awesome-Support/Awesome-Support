@@ -60,7 +60,6 @@ class WPAS_Tickets_List {
 			
 			add_filter( 'posts_search', array( $this, 'ticket_listing_search_query' ), 2 , 11 );
 			add_filter( 'posts_join',   array( $this, 'ticket_listing_search_join_query' ), 2, 11 );
-			
 		}
 	}
 	
@@ -556,12 +555,11 @@ class WPAS_Tickets_List {
 
 						// Maybe add close date
 						$close_date = wpas_get_close_date( $post_id );
-						
 						if ( ! empty( $close_date ) ) {
-						
+
 							$close_date_string        = (string) date_i18n( $close_date );  // Convert date to string
 							$close_date_string_tokens = explode( ' ', $close_date_string );    // Separate date/time
-								
+
 							if ( 'closed' == wpas_get_ticket_status( $post_id ) ) {
 								if ( ! empty( $close_date_string_tokens ) ) {
 									echo '<br>';
@@ -571,7 +569,6 @@ class WPAS_Tickets_List {
 								echo '<br>';
 								echo __( 'This ticket was re-opened but had been closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
 							}
-							
 						}
 
 						// Maybe add gmt close date
