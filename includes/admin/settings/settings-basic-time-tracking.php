@@ -17,12 +17,19 @@ function wpas_core_basic_time_tracking( $def ) {
 					'name' => __( 'Basic Time Tracking', 'awesome-support' ),
 					'type' => 'heading',
 					'options' => wpas_get_basic_time_tracking_options()
+				),
+				array(
+					'name' => __( 'Front-end Options', 'awesome-support' ),
+					'id' => 'basic-time-tracking-front-end-options',
+					'type' => 'heading',
+					'options' => wpas_get_basic_time_tracking_fe_options()
 				),				
+				
 			)
 		),
 	);
 
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_basic_time_tracking', $settings )  );
 
 }
 
@@ -90,6 +97,37 @@ function wpas_get_basic_time_tracking_options() {
 			'desc'    => __( 'Adds a column to the ticket list to show the final time recorded for the ticket', 'awesome-support' ),
 			'default' => false
 		)		
+	);
+		
+	
+	return $basic_time_tracking_options;
+}
+
+/**
+ * Prepare the available options for basic time tracking - front-end options...
+ *
+ * @since 5.8.1
+ * @return array
+ */
+function wpas_get_basic_time_tracking_fe_options() {
+
+	$basic_time_tracking_options = array(
+		array(
+			'name'    => __( 'Show Final Time On Front-end Ticket List', 'awesome-support' ),
+			'id'      => 'show_final_time_in_fe_ticket_list',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Turn this on to allow the client to see the final time recorded in the front-end ticket list', 'awesome-support' ),
+			'default' => false
+		),
+
+		array(
+			'name'    => __( 'Show Final Time On Front-end Ticket', 'awesome-support' ),
+			'id'      => 'show_final_time_in_fe_ticket',
+			'type'    => 'checkbox',
+			'desc'    => __( 'Turn this on to allow the client to see the final time recorded in the front-end ticket', 'awesome-support' ),
+			'default' => false
+		),		
+
 	);
 		
 	

@@ -68,32 +68,33 @@ class WPAS_User {
 		$other_phone  = esc_attr( get_user_option( 'wpas_other_phone',  $user->ID ) );
 		?>
 		
-		<h3><?php _e( 'Awesome Support: Additional User Data', 'awesome-support') ?></h3>
+		<div id="wpas_user_profile_segment">
+			<h3><?php _e( 'Awesome Support: Additional User Data', 'awesome-support') ?></h3>
 
 
-		<table class="form-table">
+			<table class="form-table">
 
-			<tbody>
-				<tr>
-					<th><label><?php _e( 'Mobile Phone', 'awesome-support' ); ?></label></th>
-					<td><input type="text" name="wpas_mobile_phone" id="wpas_mobile_phone" value="<?php echo $mobile_phone; ?>" class="regular-text code"></td>
-				</tr>
-				<tr>
-					<th><label><?php _e( 'Office Phone', 'awesome-support' ); ?></label></th>
-					<td><input type="text" name="wpas_office_phone" id="wpas_office_phone" value="<?php echo $office_phone; ?>" class="regular-text code"></td>
-				</tr>
-				<tr>
-					<th><label><?php _e( 'Home Phone', 'awesome-support' ); ?></label></th>
-					<td><input type="text" name="wpas_home_phone" id="wpas_home_phone" value="<?php echo $home_phone; ?>" class="regular-text code"></td>
-				</tr>
-				<tr>
-					<th><label><?php _e( 'Other Phone', 'awesome-support' ); ?></label></th>
-					<td><input type="text" name="wpas_other_phone" id="wpas_other_phone" value="<?php echo $other_phone; ?>" class="regular-text code"></td>
-				</tr>
-			</tbody>
+				<tbody>
+					<tr>
+						<th><label><?php _e( 'Mobile Phone', 'awesome-support' ); ?></label></th>
+						<td><input type="text" name="wpas_mobile_phone" id="wpas_mobile_phone" value="<?php echo $mobile_phone; ?>" class="regular-text code"></td>
+					</tr>
+					<tr>
+						<th><label><?php _e( 'Office Phone', 'awesome-support' ); ?></label></th>
+						<td><input type="text" name="wpas_office_phone" id="wpas_office_phone" value="<?php echo $office_phone; ?>" class="regular-text code"></td>
+					</tr>
+					<tr>
+						<th><label><?php _e( 'Home Phone', 'awesome-support' ); ?></label></th>
+						<td><input type="text" name="wpas_home_phone" id="wpas_home_phone" value="<?php echo $home_phone; ?>" class="regular-text code"></td>
+					</tr>
+					<tr>
+						<th><label><?php _e( 'Other Phone', 'awesome-support' ); ?></label></th>
+						<td><input type="text" name="wpas_other_phone" id="wpas_other_phone" value="<?php echo $other_phone; ?>" class="regular-text code"></td>
+					</tr>
+				</tbody>
 
-		</table>
-		
+			</table>
+		</div>		
 		
 		<?php
 	}
@@ -115,13 +116,15 @@ class WPAS_User {
 			return false;
 		} ?>
 
-		<h3><?php _e( 'Awesome Support: Preferences', 'awesome-support' ); ?></h3>
+		<div id="wpas_user_profile_segment">
+			<h3><?php _e( 'Awesome Support: Preferences', 'awesome-support' ); ?></h3>
 
-		<table class="form-table">
-			<tbody>
-				<?php do_action( 'wpas_user_profile_fields', $user ); ?>
-			</tbody>
-		</table>
+			<table class="form-table">
+				<tbody>
+					<?php do_action( 'wpas_user_profile_fields', $user ); ?>
+				</tbody>
+			</table>
+		</div>
 	<?php }
 
 	/**
@@ -137,9 +140,12 @@ class WPAS_User {
 	 */
 	public function profile_field_smart_tickets_order( $user ) {
 
-		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
-			return;
-		} ?>
+		/* If this user is not an agent, then don't allow this field to be set/shown */
+		if ( ! wpas_is_agent( $user->ID ) ) {
+			return ;
+		}
+		
+		?>
 
 		<tr class="wpas-after-reply-wrap">
 			<th><label><?php esc_attr_e( 'Smart Tickets Order', 'awesome-support' ); ?></label></th>
@@ -163,9 +169,12 @@ class WPAS_User {
 	 */
 	public function profile_field_after_reply( $user ) {
 
-		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
-			return;
-		} ?>
+		/* If this user is not an agent, then don't allow this field to be set/shown */
+		if ( ! wpas_is_agent( $user->ID ) ) {
+			return ;
+		}
+		
+		?>
 
 		<tr class="wpas-after-reply-wrap">
 			<th><label for="wpas_after_reply"><?php echo _x( 'After Reply', 'Action after replying to a ticket', 'awesome-support' ); ?></label></th>
@@ -194,13 +203,17 @@ class WPAS_User {
 	 */
 	public function profile_field_user_can_be_assigned( $user ) {
 
-		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
+		/* Only admins can set this field for an agent */
+		if ( ! wpas_is_asadmin() ) {
 			return;
 		}
+		
+		/* If this user is not an agent, then don't allow this field to be set/shown */
+		if ( ! wpas_is_agent( $user->ID ) ) {
+			return ;
+		}		
 
-		if ( ! current_user_can( 'administrator' ) ) {
-			return;
-		} ?>
+		?>
 
 		<tr class="wpas-after-reply-wrap">
 			<th><label><?php _e( 'Can Be Assigned', 'awesome-support' ); ?></label></th>
@@ -211,7 +224,8 @@ class WPAS_User {
 			</td>
 		</tr>
 
-	<?php }
+		<?php
+	}
 
 	
 	/**
@@ -252,12 +266,14 @@ class WPAS_User {
 	 */
 	public function profile_field_agent_department( $user ) {
 
-		if ( ! user_can( $user->ID, 'edit_ticket' ) ) {
+		/* Only admins can set the dept field for an agent */	
+		if ( ! wpas_is_asadmin() ) {
 			return;
 		}
-
-		if ( ! current_user_can( 'administrator' ) ) {
-			return;
+				
+		/* If this user is not an agent, then don't allow this field to be set/shown */
+		if ( ! wpas_is_agent( $user->ID ) ) {
+			return ;
 		}
 
 		if ( false === wpas_get_option( 'departments', false ) ) {

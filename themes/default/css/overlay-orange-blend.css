@@ -1,6 +1,6 @@
 /*
 
-Dark: Inherits from the angle overlay
+Orange Blend: Inherits from the angle overlay
 
 1) Import
 2) Variables
@@ -840,6 +840,24 @@ the overlay parts are put together!
     border-width: 1px;
     border-radius: 4px;
     border-color: #902e27;
+    /* Style all other input elements on the ticketlist page */
+    /* Link colors*/
+  }
+  .wpas-ticket-list input,
+  .wpas-ticket-list select {
+    /* Make all other input elements have a bit of roundedness and font size smaller */
+    border-radius: 3px;
+    font-size: 11.9px;
+    /* Set colors for input elements */
+    background-color: #902e27 !important;
+    border-color: #902e27 !important;
+    color: #ffffff !important;
+  }
+  .wpas-ticket-list a {
+    color: #428bca;
+  }
+  .wpas-ticket-list a:hover {
+    color: #2a6496;
   }
   /* Ticketlist: table background color when user hovers over row and some other stuff */
   #wpas_ticketlist {

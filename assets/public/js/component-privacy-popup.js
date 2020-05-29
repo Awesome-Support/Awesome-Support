@@ -79,9 +79,10 @@ jQuery(document).ready(function ($) {
 		 * NOTE: We cannot get the content wpas_set_editor_content()
 		 * on submission. This will be the workaround.
 		 */
-		var activeEditor_content = tinyMCE.activeEditor.getContent();
-		jQuery( '#wpas-gdpr-export-more-info' ).html( activeEditor_content );
-
+		if( jQuery( '#wpas-gdpr-export-more-info' ).length > 0 ) {
+			var activeEditor_content = tinyMCE.activeEditor.getContent();
+			jQuery( '#wpas-gdpr-export-more-info' ).html( activeEditor_content );
+		}
 		var data = {
 			'action': 'wpas_gdpr_open_ticket',
 			'security' : WPAS_GDPR.nonce,

@@ -21,9 +21,9 @@
         }
     ],
     "require": {
-        "php": ">=5.6",
-        "gambitph/titan-framework": "1.9.*",
-        "ericmann/wp-session-manager": "2.0.*"
+        "php": ">=7.1",
+        "gambitph/titan-framework": "1.12.*",
+		"ericmann/wp-session-manager": "4.2.*"		
     },
     "archive": {
         "exclude": [

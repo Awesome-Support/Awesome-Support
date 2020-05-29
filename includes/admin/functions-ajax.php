@@ -80,8 +80,6 @@ function wpas_get_ticket_for_print_ajax() {
 	
 }
 
-
-
 add_action( 'wp_ajax_wpas_get_tickets_for_print', 'wpas_get_tickets_for_print_ajax' );
 /**
  * Get tickets for print
@@ -133,3 +131,23 @@ function wpas_get_tickets_for_print_ajax() {
 	
 }
 
+
+add_action( 'wp_ajax_wpas_close_ticket_prevent_client_notification', 'wpas_ajax_close_ticket_prevent_client_notification' );
+/**
+ * Handle request to set client notification flag about ticket close
+ */
+function wpas_ajax_close_ticket_prevent_client_notification() {
+	
+	$prevent_client_notification = filter_input( INPUT_POST, 'prevent',   FILTER_SANITIZE_NUMBER_INT );
+	$ticket_id					 = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
+	
+	
+	if( !check_ajax_referer( 'prevent_client_notification', 'nonce', false ) || !current_user_can( 'edit_ticket' ) || !$ticket_id ) {
+		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
+		die();
+	}
+	
+	update_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', $prevent_client_notification );
+	
+	wp_send_json_success();
+}

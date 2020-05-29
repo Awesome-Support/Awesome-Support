@@ -62,6 +62,10 @@ if ( isset( $_GET['done'] ) ) {
 		case 'reset_channels':
 			$message = __( 'All channels have been reset', 'awesome-support' );
 			break;
+			
+		case 'reset_ticket_types':
+			$message = __( 'All ticket types have been reset', 'awesome-support' );
+			break;
 		
 		case 'install_blue_blocks_email_template':
 			$message = __( 'The Blue Blocks Email Template Set Has Been Installed', 'awesome-support' );
@@ -173,6 +177,13 @@ if ( isset( $message ) && !empty( $message ) ) {
 			</td>
 		</tr>
 		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Reset ticket types', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'reset_ticket_types' ); ?>" class="button-secondary"><?php _e( 'Reset', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'Reset ticket_types.', 'awesome-support' ); ?></span>
+			</td>
+		</tr>		
+		<tr>
 			<td class="row-title"><label for="tablecell"><?php _e( 'Zero Out All Time Fields', 'awesome-support' ); ?></label></td>
 			<td>
 				<a href="<?php echo wpas_tool_link( 'reset_time_fields' ); ?>" class="button-secondary"><?php _e( 'Reset', 'awesome-support' ); ?></a>
@@ -281,6 +292,15 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'If your CAPABILITIES are not installed, re-run the 4.x.x to 5.0.0 conversion process. Make sure you have a BACKUP!', 'awesome-support' ); ?></span>
 			</td>
 		</tr>				
+		<tr>
+			<td class="row-title"><label for="tablecell"><?php _e( 'Re-run conversion from 5.8.0 to 5.9.0', 'awesome-support' ); ?></label></td>
+			<td>
+				<a href="<?php echo wpas_tool_link( 'rerun_580_to_590_conversion' ); ?>" class="button-secondary"><?php _e( 'Rerun Conversion', 'awesome-support' ); ?></a>
+				<span class="wpas-system-tools-desc"><?php _e( 'If your CAPABILITIES are not installed, re-run the 5.8.0 to 5.9.0 conversion process. Make sure you have a BACKUP!', 'awesome-support' ); ?></span>
+			</td>
+		</tr>						
+		
+		
 		<?php do_action( 'wpas_system_data_conversion_tools_table_after' ); ?>
 	</tbody>
 </table>

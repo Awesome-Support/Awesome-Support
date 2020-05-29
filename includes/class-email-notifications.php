@@ -526,7 +526,8 @@ class WPAS_Email_Notification {
 					break;
 
 				case 'message':
-					$tag['value'] = $this->ticket_id === $this->post_id ? $this->get_ticket()->post_content : $this->get_reply()->post_content;
+					$message_value = $this->ticket_id === $this->post_id ? $this->get_ticket()->post_content : $this->get_reply()->post_content;
+					$tag['value'] = addslashes( $message_value );
 					break;
 
 			}
@@ -563,7 +564,7 @@ class WPAS_Email_Notification {
 	 * @return string E-mail body
 	 */
 	private function get_body( $case ) {
-		return apply_filters( 'wpas_email_notifications_body', stripcslashes ( $this->get_content( 'content', $case ) ), $this->post_id, $case );
+		return apply_filters( 'wpas_email_notifications_body', $this->get_content( 'content', $case ), $this->post_id, $case );
 	}
 
 	/**
@@ -624,7 +625,7 @@ class WPAS_Email_Notification {
 			$this->link_attachments = true;
 		}
 
-		return $this->fetch( $pre_fetch_content );
+		return $this->fetch( stripcslashes( $pre_fetch_content ) );
 		
 	}
 
@@ -828,7 +829,8 @@ class WPAS_Email_Notification {
 			'attachments'     => ''
 			),
 			$case,
-			$this->ticket_id
+			$this->ticket_id, 
+			$this->post_id
 		);
 		
 		$attachments = array();

@@ -47,6 +47,12 @@ module.exports = function (grunt) {
 					'themes/default/css/overlay-angle.css': 'themes/default/less/overlay-angle.less',
 					'themes/default/css/overlay-dark.css': 'themes/default/less/overlay-dark.less',
 					'themes/default/css/overlay-orange-blend.css': 'themes/default/less/overlay-orange-blend.less',
+					'themes/default/css/overlay-royal-blend.css': 'themes/default/less/overlay-royal-blend.less',
+					'themes/default/css/overlay-green-envy.css': 'themes/default/less/overlay-green-envy.less',
+					'themes/default/css/overlay-plain-gray.css': 'themes/default/less/overlay-plain-gray.less',
+					'themes/default/css/overlay-basic-blue.css': 'themes/default/less/overlay-basic-blue.less',
+					'themes/default/css/overlay-basic-red.css': 'themes/default/less/overlay-basic-red.less',
+					'themes/default/css/overlay-basic-green.css': 'themes/default/less/overlay-basic-green.less',
 					'includes/rest-api/assets/admin/css/admin.css': 'includes/rest-api/assets/admin/less/admin.less'
 				}
 			}
@@ -305,8 +311,7 @@ module.exports = function (grunt) {
 			files: [
 			  { src:"vendor-overrides/titan-framework-overrides/class-option-edd-license.php", dest:"vendor/gambitph/titan-framework/lib/class-option-edd-license.php" },
 			  { src:"vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php", dest:"vendor/gambitph/titan-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php" },
-			  { src:"vendor-overrides/titan-framework-overrides/wp-color-picker-alpha-min.js", dest:"vendor/gambitph/titan-framework/js/min/wp-color-picker-alpha-min.js" },
-			  { src:"vendor-overrides/titan-framework-overrides/wp-color-picker-alpha.js", dest:"vendor/gambitph/titan-framework/js/wp-color-picker-alpha.js" }
+			  { src:"vendor-overrides/eric-mann-session-manager/ericmann/wp-session-manager/includes/deprecated.php", dest:"vendor/ericmann/wp-session-manager/includes/deprecated.php" }
 			]
 		  },
 			copytodist: {

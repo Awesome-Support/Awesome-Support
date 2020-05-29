@@ -110,14 +110,16 @@ class WPAS_GDPR_User_Profile {
 		 */
 		if ( current_user_can( 'create_ticket' ) ) {
 			?>
-			<div class="wpas-gdpr-export-wrapper">
-				<div class="wpas-gdpr-notice export-data"></div>
-				<?php
-					global $user_id;
-					$data_user = (int) $user_id;
-				?>
-				<h2><?php esc_html_e( 'Awesome Support: Data Export', 'awesome-support' ); ?></h2>
-				<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo $data_user; ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
+			<div id="wpas_user_profile_segment">
+				<div class="wpas-gdpr-export-wrapper">
+					<div class="wpas-gdpr-notice export-data"></div>
+					<?php
+						global $user_id;
+						$data_user = (int) $user_id;
+					?>
+					<h2><?php esc_html_e( 'Awesome Support: Data Export', 'awesome-support' ); ?></h2>
+					<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo $data_user; ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
+				</div>
 			</div>
 			<?php
 			/**
@@ -128,98 +130,100 @@ class WPAS_GDPR_User_Profile {
 			$user_consent = get_user_option( 'wpas_consent_tracking', $profileuser->ID );
 			if ( ! empty( $user_consent ) && is_array( $user_consent ) ) {
 	?>
-		<h2><?php esc_html_e( 'Awesome Support: Consents Granted', 'awesome-support' ); ?></h2>		
-		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
-			<thead>
-				<tr>
-					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
-					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
-					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
-					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
-					<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php
-				/**
-				 * Loop the consent
-				 */
-			foreach ( $user_consent as $consent ) {
-				/**
-					 * Determine if current loop is TOR
-					 * Display TOR as label instead of content
-					 * There should be no Opt buttons
-					 */
-				$item = isset( $consent['item'] ) ? $consent['item'] : '';
-				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] === true ) {
-					$item = __( 'Terms and Conditions', 'awesome-support' );
-				}
-
-				/**
-				 * Determine status
-				 * Raw data is boolean, we convert it into string
-				 */
-				$status = '';
-				if ( isset( $consent['status'] ) && ! empty( $consent['status'] ) ) {
-					if ( $consent['status'] == 1 ) {
-						$status = __( 'Opted-in', 'awesome-support' );
-					} else {
-						$status = $consent['status'];
-					}
-				}
-
-				/**
-					 * Convert Opt content into date
-					 * We stored Opt data as strtotime value
-					 */
-				$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? date( 'm/d/Y', $consent['opt_in'] ) : '';
-				$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? date( 'm/d/Y', $consent['opt_out'] ) : '';
-
-				/**
-					 * Determine 'Action' buttons
-					 * If current loop is TOR, do not give Opt options
-					 */
-				$opt_button = '';
-				if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
-					$gdpr_id = wpas_get_gdpr_data( $item );
+		<div id="wpas_user_profile_segment">
+			<h2><?php esc_html_e( 'Awesome Support: Consents Granted', 'awesome-support' ); ?></h2>		
+			<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
+				<thead>
+					<tr>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php
 					/**
-					 * Determine what type of buttons we should render
-					 * If opt_in is not empty, display Opt out button
-					 * otherwise, just vice versa
-					*/
-					if ( ! empty( $opt_in ) && wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
-						$opt_button = sprintf(
-							'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optin-date="' . $opt_in . '">%s</a>',
-							__( 'Opt-out', 'awesome-support' )
-						);
-					} elseif ( ! empty( $opt_out ) ) {
-						$opt_button = sprintf(
-							'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optout-date="' . $opt_out . '">%s</a>',
-							__( 'Opt-in', 'awesome-support' )
-						);
-					} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
-						$opt_button = sprintf(
-							'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
-							__( 'Opt-in', 'awesome-support' )
-						);
-					}
-				}
-
-				/**
-					 * Render data
+					 * Loop the consent
 					 */
-				printf(
-					'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-					$item,
-					$status,
-					$opt_in,
-					$opt_out,
-					$opt_button
-				);
-			}
-			?>
-			</tbody>
-		</table>
+				foreach ( $user_consent as $consent ) {
+					/**
+						 * Determine if current loop is TOR
+						 * Display TOR as label instead of content
+						 * There should be no Opt buttons
+						 */
+					$item = isset( $consent['item'] ) ? $consent['item'] : '';
+					if ( isset( $consent['is_tor'] ) && $consent['is_tor'] === true ) {
+						$item = __( 'Terms and Conditions', 'awesome-support' );
+					}
+
+					/**
+					 * Determine status
+					 * Raw data is boolean, we convert it into string
+					 */
+					$status = '';
+					if ( isset( $consent['status'] ) && ! empty( $consent['status'] ) ) {
+						if ( $consent['status'] == 1 ) {
+							$status = __( 'Opted-in', 'awesome-support' );
+						} else {
+							$status = $consent['status'];
+						}
+					}
+
+					/**
+						 * Convert Opt content into date
+						 * We stored Opt data as strtotime value
+						 */
+					$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? date( 'm/d/Y', $consent['opt_in'] ) : '';
+					$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? date( 'm/d/Y', $consent['opt_out'] ) : '';
+
+					/**
+						 * Determine 'Action' buttons
+						 * If current loop is TOR, do not give Opt options
+						 */
+					$opt_button = '';
+					if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
+						$gdpr_id = wpas_get_gdpr_data( $item );
+						/**
+						 * Determine what type of buttons we should render
+						 * If opt_in is not empty, display Opt out button
+						 * otherwise, just vice versa
+						*/
+						if ( ! empty( $opt_in ) && wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
+							$opt_button = sprintf(
+								'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optin-date="' . $opt_in . '">%s</a>',
+								__( 'Opt-out', 'awesome-support' )
+							);
+						} elseif ( ! empty( $opt_out ) ) {
+							$opt_button = sprintf(
+								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optout-date="' . $opt_out . '">%s</a>',
+								__( 'Opt-in', 'awesome-support' )
+							);
+						} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
+							$opt_button = sprintf(
+								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
+								__( 'Opt-in', 'awesome-support' )
+							);
+						}
+					}
+
+					/**
+						 * Render data
+						 */
+					printf(
+						'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
+						$item,
+						$status,
+						$opt_in,
+						$opt_out,
+						$opt_button
+					);
+				}
+				?>
+				</tbody>
+			</table>
+		</div>
 		<?php
 			}
 			/**
@@ -230,17 +234,19 @@ class WPAS_GDPR_User_Profile {
 		?>
 
 		<!-- GDPR Consent logging -->
-		<h2><?php esc_html_e( 'Awesome Support: Consent Logs', 'awesome-support' ); ?></h2>
-		<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
-			<?php
-				/**
-				 * Loop the consent log
-				 */
-			foreach ( $consent_log as $log ) {
-				echo '<tr><td>' . $log . '</td></tr>';
-			}
-			?>
-		</table>
+		<div id="wpas_user_profile_segment">
+			<h3><?php esc_html_e( 'Awesome Support: Consent Logs', 'awesome-support' ); ?></h3>
+			<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
+				<?php
+					/**
+					 * Loop the consent log
+					 */
+				foreach ( $consent_log as $log ) {
+					echo '<tr><td>' . $log . '</td></tr>';
+				}
+				?>
+			</table>
+		</div>
 		<?php
 			}
 		}

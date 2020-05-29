@@ -36,7 +36,9 @@
          */
         if ($('.wpas-ticket-content').length && $('.wpas-reply-content').length) {
             $('.wpas-ticket-content, .wpas-reply-content').each(function (index, el) {
-                el.innerHTML = Autolinker.link(el.innerHTML);
+                if (typeof wpas !== 'undefined' && stringToBool(wpas.useAutolinker)) {
+                    el.innerHTML = Autolinker.link(el.innerHTML);
+                }
             });
         }
 
@@ -486,6 +488,45 @@
                         
                 });
         }
+        
+        
+        /* Set or remove close ticket client notification flag */
+        $('input[name=close_ticket_prevent_client_notification]').change( function(e) {
+                e.preventDefault();
+                
+                var checkbox  = $(this);
+                if( checkbox.prop('disabled') ) {
+                        return;
+                }
+                
+                var prevent = checkbox.is(':checked') ? '1' : '';
+                checkbox.prop( 'disabled', true );
+                
+                var loader = $('<div class="spinner"></div>');
+                loader.css({
+                        visibility: 'visible', 
+                        float: 'none', 
+                        width: '18px',
+                        height: '18px',
+                        backgroundSize: '18px',
+                        margin: '-4px 2px 0 0'
+                }).insertAfter(checkbox);
+                
+                checkbox.hide();
+                var data = {
+                        action : 'wpas_close_ticket_prevent_client_notification',
+                        prevent : prevent,
+                        ticket_id : wpas.ticket_id,
+                        nonce : checkbox.data('nonce')
+                };
+
+                $.post(ajaxurl, data, function (response) {
+                          
+                        loader.remove();
+                        checkbox.prop( 'disabled', false );
+                        checkbox.show();
+                });
+        })
         
 
     });
