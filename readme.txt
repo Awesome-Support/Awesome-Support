@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 5.0
-Stable tag: 5.8.2
+Tested up to: 5.4.1
+Stable tag: 6.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -446,6 +446,59 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+
+
+
+= 6.0.0 =
+
+* Security Fixes
+  * Sanitize posts and fix SQL injections
+
+* New
+  * Ticket Types
+  * Option To Suppress Closing Emails To Customer
+  * myCRED Integration
+  * Ticket Form Redirect
+  * Product Syncing - Control Which Product Statuses Should Be Synced
+  * Notifications Button For Single Ticket Screen
+  * Ticket Templates
+  * Time Fields on Front-End
+  
+* Fix
+  * When editing a customer response on a ticket, the response was not saved in the text tab.
+  * Continue 2 Warning Messages were fixed.
+  * Fixed some functions that generated Deprecated Notices
+  * A user was able to see the ticket title of other users in the front end.
+  * When clicking on the "Mine" Tickets in the back end, the list was empty.
+  * YouTube URLs where not show when adding them to a ticket reply.
+  * Path to front-end style-sheet was sometimes incorrect - resulting in an un-styled front-end.
+  * Restore the ability to load the style.css from the theme folder if it exists.
+  * The flag that controls whether the end user can set the auto-delete-attachment checkbox was not being respected when opening tickets.
+  * The flag that controls whether the end user can set the auto-delete-attachment checkbox was not being respected when replying to tickets - but only doing so when the overall auto-delete-attachment flag was turned off.
+  * Removed a header from the general settings tab that was unnecessary (no child items existed for it).
+  * Do not blindly set the wpas_default_channels_added option if the channel taxonomy does not yet exist. This can happen if the taxonomy is not enabled for some reason.
+  * Product Syncing: Make sure that fewer products show up in the product taxonomy without a description
+  * Product Syncing: Clean up some odd syncing logic
+  * Gutenberg/block editor translation process has changed so had to change our Gutenberg block code to accommodate.
+  * Ensure that all custom taxonomies have their "back to items" item set properly. Before, every custom taxonomy would say "back to categories" when a taxonomy item was edited and saved.
+  * Remove a close link in the ticket reply area if the agent does not have the 'close_ticket' capability set.
+  * The "can be assigned" field was not showing up unless the agent was a WP administrator. We're now using the wpas_is_asadmin() function to qualify who can see this field.
+  * The departments options was not showing up in the user profile unless the agent was a WP administrator. We're now using the wpas_is_asadmin() function to qualify who can see this field.
+  * Do not load the editor script on all wp-admin pages - only load on our pages.
+  
+* Tweak
+  * Added schemas to some REST API routes that didn't have them
+  * Using latest release version of the Titan Framework (1.12.1) This results in some slight UI changes to the settings screen - especially drop-downs that now use SELECT2 boxes by default.
+  * File-Uploader Class - Make sure a required function exists before using it. (For some reason sometimes it does not, especially when called from our gravity forms add-on.)
+  * Added option to load earlier versions of select2
+  * Cleaned up logic related to messages shown when ticket failed to close properly on the back-end.
+  * Cleaned up logic related to messages shown when ticket failed to close properly on the front-end.
+  * Overlays: Made styling for input and select buttons for certain overlays specific to the Ticket-list page instead of overriding all the other ticket pages.
+  * Renamed certain sections of the TICKETS->SETTING->EMAILS tab and added descriptive text to certain other items.
+
+
+
 
 = 5.8.2 =
 
