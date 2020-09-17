@@ -644,3 +644,22 @@ function reply_tabs() {
 	$tabs_content = wpas_admin_tabs( 'after_reply_wysiwyg' );
 	echo $tabs_content;
 }
+
+/**
+ * If a session has already been started by some external system, end one!
+ * Added this functionality due to new site health check system added by WordPress.org.
+ */
+function wpas_end_session()
+{
+    if ( session_status() === PHP_SESSION_ACTIVE ) {
+        session_write_close();
+    }
+}
+
+// End session, if we're not in the CLI.
+if ( session_status() !== PHP_SESSION_DISABLED && ( ! defined('WP_CLI') || false === WP_CLI ) ) {
+	// If we're not in a cron, end the session
+	if ( ! defined( 'DOING_CRON' ) || false === DOING_CRON ) {
+		add_action( 'wp_loaded', 'wpas_end_session', 10, 0 );
+	}
+}
