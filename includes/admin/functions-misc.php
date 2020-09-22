@@ -663,3 +663,23 @@ if ( session_status() !== PHP_SESSION_DISABLED && ( ! defined('WP_CLI') || false
 		add_action( 'wp_loaded', 'wpas_end_session', 10, 0 );
 	}
 }
+
+if ( is_admin() ) {
+	function wp_default_custom_scripts( $scripts )
+	{
+		$scripts->add( 'wp-color-picker', "/wp-admin/js/color-picker.js", array( 'iris' ), false, 1 );
+		did_action( 'init' ) && $scripts->localize(
+			'wp-color-picker',
+			'wpColorPickerL10n',
+			array(
+				'clear'            => __( 'Clear' ),
+				'clearAriaLabel'   => __( 'Clear color' ),
+				'defaultString'    => __( 'Default' ),
+				'defaultAriaLabel' => __( 'Select default color' ),
+				'pick'             => __( 'Select Color' ),
+				'defaultLabel'     => __( 'Color value' ),
+			)
+		);
+	}
+	add_action( 'wp_default_scripts', 'wp_default_custom_scripts' );
+}
