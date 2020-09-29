@@ -65,6 +65,15 @@
 				return wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'awesome-support' ) );
 			} else {
 
+				$login_page = wpas_get_option( 'login_page', false );
+
+				if ( false !== $login_page && !empty( $login_page ) && !is_null( get_post( intval( $login_page ) ) ) ) {
+					/* As the headers are already sent we can't use wp_redirect. */
+					echo '<meta http-equiv="refresh" content="0; url=' . get_permalink( $login_page ) . '" />';
+					wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'awesome-support' ) );
+					exit;
+				}
+
 				$output = '';
 				$output .= wpas_get_notification_markup( 'info', __( 'You are currently logged out.  To view tickets you must first login.', 'awesome-support' ) );
 
