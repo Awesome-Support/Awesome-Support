@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 5.4.1
-Stable tag: 6.0.0
+Tested up to: 5.5.1
+Stable tag: 6.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -447,6 +447,12 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.0.1 =
+
+* Fix
+  * Fixed the issue with the session_start() function call
+  * Fixed the conflict with the Agent Front End add-on in PHP 7.4
+  * There was a color picker error message shown in the wp-admin interface.
 
 
 
