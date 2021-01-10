@@ -179,7 +179,7 @@ module.exports = function (grunt) {
 						'!.tx/**',
 						'!*.zip',
 						'!.gitignore',
-						'!.travis.yml',						
+						'!.travis.yml',
 						'!apigen.neon',
 						'!composer.json',
 						'!composer.lock',
@@ -196,22 +196,22 @@ module.exports = function (grunt) {
 				}]
 			}
 		},
-		
+
 		/**
 		 Updates the translation catalog (not currently used but added here to eventually replace the transifix stuff below)
 		 @author https://www.npmjs.com/package/grunt-pot
-		 */		
+		 */
 		pot: {
 			  options:{
-			  text_domain: 'awesome-support', 
-			  dest: 'languages/', 
-			  keywords: ['__','_e','_x:1,2c','_ex:1,2c','_n:1,2','_nx:1,2,4c','_n_noop:1,2','_nx_noop:1,2,3c','esc_attr__','esc_html__','esc_attr_e','esc_html_e','esc_attr_x:1,2c','esc_html_x:1,2c\n'], //functions to look for 
+			  text_domain: 'awesome-support',
+			  dest: 'languages/',
+			  keywords: ['__','_e','_x:1,2c','_ex:1,2c','_n:1,2','_nx:1,2,4c','_n_noop:1,2','_nx_noop:1,2,3c','esc_attr__','esc_html__','esc_attr_e','esc_html_e','esc_attr_x:1,2c','esc_html_x:1,2c\n'], //functions to look for
 			},
 			files:{
-			  src:  [ '**/*.php' ], //Parse all php files 
+			  src:  [ '**/*.php' ], //Parse all php files
 			  expand: true,
 			   }
-		  },		
+		  },
 
 		/**
 		 Updates the translation catalog
@@ -305,13 +305,14 @@ module.exports = function (grunt) {
 				tasks: ['less', 'autoprefixer', 'combine_mq', 'cssmin']
 			}
 		},
-		
+
 		copy: {
 		  vendoroverrides: {
 			files: [
 			  { src:"vendor-overrides/titan-framework-overrides/class-option-edd-license.php", dest:"vendor/gambitph/titan-framework/lib/class-option-edd-license.php" },
 			  { src:"vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php", dest:"vendor/gambitph/titan-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php" },
-			  { src:"vendor-overrides/eric-mann-session-manager/ericmann/wp-session-manager/includes/deprecated.php", dest:"vendor/ericmann/wp-session-manager/includes/deprecated.php" }
+			  { src:"vendor-overrides/eric-mann-session-manager/ericmann/wp-session-manager/includes/deprecated.php", dest:"vendor/ericmann/wp-session-manager/includes/deprecated.php" },
+			  { src:"vendor-overrides/eric-mann-session-manager/ericmann/wp-session-manager/wp-session-manager.php", dest:"vendor/ericmann/wp-session-manager/wp-session-manager.php" }
 			]
 		  },
 			copytodist: {
@@ -320,17 +321,17 @@ module.exports = function (grunt) {
 			]
 		  }
 		}
-		
+
 	});
 
 	require('load-grunt-tasks')(grunt);
 
 	grunt.registerTask('default', ['jshint', 'copy:vendoroverrides', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin', 'watch']);
 	grunt.registerTask('build'  , ['jshint', 'copy:vendoroverrides', 'uglify', 'less', 'concat_css', 'autoprefixer', 'combine_mq', 'cssmin']);
-	
+
 	grunt.registerTask('txpull', ['exec:txpull', 'potomo']);
 	grunt.registerTask('txpush', ['makepot', 'exec:txpush']);
-	
+
 	grunt.registerTask('ugly', ['uglify'] );
 
 	grunt.registerTask('release', ['composer:install --no-dev', 'build', 'compress', 'copy:copytodist']);
