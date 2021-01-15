@@ -1476,7 +1476,7 @@ function wpas_get_current_user_role() {
 		
 		$user = wp_get_current_user();
 		$role = ( array ) $user->roles;
-		return $role[0];
+		return array_shift($role);
 		
 	} else {
 		
