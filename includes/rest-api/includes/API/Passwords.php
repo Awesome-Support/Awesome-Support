@@ -94,6 +94,7 @@ class Passwords extends WP_REST_Controller {
 				'callback' => array( $this, 'test_basic_authorization_header' ),
 			),
 			'schema' => array( $this, 'test_schema' ),
+			'permission_callback' => '__return_true' 
 		) );
 
 	}
