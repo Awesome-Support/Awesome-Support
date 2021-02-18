@@ -389,7 +389,8 @@ function wpas_delete_synced_products( $resync = false ) {
 	}
 	if ( true === $resync ) {
 		/* Delete the initial synchronization marker so that it's done again */
-		delete_option( "wpas_sync_$post_type" );
+		// delete_option( "wpas_sync_$post_type" );
+		update_option( "wpas_sync_$post_type", 0 );
 		/* Synchronize */
 		$sync->run_initial_sync();
 	}
