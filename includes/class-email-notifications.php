@@ -805,6 +805,13 @@ class WPAS_Email_Notification {
 		$body = apply_filters( 'wpas_email_notification_body_after_template', $this->get_formatted_email( $body ), $case, $this->ticket_id );
 
 		/**
+		 * Strip slashes off the body text
+		 * 
+		 * @var array
+		 */
+		$body = stripslashes($body);
+
+		/**
 		 * Prepare e-mail headers
 		 * 
 		 * @var array

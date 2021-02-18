@@ -81,7 +81,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @since 3.3
 		 * @var string
 		 */
-		public $php_version_required = '5.6';
+		public $php_version_required = '7.1';
 
 		/**
 		 * Holds the WPAS_Custom_Fields instance
