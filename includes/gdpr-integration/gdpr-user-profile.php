@@ -274,46 +274,50 @@ class WPAS_GDPR_User_Profile {
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
+			if ((int) $user == get_current_user_id()) {
 
-			$user_tickets = $this->wpas_gdpr_ticket_data( $user );
-			$user_consent = $this->wpas_gdpr_consent_data( $user );
-			if ( ! empty( $user_consent ) || ! empty( $user_tickets ) ) {
-				/**
-				 * Put them in awesome-support/user_log_$user_id
-				 * folders in uploads dir. This has .htaccess protect to avoid
-				 * direct access
-				 */
-				$this->user_export_dir = $this->set_log_dir( $user );
+				$user_tickets = $this->wpas_gdpr_ticket_data( $user );
+				$user_consent = $this->wpas_gdpr_consent_data( $user );
+				if ( ! empty( $user_consent ) || ! empty( $user_tickets ) ) {
+					/**
+					 * Put them in awesome-support/user_log_$user_id
+					 * folders in uploads dir. This has .htaccess protect to avoid
+					 * direct access
+					 */
+					$this->user_export_dir = $this->set_log_dir( $user );
 
-				$content = array_merge(
-					array( 'ticket_data' => $user_tickets ),
-					array( 'consent_log' => $user_consent )
-				);
+					$content = array_merge(
+						array( 'ticket_data' => $user_tickets ),
+						array( 'consent_log' => $user_consent )
+					);
 
-				$data = apply_filters( 'wpas_gdpr_export_data_profile', $content, $user );
+					$data = apply_filters( 'wpas_gdpr_export_data_profile', $content, $user );
 
-				file_put_contents(
-					$this->user_export_dir . '/export-data.xml',
-					$this->xml_conversion( $data )
-				);
+					file_put_contents(
+						$this->user_export_dir . '/export-data.xml',
+						$this->xml_conversion( $data )
+					);
 
-				$this->data_zip( $user_tickets, 'export-data.xml', $this->user_export_dir );
+					$this->data_zip( $user_tickets, 'export-data.xml', $this->user_export_dir );
 
-				$upload_dir                     = wp_upload_dir();
-				$response['message']['success'] = sprintf(
-					'<p>%s. <a href="%s" target="_blank" class="download-file-link">%s</a></p>',
-					__( 'Exporting data was successful!', 'awesome-support' ),
-					add_query_arg(
-						array(
-							'file'  => $user,
-							'check' => wp_create_nonce( 'as-validate-download-url' ),
-						), home_url()
-					),
-					__( 'Download it now..', 'awesome-support' )
-				);
+					$upload_dir                     = wp_upload_dir();
+					$response['message']['success'] = sprintf(
+						'<p>%s. <a href="%s" target="_blank" class="download-file-link">%s</a></p>',
+						__( 'Exporting data was successful!', 'awesome-support' ),
+						add_query_arg(
+							array(
+								'file'  => $user,
+								'check' => wp_create_nonce( 'as-validate-download-url' ),
+							), home_url()
+						),
+						__( 'Download it now..', 'awesome-support' )
+					);
 
+				} else {
+					$response['message']['error'] = sprintf( '<p>%s.</p>', __( 'No data exist', 'awesome-support' ) );
+				}
 			} else {
-				$response['message']['error'] = sprintf( '<p>%s.</p>', __( 'No data exist', 'awesome-support' ) );
+				$response['message'] = __( 'Cheating huh?', 'awesome-support' );
 			}
 		} else {
 			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
