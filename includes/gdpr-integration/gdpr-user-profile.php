@@ -72,10 +72,10 @@ class WPAS_GDPR_User_Profile {
 				header( 'Expires: 0' );
 				readfile( $this->user_export_dir . '/exported-data.zip' );
 				if (!unlink($this->user_export_dir . '/exported-data.zip') ){
-					return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/exported-data.zip', 'awesome-support' ) );
+					return new WP_Error( 'file_deleting_error', sprintf( __( 'Error deleting %s', 'awesome-support' ), $this->user_export_dir . '/exported-data.zip' ) );
 				}
 				if (!unlink($this->user_export_dir . '/export-data.xml') ){
-					return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/export-data.xml', 'awesome-support' ) );
+					return new WP_Error( 'file_deleting_error', sprintf( __( 'Error deleting %s', 'awesome-support' ), $this->user_export_dir . '/export-data.xml' ) );
 				}
 			} else {
 				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );

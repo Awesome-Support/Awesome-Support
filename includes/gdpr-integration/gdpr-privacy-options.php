@@ -404,7 +404,9 @@ class WPAS_Privacy_Option {
 										);
 										?>
 										<a href="<?php echo wpas_tool_link( 'add_user_consent', $opt_out ); ?>" class="button-secondary"><?php _e( 'OPT-OUT', 'awesome-support' ); ?></a>
-										<span class="wpas-system-tools-desc"><?php _e( 'Set ' . $consent_name . ' Consent status for all Awesome support Users', 'awesome-support' ); ?></span>
+										<span class="wpas-system-tools-desc"><?php
+											printf( _x( 'Set %s Consent status for all Awesome support Users', 'Placeholder is consent name eg Terms', 'awesome-support' ), $consent_name );
+										?></span>
 									</td>
 								</tr>
 								<?php 
@@ -751,7 +753,7 @@ class WPAS_Privacy_Option {
 									foreach ( $value as $reply_key => $reply_data ) {
 										$reply_count ++;
 										if( isset( $reply_data['content'] ) && !empty( $reply_data['content'] )){
-											$name = __( 'Reply ' . $reply_count . ' Content', 'awesome-support' );
+											$name = sprintf( __( 'Reply %d Content', 'awesome-support' ), $reply_count );
 											if ( ! empty( $value ) ) {
 												$user_data_to_export[] = array(
 													'name'  => $name,

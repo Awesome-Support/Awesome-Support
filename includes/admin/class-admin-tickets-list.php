@@ -515,12 +515,15 @@ class WPAS_Tickets_List {
 							$last_user      = get_user_by( 'id', $last_reply->post_author );
 							$role           = true === user_can( $last_reply->post_author, 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
 
-							echo _x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' );
+							printf( _nx( '%s reply.', '%s replies.', $replies->post_count, 'Number of replies to a ticket', 'awesome-support' ), $replies->post_count );
 							echo '<br>';
-							printf( _x( '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
-								                                                                                                                                                                 'post'   => $post_id,
-								                                                                                                                                                                 'action' => 'edit',
-							                                                                                                                                                                 ), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
+							printf( _x( '<a href="%1$s" target="%2$s">Last replied</a> %3$s ago by %4$s (%5$s).', 'Last reply ago', 'awesome-support' ),
+								add_query_arg( array(
+									'post'   => $post_id,
+									'action' => 'edit',
+								), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID,
+								$this->edit_link_target(), human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role
+							);
 						}
 
 						// Add open date
@@ -1334,7 +1337,7 @@ SQL;
 				$tax_obj = get_taxonomy( $tax_slug );
 
 				$args = array(
-					'show_option_all' => __( 'All ' . $tax_obj->label ),
+					'show_option_all' => sprintf( _x( 'All %s', 'Placeholder is a taxonomy object label', 'awesome-support' ), $tax_obj->label ),
 					'taxonomy'        => $tax_slug,
 					'name'            => $tax_obj->name,
 					'orderby'         => 'name',
