@@ -420,7 +420,7 @@ function wpas_get_javascript_object() {
 		'useAutolinker'          => true === boolval( wpas_get_option( 'use_autolinker', true ) ) ? 'true' : 'false',
 		'fileUploadMax'          => $upload_max_files,
 		'fileUploadSize'         => $upload_max_size * 1048576, // We base our calculation on binary prefixes
-		'fileUploadMaxError'     => __( sprintf( 'You can only upload a maximum of %d files', $upload_max_files ), 'awesome-support' ),
+		'fileUploadMaxError'     => sprintf( __( 'You can only upload a maximum of %d files', 'awesome-support' ), $upload_max_files ),
 		'fileUploadMaxSizeError' => array(
 			__( 'The following file(s) are too big to be uploaded:', 'awesome-support' ),
 			sprintf( __( 'The maximum file size allowed for one file is %d MB', 'awesome-support' ), $upload_max_size )
