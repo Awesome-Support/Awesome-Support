@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 5.5.1
-Stable tag: 6.0.1
+Tested up to: 5.7.2
+Stable tag: 6.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -447,14 +447,26 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.0.5 =
+
+* Fix
+  * Fixed illegal offset type message on the ticket list
+  * Fixed a backslash showing when should not in emails
+  * Correction of Product Sync
+  * Session Manager fix
+  * Security update applied
+
+= 6.0.3 =
+
+* Fix
+  * Minor corrections
+
 = 6.0.1 =
 
 * Fix
   * Fixed the issue with the session_start() function call
   * Fixed the conflict with the Agent Front End add-on in PHP 7.4
   * There was a color picker error message shown in the wp-admin interface.
-
-
 
 = 6.0.0 =
 
@@ -1580,7 +1592,7 @@ With contributions from customers such as:
 
 == Translators == 
 	
-Here is a list of users who voluntarily contributed the most translations to our POEDITOR project in 2017/2018:
+Here is a list of users who voluntarily contributed the most translations to our POEDITOR project in 2017/2021:
 
 - Miquel Martínez - Catalan
 - Samer Haddad - Arabic
