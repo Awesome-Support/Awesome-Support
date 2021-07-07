@@ -32,6 +32,9 @@ if ( ! defined( 'WPINC' ) ) {
 		do_action( 'wpas_mb_replies_under_avatar', $row->ID, $user_id );
 
 	}
+	
+	// Filter hook to check Support User anonymity on each row against parent post.
+	$user_name = apply_filters('wpas_support_user_hide_ticket_replies', $user_name, $post, $user_data);
 	?>
 
 </td>
