@@ -39,8 +39,10 @@ function wpas_add_notification( $id, $message, $group = 'notifications' ) {
 
 	$notifications = WPAS()->session->get( $group );
 	$id            = sanitize_text_field( $id );
-	$message       = wp_kses_post( $message );
-
+	// If $message is of string data type then sanitizes content for allowed HTML tags
+	if ( is_string( $message ) ) {
+		$message = wp_kses_post( $message );
+	}
 	if ( false === $notifications ) {
 		wpas_set_notifications();
 	}
