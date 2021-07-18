@@ -837,7 +837,7 @@ class WPAS_Custom_Fields {
 					if ( ! is_object( $result ) ) {
 						$result = new WP_Error( 'required_field_missing', sprintf( __( 'The field %s is required.', 'awesome-support' ), "<a href='#$field_name'><code>$title</code></a>", array( 'errors' => $field_name ) ) );
 					} else {
-						$result->add( 'required_field_missing', sprintf( __( 'The field %s is required.', 'awesome-support' ), "<code>$title</code>", array( 'errors' => $field_name ) ) );
+						$result->add( 'required_field_missing', sprintf( __( 'The field %s is required.', 'awesome-support' ), "<a href='#$field_name'><code>$title</code></a>", array( 'errors' => $field_name ) ) );
 					}
 
 				}
