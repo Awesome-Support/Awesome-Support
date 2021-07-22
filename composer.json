@@ -20,9 +20,15 @@
             "role": "Lead Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/tednh/Titan-Framework.git"
+        }
+    ],
     "require": {
         "php": ">=7.1",
-        "gambitph/titan-framework": "1.12.*",
+        "gambitph/titan-framework": "dev-fork",
 		"ericmann/wp-session-manager": "4.2.*"		
     },
     "archive": {
