@@ -65,6 +65,7 @@ if ( isset( $post ) ) {
 	</div>
 	<?php do_action( 'wpas_backend_ticket_stakeholders_before', $post->ID ); ?>
 	<?php require( WPAS_PATH . 'includes/admin/metaboxes/stakeholders.php' ); ?>
+	<?php require( WPAS_PATH . 'includes/admin/metaboxes/parents.php' ); ?>
 	<?php if ( 'open' === get_post_meta( $post->ID, '_wpas_status', true ) ): ?>
 		<label for="wpas-post-status"><strong><?php _e( 'Current Status', 'awesome-support' ); ?></strong></label>
 		<p>
