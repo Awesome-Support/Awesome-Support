@@ -5,6 +5,24 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.0.5</h1>
+				<h3>6.0.5 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed illegal offset type message on the ticket list</li>
+					<li>Fix: Fixed a backslash showing when should not in emails</li>
+					<li>Fix: Session Manager fix</li>
+					<li>Fix: Correction of Product Sync</li>					
+					<li>Fix: Security update applied</li>
+				</ul>
+			</div>		
+		</div>
+	</div>
+
+	<hr />	
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.0</h1>
 				<h3>6.0 includes a few changes to the rest api, updates to a new version of the Titan Framework to 1.12.0 and more. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">

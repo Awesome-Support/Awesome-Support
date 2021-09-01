@@ -14,7 +14,13 @@ if ( $wpas_tickets->have_posts() ):
 	}
 	
 	?>
-	<div class="wpas wpas-ticket-list">
+	<style type="text/css">
+	.wrap .content-area main article .entry-content
+	{
+		min-width: 100%;
+	}
+	</style>
+	<div class="wpas wpas-ticket-list alignwide">
 
 		<?php wpas_get_template( 'partials/ticket-navigation' ); ?>
 

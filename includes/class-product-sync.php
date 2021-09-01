@@ -554,6 +554,28 @@ class WPAS_Product_Sync {
 			return $terms;
 		}
 
+		$index = array();
+		$sort  = array(); // Used to store the orderby field from the term object.
+
+		// Set the array_multisort() arg flags based on the supplied orderby and order args.
+		if ( 'id' === $args['orderby'] ) {
+
+			$sort_flag = SORT_NUMERIC;
+
+		} else {
+
+			$sort_flag = SORT_REGULAR;
+		}
+
+		if ( 'DESC' === $args['order'] ) {
+
+			$sort_order = SORT_DESC;
+
+		} else {
+
+			$sort_order = SORT_ASC;
+		}
+
 		foreach ( $query->posts as $post ) {
 			if( isset( $post->ID ) ) {
 				$index[ $post->ID ] = $post;
@@ -581,10 +603,24 @@ class WPAS_Product_Sync {
 		    }
 
 			if ( false !== $term ) {
+
 				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $this->taxonomy );
+
+				if ( 'id' === $args['orderby'] ) {
+
+					$sort[] = (int) $term->{$args['orderby']};
+
+				} else {
+
+					$sort[] = strtolower( $term->{$args['orderby']} ); // Make lower case to get a natural sort since mixed case yields undesired results.
+				}
+
 			}
 
 		}
+
+		// Ensure terms are sorted according to the supplied args.
+		array_multisort( $sort, $sort_order, $sort_flag, $new_terms );
 
 		return apply_filters( 'wpas_get_terms', $new_terms );
 
@@ -894,7 +930,7 @@ class WPAS_Product_Sync {
 
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
 
-		if ( $this->is_tax_screen() && true === $this->is_synced_term() ) { ?>
+		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) { ?>
 			<div class="error">
 				<p><?php echo $message; ?></p>
 			</div>
@@ -916,7 +952,7 @@ class WPAS_Product_Sync {
 
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
 
-		if ( $this->is_tax_screen() && true === $this->is_synced_term() ) {
+		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) {
 			wp_die( $message, __( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );
 		}
 
@@ -929,6 +965,25 @@ class WPAS_Product_Sync {
 	 * @return integer The number of terms synchronized
 	 */
 	public function run_initial_sync() {
+
+		$slug = WPAS_eCommerce_Integration::get_instance()->plugin;
+
+		// Get the list of products to include/exclude
+		$raw_include = wpas_get_option( 'support_products_' . $slug . '_include', array() );
+		$raw_exclude = wpas_get_option( 'support_products_' . $slug . '_exclude', array() );
+
+		// Initialize empty arrays just in case the if statements below turn out to be true.
+		// $raw_exclude/include in the if statements below can be empty if the user did not click SAVE on the PRODUCTS configuration tab.
+		$include = array();
+		$exclude = array();
+
+		if ( ! empty( $raw_include ) ) {
+			$include = array_filter( $raw_include ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+		}
+
+		if ( ! empty( $raw_exclude ) ) {
+			$exclude = array_filter( $raw_exclude );  // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+		}
 
 		$args = array(
 			'post_type'              => $this->post_type,
@@ -943,6 +998,14 @@ class WPAS_Product_Sync {
 			'update_post_term_cache' => false,
 			'update_post_meta_cache' => false,
 		);
+
+		if ( ! empty( $include ) ) {
+			$args['post__in'] = $include;
+		}
+
+		if ( ! empty( $exclude ) ) {
+			$args['post__not_in'] = $exclude;
+		}
 
 		$query = new WP_Query( $args );
 		$count = 0;
@@ -959,12 +1022,14 @@ class WPAS_Product_Sync {
 
 			/* If the term was successfully created we increment our counter */
 			if ( false !== $term ) {
-				++$count;
+				$count = get_option( "wpas_sync_$this->post_type", 0 );
+				//++$count;
+				update_option( "wpas_sync_$this->post_type", ++$count );
 			}
 
 		}
 
-		add_option( "wpas_sync_$this->post_type", $count );
+		// add_option( "wpas_sync_$this->post_type", $count );
 
 		return $count;
 
