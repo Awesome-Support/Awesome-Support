@@ -12,7 +12,7 @@
 		 */
 		var is_tinyMCE_active = false;
 		if (typeof (tinyMCE) != "undefined") {
-			if (tinyMCE.activeEditor === null || tinyMCE.activeEditor.isHidden() !== false) {
+			if (tinyMCE.activeEditor != "undefined") {
 				is_tinyMCE_active = true;
 			}
 		}
