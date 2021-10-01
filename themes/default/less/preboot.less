@@ -79,7 +79,7 @@
   @media (min-width: @grid-float-breakpoint) {
     float: left;
     // Calculate width based on number of columns available
-    width: percentage(@columns / @grid-columns);
+    width: percentage((@columns / @grid-columns));
   }
   // Prevent columns from collapsing when empty
   min-height: 1px;
@@ -91,7 +91,7 @@
 }
 .make-column-offset(@columns) {
   @media (min-width: @grid-float-breakpoint) {
-    margin-left: percentage(@columns / @grid-columns);
+    margin-left: percentage((@columns / @grid-columns));
   }
 }
 
