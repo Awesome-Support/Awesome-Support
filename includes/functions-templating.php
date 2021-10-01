@@ -363,7 +363,7 @@
 		$columns_callbacks = apply_filters( 'wpas_tickets_details_columns_callbacks', $columns_callbacks );
 		?>
 
-		<?php if ( ! empty( $args[ 'container' ] ) ): ?><<?php echo $args[ 'container' ]; ?>><?php endif; ?>
+		<?php if ( ! empty( $args[ 'container' ] ) ): ?><<?php echo $args[ 'container' ]; ?> class="<?php echo !empty( $args[ 'container' ] ) ? $args[ 'container_class' ] : ''; ?>"><?php endif; ?>
 
         <table id="<?php echo $args[ 'table_id' ]; ?>" class="<?php echo $args[ 'table_class' ]; ?>">
             <thead>

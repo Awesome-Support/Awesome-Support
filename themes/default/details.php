@@ -30,7 +30,10 @@ $author = get_user_by( 'id', $post->post_author );
 	 * Display the table header containing the tickets details.
 	 * By default, the header will contain ticket status, ID, priority, type and tags (if any).
 	 */
-	wpas_ticket_header();
+	wpas_ticket_header(array(
+		'container' => 'div',
+		'container_class' => 'wpas-table-responsive'
+	));
 	?>
 
 	<table class="wpas-table wpas-ticket-replies">
