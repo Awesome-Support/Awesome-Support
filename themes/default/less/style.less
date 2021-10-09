@@ -78,7 +78,7 @@ General Scaffolding
 	.make-row();
 }
 .wpas-one-half {
-	.make-column(6);
+	.make-column(round(6));
 }
 .wpas-one-third {
 	.make-column(4);
@@ -214,6 +214,10 @@ Tables
 	border-collapse: collapse;
 	border: none;
 	table-layout: auto;
+}
+.wpas-table-responsive {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
 }
 .wpas-table>caption+thead>tr:first-child>th,
 .wpas-table>colgroup+thead>tr:first-child>th,
