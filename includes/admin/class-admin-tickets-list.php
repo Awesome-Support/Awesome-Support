@@ -1569,7 +1569,7 @@ SQL;
 				if ( isset( $_GET[ $var[ 'name' ] ] ) ) {
 					$wp->query_vars[ $key ] = $_GET[ $var[ 'name' ] ];
 				} elseif ( isset( $wp->query_vars[ $var[ 'name' ] ] ) && $wp->query_vars[ $var[ 'name' ] ] ) {
-					$wp->query_vars[ $key ] = $wp->query_vars[ $var ];
+					$wp->query_vars[ $key ] = $wp->query_vars[ $var[ 'name' ] ];
 				}
 			}
 			
