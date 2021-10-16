@@ -71,7 +71,7 @@ do_action( 'wpas_before_original_post' ); ?>
 				/**
 				 * Display the original ticket's content
 				 */
-				echo apply_filters( 'the_content', $post->post_content );
+				echo apply_filters( 'the_content', wp_unslash( $post->post_content ) );
 
 				/**
 				 * wpas_original_post_content_after hook
