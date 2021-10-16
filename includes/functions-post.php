@@ -87,14 +87,14 @@ function wpas_open_ticket( $data ) {
 	/* Check for the green light */
 	if ( is_wp_error( $go ) ) {
 
-		/* Retrieve error messages. */
-		$messages = $go->get_error_messages();
+		/* Retrieve error message. */
+		$message = $go->get_error_message();
 
 		/* Save the input */
 		wpas_save_values();
 
 		/* Redirect to submit page */
-		wpas_add_error( 'validation_issue', $messages );
+		wpas_add_error( 'validation_issue', $message );
 		wp_redirect( $submit );
 
 		exit;
