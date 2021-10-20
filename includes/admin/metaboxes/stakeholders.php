@@ -12,6 +12,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+global $wpdb;
+
 // Add nonce
 wp_nonce_field( 'wpas_update_cf', 'wpas_cf', false, true );
 
@@ -82,12 +84,13 @@ if (! empty( $staff ) ) {
 	<label for="wpas-assignee"><strong data-hint="<?php esc_html_e( 'The agent currently responsible for this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php
-		
-		
-		
+
+
+
 		$support_staff_dropdown = "";
-		
-		
+
+		$department_assignment = get_user_option( 'wpas_department_assignment', get_current_user_id() );
+
 		if ( wpas_get_option( 'support_staff_select2_enabled', false ) ) {
 		
 			$staff_atts = array(
@@ -106,8 +109,29 @@ if (! empty( $staff ) ) {
 				$support_staff_dropdown = wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );					
 			}
 		} else {
-			
-			
+			$users = [];
+			if (!empty($department_assignment)) {
+				$args  = array(
+					'meta_key' => $wpdb->get_blog_prefix() . 'wpas_department',
+					'meta_compare' => 'EXISTS'
+				);
+
+				$user_query = new WP_User_Query( $args );
+
+				if (! empty( $user_query->get_results() )) {
+					foreach ( $user_query->get_results() as $user ) {
+						$departments = get_user_option( 'wpas_department', $user->ID );
+						if (!empty($departments)) {
+							foreach ($departments as $department) {
+								if (in_array($department, $department_assignment)) {
+									$users[] = $user->ID;
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
 			$support_staff_dropdown = wpas_users_dropdown( array( 
 				'cap'	=> 'edit_ticket',
 				'orderby' => 'display_name',
@@ -116,13 +140,13 @@ if (! empty( $staff ) ) {
 				'id'    => 'wpas-assignee',
 				'class' => 'wpas-form-control',
 				'please_select' => true,
-				'selected' => $staff_id
+				'selected' => $staff_id,
+				'ids'	=> $users
 			) );
 		}
-		
-		
+
 		$support_staff_dropdown = apply_filters( 'ticket_support_staff_dropdown', $support_staff_dropdown, $post->ID, $staff_id, $staff_name );
-		
+
 		echo $support_staff_dropdown;
 		?>
 	</p>
