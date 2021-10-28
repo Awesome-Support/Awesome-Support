@@ -235,7 +235,7 @@
 				// Action hook to declare just after rendering the field on the back-end
 				// Future use only since we don't have a back-end only rendering function yet.
 				// Use the front-end hook above for everything for now.				
-				'post_render_action_hook_be' => '',	
+				'post_render_action_hook_be' => '',
 
 				// @since 5.2.0
 				// Use ajax for uploading files - used by upload custom field
@@ -243,7 +243,12 @@
 				
 				// @since 5.1.1
 				// Enable paste using ctrl+v commands
-				'enable_paste' => true,	
+				'enable_paste' => true,
+
+				// @since 6.0.7
+				// (Optional) The maximum character length allowed for the input field.
+				// @var int
+				'maxlength' => '',
 
 			);
 
@@ -603,6 +608,11 @@
 				if ( true === apply_filters( 'wpas_cf_field_markup_readonly', $this->field[ 'args' ][ 'readonly' ], $this->field ) ) {
 					array_push( $atts, 'readonly' );
 				}
+			}
+
+			/* Add the field maxlength */
+			if ( ! empty( $this->field[ 'args' ][ 'maxlength' ] ) && is_numeric($this->field[ 'args' ][ 'maxlength' ]) ) {
+				array_push( $atts, "maxlength='{$this->field['args']['maxlength']}'" );
 			}
 
 			$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field, $this->field ) ), $field );
