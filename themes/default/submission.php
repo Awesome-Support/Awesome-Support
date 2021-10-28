@@ -56,6 +56,7 @@ global $post;
 				'order'		 => '-2',
 				'pre_render_action_hook_fe'		=> 'wpas_submission_form_inside_before_subject',
 				'post_render_action_hook_fe'	=> 'wpas_submission_form_inside_after_subject',
+				'maxlength'  => 60,
 			)
 		) );
 
