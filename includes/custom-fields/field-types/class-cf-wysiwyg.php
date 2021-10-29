@@ -26,7 +26,7 @@ class WPAS_CF_Wysiwyg extends WPAS_Custom_Field {
 
 		if ( true === $wysiwyg || is_admin() ) {
 
-			$editor_defaults = array(
+			$editor_defaults = apply_filters( 'wpas_ticket_editor_args', array(
 				'media_buttons' => false,
 				'textarea_name' => $this->get_field_id(),
 				'textarea_rows' => 10,
@@ -37,7 +37,7 @@ class WPAS_CF_Wysiwyg extends WPAS_Custom_Field {
 					'toolbar1' => 'bold,italic,underline,strikethrough,hr,|,bullist,numlist,|,link,unlink',
 					'toolbar2' => ''
 				),
-			);
+			) );
 
 			/* Merge custom editor settings if any */
 			$args       = isset( $this->field_args['editor'] ) && is_array( $this->field_args['editor'] ) ? wp_parse_args( $this->field_args['editor'], $editor_defaults ) : $editor_defaults;
