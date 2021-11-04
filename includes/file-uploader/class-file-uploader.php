@@ -625,7 +625,7 @@ class WPAS_File_Upload {
 					break ;
 					
 				case 'attachment':
-					echo readfile( $_SERVER['DOCUMENT_ROOT'] . parse_url($attachment->guid, PHP_URL_PATH) );
+					readfile( $_SERVER['DOCUMENT_ROOT'] . parse_url($attachment->guid, PHP_URL_PATH) );
 					break ;
 					
 				default:
