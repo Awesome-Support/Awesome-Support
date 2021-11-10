@@ -450,6 +450,16 @@ There are several factors that can influence e-mail notifications delivery. Plea
 = 6.0.6 =
 
 * Security Fixes
+  * Fixed Vulnerability Reflected Cross-Site Scripting on load preview
+
+* Fix
+  * Fixed unslash content before display
+  * Custom code request for the wp_editor
+  * Fixed Fixed redeclare formatbytes method
+
+= 6.0.6 =
+
+* Security Fixes
   * Bump path-parse from 1.0.6 to 1.0.7
   * Bump hosted-git-info from 2.8.8 to 2.8.9
 

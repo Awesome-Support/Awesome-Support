@@ -5,6 +5,23 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.0.7</h1>
+				<h3>6.0.7 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed Vulnerability Reflected Cross-Site Scripting on load preview</li>
+					<li>Fix: Unslash content before display</li>
+					<li>Custom code request for the wp_editor</li>
+					<li>Fix: Fixed redeclare formatbytes method</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.0.6</h1>
 				<h3>6.0.6 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">

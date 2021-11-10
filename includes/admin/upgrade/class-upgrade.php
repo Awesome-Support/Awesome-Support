@@ -166,6 +166,7 @@ class WPAS_Upgrade {
 			$upgrade_functions[600] = 'wpas_upgrade_600';
 			$upgrade_functions[605] = 'wpas_upgrade_605';
 			$upgrade_functions[606] = 'wpas_upgrade_606';
+			$upgrade_functions[606] = 'wpas_upgrade_607';
 			
 			foreach(  $upgrade_functions as $version => $function_name ) {
 				
