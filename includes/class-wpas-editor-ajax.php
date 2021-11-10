@@ -120,7 +120,7 @@ class WPAS_Editor_Ajax {
 		 * Get the content and filter it.
 		 */
 		$content = ( isset( $post ) && ! empty( $post ) ) ? $post->post_content : filter_input( INPUT_POST, 'editor_content', FILTER_SANITIZE_STRING );
-		$content = apply_filters( 'the_content', $content );
+		$content = apply_filters( 'the_content', wp_unslash( $content ) );
 
 		/**
 		 * Filter the user settings for the editor
@@ -181,7 +181,7 @@ class WPAS_Editor_Ajax {
 			die();
 		}
 
-		echo apply_filters( 'the_content', $post->post_content );
+		echo apply_filters( 'the_content', wp_unslash( $post->post_content ) );
 		die();
 	}
 
