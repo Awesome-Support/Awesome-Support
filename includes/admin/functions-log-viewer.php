@@ -196,7 +196,7 @@ function wpas_log_viewer_read_last_lines( $file, $lines ) {
 			'fileinfo' => array(
 				'created' => date ("F d Y H:i:s", filectime($file_path)),
 				'lastmodified' => date ("F d Y H:i:s", filemtime($file_path)),
-			    'filesize' => formatbytes(filesize($file_path)),
+			    'filesize' => wpas_formatbytes(filesize($file_path)),
 			),
 			'data'   => $result,
 		);
@@ -238,7 +238,7 @@ function wpas_log_viewer_read_full_file( $file ) {
 			'fileinfo' => array(
 				'created' => date ("F d Y H:i:s", filectime($file_path)),
 				'lastmodified' => date ("F d Y H:i:s", filemtime($file_path)),
-			    'filesize' => formatbytes(filesize($file_path)),
+			    'filesize' => wpas_formatbytes(filesize($file_path)),
 			),
 			'data'   => $result,
 		);
@@ -255,7 +255,7 @@ function wpas_log_viewer_read_full_file( $file ) {
 	}
 }
 
-function formatbytes($val, $digits = 3, $mode = "SI", $bB = "B")
+function wpas_formatbytes($val, $digits = 3, $mode = "SI", $bB = "B")
 {
   $si = array("", "k", "M", "G", "T", "P", "E", "Z", "Y");
   $iec = array("", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi");

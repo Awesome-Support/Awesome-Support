@@ -1645,7 +1645,7 @@ function wpas_edit_reply_editor_ajax() {
 	}
 
 	$editor_id      = "wpas-editreply-$reply_id";
-	$editor_content = apply_filters( 'the_content', $post->post_content );
+	$editor_content = apply_filters( 'the_content', wp_unslash( $post->post_content ) );
 
 	$settings = array(
 		'media_buttons' => false,
