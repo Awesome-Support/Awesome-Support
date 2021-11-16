@@ -447,12 +447,13 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
-= 6.0.6 =
+= 6.0.7 =
 
 * Security Fixes
   * Fixed Vulnerability Reflected Cross-Site Scripting on load preview
 
 * Fix
+  * Fixed ticket filters in the portrait mobile view
   * Fixed unslash content before display
   * Custom code request for the wp_editor
   * Fixed Fixed redeclare formatbytes method
