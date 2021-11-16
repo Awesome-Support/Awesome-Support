@@ -829,7 +829,7 @@
 				$term_title = apply_filters( 'wpas_taxonomy_name', $term->name, $post_id, $field );
 
 				if ( is_admin() ) {
-					$get           = (array) $_GET;
+					$get           = array_map('strip_tags', (array) $_GET);
 					$get[ $field ] = isset( $term->post_id ) ? $term->post_id : $term->term_id; // Check for $term->post_id which is set when products are synchronized
 					$url           = add_query_arg( $get, admin_url( 'edit.php' ) );
 					$item          = "<a href='$url'>{$term_title}</a>";
