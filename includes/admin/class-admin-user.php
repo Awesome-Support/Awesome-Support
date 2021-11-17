@@ -396,6 +396,7 @@ class WPAS_User {
 		update_user_option( $user_id, 'wpas_can_be_assigned', $can_assign );
 		update_user_option( $user_id, 'wpas_smart_tickets_order', $smart );
 		update_user_option( $user_id, 'wpas_department', $department );
+		update_user_option( $user_id, 'wpas_department_assignment', $department_assignment );
 		update_user_option( $user_id, 'wpas_view_all_tickets', $view_all_tickets );
 		
 		update_user_option( $user_id, 'wpas_mobile_phone', $mobile_phone );
