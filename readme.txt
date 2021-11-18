@@ -450,6 +450,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 = 6.0.7 =
 
 * Security Fixes
+  * Fixed Urgent security vulnerability
   * Fixed Vulnerability Reflected Cross-Site Scripting on load preview
 
 * Fix
