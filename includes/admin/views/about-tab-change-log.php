@@ -27,6 +27,7 @@
 				<h1>What's New In 6.0.6</h1>
 				<h3>6.0.6 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed get users with include and exclude args</li>
 					<li>Fix: Typo fix: correct "rely" to "reply" in email templates</li>
 					<li>Bump path-parse from 1.0.6 to 1.0.7</li>
 					<li>Bump hosted-git-info from 2.8.8 to 2.8.9</li>
@@ -210,7 +211,7 @@
 		<p><b>Multi-column custom fields layout:</b> Version 5 introduces a new custom fields layout tab on the back-end. On large screens you get three columns for the fields. On medium sized screens you get two columns and on small screens you go back to one column.</p>
 	</div>
 	
-	<hr />		
+	<hr />
 	<div class="about-body">
 		<h1>User Registration Changes</h1>
 	</div>
