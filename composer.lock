@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7d9c98ae4026f577355e11d62a6a7689",
+    "content-hash": "e861f667f8639f61262553f4703c4f1f",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -167,16 +167,16 @@
         },
         {
             "name": "gambitph/titan-framework",
-            "version": "1.12.1",
+            "version": "dev-fork",
             "source": {
                 "type": "git",
-                "url": "https://github.com/gambitph/Titan-Framework.git",
-                "reference": "e83f3dd73e914d17ca7ee24dbe0cccc123d482fc"
+                "url": "https://github.com/tednh/Titan-Framework.git",
+                "reference": "aa28f2956f378ba303f9dab20148ac5535f2fd14"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/e83f3dd73e914d17ca7ee24dbe0cccc123d482fc",
-                "reference": "e83f3dd73e914d17ca7ee24dbe0cccc123d482fc",
+                "url": "https://api.github.com/repos/tednh/Titan-Framework/zipball/aa28f2956f378ba303f9dab20148ac5535f2fd14",
+                "reference": "aa28f2956f378ba303f9dab20148ac5535f2fd14",
                 "shasum": ""
             },
             "type": "library",
@@ -185,7 +185,16 @@
                     "titan-framework.php"
                 ]
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "post-install-cmd": [
+                    "bower install",
+                    "npm install -d"
+                ],
+                "post-update-cmd": [
+                    "bower install",
+                    "npm install -d"
+                ]
+            },
             "license": [
                 "GPLv2+"
             ],
@@ -204,9 +213,13 @@
                 "framework",
                 "options",
                 "titan",
+                "titan framework",
                 "wordpress"
             ],
-            "time": "2018-07-03T03:26:39+00:00"
+            "support": {
+                "source": "https://github.com/tednh/Titan-Framework/tree/fork"
+            },
+            "time": "2021-10-26T16:54:21+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -1646,11 +1659,14 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "gambitph/titan-framework": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": ">=7.1"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.1.0"
 }

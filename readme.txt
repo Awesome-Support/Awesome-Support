@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 5.7.2
-Stable tag: 6.0.5
+Tested up to: 5.8.1
+Stable tag: 6.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -446,6 +446,33 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 6.0.7 =
+
+* Security Fixes
+  * Fixed Urgent security vulnerability
+  * Fixed Vulnerability Reflected Cross-Site Scripting on load preview
+
+* Fix
+  * Fixed ticket filters in the portrait mobile view
+  * Fixed unslash content before display
+  * Custom code request for the wp_editor
+  * Fixed Fixed redeclare formatbytes method
+
+= 6.0.6 =
+
+* Security Fixes
+  * Bump path-parse from 1.0.6 to 1.0.7
+  * Bump hosted-git-info from 2.8.8 to 2.8.9
+
+* Fix
+  * Fixed get users with include and exclude args
+  * Typo fix: correct "rely" to "reply" in email templates
+  * Fixed not possible to edit ticket in the back end
+  * Fixed corrupted files when downloading attachments
+  * Mobile view optimisation
+  * Fixed IDOR Vulnerability
+  * Fixed custom field validation error message.
 
 = 6.0.5 =
 

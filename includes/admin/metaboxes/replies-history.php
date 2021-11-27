@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 do_action( 'wpas_backend_history_content_before', $row->ID );
 
 /* Filter the content before we display it */
-$content = apply_filters( 'the_content', $row->post_content );
+$content = apply_filters( 'the_content', wp_unslash( $row->post_content ) );
 
 /**
  * wpas_backend_history_content_after hook

@@ -5,20 +5,61 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.0.7</h1>
+				<h3>6.0.7 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed Urgent security vulnerability</li>
+					<li>Fix: Fixed ticket filters in the portrait mobile view</li>
+					<li>Fix: Fixed Vulnerability Reflected Cross-Site Scripting on load preview</li>
+					<li>Fix: Unslash content before display</li>
+					<li>Custom code request for the wp_editor</li>
+					<li>Fix: Fixed redeclare formatbytes method</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.0.6</h1>
+				<h3>6.0.6 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed get users with include and exclude args</li>
+					<li>Fix: Typo fix: correct "rely" to "reply" in email templates</li>
+					<li>Bump path-parse from 1.0.6 to 1.0.7</li>
+					<li>Bump hosted-git-info from 2.8.8 to 2.8.9</li>
+					<li>Fix: Fixed not possible to edit ticket in the back end</li>
+					<li>Fix: Fixed corrupted files when downloading attachments</li>
+					<li>Fix: Mobile view optimisation</li>
+					<li>Fix: Fixed IDOR Vulnerability</li>
+					<li>Fix: Fixed custom field validation error message.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.0.5</h1>
 				<h3>6.0.5 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
 					<li>Fix: Fixed illegal offset type message on the ticket list</li>
 					<li>Fix: Fixed a backslash showing when should not in emails</li>
 					<li>Fix: Session Manager fix</li>
-					<li>Fix: Correction of Product Sync</li>					
+					<li>Fix: Correction of Product Sync</li>
 					<li>Fix: Security update applied</li>
 				</ul>
 			</div>		
 		</div>
 	</div>
 
-	<hr />	
+	<hr />
 
 	<div class="row">
 		<div>
@@ -43,7 +84,7 @@
 		</div>
 	</div>
 
-	<hr />	
+	<hr />
 
 	<div class="row">
 		<div>
@@ -65,7 +106,7 @@
 		</div>
 	</div>
 
-	<hr />	
+	<hr />
 	
 <div>	
 	<h2>Maintenance Releases since 5.5.0</h2>
@@ -110,7 +151,7 @@
 		<p><b>Version 5.1.0</b> Introduced a new on-boarding process wizard so that new users can get started quickly and added an option for the admin to set a default role for new users who register using our standard registration form. </p>
 	</div>	
 	
-	<hr />	
+	<hr />
 	
 	<div class="row">
 		<div>
@@ -170,7 +211,7 @@
 		<p><b>Multi-column custom fields layout:</b> Version 5 introduces a new custom fields layout tab on the back-end. On large screens you get three columns for the fields. On medium sized screens you get two columns and on small screens you go back to one column.</p>
 	</div>
 	
-	<hr />		
+	<hr />
 	<div class="about-body">
 		<h1>User Registration Changes</h1>
 	</div>

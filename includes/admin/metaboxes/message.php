@@ -14,7 +14,7 @@
 
 	printf(
 		'<div class="wpas-main-ticket-message" id="wpas-main-ticket-message">%s</div>',
-		apply_filters( 'the_content', $post->post_content ) 
+		apply_filters( 'the_content', wp_unslash( $post->post_content ) )
 	);
 
 	/**
