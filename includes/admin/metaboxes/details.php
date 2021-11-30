@@ -42,9 +42,9 @@ if ( isset( $post ) ) {
 }
 ?>
 <div class="wpas-ticket-status submitbox">
-	
+
 	<?php do_action( 'wpas_backend_ticket_status_content_before', $post->ID ); ?>
-	
+
 	<div class="wpas-row" id="wpas-statusdate">
 		<div class="wpas-col">
 			<strong><?php _e( 'Status', 'awesome-support' ); ?></strong>
@@ -61,7 +61,7 @@ if ( isset( $post ) ) {
 				<em><?php printf( __( '%s ago', 'awesome-support' ), $dateago ); ?></em>
 			<?php endif; ?>
 		</div>
-		
+
 	</div>
 	<?php do_action( 'wpas_backend_ticket_stakeholders_before', $post->ID ); ?>
 	<?php require( WPAS_PATH . 'includes/admin/metaboxes/stakeholders.php' ); ?>
@@ -80,10 +80,10 @@ if ( isset( $post ) ) {
 			<?php endif; ?>
 		</p>
 	<?php endif; ?>
-		
+
 	<?php do_action( 'wpas_backend_ticket_status_before_actions', $post->ID ); ?>
 	<div id="major-publishing-actions">
-		<?php if ( current_user_can( "delete_ticket", $post->ID ) ): ?>
+		<?php if ( current_user_can( "close_ticket", $post->ID ) ): ?>
 			<div id="delete-action">
 				<a class="submitdelete deletion" href="<?php echo $action; ?>">
 					<?php
@@ -115,8 +115,8 @@ if ( isset( $post ) ) {
 		<?php endif; ?>
 		<div class="clear"></div>
 	</div>
-	
+
 	<?php do_action( 'wpas_backend_ticket_status_after_actions', $post->ID ); ?>
-	
+
 </div>
 
