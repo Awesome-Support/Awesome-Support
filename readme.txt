@@ -4,7 +4,7 @@ Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreativ
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
 Tested up to: 5.8.1
-Stable tag: 6.0.7
+Stable tag: 6.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -450,6 +450,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 = 6.0.8 =
 
 * Fix
+  * Fixed Urgent security vulnerability
   * Fixed user permissions for close_ticket
   * Fixed check the header hasn't been sent for calling session_set_save_handler()
 

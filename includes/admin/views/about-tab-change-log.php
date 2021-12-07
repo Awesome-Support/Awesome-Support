@@ -8,6 +8,7 @@
 				<h1>What's New In 6.0.8</h1>
 				<h3>6.0.8 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed Urgent security vulnerability</li>
 					<li>Fix: Fixed user permissions for close_ticket</li>
 					<li>Fix: Fixed check the header hasn't been sent for calling session_set_save_handler()</li>
 				</ul>
