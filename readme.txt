@@ -4,7 +4,7 @@ Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreativ
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
 Tested up to: 5.8.1
-Stable tag: 6.0.7
+Stable tag: 6.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -13,9 +13,9 @@ The most versatile and feature-rich help desk and support plugin for WordPress. 
 == Description ==
 [Live Demo](https://asdemo.awesomesupport.com/)
 
-Awesome Support is the most versatile and feature-rich support plugin for WordPress. It is the only helpdesk & support ticketing plugin that can match the feature set of an SAAS solution such as Zendesk or Helpscout. 
+Awesome Support is the most versatile and feature-rich support plugin for WordPress. It is the only helpdesk & support ticketing plugin that can match the feature set of an SAAS solution such as Zendesk or Helpscout.
 
-And your customers can be using it in just 5 mins! After installing and activating the plugin, just answer a few questions in the startup wizard and your helpdesk will be ready for your customers. 
+And your customers can be using it in just 5 mins! After installing and activating the plugin, just answer a few questions in the startup wizard and your helpdesk will be ready for your customers.
 
 Take a product tour in the video below where you can see the extensive list of free and premium features that will be available on your new helpdesk!  You can also go hands-on with the [Live Demo](https://asdemo.awesomesupport.com/) or scroll down to the bottom of this page for screen shots.
 
@@ -45,7 +45,7 @@ Check out the user-friendly features of this awesome plugin:
 - **Security**: assign just the right capabilities to each of your agents including just the ability to see their own tickets or expand to see everyone's tickets - your choice!
 - **Tracking**: easily track where a ticket originated (support form, email, facebook, phone call etc.)
 - **Prioritize your way**: create your own priority scheme - you don't have to get locked into a 1-5 priority scheme!
-- **Time Tracking**: basic time tracking is included!  Admins can even adjust time and all time changes are logged directly in the ticket. 
+- **Time Tracking**: basic time tracking is included!  Admins can even adjust time and all time changes are logged directly in the ticket.
 - **Custom Labels**: sign up for our email newsletter and get our Custom Status plugin for free - unlimited color coded, customized statuses and ticket labels at your fingertips! Combined with priorities and tags you have the ultimate system for categorizing and tracking your tickets!
 - **WordPress UI**: Uses the familiar WordPress administration user interface so there is almost no learning curve!  And, because we respect the WordPress UI standards you can use any 3rd party styling tool to create the look you want (see the screenshots section for examples)
 - **REST API**: We love it when developers use our products.  The REST API is very developer friendly - push and pull Awesome Support ticket data with ease!
@@ -212,7 +212,7 @@ Now that you've seen our list of awesome features above, you already know that A
 * [Issue Tracking](https://getawesomesupport.com/addons/issue-tracking/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=Extend) - Easily manage multiple related tickets.  Very useful for product recalls, bug tracking, system-down situations and more. Now, managing hundreds of support tickets related to the same problem is no problem for you at all!
 * [Custom FAQ](https://getawesomesupport.com/addons/custom-faq/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=Extend) - Use any WordPress custom post type as your FAQ source.  Tightly integrates your selected CPT with Awesome Support and uses it to automatically offer topic suggestions to users as they fill out a new ticket form.
 * [Business Rules Engine With Zapier Integration](https://getawesomesupport.com/addons/awesome-support-business-rules-engine-zapier-integration-beta/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=Extend) - Powerful rules engine for your tickets.  Automatically respond to tickets, change status, close tickets, send data to 3rd party systems via Zapier and more!
-* [Company Profiles](https://getawesomesupport.com/addons/company-profiles-shared-tickets-early-release/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=Extend) - Allow multiple users from the same company to manage a single pool of tickets. 
+* [Company Profiles](https://getawesomesupport.com/addons/company-profiles-shared-tickets-early-release/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=Extend) - Allow multiple users from the same company to manage a single pool of tickets.
 * [Scheduled Tickets](https://getawesomesupport.com/addons/scheduled-tickets/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=Extend) - Create recurring tickets on daily/weekly/monthly/annual schedules
 * [Agent Front End](https://getawesomesupport.com/addons/agent-front-end-early-release/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=Extend) - Allow untrusted agents to manage their tickets without access to wp-admin. This highly restrictive access to tickets is perfect for vendors and other help-desk non-employee support collaborators.
 
@@ -407,7 +407,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 38. Premium Addon: EMAIL SUPPORT - Incoming email handling options #1
 39. Premium Addon: EMAIL SUPPORT - Incoming email handling options #2
 40. Premium Addon: EMAIL SUPPORT - Incoming email handling options #3
-41. Premium Addon: EMAIL SUPPORT - Inbox Rules 
+41. Premium Addon: EMAIL SUPPORT - Inbox Rules
 42. Premium Addon: EMAIL SUPPORT - Multiple Mailboxes
 43. Premium Addon: REPORTS & STATISTICS - Home Screen - you can create hundreds of reports from here!
 44. Premium Addon: REPORTS & STATISTICS - Report chart with filter options
@@ -435,7 +435,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 66. Premium Addon: Private Notes - add notes to tickets that only other agents can see
 67. Premium Addon: Rules Engine - automate ticket handling and routing with ease
 68. Premium Addon: Rules Engine - more than a dozen conditions to filter ticket actions
-69. Premium Addon: Advanced Time Tracking - Automatic timer 
+69. Premium Addon: Advanced Time Tracking - Automatic timer
 70. Premium Addon: Advanced Time Tracking - Detailed tracking down to the reply level
 71. Premium Addon: Advanced Time Tracking - multiple time related reports
 72. Premium Addon: Advanced Time Tracking - settings
@@ -446,6 +446,13 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 6.0.8 =
+
+* Fix
+  * Fixed Urgent security vulnerability
+  * Fixed user permissions for close_ticket
+  * Fixed check the header hasn't been sent for calling session_set_save_handler()
 
 = 6.0.7 =
 
@@ -509,7 +516,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
   * Notifications Button For Single Ticket Screen
   * Ticket Templates
   * Time Fields on Front-End
-  
+
 * Fix
   * When editing a customer response on a ticket, the response was not saved in the text tab.
   * Continue 2 Warning Messages were fixed.
@@ -531,7 +538,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
   * The "can be assigned" field was not showing up unless the agent was a WP administrator. We're now using the wpas_is_asadmin() function to qualify who can see this field.
   * The departments options was not showing up in the user profile unless the agent was a WP administrator. We're now using the wpas_is_asadmin() function to qualify who can see this field.
   * Do not load the editor script on all wp-admin pages - only load on our pages.
-  
+
 * Tweak
   * Added schemas to some REST API routes that didn't have them
   * Using latest release version of the Titan Framework (1.12.1) This results in some slight UI changes to the settings screen - especially drop-downs that now use SELECT2 boxes by default.
@@ -552,7 +559,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 = 5.8.0 =
 ***This version requires upgrades to some of your add-ons: Custom FAQ, Documentation, FAQs, Smart Replies, Powerpack and Public Tickets***
-The version 5.x line is a MAJOR upgrade from 4.x  
+The version 5.x line is a MAJOR upgrade from 4.x
 If you are upgrading from 4.x or or earlier versions it is strongly suggested that you test this upgrade in a stage/test environment before applying it to your production site.
 Please make sure that you back-up your site before applying this update!
 
@@ -563,15 +570,15 @@ Please make sure that you back-up your site before applying this update!
 	* Integrate the REST API into the core. Turn it on using the new settings tab in TICKETS->SETTINGS->REST API.
 	* Add new tab on privacy screen to submit a request to export ALL system data to the admin (not just tickets)
 	* Replace icon images on ticket screen in wp-admin with a true icon file - helps scale up properly on higher resolution screens.
-	* Added the concept of an OVERLAY to the AS theme 
+	* Added the concept of an OVERLAY to the AS theme
 	* Added four overlays - "Subtle", "Angle", "Dark" and "Orange"
-	
+
 * Fix
 	* Entering an email address into the WP personal data eraser that does not match a user is allowed by WP. That led AS to delete ALL tickets when the personal data eraser was run for that invalid email address.
 	* Editing a reply did not show the text editor, just the html editor.
 	* Delete temporary drag-and-drop folders 24 hours after creation.  This prevents them from accidentally being deleted immediately if uploads or processing is slow.
 	* Polylang and other schemes that duplicated the AS ticket pages would end up with the privacy popup not being hidden by default.
-	
+
 * Tweak
 	* Add-ons page can now read 'single server' license pricing for certain add-ons.
 	* Modify add-on base class to NOT show a license warning if an itemid has not been set.
@@ -593,27 +600,27 @@ Please make sure that you back-up your site before applying this update!
 	* Editing the opening ticket post did not respect the logging flags. It would always show the original content in the logs.
 	* PHP 5.6 error on static function when rendering the privacy popup.
 	* A variable was not declared before being used under certain circumstances (when a right to be forgotten request was being submitted).
-	
+
 * Tweak
 	* Better error handling for duplicate right-to-be-forgotten requests.
 	* Better styling on error messages on privacy popup screen.
-	
+
 = 5.7.0 =
 
 * Security Fixes
 	(none)
-	
+
 * New
 	* Add option to allow/deny agents setting the auto-delete attachments flag in wp-admin.
-	
-* Fix	
+
+* Fix
 	* Privacy popup was not available on single ticket page on front-end.
 	* Clean up edit history popup css
-	
+
 * Tweak
 	* Make edit history popup fullscreen.
 	* Move main toolbar inside the ticket opening post area so that the icons conditionally appear on hover.  Saves vertical space.
-	
+
 * Dev
 	* Add some new filters around the user consents so other add-ons can tie into them.
 	* Add new action hook - wpas_custom_field_filters_after - which allows another location for for add-ons to hook into the ticket listing display in wp-admin.
@@ -622,43 +629,43 @@ Please make sure that you back-up your site before applying this update!
 
 * Security Fixes
 	(none)
-	
+
 * New
 	* Added fields to hold phone numbers in the user profile.
-	
+
 * Fix
 	* The function that created user names would not duplicate-check a user name when handed one by the calling program.  This primarily affected the email-support premium addon when the admin chose to use a user name construction method that would result in many commonly used user names.
 	* Resolved an issue with labels and some text in the privacy popup when slashes were used.
-	* Privacy popup might appear at the bottom of some pages where it really shouldn't appear. 
+	* Privacy popup might appear at the bottom of some pages where it really shouldn't appear.
 	* The page numbers at the bottom of the front-end ticket list were being wrapped unnecessarily
-	
+
 * Tweak
-	* Code to prevent the same email address from being added to the same notification by multiple addons. 
+	* Code to prevent the same email address from being added to the same notification by multiple addons.
 	* Privacy popup is now full screen. Other styling changes were made as well.
 	* The privacy popup css was being loaded separately while also being loaded with the minimized css files.
-	
+
 * Dev
 	* Added a function to return a list of all support users on a ticket - wpas_get_support_users_on_ticket()
 	* Added a function to return true/false if the current page is a front-end page belonging to the plugin.  Used for the privacy pop-up fix outlined in the fix section above.
-	
+
 = 5.5.1 =
-The version 5.x line is a MAJOR upgrade from 4.x  
+The version 5.x line is a MAJOR upgrade from 4.x
 If you are upgrading from 4.x or or earlier versions it is strongly suggested that you test this upgrade in a stage/test environment before applying it to your production site.
 You will also need to upgrade premium add-ons after this upgrade - in particular POWERPACK, FAQ, DOCUMENTATION, CANNED RESPONSES, FILESTACK and CUSTOM FAQ
 At the very least you should back-up your site before applying this update!
 
 * Security Fixes
 	(none)
-	
+
 * Fix
 	* A filter for the cron schedules was returning blanks which caused core WP to generate an error because it wasn't expecting void or an empty array.
 	* If an attachment is included with a reply that only has a signature (POWERPACK), we needed to let the reply go through instead of considering it a blank reply and ignoring it.
-	
+
 = 5.5.0 =
 
 * Security Fixes
 	(none)
-	
+
 * New
 	* Email template design sets
 	* Added ability to install a email template design set from the TOOLS menu
@@ -678,11 +685,11 @@ At the very least you should back-up your site before applying this update!
 	* Added two new email template tags related to agents - agent_first_name, agent_last_name
 	* added four new email template tags realted to authors  author_name, author_first_name, author_last_name, author_email. Thanks [nmoinvaz ](https://github.com/nmoinvaz)
 	* Added a separate help and support page where users can see their options to get help and support for the plugin
-	
+
 * Tweak
 	* Split out upgrade tools into its own table in the TICKETS->TOOLS->CLEANUP screen.
 	* Added an option under TICKETS->SETTINGS->ADVANCED to control whether attachments should ALWAYS be downloaded when using masked urls.
-	* Update the tracking opt-in message to include a link back to our site that discloses the information collected when you opt-in.	
+	* Update the tracking opt-in message to include a link back to our site that discloses the information collected when you opt-in.
 	* Added some help text to the email notifications
 	* Rearranged the GENERAL settings tab to separate front-end options from back-end options
 	* Gutenberg blocks now have a generic white background with black text
@@ -701,7 +708,7 @@ At the very least you should back-up your site before applying this update!
 	* Setting the ALLOW AGENTS TO ENTER TIME option to false will no longer disable all editors on the page.
 	* Fixed incorrect text that would display when loading more replies on the front-end in descending order
 	* When sentences are really long for some reason, wordwrap/break within the borders of the table when rendering the ticket on the front-end.
-	
+
 * Dev
 	* Changed a doaction hook to an apply filters hook - the wpas_show_done_tool_message hook is more usable as a filter.
 	* Added new action hook, wpas_system_tools_after, at the very end of the system-tools.php view file.
@@ -720,8 +727,8 @@ At the very least you should back-up your site before applying this update!
 	* Updated an internal role function to better support the arrays created by the User Role Editor plugin. Thanks [nmoinvaz ](https://github.com/nmoinvaz)
 	* Added two new filters for the standard email notifications class wpas_email_notifications_reply_types and wpas_email_notifications_post_types. Thanks [nmoinvaz ](https://github.com/nmoinvaz)
 	* Modified the standard email notifications class to handle post types other than just ticket and ticket_reply.  Thanks [nmoinvaz ](https://github.com/nmoinvaz)
-	
-	
+
+
 * New and Updated Add-ons Associated With This Release
 	* New: [Company Profiles](https://getawesomesupport.com/addons/company-profiles-shared-tickets-early-release/)
 	* New: [Agent Front-end](https://getawesomesupport.com/addons/agent-front-end-early-release/)
@@ -733,33 +740,33 @@ At the very least you should back-up your site before applying this update!
 	* Updated: [FAQ](https://getawesomesupport.com/addons/faq/)
 	* Updated: [Private Notes](https://getawesomesupport.com/addons/private-notes/)
 	* Updated: [Powerpack](https://getawesomesupport.com/addons/productivity/)
-	
+
 
 = 5.1.1 =
 
 * Security Fixes
 	(none)
-	
+
 * Tweak
 	* Added additional post-types to our function that determines if a page is ours.
 	* Add disclosure notice in LICENSE tab about data being transmitted to our servers during license checks.
 	* Updated wpas_is_admin() function to include check for is_super_admin()
-	
+
 * Fix
 	* Get the remote notification client working properly.
 	* Strip slashes from outgoing emails when single quotes are used in the subject line (and other areas).
 	* Remove blank menu option that remained after the on-boarding wizard is complete.
 	* Color coding priority on ticket detail screen tabs did not check to see if priorities were enabled.
-	
+
 * Dev
 	* Added a new parameter to the wpas_email_notifications_sender_data filter ($this).
 	* Fix name on post-render action hook inside the submission form.  It had a '-x' after the name for some reason.
-	
+
 = 5.1.0 =
 
 * Security Fixes
 	(none)
-	
+
 * New
 	* Added an onboarding wizard to get users quickly set up after activating the plugin
 	* Added option for admin to be able to set the role that a user will be registered with when using our registration page
@@ -771,10 +778,10 @@ At the very least you should back-up your site before applying this update!
 
 * New
 	* Simple WooCommerce Integration adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
-	* The REPLY editor is now in a tab next to the ATTACHMENTS tab so that the user does not have to keep scrolling endlessly in order to find commonly used functions.  
+	* The REPLY editor is now in a tab next to the ATTACHMENTS tab so that the user does not have to keep scrolling endlessly in order to find commonly used functions.
 	* Moved the CUSTOM FIELDS, ADDITIONAL INTERESTED PARTIES and STATISTICS metaboxes inside tabs.  This move saves on vertical space and prevents users from endlessly scrolling down to find key info in metaboxes.
 	* Email template tags can now be inserted directly from inside the editor using a new editor button.
-	* Added a toolbar to the TICKET DETAIL page that can be used for buttons. 
+	* Added a toolbar to the TICKET DETAIL page that can be used for buttons.
 	* ***possible breaking change*** The submission form was redone to make all fields being used part of the global custom fields array.  Helps with sorting.
 	* Hide the ticket SLUG by default.  Can be shown now with a new button on the button bar.  Helps saves some vertical space.
 	* Options for changing the location of the log files
@@ -782,7 +789,7 @@ At the very least you should back-up your site before applying this update!
 	* Added function to check to see if a notice is a license notice and suppress it if we're running in SAAS mode.  This only works for those add-ons that use our core library functions so older add-ons that dont will still show license notices.
 	* Added an ORDER attribute for custom fields (will only be used by the premium custom fields add-on for now but can be used to set a sort order and the custom fields array sorted by any developer)
 	* Added new attributes for custom fields to allow for pre and post do_action declarations
-	* Added option to show/hide the extended date-time information when hovering on replies. 
+	* Added option to show/hide the extended date-time information when hovering on replies.
 	* Added additional registration field options so that GDPR related notices can be provided during the registration process.
 	* Added options to control who should receive new user notifications
 	* Added options to control how the user name should be constructed when a user registers
@@ -799,22 +806,22 @@ At the very least you should back-up your site before applying this update!
 
 * Enh
 	* User search drop-downs in ticket admin now shows the user id and email address.  These items can be searched on as well. (Thanks to George Lagonikas of subscriptiongroup.co.uk for submitting this feature to github for the benefit of all users.)
-	* Support Agent Dropdown is now a regular drop-down by default, not a SELECT2 drop-down.  
+	* Support Agent Dropdown is now a regular drop-down by default, not a SELECT2 drop-down.
 	* Updated SELECT2 library from 4.0.3 to 4.0.5
 	* Updated BootStrap 4.0.0 cdn link to point to the final version
 	* Added documentation links to the documentation tab for the importer.
-	* On small screens, made the "more" button on tabs a "hamburger" icon since its now universally recognizable as a menu	
-	
+	* On small screens, made the "more" button on tabs a "hamburger" icon since its now universally recognizable as a menu
+
 * Dev
 	* Explicitly UNDECLARE support for GUTENBERG metaboxes so that the NEW TICKET page will render properly even when the GUTENBERG plug-in is installed.
 	* Added a GUTENBERG template for new tickets just in case the GUTENBERG editor ends up being shown for some reason. (Under normal circumstances GUTENBERG should not be shown on Awesome Support ticket pages.)
 	* Added a new wp-config option (WPAS_GUTENBERG_META_BOX_COMPATIBLE) to force the GUTENBERG editor to show up on the new ticket page. This is to be used strictly for testing only!
 	* Added issuetracking and sla post types to the wpas_is_plugin_page() function.
-	* Made the CHANNEL field available to hooks earlier when adding a ticket.	
+	* Made the CHANNEL field available to hooks earlier when adding a ticket.
 	* Added new filter to control whether or not the list of tickets in the user profile widget is shown.  The filter name is wpas_user_profile_show_tickets.
 	* Added new function for internal use - wpas_get_current_user_role
 	* Add filters to check if user can reply or close a ticket from addons (wpas_user_can_reply_ticket and wpas_user_can_close_ticket.)
-	
+
 * Fix
 	* Modified install/upgrade routine to check to see if a variable was null before attempting to use it
 	* A 400 error was being generated when the agent was viewing tickets in the back end (caused by remote notifications class not being accessible when AJAX was used).
@@ -828,7 +835,7 @@ At the very least you should back-up your site before applying this update!
 	* Ticket counts at top of ticket list is now correct for users with administer_awesome_support capability.
 	* Make radio button custom field labels clickable - thanks to [Talyash](https://github.com/talyash) for this contribution
 	* Tickets were not going to INPROCESS under certain circumstances.  If the first agent reply on the ticket didn't change the status (eg: when using smart replies), it would never get changed on a normal agent reply in admin.  Now it does.
-	* WooCommerce 3.x styles stepped all over some of the AS styles on AS pages. 
+	* WooCommerce 3.x styles stepped all over some of the AS styles on AS pages.
 	* Added multiple checks for empty variables before attempting to use them (Thanks to George Lagonikas of subscriptiongroup.co.uk for submitting these.)
 	* The attachments browse button overlapped the lower border on the default WP themes (2015/1/6/17) on the submit ticket form on the front-end.
 
@@ -839,10 +846,10 @@ At the very least you should back-up your site before applying this update!
 
 * New
 	* DIVI theme compatibility layer
-	
+
 * Fix
 	* WP 4.9 broke the color pickers
-	
+
 = 4.3.4 =
 
 * Security Fixes
@@ -851,12 +858,12 @@ At the very least you should back-up your site before applying this update!
 * Fix
 	* Remove errant javascript that was being queued in the logfile viewer area of the codebase
 	* Fixed a few more incorrect text-domain references
-	
+
 = 4.3.3 =
 
 * Security Fixes
 	* No security fixes in this release
-	
+
 * Tweak
 	* Welcome page now has new tabs, links to documentation and is generally cleaned up to show more information in a better format.
 	* Replaced a call to mkdir() with wp_mkdir_p() (contributed by lubobill1990)
@@ -866,7 +873,7 @@ At the very least you should back-up your site before applying this update!
 * New
 	* Filter added to reply form - wpas_show_reply_form_front_end - can be used to control whether the reply form should be shown on the front-end.
 	* Option to remove rating request in wp-admin footer.
-	* Add new filter wpas_allow_loading - allow loading / not loading of AS - useful to avoid loading AS when traffic received is from a bot. 
+	* Add new filter wpas_allow_loading - allow loading / not loading of AS - useful to avoid loading AS when traffic received is from a bot.
 	* Add new filter wpas_allow_soft_loading - allow loading / not loading of AS - useful to avoid loading AS when traffic received is from a bot. This one is different from the one above in that it uses a RETURN statement instead of a DIE statement when the filter evaluates to FALSE.
 	* Add new internal function wpas_filter_input_server() that helps to work around a known PHP bug involving INPUT_SERVER and the FILTER_INPUT() function.
 
@@ -889,7 +896,7 @@ At the very least you should back-up your site before applying this update!
 * Fix
 	* Pricing for certain items on the add-on page was missing (because they deviated from our normal pricing standards).
 	* Minor grammar fix to tools->system status tab.
-	
+
 = 4.3.1 =
 
 * Improvements
@@ -898,27 +905,27 @@ At the very least you should back-up your site before applying this update!
 
 * Fix
 	* [urgent]Create and update ticket meta _wpas_last_reply_date and _wpas_last_reply_date_gmt when tickets are opened from wp-admin.
-	
+
 = 4.3.0 =
 
 * New
 	* New custom field attributes for custom css classes
 	* New custom field attributes for multiple columns using Bootstrap 4 classes (experimental)
-	
+
 * Improvements
 	* Improved compatibility with bootstrap 4 (Bootstrap 4 support is STILL experimental)
-	
+
 * Fix
-	* [urgent] FAQs, DOCUMENTATION and other add-ons that used the reply-area in wp-admin had their select drop-downs disabled.  
-	
+	* [urgent] FAQs, DOCUMENTATION and other add-ons that used the reply-area in wp-admin had their select drop-downs disabled.
+
 = 4.2.1 =
 
 * Improvements
 	* Additional work was done on automatic upgrade routines 3.x.x to 4.2.x (please consider this experimental and BACKUP your database before upgrading!)
-	
+
 * Fix
 	* Fix minor grammar issue on general settings tab.
-	
+
 * Notes
 	* 4.2.0 was never submitted to the wordpress repo. So the upgrade is from 4.1.0 to 4.2.1, not 4.2.0 but includes all the 4.2.0 improvements and fixes outlined below.
 
@@ -928,10 +935,10 @@ At the very least you should back-up your site before applying this update!
 	* Added option to change the batch size used when cleaning up expired sessions
 	* New: Filter added to INIT function in wpas-session class. You can use the new wpas_initiate_session_flag filter to disable creating the session. This would be useful when the traffic is coming from bot sources such as pingdom or uptimerobot.
 	* New: Filter added to the wpas_can_reply_ticket function.  The new filter, wpas_can_also_reply_ticket, allows overriding the checks that determines if a user can reply to a ticket.
-	
+
 * Improvements
 	* When filtering by ticket id, remove all other filters.
-	* Added options to control which tabs are shown at the top of the TICKET LIST screen.	
+	* Added options to control which tabs are shown at the top of the TICKET LIST screen.
 	* Added automatic upgrade routines for 4.0.x to 4.2 and 3.x to 4.2 (both experimental)
 
 * Fix
@@ -939,7 +946,7 @@ At the very least you should back-up your site before applying this update!
 	* The 3.x to 4.x upgrade routine name was incorrect
 	* Removed unnecessary text from the TITLE of the email template.
 	* Fix: Custom field attribute for Show In Front-end Detail was only working when the show column back end attribute was set to true. It now works regardless of the value of the show column attribute.
-	
+
 = 4.1.0 =
 
 * New
@@ -956,28 +963,28 @@ At the very least you should back-up your site before applying this update!
 	* System report would omit timezone if it was not set to a built-in city
 	* Expired licenses are now shown as expired in the licenses tab instead of having no message at all
 	* Links in ABOUT page fixed to point to new documentation pages on our site.
-	
-* Improvements	
-	* Tweak: Performance improvements on admin pages when there are a large number of products 
+
+* Improvements
+	* Tweak: Performance improvements on admin pages when there are a large number of products
 	* Tweak: Remove the option to EDIT from the BULK ACTIONS menu when viewing the ticket list. Using it could corrupt the database when multiple taxonomy option items were added to a taxonomy field.
 	* Tweak: Updated the SELECT2 library to version 4.0.3
 	* Tweak: Updated titan framework library EDD plugin Updater to 1.6.4 which fixes a few items including reducing the number of license calls to the add-ons licensing server
 	* (***Breaking Change***)  Tweak: Custom field attribute show_column is now only used to control whether the column shows up on the back-end ticket list.  Use the new show_frontend_list and show_frontend_detail attributes to control where and how a column shows up on the front end.
 	* Tweak: Compatibility layer for certain themes that load different versions of the select2 file.  We now include the full select2 distribution as an option that can be set in TICKETS->SETTINGS->ADVANCED
 	* Tweak: Improved WPML compatibility (Thanks to David Garcia Watkins from WPML for contributing this improvement on github)
-	* Tweak: Better sorting of the activity column in ticket list.  
+	* Tweak: Better sorting of the activity column in ticket list.
 	* Tweak: Better performance when sorting the activity list
 	* Tweak: Internal function update to the list of custom post types that qualify as being owned by awesome-support
 	* Tweak: Layouts on very small mobile screens
-	
+
 = 4.0.6 =
 
 * New
 	* Added infrastructure code to allow the use of TABS in the reply area by add-ons.  This means that the never ending size of the reply area is now more manageble since add-ons can now place their UI in a tab.
-* Improvements	
+* Improvements
 	* Tweak: Only update CHANNEL in wpas_insert_ticket if channel field is blank.  This allows some other filter/action hooks to override the default channel.
 	* Tweak: Modified notifications class so it can be extended.
-	
+
 = 4.0.5 =
 
 * Improvements
@@ -1002,14 +1009,14 @@ At the very least you should back-up your site before applying this update!
 	* Add new option under tools menu to view log files stored in the awesome-support/logs folder (experimental).
 	* Add close date under the activity column in the admin ticket list.
 	* Add new options for cookie management under the TICKETS->SETTINGS->ADVANCED TAB
-	
+
 * Improvements
 	* Add new filter for front end ticket detail page (wpas_frontend_nav_buttons)
 	* Add filter: wpas_try_login_redirect for successsful logins
 	* Add new function to generate an MD5 hash
 	* Add new option to skip certain validation options when closing a ticket (will be useful for one-click close functions)
 	* Record failures to write .htaccess files (log is located in the awesome-support/logs folder)
-	* Allow adding extra tabs to the tools/system area from plugins/add-ons	
+	* Allow adding extra tabs to the tools/system area from plugins/add-ons
 
 * Bugfixes
 	* For full product resync under the TOOLS menu option do not delete the existing products in the AS product taxonomy if they are used in tickets already
@@ -1017,7 +1024,7 @@ At the very least you should back-up your site before applying this update!
 	* Check for empty value after calling a function in the stakeholders.php metabox code.  Prevents debug.log error from being thrown while still allowing for the proper agent dropdown to be shown on the screen.
 	* Issue with activation on multisite single-blog mode - activation was not completing properly.
 	* Issue with licensing infrastructure for add-ons. Not all licenses would allow for activation after the licensing server software was updated
-	
+
 
 = 4.0.3 =
 
@@ -1027,7 +1034,7 @@ At the very least you should back-up your site before applying this update!
 	* Fixed an issue where a warning was being thrown about 'original post status'.
 
 * Improvements
-	* Added option to internal function to use a pre-defined user name when creating a user. 
+	* Added option to internal function to use a pre-defined user name when creating a user.
 	* Added two utility functions for generating dropdowns - for later use.
 	* Added new hook into the reply field content when its on the form - hook name is wpas_admin_reply_form_content
 
@@ -1045,7 +1052,7 @@ At the very least you should back-up your site before applying this update!
 * Forcing a minor update through to force the svn repo to resync properly.
 
 = 4.0.0 =
-* New	
+* New
 	* Minimum required version of PHP is now 5.6
 	* Minimum required version of WP is the 4.x line.
 	* Major revamp of sorting and filtering capabilities
@@ -1100,7 +1107,7 @@ At the very least you should back-up your site before applying this update!
 		* wpas_fe_template_detail_author_display_name allows for the opportunity to change the display name in the details template on the front end
 	* wpas_dropdown now supports a "multiple" attribute
 	* Politely requests user to rate after 25 closed tickets.
-	
+
 * Improvements
 	* Action hook wpas_insert_ticket is now passing an additional parameter containing the original data received before any changes.
 	* Cleaned up Custom Post Type definitions for ticket replies, logs and history so that third party tools can more easily identify them. Prior to this change they all appeared with the name "POSTS" to third party tools which wasn't very useful.
@@ -1146,12 +1153,12 @@ At the very least you should back-up your site before applying this update!
 	* File uploader class was not setting the attachments folder location correctly under certain circumstances.
 	* Added back in the ABOUT menu option - it was remove from prior versions.
 	* BREAKING CHANGE: Change a hook with an incorrect name that was used when defining the Deparment taxonomy.  Any modifications using the old hook name will need to be updated to use the new name.
-	
+
 * Upgrade Instructions
 	* After installing the new version please go to your TICKETS->SETTINGS tabs and click the SAVE CHANGES button to write the defaults for new options to your database.
 	* If it seems that certain options are missing from your TICKETS menu or your TICKETS->SETTINGS screen then please go to TICKETS->TOOLS->CLEANUP and click the button to re-run the 3.3.4 to 4.0.0 upgrade.  This will add in any missing WordPress security capabilities to your installation.
-	
-* Deprecated or Removed	
+
+* Deprecated or Removed
 	* PHP 5.2 and PHP 5.3 no longer supported.  Portions of the plugin were not supported by 5.2 for a while now but going forward no testing will be done on PHP 5.2.   The minimum supported PHP version is 5.6.3.
 	* Support for the version 3.x line of WP is being deprecated  - going forward there will be no more testing or support on these versions.
 
@@ -1165,12 +1172,12 @@ At the very least you should back-up your site before applying this update!
 	* Updated author names in composer.json	(github repo)
 	* Updated this readme file to include more relevant and up-to-date information on Awesome Support
 	* Changes to support a better cron option for the e-mail piping add-on
-	
+
 * Bugfixes
 	* Plugin would delete its data by default during the un-install process.  Fixed to force it to respect the flag in the TICKETS->SETTINGS->Advanced tab.
 	* Fix an incorrect SQL query in the WPAS_MEMBER_QUERY class
 	* Check to make sure that $post is not empty before using it
-	* Standards cleanup in functions-list-table.php	
+	* Standards cleanup in functions-list-table.php
 	* Squashed some bugs related to attachments when tickets are deleted
 
 = 3.3.3 - October 31, 2016 =
@@ -1332,7 +1339,7 @@ At the very least you should back-up your site before applying this update!
 
 * Improvements
     * Extract string from JS to make it translatable
-    * Allow clients to close a ticket without reply 
+    * Allow clients to close a ticket without reply
 
 * Bugfix
     * Fix wpColorPicker by updating to Titan Framework 1.9
@@ -1578,7 +1585,7 @@ At the very least you should back-up your site before applying this update!
 * The Phoenix reborn. An entirely new version of Awesome Support
 
 == Upgrade Notice ==
-The version 4.x.x line is a MAJOR upgrade from 3.x.x.  It is strongly suggested that you test this upgrade in a stage/test environment before applying it to your production site.  
+The version 4.x.x line is a MAJOR upgrade from 3.x.x.  It is strongly suggested that you test this upgrade in a stage/test environment before applying it to your production site.
 At the very least you should back-up your site before applying this update!
 
 After upgrading please make sure you install the latest version of add-ons as well - especially the Email Support add-on (Version 5.0.x) and Gravity Forms.
@@ -1608,7 +1615,7 @@ Even though the plugin has been developed and is maintained by the Awesome Suppo
 Our key core developers on the Awesome Support Development Team in 2018 include:
 
 * Ante Laca
-* Muhammad Tahir Nazir	
+* Muhammad Tahir Nazir
 * Nigel Bahadur
 
 With contributions from customers such as:
@@ -1617,8 +1624,8 @@ With contributions from customers such as:
 * Naveen Giri
 * Nathan Moinvaziri
 
-== Translators == 
-	
+== Translators ==
+
 Here is a list of users who voluntarily contributed the most translations to our POEDITOR project in 2017/2021:
 
 - Miquel Martínez - Catalan
