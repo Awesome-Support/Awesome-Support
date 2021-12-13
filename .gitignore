@@ -75,3 +75,5 @@ themes/default/css/style.css
 /docs/
 awesome-support-*.zip
 /dist
+
+.DS_Store

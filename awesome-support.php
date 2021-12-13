@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           6.0.7
+ * Version:           6.0.8
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -31,7 +31,7 @@ if ( ! $load_allowed ) {
 }
 
 // Check to see if we're allowed to load Awesome Support.
-// With this filter we allow other scripts to run by returning instead of 
+// With this filter we allow other scripts to run by returning instead of
 // dieing.
 $soft_load_allowed = apply_filters( 'wpas_allow_soft_loading', true ) ;
 if ( ! $soft_load_allowed ) {
@@ -183,7 +183,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			self::$instance->includes();
 			self::$instance->session = new WPAS_Session();
 			self::$instance->custom_fields = new WPAS_Custom_Fields;
-			self::$instance->maybe_setup();			
+			self::$instance->maybe_setup();
 
 			if ( is_admin() ) {
 
@@ -197,10 +197,10 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Titan', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );
-					
+
 					/* User stats tracking from the Wisdom plugin */
 					add_action( 'plugins_loaded', array( self::$instance, 'awesome_support_start_plugin_tracking' ), 11, 0);
-					add_filter( 'wisdom_notice_text_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_notification_text' ) ); 
+					add_filter( 'wisdom_notice_text_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_notification_text' ) );
 					add_filter( 'wisdom_delay_notification_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_delay_notification' ) );
 
 				}
@@ -248,7 +248,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '6.0.7' );
+			define( 'WPAS_VERSION',           '6.0.8' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -423,21 +423,21 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/functions-channels.php' );
 			require( WPAS_PATH . 'includes/functions-ticket-type.php' );
 			require( WPAS_PATH . 'includes/functions-priority.php' );
-			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );			
+			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
 			require( WPAS_PATH . 'includes/install.php' );
 
 			/* Composer autoload */
 			require( WPAS_PATH . 'vendor/autoload.php' );
-			
+
 			/* Load Rest API */
 			require( WPAS_PATH . 'includes/rest-api/awesome-support-api.php' );
 
 			/* Simple WooCommerce Integration */
 			require( WPAS_PATH . 'includes/integrations/wc-account.php' );
-			
+
 			/* myCRED Integration */
 			require( WPAS_PATH . 'includes/integrations/my-cred/my-cred.php' );
-			
+
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
 
 				require( WPAS_PATH . 'includes/functions-admin-bar.php' );
@@ -466,12 +466,12 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/admin/functions-log-viewer.php' );
 			require( WPAS_PATH . 'includes/admin/functions-admin-ticket-detail-toolbars.php' );
 			require( WPAS_PATH . 'includes/admin/functions-toolbar.php' );
-			
+
 			if ( ! class_exists( 'TAV_Remote_Notification_Client' ) ) {
 				if ( ! defined( 'WPAS_REMOTE_NOTIFICATIONS_OFF' ) || true !== WPAS_REMOTE_NOTIFICATIONS_OFF ) {
 					require( WPAS_PATH . 'includes/class-remote-notification-client.php' );
 				}
-			}			
+			}
 
 			// We don't need all this during Ajax processing
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
@@ -485,7 +485,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/functions-admin-actions.php' );
 				require( WPAS_PATH . 'includes/admin/functions-misc.php' );
 				require( WPAS_PATH . 'includes/admin/functions-editor.php' );
-				require( WPAS_PATH . 'includes/admin/functions-agent-chat.php' );				
+				require( WPAS_PATH . 'includes/admin/functions-agent-chat.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 				require( WPAS_PATH . 'includes/admin/class-as-admin-setup-wizard.php' );
@@ -496,7 +496,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				/* Load settings files */
 				require( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-registration.php' );
-				require( WPAS_PATH . 'includes/admin/settings/settings-moderated-registration.php' );				
+				require( WPAS_PATH . 'includes/admin/settings/settings-moderated-registration.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-privacy.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-fields.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-permissions.php' );
@@ -508,14 +508,14 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-language.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-integration.php' );
-				
+
 				/* Load Gutenberg related files */
 				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg-post-type.php' );
 				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg.php' );
-				
+
 				/* Wisdom Tracking */
 				require( WPAS_PATH . '/tracking/class-plugin-usage-tracker.php' );
-				
+
 			}
 
 		}
@@ -608,7 +608,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				rdnc_add_notification( 2, '77a8b884c6e778b4', 'https://notifications.getawesomesupport.com' );
 			}
 		}
-		
+
 		/**
 		 * Start application statistics tracking
 		 *
@@ -620,7 +620,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 *
 		 * @since  4.4.0
 		 * @return void
-		 */		
+		 */
 		public function awesome_support_start_plugin_tracking() {
 			$wisdom = new Plugin_Usage_Tracker(
 				__FILE__,
@@ -631,12 +631,12 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				1
 			);
 		}
-		
+
 		/**
 		 * Application statistics tracking opt-in text
 		 *
 		 * We use the WISDOM Tracking plugin to track
-		 * application usage.  This allows us to set the 
+		 * application usage.  This allows us to set the
 		 * opt-in text shown to the user when they activate the plugin.
 		 *
 		 * https://wisdomplugin.com/support/#getting-started
@@ -648,18 +648,18 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @since  4.4.0
 		 *
 		 * @return text the notice text to be shown to the user
-		 */		
+		 */
 		function awesome_support_tracking_notification_text( $notice_text ) {
 			$notice_text = __( '<b>Would you like a discount on your next Awesome Support purchase?</b>  Help us make a better product for you by allowing us to collect some system statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
 			$notice_text = $notice_text . sprintf( __( ' <a %s>Find out more about what data we collect and how its used.</a> <a %s>View our privacy policy.</a>'  , 'awesome-support' ), 'a href="https://getawesomesupport.com/legal/tracking-statistics/" target="_blank"', 'a href="https://getawesomesupport.com/legal/privacy-policy/" target="_blank"' );
 			return $notice_text;
 		}
-		
+
 		/**
 		 * Application statistics tracking opt-in text
 		 *
 		 * We use the WISDOM Tracking plugin to track
-		 * application usage.  This allows us to set the 
+		 * application usage.  This allows us to set the
 		 * time delay before the opt-in notice shows up.
 		 *
 		 * https://wisdomplugin.com/support/#getting-started
@@ -671,11 +671,11 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @since  4.4.0
 		 *
 		 * @return text the notice text to be shown to the user
-		 */		
+		 */
 		function awesome_support_tracking_delay_notification( $delay ) {
 			return 900; // 15 mins
 		}
-	
+
 	}
 
 endif;
