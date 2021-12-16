@@ -447,6 +447,11 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.0.9 =
+
+* Fix
+  * Fixed Urgent security vulnerability vendor
+
 = 6.0.8 =
 
 * Fix
