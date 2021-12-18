@@ -619,7 +619,7 @@ function wpas_upgrade_607() {
 	// The 581 upgrade was the internal upgrade option during testing of the 606 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 607 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
-	// we create this 606 routine to make sure it runs for early 520 adopters.
+	// we create this 607 routine to make sure it runs for early 520 adopters.
 	wpas_upgrade_581();
 }
 
@@ -636,6 +636,23 @@ function wpas_upgrade_608() {
 	// The 581 upgrade was the internal upgrade option during testing of the 608 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 608 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
-	// we create this 606 routine to make sure it runs for early 520 adopters.
+	// we create this 608 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+
+/**
+ * Upgrade function for version 6.0.9
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.0.9
+ * @return void
+ */
+function wpas_upgrade_609() {
+	// Run the 581 upgrade option for version 609.
+	// The 581 upgrade was the internal upgrade option during testing of the 608 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 609 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 609 routine to make sure it runs for early 520 adopters.
 	wpas_upgrade_581();
 }
