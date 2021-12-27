@@ -1055,7 +1055,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 		public function goodbye_form_callback() {
 			check_ajax_referer( 'wisdom_goodbye_form', 'security' );
 			if( isset( $_POST['values'] ) ) {
-				$values = json_encode( wp_unslash( $_POST['values'] ) );
+				$values = json_encode( wp_unslash( array_map( 'esc_attr', $_POST['values'] ) ) );
 				update_option( 'wisdom_deactivation_reason_' . $this->plugin_name, $values );
 			}
 			if( isset( $_POST['details'] ) ) {
