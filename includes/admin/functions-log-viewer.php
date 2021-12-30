@@ -54,11 +54,11 @@ function wpas_tools_log_viewer_view() {
 
 	// Default number of lines to return
 	$lines = 100;
-	$file  = basename( $_POST[ 'file' ] );
+	$file  = basename( sanitize_text_field( $_POST[ 'file' ] ) );
 
 	// Get posted number of lines
 	if( isset( $_POST[ 'lines' ] ) ) {
-		$lines = $_POST[ 'lines' ];
+		$lines = sanitize_text_field( $_POST[ 'lines' ] );
 	}
 
 	wp_send_json_success( wpas_log_viewer_read_last_lines( $file, $lines ) );
