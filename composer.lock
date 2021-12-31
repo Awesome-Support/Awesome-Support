@@ -182,12 +182,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/tednh/Titan-Framework.git",
-                "reference": "eed423d2d1102008ab6b163a0bcfc76f2335c63f"
+                "reference": "e708474ea9b693caa1eab696f981f80d87b00fc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tednh/Titan-Framework/zipball/eed423d2d1102008ab6b163a0bcfc76f2335c63f",
-                "reference": "eed423d2d1102008ab6b163a0bcfc76f2335c63f",
+                "url": "https://api.github.com/repos/tednh/Titan-Framework/zipball/e708474ea9b693caa1eab696f981f80d87b00fc4",
+                "reference": "e708474ea9b693caa1eab696f981f80d87b00fc4",
                 "shasum": ""
             },
             "type": "library",
@@ -230,7 +230,7 @@
             "support": {
                 "source": "https://github.com/tednh/Titan-Framework/tree/fork"
             },
-            "time": "2021-12-16T06:45:39+00:00"
+            "time": "2021-12-30T16:06:39+00:00"
         },
         {
             "name": "paragonie/random_compat",
