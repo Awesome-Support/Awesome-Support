@@ -457,7 +457,7 @@ class WPAS_Email_Notification {
 					break;
 
 				case 'agent_last_name':
-					$tag['value'] = !empty($agent) ? $agent->first_name : '';
+					$tag['value'] = !empty($agent) ? $agent->last_name : '';
 					break;
 					
 				/* E-mail of the agent assigned to this ticket */

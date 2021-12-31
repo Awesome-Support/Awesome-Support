@@ -46,7 +46,7 @@ class WPAS_GDPR_User_Profile {
 		add_action( 'wp_ajax_nopriv_wpas_gdpr_export_data', array( $this, 'wpas_gdpr_export_data' ) );
 
 		add_action( 'init', array( $this, 'download_file' ) );
-		
+
 	}
 
 	/**
@@ -131,7 +131,7 @@ class WPAS_GDPR_User_Profile {
 			if ( ! empty( $user_consent ) && is_array( $user_consent ) ) {
 	?>
 		<div id="wpas_user_profile_segment">
-			<h2><?php esc_html_e( 'Awesome Support: Consents Granted', 'awesome-support' ); ?></h2>		
+			<h2><?php esc_html_e( 'Awesome Support: Consents Granted', 'awesome-support' ); ?></h2>
 			<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
 				<thead>
 					<tr>
@@ -242,7 +242,7 @@ class WPAS_GDPR_User_Profile {
 					 * Loop the consent log
 					 */
 				foreach ( $consent_log as $log ) {
-					echo '<tr><td>' . $log . '</td></tr>';
+					echo '<tr><td>' . esc_html( $log ) . '</td></tr>';
 				}
 				?>
 			</table>
@@ -357,7 +357,7 @@ class WPAS_GDPR_User_Profile {
 			);
 		if( !empty( $paged ) ){
 			$args['paged'] = $paged;
-		} 
+		}
 
 		$ticket_data  = new WP_Query( $args );
 		$user_tickets = array();
@@ -571,7 +571,7 @@ class WPAS_GDPR_User_Profile {
 							$ticket_ids = array();
 							$ticket_ids[] = $ticket['ticket_id'];
 							foreach ( $ticket['replies'] as $key => $reply ) {
-								$ticket_ids[] = $reply['reply_id'];	
+								$ticket_ids[] = $reply['reply_id'];
 							}
 							foreach ( $ticket_ids as $key => $tickets_id ) {
 								$this->add_attachments( $zip, $tickets_id );
@@ -593,7 +593,7 @@ class WPAS_GDPR_User_Profile {
 
 	/**
 	 * Add attachment in zip
-	 * 
+	 *
 	 * @param object $zip Zip instance.
 	 * @param int 	 $ticket_id Ticket ID.
 	 */

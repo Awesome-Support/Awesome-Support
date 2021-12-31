@@ -1785,3 +1785,11 @@ msgstr "Jina %s Mpya"
 msgctxt "Login form"
 msgid "Show Password"
 msgstr "Onyesha Nenosiri"
+
+#: includes/custom-fields/functions-custom-fields.php:401
+msgid "Ticket Type"
+msgstr "Aina ya Tiketi"
+
+#: includes/custom-fields/functions-custom-fields.php:402
+msgid "Ticket Types"
+msgstr ""

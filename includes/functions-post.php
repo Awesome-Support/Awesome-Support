@@ -680,6 +680,8 @@ function wpas_new_reply_submission( $data ) {
 
 	// Get parent ticket ID
 	$parent_id = (int) $data['ticket_id'];
+	
+	if( !wpas_can_reply_ticket( false, $parent_id ) ) return false; // Cheating? Hehe..
 
 	if ( 'ticket' !== get_post_type( $parent_id ) ) {
 		wpas_add_error( 'reply_added_failed', __( 'Something went wrong. We couldn&#039;t identify your ticket. Please try again.', 'awesome-support' ) );
