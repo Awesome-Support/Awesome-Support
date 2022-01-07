@@ -7534,3 +7534,11 @@ msgstr ""
 #: includes/functions-post.php:1981
 msgid "Edit history"
 msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:401
+msgid "Ticket Type"
+msgstr "Tipo de entrada"
+
+#: includes/custom-fields/functions-custom-fields.php:402
+msgid "Ticket Types"
+msgstr ""

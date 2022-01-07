@@ -1551,7 +1551,7 @@ msgid "Submit ticket"
 msgstr ""
 
 #. Description of the plugin/theme
-#: 
+#:
 msgid "Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience."
 msgstr ""
 
@@ -1738,7 +1738,7 @@ msgstr ""
 msgid "Priority"
 msgstr ""
 
-#: 
+#:
 msgid "Ticket Priority"
 msgstr ""
 
@@ -5657,3 +5657,10 @@ msgstr ""
 msgid "Edit history"
 msgstr ""
 
+#: includes/custom-fields/functions-custom-fields.php:401
+msgid "Ticket Type"
+msgstr "Typ lístka"
+
+#: includes/custom-fields/functions-custom-fields.php:402
+msgid "Ticket Types"
+msgstr ""

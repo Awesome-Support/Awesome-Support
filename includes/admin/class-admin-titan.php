@@ -53,7 +53,7 @@ class WPAS_Titan {
 		 * When using the embedded framework, use it only if the framework
 		 * plugin isn't activated.
 		 */
-		 
+
 		// Don't do anything when we're activating a plugin to prevent errors
 		// on redeclaring Titan classes
 		if( 'activate' === filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING )
@@ -77,9 +77,9 @@ class WPAS_Titan {
 
 		// Use the embedded Titan Framework
 		if ( $useEmbeddedFramework && ! class_exists( 'TitanFramework' ) ) {
-		    require_once( WPAS_PATH . 'vendor/gambitph/titan-framework/titan-framework.php' );
+		    require_once( WPAS_PATH . 'vendor/tednh/titan-framework/titan-framework.php' );
 		}
-		 
+
 		/*
 		 * Start your Titan code below
 		 */
@@ -97,7 +97,7 @@ class WPAS_Titan {
 
 		/**
 		 * Get plugin core options
-		 * 
+		 *
 		 * @var (array)
 		 * @see  admin/includes/settings.php
 		 */
@@ -131,7 +131,7 @@ class WPAS_Titan {
 			}
 
 			$tab->createOption( array( 'type' => 'save', ) );
-			
+
 		}
 
 	}

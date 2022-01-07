@@ -5,6 +5,39 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.0.11</h1>
+				<h3>6.0.11 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed security vulnerability</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.0.10</h1>
+				<h3>6.0.10 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed reply vulnerability</li>
+					<li>Fix: Fixed typo in agent_last_name</li>
+					<li>New: Added translate Ticket Type</li>
+					<li>New: Added msg file type to allow upload attachment</li>
+					<li>New: Updated Bootstrap4Themes</li>
+					<li>Fix: Fixed Urgent security vulnerability</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.0.9</h1>
 				<h3>6.0.9 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">

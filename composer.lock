@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e861f667f8639f61262553f4703c4f1f",
+    "content-hash": "5cf9664a505f04bb3ac852ccb2a1dd10",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -177,62 +177,6 @@
             "time": "2019-03-31T03:32:58+00:00"
         },
         {
-            "name": "gambitph/titan-framework",
-            "version": "dev-fork",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tednh/Titan-Framework.git",
-                "reference": "eed423d2d1102008ab6b163a0bcfc76f2335c63f"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tednh/Titan-Framework/zipball/eed423d2d1102008ab6b163a0bcfc76f2335c63f",
-                "reference": "eed423d2d1102008ab6b163a0bcfc76f2335c63f",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "titan-framework.php"
-                ]
-            },
-            "scripts": {
-                "post-install-cmd": [
-                    "bower install",
-                    "npm install -d"
-                ],
-                "post-update-cmd": [
-                    "bower install",
-                    "npm install -d"
-                ]
-            },
-            "license": [
-                "GPLv2+"
-            ],
-            "authors": [
-                {
-                    "name": "Gambit Technologies",
-                    "email": "info@gambit.ph",
-                    "homepage": "http://www.titanframework.net/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Titan Framework allows theme and plugin developers to create admin pages, options, meta boxes, and theme customizer options with just a few simple lines of code.",
-            "homepage": "https://github.com/gambitph/Titan-Framework",
-            "keywords": [
-                "Titan Framework",
-                "framework",
-                "options",
-                "titan",
-                "titan framework",
-                "wordpress"
-            ],
-            "support": {
-                "source": "https://github.com/tednh/Titan-Framework/tree/fork"
-            },
-            "time": "2021-12-16T06:45:39+00:00"
-        },
-        {
             "name": "paragonie/random_compat",
             "version": "v9.99.100",
             "source": {
@@ -281,6 +225,16 @@
                 "source": "https://github.com/paragonie/random_compat"
             },
             "time": "2020-10-15T08:29:30+00:00"
+        },
+        {
+            "name": "tednh/titan-framework",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tednh/Titan-Framework.git",
+                "reference": "master"
+            },
+            "type": "library"
         }
     ],
     "packages-dev": [
@@ -1831,9 +1785,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "gambitph/titan-framework": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

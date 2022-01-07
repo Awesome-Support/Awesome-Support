@@ -22,14 +22,22 @@
     ],
     "repositories": [
         {
-            "type": "vcs",
-            "url": "https://github.com/tednh/Titan-Framework.git"
+            "type": "package",
+            "package": {
+                "name": "tednh/titan-framework",
+                "version":"2.0.1",
+                "source": {
+                    "url": "https://github.com/tednh/Titan-Framework.git",
+                    "type": "git",
+                    "reference":"master"
+                }
+            }
         }
     ],
     "require": {
         "php": ">=7.1",
-        "gambitph/titan-framework": "dev-fork",
-		"ericmann/wp-session-manager": "4.2.*"		
+        "tednh/titan-framework": "2.0.1",
+		"ericmann/wp-session-manager": "4.2.*"
     },
     "archive": {
         "exclude": [
@@ -53,7 +61,7 @@
 	  "psr-4": {
 	    "WPAS_API\\": "includes/rest-api/includes"
 	  }
-    },	
+    },
     "scripts": {
         "post-install-cmd": "npm install",
         "pre-archive-cmd": "composer install"

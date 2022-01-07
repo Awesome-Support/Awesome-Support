@@ -1551,7 +1551,7 @@ msgid "Submit ticket"
 msgstr "提交工单"
 
 #. Description of the plugin/theme
-#: 
+#:
 msgid "Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience."
 msgstr "极佳支持是一个优秀的票据系统, 通过提供独一的客户支持体验来帮助你提升客户满意度。"
 
@@ -1738,7 +1738,7 @@ msgstr "部门"
 msgid "Priority"
 msgstr "优先级"
 
-#: 
+#:
 msgid "Ticket Priority"
 msgstr ""
 
@@ -5654,3 +5654,10 @@ msgstr "客服是否可以控制在关闭工单时自动删除附件？"
 msgid "Edit history"
 msgstr "编辑历史记录"
 
+#: includes/custom-fields/functions-custom-fields.php:401
+msgid "Ticket Type"
+msgstr "票种"
+
+#: includes/custom-fields/functions-custom-fields.php:402
+msgid "Ticket Types"
+msgstr ""
