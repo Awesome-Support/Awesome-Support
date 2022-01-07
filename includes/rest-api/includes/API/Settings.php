@@ -85,7 +85,7 @@ class Settings extends WP_REST_Settings_Controller {
 	 * @return bool True if the request has read access for the item, otherwise false.
 	 */
 	public function get_item_permissions_check( $request ) {
-		
+
 		if ( current_user_can( 'settings_tickets' ) or current_user_can( 'create_ticket' ) ) {
 			return true;
 		}
@@ -404,7 +404,7 @@ class Settings extends WP_REST_Settings_Controller {
 
 		// Use the embedded Titan Framework
 		if ( $useEmbeddedFramework && ! class_exists( 'TitanFramework' ) ) {
-			require_once( WPAS_PATH . 'vendor/gambitph/titan-framework/titan-framework.php' );
+			require_once( WPAS_PATH . 'vendor/tednh/titan-framework/titan-framework.php' );
 		}
 
 		/*
