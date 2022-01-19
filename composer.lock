@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e861f667f8639f61262553f4703c4f1f",
+    "content-hash": "aff36a7223c33955a47db42d234964bd",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -175,62 +175,6 @@
                 "source": "https://github.com/ericmann/wp-session-manager/tree/master"
             },
             "time": "2019-03-31T03:32:58+00:00"
-        },
-        {
-            "name": "gambitph/titan-framework",
-            "version": "dev-fork",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tednh/Titan-Framework.git",
-                "reference": "e708474ea9b693caa1eab696f981f80d87b00fc4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tednh/Titan-Framework/zipball/e708474ea9b693caa1eab696f981f80d87b00fc4",
-                "reference": "e708474ea9b693caa1eab696f981f80d87b00fc4",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "titan-framework.php"
-                ]
-            },
-            "scripts": {
-                "post-install-cmd": [
-                    "bower install",
-                    "npm install -d"
-                ],
-                "post-update-cmd": [
-                    "bower install",
-                    "npm install -d"
-                ]
-            },
-            "license": [
-                "GPLv2+"
-            ],
-            "authors": [
-                {
-                    "name": "Gambit Technologies",
-                    "email": "info@gambit.ph",
-                    "homepage": "http://www.titanframework.net/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Titan Framework allows theme and plugin developers to create admin pages, options, meta boxes, and theme customizer options with just a few simple lines of code.",
-            "homepage": "https://github.com/gambitph/Titan-Framework",
-            "keywords": [
-                "Titan Framework",
-                "framework",
-                "options",
-                "titan",
-                "titan framework",
-                "wordpress"
-            ],
-            "support": {
-                "source": "https://github.com/tednh/Titan-Framework/tree/fork"
-            },
-            "time": "2021-12-30T16:06:39+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -523,16 +467,16 @@
         },
         {
             "name": "phpdocumentor/type-resolver",
-            "version": "1.5.1",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/TypeResolver.git",
-                "reference": "a12f7e301eb7258bb68acd89d4aefa05c2906cae"
+                "reference": "93ebd0014cab80c4ea9f5e297ea48672f1b87706"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/a12f7e301eb7258bb68acd89d4aefa05c2906cae",
-                "reference": "a12f7e301eb7258bb68acd89d4aefa05c2906cae",
+                "url": "https://api.github.com/repos/phpDocumentor/TypeResolver/zipball/93ebd0014cab80c4ea9f5e297ea48672f1b87706",
+                "reference": "93ebd0014cab80c4ea9f5e297ea48672f1b87706",
                 "shasum": ""
             },
             "require": {
@@ -567,9 +511,9 @@
             "description": "A PSR-5 based resolver of Class names, Types and Structural Element Names",
             "support": {
                 "issues": "https://github.com/phpDocumentor/TypeResolver/issues",
-                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.5.1"
+                "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.6.0"
             },
-            "time": "2021-10-02T14:08:47+00:00"
+            "time": "2022-01-04T19:58:01+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -1622,20 +1566,23 @@
         },
         {
             "name": "symfony/polyfill-ctype",
-            "version": "v1.23.0",
+            "version": "v1.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-ctype.git",
-                "reference": "46cd95797e9df938fdd2b03693b5fca5e64b01ce"
+                "reference": "30885182c981ab175d4d034db0f6f469898070ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/46cd95797e9df938fdd2b03693b5fca5e64b01ce",
-                "reference": "46cd95797e9df938fdd2b03693b5fca5e64b01ce",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/30885182c981ab175d4d034db0f6f469898070ab",
+                "reference": "30885182c981ab175d4d034db0f6f469898070ab",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.1"
+            },
+            "provide": {
+                "ext-ctype": "*"
             },
             "suggest": {
                 "ext-ctype": "For best performance"
@@ -1681,7 +1628,7 @@
                 "portable"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.23.0"
+                "source": "https://github.com/symfony/polyfill-ctype/tree/v1.24.0"
             },
             "funding": [
                 {
@@ -1697,7 +1644,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-02-19T12:13:01+00:00"
+            "time": "2021-10-20T20:35:02+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -1831,9 +1778,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "gambitph/titan-framework": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

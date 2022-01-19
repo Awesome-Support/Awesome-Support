@@ -83,7 +83,7 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'text',
 					'default' => 5,
 					'desc'    => __( 'How many tickets per page should be displayed to the customer/client/end-user?', 'awesome-support' ),
-				),								
+				),
 				array(
 					'name'    => __( 'Hide Closed Tickets', 'awesome-support' ),
 					'id'      => 'hide_closed_fe',
@@ -104,12 +104,12 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'checkbox',
 					'desc'    => __( 'Show the checkbox that allow users to close tickets. This affects ALL users. (If you would like to restrict closing tickets to only some users, use WordPress roles and the close_ticket capability instead.)', 'awesome-support' ),
 					'default' => true
-				),				
-				
+				),
+
 				/* Notification buttons */
 				array(
 					'name' => __( 'Notification Button', 'awesome-support' ),
-					'desc' => __( 'Options for the notification button at the top of the single ticket screen on the front-end', 'awesome-support' ),					
+					'desc' => __( 'Options for the notification button at the top of the single ticket screen on the front-end', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -121,24 +121,24 @@ function wpas_core_settings_general( $def ) {
 				),
 				array(
 					'name'     => __( 'Button Label', 'awesome-support' ),
-					'desc'    => __( 'This is the label for the button', 'awesome-support' ),										
+					'desc'    => __( 'This is the label for the button', 'awesome-support' ),
 					'id'       => 'notifications_button_label',
 					'type'     => 'text',
-					'default'  => __( 'Notifications', 'awesome-support' ),					
-				),				
+					'default'  => __( 'Notifications', 'awesome-support' ),
+				),
 				array(
 					'name'     => __( 'Content', 'awesome-support' ),
-					'desc'    => __( 'This is the message that the user will see when they click the notifications button', 'awesome-support' ),										
+					'desc'    => __( 'This is the message that the user will see when they click the notifications button', 'awesome-support' ),
 					'id'       => 'notifications_button_msg',
 					'type'     => 'editor',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 ),
-					'default'  => __( 'You are receiving the default standard notifications for this ticket. Among others, they include replies from agents, a notification when the ticket is closed, a notification if the ticket is reopened by the agent and a confirmation when the ticket was first submitted. ', 'awesome-support' ),					
+					'default'  => __( 'You are receiving the default standard notifications for this ticket. Among others, they include replies from agents, a notification when the ticket is closed, a notification if the ticket is reopened by the agent and a confirmation when the ticket was first submitted. ', 'awesome-support' ),
 				),
-				
+
 				array(
 					'name' => __( 'Redirects', 'awesome-support' ),
 					'type' => 'heading',
-					'desc'    => __( 'Configure where the user should be sent after certain actions', 'awesome-support' ),					
+					'desc'    => __( 'Configure where the user should be sent after certain actions', 'awesome-support' ),
 				),
 				array(
 					'name'    => __( 'Logout Redirect', 'awesome-support' ),
@@ -157,12 +157,12 @@ function wpas_core_settings_general( $def ) {
 					'id'      => 'new_ticket_form_redirect_fe',
 					'type'    => 'text',
 					'desc' 	  => __( 'If you would like to use a custom form for your new ticket form but still use our login screen then enter the full URL to the custom form. An example where this would be useful would be if you are using a Gravity Form in conjunction with our Gravity Form bridge. Enter the FULL url starting with http or https. Note that if you use this option you will never be able to see or use our standard ticket form! ', 'awesome-support' ),
-				),				
-				
+				),
+
 				array(
 					'name' => __( 'Toolbars', 'awesome-support' ),
 					'type' => 'heading',
-					'desc'    => __( 'Control whether certain toolbars are visible to agents', 'awesome-support' ),					
+					'desc'    => __( 'Control whether certain toolbars are visible to agents', 'awesome-support' ),
 				),
 				array(
 					'name'    => __( 'Show Ticket Details Toolbar', 'awesome-support' ),
@@ -170,8 +170,8 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'checkbox',
 					'default' => true,
 					'desc'    => __( 'Show the toolbar on the ticket detail screen when an agent is viewing the ticket?', 'awesome-support' ),
-				),				
-				
+				),
+
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
 					'type' => 'heading',
@@ -199,7 +199,7 @@ function wpas_core_settings_general( $def ) {
 				array(
 					'name' => __( 'Misc', 'awesome-support' ),
 					'type' => 'heading',
-				),				
+				),
 
 				array(
 					'name' => __( 'Credit', 'awesome-support' ),
@@ -218,7 +218,7 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'checkbox',
 					'desc'    => __( 'Remove the rating request footer in the admin screen.', 'awesome-support' ),
 					'default' => false
-				),				
+				),
 			)
 		),
 	);

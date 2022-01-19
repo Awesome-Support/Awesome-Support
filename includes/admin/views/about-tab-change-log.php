@@ -5,6 +5,50 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.0.12</h1>
+				<h3>6.0.12 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed security vulnerability</li>
+					<li>
+						This version won't work with older versions of the listed add-ons
+						<br />
+						<ol>
+							<li>Awesome Support: Agent Front-end</li>
+							<li>Awesome Support: Auto Close</li>
+							<li>Awesome Support: Company Profiles</li>
+							<li>Awesome Support: Documentation & Knowledgebase</li>
+							<li>Awesome Support: E-Mail Support</li>
+							<li>Awesome Support: FAQ</li>
+							<li>Awesome Support: Issue Tracking</li>
+							<li>Awesome Support: Service Level Agreements</li>
+							<li>Awesome Support: Smart Replies Powered by AI and Machine Learning</li>
+							<li>Awesome Support: Tasks and Todos</li>
+						</ol>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.0.11</h1>
+				<h3>6.0.11 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed security vulnerability</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.0.10</h1>
 				<h3>6.0.10 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
@@ -114,7 +158,7 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.0</h1>
-				<h3>6.0 includes a few changes to the rest api, updates to a new version of the Titan Framework to 1.12.0 and more. Here is a more comprehensive list:</h3>
+				<h3>6.0 includes a few changes to the rest api, updates to a new version of the Gas Framework to 1.12.0 and more. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
 					<li>New: Ticket Types</li>
 					<li>New: Integration with myCRED</li>
@@ -123,7 +167,7 @@
 					<li>New: Option to redirect the standard ticket form to another page</li>
 					<li>Enh: Choose which product statuses should be synced with Awesome Support</li>
 					<li>Tweak: Added schemas to some REST API routes that did not have them</li>
-					<li>Tweak: Updated the Titan Framework library that is used internally to manage settings - using version 1.12.1 now</li>
+					<li>Tweak: Updated the Gas Framework library that is used internally to manage settings - using version 1.12.1 now</li>
 					<li>Tweak: Updated the session manager library that is used internally to manage sessions - using version 4.2.0 now</li>
 					<li>Bug fixes related to stylesheets, autodelete of attachments, file-uploader and more</li>
 					<li>Internal and developer related changes including the introduction of more than 20 new filters and action hooks</li>

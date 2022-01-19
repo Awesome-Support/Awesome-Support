@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           6.0.10
+ * Version:           6.0.12
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -195,7 +195,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					add_action( 'plugins_loaded', array( 'WPAS_Upgrade', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Tickets_List', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
-					add_action( 'plugins_loaded', array( 'WPAS_Titan', 'get_instance' ), 11, 0 );
+					add_action( 'plugins_loaded', array( 'WPAS_Gas', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );
 
 					/* User stats tracking from the Wisdom plugin */
@@ -248,7 +248,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '6.0.10' );
+			define( 'WPAS_VERSION',           '6.0.12' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -429,6 +429,9 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			/* Composer autoload */
 			require( WPAS_PATH . 'vendor/autoload.php' );
 
+			// GAS Framework
+			require( WPAS_PATH . 'includes/gas-framework/gas-framework.php' );
+
 			/* Load Rest API */
 			require( WPAS_PATH . 'includes/rest-api/awesome-support-api.php' );
 
@@ -489,7 +492,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				require( WPAS_PATH . 'includes/admin/class-admin-tickets-list.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-user.php' );
 				require( WPAS_PATH . 'includes/admin/class-as-admin-setup-wizard.php' );
-				require( WPAS_PATH . 'includes/admin/class-admin-titan.php' );
+				require( WPAS_PATH . 'includes/admin/class-admin-gas.php' );
 				require( WPAS_PATH . 'includes/admin/class-admin-help.php' );
 				require( WPAS_PATH . 'includes/admin/upgrade/class-upgrade.php' );
 

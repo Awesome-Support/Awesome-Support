@@ -109,12 +109,12 @@ msgstr "Wartet auf Antwort durch Support"
 msgid "Old"
 msgstr "Alt"
 
-#: includes/admin/class-admin-titan.php:90 includes/admin/functions-misc.php:28
+#: includes/admin/class-admin-gas.php:90 includes/admin/functions-misc.php:28
 #, fuzzy
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: includes/admin/class-admin-titan.php:91
+#: includes/admin/class-admin-gas.php:91
 #, fuzzy
 msgid "Awesome Support Settings"
 msgstr "Awesome Support Einstellungen"
@@ -1586,7 +1586,7 @@ msgid "Submit ticket"
 msgstr "Ticket erstellen"
 
 #. Description of the plugin/theme
-#: 
+#:
 msgid "Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience."
 msgstr "Awesome Support ist ein großartiges Ticket-System, welches Ihnen dabei hilft Ihre Kundenzufriedenheit zu verbessern, durch eine einzigartige Support-Erfahrung."
 
@@ -1773,7 +1773,7 @@ msgstr "Abteilung"
 msgid "Priority"
 msgstr "Priorität"
 
-#: 
+#:
 msgid "Ticket Priority"
 msgstr "Ticket Priorität"
 
@@ -3985,134 +3985,49 @@ msgstr "Senden und deaktivieren"
 msgid "Just Deactivate"
 msgstr "Einfach deaktivieren"
 
-#: vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php:198
+#: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:198
 msgid "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
 msgstr "Es gibt eine neue Version von %1$s. %2$sView Version %3$sdetails%4$s."
 
-#: vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php:206
+#: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:206
 msgid "There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s."
 msgstr "Es gibt eine neue Version von %1$s. %2$sView Version %3$sdetails%4$s oder %5$supdate jetzt %6$s."
 
-#: vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php:349
+#: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:349
 msgid "You do not have permission to install plugin updates"
 msgstr "Sie sind nicht berechtigt, Plugin-Updates zu installieren"
 
-#: vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php:349
+#: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:349
 msgid "Error"
 msgstr "Fehler"
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:137
+#: includes/gas-framework/lib/class-option-edd-license.php:137
 msgid "Your license is valid and active."
 msgstr "Ihre Lizenz ist gültig und aktiv."
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:141
+#: includes/gas-framework/lib/class-option-edd-license.php:141
 msgid "Your license is invalid."
 msgstr "Ihre Lizenz ist ungültig."
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:156
+#: includes/gas-framework/lib/class-option-edd-license.php:156
 msgid "Activate"
 msgstr "Aktivieren"
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:157
-msgid "Your license is valid but inactive. Click the button above to activate it."
-msgstr "Ihre Lizenz ist gültig, aber inaktiv. Klicken Sie auf die Schaltfläche oben, um sie zu aktivieren."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:162
+#: includes/gas-framework/lib/class-option-edd-license.php:162
 msgid "The remote server did not return a valid response. You can retry by hitting the &laquo;Save&raquo; button again."
 msgstr "Der Remote-Server hat keine gültige Antwort zurückgegeben. Sie können es erneut versuchen, indem Sie den &laquo;Save&raquo; Knopf erneut drücken."
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:166
+#: includes/gas-framework/lib/class-option-edd-license.php:166
 msgid "Your license is expired."
 msgstr "Ihre Lizenz ist abgelaufen."
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:170
+#: includes/gas-framework/lib/class-option-edd-license.php:170
 msgid "Unexpected response from server: "
 msgstr "Unerwartete Antwort vom Server: ␣"
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:175
+#: includes/gas-framework/lib/class-option-edd-license.php:175
 msgid "Entering your license key is mandatory to get the product updates."
 msgstr "Geben Sie Ihren Lizenzschlüssel ein, um die Produktaktualisierungen zu erhalten."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:385
-msgid "Theme License"
-msgstr "Theme Lizenz"
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:386
-msgid "Enter your theme license key."
-msgstr "Geben Sie Ihren Theme Lizenzschlüssel ein."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:387
-msgid "License Key"
-msgstr "Lizenzschlüssel"
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:388
-msgid "License Action"
-msgstr "Lizenzaktion"
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:389
-msgid "Deactivate License"
-msgstr "Lizenz deaktivieren"
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:390
-msgid "Activate License"
-msgstr "Lizenz aktivieren"
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:391
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:403
-msgid "License status is unknown."
-msgstr "Lizenzstatus ist unbekannt."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:392
-msgid "Renew?"
-msgstr "Erneuern?"
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:393
-msgid "unlimited"
-msgstr "unbegrenzt"
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:394
-msgid "License key is active."
-msgstr "Lizenzschlüssel ist aktiv."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:395
-msgid "Expires %s."
-msgstr "Läuft ab %s."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:396
-msgid "You have %1$s / %2$s sites activated."
-msgstr "Sie haben %1$s / %2$s Seiten aktivier."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:397
-msgid "License key expired %s."
-msgstr "Lizenzschlüssel abgelaufen %s."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:398
-msgid "License key has expired."
-msgstr "Lizenzschlüssel ist abgelaufen."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:399
-msgid "License keys do not match."
-msgstr "Lizenzschlüssel stimmen nicht überein."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:400
-msgid "License is inactive."
-msgstr "Die Lizenz ist inaktiv."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:401
-msgid "License key is disabled."
-msgstr "Lizenzschlüssel ist deaktiviert."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:402
-msgid "Site is inactive."
-msgstr "Die Seite ist inaktiv."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:404
-msgid "Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update."
-msgstr "Durch das Aktualisieren dieses Themes gehen alle von Ihnen vorgenommenen Anpassungen verloren. 'Abbrechen' zum Stoppen, 'OK' zum Aktualisieren."
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:405
-msgid "<strong>%1$s %2$s</strong> is available. <a href=\"%3$s\" class=\"thickbox\" title=\"%4s\">Check out what's new</a> or <a href=\"%5$s\"%6$s>update now</a>."
-msgstr ""
 
 #: awesome-support.php:640
 msgid "<b>Would you like a discount on your next Awesome Support purchase?</b>  Help us make a better product for you by allowing us to collect some system statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources."
@@ -5664,7 +5579,7 @@ msgstr "Private Notizen einbeziehen"
 msgid "Load older replies"
 msgstr "Laden alter Nachrichten"
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:157
+#: includes/gas-framework/lib/class-option-edd-license.php:157
 msgid "Your license is valid but inactive. Click the button above to activate it. If you see this message after attempting activation then please make sure that your license is not already active on another site."
 msgstr "Die Lizenz ist valide aber inaktiv. Zum aktivieren bitte Schaltfläche oben klicken. Wenn diese Nachricht erscheint, nachdem die Lizenz aktiviert wurde, bitte versichern Sie sich, dass die Lizenz nicht auf einer anderen Seite genutzt wird."
 

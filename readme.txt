@@ -4,7 +4,7 @@ Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreativ
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
 Tested up to: 5.8.1
-Stable tag: 6.0.10
+Stable tag: 6.0.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -240,7 +240,7 @@ Awesome Support provides an optimized viewing experience for easy reading and na
 
 Version 5 of Awesome Support was built with flexibility in mind; the code is clean, well-documented and full of hooks. You can easily customize Awesome Support to do almost anything you want or need.
 
-Awesome Support is built with many reputable open-source projects including the [Titan Framework](http://www.titanframework.net/) to handle plugin options, [FlexBox Grid](http://flexboxgrid.com/) for certain styling elements, [BootStrap 4](http://getbootstrap.com/) for optional themes, [Simple Hint](http://catc.github.io/simple-hint/) for tool tips and a few others.
+Awesome Support is built with many reputable open-source projects including the [FlexBox Grid](http://flexboxgrid.com/) for certain styling elements, [BootStrap 4](http://getbootstrap.com/) for optional themes, [Simple Hint](http://catc.github.io/simple-hint/) for tool tips and a few others.
 
 **Languages**
 
@@ -446,6 +446,27 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 6.0.12 =
+
+* Fix
+  * Fixed security vulnerability
+  * This version won't work with older versions of the listed add-ons
+    * Awesome Support: Agent Front-end
+	* Awesome Support: Auto Close
+	* Awesome Support: Company Profiles
+	* Awesome Support: Documentation & Knowledgebase
+	* Awesome Support: E-Mail Support
+	* Awesome Support: FAQ
+	* Awesome Support: Issue Tracking
+	* Awesome Support: Service Level Agreements
+	* Awesome Support: Smart Replies Powered by AI and Machine Learning
+	* Awesome Support: Tasks and Todos
+
+= 6.0.11 =
+
+* Fix
+  * Fixed security vulnerability
 
 = 6.0.10 =
 
