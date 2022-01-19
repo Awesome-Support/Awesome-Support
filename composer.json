@@ -20,23 +20,8 @@
             "role": "Lead Developer"
         }
     ],
-    "repositories": [
-        {
-            "type": "package",
-            "package": {
-                "name": "tednh/titan-framework",
-                "version":"2.0.1",
-                "source": {
-                    "url": "https://github.com/tednh/Titan-Framework.git",
-                    "type": "git",
-                    "reference":"master"
-                }
-            }
-        }
-    ],
     "require": {
         "php": ">=7.1",
-        "tednh/titan-framework": "2.0.1",
 		"ericmann/wp-session-manager": "4.2.*"
     },
     "archive": {
