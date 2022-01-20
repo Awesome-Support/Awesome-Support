@@ -26,7 +26,7 @@ function wpas_tool_link( $tool, $args = array() ) {
 }
 
 if ( isset( $_GET['done'] ) ) {
-	
+
 	$message = '' ;
 
 	switch( $_GET['done'] ) {
@@ -54,7 +54,7 @@ if ( isset( $_GET['done'] ) ) {
 		case 'update_last_reply':
 			$message = __( 'Last reply date has been updated on all tickets.', 'awesome-support' );
 			break;
-		
+
 		case 'ticket_attachments':
 			$message = __( 'All unclaimed ticket attachment folders have been deleted', 'awesome-support' );
 			break;
@@ -62,11 +62,11 @@ if ( isset( $_GET['done'] ) ) {
 		case 'reset_channels':
 			$message = __( 'All channels have been reset', 'awesome-support' );
 			break;
-			
+
 		case 'reset_ticket_types':
 			$message = __( 'All ticket types have been reset', 'awesome-support' );
 			break;
-		
+
 		case 'install_blue_blocks_email_template':
 			$message = __( 'The Blue Blocks Email Template Set Has Been Installed', 'awesome-support' );
 			break;
@@ -74,42 +74,42 @@ if ( isset( $_GET['done'] ) ) {
 		case 'install_blue_blocks_ss_email_template':
 			$message = __( 'The Blue Blocks With Satisfaction Survey Elements Email Template Set Has Been Installed', 'awesome-support' );
 			break;
-			
+
 		case 'install_elegant_email_template':
 			$message = __( 'The Elegant Email Template Set Has Been Installed', 'awesome-support' );
-			break;						
+			break;
 
 		case 'install_elegant_ss_email_template':
 			$message = __( 'The Elegant With Satisfaction Survey Elements Email Template Set Has Been Installed', 'awesome-support' );
 			break;
-			
+
 		case 'install_simple_email_template':
 			$message = __( 'The Simple Email Template Set Has Been Installed', 'awesome-support' );
-			break;						
-			
+			break;
+
 		case 'install_default_email_template':
 			$message = __( 'The Default Email Template Set Has Been Installed', 'awesome-support' );
-			break;				
+			break;
 
 		case 'install_debug_email_template':
 			$message = __( 'The Debug Email Template Set Has Been Installed', 'awesome-support' );
 			break;
-		
+
 		case 'mark_all_auto_del_attchmnts':
 		case 'remove_mark_all_auto_del_attchmnts':
 		case 'mark_open_auto_del_attchmnts':
 		case 'remove_mark_open_auto_del_attchmnts':
 		case 'mark_closed_auto_del_attchmnts':
 		case 'remove_mark_closed_auto_del_attchmnts':
-			
+
 			$done_parts = explode( '_', $_GET['done'] );
-			$flag_added_removed = 'remove' === substr( $_GET['done'], 0, 6 ) ? 'removed' : 'added';
+			$flag_added_removed = 'remove' === substr( sanitize_text_field( $_GET['done'] ), 0, 6 ) ? 'removed' : 'added';
 			$flag_ticket_types = 'removed' === $flag_added_removed ? $done_parts[2] : $done_parts[1];
-			
+
 			$message = sprintf( __( 'Auto delete attachments flag %s on %s tickets', 'awesome-support' ), $flag_added_removed, $flag_ticket_types );
 			break;
 	}
-	
+
 	$message = apply_filters('wpas_show_done_tool_message',$message, sanitize_text_field( $_GET['done'] ));
 
 }
@@ -182,7 +182,7 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<a href="<?php echo wpas_tool_link( 'reset_ticket_types' ); ?>" class="button-secondary"><?php _e( 'Reset', 'awesome-support' ); ?></a>
 				<span class="wpas-system-tools-desc"><?php _e( 'Reset ticket_types.', 'awesome-support' ); ?></span>
 			</td>
-		</tr>		
+		</tr>
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php _e( 'Zero Out All Time Fields', 'awesome-support' ); ?></label></td>
 			<td>
@@ -218,7 +218,7 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Install the Blue Blocks with Satisfaction Survey Elements email template set into the TICKETS->SETTINGS->EMAIL template fields', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php _e( 'Elegant', 'awesome-support' ); ?></label></td>
 			<td>
@@ -233,7 +233,7 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Install the Elegant email template set with Satisfaction Survey Elements into the TICKETS->SETTINGS->EMAIL template fields', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php _e( 'Simple', 'awesome-support' ); ?></label></td>
 			<td>
@@ -241,7 +241,7 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Install the Simple email template set into the TICKETS->SETTINGS->EMAIL template fields', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php _e( 'Default', 'awesome-support' ); ?></label></td>
 			<td>
@@ -249,15 +249,15 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Install the Default email template set into the TICKETS->SETTINGS->EMAIL template fields', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
-		
+
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php _e( 'Debug', 'awesome-support' ); ?></label></td>
 			<td>
 				<a href="<?php echo wpas_tool_link( 'install_debug_email_template' ); ?>" class="button-secondary"><?php _e( 'Install', 'awesome-support' ); ?></a>
 				<span class="wpas-system-tools-desc"><?php _e( 'Install a debugging email template set into the TICKETS->SETTINGS->EMAIL template fields', 'awesome-support' ); ?></span>
 			</td>
-		</tr>				
-		
+		</tr>
+
 		<?php do_action( 'wpas_system_email_template_tools_table_after' ); ?>
 	</tbody>
 </table>
@@ -291,16 +291,16 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<a href="<?php echo wpas_tool_link( 'rerun_400_to_500_conversion' ); ?>" class="button-secondary"><?php _e( 'Rerun Conversion', 'awesome-support' ); ?></a>
 				<span class="wpas-system-tools-desc"><?php _e( 'If your CAPABILITIES are not installed, re-run the 4.x.x to 5.0.0 conversion process. Make sure you have a BACKUP!', 'awesome-support' ); ?></span>
 			</td>
-		</tr>				
+		</tr>
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php _e( 'Re-run conversion from 5.8.0 to 5.9.0', 'awesome-support' ); ?></label></td>
 			<td>
 				<a href="<?php echo wpas_tool_link( 'rerun_580_to_590_conversion' ); ?>" class="button-secondary"><?php _e( 'Rerun Conversion', 'awesome-support' ); ?></a>
 				<span class="wpas-system-tools-desc"><?php _e( 'If your CAPABILITIES are not installed, re-run the 5.8.0 to 5.9.0 conversion process. Make sure you have a BACKUP!', 'awesome-support' ); ?></span>
 			</td>
-		</tr>						
-		
-		
+		</tr>
+
+
 		<?php do_action( 'wpas_system_data_conversion_tools_table_after' ); ?>
 	</tbody>
 </table>
@@ -338,8 +338,8 @@ if ( isset( $message ) && !empty( $message ) ) {
 				<span class="wpas-system-tools-desc"><?php _e( 'Add or Remove auto delete attachments flag on closed tickets.', 'awesome-support' ); ?></span>
 			</td>
 		</tr>
-						
-		
+
+
 	</tbody>
 </table>
 

@@ -364,11 +364,11 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					if ( count( $message ) > 1 ) {
 						echo '<ul>';
 						foreach ( $message as $msg ) {
-							echo "<li>$msg</li>";
+							echo '<li>' . esc_html( $msg ) . '</li>';
 						}
 						echo '</li>';
 					} else {
-						echo $message[0];
+						echo esc_html( $message[0] );
 					}
 					?>
 				</p>

@@ -71,7 +71,7 @@ class WPAS_Product_Sync {
 	 * @var boolean
 	 */
 	protected $append;
-	
+
 	/**
 	 * Constructor method.
 	 *
@@ -324,13 +324,13 @@ class WPAS_Product_Sync {
 		if ( ! is_object( $post ) ) {
 			return false;
 		}
-		
+
 		/* If $post is not set to one of the approved statuses return false as well */
 		$statuses = $this->get_valid_post_statuses();
 		if ( ! in_array( get_post_status( $post->ID ), $statuses, true  ) ) {
 			return false ;
 		}
-		
+
 
 		/* Try to get the term data from the post meta */
 		$term_data = get_post_meta( $post->ID, '_wpas_product_term', true );
@@ -401,7 +401,7 @@ class WPAS_Product_Sync {
 		/**
 		 * Insert a new term with the post ID as the name.
 		 * This will allow us to retrieve the post data.
-		 * 
+		 *
 		 * @var array|WP_Error
 		 */
 		$term = wp_insert_term( $post->ID, $this->taxonomy );
@@ -495,20 +495,20 @@ class WPAS_Product_Sync {
 		}
 
 		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
-		
+
 		// Get the list of products to include/exclude
 		$raw_include =  wpas_get_option( 'support_products_' . $slug . '_include', array() ) ;
 		$raw_exclude =  wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) ;
-		
+
 		// Initialize empty arrays just in case the if statements below turn out to be true.
-		// $raw_exclude/include in the if statements below can be empty if the user did not click SAVE on the PRODUCTS configuration tab. 
+		// $raw_exclude/include in the if statements below can be empty if the user did not click SAVE on the PRODUCTS configuration tab.
 		$include = array();
 		$exclude = array();
-		
+
 		if ( ! empty( $raw_include ) ) {
 			$include = array_filter( $raw_include ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
 		}
-		
+
 		if ( ! empty( $raw_exclude ) ) {
 			$exclude = array_filter( $raw_exclude );  // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
 		}
@@ -656,14 +656,14 @@ class WPAS_Product_Sync {
 		}
 
 		/* Lets cache real term data */
-		
+
 		$term_data = array(
-			'name'        => $term->name,     
-			'slug'        => $term->slug,      
+			'name'        => $term->name,
+			'slug'        => $term->slug,
 			'description' => $term->description,
 			'post_id'     => $term->post_id,
 		);
-		
+
 		/* Get the post data */
 		$post = get_post( $post_id );
 
@@ -677,7 +677,7 @@ class WPAS_Product_Sync {
 		//$x = wp_cache_get( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
 
 		//$x = wp_cache_add( $post->ID, $term->term_id, $this->taxonomy . '_relationships' );
-		
+
 		return $term;
 
 	}
@@ -687,7 +687,7 @@ class WPAS_Product_Sync {
 	 *
 	 * Hooked on get_the_terms this function will convert the placeholder terms
 	 * into their actual values.
-	 * 
+	 *
 	 * @param  array   $terms    Terms attached to this post
 	 * @param  integer $post_id  Post ID
 	 * @param  string  $taxonomy Taxonomy ID
@@ -902,9 +902,9 @@ class WPAS_Product_Sync {
 			'update_post_term_cache' => false,
 			'update_post_meta_cache' => false,
 		);
-		
+
 		$query = new WP_Query( $args );
-		
+
 		if ( ! empty( $query->post ) ) {
 			$term = (object) $this->create_term_object( $query->post );
 		} else {
@@ -932,7 +932,7 @@ class WPAS_Product_Sync {
 
 		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) { ?>
 			<div class="error">
-				<p><?php echo $message; ?></p>
+				<p><?php echo esc_html( $message ); ?></p>
 			</div>
 		<?php }
 
@@ -944,7 +944,7 @@ class WPAS_Product_Sync {
 	 * Display a wp_die() screen if the user is trying to edit
 	 * a term that is in sync with a post. This is because all modifications
 	 * should be done in the post directly.
-	 * 
+	 *
 	 * @since  3.0.2
 	 * @return void
 	 */
@@ -1085,15 +1085,15 @@ class WPAS_Product_Sync {
 			</td>
 		</tr>
 	<?php }
-	
+
 
 	/**
 	 * Gets a list of valid post statuses to sync.
 	 *
 	 * @since 5.8.1
 	 *
-	 * @return array 
-	 */	
+	 * @return array
+	 */
 	public function get_valid_post_statuses() {
 		return explode( ',' , wpas_get_option( 'support_products_statuses', 'publish' ) );
 	}
