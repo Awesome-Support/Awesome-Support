@@ -52,8 +52,12 @@ function wpas_metaboxes() {
 	
 	
 	/* Client profile */
-	if ( 'post-new.php' !== $pagenow ) {
-		add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
+	if ( 'post-new.php' !== $pagenow ) {		
+		// Filter hook to check Support User anonymity
+		$privacy = apply_filters('wpas_support_user_hide_profile', 0);
+		if ($privacy == 0) {
+			add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
+		}
 	}
 	
 	/* Add a dummy metabox to force gutenberg to render in old-style mode... */

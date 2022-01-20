@@ -35,6 +35,8 @@ if ( isset( $post ) && is_a( $post, 'WP_Post' ) && 'auto-draft' !== $post->post_
 
 	// Staff
 	$staff_id = wpas_get_cf_value( 'assignee', get_the_ID() );
+	// Check for Support User anonymity.
+	$privacy = apply_filters('wpas_support_user_hide_profile', 0);
 
 } else {
 
@@ -59,21 +61,25 @@ if (! empty( $staff ) ) {
 	<label for="wpas-issuer"><strong data-hint="<?php esc_html_e( 'This user who raised this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php if ( current_user_can( 'create_ticket' ) ):
+			if ($privacy == 1) {
+				echo("<br />Anonymous creator");
+			} else {
 
-			$users_atts = array( 
-				'agent_fallback' => true, 
-				'select2' => true, 
-				'name' => 'post_author_override', 
-				'id' => 'wpas-issuer', 
-				'disabled'  => ! current_user_can( 'assign_ticket_creator' ) && ! wpas_is_asadmin() ? true : false, 
-				'data_attr' => array( 'capability' => 'create_ticket' )
-			);
+				$users_atts = array( 
+					'agent_fallback' => true, 
+					'select2' => true, 
+					'name' => 'post_author_override', 
+					'id' => 'wpas-issuer', 
+					'disabled'  => ! current_user_can( 'assign_ticket_creator' ) && ! wpas_is_asadmin() ? true : false, 
+					'data_attr' => array( 'capability' => 'create_ticket' )
+				);
 
-			if ( isset( $post ) ) {
-				$users_atts['selected'] = $post->post_author;
+				if ( isset( $post ) ) {
+					$users_atts['selected'] = $post->post_author;
+				}
+
+				echo wpas_dropdown( $users_atts, $client_option );
 			}
-
-			echo wpas_dropdown( $users_atts, $client_option );
 
 		else: ?>
 			<a id="wpas-issuer" href="<?php echo $client_link; ?>"><?php echo $client_name; ?></a>
