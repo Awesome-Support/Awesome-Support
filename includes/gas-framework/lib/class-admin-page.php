@@ -137,11 +137,7 @@ class GASFrameworkAdminPage {
 		}
 
 		if ( isset( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) ) {
-			if ( is_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) ) {
-				$value = array_map( 'htmlspecialchars', $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] );
-			} else {
-				$value = htmlspecialchars( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] );
-			}
+			$value = wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] );
 		} else {
 			$value = '';
 		}
