@@ -1599,12 +1599,12 @@ function wpas_add_activate_user_button( $user ) {
 		$activate_url = wpas_do_url( $edit_user_link, 'mr_activate_user' );
 		$deny_url = wpas_do_url( $edit_user_link, 'mr_deny_user' );
 
-		printf( '<a href="%s" class="button button-primary">%s</a>', $activate_url ,__( 'Activate User', 'awesome-support' ) );
+		printf( '<a href="%s" class="button button-primary">%s</a>', esc_url( $activate_url ), esc_html__( 'Activate User', 'awesome-support' ) );
 
-		printf( '<a href="%s" class="button button-primary mr-deny-user-btn">%s</a>', $deny_url ,__( 'Deny User', 'awesome-support' ) );
+		printf( '<a href="%s" class="button button-primary mr-deny-user-btn">%s</a>', esc_url( $deny_url ), esc_html__( 'Deny User', 'awesome-support' ) );
 
 	} elseif( 'yes' === $user_denied ) {
-		printf( '<div><p>%s</p></div>', __( 'User has been denied.', 'awesome-support' ) );
+		printf( '<div><p>%s</p></div>', esc_html__( 'User has been denied.', 'awesome-support' ) );
 	}
 
 }
@@ -1715,7 +1715,7 @@ function wpas_mr_activation_notices() {
  */
 function wpas_mr_activation_success_notice() {
 
-	printf( '<div class="updated"><p>%s</p></div>', __( 'User successfully activated.', 'awesome-support' ) );
+	printf( '<div class="updated"><p>%s</p></div>', esc_html__( 'User successfully activated.', 'awesome-support' ) );
 
 }
 
@@ -1724,7 +1724,7 @@ function wpas_mr_activation_success_notice() {
  */
 function wpas_mr_activation_failed_notice() {
 
-	printf( '<div class="updated error"><p>%s</p></div>', __( 'Error while activating user, try again later.', 'awesome-support' ) );
+	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'Error while activating user, try again later.', 'awesome-support' ) );
 
 }
 
@@ -1733,7 +1733,7 @@ function wpas_mr_activation_failed_notice() {
  */
 function wpas_mr_deny_success_notice() {
 
-	printf( '<div class="updated error"><p>%s</p></div>', __( 'User successfully denied.', 'awesome-support' ) );
+	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'User successfully denied.', 'awesome-support' ) );
 
 }
 

@@ -5,16 +5,16 @@
 	 *
 	 * @since  3.0.0
 	 */
-	
-	
+
+
 	// Include ticket toolbar
 	include_once( WPAS_PATH . "includes/admin/metaboxes/toolbar-middle.php" );
-	
+
 	do_action( 'wpas_backend_ticket_content_before', $post->ID, $post );
 
 	printf(
 		'<div class="wpas-main-ticket-message" id="wpas-main-ticket-message">%s</div>',
-		apply_filters( 'the_content', wp_unslash( $post->post_content ) )
+		wp_kses_post( apply_filters( 'the_content', wp_unslash( $post->post_content ) ) )
 	);
 
 	/**
@@ -56,8 +56,8 @@
 	if( wpas_is_asadmin() || $role_passed ) {
 	?>
 		<div class="wpas-edit-ticket-actions">
-			<a href="#" class="button button-primary wpas-save-edit-main-ticket-message" id="wpas-save-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'Save', 'awesome-support' ); ?></a>
-			<a href="#" class="button button-secondary wpas-cancel-edit-main-ticket-message" id="wpas-cancel-edit-main-ticket-message" data-ticketid="<?php echo $post->ID; ?>"><?php _e( 'Cancel', 'awesome-support' ); ?></a>
+			<a href="#" class="button button-primary wpas-save-edit-main-ticket-message" id="wpas-save-edit-main-ticket-message" data-ticketid="<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Save', 'awesome-support' ); ?></a>
+			<a href="#" class="button button-secondary wpas-cancel-edit-main-ticket-message" id="wpas-cancel-edit-main-ticket-message" data-ticketid="<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Cancel', 'awesome-support' ); ?></a>
 		</div>
 	<?php
 	}

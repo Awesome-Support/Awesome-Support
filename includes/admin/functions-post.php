@@ -766,8 +766,8 @@ function wpas_close_ticket_prevent_client_notification_field( $ticket_id ) {
 	<div>
 	<p>
 		<label>
-			<input type="checkbox" value="1" data-nonce="<?php echo wp_create_nonce( 'prevent_client_notification' ); ?>" name="close_ticket_prevent_client_notification" <?php checked( '1', $close_ticket_prevent_client_notification); ?> />
-			<?php _e( 'Do NOT send closing ticket email to customer', 'awesome-support' ); ?>
+			<input type="checkbox" value="1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'prevent_client_notification' ) ); ?>" name="close_ticket_prevent_client_notification" <?php checked( '1', $close_ticket_prevent_client_notification); ?> />
+			<?php esc_html_e( 'Do NOT send closing ticket email to customer', 'awesome-support' ); ?>
 		</label>
 	</p>
 	</div>

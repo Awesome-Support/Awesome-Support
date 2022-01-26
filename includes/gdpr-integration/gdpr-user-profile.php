@@ -118,7 +118,7 @@ class WPAS_GDPR_User_Profile {
 						$data_user = (int) $user_id;
 					?>
 					<h2><?php esc_html_e( 'Awesome Support: Data Export', 'awesome-support' ); ?></h2>
-					<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo $data_user; ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
+					<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo esc_attr( $data_user ); ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
 				</div>
 			</div>
 			<?php

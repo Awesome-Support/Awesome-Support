@@ -27,12 +27,12 @@
 		<p><?php esc_attr_e( 'If so, check out our partners at ValiusWP.com where you can get unlimited 30 minute website fixes and support for one low price per month.', 'awesome-support' ); ?></p>
 		<p><?php esc_attr_e( 'Fast, friendly support for all things WordPress at one low monthly price!', 'awesome-support' ); ?></p>
 		<p><?php echo sprintf( __( '<a href="%s">Get started with unlimited fixes with a 10 day trial at ValiusWP.com</a>', 'awesome-support' ), 'https://valiuswp.com/', 'target="_blank"' ) ; ?></p>
-		<p><a href="https://valiuswp.com/"> <img src="<?php echo WPAS_URL; ?>assets/admin/images/ValiusWP-Ad-01.png" alt="ValiusWp Image"></a></p>
+		<p><a href="https://valiuswp.com/"> <img src="<?php echo esc_url( WPAS_URL ); ?>assets/admin/images/ValiusWP-Ad-01.png" alt="ValiusWp Image"></a></p>
 
 		<h2><?php esc_html_e( 'Documentation', 'awesome-support' ); ?></h2>
 		<?php $about_url = wpas_get_about_page_url(); ?>
 		<p><?php echo sprintf( __( 'Documentation links are located in our <a href="%s">About Page</a>', 'awesome-support' ), "$about_url", 'target="_blank"' ) ; ?></p>
-		
+
 	</div>
 
 </div>

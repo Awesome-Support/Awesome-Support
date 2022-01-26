@@ -24,7 +24,7 @@ if( wpas_get_option( 'export_existing_data_subject', false ) ) {
 		<div class="loader"></div><!-- .loader -->
 	</div>
 	<div class="wpas-gdpr-notice export-existing-data"></div>
-	<input type="hidden" name="wpas-user" value="<?php echo get_current_user_id(); ?>">
+	<input type="hidden" name="wpas-user" value="<?php echo esc_attr( get_current_user_id() ); ?>">
 	<table class="form-table wpas-gdpr-form-table">
 		<thead>
 			<tr class="headlines">
