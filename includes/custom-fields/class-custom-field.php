@@ -850,7 +850,6 @@
 		 */
 		public function get_sanitized_value( $value ) {
 
-			$value = htmlentities($value, ENT_QUOTES, 'UTF-8');
 			$sanitize_function = 'sanitize_text_field' ;
 
 			if ( isset( $this->field[ 'args' ][ 'sanitize' ] ) ) {
