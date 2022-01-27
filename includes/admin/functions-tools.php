@@ -7,11 +7,11 @@ function wpas_system_tools() {
 		return false;
 	}
 
-	if ( ! wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
+	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_nonce'] ) ), 'system_tool' ) ) {
 		return false;
 	}
 
-	switch ( sanitize_text_field( $_GET['tool'] ) ) {
+	switch ( sanitize_text_field( wp_unslash( $_GET['tool'] ) ) ) {
 
 		/* Clear all tickets metas */
 		case 'tickets_metas';
@@ -114,7 +114,7 @@ function wpas_system_tools() {
 		case 'mark_closed_auto_del_attchmnts':
 		case 'remove_mark_closed_auto_del_attchmnts':
 
-			$act = sanitize_text_field( $_GET['tool'] );
+			$act = sanitize_text_field( wp_unslash( $_GET['tool'] ) );
 			$act_parts = explode( '_', $act );
 			$flag_added = 'remove' === substr( $act, 0, 6 ) ? false : true;
 			$flag_ticket_type = $flag_added ? $act_parts[1] : $act_parts[2];
@@ -124,14 +124,14 @@ function wpas_system_tools() {
 			break;
 	}
 
-	do_action( 'execute_additional_tools', sanitize_text_field( $_GET['tool'] ) );
+	do_action( 'execute_additional_tools', sanitize_text_field( wp_unslash( $_GET['tool'] ) ) );
 
 	/* Redirect in "read-only" mode */
 	$url = add_query_arg( array(
 			'post_type' => 'ticket',
 			'page'      => 'wpas-status',
 			'tab'       => 'tools',
-			'done'      => sanitize_text_field( $_GET['tool'] )
+			'done'      => sanitize_text_field( wp_unslash( $_GET['tool'] ) )
 	), admin_url( 'edit.php' )
 	);
 

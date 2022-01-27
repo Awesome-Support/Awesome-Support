@@ -442,12 +442,12 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
 
                         <h3 class="log-viewer-filename <?php echo esc_attr( $classfromfilename ); ?>"
                             style="font-size: 14px;"><a href="#"
-                                                        data-filename="<?php echo sanitize_title( $file ); ?>"
+                                                        data-filename="<?php echo esc_attr( $file ); ?>"
                                                         data-action="wpas_tools_log_viewer_view"
                                                         data-nonce="<?php echo esc_attr( wp_create_nonce( 'wpas_tools_log_viewer_view' ) ); ?>"
                                                         class="wpas-tools-log-view <?php echo esc_attr( $classfromfilename ); ?>"><i
                                         class="fa fa-chevron-right fa-fw"
-                                        style="color: dimgray; font-size: 12px;"></i><?php echo sanitize_title( $file ); ?></a>
+                                        style="color: dimgray; font-size: 12px;"></i><?php echo esc_attr( $file ); ?></a>
                         </h3>
 
                         <div class="log-viewer-controls <?php echo esc_attr( $classfromfilename ); ?>" style="100%">

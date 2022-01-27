@@ -102,8 +102,8 @@ if ( isset( $_GET['done'] ) ) {
 		case 'mark_closed_auto_del_attchmnts':
 		case 'remove_mark_closed_auto_del_attchmnts':
 
-			$done_parts = explode( '_', $_GET['done'] );
-			$flag_added_removed = 'remove' === substr( $_GET['done'], 0, 6 ) ? 'removed' : 'added';
+			$done_parts = explode( '_', sanitize_text_field( $_GET['done'] ) );
+			$flag_added_removed = 'remove' === substr( sanitize_text_field( $_GET['done'] ), 0, 6 ) ? 'removed' : 'added';
 			$flag_ticket_types = 'removed' === $flag_added_removed ? $done_parts[2] : $done_parts[1];
 
 			$message = sprintf( __( 'Auto delete attachments flag %s on %s tickets', 'awesome-support' ), $flag_added_removed, $flag_ticket_types );
@@ -115,7 +115,7 @@ if ( isset( $_GET['done'] ) ) {
 }
 
 if ( isset( $message ) && !empty( $message ) ) {
-	echo "<div class='updated below-h2'><p>$message</p></div>";
+	echo '<div class="updated below-h2"><p>' . esc_html( $message ) . '</p></div>';
 }
 ?>
 <p><?php esc_html_e( 'These tool are intended for advanced users or for use on the support staff request. Be aware that some of these tools can definitively erase data.', 'awesome-support' ); ?></p>
@@ -262,7 +262,7 @@ if ( isset( $message ) && !empty( $message ) ) {
 	</tbody>
 </table>
 
-<p><h3><?php _e( 'Tools to re-run conversion of data after upgrading from an earlier version', 'awesome-support' ); ?></h3></p>
+<p><h3><?php esc_html_e( 'Tools to re-run conversion of data after upgrading from an earlier version', 'awesome-support' ); ?></h3></p>
 <table class="widefat wpas-system-tools-table" id="wpas-system-tools">
 	<thead>
 		<tr>
@@ -305,7 +305,7 @@ if ( isset( $message ) && !empty( $message ) ) {
 	</tbody>
 </table>
 
-<p><h3><?php _e( 'Tools to handle ticket and reply attachments', 'awesome-support' ); ?></h3></p>
+<p><h3><?php esc_html_e( 'Tools to handle ticket and reply attachments', 'awesome-support' ); ?></h3></p>
 <table class="widefat wpas-system-tools-table" id="wpas-system-tools-attachments">
 	<thead>
 		<tr>

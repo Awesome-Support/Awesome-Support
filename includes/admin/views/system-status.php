@@ -1,4 +1,4 @@
-<p><?php esc_html_e( 'The system status is a built-in debugging tool. If you contacted support and you\'re asked to provide the system status, <strong>click the button below</strong> to copy your system report:', 'awesome-support' ); ?></p>
+<p><?php echo wp_kses_post( __( 'The system status is a built-in debugging tool. If you contacted support and you\'re asked to provide the system status, <strong>click the button below</strong> to copy your system report:', 'awesome-support' ) ); ?></p>
 
 <div class="wpas-system-status">
 	<textarea id="wpas-system-status-output" rows="10" style="display: none;"></textarea>
@@ -173,7 +173,7 @@
 					$filetypes = explode( ',', $filetypes );
 					foreach ( $filetypes as $key => $type ) { $filetypes[$key] = "<code>.$type</code>"; }
 					$filetypes = implode( ', ', $filetypes );
-					echo $filetypes;
+					echo wp_kses_post( $filetypes );
 				}
 				?>
 			</td>

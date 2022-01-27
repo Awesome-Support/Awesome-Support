@@ -58,7 +58,7 @@ if ( isset( $post ) ) {
 		<div class="wpas-col">
 			<?php if ( isset( $post ) ): ?>
 				<strong><?php echo esc_html( $date ); ?></strong>
-				<em><?php printf( esc_html__( '%s ago', 'awesome-support' ), $dateago ); ?></em>
+				<em><?php printf( esc_html__( '%s ago', 'awesome-support' ), esc_html( $dateago ) ); ?></em>
 			<?php endif; ?>
 		</div>
 

@@ -103,7 +103,7 @@ if ( false === $items ) {
 					<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
 						<div class="inside">
 							<h3><?php echo esc_attr( $item->info->title ); ?> <small class="wpas-addon-item-pricing">from <?php if ( false !== $price ): ?><strong>$<?php echo esc_html( $price ); ?></strong><?php endif; ?></small></h3>
-							<p><?php if ( !empty( $item->info->excerpt ) ): echo wpautop( $item->info->excerpt ); endif; ?></p>
+							<p><?php if ( !empty( $item->info->excerpt ) ): echo wp_kses_post( wpautop( $item->info->excerpt ) ); endif; ?></p>
 							<div class="wpas-btn-group">
 								<span class="button-secondary"><?php if ( false !== $price ): ?>$<?php echo esc_html( $price ); ?><?php endif; ?></span><a class="button-primary" href="<?php echo esc_url( $item->info->link ); ?>&amp;utm_source=plugin&amp;utm_medium=addon_page&amp;utm_campaign=promote_addons" target="_blank">Details and Buy</a>
 							</div>

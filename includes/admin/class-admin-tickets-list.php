@@ -465,10 +465,10 @@ class WPAS_Tickets_List {
 					case 'id':
 
 						$link = add_query_arg( array(
-							                       'post'   => $post_id,
-							                       'action' => 'edit',
-						                       ), admin_url( 'post.php' ) );
-						echo "<strong><a href='$link' target='" . $this->edit_link_target() . "'>{$post_id}</a></strong>";
+									'post'   => $post_id,
+									'action' => 'edit',
+								), admin_url( 'post.php' ) );
+						echo '<strong><a href="' . esc_url( $link ) . ' target="' . esc_attr( $this->edit_link_target() ) . '">{' . esc_html( $post_id ) . '}</a></strong>';
 
 						break;
 
@@ -484,11 +484,11 @@ class WPAS_Tickets_List {
 
 						if ( ! empty( $client ) ) {
 							$link = add_query_arg( array(
-								                       'post_type' => 'ticket',
-								                       'author'    => $client->ID,
-							                       ), admin_url( 'edit.php' ) );
+										'post_type' => 'ticket',
+										'author'    => $client->ID,
+									), admin_url( 'edit.php' ) );
 
-							echo "<a href='$link'>$client->display_name</a><br />$client->user_email";
+							echo '<a href="' . esc_url( $link ) . '">' . esc_html( $client->display_name ) . '</a><br />' . esc_html( $client->user_email );
 						} else {
 							// This shouldn't ever execute?
 							echo '';
@@ -1474,7 +1474,7 @@ SQL;
 			);
 		}
 
-		$wpas_activity = isset( $_GET[ 'activity' ] ) && ! empty( $_GET[ 'activity' ] ) ? $_GET[ 'activity' ] : 'any';
+		$wpas_activity = isset( $_GET[ 'activity' ] ) && ! empty( $_GET[ 'activity' ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'activity' ] ) ) : 'any';
 
 			if( 'awaiting_support_reply' === $wpas_activity ) {
 				$meta_query[] = array(
@@ -1499,7 +1499,7 @@ SQL;
 				);
 			}
 
-		$wpas_status = isset( $_GET[ 'status' ] ) && ! empty( $_GET[ 'status' ] ) ? $_GET[ 'status' ] : 'open';
+		$wpas_status = isset( $_GET[ 'status' ] ) && ! empty( $_GET[ 'status' ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'status' ] ) ) : 'open';
 
 		if ( 'any' === $wpas_status ) {
 
@@ -1567,7 +1567,7 @@ SQL;
 			foreach ( $fields as $key => $var ) {
 
 				if ( isset( $_GET[ $var[ 'name' ] ] ) ) {
-					$wp->query_vars[ $key ] = $_GET[ $var[ 'name' ] ];
+					$wp->query_vars[ $key ] = sanitize_text_field( wp_unslash( $_GET[ $var[ 'name' ] ] ) );
 				} elseif ( isset( $wp->query_vars[ $var[ 'name' ] ] ) && $wp->query_vars[ $var[ 'name' ] ] ) {
 					$wp->query_vars[ $key ] = $wp->query_vars[ $var[ 'name' ] ];
 				}
@@ -1628,7 +1628,7 @@ SQL;
 
 		$fields = $this->get_custom_fields();
 
-		$orderby = isset( $_GET[ 'orderby' ] ) ? $_GET[ 'orderby' ] : '';
+		$orderby = isset( $_GET[ 'orderby' ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'orderby' ] ) ) : '';
 
 		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
 

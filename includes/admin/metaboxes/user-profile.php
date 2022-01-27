@@ -153,7 +153,7 @@ $by_status['closed'] = $closed;
 					}
 				}
 
-				printf( '<ul>%s</ul>', esc_html( $lis ) );
+				printf( '<ul>%s</ul>', wp_kses_post( $lis ) );
 
 			}
 

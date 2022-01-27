@@ -232,7 +232,7 @@ class AS_Admin_Setup_Wizard {
 	 */
 	public function as_product_setup_setup_save(){
 		check_admin_referer( 'as-setup' );
-		$product_type = (isset( $_POST['product_type'] ) )? sanitize_text_field( $_POST['product_type'] ): '';
+		$product_type = (isset( $_POST['product_type'] ) )? sanitize_text_field( wp_unslash( $_POST['product_type'] ) ): '';
 
 		// If the user needs multiple products we need to update the plugin options
 		$options = maybe_unserialize( get_option( 'wpas_options' ) );
@@ -266,7 +266,7 @@ class AS_Admin_Setup_Wizard {
 				echo '<input type="submit" name="save_step" value="Continue">';
 				wp_nonce_field( 'as-setup' );
 			} else{
-				echo __( 'It looks like you have a brand new install of WordPress without any menus.  So please setup at least one menu first. Click <a href="'. admin_url( 'nav-menus.php').'" class="contrast-link">here</a> to setup your first menu.', 'awesome-support' );
+				echo wp_kses_post( __( 'It looks like you have a brand new install of WordPress without any menus.  So please setup at least one menu first. Click <a href="'. admin_url( 'nav-menus.php').'" class="contrast-link">here</a> to setup your first menu.', 'awesome-support' ) );
 			}
 			?>
 		</form>
@@ -364,7 +364,7 @@ class AS_Admin_Setup_Wizard {
 	 */
 	public function as_setup_priorities_save(){
 		check_admin_referer( 'as-setup' );
-		$property_field = (isset( $_POST['property_field'] ) )? sanitize_text_field( $_POST['property_field'] ): '';
+		$property_field = (isset( $_POST['property_field'] ) )? sanitize_text_field( wp_unslash( $_POST['property_field'] ) ): '';
 		$options = unserialize( get_option( 'wpas_options', array() ) );
 		if( !empty( $property_field ) && 'yes' === $property_field ){
 			$options['support_priority'] = '1';
@@ -476,7 +476,7 @@ class AS_Admin_Setup_Wizard {
 	 */
 	public function as_setup_departments_save(){
 		check_admin_referer( 'as-setup' );
-		$departments_field = (isset( $_POST['departments_field'] ) )? sanitize_text_field( $_POST['departments_field'] ): '';
+		$departments_field = (isset( $_POST['departments_field'] ) )? sanitize_text_field( wp_unslash( $_POST['departments_field'] ) ): '';
 		$options = unserialize( get_option( 'wpas_options', array() ) );
 		if( !empty( $departments_field ) && 'yes' === $departments_field ){
 			$options['departments'] = '1';
@@ -498,7 +498,7 @@ class AS_Admin_Setup_Wizard {
 			<p><?php esc_html_e( "If your menus are active in your theme your users will now able to register for an account and submit tickets.", "awesome-support" ); ?></p>
 			<p><b><?php esc_html_e( "Do you have existing users in your WordPress System?", "awesome-support" ); ?></b></p>
 			<p><?php
-			echo sprintf( __( 'If so, you will want to read <b><u><a %s>this article</a></b></u> on our website.', 'awesome-support' ), 'href="https://getawesomesupport.com/documentation/awesome-support/admin-handling-existing-users-after-installation/" target="_blank" ' );
+			echo sprintf( wp_kses_post( __( 'If so, you will want to read <b><u><a %s>this article</a></b></u> on our website.', 'awesome-support' ) ), 'href="https://getawesomesupport.com/documentation/awesome-support/admin-handling-existing-users-after-installation/" target="_blank" ' );
 			?></p>
 			<p><b><?php esc_html_e( "Where are my support tickets?", "awesome-support" ); ?></b></p>
 			<p><?php esc_html_e( "You can now access your support tickets and other support options under the new TICKETS menu option.", "awesome-support" ); ?></p>
