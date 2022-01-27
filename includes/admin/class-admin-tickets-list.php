@@ -468,7 +468,7 @@ class WPAS_Tickets_List {
 									'post'   => $post_id,
 									'action' => 'edit',
 								), admin_url( 'post.php' ) );
-						echo '<strong><a href="' . esc_url( $link ) . ' target="' . esc_attr( $this->edit_link_target() ) . '">{' . esc_html( $post_id ) . '}</a></strong>';
+						echo '<strong><a href="' . esc_url( $link ) . ' target="' . esc_attr( $this->edit_link_target() ) . '">' . esc_html( $post_id ) . '</a></strong>';
 
 						break;
 
