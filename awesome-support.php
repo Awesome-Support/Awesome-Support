@@ -227,7 +227,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		public function __clone() {
 			// Cloning instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 		}
 
 		/**
@@ -238,7 +238,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		public function __wakeup() {
 			// Unserializing instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 		}
 
 		/**
@@ -364,11 +364,11 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					if ( count( $message ) > 1 ) {
 						echo '<ul>';
 						foreach ( $message as $msg ) {
-							echo "<li>$msg</li>";
+							echo '<li>' . esc_html( $msg ) . '</li>';
 						}
-						echo '</li>';
+						echo '</ul>';
 					} else {
-						echo $message[0];
+						echo esc_html( $message[0] );
 					}
 					?>
 				</p>

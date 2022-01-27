@@ -63,7 +63,7 @@ function wpas_admin_notices() {
 			case 'opened':
 				?>
 				<div class="updated">
-					<p><?php printf( __( 'The ticket #%s has been (re)opened.', 'awesome-support' ), intval( $_GET['post'] ) ); ?></p>
+					<p><?php printf( esc_html__( 'The ticket #%s has been (re)opened.', 'awesome-support' ), intval( $_GET['post'] ) ); ?></p>
 				</div>
 				<?php
 				break;
@@ -71,7 +71,7 @@ function wpas_admin_notices() {
 			case 'closed':
 				?>
 				<div class="updated">
-					<p><?php printf( __( 'The ticket #%s has been closed.', 'awesome-support' ), intval( $_GET['post'] ) ); ?></p>
+					<p><?php printf( esc_html__( 'The ticket #%s has been closed.', 'awesome-support' ), intval( $_GET['post'] ) ); ?></p>
 				</div>
 				<?php
 				break;
@@ -98,10 +98,10 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 	if ( 0 !== $ticket_id ) {
 
 		// Create a delete link and then add the delete reply icon.
-		if ( ( ( true === boolval( wpas_get_option( 'agent_delete_own_reply', false ) ) && get_current_user_id() == $reply->post_author ) ) 
-				|| true === wpas_is_asadmin() 
+		if ( ( ( true === boolval( wpas_get_option( 'agent_delete_own_reply', false ) ) && get_current_user_id() == $reply->post_author ) )
+				|| true === wpas_is_asadmin()
 				|| true === wpas_current_role_in_list( wpas_get_option( 'roles_delete_all_replies', '' ) )  ) {
-			
+
 			// Create delete link
 			$_GET['del_id'] = $reply->ID;
 			$url            = add_query_arg( $_GET, admin_url( 'post.php' ) );
@@ -123,18 +123,18 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 					'classes' => 'wpas-delete'
 				);
 		}
-		
+
 		/* Add edit reply icon */
-		if ( ( ( true === boolval( wpas_get_option( 'agent_edit_own_reply', false ) ) && get_current_user_id() == $reply->post_author ) ) 
-				|| true === wpas_is_asadmin() 
+		if ( ( ( true === boolval( wpas_get_option( 'agent_edit_own_reply', false ) ) && get_current_user_id() == $reply->post_author ) )
+				|| true === wpas_is_asadmin()
 				|| true === wpas_current_role_in_list( wpas_get_option( 'roles_edit_all_replies', '' ) )  ) {
-					
+
 			$controls['edit_reply'] = array(
 					'tool_tip_text' => esc_html_x( 'Edit', 'Link to edit a ticket reply', 'awesome-support' ),
 					'icon' => 'icon-edit-ticket-replies',
 					'id_param' => 'css',
 					'classes' => 'wpas-edit',
-					'data' => array( 
+					'data' => array(
 						'origin'=> "#wpas-reply-{$reply->ID}",
 						'replyid' => $reply->ID,
 						'reply' => "wpas-editwrap-{$reply->ID}",
@@ -151,7 +151,7 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 				'icon' => 'icon-due-date',
 				'id_param' => 'css',
 				'classes' => 'wpas-show-reply-history',
-				'data' => array( 
+				'data' => array(
 					'replyid' => $reply->ID
 				)
 			);
@@ -160,18 +160,18 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
 	}
 
 	if ( get_current_user_id() !== $reply->post_author && 'unread' === $reply->post_status ) {
-		
+
 		/* Add mark as read icon */
 		$controls['mark_read'] = array(
 			'tool_tip_text' => esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ),
 			'icon' => 'prewriten-responses',
 			'id_param' => 'css',
 			'classes' => 'wpas-mark-read',
-			'data' => array( 
+			'data' => array(
 				'replyid' => $reply->ID
 			)
 		);
-		
+
 	}
 
 	return $controls;
@@ -279,18 +279,18 @@ function wpas_is_reply_needed( $post_id, $replies = null ) {
 
 		// If the last reply was from an agent then return false - the ticket is waiting for the customer to reply.
 		if ( user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) ) {
-			
+
 			return false ;
-		
+
 		} else {
-		
-			// Or the ticket has just been transferred, in which case we want to show the awaiting reply tag			
+
+			// Or the ticket has just been transferred, in which case we want to show the awaiting reply tag
 			return true;
-		
+
 		}
 
 		// If the last reply is not from an agent return true since ticket is waiting for a reply from an agent...
-		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) ) { 
+		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) ) {
 			return true;
 		}
 
@@ -324,15 +324,15 @@ function wpas_is_ticket_template( $post_id ) {
  * @return date|string  Close date of ticket, an empty string otherwise
  */
 function wpas_get_close_date( $post_id ) {
-	
+
 	$close_date = get_post_meta( $post_id, '_ticket_closed_on', true) ;
-	
+
 	if ( ! empty( $close_date ) ) {
 		return $close_date ;
 	} else {
 		return '' ;
 	}
-	
+
 }
 
 /**
@@ -345,15 +345,15 @@ function wpas_get_close_date( $post_id ) {
  * @return date|string  Close date of ticket, an empty string otherwise
  */
 function wpas_get_close_date_gmt( $post_id ) {
-	
+
 	$close_date = get_post_meta( $post_id, '_ticket_closed_on_gmt', true) ;
-	
+
 	if ( ! empty( $close_date ) ) {
 		return $close_date ;
 	} else {
 		return '' ;
 	}
-	
+
 }
 
 /**
@@ -366,22 +366,22 @@ function wpas_get_close_date_gmt( $post_id ) {
  * @return date|string  open date of ticket, an empty string otherwise
  */
 function wpas_get_open_date( $post_id ) {
-	
+
 	// Return if not a ticket...
 	if ( 'ticket' <> get_post_type( $post_id ) ) {
 		return '' ;
 	}
-		
+
 	$the_ticket = get_post( $post_id ) ;
 
 	$open_date = $the_ticket->post_date ;
-	
+
 	if ( ! empty( $open_date ) ) {
 		return $open_date ;
 	} else {
 		return '' ;
 	}
-	
+
 }
 
 /**
@@ -394,28 +394,28 @@ function wpas_get_open_date( $post_id ) {
  * @return date|string  open date of ticket, an empty string otherwise
  */
 function wpas_get_open_date_gmt( $post_id ) {
-	
+
 	// Return if not a ticket...
 	if ( 'ticket' <> get_post_type( $post_id ) ) {
 		return '' ;
 	}
-		
+
 	$the_ticket = get_post( $post_id ) ;
 
 	$open_date = $the_ticket->post_date_gmt ;
-	
+
 	if ( ! empty( $open_date ) ) {
 		return $open_date ;
 	} else {
 		return '' ;
 	}
-	
+
 }
 
 /**
  * Returns difference between two dates in string format to help with debugging.
  * Formatted string will look like this sample : 0 day(s) 14 hour(s) 33 minute(s)
- * 
+ *
  * @since  4.0.5
  *
  * @param  date $firstdate 	First date in the format you get when using post->post_date to get a date from a post
@@ -424,19 +424,19 @@ function wpas_get_open_date_gmt( $post_id ) {
  * @return string  difference between two dates, an empty string otherwise
  */
 function wpas_get_date_diff_string( $firstdate, $seconddate ) {
-	
+
 		// Calculate difference object...
 		$date1 = new DateTime( $firstdate );
 		$date2 = new DateTime( $seconddate );
-		$diff_dates = $date2->diff($date1) ;	
-		
+		$diff_dates = $date2->diff($date1) ;
+
 		$date_string = '' ;
 		$date_string .= ' ' . $diff_dates->format('%d') .  __(' day(s)', 'awesome-support') ;
-		$date_string .=  ' ' . $diff_dates->format('%h') .  __(' hour(s)', 'awesome-support') ;								
+		$date_string .=  ' ' . $diff_dates->format('%h') .  __(' hour(s)', 'awesome-support') ;
 		$date_string .=  ' ' . $diff_dates->format('%i') .  __(' minute(s)', 'awesome-support') ;
-		
+
 		return $date_string ;
-	
+
 }
 
 add_filter( 'admin_footer_text', 'wpas_admin_footer_text', 999, 1 );
@@ -454,11 +454,11 @@ function wpas_admin_footer_text( $text ) {
 	if ( ! is_admin() || ! wpas_is_plugin_page() ) {
 		return $text;
 	}
-	
+
 	// Do not show message if installed in an SAAS environment
 	if ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) {
 		return ;
-	}	
+	}
 
 	if ( ! boolval( wpas_get_option( 'remove_admin_ratings_request', false) ) ) {
 		return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733 ' );
@@ -487,11 +487,11 @@ add_action( 'plugins_loaded', 'wpas_free_addon_notice' );
  * @return void
  */
 function wpas_free_addon_notice() {
-	
+
 	// Do not show message if installed in an SAAS environment
 	if ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) {
 		return ;
-	}			
+	}
 
 	// Only show this message to admins
 	if ( ! current_user_can( 'administrator' ) ) {
@@ -534,7 +534,7 @@ function wpas_request_first_5star_rating() {
 	// Do not show message if installed in an SAAS environment
 	if ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) {
 		return ;
-	}				
+	}
 
 	// Only show this message to admins
 	if ( ! current_user_can( 'administrator' ) ) {
@@ -545,7 +545,7 @@ function wpas_request_first_5star_rating() {
 	if ( ! wpas_is_plugin_page() ) {
 		return;
 	}
-	
+
 	// If notice has been dismissed, return since everything else after this is expensive operations!
 	If ( wpas_is_notice_dismissed('wpas_request_first_5star_rating') ) {
 		return ;
@@ -553,11 +553,11 @@ function wpas_request_first_5star_rating() {
 
 	// How many tickets have been closed?
 	$closed_tickets = wpas_get_tickets( 'closed', array( 'posts_per_page' => 25 ) );
-	
+
 	// Show notice if number of closed tickets greater than 25.
 	If ( count ($closed_tickets) >= 25 ) {
-	
-		WPAS()->admin_notices->add_notice( 'updated', 'wpas_request_first_5star_rating', wp_kses( sprintf( __( 'Wow! It looks like you have closed a lot of tickets which is pretty awesome! We guess you must really like Awesome Support, huh? Could you please do us a favor and leave a 5 star rating on WordPress? It will only take a minute and helps to motivate our developers and volunteers. <a href="%1$s">Yes, you deserve it!</a>.', 'awesome-support' ), 'https://wordpress.org/support/plugin/awesome-support/reviews/' ) , 
+
+		WPAS()->admin_notices->add_notice( 'updated', 'wpas_request_first_5star_rating', wp_kses( sprintf( __( 'Wow! It looks like you have closed a lot of tickets which is pretty awesome! We guess you must really like Awesome Support, huh? Could you please do us a favor and leave a 5 star rating on WordPress? It will only take a minute and helps to motivate our developers and volunteers. <a href="%1$s">Yes, you deserve it!</a>.', 'awesome-support' ), 'https://wordpress.org/support/plugin/awesome-support/reviews/' ) ,
 		array( 'strong' => array(), 'a' => array( 'href' => array() ) ) ) );
 
 	}
@@ -565,54 +565,54 @@ function wpas_request_first_5star_rating() {
 
 /**
  * Generate admin tabs html
- * 
+ *
  * @param string $type
  * @param array $tabs
- * 
+ *
  * @return string
  */
 function wpas_admin_tabs( $type, $tabs = array() ) {
-	
+
 	// Unique tabs widget id
 	$id = "wpas_admin_tabs_{$type}";
-	
-	
+
+
 	$tabs = apply_filters( $id, $tabs );
-	
+
 	// Stop processing if no tab exist
 	if( empty( $tabs ) ) {
 		return;
 	}
-	
-	
+
+
 	$tab_order = 1;
 	$tab_content_items_ar = array();
 	$tab_content_ar = array();
-	
+
 	foreach( $tabs as $tab_id => $tab_name ) {
 		$_id = "{$id}_{$tab_id}";
-		
+
 		$tab_content = apply_filters( "{$_id}_content", "" );
-		
+
 		if( $tab_content ) {
 			$tab_content_items_ar[] = sprintf( '<li data-tab-order="%s" rel="%s" class="wpas_tab_name">%s</li>' , $tab_order, $_id, $tab_name );
 			$tab_content_ar[] = '<div class="wpas_admin_tab_content" id="' . $_id . '">' . $tab_content . '</div>';
 			$tab_order++;
 		}
 	}
-	
-	
+
+
 	// Stop processing if no tab's data exist
 	if( empty( $tab_content_items_ar ) ) {
 		return;
 	}
-	
+
 	ob_start();
-	
+
 	?>
 
 
-	<div class="wpas_admin_tabs" id="<?php echo $id; ?>">
+	<div class="wpas_admin_tabs" id="<?php echo esc_attr( $id ); ?>">
 		<div class="wpas_admin_tabs_names_wrapper">
 			<ul>
 				<?php echo implode( '', $tab_content_items_ar ); ?>
@@ -620,14 +620,14 @@ function wpas_admin_tabs( $type, $tabs = array() ) {
 					<ul class="dropdown-menu tabs_collapsed"></ul>
 				</li>
 				<li class="clear clearfix"></li>
-	
+
 			</ul>
 		</div>
 		<?php echo implode( '', $tab_content_ar ); ?>
 	</div>
 	<?php
-	
-	
+
+
 	$output = ob_get_contents();
 	ob_end_clean();
 	return apply_filters( 'wpas_admin_tabs', $output, $tab_content_items_ar, $tab_content_ar, $id, $tabs );
@@ -640,7 +640,7 @@ add_action( 'wpas_admin_after_wysiwyg', 'reply_tabs', 8, 0 );
  * Add tabs under reply wysiwyg editor
  */
 function reply_tabs() {
-	
+
 	$tabs_content = wpas_admin_tabs( 'after_reply_wysiwyg' );
 	echo $tabs_content;
 }

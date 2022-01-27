@@ -23,7 +23,7 @@
         <div class="wpas-time-tracking-statistics-mb-time-display-header">
 			<?php
 			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', false ) ) ){
-				echo __( 'Note: Read-only Configuration - You Are Not Permitted To Edit Time Data' ); 
+				echo esc_html__( 'Note: Read-only Configuration - You Are Not Permitted To Edit Time Data' );
 			 }
 			 ?>
         </div>

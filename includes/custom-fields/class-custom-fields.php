@@ -148,7 +148,7 @@ class WPAS_Custom_Fields {
 		/* Convert the callback for backwards compatibility */
 		if ( ! empty( $arguments['callback'] ) ) {
 
-			_deprecated_argument( 'WPAS_Custom_Fields::add_field()', '3.2', sprintf( __( 'Please use %s to register your custom field type', 'awesome-support' ), '<code>field_type</code>' ) );
+			_deprecated_argument( 'WPAS_Custom_Fields::add_field()', '3.2', sprintf( wp_kses_post( __( 'Please use %s to register your custom field type', 'awesome-support' ) ), '<code>field_type</code>' ) );
 
 			switch ( $arguments['callback'] ) {
 

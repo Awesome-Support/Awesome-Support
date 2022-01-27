@@ -13,5 +13,5 @@ if ( ! defined( 'WPINC' ) ) {
 }
 ?>
 <td colspan="3">
-	<?php printf( __( 'This reply has been deleted by %s <em class="wpas-time">%s ago.</em>', 'awesome-support' ), "<strong>$user_name</strong>", human_time_diff( strtotime( $row->post_modified ), current_time( 'timestamp' ) ) ); ?>
+	<?php printf( wp_kses_post( __( 'This reply has been deleted by %s <em class="wpas-time">%s ago.</em>', 'awesome-support' ) ), '<strong>' . esc_html( $user_name ) . '</strong>', esc_html( human_time_diff( strtotime( $row->post_modified ), current_time( 'timestamp' ) ) ) ); ?>
 </td>

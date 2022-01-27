@@ -2,7 +2,7 @@
 /**
  * Show the Awesome Support Version Number
  *
- * This metabox is used to display the awesome support 
+ * This metabox is used to display the awesome support
  * version number.  It will be used later to show
  * additional debugging information in real time.
  *
@@ -14,5 +14,5 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-echo( __('Awesome Support Version: ', 'awesome_support') . WPAS_VERSION ) ;
+echo( esc_html__('Awesome Support Version: ', 'awesome_support') . esc_attr( WPAS_VERSION ) ) ;
 

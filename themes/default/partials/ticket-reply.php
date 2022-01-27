@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 $user_role = $user->roles[0];
 ?>
 
-<tr id="reply-<?php echo the_ID(); ?>" class="wpas-reply-single wpas-status-<?php echo get_post_status(); ?> wpas_user_<?php echo $user_role; ?>" valign="top">
+<tr id="reply-<?php echo esc_attr( the_ID() ); ?>" class="wpas-reply-single wpas-status-<?php echo esc_attr( get_post_status() ); ?> wpas_user_<?php echo esc_attr( $user_role ); ?>" valign="top">
 
 	<?php
 	/**
@@ -31,7 +31,7 @@ $user_role = $user->roles[0];
 	 */
 	if ( 'trash' === get_post_status() ): ?>
 
-		<td colspan="2"><?php printf( esc_html__( 'This reply has been deleted %s ago.', 'awesome-support' ), $time_ago ); ?></td>
+		<td colspan="2"><?php printf( esc_html__( 'This reply has been deleted %s ago.', 'awesome-support' ), esc_html( $time_ago ) ); ?></td>
 
 	<?php else: ?>
 
@@ -49,7 +49,7 @@ $user_role = $user->roles[0];
 				<div class="wpas-reply-time">
 					<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>">
 						<span class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
-						<span class="wpas-date-ago"><?php printf( esc_html_x( '%s ago', 'Time ago (eg. 5 minutes ago)', 'awesome-support' ), $time_ago ); ?></span>
+						<span class="wpas-date-ago"><?php printf( esc_html_x( '%s ago', 'Time ago (eg. 5 minutes ago)', 'awesome-support' ), esc_html( $time_ago ) ); ?></span>
 					</time>
 				</div>
 			</div>

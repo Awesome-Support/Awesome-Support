@@ -102,6 +102,6 @@ add_action( 'wpas_before_template', 'wpas_display_errors', 10, 3 );
  * @return string Readable errors
  */
 function wpas_display_errors() {
-	echo wpas_get_display_errors();
+	echo wp_kses_post( wpas_get_display_errors() );
 	wpas_clean_errors();
 }

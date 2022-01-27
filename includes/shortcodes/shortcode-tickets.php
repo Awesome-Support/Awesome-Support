@@ -30,7 +30,7 @@ function wpas_sc_client_account() {
 
 		if ( false !== $registration && !empty( $registration ) && !is_null( get_post( intval( $registration ) ) ) ) {
 			/* As the headers are already sent we can't use wp_redirect. */
-			echo '<meta http-equiv="refresh" content="0; url=' . get_permalink( $registration ) . '" />';
+			echo '<meta http-equiv="refresh" content="0; url=' . esc_url( get_permalink( $registration ) ) . '" />';
 			wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'awesome-support' ) );
 			exit;
 		}
@@ -53,7 +53,7 @@ function wpas_sc_client_account() {
 
 	/**
 	 * Finally get the buffer content and return.
-	 * 
+	 *
 	 * @var string
 	 */
 	$content = ob_get_clean();
@@ -67,11 +67,11 @@ function wpas_sc_client_account() {
  * @since 4.4.0
  *
  * @param none
- * 
+ *
  * @return array post array of tickets found
  */
 function wpas_get_tickets_for_shortcode() {
-	
+
 	global $current_user, $post;
 
 	/**
@@ -79,11 +79,11 @@ function wpas_get_tickets_for_shortcode() {
 	 * the query returns posts whose author has ID 1.
 	 * In order to avoid that (for non logged users)
 	 * we set the user ID to -1 if it is 0.
-	 * 
+	 *
 	 * @var integer
 	 */
 	$author = ( 0 !== $current_user->ID ) ? $current_user->ID : -1;
-	
+
 	$args = array(
 		'author'                 => $author,
 		'post_type'              => 'ticket',
@@ -99,23 +99,23 @@ function wpas_get_tickets_for_shortcode() {
 
 	/* Maybe only show open tickets */
 	if ( true === boolval( wpas_get_option( 'hide_closed_fe', false) ) ) {
-		$args_meta = array( 
+		$args_meta = array(
 			'meta_query' => array(
 				array(
 					'key'     => '_wpas_status',
 					'value'   => 'closed',
 					'compare' => '!=',
 				),
-			),		
+			),
 		) ;
-		
-		$args = array_merge($args, $args_meta);		
-	}	
-	
+
+		$args = array_merge($args, $args_meta);
+	}
+
 	$args = apply_filters( 'wpas_tickets_shortcode_query_args', $args );
 
-	$wpas_tickets_found = new WP_Query( $args );	
+	$wpas_tickets_found = new WP_Query( $args );
 
 	return $wpas_tickets_found ;
-	
+
 }

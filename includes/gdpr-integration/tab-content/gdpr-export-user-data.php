@@ -18,4 +18,4 @@ if ( ! defined( 'WPINC' ) ) {
 </div>
 <div class="wpas-gdpr-notice export-data"></div>
 
-<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo get_current_user_id(); ?>" class="button button-primary" value="<?php _e( 'Export my tickets', 'awesome-suppot' ); ?>">
+<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo esc_attr( get_current_user_id() ); ?>" class="button button-primary" value="<?php esc_html_e( 'Export my tickets', 'awesome-suppot' ); ?>">

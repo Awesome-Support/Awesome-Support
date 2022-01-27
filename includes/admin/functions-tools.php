@@ -7,11 +7,11 @@ function wpas_system_tools() {
 		return false;
 	}
 
-	if ( ! wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
+	if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_nonce'] ) ), 'system_tool' ) ) {
 		return false;
 	}
 
-	switch ( sanitize_text_field( $_GET['tool'] ) ) {
+	switch ( sanitize_text_field( wp_unslash( $_GET['tool'] ) ) ) {
 
 		/* Clear all tickets metas */
 		case 'tickets_metas';
@@ -41,7 +41,7 @@ function wpas_system_tools() {
 		case 'ticket_attachments':
 			wpas_delete_unclaimed_attachments();
 			break;
-		
+
 		case 'update_last_reply':
 			wpas_update_last_reply();
 			break;
@@ -49,23 +49,23 @@ function wpas_system_tools() {
 		case 'reset_replies_count':
 			wpas_reset_replies_count();
 			break;
-		
+
 		case 'reset_channels':
 			wpas_reset_channel_terms();
 			break;
-			
+
 		case 'reset_ticket_types':
 			wpas_reset_ticket_types();
-			break;			
+			break;
 
 		case 'reset_time_fields':
 			wpas_reset_time_fields_to_zero();
 			break;
-		
-		case 'rerun_334_to_400_conversion':			
+
+		case 'rerun_334_to_400_conversion':
 			wpas_upgrade_406();
 			break ;
-			
+
 		case 'rerun_400_to_440_conversion':
 			wpas_upgrade_440();
 			break;
@@ -73,8 +73,8 @@ function wpas_system_tools() {
 		case 'rerun_400_to_500_conversion':
 			wpas_upgrade_511();
 			wpas_upgrade_520();
-			break;	
-			
+			break;
+
 		case 'rerun_580_to_590_conversion':
 			wpas_upgrade_590();
 			break;
@@ -82,56 +82,56 @@ function wpas_system_tools() {
 		case 'install_blue_blocks_email_template':
 			wpas_install_email_template( 'blue_blocks' );
 			break;
-			
+
 		case 'install_blue_blocks_ss_email_template':
 			wpas_install_email_template( 'blue_blocks-ss' );
 			break;
-			
+
 		case 'install_elegant_email_template':
 			wpas_install_email_template( 'elegant' );
-			break;						
+			break;
 
 		case 'install_elegant_ss_email_template':
 			wpas_install_email_template( 'elegant-ss' );
 			break;
-			
+
 		case 'install_simple_email_template':
 			wpas_install_email_template( 'simple' );
-			break;						
-			
+			break;
+
 		case 'install_default_email_template':
 			wpas_install_email_template( 'default' );
 			break;
-			
+
 		case 'install_debug_email_template':
 			wpas_install_email_template( 'debug' );
-			break;		
-		
+			break;
+
 		case 'mark_all_auto_del_attchmnts':
 		case 'remove_mark_all_auto_del_attchmnts':
 		case 'mark_open_auto_del_attchmnts':
 		case 'remove_mark_open_auto_del_attchmnts':
 		case 'mark_closed_auto_del_attchmnts':
 		case 'remove_mark_closed_auto_del_attchmnts':
-			
-			$act = sanitize_text_field( $_GET['tool'] );
+
+			$act = sanitize_text_field( wp_unslash( $_GET['tool'] ) );
 			$act_parts = explode( '_', $act );
 			$flag_added = 'remove' === substr( $act, 0, 6 ) ? false : true;
 			$flag_ticket_type = $flag_added ? $act_parts[1] : $act_parts[2];
-			
+
 			WPAS_File_Upload::mark_tickets_auto_delete_attachments( $flag_ticket_type, $flag_added );
-			
+
 			break;
 	}
 
-	do_action('execute_additional_tools',sanitize_text_field( $_GET['tool'] ));
-	
+	do_action( 'execute_additional_tools', sanitize_text_field( wp_unslash( $_GET['tool'] ) ) );
+
 	/* Redirect in "read-only" mode */
 	$url = add_query_arg( array(
 			'post_type' => 'ticket',
 			'page'      => 'wpas-status',
 			'tab'       => 'tools',
-			'done'      => sanitize_text_field( $_GET['tool'] )
+			'done'      => sanitize_text_field( wp_unslash( $_GET['tool'] ) )
 	), admin_url( 'edit.php' )
 	);
 
@@ -141,7 +141,7 @@ function wpas_system_tools() {
 }
 
 /**
-* Require this file here so that we don't duplicate the upgrade functions. Its used by one of the case statements above to 
+* Require this file here so that we don't duplicate the upgrade functions. Its used by one of the case statements above to
 * run the 3.3.4 to 4.0.0 upgrade process on demand.
 * We can remove it or find a better way to handle it later (after a couple of 4.x releases).
 */
@@ -149,9 +149,9 @@ require_once( WPAS_PATH . 'includes/admin/upgrade/functions-upgrade.php' );
 
 /**
  * Add default channels.
- * 
+ *
  * @return boolean
- * 
+ *
  */
 function wpas_reset_channel_terms() {
 	return wpas_add_default_channel_terms(true);
@@ -159,9 +159,9 @@ function wpas_reset_channel_terms() {
 
 /**
  * Add default ticket types.
- * 
+ *
  * @return boolean
- * 
+ *
  */
 function wpas_reset_ticket_types() {
 	return wpas_add_default_ticket_types(true);
@@ -174,7 +174,7 @@ function wpas_reset_ticket_types() {
  * and reset their replies count one by one.
  *
  * @return boolean
- * 
+ *
  */
 function wpas_reset_replies_count() {
 	$args = array(
@@ -189,7 +189,7 @@ function wpas_reset_replies_count() {
 
 	$query   = new WP_Query( $args );
 	$reset = false;
-	
+
 	if ( 0 == $query->post_count ) {
 		return false;
 	}
@@ -212,7 +212,7 @@ function wpas_reset_replies_count() {
  * @since  3.0.0
  * @param  integer $ticket_id ID of the ticket to clear the meta from
  * @return boolean            True if meta was cleared, false otherwise
- * 
+ *
  */
 function wpas_clear_ticket_activity_meta( $ticket_id ) {
 	return delete_transient( "wpas_activity_meta_post_$ticket_id" );
@@ -226,7 +226,7 @@ function wpas_clear_ticket_activity_meta( $ticket_id ) {
  *
  * @since 3.0.0
  * @return  True if some metas were cleared, false otherwise
- * 
+ *
  */
 function wpas_clear_tickets_metas() {
 
@@ -242,7 +242,7 @@ function wpas_clear_tickets_metas() {
 
 	$query   = new WP_Query( $args );
 	$cleared = false;
-	
+
 	if ( 0 == $query->post_count ) {
 		return false;
 	}
@@ -328,28 +328,28 @@ function wpas_clear_taxonomies() {
  * @since 3.1.7
  */
 function wpas_delete_synced_products( $resync = false ) {
-	
+
 	$post_type = filter_input( INPUT_GET, 'pt', FILTER_SANITIZE_STRING );
-	
+
 	if ( empty( $post_type ) ) {
 		return false;
 	}
-	
+
 	$sync  = new WPAS_Product_Sync( '', 'product' );
 	$posts = new WP_Query( array( 'post_type' => $post_type, 'posts_per_page' => -1, 'post_status' => 'any' ) );
 	$sync->set_post_type( $post_type );
-	
+
 	$product_terms = get_terms([
 		'taxonomy' => 'product',
 		'hide_empty' => false,
 	]);
-	
+
 	if ( ! empty( $posts->posts ) ) {
-		
+
 		foreach((array)$product_terms as $product_term){
-			
+
 			$unsync_term = false;
-			
+
 			/* Does the product taxonmy exist as a product post? */
 			/* Note even sure this section is needed - it seems  */
 			/* to be unnecessary given what comes in the next    */
@@ -359,22 +359,22 @@ function wpas_delete_synced_products( $resync = false ) {
 					$unsync_term = true;
 				}
 			}
-			
+
 			/* Product taxonomy item exists in the product posts so process this section */
 			if($unsync_term == true){
-				
+
 				/* Is the product term on a ticket?  Only if its not used on a ticket should we remove it from the product taxonomy */
 				if( wpas_product_has_tickets($product_term->term_id) === false ){
-					
+
 					wp_delete_term( (int) $product_term->term_id, 'product' );
-					
+
 				}
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	/* Now let's make sure we don't have some orphan post metas left */
 	global $wpdb;
 	$metas = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->postmeta} WHERE meta_key = '%s'", '_wpas_product_term' ) );
@@ -416,7 +416,7 @@ function wpas_product_has_tickets($term_id) {
 	);
 	$term_query =  new WP_Query( $args );
 	$term_posts_count = $term_query->found_posts;
-	
+
 	if( $term_posts_count > 0 ){
 		return true;
 	}else{
@@ -540,15 +540,15 @@ function wpas_update_last_reply() {
 	global $wpdb;
 
 	$sql = <<<SQL
-SELECT 
+SELECT
 	wpas_ticket.ID AS ticket_id,
 	wpas_reply.ID AS reply_id,
 	wpas_replies.latest_reply,
 	wpas_replies.latest_reply_gmt,
 	wpas_replies.post_author,
 	wpas_ticket.post_author=wpas_reply.post_author AS client_replied_last
-FROM 
-	{$wpdb->posts} AS wpas_ticket 
+FROM
+	{$wpdb->posts} AS wpas_ticket
 	LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON wpas_ticket.ID=wpas_reply.post_parent
 	LEFT OUTER JOIN (
 		SELECT
@@ -562,7 +562,7 @@ FROM
 			AND 'ticket_reply' = post_type
 		GROUP BY
 			post_parent
-	) wpas_replies ON wpas_replies.ticket_id=wpas_reply.post_parent AND wpas_replies.latest_reply=wpas_reply.post_date 
+	) wpas_replies ON wpas_replies.ticket_id=wpas_reply.post_parent AND wpas_replies.latest_reply=wpas_reply.post_date
 WHERE 1=1
 	AND wpas_replies.latest_reply IS NOT NULL
 	AND 'ticket_reply'=wpas_reply.post_type
@@ -667,83 +667,83 @@ function wpas_reset_time_fields_to_zero() {
 		update_post_meta( $post->ID, '_wpas_ttl_adjustments_to_time_spent_on_ticket', 0 );
 		update_post_meta( $post->ID, '_wpas_final_time_spent_on_ticket', 0 );
 	}
-	
-	return $reset;	
+
+	return $reset;
 }
 
 function wpas_install_email_template( $template, $overwrite = true ) {
-	
+
 	$template_root_path = '';  // the file path to the folder containing the template set
-	
+
 	// Set the variable to the template set path based on which template we need
 	switch ( $template ) {
 
-		case 'blue_blocks' : 
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block/';		
+		case 'blue_blocks' :
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block/';
 			break;
-	
-		case 'blue_blocks-ss' : 
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block-with-satisfaction-surveys/';		
-			break;
-			
-		case 'elegant' : 
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant/';		
-			break;
-			
-		case 'elegant-ss' : 
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant-with-with-satisfaction-surveys/';		
-			break;			
 
-		case 'simple' : 
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/simple/';		
-			break;						
-			
-		case 'default' : 
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/default/';		
+		case 'blue_blocks-ss' :
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block-with-satisfaction-surveys/';
 			break;
-			
-		case 'debug' : 
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/debug/';		
-			break;					
+
+		case 'elegant' :
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant/';
+			break;
+
+		case 'elegant-ss' :
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant-with-with-satisfaction-surveys/';
+			break;
+
+		case 'simple' :
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/simple/';
+			break;
+
+		case 'default' :
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/default/';
+			break;
+
+		case 'debug' :
+			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/debug/';
+			break;
 	}
-	
+
 	// Allow other add-ons to set this path
 	$template_root_path = apply_filters( 'wpas_email_template_root_path', $template_root_path ) ;
-	
+
 	// Create array with option names and corresponding file names
 	$template_files['content_confirmation'] 	= $template_root_path . 'New-Ticket-Confirmation-Going-To-End-User.html';
 	$template_files['content_assignment'] 		= $template_root_path . 'New-Ticket-Assigned-To-Agent.html';
 	$template_files['content_reply_agent'] 		= $template_root_path . 'Agent-Reply-Going-To-End-User.html';
-	
+
 	$template_files['content_reply_client'] 	= $template_root_path . 'New-Reply-From-Client-Going-To-Agent.html';
 	$template_files['content_closed'] 			= $template_root_path . 'Ticket-Closed-By-Agent.html';
 	$template_files['content_closed_client'] 	= $template_root_path . 'Ticket-Closed-By-Client.html';
-	
-	// Allow other add-ons to update this array 
+
+	// Allow other add-ons to update this array
 	$template_files = apply_filters( 'wpas_email_template_map_to_files', $template_files );
-	
+
 	// Read the template files into the appropriate option based on the key-fiile mapping array above.
 	foreach ( $template_files as $key => $template_file ) {
 
 	if ( file_exists( $template_file ) ) {
-		
+
 		$template_contents = file_get_contents( $template_file );
 
 			if ( ! empty( $template_contents ) ) {
-				
+
 				// Is there any existing value in the option?
 				$existing_contents = wpas_get_option( $key );
-				
+
 				if ( ! empty( $existing_contents ) && ! $overwrite ) {
 					// do not overwrite existing contents
 					continue ;
 				}
-				
+
 				wpas_update_option( $key, $template_contents, true ) ;
 			}
-			
+
 		}
 	}
-	
-	
+
+
 }

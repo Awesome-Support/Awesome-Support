@@ -128,7 +128,7 @@ class AS_Admin_Notices {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 	}
 
 	/**
@@ -170,11 +170,11 @@ class AS_Admin_Notices {
 	 * @return void
 	 */
 	public function add_notice( $type, $id, $message ) {
-		
+
 		/* If running in SAAS mode and the notice is something about a license then don't bother! */
 		if ( true === $this->is_license_notice( $type, $id, $message ) && ( true === is_saas() )  ) {
 			return ;
-		}		
+		}
 
 		if ( ! in_array( $type, $this->notice_types() ) ) {
 			$type = 'updated';
@@ -186,7 +186,7 @@ class AS_Admin_Notices {
 		$this->notices[ $id ] = array( $type, $message );
 
 	}
-	
+
 	/**
 	 * Check to see if the notice is a license notice by inspecting the $ID.
 	 *
@@ -197,14 +197,14 @@ class AS_Admin_Notices {
 	 * @param string $message Notice message
 	 *
 	 * @return boolean
-	 */	
+	 */
 	public function is_license_notice( $type, $id, $message ){
-		if ( ( strpos( 'xxx'.$id, 'lincense_' ) >= 0 ) || ( strpos( 'xxx'.$id, 'license_' ) >= 0 ) ) {			
+		if ( ( strpos( 'xxx'.$id, 'lincense_' ) >= 0 ) || ( strpos( 'xxx'.$id, 'license_' ) >= 0 ) ) {
 			return true ;
 		}
-		
+
 		return false ;
-	}	
+	}
 
 	/**
 	 * Get all custom notices registered
@@ -237,7 +237,7 @@ class AS_Admin_Notices {
 
 			$url = wpas_do_url( add_query_arg( $_GET, '' ), 'dismiss_notice', array( 'notice_id' => $notice_id ) );
 
-			printf( '<div class="%s"><p>%s <a href="%s"><small>(%s)</small></a></p></div>', $notice[0], $notice[1], esc_url( $url ), _x( 'Dismiss', 'Dismiss link for admin notices', 'awesome-support' ) );
+			printf( '<div class="%s"><p>%s <a href="%s"><small>(%s)</small></a></p></div>', $notice[0], $notice[1], esc_url( $url ), esc_html_x( 'Dismiss', 'Dismiss link for admin notices', 'awesome-support' ) );
 
 		}
 

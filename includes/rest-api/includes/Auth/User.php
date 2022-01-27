@@ -173,7 +173,7 @@ class User extends \WP_User {
 		foreach ( $hashed_passwords as $key => $item ) {
 			if ( wp_check_password( $password, $item['password'], $this->ID ) ) {
 				$item['last_used']        = time();
-				$item['last_ip']          = $_SERVER['REMOTE_ADDR'];
+				$item['last_ip']          = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
 				$hashed_passwords[ $key ] = $item;
 				update_user_option( $this->ID, self::USERMETA_KEY_API_PASSWORDS, $hashed_passwords );
 
