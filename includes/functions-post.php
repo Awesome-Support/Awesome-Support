@@ -15,7 +15,7 @@ function wpas_open_ticket( $data ) {
 	/**
 	 * Prepare vars
 	 */
-	$submit = isset( $_POST['_wp_http_referer'] ) ? wpas_get_submission_page_url( url_to_postid( $_POST['_wp_http_referer'] ) ) : wpas_get_submission_page_url();
+	$submit = isset( $_POST['_wp_http_referer'] ) ? wpas_get_submission_page_url( url_to_postid( wp_unslash( $_POST['_wp_http_referer'] ) ) ) : wpas_get_submission_page_url();
 
 	// Fallback in case the referrer failed
 	if ( empty( $submit ) ) {
@@ -171,7 +171,7 @@ function wpas_new_ticket_submission( $data ) {
 
 			// Redirect to submit page
 			wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'awesome-support' ) );
-			wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
+			wp_redirect( wp_sanitize_redirect( home_url( wp_unslash( $_POST['_wp_http_referer'] ) ) ) );
 			exit;
 		}
 
@@ -1884,7 +1884,7 @@ function wpas_edit_ticket_content() {
 	/**
 	 * Variables!
 	 */
-	$ticket_id = isset( $_POST['post_id'] ) ? sanitize_text_field( $_POST['post_id'] ) : '';
+	$ticket_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
 	$content   = isset( $_POST['content'] ) ? wp_kses_post( $_POST['content'] ) : '';
 
 	/**
@@ -2017,7 +2017,7 @@ function wpas_load_reply_history() {
 	 */
 	$reply_history = get_posts(
 		array(
-			'post_parent' 		=> sanitize_text_field( $_POST['reply_id'] ),
+			'post_parent' 		=> sanitize_text_field( wp_unslash( $_POST['reply_id'] ) ),
 			'post_type'   		=> 'ticket_log',
 			'posts_per_page'	=> 10,  //Maybe this should an option?!
 			'orderby'			=> 'ID',

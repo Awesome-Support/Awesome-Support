@@ -199,8 +199,8 @@ function wpas_is_plugin_page( $slug = '' ) {
 		global $post;
 
 		if ( empty( $post ) ) {
-			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
+			$protocol = stripos( wp_unslash( $_SERVER['SERVER_PROTOCOL'] ), 'https' ) === true ? 'https://' : 'http://';
+			$post_id  = url_to_postid( $protocol . wp_unslash( $_SERVER['SERVER_NAME'] ) . ':' . wp_unslash( $_SERVER['SERVER_PORT'] ) . wp_unslash( $_SERVER['REQUEST_URI'] ) );
 			$post     = get_post( $post_id );
 		}
 
@@ -1305,7 +1305,7 @@ function wpas_is_support_ticket_type_active() {
 				$filtered_input = filter_input( INPUT_SERVER, $input_var, FILTER_SANITIZE_STRING );
 			} else {
 				if (isset($_SERVER["REQUEST_URI"]))
-					$filtered_input = filter_var( $_SERVER[$input_var], FILTER_SANITIZE_STRING );
+					$filtered_input = filter_var( wp_unslash( $_SERVER[$input_var] ), FILTER_SANITIZE_STRING );
 				else
 					$filtered_input = null;
 			}

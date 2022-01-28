@@ -47,7 +47,7 @@ function wpas_get_ticket_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
 
-	if ( ! empty( $ticket = wpas_get_ticket_by_id( $_POST['id'] ) ) ) {
+	if ( ! empty( $ticket = wpas_get_ticket_by_id( wp_unslash( $_POST['id'] ) ) ) ) {
 
 		$replies = wpas_get_replies( $ticket->ID, 'any', [
             'posts_per_page' => - 1,
@@ -92,7 +92,7 @@ function wpas_get_tickets_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
 
-	$ids = isset( $_POST['ids'] ) ? (array) $_POST['ids'] : array();
+	$ids = isset( $_POST['ids'] ) ? (array) wp_unslash( $_POST['ids'] ) : array();
 
 	foreach( $ids as $id ) {
 

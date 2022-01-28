@@ -138,11 +138,11 @@ function wpas_add_custom_field( $name, $args = array() ) {
  * @return boolean        Returns true if it exists of false otherwise
  */
 function wpas_custom_field_exists( $name ) {
-	
+
 	if ( isset( WPAS()->custom_fields->get_custom_fields()[ $name ] ) ) {
-		return true ;		
+		return true ;
 	}
-	
+
 	return false ;
 }
 
@@ -197,7 +197,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	$hours = $minutes = $adj_hours = $adj_minutes = 0;
 
 	// Time spent on ticket (hh:mm:ss)
-	sscanf( $_POST['wpas_ttl_calculated_time_spent_on_ticket'], "%d:%d", $hours, $minutes );
+	sscanf( wp_unslash( $_POST['wpas_ttl_calculated_time_spent_on_ticket'] ), "%d:%d", $hours, $minutes );
 
 	// Convert to seconds
 	$minutes = $hours * 60 + $minutes;
@@ -206,7 +206,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	if( isset ( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
 		&& ! empty( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
 	) {
-		sscanf( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'], "%d:%d", $adj_hours, $adj_minutes );
+		sscanf( wp_unslash( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] ), "%d:%d", $adj_hours, $adj_minutes );
 		$adjustment_time = $adj_hours * 60 + $adj_minutes;
 
 		if( '+' === $_POST['wpas_time_adjustments_pos_or_neg'] ) {
@@ -430,15 +430,15 @@ function wpas_register_core_fields() {
 			'select2'               => false,
 			'taxo_manage_terms' 	=> 'ticket_manage_ticket_type',
 			'taxo_edit_terms'   	=> 'ticket_edit_ticket_type',
-			'taxo_delete_terms' 	=> 'ticket_delete_ticket_type',			
+			'taxo_delete_terms' 	=> 'ticket_delete_ticket_type',
 			'filterable'            => true,
 			'required'              => $show_ticket_type_required,
 			'title'           		=> $as_label_for_ticket_type_singular,
 			'order'           		=> -10  // Yes, -10 for this one so that it appears by default above the subject and description fields on the front-end form.
 		) );
 
-	}	
-	
+	}
+
 	/*******************************************************************/
 	/* Add Product fields                                              */
 	/*******************************************************************/
@@ -523,9 +523,9 @@ function wpas_register_core_fields() {
 			'select2'               => false,
 			'taxo_manage_terms' 	=> 'ticket_manage_departments',
 			'taxo_edit_terms'   	=> 'ticket_edit_departments',
-			'taxo_delete_terms' 	=> 'ticket_delete_departments',			
+			'taxo_delete_terms' 	=> 'ticket_delete_departments',
 			'title'           		=> $as_label_for_department_singular,
-			'order'           		=> 20			
+			'order'           		=> 20
 		) );
 
 	}
@@ -588,15 +588,15 @@ function wpas_register_core_fields() {
 			'select2'               => false,
 			'taxo_manage_terms' 	=> 'ticket_manage_priorities',
 			'taxo_edit_terms'   	=> 'ticket_edit_priorities',
-			'taxo_delete_terms' 	=> 'ticket_delete_priorities',			
+			'taxo_delete_terms' 	=> 'ticket_delete_priorities',
 			'filterable'            => true,
 			'required'              => $show_priority_required,
 			'title'           		=> $as_label_for_priority_singular,
-			'order'           		=> 40			
+			'order'           		=> 40
 		) );
 
 	}
-	
+
 	/*******************************************************************/
 	/* Add ticket channel field (where did the ticket originate from?) */
 	/*******************************************************************/
@@ -638,12 +638,12 @@ function wpas_register_core_fields() {
 		'select2'               => false,
 		'taxo_manage_terms' 	=> 'ticket_manage_channels',
 		'taxo_edit_terms'   	=> 'ticket_edit_channels',
-		'taxo_delete_terms' 	=> 'ticket_delete_channels',		
+		'taxo_delete_terms' 	=> 'ticket_delete_channels',
 		'filterable'            => $show_channel_column_in_list,
 		'default'               => 'standard ticket form',
 		'title'           		=> $as_label_for_channel_singular
 	) );
-	
+
 	/*******************************************************************/
 	/* Add additional assignees to ticket                              */
 	/*******************************************************************/
@@ -729,26 +729,26 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 	$audit_log_for_time_tracking_fields = false ;
 	$audit_log_for_time_tracking_fields = ( isset( $options[ 'keep_audit_log_time_tracking' ] ) && true === boolval( $options[ 'keep_audit_log_time_tracking' ] ) );
-	
-	
+
+
 	$show_total_time_in_list = false;
 	$show_total_time_in_list = ( isset( $options[ 'show_total_time_in_ticket_list' ] ) && true === boolval( $options[ 'show_total_time_in_ticket_list' ] ) );
-	
+
 	$show_total_time_adj_in_list = false;
 	$show_total_time_adj_in_list = ( isset( $options[ 'show_total_time_adj_in_ticket_list' ] ) && true === boolval( $options[ 'show_total_time_adj_in_ticket_list' ] ) );
-	
+
 	$show_final_time_in_list = false;
 	$show_final_time_in_list = ( isset( $options[ 'show_final_time_in_ticket_list' ] ) && true === boolval( $options[ 'show_final_time_in_ticket_list' ] ) );
-	
+
 	$allow_agents_to_enter_time = true;
 	$allow_agents_to_enter_time = ! ( isset( $options[ 'allow_agents_to_enter_time' ] ) && true === boolval( $options[ 'allow_agents_to_enter_time' ] ) );
-	
+
 	$show_final_time_in_fe_list = false;
-	$show_final_time_in_fe_list = ( isset( $options[ 'show_final_time_in_fe_ticket_list' ] ) && true === boolval( $options[ 'show_final_time_in_fe_ticket_list' ] ) );	
-	
+	$show_final_time_in_fe_list = ( isset( $options[ 'show_final_time_in_fe_ticket_list' ] ) && true === boolval( $options[ 'show_final_time_in_fe_ticket_list' ] ) );
+
 	$show_final_time_in_fe_ticket = false;
-	$show_final_time_in_fe_ticket = ( isset( $options[ 'show_final_time_in_fe_ticket' ] ) && true === boolval( $options[ 'show_final_time_in_fe_ticket' ] ) );		
-	
+	$show_final_time_in_fe_ticket = ( isset( $options[ 'show_final_time_in_fe_ticket' ] ) && true === boolval( $options[ 'show_final_time_in_fe_ticket' ] ) );
+
 	$final_time_hide_front_end = true;
 	if ( $show_final_time_in_fe_list || $show_final_time_in_fe_ticket ) {
 		$final_time_hide_front_end = false ;
@@ -795,7 +795,7 @@ function wpas_register_core_fields() {
 		'desc'       		=> __( 'Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin.', 'awesome-support' ),
 		'readonly'			=> $allow_agents_to_enter_time
 	) );
-	
+
 	wpas_add_custom_field( 'time_adjustments_pos_or_neg', array(
 		'core'        		=> false,
 		'field_type'		=> 'radio',
@@ -807,7 +807,7 @@ function wpas_register_core_fields() {
 		'backend_display_type'	=> 'custom',
 		'title'       		=> $as_label_for_time_adjustments_dir_singular,
 		'readonly'			=> $allow_agents_to_enter_time
-	) );		
+	) );
 
 	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
 		'core'        		=> false,
@@ -815,7 +815,7 @@ function wpas_register_core_fields() {
 		'log'         		=> $audit_log_for_time_tracking_fields,
 		'html5_pattern'		=> '(0[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){1}',
 		'placeholder'		=> 'hh:mm',
-		'hide_front_end'	=> $final_time_hide_front_end,		
+		'hide_front_end'	=> $final_time_hide_front_end,
 		'backend_only'		=> $final_time_hide_front_end,
 		'backend_display_type'	=> 'custom',
 		'show_frontend_list' 	=> $show_final_time_in_fe_list,
@@ -823,23 +823,23 @@ function wpas_register_core_fields() {
 		'column_callback'   => 'wpas_cf_display_time_hhmm',
 		'sortable_column'	=> true,
 		'title'       		=> $as_label_for_final_time_singular,
-		'desc'       		=> __( 'This is the time calculated by the system - a sum of gross time and adjustments/credits granted.', 'awesome-support' ),						
+		'desc'       		=> __( 'This is the time calculated by the system - a sum of gross time and adjustments/credits granted.', 'awesome-support' ),
 		'save_callback'     => 'wpas_update_time_spent_on_ticket',
 		'readonly'          => true,
 	) );
-	
+
 	wpas_add_custom_field( 'time_notes', array(
 		'field_type'		=> 'wysiwyg',
 		'core'        		=> false,
 		'show_column' 		=> false,
 		'log'         		=> false,
-		'hide_front_end'	=> true,		
+		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
 		'title'       		=> $as_label_for_time_notes_singular,
-		'readonly'			=> $allow_agents_to_enter_time		
+		'readonly'			=> $allow_agents_to_enter_time
 	) );
-	
+
 	/*******************************************************************/
 	/* Add fields for other "free-form" interested parties             */
 	/*******************************************************************/
@@ -894,19 +894,19 @@ function wpas_register_core_fields() {
 		'log'            	=> false,
 		'title'          	=> $as_label_for_second_addl_interested_party_email_singular
 	) );
-	
-	
+
+
 	/*******************************************************************/
 	/* Add the IMPORTER fields - in this case only one.                */
-	/*******************************************************************/	
+	/*******************************************************************/
 	$show_saas_id = false;
 	$show_saas_id = ( isset( $options[ 'importer_id_enable' ] ) && ( true === boolval( $options[ 'importer_id_enable' ] ) ) ) ;
-	
+
 	if ( true === $show_saas_id ) {
-		
+
 		$show_saas_id_in_list = false;
-		$show_saas_id_in_list = ( isset( $options[ 'importer_id_show_in_tkt_list' ] ) && true === boolval( $options[ 'importer_id_show_in_tkt_list' ] ) );	
-		
+		$show_saas_id_in_list = ( isset( $options[ 'importer_id_show_in_tkt_list' ] ) && true === boolval( $options[ 'importer_id_show_in_tkt_list' ] ) );
+
 		$saas_id_label = 'Help Desk SaaS Ticket ID';
 		$saas_id_label = isset( $options[ 'importer_id_label' ] ) ? $options[ 'importer_id_label' ] : __( 'Help Desk SaaS Ticket ID', 'awesome-support' );
 
@@ -918,23 +918,23 @@ function wpas_register_core_fields() {
 			'backend_only' 		=> true,
 			'log'            	=> true,
 			'title'          	=> $saas_id_label,
-		) );	
+		) );
 	}
-	
+
 	/*******************************************************************/
 	/* Add the TICKET TEMPLATE option field if its enabled             */
-	/*******************************************************************/	
+	/*******************************************************************/
 	$show_ticket_template_option = false;
-	$show_ticket_template_option = ( isset( $options[ 'enable_ticket_templates' ] ) && ( true === boolval( $options[ 'enable_ticket_templates' ] ) ) ) ;	
-	
+	$show_ticket_template_option = ( isset( $options[ 'enable_ticket_templates' ] ) && ( true === boolval( $options[ 'enable_ticket_templates' ] ) ) ) ;
+
 	$show_ticket_template_in_list = false;
-	$show_ticket_template_in_list = ( isset( $options[ 'show_ticket_template_in_ticket_list' ] ) && true === boolval( $options[ 'show_ticket_template_in_ticket_list' ] ) );	
-	
-	
+	$show_ticket_template_in_list = ( isset( $options[ 'show_ticket_template_in_ticket_list' ] ) && true === boolval( $options[ 'show_ticket_template_in_ticket_list' ] ) );
+
+
 	if ( true === $show_ticket_template_option && ( current_user_can('ticket_manage_ticket_templates') || wpas_is_asadmin() ) ) {
-		
+
 		wpas_add_custom_field( 'is_ticket_template', array(
-			'field_type'		=> 'select',		
+			'field_type'		=> 'select',
 			'core'           	=> false,
 			'show_column'    	=> $show_ticket_template_in_list,
 			'options'			=> array( 0 => 'This is not a ticket template', 1 => 'This is a ticket template' ),
@@ -944,7 +944,7 @@ function wpas_register_core_fields() {
 			'log'            	=> true,
 			'title'          	=> __( 'Ticket Template?', 'awesome-support' ),
 		) );
-		
+
 		wpas_add_custom_field( 'ticket_template_short_desc', array(
 			'field_type'		=> 'text',
 			'core'           	=> false,
@@ -954,14 +954,14 @@ function wpas_register_core_fields() {
 			'backend_only' 		=> true,
 			'log'            	=> true,
 			'title'          	=> __( 'Ticket Template Description', 'awesome-support' ),
-		) );			
-				
-		
+		) );
+
+
 	}
-	
-	
-	
-	
+
+
+
+
 	/* Trigger backend custom ticket list columns */
 	if ( is_admin() ) {
 		apply_filters( 'wpas_add_custom_fields', array() );
@@ -971,7 +971,7 @@ function wpas_register_core_fields() {
 
 add_action( 'admin_init', 'insert_channel_terms' );
 /**
- * Make sure the channel terms are registered.  
+ * Make sure the channel terms are registered.
  *
  * @since  3.6.0
  * @return void

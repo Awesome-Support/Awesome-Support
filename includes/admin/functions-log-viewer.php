@@ -54,11 +54,11 @@ function wpas_tools_log_viewer_view() {
 
 	// Default number of lines to return
 	$lines = 100;
-	$file  = basename( sanitize_text_field( $_POST[ 'file' ] ) );
+	$file  = basename( sanitize_text_field( wp_unslash( $_POST[ 'file' ] ) ) );
 
 	// Get posted number of lines
 	if( isset( $_POST[ 'lines' ] ) ) {
-		$lines = sanitize_text_field( $_POST[ 'lines' ] );
+		$lines = sanitize_text_field( wp_unslash( $_POST[ 'lines' ] ) );
 	}
 
 	wp_send_json_success( wpas_log_viewer_read_last_lines( $file, $lines ) );
@@ -82,7 +82,7 @@ function wpas_tools_log_viewer_download() {
 		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
 	}
 
-	$file = basename( sanitize_text_field( $_POST[ 'file' ] ) );
+	$file = basename( sanitize_text_field( wp_unslash( $_POST[ 'file' ] ) ) );
 
 	$content = array(
 		'status' => array(
@@ -113,7 +113,7 @@ function wpas_tools_log_viewer_delete() {
 		wp_die();
 	}
 
-	$file = basename( sanitize_text_field( $_POST[ 'file' ] ) );
+	$file = basename( sanitize_text_field( wp_unslash( $_POST[ 'file' ] ) ) );
 
 	wp_send_json_success(	wpas_log_viewer_delete_file( $file ) );
 

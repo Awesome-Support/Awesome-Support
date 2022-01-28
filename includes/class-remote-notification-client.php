@@ -538,7 +538,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 
 			/* Add the current notice to the list if needed */
 			if ( is_array( $dismissed ) && ! in_array( $_GET['notification'], $dismissed ) ) {
-				array_push( $dismissed, $_GET['notification'] );
+				array_push( $dismissed, wp_unslash( $_GET['notification'] ) );
 			}
 
 			/* Update option */
@@ -661,7 +661,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		public function remote_get_notice_ajax() {
 
 			if ( isset( $_POST['notices'] ) ) {
-				$notices = $_POST['notices'];
+				$notices = wp_unslash( $_POST['notices'] );
 			} else {
 				echo 'No notice ID';
 				die();

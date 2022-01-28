@@ -85,7 +85,7 @@ class WPAS_Tickets_List {
 		}
 
 
-		$search_params = isset( $_GET['search_by'] ) && !empty( $_GET['search_by'] ) ? $_GET['search_by'] : array( 'subject', 'opening_post' );
+		$search_params = isset( $_GET['search_by'] ) && !empty( $_GET['search_by'] ) ? wp_unslash( $_GET['search_by'] ) : array( 'subject', 'opening_post' );
 
 
 		$search_joins = array();
@@ -127,7 +127,7 @@ class WPAS_Tickets_List {
 
 
 		$search_clauses = array();
-		$search_params = isset( $_GET['search_by'] ) && !empty( $_GET['search_by'] ) ? $_GET['search_by'] : array( 'subject', 'opening_post' );
+		$search_params = isset( $_GET['search_by'] ) && !empty( $_GET['search_by'] ) ? wp_unslash( $_GET['search_by'] ) : array( 'subject', 'opening_post' );
 
 
 		$like = '%' . $wpdb->esc_like( $search ) . '%';
@@ -745,7 +745,7 @@ class WPAS_Tickets_List {
 						break;
 				}
 
-				$order = isset( $_GET[ 'order' ] ) && ! empty( $_GET[ 'order' ] ) && strtoupper( $_GET[ 'order' ] ) === 'DESC' ? 'DESC' : 'ASC';
+				$order = isset( $_GET[ 'order' ] ) && ! empty( $_GET[ 'order' ] ) && strtoupper( wp_unslash( $_GET[ 'order' ] ) ) === 'DESC' ? 'DESC' : 'ASC';
 
 				$query->set( 'order', $order );
 			}
@@ -996,7 +996,7 @@ SQL;
 	public function search_tab_content( $content ) {
 
 
-		$search_params = isset( $_GET['search_by'] ) ? $_GET['search_by'] : array( 'subject', 'opening_post' );
+		$search_params = isset( $_GET['search_by'] ) ? wp_unslash( $_GET['search_by'] ) : array( 'subject', 'opening_post' );
 
 		$subject_checked		= in_array( 'subject',		 $search_params )	? true : false;
 		$opening_post_checked	= in_array( 'opening_post',  $search_params )	? true : false;
