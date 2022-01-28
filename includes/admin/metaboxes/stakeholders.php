@@ -56,16 +56,16 @@ if (! empty( $staff ) ) {
 }
 ?>
 <div id="wpas-stakeholders">
-	<label for="wpas-issuer"><strong data-hint="<?php esc_html_e( 'This user who raised this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
+	<label for="wpas-issuer"><strong data-hint="<?php esc_html_e( 'This user who raised this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php esc_html_e( 'Ticket Creator', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php if ( current_user_can( 'create_ticket' ) ):
 
-			$users_atts = array( 
-				'agent_fallback' => true, 
-				'select2' => true, 
-				'name' => 'post_author_override', 
-				'id' => 'wpas-issuer', 
-				'disabled'  => ! current_user_can( 'assign_ticket_creator' ) && ! wpas_is_asadmin() ? true : false, 
+			$users_atts = array(
+				'agent_fallback' => true,
+				'select2' => true,
+				'name' => 'post_author_override',
+				'id' => 'wpas-issuer',
+				'disabled'  => ! current_user_can( 'assign_ticket_creator' ) && ! wpas_is_asadmin() ? true : false,
 				'data_attr' => array( 'capability' => 'create_ticket' )
 			);
 
@@ -76,20 +76,20 @@ if (! empty( $staff ) ) {
 			echo wpas_dropdown( $users_atts, $client_option );
 
 		else: ?>
-			<a id="wpas-issuer" href="<?php echo $client_link; ?>"><?php echo $client_name; ?></a>
+			<a id="wpas-issuer" href="<?php echo esc_url( $client_link ); ?>"><?php echo esc_html( $client_name ); ?></a>
 		<?php endif; ?>
 	</p>
-	<label for="wpas-assignee"><strong data-hint="<?php esc_html_e( 'The agent currently responsible for this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php _e( 'Support Staff', 'awesome-support' ); ?></strong></label>
+	<label for="wpas-assignee"><strong data-hint="<?php esc_html_e( 'The agent currently responsible for this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php esc_html_e( 'Support Staff', 'awesome-support' ); ?></strong></label>
 	<p>
 		<?php
-		
-		
-		
+
+
+
 		$support_staff_dropdown = "";
-		
-		
+
+
 		if ( wpas_get_option( 'support_staff_select2_enabled', false ) ) {
-		
+
 			$staff_atts = array(
 				'name'      => 'wpas_assignee',
 				'id'        => 'wpas-assignee',
@@ -100,15 +100,15 @@ if (! empty( $staff ) ) {
 
 			if (! empty( $staff ) ) {
 				// We have a valid staff id
-				$support_staff_dropdown = wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );		
+				$support_staff_dropdown = wpas_dropdown( $staff_atts, "<option value='$staff_id' selected='selected'>$staff_name</option>" );
 			} else {
 				// Oops - no valid staff id...
-				$support_staff_dropdown = wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );					
+				$support_staff_dropdown = wpas_dropdown( $staff_atts, "<option value='$staff_id'> " );
 			}
 		} else {
-			
-			
-			$support_staff_dropdown = wpas_users_dropdown( array( 
+
+
+			$support_staff_dropdown = wpas_users_dropdown( array(
 				'cap'	=> 'edit_ticket',
 				'orderby' => 'display_name',
 				'order' => 'ASC',
@@ -119,10 +119,10 @@ if (! empty( $staff ) ) {
 				'selected' => $staff_id
 			) );
 		}
-		
-		
+
+
 		$support_staff_dropdown = apply_filters( 'ticket_support_staff_dropdown', $support_staff_dropdown, $post->ID, $staff_id, $staff_name );
-		
+
 		echo $support_staff_dropdown;
 		?>
 	</p>

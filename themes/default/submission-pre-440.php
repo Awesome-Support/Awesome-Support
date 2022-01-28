@@ -13,7 +13,7 @@ global $post;
 
 	<?php wpas_get_template( 'partials/ticket-navigation' ); ?>
 
-	<form class="wpas-form" role="form" method="post" action="<?php echo get_permalink( $post->ID ); ?>" id="wpas-new-ticket" enctype="multipart/form-data">
+	<form class="wpas-form" role="form" method="post" action="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" id="wpas-new-ticket" enctype="multipart/form-data">
 
 		<?php
 		/**
@@ -82,7 +82,7 @@ global $post;
 
 		wp_nonce_field( 'new_ticket', 'wpas_nonce', true, true );
 		wpas_make_button( __( 'Submit ticket', 'awesome-support' ), array( 'name' => 'wpas-submit' ) );
-		
+
 		/**
 		 * The wpas_submission_form_inside_before hook has to be placed
 		 * right before the form closing tag.

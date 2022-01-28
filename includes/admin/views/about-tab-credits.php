@@ -25,7 +25,6 @@
 			<a href="https://github.com/select2/select2" target="_blank">Select2</a><br />
 			<a href="https://getcomposer.org/" target="_blank">Composer</a><br />
 			<a href="https://github.com/ericmann/wp-session-manager" target="_blank">Eric Mann's wp-session manager</a><br />
-			<a href="http://www.titanframework.net/" target="_blank">Titan Framework</a><br />
 			<a href="https://fooplugins.github.io/FooTable/" target="_blank">Footable</a><br />
 			<a href="http://flexboxgrid.com/" target="_blank">Flexbox Grid</a><br />
 			<a href="http://catc.github.io/simple-hint/" target="_blank">Simple Hint</a><br />

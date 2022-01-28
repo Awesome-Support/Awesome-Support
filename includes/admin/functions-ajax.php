@@ -30,7 +30,7 @@ add_action( 'wp_ajax_wpas_skip_wizard_setup', 'wpas_skip_wizard_setup' );
  * @since 3.3.3
  * @return bool
  */
-function wpas_skip_wizard_setup() {	
+function wpas_skip_wizard_setup() {
 	add_option( 'wpas_skip_wizard_setup', true );
 	wp_die();
 }
@@ -48,7 +48,7 @@ function wpas_get_ticket_for_print_ajax() {
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
 
 	if ( ! empty( $ticket = wpas_get_ticket_by_id( $_POST['id'] ) ) ) {
-		
+
 		$replies = wpas_get_replies( $ticket->ID, 'any', [
             'posts_per_page' => - 1,
             'orderby'        => 'post_date',
@@ -72,12 +72,12 @@ function wpas_get_ticket_for_print_ajax() {
 
 	} else {
 
-		_e( 'Ticket not found', 'awesome-support' );
+		esc_html_e( 'Ticket not found', 'awesome-support' );
 
 	}
 
 	wp_die();
-	
+
 }
 
 add_action( 'wp_ajax_wpas_get_tickets_for_print', 'wpas_get_tickets_for_print_ajax' );
@@ -97,7 +97,7 @@ function wpas_get_tickets_for_print_ajax() {
 	foreach( $ids as $id ) {
 
 		if ( ! empty( $ticket = wpas_get_ticket_by_id( $id ) ) ) {
-			
+
 			$replies = wpas_get_replies( $ticket->ID, 'any', [
 				'posts_per_page' => - 1,
 				'orderby'        => 'post_date',
@@ -121,14 +121,14 @@ function wpas_get_tickets_for_print_ajax() {
 
 		} else {
 
-			_e( 'Ticket not found', 'awesome-support' );
+			esc_html_e( 'Ticket not found', 'awesome-support' );
 
 		}
 
 	}
 
 	wp_die();
-	
+
 }
 
 
@@ -137,17 +137,17 @@ add_action( 'wp_ajax_wpas_close_ticket_prevent_client_notification', 'wpas_ajax_
  * Handle request to set client notification flag about ticket close
  */
 function wpas_ajax_close_ticket_prevent_client_notification() {
-	
+
 	$prevent_client_notification = filter_input( INPUT_POST, 'prevent',   FILTER_SANITIZE_NUMBER_INT );
 	$ticket_id					 = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
-	
-	
+
+
 	if( !check_ajax_referer( 'prevent_client_notification', 'nonce', false ) || !current_user_can( 'edit_ticket' ) || !$ticket_id ) {
 		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
 		die();
 	}
-	
+
 	update_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', $prevent_client_notification );
-	
+
 	wp_send_json_success();
 }

@@ -1208,7 +1208,7 @@ function wpas_mailgun_check( $data = '' ) {
 		$check = json_decode( $check );
 
 		if ( is_object( $check ) && isset( $check->did_you_mean ) && ! is_null( $check->did_you_mean ) ) {
-			printf( __( 'Did you mean %s', 'awesome-support' ), "<strong>{$check->did_you_mean}</strong>?" );
+			printf( wp_kses_post( __( 'Did you mean %s', 'awesome-support' ) ), "<strong>{$check->did_you_mean}</strong>?" );
 			die();
 		}
 
@@ -1241,7 +1241,7 @@ function wpas_get_users_ajax( $args = array() ) {
 		$args = array();
 		foreach ( $defaults as $key => $value ) {
 			if ( isset( $_POST[ $key ] ) ) {
-				$args[ $key ] = sanitize_text_field( $_POST[ $key ] );
+				$args[ $key ] = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
 			}
 		}
 	}
@@ -1599,12 +1599,12 @@ function wpas_add_activate_user_button( $user ) {
 		$activate_url = wpas_do_url( $edit_user_link, 'mr_activate_user' );
 		$deny_url = wpas_do_url( $edit_user_link, 'mr_deny_user' );
 
-		printf( '<a href="%s" class="button button-primary">%s</a>', $activate_url ,__( 'Activate User', 'awesome-support' ) );
+		printf( '<a href="%s" class="button button-primary">%s</a>', esc_url( $activate_url ), esc_html__( 'Activate User', 'awesome-support' ) );
 
-		printf( '<a href="%s" class="button button-primary mr-deny-user-btn">%s</a>', $deny_url ,__( 'Deny User', 'awesome-support' ) );
+		printf( '<a href="%s" class="button button-primary mr-deny-user-btn">%s</a>', esc_url( $deny_url ), esc_html__( 'Deny User', 'awesome-support' ) );
 
 	} elseif( 'yes' === $user_denied ) {
-		printf( '<div><p>%s</p></div>', __( 'User has been denied.', 'awesome-support' ) );
+		printf( '<div><p>%s</p></div>', esc_html__( 'User has been denied.', 'awesome-support' ) );
 	}
 
 }
@@ -1715,7 +1715,7 @@ function wpas_mr_activation_notices() {
  */
 function wpas_mr_activation_success_notice() {
 
-	printf( '<div class="updated"><p>%s</p></div>', __( 'User successfully activated.', 'awesome-support' ) );
+	printf( '<div class="updated"><p>%s</p></div>', esc_html__( 'User successfully activated.', 'awesome-support' ) );
 
 }
 
@@ -1724,7 +1724,7 @@ function wpas_mr_activation_success_notice() {
  */
 function wpas_mr_activation_failed_notice() {
 
-	printf( '<div class="updated error"><p>%s</p></div>', __( 'Error while activating user, try again later.', 'awesome-support' ) );
+	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'Error while activating user, try again later.', 'awesome-support' ) );
 
 }
 
@@ -1733,7 +1733,7 @@ function wpas_mr_activation_failed_notice() {
  */
 function wpas_mr_deny_success_notice() {
 
-	printf( '<div class="updated error"><p>%s</p></div>', __( 'User successfully denied.', 'awesome-support' ) );
+	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'User successfully denied.', 'awesome-support' ) );
 
 }
 

@@ -69,7 +69,7 @@
 
 				if ( false !== $login_page && !empty( $login_page ) && !is_null( get_post( intval( $login_page ) ) ) ) {
 					/* As the headers are already sent we can't use wp_redirect. */
-					echo '<meta http-equiv="refresh" content="0; url=' . get_permalink( $login_page ) . '" />';
+					echo '<meta http-equiv="refresh" content="0; url=' . esc_url( get_permalink( $login_page ) ) . '" />';
 					wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'awesome-support' ) );
 					exit;
 				}
@@ -137,9 +137,9 @@
 	 *
 	 * @since  5.8.0
 	 * @return string The overlay stylesheet filename without the directory
-	 */	
-	function wpas_get_overlay() {		
-		return ( '' != ( $t = wpas_get_option( 'theme_overlay', 'style.css' ) ) ) ? $t : 'style.css';		
+	 */
+	function wpas_get_overlay() {
+		return ( '' != ( $t = wpas_get_option( 'theme_overlay', 'style.css' ) ) ) ? $t : 'style.css';
 	}
 
 	/**
@@ -235,14 +235,14 @@
 				WPAS_TEMPLATE_PATH . 'css/style.css'
 			)
 		);
-		
+
 		if ( $template && $template <> WPAS_PATH . 'themes/' . $theme . '/css/style.css' ) {
 			/* We found something that isn't in the standard AS path so use that */
 			return apply_filters( 'wpas_get_theme_stylesheet', $template );
 		}
 		/* End try to find a style.css file of higher priority */
-		
-		/* If we're here then we're working from files in the standard AS path */		
+
+		/* If we're here then we're working from files in the standard AS path */
 		if ( empty( $overlay ) ) {
 			$overlay = 'style.css' ;
 		}
@@ -275,24 +275,24 @@
 
 		$theme = wpas_get_theme();
 		$overlay = wpas_get_overlay();
-		
+
 		/* Try to find a style.css file of higher priority */
 		$template = locate_template(
 			array(
 				WPAS_TEMPLATE_PATH . 'css/style.css'
 			)
 		);
-		
+
 		if ( $template && $template <> WPAS_PATH . 'themes/' . $theme . '/css/style.css' ) {
 			/* We found something that isn't in the standard AS path so use that */
 			/* But first we need to convert to the URI, NOT the absolute file path */
-			$template = get_stylesheet_directory_uri() . '/' . WPAS_TEMPLATE_PATH . 'css/style.css';			
+			$template = get_stylesheet_directory_uri() . '/' . WPAS_TEMPLATE_PATH . 'css/style.css';
 			return apply_filters( 'wpas_get_theme_stylesheet_uri', $template );
 		}
 		/* End try to find a style.css file of higher priority */
-		
-		
-		/* If we're here then we're working from files in the standard AS path */				
+
+
+		/* If we're here then we're working from files in the standard AS path */
 		if ( empty( $overlay ) ) {
 			$overlay = 'style.css' ;
 		}
@@ -363,9 +363,9 @@
 		$columns_callbacks = apply_filters( 'wpas_tickets_details_columns_callbacks', $columns_callbacks );
 		?>
 
-		<?php if ( ! empty( $args[ 'container' ] ) ): ?><<?php echo $args[ 'container' ]; ?> class="<?php echo !empty( $args[ 'container' ] ) ? $args[ 'container_class' ] : ''; ?>"><?php endif; ?>
+		<?php if ( ! empty( $args[ 'container' ] ) ): ?><<?php echo $args[ 'container' ]; ?> class="<?php echo !empty( $args[ 'container' ] ) ? esc_attr( $args[ 'container_class' ] ) : ''; ?>"><?php endif; ?>
 
-        <table id="<?php echo $args[ 'table_id' ]; ?>" class="<?php echo $args[ 'table_class' ]; ?>">
+        <table id="<?php echo esc_attr( $args[ 'table_id' ] ); ?>" class="<?php echo esc_attr( $args[ 'table_class' ] ); ?>">
             <thead>
             <tr>
 				<?php foreach ( $columns as $column => $label ): ?>
@@ -445,8 +445,8 @@
 		 */
 		elseif ( 'open' === $status && true === wpas_can_reply_ticket() ): ?>
 
-        <form id="<?php echo $args[ 'form_id' ]; ?>" class="<?php echo $form_class; ?>" method="post"
-              action="<?php echo get_permalink( $post_id ); ?>" enctype="multipart/form-data">
+        <form id="<?php echo esc_attr( $args[ 'form_id' ] ); ?>" class="<?php echo esc_attr( $form_class ); ?>" method="post"
+              action="<?php echo esc_url( get_permalink( $post_id ) ); ?>" enctype="multipart/form-data">
 
 			<?php
 			/**
@@ -456,8 +456,8 @@
 			 */
 			do_action( 'wpas_ticket_details_reply_textarea_before' ); ?>
 
-            <<?php echo $args[ 'container' ]; ?> id="<?php echo $args[ 'container_id' ]; ?>"
-            class="<?php echo $args[ 'container_class' ]; ?>">
+            <<?php echo $args[ 'container' ]; ?> id="<?php echo esc_attr( $args[ 'container_id' ] ); ?>"
+            class="<?php echo esc_attr( $args[ 'container_class' ] ); ?>">
 			<?php echo $args[ 'textarea_before' ];
 
 			/**
@@ -494,7 +494,7 @@
 				$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', false );
 				?>
                 <textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea"
-                          placeholder="<?php _e( 'Type your reply here.', 'awesome-support' ); ?>"
+                          placeholder="<?php esc_html_e( 'Type your reply here.', 'awesome-support' ); ?>"
 				          <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
 			<?php }
 
@@ -513,9 +513,9 @@
 
                 <div class="checkbox">
                     <label for="close_ticket" data-toggle="tooltip" data-placement="right" title=""
-                           data-original-title="<?php _e( 'No reply is required to close', 'awesome-support' ); ?>">
+                           data-original-title="<?php esc_html_e( 'No reply is required to close', 'awesome-support' ); ?>">
                         <input type="checkbox" name="wpas_close_ticket" id="close_ticket"
-                               value="true"> <?php _e( 'Close this ticket', 'awesome-support' ); ?>
+                               value="true"> <?php esc_html_e( 'Close this ticket', 'awesome-support' ); ?>
                     </label>
                 </div>
 
@@ -528,7 +528,7 @@
 			 */
 			do_action( 'wpas_ticket_details_reply_close_checkbox_after' ); ?>
 
-            <input type="hidden" name="ticket_id" value="<?php echo $post_id; ?>"/>
+            <input type="hidden" name="ticket_id" value="<?php echo esc_attr( $post_id ); ?>"/>
 
 			<?php
 			wp_nonce_field( 'send_reply', 'client_reply', false, true );
@@ -716,13 +716,13 @@
 
 				$id    = get_the_ID();
 				$title = get_the_title();
-				
+
 				/* Maybe add the ticket id to the title string */
 				if ( ! boolval( wpas_get_option( 'hide_ticket_id_title_fe', false ) ) ) {
 					$title .= " (#$id)";
 				}
 
-				?><a href="<?php echo $link; ?>"><?php echo $title; ?></a><?php
+				?><a href="<?php echo esc_url( $link ); ?>"><?php echo esc_html( $title ); ?></a><?php
 				break;
 
 			case 'date':
@@ -894,7 +894,7 @@
 		}
 
 	}
-	
+
 	/**
 	 * Display tertiary assignee.
 	 *
@@ -918,7 +918,7 @@
 		}
 
 	}
-	
+
 	/**
 	 * Display 3rd party information in ticket list.
 	 *
@@ -935,7 +935,7 @@
 	function wpas_show_3rd_party01_column( $field, $post_id ) {
 		$third_party_name01  = get_post_meta( $post_id, '_wpas_first_addl_interested_party_name', true );
 		$third_party_email01 = get_post_meta( $post_id, '_wpas_first_addl_interested_party_email', true );
-		
+
 		$fullouput = '';
 		If ( ! empty($third_party_name01) ) {
 			$fullouput .= $third_party_name01 ;
@@ -944,7 +944,7 @@
 			If ( empty($fullouput) ) {
 				$fullouput .= $third_party_email01 ;
 			}
-			
+
 			If ( ! empty($fullouput) ) {
 				$fullouput .= '<br />' . $third_party_email01 ;
 			}
@@ -971,7 +971,7 @@
 	function wpas_show_3rd_party02_column( $field, $post_id ) {
 		$third_party_name02  = get_post_meta( $post_id, '_wpas_second_addl_interested_party_name', true );
 		$third_party_email02 = get_post_meta( $post_id, '_wpas_second_addl_interested_party_email', true );
-		
+
 		$fullouput = '';
 		If ( ! empty($third_party_name02) ) {
 			$fullouput .= $third_party_name02 ;
@@ -980,7 +980,7 @@
 			If ( empty($fullouput) ) {
 				$fullouput .= $third_party_email02 ;
 			}
-			
+
 			If ( ! empty($fullouput) ) {
 				$fullouput .= '<br />' . $third_party_email02 ;
 			}
@@ -990,7 +990,7 @@
 			echo $fullouput;
 		}
 	}
-	
+
 	/***
 	 * Display integer as hh:mm:ss
 	 *
@@ -1137,7 +1137,7 @@
 		echo $tag;
 
 	}
-	
+
 	/**
 	 * Display the ticket type.
 	 *
@@ -1169,7 +1169,7 @@
 
 		echo $tag;
 
-	}	
+	}
 
 	/**
 	 * Get the notification wrapper markup
@@ -1424,7 +1424,7 @@
 		return true;
 
 	}
-	
+
 	add_action( 'wpas_after_registration_fields', 'wpas_gdpr_checkboxes', 10, 3 );
 	/**
 	 * Add the checkboxes for GDPR notices
@@ -1457,7 +1457,7 @@
 
 			echo $gdpr01->get_output();
 		}
-		
+
 		$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
 		$gdpr_long_desc_02 = wpas_get_option( 'gdpr_notice_long_desc_02', '' );
 		$gdpr_opt_out_ok_02 = wpas_get_option('gdpr_notice_opt_out_ok_02', '' );
@@ -1477,7 +1477,7 @@
 			) );
 
 			echo $gdpr02->get_output();
-		}	
+		}
 
 		$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
 		$gdpr_long_desc_03 = wpas_get_option( 'gdpr_notice_long_desc_03', '' );
@@ -1498,9 +1498,9 @@
 			) );
 
 			echo $gdpr03->get_output();
-		}		
+		}
 
-	}	
+	}
 
 	add_filter( 'wpas_cf_field_markup_readonly', 'wpas_cf_field_markup_time_tracking_readonly', 10, 2 );
 	/**
@@ -1551,9 +1551,9 @@
 		} else {
 			return wp_logout_url();
 		}
-		
+
 	}
-	
+
 	/**
 	 * Alter page title for single ticket.
 	 *
@@ -1631,4 +1631,3 @@
 	}
 	// Add filter to `the_title` hook.
 	add_filter( 'the_title', 'wpas_single_ticket_title', 10, 1 );
-	
