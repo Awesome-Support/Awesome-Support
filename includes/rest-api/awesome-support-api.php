@@ -46,7 +46,7 @@ function wpas_rest_api_load() {
 		if ( boolval( wpas_get_option( 'enable_rest_api' ) ) ) {
 			// Load API Class
 			require( __DIR__ . '/includes/api.php' );
-			// Initialize 
+			// Initialize
 			return wpas_api();
 		}
 
@@ -55,12 +55,12 @@ function wpas_rest_api_load() {
 }
 
 /**
- * Notify user 
+ * Notify user
  *
  * @return void
  */
 function wpas_rest_api_addon_notice() {
-	printf( '<div class="notice notice-error"><p>Awesome Support: ' . __( 'REST API Addon is now part of Awesome Support core. Please deactivate and delete the REST API addon.', 'awesome-support' ) . '</p></div>' );
+	printf( '<div class="notice notice-error"><p>Awesome Support: ' . esc_html__( 'REST API Addon is now part of Awesome Support core. Please deactivate and delete the REST API addon.', 'awesome-support' ) . '</p></div>' );
 }
 
 

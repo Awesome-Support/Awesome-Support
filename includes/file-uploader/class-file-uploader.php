@@ -297,7 +297,7 @@ class WPAS_File_Upload {
 		<div class="wpas-auto-delete-attachments-container">
 			<label for="wpas-auto-delete-attachments">
 				<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1" <?php checked(1, $flag_on); ?>>
-				<?php _e( 'Automatically delete attachments when a ticket is closed', 'wpas' ); ?>
+				<?php esc_html_e( 'Automatically delete attachments when a ticket is closed', 'wpas' ); ?>
 			</label>
 		</div>
 		<?php
@@ -595,18 +595,18 @@ class WPAS_File_Upload {
 			}
 
 			if ( 'attachment' !== $attachment->post_type ) {
-				wp_die( __( 'The file you requested is not a valid attachment', 'awesome-support' ) );
+				wp_die( esc_html__( 'The file you requested is not a valid attachment', 'awesome-support' ) );
 			}
 
 			if ( empty( $attachment->post_parent ) ) {
-				wp_die( __( 'The attachment you requested is not attached to any ticket', 'awesome-support' ) );
+				wp_die( esc_html__( 'The attachment you requested is not attached to any ticket', 'awesome-support' ) );
 			}
 
 			$parent    = get_post( $attachment->post_parent ); // Get the parent. It can be a ticket or a ticket reply
 			$parent_id = empty( $parent->post_parent ) ? $parent->ID : $parent->post_parent;
 
 			if ( true !== wpas_can_view_ticket( $parent_id ) ) {
-				wp_die( __( 'You are not allowed to view this attachment', 'awesome-support' ) );
+				wp_die( esc_html__( 'You are not allowed to view this attachment', 'awesome-support' ) );
 			}
 
 			$render_method = wpas_get_option( 'attachment_render_method', 'inline');  // returns 'inline' or 'attachment'.
@@ -946,7 +946,7 @@ class WPAS_File_Upload {
 		if ( ! empty( $attachments ) ): ?>
 
 			<div class="wpas-reply-attachements">
-				<strong><?php _e( 'Attachments:', 'awesome-support' ); ?></strong>
+				<strong><?php esc_html_e( 'Attachments:', 'awesome-support' ); ?></strong>
 				<ul>
 					<?php
 
@@ -991,14 +991,14 @@ class WPAS_File_Upload {
 							<li>
 									<?php
 									if( $can_delete ) {
-										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', $post_id,  $attachment['id'], __( 'X', 'awesome-support' ) );
+										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
 									}
 
 
 
 									?>
 
-									<a href="<?php echo $link; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
+									<a href="<?php echo esc_url( $link ); ?>" target="_blank"><?php echo esc_html( $name ); ?></a> <?php echo esc_html( $filesize ); ?></li><?php
 
 						} /**
 						 * Now if we have a different upload source we delegate the computing

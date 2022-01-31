@@ -63,7 +63,7 @@ function wpas_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
 			break;
 
 		case 'email':
-			printf( '<a href="mailto:%1$s">%1$s</a>', $user->data->user_email );
+			printf( '<a href="mailto:%1$s">%1$s</a>', esc_attr( $user->data->user_email ) );
 			break;
 
 		default:

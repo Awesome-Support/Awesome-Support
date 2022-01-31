@@ -47,7 +47,7 @@ if ( isset( $post ) ) {
 
 	<div class="wpas-row" id="wpas-statusdate">
 		<div class="wpas-col">
-			<strong><?php _e( 'Status', 'awesome-support' ); ?></strong>
+			<strong><?php esc_html_e( 'Status', 'awesome-support' ); ?></strong>
 			<?php if ( 'post-new.php' != $pagenow ):
 				wpas_cf_display_status( '', $post->ID );
 			?>
@@ -58,7 +58,7 @@ if ( isset( $post ) ) {
 		<div class="wpas-col">
 			<?php if ( isset( $post ) ): ?>
 				<strong><?php echo esc_html( $date ); ?></strong>
-				<em><?php printf( __( '%s ago', 'awesome-support' ), $dateago ); ?></em>
+				<em><?php printf( esc_html__( '%s ago', 'awesome-support' ), esc_html( $dateago ) ); ?></em>
 			<?php endif; ?>
 		</div>
 
@@ -66,13 +66,13 @@ if ( isset( $post ) ) {
 	<?php do_action( 'wpas_backend_ticket_stakeholders_before', $post->ID ); ?>
 	<?php require( WPAS_PATH . 'includes/admin/metaboxes/stakeholders.php' ); ?>
 	<?php if ( 'open' === get_post_meta( $post->ID, '_wpas_status', true ) ): ?>
-		<label for="wpas-post-status"><strong><?php _e( 'Current Status', 'awesome-support' ); ?></strong></label>
+		<label for="wpas-post-status"><strong><?php esc_html_e( 'Current Status', 'awesome-support' ); ?></strong></label>
 		<p>
 			<select id="wpas-post-status" name="post_status_override" style="width: 100%">
 				<?php foreach ( $statuses as $status => $label ):
 					$selected = ( $post_status === $status ) ? 'selected="selected"' : '';
 					if ( 'auto-draft' === $post_status && 'processing' === $status ) { $selected = 'selected="selected"'; } ?>
-					<option value="<?php echo $status; ?>" <?php echo $selected; ?>><?php echo $label; ?></option>
+					<option value="<?php echo esc_attr( $status ); ?>" <?php echo esc_attr( $selected ); ?>><?php echo esc_html( $label ); ?></option>
 				<?php endforeach; ?>
 			</select>
 			<?php if ( isset( $_GET['post'] ) ): ?>
@@ -85,14 +85,14 @@ if ( isset( $post ) ) {
 	<div id="major-publishing-actions">
 		<?php if ( current_user_can( "close_ticket", $post->ID ) ): ?>
 			<div id="delete-action">
-				<a class="submitdelete deletion" href="<?php echo $action; ?>">
+				<a class="submitdelete deletion" href="<?php echo esc_attr( $action ); ?>">
 					<?php
 					if ( 'closed' === $ticket_status ) {
-						_e( 'Re-open', 'awesome-support' );
+						esc_html_e( 'Re-open', 'awesome-support' );
 					} elseif( '' === $ticket_status ) {
-						_e( 'Open', 'awesome-support' );
+						esc_html_e( 'Open', 'awesome-support' );
 					} else {
-						_e( 'Close', 'awesome-support' );
+						esc_html_e( 'Close', 'awesome-support' );
 					}
 					?>
 				</a>

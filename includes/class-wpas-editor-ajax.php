@@ -152,8 +152,8 @@ class WPAS_Editor_Ajax {
 		$qt_init  = $this->get_qt_init( $editor_id ); ?>
 
 		<script type="text/javascript">
-			tinyMCEPreInit.mceInit = jQuery.extend( tinyMCEPreInit.mceInit, <?php echo $mce_init ?>);
-			tinyMCEPreInit.qtInit = jQuery.extend( tinyMCEPreInit.qtInit, <?php echo $qt_init ?>);
+			tinyMCEPreInit.mceInit = jQuery.extend( tinyMCEPreInit.mceInit, <?php echo esc_attr( $mce_init ); ?>);
+			tinyMCEPreInit.qtInit = jQuery.extend( tinyMCEPreInit.qtInit, <?php echo esc_attr( $qt_init ); ?>);
 		</script>
 
 		<?php die();
@@ -181,7 +181,7 @@ class WPAS_Editor_Ajax {
 			die();
 		}
 
-		echo apply_filters( 'the_content', wp_unslash( $post->post_content ) );
+		echo apply_filters( 'the_content', wp_kses_post( $post->post_content ) );
 		die();
 	}
 

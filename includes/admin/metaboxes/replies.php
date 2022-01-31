@@ -17,8 +17,8 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 		if( '' == $status ): ?>
 
 			<div class="updated below-h2" style="margin-top: 2em;">
-				<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php _e( 'Create Ticket', 'awesome-support' ); ?></h2>
-				<p><?php _e( 'Please save this ticket to reveal all options.', 'awesome-support' ); ?></p>
+				<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php esc_html_e( 'Create Ticket', 'awesome-support' ); ?></h2>
+				<p><?php esc_html_e( 'Please save this ticket to reveal all options.', 'awesome-support' ); ?></p>
 			</div>
 
 		<?php
@@ -78,8 +78,8 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 					 */
 					do_action( 'wpas_backend_replies_outside_row_before', $row );
 					?>
-					<tr valign="top" class="wpas-table-row wpas-<?php echo str_replace( '_', '-', $post_type_class ); ?> wpas-<?php echo str_replace( '_', '-', $row->post_status ); ?>" id="wpas-post-<?php echo $row->ID; ?>">
-					
+					<tr valign="top" class="wpas-table-row wpas-<?php echo esc_attr( str_replace( '_', '-', $post_type_class ) ); ?> wpas-<?php echo esc_attr( str_replace( '_', '-', $row->post_status ) ); ?>" id="wpas-post-<?php echo esc_attr( $row->ID ); ?>">
+
 						<?php
 						/**
 						 * This hook is fired just after we opened the post row
@@ -119,12 +119,12 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 
 					<?php if ( 'ticket_reply' === $post_type && 'trash' !== $row->post_status ): ?>
 
-						<tr class="wpas-editor wpas-editwrap-<?php echo $row->ID; ?>" style="display:none;">
+						<tr class="wpas-editor wpas-editwrap-<?php echo esc_attr( $row->ID ); ?>" style="display:none;">
 							<td colspan="2">
 								<div class="wpas-wp-editor" style="margin-bottom: 1em;"></div>
-								<input id="wpas-edited-reply-<?php echo $row->ID; ?>" type="hidden" name="edited_reply">
-								<input type="submit" id="wpas-edit-submit-<?php echo $row->ID; ?>" class="button-primary wpas-btn-save-edit" value="<?php _e( 'Save changes', 'awesome-support' ); ?>">
-								<input type="button" class="wpas-editcancel button-secondary" data-origin="#wpas-reply-<?php echo $row->ID; ?>" data-replyid="<?php echo $row->ID; ?>" data-reply="wpas-editwrap-<?php echo $row->ID; ?>" data-wysiwygid="wpas-editreply-<?php echo $row->ID; ?>" value="<?php _e( 'Cancel', 'awesome-support' ); ?>">
+								<input id="wpas-edited-reply-<?php echo esc_attr( $row->ID ); ?>" type="hidden" name="edited_reply">
+								<input type="submit" id="wpas-edit-submit-<?php echo esc_attr( $row->ID ); ?>" class="button-primary wpas-btn-save-edit" value="<?php esc_html_e( 'Save changes', 'awesome-support' ); ?>">
+								<input type="button" class="wpas-editcancel button-secondary" data-origin="#wpas-reply-<?php echo esc_attr( $row->ID ); ?>" data-replyid="<?php echo esc_attr( $row->ID ); ?>" data-reply="wpas-editwrap-<?php echo esc_attr( $row->ID ); ?>" data-wysiwygid="wpas-editreply-<?php echo esc_attr( $row->ID ); ?>" value="<?php esc_html_e( 'Cancel', 'awesome-support' ); ?>">
 							</td>
 						</tr>
 
@@ -146,10 +146,10 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 <hr />
 <div>
 	<?php do_action( 'wpas_backend_replies_bottom_before', $post ); ?>
-	
+
 	<!-- Link to collapse replies -->
-	<span name="wpas_collapse_replies_bottom" id="wpas-collapse-replies-bottom" class="link-primary wpas-link-reply wpas-replies-links-bottom" value="collapse_replies"><?php _e( 'Toggle Replies', 'awesome-support' ); ?></span>	
-	
+	<span name="wpas_collapse_replies_bottom" id="wpas-collapse-replies-bottom" class="link-primary wpas-link-reply wpas-replies-links-bottom" value="collapse_replies"><?php esc_html_e( 'Toggle Replies', 'awesome-support' ); ?></span>
+
 	<?php do_action( 'wpas_backend_replies_bottom_after', $post ); ?>
 </div>
 
@@ -160,7 +160,7 @@ if( 'open' == $status ):
 		require( WPAS_PATH . 'includes/admin/metaboxes/replies-form.php' );
 	else: ?>
 
-		<p><?php _e( 'Sorry, you don\'t have sufficient permissions to reply to tickets.', 'awesome-support' ); ?></p>
+		<p><?php esc_html_e( 'Sorry, you don\'t have sufficient permissions to reply to tickets.', 'awesome-support' ); ?></p>
 
 	<?php endif;
 
@@ -168,16 +168,16 @@ if( 'open' == $status ):
 elseif( 'closed' == $status ): ?>
 
 	<div class="updated below-h2" style="margin-top: 2em;">
-		<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php _e('Ticket is closed', 'wpas'); ?></h2>
-		<p><?php printf( __( 'This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href="%s">re-open it first</a>.', 'awesome-support' ), wpas_get_open_ticket_url( $post->ID ) ); ?></p>
+		<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php esc_html_e('Ticket is closed', 'wpas'); ?></h2>
+		<p><?php printf( wp_kses_post( __( 'This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href="%s">re-open it first</a>.', 'awesome-support' ) ), esc_attr( wpas_get_open_ticket_url( $post->ID ) ) ); ?></p>
 	</div>
 
-<?php endif; 
+<?php endif;
 
 /** Reply History popup */
 ?>
 <div class="wpas-reply-history-lightbox pop">
-	<div class="icon-remove-sign"><a href="#"><?php _e('X', 'wpas'); ?></a></div>
+	<div class="icon-remove-sign"><a href="#"><?php esc_html_e('X', 'wpas'); ?></a></div>
 	<div class="wpas-reply-history-wrapper">
 		<div class="wpas-reply-notification"></div>
 		<div class="wpas-reply-history-table">

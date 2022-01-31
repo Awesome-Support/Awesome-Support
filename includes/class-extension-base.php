@@ -43,7 +43,7 @@ abstract class WPAS_Extension_Base {
 	 *
 	 * Follow WordPress latest requirements and require
 	 * PHP version 5.4 at least.
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $php_version_required = '5.6';
@@ -56,7 +56,7 @@ abstract class WPAS_Extension_Base {
 	 */
 	protected $slug = '';
 
-	
+
 	/**
 	 * Instance of the addon itself.
 	 *
@@ -67,81 +67,81 @@ abstract class WPAS_Extension_Base {
 
 	/**
 	 * Possible error message.
-	 * 
+	 *
 	 * @var null|WP_Error
 	 */
 	protected $error = null;
-	
-	
+
+
 	/**
 	 * Addon text domain for retrieving translated strings
-	 * 
-	 * @var string 
+	 *
+	 * @var string
 	 */
 	protected $text_domain;
-	
-	
+
+
 	/**
 	 * Short unique id
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $uid = '';
-	
+
 	/**
 	 * Addon version
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $version = '1.0.0';
-	
+
 	/**
 	 * Addon file path
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $addon_file;
-	
+
 	/**
-	 * Addon directory url 
-	 * 
+	 * Addon directory url
+	 *
 	 * @var string
 	 */
 	protected $addon_url;
-	
+
 	/**
 	 * Addon directory path
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $addon_path;
-	
+
 	/**
 	 *	Addon directory relative path
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $addon_root;
-	
+
 	/**
 	 * Addon name
-	 * 
+	 *
 	 * @var string
 	 */
 	protected $name;
-	
-	
+
+
 	public function __construct() {
-		
+
 		$this->addon_file = $this->get_addon_path();
-		
+
 		$this->name = $this->get_addon_name();
-		
+
 		$this->declare_constants();
-		
+
 		$this->init();
 	}
-	
+
 
 	/**
 	 * Return an instance of this class.
@@ -152,9 +152,9 @@ abstract class WPAS_Extension_Base {
 	public static function get_instance() {
 
 		// If the single instance hasn't been set, set it now.
-		
+
 		$addon_class = get_called_class();
-		
+
 		if ( null == $addon_class::$instance ) {
 			$addon_class::$instance = new $addon_class;
 		}
@@ -174,16 +174,16 @@ abstract class WPAS_Extension_Base {
 
 	/**
 	 * Return Path of addon base file
-	 * 
+	 *
 	 * @return string
 	 */
 	protected static function get_addon_path() {
 		$reflector = new ReflectionClass( get_called_class() );
-		
+
 		return  $reflector->getFileName();
 	}
-	
-	
+
+
 	/**
 	 * Declare addon constants
 	 *
@@ -191,20 +191,20 @@ abstract class WPAS_Extension_Base {
 	 * @return void
 	 */
 	public function declare_constants() {
-		
-		
+
+
 		if( $this->uid ) {
-			
+
 			$this->addon_url  = trailingslashit( plugin_dir_url( $this->addon_file ) ) ;
 			$this->addon_path = trailingslashit( plugin_dir_path( $this->addon_file ) ) ;
 			$this->addon_root = trailingslashit( dirname( plugin_basename( $this->addon_file ) ) );
-			
-			
+
+
 			define( "WPAS_{$this->uid}_VERSION", $this->version );
 			define( "WPAS_{$this->uid}_URL",     $this->addon_url );
 			define( "WPAS_{$this->uid}_PATH",    $this->addon_path );
 			define( "WPAS_{$this->uid}_ROOT",    $this->addon_root );
-			
+
 		}
 	}
 
@@ -219,11 +219,11 @@ abstract class WPAS_Extension_Base {
 	 * @return void
 	 */
 	public static function activate() {
-		
+
 		if ( ! class_exists( 'Awesome_Support' ) ) {
 			deactivate_plugins( basename( self::get_addon_path() ) );
 			wp_die(
-				sprintf( __( 'You need Awesome Support to activate this addon. Please <a href="%s" target="_blank">install Awesome Support</a> before continuing.', 'awesome-support' ), esc_url( 'http://getawesomesupport.com/?utm_source=internal&utm_medium=addon_loader&utm_campaign=Addons' ) )
+				sprintf( wp_kses_post( __( 'You need Awesome Support to activate this addon. Please <a href="%s" target="_blank">install Awesome Support</a> before continuing.', 'awesome-support' ) ), esc_url( 'http://getawesomesupport.com/?utm_source=internal&utm_medium=addon_loader&utm_campaign=Addons' ) )
 			);
 		}
 
@@ -241,8 +241,8 @@ abstract class WPAS_Extension_Base {
 	public function init() {
 
 		$plugin_name = $this->get_addon_name( false );
-		
-		
+
+
 		if ( ! $this->is_core_active() ) {
 			$this->add_error( sprintf( __( '%s requires Awesome Support to be active. Please activate the core plugin first.', 'awesome-support' ), $plugin_name ) );
 		}
@@ -254,14 +254,14 @@ abstract class WPAS_Extension_Base {
 		if ( ! $this->is_version_compatible() ) {
 			$this->add_error( sprintf( __( '%s requires Awesome Support version %s or greater. Please update the core plugin first.', 'awesome-support' ), $plugin_name, $this->version_required ) );
 		}
-		
+
 		if ( ! $this->dependencies_available() ) {
 			$this->add_error( sprintf( __( '%s requires some dependencies that aren&#039;t loaded. Please contact support.', 'awesome-support' ), $plugin_name ) );
 		}
 
 		// Load the plugin translation.
 		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ), 15 );
-		
+
 		if ( is_a( $this->error, 'WP_Error' ) ) {
 			add_action( 'admin_notices', array( $this, 'display_error' ), 10, 0 );
 			add_action( 'admin_init',    array( $this, 'deactivate' ),    10, 0 );
@@ -279,28 +279,28 @@ abstract class WPAS_Extension_Base {
 			add_filter( 'wpas_addons_licenses', array( $this, 'addon_license' ),       10, 1 );
 			add_filter( 'plugin_row_meta',      array( $this, 'license_notice_meta' ), 10, 4 );
 		}
-		
+
 		$this->after_init();
 
 		/**
 		 * Register the addon
 		 */
 		wpas_register_addon( $this->slug, array( $this, 'load' ) );
-		
+
 		register_deactivation_hook( $this->addon_file, array( $this, 'deactivate' ) ) ;
-		
+
 
 		return true;
 
 	}
-	
+
 	/**
 	 * Call this method after addon successfully initialized
-	 * 
+	 *
 	 * @return type
 	 */
 	protected function after_init() {
-		
+
 	}
 
 	/**
@@ -313,7 +313,7 @@ abstract class WPAS_Extension_Base {
 	protected function plugin_data( $data ) {
 
 		if ( ! function_exists( 'get_plugin_data' ) ) {
-			
+
 			$site_url = get_site_url() . '/';
 
 			if ( defined( 'FORCE_SSL_ADMIN' ) && FORCE_SSL_ADMIN && 'http://' === substr( $site_url, 0, 7 ) ) {
@@ -323,13 +323,13 @@ abstract class WPAS_Extension_Base {
 			$admin_path = str_replace( $site_url, ABSPATH, get_admin_url() );
 
 			require_once( $admin_path . 'includes/plugin.php' );
-			
+
 		}
-		
-		
+
+
 		$plugin = get_plugin_data( $this->addon_file, false, false );
-		
-		
+
+
 		if ( array_key_exists( $data, $plugin ) ) {
 			return $plugin[$data];
 		} else {
@@ -386,11 +386,11 @@ abstract class WPAS_Extension_Base {
 		return true;
 
 	}
-	
-	
+
+
 	/**
 	 * Load vendor dependencies
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected function dependencies_available() {
@@ -464,13 +464,13 @@ abstract class WPAS_Extension_Base {
 					echo '<ul>';
 
 					foreach ( $message as $msg ) {
-						echo "<li>$msg</li>";
+						echo '<li>' . esc_html( $msg ) . '</li>';
 					}
 
-					echo '</li>';
+					echo '</ul>';
 
 				} else {
-					echo $message[0];
+					echo esc_html( $message[0] );
 				}
 				?>
 			</p>
@@ -484,39 +484,39 @@ abstract class WPAS_Extension_Base {
 	 *
 	 * If the requirements aren't met we try to
 	 * deactivate the addon completely.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function deactivate() {
 		if ( function_exists( 'deactivate_plugins' ) ) {
 			deactivate_plugins( basename( $this->addon_file ) );
-			
-			
+
+
 			if( method_exists( $this, 'after_deactivated') ) {
 				$this->after_deactivated();
 			}
 		}
-		
+
 	}
-	
-	
+
+
 	/**
 	 * Get addon name
-	 * 
+	 *
 	 * @param boolean $trim_as
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected function get_addon_name( $trim_as = true ) {
-		
+
 		$plugin_name = $this->plugin_data( 'Name' );
-		
+
 		if( $trim_as ) {
 			$plugin_name = trim( str_replace( 'Awesome Support:', '', $plugin_name ) ); // Remove the Awesome Support prefix from the addon name
 		}
-		
+
 		return $plugin_name;
-		
+
 	}
 
 	/**
@@ -556,7 +556,7 @@ abstract class WPAS_Extension_Base {
 		if ( ! current_user_can( 'administrator' ) ) {
 			return;
 		}
-		
+
 		/**
 		 * We only want to display the notice if an item id has been set.
 		 */
@@ -601,7 +601,7 @@ abstract class WPAS_Extension_Base {
 		if ( plugin_basename( $this->addon_file ) === $plugin_file ) {
 			$plugin_meta[] = '<strong>' . sprintf( __( 'You must fill-in your product license in order to get future plugin updates. <a href="%s">Click here to do it</a>.', 'awesome-support' ), $license_page ) . '</strong>';
 		}
-		
+
 		return $plugin_meta;
 	}
 
@@ -616,8 +616,8 @@ abstract class WPAS_Extension_Base {
 	public function load() {
 		// Load the addon here.
 	}
-	
-	
+
+
 	/**
 	 * Load the plugin text domain for translation.
 	 *
@@ -639,8 +639,8 @@ abstract class WPAS_Extension_Base {
 		$locale         = apply_filters( 'plugin_locale', get_locale(), $this->text_domain );
 		$mofile         = "{$this->text_domain}-{$locale}.mo";
 		$glotpress_file = $this->addon_path . $mofile;
-		
-		
+
+
 		// Look for the GlotPress language pack first of all
 		if ( file_exists( $glotpress_file ) ) {
 			$language = load_textdomain( $this->text_domain, $glotpress_file );
@@ -653,217 +653,217 @@ abstract class WPAS_Extension_Base {
 		return $language;
 
 	}
-	
+
 	/**
 	 * Return addon item id
-	 * 
+	 *
 	 * @return int
 	 */
 	public function getItemId() {
 		return $this->item_id;
 	}
-	
+
 	/**
 	 * Set addon item id
-	 * 
+	 *
 	 * @param int $item_id
 	 */
 	public function setItemId( $item_id ) {
 		$this->item_id = $item_id;
 	}
-	
+
 	/**
 	 * Return required version of core
-	 * 
+	 *
 	 * @return float
 	 */
 	public function getVersionRequired() {
 		return $this->version_required;
 	}
-	
+
 	/**
 	 * Set required version of core
-	 * 
+	 *
 	 * @param float $version_required
 	 */
 	public function setVersionRequired( $version_required ) {
 		$this->version_required = $version_required;
 	}
-	
+
 	/**
 	 * Return required version of php
-	 * 
+	 *
 	 * @return float
 	 */
 	public function getPhpVersionRequired() {
 		return $this->php_version_required;
 	}
-	
+
 	/**
 	 * Set required version of php
-	 * 
+	 *
 	 * @param float $php_version_required
 	 */
 	public function setPhpVersionRequired( $php_version_required ) {
 		$this->php_version_required = $php_version_required;
 	}
-	
+
 	/**
 	 * Return addon slug
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getSlug() {
 		return $this->slug;
 	}
-	
+
 	/**
 	 * Set addon slug
-	 * 
+	 *
 	 * @param string $slug
 	 */
 	public function setSlug( $slug ) {
 		$this->slug = $slug;
 	}
-	
+
 	/**
 	 * Return text domain for translation
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getTextDomain() {
 		return $this->text_domain;
 	}
-	
+
 	/**
 	 * Set text domain for translation
-	 * 
+	 *
 	 * @param string $text_domain
 	 */
 	public function setTextDomain( $text_domain ) {
 		$this->text_domain = $text_domain;
 	}
-	
+
 	/**
 	 * Return short unique id
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getUid() {
 		return $this->uid;
 	}
-	
+
 	/**
 	 * Set short unique id
-	 * 
+	 *
 	 * @param string $uid
 	 */
 	public function setUid( $uid ) {
 		$this->uid = $uid;
 	}
-	
+
 	/**
 	 * Return addon version
-	 * 
+	 *
 	 * @return float
 	 */
 	public function getVersion() {
 		return $this->version;
 	}
-	
+
 	/**
 	 * Set addon version
-	 * 
+	 *
 	 * @param float $version
 	 */
 	public function setVersion( $version ) {
 		$this->version = $version;
 	}
-	
+
 	/**
 	 * Return addon main file path
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getAddonFile() {
 		return $this->addon_file;
 	}
-	
+
 	/**
 	 * Set addon main file path
-	 * 
+	 *
 	 * @param string $addon_file
 	 */
 	public function setAddonFile( $addon_file ) {
 		$this->addon_file = $addon_file;
 	}
-	
+
 	/**
 	 * Return url of addon's main directory
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getAddonUrl() {
 		return $this->addon_url;
 	}
-	
+
 	/**
 	 * Set url of addon's main directory
-	 * 
+	 *
 	 * @param string $addon_url
 	 */
 	public function setAddonUrl( $addon_url ) {
 		$this->addon_url = $addon_url;
 	}
-	
+
 	/**
 	 * Return path of addon's main directory
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getAddonPath() {
 		return $this->addon_path;
 	}
-	
+
 	/**
 	 * Set path of addon's main directory
-	 * 
+	 *
 	 * @param string $addon_path
 	 */
 	public function setAddonPath( $addon_path ) {
 		$this->addon_path = $addon_path;
 	}
-	
+
 	/**
 	 * Return addon's directory name with trailing slash
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getAddonRoot() {
 		return $this->addon_root;
 	}
-	
+
 	/**
 	 * Set addon's directory name with trailing slash
-	 * 
+	 *
 	 * @param string $addon_root
 	 */
 	public function setAddonRoot( $addon_root ) {
 		$this->addon_root = $addon_root;
 	}
-	
+
 	/**
 	 * Return addon name
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getName() {
 		return $this->name;
 	}
-	
+
 	/**
 	 * Set addon name
-	 * 
+	 *
 	 * @param string $name
 	 */
 	public function setName( $name ) {

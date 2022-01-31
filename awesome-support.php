@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           6.0.12
+ * Version:           6.0.13
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -227,7 +227,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		public function __clone() {
 			// Cloning instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 		}
 
 		/**
@@ -238,7 +238,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 */
 		public function __wakeup() {
 			// Unserializing instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 		}
 
 		/**
@@ -248,7 +248,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '6.0.12' );
+			define( 'WPAS_VERSION',           '6.0.13' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -364,11 +364,11 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					if ( count( $message ) > 1 ) {
 						echo '<ul>';
 						foreach ( $message as $msg ) {
-							echo "<li>$msg</li>";
+							echo '<li>' . esc_html( $msg ) . '</li>';
 						}
-						echo '</li>';
+						echo '</ul>';
 					} else {
-						echo $message[0];
+						echo esc_html( $message[0] );
 					}
 					?>
 				</p>

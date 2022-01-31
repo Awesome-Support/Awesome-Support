@@ -31,7 +31,7 @@ function wpas_sc_submit_form() {
 
 			if ( false !== $registration && !empty( $registration ) && !is_null( get_post( intval( $registration ) ) ) ) {
 				/* As the headers are already sent we can't use wp_redirect. */
-				echo '<meta http-equiv="refresh" content="0; url=' . get_permalink( $registration ) . '" />';
+				echo '<meta http-equiv="refresh" content="0; url=' . esc_url( get_permalink( $registration ) ) . '" />';
 				echo wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'awesome-support' ) );
 				exit;
 			}
@@ -42,12 +42,12 @@ function wpas_sc_submit_form() {
 		 * If user is logged in we display the ticket submission form
 		 */
 		else:
-		
+
 			/**
 			 * Redirect to an alternate new ticket form if specified in settings.
 			 * But only do so if there is no query string in the url that forces
 			 * use of the standard ticket form.
-			 * We will be looking for a force_standard_form=1 in the url query string to 
+			 * We will be looking for a force_standard_form=1 in the url query string to
 			 * see if we should force the standard form to show up.
 			 */
 			if ( ! empty( wpas_get_option( 'new_ticket_form_redirect_fe', '' ) ) ) {
