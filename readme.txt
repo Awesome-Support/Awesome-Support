@@ -4,7 +4,7 @@ Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreativ
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
 Tested up to: 5.9
-Stable tag: 6.0.13
+Stable tag: 6.0.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -446,6 +446,13 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 6.0.14 =
+
+* Fix
+  * Fixed security vulnerability
+  * Fixed Fixed Error message format
+  * Fixed Fixed Tutorial message format
 
 = 6.0.13 =
 
