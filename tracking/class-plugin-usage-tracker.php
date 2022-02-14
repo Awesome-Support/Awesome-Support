@@ -818,7 +818,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 
 				<div class="notice notice-info updated put-dismiss-notice">
 					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
-					<p><?php echo esc_html( $notice_text ); ?></p>
+					<p><?php echo  $notice_text ; ?></p>
 					<p>
 						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-secondary"><?php esc_html_e( 'Allow', 'singularity' ); ?></a>
 						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php esc_html_e( 'Do Not Allow', 'singularity' ); ?></a>

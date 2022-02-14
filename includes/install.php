@@ -325,8 +325,12 @@ function wpas_ask_setup_wizard() {
 		<h1 class="wizard-main-heading"><?php esc_html_e( 'Awesome Support: First Time Install' , 'awesome-support' ); ?></h1>
 		<p class="wizard-first-line"><?php esc_html_e( 'Thank you for installing Awesome Support. Please choose an option below to get started.' , 'awesome-support' ); ?></p>
 		<p class="wizard-normal wizard-second-line"><?php esc_html_e( 'If this is not the first time you are using Awesome Support or you would like to manually configure your initial settings, then you should choose to skip this process. Otherwise proceed by clicking the orange button.' , 'awesome-support' ); ?></p>
-		<p><span class="wpas-button-wizard-primary"><?php esc_html_e( '<a href="'. admin_url( 'index.php?page=as-setup' ) .'">Click here To Get Started Now</a>', 'awesome-support' ); ?></span>
-			<span class="wpas-button-wizard-skip"><?php esc_html_e( '<a href="#" id="wpas-skip-wizard">Or skip this process</a>', 'awesome-support' ); ?>
+		<p><span class="wpas-button-wizard-primary">	
+			<a href="<?php echo esc_url( admin_url( 'index.php?page=as-setup' ) ); ?>">
+				<?php esc_html_e( 'Click here To Get Started Now' , 'awesome-support' ); ?>
+			</a>
+			</span>
+			<span class="wpas-button-wizard-skip"><a href="#" id="wpas-skip-wizard"><?php esc_html_e( 'Or skip this process' , 'awesome-support' ); ?></a></span>
 		</p>
 	</div>
 	<?php
