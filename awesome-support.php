@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           6.0.12
+ * Version:           6.0.14
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -155,17 +155,18 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			// Make sure the WordPress version is recent enough
 			if ( ! self::$instance->is_version_compatible() ) {
-				self::$instance->add_error( sprintf( __( 'Awesome Support requires WordPress version %s or above. Please update WordPress to run this plugin.', 'awesome-support' ), self::$instance->wordpress_version_required ) );
+				self::$instance->add_error( sprintf( esc_html__( 'Awesome Support requires WordPress version %s or above. Please update WordPress to run this plugin.', 'awesome-support' ), self::$instance->wordpress_version_required ) );
 			}
 
 			// Make sure we have a version of PHP that's not too old
 			if ( ! self::$instance->is_php_version_enough() ) {
-				self::$instance->add_error( sprintf( __( 'Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>.', 'awesome-support' ), self::$instance->php_version_required, 'a href="http://www.wpupdatephp.com/update/" target="_blank"' ) );
-			}
+				self::$instance->add_error( sprintf( esc_html__( 'Awesome Support requires PHP version %s or above. Read more information about ', 'awesome-support' ).'<a %s>'. esc_html__( 'how you can update', 'awesome-support' ).'</a>.', self::$instance->php_version_required, 'href="http://www.wpupdatephp.com/update/" target="_blank"' ) );
 
+			}
+			
 			// Check that the vendor directory is present
 			if ( ! self::$instance->dependencies_loaded() ) {
-				self::$instance->add_error( sprintf( __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array(
+				self::$instance->add_error( sprintf( esc_html__( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should','awesome-support').' <a href="%s" class="thickbox">'.esc_html__('install the production version', 'awesome-support' ).'</a>'.esc_html__(' of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array(
 						'tab'       => 'plugin-information',
 						'plugin'    => 'awesome-support',
 						'TB_iframe' => 'true',
@@ -248,7 +249,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '6.0.12' );
+			define( 'WPAS_VERSION',           '6.0.14' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -364,11 +365,11 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					if ( count( $message ) > 1 ) {
 						echo '<ul>';
 						foreach ( $message as $msg ) {
-							echo '<li>' . esc_html( $msg ) . '</li>';
+							echo '<li>' . $msg . '</li>';
 						}
 						echo '</ul>';
 					} else {
-						echo esc_html( $message[0] );
+						echo $message[0];
 					}
 					?>
 				</p>
@@ -653,8 +654,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return text the notice text to be shown to the user
 		 */
 		function awesome_support_tracking_notification_text( $notice_text ) {
-			$notice_text = __( '<b>Would you like a discount on your next Awesome Support purchase?</b>  Help us make a better product for you by allowing us to collect some system statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. <b>Tracking is completely optional</b>.  To show our appreciation for helping make Awesome Support better, <b>when you opt-in we will send you a discount code good towards your next purchase</b>. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
-			$notice_text = $notice_text . sprintf( __( ' <a %s>Find out more about what data we collect and how its used.</a> <a %s>View our privacy policy.</a>'  , 'awesome-support' ), 'a href="https://getawesomesupport.com/legal/tracking-statistics/" target="_blank"', 'a href="https://getawesomesupport.com/legal/privacy-policy/" target="_blank"' );
+			$notice_text = '<b>'.esc_html__( 'Would you like a discount on your next Awesome Support purchase?', 'awesome-support').'</b>'.  esc_html__('Help us make a better product for you by allowing us to collect some system statistics and adding you to our email list for important updates. We won’t record any sensitive data, only information regarding the WordPress environment and product settings, which we will use to help us make improvements to the product. ', 'awesome-support').'<b>'.  esc_html__('Tracking is completely optional', 'awesome-support').'</b>'. esc_html__('.  To show our appreciation for helping make Awesome Support better,', 'awesome-support').' <b>'. esc_html__('when you opt-in we will send you a discount code good towards your next purchase', 'awesome-support').'</b>'. esc_html__('. And, opting in would allow us to send you any critical security related information directly - which, in most instances, would be much faster than receiving it from other sources.', 'awesome-support' );
+			$notice_text = $notice_text . sprintf(  ' <a %s>'. esc_html__('Find out more about what data we collect and how its used.'  , 'awesome-support').'</a> <a %s>'.esc_html__('View our privacy policy.','awesome-support').'</a>', 'a href="https://getawesomesupport.com/legal/tracking-statistics/" target="_blank"', 'a href="https://getawesomesupport.com/legal/privacy-policy/" target="_blank"' );
 			return $notice_text;
 		}
 

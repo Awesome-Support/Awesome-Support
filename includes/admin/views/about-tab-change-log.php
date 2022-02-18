@@ -5,6 +5,38 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.0.14</h1>
+				<h3>6.0.14 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed security vulnerability</li>
+					<li>Fix: Fixed Error message format</li>
+					<li>Fix: Fixed Tutorial message format</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.0.13</h1>
+				<h3>6.0.13 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed security vulnerability</li>
+					<li>Fix: Fixed custom fields check box issuee</li>
+					<li>Fix: Fixed Mail Editor Problem</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.0.12</h1>
 				<h3>6.0.12 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
