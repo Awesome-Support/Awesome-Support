@@ -60,7 +60,11 @@
 						// Append editor to DOM
 						$('.wpas-editwrap-' + replyId).addClass('wp_editor_active').show();
 						$('.wpas-editwrap-' + replyId + ' .wpas-wp-editor').html(response);
-
+						
+						/* GAS 6.0.14 - BUG : Edit ticket content not working. */
+						$('#wp-wpas-editreply-' + replyId + '-media-buttons').hide();						
+						$('.wpas-editwrap-' + replyId + ' .wpas-wp-editor').append($('#wpas-reply-' + replyId + ' .wpas-reply-attachements').clone());
+						
 						// Init TinyMCE
 						tinyMCE.init(tinyMCEPreInit.mceInit[data.editor_id]);
 
