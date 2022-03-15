@@ -1,5 +1,5 @@
 jQuery(document).ready(function(){
-	jQuery('#wpas-skip-wizard').click(function(){
+	jQuery('#wpas-skip-wizard').on( 'click', function() {
 		jQuery.ajax({
 			url : WPAS_Wizard.ajax_url,
 			type : 'post',

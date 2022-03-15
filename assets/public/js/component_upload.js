@@ -33,7 +33,7 @@
 		}
                 
                 /* Delete single attachment from front-end or back-end  */
-                $('body').delegate( '.btn_delete_attachment', 'click', function( e ) {
+                $('body').on('click', '.btn_delete_attachment', function( e ) {
                     
                     e.preventDefault();
                     
@@ -66,7 +66,7 @@
             });
             
             /* front end update auto delete attachments flag */
-            $('#wpas-new-reply .wpas-auto-delete-attachments-container input[type=checkbox]').change( function() {
+            $('#wpas-new-reply .wpas-auto-delete-attachments-container input[type=checkbox]').on("change", function() {
                     var btn = $(this);
                     
                     var loader = $('<span class="spinner" style="visibility: visible;margin-left: 0;float: left;margin-top: 0;"></span>');
