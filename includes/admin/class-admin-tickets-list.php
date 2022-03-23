@@ -976,7 +976,7 @@ SQL;
 		/* RESET FILTERS */
 
 		echo '<span style="line-height: 28px; margin: 0 25px;">';
-		echo esc_url( $this->reset_link() );
+		echo $this->reset_link();
 		echo '</span>';
 
 		echo '<div class="clear clearfix"></div>';
@@ -1735,7 +1735,7 @@ SQL;
 
 		$link = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
 
-		return "<a href='$link'>Reset Filters</a>";
+		return "<a href='".esc_url($link)."'>Reset Filters</a>";
 
 	}
 
@@ -1872,7 +1872,7 @@ SQL;
 			echo '<div class="alignright" style="clear: both; overflow: hidden; margin: 20px 10px;"><p>'
 			     . esc_html__( 'NOTE: Please be aware that when you sort on a column, tickets that have never had a value entered into that column will not appear on your sorted list (null fields). This can reduce the number of tickets in your sorted list.  This reduced number of tickets is NOT a bug - it is a deliberate design decision. You should also be aware that deliberately entering a blank into a ticket field is considered data so those tickets will show up in the sorted list.', 'awesome-support' )
 			     . ' - '
-			     . esc_url( $this->reset_link() )
+			     . $this->reset_link()
 			     . '</p></div>';
 		}
 
