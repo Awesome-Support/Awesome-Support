@@ -116,7 +116,7 @@
                         <td>
                             <?php
 
-                                $content = apply_filters( 'the_content', wp_unslash( $reply->post_content ) );
+                                $content = apply_filters( 'the_content', $reply->post_content );
 
                                 do_action( 'wpas_backend_reply_content_before', $reply->ID );
 
