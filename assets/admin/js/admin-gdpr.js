@@ -84,7 +84,7 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Ajax based export data
 	 */
-	jQuery( "#wpas-gdpr-export-data-submit" ).click( function(e) {
+	jQuery( "#wpas-gdpr-export-data-submit" ).on( "click", function(e) {
 		e.preventDefault();
 		jQuery( "#wpas-gdpr-export-data-submit" ).removeClass('button-primary').prop('disabled',true).val( 'Processing..' );
 		var data = {

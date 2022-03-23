@@ -138,7 +138,7 @@
 				});
 			});
 
-			btnDelete.click(function (e) {
+			btnDelete.on("click", function (e) {
 				if (confirm(wpasL10n.alertDelete)) {
 					return true;
 				} else {
