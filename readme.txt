@@ -447,6 +447,10 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.0.15.6 =
+
+* Fix
+  * 3984879 - GAS conflict with Download Monitor (Plugin)
 = 6.0.15.5 =
 
 * Fix
