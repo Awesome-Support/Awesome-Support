@@ -237,8 +237,7 @@ function wpas_register_assets_back_end() {
 		wp_enqueue_editor();
 		wp_enqueue_media();
 	}
-
-
+	
 }
 
 add_action( 'wp_enqueue_scripts', 'wpas_assets_front_end', 10 );
