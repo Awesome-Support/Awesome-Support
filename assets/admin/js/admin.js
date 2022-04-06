@@ -181,10 +181,12 @@
         });
 
         // Adding color picker for priority taxonomy
-        if (typeof $.wp.wpColorPicker === 'function') {
-            $('#term-color').wpColorPicker();
-        }
-
+        if (typeof $.wp !== 'undefined')
+        {
+			if (typeof $.wp.wpColorPicker === 'function') {
+				$('#term-color').wpColorPicker();
+			}
+		}
 
         /**
          * Admin tabs
