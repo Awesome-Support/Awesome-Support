@@ -235,6 +235,7 @@ function wpas_register_assets_back_end() {
 	// Edit ticket content!
 	if ( true == wpas_is_plugin_page() ) {
 		wp_enqueue_editor();
+		wp_enqueue_media();
 	}
 
 
