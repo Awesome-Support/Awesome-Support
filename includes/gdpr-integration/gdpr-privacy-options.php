@@ -103,13 +103,15 @@ class WPAS_Privacy_Option {
 
 			case 'add_user_consent':
 
-				$_status = (isset( $_GET['_status'] ) && !empty( isset( $_GET['_status'] ) ))? sanitize_text_field( $_GET['_status'] ): '';
-				$consent = ( isset( $_GET['_consent'] ) && !empty( isset( $_GET['_consent'] ) ) )? sanitize_text_field( $_GET['_consent'] ): '';
-				if( empty( $_status ) || empty( $consent ) ){
+				// $_status = (isset( $_GET['_status'] ) && !empty( isset( $_GET['_status'] ) ))? sanitize_text_field( $_GET['_status'] ): '';
+				$_status = ( isset( $_GET['_status'] ) && $_GET['_status'] ) ? sanitize_text_field( $_GET['_status'] ) : '';
+				// $consent = ( isset( $_GET['_consent'] ) && !empty( isset( $_GET['_consent'] ) ) )? sanitize_text_field( $_GET['_consent'] ): '';
+				$consent = ( isset( $_GET['_consent'] ) && $_GET['_consent'] ) ? sanitize_text_field( $_GET['_consent'] ) : '';
+				if ( empty( $_status ) || empty( $consent ) ) {
 					return false;
 				}
 				// Check for results
-				if (!empty($authors)) {
+				if ( ! empty( $authors ) ) {
 
 				    // loop through each author
 				    foreach ($authors as $author) {
