@@ -347,7 +347,9 @@ function wpas_ask_setup_wizard() {
  */
 function wpas_install_default_email_templates() {
 
-	wpas_install_email_template( 'elegant', false );
-	add_option( 'wpas_setup_email_templates', 'complete' );
+	if (function_exists('wpas_install_email_template')) {
+		wpas_install_email_template( 'elegant', false );
+		add_option( 'wpas_setup_email_templates', 'complete' );
+	}
 
 }
