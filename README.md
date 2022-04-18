@@ -33,7 +33,7 @@ The development version works a little differently than the production version. 
 
 #### Requirements
 
-In order to work with the development branch you will need the following on your development environment:
+In order to work with the development branch you need the following on your development environment:
 
 - [Composer](https://getcomposer.org)
 - [Node.js](http://nodejs.org/)

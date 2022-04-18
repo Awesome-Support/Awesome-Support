@@ -447,6 +447,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+
 = 6.0.15.6 =
 
 * Fix
@@ -460,6 +461,12 @@ There are several factors that can influence e-mail notifications delivery. Plea
   * GAS-edit-ticket-content-and-reply
   * Fix reset filter button 
   * Fix: invalid ticket ID a tag url in list
+=======
+= 6.0.15 =
+
+* Fix
+  * Fixed stability vulnerability
+  
 = 6.0.14 =
 
 * Fix
