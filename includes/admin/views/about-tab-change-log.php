@@ -5,14 +5,14 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.1</h1>
-				<h3>6.1 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<h1>What's New In 6.1.0</h1>
+				<h3>6.1.0 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
 					<li>Fix: 3984879 - GAS conflict with Download Monitor (Plugin)</li>
 					<li>Fix: 3946543 - Error occurs when applying Close Filter</li>
 					<li>Fix: 3862319 - Backslashes lost in Ticket body</li>
-					<li>Fix: 3919242_js_deprecated_messages</li>
-					<li>Fix: GAS-edit-ticket-content-and-reply</li>
+					<li>Fix: 3919242 - JS deprecated messages</li>
+					<li>Fix: It's not possible to edit a ticket submission or reply in the back end.</li>
 					<li>Fix: Reset filter button </li>
 					<li>Fix: Invalid ticket ID a tag url in list</li>
 					<li>Fix: Stability vulnerability</li>

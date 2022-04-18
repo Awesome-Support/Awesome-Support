@@ -448,17 +448,17 @@ There are several factors that can influence e-mail notifications delivery. Plea
 == Changelog ==
 
 
-= 6.1
+= 6.1.0
 
 * Fix
   * 3984879 - GAS conflict with Download Monitor (Plugin)
   * 3946543 - Error occurs when applying Close Filter
   * 3862319 - Backslashes lost in Ticket body
-  * 3919242_js_deprecated_messages
-  * GAS-edit-ticket-content-and-reply
-  * Fix reset filter button 
-  * Fix: invalid ticket ID a tag url in list
-  * Fixed stability vulnerability
+  * 3919242 - JS deprecated messages
+  * It's not possible to edit a ticket submission or reply in the back end.
+  * Reset filter button issue
+  * Invalid ticket ID a tag url in list
+  * Stability vulnerability
   * #652: Arbitrary expressions in empty are allowed in PHP 5.5 only 
 = 6.0.14 =
 
