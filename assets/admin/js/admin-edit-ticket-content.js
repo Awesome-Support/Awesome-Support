@@ -158,7 +158,7 @@
              * Prepare the standard settings. Include the media buttons plus toolbars
              */
             var settings = {
-                mediaButtons:	true,
+                mediaButtons:	false,
                 tinymce:	{
                     toolbar:	[]
                 },

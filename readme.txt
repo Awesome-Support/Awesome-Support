@@ -448,25 +448,18 @@ There are several factors that can influence e-mail notifications delivery. Plea
 == Changelog ==
 
 
-= 6.0.15.6 =
+= 6.1
 
 * Fix
   * 3984879 - GAS conflict with Download Monitor (Plugin)
-= 6.0.15.5 =
-
-* Fix
   * 3946543 - Error occurs when applying Close Filter
   * 3862319 - Backslashes lost in Ticket body
   * 3919242_js_deprecated_messages
   * GAS-edit-ticket-content-and-reply
   * Fix reset filter button 
   * Fix: invalid ticket ID a tag url in list
-=======
-= 6.0.15 =
-
-* Fix
   * Fixed stability vulnerability
-  
+  * #652: Arbitrary expressions in empty are allowed in PHP 5.5 only 
 = 6.0.14 =
 
 * Fix
