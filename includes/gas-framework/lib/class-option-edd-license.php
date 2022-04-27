@@ -247,7 +247,7 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 			}
 
 			/* Call the API. */
-			$response = wp_remote_get( add_query_arg( $api_params, $this->settings['server'] ), array( 'timeout' => 15, 'sslverify' => false ) );
+			$response = wp_remote_get( add_query_arg( $api_params, $this->settings['server'] ), array( 'timeout' => 15, 'sslverify' => true ) );
 
 			/* Check for request error. */
 			if ( is_wp_error( $response ) ) {
