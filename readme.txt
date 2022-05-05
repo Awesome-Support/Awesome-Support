@@ -1,10 +1,10 @@
-=== Awesome Support - WordPress HelpDesk & Support Plugin ===
+﻿=== Awesome Support - WordPress HelpDesk & Support Plugin ===
 
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 5.9
-Stable tag: 6.0.14
+Tested up to: 5.9.3
+Stable tag: 6.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -460,6 +460,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
   * Invalid ticket ID a tag url in list
   * Stability vulnerability
   * #652: Arbitrary expressions in empty are allowed in PHP 5.5 only 
+  
 = 6.0.14 =
 
 * Fix
