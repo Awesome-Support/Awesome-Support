@@ -264,7 +264,7 @@
 			 *
 			 * @since 3.5
 			 */
-			self.toggler.click( function(){
+			self.toggler.on("click", function(){
 				if ( self.toggler.hasClass( 'wp-picker-open' ) ) {
 					self.close();
 				} else {

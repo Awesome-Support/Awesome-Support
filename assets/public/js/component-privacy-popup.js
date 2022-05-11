@@ -10,13 +10,13 @@ jQuery(document).ready(function ($) {
 	jQuery( '.wpas-gdpr-pre-loader' ).hide();
 	jQuery( '.wpas-gdpr-loader-background' ).hide();
 
-	jQuery('.wpas-link-privacy').click(function(){
+	jQuery('.wpas-link-privacy').on("click", function(){
 		jQuery(".privacy-container-template").show();
 		jQuery(document).keyup(function(e) {
 			if (e.keyCode == 27) jQuery(".privacy-container-template").hide();
 		});
 
-		jQuery(".privacy-container-template .hide-the-content").click(function(){
+		jQuery(".privacy-container-template .hide-the-content").on("click", function(){
 			jQuery(".privacy-container-template").hide();
 		});
 	});
@@ -25,7 +25,7 @@ jQuery(document).ready(function ($) {
 	 * Ajax based ticket submission for "Right To Be Forgotten"
 	 * in "Delete My Existing Data" from GDPR popup
 	 */
-	jQuery( "#wpas-gdpr-ded-submit" ).click( function(e) {
+	jQuery( "#wpas-gdpr-ded-submit" ).on("click", function(e) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
 		jQuery( '.wpas-gdpr-pre-loader' ).show();
@@ -68,7 +68,7 @@ jQuery(document).ready(function ($) {
 	 * Ajax based ticket submission
 	 * in "Export My Existing Data" from GDPR popup
 	 */
-	jQuery( "#wpas-gdpr-export-submit" ).click( function(e) {
+	jQuery( "#wpas-gdpr-export-submit" ).on("click", function(e) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
 		jQuery( '.wpas-gdpr-pre-loader' ).show();
@@ -202,7 +202,7 @@ jQuery(document).ready(function ($) {
     /**
 	 * Ajax based export data
 	 */
-	jQuery( "#wpas-gdpr-export-data-submit" ).click( function(e) {
+	jQuery( "#wpas-gdpr-export-data-submit" ).on("click", function(e) {
 		e.preventDefault();
 		jQuery( '.wpas-gdpr-pre-loader' ).show();
 		jQuery( '.wpas-gdpr-loader-background').show();
@@ -234,13 +234,13 @@ jQuery(document).ready(function ($) {
 	/**
 	 * Set tab default
 	 */
-	jQuery( ".wpas-gdpr-tablinks" ).first().click();
+	jQuery( ".wpas-gdpr-tablinks" ).first().trigger('click');
 	
 	/**
 	 * Initiate WP Editor when requesting right
 	 * to be deleted data in GDPR popup
 	 */
-	jQuery( ".wpas-gdpr-tablinks" ).click( function(e) {
+	jQuery( ".wpas-gdpr-tablinks" ).on("click", function(e) {
 		if( jQuery(this).data( 'id' ) === 'delete-existing'  ) {
 			/**
 			 * If the Additional Information is set

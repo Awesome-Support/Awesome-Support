@@ -143,7 +143,7 @@ $by_status['closed'] = $closed;
 
 				foreach ( $tickets as $t ) {
 					$created = sprintf( esc_html_x( 'Created on %s', 'Ticket date creation', 'awesome-support' ), date( get_option( 'date_format' ), strtotime( $t->post_date ) ) );
-					$title   = apply_filters( 'the_title', $t->post_title );
+					$title   = apply_filters( 'the_title', $t->post_title, $t->ID );
 					$link    = esc_url( admin_url( "post.php?post=$t->ID&action=edit" ) );
 
 					if ( $t->ID !== (int) $post->ID ) {

@@ -39,7 +39,7 @@
 		}
 	} );
 
-	$newAppPassButton.click( function( e ) {
+	$newAppPassButton.on("click", function( e ) {
 		e.preventDefault();
 		var name = $newAppPassField.val();
 

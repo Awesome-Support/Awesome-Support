@@ -33,8 +33,8 @@
 		
 		var lnkToggleRepliesTop 	= $('#wpas-collapse-replies-top');  	// Get a handle to the TOGGLE REPLIES link at the top of the reply list
 		var lnkToggleRepliesBottom 	= $('#wpas-collapse-replies-bottom');  	// Get a handle to the TOGGLE REPLIES link at the bottom of the reply list
-		lnkToggleRepliesTop.click( function() { hideReplies(); } ) ;  		// When its clicked, call our hideReplies function above.	
-		lnkToggleRepliesBottom.click( function() { hideReplies(); } ) ;  	// When its clicked, call our hideReplies function above.
+		lnkToggleRepliesTop.on("click", function() { hideReplies(); } ) ;  		// When its clicked, call our hideReplies function above.	
+		lnkToggleRepliesBottom.on("click", function() { hideReplies(); } ) ;  	// When its clicked, call our hideReplies function above.
 
         /**
          * Function that will hide the TOGGLE REPLES links/buttons if the number of reply rows is 3 or less.
@@ -104,7 +104,7 @@ function wpas_add_toolbar_msg(imessage = '', successflag = true, ttl = 0 ) {
 		}
 
 		/* If the dismissible text is clicked hide the entire message area */
-		$('#wpas-toolbar-dismissible').click(function() {
+		$('#wpas-toolbar-dismissible').on("click", function() {
                 $('#wpas-tb01-msg-area').hide();
         });
 		

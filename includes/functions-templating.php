@@ -829,7 +829,18 @@
 				$term_title = apply_filters( 'wpas_taxonomy_name', $term->name, $post_id, $field );
 
 				if ( is_admin() ) {
-					$get           = array_map('wp_strip_all_tags', (array) $_GET);
+					$get = (array) $_GET;
+					$get_append = [];
+					foreach ($get as $key => $value) {
+
+						if(is_array($value) || is_object($value))
+						{
+							$get_append[$key] =  array_map('wp_strip_all_tags', (array)$value);
+							unset($get[$key]);
+						}													
+					}	
+					$get = array_map('wp_strip_all_tags', $get);
+					$get = array_merge($get, $get_append);		
 					$get[ $field ] = isset( $term->post_id ) ? $term->post_id : $term->term_id; // Check for $term->post_id which is set when products are synchronized
 					$url           = add_query_arg( $get, admin_url( 'edit.php' ) );
 					$item          = '<a href="' . esc_url( $url ) . '">' . esc_html( $term_title ) . '</a>';

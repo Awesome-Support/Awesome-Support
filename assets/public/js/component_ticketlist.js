@@ -55,7 +55,7 @@
 			});
 
 			// Clear status dropdown and search box
-			$('.wpas-clear-filter').click(function (e) {
+			$('.wpas-clear-filter').on("click", function (e) {
 				e.preventDefault();
 				statusDropdown.val('');
 				selector.trigger('footable_clear_filter');
