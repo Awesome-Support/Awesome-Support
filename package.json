@@ -3,7 +3,7 @@
   "version": "6.1.0",
   "private": true,
   "devDependencies": {
-    "grunt": "^1.4.1",
+    "grunt": "^1.5.2",
     "grunt-autoprefixer": "~0.8.2",
     "grunt-combine-mq": "^0.6.0",
     "grunt-composer": "^0.4.4",
