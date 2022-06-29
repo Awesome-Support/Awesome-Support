@@ -78,6 +78,7 @@ class WPAS_File_Upload {
 			add_action( 'before_delete_post', array( $this, 'delete_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_reply_content_after', array( $this, 'show_attachments' ), 10, 1 );
+			add_action( 'wpas_backend_reply_content_after_with_image', array( $this, 'show_attachments_with_image' ), 10, 1 );
 			add_filter( 'wpas_cf_wrapper_class', array( $this, 'add_wrapper_class_admin' ), 10, 2 );
 
 		}
@@ -999,6 +1000,110 @@ class WPAS_File_Upload {
 									?>
 
 									<a href="<?php echo esc_url( $link ); ?>" target="_blank"><?php echo esc_html( $name ); ?></a> <?php echo esc_html( $filesize ); ?></li><?php
+
+						} /**
+						 * Now if we have a different upload source we delegate the computing
+						 * to whatever will hook on wpas_attachment_display_$source
+						 */
+						else {
+
+							$source = sanitize_text_field( $metadata['wpas_upload_source'] );
+
+							/**
+							 * wpas_attachment_display_$source fires if the current attachment
+							 * was uploaded by an unknown source.
+							 *
+							 * @since  3.1.5
+							 *
+							 * @param  integer $attachment_id ID of this attachment
+							 * @param  array   $attachment    The attachment array
+							 * @param  integer $post_id       ID of the post we're displaying attachments for
+							 */
+							do_action( 'wpas_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id );
+
+						}
+
+					endforeach; ?>
+				</ul>
+			</div>
+		<?php endif;
+	}
+	
+	/**
+	 * Show ticket attachments.
+	 *
+	 * Displays a ticket or reply attachments (Shows Images instead of link).
+	 *
+	 * @since  3.0.0
+	 *
+	 * @param  integer $post_id ID of the post to get attachment for
+	 *
+	 * @return void
+	 */
+	public function show_attachments_with_image( $post_id ) {
+
+		$attachments = $this->get_attachments( $post_id );
+
+		if ( ! empty( $attachments ) ): ?>
+
+			<div class="wpas-reply-attachements">
+				<strong><?php esc_html_e( 'Attachments:', 'awesome-support' ); ?></strong>
+				<ul>
+					<?php
+
+					$can_delete = wpas_can_delete_attachments();
+
+					foreach ( $attachments as $attachment_id => $attachment ):
+
+						/**
+						 * Get attachment metadata.
+						 *
+						 * @var array
+						 */
+						$metadata = wp_get_attachment_metadata( $attachment_id );
+
+						/**
+						 * This is the default case where an attachment was uploaded by the WordPress uploader.
+						 * In this case we get the media from the ticket's attachments directory.
+						 */
+						if ( ! isset( $metadata['wpas_upload_source'] ) || 'wordpress' === $metadata['wpas_upload_source'] ) {
+
+							/**
+							 * Get filename.
+							 */
+							$filename   = explode( '/', $attachment['url'] );
+							$filename   = $name = $filename[ count( $filename ) - 1 ];
+							$upload_dir = wp_upload_dir();
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
+							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
+
+							/**
+							 * Prepare attachment link
+							 */
+							if ( false === boolval( wpas_get_option( 'unmask_attachment_links', false ) ) ) {
+								// mask or obscure attachment links
+								$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
+							} else {
+								// show full link
+								$link = $attachment['url'];
+							}
+
+							?>
+							<li>
+									<?php
+									if( $can_delete ) {
+										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
+									}
+									
+									if( strpos( $name, '.jpeg' ) !== false || strpos( $name, '.jpg' ) !== false || strpos( $name, '.png' ) !== false || strpos( $name, '.gif' ) !== false ) {
+									?>
+									<img style="width:100%;" src="<?php echo esc_url( $link ); ?>" alt="<?php echo esc_html( $name ); ?>">
+									<?php
+									} else {
+									?>
+									<a href="<?php echo esc_url( $link ); ?>" target="_blank"><?php echo esc_html( $name ); ?></a> <?php echo esc_html( $filesize ); ?></li>
+									<?php
+									}
 
 						} /**
 						 * Now if we have a different upload source we delegate the computing

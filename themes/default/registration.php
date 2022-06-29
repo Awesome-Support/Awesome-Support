@@ -99,7 +99,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 					'placeholder' => __( 'First Name', 'awesome-support' ),
 					'sanitize'    => 'sanitize_text_field',
 					'desc'		  => $first_name_desc,
-					'default'	  => ( isset( $_SESSION["wpas_registration_form"]["first_name"] ) && $_SESSION["wpas_registration_form"]["first_name"] ) ? $_SESSION["wpas_registration_form"]["first_name"] : ""
 				)
 			) );
 
@@ -117,7 +116,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 					'placeholder' => __( 'Last Name', 'awesome-support' ),
 					'sanitize'    => 'sanitize_text_field',
 					'desc'		  => $last_name_desc,
-					'default'	  => ( isset( $_SESSION["wpas_registration_form"]["last_name"] ) && $_SESSION["wpas_registration_form"]["last_name"] ) ? $_SESSION["wpas_registration_form"]["last_name"] : ""
 				)
 			) );
 
@@ -135,7 +133,6 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 					'placeholder' => __( 'Email', 'awesome-support' ),
 					'sanitize'    => 'sanitize_text_field',
 					'desc'		  => $email_desc,
-					'default'	  => ( isset( $_SESSION["wpas_registration_form"]["email"] ) && $_SESSION["wpas_registration_form"]["email"] ) ? $_SESSION["wpas_registration_form"]["email"] : ""
 				)
 			) );
 
