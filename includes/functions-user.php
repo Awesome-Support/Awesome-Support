@@ -1747,3 +1747,32 @@ function wpas_id_to_user_object( $user_ids ) {
 	}
 	return $user_objects;
 }
+/**
+ * Temporarily save Registration Form fields before validation
+ * This will help user NOT to retype registration fields
+ * 
+ * @param	array	$user			User object
+ * @param	string	$redirect_to	Redirect to URL
+ * @param	array	$data			HTTP Request data
+ */
+function wpas_pre_register_temp_value_save( $user, $redirect_to, $data )
+{
+	if ( isset( $user["first_name"] ) && $user["first_name"] ) {
+		$_SESSION["wpas_registration_form"]["first_name"] = $user["first_name"];
+	}
+	if ( isset( $user["last_name"] ) && $user["last_name"] ) {
+		$_SESSION["wpas_registration_form"]["last_name"] = $user["last_name"];
+	}
+	if ( isset($user["email"] ) && $user["email"] ) {
+		$_SESSION["wpas_registration_form"]["email"] = $user["email"];
+	}
+}
+add_action( "wpas_pre_register_account", "wpas_pre_register_temp_value_save", 10, 3 );
+
+/**
+ * Clear temporary $_SESSION variables once registration form values are displayed in relative fields.
+ */
+function wpas_after_registration_clean_temp() {
+	unset( $_SESSION["wpas_registration_form"] );
+}
+add_action( "wpas_after_registration_fields", "wpas_after_registration_clean_temp", 10 );
