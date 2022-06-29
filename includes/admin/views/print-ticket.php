@@ -122,7 +122,7 @@
 
                                 echo wp_kses( $content, wp_kses_allowed_html( 'post' ) );
 
-                                do_action( 'wpas_backend_reply_content_after_with_image', $reply->ID );
+                                do_action( 'wpas_backend_reply_content_after', $reply->ID );
 
                             ?>
                         </td>
