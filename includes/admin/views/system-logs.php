@@ -355,7 +355,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
     <thead>
     <tr>
         <th data-override="key" class="row-title" width="289">
-            <strong><?php _e( 'Server Logs', 'awesome-support' ); ?></strong></th>
+            <strong><?php esc_html_e( 'Server Logs', 'awesome-support' ); ?></strong></th>
         <th data-override="value">
 
             <div style="float: left;">
@@ -366,25 +366,25 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                         class="button-secondary wpas-tools-log-clear"
                         disabled="disabled"><i
                             class="fa fa-eraser fa-fw"
-                            style="color:lightgray;"></i><?php _e( 'Clear', 'awesome-support' ); ?></button>
+                            style="color:lightgray;"></i><?php esc_html_e( 'Clear', 'awesome-support' ); ?></button>
 
                 <button id="download"
                         class="button-secondary wpas-tools-log-download"
                         data-action="wpas_tools_log_viewer_download"
-                        data-nonce="<?php echo wp_create_nonce( 'wpas_tools_log_viewer_download' ); ?>"
+                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'wpas_tools_log_viewer_download' ) ); ?>"
                         data-filename=""
                         disabled="disabled"><i
                             class="fa fa-arrow-circle-down fa-fw"
-                            style="color:lightgray;"></i><?php _e( 'Download', 'awesome-support' ); ?></button>
+                            style="color:lightgray;"></i><?php esc_html_e( 'Download', 'awesome-support' ); ?></button>
 
                 <button id="delete"
                         class="button-secondary wpas-tools-log-delete"
                         data-action="wpas_tools_log_viewer_delete"
-                        data-nonce="<?php echo wp_create_nonce( 'wpas_tools_log_viewer_delete' ); ?>"
+                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'wpas_tools_log_viewer_delete' ) ); ?>"
                         data-filename=""
                         disabled="disabled"><i
                             class="fa fa-minus-circle fa-fw"
-                            style="color: lightgray;"></i><?php _e( 'Delete', 'awesome-support' ); ?></button>
+                            style="color: lightgray;"></i><?php esc_html_e( 'Delete', 'awesome-support' ); ?></button>
 
             </div>
 
@@ -395,7 +395,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
 
             <div style="float: right;">
 
-                <label for="lines"><?php _e( 'Max Lines', 'awesome-support' ); ?></label>
+                <label for="lines"><?php esc_html_e( 'Max Lines', 'awesome-support' ); ?></label>
                 <select id="lines">
                     <option value="50">50</option>
                     <option value="500">500</option>
@@ -440,17 +440,17 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
 						$classfromfilename = sanitize_title( $file );
 						?>
 
-                        <h3 class="log-viewer-filename <?php echo $classfromfilename; ?>"
+                        <h3 class="log-viewer-filename <?php echo esc_attr( $classfromfilename ); ?>"
                             style="font-size: 14px;"><a href="#"
-                                                        data-filename="<?php echo $file; ?>"
+                                                        data-filename="<?php echo esc_attr( $file ); ?>"
                                                         data-action="wpas_tools_log_viewer_view"
-                                                        data-nonce="<?php echo wp_create_nonce( 'wpas_tools_log_viewer_view' ); ?>"
-                                                        class="wpas-tools-log-view <?php echo $classfromfilename; ?>"><i
+                                                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'wpas_tools_log_viewer_view' ) ); ?>"
+                                                        class="wpas-tools-log-view <?php echo esc_attr( $classfromfilename ); ?>"><i
                                         class="fa fa-chevron-right fa-fw"
-                                        style="color: dimgray; font-size: 12px;"></i><?php echo $file; ?></a>
+                                        style="color: dimgray; font-size: 12px;"></i><?php echo esc_attr( $file ); ?></a>
                         </h3>
 
-                        <div class="log-viewer-controls <?php echo $classfromfilename; ?>" style="100%">
+                        <div class="log-viewer-controls <?php echo esc_attr( $classfromfilename ); ?>" style="100%">
 
                             <table width="100%">
                                 <tr>

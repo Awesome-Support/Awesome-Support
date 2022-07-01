@@ -25,7 +25,7 @@ class UserData extends WP_REST_Users_Controller {
 		$this->rest_base = 'users';
     }
 
-	
+
 	/**
 	 * Registers the routes for the objects of the controller.
 	 *
@@ -69,7 +69,7 @@ class UserData extends WP_REST_Users_Controller {
 		) );
 
     }
-    
+
 	/**
 	 * Checks if a given request has access to list users or create ticket
 	 *
@@ -99,7 +99,7 @@ class UserData extends WP_REST_Users_Controller {
 		}
 
 		$user = get_user_by( 'login',  $request[ 'username' ] );
-		
+
 		// Check result
         if ( ! $user ) {
             return new WP_Error( 'invalid_username', __( 'Invalid username.', 'awesome-support' ), array( 'status' => 400 ) );
@@ -109,7 +109,7 @@ class UserData extends WP_REST_Users_Controller {
 		if ( $user->ID != get_current_user_id() ) {
             return new WP_Error( 'invalid_username_access', __( 'You are not allowed to get user data', 'awesome-support' ), array( 'status' => 400 ) );
 		}
-		
+
 		return array(
 			'id' => $user->ID
 		);
@@ -141,5 +141,5 @@ class UserData extends WP_REST_Users_Controller {
 		);
 
 	}
-    
+
 }

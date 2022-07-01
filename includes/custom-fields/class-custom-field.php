@@ -166,24 +166,24 @@
 				'taxo_edit_terms'   	=> 'settings_tickets',
 				'taxo_delete_terms' 	=> 'settings_tickets',
 				'taxo_assign_terms' 	=> 'create_ticket',
-				
+
 				// Sort taxonomy terms
 				'taxo_sortorder' => '',
 
 				// @since 3.3.5
 				'readonly'              => false,
 				// Readonly field by default. Can be updated in custom save_callback
-				
+
 				// @since 4.1.0
 				// Whether or not to show the field in the front-end my-tickets list screen after a ticket is submitted.
 				// Sometimes when you get a ton of custom fields, having them all in the list is an issue.
 				'show_frontend_list'	=> true,
-				
+
 				// @since 4.1.0
 				// Whether or not to show the field in the front-end detail screen (header area) for existing tickets.
 				// Sometimes when you get a ton of custom fields, having them all in the list is an issue.
-				'show_frontend_detail'	=> true,				
-				
+				'show_frontend_detail'	=> true,
+
 				// @since 4.3.0
 				// Hold extra wrapper classes/ids - applies to front-end only
 				'extra_wrapper_css_classes'	=> '' ,
@@ -191,19 +191,19 @@
 				// @since 4.3.0
 				// Hold extra field classes/ids - applies to front-end only
 				'extra_field_css_classes'	=> '' ,
-				
+
 				// @since 4.3.0
 				// Hold extra wrapper classes/ids - applies to back-end only
 				'extra_wrapper_css_classes_be'	=> '' ,
 
 				// @since 4.3.0
 				// Hold extra field classes/ids - applies to back-end only
-				'extra_field_css_classes_be'	=> '' ,				
-				
+				'extra_field_css_classes_be'	=> '' ,
+
 				// @since 4.3.0
 				// Hold extra label classes/ids - this one not currently used - for possible future use only.
 				'extra_label_css_classes'	=> '' ,
-				
+
 				// @since 4.3.0
 				// Start or end front-end bootstrap row with this field?
 				'boot_strap_row_fe_start'	=> false ,
@@ -212,38 +212,38 @@
 				// @since 4.3.0
 				// Place this field in a bootstrap column?
 				'boot_strap_column_fe'	=> false ,
-				
+
 				// @since 4.4.0
 				// The sort order of the field - used only by the custom-fields add-on!
 				'order'	=> '99999',
-				
+
 				// @since 4.4.0
 				// Action hook to declare just before rendering the field on the front-end
 				'pre_render_action_hook_fe' => '',
-				
+
 				// @since 4.4.0
 				// Action hook to declare just after rendering the field on the front-end
 				'post_render_action_hook_fe' => '',
-				
+
 				// @since 4.4.0
 				// Action hook to declare just before rendering the field on the back-end
 				// Future use only since we don't have a back-end only rendering function yet.
 				// Use the front-end hook above for everything for now.
 				'pre_render_action_hook_be' => '',
-				
+
 				// @since 4.4.0
 				// Action hook to declare just after rendering the field on the back-end
 				// Future use only since we don't have a back-end only rendering function yet.
-				// Use the front-end hook above for everything for now.				
-				'post_render_action_hook_be' => '',	
+				// Use the front-end hook above for everything for now.
+				'post_render_action_hook_be' => '',
 
 				// @since 5.2.0
 				// Use ajax for uploading files - used by upload custom field
 				'use_ajax_uploader' => false,
-				
+
 				// @since 5.1.1
 				// Enable paste using ctrl+v commands
-				'enable_paste' => true,	
+				'enable_paste' => true,
 
 			);
 
@@ -632,7 +632,7 @@
 			$classes = array(
 				'wpas-form-group',
 			);
-			
+
 			/* Add in any user defined classes if any (front-end) */
 			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] )  && false === is_admin() ) {
 				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css_classes' ] ;
@@ -642,7 +642,7 @@
 			if ( ! empty( $this->field[ 'args' ][ 'extra_wrapper_css_classes_be' ] )  && true === is_admin() ) {
 				$classes[] = $this->field[ 'args' ][ 'extra_wrapper_css_classes_be' ] ;
 			}
-			
+
 			/* If this field should go into its own bootstrap column add in that class name here */
 			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_column_fe' ] ) && true === $this->field[ 'args' ][ 'boot_strap_column_fe' ] && false === is_admin() ) {
 				$classes[] = 'col' ;
@@ -717,16 +717,16 @@
 			$classes = array(
 				'wpas-form-control',
 			);
-			
+
 			/* Add in any user defined classes if any (front-end) */
 			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css_classes' ] ) && false === is_admin() ) {
 				$classes[] = $this->field[ 'args' ][ 'extra_field_css_classes' ] ;
 			}
-			
+
 			/* Add in any user defined classes if any (back-end) */
 			if ( ! empty( $this->field[ 'args' ][ 'extra_field_css_classes_be' ] ) && true === is_admin() ) {
 				$classes[] = $this->field[ 'args' ][ 'extra_field_css_classes_be' ] ;
-			}			
+			}
 
 			$class_name = $this->get_class_name();
 
@@ -812,19 +812,19 @@
 			$this->require_field_type_class();
 
 			$wrapper     = $this->get_wrapper_markup();
-			
-			/* Add a beginning DIV if this field marks the start of a bootstrap row and we're displaying on the front-end... */	
+
+			/* Add a beginning DIV if this field marks the start of a bootstrap row and we're displaying on the front-end... */
 			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_row_fe_start' ] ) && true === $this->field[ 'args' ][ 'boot_strap_row_fe_start' ] && false === is_admin() ) {
 				$wrapper = ' <div class="wpas-fe-bs4-row row"> ' . $wrapper;
 			}
 
-			/* Add an ending DIV if this field marks the end of a bootstrap row and we're displaying on the front-end... */		
+			/* Add an ending DIV if this field marks the end of a bootstrap row and we're displaying on the front-end... */
 			if ( ! empty( $this->field[ 'args' ][ 'boot_strap_row_fe_end' ] ) && true === $this->field[ 'args' ][ 'boot_strap_row_fe_end' ] && false === is_admin() ) {
 				$wrapper .= ' </div> ' ;
-			}			
-			
+			}
+
 			$field       = $this->get_field_markup();
-			
+
 			$description = $this->get_field_description();
 
 			if ( ! empty( $description ) ) {
@@ -851,7 +851,7 @@
 		public function get_sanitized_value( $value ) {
 
 			$sanitize_function = 'sanitize_text_field' ;
-			
+
 			if ( isset( $this->field[ 'args' ][ 'sanitize' ] ) ) {
 				$sanitize_function = function_exists( $this->field[ 'args' ][ 'sanitize' ] ) ? $this->field[ 'args' ][ 'sanitize' ] : 'sanitize_text_field';
 			}

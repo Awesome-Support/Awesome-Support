@@ -26,8 +26,8 @@ class WPAS_Tickets_List {
 			/**
 			 * Set some options on the PRODUCT custom field that depends on if if products can be synced or not;
 			 */
-			add_filter( 'wpas_get_custom_fields', array( $this, 'show_product_filters' ), 10, 1 );	// Show product filter options if product syncing is not enabled.	
-		
+			add_filter( 'wpas_get_custom_fields', array( $this, 'show_product_filters' ), 10, 1 );	// Show product filter options if product syncing is not enabled.
+
 			/**
 			 * Add custom columns
 			 */
@@ -57,81 +57,81 @@ class WPAS_Tickets_List {
 			add_filter( 'post_row_actions', array( $this, 'remove_quick_edit' ), 10, 2 );
 			add_filter( 'post_class', array( $this, 'ticket_row_class' ), 10, 3 );
 			add_filter( 'manage_posts_extra_tablenav', array( $this, 'manage_posts_extra_tablenav' ), 10, 1 );
-			
+
 			add_filter( 'posts_search', array( $this, 'ticket_listing_search_query' ), 2 , 11 );
 			add_filter( 'posts_join',   array( $this, 'ticket_listing_search_join_query' ), 2, 11 );
 		}
 	}
-	
+
 	/**
 	 * Set join query for ticket listing page for search based on selected search criteria
-	 * 
+	 *
 	 * @global string $post_type
 	 * @global object $wpdb
-	 * 
+	 *
 	 * @param string $joins
 	 * @param object $query
-	 * 
+	 *
 	 * @return string
 	 */
 	public function ticket_listing_search_join_query( $joins, $query ) {
-		
+
 		global $post_type, $wpdb;
-		
+
 		$search = $query->get('s');
-		
+
 		if( 'ticket' !== $post_type || !$query->is_main_query() || !$query->is_search || !$search ) {
 			return $joins;
 		}
-		
-			
+
+
 		$search_params = isset( $_GET['search_by'] ) && !empty( $_GET['search_by'] ) ? $_GET['search_by'] : array( 'subject', 'opening_post' );
-		
+
 
 		$search_joins = array();
-		
+
 		if( in_array( 'replies', $search_params ) ) {
 			$search_joins[] = " LEFT JOIN {$wpdb->posts} wprp ON ({$wpdb->posts}.ID = wprp.post_parent) AND wprp.post_type='ticket_reply'";
 		}
 
 		$search_joins = apply_filters( 'ticket_listing_search_joins', $search_joins );
-		
+
 		$search_joins_query = implode( ' ', $search_joins );
 
 		$joins .= $search_joins_query;
-			
-		
+
+
 		return $joins;
 	}
-	
-	
+
+
 	/**
 	 * Set search query for ticket listing page based on selected search criteria
-	 * 
+	 *
 	 * @global string $post_type
 	 * @global object $wpdb
-	 * 
+	 *
 	 * @param string $search_query
 	 * @param object $query
-	 * 
+	 *
 	 * @return string
 	 */
 	public function ticket_listing_search_query( $search_query, $query ) {
 		global $post_type, $wpdb;
-		
+
 		$search = $query->get('s');
-		
+
 		if( 'ticket' !== $post_type || !$query->is_main_query() || !$query->is_search || !$search ) {
 			return $search_query;
 		}
-		
-		
+
+
 		$search_clauses = array();
 		$search_params = isset( $_GET['search_by'] ) && !empty( $_GET['search_by'] ) ? $_GET['search_by'] : array( 'subject', 'opening_post' );
-		
-		
+
+
 		$like = '%' . $wpdb->esc_like( $search ) . '%';
-		
+
 		if( in_array( 'subject', $search_params ) ) {
 			$search_clauses[] = $wpdb->prepare( "({$wpdb->posts}.post_title LIKE %s)", $like );
 		}
@@ -144,13 +144,13 @@ class WPAS_Tickets_List {
 			$search_clauses[] = $wpdb->prepare( '(wprp.post_excerpt LIKE %s) OR (wprp.post_content LIKE %s)', $like, $like );
 		}
 
-		
+
 		$search_clauses = apply_filters( 'ticket_listing_search_clauses', $search_clauses, $query );
-		
+
 		$search_clauses_query = implode( ' OR ', $search_clauses );
-		
+
 		$search_query = ' AND (' . $search_clauses_query . ')';
-		
+
 		return $search_query;
 	}
 
@@ -162,7 +162,7 @@ class WPAS_Tickets_List {
 	public function set_filtering_query_var( $query ) {
 
 		global $post_type;
-		
+
 	    if ( 'ticket' !== $post_type
 	        || ! $query->is_main_query()
 	        || empty ($_GET[ 'id' ])
@@ -356,7 +356,7 @@ class WPAS_Tickets_List {
 				if ( array_key_exists( 'ticket_type', $custom ) ) {
 					$new[ 'ticket_type' ] = $this->get_cf_title( 'ticket_type', 'Ticket Type' );
 				}
-				
+
 				if ( array_key_exists( 'ticket_channel', $custom ) ) {
 					$new[ 'ticket_channel' ] = $this->get_cf_title( 'ticket_channel', 'Channel' );
 				}
@@ -465,15 +465,15 @@ class WPAS_Tickets_List {
 					case 'id':
 
 						$link = add_query_arg( array(
-							                       'post'   => $post_id,
-							                       'action' => 'edit',
-						                       ), admin_url( 'post.php' ) );
-						echo "<strong><a href='$link' target='" . $this->edit_link_target() . "'>{$post_id}</a></strong>";
+									'post'   => $post_id,
+									'action' => 'edit',
+								), admin_url( 'post.php' ) );
+						echo '<strong><a href="' . esc_url( $link ) . '" target="' . esc_attr( $this->edit_link_target() ) . '">' . esc_html( $post_id ) . '</a></strong>';
 
 						break;
 
 					case 'wpas-client':
-					
+
 						$the_post = get_post( $post_id ) ;
 						$author_id = 0 ;
 						if ( ! is_wp_error( $the_post ) && ! empty( $the_post ) ) {
@@ -484,11 +484,11 @@ class WPAS_Tickets_List {
 
 						if ( ! empty( $client ) ) {
 							$link = add_query_arg( array(
-								                       'post_type' => 'ticket',
-								                       'author'    => $client->ID,
-							                       ), admin_url( 'edit.php' ) );
+										'post_type' => 'ticket',
+										'author'    => $client->ID,
+									), admin_url( 'edit.php' ) );
 
-							echo "<a href='$link'>$client->display_name</a><br />$client->user_email";
+							echo '<a href="' . esc_url( $link ) . '">' . esc_html( $client->display_name ) . '</a><br />' . esc_html( $client->user_email );
 						} else {
 							// This shouldn't ever execute?
 							echo '';
@@ -507,7 +507,7 @@ class WPAS_Tickets_List {
 						 * old, we display an informational tag.
 						 */
 						if ( 0 === $replies->post_count ) {
-							echo _x( 'No reply yet.', 'No last reply', 'awesome-support' );
+							echo esc_html_x( 'No reply yet.', 'No last reply', 'awesome-support' );
 						} else {
 
 							$last_reply     = $replies->posts[ $replies->post_count - 1 ];
@@ -533,7 +533,7 @@ class WPAS_Tickets_List {
 
 								if ( ! empty( $open_date_string_tokens ) ) {
 									echo '<br>';
-									echo __( 'Opened on: ', 'awesome-support' ) . $open_date_string_tokens[ 0 ] . ' at: ' . $open_date_string_tokens[ 1 ];
+									echo esc_html__( 'Opened on: ', 'awesome-support' ) . $open_date_string_tokens[ 0 ] . ' at: ' . $open_date_string_tokens[ 1 ];
 								}
 							}
 						}
@@ -548,7 +548,7 @@ class WPAS_Tickets_List {
 
 								if ( ! empty( $open_date_string_tokens_gmt ) ) {
 									echo '<br>';
-									echo __( 'Opened on GMT: ', 'awesome-support' ) . $open_date_string_tokens_gmt[ 0 ] . ' at: ' . $open_date_string_tokens_gmt[ 1 ];
+									echo esc_html__( 'Opened on GMT: ', 'awesome-support' ) . $open_date_string_tokens_gmt[ 0 ] . ' at: ' . $open_date_string_tokens_gmt[ 1 ];
 								}
 							}
 						}
@@ -563,11 +563,11 @@ class WPAS_Tickets_List {
 							if ( 'closed' == wpas_get_ticket_status( $post_id ) ) {
 								if ( ! empty( $close_date_string_tokens ) ) {
 									echo '<br>';
-									echo __( 'Closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
+									echo esc_html__( 'Closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
 								}
 							} else {
 								echo '<br>';
-								echo __( 'This ticket was re-opened but had been closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
+								echo esc_html__( 'This ticket was re-opened but had been closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
 							}
 						}
 
@@ -582,7 +582,7 @@ class WPAS_Tickets_List {
 
 								if ( ! empty( $close_date_string_tokens_gmt ) ) {
 									echo '<br>';
-									echo __( 'Closed on GMT: ', 'awesome-support' ) . $close_date_string_tokens_gmt[ 0 ] . ' at: ' . $close_date_string_tokens_gmt[ 1 ];
+									echo esc_html__( 'Closed on GMT: ', 'awesome-support' ) . $close_date_string_tokens_gmt[ 0 ] . ' at: ' . $close_date_string_tokens_gmt[ 1 ];
 								}
 							}
 						}
@@ -602,10 +602,10 @@ class WPAS_Tickets_List {
 								//echo '<br>';
 								//echo __('Ticket was opened for: ', 'awesome-support') . human_time_diff( strtotime( $open_date_gmt ), strtotime( $close_date_gmt ) )   ;
 								echo '<br>';
-								echo __( 'Ticket was opened for: ', 'awesome-support' );
-								echo ' ' . $diff_dates->format( '%d' ) . __( ' day(s)', 'awesome-support' );
-								echo ' ' . $diff_dates->format( '%h' ) . __( ' hour(s)', 'awesome-support' );
-								echo ' ' . $diff_dates->format( '%i' ) . __( ' minute(s)', 'awesome-support' );
+								echo esc_html__( 'Ticket was opened for: ', 'awesome-support' );
+								echo ' ' . $diff_dates->format( '%d' ) . esc_html__( ' day(s)', 'awesome-support' );
+								echo ' ' . $diff_dates->format( '%h' ) . esc_html__( ' hour(s)', 'awesome-support' );
+								echo ' ' . $diff_dates->format( '%i' ) . esc_html__( ' minute(s)', 'awesome-support' );
 
 
 							}
@@ -624,15 +624,15 @@ class WPAS_Tickets_List {
 							$old_color = wpas_get_option( 'color_old' );
 							array_push( $tags, "<span class='wpas-label' style='background-color:$old_color;'>" . __( 'Old', 'awesome-support' ) . "</span>" );
 						}
-						
+
 						// Maybe add the "Ticket Template" tag
 						if ( true === wpas_is_ticket_template( $post_id ) ) {
 							$ticket_template_color = wpas_get_option( 'color_ticket_template_type' );
 							array_push( $tags, "<span class='wpas-label' style='background-color:$ticket_template_color;'>" . __( 'Template', 'awesome-support' ) . "</span>" );
-						}						
-						
-						
-						
+						}
+
+
+
 						$tags = apply_filters( 'wpas_ticket_listing_activity_tags', $tags, $post_id );
 
 						if ( ! empty( $tags ) ) {
@@ -796,7 +796,7 @@ class WPAS_Tickets_List {
 			global $wpdb;
 
 			$sql = <<<SQL
-SELECT 
+SELECT
 	wpas_ticket.ID AS ticket_id,
 	wpas_ticket.post_title AS ticket_title,
 	wpas_reply.ID AS reply_id,
@@ -804,8 +804,8 @@ SELECT
 	wpas_replies.reply_count AS reply_count,
 	wpas_replies.latest_reply,
 	wpas_ticket.post_author=wpas_reply.post_author AS client_replied_last
-FROM 
-	{$wpdb->posts} AS wpas_ticket 
+FROM
+	{$wpdb->posts} AS wpas_ticket
 	INNER JOIN {$wpdb->postmeta} AS wpas_postmeta ON wpas_ticket.ID=wpas_postmeta.post_id
 	LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON wpas_ticket.ID=wpas_reply.post_parent
 	LEFT OUTER JOIN (
@@ -819,7 +819,7 @@ FROM
 			AND 'ticket_reply' = post_type
 		GROUP BY
 			post_parent
-	) wpas_replies ON wpas_replies.ticket_id=wpas_reply.post_parent AND wpas_replies.latest_reply=wpas_reply.post_date 
+	) wpas_replies ON wpas_replies.ticket_id=wpas_reply.post_parent AND wpas_replies.latest_reply=wpas_reply.post_date
 WHERE 1=1
 	AND wpas_replies.latest_reply IS NOT NULL
 	AND 'ticket_reply'=wpas_reply.post_type
@@ -901,7 +901,7 @@ SQL;
 	 * @return array
 	 */
 	public function register_tabs( $tabs ) {
-		
+
 		// Check options to see which tabs to show...
 		$show_doc_tab = boolval( wpas_get_option( 'ticket_list_show_doc_tab', true) );
 		$show_bulk_actions_tab = boolval( wpas_get_option( 'ticket_list_show_bulk_actions_tab', true) );
@@ -910,42 +910,42 @@ SQL;
 		// Add tabs to tab array based on options set
 		$tabs[ 'filter' ]        = __( 'Filter', 'awesome-support' );
 		$tabs[ 'search' ]        = __( 'Search', 'awesome-support' );
-		
+
 		if ( true === $show_bulk_actions_tab ) {
 			$tabs[ 'bulk_actions' ]  = __( 'Bulk Actions', 'awesome-support' );
 		}
-		
+
 		if ( true === $show_preferences_tab ) {
 			$tabs[ 'preferences' ]   = __( 'Preferences', 'awesome-support' );
 		}
-		
-		if ( true === $show_doc_tab ) {		
+
+		if ( true === $show_doc_tab ) {
 			$tabs[ 'documentation' ] = __( 'Documentation', 'awesome-support' );
 		}
 
 		// Set content fo tabs based on which tabs are set to be active...
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_filter_content', array( $this, 'filter_tab_content' ) );
 		add_filter( 'wpas_admin_tabs_tickets_tablenav_search_content', array( $this, 'search_tab_content' ) );
-		
-		if ( true === $show_bulk_actions_tab ) {		
+
+		if ( true === $show_bulk_actions_tab ) {
 			add_filter( 'wpas_admin_tabs_tickets_tablenav_bulk_actions_content', array(
 				$this,
 				'bulk_actions_tab_content',
 			) );
 		}
-		
-		if ( true === $show_preferences_tab ) {		
+
+		if ( true === $show_preferences_tab ) {
 			add_filter( 'wpas_admin_tabs_tickets_tablenav_preferences_content', array( $this, 'preferences_tab_content' ) );
 		}
-		
-		if ( true === $show_doc_tab ) {				
+
+		if ( true === $show_doc_tab ) {
 			add_filter( 'wpas_admin_tabs_tickets_tablenav_documentation_content', array(
 				$this,
 				'filter_documentation_content',
 			) );
 		}
 
-			
+
 		return $tabs;
 	}
 
@@ -964,7 +964,7 @@ SQL;
 
 		// Add custom field filters
 		$this->custom_filters();
-		
+
 		do_action( 'wpas_custom_field_filters_after' );
 
 		// Add texonomy filters
@@ -994,30 +994,30 @@ SQL;
 	 * @return string
 	 */
 	public function search_tab_content( $content ) {
-		
-		
+
+
 		$search_params = isset( $_GET['search_by'] ) ? $_GET['search_by'] : array( 'subject', 'opening_post' );
-		
+
 		$subject_checked		= in_array( 'subject',		 $search_params )	? true : false;
 		$opening_post_checked	= in_array( 'opening_post',  $search_params )	? true : false;
 		$replies_checked		= in_array( 'replies',		 $search_params )	? true : false;
-		
-		
+
+
 		ob_start();
 
 		?>
-		
+
 		<div id="search_tab_content_placeholder"></div>
-		
+
 		<div class="ticket_listing_search_types">
-			<label><input type="checkbox" name="search_by[]" value="subject" <?php checked( true, $subject_checked ); ?> /> <?php _e( 'Subject', 'awesome-support' ); ?></label>
-			<label><input type="checkbox" name="search_by[]" value="opening_post" <?php checked( true, $opening_post_checked ); ?> /> <?php _e( 'Opening Post', 'awesome-support' ); ?></label>
-			<label><input type="checkbox" name="search_by[]" value="replies" <?php checked( true, $replies_checked ); ?> /> <?php _e( 'Replies', 'awesome-support' ); ?></label>
+			<label><input type="checkbox" name="search_by[]" value="subject" <?php checked( true, $subject_checked ); ?> /> <?php esc_html_e( 'Subject', 'awesome-support' ); ?></label>
+			<label><input type="checkbox" name="search_by[]" value="opening_post" <?php checked( true, $opening_post_checked ); ?> /> <?php esc_html_e( 'Opening Post', 'awesome-support' ); ?></label>
+			<label><input type="checkbox" name="search_by[]" value="replies" <?php checked( true, $replies_checked ); ?> /> <?php esc_html_e( 'Replies', 'awesome-support' ); ?></label>
 			<?php do_action( 'ticket_listing_after_search_controls' ); ?>
 		</div>
 
 		<?php
-		
+
 		return ob_get_clean();
 	}
 
@@ -1049,8 +1049,8 @@ SQL;
 		echo "<tr><td colspan='2'><h2>Preferences</h2><br/></td></tr>";
 
 		echo "<tr><td width='100' align='right'>";
-		echo "<input type='checkbox' name='edit_ticket_in_new_window' id='edit_ticket_in_new_window' value='yes' " . $selected . " />";
-		echo "</td><td><label for='edit_ticket_in_new_window'>" . __('Edit ticket in new Window when the ticket ID is clicked', 'awesome-support') . "</label></td></tr>";
+		echo "<input type='checkbox' name='edit_ticket_in_new_window' id='edit_ticket_in_new_window' value='yes' " . esc_attr( $selected ) . " />";
+		echo "</td><td><label for='edit_ticket_in_new_window'>" . esc_html__('Edit ticket in new Window when the ticket ID is clicked', 'awesome-support') . "</label></td></tr>";
 
 		echo "<tr><td></td><td><br/><input type='submit' name='save_preferences' class='button' value='Save Preferences' /></td></tr>";
 		echo "</table>";
@@ -1072,35 +1072,35 @@ SQL;
 
 		ob_start();
 
-		echo '<h2>' . __( 'Awesome Support Core Documentation', 'awesome-support' ) . '</h2>' . '<br />';
-		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/post-installation-need-know-quick-start/">' . __( '1. User Guide', 'awesome-support' ) . '</a>' . '<br />';
-		echo __( 'The end user guide covers topics such as instructions for installation, entering tickets, adding agents, navigation, replying to and closing tickets and more.', 'awesome-support' ) . '<br /><br />';
+		echo '<h2>' . esc_html__( 'Awesome Support Core Documentation', 'awesome-support' ) . '</h2>' . '<br />';
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/post-installation-need-know-quick-start/">' . esc_html__( '1. User Guide', 'awesome-support' ) . '</a>' . '<br />';
+		echo esc_html__( 'The end user guide covers topics such as instructions for installation, entering tickets, adding agents, navigation, replying to and closing tickets and more.', 'awesome-support' ) . '<br /><br />';
 
-		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/admin-overview/">' . __( '2. Administration Guide', 'awesome-support' ) . '</a>' . '<br />';
-		echo __( 'The admin guide covers topics such as configuring products, departments, priorities and channels. It also includes guides for security using roles and capabilities along with time tracking, email alerts and known incompatibilities.', 'awesome-support' ) . '<br /><br />';
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/admin-overview/">' . esc_html__( '2. Administration Guide', 'awesome-support' ) . '</a>' . '<br />';
+		echo esc_html__( 'The admin guide covers topics such as configuring products, departments, priorities and channels. It also includes guides for security using roles and capabilities along with time tracking, email alerts and known incompatibilities.', 'awesome-support' ) . '<br /><br />';
 
-		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/how-to-fix-you-do-not-have-the-capacity-to-open-a-new-ticket/">' . __( '3. Troubleshooting', 'awesome-support' ) . '</a>' . '<br />';
-		echo __( 'Having an issue? Your answer might be in here.', 'awesome-support' ) . '<br /><br />';
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/how-to-fix-you-do-not-have-the-capacity-to-open-a-new-ticket/">' . esc_html__( '3. Troubleshooting', 'awesome-support' ) . '</a>' . '<br />';
+		echo esc_html__( 'Having an issue? Your answer might be in here.', 'awesome-support' ) . '<br /><br />';
 
-		echo '<a href = "https://getawesomesupport.com/faq/">' . __( '4. FAQ and More Troubleshooting Tips', 'awesome-support' ) . '</a>' . '<br />';
-		echo __( 'Even more trouble-shooting tips and other frequently asked questions. 404 pages, missing tabs, PHP errors and conflicts are just some of the topics covered here!', 'awesome-support' ) . '<br /><br />';
+		echo '<a href = "https://getawesomesupport.com/faq/">' . esc_html__( '4. FAQ and More Troubleshooting Tips', 'awesome-support' ) . '</a>' . '<br />';
+		echo esc_html__( 'Even more trouble-shooting tips and other frequently asked questions. 404 pages, missing tabs, PHP errors and conflicts are just some of the topics covered here!', 'awesome-support' ) . '<br /><br />';
 
-		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/custom-fields/">' . __( '5. Customization', 'awesome-support' ) . '</a>' . '<br />';
-		echo __( 'Need to change the look of your ticket pages?  Maybe add some custom fields? Then this is the guide you need!', 'awesome-support' ) . '<br /><br />';
-		
-		echo '<h2>' . __( 'Awesome Support Add-ons and Extensions Documentation', 'awesome-support' ) . '</h2>' . '<br />';
-		echo '<a href = "https://getawesomesupport.com/documentation-new/">' . __( '1. All Extensions', 'awesome-support' ) . '</a>' . '<br />';
-		echo __( 'Links to documentation for all extensions and add-ons.', 'awesome-support' ) . '<br /><br />';
-		
-		echo '<a href = "https://developer.getawesomesupport.com/documentation/rest-api/introduction-to-the-awesome-support-rest-api/">' . __( '2. REST API', 'awesome-support' ) . '</a>' . '<br />';
-		echo __( 'Documentation for the REST API.', 'awesome-support' ) . '<br /><br />';
-		
-		echo '<h2>' . __( 'Import Tickets (Zendesk, Ticksy, Helpscout)', 'awesome-support' ) . '</h2>' . '<br />';		
-		echo '<a href = "https://getawesomesupport.com/addons/awesome-support-importer/">' . __( '1. Install The FREE Importer', 'awesome-support' ) . '</a>' . '<br />';
-		echo __( 'The link above will direct you to the page with the importer add-on', 'awesome-support' ) . '<br /><br />';		
+		echo '<a href = "https://getawesomesupport.com/documentation/awesome-support/custom-fields/">' . esc_html__( '5. Customization', 'awesome-support' ) . '</a>' . '<br />';
+		echo esc_html__( 'Need to change the look of your ticket pages?  Maybe add some custom fields? Then this is the guide you need!', 'awesome-support' ) . '<br /><br />';
 
-		echo '<a href = "https://getawesomesupport.com/documentation/importer/installation/">' . __( '2. Importer Documentation', 'awesome-support' ) . '</a>' . '<br />';		
-		echo __( 'Read the documentation to learn how to import tickets from Zendesk, Ticksy and Helpscout', 'awesome-support' ) . '<br /><br />';		
+		echo '<h2>' . esc_html__( 'Awesome Support Add-ons and Extensions Documentation', 'awesome-support' ) . '</h2>' . '<br />';
+		echo '<a href = "https://getawesomesupport.com/documentation-new/">' . esc_html__( '1. All Extensions', 'awesome-support' ) . '</a>' . '<br />';
+		echo esc_html__( 'Links to documentation for all extensions and add-ons.', 'awesome-support' ) . '<br /><br />';
+
+		echo '<a href = "https://developer.getawesomesupport.com/documentation/rest-api/introduction-to-the-awesome-support-rest-api/">' . esc_html__( '2. REST API', 'awesome-support' ) . '</a>' . '<br />';
+		echo esc_html__( 'Documentation for the REST API.', 'awesome-support' ) . '<br /><br />';
+
+		echo '<h2>' . esc_html__( 'Import Tickets (Zendesk, Ticksy, Helpscout)', 'awesome-support' ) . '</h2>' . '<br />';
+		echo '<a href = "https://getawesomesupport.com/addons/awesome-support-importer/">' . esc_html__( '1. Install The FREE Importer', 'awesome-support' ) . '</a>' . '<br />';
+		echo esc_html__( 'The link above will direct you to the page with the importer add-on', 'awesome-support' ) . '<br /><br />';
+
+		echo '<a href = "https://getawesomesupport.com/documentation/importer/installation/">' . esc_html__( '2. Importer Documentation', 'awesome-support' ) . '</a>' . '<br />';
+		echo esc_html__( 'Read the documentation to learn how to import tickets from Zendesk, Ticksy and Helpscout', 'awesome-support' ) . '<br /><br />';
 
 		$content = ob_get_clean();
 
@@ -1170,25 +1170,25 @@ SQL;
 
 
 		/* ACTIVITY */
-		
-		
+
+
 		$selected_activity        = isset( $_GET[ 'activity' ] ) ? filter_input( INPUT_GET, 'activity', FILTER_SANITIZE_STRING ) : '';
-		
+
 		$activity_options = apply_filters( 'wpas_ticket_list_activity_options', array(
 			'all' =>					__( 'All Activity', 'awesome-support' ),
 			'awaiting_support_reply' => __( 'Awaiting Support Reply', 'awesome-support' ),
 			'old' =>					__( 'Old', 'awesome-support' ) . " (Last Reply > " . wpas_get_option( 'old_ticket' ) . " Days)"
-			
+
 		) );
-		
+
 
 		$dropdown = '<select id="activity" name="activity">';
-		
+
 		foreach ( $activity_options as $a_value => $a_name ) {
 			$selected = $selected_activity === $a_value ? ' selected="selected"' : '';
 			$dropdown .= "<option value=\"{$a_value}\"{$selected}>{$a_name}</option>";
 		}
-		
+
 		$dropdown .= '</select>';
 
 		echo $dropdown;
@@ -1277,7 +1277,7 @@ SQL;
 			$selected_value = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
 		}
 
-		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . $selected_value . '" />';
+		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . esc_attr( $selected_value ) . '" />';
 
 		/* SAAS TICKET ID */
 		$show_saas_id = boolval( wpas_get_option( 'importer_id_enable', false) );
@@ -1290,7 +1290,7 @@ SQL;
 					$selected_value = filter_input( INPUT_GET, 'helpdesk_id', FILTER_SANITIZE_STRING );
 				}
 				$saas_id_label = wpas_get_option( 'importer_id_label', 'Help Desk SaaS Ticket ID');
-				echo '<input type="text" placeholder="'.$saas_id_label.'" name="helpdesk_id" id="helpdesk_id" value="' . $selected_value . '" />';
+				echo '<input type="text" placeholder="' . esc_attr( $saas_id_label ) . '" name="helpdesk_id" id="helpdesk_id" value="' . esc_attr( $selected_value ) . '" />';
 			}
 		}
 
@@ -1396,14 +1396,14 @@ SQL;
 					}
 
 					if ( ! empty( $term ) ) {
-						
+
 						if( 'product' === $arg && property_exists( $term, 'term_data' ) && !empty( $term->term_data ) ) {
 							$query->query_vars[ $arg ] = $term->term_data['slug'];
 						} else {
 							$query->query_vars[ $arg ] = $term->slug;
 						}
-						
-						
+
+
 					}
 
 				}
@@ -1465,7 +1465,7 @@ SQL;
 		if ( isset( $_GET[ 'helpdesk_id' ] ) && ! empty( $_GET[ 'helpdesk_id' ] ) ) {
 
 			$helpdeskId = (int) $_GET[ 'helpdesk_id' ];
-			
+
 			$meta_query[] = array(
 				'key'     => '_wpas_help_desk_ticket_id',
 				'value'   => (string)$helpdeskId,
@@ -1473,8 +1473,8 @@ SQL;
 				'type'    => 'CHAR',
 			);
 		}
-		
-		$wpas_activity = isset( $_GET[ 'activity' ] ) && ! empty( $_GET[ 'activity' ] ) ? $_GET[ 'activity' ] : 'any';
+
+		$wpas_activity = isset( $_GET[ 'activity' ] ) && ! empty( $_GET[ 'activity' ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'activity' ] ) ) : 'any';
 
 			if( 'awaiting_support_reply' === $wpas_activity ) {
 				$meta_query[] = array(
@@ -1489,9 +1489,9 @@ SQL;
 
 				$old_after           = (int) wpas_get_option( 'old_ticket' );
 				$old_after           = strtotime( 'now' ) - ( $old_after * 86400 );
-				
+
 				$old_after = date( 'Y-m-d H:i:s', $old_after ) ;
-				
+
 				$meta_query[] = array(
 					'key'     => '_wpas_last_reply_date',
 					'value'   => $old_after,
@@ -1499,7 +1499,7 @@ SQL;
 				);
 			}
 
-		$wpas_status = isset( $_GET[ 'status' ] ) && ! empty( $_GET[ 'status' ] ) ? $_GET[ 'status' ] : 'open';
+		$wpas_status = isset( $_GET[ 'status' ] ) && ! empty( $_GET[ 'status' ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'status' ] ) ) : 'open';
 
 		if ( 'any' === $wpas_status ) {
 
@@ -1558,21 +1558,21 @@ SQL;
 		global $wp;
 
 		$fields = $this->get_custom_fields();
-		
-		$screen = get_current_screen(); 
-		
-		if ( $screen->id == 'edit-ticket' ){ 		
+
+		$screen = get_current_screen();
+
+		if ( $screen->id == 'edit-ticket' ){
 
 			// Map query vars to their keys, or get them if endpoints are not supported
 			foreach ( $fields as $key => $var ) {
 
 				if ( isset( $_GET[ $var[ 'name' ] ] ) ) {
-					$wp->query_vars[ $key ] = $_GET[ $var[ 'name' ] ];
+					$wp->query_vars[ $key ] = sanitize_text_field( wp_unslash( $_GET[ $var[ 'name' ] ] ) );
 				} elseif ( isset( $wp->query_vars[ $var[ 'name' ] ] ) && $wp->query_vars[ $var[ 'name' ] ] ) {
-					$wp->query_vars[ $key ] = $wp->query_vars[ $var ];
+					$wp->query_vars[ $key ] = $wp->query_vars[ $var[ 'name' ] ];
 				}
 			}
-			
+
 		}
 	}
 
@@ -1628,12 +1628,12 @@ SQL;
 
 		$fields = $this->get_custom_fields();
 
-		$orderby = isset( $_GET[ 'orderby' ] ) ? $_GET[ 'orderby' ] : '';
+		$orderby = isset( $_GET[ 'orderby' ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'orderby' ] ) ) : '';
 
 		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
 
 			global $wpdb;
-			
+
 			$order = ( 'ASC' == strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
 
 			if ( 'taxonomy' == $fields[ $orderby ][ 'args' ][ 'field_type' ] && ! $fields[ $orderby ][ 'args' ][ 'taxo_std' ] ) {
@@ -1678,7 +1678,7 @@ SQL;
 			}
 
 		}
-		
+
 		return $clauses;
 	}
 
@@ -1735,7 +1735,7 @@ SQL;
 
 		$link = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
 
-		return "<a href='$link'>Reset Filters</a>";
+		return "<a href='".esc_url($link)."'>Reset Filters</a>";
 
 	}
 
@@ -1870,7 +1870,7 @@ SQL;
 		if ( 'bottom' === $which ) {
 
 			echo '<div class="alignright" style="clear: both; overflow: hidden; margin: 20px 10px;"><p>'
-			     . __( 'NOTE: Please be aware that when you sort on a column, tickets that have never had a value entered into that column will not appear on your sorted list (null fields). This can reduce the number of tickets in your sorted list.  This reduced number of tickets is NOT a bug - it is a deliberate design decision. You should also be aware that deliberately entering a blank into a ticket field is considered data so those tickets will show up in the sorted list.', 'awesome-support' )
+			     . esc_html__( 'NOTE: Please be aware that when you sort on a column, tickets that have never had a value entered into that column will not appear on your sorted list (null fields). This can reduce the number of tickets in your sorted list.  This reduced number of tickets is NOT a bug - it is a deliberate design decision. You should also be aware that deliberately entering a blank into a ticket field is considered data so those tickets will show up in the sorted list.', 'awesome-support' )
 			     . ' - '
 			     . $this->reset_link()
 			     . '</p></div>';
@@ -1918,8 +1918,8 @@ SQL;
 		return $classes;
 
 	}
-	
-	
+
+
 	/**
 	 * Turn on product filtering if we're not syncing products with WC.
 	 *
@@ -1928,26 +1928,26 @@ SQL;
 	 * @param array $custom_fields Registered custom fields
 	 *
 	 * @return array
-	 */	
+	 */
 	public function show_product_filters($custom_fields ) {
-		
+
 		// What e-commerce plugin are we syncing with?
 		$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->plugin;
 
 		$product_sync = false ;
-		
+
 		/* Do not turn on product filtering if we're syncing with WC */
 		if ( ! is_null( $ecommerce_synced ) && 'woocommerce' === $ecommerce_synced ) {
 			$product_sync = true ;
-		}		
-		
+		}
+
 		if (false === $product_sync) {
-			if ( isset( $custom_fields['product'] ) ) {					
+			if ( isset( $custom_fields['product'] ) ) {
 				$custom_fields['product']['args']['filterable'] = true;
 			}
 		}
 
-		
+
 		return $custom_fields;
 
 	}

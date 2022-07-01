@@ -134,12 +134,12 @@ msgstr "منتظر برای پاسخ پشتیبانی"
 msgid "Old"
 msgstr "قدیمی"
 
-#: includes/admin/class-admin-titan.php:88 includes/admin/class-admin.php:200
+#: includes/admin/class-admin-gas.php:88 includes/admin/class-admin.php:200
 #: includes/admin/class-admin.php:497
 msgid "Settings"
 msgstr "تنظیمات"
 
-#: includes/admin/class-admin-titan.php:89
+#: includes/admin/class-admin-gas.php:89
 msgid "Awesome Support Settings"
 msgstr "تنظیمات افزونه"
 

@@ -17,11 +17,11 @@ $redirect_to   = get_permalink( $post->ID );
 $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'wpas-login-only' : 'wpas-login-register';
 ?>
 
-<div class="wpas <?php echo $wrapper_class; ?>">
+<div class="wpas <?php echo esc_attr( $wrapper_class ); ?>">
 	<?php do_action('wpas_before_login_form'); ?>
 
-	<form class="wpas-form" id="wpas_form_login" method="post" role="form" action="<?php echo wpas_get_login_url(); ?>">
-		<h3><?php _e( 'Log in', 'awesome-support' ); ?></h3>
+	<form class="wpas-form" id="wpas_form_login" method="post" role="form" action="<?php echo esc_url( wpas_get_login_url() ); ?>">
+		<h3><?php esc_html_e( 'Log in', 'awesome-support' ); ?></h3>
 
 		<?php
 		/* Registrations are not allowed. */
@@ -39,7 +39,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				'sanitize'    => 'sanitize_user'
 			)
 		) );
-		
+
 		$username = apply_filters( 'wpas_login_form_user_name', $username ) ;
 
 		echo $username->get_output();
@@ -56,7 +56,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 		) );
 
 		$password = apply_filters( 'wpas_login_form_password', $password ) ;
-		
+
 		echo $password->get_output();
 
 		/**
@@ -79,14 +79,14 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 
 		wpas_do_field( 'login', $redirect_to );
 		wpas_make_button( __( 'Log in', 'awesome-support' ), array( 'onsubmit' => __( 'Logging In...', 'awesome-support' ) ) );
-		printf( '<a href="%1$s" class="wpas-forgot-password-link">%2$s</a>', wp_lostpassword_url( wpas_get_tickets_list_page_url() ), esc_html( __( 'Forgot password?', 'awesome-support' ) ) ); ?>
+		printf( '<a href="%1$s" class="wpas-forgot-password-link">%2$s</a>', esc_url( wp_lostpassword_url( wpas_get_tickets_list_page_url() ) ), esc_html__( 'Forgot password?', 'awesome-support' ) ); ?>
 	</form>
-	
+
 	<?php
 	if ( 'allow' === $registration || 'moderated' === $registration ): ?>
 
-		<form class="wpas-form" id="wpas_form_registration" method="post" action="<?php echo get_permalink( $post->ID ); ?>">
-			<h3><?php _e( 'Register', 'awesome-support' ); ?></h3>
+		<form class="wpas-form" id="wpas_form_registration" method="post" action="<?php echo esc_url( get_permalink( $post->ID ) ); ?>">
+			<h3><?php esc_html_e( 'Register', 'awesome-support' ); ?></h3>
 
 			<?php
 			$first_name_desc = wpas_get_option( 'reg_first_name_desc', '' ) ;
@@ -102,8 +102,8 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				)
 			) );
 
-			$first_name = apply_filters( 'wpas_registration_form_first_name', $first_name ) ;			
-			
+			$first_name = apply_filters( 'wpas_registration_form_first_name', $first_name ) ;
+
 			echo $first_name->get_output();
 
 			$last_name_desc = wpas_get_option( 'reg_last_name_desc', '' ) ;
@@ -119,8 +119,8 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				)
 			) );
 
-			$last_name = apply_filters( 'wpas_registration_form_last_name', $last_name ) ;						
-			
+			$last_name = apply_filters( 'wpas_registration_form_last_name', $last_name ) ;
+
 			echo $last_name->get_output();
 
 			$email_desc = wpas_get_option( 'reg_email_desc', '' ) ;
@@ -136,8 +136,8 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				)
 			) );
 
-			$email = apply_filters( 'wpas_registration_form_email', $email ) ;						
-			
+			$email = apply_filters( 'wpas_registration_form_email', $email ) ;
+
 			echo $email->get_output();
 
 			$pwd = new WPAS_Custom_Field( 'password', array(
@@ -152,7 +152,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 			) );
 
 			$pwd = apply_filters( 'wpas_registration_form_password', $pwd ) ;
-			
+
 			echo $pwd->get_output();
 
 			$showpwd = new WPAS_Custom_Field( 'pwdshow', array(
@@ -169,7 +169,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 
 			/**
 			 * wpas_after_registration_fields hook
-			 * 
+			 *
 			 * @Awesome_Support::terms_and_conditions_checkbox()
 			 */
 			do_action( 'wpas_after_registration_fields' );

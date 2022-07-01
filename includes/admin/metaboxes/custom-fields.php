@@ -16,14 +16,14 @@ if ( ! defined( 'WPINC' ) ) {
 <div class="wpas-custom-fields">
 	<?php
 
-	printf('<h2>%s</h2>', __( 'Custom Fields', 'awesome-support' ) );
-	
+	printf('<h2>%s</h2>', esc_html__( 'Custom Fields', 'awesome-support' ) );
+
 	do_action( 'wpas_mb_details_before_custom_fields' );
 
 	WPAS()->custom_fields->submission_form_fields();
 
 	do_action( 'wpas_mb_details_after_custom_fields' );
-	
+
 	echo '<div class="clear clearfix"></div>';
 	?>
 </div>

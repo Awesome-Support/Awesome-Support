@@ -121,15 +121,15 @@ function wpas_upgrade_406() {
 		'ticket_edit_channels',
 		'ticket_delete_channels'
 	);
-	
+
 	$agent_caps = array(
 		'ticket_manage_tags',
 		'ticket_manage_products',
 		'ticket_manage_departments',
 		'ticket_manage_priorities',
-		'ticket_manage_channels'		
+		'ticket_manage_channels'
 	);
-	
+
 	$manager_caps = array(
 		'ticket_manage_tags',
 		'ticket_edit_tags',
@@ -147,7 +147,7 @@ function wpas_upgrade_406() {
 		'ticket_edit_channels',
 		'ticket_delete_channels'
 	);
-	
+
 	$supportmanager_caps = array(
 		'ticket_manage_tags',
 		'ticket_edit_tags',
@@ -164,14 +164,14 @@ function wpas_upgrade_406() {
 		'ticket_manage_channels',
 		'ticket_edit_channels',
 		'ticket_delete_channels'
-	);	
+	);
 
 	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
 	$supportmanager = get_role( 'wpas_support_manager' );
 	$admin   		= get_role( 'administrator' );
-	$as_admin  		= get_role( 'as_admin' );	
+	$as_admin  		= get_role( 'as_admin' );
 	$agent	 		= get_role( 'wpas_agent' );
-	
+
 
 	/**
 	 * Add new capacities to admin roles
@@ -181,18 +181,18 @@ function wpas_upgrade_406() {
 		// Add all the capacities to admin in addition to full WP capacities
 		if ( null != $admin )
 			$admin->add_cap( $cap );
-		
+
 		// Add all the capacities to as_admin in addition to full WP capacities
 		if ( null != $as_admin )
 			$as_admin->add_cap( $cap );
-		
+
 
 		// Add full plugin capacities to manager in addition to the editor capacities
 		if ( null != $manager )
 			$manager->add_cap( $cap );
 
 	}
-	
+
 	/**
 	 * Add certain new capacities to agents
 	 */
@@ -201,7 +201,7 @@ function wpas_upgrade_406() {
 			$agent->add_cap( $cap );
 		}
 	}
-	
+
 	/**
 	 * Add certain new capacities to support managers
 	 */
@@ -210,7 +210,7 @@ function wpas_upgrade_406() {
 			$supportmanager->add_cap( $cap );
 		}
 	}
-	
+
 
 	// Now, remove the "view_all_tickets" capability from admin.
 	// We need to do this because this capability will override the
@@ -264,25 +264,25 @@ function wpas_upgrade_511() {
 	$admin_caps = array(
 		'assign_ticket_creator'
 	);
-	
+
 	$agent_caps = array(
 		'assign_ticket_creator'
 	);
-	
+
 	$manager_caps = array(
 		'assign_ticket_creator'
 	);
-	
+
 	$supportmanager_caps = array(
 		'assign_ticket_creator'
-	);	
+	);
 
 	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
 	$supportmanager = get_role( 'wpas_support_manager' );
 	$admin   		= get_role( 'administrator' );
 	$as_admin		= get_role( 'as_admin' );
 	$agent	 		= get_role( 'wpas_agent' );
-	
+
 
 	/**
 	 * Add new capacities to admin roles
@@ -292,7 +292,7 @@ function wpas_upgrade_511() {
 		// Add all the capacities to admin in addition to full WP capacities
 		if ( null != $admin )
 			$admin->add_cap( $cap );
-		
+
 		// Add all the capacities to as_admin in addition to full WP capacities
 		if ( null != $as_admin )
 			$as_admin->add_cap( $cap );
@@ -302,7 +302,7 @@ function wpas_upgrade_511() {
 			$manager->add_cap( $cap );
 
 	}
-	
+
 	/**
 	 * Add certain new capacities to agents
 	 */
@@ -311,7 +311,7 @@ function wpas_upgrade_511() {
 			$agent->add_cap( $cap );
 		}
 	}
-	
+
 	/**
 	 * Add certain new capacities to support managers
 	 */
@@ -343,25 +343,25 @@ function wpas_upgrade_520() {
 	$admin_caps = array(
 		'ticket_manage_privacy'
 	);
-	
+
 	$agent_caps = array(
 		'ticket_manage_privacy'
 	);
-	
+
 	$manager_caps = array(
 		'ticket_manage_privacy'
 	);
-	
+
 	$supportmanager_caps = array(
 		'ticket_manage_privacy'
-	);	
+	);
 
 	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
 	$supportmanager = get_role( 'wpas_support_manager' );
 	$admin   		= get_role( 'administrator' );
 	$as_admin		= get_role( 'as_admin' );
 	$agent	 		= get_role( 'wpas_agent' );
-	
+
 
 	/**
 	 * Add new capacities to admin roles
@@ -371,7 +371,7 @@ function wpas_upgrade_520() {
 		// Add all the capacities to admin in addition to full WP capacities
 		if ( null != $admin )
 			$admin->add_cap( $cap );
-		
+
 		// Add all the capacities to as_admin in addition to full WP capacities
 		if ( null != $as_admin )
 			$as_admin->add_cap( $cap );
@@ -381,7 +381,7 @@ function wpas_upgrade_520() {
 			$manager->add_cap( $cap );
 
 	}
-	
+
 	/**
 	 * Add certain new capacities to agents
 	 */
@@ -390,7 +390,7 @@ function wpas_upgrade_520() {
 			$agent->add_cap( $cap );
 		}
 	}
-	
+
 	/**
 	 * Add certain new capacities to support managers
 	 */
@@ -399,35 +399,35 @@ function wpas_upgrade_520() {
 			$supportmanager->add_cap( $cap );
 		}
 	}
-	
-	
+
+
 	/**
 	 * Add moderated registration settings
 	 */
 	$moderated_registration_settings = array(
-		
+
 		'mr_success_message',
 		'moderated_pending_user_role',
 		'moderated_activated_user_role',
-		
+
 		'enable_moderated_registration_admin_email',
 		'moderated_registration_admin_email__subject',
 		'moderated_registration_admin_email__content',
-		
+
 		'enable_moderated_registration_user_email',
 		'moderated_registration_user_email__subject',
 		'moderated_registration_user_email__content',
-		
+
 		'enable_moderated_registration_approved_user_email',
-        'moderated_registration_approved_user_email__subject',
-        'moderated_registration_approved_user_email__content',
-        
+		'moderated_registration_approved_user_email__subject',
+		'moderated_registration_approved_user_email__content',
+
 		'enable_moderated_registration_denied_user_email',
 		'moderated_registration_denied_user_email__subject',
-        'moderated_registration_denied_user_email__content'
+		'moderated_registration_denied_user_email__content'
 	);
-	
-	
+
+
 	foreach ( $moderated_registration_settings as $mr_setting_name ) {
 		wpas_update_option( $mr_setting_name, get_settings_defaults( $mr_setting_name ), true );
 	}
@@ -473,30 +473,30 @@ function wpas_upgrade_581() {
 		'ticket_delete_ticket_type',
 		'ticket_manage_ticket_templates'
 	);
-	
+
 	$agent_caps = array(
 		'ticket_manage_ticket_type'
 	);
-	
+
 	$manager_caps = array(
 		'ticket_manage_ticket_type',
 		'ticket_edit_ticket_type',
 		'ticket_delete_ticket_type',
 		'ticket_manage_ticket_templates'
 	);
-	
+
 	$supportmanager_caps = array(
 		'ticket_manage_ticket_type',
 		'ticket_edit_ticket_type',
 		'ticket_delete_ticket_type'
-	);	
+	);
 
 	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
 	$supportmanager = get_role( 'wpas_support_manager' );
 	$admin   		= get_role( 'administrator' );
-	$as_admin  		= get_role( 'as_admin' );	
+	$as_admin  		= get_role( 'as_admin' );
 	$agent	 		= get_role( 'wpas_agent' );
-	
+
 
 	/**
 	 * Add new capacities to admin roles
@@ -506,18 +506,18 @@ function wpas_upgrade_581() {
 		// Add all the capacities to admin in addition to full WP capacities
 		if ( null != $admin )
 			$admin->add_cap( $cap );
-		
+
 		// Add all the capacities to as_admin in addition to full WP capacities
 		if ( null != $as_admin )
 			$as_admin->add_cap( $cap );
-		
+
 
 		// Add full plugin capacities to manager in addition to the editor capacities
 		if ( null != $manager )
 			$manager->add_cap( $cap );
 
 	}
-	
+
 	/**
 	 * Add certain new capacities to agents
 	 */
@@ -526,7 +526,7 @@ function wpas_upgrade_581() {
 			$agent->add_cap( $cap );
 		}
 	}
-	
+
 	/**
 	 * Add certain new capacities to support managers
 	 */
@@ -603,5 +603,156 @@ function wpas_upgrade_606() {
 	// Therefore the two routines are the same and there is no reason to write a separate 606 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 606 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+
+/**
+ * Upgrade function for version 6.0.7
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.0.7
+ * @return void
+ */
+function wpas_upgrade_607() {
+	// Run the 581 upgrade option for version 606.
+	// The 581 upgrade was the internal upgrade option during testing of the 606 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 607 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 607 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+
+/**
+ * Upgrade function for version 6.0.8
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.0.8
+ * @return void
+ */
+function wpas_upgrade_608() {
+	// Run the 581 upgrade option for version 608.
+	// The 581 upgrade was the internal upgrade option during testing of the 608 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 608 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 608 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+
+/**
+ * Upgrade function for version 6.0.9
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.0.9
+ * @return void
+ */
+function wpas_upgrade_609() {
+	// Run the 581 upgrade option for version 609.
+	// The 581 upgrade was the internal upgrade option during testing of the 609 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 609 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 609 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+
+/**
+ * Upgrade function for version 6.0.10
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.0.10
+ * @return void
+ */
+function wpas_upgrade_6010() {
+	// Run the 581 upgrade option for version 6010.
+	// The 581 upgrade was the internal upgrade option during testing of the 6010 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 6010 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 6010 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+
+/**
+ * Upgrade function for version 6.0.11
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.0.11
+ * @return void
+ */
+function wpas_upgrade_6011() {
+	// Run the 581 upgrade option for version 6011.
+	// The 581 upgrade was the internal upgrade option during testing of the 6011 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 6011 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 6011 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+
+/**
+ * Upgrade function for version 6.0.12
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.0.12
+ * @return void
+ */
+function wpas_upgrade_6012() {
+	// Run the 581 upgrade option for version 6012.
+	// The 581 upgrade was the internal upgrade option during testing of the 6012 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 6012 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 6012 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+
+/**
+ * Upgrade function for version 6.0.13
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.0.13
+ * @return void
+ */
+function wpas_upgrade_6013() {
+	// Run the 581 upgrade option for version 6013.
+	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 6013 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+/**
+ * Upgrade function for version 6.0.14
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.0.14
+ * @return void
+ */
+function wpas_upgrade_6014() {
+	// Run the 581 upgrade option for version 6014.
+	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 6014 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}
+/**
+ * Upgrade function for version 6.0.14
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.1
+ * @return void
+ */
+function wpas_upgrade_6100() {
+	// Run the 581 upgrade option for version 6014.
+	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 6014 routine to make sure it runs for early 520 adopters.
 	wpas_upgrade_581();
 }

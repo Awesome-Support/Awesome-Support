@@ -20,16 +20,9 @@
             "role": "Lead Developer"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/tednh/Titan-Framework.git"
-        }
-    ],
     "require": {
         "php": ">=7.1",
-        "gambitph/titan-framework": "dev-fork",
-		"ericmann/wp-session-manager": "4.2.*"		
+		"ericmann/wp-session-manager": "4.2.*"
     },
     "archive": {
         "exclude": [
@@ -53,7 +46,7 @@
 	  "psr-4": {
 	    "WPAS_API\\": "includes/rest-api/includes"
 	  }
-    },	
+    },
     "scripts": {
         "post-install-cmd": "npm install",
         "pre-archive-cmd": "composer install"

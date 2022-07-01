@@ -19,7 +19,7 @@ $user = get_userdata( $post->post_author );
 
 // Get tickets
 $get_tickets = apply_filters( 'wpas_user_profile_show_tickets', true ) ;
-if ( true === $get_tickets ) { 
+if ( true === $get_tickets ) {
 	$open   = wpas_get_tickets( 'open', array( 'posts_per_page' => apply_filters( 'wpas_user_profile_tickets_open_limit', 10 ), 'author' => $post->post_author ) );
 	$closed = wpas_get_tickets( 'closed', array( 'posts_per_page' => apply_filters( 'wpas_user_profile_tickets_closed_limit', 5 ), 'author' => $post->post_author ) );
 } else {
@@ -78,7 +78,7 @@ $by_status['closed'] = $closed;
 		$contact_fields = wpas_user_profile_get_contact_info( $post->ID );
 
 		foreach ( $contact_fields as $contact_field ) {
-			printf( '<div class="wpas-up-contact-%1$s">', $contact_field );
+			printf( '<div class="wpas-up-contact-%1$s">', esc_attr( $contact_field ) );
 			wpas_user_profile_contact_info_contents( $contact_field, $user, $post->ID );
 			echo '</div>';
 		}
@@ -94,7 +94,7 @@ $by_status['closed'] = $closed;
 	 * @var WP_Post $post Post object of the current ticket
 	 */
 	do_action( 'wpas_user_profile_metabox_after_contact_info', $user, $post ); ?>
-	
+
 	<div class="wpas-row wpas-up-stats">
 		<div class="wpas-col wpas-up-stats-all">
 			<strong><?php echo count( $open_for_count ) + count( $closed_for_count ); ?></strong>
@@ -109,16 +109,16 @@ $by_status['closed'] = $closed;
 			<?php echo esc_html__( 'Closed', 'awesome-support' ); ?>
 		</div>
 	</div>
-	
+
 	<?php
-	
+
 	If ( ( count( $open_for_count) <> count ($open) ) or ( count( $closed_for_count ) <> count ($closed) ) ) {
 		if ( true === $get_tickets ) {
 			// add warning message that the totals shown will not match the list of open tickets
-			echo esc_html__( 'Note: A filter is enabled that allows the totals shown above to be greater than the list of tickets below.', 'awesome-support' ); 
+			echo esc_html__( 'Note: A filter is enabled that allows the totals shown above to be greater than the list of tickets below.', 'awesome-support' );
 		}
 	}
-	
+
 	/**
 	 * Fires after the user stats
 	 *
@@ -131,7 +131,7 @@ $by_status['closed'] = $closed;
 	<div class="wpas-up-tickets">
 		<?php
 		if ( true === $get_tickets  ) {
-			
+
 			foreach ( $by_status as $status => $tickets ) {
 
 				if ( empty( $tickets ) ) {
@@ -143,7 +143,7 @@ $by_status['closed'] = $closed;
 
 				foreach ( $tickets as $t ) {
 					$created = sprintf( esc_html_x( 'Created on %s', 'Ticket date creation', 'awesome-support' ), date( get_option( 'date_format' ), strtotime( $t->post_date ) ) );
-					$title   = apply_filters( 'the_title', $t->post_title );
+					$title   = apply_filters( 'the_title', $t->post_title, $t->ID );
 					$link    = esc_url( admin_url( "post.php?post=$t->ID&action=edit" ) );
 
 					if ( $t->ID !== (int) $post->ID ) {
@@ -153,10 +153,10 @@ $by_status['closed'] = $closed;
 					}
 				}
 
-				printf( '<ul>%s</ul>', $lis );
+				printf( '<ul>%s</ul>', wp_kses_post( $lis ) );
 
 			}
-			
+
 		}
 		?>
 

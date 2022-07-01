@@ -196,13 +196,13 @@ msgstr "في انتظار الرد"
 msgid "Old"
 msgstr "قديم"
 
-#: includes/admin/class-admin-titan.php:88 includes/admin/functions-misc.php:28
-#: includes/admin/class-admin-titan.php:90
+#: includes/admin/class-admin-gas.php:88 includes/admin/functions-misc.php:28
+#: includes/admin/class-admin-gas.php:90
 msgid "Settings"
 msgstr "إعدادات"
 
-#: includes/admin/class-admin-titan.php:89
-#: includes/admin/class-admin-titan.php:91
+#: includes/admin/class-admin-gas.php:89
+#: includes/admin/class-admin-gas.php:91
 msgid "Awesome Support Settings"
 msgstr "دعم ممتاز"
 
@@ -5753,144 +5753,53 @@ msgstr ""
 msgid "Just Deactivate"
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php:198
+#: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:198
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php:206
+#: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:206
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s "
 "or %5$supdate now%6$s."
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php:349
+#: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:349
 msgid "You do not have permission to install plugin updates"
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php:349
+#: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:349
 msgid "Error"
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:137
+#: includes/gas-framework/lib/class-option-edd-license.php:137
 msgid "Your license is valid and active."
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:141
+#: includes/gas-framework/lib/class-option-edd-license.php:141
 msgid "Your license is invalid."
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:156
+#: includes/gas-framework/lib/class-option-edd-license.php:156
 msgid "Activate"
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:157
-msgid ""
-"Your license is valid but inactive. Click the button above to activate it."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:162
+#: includes/gas-framework/lib/class-option-edd-license.php:162
 msgid ""
 "The remote server did not return a valid response. You can retry by hitting "
 "the &laquo;Save&raquo; button again."
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:166
+#: includes/gas-framework/lib/class-option-edd-license.php:166
 msgid "Your license is expired."
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:170
+#: includes/gas-framework/lib/class-option-edd-license.php:170
 msgid "Unexpected response from server: "
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:175
+#: includes/gas-framework/lib/class-option-edd-license.php:175
 msgid "Entering your license key is mandatory to get the product updates."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:385
-msgid "Theme License"
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:386
-msgid "Enter your theme license key."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:387
-msgid "License Key"
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:388
-msgid "License Action"
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:389
-msgid "Deactivate License"
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:390
-msgid "Activate License"
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:391
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:403
-msgid "License status is unknown."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:392
-msgid "Renew?"
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:393
-msgid "unlimited"
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:394
-msgid "License key is active."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:395
-msgid "Expires %s."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:396
-msgid "You have %1$s / %2$s sites activated."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:397
-msgid "License key expired %s."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:398
-msgid "License key has expired."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:399
-msgid "License keys do not match."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:400
-msgid "License is inactive."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:401
-msgid "License key is disabled."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:402
-msgid "Site is inactive."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:404
-msgid ""
-"Updating this theme will lose any customizations you have made. 'Cancel' to "
-"stop, 'OK' to update."
-msgstr ""
-
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:405
-msgid ""
-"<strong>%1$s %2$s</strong> is available. <a href=\"%3$s\" class=\"thickbox\" "
-"title=\"%4s\">Check out what's new</a> or <a href=\"%5$s\"%6$s>update now</"
-"a>."
 msgstr ""
 
 #: awesome-support.php:640
@@ -7766,7 +7675,7 @@ msgstr ""
 msgid "Load older replies"
 msgstr ""
 
-#: vendor-overrides/titan-framework-overrides/class-option-edd-license.php:157
+#: includes/gas-framework/lib/class-option-edd-license.php:157
 msgid ""
 "Your license is valid but inactive. Click the button above to activate it. "
 "If you see this message after attempting activation then please make sure "
@@ -7805,4 +7714,12 @@ msgstr ""
 
 #: includes/functions-post.php:1981
 msgid "Edit history"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:401
+msgid "Ticket Type"
+msgstr "نوع التذكرة"
+
+#: includes/custom-fields/functions-custom-fields.php:402
+msgid "Ticket Types"
 msgstr ""

@@ -67,13 +67,13 @@ function wpas_register_account( $data ) {
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
-	
+
 	if ( wpas_get_option( 'gdpr_notice_short_desc_02', false ) && wpas_get_option( 'gdpr_notice_mandatory_02', true)  && ! isset( $data['wpas_gdpr02'] ) ) {
 		wpas_add_error( 'accept_gdpr02_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
-	
+
 	if ( wpas_get_option( 'gdpr_notice_short_desc_03', false ) && wpas_get_option( 'gdpr_notice_mandatory_03', true)  && ! isset( $data['wpas_gdpr03'] ) ) {
 		wpas_add_error( 'accept_gdpr03_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
@@ -122,7 +122,7 @@ function wpas_register_account( $data ) {
 			$status = isset( $data['wpas_terms'] ) ? isset( $data['wpas_terms'] ) : "";
 			$opt_in = ! empty ( $status ) ? strtotime( 'NOW' ) : "";
 
-			wpas_track_consent( array( 
+			wpas_track_consent( array(
 				'item' 		=> wpas_get_option( 'terms_conditions', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
@@ -139,7 +139,7 @@ function wpas_register_account( $data ) {
 			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
 			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 
-			wpas_track_consent( array( 
+			wpas_track_consent( array(
 				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_01', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
@@ -156,7 +156,7 @@ function wpas_register_account( $data ) {
 			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
 			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 
-			wpas_track_consent( array( 
+			wpas_track_consent( array(
 				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_02', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
@@ -173,7 +173,7 @@ function wpas_register_account( $data ) {
 			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
 			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 
-			wpas_track_consent( array( 
+			wpas_track_consent( array(
 				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_03', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
@@ -194,7 +194,7 @@ function wpas_register_account( $data ) {
 		// For moderated registration print message and redirect, so we don't auto login.
 		if( 'moderated' === $registration ) {
 			update_user_option( $user_id, 'mr_user_not_activated', 'yes' );
-			
+
 			wpas_add_notification( 'moderated_account_created', esc_html( wpas_get_option( 'mr_success_message' ) ) );
 			wp_safe_redirect( $redirect_to );
 			exit;
@@ -294,10 +294,10 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 		} else {
 			$username = wpas_create_user_name( $user ) ;  // This function will create a user name AND automatically check and fix duplicates
 		}
-		
+
 		$registration_type = wpas_get_option( 'allow_registrations', 'allow' );
 		$new_user_role = 'moderated' === $registration_type ? wpas_get_option( 'moderated_pending_user_role' ) : wpas_get_option( 'new_user_role', 'wpas_user' );
-		
+
 		/**
 		 * wpas_insert_user_data filter
 		 *
@@ -345,13 +345,13 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 
 			// Notify the new user if needed
 			if ( ! is_wp_error( $user_id ) && true === apply_filters( 'wpas_new_user_notification', $notify ) ) {
-				
+
 				$receive_alert = wpas_get_option('reg_notify_users', 'both');  // Who should receive alerts?
-				
+
 				if ( 'none' <> $receive_alert ) {
 					wp_new_user_notification( $user_id, null, $receive_alert );
 				}
-				
+
 			}
 
 		}
@@ -374,32 +374,32 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 function wpas_create_user_name( $user_args ) {
 
 	$name_ary = explode( '@', $user_args['email'] ); 	// extract whatever name we can from the email address...
-	
+
 	$user_name_construction = (int) wpas_get_option( 'reg_user_name_construction', 6 );	// get setting for how user name is to be constructed...
-	
+
 	$user_name = '' ; // initialize the user name variable...
-	
+
 	switch ( $user_name_construction ) {
 		case 0 :
 			// use the first part of the email address
 			$user_name  = strtolower( $name_ary[0] );
 			break;
-			
+
 		case 1:
 			// use the full email address
 			$user_name = strtolower( $user_args['email'] );
 			break;
-			
+
 		case 2:
 			// use a random number
 			$user_name = mt_rand();
 			break;
-			
+
 		case 3:
 			// use a guid
 			$user_name = wpas_create_pseudo_guid();
 			break;
-			
+
 		case 4:
 			// user the first name
 			$user_name = strtolower( $user_args['first_name'] );
@@ -409,28 +409,28 @@ function wpas_create_user_name( $user_args ) {
 			// user the last name
 			$user_name = strtolower( $user_args['last_name'] );
 			break ;
-			
+
 		case 6:
 			// user the first and last name name
 			$user_name = strtolower( $user_args['first_name'] . $user_args['last_name'] );
 			break ;
-			
-		default: 
+
+		default:
 			$user_name = $user_args['first_name'] . $user_args['last_name'] ;
 			break;
-	}				
+	}
 
 	// Now verify that the selected username is not already in use.
-	// If it is, append a postfix and return it.	
+	// If it is, append a postfix and return it.
 	return wpas_check_duplicate_user_name( $user_name );
-	
+
 }
 
 /**
  * Check to see if a username is a duplicate
  *
  * If the user name is a duplicate, append a postfix and return it.
- * 
+ *
  * @since 4.4.0
  *
  * @param string $user_name
@@ -438,7 +438,7 @@ function wpas_create_user_name( $user_args ) {
  * @return string username
  */
 function wpas_check_duplicate_user_name( $user_name ) {
-	
+
 	$user_check = get_user_by( 'login', $user_name );
 
 	if ( is_a( $user_check, 'WP_User' ) ) {
@@ -452,7 +452,7 @@ function wpas_check_duplicate_user_name( $user_name ) {
 	}
 
 	return $user_name ;
-	
+
 }
 
 add_action( 'wpas_do_login', 'wpas_try_login' );
@@ -542,7 +542,7 @@ function wpas_try_login( $data ) {
 				wp_safe_redirect( $redirect_to );
 				exit;
 			}
-			
+
 			// Filter to allow redirection of successful login
 			$redirect_to = apply_filters( 'wpas_try_login_redirect', $redirect_to, $redirect_to, $login );
 
@@ -580,9 +580,9 @@ function wpas_can_view_ticket( $post_id ) {
 	 */
 	$post = get_post( $post_id );
 	$author_id = null;
-	
+
 	if (!empty($post)) {
-	
+
 		/**
 		 * Get author and agent ids on the ticket
 		 */
@@ -604,14 +604,14 @@ function wpas_can_view_ticket( $post_id ) {
 
 /**
  * Check if user can see all tickets
- * 
+ *
  * @global object $current_user
  * @return boolean
  */
 function wpas_can_user_see_all_tickets() {
-	
+
 	$user_can_see_all = false;
-	
+
 	/* Check if admins can see all tickets */
 	if ( wpas_is_asadmin() && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
 		$user_can_see_all = true;
@@ -623,12 +623,12 @@ function wpas_can_user_see_all_tickets() {
 	}
 
 	global $current_user;
-	
+
 	/* If current user can see all tickets */
 	if ( current_user_can( 'view_all_tickets' ) || true === (bool) get_user_option( 'wpas_view_all_tickets', (int) $current_user->ID )  ) {
 		$user_can_see_all = true;
 	}
-	
+
 	return $user_can_see_all;
 }
 
@@ -697,14 +697,14 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
  * @return string       Nicely formatted user role
  */
 function wpas_get_user_nice_role( $role ) {
-	
+
 	/* Get first role if role is an array */
 	if ( is_array($role) ) {
-		// The two lines below have to be separate instead of embedded inside each other in order to avoid an "Only variables should be passed by reference" error 
+		// The two lines below have to be separate instead of embedded inside each other in order to avoid an "Only variables should be passed by reference" error
 		$role = array_values( $role );
 		$role = array_shift( $role ) ;
 	}
-	
+
 	/* Remove the prefix on WPAS roles */
 	if ( 'wpas_' === substr( $role, 0, 5 ) ) {
 		$role = substr( $role, 5 );
@@ -1010,7 +1010,7 @@ function wpas_users_dropdown( $args = array() ) {
 	/**
 	 * We use a marker to keep track of when a user was selected.
 	 * This allows for adding a fallback if nobody was selected.
-	 * 
+	 *
 	 * @var boolean
 	 */
 	$marker = false;
@@ -1208,7 +1208,7 @@ function wpas_mailgun_check( $data = '' ) {
 		$check = json_decode( $check );
 
 		if ( is_object( $check ) && isset( $check->did_you_mean ) && ! is_null( $check->did_you_mean ) ) {
-			printf( __( 'Did you mean %s', 'awesome-support' ), "<strong>{$check->did_you_mean}</strong>?" );
+			printf( wp_kses_post( __( 'Did you mean %s', 'awesome-support' ) ), "<strong>{$check->did_you_mean}</strong>?" );
 			die();
 		}
 
@@ -1243,7 +1243,7 @@ function wpas_get_users_ajax( $args = array() ) {
 		$args = array();
 		foreach ( $defaults as $key => $value ) {
 			if ( isset( $_POST[ $key ] ) ) {
-				$args[ $key ] = $_POST[ $key ];
+				$args[ $key ] = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
 			}
 		}
 	}
@@ -1351,14 +1351,14 @@ function wpas_has_smart_tickets_order( $user_id = 0 ) {
  * @return array
  */
 function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
-	
+
 	$agent_ids = $agents = array();
-	
+
 	$primary_agent_id    = intval( get_post_meta( $ticket_id, '_wpas_assignee', true ) );
 	if( $primary_agent_id && !in_array( $primary_agent_id, $exclude ) ) {
 		$agent_ids[] = $primary_agent_id;
 	}
-	
+
 	if( wpas_is_multi_agent_active() ) {
 		$secondary_agent_id  = intval( get_post_meta( $ticket_id, '_wpas_secondary_assignee', true ) );
 		$tertiary_agent_id   = intval( get_post_meta( $ticket_id, '_wpas_tertiary_assignee', true ) );
@@ -1370,11 +1370,11 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
 			$agent_ids[] = $tertiary_agent_id;
 		}
 	}
-	
+
 	foreach ($agent_ids as $id) {
 		$agents[] = get_user_by('id', $id);
 	}
-	
+
 	return $agents;
 }
 
@@ -1382,10 +1382,10 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
  * Log the user consent. Data saved in WP Option
  * We're not sure yet if custom table is needed but we can
  * extend in the future version when we see fit
- * 
- * @param {*} label 
- * @param {*} action 
- * @param {*} date 
+ *
+ * @param {*} label
+ * @param {*} action
+ * @param {*} date
  */
 function wpas_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
 	/**
@@ -1430,35 +1430,35 @@ function wpas_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
 	}else{
 		update_user_option( $user_id, 'wpas_consent_log', array( $consent ) );
 	}
-	
+
 	/**
 	 * After logging consent action hook
 	 */
 	do_action( 'wpas_log_consent_after', $user_id, $label, $action, $date , $user, $consent );
-	
+
 }
 
 /**
  * Similar to wpas_log_consent()
  * This function tracks the consent instead of just
- * logging them. This is the primary function in consent 
+ * logging them. This is the primary function in consent
  * table information in both on user profile and on the
  * GDPR table in the front-end
- * 
+ *
  * @param {*} data
  */
-function wpas_track_consent( $data, $user_id, $opt_type = "" ){	
+function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 	/**
 	 * Consent logs are stored in wpas_consent_tracking option
 	 */
 	$tracked_consent = get_user_option( 'wpas_consent_tracking', $user_id );
-	
+
 	if( ! empty ( $tracked_consent ) && is_array( $tracked_consent ) ) {
 		/**
 		 * If same item exists, simply update the same row
 		 * instead of merging them on new row
 		 */
-		$found_key = array_search( $data['item'], array_column( $tracked_consent, 'item' ) );	
+		$found_key = array_search( $data['item'], array_column( $tracked_consent, 'item' ) );
 		if( $found_key !== false && ! empty ( $opt_type ) ) {
 			/**
 			 * We found something, update the row
@@ -1477,30 +1477,30 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 				}
 			}
 			update_user_option( $user_id, 'wpas_consent_tracking', $tracked_consent );
-			
+
 			/**
 			 * After consent tracking update existing meta action hook
-			 */	
+			 */
 			do_action( 'wpas_track_consent_update_existing_after', $data, $user_id, $opt_type, $tracked_consent ) ;
-			
+
 		}else{
 			update_user_option( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
 			/**
 			 * After new consent tracking action hook
-			 */	
+			 */
 			do_action( 'wpas_track_consent_update_new_too', $data, $user_id, $opt_type, $tracked_consent ) ;
-		}		
+		}
 	}else{
 		update_user_option( $user_id, 'wpas_consent_tracking', array( $data ) );
-		
+
 		/**
 		 * After new consent tracking action hook
-		 */	
-		do_action( 'wpas_track_consent_update_new', $data, $user_id, $opt_type, $tracked_consent ) ;								
+		 */
+		do_action( 'wpas_track_consent_update_new', $data, $user_id, $opt_type, $tracked_consent ) ;
 	}
 	/**
 	 * After consent tracking action hook
-	 */	
+	 */
 	do_action( 'wpas_track_consent_after', $data, $user_id, $opt_type ) ;
 
 }
@@ -1509,19 +1509,19 @@ add_action( 'wpas_register_account_after', 'wpas_moderated_registeration_notify'
 
 /**
  * Notify user and admin about moderated registration
- * 
+ *
  * @param int $user_id
  * @param array $user
  */
 function wpas_moderated_registeration_notify( $user_id, $user ) {
-	
-	
+
+
 	$registration_type = wpas_get_option( 'allow_registrations', 'allow' );
-	
+
 	if( 'moderated' === $registration_type ) {
-		
+
 		$admin_email = get_bloginfo( 'admin_email' );
-	
+
 		$admin_notify = new WPAS_User_Email_Notification( $user_id, $admin_email );
 		$admin_notify->notify( 'moderated_registration_admin' );
 
@@ -1533,11 +1533,11 @@ function wpas_moderated_registeration_notify( $user_id, $user ) {
 
 /**
  * Return moderated registration notification cases
- * 
+ *
  * @return array
  */
 function wpas_mr_notification_cases() {
-	
+
 	return array(
 		'moderated_registration_admin',
 		'moderated_registration_user',
@@ -1546,25 +1546,25 @@ function wpas_mr_notification_cases() {
 	);
 }
 
-add_filter( 'wpas__user_email_notifications_case_is_active', 'wpas_mr_enabled_email_notification_case', 11, 2 ); 
+add_filter( 'wpas__user_email_notifications_case_is_active', 'wpas_mr_enabled_email_notification_case', 11, 2 );
 
 /**
  * Check if moderated registration notification is enabled
- * 
+ *
  * @param boolean $enabled
  * @param string $case
- * 
+ *
  * @return boolean
  */
 function wpas_mr_enabled_email_notification_case( $enabled, $case ) {
-	
-	
+
+
 	$cases = wpas_mr_notification_cases();
-	
+
 	if( in_array( $case, $cases ) ) {
 		$enabled = wpas_get_option( "enable_{$case}_email", true );
 	}
-	
+
 	return $enabled;
 }
 
@@ -1574,17 +1574,17 @@ add_filter( 'wpas__user_email_notifications_pre_fetch_subject'  , 'wpas_registra
 
 /**
  * Set email subject for moderated registration notification
- * 
+ *
  * @param string $subject
  * @param int $user_id
  * @param string $case
- * 
+ *
  * @return string
  */
 function wpas_registration_user_email_notifications_pre_fetch_subject( $subject, $user_id, $case ) {
-	
+
 	$subject = wpas_get_option( "{$case}_email__subject" );
-	
+
 	return $subject;
 }
 
@@ -1592,19 +1592,19 @@ add_filter( 'wpas__user_email_notifications_pre_fetch_content'	, 'wpas_registrat
 
 /**
  * Set email content for moderated registration notification
- * 
+ *
  * @param string $body
  * @param int $user_id
  * @param string $case
- * 
+ *
  * @return string
  */
 function wpas_registration_user_email_notifications_pre_fetch_content( $body, $user_id, $case ) {
-	
+
 	$body = wpas_get_option( "{$case}_email__content" );
-	
+
 	return $body;
-	
+
 }
 
 add_action( 'edit_user_profile', 'wpas_add_activate_user_button' , 10, 1 ); // Display tickets on user profile page
@@ -1612,29 +1612,29 @@ add_action( 'show_user_profile', 'wpas_add_activate_user_button' , 9, 1 ); // Di
 
 /**
  * Add activate user button on back-end edit user page
- * 
+ *
  * @param object $user
  */
 function wpas_add_activate_user_button( $user ) {
-	
+
 	$not_activated = get_user_option( 'mr_user_not_activated', $user->ID );
 	$user_denied   = get_user_option( 'mr_user_denied', $user->ID );
-	
-	
+
+
 	if( 'yes' === $not_activated && 'yes' !== $user_denied ) {
-		
+
 		$edit_user_link = add_query_arg( 'user_id', $user->ID, self_admin_url( 'user-edit.php' ) );
 		$activate_url = wpas_do_url( $edit_user_link, 'mr_activate_user' );
 		$deny_url = wpas_do_url( $edit_user_link, 'mr_deny_user' );
-		
-		printf( '<a href="%s" class="button button-primary">%s</a>', $activate_url ,__( 'Activate User', 'awesome-support' ) );
-		
-		printf( '<a href="%s" class="button button-primary mr-deny-user-btn">%s</a>', $deny_url ,__( 'Deny User', 'awesome-support' ) );
-		
+
+		printf( '<a href="%s" class="button button-primary">%s</a>', esc_url( $activate_url ), esc_html__( 'Activate User', 'awesome-support' ) );
+
+		printf( '<a href="%s" class="button button-primary mr-deny-user-btn">%s</a>', esc_url( $deny_url ), esc_html__( 'Deny User', 'awesome-support' ) );
+
 	} elseif( 'yes' === $user_denied ) {
-		printf( '<div><p>%s</p></div>', __( 'User has been denied.', 'awesome-support' ) );
+		printf( '<div><p>%s</p></div>', esc_html__( 'User has been denied.', 'awesome-support' ) );
 	}
-	
+
 }
 
 
@@ -1642,15 +1642,15 @@ add_action( 'wpas_do_mr_activate_user', 'wpas_do_mr_activate_user' );
 
 /**
  * Activate moderated user
- * 
+ *
  * @param array $data
  */
 function wpas_do_mr_activate_user( $data ) {
-		
+
 	$user_id = $data['user_id'];
-	
+
 	if( $user_id ) {
-		
+
 		$role = wpas_get_option( 'moderated_activated_user_role' );
 
 		$updated = wp_update_user( array( 'ID' => $user_id, 'role' => $role ) );
@@ -1662,49 +1662,49 @@ function wpas_do_mr_activate_user( $data ) {
 			), admin_url( 'user-edit.php' ) );
 		} else {
 			delete_user_option( $user_id, 'mr_user_not_activated' );
-			
+
 			// Notify to user
 			$user = get_user_by( 'id', $user_id );
 			$user_notify = new WPAS_User_Email_Notification( $user_id, $user->user_email );
 			$user_notify->notify( 'moderated_registration_approved_user' );
-			
+
 			$redirect_to = add_query_arg( array(
 				'user_id'         => $user_id,
 				'wpas-mr-message' => 'success'
 			), admin_url( 'user-edit.php' ) );
 		}
-		
+
 		wpas_redirect( 'mr_activation', $redirect_to );
 	}
-			
+
 }
 
 add_action( 'wpas_do_mr_deny_user', 'wpas_do_mr_deny_user' );
 
 /**
  * Deny moderated user registration
- * 
+ *
  * @param array $data
  */
 function wpas_do_mr_deny_user( $data ) {
-	
+
 	$user_id = $data['user_id'];
-	
+
 	if( $user_id ) {
-		
+
 		update_user_option( $user_id, 'mr_user_denied', 'yes' );
-		
+
 		// Notify to user
 		$user = get_user_by( 'id', $user_id );
 		$user_notify = new WPAS_User_Email_Notification( $user_id, $user->user_email );
 		$user_notify->notify( 'moderated_registration_denied_user' );
-		
+
 		$redirect_to = add_query_arg( array(
 			'user_id'         => $user_id,
 			'wpas-mr-deny-message' => 'success'
 		), admin_url( 'user-edit.php' ) );
-		
-		
+
+
 		wpas_redirect( 'mr_activation', $redirect_to );
 	}
 }
@@ -1716,25 +1716,25 @@ add_action( 'admin_init', 'wpas_mr_activation_notices', 10, 0 );
  * Register moderated user activation notices
  */
 function wpas_mr_activation_notices() {
-	
+
 	if ( isset( $_GET['wpas-mr-message'] ) ) {
 
 		$_SERVER['REQUEST_URI'] = remove_query_arg( 'wpas-mr-message' );
-		
+
 		if ( 'success' === $_GET['wpas-mr-message'] ) {
 			add_action( 'admin_notices', 'wpas_mr_activation_success_notice' );
 		} else {
 			add_action( 'admin_notices', 'wpas_mr_activation_failed_notice' );
 		}
-		
+
 	} elseif ( isset( $_GET['wpas-mr-deny-message'] ) ) {
 
 		$_SERVER['REQUEST_URI'] = remove_query_arg( 'wpas-mr-deny-message' );
-		
+
 		if ( 'success' === $_GET['wpas-mr-deny-message'] ) {
 			add_action( 'admin_notices', 'wpas_mr_deny_success_notice' );
 		}
-		
+
 	}
 }
 
@@ -1742,27 +1742,27 @@ function wpas_mr_activation_notices() {
  * Print notice once a moderated user successfully activated
  */
 function wpas_mr_activation_success_notice() {
-	
-	printf( '<div class="updated"><p>%s</p></div>', __( 'User successfully activated.', 'awesome-support' ) );
-	
+
+	printf( '<div class="updated"><p>%s</p></div>', esc_html__( 'User successfully activated.', 'awesome-support' ) );
+
 }
 
 /**
  * Print notice once a moderated user activation failed
  */
 function wpas_mr_activation_failed_notice() {
-	
-	printf( '<div class="updated error"><p>%s</p></div>', __( 'Error while activating user, try again later.', 'awesome-support' ) );
-	
+
+	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'Error while activating user, try again later.', 'awesome-support' ) );
+
 }
 
 /**
  * Print notice once a moderated user registration denied
  */
 function wpas_mr_deny_success_notice() {
-	
-	printf( '<div class="updated error"><p>%s</p></div>', __( 'User successfully denied.', 'awesome-support' ) );
-	
+
+	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'User successfully denied.', 'awesome-support' ) );
+
 }
 
 /**

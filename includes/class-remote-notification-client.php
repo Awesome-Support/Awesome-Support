@@ -125,7 +125,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public function __clone() {
 			// Cloning instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 		}
 
 		/**
@@ -136,7 +136,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public function __wakeup() {
 			// Unserializing instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 		}
 
 		/**
@@ -287,8 +287,8 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			// Don't put notices on page unless its an admin!
 			if ( ! wpas_is_asadmin() ) {
 				return ;
-			}				
-		
+			}
+
 			foreach ( $this->notifications as $id => $notification ) {
 
 				$rn = $this->get_remote_notification( $notification );
@@ -503,8 +503,8 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 * @return void
 		 */
 		protected function create_admin_notice( $contents, $class, $dismiss ) { ?>
-			<div class="<?php echo $class; ?>">
-				<a href="<?php echo $dismiss; ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php _e( 'Dismiss notification', 'awesome-support' ); ?>">&times;</a>
+			<div class="<?php echo esc_attr( $class ); ?>">
+				<a href="<?php echo $dismiss; ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php esc_html_e( 'Dismiss notification', 'awesome-support' ); ?>">&times;</a>
 				<p><?php echo html_entity_decode( $contents ); ?></p>
 			</div>
 		<?php }
@@ -574,7 +574,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		// Don't put script on page unless its an admin!
 			if ( ! wpas_is_asadmin() ) {
 				return ;
-			}		
+			}
 
 			$maybe_fetch = array();
 

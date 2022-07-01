@@ -48,19 +48,22 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 	if ( 'auto-draft' === $data['post_status'] ) {
 		return $data;
 	}
-	
+
 	/**
 	 * Sanitize the title of the ticket post
 	 */
 	$data['post_title'] = wp_kses_post( $data['post_title'] );
-	$data['post_title'] = sanitize_text_field( $data['post_title'] );	
+	$data['post_title'] = sanitize_text_field( $data['post_title'] );
+
+	/* Sanitize the data */
+	$data['post_content'] = wp_kses( $data['post_content'], wp_kses_allowed_html( 'post' ) );
 
 	/**
 	 * Automatically set the ticket as processing if this is the first reply.
 	 */
 	if ( user_can( $current_user->ID, 'edit_ticket' ) && isset( $postarr['ID'] ) ) {
-		
-		
+
+
 		// @TODO:  Its possible that this entire section of code to set the $agent_replied flag might not be needed.
 		// We'll keep it for now but its not used in this function at this time.
 		$replies       = wpas_get_replies( intval( $postarr['ID'] ) );
@@ -78,7 +81,7 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 		}
 
 		// @TODO: Its possible this if statement below might need an additional qualifier to see if $agent_replied = true.
-		// For now the ticket is going to IN PROCESS properly but if there is an issue later then using the additional 
+		// For now the ticket is going to IN PROCESS properly but if there is an issue later then using the additional
 		// qualifier might be warranted.
 		if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
 			$_POST['post_status_override'] = 'processing';
@@ -146,9 +149,9 @@ function wpas_save_ticket( $post_id ) {
 
 	/**
 	 * Save old assignee - will need to pass it to action hooks later
-	 */ 
+	 */
 	 $old_assignee = get_post_meta( $post_id, '_wpas_assignee', true );
-	
+
 	/* Now we can save the custom fields */
 	WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
 
@@ -163,15 +166,15 @@ function wpas_save_ticket( $post_id ) {
 		 * First of all, set the ticket as open. This is very important.
 		 */
 		add_post_meta( $post_id, '_wpas_status', 'open', true );
-		
+
 		/* Next - update other some meta values. If you add or delete from this list you also */
 		/* need to do the same thing in the /includes/functions-post.php file */
 		add_post_meta( $post_id, '_wpas_last_reply_date', null, true );
 		add_post_meta( $post_id, '_wpas_last_reply_date_gmt', null, true );
-		
+
 		/* Set the slug */
 		wpas_set_ticket_slug( $post_id );
-		
+
 		/**
 		 * Fire hook when a new ticket is being added - works great for notifications
 		 *
@@ -234,7 +237,7 @@ function wpas_save_ticket( $post_id ) {
 
 			/* In case the insertion failed... */
 			if ( is_wp_error( $reply ) ) {
-				
+
 				// Fire action hook for failed reply inserted via admin
 				do_action( 'wpas_insert_reply_admin_failed', $post_id, $data, $reply );
 
@@ -242,10 +245,10 @@ function wpas_save_ticket( $post_id ) {
 				$_SESSION['wpas_redirect'] = add_query_arg( array( 'wpas-message' => 'wpas_reply_error' ), get_permalink( $post_id ) );
 
 			} else {
-				
+
 				/**
 				 * Fire action hook for reply inserted via admin - great place for notifications...
-				 */								
+				 */
 				do_action( 'wpas_insert_reply_admin_success', $post_id, $data, $reply );
 
 				/* The agent wants to close the ticket */
@@ -265,7 +268,7 @@ function wpas_save_ticket( $post_id ) {
 						/**
 						 * wpas_ticket_closed_by_agent hook
 						 */
-						
+
 						if( $closed ) {
 							do_action( 'wpas_ticket_closed_by_agent', $post_id );
 						}
@@ -286,13 +289,13 @@ function wpas_save_ticket( $post_id ) {
 
 	/* If this was a ticket update, we need to fire some action hooks and then figure out where to go next... */
 	if ( '' !== $original_status ) {
-		
+
 		/**
 		 * Fire action hook for after ticket update...
 		 *
 		 * @since 4.0.0
 		 */
-		do_action( 'wpas_ticket_after_update_admin_success', $post_id, $old_assignee, $_POST);	
+		do_action( 'wpas_ticket_after_update_admin_success', $post_id, $old_assignee, $_POST);
 
 		$gt_post      = null;
 		$where_after  = filter_input( INPUT_POST, 'where_after', FILTER_SANITIZE_STRING );
@@ -327,7 +330,7 @@ function wpas_save_ticket( $post_id ) {
 			), admin_url( 'post.php' ) ) );
 		}
 	}
-	
+
 	do_action( 'wpas_ticket_after_saved', $post_id );
 
 }
@@ -449,44 +452,44 @@ function wpas_redirect_ticket_after_save( $location, $post_id ) {
 /**
  * Get next id
  * @param int $current_ticket
- * 
+ *
  * @return int
  */
 function wpas_get_next_ticket( $current_ticket ) {
-	
+
 	return wpas_get_adjacent_ticket( $current_ticket );
-	
+
 }
 
 /**
  * Get previous id
  * @param int $current_ticket
- * 
+ *
  * @return int
  */
 function wpas_get_previous_ticket( $current_ticket ) {
-	
+
 	return wpas_get_adjacent_ticket( $current_ticket, false );
-	
+
 }
 
 
 /**
- * 
+ *
  * @global object $wpdb
  * @global object $current_user
  * @param int $ticket_id
  * @param boolean $next
- * 
+ *
  * @return int
  */
 function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
-	
+
 	/* Make sure this is the admin screen */
 	if ( ! is_admin() ) {
 		return false;
 	}
-	
+
 	if ( true === $next ) {
 		$adjacent = '>';
 		$order_type = 'ASC';
@@ -494,12 +497,12 @@ function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
 		$adjacent = '<';
 		$order_type = 'DESC';
 	}
-	
+
 	$custom_post_status = wpas_get_post_status();
 	$custom_post_status['open'] = 'Open';
-	
+
 	$meta_query = wpas_ticket_listing_assignee_meta_query_args();
-	
+
 	$args = array(
 		'post_type' => 'ticket',
 		'posts_per_page' => 1,
@@ -510,15 +513,15 @@ function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
 		'next_previous_adjacent' => "{$adjacent} {$ticket_id}",
 		'wpas_tickets_query' => 'listing'
 	);
-	
+
 	$query = new WP_Query( $args );
-	
+
 	$adjacent_post_id = '';
-	
+
 	if ( !empty( $query->posts ) ) {
 		$adjacent_post_id = $query->posts[0]->ID;
-	} 
-	
+	}
+
 	return $adjacent_post_id;
 }
 
@@ -526,21 +529,21 @@ add_filter( 'posts_clauses', 'wpas_get_adjacent_ticket_posts_clauses', 30, 2 );
 
 /**
  * Modify get_adjacent_ticket query
- * 
+ *
  * @global object $wpdb
  * @param array $pieces
  * @param object $wp_query
- * 
+ *
  * @return array
  */
 function wpas_get_adjacent_ticket_posts_clauses( $pieces , $wp_query ) {
 	global $wpdb;
-	
+
 	if ( isset( $wp_query->query['next_previous_adjacent'] ) ) {
 		$adjacent = $wp_query->query['next_previous_adjacent'];
 		$pieces['where'] = "AND ({$wpdb->posts}.ID {$adjacent} ) " . $pieces['where'];
 	}
-	
+
 	return $pieces;
 }
 
@@ -552,17 +555,17 @@ function wpas_get_adjacent_ticket_posts_clauses( $pieces , $wp_query ) {
  * @return array|int
  */
 function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
-	
+
 	global $current_user;
-	
+
 	$custom_post_status = wpas_get_post_status();
 	$custom_post_status['open'] = 'Open';
-	
+
 	foreach($custom_post_status as $status => $label) {
 		$post_status[] = $status;
 	}
-	
-	
+
+
 	$defaults = array(
 		'post_type'              => 'ticket',
 		'post_status'            => $post_status,
@@ -570,9 +573,9 @@ function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
 	);
 
 	$args  = wp_parse_args( $args, $defaults );
-	
+
 	$meta_query = array();
-	
+
 	if ( 'any' !== $ticket_status ) {
 		if ( in_array( $ticket_status, array( 'open', 'closed' ) ) ) {
 			$meta_query[] = array(
@@ -583,51 +586,51 @@ function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
 			);
 		}
 	}
-	
-	
-	
+
+
+
 	$meta_query = wpas_ticket_listing_assignee_meta_query_args();
-		
+
 	if( !empty( $meta_query ) ) {
 		$args['meta_query'] = $meta_query;
 	}
-	
+
 	$args['wpas_tickets_query'] = 'listing';
-	
+
 	$query = new WP_Query( $args );
 	if ( empty( $query->posts ) ) {
 		return array();
 	} else {
 		return $query->posts;
 	}
-	
+
 }
 
 /**
  * Return meta query args for ticket listing query relative to assignee
- * 
+ *
  * @param type $use_id
  * @return type
  */
 function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_filter = true ) {
-	
+
 	if( 0 ===  $user_id ) {
 		$user_id = get_current_user_id();
 	}
-	
+
 	$user_can_see_all = wpas_can_user_see_all_tickets();
-	
+
 	$meta_query = array();
-	
+
 	if( false === $user_can_see_all ) {
-		
+
 		$primary_agent_meta_query = array(
 			'key'     => '_wpas_assignee',
 			'value'   => (int) $user_id,
 			'compare' => '=',
 			'type'    => 'NUMERIC',
 		);
-	
+
 		if( wpas_is_multi_agent_active() ) {
 			// Check if agent is set as secondary or tertiary agent
 			$multi_agents_meta_query = array();
@@ -654,48 +657,48 @@ function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_fi
 			$meta_query[] = $primary_agent_meta_query;
 		}
 	}
-	
+
 	return apply_filters( 'wpas_assignee_meta_query', $meta_query, $user_id, $profile_filter );
-	
+
 }
 
 
 /**
  * Generate a link with icon for a reply action
- * 
+ *
  * @param string $id
  * @param array $args
- * 
+ *
  * @return string
  */
 function wpas_reply_control_item( $id , $args = array() ) {
-	
+
 	$link = isset( $args['link'] ) ? $args['link'] : '#';
 	$title = isset( $args['title'] ) ? $args['title'] : '';
-	
+
 	$icon = isset( $args['icon'] ) && $args['icon'] ? $args['icon'] : false;
-	
+
 	$attr_id = isset( $args['id'] ) && $args['id'] ? $args['id'] : '';
-	
+
 	$classes = isset( $args['classes'] ) ? $args['classes'] : '';
 	$classes .= " {$id}";
 	$classes .= ( $icon ? ' reply_icon' : '' );
 	$classes .= $title ? ' hint-bottom hint-anim' : '';
-	
+
 	$data_params = isset( $args['data'] ) && is_array( $args['data'] ) ?  $args['data'] : array();
-	
+
 	$markup = "<a href=\"{$link}\" data-hint=\"{$title}\" class=\"{$classes}\"";
-	
+
 	foreach( $data_params as $dp_name => $dp_value ) {
 		$markup .= " data-{$dp_name}=\"{$dp_value}\"";
 	}
-	
+
 	$markup .= $attr_id ? " id=\"{$attr_id}\"" : '';
 	$markup .= '>';
 	$markup .= $icon ? "<img src=\"{$icon}\" />" : '';
 	$markup .= '</a>';
-	
-	
+
+
 	return $markup;
 }
 
@@ -704,19 +707,19 @@ function wpas_reply_control_item( $id , $args = array() ) {
  * Check if reply content or attachments provided with new reply
  */
 function wpas_is_new_reply_empty( $ticket_id ) {
-		
+
 	$content_empty = isset( $_POST['wpas_reply'] ) && isset( $_POST['wpas_reply_ticket'] ) && '' !== $_POST['wpas_reply'] ? false : true;
-	
+
 	$attachments_empty = true;
-	
+
 	// Check if agent uploaded attachments
 	if( $content_empty ) {
-		
+
 		if ( boolval( wpas_get_option( 'ajax_upload', false ) ) || boolval( wpas_get_option( 'ajax_upload_all', false ) ) ) {
-			
+
 			$upload = wp_upload_dir();
 			$dir    = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . get_current_user_id() .'/';
-			
+
 			// If temp directory exists, it means that user is uploaded attachments
 			if ( is_dir( $dir ) ) {
 
@@ -728,43 +731,43 @@ function wpas_is_new_reply_empty( $ticket_id ) {
 				}
 
 				$accept = implode( ',', $accept );
-				
-				
+
+
 				$files = glob( $dir . '{' . $accept . '}', GLOB_BRACE );
 				$attachments_empty = empty( $files ) ? true : false;
 			}
-			
-			
+
+
 		} else {
 			$attachments_empty = $_FILES && isset( $_FILES['wpas_files'] ) && !empty( $_FILES['wpas_files']['name'][0] ) ? false : true;
 		}
-		
+
 	}
-	
+
 	return ( $content_empty && $attachments_empty );
 }
 
 add_action( 'wpas_backend_ticket_status_before_actions', 'wpas_close_ticket_prevent_client_notification_field', 12 );
 /**
  * Add Checkbox to prevent client notification about ticket close
- * 
+ *
  * @param int $ticket_id
  */
 function wpas_close_ticket_prevent_client_notification_field( $ticket_id ) {
-	
+
 	/* Do not show the checkbox if not enabled in settings */
 	if ( ! boolval( wpas_get_option( 'agents_can_suppress_closing_emails', false ) ) ) {
 		return ;
 	}
-	
+
 	$close_ticket_prevent_client_notification = get_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', true );
 	?>
 
 	<div>
 	<p>
 		<label>
-			<input type="checkbox" value="1" data-nonce="<?php echo wp_create_nonce( 'prevent_client_notification' ); ?>" name="close_ticket_prevent_client_notification" <?php checked( '1', $close_ticket_prevent_client_notification); ?> />
-			<?php _e( 'Do NOT send closing ticket email to customer', 'awesome-support' ); ?>
+			<input type="checkbox" value="1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'prevent_client_notification' ) ); ?>" name="close_ticket_prevent_client_notification" <?php checked( '1', $close_ticket_prevent_client_notification); ?> />
+			<?php esc_html_e( 'Do NOT send closing ticket email to customer', 'awesome-support' ); ?>
 		</label>
 	</p>
 	</div>

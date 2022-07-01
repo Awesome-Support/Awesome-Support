@@ -3,7 +3,7 @@
 
 
 	$(function () {
-        $(".wpas-show-reply-history").click(function(e) {
+        $(".wpas-show-reply-history").on("click", function(e) {
             if( ! $('.wpas-show-history-popup').length ) {
               $('#wpcontent').append('<div class="wpas-show-history-popup"></div>');
             }
@@ -41,7 +41,7 @@
           /**
            * Ticket content history
            */
-          $("#wpas-view-edit-main-ticket-message").click(function(e) {
+          $("#wpas-view-edit-main-ticket-message").on("click", function(e) {
             e.preventDefault();
             $.ajax({
               url : WPAS_Reply_History.ajax_url,
@@ -71,7 +71,7 @@
           });
           
           
-          $(".pop .icon-remove-sign a").click(function(e) {
+          $(".pop .icon-remove-sign a").on("click", function(e) {
             e.preventDefault();
             $(".pop").fadeOut("fast");
             $('.wpas-show-history-popup').removeClass('is-visible');

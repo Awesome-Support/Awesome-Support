@@ -92,12 +92,12 @@
 
         }
 
-        $('#wpas-system-status-generate-json').click(function (event) {
+        $('#wpas-system-status-generate-json').on("click", function (event) {
             tableToJSON('.wpas-system-status-table');
             output.html(JSON.stringify(tables)).fadeIn('fast').focus().select();
         });
 
-        $('#wpas-system-status-generate-wporg').click(function (event) {
+        $('#wpas-system-status-generate-wporg').on("click", function (event) {
             tableToJSON('.wpas-system-status-table');
             output.html('<pre>' + JSON.stringify(tables) + '</pre>').fadeIn('fast').focus().select();
         });
@@ -181,10 +181,12 @@
         });
 
         // Adding color picker for priority taxonomy
-        if (typeof $.wp.wpColorPicker === 'function') {
-            $('#term-color').wpColorPicker();
-        }
-
+        if (typeof $.wp !== 'undefined')
+        {
+			if (typeof $.wp.wpColorPicker === 'function') {
+				$('#term-color').wpColorPicker();
+			}
+		}
 
         /**
          * Admin tabs
@@ -475,7 +477,7 @@
         /* Make sure we activate error tab once ticket submit button is pressed, so agent can see error message */
         if( $( '#wpas-mb-ticket-main-tabs' ).length > 0 ) {
                         
-                $('form[name=post] #publishing-action, .wpas-reply-actions .wpas_btn_reply').click( function(e) {
+                $('form[name=post] #publishing-action, .wpas-reply-actions .wpas_btn_reply').on("click", function(e) {
                         if( !$('form[name=post]').get(0).checkValidity() ) {
 
                                 $('#wpas_admin_tabs_ticket_main .wpas_admin_tab_content').find('input, select, textarea').each( function() {
@@ -491,7 +493,7 @@
         
         
         /* Set or remove close ticket client notification flag */
-        $('input[name=close_ticket_prevent_client_notification]').change( function(e) {
+        $('input[name=close_ticket_prevent_client_notification]').on("click", function(e) {
                 e.preventDefault();
                 
                 var checkbox  = $(this);

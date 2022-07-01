@@ -820,8 +820,8 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
 					<p><?php echo  $notice_text ; ?></p>
 					<p>
-						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-secondary"><?php _e( 'Allow', 'singularity' ); ?></a>
-						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php _e( 'Do Not Allow', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-secondary"><?php esc_html_e( 'Allow', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php esc_html_e( 'Do Not Allow', 'singularity' ); ?></a>
 					</p>
 				</div>
 			<?php
@@ -867,8 +867,8 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
 					<p><?php echo esc_html( $marketing_text ); ?></p>
 					<p>
-						<a href="<?php echo esc_url( $url_yes ); ?>" data-putnotice="yes" class="button-secondary"><?php _e( 'Yes Please', 'singularity' ); ?></a>
-						<a href="<?php echo esc_url( $url_no ); ?>" data-putnotice="no" class="button-secondary"><?php _e( 'No Thank You', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_yes ); ?>" data-putnotice="yes" class="button-secondary"><?php esc_html_e( 'Yes Please', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_no ); ?>" data-putnotice="no" class="button-secondary"><?php esc_html_e( 'No Thank You', 'singularity' ); ?></a>
 					</p>
 				</div>
 				<?php }
@@ -1009,7 +1009,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 						var url = document.getElementById("put-goodbye-link-<?php echo esc_attr( $this->plugin_name ); ?>");
 						$('body').toggleClass('put-form-active');
 						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").fadeIn();
-						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").html( '<?php echo $html; ?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php _e( 'Submit and Deactivate', 'singularity' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php _e( 'Just Deactivate', 'singularity' ); ?></a></p></div>');
+						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").html( '<?php echo $html; ?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php esc_html_e( 'Submit and Deactivate', 'singularity' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php _e( 'Just Deactivate', 'singularity' ); ?></a></p></div>');
 						$('#put-submit-form').on('click', function(e){
 							// As soon as we click, the body of the form should disappear
 							$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?> .put-goodbye-form-body").fadeOut();
@@ -1055,7 +1055,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 		public function goodbye_form_callback() {
 			check_ajax_referer( 'wisdom_goodbye_form', 'security' );
 			if( isset( $_POST['values'] ) ) {
-				$values = json_encode( wp_unslash( $_POST['values'] ) );
+				$values = json_encode( wp_unslash( array_map( 'esc_attr', $_POST['values'] ) ) );
 				update_option( 'wisdom_deactivation_reason_' . $this->plugin_name, $values );
 			}
 			if( isset( $_POST['details'] ) ) {

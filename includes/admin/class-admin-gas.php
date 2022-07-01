@@ -1,15 +1,15 @@
 <?php
 /**
- * Titan Framework.
+ * Gas Framework.
  *
- * @package   Admin/Titan
+ * @package   Admin/Gas
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
 
-class WPAS_Titan {
+class WPAS_Gas {
 
 	/**
 	 * Instance of this class.
@@ -21,7 +21,7 @@ class WPAS_Titan {
 
 	public function __construct() {
 
-		add_action( 'wp_loaded', array( $this, 'load_titan_framework' ), 12 );
+		add_action( 'wp_loaded', array( $this, 'load_gas_framework' ), 12 );
 
 	}
 
@@ -42,20 +42,20 @@ class WPAS_Titan {
 	}
 
 	/**
-	 * Load Titan Framework.
+	 * Load Gas Framework.
 	 *
-	 * @link   http://www.titanframework.net/embedding-titan-framework-in-your-project/
+	 * @link
 	 * @since  3.0.0
 	 */
-	public function load_titan_framework() {
+	public function load_gas_framework() {
 
 		/*
 		 * When using the embedded framework, use it only if the framework
 		 * plugin isn't activated.
 		 */
-		 
+
 		// Don't do anything when we're activating a plugin to prevent errors
-		// on redeclaring Titan classes
+		// on redeclaring Gas classes
 		if( 'activate' === filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING )
 			&& ! empty( filter_input( INPUT_GET, 'plugin' ) ) ) {
 				return;
@@ -67,7 +67,7 @@ class WPAS_Titan {
 		if ( is_array( $activePlugins ) ) {
 		    foreach ( $activePlugins as $plugin ) {
 		        if ( is_string( $plugin ) ) {
-		            if ( stripos( $plugin, '/titan-framework.php' ) !== false ) {
+		            if ( stripos( $plugin, '/gas-framework.php' ) !== false ) {
 		                $useEmbeddedFramework = false;
 		                break;
 		            }
@@ -75,17 +75,17 @@ class WPAS_Titan {
 		    }
 		}
 
-		// Use the embedded Titan Framework
-		if ( $useEmbeddedFramework && ! class_exists( 'TitanFramework' ) ) {
-		    require_once( WPAS_PATH . 'vendor/gambitph/titan-framework/titan-framework.php' );
+		// Use the embedded Gas Framework
+		if ( $useEmbeddedFramework && ! class_exists( 'GASFramework' ) ) {
+		    require_once( WPAS_PATH . 'includes/gas-framework/gas-framework.php' );
 		}
-		 
-		/*
-		 * Start your Titan code below
-		 */
-		$titan = TitanFramework::getInstance( 'wpas' );
 
-		$settings = $titan->createContainer( array(
+		/*
+		 * Start your Gas code below
+		 */
+		$gas = GASFramework::getInstance( 'wpas' );
+
+		$settings = $gas->createContainer( array(
 						'type'       => 'admin-page',
 						'name'       => __( 'Settings', 'awesome-support' ),
 						'title'      => __( 'Settings', 'awesome-support' ),
@@ -97,7 +97,7 @@ class WPAS_Titan {
 
 		/**
 		 * Get plugin core options
-		 * 
+		 *
 		 * @var (array)
 		 * @see  admin/includes/settings.php
 		 */
@@ -131,7 +131,7 @@ class WPAS_Titan {
 			}
 
 			$tab->createOption( array( 'type' => 'save', ) );
-			
+
 		}
 
 	}

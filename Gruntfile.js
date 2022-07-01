@@ -309,10 +309,9 @@ module.exports = function (grunt) {
 		copy: {
 		  vendoroverrides: {
 			files: [
-			  { src:"vendor-overrides/titan-framework-overrides/class-option-edd-license.php", dest:"vendor/gambitph/titan-framework/lib/class-option-edd-license.php" },
-			  { src:"vendor-overrides/titan-framework-overrides/EDD_SL_Plugin_Updater.php", dest:"vendor/gambitph/titan-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php" },
 			  { src:"vendor-overrides/eric-mann-session-manager/ericmann/wp-session-manager/includes/deprecated.php", dest:"vendor/ericmann/wp-session-manager/includes/deprecated.php" },
-			  { src:"vendor-overrides/eric-mann-session-manager/ericmann/wp-session-manager/wp-session-manager.php", dest:"vendor/ericmann/wp-session-manager/wp-session-manager.php" }
+			  { src:"vendor-overrides/eric-mann-session-manager/ericmann/wp-session-manager/wp-session-manager.php", dest:"vendor/ericmann/wp-session-manager/wp-session-manager.php" },
+			  { src:"vendor-overrides/eric-mann-sessionz/Manager.php", dest:"vendor/ericmann/sessionz/php/Manager.php" }
 			]
 		  },
 			copytodist: {

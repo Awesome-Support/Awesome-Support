@@ -1,16 +1,17 @@
-// Cyborg 4.0.0
+// Cyborg 4.6.1
 // Bootswatch
 
 
 // Variables ===================================================================
 
-$web-font-path: "https://fonts.googleapis.com/css?family=Roboto:400,700" !default;
-@import url($web-font-path);
+$web-font-path: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" !default;
+@if $web-font-path {
+  @import url($web-font-path);
+}
 
 // Navbar ======================================================================
 
 .navbar {
-
   &.bg-primary {
     border: 1px solid $gray-700;
   }
@@ -25,86 +26,177 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Roboto:400,700" !defaul
   }
 
   &.fixed-top {
-    border-width: 0 0 1px 0;
+    border-width: 0 0 1px;
   }
 
   &.fixed-bottom {
-    border-width: 1px 0 0 0;
+    border-width: 1px 0 0;
   }
-
 }
 
 // Buttons =====================================================================
 
 .btn {
-
-  &-warning,
-  &-warning:hover {
-    color: $white;
+  @each $color, $value in $theme-colors {
+    &-#{$color} {
+      @if $enable-gradients {
+        background: $value linear-gradient(180deg, mix($white, $value, 15%), $value) repeat-x;
+      } @else {
+        background-color: $value;
+      }
+    }
   }
 }
-
-// Typography ==================================================================
 
 // Tables ======================================================================
 
 table {
-  color: #fff;
+  color: $white;
 }
 
 .table {
+  &-primary {
+    &,
+    > th,
+    > td {
+      background-color: $primary;
+    }
+  }
 
-  .thead-dark th {
-    color: $white;
+  &-secondary {
+    &,
+    > th,
+    > td {
+      background-color: $secondary;
+    }
+  }
+
+  &-light {
+    &,
+    > th,
+    > td {
+      background-color: $light;
+    }
+  }
+
+  &-dark {
+    &,
+    > th,
+    > td {
+      background-color: $dark;
+    }
   }
 
   &-success {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $success;
     }
   }
 
   &-info {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $info;
     }
   }
 
   &-danger {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $danger;
     }
   }
 
   &-warning {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $warning;
     }
   }
 
+  &-active {
+    &,
+    > th,
+    > td {
+      background-color: $table-active-bg;
+    }
+  }
+
   &-hover {
+    .table-primary:hover {
+      &,
+      > th,
+      > td {
+        background-color: darken($primary, 5%);
+      }
+    }
+
+    .table-secondary:hover {
+      &,
+      > th,
+      > td {
+        background-color: darken($secondary, 5%);
+      }
+    }
+
+    .table-light:hover {
+      &,
+      > th,
+      > td {
+        background-color: darken($light, 5%);
+      }
+    }
+
+    .table-dark:hover {
+      &,
+      > th,
+      > td {
+        background-color: darken($dark, 5%);
+      }
+    }
 
     .table-success:hover {
-      &, > th, > td {
+      &,
+      > th,
+      > td {
         background-color: darken($success, 5%);
       }
     }
 
     .table-info:hover {
-      &, > th, > td {
+      &,
+      > th,
+      > td {
         background-color: darken($info, 5%);
       }
     }
 
     .table-danger:hover {
-      &, > th, > td {
+      &,
+      > th,
+      > td {
         background-color: darken($danger, 5%);
       }
     }
 
     .table-warning:hover {
-      &, > th, > td {
+      &,
+      > th,
+      > td {
         background-color: darken($warning, 5%);
+      }
+    }
+
+    .table-active:hover {
+      &,
+      > th,
+      > td {
+        background-color: $table-active-bg;
       }
     }
 
@@ -113,9 +205,17 @@ table {
 
 // Forms =======================================================================
 
-legend,
-.input-group-addon {
-  color: #fff;
+legend {
+  color: $white;
+}
+
+.form-control {
+  background-clip: border-box;
+
+  &:disabled,
+  &[readonly] {
+    border-color: transparent;
+  }
 }
 
 // Navs ========================================================================
@@ -123,7 +223,7 @@ legend,
 .nav-tabs,
 .nav-pills {
   .nav-link {
-    color: #fff;
+    color: $white;
 
     &:hover {
       background-color: $gray-700;
@@ -143,7 +243,7 @@ legend,
 
 .breadcrumb {
   a {
-    color: #fff;
+    color: $white;
   }
 }
 
@@ -161,13 +261,17 @@ legend,
 
   a,
   .alert-link {
-    color: #fff;
+    color: $white;
     text-decoration: underline;
   }
 
   @each $color, $value in $theme-colors {
     &-#{$color} {
-      background-color: $value;
+      @if $enable-gradients {
+        background: $value linear-gradient(180deg, mix($white, $value, 15%), $value) repeat-x;
+      } @else {
+        background-color: $value;
+      }
     }
   }
 }
@@ -179,21 +283,19 @@ legend,
 }
 
 .close {
-  opacity: 0.6;
+  opacity: .6;
 
   &:hover {
     opacity: 1;
   }
 }
 
-// Progress bars ===============================================================
-
 // Containers ==================================================================
 
 .list-group-item {
   &:hover {
     background-color: $gray-700;
-    color: #fff;
+    color: $white;
   }
 
   &-action {
@@ -205,13 +307,18 @@ legend,
   }
 
   &:hover .list-group-item-heading {
-    color: #fff;
+    color: $white;
   }
 }
 
 .card,
 .list-group-item {
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     color: inherit;
   }
 }

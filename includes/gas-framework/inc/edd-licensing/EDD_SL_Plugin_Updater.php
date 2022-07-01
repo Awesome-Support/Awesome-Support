@@ -3,7 +3,7 @@
 /**
  *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  * This file now overrides the official version that is in github.  Needed
- * to do this so that we can get the latest version of this file to prevent the 
+ * to do this so that we can get the latest version of this file to prevent the
  * edd licensing check from hammering our servers with data
  * arrg.
  *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @author Pippin Williamson
  * @version 1.6.4
  */
-class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
+class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
 
 	private $api_url     = '';
 	private $api_data    = array();
@@ -146,7 +146,7 @@ class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
 		remove_filter( 'pre_set_site_transient_update_plugins', array( $this, 'check_update' ), 10 );
 
 		$update_cache = get_site_transient( 'update_plugins' );
-		
+
 		$update_cache = is_object( $update_cache ) ? $update_cache : new stdClass();
 
 		if ( empty( $update_cache->response ) || empty( $update_cache->response[ $this->name ] ) ) {

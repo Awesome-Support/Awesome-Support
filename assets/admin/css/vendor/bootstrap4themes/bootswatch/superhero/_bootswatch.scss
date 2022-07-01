@@ -1,11 +1,13 @@
-// Superhero 4.0.0
+// Superhero 4.6.1
 // Bootswatch
 
 
 // Variables ===================================================================
 
-$web-font-path: "https://fonts.googleapis.com/css?family=Lato:300,400,700" !default;
-@import url($web-font-path);
+$web-font-path: "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" !default;
+@if $web-font-path {
+  @import url($web-font-path);
+}
 
 // Navbar ======================================================================
 
@@ -16,17 +18,20 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Lato:300,400,700" !defa
 // Buttons =====================================================================
 
 .btn {
-
-  &-info,
-  &-warning {
-    color: $white;
+  @each $color, $value in $theme-colors {
+    &-#{$color} {
+      @if $enable-gradients {
+        background: $value linear-gradient(180deg, mix($white, $value, 15%), $value) repeat-x;
+      } @else {
+        background-color: $value;
+      }
+    }
   }
 }
 
 // Typography ==================================================================
 
 .dropdown-menu {
-
   font-size: $font-size-sm;
 }
 
@@ -48,7 +53,7 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Lato:300,400,700" !defa
   }
 
   a:not(.btn) {
-    color: #fff;
+    color: $white;
     text-decoration: underline;
   }
 
@@ -60,53 +65,150 @@ $web-font-path: "https://fonts.googleapis.com/css?family=Lato:300,400,700" !defa
     color: $text-muted;
   }
 
+  &-primary {
+    &,
+    > th,
+    > td {
+      background-color: $primary;
+    }
+  }
+
+  &-secondary {
+    &,
+    > th,
+    > td {
+      background-color: $secondary;
+    }
+  }
+
+  &-light {
+    &,
+    > th,
+    > td {
+      background-color: $light;
+    }
+  }
+
+  &-dark {
+    color: $white;
+
+    &,
+    > th,
+    > td {
+      background-color: $dark;
+    }
+  }
+
   &-success {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $success;
     }
   }
 
   &-info {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $info;
     }
   }
 
   &-danger {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $danger;
     }
   }
 
   &-warning {
-    &, > th, > td {
+    &,
+    > th,
+    > td {
       background-color: $warning;
     }
   }
 
+  &-active {
+    &,
+    > th,
+    > td {
+      background-color: $table-active-bg;
+    }
+  }
+
   &-hover {
+    .table-primary:hover {
+      &,
+      > th,
+      > td {
+        background-color: darken($primary, 5%);
+      }
+    }
+
+    .table-secondary:hover {
+      &,
+      > th,
+      > td {
+        background-color: darken($secondary, 5%);
+      }
+    }
+
+    .table-light:hover {
+      &,
+      > th,
+      > td {
+        background-color: darken($light, 5%);
+      }
+    }
+
+    .table-dark:hover {
+      &,
+      > th,
+      > td {
+        background-color: darken($dark, 5%);
+      }
+    }
 
     .table-success:hover {
-      &, > th, > td {
+      &,
+      > th,
+      > td {
         background-color: darken($success, 5%);
       }
     }
 
     .table-info:hover {
-      &, > th, > td {
+      &,
+      > th,
+      > td {
         background-color: darken($info, 5%);
       }
     }
 
     .table-danger:hover {
-      &, > th, > td {
+      &,
+      > th,
+      > td {
         background-color: darken($danger, 5%);
       }
     }
 
     .table-warning:hover {
-      &, > th, > td {
+      &,
+      > th,
+      > td {
         background-color: darken($warning, 5%);
+      }
+    }
+
+    .table-active:hover {
+      &,
+      > th,
+      > td {
+        background-color: $table-active-bg;
       }
     }
 
@@ -120,11 +222,6 @@ label,
 .checkbox label,
 .help-block {
   font-size: $font-size-sm;
-}
-
-.input-addon,
-.input-group-addon {
-  color: $body-color;
 }
 
 // Navs ========================================================================
@@ -143,7 +240,7 @@ label,
 
 .page-link:hover,
 .page-link:focus {
-  color: #fff;
+  color: $white;
   text-decoration: none;
 }
 
@@ -155,13 +252,17 @@ label,
 
   a,
   .alert-link {
-    color: #fff;
+    color: $white;
     text-decoration: underline;
   }
 
   @each $color, $value in $theme-colors {
     &-#{$color} {
-      background-color: $value;
+      @if $enable-gradients {
+        background: $value linear-gradient(180deg, mix($white, $value, 15%), $value) repeat-x;
+      } @else {
+        background-color: $value;
+      }
     }
   }
 }
@@ -174,7 +275,9 @@ label,
 }
 
 .close {
-  opacity: 0.5;
+  color: $white;
+  text-shadow: none;
+  opacity: .5;
 
   &:hover,
   &:focus {
@@ -182,7 +285,12 @@ label,
   }
 }
 
-// Progress bars ===============================================================
+// Popovers      ===============================================================
+
+.popover-header {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
 
 // Containers ==================================================================
 
@@ -190,16 +298,5 @@ label,
   &-header,
   &-footer {
     background-color: $table-hover-bg;
-
-    .close {
-      color: #fff;
-      text-shadow: none;
-      opacity: 0.5;
-
-      &:hover,
-      &:focus {
-        opacity: 1;
-      }
-    }
   }
 }

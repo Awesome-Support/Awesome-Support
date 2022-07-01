@@ -50,15 +50,15 @@
                 
                 /**
                  * Trigger once close button is pressed from poopup
-                 */
-                $('body').delegate('.wpas_win_close_btn', 'click', function() {
+                 */               
+                $('body').on('click', '.wpas_win_close_btn', function() {
                         $.magnificPopup.close();
                 });
-                
                 /**
                  * Trigger once open window button is pressed
                  */
-                $('body').delegate( '.mfp_window, .wpas_win_link ', 'click', function( e) {
+                //$('body').delegate( '.mfp_window, .wpas_win_link ', 'click', function( e) {
+                $('body').on( 'click', '.mfp_window, .wpas_win_link ', function( e) {
                         e.preventDefault();
                         
                         

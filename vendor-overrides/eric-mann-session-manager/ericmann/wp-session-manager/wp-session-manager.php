@@ -108,11 +108,15 @@ function wp_session_manager_initialize()
 function wp_session_manager_multiple_sessions_notice()
 {
     global $wp_session_messages;
-    ?>
-    <div class="notice notice-error">
-        <p><?php echo esc_html($wp_session_messages['multiple_sessions']); ?></p>
-    </div>
-    <?php
+    
+	if($wp_session_messages)
+	{
+		?>
+		<div class="notice notice-error">
+			<p><?php echo esc_html($wp_session_messages['multiple_sessions']); ?></p>
+		</div>
+		<?php
+	}
 }
 
 /**
@@ -123,11 +127,14 @@ function wp_session_manager_multiple_sessions_notice()
 function wp_session_manager_deactivated_notice()
 {
     global $wp_session_messages;
-    ?>
-    <div class="notice notice-error">
-        <p><?php echo esc_html($wp_session_messages['bad_php_version']); ?></p>
-    </div>
-    <?php
+    if($wp_session_messages)
+	{
+		?>
+		<div class="notice notice-error">
+			<p><?php echo esc_html($wp_session_messages['bad_php_version']); ?></p>
+		</div>
+		<?php
+	}
 }
 
 /**
