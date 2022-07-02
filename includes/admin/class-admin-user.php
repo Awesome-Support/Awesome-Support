@@ -35,7 +35,7 @@ class WPAS_User {
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_smart_tickets_order' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_after_reply' ), 10, 1 );
 		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_user_view_all_tickets' ), 10, 1 );
-
+		add_action( 'wpas_user_profile_fields', array( $this, 'profile_field_allow_assignment_to' ), 11, 1 );
 		add_action( 'wpas_all_user_profile_fields', array( $this, 'profile_phone_fields' ), 10, 1 );
 	}
 
@@ -306,6 +306,59 @@ class WPAS_User {
 
 	<?php }
 
+
+	/**
+	 * User profile field "allow assignment to"
+	 *
+	 * @since 3.3
+	 *
+	 * @param WP_User $user
+	 *
+	 * @return void
+	 */
+	public function profile_field_allow_assignment_to( $user ) {
+
+		/* Only admins can set the dept field for an agent */
+		if ( ! wpas_is_asadmin() ) {
+			return;
+		}
+
+		if ( false === wpas_get_option( 'departments', false ) ) {
+			return;
+		}
+
+		$departments = get_terms( array(
+			'taxonomy'   => 'department',
+			'hide_empty' => false,
+		) );
+
+		if ( empty( $departments ) ) {
+			return;
+		}
+
+		$current = get_user_option( 'wpas_department_assignment', $user->ID ); ?>
+
+		<tr class="wpas-after-reply-wrap">
+			<th><label><?php _e( 'Allow assignment to', 'awesome-support' ); ?></label></th>
+			<td>
+				<?php
+					$checked_all = in_array( 0, $current ) ? 'checked="checked"' : '';
+					printf( '<label for="wpas_department_assignment_%1$s"><input type="checkbox" name="%3$s" id="wpas_department_assignment_%1$s" value="%2$d" %5$s> %4$s</label><br>', 'all', 0, 'wpas_department_assignment[]', 'Users from all departments', $checked_all );
+				?>
+				<?php
+				foreach ( $departments as $department ) {
+					$checked = in_array( $department->term_id, $current ) ? 'checked="checked"' : '';
+					printf( '<label for="wpas_department_assignment_%1$s"><input type="checkbox" name="%3$s" id="wpas_department_assignment_%1$s" value="%2$d" %5$s> %4$s</label><br>', $department->slug, $department->term_id, 'wpas_department_assignment[]', $department->name, $checked );
+				}
+				?>
+				<p class="description"><?php esc_html_e( 'To agents from which departments is the user allowed to assign tickets', 'awesome-support' ); ?></p>
+			</td>
+		</tr>
+
+	<?php
+	}
+
+
 	/**
 	 * Save the user preferences.
 	 *
@@ -326,8 +379,8 @@ class WPAS_User {
 		$smart            = filter_input( INPUT_POST, 'wpas_smart_tickets_order' );
 		$view_all_tickets = filter_input( INPUT_POST, 'wpas_view_all_tickets' );
 		$department       = isset( $_POST['wpas_department'] ) ? array_map( 'intval', $_POST['wpas_department'] ) : array();
-
-
+		$department_assignment = isset( $_POST['wpas_department_assignment'] ) ? array_map( 'intval', $_POST['wpas_department_assignment'] ) : array();
+    
 		$mobile_phone = filter_input( INPUT_POST, 'wpas_mobile_phone' );
 		$office_phone = filter_input( INPUT_POST, 'wpas_office_phone' );
 		$home_phone   = filter_input( INPUT_POST, 'wpas_home_phone' );
@@ -341,6 +394,7 @@ class WPAS_User {
 		update_user_option( $user_id, 'wpas_can_be_assigned', $can_assign );
 		update_user_option( $user_id, 'wpas_smart_tickets_order', $smart );
 		update_user_option( $user_id, 'wpas_department', $department );
+		update_user_option( $user_id, 'wpas_department_assignment', $department_assignment );
 		update_user_option( $user_id, 'wpas_view_all_tickets', $view_all_tickets );
 
 		update_user_option( $user_id, 'wpas_mobile_phone', $mobile_phone );
