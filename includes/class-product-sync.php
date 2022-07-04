@@ -234,7 +234,13 @@ class WPAS_Product_Sync {
 
 				case 'slug':
 				case 'name':
-					$clean_args['name'] = sanitize_title( $value );
+					if ( is_array( $value ) ) {
+						$name = reset( $value );
+						// `reset()` can return false && there is always the possibility that the first array item is not an array, so check for a string.
+						$clean_args['name'] = is_string( $name ) ? sanitize_title( $name ) : '';
+					} elseif ( is_string( $value ) ) {
+						$clean_args['name'] = sanitize_title( $value );
+					}
 					break;
 
 				case 'parent':
