@@ -447,6 +447,18 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.1.1
+
+* Fix
+	* When activating Client ticket with Version 6.1.0 SHOW EMPTY notice
+	* Fixed security vulnerability
+	* 4161890 - Errors when Awesome Support and WooCommerce are Enabled on PHP version 8.x
+	* Conflict with Email Support Add-on
+	* SSL verify throw warnings
+	* Registration form does not remember completed fields #683
+	* When using the "Awaiting for Reply" status, not all of those tickets are shown with that filter
+* New Feature
+	* Q 202215 - show the image attached on the ticket, in the print file
 
 = 6.1.0
 

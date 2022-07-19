@@ -5,6 +5,27 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.1.1</h1>
+				<h3>6.1.1 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: When activating Client ticket with Version 6.1.0 SHOW EMPTY notice</li>
+					<li>Fix: Fixed security vulnerability</li>
+					<li>Fix: 4161890 - Errors when Awesome Support and WooCommerce are Enabled on PHP version 8.x</li>
+					<li>Fix: Conflict with Email Support Add-on</li>
+					<li>Fix: SSL verify throw warnings</li>
+					<li>Fix: Registration form does not remember completed fields #683</li>
+					<li>Fix: When using the "Awaiting for Reply" status, not all of those tickets are shown with that filter</li>
+					<li>New Feature: Q 202215 - show the image attached on the ticket, in the print file</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+	
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.1.0</h1>
 				<h3>6.1.0 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">

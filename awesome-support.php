@@ -249,7 +249,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '6.1.0' );
+			define( 'WPAS_VERSION',           '6.1.1' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
