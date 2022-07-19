@@ -626,6 +626,8 @@ class WPAS_Tickets_List {
 						if ( true === wpas_is_reply_needed( $post_id, $replies ) ) {
 							$color = ( false !== ( $c = wpas_get_option( 'color_awaiting_reply', false ) ) ) ? $c : '#0074a2';
 							array_push( $tags, "<span class='wpas-label' style='background-color:$color;'>" . __( 'Awaiting Support Reply', 'awesome-support' ) . "</span>" );
+							//HOTFIX: When using the "Awaiting for Reply" status, not all of those tickets are shown with that filter
+							update_post_meta( $post_id, '_wpas_is_waiting_client_reply', true );
 						}
 
 						// Maybe add the "Old" tag
