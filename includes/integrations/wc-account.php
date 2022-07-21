@@ -125,7 +125,11 @@
 		
 		$page_ids = wpas_get_option('ticket_submit') ;  // get the ids of the ticket pages from settings...
 		
-		if ( ! empty( $page_ids ) ) {
+		if ( ! is_array( $page_ids ) ) {
+			$page_ids = (array) $page_ids;
+		}
+		
+		if ( ! empty( $page_ids ) && count( $page_ids ) > 0 ) {
 			
 			$page_id = $page_ids[0];  
 			
