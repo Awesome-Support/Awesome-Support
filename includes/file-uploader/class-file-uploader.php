@@ -1862,11 +1862,23 @@ class WPAS_File_Upload {
 				$new_file_relative = $new_file_relative_dir . '/' . basename( $file );
 
 				$new_file_url = trailingslashit( $upload['baseurl'] ) . $new_file_relative;
-
+				
+				// https://trello.com/c/ksKkxT9e fix fileinfo.dll not enable on server
+				if(!function_exists("mime_content_type"))
+				{					
+					require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
+					$file_pathinfo = pathinfo($file, PATHINFO_EXTENSION);
+					$post_mime_type = wpas_get_mime_type( $file_pathinfo );
+				}
+				else
+				{
+					$post_mime_type = mime_content_type( $file );
+				}			
+				
 				// Prepare an array of post data for the attachment.
 				$attachment = array(
 					'guid'           => $new_file_url,
-					'post_mime_type' => mime_content_type( $file ),
+					'post_mime_type' => $post_mime_type,
 					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file ) ),
 					'post_content'   => '',
 					'post_status'    => 'inherit'
