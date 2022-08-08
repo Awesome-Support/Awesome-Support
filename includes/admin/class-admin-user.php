@@ -289,7 +289,11 @@ class WPAS_User {
 			return;
 		}
 
-		$current = get_user_option( 'wpas_department', $user->ID ); ?>
+		$current = get_user_option( 'wpas_department', $user->ID ); 
+		
+		$current = is_array( $current ) ? $current : array();		
+		
+		?>
 
 		<tr class="wpas-after-reply-wrap">
 			<th><label><?php esc_html_e( 'Department(s)', 'awesome-support' ); ?></label></th>
@@ -336,8 +340,10 @@ class WPAS_User {
 			return;
 		}
 
-		$current = get_user_option( 'wpas_department_assignment', $user->ID ); ?>
-
+		$current = get_user_option( 'wpas_department_assignment', $user->ID ); 
+		
+		?>
+		
 		<tr class="wpas-after-reply-wrap">
 			<th><label><?php _e( 'Allow assignment to', 'awesome-support' ); ?></label></th>
 			<td>
