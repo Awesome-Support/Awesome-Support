@@ -341,6 +341,7 @@ class WPAS_User {
 		}
 
 		$current = get_user_option( 'wpas_department_assignment', $user->ID ); 
+		$current = is_array( $current ) ? $current : array();
 		
 		?>
 		
