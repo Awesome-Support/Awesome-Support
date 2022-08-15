@@ -20,8 +20,12 @@ function wpas_open_ticket( $data ) {
 	// Fallback in case the referrer failed
 	if ( empty( $submit ) ) {
 		$submission_pages = wpas_get_option( 'ticket_submit' );
-
-		if( $submission_pages ) {
+		
+		if ( ! is_array( $submission_pages ) ) {
+			$submission_pages = (array) $submission_pages;
+		}
+		
+		if( $submission_pages && count( $submission_pages ) > 0 ) {
 			$submit           = $submission_pages[0];
 			$submit           = wp_sanitize_redirect( get_permalink( $submit ) );
 		}

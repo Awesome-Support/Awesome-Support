@@ -447,6 +447,19 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.1.1
+* Fix
+	* When activating Client tickets add-on with Version 6.1.0 SHOW EMPTY notice
+	* Fixed security vulnerability
+	* Errors when Awesome Support and WooCommerce are Enabled on PHP version 8.x
+	* Conflict with Email Support Add-on
+	* SSL verify throw warnings
+	* Registration form did not remember completed fields. Now these fields are saved properly
+	* Now all the ticket with the "Awaiting for Reply" status filter are displayed
+	* Fixed login issue with the Guest tickets add-on on PHP 8.0 
+	* fileinfo.dll extension not enable on server caused Drap-dop file not working
+* New Feature
+	* You can show the image attached on the ticket, in the print file.
 
 = 6.1.0
 

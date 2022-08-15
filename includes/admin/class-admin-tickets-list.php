@@ -513,6 +513,15 @@ class WPAS_Tickets_List {
 							$last_reply     = $replies->posts[ $replies->post_count - 1 ];
 							$last_user_link = add_query_arg( array( 'user_id' => $last_reply->post_author ), admin_url( 'user-edit.php' ) );
 							$last_user      = get_user_by( 'id', $last_reply->post_author );
+							if(!$last_user)
+							{
+								$user_nicename = 'deleted user';
+								$last_user_link = '#';
+							}
+							else
+							{
+								$user_nicename = $last_user->user_nicename;
+							}
 							$role           = true === user_can( $last_reply->post_author, 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
 
 							echo _x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' );
@@ -520,7 +529,7 @@ class WPAS_Tickets_List {
 							printf( _x( '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
 								                                                                                                                                                                 'post'   => $post_id,
 								                                                                                                                                                                 'action' => 'edit',
-							                                                                                                                                                                 ), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $last_user->user_nicename . '</a>', $role );
+							                                                                                                                                                                 ), admin_url( 'post.php' ) ) . '#wpas-post-' . $last_reply->ID, human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) ), '<a href="' . $last_user_link . '">' . $user_nicename . '</a>', $role );
 						}
 
 						// Add open date
@@ -617,6 +626,8 @@ class WPAS_Tickets_List {
 						if ( true === wpas_is_reply_needed( $post_id, $replies ) ) {
 							$color = ( false !== ( $c = wpas_get_option( 'color_awaiting_reply', false ) ) ) ? $c : '#0074a2';
 							array_push( $tags, "<span class='wpas-label' style='background-color:$color;'>" . __( 'Awaiting Support Reply', 'awesome-support' ) . "</span>" );
+							//HOTFIX: When using the "Awaiting for Reply" status, not all of those tickets are shown with that filter
+							update_post_meta( $post_id, '_wpas_is_waiting_client_reply', true );
 						}
 
 						// Maybe add the "Old" tag

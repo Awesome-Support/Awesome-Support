@@ -1230,6 +1230,8 @@ add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax',11,0 );
  */
 function wpas_get_users_ajax( $args = array() ) {
 
+	global $wpdb;
+
 	$defaults = array(
 		'cap'         => 'edit_ticket',
 		'cap_exclude' => '',
@@ -1248,6 +1250,31 @@ function wpas_get_users_ajax( $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
+	$department_assignment = get_user_option( 'wpas_department_assignment', get_current_user_id() );
+	$ids = [];
+	if (!empty($department_assignment)) {
+		$args_user  = array(
+			'meta_key' => $wpdb->get_blog_prefix() . 'wpas_department',
+			'meta_compare' => 'EXISTS'
+		);
+
+		$user_query = new WP_User_Query( $args_user );
+
+		if (! empty( $user_query->get_results() )) {
+			foreach ( $user_query->get_results() as $user ) {
+				$departments = get_user_option( 'wpas_department', $user->ID );
+				if (!empty($departments)) {
+					foreach ($departments as $department) {
+						if (in_array($department, $department_assignment)) {
+							$ids[] = $user->ID;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * @var WPAS_Member_Query $users
 	 */
@@ -1256,6 +1283,7 @@ function wpas_get_users_ajax( $args = array() ) {
 			'cap'         => array_map( 'sanitize_text_field', array_filter( (array) $args['cap'] ) ),
 			'cap_exclude' => array_map( 'sanitize_text_field', array_filter( (array) $args['cap_exclude'] ) ),
 			'exclude'     => array_map( 'intval', array_filter( (array) $args['exclude'] ) ),
+			'ids'		  => array_map( 'intval', array_filter( (array) $ids ) ),
 			'search'      => array(
 				'query'    => sanitize_text_field( $args['q'] ),
 				'fields'   => array( 'user_nicename', 'display_name', 'id', 'user_email' ),
@@ -1747,3 +1775,32 @@ function wpas_id_to_user_object( $user_ids ) {
 	}
 	return $user_objects;
 }
+/**
+ * Temporarily save Registration Form fields before validation
+ * This will help user NOT to retype registration fields
+ * 
+ * @param	array	$user			User object
+ * @param	string	$redirect_to	Redirect to URL
+ * @param	array	$data			HTTP Request data
+ */
+function wpas_pre_register_temp_value_save( $user, $redirect_to, $data )
+{
+	if ( isset( $user["first_name"] ) && $user["first_name"] ) {
+		$_SESSION["wpas_registration_form"]["first_name"] = $user["first_name"];
+	}
+	if ( isset( $user["last_name"] ) && $user["last_name"] ) {
+		$_SESSION["wpas_registration_form"]["last_name"] = $user["last_name"];
+	}
+	if ( isset($user["email"] ) && $user["email"] ) {
+		$_SESSION["wpas_registration_form"]["email"] = $user["email"];
+	}
+}
+add_action( "wpas_pre_register_account", "wpas_pre_register_temp_value_save", 10, 3 );
+
+/**
+ * Clear temporary $_SESSION variables once registration form values are displayed in relative fields.
+ */
+function wpas_after_registration_clean_temp() {
+	unset( $_SESSION["wpas_registration_form"] );
+}
+add_action( "wpas_after_registration_fields", "wpas_after_registration_clean_temp", 10 );
