@@ -276,7 +276,7 @@ class WPAS_User {
 			return ;
 		}
 
-		if ( false === wpas_get_option( 'departments', false ) ) {
+		if ( false == wpas_get_option( 'departments', false ) ) {
 			return;
 		}
 
@@ -327,7 +327,7 @@ class WPAS_User {
 			return;
 		}
 
-		if ( false === wpas_get_option( 'departments', false ) ) {
+		if ( false == wpas_get_option( 'departments', false ) ) {
 			return;
 		}
 
@@ -339,7 +339,9 @@ class WPAS_User {
 		if ( empty( $departments ) || is_wp_error( $departments ) ) {
 			return;
 		}
-
+		if( !class_exists( 'Smart_Agent_Assignment' ) ) {
+			return;
+		}
 		$current = get_user_option( 'wpas_department_assignment', $user->ID ); 
 		$current = is_array( $current ) ? $current : array();
 		
