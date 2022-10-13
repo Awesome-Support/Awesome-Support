@@ -336,7 +336,7 @@ class WPAS_User {
 			'hide_empty' => false,
 		) );
 
-		if ( empty( $departments ) ) {
+		if ( empty( $departments ) || is_wp_error( $departments ) ) {
 			return;
 		}
 
