@@ -610,8 +610,15 @@ class WPAS_GDPR_User_Profile {
 		if ( is_dir( $dir ) ) {
 			if ( $dh = opendir( $dir ) ) {
 				while ( ( $file2 = readdir( $dh ) ) !== false ) {
-					if ( file_exists( $dir . '/' . $file2 ) ) {
-						$mimetype = mime_content_type( $dir . '/' . $file2 );
+					if ( file_exists( $dir . '/' . $file2 ) ) {						
+						if(!function_exists("mime_content_type")) {					
+							require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
+							$file_pathinfo = pathinfo($dir . '/' . $file2, PATHINFO_EXTENSION);
+							$mimetype = wpas_get_mime_type( $file_pathinfo );
+						}
+						else {
+							$mimetype = mime_content_type( $dir . '/' . $file2 );
+						}
 						if ( 'text/plain' !== $mimetype ) {
 							if ( ! is_dir( $dir . '/' . $file2 ) ) {
 								$folder_prefix = 'ticket_';
