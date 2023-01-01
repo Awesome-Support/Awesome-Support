@@ -446,10 +446,14 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
-
+= 6.1.2.3
+* Fix	
+	* To create a function to avoid site crashes when deactivating the Core plugin and having add-ons activated.
+	* Fixed BUG - No attachments appear on ticket content when printing
+	
 = 6.1.2.2
 * Fix	
-	* Fixed BUG- Assign ticket by Departments broken the GAS after it disabled.
+	* Fixed BUG - Assign ticket by Departments broken the GAS after it disabled.
 
 = 6.1.2.1
 * Fix	
