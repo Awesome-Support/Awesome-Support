@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 5.9.3
-Stable tag: 6.1.1
+Tested up to: 6.0.3
+Stable tag: 6.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -446,14 +446,19 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
-= 6.1.1.2
+
+= 6.1.2.2
 * Fix	
 	* Fixed BUG- Assign ticket by Departments broken the GAS after it disabled.
 
-= 6.1.1.1
+= 6.1.2.1
 * Fix	
 	* Fixed 4427755 - Invalid taxonomy "departmnet"
-	
+
+= 6.1.2
+* Fix
+	* Fixed security vulnerability
+
 = 6.1.1
 * Fix
 	* When activating Client tickets add-on with Version 6.1.0 SHOW EMPTY notice
