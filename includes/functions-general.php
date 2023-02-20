@@ -198,11 +198,14 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		global $post;
 
-		if ( empty( $post ) ) {
-			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
-			$post     = get_post( $post_id );
-		}
+        if ( empty( $post ) ) {
+            $protocol = (isset($_SERVER['SERVER_PROTOCOL']) && stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true) ? 'https://' : 'http://';
+            $server_name = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
+            $server_port = isset($_SERVER['SERVER_PORT']) ? ':' . $_SERVER['SERVER_PORT'] : '';
+            $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+            $post_id  = url_to_postid( $protocol . $server_name . $server_port . $request_uri );
+            $post     = get_post( $post_id );
+        }
 
 		if ( is_singular( 'ticket' ) ) {
 			return true;
