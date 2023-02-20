@@ -162,7 +162,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
 	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
-	/* Check for plugin pages in the admin */
+	/* Check for plugin pages in the admin */	
 	if ( is_admin() ) {
 
 		/* First of all let's check if there is a specific slug given */
@@ -189,9 +189,9 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		return false;
 
-	} elseif ( wpas_is_wp_cli() ) {
+	} elseif ( wpas_is_wp_cli() || !isset( $_SERVER ) ) {
 
-		/* running from wp_cli so just return false */
+		/* running from wp_cli so just return false */				
 		return false;
 
 	} else {
@@ -203,7 +203,7 @@ function wpas_is_plugin_page( $slug = '' ) {
             $server_name = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
             $server_port = isset($_SERVER['SERVER_PORT']) ? ':' . $_SERVER['SERVER_PORT'] : '';
             $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-            $post_id  = url_to_postid( $protocol . $server_name . $server_port . $request_uri );
+            $post_id  = url_to_postid( '' . '' . '' . $request_uri );
             $post     = get_post( $post_id );
         }
 
