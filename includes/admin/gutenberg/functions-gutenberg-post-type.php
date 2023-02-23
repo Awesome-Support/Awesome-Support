@@ -30,7 +30,7 @@ function wpas_blocked_gutenberg_post_types() {
 	
 }
 
-add_filter( 'allowed_block_types', 'wpas_filter_gutenberg_blocks_ticket' );
+add_filter( 'allowed_block_types_all', 'wpas_filter_gutenberg_blocks_ticket' );
 /**
  * Make sure that new tickets that use the GUTENBERG editor can only use the paragraph block type
  * We're going to disable GUTENBERG blocks on the tickets and reply post type completely by
