@@ -148,7 +148,7 @@ if (! empty( $staff ) ) {
 				'order' => 'ASC',
 				'name'  => 'wpas_assignee',
 				'id'    => 'wpas-assignee',
-				'class' => 'wpas-form-control',
+				'class' => 'search_and_list_dropdown',
 				'please_select' => true,
 				'selected' => $staff_id,
 				'ids'	=> $users
