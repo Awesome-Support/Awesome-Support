@@ -601,8 +601,18 @@ function wpas_dropdown( $args, $options ) {
 
 	/* Start the buffer */
 	ob_start(); ?>
-
+	<?php
+	if ($class[0] == 'search_and_list_dropdown') {
+	?>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="wpas-select2"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<?php
+	}
+	else {
+	?>
 	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<?php
+	}
+	?>
 		<?php
 		if ( $args['please_select'] ) {
 			echo '<option value="">' . esc_html__( 'Please select', 'awesome-support' ) . '</option>';
@@ -611,7 +621,6 @@ function wpas_dropdown( $args, $options ) {
 		echo $options;
 		?>
 	</select>
-
 	<?php
 	/* Get the buffer contents */
 	$contents = ob_get_contents();
