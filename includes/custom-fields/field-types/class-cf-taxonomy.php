@@ -79,7 +79,8 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 	 * @return boolean
 	 */
 	function sortByNameASC( $termA, $termB ) {
-		return strtolower( strlen($termA->name) ) <=> strtolower( strlen($termB->name) );
+		
+		return strtolower( $termA->name ) > strtolower( $termB->name );
 	}
 	
 	/**
@@ -91,8 +92,8 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 	 * @return boolean
 	 */
 	function sortByNameDESC( $termA, $termB ) {
-
-        return strtolower( strlen($termA->name) ) <=> strtolower( strlen($termB->name) );
+		
+		return strtolower( $termA->name ) < strtolower( $termB->name );
 	}
 
 	/**

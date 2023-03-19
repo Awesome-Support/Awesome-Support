@@ -59,28 +59,23 @@ class WPAS_GDPR_User_Profile {
 
 		if ( isset( $_GET['file'] ) && isset( $_GET['check'] ) ) {
 			$nonce = ( ! empty( $_GET['check'] ) ) ? sanitize_text_field( $_GET['check'] ) : '';
-			if ( wp_verify_nonce( $nonce, 'as-validate-download-url' )  && ( intval( $_GET['file'] ) == get_current_user_id() ) ) {
+			if ( wp_verify_nonce( $nonce, 'as-validate-download-url' ) ) {
 				$user = intval( $_GET['file'] );
 				if ( ! $this->user_export_dir ) {
 					$this->user_export_dir = $this->set_log_dir( $user );
 				}
-				if ( file_exists( $this->user_export_dir . '/exported-data.zip' ) ) {
-					header( 'Content-Description: File Transfer' );
-					header( 'Content-type: application/zip' );
-					header( 'Content-Disposition: attachment; filename=exported-data.zip' );
-					header( 'Content-length: ' . filesize( $this->user_export_dir . '/exported-data.zip' ) );
-					header( 'Pragma: no-cache' );
-					header( 'Expires: 0' );
-					readfile( $this->user_export_dir . '/exported-data.zip' );
-					if (!unlink($this->user_export_dir . '/exported-data.zip') ){
-						return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/exported-data.zip', 'awesome-support' ) );
-					}
-					if (!unlink($this->user_export_dir . '/export-data.xml') ){
-						return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/export-data.xml', 'awesome-support' ) );
-					}
+				header( 'Content-Description: File Transfer' );
+				header( 'Content-type: application/zip' );
+				header( 'Content-Disposition: attachment; filename=exported-data.zip' );
+				header( 'Content-length: ' . filesize( $this->user_export_dir . '/exported-data.zip' ) );
+				header( 'Pragma: no-cache' );
+				header( 'Expires: 0' );
+				readfile( $this->user_export_dir . '/exported-data.zip' );
+				if (!unlink($this->user_export_dir . '/exported-data.zip') ){
+					return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/exported-data.zip', 'awesome-support' ) );
 				}
-				else {
-					return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );
+				if (!unlink($this->user_export_dir . '/export-data.xml') ){
+					return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/export-data.xml', 'awesome-support' ) );
 				}
 			} else {
 				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );
@@ -610,15 +605,8 @@ class WPAS_GDPR_User_Profile {
 		if ( is_dir( $dir ) ) {
 			if ( $dh = opendir( $dir ) ) {
 				while ( ( $file2 = readdir( $dh ) ) !== false ) {
-					if ( file_exists( $dir . '/' . $file2 ) ) {						
-						if(!function_exists("mime_content_type")) {					
-							require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
-							$file_pathinfo = pathinfo($dir . '/' . $file2, PATHINFO_EXTENSION);
-							$mimetype = wpas_get_mime_type( $file_pathinfo );
-						}
-						else {
-							$mimetype = mime_content_type( $dir . '/' . $file2 );
-						}
+					if ( file_exists( $dir . '/' . $file2 ) ) {
+						$mimetype = mime_content_type( $dir . '/' . $file2 );
 						if ( 'text/plain' !== $mimetype ) {
 							if ( ! is_dir( $dir . '/' . $file2 ) ) {
 								$folder_prefix = 'ticket_';

@@ -62,10 +62,9 @@ function wpas_tickets_count() {
 		$count = $agent->open_tickets();
 
 	} else {
-		
-		$count = wpas_get_tickets( 'open', [], 'any', true, true );
+		$count = count( wpas_get_tickets( 'open' ) );
 	}
-	
+
 	if ( 0 === $count ) {
 		return false;
 	}

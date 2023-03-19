@@ -721,7 +721,7 @@ class WPAS_Tickets_List {
 
 		if ( ! isset( $_GET[ 'post_type' ] ) || 'ticket' !== $_GET[ 'post_type' ]
 		     || 'edit.php' !== $pagenow
-		     || ( isset( $query->query[ 'post_type' ] ) && $query->query[ 'post_type' ] !== 'ticket')
+		     || $query->query[ 'post_type' ] !== 'ticket'
 		     || ! $query->is_main_query()
 		) {
 			return;

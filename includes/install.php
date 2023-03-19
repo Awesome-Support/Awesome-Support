@@ -13,7 +13,6 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
-register_deactivation_hook( WPAS_PLUGIN_FILE, 'wpas_deactivation' );
 /**
  * Fired when the plugin is activated.
  *
@@ -29,21 +28,9 @@ function wpas_install( $network_wide ) {
 	if ( false === $network_wide || ! function_exists( 'is_multisite' ) || ( function_exists( 'is_multisite' ) && ! is_multisite() ) ) {
 		wpas_single_activate();
 	}
+
 }
-function wpas_deactivation( $network_wide ) {
-	
-    remove_action('deactivate_awesome-support/awesome-support.php','wpas_deactivation');
-    if ( false === $network_wide || ! function_exists( 'is_multisite' ) || ( function_exists( 'is_multisite' ) && ! is_multisite() ) ) {
-        $plugins = get_plugins();
-        foreach($plugins as $name => $data) {
-            if (strpos($data['Name'], 'Awesome Support') !== false) {
-                deactivate_plugins($name);
-            }   
-        }
-        wp_redirect( admin_url() . 'plugins.php?deactivate=true' );
-        exit;
-    }       
-}
+
 add_action( 'wpmu_new_blog', 'wpas_activate_new_site', 10, 6 );
 /**
  * Fired when a new site is activated with a WPMU environment.
