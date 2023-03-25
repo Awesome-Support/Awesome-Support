@@ -1798,24 +1798,26 @@ function wpas_get_ticket_replies_ajax() {
 
 		$replies->the_post();
 		$user     = get_userdata( $replies->post->post_author );
-		$time_ago = human_time_diff( get_the_time( 'U', $replies->post->ID ), current_time( 'timestamp' ) );
+		if( $user && !empty( $user ) )
+		{
+			$time_ago = human_time_diff( get_the_time( 'U', $replies->post->ID ), current_time( 'timestamp' ) );
 
-		ob_start();
+			ob_start();
 
-		wpas_get_template(
-			'partials/ticket-reply', array(
-				'time_ago' => $time_ago,
-				'user'     => $user,
-				'post'     => $replies->post,
-			)
-		);
+			wpas_get_template(
+				'partials/ticket-reply', array(
+					'time_ago' => $time_ago,
+					'user'     => $user,
+					'post'     => $replies->post,
+				)
+			);
 
-		$reply = ob_get_contents();
+			$reply = ob_get_contents();
 
-		ob_end_clean();
+			ob_end_clean();
 
-		$html[] = $reply;
-
+			$html[] = $reply;
+		}
 	}
 
 	$output['html'] = implode( '', $html );

@@ -54,10 +54,17 @@ $status = get_post_meta( $post->ID, '_wpas_status', true );
 					// Set the author data (if author is known)
 					if ( $row->post_author != 0 ) {
 						$user_data = get_userdata( $row->post_author );
-						$user_id   = $user_data->data->ID;
-						$user_name = $user_data->data->display_name;
+						if( $user_data && !empty( $user_data ) )
+						{
+							$user_id   = $user_data->data->ID;
+							$user_name = $user_data->data->display_name;
+						}
+						else
+						{
+							$user_name = __( 'Anonymous', 'awesome-support' );
+							$user_id   = 0;
+						}
 					}
-
 					// In case the post author is unknown, we set this as an anonymous post
 					else {
 						$user_name = __( 'Anonymous', 'awesome-support' );
