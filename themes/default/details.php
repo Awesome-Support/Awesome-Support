@@ -111,9 +111,9 @@ $author = get_user_by( 'id', $post->post_author );
 					$user      = get_userdata( $post->post_author );
 					if( $user && !empty( $user ) )
 					{
-							$user_role = $user->roles[0];
-							$time_ago  = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) );
-							wpas_get_template( 'partials/ticket-reply', array( 'time_ago' => $time_ago, 'user' => $user, 'post' => $post ) );
+						$user_role = $user->roles[0];
+						$time_ago  = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) );
+						wpas_get_template( 'partials/ticket-reply', array( 'time_ago' => $time_ago, 'user' => $user, 'post' => $post ) );
 					}	
 				endwhile;
 
