@@ -5,6 +5,28 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.1.3</h1>
+				<h3>6.1.3 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">					
+					<li>New: Add attachments when you print tickets. You can enable or disable this option on the print screen.</li>
+					<li>Tweak: We updated the select field under the User profile to select and search field. This is useful when there are hundreds of agents in the list.</li>
+					<li>Fix: Fixed Deprecated error message.</li>
+					<li>Fix: We fixed some warning messages for PHP 8.0.</li>
+					<li>Fix: Solved Warning and Deprecated messages related that affect the Public Tickets add-on in PHP 8.0.</li>
+					<li>Fix: We fixed a warning message when activating the E-mail Support add-on.</li>
+					<li>Fix: We fixed a security vulnerability in the login fields.</li>
+					<li>Fix: We did some security fixes to keep the plugin safe and stable.</li>
+					<li>Fix: We fixed when using a command line task that generates multiple notice messages.</li>							
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+	
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.1.2</h1>
 				<h3>6.1.2 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">					

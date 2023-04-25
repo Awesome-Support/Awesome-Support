@@ -446,19 +446,20 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
-= 6.1.2.3
-* Fix	
-	* To create a function to avoid site crashes when deactivating the Core plugin and having add-ons activated.
-	* Fixed BUG - No attachments appear on ticket content when printing
+= 6.1.3
+* New Feature	
+	* Add attachments when you print tickets. You can enable or disable this option on the print screen.
+* Tweak 
+	* We updated the select field under the User profile to select and search field. This is useful when there are hundreds of agents in the list.
+* Fix
+	* Fixed Deprecated error message.
+	* We fixed some warning messages for PHP 8.0.
+	* Solved Warning and Deprecated messages related that affect the Public Tickets add-on in PHP 8.0.	
+	* We fixed a warning message when activating the E-mail Support add-on.
+	* We fixed a security vulnerability in the login fields.
+	* We did some security fixes to keep the plugin safe and stable.
+	* We fixed when using a command line task that generates multiple notice messages.
 	
-= 6.1.2.2
-* Fix	
-	* Fixed BUG - Assign ticket by Departments broken the GAS after it disabled.
-
-= 6.1.2.1
-* Fix	
-	* Fixed 4427755 - Invalid taxonomy "departmnet"
-
 = 6.1.2
 * Fix
 	* Fixed security vulnerability
