@@ -450,7 +450,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 * New Feature	
 	* Add attachments when you print tickets. You can enable or disable this option on the print screen.
 * Tweak 
-	* We updated the select field under the User profile to select and search field. This is useful when there are hundreds of agents in the list.
+	* We updated the assigned agent field, in the ticket details page in the back end to a select and search field. This is useful when there are hundreds of agents in the list.
 * Fix
 	* Fixed Deprecated error message.
 	* We fixed some warning messages for PHP 8.0.
@@ -459,6 +459,8 @@ There are several factors that can influence e-mail notifications delivery. Plea
 	* We fixed a security vulnerability in the login fields.
 	* We did some security fixes to keep the plugin safe and stable.
 	* We fixed when using a command line task that generates multiple notice messages.
+	* Solved an Undefined array key warning message that shows to some users.
+	* When deactivating the plugin with add-ons activated, it crashed websites. From now, this won't happen, you can deactivate the plugin with the add-ons activated and the site won't crash.
 	
 = 6.1.2
 * Fix
