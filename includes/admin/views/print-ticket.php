@@ -59,7 +59,10 @@
         </tr>
         <tr>
             <td>
-                <?php echo wp_kses_post( $ticket->post_content ); ?>
+                <?php 
+					echo wp_kses_post( $ticket->post_content );
+                    do_action( 'wpas_backend_reply_content_after_with_image', $ticket->ID );
+                ?>
             </td>
         </tr>
     </table>
@@ -74,10 +77,17 @@
             // Set the author data (if author is known)
             if ( $reply->post_author != 0 ) {
                 $user_data = get_userdata( $reply->post_author );
-                $user_id   = $user_data->data->ID;
-                $user_name = $user_data->data->display_name;
+                if( $user_data && !empty( $user_data ) )
+				{
+					$user_id   = $user_data->data->ID;
+					$user_name = $user_data->data->display_name;
+				}
+				else
+				{
+					$user_name = __( 'Anonymous', 'awesome-support' );
+					$user_id   = 0;
+				}			
             }
-
             // In case the post author is unknown, we set this as an anonymous post
             else {
                 $user_name = __( 'Anonymous', 'awesome-support' );

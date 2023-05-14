@@ -506,7 +506,7 @@ function wpas_set_ticket_slug( $ticket_id = -1 ) {
  *
  * @return array               Array of tickets, empty array if no tickets found
  */
-function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_status = 'any', $cache = false ) {
+function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_status = 'any', $cache = false, $return_count = false ) {
 
 	$custom_post_status = wpas_get_post_status();
 	$post_status_clean  = array();
@@ -560,9 +560,15 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 			);
 		}
 	}
-
+	if( $return_count == true ){
+		$args['no_found_rows'] = false;
+		$args['posts_per_page'] = 1;
+		$args['fields'] = 'ids';
+	}
 	$query = new WP_Query( $args );
-
+	if( $return_count == true ){
+		return $query->found_posts;
+	}
 	if ( empty( $query->posts ) ) {
 		return array();
 	} else {
@@ -1729,7 +1735,8 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open', $query 
 	if( is_array( $query ) &&  count( $query ) > 0 ) {
 		$args = array_merge( $args, $query );
 	}
-	return count( wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ) ) );
+	//return count( wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ) ) );
+	return wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ),'any', true, true ) ;
 
 }
 
@@ -1791,24 +1798,26 @@ function wpas_get_ticket_replies_ajax() {
 
 		$replies->the_post();
 		$user     = get_userdata( $replies->post->post_author );
-		$time_ago = human_time_diff( get_the_time( 'U', $replies->post->ID ), current_time( 'timestamp' ) );
+		if( $user && !empty( $user ) )
+		{
+			$time_ago = human_time_diff( get_the_time( 'U', $replies->post->ID ), current_time( 'timestamp' ) );
 
-		ob_start();
+			ob_start();
 
-		wpas_get_template(
-			'partials/ticket-reply', array(
-				'time_ago' => $time_ago,
-				'user'     => $user,
-				'post'     => $replies->post,
-			)
-		);
+			wpas_get_template(
+				'partials/ticket-reply', array(
+					'time_ago' => $time_ago,
+					'user'     => $user,
+					'post'     => $replies->post,
+				)
+			);
 
-		$reply = ob_get_contents();
+			$reply = ob_get_contents();
 
-		ob_end_clean();
+			ob_end_clean();
 
-		$html[] = $reply;
-
+			$html[] = $reply;
+		}
 	}
 
 	$output['html'] = implode( '', $html );
@@ -2261,9 +2270,7 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 		if( $args['suppress_notifications'] ) {
 			add_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10, 2 );
 		}
-
 	}
-
 
 	do_action( 'wpas_clone_ticket_completed_after', $new_ticket_id, $ticket, $args );
 

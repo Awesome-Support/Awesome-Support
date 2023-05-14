@@ -70,7 +70,7 @@ if ( ! defined( 'WPINC' ) ) {
 					'order'		=> 'ASC',
 					'name'      => 'wpas_secondary_assignee',
 					'id'        => 'wpas-secondary-assignee',
-					'class'		=> 'wpas-form-control',
+                    'class'     => 'search_and_list_dropdown',
 					'please_select' => true,
 					'selected' => $secondary_staff_id
 				) );
@@ -95,7 +95,7 @@ if ( ! defined( 'WPINC' ) ) {
 					'order'		=> 'ASC',
 					'name'      => 'wpas_tertiary_assignee',
 					'id'        => 'wpas-tertiary-assignee',
-					'class'		=> 'wpas-form-control',
+                    'class'     => 'search_and_list_dropdown',
 					'please_select' => true,
 					'selected' => $tertiary_staff_id
 				) );

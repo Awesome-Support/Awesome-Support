@@ -166,7 +166,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 */
 	public function in_department() {
 
-		if ( false === wpas_get_option( 'departments', false ) ) {
+		if ( false == wpas_get_option( 'departments', false ) ) {
 			return false;
 		}
 

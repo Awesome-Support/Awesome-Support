@@ -244,6 +244,10 @@
 				// @since 5.1.1
 				// Enable paste using ctrl+v commands
 				'enable_paste' => true,
+				
+				// @since 6.1.3
+				// Google, Microsoft can get your passwords via web browsers spellcheck
+				'spellcheck' => '',
 
 			);
 
@@ -596,7 +600,12 @@
 			if ( true === $this->field[ 'args' ][ 'required' ] ) {
 				array_push( $atts, 'required' );
 			}
-
+			
+			/* Add Spell check for security reason */
+			if ( isset( $this->field[ 'args' ][ 'spellcheck' ] ) && false === $this->field[ 'args' ][ 'spellcheck' ] ) {
+				array_push( $atts, "spellcheck='false'" );
+			}
+			
 			/* Add the readonly attribute */
 			if ( ! empty( $this->field[ 'args' ][ 'readonly' ] ) && true === $this->field[ 'args' ][ 'readonly' ] ) {
 				/* Allow filter to change readonly setting */

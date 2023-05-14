@@ -32,6 +32,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 		$username = new WPAS_Custom_Field( 'log', array(
 			'name' => 'log',
 			'args' => array(
+				'spellcheck'    => false,
 				'required'    => true,
 				'field_type'  => 'text',
 				'label'       => __( 'E-mail or username', 'awesome-support' ),
@@ -47,6 +48,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 		$password = new WPAS_Custom_Field( 'pwd', array(
 			'name' => 'pwd',
 			'args' => array(
+				'spellcheck'    => false,
 				'required'    => true,
 				'field_type'  => 'password',
 				'label'       => __( 'Password', 'awesome-support' ),
@@ -130,6 +132,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				'name' => 'email',
 				'args' => array(
 					'required'    => true,
+					'spellcheck'    => false,
 					'field_type'  => 'email',
 					'label'       => __( 'Email', 'awesome-support' ),
 					'placeholder' => __( 'Email', 'awesome-support' ),
@@ -147,6 +150,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				'name' => 'password',
 				'args' => array(
 					'required'    => true,
+					'spellcheck'    => false,
 					'field_type'  => 'password',
 					'label'       => __( 'Enter a password', 'awesome-support' ),
 					'placeholder' => __( 'Password', 'awesome-support' ),

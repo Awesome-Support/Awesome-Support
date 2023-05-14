@@ -162,7 +162,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
 	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
-	/* Check for plugin pages in the admin */
+	/* Check for plugin pages in the admin */	
 	if ( is_admin() ) {
 
 		/* First of all let's check if there is a specific slug given */
@@ -189,20 +189,23 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		return false;
 
-	} elseif ( wpas_is_wp_cli() ) {
+	} elseif ( wpas_is_wp_cli() || !isset( $_SERVER ) ) {
 
-		/* running from wp_cli so just return false */
+		/* running from wp_cli so just return false */				
 		return false;
 
 	} else {
 
 		global $post;
 
-		if ( empty( $post ) ) {
-			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
-			$post     = get_post( $post_id );
-		}
+        if ( empty( $post ) ) {
+            $protocol = (isset($_SERVER['SERVER_PROTOCOL']) && stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true) ? 'https://' : 'http://';
+            $server_name = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
+            $server_port = isset($_SERVER['SERVER_PORT']) ? ':' . $_SERVER['SERVER_PORT'] : '';
+            $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+            $post_id  = url_to_postid( '' . '' . '' . $request_uri );
+            $post     = get_post( $post_id );
+        }
 
 		if ( is_singular( 'ticket' ) ) {
 			return true;
@@ -598,8 +601,18 @@ function wpas_dropdown( $args, $options ) {
 
 	/* Start the buffer */
 	ob_start(); ?>
-
+	<?php
+	if ($class[0] == 'search_and_list_dropdown') {
+	?>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="wpas-select2"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<?php
+	}
+	else {
+	?>
 	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<?php
+	}
+	?>
 		<?php
 		if ( $args['please_select'] ) {
 			echo '<option value="">' . esc_html__( 'Please select', 'awesome-support' ) . '</option>';
@@ -608,7 +621,6 @@ function wpas_dropdown( $args, $options ) {
 		echo $options;
 		?>
 	</select>
-
 	<?php
 	/* Get the buffer contents */
 	$contents = ob_get_contents();

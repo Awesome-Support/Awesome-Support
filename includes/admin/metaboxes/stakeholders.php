@@ -85,11 +85,9 @@ if (! empty( $staff ) ) {
 	<p>
 		<?php
 
-
-
 		$support_staff_dropdown = "";
-    
-		$department_assignment = get_user_option( 'wpas_department_assignment', get_current_user_id() );
+    	
+		$department_assignment = get_user_option( 'wpas_department_assignment', get_current_user_id() );		
 
 		if ( wpas_get_option( 'support_staff_select2_enabled', false ) ) {
 
@@ -110,35 +108,47 @@ if (! empty( $staff ) ) {
 			}
 		} else {
 			$users = [];
-			if (!empty($department_assignment)) {
-				$args  = array(
-					'meta_key' => $wpdb->get_blog_prefix() . 'wpas_department',
-					'meta_compare' => 'EXISTS'
-				);
 
-				$user_query = new WP_User_Query( $args );
+			if ( false != wpas_get_option( 'departments', false ) ) {
 
-				if (! empty( $user_query->get_results() )) {
-					foreach ( $user_query->get_results() as $user ) {
-						$departments = get_user_option( 'wpas_department', $user->ID );
-						if (!empty($departments)) {
-							foreach ($departments as $department) {
-								if (in_array($department, $department_assignment)) {
-									$users[] = $user->ID;
-									break;
+				if( class_exists( 'Smart_Agent_Assignment' ) ) {
+
+					if ( !empty( $department_assignment ) ) {
+
+						if( !in_array( 0 , $department_assignment) )
+						{
+							$args  = array(
+								'meta_key' => $wpdb->get_blog_prefix() . 'wpas_department',
+								'meta_compare' => 'EXISTS'
+							);
+
+							$user_query = new WP_User_Query( $args );
+
+							if (! empty( $user_query->get_results() )) {
+								foreach ( $user_query->get_results() as $user ) {
+									$departments = get_user_option( 'wpas_department', $user->ID );								
+									if (!empty($departments)) {
+										foreach ($departments as $department) {
+											if (in_array($department, $department_assignment)) {
+												$users[] = $user->ID;
+												break;
+											}
+										}
+									}
 								}
 							}
-						}
-					}
-				}
-			}
+						}						
+					}					
+				}				
+			}			
+			
 			$support_staff_dropdown = wpas_users_dropdown( array( 
 				'cap'	=> 'edit_ticket',
 				'orderby' => 'display_name',
 				'order' => 'ASC',
 				'name'  => 'wpas_assignee',
 				'id'    => 'wpas-assignee',
-				'class' => 'wpas-form-control',
+				'class' => 'search_and_list_dropdown',
 				'please_select' => true,
 				'selected' => $staff_id,
 				'ids'	=> $users

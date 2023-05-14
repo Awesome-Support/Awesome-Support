@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 6.0.3
-Stable tag: 6.1.0
+Tested up to: 6.2
+Stable tag: 6.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -446,9 +446,26 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+= 6.1.3
+* New Feature	
+	* Add attachments when you print tickets. You can enable or disable this option on the print screen.
+* Tweak 
+	* We updated the assigned agent field, in the ticket details page in the back end to a select and search field. This is useful when there are hundreds of agents in the list.
+* Fix
+	* Fixed Deprecated error message.
+	* We fixed some warning messages for PHP 8.0.
+	* Solved Warning and Deprecated messages related that affect the Public Tickets add-on in PHP 8.0.	
+	* We fixed a warning message when activating the E-mail Support add-on.
+	* We fixed a security vulnerability in the login fields.
+	* We did some security fixes to keep the plugin safe and stable.
+	* We fixed when using a command line task that generates multiple notice messages.
+	* Solved an Undefined array key warning message that shows to some users.
+	* When deactivating the plugin with add-ons activated, it crashed websites. From now, this won't happen, you can deactivate the plugin with the add-ons activated and the site won't crash.
+	
 = 6.1.2
 * Fix
 	* Fixed security vulnerability
+
 = 6.1.1
 * Fix
 	* When activating Client tickets add-on with Version 6.1.0 SHOW EMPTY notice
