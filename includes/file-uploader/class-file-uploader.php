@@ -948,7 +948,7 @@ class WPAS_File_Upload {
 		if ( ! empty( $attachments ) ): ?>
 
 			<div class="wpas-reply-attachements">
-				<strong><?php esc_html_e( 'Attachments: 950', 'awesome-support' ); ?></strong>
+				<strong><?php esc_html_e( 'Attachments:', 'awesome-support' ); ?></strong>
 				<ul>
 					<?php
 
@@ -1048,7 +1048,7 @@ class WPAS_File_Upload {
 		if ( ! empty( $attachments ) ): ?>
 
 			<div class="wpas-reply-attachements">
-				<strong><?php esc_html_e( 'Attachments: 1050', 'awesome-support' ); ?></strong>
+				<strong><?php esc_html_e( 'Attachments:', 'awesome-support' ); ?></strong>
 				<ul>
 					<?php
 
