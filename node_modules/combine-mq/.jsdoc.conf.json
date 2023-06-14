@@ -1,0 +1,19 @@
+{
+	"tags": {
+		"allowUnknownTags" : true
+	},
+	"templates" : {
+		"cleverLinks": false,
+		"collapseSymbols": false,
+		"dateFormat": "ddd MMM Do YYYY",
+		"highlightTutorialCode": true,
+		"inverseNav": true,
+		"linenums": true,
+		"monospaceLinks": false,
+		"navType": "vertical",
+		"outputSourceFiles": true,
+		"outputSourcePath": true,
+		"systemName": "Combine MQ",
+		"theme": "simplex"
+	}
+}

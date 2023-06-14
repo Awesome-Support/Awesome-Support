@@ -1,0 +1,17 @@
+Usage: wpi18n <command> [options]
+
+Back up your project before using! This is still experimental and may change.
+
+Commands:
+  addtextdomain           Add a text domain to gettext functions.
+  info                    Display information about a package.
+  makepot                 Generate a POT file.
+
+Options:
+  -v, --version           Display the current version.
+  -h, --help              Display help and usage details.
+  --domain-path           Relative path to the POT file directory.
+  --exclude               Exclude directories. Separate multiple directories by comma.
+  --main-file             Name of the main package file.
+  --pot-file              Name of the POT file.
+  --type                  Type of package (plugin or theme).

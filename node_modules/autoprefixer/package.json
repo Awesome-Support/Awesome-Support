@@ -1,0 +1,34 @@
+{
+  "name": "autoprefixer",
+  "version": "0.8.20131213",
+  "description": "Parse CSS and add vendor prefixes to CSS rules using values from the Can I Use website",
+  "keywords": ["css", "prefix", "rework"],
+  "author": "Andrey Sitnik <andrey@sitnik.ru>",
+  "license": "LGPL 3",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ai/autoprefixer.git"
+  },
+  "dependencies": {
+    "css-parse":     "~> 1.6.0",
+    "css-stringify": "~> 1.4.1"
+  },
+  "devDependencies": {
+    "coffee-script": "1.6.3",
+    "component":     "0.18.0",
+    "fs-extra":      "0.8.1",
+    "should":        "2.1.1",
+    "stylus":        "0.41.3",
+    "rework":        "0.18.3",
+    "mocha":         "1.15.1",
+    "glob":          "3.2.7",
+    "nib":           "1.0.1"
+  },
+  "bin": {
+    "autoprefixer": "./bin/autoprefixer"
+  },
+  "main": "lib/autoprefixer",
+  "scripts": {
+    "test": "mocha"
+  }
+}

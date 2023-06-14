@@ -56,7 +56,7 @@ class WPAS_Gas {
 
 		// Don't do anything when we're activating a plugin to prevent errors
 		// on redeclaring Gas classes
-		if( 'activate' === filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING )
+		if( 'activate' === filter_input(INPUT_GET, 'action', htmlspecialchars(513) )
 			&& ! empty( filter_input( INPUT_GET, 'plugin' ) ) ) {
 				return;
 		}

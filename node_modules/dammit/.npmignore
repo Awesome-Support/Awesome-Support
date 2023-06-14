@@ -1,0 +1,12 @@
+# Logging
+*.log
+
+# Project meta
+.gitignore
+*.sublime-workspace
+.travis.yml
+
+# Project build files - `$ git clone https://github.com/furzeface/dammit.git` if you want them
+.jshintrc
+Gruntfile
+*.sublime-project

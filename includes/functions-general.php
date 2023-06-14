@@ -746,7 +746,7 @@ add_filter( 'locale','wpas_change_locale', 10, 1 );
  */
 function wpas_change_locale( $locale ) {
 
-   $wpas_locale = filter_input( INPUT_GET, 'wpas_lang', FILTER_SANITIZE_STRING );
+   $wpas_locale = filter_input( INPUT_GET, 'wpas_lang', htmlspecialchars(513) );
 
 	if ( ! empty( $wpas_locale ) ) {
 		$locale = $wpas_locale;

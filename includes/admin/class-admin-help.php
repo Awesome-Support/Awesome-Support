@@ -54,8 +54,8 @@ class WPAS_Help {
 	 */
 	public function settings_general_contextual_help() {
 
-		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
-		    'general' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', htmlspecialchars(513) ) ||
+		    'general' !== filter_input( INPUT_GET, 'tab', htmlspecialchars(513) ) ) {
 			return;
 		}
 		
@@ -83,8 +83,8 @@ class WPAS_Help {
 	 */
 	public function settings_registration_help() {
 
-		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
-		    'registration' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', htmlspecialchars(513) ) ||
+		    'registration' !== filter_input( INPUT_GET, 'tab', htmlspecialchars(513) ) ) {
 			return;
 		}
 		
@@ -103,8 +103,8 @@ class WPAS_Help {
 	 * @return void
 	 */
 	public function settings_moderated_registration_help() {
-		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
-		    'modregistration' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', htmlspecialchars(513) ) ||
+		    'modregistration' !== filter_input( INPUT_GET, 'tab', htmlspecialchars(513) ) ) {
 			return;
 		}
 		
@@ -140,8 +140,8 @@ class WPAS_Help {
 	 */
 	public function settings_products_management_help() {
 
-		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
-		    'products-management' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', htmlspecialchars(513) ) ||
+		    'products-management' !== filter_input( INPUT_GET, 'tab', htmlspecialchars(513) ) ) {
 			return;
 		}
 		
@@ -175,8 +175,8 @@ class WPAS_Help {
 	 */
 	public function settings_notifications_contextual_help() {
 
-		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
-		    'email' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', htmlspecialchars(513) ) ||
+		    'email' !== filter_input( INPUT_GET, 'tab', htmlspecialchars(513) ) ) {
 			return;
 		}
 
@@ -217,8 +217,8 @@ class WPAS_Help {
 	 */
 	public function settings_advanced_contextual_help() {
 
-		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING ) ||
-		    'advanced' !== filter_input( INPUT_GET, 'tab', FILTER_SANITIZE_STRING ) ) {
+		if( 'ticket' !== filter_input( INPUT_GET, 'post_type', htmlspecialchars(513) ) ||
+		    'advanced' !== filter_input( INPUT_GET, 'tab', htmlspecialchars(513) ) ) {
 			return;
 		}
 

@@ -1,0 +1,110 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var fs = require('fs');
+var glob = require('glob');
+var path = require('path');
+var wpi18n = require('../');
+var WPPackage = require('../lib/package');
+
+var argv = require('minimist')(process.argv.slice(2), {
+  string: [
+    'domain-path',
+    'exclude',
+    'glob-pattern',
+    'main-file',
+    'pot-file',
+    'textdomain',
+    'type'
+  ],
+  boolean: [
+    'dry-run',
+    'help',
+    'poedit',
+    'version'
+  ],
+  alias: {
+    h: 'help',
+    v: 'version'
+  }
+});
+
+if (argv.help) {
+  var help = fs.readFileSync(path.join(__dirname, '../docs/cli.txt')).toString();
+  console.log(help);
+  process.exit(0);
+}
+
+if (argv.version) {
+  var pkg = require('../package.json');
+  console.log('node-wp-i18n v' + pkg.version);
+  process.exit(0);
+}
+
+if (-1 !== argv._.indexOf('addtextdomain')) {
+  var pattern = argv['glob-pattern'] ? argv['glob-pattern'] : '**/*.php';
+  var files = glob.sync(pattern);
+
+  if (argv['exclude']) {
+    var excludePattern = argv['exclude']
+      .split(',')
+      .map(function(string) {
+        // Escape special characters.
+        // @link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      })
+      .join('|');
+
+    var excludeRegExp = new RegExp('^('+excludePattern+')');
+
+    files = files.filter(function(file) {
+      return ! excludeRegExp.test(file);
+    });
+  }
+
+  wpi18n.addtextdomain(files, {
+    dryRun: argv['dry-run'],
+    textdomain: argv.textdomain || '',
+    updateDomains: [ 'all' ]
+  }).then(function() {
+
+  });
+}
+
+if (-1 !== argv._.indexOf('info')) {
+  var wpPackage = new WPPackage(process.cwd());
+  var nameHeader = 'wp-plugin' === wpPackage.getType() ? 'Plugin Name' : 'Theme Name';
+
+  console.log('Name:         ' + wpPackage.getHeader(nameHeader));
+  console.log('Path:         ' + wpPackage.getPath());
+  console.log('Type:         ' + wpPackage.getType());
+  console.log('Main File:    ' + wpPackage.getMainFile());
+  console.log('Domain Path:  ' + wpPackage.getHeader('Domain Path'));
+  console.log('Text Domain:  ' + wpPackage.getHeader('Text Domain'));
+  console.log('Pot File:     ' + wpPackage.getPotFile());
+}
+
+if (-1 !== argv._.indexOf('makepot')) {
+  var pkg = require('../package.json');
+
+  var headers = {
+    'x-generator': 'node-wp-i18n ' + pkg.version
+  };
+
+  if (argv.poedit) {
+    headers.poedit = true;
+  }
+
+  wpi18n.makepot({
+    domainPath: argv['domain-path'] ? argv['domain-path'] : '',
+    exclude: argv['exclude'] ? argv['exclude'].split(',') : [],
+    mainFile: argv['main-file'] ? argv['main-file'] : '',
+    potHeaders: headers,
+    potFile: argv['pot-file'] ? argv['pot-file'] : '',
+    type: argv.type ? 'wp-' + argv.type.replace('wp-', '') : '',
+    updateTimestamp: false
+  }).then(function() {
+
+  });
+}
