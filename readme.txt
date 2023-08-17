@@ -446,6 +446,22 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 6.1.3.5
+* Fix  
+	* 364-php-81-deprecated-error-messages-check-and-fix
+= 6.1.3.3 and 6.1.3.4
+* Fix 
+    * Display a horizontal scroll bar when ticket content is wider than display element.
+	
+= 6.1.3.2
+* Fix 
+    * E_ERROR was caused in line 751 of the file class-product-sync.php
+	
+= 6.1.3.1
+* Fix 
+    * If I upload a file to a ticket with the character “#” on the filename, the file won’t load.
+	
 = 6.1.3
 * New Feature	
 	* Add attachments when you print tickets. You can enable or disable this option on the print screen.
