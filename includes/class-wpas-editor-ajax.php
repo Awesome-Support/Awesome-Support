@@ -99,9 +99,9 @@ class WPAS_Editor_Ajax {
 	 */
 	public function editor_html() {
 
-		$post_id   = filter_input( INPUT_POST, 'post_id',         FILTER_SANITIZE_NUMBER_INT );
-		$editor_id = filter_input( INPUT_POST, 'editor_id',       FILTER_SANITIZE_STRING );
-		$name      = filter_input( INPUT_POST, 'textarea_name',   FILTER_SANITIZE_STRING );
+		$post_id   = filter_input( INPUT_POST, 'post_id',         FILTER_SANITIZE_NUMBER_INT );				
+		$editor_id = isset( $_POST['editor_id'] ) ? wp_unslash( sanitize_text_field( $_POST['editor_id'] ) ) : '';		
+		$name = isset( $_POST['textarea_name'] ) ?  sanitize_text_field( $_POST['textarea_name'] ) : '';
 		$settings  = (array) filter_input( INPUT_POST, 'editor_settings', FILTER_UNSAFE_RAW);
 
 		if ( empty( $editor_id ) ) {
@@ -119,7 +119,8 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Get the content and filter it.
 		 */
-		$content = ( isset( $post ) && ! empty( $post ) ) ? $post->post_content : filter_input( INPUT_POST, 'editor_content', FILTER_SANITIZE_STRING );
+		$editor_content = isset( $_POST['editor_content'] ) ? sanitize_text_field( $_POST['editor_content'] ) : '';	
+		$content = ( isset( $post ) && ! empty( $post ) ) ? $post->post_content : $editor_content;
 		$content = apply_filters( 'the_content', $content );
 
 		/**

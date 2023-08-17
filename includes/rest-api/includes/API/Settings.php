@@ -382,9 +382,8 @@ class Settings extends WP_REST_Settings_Controller {
 
 		// Don't do anything when we're activating a plugin to prevent errors
 		// on redeclaring Gas classes
-		if ( 'activate' === filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING )
-		     && ! empty( filter_input( INPUT_GET, 'plugin' ) )
-		) {
+		$action = isset( $_GET['action'] ) ? sanitize_text_field( $_GET['action'] ) : '';
+		if ( 'activate' === $action && ! empty( filter_input( INPUT_GET, 'plugin' )  ) {
 			return;
 		}
 

@@ -337,10 +337,10 @@ function wpas_enqueue_assets_back_end() {
 		if ( 'ticket' == get_post_type() ) {
 			wp_dequeue_script( 'autosave' );
 		}
-
-		$page   = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING );
-		$action = filter_input( INPUT_GET, 'action', FILTER_SANITIZE_STRING );
-
+		
+		$page = isset( $_GET['page'] ) ? wp_unslash( sanitize_text_field( $_GET['page'] ) ) : '';		
+		$action = isset( $_GET['action'] ) ? wp_unslash( sanitize_text_field( $_GET['action'] ) ) : '';
+		
 		if ( 'wpas-about' === $page ) {
 			wp_enqueue_script( 'wpas-admin-about-linkify' );
 			wp_enqueue_script( 'wpas-admin-about-linkify-jquery' );

@@ -1367,8 +1367,8 @@ class WPAS_File_Upload {
 		}
 
 		$submission = (int) wpas_get_option( 'ticket_submit' );
-		$post_type  = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
-
+		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( $_GET[ 'post_type' ] ) : '' ; 
+		
 		/**
 		 * On the front-end we only want to limit upload size
 		 * on the submission page or on a ticket details page.
@@ -1747,8 +1747,8 @@ class WPAS_File_Upload {
 
 		if ( wpas_can_delete_attachments() ) {
 
-			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
-			$attachment = filter_input( INPUT_POST, 'attachment', FILTER_SANITIZE_STRING );
+			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );			
+			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( $_POST['attachment'] ) : '';
 			$upload     = wp_upload_dir();
 			$user_id    = get_current_user_id();
 
