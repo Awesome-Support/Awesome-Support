@@ -38,7 +38,7 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
-	$post_type = wp_unslash( sanitize_text_field( $_GET['post_type'] ) );
+	$post_type =  isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
 
 	/* Make sure we only alter our post type */
 	if ( 'ticket' !== $post_type ) {
