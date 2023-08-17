@@ -147,7 +147,7 @@ class Manager implements \SessionHandlerInterface {
      *
      * @return true
      */
-    public function close()
+    public function close() : bool
     {
         $this->handlerLock = true;
 
@@ -172,7 +172,7 @@ class Manager implements \SessionHandlerInterface {
      *
      * @return bool
      */
-    public function destroy($session_id)
+    public function destroy($session_id) : bool
     {
         if (is_null($this->handlers)) {
             $this->seedHandlerStack();
@@ -194,7 +194,7 @@ class Manager implements \SessionHandlerInterface {
      *
      * @return bool
      */
-    public function gc($maxlifetime)
+    public function gc($maxlifetime) : int|false
     {
         if (is_null($this->handlers)) {
             $this->seedHandlerStack();
@@ -216,7 +216,7 @@ class Manager implements \SessionHandlerInterface {
      *
      * @return bool
      */
-    public function open($save_path, $name)
+    public function open($save_path, $name) : bool
     {
         if (is_null($this->handlers)) {
             $this->seedHandlerStack();
@@ -237,7 +237,7 @@ class Manager implements \SessionHandlerInterface {
      *
      * @return string
      */
-    public function read($session_id)
+    public function read($session_id) : string|false
     {
         if (is_null($this->handlers)) {
             $this->seedHandlerStack();
@@ -259,7 +259,7 @@ class Manager implements \SessionHandlerInterface {
      *
      * @return bool
      */
-    public function write($session_id, $session_data)
+    public function write($session_id, $session_data) : bool
     {
         if (is_null($this->handlers)) {
             $this->seedHandlerStack();
