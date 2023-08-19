@@ -11,7 +11,7 @@
 namespace EAMann\Sessionz;
 
 use EAMann\Sessionz\Handlers\BaseHandler;
-
+use ReturnTypeWillChange;
 /**
  * Implement PHP's native session handling in such a way as to pass requests
  * for information through a multi-layered stack of potential handlers in
@@ -194,7 +194,8 @@ class Manager implements \SessionHandlerInterface {
      *
      * @return bool
      */
-    public function gc($maxlifetime) : int|false
+	#[ReturnTypeWillChange]
+    public function gc($maxlifetime)
     {
         if (is_null($this->handlers)) {
             $this->seedHandlerStack();
@@ -237,7 +238,8 @@ class Manager implements \SessionHandlerInterface {
      *
      * @return string
      */
-    public function read($session_id) : string|false
+	#[ReturnTypeWillChange]
+    public function read($session_id)
     {
         if (is_null($this->handlers)) {
             $this->seedHandlerStack();

@@ -217,28 +217,28 @@ if (!class_exists('WP_Session')) :
             return new WP_Session();
         }
 
-        public function offsetExists( mixed $offset) : bool
+        public function offsetExists( $offset) : bool
         {
          //   _doing_it_wrong('WP_Session::get_instance', 'Please use native Session functionality.', '3.0');
 
             return isset($_SESSION[$offset]);
         }
 
-        public function offsetGet( mixed $offset) : string
+        public function offsetGet( $offset) : string
         {
          //   _doing_it_wrong('WP_Session::get_instance', 'Please use native Session functionality.', '3.0');
 
             return $_SESSION[$offset];
         }
 
-        public function offsetSet( mixed  $offset, $value ) : void
+        public function offsetSet( $offset, $value ) : void
         {
           //  _doing_it_wrong('WP_Session::get_instance', 'Please use native Session functionality.', '3.0');
 
             $_SESSION[$offset] = $value;
         }
 
-        public function offsetUnset( mixed $offset ) : void
+        public function offsetUnset( $offset ) : void
         {
          //   _doing_it_wrong('WP_Session::get_instance', 'Please use native Session functionality.', '3.0');
 
