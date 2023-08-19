@@ -447,6 +447,10 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.1.3.6
+* Fix  
+	* Ted fix show role for user on admin ticket list
+	
 = 6.1.3.5
 * Fix  
 	* 364-php-81-deprecated-error-messages-check-and-fix
