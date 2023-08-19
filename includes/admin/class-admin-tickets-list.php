@@ -513,6 +513,8 @@ class WPAS_Tickets_List {
 							$last_reply     = $replies->posts[ $replies->post_count - 1 ];
 							$last_user_link = add_query_arg( array( 'user_id' => $last_reply->post_author ), admin_url( 'user-edit.php' ) );
 							$last_user      = get_user_by( 'id', $last_reply->post_author );
+							$role           = true === user_can( $last_reply->post_author, 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
+							
 							if(!$last_user)
 							{
 								$user_nicename = 'deleted user';
@@ -521,9 +523,29 @@ class WPAS_Tickets_List {
 							else
 							{
 								$user_nicename = $last_user->user_nicename;
+								if( isset( $last_user->roles ) ) {
+									switch ( true ) {
+										case ( in_array( 'administrator' , (array) $last_user->roles) ):
+											$role = _x( 'admin', 'User role', 'awesome-support' );
+											break;
+										case ( in_array( 'wpas_manager' , (array)$last_user->roles) ):
+											$role = _x( 'Supervisor', 'User role', 'awesome-support' );
+											break;
+										case ( in_array( 'wpas_support_manager' , (array)$last_user->roles) ):
+											$role = _x( 'Support Manager', 'User role', 'awesome-support' );
+											break;
+										case ( in_array( 'wpas_agent' , (array)$last_user->roles) ):
+											$role = _x( 'agent', 'User role', 'awesome-support' );
+											break;
+										case ( in_array( 'wpas_user' , (array)$last_user->roles) ):
+											$role = _x( 'client', 'User role', 'awesome-support' );
+											break;		
+										default:								
+											$role = _x( 'client', 'User role', 'awesome-support' );
+									}
+								}
 							}
-							$role           = true === user_can( $last_reply->post_author, 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
-
+							
 							echo _x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' );
 							echo '<br>';
 							printf( _x( '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
