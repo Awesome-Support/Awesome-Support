@@ -67,7 +67,10 @@ $author = get_user_by( 'id', $post->post_author );
 					 * @since  3.0.0
 					 */
 					do_action( 'wpas_frontend_ticket_content_before', $post->ID, $post );
-
+					
+					/* Process missing html tag when pull content from email for ticket and ticket reply 11-5447420 */
+					$post->post_content = force_balance_tags( $post->post_content );
+					
 					/**
 					 * Display the original ticket's content
 					 */

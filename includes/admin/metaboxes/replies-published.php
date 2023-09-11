@@ -87,7 +87,10 @@ if ( ! defined( 'WPINC' ) ) {
 	<?php
 	/* Filter the content before we display it */
 	$content = apply_filters( 'the_content', $row->post_content );
-
+	
+	/* Process missing html tag when pull content from email for ticket and ticket reply 11-5447420 */	
+	$content = force_balance_tags( $content );
+	
 	/* The content displayed to agents */
 	echo '<div class="wpas-reply-content wpas-break-words" id="wpas-reply-' . esc_attr( $row->ID ) . '">';
 

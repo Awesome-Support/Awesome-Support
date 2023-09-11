@@ -61,9 +61,24 @@ $user_role = isset( $user->roles[0] ) ? $user->roles[0] : null;
 			 * @since  3.0.0
 			 */
 			do_action( 'wpas_frontend_reply_content_before', get_the_ID() );
+			
+			/* Process missing html tag when pull content from email for ticket and ticket reply 11-5447420 */			
+			$content_reply = get_the_content();
+
+			/**
+			 * Filters the post content.
+			 *
+			 * @since 0.71
+			 *
+			 * @param string $content Content of the current post.
+			 */
+			$content_reply = apply_filters( 'the_content', $content_reply );
+			
+			$content_reply = str_replace( ']]>', ']]&gt;', $content_reply );
+	
 			?>
 
-			<div class="wpas-reply-content wpas-break-words"><?php the_content(); ?></div>
+			<div class="wpas-reply-content wpas-break-words ticket-reply"><?php echo force_balance_tags( $content_reply ); ?></div>
 
 			<?php
 			/**
