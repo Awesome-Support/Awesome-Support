@@ -856,6 +856,11 @@ class WPAS_Email_Notification {
 		
 		$email_sent_recipients = array();
 		
+		if( !isset( $email['subject'] ) || empty( $email['subject'] ) )
+		{
+			$email['subject'] = str_replace( "_", " ", $case ); 
+		}
+		
 		foreach( $email['recipient_email'] as $r_email ) {
 			
 			$email_headers = $email['headers'];
