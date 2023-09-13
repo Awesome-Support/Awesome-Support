@@ -180,7 +180,7 @@ class CustomFields extends WP_REST_Controller {
         // Check for ticket id
         if ( isset( $request['ticket_id'] ) ) {
 
-            if ( ! $this->is_user_ticket(  $request[ 'ticket_id' ] ) ) {
+            if ( ! $this->is_user_ticket(  $request[ 'ticket_id' ] ) && !wpas_is_asadmin()  ) {
                 return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to get custom fields of this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
             }    
 
