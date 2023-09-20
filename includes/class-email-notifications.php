@@ -17,6 +17,7 @@
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
+#[AllowDynamicProperties]
 class WPAS_Email_Notification {
 
 	/**
