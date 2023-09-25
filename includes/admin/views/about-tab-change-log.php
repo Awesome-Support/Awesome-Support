@@ -1,7 +1,26 @@
 <p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
 
 <div class="changelog">
+	
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.1.4</h1>
+				<h3>6.1.4 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">					
+					<li>Fix: We fixed an issue with the Email Support add-on and the Piping Subject Link.</li>
+					<li>Fix: The Admin could not pull custom fields data, now it's possible.</li>
+					<li>Fix: We fixed the role for users on the admin ticket list.</li>
+					<li>Fix: Fixed deprecated errors from PHP 8.1</li>
+					<li>Fix: We now display a horizontal scroll bar when ticket content is wider than the display element.</li>
+					<li>Fix: An E_ERROR message was fixed.</li>
+					<li>Fix: If I upload a file to a ticket with the character “#” on the filename, the file won’t load.</li>					
+				</ul>
+			</div>
+		</div>
+	</div>
 
+	<hr />
 	<div class="row">
 		<div>
 			<div class="about-body">
