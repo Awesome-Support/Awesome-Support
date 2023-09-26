@@ -11,7 +11,7 @@
 					<li>Fix: We fixed an issue with the Email Support add-on and the Piping Subject Link.</li>
 					<li>Fix: The Admin could not pull custom fields data, now it's possible.</li>
 					<li>Fix: We fixed the role for users on the admin ticket list.</li>
-					<li>Fix: Fixed deprecated errors from PHP 8.1</li>
+					<li>Fix: Fixed deprecated errors from PHP 8.1 and 8.2</li>
 					<li>Fix: We now display a horizontal scroll bar when ticket content is wider than the display element.</li>
 					<li>Fix: An E_ERROR message was fixed.</li>
 					<li>Fix: If I upload a file to a ticket with the character “#” on the filename, the file won’t load.</li>					
