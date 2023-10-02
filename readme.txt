@@ -3,21 +3,21 @@
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 6.2
-Stable tag: 6.2
+Tested up to: 6.3
+Stable tag: 6.1.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The most versatile and feature-rich help desk and support plugin for WordPress. Provide awesome support directly from your WordPress site.
 
 == Description ==
-[Live Demo](https://asdemo.awesomesupport.com/)
+[Live Demo](https://demo.awesomesupport.com/)
 
 Awesome Support is the most versatile and feature-rich support plugin for WordPress. It is the only helpdesk & support ticketing plugin that can match the feature set of an SAAS solution such as Zendesk or Helpscout.
 
 And your customers can be using it in just 5 mins! After installing and activating the plugin, just answer a few questions in the startup wizard and your helpdesk will be ready for your customers.
 
-Take a product tour in the video below where you can see the extensive list of free and premium features that will be available on your new helpdesk!  You can also go hands-on with the [Live Demo](https://asdemo.awesomesupport.com/) or scroll down to the bottom of this page for screen shots.
+Take a product tour in the video below where you can see the extensive list of free and premium features that will be available on your new helpdesk!  You can also go hands-on with the [Live Demo](https://demo.awesomesupport.com/) or scroll down to the bottom of this page for screen shots.
 
 **Product Tour**
 
