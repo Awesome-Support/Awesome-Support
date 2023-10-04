@@ -513,6 +513,8 @@ class WPAS_Tickets_List {
 							$last_reply     = $replies->posts[ $replies->post_count - 1 ];
 							$last_user_link = add_query_arg( array( 'user_id' => $last_reply->post_author ), admin_url( 'user-edit.php' ) );
 							$last_user      = get_user_by( 'id', $last_reply->post_author );
+							$role           = true === user_can( $last_reply->post_author, 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
+							
 							if(!$last_user)
 							{
 								$user_nicename = 'deleted user';
@@ -521,9 +523,29 @@ class WPAS_Tickets_List {
 							else
 							{
 								$user_nicename = $last_user->user_nicename;
+								if( isset( $last_user->roles ) ) {
+									switch ( true ) {
+										case ( in_array( 'administrator' , (array) $last_user->roles) ):
+											$role = _x( 'admin', 'User role', 'awesome-support' );
+											break;
+										case ( in_array( 'wpas_manager' , (array)$last_user->roles) ):
+											$role = _x( 'Supervisor', 'User role', 'awesome-support' );
+											break;
+										case ( in_array( 'wpas_support_manager' , (array)$last_user->roles) ):
+											$role = _x( 'Support Manager', 'User role', 'awesome-support' );
+											break;
+										case ( in_array( 'wpas_agent' , (array)$last_user->roles) ):
+											$role = _x( 'agent', 'User role', 'awesome-support' );
+											break;
+										case ( in_array( 'wpas_user' , (array)$last_user->roles) ):
+											$role = _x( 'client', 'User role', 'awesome-support' );
+											break;		
+										default:								
+											$role = _x( 'client', 'User role', 'awesome-support' );
+									}
+								}
 							}
-							$role           = true === user_can( $last_reply->post_author, 'edit_ticket' ) ? _x( 'agent', 'User role', 'awesome-support' ) : _x( 'client', 'User role', 'awesome-support' );
-
+							
 							echo _x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' );
 							echo '<br>';
 							printf( _x( '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' ), add_query_arg( array(
@@ -1139,7 +1161,7 @@ SQL;
 
 		/* STATE */
 
-		$this_sort       = isset( $_GET[ 'status' ] ) ? filter_input( INPUT_GET, 'status', FILTER_SANITIZE_STRING ) : 'open';
+		$this_sort       = isset( $_GET[ 'status' ] ) ? sanitize_text_field( $_GET['status'] ) : 'open';		
 		$all_selected    = ( 'any' === $this_sort ) ? 'selected="selected"' : '';
 		$open_selected   = ( ! isset( $_GET[ 'status' ] ) && true === (bool) wpas_get_option( 'hide_closed' ) || 'open' === $this_sort ) ? 'selected="selected"' : '';
 		$closed_selected = ( 'closed' === $this_sort ) ? 'selected="selected"' : '';
@@ -1158,7 +1180,7 @@ SQL;
 		if ( ! isset( $_GET[ 'post_status' ] )
 		     || isset( $_GET[ 'post_status' ] ) && 'trash' !== $_GET[ 'post_status' ]
 		) {
-			$this_sort    = isset( $_GET[ 'post_status' ] ) ? filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING ) : 'any';
+			$this_sort    = isset( $_GET[ 'post_status' ] ) ? sanitize_text_field( $_GET['post_status'] ) : 'any';
 			$all_selected = ( 'any' === $this_sort ) ? 'selected="selected"' : '';
 
 			$dropdown = '<select id="post_status" name="post_status" >';
@@ -1183,7 +1205,7 @@ SQL;
 		/* ACTIVITY */
 
 
-		$selected_activity        = isset( $_GET[ 'activity' ] ) ? filter_input( INPUT_GET, 'activity', FILTER_SANITIZE_STRING ) : '';
+		$selected_activity        = isset( $_GET[ 'activity' ] ) ?  sanitize_text_field( $_GET['activity'] ) : '';
 
 		$activity_options = apply_filters( 'wpas_ticket_list_activity_options', array(
 			'all' =>					__( 'All Activity', 'awesome-support' ),
@@ -1285,7 +1307,7 @@ SQL;
 		/* TICKET ID */
 		$selected_value = '';
 		if ( isset( $_GET[ 'id' ] ) && ! empty( $_GET[ 'id' ] ) ) {
-			$selected_value = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
+			$selected_value = wp_unslash( sanitize_text_field( $_GET['id'] ) );
 		}
 
 		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . esc_attr( $selected_value ) . '" />';
@@ -1298,7 +1320,7 @@ SQL;
 				/* HELP DESK TICKET ID */
 				$selected_value = '';
 				if ( isset( $_GET[ 'helpdesk_id' ] ) && ! empty( $_GET[ 'helpdesk_id' ] ) ) {
-					$selected_value = filter_input( INPUT_GET, 'helpdesk_id', FILTER_SANITIZE_STRING );
+					$selected_value = wp_unslash( sanitize_text_field( $_GET['helpdesk_id'] ) );
 				}
 				$saas_id_label = wpas_get_option( 'importer_id_label', 'Help Desk SaaS Ticket ID');
 				echo '<input type="text" placeholder="' . esc_attr( $saas_id_label ) . '" name="helpdesk_id" id="helpdesk_id" value="' . esc_attr( $selected_value ) . '" />';
@@ -1356,7 +1378,7 @@ SQL;
 				);
 
 				if ( isset( $_GET[ $tax_slug ] ) ) {
-					$args[ 'selected' ] = filter_input( INPUT_GET, $tax_slug, FILTER_SANITIZE_STRING );
+					$args[ 'selected' ] = sanitize_text_field( $_GET[ $tax_slug ] );
 				}
 
 				wp_dropdown_categories( $args );
@@ -1485,7 +1507,7 @@ SQL;
 			);
 		}
 
-		$wpas_activity = isset( $_GET[ 'activity' ] ) && ! empty( $_GET[ 'activity' ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'activity' ] ) ) : 'any';
+		$wpas_activity = isset( $_GET[ 'activity' ] ) && ! empty( $_GET[ 'activity' ] ) ? sanitize_text_field( $_GET[ 'activity' ] ) : 'any';
 
 			if( 'awaiting_support_reply' === $wpas_activity ) {
 				$meta_query[] = array(
@@ -1510,7 +1532,7 @@ SQL;
 				);
 			}
 
-		$wpas_status = isset( $_GET[ 'status' ] ) && ! empty( $_GET[ 'status' ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'status' ] ) ) : 'open';
+		$wpas_status = isset( $_GET[ 'status' ] ) && ! empty( $_GET[ 'status' ] ) ? sanitize_text_field( $_GET[ 'status' ] ) : 'open';
 
 		if ( 'any' === $wpas_status ) {
 
@@ -1578,7 +1600,7 @@ SQL;
 			foreach ( $fields as $key => $var ) {
 
 				if ( isset( $_GET[ $var[ 'name' ] ] ) ) {
-					$wp->query_vars[ $key ] = sanitize_text_field( wp_unslash( $_GET[ $var[ 'name' ] ] ) );
+					$wp->query_vars[ $key ] = sanitize_text_field( $_GET[ $var[ 'name' ] ] );
 				} elseif ( isset( $wp->query_vars[ $var[ 'name' ] ] ) && $wp->query_vars[ $var[ 'name' ] ] ) {
 					$wp->query_vars[ $key ] = $wp->query_vars[ $var[ 'name' ] ];
 				}
@@ -1606,7 +1628,7 @@ SQL;
 
 			global $wpdb;
 
-			$ticket_id = filter_input( INPUT_GET, 'id', FILTER_SANITIZE_STRING );
+			$ticket_id = wp_unslash( sanitize_text_field( $_GET['id'] ) );
 
 			/* Filter by Ticket ID */
 			if ( ! empty( $ticket_id ) && intval( $ticket_id ) != 0 && 'ticket' === get_post_type( $ticket_id ) && wpas_can_view_ticket( intval( $ticket_id ) ) ) {
@@ -1639,7 +1661,7 @@ SQL;
 
 		$fields = $this->get_custom_fields();
 
-		$orderby = isset( $_GET[ 'orderby' ] ) ? sanitize_text_field( wp_unslash( $_GET[ 'orderby' ] ) ) : '';
+		$orderby = isset( $_GET[ 'orderby' ] ) ? sanitize_text_field( $_GET[ 'orderby' ] ) : '';
 
 		if ( ! empty( $orderby ) && array_key_exists( $orderby, $fields ) ) {
 

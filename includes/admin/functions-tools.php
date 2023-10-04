@@ -329,7 +329,7 @@ function wpas_clear_taxonomies() {
  */
 function wpas_delete_synced_products( $resync = false ) {
 
-	$post_type = filter_input( INPUT_GET, 'pt', FILTER_SANITIZE_STRING );
+	$post_type = sanitize_text_field( $_GET['pt'] );
 
 	if ( empty( $post_type ) ) {
 		return false;

@@ -17,6 +17,7 @@
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
+#[AllowDynamicProperties]
 class WPAS_Email_Notification {
 
 	/**
@@ -855,6 +856,11 @@ class WPAS_Email_Notification {
 		$mail = false;
 		
 		$email_sent_recipients = array();
+		
+		if( !isset( $email['subject'] ) || empty( $email['subject'] ) )
+		{
+			$email['subject'] = str_replace( "_", " ", $case ); 
+		}
 		
 		foreach( $email['recipient_email'] as $r_email ) {
 			

@@ -744,10 +744,10 @@ add_filter( 'locale','wpas_change_locale', 10, 1 );
  * @param  string $locale Site locale
  * @return string         Possibly modified locale
  */
-function wpas_change_locale( $locale ) {
-
-   $wpas_locale = filter_input( INPUT_GET, 'wpas_lang', FILTER_SANITIZE_STRING );
-
+function wpas_change_locale( $locale ) {    
+	
+	$wpas_locale = isset( $_GET['wpas_lang'] ) ? wp_unslash( sanitize_text_field( $_GET['wpas_lang'] ) ) : '';	
+	
 	if ( ! empty( $wpas_locale ) ) {
 		$locale = $wpas_locale;
 	}
@@ -1085,8 +1085,9 @@ function wpas_change_plugin_locale( $locale, $domain ) {
 	 * @since  3.1.5
 	 * @var    string
 	 */
-	$wpas_locale = filter_input( INPUT_GET, 'wpas_locale', FILTER_SANITIZE_STRING );
-
+	
+	$wpas_locale = isset( $_GET['wpas_locale'] ) ? wp_unslash( sanitize_text_field( $_GET['wpas_locale'] ) ) : '';
+	
 	if ( ! empty( $wpas_locale ) ) {
 		$locale = $wpas_locale;
 	}
@@ -1308,16 +1309,15 @@ function wpas_is_support_ticket_type_active() {
  * @return string
  */
  function wpas_filter_input_server( $input_var = 'REQUEST_URI' ) {
-
-	 $filtered_input = filter_input( INPUT_SERVER, $input_var, FILTER_SANITIZE_STRING );
-
+	
+	$filtered_input = isset( $_SERVER[$input_var] ) ?  sanitize_text_field( $_SERVER[$input_var] ) : '';	
 	 if ( empty( $filtered_input ) ) {
 
 		if ( filter_has_var(INPUT_SERVER, $input_var )) {
-				$filtered_input = filter_input( INPUT_SERVER, $input_var, FILTER_SANITIZE_STRING );
+				$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( $_SERVER[$input_var] ) : '';	
 			} else {
 				if (isset($_SERVER["REQUEST_URI"]))
-					$filtered_input = filter_var( $_SERVER[$input_var], FILTER_SANITIZE_STRING );
+					$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( $_SERVER[$input_var] ) : '';	
 				else
 					$filtered_input = null;
 			}
@@ -1488,12 +1488,15 @@ function wpas_get_current_user_role() {
 
 		$user = wp_get_current_user();
 		$role = ( array ) $user->roles;
-		return $role[0];
-
-	} else {
-
+		if( isset( $role[0] ) )
+		{
+			return $role[0];
+		}
 		return false;
 
+	} else {
+		
+		return false;
 	}
  }
 

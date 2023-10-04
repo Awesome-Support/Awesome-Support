@@ -501,8 +501,8 @@ class WPAS_Product_Sync {
 		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
 
 		// Get the list of products to include/exclude
-		$raw_include =  wpas_get_option( 'support_products_' . $slug . '_include', array() ) ;
-		$raw_exclude =  wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) ;
+		$raw_include =  (array) wpas_get_option( 'support_products_' . $slug . '_include', array() ) ;
+		$raw_exclude =  (array) wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) ;
 
 		// Initialize empty arrays just in case the if statements below turn out to be true.
 		// $raw_exclude/include in the if statements below can be empty if the user did not click SAVE on the PRODUCTS configuration tab.
@@ -745,10 +745,13 @@ class WPAS_Product_Sync {
 		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
 
 		// If syncing enabled
+		
 		if( (bool) wpas_get_option( 'support_products_' . $slug, array() ) ) {
 
-			// Get currently synced products
-			$include = array_filter( wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); // Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
+			// Get currently synced products		
+			$include = array_filter( (array) wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); 
+
+			// Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
 
             if( ! empty( $include ) ) {
 
@@ -973,8 +976,8 @@ class WPAS_Product_Sync {
 		$slug = WPAS_eCommerce_Integration::get_instance()->plugin;
 
 		// Get the list of products to include/exclude
-		$raw_include = wpas_get_option( 'support_products_' . $slug . '_include', array() );
-		$raw_exclude = wpas_get_option( 'support_products_' . $slug . '_exclude', array() );
+		$raw_include = (array) wpas_get_option( 'support_products_' . $slug . '_include', array() );
+		$raw_exclude = (array) wpas_get_option( 'support_products_' . $slug . '_exclude', array() );
 
 		// Initialize empty arrays just in case the if statements below turn out to be true.
 		// $raw_exclude/include in the if statements below can be empty if the user did not click SAVE on the PRODUCTS configuration tab.

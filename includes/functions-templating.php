@@ -35,6 +35,11 @@
 
 		$slug = 'ticket';
 
+		/* Process missing html tag when pull content from email for ticket and ticket reply 511-5447420 */
+		if ( $post && ( $slug == $post->post_type || 'ticket_reply' == $post->post_type ) ) {
+			$content = force_balance_tags( $content );
+		}
+		
 		/* Don't touch the admin */
 		if ( is_admin() ) {
 			return $content;

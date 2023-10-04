@@ -611,6 +611,7 @@ class WPAS_File_Upload {
 			}
 
 			$render_method = wpas_get_option( 'attachment_render_method', 'inline');  // returns 'inline' or 'attachment'.
+
 			$filename = basename( $attachment->guid );
 
 			ob_clean();
@@ -1242,7 +1243,7 @@ class WPAS_File_Upload {
 
 		foreach ( $attachments as $attachment ) {
 
-			$filename = $attachment['filename'];                    // Base filename
+			$filename = $this->wpas_sanitize_file_name( $attachment['filename'] );                    // Base filename
 			$data     = $attachment['data'];                        // Raw file contents
 
 			/* Limit the number of uploaded files */
@@ -1366,8 +1367,8 @@ class WPAS_File_Upload {
 		}
 
 		$submission = (int) wpas_get_option( 'ticket_submit' );
-		$post_type  = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
-
+		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( $_GET[ 'post_type' ] ) : '' ; 
+		
 		/**
 		 * On the front-end we only want to limit upload size
 		 * on the submission page or on a ticket details page.
@@ -1726,9 +1727,8 @@ class WPAS_File_Upload {
 			// Check file extension
 			if ( in_array( $extension, $filetypes ) ) {
 				// Upload file
-				move_uploaded_file( $file[ 'tmp_name' ], trailingslashit( $dir ) . basename( $file[ 'name' ] ) );
+				move_uploaded_file( $file[ 'tmp_name' ], trailingslashit( $dir ) . $this->wpas_sanitize_file_name( basename( $file[ 'name' ] ) ) );
 			}
-
 		}
 
 		wp_die();
@@ -1747,8 +1747,8 @@ class WPAS_File_Upload {
 
 		if ( wpas_can_delete_attachments() ) {
 
-			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
-			$attachment = filter_input( INPUT_POST, 'attachment', FILTER_SANITIZE_STRING );
+			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );			
+			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( $_POST['attachment'] ) : '';
 			$upload     = wp_upload_dir();
 			$user_id    = get_current_user_id();
 
@@ -1859,7 +1859,10 @@ class WPAS_File_Upload {
 			foreach( glob( $dir . '{' . $accept . '}', GLOB_BRACE ) as $file ) {
 
 				$new_file_relative_dir = 'awesome-support/ticket_' . $reply_id;
-				$new_file_relative = $new_file_relative_dir . '/' . basename( $file );
+
+				$gas_file_base_name = $this->wpas_sanitize_file_name( basename( $file ) );
+
+				$new_file_relative = $new_file_relative_dir . '/' . $gas_file_base_name;
 
 				$new_file_url = trailingslashit( $upload['baseurl'] ) . $new_file_relative;
 				
@@ -1879,7 +1882,7 @@ class WPAS_File_Upload {
 				$attachment = array(
 					'guid'           => $new_file_url,
 					'post_mime_type' => $post_mime_type,
-					'post_title'     => preg_replace( '/\.[^.]+$/', '', basename( $file ) ),
+					'post_title'     => preg_replace( '/\.[^.]+$/', '', $gas_file_base_name ),
 					'post_content'   => '',
 					'post_status'    => 'inherit'
 				);
@@ -1895,7 +1898,7 @@ class WPAS_File_Upload {
 				} else {
 
 					$new_file_upload_dir = trailingslashit( $upload['basedir'] ) . $new_file_relative_dir;
-					$new_file_upload = $new_file_upload_dir . '/' . basename( $file );
+					$new_file_upload = $new_file_upload_dir . '/' . $gas_file_base_name;
 
 					// Create ticket attachment directory if not exists
 					if ( ! file_exists( $new_file_upload_dir ) ) {
@@ -1999,6 +2002,31 @@ class WPAS_File_Upload {
 
 		rmdir( $directory );
 
+	}
+
+	/**
+	 * Convert and clean uploaded filenames in WordPress.
+	 * - Remove chars with accents etc, also replaces € with E.
+	 * - Remove every character except A-Z a-z 0-9 . - _ and spaces.
+	 * - Replace spaces (blanks) with an underscore.
+	 *
+	 * @author awesomesupport.com
+	 * @param  string $filename
+	 * @return string
+	 */
+
+	public function wpas_sanitize_file_name( $filename ) {
+
+		// Remove chars with accents etc, also replaces € with E.
+		$sanitized_filename = remove_accents( $filename );
+
+		// Remove every character except A-Z a-z 0-9 . - _ and spaces.
+		$sanitized_filename = preg_replace( '/[^A-Za-z0-9-_\.[:blank:]]/', '', $sanitized_filename );
+
+		// Replace spaces (blanks) with an underscore.
+		$sanitized_filename = preg_replace( '/[[:blank:]]+/', '_', $sanitized_filename );
+
+		return $sanitized_filename;
 	}
 
 }

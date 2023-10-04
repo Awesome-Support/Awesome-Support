@@ -160,7 +160,11 @@ class Tickets extends TicketBase {
 		} elseif ( $user->ID ) {
 			$query_params['author']['default'] = $user->ID;
 		}
-
+		if( ( wpas_is_asadmin() && true === (bool) wpas_get_option( 'admin_see_all' ) ) )
+		{
+			unset( $query_params['assignee']['default'] );
+			unset( $query_params['author']['default'] );
+		}
 		if ( isset( $_GET['context'] ) && 'help' == $_GET['context'] ) {
 			$query_params['assignee']['default'] = __( 'The ID of the current logged in agent if applicable.', 'awesome-support' );
 			$query_params['author']['default'] = __( 'The ID of the current logged in client if applicable.', 'awesome-support' );

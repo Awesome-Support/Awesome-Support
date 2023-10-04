@@ -29,10 +29,9 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 		$args = func_get_args();
 
-		call_user_func_array( array( $this, 'parent::__construct' ), $args );
+		call_user_func_array( array( 'WPAS_Custom_Field', '__construct' ), $args );
 		
-		$term_args = array( 'hide_empty' => 0 );
-		
+		$term_args = array( 'hide_empty' => 0 );		
 		
 		$sort_order = isset( $this->field_args['taxo_sortorder'] ) ? $this->field_args['taxo_sortorder'] : '';
 		$order_types = array( 'asc', 'desc' );

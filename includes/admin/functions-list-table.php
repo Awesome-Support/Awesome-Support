@@ -38,7 +38,7 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
-	$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+	$post_type =  isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
 
 	/* Make sure we only alter our post type */
 	if ( 'ticket' !== $post_type ) {
@@ -91,8 +91,8 @@ function wpas_limit_open( $query ) {
 		return false;
 	}
 
-	$post_type   = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
-	$post_status = filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING );
+	$post_type   = sanitize_text_field( $_GET['post_type'] );
+	$post_status = sanitize_text_field( $_GET['post_status'] );
 
 	/* Make sure we only alter our post type */
 	if ( 'ticket' !== $post_type ) {
@@ -174,7 +174,7 @@ function wpas_fix_tickets_count( $views ) {
 
 	$ticket_status = wpas_get_post_status(); // Our declared ticket status.
 	$status        = 'open';
-	$post_status   = filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING );
+	$post_status   = isset( $_GET['post_status'] ) ? wp_unslash( sanitize_text_field( $_GET['post_status'] ) ) : '';
 
 	// Maybe apply filters.
 	if ( ! empty( $post_status ) ) {

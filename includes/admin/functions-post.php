@@ -298,7 +298,7 @@ function wpas_save_ticket( $post_id ) {
 		do_action( 'wpas_ticket_after_update_admin_success', $post_id, $old_assignee, $_POST);
 
 		$gt_post      = null;
-		$where_after  = filter_input( INPUT_POST, 'where_after', FILTER_SANITIZE_STRING );
+		$where_after  = isset( $_POST['where_after'] ) ? sanitize_text_field( $_POST['where_after'] ) : '';
 		$back_to_list = filter_input( INPUT_POST, 'wpas_back_to_list', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( true === (bool) $back_to_list ) {

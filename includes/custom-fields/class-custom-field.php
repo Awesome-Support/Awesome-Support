@@ -429,12 +429,12 @@
 
 			if ( empty( $value ) ) {
 
-				$queried_value = filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING );
+				$queried_value = isset( $_GET[$this->get_field_id()] ) ? sanitize_text_field( $_GET[$this->get_field_id()] ) : '';
 
 				if ( ! empty( $queried_value ) ) {
 					$value = is_array( $_GET[ $this->get_field_id() ] )
-						? filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING, FILTER_REQUIRE_ARRAY )
-						: filter_input( INPUT_GET, $this->get_field_id(), FILTER_SANITIZE_STRING );
+						? array_map( 'sanitize_text_field', $_GET[ $this->get_field_id() ] )
+						: sanitize_text_field( $_GET[$this->get_field_id()] );
 				}
 
 				$fields = WPAS()->session->get( 'submission_form' );

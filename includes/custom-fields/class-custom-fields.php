@@ -14,6 +14,7 @@ class WPAS_Custom_Fields {
 	/**
 	 * List of metaboxes to remove.
 	 */
+	public $options; 
 	public $remove_mb;
 
 	public function __construct() {
