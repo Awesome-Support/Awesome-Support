@@ -1668,7 +1668,7 @@ class WPAS_File_Upload {
 		}
 
 		wp_localize_script( 'wpas-ajax-upload', 'WPAS_AJAX', array(
-			'nonce'              => wp_create_nonce( 'wpas-gdpr-nonce' ),
+			'nonce'              => wp_create_nonce( 'wpas-ajax-upload-nonce' ),
 			'ajax_url'           => admin_url( 'admin-ajax.php' ),
 			'accept'             => $accept,
 			'max_execution_time' => ( $max_execution_time * 1000 ), // Convert to miliseconds
@@ -1698,39 +1698,45 @@ class WPAS_File_Upload {
 		$upload    = wp_upload_dir();
 		$ticket_id = intval( $_POST[ 'ticket_id' ] );
 		$user_id   = get_current_user_id();
-
+		
 		/**
-		 * wpas_before_ajax_file_upload fires before uploading attachments
-		 *
-		 * @since 5.1.1
-		 *
-		 * @param int $ticket_id   ID of the ticket
-		 * @param int $user_id     ID of the current logged in user
+		 * Initiate nonce
 		 */
-		do_action( 'wpas_before_ajax_file_upload', $ticket_id, $user_id );
+		$nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
+		
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-ajax-upload-nonce', 'nonce' ) ) { 
+	
+			/**
+			 * wpas_before_ajax_file_upload fires before uploading attachments
+			 *
+			 * @since 5.1.1
+			 *
+			 * @param int $ticket_id   ID of the ticket
+			 * @param int $user_id     ID of the current logged in user
+			 */
+			do_action( 'wpas_before_ajax_file_upload', $ticket_id, $user_id );
 
+			$dir = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . $user_id;
 
-		$dir = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . $user_id;
+			// Create temp directory if not exists
+			if ( ! is_dir( $dir ) ) {
+				$this->create_upload_dir( $dir );
+			}
 
-		// Create temp directory if not exists
-		if ( ! is_dir( $dir ) ) {
-			$this->create_upload_dir( $dir );
-		}
+			// Check if file is set
+			if ( ! empty( $file = $_FILES[ 'wpas_' . $this->index ] ) ) {
+				// Get file extension
+				$extension = pathinfo( $file[ 'name' ], PATHINFO_EXTENSION );
+				// Get allowed file extensions
+				$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
 
-		// Check if file is set
-		if ( ! empty( $file = $_FILES[ 'wpas_' . $this->index ] ) ) {
-			// Get file extension
-			$extension = pathinfo( $file[ 'name' ], PATHINFO_EXTENSION );
-			// Get allowed file extensions
-			$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
-
-			// Check file extension
-			if ( in_array( $extension, $filetypes ) ) {
-				// Upload file
-				move_uploaded_file( $file[ 'tmp_name' ], trailingslashit( $dir ) . $this->wpas_sanitize_file_name( basename( $file[ 'name' ] ) ) );
+				// Check file extension
+				if ( in_array( $extension, $filetypes ) ) {
+					// Upload file
+					move_uploaded_file( $file[ 'tmp_name' ], trailingslashit( $dir ) . $this->wpas_sanitize_file_name( basename( $file[ 'name' ] ) ) );
+				}
 			}
 		}
-
 		wp_die();
 
 	}
@@ -1743,29 +1749,32 @@ class WPAS_File_Upload {
 	 *
 	 * @return void
 	 */
+
 	public function ajax_delete_temp_attachment() {
 
-		if ( wpas_can_delete_attachments() ) {
+		/**
+		 * Initiate nonce
+		 */
+		$nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
+		
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-ajax-upload-nonce', 'nonce' ) ) { 	
 
 			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );			
-			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( $_POST['attachment'] ) : '';
+			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( $_POST['attachment'] ) : '';		
+			
 			$upload     = wp_upload_dir();
 			$user_id    = get_current_user_id();
 
-			$file = sprintf( '%s/awesome-support/temp_%d_%d/%s', $upload['basedir'], $ticket_id, $user_id, $attachment );
+			$file = sprintf( '%s/awesome-support/temp_%d_%d/%s', $upload['basedir'], $ticket_id, $user_id, $attachment );			
 			
-			/**
-			 * Security Vulnerabilitie fixing			 
-			 * @since 6.1.4			
-			*/			 
 			$realBaseDir = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], $ticket_id, $user_id );
 			$realFilePath = realpath($file);
 			$realBasePath = realpath( $realBaseDir ) . DIRECTORY_SEPARATOR;
 			
-			if ($realFilePath === false || strpos($realFilePath, $realBasePath) !== 0) {				
+			if ($realFilePath === false || strpos($realFilePath, $realBasePath) !== 0) {
+				echo "Permission denied!";
 				wp_die();
 			}
-			
 			/**
 			 * wpas_before_delete_temp_attachment fires before deleting temp attachment
 			 *
@@ -1779,14 +1788,10 @@ class WPAS_File_Upload {
 
 			if ( file_exists( $file ) ) {
 				unlink( $file );
-			}
-
+			}			
 		}
-
 		wp_die();
-
-	}
-
+	}	
 	/**
 	 * Delete temporary attachment folder
 	 *
