@@ -1753,7 +1753,19 @@ class WPAS_File_Upload {
 			$user_id    = get_current_user_id();
 
 			$file = sprintf( '%s/awesome-support/temp_%d_%d/%s', $upload['basedir'], $ticket_id, $user_id, $attachment );
-
+			
+			/**
+			 * Security Vulnerabilitie fixing			 
+			 * @since 6.1.4			
+			*/			 
+			$realBaseDir = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], $ticket_id, $user_id );
+			$realFilePath = realpath($file);
+			$realBasePath = realpath( $realBaseDir ) . DIRECTORY_SEPARATOR;
+			
+			if ($realFilePath === false || strpos($realFilePath, $realBasePath) !== 0) {				
+				wp_die();
+			}
+			
 			/**
 			 * wpas_before_delete_temp_attachment fires before deleting temp attachment
 			 *
