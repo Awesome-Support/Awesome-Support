@@ -5,6 +5,21 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.1.5</h1>
+				<h3>6.1.5 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">					
+					<li>Fix: Patched security issues to keep the plugin secure.</li>
+					<li>Fix: We solved the error messages when saving ticket settings.</li>
+					<li>Fix: It was not possible to upload multiple files with the drag and drop uploader.</li>							
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.1.4</h1>
 				<h3>6.1.4 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">					
