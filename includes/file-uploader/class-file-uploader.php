@@ -404,29 +404,34 @@ class WPAS_File_Upload {
 
 			$ticket_id = $parent_id;
 
-			$can_delete = wpas_can_delete_attachments();
-
+			$can_delete = wpas_can_delete_attachments();	
+	
 			if( $can_delete ) {
 
-				$parent = get_post( $parent_id );
+				$parent = get_post( $parent_id );				
+				
 				if( 'ticket_reply' === $parent->post_type ) {
 					$ticket_id = $parent->post_parent;
 				}
 
 				if( 'ticket' === $parent->post_type || 'ticket_reply' === $parent->post_type ) {
+					
+					$author_id = get_post_field( 'post_author', $attachment_id ); 
+				
+					if( wpas_is_agent() || ( get_current_user_id() == $author_id ) )
+					{
+						$attachment = get_post( $attachment_id );
+						$filename   = explode( '/', $attachment->guid );
+						$name = $filename[ count( $filename ) - 1 ];
 
-					$attachment = get_post( $attachment_id );
-					$filename   = explode( '/', $attachment->guid );
-					$name = $filename[ count( $filename ) - 1 ];
+						wp_delete_attachment( $attachment_id, true );
 
-					wp_delete_attachment( $attachment_id, true );
-
-					wpas_log( $ticket_id, sprintf( __( '%s attachment deleted by %s', 'awesome-support' ), $name, $user->display_name ) );
-					$deleted = true;
+						wpas_log( $ticket_id, sprintf( __( '%s attachment deleted by %s', 'awesome-support' ), $name, $user->display_name ) );
+						
+						$deleted = true;
+					}					
 				}
-
 			}
-
 		}
 
 		if( $deleted ) {
