@@ -395,8 +395,14 @@ class WPAS_File_Upload {
 	function ajax_delete_attachment() {
 
 		$parent_id = filter_input( INPUT_POST, 'parent_id', FILTER_SANITIZE_NUMBER_INT );
-		$attachment_id = filter_input( INPUT_POST, 'att_id', FILTER_SANITIZE_NUMBER_INT );
-
+		$attachment_id = filter_input( INPUT_POST, 'att_id', FILTER_SANITIZE_NUMBER_INT );		
+	
+		$nonce = isset( $_POST['att_delete_nonce'] ) ? $_POST['att_delete_nonce'] : '';
+		
+		if ( empty( $nonce ) || !check_ajax_referer( 'wpas-delete-attachs', 'att_delete_nonce' ) ) { 		
+			wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
+			die();
+		}
 		$user = wp_get_current_user();
 		$deleted = false;
 
@@ -437,9 +443,8 @@ class WPAS_File_Upload {
 		if( $deleted ) {
 			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'wpas' ) ) );
 		} else {
-			wp_send_json_error();
+			wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
 		}
-
 
 		die();
 	}
