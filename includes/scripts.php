@@ -201,7 +201,8 @@ function wpas_register_assets_back_end() {
 	) );
 	wp_localize_script( 'wpas-admin-reply-history', 'WPAS_Reply_History', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
-		'date_label' => __( 'Edited on', 'awesome-support' )
+		'date_label' => __( 'Edited on', 'awesome-support' ),
+		'wpas_history_reply_nonce' => wp_create_nonce( 'wpas_history_reply_nonce' )
 	));
 
 	// Print ticket vars
@@ -429,7 +430,8 @@ function wpas_get_javascript_object() {
 		'translations' => array(
 			'emptyEditor' => $empty_editor,
 			'onSubmit'    => _x( 'Submitting...', 'ticket submission button text while submitting', 'awesome-support' ),
-		)
+		),
+		'front_replies_nonce' => wp_create_nonce( 'wpas_loads_replies' )
 	);
 
 	if ( 'ticket' === $post->post_type ) {

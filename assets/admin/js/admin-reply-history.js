@@ -16,7 +16,8 @@
               type : 'post',
               data : {
                 action : 'wpas_load_reply_history',
-                reply_id : $(this).data( 'replyid' )
+                reply_id : $(this).data( 'replyid' ),
+				history_nonce : WPAS_Reply_History.wpas_history_reply_nonce				
               },
               success : function( response ) {
                 if( response.code === 200 ) {
@@ -48,7 +49,8 @@
               type : 'post',
               data : {
                 action : 'wpas_load_reply_history',
-                reply_id : $(this).data( 'ticketid' )
+                reply_id : $(this).data( 'ticketid' ),
+				history_nonce : WPAS_Reply_History.wpas_history_reply_nonce
               },
               success : function( response ) {
                 if( response.code === 200 ) {
