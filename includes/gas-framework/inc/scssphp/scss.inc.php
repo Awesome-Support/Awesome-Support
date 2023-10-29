@@ -80,6 +80,16 @@ class gasscssc {
 	protected $userFunctions = array();
 	protected $numberPrecision = 5;
 	protected $formatter = "gasscss_formatter_nested";
+	protected $indentLevel = "";
+	protected $commentsSeen = [];
+	protected $extends = [];
+	protected $extendsMap = [];
+	protected $parsedFiles = [];
+	protected $parser = null;
+	protected $env = null;
+	protected $scope = null;
+	protected $sourcePos = -1;
+	protected $sourceParser = null;
 	public function compile($code, $name=null) {
 		$this->indentLevel = -1;
 		$this->commentsSeen = array();
@@ -691,12 +701,12 @@ class gasscssc {
 				// 1. op_[op name]_[left type]_[right type]
 				// 2. op_[left type]_[right type] (passing the op as first arg
 				// 3. op_[op name]
-				$fn = "op_${opName}_${ltype}_${rtype}";
+				$fn = "op_{$opName}_{$ltype}_{$rtype}";
 				if (is_callable(array($this, $fn)) ||
-					(($fn = "op_${ltype}_${rtype}") &&
+					(($fn = "op_{$ltype}_{$rtype}") &&
 						is_callable(array($this, $fn)) &&
 						$passOp = true) ||
-					(($fn = "op_${opName}") &&
+					(($fn = "op_{$opName}") &&
 						is_callable(array($this, $fn)) &&
 						$genOp = true))
 				{
@@ -2195,6 +2205,15 @@ class gasscss_parser {
 	static protected $commentSingle = "//";
 	static protected $commentMultiLeft = "/*";
 	static protected $commentMultiRight = "*/";
+	protected $sourceName = null;
+	protected $rootParser = true;
+	protected $count = 0;
+	protected $env = null;	
+	protected $inParens = false;		
+	protected $eatWhiteDefault = true;
+	protected $insertComments = true;
+	protected $buffer = null;
+		
 	public function __construct($sourceName = null, $rootParser = true) {
 		$this->sourceName = $sourceName;
 		$this->rootParser = $rootParser;
@@ -2913,7 +2932,7 @@ class gasscss_parser {
 			}
 			$num = hexdec($num);
 			foreach (array(3,2,1) as $i) {
-				$t = $num % $width;
+				$t = (int) $num % $width;
 				$num /= $width;
 				$color[$i] = $t * (256/$width) + $t * floor(16/$width);
 			}
@@ -3360,7 +3379,7 @@ class gasscss_parser {
 	protected function match($regex, &$out, $eatWhitespace = null) {
 		if (is_null($eatWhitespace)) $eatWhitespace = $this->eatWhiteDefault;
 		$r = '/'.$regex.'/Ais';
-		if (preg_match($r, $this->buffer, $out, null, $this->count)) {
+		if (preg_match($r, $this->buffer, $out, PREG_UNMATCHED_AS_NULL, $this->count)) {
 			$this->count += strlen($out[0]);
 			if ($eatWhitespace) $this->whitespace();
 			return true;
@@ -3370,7 +3389,7 @@ class gasscss_parser {
 	// match some whitespace
 	protected function whitespace() {
 		$gotWhite = false;
-		while (preg_match(self::$whitePattern, $this->buffer, $m, null, $this->count)) {
+		while (preg_match(self::$whitePattern, $this->buffer, $m, PREG_UNMATCHED_AS_NULL, $this->count)) {
 			if ($this->insertComments) {
 				if (isset($m[1]) && empty($this->commentsSeen[$this->count])) {
 					$this->append(array("comment", $m[1]));
@@ -3385,7 +3404,7 @@ class gasscss_parser {
 	protected function peek($regex, &$out, $from=null) {
 		if (is_null($from)) $from = $this->count;
 		$r = '/'.$regex.'/Ais';
-		$result = preg_match($r, $this->buffer, $out, null, $from);
+		$result = preg_match($r, $this->buffer, $out, PREG_UNMATCHED_AS_NULL, $from);
 		return $result;
 	}
 	protected function seek($where = null) {
@@ -3422,6 +3441,7 @@ class gasscss_formatter {
 	public $close = "}";
 	public $tagSeparator = ", ";
 	public $assignSeparator = ": ";
+	public $indentLevel = "";
 	public function __construct() {
 		$this->indentLevel = 0;
 	}
@@ -3658,7 +3678,7 @@ class gasscss_server {
 		$elapsed = round((microtime(true) - $start), 4);
 		$v = gasscssc::$VERSION;
 		$t = date('r');
-		$css = "/* compiled by scssphp $v on $t (${elapsed}s) */\n\n" . $css;
+		$css = "/* compiled by scssphp $v on $t ({$elapsed}s) */\n\n" . $css;
 		file_put_contents($out, $css);
 		file_put_contents($this->importsCacheName($out),
 			serialize($this->scss->getParsedFiles()));

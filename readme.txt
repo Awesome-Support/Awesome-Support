@@ -447,6 +447,12 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.1.5
+* Fix	
+	* Patched security issues to keep the plugin secure.
+	* We solved the error messages when saving ticket settings.
+	* It was not possible to upload multiple files with the drag and drop uploader.
+
 = 6.1.4
 * Fix	
 	* We fixed an issue with the Email Support add-on and the Piping Subject Link.
@@ -456,6 +462,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
    	* We now display a horizontal scroll bar when ticket content is wider than the display element.
   	* An E_ERROR message was fixed.
 	* If I upload a file to a ticket with the character “#” on the filename, the file won’t load.
+	
 = 6.1.3
 * New Feature	
 	* Add attachments when you print tickets. You can enable or disable this option on the print screen.

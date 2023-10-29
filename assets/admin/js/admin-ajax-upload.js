@@ -35,6 +35,7 @@
                     
                     this.on('sending', function(file, xhr, formData){
                         formData.append('action', 'wpas_upload_attachment');
+						formData.append('nonce', WPAS_AJAX.nonce);
                         formData.append('ticket_id', ticket_id );
                         formData.append('dz_id', dropzone_id );
                         uploaded = true;
@@ -85,6 +86,7 @@
                         url: WPAS_AJAX.ajax_url,
                         data: {
                             action: 'wpas_delete_temp_attachment',
+							nonce: WPAS_AJAX.nonce,
                             ticket_id: ticket_id,
                             attachment: file.name
                         }

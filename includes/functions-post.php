@@ -777,13 +777,21 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 			return false;
 		}
 	}
-
+	//ensuring that the user is allowed to edit the post given by the reply_id POST parameter 	
+	if( !current_user_can( 'edit_post', $reply_id ) )
+	{		
+		return false;
+	}
 	$original_reply = get_post( $reply_id );
 
 	if ( is_null( $original_reply ) ) {
 		return false;
+	}	
+	//the post type should be checked so arbitrary posts cannot be updated
+	if( $original_reply->post_type != 'ticket_reply' )
+	{		
+		return false;
 	}
-
 	$data = apply_filters(
 		'wpas_edit_reply_data', array(
 			'ID'             => $reply_id,
@@ -928,10 +936,19 @@ add_action( 'wp_ajax_wpas_edit_reply', 'wpas_edit_reply_ajax' );
  * @return void
  */
 function wpas_edit_reply_ajax() {
-
+	
+	if( !check_ajax_referer( 'wpas_edit_reply', 'nonce', false ) ) {
+		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
+		die();
+	}
 	$ID = wpas_edit_reply();
-
-	if ( false === $ID || is_wp_error( $ID ) ) {
+	
+	if ( false === $ID ) {
+		echo "Invalid data!";
+		die();
+	}
+	
+	if ( is_wp_error( $ID ) ) {
 		$ID = $ID->get_error_message();
 	}
 
@@ -960,6 +977,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	}
 
 	if ( ! current_user_can( 'reply_ticket' ) ) {
+		
 		return false;
 	}
 

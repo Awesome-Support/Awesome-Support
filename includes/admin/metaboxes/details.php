@@ -76,7 +76,7 @@ if ( isset( $post ) ) {
 				<?php endforeach; ?>
 			</select>
 			<?php if ( isset( $_GET['post'] ) ): ?>
-				<input type="hidden" name="wpas_post_parent" value="<?php echo sanitize_text_field( $_GET['post'] ); ?>">
+				<input type="hidden" name="wpas_post_parent" value="<?php echo esc_attr( $_GET['post'] ); ?>">
 			<?php endif; ?>
 		</p>
 	<?php endif; ?>

@@ -89,6 +89,7 @@
 					var tinyMCEContent = tinyMCE.get(editorId).getContent();
 					var data = {
 						'action': 'wpas_edit_reply',
+						'nonce' : wpasL10n.reply_nonce, 
 						'reply_id': replyId,
 						'reply_content': tinyMCEContent
 					};

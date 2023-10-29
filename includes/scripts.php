@@ -196,7 +196,8 @@ function wpas_register_assets_back_end() {
 	wp_localize_script( 'wpas-admin-reply', 'wpasL10n', array(
 		'alertDelete'    => __( 'Are you sure you want to delete this reply?', 'awesome-support' ),
 		'alertNoTinyMCE' => __( 'No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor', 'awesome-support' ),
-		'alertNoContent' => __( "You can't submit an empty reply", 'awesome-support' )
+		'alertNoContent' => __( "You can't submit an empty reply", 'awesome-support' ),
+		'reply_nonce' => wp_create_nonce( 'wpas_edit_reply' )
 	) );
 	wp_localize_script( 'wpas-admin-reply-history', 'WPAS_Reply_History', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
