@@ -5,6 +5,19 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.1.6</h1>
+				<h3>6.1.6 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">					
+					<li>Fix: We applied several security patches to improve the plugin security.</li>										
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.1.5</h1>
 				<h3>6.1.5 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">					

@@ -1769,12 +1769,18 @@ add_action( 'wp_ajax_nopriv_wpas_load_replies', 'wpas_get_ticket_replies_ajax' )
 function wpas_get_ticket_replies_ajax() {
 
 	// Make sure we have a ticket ID to work with
-	if ( ! isset( $_POST['ticket_id'] ) ) {
+	if ( ! isset( $_POST['ticket_id'] ) || ( isset( $_POST['ticket_id'] ) && empty( $_POST[ 'ticket_id' ] ) )) {
 		echo json_encode( array( 'error' => esc_html__( 'No ticket ID given', 'awesome-support' ) ) );
 		die();
 	}
-
-	$ticket_id = (int) $_POST['ticket_id'];
+	
+	$ticket_id = absint( $_POST['ticket_id'] );	
+		
+	if( !check_ajax_referer( 'wpas_loads_replies', 'ticket_replies_nonce', false ) ) {		
+		wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
+		die();
+	}
+	
 	$offset    = isset( $_POST['ticket_replies_total'] ) ? (int) $_POST['ticket_replies_total'] : 0;
 	$ticket    = get_post( $ticket_id );
 
@@ -2039,16 +2045,30 @@ function wpas_load_reply_history() {
 	/**
 	 * Reply ID is required
 	 */
-	if ( ! isset( $_POST['reply_id'] ) ) {
+	if ( ! isset( $_POST['reply_id'] ) || ( isset( $_POST['reply_id'] ) && empty( $_POST[ 'reply_id' ] ) ) ) {
 		wp_send_json( $response );
+	}	
+	
+	$reply_id = ! empty( $_POST[ 'reply_id' ] ) ? absint( $_POST[ 'reply_id' ] ) : 0;
+	
+	if( !current_user_can( 'edit_post', $reply_id ) )
+	{		
+		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
+		die();
 	}
-
+	
+	if( !check_ajax_referer( 'wpas_history_reply_nonce', 'history_nonce', false ) ) {
+		
+		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
+		die();
+	}
+	
 	/**
 	 * Get all reply history
 	 */
 	$reply_history = get_posts(
 		array(
-			'post_parent' 		=> sanitize_text_field( $_POST['reply_id'] ),
+			'post_parent' 		=> $reply_id,
 			'post_type'   		=> 'ticket_log',
 			'posts_per_page'	=> 10,  //Maybe this should an option?!
 			'orderby'			=> 'ID',

@@ -395,8 +395,14 @@ class WPAS_File_Upload {
 	function ajax_delete_attachment() {
 
 		$parent_id = filter_input( INPUT_POST, 'parent_id', FILTER_SANITIZE_NUMBER_INT );
-		$attachment_id = filter_input( INPUT_POST, 'att_id', FILTER_SANITIZE_NUMBER_INT );
-
+		$attachment_id = filter_input( INPUT_POST, 'att_id', FILTER_SANITIZE_NUMBER_INT );		
+	
+		$nonce = isset( $_POST['att_delete_nonce'] ) ? $_POST['att_delete_nonce'] : '';
+		
+		if ( empty( $nonce ) || !check_ajax_referer( 'wpas-delete-attachs', 'att_delete_nonce' ) ) { 		
+			wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
+			die();
+		}
 		$user = wp_get_current_user();
 		$deleted = false;
 
@@ -404,37 +410,41 @@ class WPAS_File_Upload {
 
 			$ticket_id = $parent_id;
 
-			$can_delete = wpas_can_delete_attachments();
-
+			$can_delete = wpas_can_delete_attachments();	
+	
 			if( $can_delete ) {
 
-				$parent = get_post( $parent_id );
+				$parent = get_post( $parent_id );				
+				
 				if( 'ticket_reply' === $parent->post_type ) {
 					$ticket_id = $parent->post_parent;
 				}
 
 				if( 'ticket' === $parent->post_type || 'ticket_reply' === $parent->post_type ) {
+					
+					$author_id = get_post_field( 'post_author', $attachment_id ); 
+				
+					if( wpas_is_agent() || ( get_current_user_id() == $author_id ) )
+					{
+						$attachment = get_post( $attachment_id );
+						$filename   = explode( '/', $attachment->guid );
+						$name = $filename[ count( $filename ) - 1 ];
 
-					$attachment = get_post( $attachment_id );
-					$filename   = explode( '/', $attachment->guid );
-					$name = $filename[ count( $filename ) - 1 ];
+						wp_delete_attachment( $attachment_id, true );
 
-					wp_delete_attachment( $attachment_id, true );
-
-					wpas_log( $ticket_id, sprintf( __( '%s attachment deleted by %s', 'awesome-support' ), $name, $user->display_name ) );
-					$deleted = true;
+						wpas_log( $ticket_id, sprintf( __( '%s attachment deleted by %s', 'awesome-support' ), $name, $user->display_name ) );
+						
+						$deleted = true;
+					}					
 				}
-
 			}
-
 		}
 
 		if( $deleted ) {
 			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'wpas' ) ) );
 		} else {
-			wp_send_json_error();
+			wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
 		}
-
 
 		die();
 	}

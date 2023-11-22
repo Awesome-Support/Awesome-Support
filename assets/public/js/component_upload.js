@@ -48,9 +48,10 @@
                     var att_id = $(this).data('att_id');
                     
                     var data = {
-                        action   : 'wpas_delete_attachment',
+                        action : 'wpas_delete_attachment',
                         parent_id : parent_id,
-                        att_id : att_id
+                        att_id : att_id,
+						att_delete_nonce: wpas.front_delete_att_nonce
                     };
 
                     $.post( ajaxurl, data, function (response) {
