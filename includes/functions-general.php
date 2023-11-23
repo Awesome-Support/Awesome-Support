@@ -1685,14 +1685,33 @@ function wpas_is_field_in_ai_tab( $field_name ) {
 function wpas_can_delete_attachments() {
 
 	$can = false;
-
+	$user = wp_get_current_user();
 	if( wpas_is_agent() ) {
-		if( wpas_agent_can_delete_attachments() ) {
+	    // gets the Agent role
+		$wpas_agent_role = get_role( 'wpas_agent' );
+		
+		if( wpas_agent_can_delete_attachments() ) {		
+			// This only works, because it accesses the class instance.			
+			$wpas_agent_role->add_cap( 'delete_attachment' ); 			
 			$can = true;
 		}
+		else
+		{
+			// This only works, because it accesses the class instance.			
+			$wpas_agent_role->remove_cap( 'delete_attachment' );  
+		}
 	} else {
-		if( wpas_user_can_delete_attachments() ) {
+		// gets the Support User role
+		$wpas_user_role = get_role( 'wpas_user' );
+		if( wpas_user_can_delete_attachments() ) {			
+			// This only works, because it accesses the class instance.			
+			$wpas_user_role->add_cap( 'delete_attachment' ); 			
 			$can = true;
+		}
+		else
+		{
+			// This only works, because it accesses the class instance.			
+			$wpas_agent_role->remove_cap( 'delete_attachment' );  
 		}
 	}
 
