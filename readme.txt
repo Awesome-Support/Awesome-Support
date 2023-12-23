@@ -4,7 +4,7 @@ Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreativ
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
 Tested up to: 6.4
-Stable tag: 6.1.6
+Stable tag: 6.1.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -447,6 +447,10 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.1.7
+* Fix	
+	* We fixed high priority vulnerabilities to keep the plugin safe and up to date.
+	
 = 6.1.6
 * Fix	
 	* We applied several security patches to improve the plugin security.
