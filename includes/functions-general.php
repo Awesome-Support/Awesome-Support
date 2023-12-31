@@ -1711,7 +1711,7 @@ function wpas_can_delete_attachments() {
 		else
 		{
 			// This only works, because it accesses the class instance.			
-			$wpas_agent_role->remove_cap( 'delete_attachment' );  
+			$wpas_user_role->remove_cap( 'delete_attachment' );  
 		}
 	}
 
