@@ -1285,7 +1285,7 @@ function wpas_get_users_ajax( $args = array() ) {
 			'exclude'     => array_map( 'intval', array_filter( (array) $args['exclude'] ) ),
 			'ids'		  => array_map( 'intval', array_filter( (array) $ids ) ),
 			'search'      => array(
-				'query'    => sanitize_text_field( $args['q'] ),
+				'query'    => sanitize_text_field( esc_sql( $args['q'] )),
 				'fields'   => array( 'user_nicename', 'display_name', 'id', 'user_email' ),
 				'relation' => 'OR'
 			)

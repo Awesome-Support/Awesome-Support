@@ -61,7 +61,7 @@ function wpas_core_settings_style( $def ) {
 				),
 				array(
 					'name'    => __( 'Closed Status', 'awesome-support' ),
-					'id'      => 'color_closed',
+					'id'      => 'gas_color_closed',
 					'type'    => 'color',
 					'default' => '#dd3333',
 				),

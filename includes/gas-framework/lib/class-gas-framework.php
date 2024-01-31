@@ -184,8 +184,14 @@ class GASFramework {
 	 */
 	public function rememberAllOptions( $option ) {
 		if ( ! empty( $option->settings['id'] ) ) {
-
+			
+			if( $option->settings['id'] == 'color_closed' ) 
+			{ 
+					//echo "option<pre>";var_dump($option);echo "<pre>"; exit;
+			}
+			
 			if ( is_admin() && isset( $this->optionsUsed[ $option->settings['id'] ] ) ) {
+				
 				self::displayFrameworkError(
 					sprintf( __( 'All option IDs per namespace must be unique. The id %s has been used multiple times.', GASF_I18NDOMAIN ),
 						'<code>' . $option->settings['id'] . '</code>'
