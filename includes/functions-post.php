@@ -1911,6 +1911,15 @@ add_action( 'wp_ajax_nopriv_wpas_edit_ticket_content', 'wpas_edit_ticket_content
 function wpas_edit_ticket_content() {
 
 	/**
+	 * Security checking. Verify ajax via nonce.
+	 */
+	if( !check_ajax_referer( 'wpas-editor-content-nonce', 'nonce', false ) ) {
+		$response['message'] = __( "You don't have access to perform this action." , 'awesome-support' );
+		wp_send_json( $response );
+		die();
+	}
+		
+	/**
 	 * The default response
 	 */
 	$response = array(
@@ -1923,6 +1932,7 @@ function wpas_edit_ticket_content() {
 	 */
 	$ticket_id = isset( $_POST['post_id'] ) ? sanitize_text_field( $_POST['post_id'] ) : '';
 	$content   = isset( $_POST['content'] ) ? wp_kses_post( $_POST['content'] ) : '';
+	
 
 	/**
 	 * Make sure we have ticket ID
@@ -1941,7 +1951,14 @@ function wpas_edit_ticket_content() {
 		wp_send_json( $response );
 		wp_die();
 	}
-
+	
+	//Check permission for capability of current user	
+	if ( ! current_user_can( 'edit_ticket', $ticket_id ) || !wpas_can_view_ticket( $ticket_id ) ) {		
+		$response['message'] = __( "You don't have access to perform this action." , 'awesome-support' );
+		wp_send_json( $response );
+		die();
+	}
+		
 	/**
 	 * Make sure we are on the correct post type
 	 */

@@ -1230,8 +1230,23 @@ add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax',11,0 );
  */
 function wpas_get_users_ajax( $args = array() ) {
 
-	global $wpdb;
-
+	global $wpdb;	
+	
+	/**
+	 * Security checking. Verify ajax via nonce.
+	 */
+	if( !check_ajax_referer( 'wpas-get-users', 'get_users_nonce', false ) ) {
+		
+		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
+		die();
+	}
+	
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
+		die();
+	}
+	
 	$defaults = array(
 		'cap'         => 'edit_ticket',
 		'cap_exclude' => '',
@@ -1247,7 +1262,7 @@ function wpas_get_users_ajax( $args = array() ) {
 			}
 		}
 	}
-
+	
 	$args = wp_parse_args( $args, $defaults );
 
 	$department_assignment = get_user_option( 'wpas_department_assignment', get_current_user_id() );

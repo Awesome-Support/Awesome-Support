@@ -197,7 +197,8 @@ function wpas_register_assets_back_end() {
 		'alertDelete'    => __( 'Are you sure you want to delete this reply?', 'awesome-support' ),
 		'alertNoTinyMCE' => __( 'No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor', 'awesome-support' ),
 		'alertNoContent' => __( "You can't submit an empty reply", 'awesome-support' ),
-		'reply_nonce' => wp_create_nonce( 'wpas_edit_reply' )
+		'reply_nonce' => wp_create_nonce( 'wpas_edit_reply' ),
+		'editor_content_nonce' => wp_create_nonce( 'wpas-editor-content-nonce' )
 	) );
 	wp_localize_script( 'wpas-admin-reply-history', 'WPAS_Reply_History', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
@@ -361,6 +362,9 @@ function wpas_enqueue_assets_back_end() {
 		wp_enqueue_script( 'wpas-admin-toolbars-script' ) ;
 		wp_enqueue_script( 'wpas-admin-tabletojson' );
 		wp_enqueue_script( 'wpas-users' );
+		wp_localize_script( 'wpas-users', 'WPAS_get_users', array(			
+			'get_users_nonce' => wp_create_nonce( 'wpas-get-users' )
+		) );
 		wp_enqueue_script( 'wpas-admin-helpers_functions' );
 		wp_enqueue_script( 'wpas-admin-upload' );
 
@@ -373,7 +377,8 @@ function wpas_enqueue_assets_back_end() {
 
 		wp_enqueue_script( 'wpas-admin-edit-ticket-content-script');
 		wp_localize_script( 'wpas-admin-edit-ticket-content-script', 'WPAS_Edit_Ticket_Content', array(
-			'ajax_url' => admin_url( 'admin-ajax.php' )
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'editor_content_nonce' => wp_create_nonce( 'wpas-editor-content-nonce' )
 		));
 
 	}
