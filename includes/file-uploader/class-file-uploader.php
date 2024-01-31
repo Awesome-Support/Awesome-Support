@@ -348,10 +348,7 @@ class WPAS_File_Upload {
 				$log_content = '<ul>'. implode( '', $logs ).'</ul>';
 				wpas_log( $ticket_id, $log_content );
 			}
-
 		}
-
-
 	}
 
 	/**
@@ -400,7 +397,7 @@ class WPAS_File_Upload {
 		$nonce = isset( $_POST['att_delete_nonce'] ) ? $_POST['att_delete_nonce'] : '';
 		
 		if ( empty( $nonce ) || !check_ajax_referer( 'wpas-delete-attachs', 'att_delete_nonce' ) ) { 		
-			wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'wpas') ) );
 			die();
 		}
 		$user = wp_get_current_user();
@@ -422,11 +419,24 @@ class WPAS_File_Upload {
 
 				if( 'ticket' === $parent->post_type || 'ticket_reply' === $parent->post_type ) {
 					
-					$author_id = get_post_field( 'post_author', $attachment_id ); 
+					$author_id = get_post_field( 'post_author', $attachment_id );
+					
 				
 					if( wpas_is_agent() || ( get_current_user_id() == $author_id ) )
 					{
 						$attachment = get_post( $attachment_id );
+
+						if (!$attachment || $attachment->post_type !== 'attachment') {
+							// Attachment not found							
+							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'wpas') ) );
+							die();
+						}
+						
+						if ( ! current_user_can( 'delete_attachment', $attachment_id ) ) {							
+							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'wpas') ) );
+							die();
+						}
+						
 						$filename   = explode( '/', $attachment->guid );
 						$name = $filename[ count( $filename ) - 1 ];
 
@@ -443,7 +453,7 @@ class WPAS_File_Upload {
 		if( $deleted ) {
 			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'wpas' ) ) );
 		} else {
-			wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'wpas') ) );
 		}
 
 		die();
