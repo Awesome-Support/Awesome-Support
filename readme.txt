@@ -446,7 +446,10 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
-
+= 6.1.7.1
+* Fix	
+	* We fixed Vulnerabilities - Authenticated (Subscriber+) SQL Injection.
+	
 = 6.1.7
 * Fix	
 	* We fixed high priority vulnerabilities to keep the plugin safe and up to date.
