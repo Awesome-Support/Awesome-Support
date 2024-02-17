@@ -5,6 +5,21 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.1.8</h1>
+				<h3>6.1.8 includes the 3 vulnerabilities fixes and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">					
+					<li>Authenticated (Subscriber+) SQL Injection.</li>	
+					<li>Missing Authorization via wpas_get_users() function.</li>	
+					<li>Missing Authorization via editor_html() function.</li>						
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />	
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.1.7</h1>
 				<h3>6.1.7 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">					
