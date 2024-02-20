@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 6.4
-Stable tag: 6.1.8
+Tested up to: 6.4.3
+Stable tag: 6.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -447,9 +447,9 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
-= 6.1.8.1
+= 6.1.9
 * Fix	
-	* We fixed the User assignment issue.		
+	* We fixed when the agent was not able to choose a user when changing the ticket creator field.
 		
 = 6.1.8
 * Fix	
