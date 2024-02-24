@@ -1025,40 +1025,43 @@ function wpas_users_dropdown( $args = array() ) {
 			$options .= "<option value='{$user->ID}' selected='selected'>{$user->data->display_name}</option>";
 		}
 	}
+	
+	if( $all_users && !is_null( $all_users->members ) && !empty( $all_users->members ) )
+	{
+		foreach ( $all_users->members as $user ) {
 
-	foreach ( $all_users->members as $user ) {
+			/* This user was already added, skip it */
+			if ( ! empty( $args['selected'] ) && intval( $user->user_id ) === intval( $args['selected'] ) ) {
+				continue;
+			}
 
-		/* This user was already added, skip it */
-		if ( ! empty( $args['selected'] ) && intval( $user->user_id ) === intval( $args['selected'] ) ) {
-			continue;
-		}
+			$user_id       = $user->ID;
+			$user_name     = $user->display_name;
+			$selected_attr = '';
 
-		$user_id       = $user->ID;
-		$user_name     = $user->display_name;
-		$selected_attr = '';
-
-		if ( false === $marker ) {
-			if ( false !== $args['selected'] ) {
-				if ( ! empty( $args['selected'] ) ) {
-					if ( $args['selected'] === $user_id ) {
-						$selected_attr = 'selected="selected"';
-					}
-				} else {
-					if ( isset( $post ) && $user_id == $post->post_author ) {
-						$selected_attr = 'selected="selected"';
+			if ( false === $marker ) {
+				if ( false !== $args['selected'] ) {
+					if ( ! empty( $args['selected'] ) ) {
+						if ( $args['selected'] === $user_id ) {
+							$selected_attr = 'selected="selected"';
+						}
+					} else {
+						if ( isset( $post ) && $user_id == $post->post_author ) {
+							$selected_attr = 'selected="selected"';
+						}
 					}
 				}
 			}
+
+			/* Set the marker as true to avoid selecting more than one user */
+			if ( ! empty( $selected_attr ) ) {
+				$marker = true;
+			}
+
+			/* Output the option */
+			$options .= "<option value='$user_id' $selected_attr>$user_name</option>";
+
 		}
-
-		/* Set the marker as true to avoid selecting more than one user */
-		if ( ! empty( $selected_attr ) ) {
-			$marker = true;
-		}
-
-		/* Output the option */
-		$options .= "<option value='$user_id' $selected_attr>$user_name</option>";
-
 	}
 
 	/* In case there is no selected user yet we add the post author, or the currently logged user (most likely an admin) */
@@ -1230,8 +1233,23 @@ add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax',11,0 );
  */
 function wpas_get_users_ajax( $args = array() ) {
 
-	global $wpdb;
-
+	global $wpdb;	
+	
+	/**
+	 * Security checking. Verify ajax via nonce.
+	 */
+	if( !check_ajax_referer( 'wpas-get-users', 'get_users_nonce', false ) ) {
+		
+		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
+		die();
+	}
+	
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
+		die();
+	}
+	
 	$defaults = array(
 		'cap'         => 'edit_ticket',
 		'cap_exclude' => '',
@@ -1247,7 +1265,7 @@ function wpas_get_users_ajax( $args = array() ) {
 			}
 		}
 	}
-
+	
 	$args = wp_parse_args( $args, $defaults );
 
 	$department_assignment = get_user_option( 'wpas_department_assignment', get_current_user_id() );
@@ -1285,26 +1303,27 @@ function wpas_get_users_ajax( $args = array() ) {
 			'exclude'     => array_map( 'intval', array_filter( (array) $args['exclude'] ) ),
 			'ids'		  => array_map( 'intval', array_filter( (array) $ids ) ),
 			'search'      => array(
-				'query'    => sanitize_text_field( $args['q'] ),
+				'query'    => sanitize_text_field( esc_sql( $args['q'] )),
 				'fields'   => array( 'user_nicename', 'display_name', 'id', 'user_email' ),
 				'relation' => 'OR'
 			)
 		)
 	);
 
-	$result = array();
+	$result = array();	
+	if( $users && !is_null( $users->members ) && !empty( $users->members ) )
+	{
+		foreach ( $users->members as $user ) {
 
-	foreach ( $users->members as $user ) {
+			$result[] = array(
+				'user_id'     => $user->ID,
+				'user_name'   => $user->display_name,
+				'user_email'  => $user->user_email,
+				'user_avatar' => get_avatar_url( $user->ID, array( 'size' => 32, 'default' => 'mm' ) ),
+			);
 
-		$result[] = array(
-			'user_id'     => $user->ID,
-			'user_name'   => $user->display_name,
-			'user_email'  => $user->user_email,
-			'user_avatar' => get_avatar_url( $user->ID, array( 'size' => 32, 'default' => 'mm' ) ),
-		);
-
+		}
 	}
-
 	echo json_encode( $result );
 	die();
 

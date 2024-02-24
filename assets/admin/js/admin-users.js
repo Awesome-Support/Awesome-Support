@@ -31,6 +31,7 @@ jQuery(document).ready(function ($) {
 						data: function (params) {
 							return {
 								action: 'wpas_get_users',
+								get_users_nonce: WPAS_get_users.get_users_nonce,
 								cap: capability,
 								q: params.term
 							};

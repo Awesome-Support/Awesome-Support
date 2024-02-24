@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,tahir1235,rwkiii,elindydotcom,SiamKreative,alaca,
 Tags: helpdesk,ticket system,support,tickets,support ticket,support desk,help,paid support,knowledgebase,faq
 Requires at least: 4.0
-Tested up to: 6.4
-Stable tag: 6.1.7
+Tested up to: 6.4.3
+Stable tag: 6.1.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -446,6 +446,17 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 6.1.9
+* Fix	
+	* We fixed when the agent was not able to choose a user when changing the ticket creator field.
+		
+= 6.1.8
+* Fix	
+	* We fixed the 3 vulnerabilities: 
+		- Authenticated (Subscriber+) SQL Injection.
+		- Missing Authorization via wpas_get_users() function.
+		- Missing Authorization via editor_html() function.
 
 = 6.1.7
 * Fix	

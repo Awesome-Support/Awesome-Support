@@ -36,6 +36,7 @@
                 // AJAX data
 				var data = {
 					'action': 'wp_editor_content_ajax',
+					'nonce' : WPAS_Edit_Ticket_Content.editor_content_nonce, 
                     'post_id':  $(this).data('ticketid')
                 };
 
@@ -64,6 +65,7 @@
                 var data = {
                     'action': 'wpas_edit_ticket_content',
                     'post_id':  $(this).data('ticketid'),
+					'nonce' : WPAS_Edit_Ticket_Content.editor_content_nonce, 
                     'content': content
                 };
 
@@ -102,6 +104,7 @@
                 event.preventDefault();
                 var data = {
                     'action': 'wp_editor_content_ajax',
+					'nonce' : WPAS_Edit_Ticket_Content.editor_content_nonce, 
                     'post_id':  $(this).data('ticketid')
                 };
 

@@ -51,6 +51,7 @@
 					// AJAX data
 					data = {
 						'action': 'wp_editor_ajax',
+						'nonce' : wpasL10n.reply_nonce, 
 						'post_id': replyId,
 						'editor_id': editorId
 					};
@@ -125,6 +126,7 @@
 
 					var data = {
 						'action': 'wp_editor_content_ajax',
+						'nonce' : wpasL10n.editor_content_nonce, 
 						'post_id': replyId
 					};
 					$.post(ajaxurl, data, function (response) {

@@ -99,8 +99,23 @@ class WPAS_Editor_Ajax {
 	 */
 	public function editor_html() {
 
-		$post_id   = filter_input( INPUT_POST, 'post_id',         FILTER_SANITIZE_NUMBER_INT );				
-		$editor_id = isset( $_POST['editor_id'] ) ? wp_unslash( sanitize_text_field( $_POST['editor_id'] ) ) : '';		
+		/**
+		 * Security checking. Verify ajax via nonce.
+		 */
+		if( !check_ajax_referer( 'wpas_edit_reply', 'nonce', false ) ) {
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			die();
+		}
+		
+		$post_id   = filter_input( INPUT_POST, 'post_id',         FILTER_SANITIZE_NUMBER_INT );	
+		$editor_id = isset( $_POST['editor_id'] ) ? wp_unslash( sanitize_text_field( $_POST['editor_id'] ) ) : '';	
+		
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			die();
+		}		
+			
 		$name = isset( $_POST['textarea_name'] ) ?  sanitize_text_field( $_POST['textarea_name'] ) : '';
 		$settings  = (array) filter_input( INPUT_POST, 'editor_settings', FILTER_UNSAFE_RAW);
 
@@ -168,13 +183,27 @@ class WPAS_Editor_Ajax {
 	 */
 	public function get_content() {
 
+		/**
+		 * Security checking. Verify ajax via nonce.
+		 */
+		if( !check_ajax_referer( 'wpas-editor-content-nonce', 'nonce', false ) ) {
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			die();
+		}
+		
 		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( empty( $post_id ) ) {
-			echo '';
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
 			die();
 		}
-
+		
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'edit_ticket', $post_id ) || !wpas_can_view_ticket( $post_id ) ) {
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			die();
+		}
+		
 		$post = get_post( $post_id );
 
 		if ( empty( $post ) ) {
