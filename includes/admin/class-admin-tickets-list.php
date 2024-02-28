@@ -564,7 +564,12 @@ class WPAS_Tickets_List {
 
 								if ( ! empty( $open_date_string_tokens ) ) {
 									echo '<br>';
-									echo esc_html__( 'Opened on: ', 'awesome-support' ) . $open_date_string_tokens[ 0 ] . ' at: ' . $open_date_string_tokens[ 1 ];
+									printf(
+										/* translators: %1$s is the date and %2$s is the time when the ticket was opened */
+										esc_html__( 'Opened on: %1$s at: %2$s', 'awesome-support' ),
+										esc_html( $open_date_string_tokens[0] ),
+										esc_html( $open_date_string_tokens[1] )
+									);
 								}
 							}
 						}
@@ -579,7 +584,12 @@ class WPAS_Tickets_List {
 
 								if ( ! empty( $open_date_string_tokens_gmt ) ) {
 									echo '<br>';
-									echo esc_html__( 'Opened on GMT: ', 'awesome-support' ) . $open_date_string_tokens_gmt[ 0 ] . ' at: ' . $open_date_string_tokens_gmt[ 1 ];
+									printf(
+										/* translators: %1$s is the GMT date and %2$s is the GMT time when the ticket was opened */
+										esc_html__( 'Opened on GMT: %1$s at: %2$s', 'awesome-support' ),
+										esc_html( $open_date_string_tokens_gmt[0] ),
+										esc_html( $open_date_string_tokens_gmt[1] )
+									);
 								}
 							}
 						}
@@ -594,11 +604,21 @@ class WPAS_Tickets_List {
 							if ( 'closed' == wpas_get_ticket_status( $post_id ) ) {
 								if ( ! empty( $close_date_string_tokens ) ) {
 									echo '<br>';
-									echo esc_html__( 'Closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
+									printf(
+										/* translators: %1$s is the date and %2$s is the time when the ticket was closed */
+										esc_html__( 'Closed on: %1$s at: %2$s', 'awesome-support' ),
+										esc_html( $close_date_string_tokens[0] ),
+										esc_html( $close_date_string_tokens[1] )
+									);
 								}
 							} else {
 								echo '<br>';
-								echo esc_html__( 'This ticket was re-opened but had been closed on: ', 'awesome-support' ) . $close_date_string_tokens[ 0 ] . ' at: ' . $close_date_string_tokens[ 1 ];
+								printf(
+									/* translators: %1$s is the date and %2$s is the time when the ticket was closed */
+									esc_html__( 'This ticket was re-opened but had been closed on: %1$s at: %2$s ', 'awesome-support' ),
+									esc_html( $close_date_string_tokens[0] ),
+									esc_html( $close_date_string_tokens[1] )
+								);
 							}
 						}
 
@@ -613,7 +633,12 @@ class WPAS_Tickets_List {
 
 								if ( ! empty( $close_date_string_tokens_gmt ) ) {
 									echo '<br>';
-									echo esc_html__( 'Closed on GMT: ', 'awesome-support' ) . $close_date_string_tokens_gmt[ 0 ] . ' at: ' . $close_date_string_tokens_gmt[ 1 ];
+									printf(
+										/* translators: %1$s is the GMT date and %2$s is the GMT time when the ticket was closed */
+										esc_html__( 'Closed on GMT: %1$s at: %2$s ', 'awesome-support' ),
+										esc_html( $close_date_string_tokens_gmt[0] ),
+										esc_html( $close_date_string_tokens_gmt[1] )
+									);
 								}
 							}
 						}
