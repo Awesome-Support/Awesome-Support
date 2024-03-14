@@ -31,8 +31,11 @@ add_action( 'wp_ajax_wpas_skip_wizard_setup', 'wpas_skip_wizard_setup' );
  * @return bool
  */
 function wpas_skip_wizard_setup() {
-	add_option( 'wpas_skip_wizard_setup', true );
-	wp_die();
+	if ( current_user_can( 'administrator' ) ) {
+		add_option( 'wpas_skip_wizard_setup', true );
+		wp_die();
+    }
+	wp_send_json([], 401);
 }
 
 add_action( 'wp_ajax_wpas_get_ticket_for_print', 'wpas_get_ticket_for_print_ajax' );
