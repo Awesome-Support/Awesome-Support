@@ -49,12 +49,12 @@ class GASFrameworkOptionMulticheck extends GASFrameworkOption {
 		foreach ( $this->settings['options'] as $value => $label ) {
 
 			printf('<label for="%s"><input id="%s" type="checkbox" name="%s[]" value="%s" %s/> %s</label><br>',
-				$this->getID() . $value,
-				$this->getID() . $value,
-				$this->getID(),
+				wp_kses_post($this->getID() . $value),
+				wp_kses_post($this->getID() . $value),
+				wp_kses_post($this->getID()),
 				esc_attr( $value ),
 				checked( in_array( $value, $savedValue ), true, false ),
-				$label
+				wp_kses_post($label)
 			);
 		}
 
@@ -183,7 +183,7 @@ function registerGASFrameworkOptionMulticheckControl() {
 			<label class='tf-multicheck-container'>
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
 				<?php
-				echo $description;
+				echo wp_kses_post($description);
 
 				if ( ! empty( $this->select_all ) ) {
 					$select_all_label = __( 'Select All' );
@@ -197,11 +197,11 @@ function registerGASFrameworkOptionMulticheckControl() {
 
 				foreach ( $this->options as $value => $label ) {
 					printf('<label for="%s"><input class="tf-multicheck" id="%s" type="checkbox" value="%s" %s/> %s</label><br>',
-						$this->id . $value,
-						$this->id . $value,
+						wp_kses_post($this->id . $value),
+						wp_kses_post($this->id . $value),
 						esc_attr( $value ),
 						checked( in_array( $value, $values ), true, false ),
-						$label
+						wp_kses_post($label)
 					);
 				}
 				?>

@@ -16,6 +16,7 @@ class WPAS_Custom_Fields {
 	 */
 	public $options; 
 	public $remove_mb;
+	public $allow_html;
 
 	public function __construct() {
 
@@ -23,6 +24,36 @@ class WPAS_Custom_Fields {
 		 * Array where all custom fields will be stored.
 		 */
 		$this->options = array();
+
+		/**
+		 * Array where html to allow in escaping.
+		 */
+		$this->allow_html = array(
+			'label' => array(
+				'for' => true,
+			),
+			'input' => array(
+				'type' => true,
+				'value' => true,
+				'id' => true,
+				'class' => true,
+				'name' => true,
+				'readonly' => true,
+			),
+			'div' => array(
+				'class' => true,
+				'id' => true,
+			),
+			'select' => array(
+				'name' => true,
+				'class' => true,
+				'id' => true,
+			),
+			'option' => array(
+				'value' => true,
+				'selected' => true,
+			),
+		);
 
 		/**
 		 * Register the taxonomies
@@ -446,7 +477,7 @@ class WPAS_Custom_Fields {
 					$this_field = new WPAS_Custom_Field( $name, $field );
 					$output     = $this_field->get_output();
 
-					echo $output;
+					echo wp_kses($output, $this->allow_html);
 				}
 
 			}
@@ -474,7 +505,7 @@ class WPAS_Custom_Fields {
 				$this_field = new WPAS_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
-				echo $output;
+				echo wp_kses($output, $this->allow_html);
 			}
 		}
 

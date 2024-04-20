@@ -2017,7 +2017,7 @@ class gasscssc {
 		if ($this->sourcePos >= 0 && isset($this->sourceParser)) {
 			$this->sourceParser->throwParseError($msg, $this->sourcePos);
 		}
-		throw new Exception($msg);
+		throw new Exception(wp_kses_post($msg));
 	}
 	/**
 	 * CSS Colors
@@ -3331,9 +3331,9 @@ class gasscss_parser {
 			$loc = "line: $line";
 		}
 		if ($this->peek("(.*?)(\n|$)", $m, $count)) {
-			throw new Exception("$msg: failed at `$m[1]` $loc");
+			throw new Exception(wp_kses_post("$msg: failed at `$m[1]` $loc"));
 		} else {
-			throw new Exception("$msg: $loc");
+			throw new Exception(wp_kses_post("$msg: $loc"));
 		}
 	}
 	public function getLineNo($pos) {
@@ -3455,17 +3455,17 @@ class gasscss_formatter {
 		if (empty($block->lines) && empty($block->children)) return;
 		$inner = $pre = $this->indentStr();
 		if (!empty($block->selectors)) {
-			echo $pre .
+			echo wp_kses_post($pre .
 				implode($this->tagSeparator, $block->selectors) .
-				$this->open . $this->break;
+				$this->open . $this->break);
 			$this->indentLevel++;
 			$inner = $this->indentStr();
 		}
 		if (!empty($block->lines)) {
 			$glue = $this->break.$inner;
-			echo $inner . implode($glue, $block->lines);
+			echo wp_kses_post($inner . implode($glue, $block->lines));
 			if (!empty($block->children)) {
-				echo $this->break;
+				echo wp_kses_post($this->break);
 			}
 		}
 		foreach ($block->children as $child) {
@@ -3473,8 +3473,8 @@ class gasscss_formatter {
 		}
 		if (!empty($block->selectors)) {
 			$this->indentLevel--;
-			if (empty($block->children)) echo $this->break;
-			echo $pre . $this->close . $this->break;
+			if (empty($block->children)) echo wp_kses_post($this->break);
+			echo wp_kses_post($pre . $this->close . $this->break);
 		}
 	}
 	public function format($block) {
@@ -3530,36 +3530,36 @@ class gasscss_formatter_nested extends gasscss_formatter {
 		}
 		$inner = $pre = $this->indentStr($block->depth - 1);
 		if (!empty($block->selectors)) {
-			echo $pre .
+			echo wp_kses_post($pre .
 				implode($this->tagSeparator, $block->selectors) .
-				$this->open . $this->break;
+				$this->open . $this->break);
 			$this->indentLevel++;
 			$inner = $this->indentStr($block->depth - 1);
 		}
 		if (!empty($block->lines)) {
 			$glue = $this->break.$inner;
-			echo $inner . implode($glue, $block->lines);
-			if (!empty($block->children)) echo $this->break;
+			echo wp_kses_post($inner . implode($glue, $block->lines));
+			if (!empty($block->children)) echo wp_kses_post($this->break);
 		}
 		foreach ($block->children as $i => $child) {
 			// echo "*** block: ".$block->depth." child: ".$child->depth."\n";
 			$this->block($child);
 			if ($i < count($block->children) - 1) {
-				echo $this->break;
+				echo wp_kses_post($this->break);
 				if (isset($block->children[$i + 1])) {
 					$next = $block->children[$i + 1];
 					if ($next->depth == max($block->depth, 1) && $child->depth >= $next->depth) {
-						echo $this->break;
+						echo wp_kses_post($this->break);
 					}
 				}
 			}
 		}
 		if (!empty($block->selectors)) {
 			$this->indentLevel--;
-			echo $this->close;
+			echo wp_kses_post($this->close);
 		}
 		if ($block->type == "root") {
-			echo $this->break;
+			echo wp_kses_post($this->break);
 		}
 	}
 }
@@ -3695,21 +3695,21 @@ class gasscss_server {
 			header('Content-type: text/css');
 			if ($this->needsCompile($input, $output)) {
 				try {
-					echo $this->compile($input, $output);
+					echo wp_kses_post($this->compile($input, $output));
 				} catch (Exception $e) {
 					header('HTTP/1.1 500 Internal Server Error');
-					echo 'Parse error: ' . $e->getMessage() . "\n";
+					echo wp_kses_post('Parse error: ' . $e->getMessage() . "\n");
 				}
 			} else {
 				header('X-SCSS-Cache: true');
-				echo file_get_contents($output);
+				echo wp_kses_post(file_get_contents($output));
 			}
 			return;
 		}
 		header('HTTP/1.0 404 Not Found');
 		header('Content-type: text');
 		$v = gasscssc::$VERSION;
-		echo "/* INPUT NOT FOUND scss $v */\n";
+		echo wp_kses_post("/* INPUT NOT FOUND scss $v */\n");
 	}
 	/**
 	 * Constructor

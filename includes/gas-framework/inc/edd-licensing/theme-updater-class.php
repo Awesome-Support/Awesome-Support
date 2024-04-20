@@ -69,17 +69,17 @@ class GAST_EDD_Theme_Updater {
 
 			echo '<div id="update-nag">';
 			printf(
-				$strings['update-available'],
-				$theme->get( 'Name' ),
-				$api_response->new_version,
-				'#TB_inline?width=640&amp;inlineId=' . $this->theme_slug . '_changelog',
-				$theme->get( 'Name' ),
-				$update_url,
-				$update_onclick
+				wp_kses_post($strings['update-available']),
+				wp_kses_post($theme->get( 'Name' )),
+				wp_kses_post($api_response->new_version),
+				wp_kses_post('#TB_inline?width=640&amp;inlineId=' . $this->theme_slug . '_changelog'),
+				wp_kses_post($theme->get( 'Name' )),
+				wp_kses_post($update_url),
+				wp_kses_post($update_onclick)
 			);
 			echo '</div>';
-			echo '<div id="' . $this->theme_slug . '_' . 'changelog" style="display:none;">';
-			echo wpautop( $api_response->sections['changelog'] );
+			echo wp_kses_post('<div id="' . $this->theme_slug . '_' . 'changelog" style="display:none;">');
+			echo wp_kses_post(wpautop( $api_response->sections['changelog'] ));
 			echo '</div>';
 		}
 	}

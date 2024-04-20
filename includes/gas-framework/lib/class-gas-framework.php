@@ -669,12 +669,12 @@ class GASFramework {
 
 		// Display an error message.
 		?>
-		<div style='margin: 20px; text-align: center;'><strong><?php echo GASF_NAME ?> Error:</strong>
-			<?php echo $message ?>
+		<div style='margin: 20px; text-align: center;'><strong><?php echo wp_kses_post(GASF_NAME) ?> Error:</strong>
+			<?php echo wp_kses_post($message) ?>
 			<?php
 			if ( ! empty( $errorObject ) ) :
 				?>
-				<pre><code style="display: inline-block; padding: 10px"><?php echo print_r( $errorObject, true ) ?></code></pre>
+				<pre><code style="display: inline-block; padding: 10px"><?php echo wp_kses_post(print_r( $errorObject, true )) ?></code></pre>
 				<?php
 			endif;
 			?>

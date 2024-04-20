@@ -33,9 +33,9 @@ class GASFrameworkOptionRadioPalette extends GASFrameworkOption {
 		// print the palettes
 		foreach ( $this->settings['options'] as $key => $colorSet ) {
 			printf( '<label id="%s"><input id="%s" type="radio" name="%s" value="%s" %s/> <span>',
-				$this->getID() . $key,
-				$this->getID() . $key,
-				$this->getID(),
+				wp_kses_post($this->getID() . $key),
+				wp_kses_post($this->getID() . $key),
+				wp_kses_post($this->getID()),
 				esc_attr( $key ),
 				$value == $colorSet ? 'checked="checked"' : '' // can't use checked with arrays
 			);
@@ -43,7 +43,7 @@ class GASFrameworkOptionRadioPalette extends GASFrameworkOption {
 				continue;
 			}
 			foreach ( $colorSet as $color ) {
-				echo "<span style='background: {$color}'></span>";
+				echo wp_kses_post("<span style='background: {$color}'></span>");
 			}
 			echo '</span></label>';
 		}
@@ -132,7 +132,7 @@ function registerGASFrameworkOptionRadioPaletteControl() {
 			?><span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span><?php
 
 			if ( ! empty( $this->description ) ) {
-				echo "<p class='description'>" . $this->description . '</p>';
+				echo wp_kses_post("<p class='description'>" . $this->description . '</p>');
 			}
 
 			// print the palettes
@@ -143,11 +143,11 @@ function registerGASFrameworkOptionRadioPaletteControl() {
 				?>
 				<span class='tf-radio-palette'>
 					<label>
-						<input type="radio" name="<?php echo $this->id ?>" value="<?php echo esc_attr( $key ) ?>" <?php $this->link(); checked( $value, $key ); ?>/>
+						<input type="radio" name="<?php echo wp_kses_post($this->id )?>" value="<?php echo esc_attr( $key ) ?>" <?php $this->link(); checked( $value, $key ); ?>/>
 						<span>
 							<?php
 							foreach ( $colorSet as $color ) {
-								echo "<span style='background: {$color}'></span>";
+								echo wp_kses_post("<span style='background: {$color}'></span>");
 							}
 							?>
 						</span>

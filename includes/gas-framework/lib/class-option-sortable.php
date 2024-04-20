@@ -156,8 +156,8 @@ class GASFrameworkOptionSortable extends GASFrameworkOption {
 				if ( isset( $this->settings['options'][ $value ] ) ) {
 					printf( "<li data-value='%s'><i class='dashicons dashicons-menu'></i>%s%s</li>",
 						esc_attr( $value ),
-						$visibleButton,
-						$this->settings['options'][ $value ]
+						wp_kses_post($visibleButton),
+						wp_kses_post($this->settings['options'][ $value ])
 					);
 				}
 			}
@@ -167,8 +167,8 @@ class GASFrameworkOptionSortable extends GASFrameworkOption {
 				if ( isset( $this->settings['options'][ $value ] ) ) {
 					printf( "<li data-value='%s'><i class='dashicons dashicons-menu'></i>%s%s</li>",
 						esc_attr( $value ),
-						$visibleButton,
-						$this->settings['options'][ $value ]
+						wp_kses_post($visibleButton),
+						wp_kses_post($this->settings['options'][ $value ])
 					);
 				}
 			}
@@ -182,8 +182,8 @@ class GASFrameworkOptionSortable extends GASFrameworkOption {
 		}
 
 		printf( "<input type='hidden' name=\"%s\" id=\"%s\" value=\"%s\" />",
-			$this->getID(),
-			$this->getID(),
+			wp_kses_post($this->getID()),
+			wp_kses_post($this->getID()),
 			esc_attr( $values )
 		);
 
@@ -302,8 +302,8 @@ function registerGASFrameworkOptionSortableControl() {
 				foreach ( $values as $dummy => $value ) {
 					printf( "<li data-value='%s'><i class='dashicons dashicons-menu'></i>%s%s</li>",
 						esc_attr( $value ),
-						$visibleButton,
-						$this->options[ $value ]
+						wp_kses_post($visibleButton),
+						wp_kses_post($this->options[ $value ])
 					);
 				}
 
@@ -311,8 +311,8 @@ function registerGASFrameworkOptionSortableControl() {
 				foreach ( $invisibleKeys as $dummy => $value ) {
 					printf( "<li data-value='%s'><i class='dashicons dashicons-menu'></i>%s%s</li>",
 						esc_attr( $value ),
-						$visibleButton,
-						$this->options[ $value ]
+						wp_kses_post($visibleButton),
+						wp_kses_post($this->options[ $value ])
 					);
 				}
 				?>
@@ -328,7 +328,7 @@ function registerGASFrameworkOptionSortableControl() {
 				<input type='hidden' <?php $this->link(); ?> value='<?php echo esc_attr( $values )  ?>'/>
 			</label>
 			<?php
-			echo "<p class='description'>{$this->description}</p>";
+			echo wp_kses_post("<p class='description'>{$this->description}</p>");
 		}
 	}
 }

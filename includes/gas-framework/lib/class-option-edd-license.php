@@ -114,11 +114,11 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 			$this->echoOptionHeader();
 
 			printf( '<input class="regular-text" name="%s" placeholder="%s" id="%s" type="%s" value="%s" />',
-				$this->getID(),
-				$this->settings['placeholder'],
-				$this->getID(),
+				wp_kses_post($this->getID()),
+				wp_kses_post($this->settings['placeholder']),
+				wp_kses_post($this->getID()),
 				$this->settings['is_password'] ? 'password' : 'text',
-			$license );
+				wp_kses_post($license) );
 
 			/* If the license is set, we display its status and check it if necessary. */
 			if ( strlen( $license ) > 0 ) {
@@ -153,7 +153,7 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 						$get['eddactivate'] = true;
 						$url                = esc_url( add_query_arg( $get, admin_url( $pagenow ) ) );
 						?>
-						<a href="<?php echo $url; ?>" class="button-secondary"><?php esc_html_e( 'Activate', GASF_I18NDOMAIN ); ?></a>
+						<a href="<?php echo wp_kses_post($url); ?>" class="button-secondary"><?php esc_html_e( 'Activate', GASF_I18NDOMAIN ); ?></a>
 						<p class="description"><?php esc_html_e( 'Your license is valid but inactive. Click the button above to activate it. If you see this message after attempting activation then please make sure that your license is not already active on another site.', GASF_I18NDOMAIN ); ?></p><?php
 
 					break;

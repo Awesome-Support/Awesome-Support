@@ -223,7 +223,7 @@ abstract class WPAS_Extension_Base {
 		if ( ! class_exists( 'Awesome_Support' ) ) {
 			deactivate_plugins( basename( self::get_addon_path() ) );
 			wp_die(
-				sprintf( wp_kses_post( __( 'You need Awesome Support to activate this addon. Please <a href="%s" target="_blank">install Awesome Support</a> before continuing.', 'awesome-support' ) ), esc_url( 'http://getawesomesupport.com/?utm_source=internal&utm_medium=addon_loader&utm_campaign=Addons' ) )
+				sprintf( ( __( 'You need Awesome Support to activate this addon. Please <a href="%s" target="_blank">install Awesome Support</a> before continuing.', 'awesome-support' ) ), esc_url( 'http://getawesomesupport.com/?utm_source=internal&utm_medium=addon_loader&utm_campaign=Addons' ) )
 			);
 		}
 

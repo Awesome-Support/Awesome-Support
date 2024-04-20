@@ -218,11 +218,11 @@ class WPAS_GDPR_User_Profile {
 						 */
 					printf(
 						'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-						$item,
-						$status,
-						$opt_in,
-						$opt_out,
-						$opt_button
+						wp_kses_post($item),
+						wp_kses_post($status),
+						wp_kses_post($opt_in),
+						wp_kses_post($opt_out),
+						wp_kses_post($opt_button)
 					);
 				}
 				?>

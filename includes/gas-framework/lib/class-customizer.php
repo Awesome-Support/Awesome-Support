@@ -249,7 +249,7 @@ class GASFrameworkCustomizer {
 			}
 
 			?>
-			wp.customize( '<?php echo $option->getID() ?>', function( v ) {
+			wp.customize( '<?php echo wp_kses_post($option->getID()) ?>', function( v ) {
 				v.bind( function( value ) {
 					<?php
 
@@ -261,7 +261,7 @@ class GASFrameworkCustomizer {
 						 */
 						?>
 						if ( typeof localStorage !== 'undefined' ) {
-							localStorage.setItem( '<?php echo $option->getID() ?>', value );
+							localStorage.setItem( '<?php echo wp_kses_post($option->getID()) ?>', value );
 						}
 						window.tf_refresh_css();
 						<?php
@@ -276,7 +276,7 @@ class GASFrameworkCustomizer {
 							do_action( 'tf_livepreview_pre_' . $this->owner->optionNamespace, $option->settings['id'], $option->settings['type'], $option );
 						}
 
-						echo $option->settings['livepreview'];
+						echo wp_kses_post($option->settings['livepreview']);
 
 						// Some options may want to insert custom jQuery code after manipulation of live preview.
 						if ( ! empty( $option->settings['id'] ) ) {
@@ -317,7 +317,7 @@ class GASFrameworkCustomizer {
 			self::$namespacesWithPrintedPreviewCSS[] = $this->owner->optionNamespace;
 
 			echo '<style id="gas-preview-' . esc_attr( $this->owner->optionNamespace ) . '">';
-			echo $this->owner->cssInstance->generateCSS();
+			echo wp_kses_post($this->owner->cssInstance->generateCSS());
 			echo '</style>';
 		}
 	}

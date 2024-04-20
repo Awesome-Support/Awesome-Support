@@ -174,11 +174,11 @@ class GASFrameworkOptionDate extends GASFrameworkOption {
 		printf('<input class="input-date%s%s" name="%s" placeholder="%s" id="%s" type="text" value="%s" /> <p class="description">%s</p>',
 			( $this->settings['date'] ? ' date' : '' ),
 			( $this->settings['time'] ? ' time' : '' ),
-			$this->getID(),
-			$placeholder,
-			$this->getID(),
+			wp_kses_post($this->getID()),
+			wp_kses_post($placeholder),
+			wp_kses_post($this->getID()),
 			esc_attr( $this->getValue() > 0 ? date( $dateFormat, $this->getDateValueInTime() ) : '' ),
-			$this->settings['desc']
+			wp_kses_post($this->settings['desc'])
 		);
 		$this->echoOptionFooter( false );
 	}
@@ -244,11 +244,11 @@ function registerGASFrameworkOptionDateControl() {
 			?>
 			<label class='tf-date'>
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-				<input class="input-date<?php echo $class ?>" <?php $this->link(); ?> placeholder="<?php echo $placeholder ?>" type="text" value="<?php echo $this->value() ?>" />
+				<input class="input-date<?php echo wp_kses_post($class) ?>" <?php $this->link(); ?> placeholder="<?php echo wp_kses_post($placeholder) ?>" type="text" value="<?php echo wp_kses_post($this->value()) ?>" />
 
 				<?php
 				if ( ! empty( $this->description ) ) {
-					echo "<p class='description'>{$this->description}</p>";
+					echo wp_kses_post("<p class='description'>{$this->description}</p>");
 				}
 				?>
 			</label>

@@ -112,16 +112,16 @@ if ( $textShadowLocation != 'none' ) {
 			p {
 				margin-left: 50px;
 				margin-right: 20px;
-				font-family: <?php echo $fontFamily; ?>;
-				color: <?php echo $color; ?>;
-				font-size: <?php echo $fontSize; ?>;
-				font-weight: <?php echo $fontWeight; ?>;
-				font-style: <?php echo $fontStyle; ?>;
-				line-height: <?php echo $lineHeight; ?>;
-				letter-spacing: <?php echo $letterSpacing; ?>;
-				text-transform: <?php echo $textTransform; ?>;
-				font-variant: <?php echo $fontVariant; ?>;
-				text-shadow: <?php echo $textShadow; ?>;
+				font-family: <?php echo wp_kses_post($fontFamily); ?>;
+				color: <?php echo wp_kses_post($color); ?>;
+				font-size: <?php echo wp_kses_post($fontSize); ?>;
+				font-weight: <?php echo wp_kses_post($fontWeight); ?>;
+				font-style: <?php echo wp_kses_post($fontStyle); ?>;
+				line-height: <?php echo wp_kses_post($lineHeight); ?>;
+				letter-spacing: <?php echo wp_kses_post($letterSpacing); ?>;
+				text-transform: <?php echo wp_kses_post($textTransform); ?>;
+				font-variant: <?php echo wp_kses_post($fontVariant); ?>;
+				text-shadow: <?php echo wp_kses_post($textShadow); ?>;
 			}
 			body {
 				margin: 20px 0;
@@ -132,9 +132,9 @@ if ( $textShadowLocation != 'none' ) {
 				-moz-user-select: none;
 				-ms-user-select: none;
 				user-select: none;
-				font-family: <?php echo $fontFamily; ?>;
+				font-family: <?php echo wp_kses_post($fontFamily); ?>;
 				<?php if (! empty($weight) ) { ?>
-					font-weight: <?php echo $weight; ?>;
+					font-weight: <?php echo wp_kses_post($weight); ?>;
 				<?php } ?>
 			}
 			body.dark {
@@ -165,7 +165,7 @@ if ( $textShadowLocation != 'none' ) {
 			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at dolor non purus adipiscing rhoncus. Nullam vitae turpis pharetra odio feugiat gravida sed ac velit. Nullam luctus ultrices suscipit. Fusce condimentum laoreet cursus. Suspendisse sed accumsan tortor. Quisque pharetra pulvinar ante, feugiat varius nibh sodales nec. Fusce vel mattis lectus. Vivamus magna felis, pharetra in lacinia sed, condimentum quis nisi. Ut at rutrum urna. Vivamus convallis posuere metus vel ullamcorper.</p>
 			<?php
 		else :
-			echo '<p>' . str_replace( "\n", '</p><p>', $text ) . '</p>';
+			echo wp_kses_post('<p>' . str_replace( "\n", '</p><p>', $text ) . '</p>');
 		endif;
 		?>
 	</body>

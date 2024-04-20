@@ -615,7 +615,7 @@ function wpas_admin_tabs( $type, $tabs = array() ) {
 	<div class="wpas_admin_tabs" id="<?php echo esc_attr( $id ); ?>">
 		<div class="wpas_admin_tabs_names_wrapper">
 			<ul>
-				<?php echo implode( '', $tab_content_items_ar ); ?>
+				<?php echo (implode( '', $tab_content_items_ar )); ?>
 				<li class="moreTab">
 					<ul class="dropdown-menu tabs_collapsed"></ul>
 				</li>
@@ -623,7 +623,7 @@ function wpas_admin_tabs( $type, $tabs = array() ) {
 
 			</ul>
 		</div>
-		<?php echo implode( '', $tab_content_ar ); ?>
+		<?php echo (implode( '', $tab_content_ar )); ?>
 	</div>
 	<?php
 
@@ -642,7 +642,7 @@ add_action( 'wpas_admin_after_wysiwyg', 'reply_tabs', 8, 0 );
 function reply_tabs() {
 
 	$tabs_content = wpas_admin_tabs( 'after_reply_wysiwyg' );
-	echo $tabs_content;
+	echo ($tabs_content);
 }
 
 /**

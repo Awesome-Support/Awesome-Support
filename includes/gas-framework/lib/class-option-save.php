@@ -32,8 +32,8 @@ class GASFrameworkOptionSave extends GASFrameworkOption {
 		</table>
 
 		<p class='submit'>
-			<button name="action" value="<?php echo $this->settings['action'] ?>" class="button button-primary">
-				<?php echo $this->settings['save'] ?>
+			<button name="action" value="<?php echo wp_kses_post($this->settings['action']) ?>" class="button button-primary">
+				<?php echo wp_kses_post($this->settings['save']) ?>
 			</button>
 
 			<?php
@@ -41,7 +41,7 @@ class GASFrameworkOptionSave extends GASFrameworkOption {
 			?>
 			<button name="action" class="button button-secondary"
 				onclick="javascript: if ( confirm( '<?php echo htmlentities( esc_attr( $this->settings['reset_question'] ) ) ?>' ) ) { jQuery( '#tf-reset-form' ).submit(); } jQuery(this).blur(); return false;">
-				<?php echo $this->settings['reset'] ?>
+				<?php echo wp_kses_post($this->settings['reset'] )?>
 			</button>
 			<?php
 			endif;

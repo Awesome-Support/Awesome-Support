@@ -555,7 +555,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 		}
 		?>
 		<div>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Font Family
 			<select class='tf-font-sel-family'>
 				<option value='inherit'>inherit</option>
@@ -568,9 +568,9 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 
 							foreach ( $this->settings['fonts'] as $family => $label ) {
 								printf( "<option value='%s'%s>%s</option>",
-									$family,
+									wp_kses_post($family),
 									selected( $value['font-family'], $family, false ),
-									$label
+									wp_kses_post($label)
 								);
 							}
 
@@ -585,9 +585,9 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 						<?php
 						foreach ( self::$webSafeFonts as $family => $label ) {
 							printf( "<option value='%s'%s>%s</option>",
-								$family,
+								wp_kses_post($family),
 								selected( $value['font-family'], $family, false ),
-								$label
+								wp_kses_post($label)
 							);
 						}
 						?>
@@ -630,7 +630,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 							printf( "<option value='%s'%s>%s</option>",
 								esc_attr( $fontStuff['name'] ),
 								selected( $value['font-family'], $fontStuff['name'], false ),
-								$fontStuff['name']
+								wp_kses_post($fontStuff['name'])
 							);
 						}
 						?>
@@ -649,7 +649,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			$visibilityAttrs = "data-visible='false' style='display: block'";
 		}
 		?>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Color
 			<input class='tf-font-sel-color' type="text" value="<?php echo esc_attr( $value['color'] ) ?>"  data-default-color="<?php echo esc_attr( $value['color'] ) ?>"/>
 		</label>
@@ -660,7 +660,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			$visibilityAttrs = "data-visible='false' style='display: none'";
 		}
 		?>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Font Size
 			<select class='tf-font-sel-size'>
 				<option value='inherit'>inherit</option>
@@ -669,14 +669,14 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $i . 'px' ),
 						selected( $value['font-size'], $i . 'px', false ),
-						$i . 'px'
+						wp_kses_post($i . 'px')
 					);
 				}
         for ( $i = 0.1; $i <= 3.1; $i += 0.1 ) {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $i . 'em' ),
 						selected( $value['font-size'], $i . 'em', false ),
-						$i . 'em'
+						wp_kses_post($i . 'em')
 					);
 				}
 				?>
@@ -689,7 +689,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			$visibilityAttrs = "data-visible='false' style='display: none'";
 		}
 		?>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Font Weight
 			<select class='tf-font-sel-weight'>
 				<option value='inherit'>inherit</option>
@@ -699,7 +699,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $option ),
 						selected( $value['font-weight'], $option, false ),
-						$option
+						wp_kses_post($option)
 					);
 				}
 				?>
@@ -712,7 +712,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			$visibilityAttrs = "data-visible='false' style='display: none'";
 		}
 		?>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Font Style
 			<select class='tf-font-sel-style'>
 				<?php
@@ -721,7 +721,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $option ),
 						selected( $value['font-style'], $option, false ),
-						$option
+						wp_kses_post($option)
 					);
 				}
 				?>
@@ -734,7 +734,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			$visibilityAttrs = "data-visible='false' style='display: none'";
 		}
 		?>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Line Height
 			<select class='tf-font-sel-height'>
 				<?php
@@ -742,7 +742,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $i . 'em' ),
 						selected( $value['line-height'], $i . 'em', false ),
-						$i . 'em'
+						wp_kses_post($i . 'em')
 					);
 				}
 				?>
@@ -755,7 +755,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			$visibilityAttrs = "data-visible='false' style='display: none'";
 		}
 		?>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Letter Spacing
 			<select class='tf-font-sel-spacing'>
 				<option value='normal'>normal</option>
@@ -764,7 +764,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $i . 'px' ),
 						selected( $value['letter-spacing'], $i . 'px', false ),
-						$i . 'px'
+						wp_kses_post($i . 'px')
 					);
 				}
 				?>
@@ -777,7 +777,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			$visibilityAttrs = "data-visible='false' style='display: none'";
 		}
 		?>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Text Transform
 			<select class='tf-font-sel-transform'>
 				<?php
@@ -786,7 +786,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $option ),
 						selected( $value['text-transform'], $option, false ),
-						$option
+						wp_kses_post($option)
 					);
 				}
 				?>
@@ -799,7 +799,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			$visibilityAttrs = "data-visible='false' style='display: none'";
 		}
 		?>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Font Variant
 			<select class='tf-font-sel-variant'>
 				<?php
@@ -808,7 +808,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $option ),
 						selected( $value['font-variant'], $option, false ),
-						$option
+						wp_kses_post($option)
 					);
 				}
 				?>
@@ -821,7 +821,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			$visibilityAttrs = "data-visible='false' style='display: none'";
 		}
 		?>
-		<label <?php echo $visibilityAttrs; ?>>
+		<label <?php echo wp_kses_post($visibilityAttrs); ?>>
 			Shadow Location
 			<select class='tf-font-sel-location'>
 				<?php
@@ -830,7 +830,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $option ),
 						selected( $value['text-shadow-location'], $option, false ),
-						$option
+						wp_kses_post($option)
 					);
 				}
 				?>
@@ -844,7 +844,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $i . 'px' ),
 						selected( $value['text-shadow-distance'], $i . 'px', false ),
-						$i . 'px'
+						wp_kses_post($i . 'px')
 					);
 				}
 				?>
@@ -859,7 +859,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $option ),
 						selected( $value['text-shadow-blur'], $option, false ),
-						$option
+						wp_kses_post($option)
 					);
 				}
 				?>
@@ -878,7 +878,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 					printf( "<option value='%s'%s>%s</option>",
 						esc_attr( $option ),
 						selected( $value['text-shadow-opacity'], $option, false ),
-						$option
+						wp_kses_post($option)
 					);
 				}
 				?>
@@ -892,8 +892,8 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 		}
 
 		printf("<input type='hidden' class='tf-for-saving' name='%s' id='%s' value='%s' />",
-			$this->getID(),
-			$this->getID(),
+			wp_kses_post($this->getID()),
+			wp_kses_post($this->getID()),
 			esc_attr( $value )
 		);
 
@@ -1004,7 +1004,7 @@ function registerGASFrameworkOptionFontControl() {
 			}
 			?>
 			<div>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Font Family
 				<select class='tf-font-sel-family'>
 					<option value='inherit'>inherit</option>
@@ -1017,9 +1017,9 @@ function registerGASFrameworkOptionFontControl() {
 
 								foreach ( $this->params['fonts'] as $family => $label ) {
 									printf( "<option value='%s'%s>%s</option>",
-										$family,
+										wp_kses_post($family),
 										selected( $value['font-family'], $family, false ),
-										$label
+										wp_kses_post($label)
 									);
 								}
 
@@ -1034,9 +1034,9 @@ function registerGASFrameworkOptionFontControl() {
 						<?php
 						foreach ( GASFrameworkOptionFont::$webSafeFonts as $family => $label ) {
 							printf( "<option value='%s'%s>%s</option>",
-								$family,
+								wp_kses_post($family),
 								selected( $value['font-family'], $family, false ),
-								$label
+								wp_kses_post($label)
 							);
 						}
 						?>
@@ -1081,7 +1081,7 @@ function registerGASFrameworkOptionFontControl() {
 							printf( "<option value='%s'%s>%s</option>",
 								esc_attr( $fontStuff['name'] ),
 								selected( $value['font-family'], $fontStuff['name'], false ),
-								$fontStuff['name']
+								wp_kses_post($fontStuff['name'])
 							);
 						}
 						?>
@@ -1099,7 +1099,7 @@ function registerGASFrameworkOptionFontControl() {
 				$visibilityAttrs = "data-visible='false' style='display: none'";
 			}
 			?>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Color
 				<input class='tf-font-sel-color' type="text" value="<?php echo esc_attr( $value['color'] ) ?>"  data-default-color="<?php echo esc_attr( $value['color'] ) ?>"/>
 			</label>
@@ -1110,7 +1110,7 @@ function registerGASFrameworkOptionFontControl() {
 				$visibilityAttrs = "data-visible='false' style='display: none'";
 			}
 			?>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Font Size
 				<select class='tf-font-sel-size'>
 					<option value='inherit'>inherit</option>
@@ -1119,7 +1119,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $i . 'px' ),
 							selected( $value['font-size'], $i . 'px', false ),
-							$i . 'px'
+							wp_kses_post($i . 'px')
 						);
 					}
 					?>
@@ -1132,7 +1132,7 @@ function registerGASFrameworkOptionFontControl() {
 				$visibilityAttrs = "data-visible='false' style='display: none'";
 			}
 			?>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Font Weight
 				<select class='tf-font-sel-weight'>
 					<option value='inherit'>inherit</option>
@@ -1142,7 +1142,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $option ),
 							selected( $value['font-weight'], $option, false ),
-							$option
+							wp_kses_post($option)
 						);
 					}
 					?>
@@ -1155,7 +1155,7 @@ function registerGASFrameworkOptionFontControl() {
 				$visibilityAttrs = "data-visible='false' style='display: none'";
 			}
 			?>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Font Style
 				<select class='tf-font-sel-style'>
 					<?php
@@ -1164,7 +1164,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $option ),
 							selected( $value['font-style'], $option, false ),
-							$option
+							wp_kses_post($option)
 						);
 					}
 					?>
@@ -1177,7 +1177,7 @@ function registerGASFrameworkOptionFontControl() {
 				$visibilityAttrs = "data-visible='false' style='display: none'";
 			}
 			?>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Line Height
 				<select class='tf-font-sel-height'>
 					<?php
@@ -1185,7 +1185,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $i . 'em' ),
 							selected( $value['line-height'], $i . 'em', false ),
-							$i . 'em'
+							wp_kses_post($i . 'em')
 						);
 					}
 					?>
@@ -1198,7 +1198,7 @@ function registerGASFrameworkOptionFontControl() {
 				$visibilityAttrs = "data-visible='false' style='display: none'";
 			}
 			?>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Letter Spacing
 				<select class='tf-font-sel-spacing'>
 					<option value='normal'>normal</option>
@@ -1207,7 +1207,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $i . 'px' ),
 							selected( $value['letter-spacing'], $i . 'px', false ),
-							$i . 'px'
+							wp_kses_post($i . 'px')
 						);
 					}
 					?>
@@ -1220,7 +1220,7 @@ function registerGASFrameworkOptionFontControl() {
 				$visibilityAttrs = "data-visible='false' style='display: none'";
 			}
 			?>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Text Transform
 				<select class='tf-font-sel-transform'>
 					<?php
@@ -1229,7 +1229,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $option ),
 							selected( $value['text-transform'], $option, false ),
-							$option
+							wp_kses_post($option)
 						);
 					}
 					?>
@@ -1242,7 +1242,7 @@ function registerGASFrameworkOptionFontControl() {
 				$visibilityAttrs = "data-visible='false' style='display: none'";
 			}
 			?>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Font Variant
 				<select class='tf-font-sel-variant'>
 					<?php
@@ -1251,7 +1251,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $option ),
 							selected( $value['font-variant'], $option, false ),
-							$option
+							wp_kses_post($option)
 						);
 					}
 					?>
@@ -1264,7 +1264,7 @@ function registerGASFrameworkOptionFontControl() {
 				$visibilityAttrs = "data-visible='false' style='display: none'";
 			}
 			?>
-			<label <?php echo $visibilityAttrs ?>>
+			<label <?php echo wp_kses_post($visibilityAttrs) ?>>
 				Shadow Location
 				<select class='tf-font-sel-location'>
 					<?php
@@ -1273,7 +1273,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $option ),
 							selected( $value['text-shadow-location'], $option, false ),
-							$option
+							wp_kses_post($option)
 						);
 					}
 					?>
@@ -1287,7 +1287,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $i . 'px' ),
 							selected( $value['text-shadow-distance'], $i . 'px', false ),
-							$i . 'px'
+							wp_kses_post($i . 'px')
 						);
 					}
 					?>
@@ -1302,7 +1302,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $option ),
 							selected( $value['text-shadow-blur'], $option, false ),
-							$option
+							wp_kses_post($option)
 						);
 					}
 					?>
@@ -1321,7 +1321,7 @@ function registerGASFrameworkOptionFontControl() {
 						printf( "<option value='%s'%s>%s</option>",
 							esc_attr( $option ),
 							selected( $value['text-shadow-opacity'], $option, false ),
-							$option
+							wp_kses_post($option)
 						);
 					}
 					?>
@@ -1338,7 +1338,7 @@ function registerGASFrameworkOptionFontControl() {
 			<input type='hidden' class='tf-for-saving' <?php $this->link() ?> value='<?php echo esc_attr( $value ) ?>'/>
 			</div>
 			<?php
-			echo "<p class='description'>{$this->description}</p>";
+			echo wp_kses_post("<p class='description'>{$this->description}</p>");
 		}
 	}
 }

@@ -11,9 +11,9 @@ class GASFrameworkOptionCheckbox extends GASFrameworkOption {
 		$this->echoOptionHeader();
 
 		?>
-		<label for="<?php echo $this->getID() ?>">
-		<input name="<?php echo $this->getID() ?>" type="checkbox" id="<?php echo $this->getID() ?>" value="1" <?php checked( $this->getValue(), 1 ) ?>>
-		<?php echo $this->getDesc( '' ) ?>
+		<label for="<?php echo wp_kses_post($this->getID()) ?>">
+		<input name="<?php echo wp_kses_post($this->getID()) ?>" type="checkbox" id="<?php echo wp_kses_post($this->getID()) ?>" value="1" <?php checked( $this->getValue(), 1 ) ?>>
+		<?php echo wp_kses_post($this->getDesc( '' )) ?>
 		</label>
 		<?php
 

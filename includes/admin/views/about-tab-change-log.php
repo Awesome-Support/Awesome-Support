@@ -1,6 +1,31 @@
 <p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
 
 <div class="changelog">
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.2.0</h1>
+				<h3>6.2.0 We fixed security vulnerabilities in all the plugin</h3>
+			</div>
+		</div>
+	</div>
+
+	<hr />
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.1.11</h1>
+				<h3>6.1.11 includes the vulnerabilities fix and security patches. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">					
+					<li>We implement a CSRF protection (via a nonce) in the endpoints wpas_dismiss_free_addon_page and wpas_skip_wizard_setup.</li>										
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<hr />	
 	
 	<div class="row">
 		<div>

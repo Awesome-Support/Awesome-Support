@@ -32,8 +32,8 @@ class GASFrameworkOptionIframe extends GASFrameworkOption {
 		$this->echoOptionHeader();
 
 		printf( '<iframe frameborder="0" src="%s" style="height: %spx; width:100%%;"></iframe>',
-			$this->settings['url'],
-			$this->settings['height']
+			wp_kses_post($this->settings['url']),
+			wp_kses_post($this->settings['height'])
 		);
 		$this->echoOptionFooter();
 
@@ -90,8 +90,8 @@ function register_gas_framework_option_iframe_control() {
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
 				<?php
 				printf( '<iframe frameborder="0" src="%s" style="height: %spx; width:100%%;"></iframe>',
-					$this->optionSettings['url'],
-					$this->optionSettings['height']
+					wp_kses_post($this->optionSettings['url']),
+					wp_kses_post($this->optionSettings['height'])
 				);
 
 				if ( ! empty( $this->optionSettings['desc'] ) ) {

@@ -504,8 +504,8 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		protected function create_admin_notice( $contents, $class, $dismiss ) { ?>
 			<div class="<?php echo esc_attr( $class ); ?>">
-				<a href="<?php echo $dismiss; ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php esc_html_e( 'Dismiss notification', 'awesome-support' ); ?>">&times;</a>
-				<p><?php echo html_entity_decode( $contents ); ?></p>
+				<a href="<?php echo wp_kses_post($dismiss); ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php esc_html_e( 'Dismiss notification', 'awesome-support' ); ?>">&times;</a>
+				<p><?php echo wp_kses_post(html_entity_decode( $contents )); ?></p>
 			</div>
 		<?php }
 
@@ -677,7 +677,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 				$rn           = $this->remote_get_notification( $notification );
 
 				if ( is_wp_error( $rn ) ) {
-					echo $rn->get_error_message();
+					echo wp_kses_post($rn->get_error_message());
 				} else {
 					echo json_encode( $rn );
 				}

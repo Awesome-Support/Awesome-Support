@@ -922,3 +922,20 @@ function wpas_upgrade_61100() {
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
 	wpas_upgrade_581();
 }
+
+/**
+ * Upgrade function for version 6.1.11
+ *
+ * No new capabilities need to be added to certain roles.
+ *
+ * @since 6.1
+ * @return void
+ */
+function wpas_upgrade_61110() {
+	// Run the 581 upgrade option for version 6014.
+	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
+	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
+	// But we do want early 581 adopters to get the later changes to the update routine.  So
+	// we create this 6014 routine to make sure it runs for early 520 adopters.
+	wpas_upgrade_581();
+}

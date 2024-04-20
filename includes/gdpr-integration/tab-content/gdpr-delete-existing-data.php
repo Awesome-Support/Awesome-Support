@@ -33,7 +33,7 @@ if( wpas_get_option( 'delete_existing_data_subject', false ) ) {
 			</tr>
 		</thead>
 		<tr>
-			<td data-label="Subject"><input type="text" name="wpas-gdpr-ded-subject" id="wpas-gdpr-ded-subject" readonly="readonly" value='<?php echo stripslashes_deep ( htmlentities( $subject, ENT_QUOTES  ) ); ?>' /></td>
+			<td data-label="Subject"><input type="text" name="wpas-gdpr-ded-subject" id="wpas-gdpr-ded-subject" readonly="readonly" value='<?php echo wp_kses_post(stripslashes_deep ( htmlentities( $subject, ENT_QUOTES  ) )); ?>' /></td>
 		</tr>
 		<?php
 		/**

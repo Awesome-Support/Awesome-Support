@@ -141,7 +141,7 @@ function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, 
 	$echoout = $echoout. ' ' . '</span>' ; // closing tag of encompassing span
 	
 	if ( ! $return_markup ) {
-		echo $echoout ;
+		echo $echoout;
 	} else {
 		return $echoout;
 	}

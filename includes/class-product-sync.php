@@ -1051,7 +1051,7 @@ class WPAS_Product_Sync {
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php esc_html_e( 'Re-Synchronize Products', 'awesome-support' ); ?></label></td>
 			<td>
-				<a href="<?php echo wpas_tool_link( 'resync_products', array( 'pt' => $this->post_type ) ); ?>"
+				<a href="<?php echo  wpas_tool_link( 'resync_products', array( 'pt' => $this->post_type ) ); ?>"
 				   class="button-secondary"><?php esc_html_e( 'Resync', 'awesome-support' ); ?></a>
 				<span
 					class="wpas-system-tools-desc"><?php esc_html_e( 'Re-synchronize all products from your e-commerce plugin. Any product not attached to an existing ticket and not matched to a product in your e-commerce system will be deleted.', 'awesome-support' ); ?></span>
@@ -1068,7 +1068,7 @@ class WPAS_Product_Sync {
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php esc_html_e( 'Delete Products', 'awesome-support' ); ?></label></td>
 			<td>
-				<a href="<?php echo wpas_tool_link( 'delete_products', array( 'pt' => $this->post_type ) ); ?>"
+				<a href="<?php echo (wpas_tool_link( 'delete_products', array( 'pt' => $this->post_type ) )); ?>"
 				   class="button-secondary"><?php esc_html_e( 'Delete', 'awesome-support' ); ?></a>
 				<span
 					class="wpas-system-tools-desc"><?php esc_html_e( 'Delete all products synchronized from your e-commerce plugin.', 'awesome-support' ); ?></span>
@@ -1085,7 +1085,7 @@ class WPAS_Product_Sync {
 		<tr>
 			<td class="row-title"><label for="tablecell"><?php esc_html_e( 'Delete unused Product Terms', 'awesome-support' ); ?></label></td>
 			<td>
-				<a href="<?php echo wpas_tool_link( 'delete_unused_terms', array( 'pt' => $this->post_type ) ); ?>"
+				<a href="<?php echo (wpas_tool_link( 'delete_unused_terms', array( 'pt' => $this->post_type ) )); ?>"
 				   class="button-secondary"><?php esc_html_e( 'Delete', 'awesome-support' ); ?></a>
 				<span
 					class="wpas-system-tools-desc"><?php esc_html_e( 'Delete all Product Terms not used in any AS ticket.', 'awesome-support' ); ?></span>

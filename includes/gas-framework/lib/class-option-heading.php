@@ -35,10 +35,10 @@ class GASFrameworkOptionHeading extends GASFrameworkOption {
 		?>
 		<tr valign="top" class="even first tf-heading">
 			<th scope="row" class="first last" colspan="2">
-				<h3 id="<?php echo esc_attr( $headingID ) ?>"><?php echo $this->settings['name'] ?></h3>
+				<h3 id="<?php echo esc_attr( $headingID ) ?>"><?php echo wp_kses_post($this->settings['name']) ?></h3>
 				<?php
 				if ( ! empty( $this->settings['desc'] ) ) {
-					?><p class='description'><?php echo $this->settings['desc'] ?></p><?php
+					?><p class='description'><?php echo wp_kses_post($this->settings['desc']) ?></p><?php
 				}
 				?>
 			</th>
