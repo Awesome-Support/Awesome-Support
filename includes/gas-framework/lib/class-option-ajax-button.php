@@ -134,7 +134,7 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 
 		foreach ( $this->settings['action'] as $i => $action ) {
 			printf( '<button class="button %s" data-action="%s" data-label="%s" data-wait-label="%s" data-error-label="%s" data-success-label="%s" data-nonce="%s" data-success-callback="%s" data-error-callback="%s" data-data-filter-callback="%s">%s</button>',
-				$this->settings['class'][ $i ],
+				wp_kses_post($this->settings['class'][ $i ]),
 				esc_attr( $action ),
 				esc_attr( $this->settings['label'][ $i ] ),
 				esc_attr( $this->settings['wait_label'][ $i ] ),
@@ -298,7 +298,7 @@ function registerGASFrameworkOptionAjaxButtonControl() {
 
 				foreach ( $this->options['action'] as $i => $action ) {
 					printf( '<button class="button %s" data-action="%s" data-label="%s" data-wait-label="%s" data-error-label="%s" data-success-label="%s" data-nonce="%s" data-success-callback="%s" data-error-callback="%s">%s</button>',
-						$this->options['class'][ $i ],
+						wp_kses_post($this->options['class'][ $i ]),
 						esc_attr( $action ),
 						esc_attr( $this->options['label'][ $i ] ),
 						esc_attr( $this->options['wait_label'][ $i ] ),
@@ -312,7 +312,7 @@ function registerGASFrameworkOptionAjaxButtonControl() {
 				}
 
 				if ( ! empty( $this->description ) ) {
-					echo "<p class='description'>" . $this->description . '</p>';
+					echo "<p class='description'>" . wp_kses_post($this->description). '</p>';
 				}
 
 			?></label><?php

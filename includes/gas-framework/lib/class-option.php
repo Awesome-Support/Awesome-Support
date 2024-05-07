@@ -302,17 +302,17 @@ class GASFrameworkOption {
 		$style = $this->getHidden() == true ? 'style="display: none"' : '';
 
 		?>
-		<tr valign="top" class="row-<?php echo self::$rowIndex ?> <?php echo $evenOdd ?>" <?php echo $style ?>>
+		<tr valign="top" class="row-<?php echo wp_kses_post(self::$rowIndex )?> <?php echo wp_kses_post($evenOdd) ?>" <?php echo wp_kses_post($style) ?>>
 		<th scope="row" class="first">
-			<label for="<?php echo ! empty( $id ) ? $id : '' ?>"><?php echo ! empty( $name ) ? $name : '' ?></label>
+			<label for="<?php echo wp_kses_post(! empty( $id ) ? $id : '') ?>"><?php echo wp_kses_post(! empty( $name ) ? $name : '') ?></label>
 		</th>
-		<td class="second tf-<?php echo $this->settings['type'] ?>">
+		<td class="second tf-<?php echo wp_kses_post($this->settings['type']) ?>">
 		<?php
 
 		$desc = $this->getDesc();
 		if ( ! empty( $desc ) && $showDesc ) :
 			?>
-			<p class='description'><?php echo $desc ?></p>
+			<p class='description'><?php echo wp_kses_post($desc) ?></p>
 			<?php
 		endif;
 	}
@@ -343,8 +343,8 @@ class GASFrameworkOption {
 		$style = $this->getHidden() == true ? 'style="display: none"' : '';
 
 		?>
-		<tr valign="top" class="row-<?php echo self::$rowIndex ?> <?php echo $evenOdd ?>" <?php echo $style ?>>
-			<td class="second tf-<?php echo $this->settings['type'] ?>">
+		<tr valign="top" class="row-<?php echo wp_kses_post(self::$rowIndex )?> <?php echo wp_kses_post($evenOdd) ?>" <?php echo wp_kses_post($style) ?>>
+			<td class="second tf-<?php echo wp_kses_post($this->settings['type']) ?>">
 		<?php
 	}
 
@@ -370,14 +370,14 @@ class GASFrameworkOption {
 		$desc = $this->getDesc();
 		if ( ! empty( $desc ) && $showDesc ) :
 			?>
-			<p class='description'><?php echo $desc ?></p>
+			<p class='description'><?php echo wp_kses_post($desc) ?></p>
 			<?php
 		endif;
 
 		$example = $this->getExample();
 		if ( ! empty( $example ) ) :
 			?>
-			<p class="description"><code><?php echo htmlentities( $example ) ?></code></p>
+			<p class="description"><code><?php echo wp_kses_post(htmlentities( $example )) ?></code></p>
 			<?php
 		endif;
 

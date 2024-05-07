@@ -189,7 +189,7 @@ class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
 
 			// build a plugin list row, with update notification
 			$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
-			echo '<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count() . '" class="plugin-update colspanchange"><div class="update-message">';
+			echo wp_kses_post('<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count() . '" class="plugin-update colspanchange"><div class="update-message">');
 
 			$changelog_link = self_admin_url( 'index.php?edd_sl_action=view_plugin_changelog&plugin=' . $this->name . '&slug=' . $this->slug . '&TB_iframe=true&width=772&height=911' );
 
@@ -381,7 +381,7 @@ class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
 		}
 
 		if( ! empty( $version_info ) && isset( $version_info->sections['changelog'] ) ) {
-			echo '<div style="background:#fff;padding:10px;">' . $version_info->sections['changelog'] . '</div>';
+			echo wp_kses_post('<div style="background:#fff;padding:10px;">' . $version_info->sections['changelog'] . '</div>');
 		}
 
 		exit;

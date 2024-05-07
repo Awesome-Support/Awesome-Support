@@ -336,9 +336,9 @@ function wpas_make_button( $label = null, $args = array() ) {
 	extract( shortcode_atts( $defaults, $args ) );
 
 	if ( 'link' === $args['type'] && !empty( $args['link'] ) ) {
-		?><a href="<?php echo esc_url( $args['link'] ); ?>" class="<?php echo esc_attr( $args['class'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo esc_html( $label ); ?></a><?php
+		?><a href="<?php echo esc_url( $args['link'] ); ?>" class="<?php echo esc_attr( $args['class'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo wp_kses_post("data-onsubmit='{$args['onsubmit']}'"); endif; ?>><?php echo esc_html( $label ); ?></a><?php
 	} else {
-		?><button type="submit" class="<?php echo esc_attr( $args['class'] ); ?>" name="<?php echo esc_attr( $args['name'] ); ?>" value="<?php echo esc_attr( $args['value'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo esc_html( $label ); ?></button><?php
+		?><button type="submit" class="<?php echo esc_attr( $args['class'] ); ?>" name="<?php echo esc_attr( $args['name'] ); ?>" value="<?php echo esc_attr( $args['value'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo wp_kses_post("data-onsubmit='{$args['onsubmit']}'"); endif; ?>><?php echo esc_html( $label ); ?></button><?php
 	}
 
 }
@@ -481,7 +481,7 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
 	if ( ! headers_sent() ) {
 		wp_redirect( $location, 302 );
 	} else {
-		echo "<meta http-equiv='refresh' content='0; url=$location'>";
+		echo "<meta http-equiv='refresh' content='0; url=" . wp_kses_post($location) . "'>";
 	}
 
 	return true;
@@ -517,7 +517,7 @@ function wpas_write_log( $handle, $message ) {
  */
 function wpas_missing_dependencies() { ?>
 	<div class="error">
-        <p><?php printf( __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
+        <p><?php printf( wp_kses_post(__( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ) ); ?></p>
     </div>
 <?php }
 
@@ -604,12 +604,12 @@ function wpas_dropdown( $args, $options ) {
 	<?php
 	if ($class[0] == 'search_and_list_dropdown') {
 	?>
-	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="wpas-select2"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo wp_kses_post($args['name']); ?>" <?php if ( !empty( $class ) ) echo 'class="wpas-select2"'; ?> <?php if ( !empty( $id ) ) echo wp_kses_post("id='$id'"); ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 	<?php
 	}
 	else {
 	?>
-	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo wp_kses_post($args['name']); ?>" <?php if ( !empty( $class ) ) echo wp_kses_post('class="' . implode( ' ' , $class ) . '"'); ?> <?php if ( !empty( $id ) ) echo wp_kses_post("id='$id'"); ?> <?php if ( ! empty( $data_attributes ) ): echo wp_kses_post($data_attributes); endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 	<?php
 	}
 	?>
@@ -618,7 +618,7 @@ function wpas_dropdown( $args, $options ) {
 			echo '<option value="">' . esc_html__( 'Please select', 'awesome-support' ) . '</option>';
 		}
 
-		echo $options;
+		echo wp_kses($options, ['option'=> [ 'value' => true, 'selected' => true]]);
 		?>
 	</select>
 	<?php
@@ -902,7 +902,7 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
 	?>
 
-	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug ) { echo 'selected="selected"'; } ?>><?php echo $option; ?></option>
+	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug ) { echo 'selected="selected"'; } ?>><?php echo wp_kses_post($option); ?></option>
 
 	<?php if ( isset( $term->children ) && !empty( $term->children ) ) {
 		++$level;

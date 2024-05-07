@@ -328,10 +328,10 @@ class GASFrameworkAdminPage {
 
 		?>
 		<div class="wrap">
-		<h2><?php echo $this->settings['title'] ?></h2>
+		<h2><?php echo wp_kses_post($this->settings['title']) ?></h2>
 		<?php
 		if ( ! empty( $this->settings['desc'] ) ) {
-			?><p class='description'><?php echo $this->settings['desc'] ?></p><?php
+			?><p class='description'><?php echo wp_kses_post($this->settings['desc']) ?></p><?php
 		}
 		?>
 
@@ -368,9 +368,9 @@ class GASFrameworkAdminPage {
 		// Display notification if we did something
 		if ( ! empty( $_GET['message'] ) ) {
 			if ( $_GET['message'] == 'saved' ) {
-				echo GASFrameworkAdminNotification::formNotification( __( 'Settings saved.', GASF_I18NDOMAIN ), esc_html( $_GET['message'] ) );
+				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings saved.', GASF_I18NDOMAIN ), esc_html( $_GET['message'] ) ) );
 			} else if ( $_GET['message'] == 'reset' ) {
-				echo GASFrameworkAdminNotification::formNotification( __( 'Settings reset to default.', GASF_I18NDOMAIN ), esc_html( $_GET['message'] ) );
+				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings reset to default.', GASF_I18NDOMAIN ), esc_html( $_GET['message'] ) ) );
 			}
 		}
 
@@ -397,7 +397,7 @@ class GASFrameworkAdminPage {
 		if ( ! empty( $activeTab ) ) {
 
 			if ( ! empty( $activeTab->settings['desc'] ) ) {
-				?><p class='description'><?php echo $activeTab->settings['desc'] ?></p><?php
+				?><p class='description'><?php echo wp_kses_post($activeTab->settings['desc']) ?></p><?php
 			}
 
 			$activeTab->displayOptions();

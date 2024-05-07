@@ -17,9 +17,9 @@ class GASFrameworkOptionTextarea extends GASFrameworkOption {
 		$this->echoOptionHeader( true );
 		printf("<textarea class='large-text %s' name=\"%s\" placeholder=\"%s\" id=\"%s\" rows='10' cols='50'>%s</textarea>",
 			$this->settings['is_code'] ? 'code' : '',
-			$this->getID(),
-			$this->settings['placeholder'],
-			$this->getID(),
+			wp_kses_post($this->getID()),
+			wp_kses_post($this->settings['placeholder']),
+			wp_kses_post($this->getID()),
 			esc_textarea( stripslashes( $this->getValue() ) )
 		);
 		$this->echoOptionFooter( false );
@@ -66,7 +66,7 @@ function registerGASFrameworkOptionTextareaControl() {
 				<textarea class='large-text <?php echo $this->is_code ? 'code' : '' ?>' rows='7' cols='50' <?php $this->link(); ?>><?php echo esc_textarea( stripslashes( $this->value() ) ) ?></textarea>
 			</label>
 			<?php
-			echo "<p class='description'>{$this->description}</p>";
+			echo wp_kses_post("<p class='description'>{$this->description}</p>");
 		}
 	}
 }

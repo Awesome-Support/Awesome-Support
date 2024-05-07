@@ -31,5 +31,5 @@ do_action( 'wpas_backend_history_content_after', $row->ID ); ?>
 
 <td colspan="3">
 	<span class="wpas-action-author"><?php echo esc_html( $user_name ); ?>, <em class='wpas-time'><?php printf( esc_html__( '%s ago', 'awesome-support' ), esc_attr( $date ) ); ?></em></span>
-	<div class="wpas-action-details"><?php echo wp_kses_post( $content ); ?></div>
+	<div class="wpas-action-details"><?php echo $content; ?></div>
 </td>

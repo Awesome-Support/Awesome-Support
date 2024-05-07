@@ -55,7 +55,7 @@ function wpas_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
 	switch ( $info ) {
 
 		case 'name':
-			echo apply_filters( 'wpas_user_profile_contact_name', $user->data->display_name, $user, $ticket_id );
+			echo wp_kses_post(apply_filters( 'wpas_user_profile_contact_name', $user->data->display_name, $user, $ticket_id ));
 			break;
 
 		case 'role':

@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 	/* Display avatar only for replies */
 	if( 'ticket_reply' == $row->post_type ) {
 
-		echo wp_kses_post( $user_avatar );
+		echo $user_avatar;
 
 		/**
 		 * Triggers an action right under the user avatar for ticket replies.

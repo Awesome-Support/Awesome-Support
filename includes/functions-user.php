@@ -1211,7 +1211,7 @@ function wpas_mailgun_check( $data = '' ) {
 		$check = json_decode( $check );
 
 		if ( is_object( $check ) && isset( $check->did_you_mean ) && ! is_null( $check->did_you_mean ) ) {
-			printf( wp_kses_post( __( 'Did you mean %s', 'awesome-support' ) ), "<strong>{$check->did_you_mean}</strong>?" );
+			printf( ( __( 'Did you mean %s', 'awesome-support' ) ), "<strong>{$check->did_you_mean}</strong>?" );
 			die();
 		}
 

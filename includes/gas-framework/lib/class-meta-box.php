@@ -95,7 +95,7 @@ class GASFrameworkMetaBox {
 		wp_nonce_field( $this->settings['id'], GASF . '_' . $this->settings['id'] . '_nonce' );
 
 		if ( ! empty( $this->settings['desc'] ) ) {
-			?><p class='description'><?php echo $this->settings['desc'] ?></p><?php
+			?><p class='description'><?php echo wp_kses_post($this->settings['desc']) ?></p><?php
 		}
 
 		?>

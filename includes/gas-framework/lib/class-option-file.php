@@ -129,9 +129,9 @@ class GASFrameworkOptionFile extends GASFrameworkOption {
         echo "<div class='tf-file-upload'>" . $previewFile . '</div>';
 
         printf('<input name="%s" placeholder="%s" id="%s" type="hidden" value="%s" />',
-            $this->getID(),
-            $this->settings['placeholder'],
-            $this->getID(),
+            wp_kses_post($this->getID()),
+            wp_kses_post($this->settings['placeholder']),
+            wp_kses_post($this->getID()),
             esc_attr( $this->getValue() )
         );
         $this->echoOptionFooter();

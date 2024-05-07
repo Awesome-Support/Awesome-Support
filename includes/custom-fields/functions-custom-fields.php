@@ -111,7 +111,7 @@ function wpas_get_cf_value( $name, $post_id, $default = false ) {
  * @since  3.0.0
  */
 function wpas_cf_value( $name, $post_id, $default = false ) {
-	echo wpas_get_cf_value( $name, $post_id, $default );
+	echo (wpas_get_cf_value( $name, $post_id, $default ));
 }
 
 /**

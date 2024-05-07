@@ -70,7 +70,7 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 	}
 
 	if ( $echo ) {
-		echo $field;
+		echo ($field);
 	}
 
 	return $field;

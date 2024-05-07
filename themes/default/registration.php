@@ -15,6 +15,9 @@ $submit        = get_permalink( wpas_get_option( 'ticket_list' ) );
 $registration  = wpas_get_option( 'allow_registrations', 'allow' ); // Make sure registrations are open
 $redirect_to   = get_permalink( $post->ID );
 $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'wpas-login-only' : 'wpas-login-register';
+$allow_html = [ 'label' => [ 'for' => true, ],
+	'input' => [ 'type' => true, 'value' => true, 'id' => true, 'class' => true, 'name' => true, 'placeholder' => true, 'required' => true ],
+	'div' => [ 'class' => true, 'id' => true, ]];
 ?>
 
 <div class="wpas <?php echo esc_attr( $wrapper_class ); ?>">
@@ -26,7 +29,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 		<?php
 		/* Registrations are not allowed. */
 		if ( 'disallow' === $registration ) {
-			echo wpas_get_notification_markup( 'failure', __( 'Registrations are currently not allowed.', 'awesome-support' ) );
+			echo (wpas_get_notification_markup( 'failure', __( 'Registrations are currently not allowed.', 'awesome-support' ) ));
 		}
 
 		$username = new WPAS_Custom_Field( 'log', array(
@@ -43,7 +46,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 
 		$username = apply_filters( 'wpas_login_form_user_name', $username ) ;
 
-		echo $username->get_output();
+		echo wp_kses($username->get_output(), $allow_html);
 
 		$password = new WPAS_Custom_Field( 'pwd', array(
 			'name' => 'pwd',
@@ -59,7 +62,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 
 		$password = apply_filters( 'wpas_login_form_password', $password ) ;
 
-		echo $password->get_output();
+		echo wp_kses($password->get_output(), $allow_html);
 
 		/**
 		 * wpas_after_login_fields hook
@@ -77,7 +80,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 		) );
 
 		$rememberme = apply_filters( 'wpas_login_form_rememberme', $rememberme ) ;
-		echo $rememberme->get_output();
+		echo wp_kses($rememberme->get_output(), $allow_html);
 
 		wpas_do_field( 'login', $redirect_to );
 		wpas_make_button( __( 'Log in', 'awesome-support' ), array( 'onsubmit' => __( 'Logging In...', 'awesome-support' ) ) );
@@ -107,7 +110,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 
 			$first_name = apply_filters( 'wpas_registration_form_first_name', $first_name ) ;
 
-			echo $first_name->get_output();
+			echo wp_kses($first_name->get_output(), $allow_html);
 
 			$last_name_desc = wpas_get_option( 'reg_last_name_desc', '' ) ;
 			$last_name = new WPAS_Custom_Field( 'last_name', array(
@@ -125,7 +128,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 
 			$last_name = apply_filters( 'wpas_registration_form_last_name', $last_name ) ;
 
-			echo $last_name->get_output();
+			echo wp_kses($last_name->get_output(), $allow_html);
 
 			$email_desc = wpas_get_option( 'reg_email_desc', '' ) ;
 			$email = new WPAS_Custom_Field( 'email', array(
@@ -144,7 +147,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 
 			$email = apply_filters( 'wpas_registration_form_email', $email ) ;
 
-			echo $email->get_output();
+			echo wp_kses($email->get_output(), $allow_html);
 
 			$pwd = new WPAS_Custom_Field( 'password', array(
 				'name' => 'password',
@@ -160,7 +163,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 
 			$pwd = apply_filters( 'wpas_registration_form_password', $pwd ) ;
 
-			echo $pwd->get_output();
+			echo wp_kses($pwd->get_output(), $allow_html);
 
 			$showpwd = new WPAS_Custom_Field( 'pwdshow', array(
 				'name' => 'pwdshow',
@@ -172,7 +175,7 @@ $wrapper_class = 'allow' !== $registration && 'moderated' !== $registration ? 'w
 				)
 			) );
 
-			echo $showpwd->get_output();
+			echo wp_kses($showpwd->get_output(), $allow_html);
 
 			/**
 			 * wpas_after_registration_fields hook

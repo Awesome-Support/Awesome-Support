@@ -162,16 +162,16 @@ class GASFrameworkOptionNumber extends GASFrameworkOption {
 		$this->echoOptionHeader();
 		echo "<div class='number-slider'></div>";
 		printf('<input class="%s-text" name="%s" placeholder="%s" id="%s" type="number" value="%s" min="%s" max="%s" step="%s" /> %s <p class="description">%s</p>',
-			$this->settings['size'],
-			$this->getID(),
-			$this->settings['placeholder'],
-			$this->getID(),
+			wp_kses_post($this->settings['size']),
+			wp_kses_post($this->getID()),
+			wp_kses_post($this->settings['placeholder']),
+			wp_kses_post($this->getID()),
 			esc_attr( $this->getValue() ),
-			$this->settings['min'],
-			$this->settings['max'],
-			$this->settings['step'],
-			$this->settings['unit'],
-			$this->settings['desc']
+			wp_kses_post($this->settings['min']),
+			wp_kses_post($this->settings['max']),
+			wp_kses_post($this->settings['step']),
+			wp_kses_post($this->settings['unit']),
+			wp_kses_post($this->settings['desc'])
 		);
 		$this->echoOptionFooter( false );
 	}
@@ -243,7 +243,7 @@ function registerGASFrameworkOptionNumberControl() {
 			</label>
 			<?php
 			if ( ! empty( $this->description ) ) {
-				echo "<p class='description'>{$this->description}</p>";
+				echo wp_kses_post("<p class='description'>{$this->description}</p>");
 			}
 		}
 	}

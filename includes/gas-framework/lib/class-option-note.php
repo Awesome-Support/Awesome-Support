@@ -19,14 +19,14 @@ class GASFrameworkOptionNote extends GASFrameworkOption {
 		$color = $this->settings['color'] == 'green' ? '' : 'error';
 
 		if ( $this->settings['notification'] ) {
-			?><div class='updated below-h2 <?php echo $color ?>'><?php
+			?><div class='updated below-h2 <?php echo wp_kses_post($color) ?>'><?php
 		}
 
 		if ( $this->settings['paragraph'] ) {
 			echo "<p class='description'>";
 		}
 
-		echo $this->settings['desc'];
+		echo wp_kses_post($this->settings['desc']);
 
 		if ( $this->settings['paragraph'] ) {
 			echo '</p>';

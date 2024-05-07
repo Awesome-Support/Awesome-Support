@@ -104,14 +104,14 @@ class GASFrameworkOptionText extends GASFrameworkOption {
 		$thePass = $this->settings['is_password'] ? 'password' : 'text';
 		$theType = $this->settings['hidden'] ? 'hidden' : $thePass;
 		printf('<input class="%s-text" name="%s" placeholder="%s" maxlength="%s" id="%s" type="%s" value="%s" />%s',
-			empty($this->settings['size']) ? 'regular' : $this->settings['size'],
-			$this->getID(),
-			$this->settings['placeholder'],
-			$this->settings['maxlength'],
-			$this->getID(),
-			$theType,
+			wp_kses_post(empty($this->settings['size']) ? 'regular' : $this->settings['size']),
+			wp_kses_post($this->getID()),
+			wp_kses_post($this->settings['placeholder']),
+			wp_kses_post($this->settings['maxlength']),
+			wp_kses_post($this->getID()),
+			wp_kses_post($theType),
 			esc_attr( $this->getValue() ),
-			$this->settings['hidden'] ? '' : ' ' . $this->settings['unit']
+			wp_kses_post($this->settings['hidden'] ? '' : ' ' . $this->settings['unit'])
 		);
 		$this->echoOptionFooter();
 	}

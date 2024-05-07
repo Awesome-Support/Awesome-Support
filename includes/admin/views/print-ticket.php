@@ -60,7 +60,7 @@
         <tr>
             <td>
                 <?php 
-					echo wp_kses_post( $ticket->post_content );
+					echo $ticket->post_content;
                     do_action( 'wpas_backend_reply_content_after_with_image', $ticket->ID );
                 ?>
             </td>
@@ -107,7 +107,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <?php echo wp_kses_post( $reply->post_content ); ?>
+                            <?php echo $reply->post_content; ?>
                         </td>
                     </tr>
                 </table>

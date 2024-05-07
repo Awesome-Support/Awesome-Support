@@ -59,15 +59,15 @@ class GASFrameworkOptionGallery extends GASFrameworkOption {
 				}
 
 				$previewImage = "<i class='dashicons dashicons-no-alt remove'></i><img style='max-width: 150px; max-height: 150px; margin-top: 0px; margin-left: 0px;' src='" . esc_url( $v ) . "' style='display: none'/>";
-				echo "<div data-attachment-id=" . $value . " class='thumbnail used-thumbnail tf-image-preview'>" . $previewImage . '</div>';
+				echo "<div data-attachment-id=" . wp_kses_post($value) . " class='thumbnail used-thumbnail tf-image-preview'>" . $previewImage . '</div>';
 			}
 		}
 		echo "<div class='thumbnail tf-image-preview'></div>";
 
 		printf('<input name="%s" placeholder="%s" id="%s" type="hidden" value="%s" />',
-			$this->getID(),
-			$this->settings['placeholder'],
-			$this->getID(),
+			wp_kses_post($this->getID()),
+			wp_kses_post($this->settings['placeholder']),
+			wp_kses_post($this->getID()),
 			esc_attr( $this->getValue() )
 		);
 

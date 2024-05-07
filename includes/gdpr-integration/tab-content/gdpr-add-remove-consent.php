@@ -106,16 +106,16 @@ if ( ! defined( 'WPINC' ) ) {
 			 */
 			printf(
 				'<tr><td data-label="%s">%s</td><td data-label="%s">%s</td><td data-label="%s">%s</td><td data-label="%s">%s</td><td data-label="%s">%s</td></tr>',
-				$item,
-				$item,
-				$status,
-				$status,
-				$opt_in,
-				$opt_in,
-				$opt_out,
-				$opt_out,
-				$opt_button_label,
-				$opt_button
+				wp_kses_post($item),
+				wp_kses_post($item),
+				wp_kses_post($status),
+				wp_kses_post($status),
+				wp_kses_post($opt_in),
+				wp_kses_post($opt_in),
+				wp_kses_post($opt_out),
+				wp_kses_post($opt_out),
+				wp_kses_post($opt_button_label),
+				wp_kses_post($opt_button)
 			);
 		}
 	}

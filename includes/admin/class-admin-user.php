@@ -348,16 +348,16 @@ class WPAS_User {
 		?>
 		
 		<tr class="wpas-after-reply-wrap">
-			<th><label><?php _e( 'Allow assignment to', 'awesome-support' ); ?></label></th>
+			<th><label><?php esc_html_e( 'Allow assignment to', 'awesome-support' ); ?></label></th>
 			<td>
 				<?php
 					$checked_all = in_array( 0, $current ) ? 'checked="checked"' : '';
-					printf( '<label for="wpas_department_assignment_%1$s"><input type="checkbox" name="%3$s" id="wpas_department_assignment_%1$s" value="%2$d" %5$s> %4$s</label><br>', 'all', 0, 'wpas_department_assignment[]', 'Users from all departments', $checked_all );
+					printf( '<label for="wpas_department_assignment_%1$s"><input type="checkbox" name="%3$s" id="wpas_department_assignment_%1$s" value="%2$d" %5$s> %4$s</label><br>', 'all', 0, 'wpas_department_assignment[]', 'Users from all departments', wp_kses_post($checked_all) );
 				?>
 				<?php
 				foreach ( $departments as $department ) {
 					$checked = in_array( $department->term_id, $current ) ? 'checked="checked"' : '';
-					printf( '<label for="wpas_department_assignment_%1$s"><input type="checkbox" name="%3$s" id="wpas_department_assignment_%1$s" value="%2$d" %5$s> %4$s</label><br>', $department->slug, $department->term_id, 'wpas_department_assignment[]', $department->name, $checked );
+					printf( '<label for="wpas_department_assignment_%1$s"><input type="checkbox" name="%3$s" id="wpas_department_assignment_%1$s" value="%2$d" %5$s> %4$s</label><br>', wp_kses_post($department->slug), wp_kses_post($department->term_id), 'wpas_department_assignment[]', wp_kses_post($department->name), wp_kses_post($checked) );
 				}
 				?>
 				<p class="description"><?php esc_html_e( 'To agents from which departments is the user allowed to assign tickets', 'awesome-support' ); ?></p>

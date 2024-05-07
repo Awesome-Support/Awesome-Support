@@ -18,12 +18,12 @@ class GASFrameworkOptionRadio extends GASFrameworkOption {
 
 		foreach ( $this->settings['options'] as $value => $label ) {
 			printf('<label for="%s"><input id="%s" type="radio" name="%s" value="%s" %s/> %s</label><br>',
-				$this->getID() . $value,
-				$this->getID() . $value,
-				$this->getID(),
+				wp_kses_post($this->getID() . $value),
+				wp_kses_post($this->getID() . $value),
+				wp_kses_post($this->getID()),
 				esc_attr( $value ),
 				checked( $this->getValue(), $value, false ),
-				$label
+				wp_kses_post($label)
 			);
 		}
 
