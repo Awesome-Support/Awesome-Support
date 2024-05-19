@@ -291,6 +291,9 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.2.1
+	* 
+
 = 6.2.0
 	* We fixed security vulnerabilities in all the plugin.
 
