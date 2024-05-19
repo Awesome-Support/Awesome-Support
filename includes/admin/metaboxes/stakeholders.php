@@ -161,6 +161,7 @@ if (! empty( $staff ) ) {
 					'name' => true,
 					'class' => true,
 					'id' => true,
+					'data-capability' => true,
 				),
 				'option' => array(
 					'selected' => true,
