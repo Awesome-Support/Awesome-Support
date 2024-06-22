@@ -846,10 +846,7 @@ class WPAS_File_Upload {
 		) );
 
 		$attachments = new WPAS_Custom_Field( $this->index, $attachments_args );
-		echo wp_kses($attachments->get_output(), ['label' => [
-			'for' => true, ], 'input' => [ 'style' => true, 'accept' => true, 'multiple', 'type' => true, 'value' => true, 'id' => true,
-			'class' => true, 'name' => true, 'readonly' => true, ], 'div' => [ 'class' => true,'id' => true]]);
-
+		echo wp_kses_post( $attachments->get_output() );
 	}
 
 	/**
