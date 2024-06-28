@@ -5,8 +5,8 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.2.1.1</h1>
-				<h3>6.2.1.1 We fixed the issue with the upload file using drap-drop feature</h3>
+				<h1>What's New In 6.2.1.2</h1>
+				<h3>6.2.1.2 We fixed the issue with the upload file using drap-drop feature</h3>
 			</div>
 		</div>
 	</div>

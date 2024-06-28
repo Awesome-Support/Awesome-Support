@@ -845,8 +845,15 @@ class WPAS_File_Upload {
 			),
 		) );
 
-		$attachments = new WPAS_Custom_Field( $this->index, $attachments_args );
-		echo wp_kses_post( $attachments->get_output() );
+		$attachments = new WPAS_Custom_Field( $this->index, $attachments_args );		
+		echo wp_kses($attachments->get_output(), 
+			[
+				'label' => ['for' => true, 'class' => true,'id' => true,], 
+				'input' => ['style' => true, 'accept' => true, 'multiple' => true, 'type' => true, 'value' => true, 'id' => true, 'class' => true, 'name' => true, 'readonly' => true, ], 
+				'div' => ['class' => true,'id' => true, 'data-ticket-id' => true, 'data-enable-paste' => true, 'data-dz-message' => true,],
+				'span' => ['class' => true,'id' => true,],
+				'p' => ['class' => true,'id' => true,],				
+			]);		
 	}
 
 	/**
