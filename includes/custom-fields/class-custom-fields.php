@@ -477,7 +477,7 @@ class WPAS_Custom_Fields {
 					$this_field = new WPAS_Custom_Field( $name, $field );
 					$output     = $this_field->get_output();
 
-					echo wp_kses($output, $this->allow_html);
+					echo $output;
 				}
 
 			}
@@ -505,7 +505,7 @@ class WPAS_Custom_Fields {
 				$this_field = new WPAS_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
-				echo wp_kses($output, $this->allow_html);
+				echo $output;
 			}
 		}
 

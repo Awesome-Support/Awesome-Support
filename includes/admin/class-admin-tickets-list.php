@@ -64,28 +64,7 @@ class WPAS_Tickets_List
 
 			add_filter('posts_search', array($this, 'ticket_listing_search_query'), 2, 11);
 			add_filter('posts_join',   array($this, 'ticket_listing_search_join_query'), 2, 11);
-			$this->allow_html = [
-				'label' => [
-					'for' => true,
-				], 'input' => [
-					'type' => true,
-					'value' => true,
-					'id' => true,
-					'class' => true,
-					'name' => true,
-					'readonly' => true,
-				], 'div' => [
-					'class' => true,
-					'id' => true,
-				], 'select' => [
-					'name' => true,
-					'class' => true,
-					'id' => true,
-				], 'option' => [
-					'value' => true,
-					'selected' => true,
-				],
-			];
+
 		}
 	}
 
@@ -1198,7 +1177,7 @@ SQL;
 		$dropdown .= "<option value='closed' $closed_selected>" . __('Closed', 'awesome-support') . "</option>";
 		$dropdown .= '</select>';
 
-		echo wp_kses($dropdown, $this->allow_html);
+		echo $dropdown;
 
 
 		/* STATUS */
@@ -1225,7 +1204,7 @@ SQL;
 
 			$dropdown .= '</select>';
 
-			echo wp_kses($dropdown, $this->allow_html);
+			echo $dropdown;
 		}
 
 
@@ -1251,7 +1230,7 @@ SQL;
 
 		$dropdown .= '</select>';
 
-		echo wp_kses($dropdown, $this->allow_html);
+		echo $dropdown;
 
 
 		$fields = $this->get_custom_fields();
