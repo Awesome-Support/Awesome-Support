@@ -173,7 +173,7 @@
 					$filetypes = explode( ',', $filetypes );
 					foreach ( $filetypes as $key => $type ) { $filetypes[$key] = "<code>.$type</code>"; }
 					$filetypes = implode( ', ', $filetypes );
-					echo $filetypes;
+					echo wp_kses_post( $filetypes );
 				}
 				?>
 			</td>
@@ -212,7 +212,7 @@
 						array_push( $submission_pages, "<span class='wpas-alert-success'>" . esc_url( $page_submit_url ) . " (#$page_submit_id)</span>" );
 					}
 
-					echo wp_kses_post(implode( ', ', $submission_pages ));
+					echo wp_kses(implode( ', ', $submission_pages ), get_allowed_html_wp_notifications());
 
 				}
 				?>
@@ -227,7 +227,7 @@
 				$page_list = $page_list[0];
 			}
 			?>
-			<td><?php echo wp_kses_post(empty( $page_list ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . esc_url( get_permalink( $page_list ) ) . " (#$page_list)</span>"); ?></td>
+			<td><?php echo empty( $page_list ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . esc_url( get_permalink( $page_list ) ) . " (#" . wp_kses($page_list , get_allowed_html_wp_notifications()) . ")</span>"; ?></td>
 		</tr>
 	</tbody>
 </table>
@@ -360,9 +360,9 @@
 				}
 				?>
 
-				<tr <?php if ( !empty( $cf_tr_class ) ) echo wp_kses_post("class='$cf_tr_class'"); ?>>
+				<tr <?php if ( !empty( $cf_tr_class ) ) echo "class='" . wp_kses($cf_tr_class,  get_allowed_html_wp_notifications()) . "'"; ?>>
 					<td class="row-title"><?php echo esc_html( wpas_get_field_title( $field ) ); ?></td>
-					<td><?php echo wp_kses_post(implode( ', ', $values )); ?></td>
+					<td><?php echo wp_kses(implode( ', ', $values ), [ 'strong' => [] ]); ?></td>
 				</tr>
 
 			<?php }
@@ -410,7 +410,8 @@
 				if ( sizeof( $wp_plugins ) == 0 )
 					echo '-';
 				else
-					echo wp_kses_post(implode( ', <br/>', $wp_plugins ));
+					echo wp_kses(implode( ', <br/>', $wp_plugins ),  get_allowed_html_wp_notifications());
+
 				?>
 			</td>
 		</tr>
@@ -508,7 +509,7 @@
 					if ( !empty( $overrides ) ) {
 						echo '<ul>';
 						foreach ( $overrides as $key => $override ) {
-							echo wp_kses_post("<li><code>$override</code></li>");
+							echo "<li><code>" . wp_kses($override,  get_allowed_html_wp_notifications()) . "</code></li>";
 						}
 						echo '</ul>';
 					} else {
@@ -522,7 +523,7 @@
 					if ( !empty( $overrides ) ) {
 						echo '<ul>';
 						foreach ( $overrides as $key => $override ) {
-							echo wp_kses_post("<li><code>$override</code></li>");
+							echo "<li><code>" . wp_kses($override,  get_allowed_html_wp_notifications()) . "</code></li>";
 						}
 						echo '</ul>';
 					} else {

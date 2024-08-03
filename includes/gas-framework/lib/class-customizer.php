@@ -249,7 +249,7 @@ class GASFrameworkCustomizer {
 			}
 
 			?>
-			wp.customize( '<?php echo wp_kses_post($option->getID()) ?>', function( v ) {
+			wp.customize( '<?php echo wp_kses_post($option->getID() )?>', function( v ) {
 				v.bind( function( value ) {
 					<?php
 
@@ -261,7 +261,7 @@ class GASFrameworkCustomizer {
 						 */
 						?>
 						if ( typeof localStorage !== 'undefined' ) {
-							localStorage.setItem( '<?php echo wp_kses_post($option->getID()) ?>', value );
+							localStorage.setItem( '<?php echo wp_kses_post($option->getID() )?>', value );
 						}
 						window.tf_refresh_css();
 						<?php
@@ -316,9 +316,9 @@ class GASFrameworkCustomizer {
 		if ( ! in_array( $this->owner->optionNamespace, self::$namespacesWithPrintedPreviewCSS ) ) {
 			self::$namespacesWithPrintedPreviewCSS[] = $this->owner->optionNamespace;
 
-			echo '<style id="gas-preview-' . esc_attr( $this->owner->optionNamespace ) . '">';
-			echo wp_kses_post($this->owner->cssInstance->generateCSS());
-			echo '</style>';
+			echo wp_kses_post('<style id="gas-preview-' . esc_attr( $this->owner->optionNamespace ) . '">'
+					. $this->owner->cssInstance->generateCSS() .
+				 '</style>', ['style' => [ 'id' => true] ]);
 		}
 	}
 

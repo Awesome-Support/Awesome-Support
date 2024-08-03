@@ -5,8 +5,7 @@ jQuery(document).ready(function(){
 			type : 'post',
 			data : {
 				action : 'wpas_skip_wizard_setup',
-				skip_wizard : true,
-				nonce: WPAS_Wizard.nonce,
+				skip_wizard : true
 			},
 			success : function( response ) {
 				/** 

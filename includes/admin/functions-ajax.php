@@ -20,11 +20,6 @@ add_action( 'wp_ajax_wpas_dismiss_free_addon_page', 'wpas_dismiss_free_addon_pag
  * @return bool
  */
 function wpas_dismiss_free_addon_page() {
-	check_ajax_referer('wpas_admin_optin', 'nonce');
-	if ( ! current_user_can( 'administrator' ) ) {
-		wp_send_json([], 401);		
-    }
-
 	return add_option( 'wpas_dismiss_free_addon_page', true );
 }
 
@@ -36,13 +31,11 @@ add_action( 'wp_ajax_wpas_skip_wizard_setup', 'wpas_skip_wizard_setup' );
  * @return bool
  */
 function wpas_skip_wizard_setup() {
-	check_ajax_referer('wpas_admin_wizard', 'nonce');
-	if ( ! current_user_can( 'administrator' ) ) {
-		wp_send_json([], 401);		
+	if ( current_user_can( 'administrator' ) ) {
+		add_option( 'wpas_skip_wizard_setup', true );
+		wp_die();
     }
-
-	add_option( 'wpas_skip_wizard_setup', true );
-	wp_die();
+	wp_send_json([], 401);
 }
 
 add_action( 'wp_ajax_wpas_get_ticket_for_print', 'wpas_get_ticket_for_print_ajax' );
@@ -161,4 +154,3 @@ function wpas_ajax_close_ticket_prevent_client_notification() {
 
 	wp_send_json_success();
 }
-

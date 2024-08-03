@@ -99,6 +99,7 @@ if ( ! defined( 'WPINC' ) ) {
 					);
 					$opt_button_label = __( 'Opt-in', 'awesome-support' );
 				}
+				get_allowed_html_wp_notifications();
 			}
 
 			/**
@@ -106,16 +107,16 @@ if ( ! defined( 'WPINC' ) ) {
 			 */
 			printf(
 				'<tr><td data-label="%s">%s</td><td data-label="%s">%s</td><td data-label="%s">%s</td><td data-label="%s">%s</td><td data-label="%s">%s</td></tr>',
-				wp_kses_post($item),
-				wp_kses_post($item),
-				wp_kses_post($status),
-				wp_kses_post($status),
-				wp_kses_post($opt_in),
-				wp_kses_post($opt_in),
-				wp_kses_post($opt_out),
-				wp_kses_post($opt_out),
-				wp_kses_post($opt_button_label),
-				wp_kses_post($opt_button)
+				wp_kses($item, get_allowed_html_wp_notifications()),
+				wp_kses($item, get_allowed_html_wp_notifications()),
+				wp_kses($status, get_allowed_html_wp_notifications()),
+				wp_kses($status, get_allowed_html_wp_notifications()),
+				wp_kses($opt_in, get_allowed_html_wp_notifications()),
+				wp_kses($opt_in, get_allowed_html_wp_notifications()),
+				wp_kses($opt_out, get_allowed_html_wp_notifications()),
+				wp_kses($opt_out, get_allowed_html_wp_notifications()),
+				wp_kses($opt_button_label, get_allowed_html_wp_notifications()),
+				wp_kses($opt_button, get_allowed_html_wp_notifications())
 			);
 		}
 	}

@@ -243,7 +243,7 @@ function registerGASFrameworkOptionNumberControl() {
 			</label>
 			<?php
 			if ( ! empty( $this->description ) ) {
-				echo wp_kses_post("<p class='description'>{$this->description}</p>");
+				echo "<p class='description'>{" . wp_kses_post($this->description) . "}</p>";
 			}
 		}
 	}

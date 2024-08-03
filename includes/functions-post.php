@@ -1931,7 +1931,7 @@ function wpas_edit_ticket_content() {
 	 * Variables!
 	 */
 	$ticket_id = isset( $_POST['post_id'] ) ? sanitize_text_field( $_POST['post_id'] ) : '';
-	$content   = isset( $_POST['content'] ) ? ( $_POST['content'] ) : '';
+	$content   = isset( $_POST['content'] ) ? wp_kses_post( $_POST['content'] ) : '';
 	
 
 	/**

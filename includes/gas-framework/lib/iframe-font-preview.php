@@ -157,7 +157,7 @@ if ( $textShadowLocation != 'none' ) {
 			}
 		</script>
 	</head>
-	<body class='<?php echo $isDarkBody ? 'dark' : '' ?>'>
+	<body class='<?php echo wp_kses_post($isDarkBody) ? 'dark' : '' ?>'>
 		<?php
 		if ( empty( $text ) ) :
 			?>
@@ -165,7 +165,7 @@ if ( $textShadowLocation != 'none' ) {
 			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at dolor non purus adipiscing rhoncus. Nullam vitae turpis pharetra odio feugiat gravida sed ac velit. Nullam luctus ultrices suscipit. Fusce condimentum laoreet cursus. Suspendisse sed accumsan tortor. Quisque pharetra pulvinar ante, feugiat varius nibh sodales nec. Fusce vel mattis lectus. Vivamus magna felis, pharetra in lacinia sed, condimentum quis nisi. Ut at rutrum urna. Vivamus convallis posuere metus vel ullamcorper.</p>
 			<?php
 		else :
-			echo wp_kses_post('<p>' . str_replace( "\n", '</p><p>', $text ) . '</p>');
+			echo '<p>' . wp_kses(str_replace( "\n", '</p><p>', $text ), get_allowed_html_wp_notifications()) . '</p>';
 		endif;
 		?>
 	</body>

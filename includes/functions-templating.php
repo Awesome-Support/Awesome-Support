@@ -368,13 +368,13 @@
 		$columns_callbacks = apply_filters( 'wpas_tickets_details_columns_callbacks', $columns_callbacks );
 		?>
 
-		<?php if ( ! empty( $args[ 'container' ] ) ): ?><<?php echo ($args[ 'container' ]); ?> class="<?php echo !empty( $args[ 'container' ] ) ? esc_attr( $args[ 'container_class' ] ) : ''; ?>"><?php endif; ?>
+		<?php if ( ! empty( $args[ 'container' ] ) ): ?><<?php echo wp_kses($args[ 'container' ], get_allowed_html_wp_notifications()); ?> class="<?php echo !empty( $args[ 'container' ] ) ? esc_attr( $args[ 'container_class' ] ) : ''; ?>"><?php endif; ?>
 
         <table id="<?php echo esc_attr( $args[ 'table_id' ] ); ?>" class="<?php echo esc_attr( $args[ 'table_class' ] ); ?>">
             <thead>
             <tr>
 				<?php foreach ( $columns as $column => $label ): ?>
-                    <th><?php echo ($label); ?></th>
+                    <th><?php echo wp_kses($label, get_allowed_html_wp_notifications()); ?></th>
 				<?php endforeach; ?>
             </tr>
             </thead>
@@ -389,7 +389,7 @@
             </tbody>
         </table>
 
-		<?php if ( ! empty( $args[ 'container' ] ) ): ?></<?php echo ($args[ 'container' ]); ?>><?php endif;
+		<?php if ( ! empty( $args[ 'container' ] ) ): ?></<?php echo wp_kses($args[ 'container' ], get_allowed_html_wp_notifications()); ?>><?php endif;
 
 	}
 
@@ -442,7 +442,7 @@
 
 		if ( 'closed' === $status ):
 
-			echo (wpas_get_notification_markup( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'awesome-support' ), wpas_get_reopen_url() ) ));
+			echo wp_kses(wpas_get_notification_markup( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'awesome-support' ), wpas_get_reopen_url() ) ), get_allowed_html_wp_notifications());
 
 		/**
 		 * Check if the ticket is currently open and if the current user
@@ -461,9 +461,9 @@
 			 */
 			do_action( 'wpas_ticket_details_reply_textarea_before' ); ?>
 
-            <<?php echo ($args[ 'container' ]); ?> id="<?php echo esc_attr( $args[ 'container_id' ] ); ?>"
+            <<?php echo wp_kses($args[ 'container' ], get_allowed_html_wp_notifications()); ?> id="<?php echo esc_attr( $args[ 'container_id' ] ); ?>"
             class="<?php echo esc_attr( $args[ 'container_class' ] ); ?>">
-			<?php echo ($args[ 'textarea_before' ]);
+			<?php echo wp_kses($args[ 'textarea_before' ], get_allowed_html_wp_notifications());
 
 			/**
 			 * Load the visual editor if enabled
@@ -503,8 +503,8 @@
 				          <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
 			<?php }
 
-			echo ($args[ 'textarea_after' ]); ?>
-            </<?php echo ($args[ 'container' ]); ?>>
+			echo wp_kses($args[ 'textarea_after' ], get_allowed_html_wp_notifications()); ?>
+            </<?php echo wp_kses($args[ 'container' ], get_allowed_html_wp_notifications()); ?>>
 
 			<?php
 			/**
@@ -558,12 +558,12 @@
 		 * This case is an agent viewing the ticket from the front-end. All actions are tracked in the back-end only, that's why we prevent agents from replying through the front-end.
 		 */
 		elseif ( 'open' === $status && false === wpas_can_reply_ticket() ):
-			echo (wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' ), add_query_arg( array(
+			echo wp_kses(wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' ), add_query_arg( array(
 				'post'   => $post_id,
 				'action' => 'edit',
-			), admin_url( 'post.php' ) ) ) ));
+			), admin_url( 'post.php' ) ) ) ), get_allowed_html_wp_notifications());
 		else:
-			echo (wpas_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'awesome-support' ) ));
+			echo wp_kses(wpas_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'awesome-support' ) ), get_allowed_html_wp_notifications());
 		endif;
 
 		/**
@@ -699,11 +699,11 @@
 		switch ( $callback ) {
 
 			case 'id':
-				echo ('#' . get_the_ID());
+				echo '#' . wp_kses(get_the_ID(), get_allowed_html_wp_notifications());
 				break;
 
 			case 'status':
-				echo (wpas_get_ticket_status( get_the_ID() ));
+				echo wp_kses(wpas_get_ticket_status( get_the_ID() ), get_allowed_html_wp_notifications());
 				break;
 
 			case 'title':
@@ -734,7 +734,7 @@
 				$offset = wpas_get_offset_html5();
 				?>
                 <time
-                datetime="<?php echo (get_the_date( 'Y-m-d\TH:i:s' ) . $offset) ?>"><?php echo get_the_date( get_option( 'date_format' ) ) . ' ' . get_the_date( get_option( 'time_format' ) ); ?></time><?php
+                datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wp_kses($offset, get_allowed_html_wp_notifications()) ?>"><?php echo get_the_date( get_option( 'date_format' ) ) . ' ' . get_the_date( get_option( 'time_format' ) ); ?></time><?php
 				break;
 
 			case 'taxonomy':
@@ -750,7 +750,7 @@
 					array_push( $list, $term->name );
 				}
 
-				echo (implode( ', ', $list ));
+				echo wp_kses(implode( ', ', $list ), get_allowed_html_wp_notifications());
 
 				break;
 
@@ -857,7 +857,7 @@
 
 			}
 
-			echo (implode( $separator, $list ));
+			echo wp_kses(implode( $separator, $list ), get_allowed_html_wp_notifications());
 
 		}
 
@@ -882,7 +882,7 @@
 		$link     = add_query_arg( array( 'post_type' => 'ticket', 'assignee' => $assignee ), admin_url( 'edit.php' ) );
 
 		if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
-			echo ("<a href='$link'>{$agent->data->display_name}</a>");
+			echo wp_kses("<a href='$link'>{$agent->data->display_name}</a>", get_allowed_html_wp_notifications());
 		}
 
 	}
@@ -906,7 +906,7 @@
 		$link     = add_query_arg( array( 'post_type' => 'ticket', 'secondary_assignee' => $assignee ), admin_url( 'edit.php' ) );
 
 		if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
-			echo ("<a href='$link'>{$agent->data->display_name}</a>");
+			echo wp_kses("<a href='$link'>{$agent->data->display_name}</a>", get_allowed_html_wp_notifications());
 		}
 
 	}
@@ -930,7 +930,7 @@
 		$link     = add_query_arg( array( 'post_type' => 'ticket', 'tertiary_assignee' => $assignee ), admin_url( 'edit.php' ) );
 
 		if ( is_object( $agent ) && is_a( $agent, 'WP_User' ) ) {
-			echo ("<a href='$link'>{$agent->data->display_name}</a>");
+			echo wp_kses("<a href='$link'>{$agent->data->display_name}</a>", get_allowed_html_wp_notifications());
 		}
 
 	}
@@ -967,7 +967,7 @@
 		}
 
 		if ( ! empty($fullouput) ){
-			echo ($fullouput);
+			echo wp_kses($fullouput, get_allowed_html_wp_notifications());
 		}
 	}
 
@@ -1003,7 +1003,7 @@
 		}
 
 		if ( ! empty($fullouput) ){
-			echo ($fullouput);
+			echo wp_kses($fullouput, get_allowed_html_wp_notifications());
 		}
 	}
 
@@ -1021,7 +1021,7 @@
 		$minutes = (int) get_post_meta( $post_id, '_wpas_' . $field, true );
 
 		if ( ! empty( $minutes ) ) {
-			echo (sprintf( "%02d:%02d", floor( $minutes / 60 ), ( $minutes ) % 60 ));
+			echo wp_kses(sprintf( "%02d:%02d", floor( $minutes / 60 ), ( $minutes ) % 60 ), get_allowed_html_wp_notifications());
 		}
 
 	}
@@ -1044,11 +1044,11 @@
 
 		if ( '+' === $adjustment_operator ) {
 
-			echo ("<span style='color: #6ddb32;'>$adjustment_operator</span> <span>$minutes</span>");
+			echo wp_kses("<span style='color: #6ddb32;'>$adjustment_operator</span> <span>$minutes</span>", get_allowed_html_wp_notifications());
 
 		} elseif ( '-' === $adjustment_operator ) {
 
-			echo ("<span style='color: #dd3333;'>$adjustment_operator</span> (<span style='color: #dd3333;'>$minutes</span>)");
+			echo wp_kses("<span style='color: #dd3333;'>$adjustment_operator</span> (<span style='color: #dd3333;'>$minutes</span>)", get_allowed_html_wp_notifications());
 
 		}
 
@@ -1117,7 +1117,7 @@
 			}
 		}
 
-		echo ($tag);
+		echo wp_kses($tag, get_allowed_html_wp_notifications());
 
 	}
 
@@ -1150,7 +1150,7 @@
 		$color = get_term_meta( $term->term_id, 'color', true );
 		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
-		echo ($tag);
+		echo wp_kses($tag, get_allowed_html_wp_notifications());
 
 	}
 
@@ -1183,7 +1183,7 @@
 		$color = get_term_meta( $term->term_id, 'color', true );
 		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
-		echo ($tag);
+		echo wp_kses($tag, get_allowed_html_wp_notifications());
 
 	}
 
@@ -1294,7 +1294,7 @@
 		}
 
 		if ( true === $echo ) {
-			echo ($link);
+			echo wp_kses($link, get_allowed_html_wp_notifications());
 		} else {
 			return $link;
 		}
@@ -1327,7 +1327,7 @@
 		}
 
 		if ( true === $echo ) {
-			echo ($link);
+			echo wp_kses($link, get_allowed_html_wp_notifications());
 		} else {
 			return $link;
 		}
@@ -1406,8 +1406,7 @@
 			),
 		) );
 
-		echo ($terms->get_output());
-
+		echo wp_kses($terms->get_output(), get_allowed_html_wp_notifications());
 	}
 
 	add_action( 'wpas_after_template', 'wpas_terms_and_conditions_modal', 10, 3 );
@@ -1435,7 +1434,7 @@
 			return false;
 		}
 
-		echo ('<div style="display: none;"><div id="wpas-modalterms">' . wpautop( ( $terms ) ) . '</div></div>');
+		echo wp_kses('<div style="display: none;"><div id="wpas-modalterms">' . wpautop( wp_kses_post( $terms ) ) . '</div></div>', get_allowed_html_wp_notifications());
 
 		return true;
 
@@ -1471,7 +1470,8 @@
 				),
 			) );
 
-			echo ($gdpr01->get_output());
+			echo wp_kses($gdpr01->get_output(), get_allowed_html_wp_notifications());
+
 		}
 
 		$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
@@ -1492,7 +1492,8 @@
 				),
 			) );
 
-			echo ($gdpr02->get_output());
+			echo wp_kses($gdpr02->get_output(), get_allowed_html_wp_notifications());
+
 		}
 
 		$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
@@ -1513,7 +1514,8 @@
 				),
 			) );
 
-			echo ($gdpr03->get_output());
+			echo wp_kses($gdpr03->get_output(), get_allowed_html_wp_notifications());
+
 		}
 
 	}

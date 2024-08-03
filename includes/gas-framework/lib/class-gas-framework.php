@@ -674,7 +674,7 @@ class GASFramework {
 			<?php
 			if ( ! empty( $errorObject ) ) :
 				?>
-				<pre><code style="display: inline-block; padding: 10px"><?php echo wp_kses_post(print_r( $errorObject, true )) ?></code></pre>
+				<pre><code style="display: inline-block; padding: 10px"><?php echo esc_html(print_r( $errorObject, true )) ?></code></pre>
 				<?php
 			endif;
 			?>

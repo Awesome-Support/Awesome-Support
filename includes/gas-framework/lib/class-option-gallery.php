@@ -59,7 +59,7 @@ class GASFrameworkOptionGallery extends GASFrameworkOption {
 				}
 
 				$previewImage = "<i class='dashicons dashicons-no-alt remove'></i><img style='max-width: 150px; max-height: 150px; margin-top: 0px; margin-left: 0px;' src='" . esc_url( $v ) . "' style='display: none'/>";
-				echo "<div data-attachment-id=" . wp_kses_post($value) . " class='thumbnail used-thumbnail tf-image-preview'>" . $previewImage . '</div>';
+				echo "<div data-attachment-id=" . wp_kses_post($value ). " class='thumbnail used-thumbnail tf-image-preview'>" . wp_kses($previewImage, get_allowed_html_wp_notifications()) . '</div>';
 			}
 		}
 		echo "<div class='thumbnail tf-image-preview'></div>";

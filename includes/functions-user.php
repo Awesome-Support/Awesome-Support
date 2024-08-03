@@ -1091,7 +1091,7 @@ function wpas_users_dropdown( $args = array() ) {
 function wpas_support_users_dropdown( $args = array() ) {
 	$args['cap_exclude'] = 'edit_ticket';
 	$args['cap']         = 'create_ticket';
-	echo wpas_users_dropdown( $args );
+	echo wp_kses(wpas_users_dropdown( $args ), get_allowed_html_wp_notifications());
 }
 
 /**
@@ -1211,7 +1211,7 @@ function wpas_mailgun_check( $data = '' ) {
 		$check = json_decode( $check );
 
 		if ( is_object( $check ) && isset( $check->did_you_mean ) && ! is_null( $check->did_you_mean ) ) {
-			printf( ( __( 'Did you mean %s', 'awesome-support' ) ), "<strong>{$check->did_you_mean}</strong>?" );
+			printf( wp_kses_post( __( 'Did you mean %s', 'awesome-support' ), "<strong>{$check->did_you_mean}</strong>?" ) );
 			die();
 		}
 

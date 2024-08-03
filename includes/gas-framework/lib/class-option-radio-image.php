@@ -39,7 +39,7 @@ class GASFrameworkOptionRadioImage extends GASFrameworkOption {
 			if ( $value == '' ) {
 				$value = $key;
 			}
-			printf( $template,
+			printf( wp_kses_post($template, [ 'labal' => [ 'id' => true], 'input' => [ 'id' => true, 'type' => true, 'name' => true, 'value' => true, 'checked' => true ], 'span' => [ 'class' => true ], 'img' => [ 'src' => true]]),
 				wp_kses_post($this->getID() . $key),
 				wp_kses_post($this->getID() . $key),
 				wp_kses_post($this->getID()),
@@ -106,7 +106,7 @@ function registerGASFrameworkOptionRadioImageControl() {
 			?><span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span><?php
 
 			if ( ! empty( $this->description ) ) {
-				echo wp_kses_post("<p class='description'>" . $this->description . '</p>');
+				echo "<p class='description'>" . wp_kses_post($this->description) . '</p>';
 			}
 
 			// print the images

@@ -71,14 +71,14 @@ class GASFrameworkCSS {
 		if ( $this->frameworkInstance->settings['css'] == 'generate' ) {
 			$css = get_option( $this->getCSSSlug() );
 			if ( ! empty( $css ) ) {
-				echo wp_kses_post("<style id='tf-" . esc_attr( $this->frameworkInstance->optionNamespace ) . "'>{$css}</style>");
+				echo wp_kses("<style id='tf-" . esc_attr( $this->frameworkInstance->optionNamespace ) . "'>{$css}</style>", [ 'style' => [ 'id' => true ]]);
 			}
 
 			// If the setting is 'print inline css', print it out if we have any
 		} else if ( $this->frameworkInstance->settings['css'] == 'inline' ) {
 			$css = $this->generateCSS();
 			if ( ! empty( $css ) ) {
-				echo wp_kses_post("<style id='tf-" . esc_attr( $this->frameworkInstance->optionNamespace ) . "'>{$css}</style>");
+				echo wp_kses("<style id='tf-" . esc_attr( $this->frameworkInstance->optionNamespace ) . "'>{$css}</style>", [ 'style' => [ 'id' => true ]]);
 			}
 		}
 	}

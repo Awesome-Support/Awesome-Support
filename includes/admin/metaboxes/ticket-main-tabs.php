@@ -224,7 +224,7 @@ wpas_color_ticket_header_by_priority();
 /**
  * Print main tabs in ticket edit page
  */
-echo wpas_admin_tabs( 'ticket_main' );
+echo wp_kses(wpas_admin_tabs( 'ticket_main' ), get_allowed_html_wp_notifications());
 
 /**
  * Inject the color coding for ticket_type (bottom of ticket is color coded).

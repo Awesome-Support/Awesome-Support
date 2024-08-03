@@ -72,14 +72,14 @@ class GAST_EDD_Theme_Updater {
 				wp_kses_post($strings['update-available']),
 				wp_kses_post($theme->get( 'Name' )),
 				wp_kses_post($api_response->new_version),
-				wp_kses_post('#TB_inline?width=640&amp;inlineId=' . $this->theme_slug . '_changelog'),
+				'#TB_inline?width=640&amp;inlineId=' . esc_attr($this->theme_slug) . '_changelog',
 				wp_kses_post($theme->get( 'Name' )),
-				wp_kses_post($update_url),
-				wp_kses_post($update_onclick)
+				esc_url($update_url),
+				esc_attr($update_onclick)
 			);
 			echo '</div>';
-			echo wp_kses_post('<div id="' . $this->theme_slug . '_' . 'changelog" style="display:none;">');
-			echo wp_kses_post(wpautop( $api_response->sections['changelog'] ));
+			echo '<div id="' . esc_attr($this->theme_slug ). '_' . 'changelog" style="display:none;">';
+			echo esc_attr(wpautop( $api_response->sections['changelog'] ));
 			echo '</div>';
 		}
 	}

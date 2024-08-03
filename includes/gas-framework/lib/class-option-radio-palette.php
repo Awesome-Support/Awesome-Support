@@ -43,7 +43,7 @@ class GASFrameworkOptionRadioPalette extends GASFrameworkOption {
 				continue;
 			}
 			foreach ( $colorSet as $color ) {
-				echo wp_kses_post("<span style='background: {$color}'></span>");
+				echo wp_kses("<span style='background: {$color}'></span>", [ 'span' => [ 'style' => true] ]);
 			}
 			echo '</span></label>';
 		}
@@ -132,7 +132,7 @@ function registerGASFrameworkOptionRadioPaletteControl() {
 			?><span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span><?php
 
 			if ( ! empty( $this->description ) ) {
-				echo wp_kses_post("<p class='description'>" . $this->description . '</p>');
+				echo "<p class='description'>" . wp_kses_post($this->description) . '</p>';
 			}
 
 			// print the palettes
@@ -143,11 +143,11 @@ function registerGASFrameworkOptionRadioPaletteControl() {
 				?>
 				<span class='tf-radio-palette'>
 					<label>
-						<input type="radio" name="<?php echo wp_kses_post($this->id )?>" value="<?php echo esc_attr( $key ) ?>" <?php $this->link(); checked( $value, $key ); ?>/>
+						<input type="radio" name="<?php echo esc_attr($this->id) ?>" value="<?php echo esc_attr( $key ) ?>" <?php $this->link(); checked( $value, $key ); ?>/>
 						<span>
 							<?php
 							foreach ( $colorSet as $color ) {
-								echo wp_kses_post("<span style='background: {$color}'></span>");
+								echo wp_kses("<span style='background: {$color}'></span>", [ 'span' => [ 'style' => true] ]);
 							}
 							?>
 						</span>

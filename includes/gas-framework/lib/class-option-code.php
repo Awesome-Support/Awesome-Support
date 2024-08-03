@@ -100,7 +100,7 @@ class GASFrameworkOptionCode extends GASFrameworkOption {
 		$js = $this->getValue();
 
 		if ( ! empty( $js ) ) {
-			printf( "<script type=\"text/javascript\">\n%s\n</script>\n", $js );
+			printf( wp_kses("<script type=\"text/javascript\">\n" . $js . "\n</script>\n", get_allowed_html_wp_notifications()) );
 		}
 	}
 
@@ -134,11 +134,7 @@ class GASFrameworkOptionCode extends GASFrameworkOption {
 			return;
 		}
 
-		?>
-		<script>
-		<?php echo $this->getValue( $id ) ?>
-		</script>
-		<?php
+		echo wp_kses('<script> ' . $this->getValue( $id ) . ' </script>', get_allowed_html_wp_notifications());
 	}
 
 
@@ -182,7 +178,7 @@ class GASFrameworkOptionCode extends GASFrameworkOption {
 		$scss = new gasscssc();
 		try {
 			$css = $scss->compile( $css );
-			echo "<style type='text/css' media='screen'>{$css}</style>";
+			echo wp_kses("<style type='text/css' media='screen'>{$css}</style>", [ 'style' => [ 'type' => true, 'media' => true ]]);
 		} catch (Exception $e) {
 		}
 	}
@@ -253,7 +249,7 @@ class GASFrameworkOptionCode extends GASFrameworkOption {
 		<script>
 		jQuery(document).ready(function ($) {
 			var container = jQuery('#<?php echo wp_kses_post($this->getID() )?>_ace_editor');
-			container.width( container.parent().width() ).height( <?php echo $this->settings['height'] ?> );
+			container.width( container.parent().width() ).height( <?php echo wp_kses_post($this->settings['height']) ?> );
 
 			var editor = ace.edit( "<?php echo wp_kses_post($this->getID() )?>_ace_editor" );
 			container.css('width', 'auto');
@@ -272,7 +268,7 @@ class GASFrameworkOptionCode extends GASFrameworkOption {
 		</script>
 		<?php
 
-		printf( "<div id='%s_ace_editor'></div>", wp_kses_post($this->getID() ));
+		printf( "<div id='%s_ace_editor'></div>", esc_attr($this->getID()) );
 
 		// The hidden textarea that will hold our contents
 		printf( "<textarea name='%s' id='%s' style='display: none'>%s</textarea>",
@@ -345,10 +341,10 @@ function registerGASFrameworkOptionCodeControl() {
 			?>
 			<script>
 			jQuery(document).ready(function ($) {
-				var container = jQuery('#<?php echo wp_kses_post($this->id) ?>_ace_editor');
-				container.width( container.parent().width() ).height( <?php echo wp_kses_post($this->height) ?> );
+				var container = jQuery('#<?php echo esc_attr($this->id) ?>_ace_editor');
+				container.width( container.parent().width() ).height( <?php echo wp_kses_post($this->height )?> );
 
-				var editor = ace.edit( "<?php echo wp_kses_post($this->id) ?>_ace_editor" );
+				var editor = ace.edit( "<?php echo esc_attr($this->id) ?>_ace_editor" );
 				container.css('width', 'auto');
 				editor.setValue(container.siblings('textarea').val());
 				editor.setTheme("ace/theme/<?php echo wp_kses_post($this->theme) ?>");
@@ -371,10 +367,10 @@ function registerGASFrameworkOptionCodeControl() {
 			printf( "<div id='%s_ace_editor' class='tf-code'></div>", wp_kses_post($this->id) );
 
 			// The hidden textarea that will hold our contents
-			?><textarea <?php $this->link(); ?> style='display: none'><?php echo $this->value() ?></textarea><?php
+			?><textarea <?php $this->link(); ?> style='display: none'><?php echo wp_kses_post($this->value()) ?></textarea><?php
 
 			if ( ! empty( $this->description ) ) {
-				echo "<p class='description'>{$this->description}</p>";
+				echo "<p class='description'>" . wp_kses_post($this->description) . "</p>";
 			}
 
 			?>

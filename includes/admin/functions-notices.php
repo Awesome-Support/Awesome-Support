@@ -237,7 +237,7 @@ class AS_Admin_Notices {
 
 			$url = wpas_do_url( add_query_arg( $_GET, '' ), 'dismiss_notice', array( 'notice_id' => $notice_id ) );
 
-			printf('<div class="%s"><p>%s <a href="%s"><small>(%s)</small></a></p></div>', wp_kses_post($notice[0]), wp_kses_post($notice[1]), esc_url( $url ), esc_html_x( 'Dismiss', 'Dismiss link for admin notices', 'awesome-support' ));
+			printf( '<div class="%s"><p>%s <a href="%s"><small>(%s)</small></a></p></div>', wp_kses_post($notice[0]), wp_kses_post($notice[1]), esc_url( $url ), esc_html_x( 'Dismiss', 'Dismiss link for admin notices', 'awesome-support' ) );
 
 		}
 

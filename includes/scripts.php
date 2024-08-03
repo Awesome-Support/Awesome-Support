@@ -149,10 +149,6 @@ function wpas_register_assets_back_end() {
 	wp_register_script( 'wpas-admin-about-moment', WPAS_URL . 'assets/admin/js/vendor/moment.min.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-about-script', WPAS_URL . 'assets/admin/js/admin-about.js', array( 'jquery' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-optin-script', WPAS_URL . 'assets/admin/js/admin-optin.js', array( 'jquery' ), WPAS_VERSION );
-	wp_localize_script( 'wpas-admin-optin-script', 'WPAS_Optin', array(
-		'nonce' => wp_create_nonce('wpas_admin_optin'), // Créez la nonce et transmettez-la au script
-	));
-
 	wp_register_script( 'wpas-admin-script', WPAS_URL . 'assets/admin/js/admin.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-toolbars-script', WPAS_URL . 'assets/admin/js/admin-toolbars.js', array( 'jquery', 'wpas-select2' ), WPAS_VERSION );
 	wp_register_script( 'wpas-admin-tabletojson', WPAS_URL . 'assets/admin/js/vendor/jquery.tabletojson.min.js', array( 'jquery' ), WPAS_VERSION );
@@ -231,8 +227,7 @@ function wpas_register_assets_back_end() {
 	wp_enqueue_script( 'wpas-admin-wizard-script', WPAS_URL . 'assets/admin/js/admin-wizard.js', array( 'jquery' ), WPAS_VERSION );
 	wp_localize_script( 'wpas-admin-wizard-script', 'WPAS_Wizard', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
-		'about_page' => admin_url( 'edit.php?post_type=ticket&page=wpas-about' ),
-		'nonce' => wp_create_nonce('wpas_admin_wizard'), // Créez la nonce et transmettez-la au script
+		'about_page' => admin_url( 'edit.php?post_type=ticket&page=wpas-about' )
 	));
 
 	// Include magnific popup

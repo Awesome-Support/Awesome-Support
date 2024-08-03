@@ -66,7 +66,7 @@ function registerGASFrameworkOptionTextareaControl() {
 				<textarea class='large-text <?php echo $this->is_code ? 'code' : '' ?>' rows='7' cols='50' <?php $this->link(); ?>><?php echo esc_textarea( stripslashes( $this->value() ) ) ?></textarea>
 			</label>
 			<?php
-			echo wp_kses_post("<p class='description'>{$this->description}</p>");
+			echo "<p class='description'>" . wp_kses_post($this->description) . "</p>";
 		}
 	}
 }

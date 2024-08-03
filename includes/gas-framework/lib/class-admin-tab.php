@@ -75,7 +75,7 @@ class GASFrameworkAdminTab {
 			remove_query_arg( 'message' )
 		);
 		?>
-		<a href="<?php echo esc_url( $url ) ?>" class="nav-tab <?php echo wp_kses_post($this->isActiveTab()) ? 'nav-tab-active' : '' ?>"><?php echo wp_kses_post($this->settings['name']) ?></a>
+		<a href="<?php echo esc_url( $url ) ?>" class="nav-tab <?php echo wp_kses_post($this->isActiveTab() ? 'nav-tab-active' : '') ?>"><?php echo wp_kses_post($this->settings['name']) ?></a>
 		<?php
 	}
 

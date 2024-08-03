@@ -869,7 +869,7 @@ class WPAS_Privacy_Option {
 					<?php
 					$entry_header = wpas_get_option( 'privacy_popup_header', 'Privacy' );
 					if ( ! empty( $entry_header ) ) {
-						echo wp_kses_post('<div class="entry-header">' . wpautop( stripslashes( $entry_header ) ) . '</div>');
+						echo '<div class="entry-header">' . wp_kses(wpautop( stripslashes( $entry_header ) ),get_allowed_html_wp_notifications()) . '</div>';
 					}
 					?>
 					<div class="entry-content">
@@ -922,9 +922,9 @@ class WPAS_Privacy_Option {
 						</div>
 					</div>
 					<?php
-					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' );
+					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' ); 
 					if ( ! empty( $entry_footer ) ) {
-						echo wp_kses_post('<div class="entry-footer">' . wpautop( stripslashes( $entry_footer ) )  . '</div>');
+						echo '<div class="entry-footer">' . wp_kses(wpautop( stripslashes( $entry_footer ) ), get_allowed_html_wp_notifications())  . '</div>';
 					}
 					?>
 				</div> <!--  .entry entry-regular -->

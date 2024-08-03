@@ -155,7 +155,7 @@ class GASFrameworkOptionUpload extends GASFrameworkOption {
 		if ( ! empty( $value ) ) {
 			$previewImage = "<i class='dashicons dashicons-no-alt remove'></i><img src='" . esc_url( $value ) . "' style='display: none'/>";
 		}
-		echo wp_kses_post("<div class='thumbnail tf-image-preview'>" . $previewImage . '</div>');
+		echo "<div class='thumbnail tf-image-preview'>" . wp_kses($previewImage, get_allowed_html_wp_notifications()) . '</div>';
 
 		printf('<input name="%s" placeholder="%s" id="%s" type="hidden" value="%s" />',
 			wp_kses_post($this->getID()),
@@ -367,13 +367,13 @@ function registerGASFrameworkOptionUploadControl() {
 			?>
 			<div class='tf-upload'>
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-				<div class='thumbnail tf-image-preview'><?php echo wp_kses_post($previewImage) ?></div>
+				<div class='thumbnail tf-image-preview'><?php echo wp_kses($previewImage, get_allowed_html_wp_notifications()) ?></div>
 				<input type='hidden' value="<?php echo esc_attr( $this->value() ); ?>" <?php $this->link(); ?>/>
 			</div>
 			<?php
 
 			if ( ! empty( $this->description ) ) {
-				echo wp_kses_post("<p class='description'>{$this->description}</p>");
+				echo wp_kses("<p class='description'>{$this->description}</p>", get_allowed_html_wp_notifications());
 			}
 		}
 	}

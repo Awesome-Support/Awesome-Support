@@ -3455,9 +3455,9 @@ class gasscss_formatter {
 		if (empty($block->lines) && empty($block->children)) return;
 		$inner = $pre = $this->indentStr();
 		if (!empty($block->selectors)) {
-			echo wp_kses_post($pre .
-				implode($this->tagSeparator, $block->selectors) .
-				$this->open . $this->break);
+			echo wp_kses_post($pre) .
+				 wp_kses_post(implode($this->tagSeparator, $block->selectors)) .
+				wp_kses_post($this->open . $this->break);
 			$this->indentLevel++;
 			$inner = $this->indentStr();
 		}
@@ -3698,7 +3698,7 @@ class gasscss_server {
 					echo wp_kses_post($this->compile($input, $output));
 				} catch (Exception $e) {
 					header('HTTP/1.1 500 Internal Server Error');
-					echo wp_kses_post('Parse error: ' . $e->getMessage() . "\n");
+					echo 'Parse error: ' . wp_kses_post($e->getMessage()) . "\n";
 				}
 			} else {
 				header('X-SCSS-Cache: true');

@@ -19,7 +19,7 @@ class GASFrameworkOptionNote extends GASFrameworkOption {
 		$color = $this->settings['color'] == 'green' ? '' : 'error';
 
 		if ( $this->settings['notification'] ) {
-			?><div class='updated below-h2 <?php echo wp_kses_post($color) ?>'><?php
+			?><div class='updated below-h2 <?php echo esc_attr($color) ?>'><?php
 		}
 
 		if ( $this->settings['paragraph'] ) {
@@ -63,7 +63,7 @@ function registerGASFrameworkOptionNoteControl() {
 
 		public function render_content() {
 			if ( ! empty( $this->description ) ) {
-				echo "<p class='description'>" . $this->description . '</p>';
+				echo "<p class='description'>" . wp_kses_post($this->description) . '</p>';
 			}
 		}
 	}

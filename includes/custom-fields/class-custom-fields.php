@@ -16,7 +16,6 @@ class WPAS_Custom_Fields {
 	 */
 	public $options; 
 	public $remove_mb;
-	public $allow_html;
 
 	public function __construct() {
 
@@ -24,36 +23,6 @@ class WPAS_Custom_Fields {
 		 * Array where all custom fields will be stored.
 		 */
 		$this->options = array();
-
-		/**
-		 * Array where html to allow in escaping.
-		 */
-		$this->allow_html = array(
-			'label' => array(
-				'for' => true,
-			),
-			'input' => array(
-				'type' => true,
-				'value' => true,
-				'id' => true,
-				'class' => true,
-				'name' => true,
-				'readonly' => true,
-			),
-			'div' => array(
-				'class' => true,
-				'id' => true,
-			),
-			'select' => array(
-				'name' => true,
-				'class' => true,
-				'id' => true,
-			),
-			'option' => array(
-				'value' => true,
-				'selected' => true,
-			),
-		);
 
 		/**
 		 * Register the taxonomies
@@ -423,7 +392,7 @@ class WPAS_Custom_Fields {
 				}
 
 				/* Render the field */
-				echo $output;
+				echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
 
 				/* add the post-render action hook */
 				if ( ! empty( $field['args']['post_render_action_hook_fe'] ) ) {
@@ -439,6 +408,110 @@ class WPAS_Custom_Fields {
 			}
 		}
 
+	}
+
+	/**
+	 * get_allowed_html_wpas_custom_fields
+	 *
+	 * @return void
+	 */
+	function get_allowed_html_wpas_custom_fields()
+	{
+		return apply_filters(
+			'custom_allowed_html_wpas_custom_fields',
+			[
+				'div' => [
+					'class' => true,
+					'id' => true,
+					'style' => true,
+				], 'ul' => [
+					'class' => true,
+					'id' => true,
+				], 'li' => [
+					'data-tab-order' => true,
+					'rel' => true,
+					'class' => true,
+					'data-hint' => true,
+				], 'select' => [
+					'name' => true,
+					'class' => true,
+					'id' => true,
+					'data-capability' => true,
+					'data-allowClear' => true,
+					'data-placeholder' => true,
+				], 'option' => [
+					'value' => true,
+					'selected' => true,
+				], 'input' => [
+					'type' => true,
+					'value' => true,
+					'id' => true,
+					'class' => true,
+					'name' => true,
+					'readonly' => true,
+					'placeholder' => true,
+					'checked' => true,
+					'style' => true,
+					'accept' => true,
+					'multiple' => true,
+					'aria-label' => true,
+				],  'span' => [
+					'style' => true,
+					'id' => true,
+					'data-ticketid' => true,
+					'class' => true,
+				],  'img' => [
+					'style' => true,
+					'id' => true,
+					'class' => true,
+					'src' => true,
+					'alt' => true,
+					'height' => true,
+					'width' => true,
+				], 'a' => [
+					'href' => true,
+					'class' => true,
+					'id' => true,
+					'data-ticketid' => true,
+					'data-gdpr' => true,
+					'data-user' => true,
+					'data-optout-date' => true,
+				], 'label' => [
+					'for' => true,
+				], 'id' => [
+					'id' => true,
+					'class' => true,
+				], 'button' => [
+					'type' => true,
+					'data-wp-editor-id' => true,
+					'id' => true,
+					'class' => true,
+				], 'form' => [
+					'method' => true,
+					'action' => true,
+					'id' => true,
+					'class' => true,
+					'enctype' => true,
+				],
+				'textarea' => [
+					'type' => true,
+					'autocomplete' => true,
+					'id' => true,
+					'name' => true,
+					'rows' => true,
+					'cols' => true,
+					'class' => true,
+				], 'footer' => [
+					'style' => true,
+					'id' => true,
+					'class' => true,
+				], 'table' => [
+					'style' => true,
+					'id' => true,
+					'class' => true,
+				], 'tr' => [], 'tr' => [ 'id' => true], 'p' => [ 'class' => true, 'id' => true, 'style' => true ], 'code' => [], 'strong' => [], 'td' => ['colspan' => true, 'align' => true, 'width' => true], 'h2' => [], 'br' => [],
+			]
+		);
 	}
 
 	/**
@@ -477,7 +550,8 @@ class WPAS_Custom_Fields {
 					$this_field = new WPAS_Custom_Field( $name, $field );
 					$output     = $this_field->get_output();
 
-					echo $output;
+					echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
+
 				}
 
 			}
@@ -505,7 +579,8 @@ class WPAS_Custom_Fields {
 				$this_field = new WPAS_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
-				echo $output;
+				echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
+
 			}
 		}
 

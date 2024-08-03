@@ -70,7 +70,7 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 	}
 
 	if ( $echo ) {
-		echo ($field);
+		echo wp_kses($field, get_allowed_html_wp_notifications());
 	}
 
 	return $field;

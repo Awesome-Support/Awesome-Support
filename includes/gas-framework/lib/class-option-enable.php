@@ -66,8 +66,8 @@ class GASFrameworkOptionEnable extends GASFrameworkOption {
 		}
 
 		?>
-		<input name="<?php echo wp_kses_post($this->getID()) ?>" type="checkbox" id="<?php echo wp_kses_post($this->getID()) ?>" value="1" <?php checked( $this->getValue(), 1 ) ?>>
-		<span class="button button-<?php echo checked( $this->getValue(), 1, false ) ? 'primary' : 'secondary' ?>"><?php echo wp_kses_post($this->settings['enabled']) ?></span><span class="button button-<?php echo checked( $this->getValue(), 1, false ) ? 'secondary' : 'primary' ?>"><?php echo wp_kses_post($this->settings['disabled']) ?></span>
+		<input name="<?php echo esc_attr($this->getID()) ?>" type="checkbox" id="<?php echo esc_attr($this->getID()) ?>" value="1" <?php checked( $this->getValue(), 1 ) ?>>
+		<span class="button button-<?php echo checked( $this->getValue(), 1, false ) ? 'primary' : 'secondary' ?>"><?php echo wp_kses_post($this->settings['enabled'] )?></span><span class="button button-<?php echo checked( $this->getValue(), 1, false ) ? 'secondary' : 'primary' ?>"><?php echo wp_kses_post($this->settings['disabled']) ?></span>
 		<?php
 
 		// load the javascript to init the colorpicker
@@ -151,7 +151,7 @@ function registerGASFrameworkOptionEnableControl() {
 			</div>
 			<?php
 
-			echo wp_kses_post("<p class='description'>{$this->description}</p>");
+			echo "<p class='description'>" . wp_kses_post($this->description) . "</p>";
 
 			// load the javascript to init the colorpicker
 			if ( self::$firstLoad ) :
