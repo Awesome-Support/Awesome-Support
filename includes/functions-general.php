@@ -618,7 +618,7 @@ function wpas_dropdown( $args, $options ) {
 			echo '<option value="">' . esc_html__( 'Please select', 'awesome-support' ) . '</option>';
 		}
 
-		echo wp_kses($options, ['option'=> [ 'value' => true, 'selected' => true]]);
+		echo $options;
 		?>
 	</select>
 	<?php

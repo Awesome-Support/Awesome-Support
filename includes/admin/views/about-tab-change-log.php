@@ -5,6 +5,15 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.2.2</h1>
+				<h3>6.2.2 Updating security rules for form upload via AJAX</h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.2.1</h1>
 				<h3>6.2.1 We fixed the issue with the user search</h3>
 			</div>

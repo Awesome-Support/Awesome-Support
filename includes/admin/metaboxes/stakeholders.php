@@ -156,27 +156,7 @@ if (! empty( $staff ) ) {
 			) );
 		}
 		$support_staff_dropdown = apply_filters( 'ticket_support_staff_dropdown', $support_staff_dropdown, $post->ID, $staff_id, $staff_name );
-		echo wp_kses($support_staff_dropdown, [
-				'select' => array(
-					'name' => true,
-					'class' => true,
-					'id' => true,
-					'data-capability' => true,
-				),
-				'option' => array(
-					'selected' => true,
-					'value' => true,
-				),
-				'div' => array(
-					'class' => true,
-					'id' => true,
-				),
-				'span' => array(
-					'class' => true,
-					'id' => true,
-				),
-			]
-		);
+		echo $support_staff_dropdown;
 		?>
 	</p>
 </div>
