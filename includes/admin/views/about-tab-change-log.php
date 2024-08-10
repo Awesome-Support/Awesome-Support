@@ -7,6 +7,9 @@
 			<div class="about-body">
 				<h1>What's New In 6.2.3</h1>
 				<h3>6.2.3 Updating security rules for multiple files upload</h3>
+				<ul>
+					<li>We updates security rules tmultiple files upload.</li>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -16,6 +19,9 @@
 			<div class="about-body">
 				<h1>What's New In 6.2.2</h1>
 				<h3>6.2.2 Updating security rules for form upload via AJAX</h3>
+				<ul>
+					<li>We updates security rules to allow form upload via AJAX.</li>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -25,6 +31,9 @@
 			<div class="about-body">
 				<h1>What's New In 6.2.1</h1>
 				<h3>6.2.1 We fixed the issue with the user search</h3>
+				<ul>
+					<li>We updates security rules to allow the user search.</li>
+				</ul>
 			</div>
 		</div>
 	</div>
@@ -34,6 +43,9 @@
 			<div class="about-body">
 				<h1>What's New In 6.2.0</h1>
 				<h3>6.2.0 We fixed security vulnerabilities in all the plugin</h3>
+				<ul>
+					<li>We fixed various security vulnerabilities across all our plugins, enhancing overall protection through improved validation and sanitization.</li>
+				</ul>
 			</div>
 		</div>
 	</div>

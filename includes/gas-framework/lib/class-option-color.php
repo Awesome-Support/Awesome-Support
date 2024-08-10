@@ -137,11 +137,11 @@ function registerGASFrameworkOptionColorControl() {
 			ob_start();
 			$this->content_template();
 			$contents = ob_get_contents();
-			ob_end_clean(); die;
+			ob_end_clean();
 
 			// Modify the template to include our alpha parameter.
 			$contents = str_replace( '<input', '<input {{ alpha }} data-custom-width="0"', $contents );
-			/*?>
+			?>
 			<script type="text/html" id="tmpl-customize-control-color-content-tf">
 			<#
 			var alpha = '';
@@ -149,20 +149,10 @@ function registerGASFrameworkOptionColorControl() {
 				alpha = ' data-alpha=true'; // Quotes added automatically.
 			}
 			#>
-			<?php echo $contents ?>
+			<?php echo esc_js($contents) ?>
 			</script>
-			<?php*/
-
-			echo wp_kses('<script type="text/html" id="tmpl-customize-control-color-content-tf">'
-			 	. '<#'
-			 	. 'var alpha = \'\';'
-			 	. 'if ( data.alpha ) {'
-			 	. 'alpha = \' data-alpha=true\'; // Quotes added automatically.'
-			 	. '}'
-			 	. '#>'
-			    . $contents
-			 	. '</script>', get_allowed_html_wp_notifications());
-
+			<?php
+			
 			// Override the original color content template. Don't use jQuery here since it will be too late
 			// We're sure that the templates have already been printed out
 			// We can't modify the original output, so we just adjust the ID so that we won't use the original one

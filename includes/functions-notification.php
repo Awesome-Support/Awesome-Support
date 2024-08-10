@@ -292,7 +292,11 @@ function get_allowed_html_wp_notifications()
 			], 'ul' => [
 				'class' => true,
 				'id' => true,
-			], 'li' => [
+				'style' => true,
+			], 'ol' => [
+				'class' => true,
+				'id' => true,
+			],'li' => [
 				'data-tab-order' => true,
 				'rel' => true,
 				'class' => true,
@@ -304,6 +308,7 @@ function get_allowed_html_wp_notifications()
 				'data-capability' => true,
 				'data-allowClear' => true,
 				'data-placeholder' => true,
+				'multiple' => true,
 			], 'option' => [
 				'value' => true,
 				'selected' => true,
@@ -345,6 +350,8 @@ function get_allowed_html_wp_notifications()
 				'data-gdpr' => true,
 				'data-user' => true,
 				'data-optout-date' => true,
+				'data-onsubmit' => true,
+				'target' => true,
 			], 'label' => [
 				'for' => true,
 			], 'id' => [
@@ -354,6 +361,7 @@ function get_allowed_html_wp_notifications()
 				'type' => true,
 				'data-wp-editor-id' => true,
 				'id' => true,
+				'data-onsubmit' => true,
 				'class' => true,
 			], 'form' => [
 				'method' => true,
@@ -378,7 +386,7 @@ function get_allowed_html_wp_notifications()
 				'style' => true,
 				'id' => true,
 				'class' => true,
-			], 'tr' => [], 'tr' => [ 'id' => true], 'p' => [ 'class' => true, 'id' => true, 'style' => true ], 'code' => [], 'strong' => [], 'td' => ['colspan' => true, 'align' => true, 'width' => true], 'h2' => [], 'br' => [],
+			], 'tr' => [], 'b' => [], 'em' => [], 'h1' => [], 'h2' => [],'h3' => [],'h4' => [], 'h5' => [], 'tr' => [ 'id' => true], 'p' => [ 'class' => true, 'id' => true, 'style' => true ], 'code' => [], 'strong' => [], 'td' => ['colspan' => true, 'class' => true, 'style' => true, 'align' => true, 'width' => true], 'h2' => [], 'br' => [],
 		]
 	);
 }

@@ -114,11 +114,11 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 			$this->echoOptionHeader();
 
 			printf( '<input class="regular-text" name="%s" placeholder="%s" id="%s" type="%s" value="%s" />',
-				wp_kses_post($this->getID()),
-				wp_kses_post($this->settings['placeholder']),
-				wp_kses_post($this->getID()),
-				wp_kses_post($this->settings['is_password'] ? 'password' : 'text'),
-				wp_kses_post($license) );
+				esc_attr($this->getID()),
+				esc_attr($this->settings['placeholder']),
+				esc_attr($this->getID()),
+				esc_attr($this->settings['is_password'] ? 'password' : 'text'),
+				esc_attr($license) );
 
 			/* If the license is set, we display its status and check it if necessary. */
 			if ( strlen( $license ) > 0 ) {

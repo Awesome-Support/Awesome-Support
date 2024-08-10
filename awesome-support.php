@@ -352,7 +352,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		public function display_error() {
-			die(57);
 			if ( ! is_a( $this->error, 'WP_Error' ) ) {
 				return;
 			}

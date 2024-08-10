@@ -34,7 +34,8 @@
     function dismiss_free_addon_page() {
 
         var data = {
-            action: 'wpas_dismiss_free_addon_page'
+            action: 'wpas_dismiss_free_addon_page',
+            nonce: WPAS_Optin.nonce,
         };
 
         jQuery.ajax({

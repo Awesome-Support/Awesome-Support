@@ -546,12 +546,12 @@ class WPAS_Tickets_List {
 								}
 							}
 							
-							echo wp_kses_post(_x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' ));
+							echo esc_html(_x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' ));
 							echo '<br>';
-							printf( wp_kses_post(_x( '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' )), wp_kses_post(add_query_arg( array(
+							printf( wp_kses_post(_x( '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' )), esc_url(add_query_arg( array(
 								                                                                                                                                                                 'post'   => $post_id,
 								                                                                                                                                                                 'action' => 'edit',
-							                                                                                                                                                                 ), admin_url( 'post.php' ) )) . '#wpas-post-' . wp_kses_post($last_reply->ID), wp_kses_post(human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) )), '<a href="' . wp_kses_post($last_user_link) . '">' . wp_kses_post($user_nicename) . '</a>', wp_kses_post($role) );
+							                                                                                                                                                                 ), admin_url( 'post.php' ) )) . '#wpas-post-' . esc_attr($last_reply->ID), esc_html(human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) )), '<a href="' . esc_url($last_user_link) . '">' . esc_html($user_nicename) . '</a>', esc_html($role) );
 						}
 
 						// Add open date

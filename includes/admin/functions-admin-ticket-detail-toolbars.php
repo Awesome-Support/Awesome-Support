@@ -183,6 +183,7 @@ function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, 
 				'id' => true,
 				'data-ticketid' => true,
 				'class' => true,
+				'data-hint' => true,
 			],  'img' => [
 				'style' => true,
 				'id' => true,

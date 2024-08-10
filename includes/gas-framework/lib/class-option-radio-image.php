@@ -39,10 +39,10 @@ class GASFrameworkOptionRadioImage extends GASFrameworkOption {
 			if ( $value == '' ) {
 				$value = $key;
 			}
-			printf( wp_kses_post($template, [ 'labal' => [ 'id' => true], 'input' => [ 'id' => true, 'type' => true, 'name' => true, 'value' => true, 'checked' => true ], 'span' => [ 'class' => true ], 'img' => [ 'src' => true]]),
-				wp_kses_post($this->getID() . $key),
-				wp_kses_post($this->getID() . $key),
-				wp_kses_post($this->getID()),
+			printf( wp_kses($template, [ 'label' => [ 'id' => true], 'input' => [ 'id' => true, 'type' => true, 'name' => true, 'value' => true, 'checked' => true ], 'span' => [ 'class' => true ], 'img' => [ 'src' => true]]),
+				esc_attr($this->getID() . $key),
+				esc_attr($this->getID() . $key),
+				esc_attr($this->getID()),
 				esc_attr( $key ),
 				checked( $value, $key, false ),
 				esc_attr( $imageURL )

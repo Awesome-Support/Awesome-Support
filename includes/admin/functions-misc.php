@@ -23,8 +23,7 @@ add_filter('plugin_action_links_' . WPAS_PLUGIN_BASENAME, 'wpas_settings_page_li
  *
  * @return array        Links with the settings
  */
-function wpas_settings_page_link($links)
-{
+function wpas_settings_page_link($links) {
 
 	$link    = wpas_get_settings_page_url();
 	$links[] = "<a href='$link'>" . __('Settings', 'awesome-support') . "</a>";
@@ -40,8 +39,7 @@ add_filter('postbox_classes_ticket_wpas-mb-details', 'wpas_add_metabox_details_c
  *
  * @return array The updated list of classes
  */
-function wpas_add_metabox_details_classes($classes)
-{
+function wpas_add_metabox_details_classes($classes) {
 	array_push($classes, 'submitdiv');
 
 	return $classes;
@@ -56,8 +54,7 @@ add_action('admin_notices', 'wpas_admin_notices');
  * @since  3.0.0
  * @return void
  */
-function wpas_admin_notices()
-{
+function wpas_admin_notices() {
 
 	if (isset($_GET['wpas-message'])) {
 
@@ -94,16 +91,14 @@ add_filter('wpas_toolbar_ticket_reply', 'wpas_ticket_reply_controls', 10, 3);
  *
  * @return array
  */
-function wpas_ticket_reply_controls($controls, $ticket_id, $reply)
-{
+function wpas_ticket_reply_controls($controls, $ticket_id, $reply) {
 
 	if (0 !== $ticket_id) {
 
 		// Create a delete link and then add the delete reply icon.
 		if (((true === boolval(wpas_get_option('agent_delete_own_reply', false)) && get_current_user_id() == $reply->post_author))
 			|| true === wpas_is_asadmin()
-			|| true === wpas_current_role_in_list(wpas_get_option('roles_delete_all_replies', ''))
-		) {
+			|| true === wpas_current_role_in_list(wpas_get_option('roles_delete_all_replies', '')) ) {
 
 			// Create delete link
 			$_GET['del_id'] = $reply->ID;
@@ -130,8 +125,7 @@ function wpas_ticket_reply_controls($controls, $ticket_id, $reply)
 		/* Add edit reply icon */
 		if (((true === boolval(wpas_get_option('agent_edit_own_reply', false)) && get_current_user_id() == $reply->post_author))
 			|| true === wpas_is_asadmin()
-			|| true === wpas_current_role_in_list(wpas_get_option('roles_edit_all_replies', ''))
-		) {
+			|| true === wpas_current_role_in_list(wpas_get_option('roles_edit_all_replies', '')) ) {
 
 			$controls['edit_reply'] = array(
 				'tool_tip_text' => esc_html_x('Edit', 'Link to edit a ticket reply', 'awesome-support'),
@@ -194,8 +188,7 @@ function wpas_ticket_reply_controls($controls, $ticket_id, $reply)
  *
  * @return boolean          True if the ticket is old, false otherwise
  */
-function wpas_is_ticket_old($post_id, $replies = null)
-{
+function wpas_is_ticket_old($post_id, $replies = null) {
 
 	if ('closed' === wpas_get_ticket_status($post_id)) {
 		return false;
@@ -251,8 +244,7 @@ function wpas_is_ticket_old($post_id, $replies = null)
  *
  * @return boolean          True if a reply is needed, false otherwise
  */
-function wpas_is_reply_needed($post_id, $replies = null)
-{
+function wpas_is_reply_needed($post_id, $replies = null) {
 
 	if ('closed' === wpas_get_ticket_status($post_id)) {
 		return false;
@@ -305,8 +297,7 @@ function wpas_is_reply_needed($post_id, $replies = null)
  *
  * @return boolean       True if the ticket is a ticket template, false otherwise
  */
-function wpas_is_ticket_template($post_id)
-{
+function wpas_is_ticket_template($post_id) {
 	return boolval(get_post_meta($post_id, '_wpas_is_ticket_template', true));
 }
 
@@ -319,8 +310,7 @@ function wpas_is_ticket_template($post_id)
  *
  * @return date|string  Close date of ticket, an empty string otherwise
  */
-function wpas_get_close_date($post_id)
-{
+function wpas_get_close_date($post_id) {
 
 	$close_date = get_post_meta($post_id, '_ticket_closed_on', true);
 
@@ -340,8 +330,7 @@ function wpas_get_close_date($post_id)
  *
  * @return date|string  Close date of ticket, an empty string otherwise
  */
-function wpas_get_close_date_gmt($post_id)
-{
+function wpas_get_close_date_gmt($post_id) {
 
 	$close_date = get_post_meta($post_id, '_ticket_closed_on_gmt', true);
 
@@ -361,8 +350,7 @@ function wpas_get_close_date_gmt($post_id)
  *
  * @return date|string  open date of ticket, an empty string otherwise
  */
-function wpas_get_open_date($post_id)
-{
+function wpas_get_open_date($post_id) {
 
 	// Return if not a ticket...
 	if ('ticket' <> get_post_type($post_id)) {
@@ -389,8 +377,7 @@ function wpas_get_open_date($post_id)
  *
  * @return date|string  open date of ticket, an empty string otherwise
  */
-function wpas_get_open_date_gmt($post_id)
-{
+function wpas_get_open_date_gmt($post_id) {
 
 	// Return if not a ticket...
 	if ('ticket' <> get_post_type($post_id)) {
@@ -419,8 +406,7 @@ function wpas_get_open_date_gmt($post_id)
  *
  * @return string  difference between two dates, an empty string otherwise
  */
-function wpas_get_date_diff_string($firstdate, $seconddate)
-{
+function wpas_get_date_diff_string($firstdate, $seconddate) {
 
 	// Calculate difference object...
 	$date1 = new DateTime($firstdate);
@@ -445,8 +431,7 @@ add_filter('admin_footer_text', 'wpas_admin_footer_text', 999, 1);
  *
  * @return string
  */
-function wpas_admin_footer_text($text)
-{
+function wpas_admin_footer_text($text) {
 
 	if (!is_admin() || !wpas_is_plugin_page()) {
 		return $text;
@@ -468,8 +453,7 @@ function wpas_admin_footer_text($text)
  * @since 3.3.3
  * @return bool
  */
-function wpas_is_free_addon_page_dismissed()
-{
+function wpas_is_free_addon_page_dismissed() {
 	return (bool) get_option('wpas_dismiss_free_addon_page', false);
 }
 
@@ -483,8 +467,7 @@ add_action('plugins_loaded', 'wpas_free_addon_notice');
  * @since 3.3.3
  * @return void
  */
-function wpas_free_addon_notice()
-{
+function wpas_free_addon_notice() {
 
 	// Do not show message if installed in an SAAS environment
 	if (defined('WPAS_SAAS') && true === WPAS_SAAS) {
@@ -526,8 +509,7 @@ add_action('plugins_loaded', 'wpas_request_first_5star_rating');
  * @since 4.0.0
  * @return void
  */
-function wpas_request_first_5star_rating()
-{
+function wpas_request_first_5star_rating() {
 
 	// Do not show message if installed in an SAAS environment
 	if (defined('WPAS_SAAS') && true === WPAS_SAAS) {
@@ -570,8 +552,7 @@ function wpas_request_first_5star_rating()
  *
  * @return string
  */
-function wpas_admin_tabs($type, $tabs = array())
-{
+function wpas_admin_tabs($type, $tabs = array()) {
 
 	// Unique tabs widget id
 	$id = "wpas_admin_tabs_{$type}";
@@ -639,8 +620,7 @@ add_action('wpas_admin_after_wysiwyg', 'reply_tabs', 8, 0);
 /**
  * Add tabs under reply wysiwyg editor
  */
-function reply_tabs()
-{
+function reply_tabs() {
 
 	$tabs_content = wpas_admin_tabs('after_reply_wysiwyg');
 	echo wp_kses($tabs_content, get_allowed_html_wp_notifications());
@@ -650,8 +630,7 @@ function reply_tabs()
  * If a session has already been started by some external system, end one!
  * Added this functionality due to new site health check system added by WordPress.org.
  */
-function wpas_end_session()
-{
+function wpas_end_session() {
 	if (session_status() === PHP_SESSION_ACTIVE) {
 		session_write_close();
 	}
