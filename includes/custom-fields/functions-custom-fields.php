@@ -111,7 +111,7 @@ function wpas_get_cf_value( $name, $post_id, $default = false ) {
  * @since  3.0.0
  */
 function wpas_cf_value( $name, $post_id, $default = false ) {
-	echo wp_kses(wpas_get_cf_value( $name, $post_id, $default, get_allowed_html_wp_notifications()));
+	echo wp_kses(wpas_get_cf_value( $name, $post_id, $default ), get_allowed_html_wp_notifications());
 }
 
 /**
