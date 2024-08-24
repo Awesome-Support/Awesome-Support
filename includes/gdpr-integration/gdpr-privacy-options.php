@@ -218,7 +218,7 @@ class WPAS_Privacy_Option {
 			        )
 			    ),
 			    'date_query' => array(
-					'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days') )
+					'before' => gmdate('Y-m-d', strtotime('-' . $cronjob_max_age . ' days') )
 				)
 			);
 
@@ -282,7 +282,10 @@ class WPAS_Privacy_Option {
 								);
 								wp_update_post( $arg );
 								update_post_meta( $ticket_id, 'is_anonymize', true );
-								$messages = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+
+								// translators: %s is the ticket id.
+								$x_content = __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' );
+								$messages = sprintf( $x_content, (string) $ticket_id ) ;
 								wpas_write_log( 'anonymize_ticket', $messages );
 
 								//2b. Now handle the replies
@@ -312,13 +315,21 @@ class WPAS_Privacy_Option {
 									);
 									wp_update_post( $arg );
 									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
-									$messages = sprintf( __( 'Anonymize Reply on Awesome Support Ticket #: %s. The reply id is: %s', 'awesome-support' ), (string) $ticket_id, (string) $post->ID ) ;
+
+									// translators: %1$s is the ticket number, %2$s is the reply ID.
+									$x_content = __( 'Anonymize Reply on Awesome Support Ticket #: %1$s. The reply ID is: %2$s', 'awesome-support' );
+
+									$messages = sprintf( $x_content, (string) $ticket_id, (string) $post->ID ) ;
 									wpas_write_log( 'anonymize_ticket', $messages );
 								}
 							} else{
 								if ( wp_delete_post( $ticket_id, true ) ) {
 									$items_removed = true;
-									$messages = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+
+									// translators: %s is the ticket id.
+									$x_content = __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' );
+
+									$messages = sprintf( $x_content, (string) $ticket_id ) ;
 									wpas_write_log( 'anonymize_ticket_delete', $messages );
 								}
 							}
@@ -390,7 +401,7 @@ class WPAS_Privacy_Option {
 							if( !empty( $consent_name ) ){
 								?>
 								<tr>
-									<td class="row-title"><label for="tablecell"><?php esc_html_e( $consent_name , 'awesome-support' ); ?></label></td>
+									<td class="row-title"><label for="tablecell"><?php esc_html( $consent_name ); ?></label></td>
 									<td>
 										<?php
 											$opt_in = array(
@@ -406,7 +417,11 @@ class WPAS_Privacy_Option {
 										);
 										?>
 										<a href="<?php echo esc_url( wpas_tool_link( 'add_user_consent', $opt_out ) ); ?>" class="button-secondary"><?php esc_html_e( 'OPT-OUT', 'awesome-support' ); ?></a>
-										<span class="wpas-system-tools-desc"><?php esc_html_e( 'Set ' . $consent_name . ' Consent status for all Awesome support Users', 'awesome-support' ); ?></span>
+										<span class="wpas-system-tools-desc">
+											<?php 
+												// translators: %s is the consent_name.
+												sprintf( esc_html_e( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ), $consent_name); 
+											?></span>
 									</td>
 								</tr>
 								<?php
@@ -557,15 +572,22 @@ class WPAS_Privacy_Option {
 
 									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
 								}
-								$messages[] = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+
+								// translators: %s is the ticket id.
+								$x_content = __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' );
+								$messages[] = sprintf( $x_content, (string) $ticket_id ) ;
 							} else{
 								if ( wp_delete_post( $ticket_id, true ) ) {
 									$items_removed = true;
-									$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+									// translators: %s is the ticket id.
+									$x_content =  __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' );
+									$messages[] = sprintf( $x_content, (string) $ticket_id ) ;
 								}
 							}
 						} else {
-							$messages[] = sprintf( __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' ), (string) $ticket_id ) ;
+							// translators: %s is the ticket id.
+							$x_content = __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' );
+							$messages[] = sprintf( $x_content, (string) $ticket_id ) ;
 							$messages = array_merge( $messages, $wpas_pe_msgs['messages'] ) ;
 						}
 
@@ -753,7 +775,8 @@ class WPAS_Privacy_Option {
 									foreach ( $value as $reply_key => $reply_data ) {
 										$reply_count ++;
 										if( isset( $reply_data['content'] ) && !empty( $reply_data['content'] )){
-											$name = __( 'Reply ' . $reply_count . ' Content', 'awesome-support' );
+											// translators: %s is the number of reply.
+											$name = sprintf(__( 'Reply %s Content', 'awesome-support' ), $reply_count);
 											if ( ! empty( $value ) ) {
 												$user_data_to_export[] = array(
 													'name'  => $name,
@@ -783,7 +806,7 @@ class WPAS_Privacy_Option {
 
 					$data_to_export[] = array(
 						'group_id'    => 'ticket_' . $item_id,
-						'group_label' => __( $ticket['subject'], 'awesome-support' ),
+						'group_label' => $ticket['subject'],
 						'item_id'     => $item_id,
 						'data'        => $user_data_to_export,
 					);
@@ -1101,7 +1124,7 @@ class WPAS_Privacy_Option {
 			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ), '', $current_user );
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-in', 'awesome-support' );
-			$response['message']['date']    = date( 'm/d/Y', $opt_in );
+			$response['message']['date']    = gmdate( 'm/d/Y', $opt_in );
 			$response['message']['status']    = $status;
 			/**
 			 * return buttons markup based on settings
@@ -1170,7 +1193,7 @@ class WPAS_Privacy_Option {
 
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-out', 'awesome-support' );
-			$response['message']['date']    = date( 'm/d/Y', $opt_out );
+			$response['message']['date']    = gmdate( 'm/d/Y', $opt_out );
 			$response['message']['status']    = $status;
 			$response['message']['button']  = sprintf(
 				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',

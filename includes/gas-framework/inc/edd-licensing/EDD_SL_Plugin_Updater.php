@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @author Pippin Williamson
  * @version 1.6.4
  */
-class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
+class GASF_EDD_SL_Plugin { // Namespaced to PBS for error protection
 
 	private $api_url     = '';
 	private $api_data    = array();
@@ -194,16 +194,23 @@ class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
 			$changelog_link = self_admin_url( 'index.php?edd_sl_action=view_plugin_changelog&plugin=' . $this->name . '&slug=' . $this->slug . '&TB_iframe=true&width=772&height=911' );
 
 			if ( empty( $version_info->download_link ) ) {
+				// translators: %1$s is the name of the item with the new version, %2$s is the link text to view version details, %3$s is the version number, %4$s is the link closure or additional attributes.
+				$x_content = __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'easy-digital-downloads' );
+
 				printf(
-					wp_kses_post(__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'easy-digital-downloads' )),
+					wp_kses_post( $x_content),
 					esc_html( $version_info->name ),
 					'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
 					esc_html( $version_info->new_version ),
 					'</a>'
 				);
 			} else {
+
+				// translators: %1$s is the name of the item with the new version, %2$s is the link to view version details, %3$s is the version number, %4$s is the link closure for version details, %5$s is the link to update now, %6$s is the link closure for update now.
+				$x_content = __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'easy-digital-downloads' );
+
 				printf(
-					wp_kses_post(__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'easy-digital-downloads' )),
+					wp_kses_post($x_content),
 					esc_html( $version_info->name ),
 					'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
 					esc_html( $version_info->new_version ),

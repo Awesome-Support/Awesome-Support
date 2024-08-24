@@ -12,6 +12,12 @@ function wpas_core_settings_general( $def ) {
 	$user_registration = boolval( get_option( 'users_can_register' ) );
 	$registration_lbl  = ( true === $user_registration ) ? _x( 'allowed', 'User registration is allowed', 'awesome-support' ) : _x( 'not allowed', 'User registration is not allowed', 'awesome-support' );
 
+	// translators: %s is the shortcode value.
+	$desc = __( 'The page used for ticket submission. This page should contain the shortcode %s', 'awesome-support' );
+
+	// translators: %s is the shortcode value.
+	$desc1 = __( 'The page that will list all tickets for a client. This page should contain the shortcode %s', 'awesome-support' );
+	
 	$settings = array(
 		'general' => array(
 			'name'    => __( 'General', 'awesome-support' ),
@@ -182,7 +188,7 @@ function wpas_core_settings_general( $def ) {
 					'id'       => 'ticket_submit',
 					'type'     => 'select',
 					'multiple' => true,
-					'desc'     => sprintf( __( 'The page used for ticket submission. This page should contain the shortcode %s', 'awesome-support' ), '<code>[ticket-submit]</code>' ),
+					'desc'     => sprintf( $desc, '<code>[ticket-submit]</code>' ),
 					'options'  => wpas_list_pages(),
 					'default'  => ''
 				),
@@ -191,7 +197,7 @@ function wpas_core_settings_general( $def ) {
 					'id'       => 'ticket_list',
 					'type'     => 'select',
 					'multiple' => false,
-					'desc'     => sprintf( __( 'The page that will list all tickets for a client. This page should contain the shortcode %s', 'awesome-support' ), '<code>[tickets]</code>' ),
+					'desc'     => sprintf( $desc1, '<code>[tickets]</code>' ),
 					'options'  => wpas_list_pages(),
 					'default'  => ''
 				),

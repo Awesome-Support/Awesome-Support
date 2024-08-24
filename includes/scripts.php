@@ -424,6 +424,12 @@ function wpas_get_javascript_object() {
 	} else {
 		$empty_editor = _x( "You can't submit an empty reply", 'JavaScript validation error message', 'awesome-support' );
 	}
+	
+	// translators: %d is the maximum number of files.
+	$fileUploadMaxError =  sprintf( __('You can only upload a maximum of %d files', 'awesome-support' ), $upload_max_files );
+
+	// translators: %d is the maximum size of files.
+	$x_content = __( 'The maximum file size allowed for one file is %d MB', 'awesome-support' );
 
 	$object = array(
 		'ajaxurl'                => admin_url( 'admin-ajax.php' ),
@@ -431,10 +437,10 @@ function wpas_get_javascript_object() {
 		'useAutolinker'          => true === boolval( wpas_get_option( 'use_autolinker', true ) ) ? 'true' : 'false',
 		'fileUploadMax'          => $upload_max_files,
 		'fileUploadSize'         => $upload_max_size * 1048576, // We base our calculation on binary prefixes
-		'fileUploadMaxError'     => __( sprintf( 'You can only upload a maximum of %d files', $upload_max_files ), 'awesome-support' ),
+		'fileUploadMaxError'     => $fileUploadMaxError,
 		'fileUploadMaxSizeError' => array(
 			__( 'The following file(s) are too big to be uploaded:', 'awesome-support' ),
-			sprintf( __( 'The maximum file size allowed for one file is %d MB', 'awesome-support' ), $upload_max_size )
+			sprintf( $x_content, $upload_max_size )
 		),
 		'translations' => array(
 			'emptyEditor' => $empty_editor,

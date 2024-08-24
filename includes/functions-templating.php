@@ -441,8 +441,9 @@
 		do_action( 'wpas_ticket_details_reply_form_before' );
 
 		if ( 'closed' === $status ):
-
-			echo wp_kses(wpas_get_notification_markup( 'info', sprintf( __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'awesome-support' ), wpas_get_reopen_url() ) ), get_allowed_html_wp_notifications());
+			// translators: %s is the URL to re-open the ticket.
+			$x_content = __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'awesome-support' );
+			echo wp_kses(wpas_get_notification_markup( 'info', sprintf( $x_content, wpas_get_reopen_url() ) ), get_allowed_html_wp_notifications());
 
 		/**
 		 * Check if the ticket is currently open and if the current user
@@ -558,7 +559,9 @@
 		 * This case is an agent viewing the ticket from the front-end. All actions are tracked in the back-end only, that's why we prevent agents from replying through the front-end.
 		 */
 		elseif ( 'open' === $status && false === wpas_can_reply_ticket() ):
-			echo wp_kses(wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' ), add_query_arg( array(
+			// translators: %s is the URL to the admin panel.
+			$x_content = __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' );
+			echo wp_kses(wpas_get_notification_markup( 'info', sprintf( $x_content, add_query_arg( array(
 				'post'   => $post_id,
 				'action' => 'edit',
 			), admin_url( 'post.php' ) ) ) ), get_allowed_html_wp_notifications());
@@ -1146,7 +1149,9 @@
 
 		$term = array_shift( $terms ); // Will get first term, and remove it from $terms array
 
-		$label = __( $term->name, 'awesome-support' );
+		// translators: %s is the taxomany.
+		$label = __( '%s.', 'awesome-support' );
+		$label = sprintf($label, $term->name);
 		$color = get_term_meta( $term->term_id, 'color', true );
 		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
@@ -1179,7 +1184,9 @@
 
 		$term = array_shift( $terms ); // Will get first term, and remove it from $terms array
 
-		$label = __( $term->name, 'awesome-support' );
+		// translators: %s is the taxomany.
+		$label = __( '%s.', 'awesome-support' );
+		$label = sprintf($label, $term->name);
 		$color = get_term_meta( $term->term_id, 'color', true );
 		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
@@ -1394,7 +1401,11 @@
 
 		if ( empty( $terms ) ) {
 			return;
-		}
+		}	
+
+		// translators: %1$s and %2$s are the opening and closing HTML tags around "terms and conditions".
+		$x_options = __( 'I accept the %1$sterms and conditions%2$s', 'awesome-support' );
+
 
 		$terms = new WPAS_Custom_Field( 'terms', array(
 			'name' => 'terms',
@@ -1402,7 +1413,7 @@
 				'required'   => true,
 				'field_type' => 'checkbox',
 				'sanitize'   => 'sanitize_text_field',
-				'options'    => array( '1' => sprintf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ) ),
+				'options'    => array( '1' => sprintf( $x_options, '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ) ),
 			),
 		) );
 

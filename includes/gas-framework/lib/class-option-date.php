@@ -37,7 +37,7 @@ class GASFrameworkOptionDate extends GASFrameworkOption {
 		add_action( 'admin_head', array( __CLASS__, 'createCalendarScript' ) );
 
 		if ( empty( self::$date_epoch ) ) {
-			self::$date_epoch = date( 'Y-m-d', 0 );
+			self::$date_epoch = gmdate( 'Y-m-d', 0 );
 		}
 	}
 
@@ -177,7 +177,7 @@ class GASFrameworkOptionDate extends GASFrameworkOption {
 			esc_attr($this->getID()),
 			esc_attr($placeholder),
 			esc_attr($this->getID()),
-			esc_attr( $this->getValue() > 0 ? date( $dateFormat, $this->getDateValueInTime() ) : '' ),
+			esc_attr( $this->getValue() > 0 ? gmdate( $dateFormat, $this->getDateValueInTime() ) : '' ),
 			wp_kses_post($this->settings['desc'])
 		);
 		$this->echoOptionFooter( false );

@@ -45,7 +45,7 @@
                 ?>
             </td>
             <td>
-                <?php echo esc_html( date( get_option( 'date_format' ), strtotime( $ticket->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $ticket->post_date ) ) ); ?>
+                <?php echo esc_html( gmdate( get_option( 'date_format' ), strtotime( $ticket->post_date ) ) . ' ' . gmdate( get_option( 'time_format' ), strtotime( $ticket->post_date ) ) ); ?>
             </td>
         </tr>
     </table>
@@ -54,7 +54,7 @@
         <tr>
             <td>
                 <strong><?php echo esc_html( $user ); ?></strong>,
-                <?php echo esc_html( date( get_option( 'date_format' ), strtotime( $ticket->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $ticket->post_date ) ) ); ?>
+                <?php echo esc_html( gmdate( get_option( 'date_format' ), strtotime( $ticket->post_date ) ) . ' ' . gmdate( get_option( 'time_format' ), strtotime( $ticket->post_date ) ) ); ?>
             </td>
         </tr>
         <tr>
@@ -102,7 +102,7 @@
                     <tr>
                         <td>
                             <strong><?php echo esc_html( $user_name ); ?></strong>,
-                            <?php echo esc_html( date( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $reply->post_date ) ) ); ?>
+                            <?php echo esc_html( gmdate( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . gmdate( get_option( 'time_format' ), strtotime( $reply->post_date ) ) ); ?>
                         </td>
                     </tr>
                     <tr>
@@ -118,7 +118,7 @@
                     <tr>
                         <td>
                             <strong><?php echo esc_html( $user_name ); ?></strong>,
-                            <?php echo esc_html( date( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . date( get_option( 'time_format' ), strtotime( $reply->post_date ) ) ); ?>
+                            <?php echo esc_html( gmdate( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . gmdate( get_option( 'time_format' ), strtotime( $reply->post_date ) ) ); ?>
                             <?php if ( $reply->post_type == 'ticket_note' ) printf( ' - <strong>%s</strong>', esc_html__( 'Private note', 'awesome-support' ) ); ?>
                         </td>
                     </tr>

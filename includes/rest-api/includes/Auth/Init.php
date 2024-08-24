@@ -94,12 +94,12 @@ class Init {
 				unset( $item['raw'] );
 				unset( $item['password'] );
 
-				$item['created'] = date( get_option( 'date_format', 'r' ), $item['created'] );
+				$item['created'] = gmdate( get_option( 'date_format', 'r' ), $item['created'] );
 
 				if ( empty( $item['last_used'] ) ) {
 					$item['last_used'] =  '—';
 				} else {
-					$item['last_used'] = date( get_option( 'date_format', 'r' ), $item['last_used'] );
+					$item['last_used'] = gmdate( get_option( 'date_format', 'r' ), $item['last_used'] );
 				}
 
 				if ( empty( $item['last_ip'] ) ) {
@@ -132,7 +132,7 @@ class Init {
 
 		// Some tidying before we return it.
 		$new_item['slug']      = User::password_unique_slug( $new_item );
-		$new_item['created']   = date( get_option( 'date_format', 'r' ), $new_item['created'] );
+		$new_item['created']   = gmdate( get_option( 'date_format', 'r' ), $new_item['created'] );
 		$new_item['last_used'] = '—';
 		$new_item['last_ip']   = '—';
 		unset( $new_item['password'] );
@@ -326,8 +326,11 @@ class Init {
 					<div class="app-pass-dialog notification-dialog">
 						<div class="new-wpas-api-password-content">
 							<?php
+							// translators: %1$s is the application name, %2$s is the new password.
+							$x_content = _x( 'Your new password for %1$s is: %2$s', 'application, password' );
+
 							printf(
-								esc_html_x( 'Your new password for %1$s is: %2$s', 'application, password' ),
+								esc_html($x_content),
 								'<strong>{{ data.name }}</strong>',
 								'<kbd>{{ data.password }}</kbd>'
 							);

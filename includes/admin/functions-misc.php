@@ -55,15 +55,21 @@ add_action('admin_notices', 'wpas_admin_notices');
  * @return void
  */
 function wpas_admin_notices() {
-
+	
 	if (isset($_GET['wpas-message'])) {
+
+		// translators: %s is the ticket id.
+		$x_content1 = __('The ticket #%s has been (re)opened.', 'awesome-support');
+
+		// translators: %s is the ticket id.
+		$x_content2 = __('The ticket #%s has been closed.', 'awesome-support');
 
 		switch ($_GET['wpas-message']) {
 
 			case 'opened':
 ?>
 				<div class="updated">
-					<p><?php printf(esc_html__('The ticket #%s has been (re)opened.', 'awesome-support'), intval($_GET['post'])); ?></p>
+					<p><?php printf(esc_html($x_content1), intval($_GET['post'])); ?></p>
 				</div>
 			<?php
 				break;
@@ -71,7 +77,7 @@ function wpas_admin_notices() {
 			case 'closed':
 			?>
 				<div class="updated">
-					<p><?php printf(esc_html__('The ticket #%s has been closed.', 'awesome-support'), intval($_GET['post'])); ?></p>
+					<p><?php printf(esc_html($x_content2), intval($_GET['post'])); ?></p>
 				</div>
 	<?php
 				break;
@@ -443,7 +449,9 @@ function wpas_admin_footer_text($text) {
 	}
 
 	if (!boolval(wpas_get_option('remove_admin_ratings_request', false))) {
-		return sprintf(__('If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support'), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733 ');
+		// translators: %1$s is the HTML attribute for the link, %2$s is the rating (e.g., star) the user is asked to leave.
+		$x_content = __('If you like Awesome Support <a %1$s>please leave us a %2$s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support');
+		return sprintf($x_content, 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733 ');
 	}
 }
 
@@ -494,7 +502,10 @@ function wpas_free_addon_notice() {
 		return;
 	}
 
-	WPAS()->admin_notices->add_notice('updated', 'wpas_get_free_addon', wp_kses(sprintf(__('Hey! Did you know you can get a <strong>free add-on for unlimited sites</strong> (a $61.00 USD value) for Awesome Support? <a href="%1$s">Click here to read more</a>.', 'awesome-support'), add_query_arg(array(
+	// translators: %1$s is the URL for more information about the free add-on.
+	$x_content = __('Hey! Did you know you can get a <strong>free add-on for unlimited sites</strong> (a $61.00 USD value) for Awesome Support? <a href="%1$s">Click here to read more</a>.', 'awesome-support');
+
+	WPAS()->admin_notices->add_notice('updated', 'wpas_get_free_addon', wp_kses(sprintf($x_content, add_query_arg(array(
 		'post_type' => 'ticket',
 		'page'      => 'wpas-optin',
 	), admin_url('edit.php'))), array('strong' => array(), 'a' => array('href' => array()))));
@@ -537,8 +548,11 @@ function wpas_request_first_5star_rating() {
 	// Show notice if number of closed tickets greater than 25.
 	if ($closed_tickets >= 25) {
 
+		// translators: %1$s is the URL where users can leave a rating.
+		$x_content = __('Wow! It looks like you have closed a lot of tickets which is pretty awesome! We guess you must really like Awesome Support, huh? Could you please do us a favor and leave a 5 star rating on WordPress? It will only take a minute and helps to motivate our developers and volunteers. <a href="%1$s">Yes, you deserve it!</a>.', 'awesome-support');
+
 		WPAS()->admin_notices->add_notice('updated', 'wpas_request_first_5star_rating', wp_kses(
-			sprintf(__('Wow! It looks like you have closed a lot of tickets which is pretty awesome! We guess you must really like Awesome Support, huh? Could you please do us a favor and leave a 5 star rating on WordPress? It will only take a minute and helps to motivate our developers and volunteers. <a href="%1$s">Yes, you deserve it!</a>.', 'awesome-support'), 'https://wordpress.org/support/plugin/awesome-support/reviews/'),
+			sprintf( $x_content, 'https://wordpress.org/support/plugin/awesome-support/reviews/'),
 			array('strong' => array(), 'a' => array('href' => array()))
 		));
 	}

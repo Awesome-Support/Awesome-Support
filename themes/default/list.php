@@ -98,5 +98,7 @@ if ( $wpas_tickets->have_posts() ):
 		</table>
 	</div>
 <?php else:
-	echo wp_kses(wpas_get_notification_markup( 'info', sprintf( __( 'You haven\'t submitted a ticket yet. <a href="%s">Click here to submit your first ticket</a>.', 'awesome-support' ), wpas_get_submission_page_url() ) ), get_allowed_html_wp_notifications());
+	// translators: %s is the submit ticket link.
+	$x_content = __( 'You haven\'t submitted a ticket yet. <a href="%s">Click here to submit your first ticket</a>.', 'awesome-support' );
+	echo wp_kses(wpas_get_notification_markup( 'info', sprintf( $x_content, wpas_get_submission_page_url() ) ), get_allowed_html_wp_notifications());
 endif; ?>

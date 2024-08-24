@@ -8,6 +8,12 @@ add_filter( 'wpas_plugin_settings', 'wpas_core_settings_advanced', 95, 1 );
  */
 function wpas_core_settings_advanced( $def ) {
 
+	// translators: %s is the link to the guide.
+	$desc = __( 'Only use this option if you know how to create your own registration page, otherwise you might create an infinite redirect. If you need help on creating a registration page you should <a href="%s" target="_blank">start by reading this guide</a>.', 'awesome-support' );
+	
+	// translators: %s is the link to the Awesome Support SAAS Importer.
+	$desc1 = __( 'If you use the <a href="%s" target="_blank">Awesome Support SAAS Importer</a> to import data from Zendesk, Helpscout or Ticksy, there is a reference field that contains the original ticket ID.  The options below control what to do with that field. ' , 'awesome-support' );
+
 	$settings = array(
 		'advanced' => array(
 			'name'    => __( 'Advanced', 'awesome-support' ),
@@ -16,7 +22,7 @@ function wpas_core_settings_advanced( $def ) {
 					'name'    => __( 'Custom Login / Registration Page', 'awesome-support' ),
 					'id'      => 'login_page',
 					'type'    => 'select',
-					'desc'    => sprintf( __( 'Only use this option if you know how to create your own registration page, otherwise you might create an infinite redirect. If you need help on creating a registration page you should <a href="%s" target="_blank">start by reading this guide</a>.', 'awesome-support' ), esc_url( 'http://codex.wordpress.org/Customizing_the_Registration_Form' ) ),
+					'desc'    => sprintf( $desc, esc_url( 'http://codex.wordpress.org/Customizing_the_Registration_Form' ) ),
 					'default' => '',
 					'options' => wpas_list_pages()
 				),
@@ -46,7 +52,7 @@ function wpas_core_settings_advanced( $def ) {
 				array(
 					'name' => __( 'Importer Integration', 'awesome-support' ),
 					'type' => 'heading',
-					'desc'    => sprintf( __( 'If you use the <a href="%s" target="_blank">Awesome Support SAAS Importer</a> to import data from Zendesk, Helpscout or Ticksy, there is a reference field that contains the original ticket ID.  The options below control what to do with that field. ' , 'awesome-support' ), esc_url( 'https://getawesomesupport.com/addons/awesome-support-importer/' ) ),					
+					'desc'    => sprintf( $desc1, esc_url( 'https://getawesomesupport.com/addons/awesome-support-importer/' ) ),					
 				),
 				array(
 					'name'    => __( 'Enable the Original Ticket ID Field?', 'awesome-support' ),

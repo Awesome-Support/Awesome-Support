@@ -200,7 +200,7 @@ function wpas_fix_tickets_count( $views ) {
 				$replace = $matches[1][0];
 			}
 
-			$label           = trim( strip_tags( str_replace( $replace, '', $label ) ) );
+			$label           = trim( wp_strip_all_tags( str_replace( $replace, '', $label ) ) );
 			$class           = isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view || isset( $wp_query->query_vars['post_status'] ) && 'all' === $view && null === $wp_query->query_vars['post_status'] ? ' class="current"' : '';
 			$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
 			$link            = esc_url( add_query_arg( $link_query_args, admin_url( 'edit.php' ) ) );

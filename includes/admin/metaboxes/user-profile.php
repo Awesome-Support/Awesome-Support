@@ -142,9 +142,11 @@ $by_status['closed'] = $closed;
 				$lis = sprintf( '<li><span class="wpas-label" style="background-color:%1$s;">%2$s ▾</span></li>', wpas_get_option( "color_$status", '#dd3333' ), $status_label );
 
 				foreach ( $tickets as $t ) {
-					$created = sprintf( esc_html_x( 'Created on %s', 'Ticket date creation', 'awesome-support' ), date( get_option( 'date_format' ), strtotime( $t->post_date ) ) );
+					// translators: %s is the date of the ticket creation.
+					$x_content = _x( 'Created on %s', 'Ticket date creation', 'awesome-support' );
+					$created = sprintf( esc_html($x_content), gmdate( get_option( 'date_format' ), strtotime( $t->post_date ) ) );
 					$title   = apply_filters( 'the_title', $t->post_title, $t->ID );
-					$link    = esc_url( admin_url( "post.php?post=$t->ID&action=edit" ) );
+					// $link    = esc_url( admin_url( "post.php?post=$t->ID&action=edit" ) );
 
 					if ( $t->ID !== (int) $post->ID ) {
 						$lis .= sprintf( '<li data-hint="%1$s" class="hint-left hint-anim"><a href="%3$s">%2$s</a></li>', $created, $title, $link );

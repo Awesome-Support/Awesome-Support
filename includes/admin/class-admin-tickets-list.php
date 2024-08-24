@@ -408,8 +408,39 @@ class WPAS_Tickets_List {
 			$field_title = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
 		}
 
-		return esc_html__( $field_title, 'awesome-support' );
-
+		switch ( $field_title ) {
+			case 'Priority':
+				$translated_field_title = esc_html__( 'Priority', 'awesome-support' );
+				break;
+			case 'Product':
+				$translated_field_title = esc_html__( 'Product', 'awesome-support' );
+				break;
+			case 'Department':
+				$translated_field_title = esc_html__( 'Department', 'awesome-support' );
+				break;
+			case 'Ticket Type':
+				$translated_field_title = esc_html__( 'Ticket Type', 'awesome-support' );
+				break;
+			case 'Channel':
+				$translated_field_title = esc_html__( 'Channel', 'awesome-support' );
+				break;
+			case 'Tag':
+				$translated_field_title = esc_html__( 'Tag', 'awesome-support' );
+				break;
+			case 'Created by':
+				$translated_field_title = esc_html__( 'Created by', 'awesome-support' );
+				break;
+			case 'Agent':
+				$translated_field_title = esc_html__( 'Agent', 'awesome-support' );
+				break;
+			case 'Activity':
+				$translated_field_title = esc_html__( 'Activity', 'awesome-support' );
+				break;
+			default:
+				$translated_field_title = esc_html( $field_title );
+				break;
+		}
+		return $translated_field_title;
 	}
 
 
@@ -546,9 +577,26 @@ class WPAS_Tickets_List {
 								}
 							}
 							
-							echo esc_html(_x( sprintf( _n( '%s reply.', '%s replies.', $replies->post_count, 'awesome-support' ), $replies->post_count ), 'Number of replies to a ticket', 'awesome-support' ));
+							// translators: %s is the number of replies.
+							$n_content = _n( '%s reply', '%s replies', $replies->post_count, 'awesome-support' );
+
+							// Format the number of replies with sprintf() first
+							$formatted_reply_string = sprintf(
+								$n_content,
+								$replies->post_count
+							);
+
+							// translators: %s is the formatted_reply_string.
+							$translated_reply_string = sprintf(_x( '%s.', 'Number of replies to a ticket' ), $formatted_reply_string);
+
+							// Output the escaped and translated string
+							echo esc_html( $translated_reply_string );
 							echo '<br>';
-							printf( wp_kses_post(_x( '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s).', 'Last reply ago', 'awesome-support' )), esc_url(add_query_arg( array(
+							$x_url = '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s)';
+							
+							// translators: %s is the Last reply ago url.
+							$x_content = _x( '%s.', 'Last reply ago', 'awesome-support' );
+							printf( wp_kses_post( sprintf($x_content, $x_url) ), esc_url(add_query_arg( array(
 								                                                                                                                                                                 'post'   => $post_id,
 								                                                                                                                                                                 'action' => 'edit',
 							                                                                                                                                                                 ), admin_url( 'post.php' ) )) . '#wpas-post-' . esc_attr($last_reply->ID), esc_html(human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) )), '<a href="' . esc_url($last_user_link) . '">' . esc_html($user_nicename) . '</a>', esc_html($role) );
@@ -861,7 +909,7 @@ ORDER BY
 SQL;
 
 			$no_replies = $client_replies = $agent_replies = array();
-			$replies = $wpdb->get_results( $sql );
+			$replies = $wpdb->get_results( "$sql" );
 
 			foreach ( $posts as $post ) {
 
@@ -1043,6 +1091,7 @@ SQL;
 		<div id="search_tab_content_placeholder"></div>
 
 		<div class="ticket_listing_search_types">
+		<?php wp_nonce_field( 'my_custom_action', 'my_custom_nonce' ); ?>
 			<label><input type="checkbox" name="search_by[]" value="subject" <?php checked( true, $subject_checked ); ?> /> <?php esc_html_e( 'Subject', 'awesome-support' ); ?></label>
 			<label><input type="checkbox" name="search_by[]" value="opening_post" <?php checked( true, $opening_post_checked ); ?> /> <?php esc_html_e( 'Opening Post', 'awesome-support' ); ?></label>
 			<label><input type="checkbox" name="search_by[]" value="replies" <?php checked( true, $replies_checked ); ?> /> <?php esc_html_e( 'Replies', 'awesome-support' ); ?></label>
@@ -1193,7 +1242,7 @@ SQL;
 
 			foreach ( $custom_statuses as $_status_id => $_status_value ) {
 				$custom_status_selected = ( isset( $_GET[ 'post_status' ] ) && $_status_id === $this_sort ) ? 'selected="selected"' : '';
-				$dropdown               .= "<option value='" . $_status_id . "' " . $custom_status_selected . " >" . __( $_status_value, 'awesome-support' ) . "</option>";
+				$dropdown               .= "<option value='" . $_status_id . "' " . $custom_status_selected . " >" .  $_status_value . "</option>";
 			}
 
 			$dropdown .= '</select>';
@@ -1367,7 +1416,7 @@ SQL;
 				$tax_obj = get_taxonomy( $tax_slug );
 
 				$args = array(
-					'show_option_all' => __( 'All ' . $tax_obj->label ),
+					'show_option_all' => esc_html( 'All ' . $tax_obj->label ),
 					'taxonomy'        => $tax_slug,
 					'name'            => $tax_obj->name,
 					'orderby'         => 'name',
@@ -1523,7 +1572,7 @@ SQL;
 				$old_after           = (int) wpas_get_option( 'old_ticket' );
 				$old_after           = strtotime( 'now' ) - ( $old_after * 86400 );
 
-				$old_after = date( 'Y-m-d H:i:s', $old_after ) ;
+				$old_after = gmdate( 'Y-m-d H:i:s', $old_after ) ;
 
 				$meta_query[] = array(
 					'key'     => '_wpas_last_reply_date',

@@ -42,7 +42,14 @@ else {
 function wpas_uninstall() {
 
 	$options = maybe_unserialize( get_option( 'wpas_options' ) );
+	global $wp_filesystem;
 
+	// Initialize the filesystem 
+	if (empty($wp_filesystem)) {
+		require_once(ABSPATH . '/wp-admin/includes/file.php');
+		WP_Filesystem();
+	} 
+	
 	/* Make sure that the user wants to remove all the data. */
 	if ( isset( $options['delete_data'] ) && '1' === $options['delete_data'] ) {
 
@@ -92,15 +99,14 @@ function wpas_uninstall() {
 				/* Delete each file */
 				foreach ( $files as $file ) {
 					if ( $file->isDir() ) {
-						rmdir( $file->getRealPath() );
+						$wp_filesystem->delete($file->getRealPath(), true);
 					} else {
 						unlink( $file->getRealPath() );
 					}
 				}
 
 				/* Delete the uploads folder */
-				rmdir( $dirpath );
-
+				$wp_filesystem->delete($dirpath, true);
 				/* Remove transients */
 				delete_transient( "wpas_activity_meta_post_$post->ID" );
 			}
@@ -155,14 +161,13 @@ function wpas_uninstall() {
 function wpas_delete_taxonomy( $taxonomy ) {
 
 	global $wpdb;
-
-	$query = 'SELECT t.name, t.term_id
+	$sql = 'SELECT t.name, t.term_id
 			FROM ' . $wpdb->terms . ' AS t
 			INNER JOIN ' . $wpdb->term_taxonomy . ' AS tt
 			ON t.term_id = tt.term_id
 			WHERE tt.taxonomy = "' . $taxonomy . '"';
-
-	$terms = $wpdb->get_results($query);
+			
+	$terms = $wpdb->get_results("$sql");
 
 	foreach ( $terms as $term ) {
 		wp_delete_term( $term->term_id, $taxonomy );

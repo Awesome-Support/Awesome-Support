@@ -9,6 +9,12 @@ add_filter( 'wpas_plugin_settings', 'wpas_core_settings_notifications', 5, 1 );
  */
 function wpas_core_settings_notifications( $def ) {
 
+	// translators: %1$s is the URL to the email template, %2$s is the target attribute for the link (e.g., "_blank").
+	$desc = __( 'Please note that the <a href="%1$s" target="%2$s">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add additional fancy styling through the editors you should do so with caution in order to avoid breaking the layouts on some devices.', 'awesome-support' );
+
+	// translators: %s is the URL to the documentation.
+	$desc1 = __( 'We include a default set of designs for the six core emails below.  You can use these designs in other email templates by simply copying them to the target email template editor and modifying them there.  You can also install new designs from the TICKETS->TOOLS->CLEANUP area. Samples of some of the email templates can be found in our <a href="%s">documentation</a>.', 'awesome-support' );
+	
 	$settings = array(
 		'email' => array(
 			'name'    => __( 'E-Mails', 'awesome-support' ),
@@ -31,7 +37,7 @@ function wpas_core_settings_notifications( $def ) {
 				),
 				array(
 					'type' => 'note',
-					'desc' => wp_kses( sprintf( __( 'Please note that the <a href="%1$s" target="%2$s">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add additional fancy styling through the editors you should do so with caution in order to avoid breaking the layouts on some devices.', 'awesome-support' ), 'https://github.com/mailgun/transactional-email-templates', '_blank' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) )
+					'desc' => wp_kses( sprintf( $desc, 'https://github.com/mailgun/transactional-email-templates', '_blank' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) )
 				),
 				array(
 					'name'    => __( 'Logo', 'awesome-support' ),
@@ -86,7 +92,7 @@ function wpas_core_settings_notifications( $def ) {
 					'name'    => __( 'Design Notes', 'awesome-support' ),
 					'id'      => 'reply_design_notes',
 					'type'    => 'note',
-					'desc' => sprintf( __( 'We include a default set of designs for the six core emails below.  You can use these designs in other email templates by simply copying them to the target email template editor and modifying them there.  You can also install new designs from the TICKETS->TOOLS->CLEANUP area. Samples of some of the email templates can be found in our <a href="%s">documentation</a>.', 'awesome-support' ), 'https://getawesomesupport.com/documentation/awesome-support/admin-email-template-sets/' ),
+					'desc' => sprintf( $desc1, 'https://getawesomesupport.com/documentation/awesome-support/admin-email-template-sets/' ),
 				),				
 				array(				
 					'name'    => __( 'Template Tags', 'awesome-support' ),				
@@ -229,7 +235,7 @@ function wpas_core_settings_notifications( $def ) {
 					'id'      => 'agents_can_suppress_closing_emails',
 					'type'    => 'checkbox',
 					'default' => false,
-					'desc'    => __( '<em>Can agents prevent a closing confirmation email from being sent to a customer? Note: If this enabled it only applies to the emails defined in the core plugin and not to emails created by add-ons such as our Notification or Business Rules Engine add-ons</em>', 'awesome-support' )
+					'desc'    => '<em>' . __( 'Can agents prevent a closing confirmation email from being sent to a customer? Note: If this enabled it only applies to the emails defined in the core plugin and not to emails created by add-ons such as our Notification or Business Rules Engine add-ons', 'awesome-support' ) . '</em>'
 				),
 				/* Ticket closed by client*/				
 				array(

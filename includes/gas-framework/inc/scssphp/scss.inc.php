@@ -468,6 +468,14 @@ class gasscssc {
 	}
 	// return a value to halt execution
 	protected function compileChild($child, $out) {
+		
+		global $wp_filesystem;
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		}
+
 		$this->sourcePos = isset($child[-1]) ? $child[-1] : -1;
 		$this->sourceParser = isset($child[-2]) ? $child[-2] : $this->parser;
 		switch ($child[0]) {
@@ -647,7 +655,10 @@ class gasscssc {
 			list(,$value, $pos) = $child;
 			$line = $this->parser->getLineNo($pos);
 			$value = $this->compileValue($this->reduce($value, true));
-			fwrite(STDERR, "Line $line DEBUG: $value\n");
+			$result = $wp_filesystem->put_contents(STDERR, "Line $line DEBUG: $value\n", FS_CHMOD_FILE);
+			if ( $result === false ) {
+				wpas_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
+			}
 			break;
 		default:
 			$this->throwError("unknown child type: $child[0]");
@@ -1308,7 +1319,7 @@ class gasscssc {
 		if (isset($this->importCache[$realPath])) {
 			$tree = $this->importCache[$realPath];
 		} else {
-			$code = file_get_contents($path);
+			$code = wp_remote_get($path);
 			$parser = new gasscss_parser($path, false);
 			$tree = $parser->parse($code);
 			$this->parsedFiles[] = $path;
@@ -3657,7 +3668,7 @@ class gasscss_server {
 		// look for modified imports
 		$icache = $this->importsCacheName($out);
 		if (is_readable($icache)) {
-			$imports = unserialize(file_get_contents($icache));
+			$imports = unserialize(wp_remote_get($icache));
 			foreach ($imports as $import) {
 				if (filemtime($import) > $mtime) return true;
 			}
@@ -3673,15 +3684,21 @@ class gasscss_server {
 	 * @return string
 	 */
 	protected function compile($in, $out) {
+		global $wp_filesystem;
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		} 
+
 		$start = microtime(true);
-		$css = $this->scss->compile(file_get_contents($in), $in);
+		$css = $this->scss->compile(wp_remote_get($in), $in);
 		$elapsed = round((microtime(true) - $start), 4);
 		$v = gasscssc::$VERSION;
-		$t = date('r');
+		$t = gmdate('r');
 		$css = "/* compiled by scssphp $v on $t ({$elapsed}s) */\n\n" . $css;
-		file_put_contents($out, $css);
-		file_put_contents($this->importsCacheName($out),
-			serialize($this->scss->getParsedFiles()));
+		$wp_filesystem->put_contents($out, $css, FS_CHMOD_FILE);
+		$wp_filesystem->put_contents($this->importsCacheName($out), serialize($this->scss->getParsedFiles()), FS_CHMOD_FILE);
 		return $css;
 	}
 	/**
@@ -3702,7 +3719,7 @@ class gasscss_server {
 				}
 			} else {
 				header('X-SCSS-Cache: true');
-				echo wp_kses_post(file_get_contents($output));
+				echo wp_kses_post(wp_remote_get($output));
 			}
 			return;
 		}
@@ -3719,12 +3736,19 @@ class gasscss_server {
 	 * @param \scssc|null $scss     SCSS compiler instance
 	 */
 	public function __construct($dir, $cacheDir=null, $scss=null) {
+		global $wp_filesystem;
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		} 
+
 		$this->dir = $dir;
 		if (is_null($cacheDir)) {
 			$cacheDir = $this->join($dir, 'scss_cache');
 		}
 		$this->cacheDir = $cacheDir;
-		if (!is_dir($this->cacheDir)) mkdir($this->cacheDir, 0755, true);
+		if (!is_dir($this->cacheDir)) $wp_filesystem->mkdir($this->cacheDir, 0755, true);
 		if (is_null($scss)) {
 			$scss = new gasscssc();
 			$scss->setImportPaths($this->dir);

@@ -209,9 +209,9 @@ class GASFrameworkOptionFile extends GASFrameworkOption {
 
                     // Uploader frame properties.
                     var frame = wp.media({
-                        title: '<?php esc_html_e( 'Select File', GASF_I18NDOMAIN ) ?>',
+                        title: '<?php esc_html_e( 'Select File', 'gas-framework' ) ?>',
                         multiple: false,
-                        button : { text : '<?php esc_html_e( 'Use file', GASF_I18NDOMAIN ) ?>' }
+                        button : { text : '<?php esc_html_e( 'Use file', 'gas-framework' ) ?>' }
                     });
 
                     // Get the url when done.

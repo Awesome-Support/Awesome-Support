@@ -64,8 +64,8 @@ if ( ! defined( 'WPINC' ) ) {
 			 * Convert Opt content into date
 			 * We stored Opt data as strtotime value
 			 */
-			$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? date( 'm/d/Y', $consent['opt_in'] ) : '';
-			$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? date( 'm/d/Y', $consent['opt_out'] ) : '';
+			$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? gmdate( 'm/d/Y', $consent['opt_in'] ) : '';
+			$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? gmdate( 'm/d/Y', $consent['opt_out'] ) : '';
 
 			/**
 			 * Determine 'Action' buttons

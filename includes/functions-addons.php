@@ -67,7 +67,11 @@ function wpas_load_addons() {
 function wpas_register_addon( $id, $callback, $priority = 10 ) {
 
 	if ( array_key_exists( $id, WPAS()->addons ) ) {
-		wpas_debug_display( sprintf( __( 'An addon with the ID %s is already registered', 'awesome-support' ), $id ) );
+		
+		// translators: %s is the addon id.
+		$x_content = __( 'An addon with the ID %s is already registered', 'awesome-support' );
+
+		wpas_debug_display( sprintf( $x_content, $id ) );
 		return false;
 	}
 

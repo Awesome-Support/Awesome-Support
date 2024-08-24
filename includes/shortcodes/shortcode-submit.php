@@ -83,7 +83,10 @@ function wpas_sc_submit_form() {
 			 * Check if the current user is logged in
 			 */
 			if ( false === is_user_logged_in() ) {
-				echo wp_kses(wpas_get_notification_markup( 'failure', sprintf( __( 'You need to <a href="%s">log-in</a> to submit a ticket.', 'awesome-support' ), esc_url( '' ) ) ), get_allowed_html_wp_notifications());
+
+				// translators: %s is the log-in link.
+				$x_content = __( 'You need to <a href="%s">log-in</a> to submit a ticket.', 'awesome-support' );
+				echo wp_kses(wpas_get_notification_markup( 'failure', sprintf( $x_content, esc_url( '' ) ) ), get_allowed_html_wp_notifications());
 			} else {
 
 				/**
@@ -115,7 +118,10 @@ function wpas_sc_submit_form() {
 						 * Keep in mind that if you allow agents to open ticket through the front-end, actions
 						 * will not be tracked.
 						 */
-						echo wp_kses(wpas_get_notification_markup( 'info', sprintf( __( 'Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href="%s">click here to open a new ticket</a>.', 'awesome-support' ), add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'post-new.php' ) ) ) ), get_allowed_html_wp_notifications());
+
+						// translators: %s is the link to the admin panel.
+						$x_content = __( 'Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href="%s">click here to open a new ticket</a>.', 'awesome-support' );
+						echo wp_kses(wpas_get_notification_markup( 'info', sprintf( $x_content, add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'post-new.php' ) ) ) ), get_allowed_html_wp_notifications());
 
 					/**
 					 * If the user is authorized to post a ticket, we display the submit form

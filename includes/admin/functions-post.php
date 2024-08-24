@@ -96,9 +96,11 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 		if ( array_key_exists( $_POST['post_status_override'], $status ) ) {
 
 			$data['post_status'] = $_POST['post_status_override'];
-
+			
+			// translators: %s is the state of the ticket
+			$x_content = __( 'Ticket state changed to %s', 'awesome-support' );
 			if ( isset($postarr['original_post_status']) && $postarr['original_post_status'] !== $_POST['post_status_override'] && isset( $_POST['wpas_post_parent'] ) ) {
-				wpas_log_history( intval( $_POST['wpas_post_parent'] ), sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), '&laquo;' . $status[ $_POST['post_status_override'] ] . '&raquo;' ) );
+				wpas_log_history( intval( $_POST['wpas_post_parent'] ), sprintf( $x_content, '&laquo;' . $status[ $_POST['post_status_override'] ] . '&raquo;' ) );
 			}
 		}
 

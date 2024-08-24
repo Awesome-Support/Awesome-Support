@@ -57,6 +57,21 @@ final class WPAS_eCommerce_Integration {
 
 	protected function __construct() {
 
+		// translators: %s is the link
+		$locked_taxo_msg1 = __( 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		
+		// translators: %s is the link
+		$locked_taxo_msg2 = __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		
+		// translators: %s is the link
+		$locked_taxo_msg3 = __( 'You cannot edit this term from here because it is linked to an Exchange product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		
+		// translators: %s is the link
+		$locked_taxo_msg4 = __( 'You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		
+		// translators: %s is the link
+		$locked_taxo_msg5 = __( 'You cannot edit this term from here because it is linked to a WP eCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+
 		// Set our default integrations
 		$this->plugins = array(
 			'edd'         => array(
@@ -64,35 +79,35 @@ final class WPAS_eCommerce_Integration {
 				'class'           => 'Easy_Digital_Downloads',
 				'post_type'       => 'download',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'download', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => sprintf( $locked_taxo_msg1, add_query_arg( 'post_type', 'download', admin_url( 'edit.php' ) ) ),
 			),
 			'woocommerce' => array(
 				'file'            => 'woocommerce.php',
 				'class'           => 'WC_Integration',
 				'post_type'       => 'product',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => sprintf( $locked_taxo_msg2, add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) ),
 			),
 			'exchange'    => array(
 				'file'            => 'init.php',
 				'class'           => 'IT_Exchange',
 				'post_type'       => 'it_exchange_prod',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to an Exchange product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'it_exchange_prod', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => sprintf( $locked_taxo_msg3, add_query_arg( 'post_type', 'it_exchange_prod', admin_url( 'edit.php' ) ) ),
 			),
 			'jigoshop'    => array(
 				'file'            => 'jigoshop.php',
 				'class'           => 'Jigoshop_Base',
 				'post_type'       => 'product',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => sprintf( $locked_taxo_msg4, add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) ),
 			),
 			'wpecommerce' => array(
 				'file'            => 'wp-shopping-cart.php',
 				'class'           => 'WP_eCommerce',
 				'post_type'       => 'wpsc-product',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to a WP eCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'wpsc-product', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => sprintf( $locked_taxo_msg5, add_query_arg( 'post_type', 'wpsc-product', admin_url( 'edit.php' ) ) ),
 			),
 		);
 

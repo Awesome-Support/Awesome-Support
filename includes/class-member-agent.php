@@ -52,7 +52,11 @@ class WPAS_Member_Agent extends WPAS_Member {
 	public function is_agent() {
 
 		if ( false === $this->is_member() ) {
-			return new WP_Error( 'user_not_exists', sprintf( __( 'The user with ID %d does not exist', 'awesome-support' ), $this->user_id ) );
+			
+			// translators: %d is the user id.
+			$x_content = __( 'The user with ID %d does not exist', 'awesome-support' );
+
+			return new WP_Error( 'user_not_exists', sprintf( $x_content, $this->user_id ) );
 		}
 
 		if ( false === $this->has_cap( 'edit_ticket' ) ) {

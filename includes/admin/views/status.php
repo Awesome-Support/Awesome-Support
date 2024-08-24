@@ -1,10 +1,10 @@
 <?php
 
-$tools_tabs['status'] = array( 'name' => 'System Status' );
+$tools_tabs['status'] = array( 'name' => __('System Status', 'awesome-support') );
 if( current_user_can( 'administrator' ) ) {
-    $tools_tabs['logs'] = array( 'name' => 'Log Viewer' );
+    $tools_tabs['logs'] = array( 'name' => __('Log Viewer', 'awesome-support') );
 }
-$tools_tabs['tools'] = array( 'name' => 'Cleanup' );
+$tools_tabs['tools'] = array( 'name' => __('Cleanup', 'awesome-support') );
 $tools_tabs = apply_filters( 'wpas_system_tabls', $tools_tabs );
 
 /*$tools_tabs = apply_filters( 'wpas_system_tabls', array(
@@ -45,7 +45,7 @@ if(!empty( $tools_tabs )) {
 
 		$active_class = ( $t_tab_key === $active_tab ) ?  'nav-tab-active' : '';
 
-		echo '<a href="' . esc_url( $link ) . '" class="nav-tab ' . esc_attr( $active_class ) . '">'. esc_html__( $t_tab['name'], 'awesome-support' ) .'</a>';
+		echo '<a href="' . esc_url( $link ) . '" class="nav-tab ' . esc_attr( $active_class ) . '">'. esc_html( $t_tab['name'] ) .'</a>';
 	}
 	?>
 

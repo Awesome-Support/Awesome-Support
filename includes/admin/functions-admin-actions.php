@@ -225,10 +225,13 @@ function wpas_log_reply_trashed( $reply_id, $original_reply, $ticket_id ) {
 		$reply_contents_to_log = $original_reply->post_content ;
 	}
 	
+	// translators: %1$s is the reply number, %2$s is the ticket number.
+	$x_content = __( 'Reply #%1$s was deleted from ticket #%2$s.', 'awesome-support' );
+
 	// Log it at the reply level
-	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%s was deleted from ticket #%s.', 'awesome-support' ), (string) $reply_id, (string) $original_reply->post_parent  ), $reply_contents_to_log );
+	wpas_log_edits( $reply_id, sprintf( $x_content, (string) $reply_id, (string) $original_reply->post_parent  ), $reply_contents_to_log );
 	
 	// Log it at the ticket level as well because if the reply gets permanently deleted, the only way to show it in the UI is at the ticket level
-	wpas_log_edits( $original_reply->post_parent, sprintf( __( 'Reply #%s was deleted from ticket #%s.', 'awesome-support' ), (string) $reply_id, (string) $original_reply->post_parent  ), $reply_contents_to_log );
+	wpas_log_edits( $original_reply->post_parent, sprintf( $x_content, (string) $reply_id, (string) $original_reply->post_parent  ), $reply_contents_to_log );
 	
 }

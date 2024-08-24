@@ -801,15 +801,21 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 
 				// Decide on notice text
 				if( $this->marketing != 1 ) {
+					// translators: %1$s is the plugin name
+					$s_content = __( 'Thank you for installing our %1$s. We would like to track its usage on your site. We don\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' );
+					
 					// Standard notice text
 					$notice_text = sprintf(
-						__( 'Thank you for installing our %1$s. We would like to track its usage on your site. We don\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' ),
+						$s_content,
 						$this->what_am_i
 					);
 				} else {
+					// translators: %1$s is the plugin name
+					$s_content = __( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' );
+
 					// If we have option 1 for marketing, we include reference to sending product information here
 					$notice_text = sprintf(
-						__( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' ),
+						$s_content,
 						$this->what_am_i
 					);
 				}
@@ -857,8 +863,11 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 					'marketing_optin'	=> 'no'
 				) );
 
+				// translators: %s is the plugin name
+				$s_content = __( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'singularity' );
+
 				$marketing_text = sprintf(
-					__( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'singularity' ),
+					$s_content,
 					$this->what_am_i
 				);
 				$marketing_text = apply_filters( 'wisdom_marketing_text_' . esc_attr( $this->plugin_name ), $marketing_text ); ?>

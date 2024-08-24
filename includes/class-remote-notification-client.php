@@ -725,7 +725,11 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			if ( 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-				return new WP_Error( 'invalid_response', sprintf( __( 'The server response was invalid (code %s)', 'awesome-support' ), wp_remote_retrieve_response_code( $response ) ) );
+				
+				// translators: %s is the code server response.
+				$x_content = __( 'The server response was invalid (code %s)', 'awesome-support' );
+
+				return new WP_Error( 'invalid_response', sprintf( $x_content, wp_remote_retrieve_response_code( $response ) ) );
 			}
 
 			$body = wp_remote_retrieve_body( $response );

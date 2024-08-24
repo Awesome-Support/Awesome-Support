@@ -49,10 +49,13 @@ do_action( 'wpas_before_original_post' ); ?>
 						/**
 						 * Display the ticket's author name (client's name)
 						 */
+
+						// translators: %s is the account creation date, %s is the account expiration date.
+						$x_content = __( '%s ago', 'awesome-support' );
 						?><span class="wpas-profilename"><?php echo esc_html( $author->data->user_nicename ); ?></span>
 						<span class="wpas-profiletype"><?php echo wp_kses(wpas_get_user_nice_role( $author->roles ),get_allowed_html_wp_notifications()); ?></span>
 						<time class="visible-xs wpas-timestamp" datetime="<?php echo wp_kses_post(str_replace( ' ', 'T', $post->post_date )); ?>Z">
-							<?php printf( wp_kses_post(__( '%s ago', 'awesome-support' )), wp_kses_post(human_time_diff( get_the_time( 'U', $post->ID )), current_time( 'timestamp' ) ) ); ?>
+							<?php printf( wp_kses_post($x_content), wp_kses_post(human_time_diff( get_the_time( 'U', $post->ID )), current_time( 'timestamp' ) ) ); ?>
 						</time>
 
 					</div>

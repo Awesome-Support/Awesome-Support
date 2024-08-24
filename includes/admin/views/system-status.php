@@ -52,7 +52,10 @@
 				if ( $wp_upload_max <= $server_upload_max ) {
 					echo esc_html( size_format( $wp_upload_max ) );
 				} else {
-					echo '<span class="wpas-alert-danger">' . sprintf( esc_html__( '%s (The server only allows %s)', 'awesome-support' ), esc_html( size_format( $wp_upload_max ) ), esc_html( size_format( $server_upload_max ) ) ) . '</span>';
+					// translators: %1$s is the value being referenced, %2$s is the server's limit.
+					$x_content = __( '%1$s (The server only allows %2$s)', 'awesome-support' );
+
+					echo '<span class="wpas-alert-danger">' . sprintf( esc_html($x_content), esc_html( size_format( $wp_upload_max ) ), esc_html( size_format( $server_upload_max ) ) ) . '</span>';
 				}
 				?>
 			</td>
@@ -145,14 +148,23 @@
 			<td class="row-title">Uploads Folder</td>
 			<td>
 				<?php
+				
+				global $wp_filesystem;
+
+				// Initialize the filesystem 
+				if (empty($wp_filesystem)) {
+					require_once(ABSPATH . '/wp-admin/includes/file.php');
+					WP_Filesystem();
+				} 
+
 				if ( !is_dir( ABSPATH . 'wp-content/uploads/awesome-support' ) ) {
-					if ( !is_writable( ABSPATH . 'wp-content/uploads' ) ) {
+					if ( !$wp_filesystem->is_writable( ABSPATH . 'wp-content/uploads' ) ) {
 						echo '<span class="wpas-alert-danger">' . esc_html__( 'The upload folder doesn\'t exist and can\'t be created', 'awesome-support' ) . '</span>';
 					} else {
 						echo '<span class="wpas-alert-success">' . esc_html__( 'The upload folder doesn\'t exist but can be created', 'awesome-support' ) . '</span>';
 					}
 				} else {
-					if ( !is_writable( ABSPATH . 'wp-content/uploads/awesome-support' ) ) {
+					if ( !$wp_filesystem->is_writable( ABSPATH . 'wp-content/uploads/awesome-support' ) ) {
 						echo '<span class="wpas-alert-danger">' . esc_html__( 'The upload folder exists but isn\'t writable', 'awesome-support' ) . '</span>';
 					} else {
 						echo '<span class="wpas-alert-success">' . esc_html__( 'The upload folder exists and is writable', 'awesome-support' ) . '</span>';

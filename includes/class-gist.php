@@ -106,7 +106,9 @@ class WPAS_Gist {
 			$url = $url . '?file=' . $file;
 		}
 
-		$noscript = sprintf( __( 'View the code on <a href="%s">Gist</a>.', 'awesome-support' ), esc_url( $url ) );
+		// translators: %s is the URL to view the code on Gist.
+		$x_content = __( 'View the code on <a href="%s">Gist</a>.', 'awesome-support' );
+		$noscript = sprintf( $x_content, esc_url( $url ) );
 		$embed = sprintf( '<div class="oembed-gist"><script src="%s"></script><noscript>%s</noscript></div>', $url, $noscript );
 
 		return apply_filters( 'embed_gist', $embed, $matches, $attr, $url, $rawattr );

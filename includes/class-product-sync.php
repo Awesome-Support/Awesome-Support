@@ -823,8 +823,9 @@ class WPAS_Product_Sync {
 		}
 
 		$term_id       = intval( $_GET['tag_ID'] );
-		$query         = $wpdb->prepare( "SELECT * FROM $wpdb->term_taxonomy WHERE term_id = '%d'", $term_id );
-		$term_taxonomy = $wpdb->get_col( $query, 2 );
+		$sql = "SELECT * FROM $wpdb->term_taxonomy WHERE term_id = '%d'";
+		$query         = $wpdb->prepare( "$sql", $term_id );
+		$term_taxonomy = $wpdb->get_col( "$query", 2 );
 
 		if ( ! is_array( $term_taxonomy ) || ! isset( $term_taxonomy[0] ) ) {
 			return false;
@@ -863,8 +864,9 @@ class WPAS_Product_Sync {
 			}
 
 			/* We use a SQL query because get_term() would give us a filtered result */
-			$query     = $wpdb->prepare( "SELECT * FROM $wpdb->terms WHERE term_id = '%d'", $term );
-			$term_name = $wpdb->get_col( $query, 1 );
+			$sql = "SELECT * FROM $wpdb->terms WHERE term_id = '%d'";
+			$query     = $wpdb->prepare( "$sql", $term );
+			$term_name = $wpdb->get_col( "$query", 1 );
 
 			if ( ! is_array( $term_name ) || ! isset( $term_name[0] ) ) {
 				return false;
@@ -935,7 +937,10 @@ class WPAS_Product_Sync {
 	 */
 	public function notice_locked_tax() {
 
-		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
+		// translators: %s is the taxonomy.
+		$x_content = __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' );
+
+		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( $x_content, "<code>$this->post_type</code>" ) );
 
 		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) { ?>
 			<div class="error">
@@ -957,7 +962,9 @@ class WPAS_Product_Sync {
 	 */
 	public function lock_taxonomy() {
 
-		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' ), "<code>$this->post_type</code>" ) );
+		// translators: %s is the taxonomy.
+		$x_content = __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' );
+		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( $x_content, "<code>$this->post_type</code>" ) );
 
 		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) {
 			wp_die( esc_html( $message ), esc_html__( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );

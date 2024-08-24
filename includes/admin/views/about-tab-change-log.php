@@ -5,6 +5,18 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.3.0</h1>
+				<h3>6.3.0 Update General Rules and Improve Security, Performance, and Accessibility</h3>
+				<ul>
+					<li>We updated general rules and improve security, performance, and accessibility in the plugin.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.2.3</h1>
 				<h3>6.2.3 Updating security rules for multiple files upload</h3>
 				<ul>

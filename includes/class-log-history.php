@@ -117,20 +117,29 @@ class WPAS_Log_History {
 
 				}
 
+				// translators: %1$s is the old value, %2$s is the new value.
+				$x_updated = _x( 'updated %1$s to %2$s', 'Custom field value was updated', 'awesome-support' );
+				
+				// translators: %s is the deleted value.
+				$x_deleted = _x( 'deleted %s', 'Custom field value was deleted', 'awesome-support' );
+
+				// translators: %1$s is the value being added, %2$s is the field or context where the value is added.
+				$x_added = _x( 'added %1$s to %2$s', 'Custom field value was added', 'awesome-support' );
+
 				$content .= '<li>';
 
 				switch( $action ):
 
 					case 'updated':
-						$content .= sprintf( _x( 'updated %s to %s', 'Custom field value was updated', 'awesome-support' ), $label, $value );
+						$content .= sprintf( $x_updated, $label, $value );
 						break;
 
 					case 'deleted':
-						$content .= sprintf( _x( 'deleted %s', 'Custom field value was deleted', 'awesome-support' ), $label );
+						$content .= sprintf( $x_deleted, $label );
 						break;
 
 					case 'added':
-						$content .= sprintf( _x( 'added %s to %s', 'Custom field value was added', 'awesome-support' ), $value, $label );
+						$content .= sprintf( $x_added, $value, $label );
 						break;
 
 				endswitch;

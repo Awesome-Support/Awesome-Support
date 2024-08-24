@@ -360,7 +360,7 @@
 				$title = $this->field[ 'args' ][ 'label' ];
 			}
 
-			return esc_attr( strip_tags( $title ) );
+			return esc_attr( wp_strip_all_tags( $title ) );
 
 		}
 
@@ -373,7 +373,7 @@
 		public function get_field_label() {
 
 			if ( isset( $this->field[ 'args' ][ 'label' ] ) && ! empty( $this->field[ 'args' ][ 'label' ] ) ) {
-				$label = esc_attr( strip_tags( $this->field[ 'args' ][ 'label' ] ) );
+				$label = esc_attr( wp_strip_all_tags( $this->field[ 'args' ][ 'label' ] ) );
 			} else {
 				$label = $this->get_field_title();
 			}

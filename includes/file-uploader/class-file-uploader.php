@@ -157,18 +157,12 @@ class WPAS_File_Upload {
 					INNER JOIN $wpdb->posts p ON p.ID = pm.post_id AND p.post_type='ticket'
 					WHERE pm.meta_key = '_wpas_status' AND $type_clause";
 
-		$update_query = "UPDATE $wpdb->postmeta SET meta_value = %s WHERE meta_key = %s AND post_id IN(
+
+		$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value = %s WHERE meta_key = %s AND post_id IN(
 					select post_ids.post_id from ( $select_q AND !isnull( pm2.meta_id ) group by pm.post_id ) as post_ids
-				)";
+				)", $meta_value, 'auto_delete_attachments' ));
 
-
-
-
-		$wpdb->query( $wpdb->prepare( $update_query, $meta_value, 'auto_delete_attachments' ));
-
-
-		$q = "INSERT INTO $wpdb->postmeta( post_id, meta_key, meta_value ) ( $select_q AND isnull( pm2.meta_id ) group by pm.post_id )";
-		$wpdb->query( $q );
+		$wpdb->query( "INSERT INTO $wpdb->postmeta( post_id, meta_key, meta_value ) ( $select_q AND isnull( pm2.meta_id ) group by pm.post_id )" );
 	}
 
 
@@ -332,6 +326,8 @@ class WPAS_File_Upload {
 
 			$attachments = apply_filters( 'attachments_list_for_auto_delete', $attachments, $ticket_id );
 
+			// translators: %s is the attachment.
+			$x_content = __( '%s attachment auto deleted', 'awesome-support' );
 			foreach ( $attachments as $attachment ) {
 
 				$filename   = explode( '/', $attachment->guid );
@@ -339,7 +335,7 @@ class WPAS_File_Upload {
 
 				wp_delete_attachment( $attachment->ID );
 
-				$logs[] = '<li>' . sprintf( __( '%s attachment auto deleted', 'awesome-support' ), $name ) . '</li>';
+				$logs[] = '<li>' . sprintf( $x_content, $name ) . '</li>';
 
 			}
 
@@ -440,9 +436,12 @@ class WPAS_File_Upload {
 						$filename   = explode( '/', $attachment->guid );
 						$name = $filename[ count( $filename ) - 1 ];
 
+						// translators: %1$s is the type of attachment, %2$s is the person who deleted it.
+						$x_content = __( '%1$s attachment deleted by %2$s', 'awesome-support' );
+
 						wp_delete_attachment( $attachment_id, true );
 
-						wpas_log( $ticket_id, sprintf( __( '%s attachment deleted by %s', 'awesome-support' ), $name, $user->display_name ) );
+						wpas_log( $ticket_id, sprintf( $x_content, $name, $user->display_name ) );
 						
 						$deleted = true;
 					}					
@@ -643,21 +642,53 @@ class WPAS_File_Upload {
 
 			switch ($render_method) {
 				case 'inline':
-					readfile( $attachment->guid );
+					$this->custom_readfile( $attachment->guid );
 					break ;
 
 				case 'attachment':
-					readfile( $_SERVER['DOCUMENT_ROOT'] . parse_url($attachment->guid, PHP_URL_PATH) );
+					$this->custom_readfile( $_SERVER['DOCUMENT_ROOT'] . parse_url($attachment->guid, PHP_URL_PATH) );
 					break ;
 
 				default:
-					readfile( $attachment->guid );
+					$this->custom_readfile( $attachment->guid );
 					break ;
 			};
 
 			die();
 
 		}
+
+	}
+	
+	/**
+	 * custom_readfile
+	 *
+	 * @param  mixed $file_path
+	 * @return void
+	 */
+	private function custom_readfile($file_path) {
+		// Ensure the WP_Filesystem class is available
+		if ( !function_exists('get_filesystem_method') ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// Initialize WP_Filesystem
+		global $wp_filesystem;
+		if ( empty($wp_filesystem) ) {
+			WP_Filesystem();
+		}
+
+		// Get the file contents
+		$file_contents = $wp_filesystem->get_contents($file_path);
+
+		// Check if we successfully got the contents
+		if ( $file_contents === false ) {
+			// Handle the error if reading the file failed
+			return; // or handle the error appropriately
+		}
+
+		// Output the file contents
+		echo $file_contents;
 
 	}
 
@@ -780,9 +811,17 @@ class WPAS_File_Upload {
 	 *
 	 * @return void
 	 */
-	protected function protect_upload_dir( $dir ) {
+	protected function protect_upload_dir( $dir ) { 
+		
+		global $wp_filesystem;
 
-		if ( is_writable( $dir ) ) {
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		} 
+		
+		if ( $wp_filesystem->is_writable($dir) ) {
 
 			$filename = $dir . '/.htaccess';
 
@@ -792,12 +831,8 @@ class WPAS_File_Upload {
 			}
 
 			if ( ! file_exists( $filename ) ) {
-				$file = fopen( $filename, 'a+' );
-				if ( false <> $file ) {
-					fwrite( $file, $filecontents );
-					fclose( $file );
-				} else {
-					// attempt to record failure...
+				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
+				if ( $result === false ) {
 					wpas_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
 				}
 			}
@@ -828,6 +863,9 @@ class WPAS_File_Upload {
 		$filetypes = implode( ', ', $filetypes );
 		$accept    = implode( ',', $accept );
 
+		// translators: %1$d is the maximum number of files, %2$d is the maximum file size in MB, %3$s is the list of allowed file types.
+		$x_content = __( 'You can upload up to %1$d files (maximum %2$d MB each) of the following types: %3$s', 'awesome-support' );
+		
 		/**
 		 * Output the upload field using a custom field
 		 */
@@ -841,7 +879,7 @@ class WPAS_File_Upload {
 				'use_ajax_uploader' => ( boolval( wpas_get_option( 'ajax_upload', false ) ) ),
 				'enable_paste' => ( boolval( wpas_get_option( 'ajax_upload_paste_image', false ) ) ),
 				'label'      => __( 'Attachments', 'awesome-support' ),
-				'desc'       => sprintf( __( ' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'awesome-support' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) ),
+				'desc'       => sprintf( $x_content, (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) ),
 			),
 		) );
 
@@ -1367,10 +1405,13 @@ class WPAS_File_Upload {
 
 			$filename = $this->wpas_sanitize_file_name( $attachment['filename'] );                    // Base filename
 			$data     = $attachment['data'];                        // Raw file contents
+			
+			// translators: %1$s is the identifier or message, %2$d is the maximum number of files.
+			$x_content = __( '%1$s -> Max files (%2$d) exceeded.', 'awesome-support' );
 
 			/* Limit the number of uploaded files */
 			if ( $cnt + 1 > $max ) {
-				$errors[] = sprintf( __( '%s -> Max files (%d) exceeded.', 'awesome-support' ), $filename, $max );
+				$errors[] = sprintf( $x_content, $filename, $max );
 				continue;
 			}
 
@@ -1458,7 +1499,10 @@ class WPAS_File_Upload {
 		$url   = remove_query_arg( 'message', $location );
 		$error = is_array( $this->error_message ) ? implode( ', ', $this->error_message ) : $this->error_message;
 
-		wpas_add_error( 'files_not_uploaded', sprintf( __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'awesome-support' ), $error ) );
+		// translators: %s is the attachment.
+		$x_content = __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'awesome-support' );
+
+		wpas_add_error( 'files_not_uploaded', sprintf( $x_content, $error ) );
 
 		$location = wp_sanitize_redirect( $url );
 
@@ -1527,7 +1571,10 @@ class WPAS_File_Upload {
 		$max_size_bytes = $max_size * 1024 * 1024;
 
 		if ( ! in_array( $ext, $filetypes ) ) {
-			$file['error'] = sprintf( __( 'You are not allowed to upload files of this type (%s)', 'awesome-support' ), $ext );
+			// translators: %s is the attachment.
+			$x_content = __( 'You are not allowed to upload files of this type (%s)', 'awesome-support' );
+
+			$file['error'] = sprintf( $x_content, $ext );
 		}
 
 		if ( $file['size'] <= 0 ) {
@@ -1535,7 +1582,10 @@ class WPAS_File_Upload {
 		}
 
 		if ( $file['size'] > $max_size_bytes ) {
-			$file['error'] = sprintf( __( 'Your attachment is too big. You are allowed to attach files up to %s', 'awesome-support' ), "$max_size Mo" );
+			// translators: %s is the attachment.
+			$x_content = __( 'Your attachment is too big. You are allowed to attach files up to %s', 'awesome-support' );
+
+			$file['error'] = sprintf( $x_content, "$max_size Mo" );
 		}
 
 		return $file;
@@ -1702,6 +1752,14 @@ class WPAS_File_Upload {
 	 */
 	public function delete_attachments( $post_id ) {
 
+		global $wp_filesystem;
+
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		}
+
 		$post = get_post( $post_id );
 		if( empty( $post ) || 'ticket' !== $post->post_type ) {
 		    return;
@@ -1741,12 +1799,13 @@ class WPAS_File_Upload {
 
 			foreach ( $files as $file ) {
 				if ( $file->isDir() ) {
-					rmdir( $file->getRealPath() );
+					$wp_filesystem->delete($file->getRealPath(), true);
 				} else {
 					unlink( $file->getRealPath() );
 				}
 			}
-			rmdir( $upload['path'] );
+			$wp_filesystem->delete($upload['path'], true);
+
 
 			/**
 			 * wpas_attachments_after_delete fires after deleting attachments
@@ -1789,6 +1848,9 @@ class WPAS_File_Upload {
 			$max_execution_time = 30;
 		}
 
+		// translators: %s is the number of files.
+		$x_content = __( 'Max files (%s) exceeded.', 'awesome-support' );
+
 		wp_localize_script( 'wpas-ajax-upload', 'WPAS_AJAX', array(
 			'nonce'              => wp_create_nonce( 'wpas-ajax-upload-nonce' ),
 			'ajax_url'           => admin_url( 'admin-ajax.php' ),
@@ -1796,7 +1858,7 @@ class WPAS_File_Upload {
 			'max_execution_time' => ( $max_execution_time * 1000 ), // Convert to miliseconds
 			'max_files'          => wpas_get_option( 'attachments_max' ),
 			'max_size'           => wpas_get_option( 'filesize_max' ),
-			'exceeded'           => sprintf( __( 'Max files (%s) exceeded.', 'awesome-support' ), wpas_get_option( 'attachments_max' ) )
+			'exceeded'           => sprintf( $x_content, wpas_get_option( 'attachments_max' ) )
 		) );
 
 		wp_enqueue_script( 'wpas-ajax-upload' );
@@ -1817,6 +1879,14 @@ class WPAS_File_Upload {
 			return false;
 		}
 
+		global $wp_filesystem;
+
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		} 
+		
 		$upload    = wp_upload_dir();
 		$ticket_id = intval( $_POST[ 'ticket_id' ] );
 		$user_id   = get_current_user_id();
@@ -1855,7 +1925,7 @@ class WPAS_File_Upload {
 				// Check file extension
 				if ( in_array( $extension, $filetypes ) ) {
 					// Upload file
-					move_uploaded_file( $file[ 'tmp_name' ], trailingslashit( $dir ) . $this->wpas_sanitize_file_name( basename( $file[ 'name' ] ) ) );
+					$wp_filesystem->move($file[ 'tmp_name' ], trailingslashit( $dir ) . $this->wpas_sanitize_file_name( basename( $file[ 'name' ] ) ), true); 
 				}
 			}
 		}
@@ -2045,7 +2115,7 @@ class WPAS_File_Upload {
 					}
 
 					// Move file from temp dir to ticket dir
-					rename( $file,  $new_file_upload);
+					$wp_filesystem->move($file, $new_file_upload); 
 
 					// Update attached file post meta data
 					update_attached_file($attachment_id, $new_file_relative);
@@ -2128,18 +2198,26 @@ class WPAS_File_Upload {
 			return false;
 		}
 
+		global $wp_filesystem;
+
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		} 
+
 		$it    = new RecursiveDirectoryIterator( $directory, RecursiveDirectoryIterator::SKIP_DOTS );
 		$files = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
 
 		foreach ( $files as $file ) {
 			if ( $file->isDir() ) {
-				rmdir( $file->getRealPath() );
+				$wp_filesystem->delete($file->getRealPath(), true);
+
 			} else {
 				unlink( $file->getRealPath() );
 			}
 		}
-
-		rmdir( $directory );
+		$wp_filesystem->delete($directory, true);
 
 	}
 

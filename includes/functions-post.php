@@ -459,7 +459,7 @@ function wpas_set_ticket_slug( $ticket_id = -1 ) {
 	if ( isset( $use_ticket_id_for_slug ) && ( 'randomnumber' == $use_ticket_id_for_slug ) ) {
 
 		/*Calculate a random number */
-		$randomslug = mt_rand();
+		$randomslug = wp_rand();
 
 		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
 		$newdata = array(
@@ -641,6 +641,9 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 		}
 	}
 
+	// translators: %s is the ticket reply.
+	$x_content = __( 'Reply to ticket %s', 'awesome-support' );
+
 	/**
 	 * Submit the reply.
 	 *
@@ -649,8 +652,8 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 	 */
 	$defaults = array(
 		'post_content'   => '',
-		'post_name'      => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$parent_id" ),
-		'post_title'     => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$parent_id" ),
+		'post_name'      => sprintf( $x_content, "#$parent_id" ),
+		'post_title'     => sprintf( $x_content, "#$parent_id" ),
 		'post_status'    => 'unread',
 		'post_type'      => 'ticket_reply',
 		'ping_status'    => 'closed',
@@ -849,7 +852,10 @@ function wpas_log_reply_edits( $reply_id, $original_reply ) {
 		$reply_contents_to_log = $original_reply->post_content;
 	}
 
-	wpas_log_edits( $reply_id, sprintf( __( 'Reply #%1$s located on ticket #%2$s was edited.', 'awesome-support' ), (string) $reply_id, (string) $original_reply->post_parent ), $reply_contents_to_log );
+	// translators: %1$s is the reply number, %2$s is the ticket number.
+	$x_content = __( 'Reply #%1$s located on ticket #%2$s was edited.', 'awesome-support' );
+
+	wpas_log_edits( $reply_id, sprintf( $x_content, (string) $reply_id, (string) $original_reply->post_parent ), $reply_contents_to_log );
 
 }
 
@@ -981,9 +987,11 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		return false;
 	}
 
+	// translators: %s is the ticket reply.
+	$x_content = __( 'Reply to ticket %s', 'awesome-support' );
 	$defaults = array(
-		'post_name'      => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$post_id" ),
-		'post_title'     => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$post_id" ),
+		'post_name'      => sprintf( $x_content, "#$post_id" ),
+		'post_title'     => sprintf( $x_content, "#$post_id" ),
 		'post_content'   => '',
 		'post_status'    => 'unread',
 		'post_type'      => 'ticket_reply',
@@ -1468,7 +1476,10 @@ function wpas_update_ticket_status( $post_id, $status ) {
 	$updated = wp_update_post( $my_post );
 
 	if ( 0 !== intval( $updated ) ) {
-		wpas_log_history( $post_id, sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), $custom_status[ $status ] ) );
+
+		// translators: %s is the ticket state.
+		$x_content = __( 'Ticket state changed to %s', 'awesome-support' );
+		wpas_log_history( $post_id, sprintf( $x_content, $custom_status[ $status ] ) );
 	}
 
 	/**
@@ -2037,7 +2048,9 @@ function wpas_log_ticket_edits( $ticket_id, $original_ticket ) {
 		$contents_to_log = $original_ticket->post_content;
 	}
 
-	wpas_log_edits( $ticket_id, sprintf( __( 'Ticket content located on ticket #%1$s was edited.', 'awesome-support' ), (string) $ticket_id ), $contents_to_log );
+	// translators: %1$s is the ticket number.
+	$x_content = __( 'Ticket content located on ticket #%1$s was edited.', 'awesome-support' );
+	wpas_log_edits( $ticket_id, sprintf( $x_content, (string) $ticket_id ), $contents_to_log );
 
 }
 
@@ -2303,12 +2316,15 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 			remove_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10 );
 		}
 
+		// translators: %s is the ticket number.
+		$x_content = __( 'Reply to ticket %s', 'awesome-support' );
+
 		foreach( $replies as $reply ) {
 
 			$reply_data = array(
 				'post_content'   => $reply->post_content,
-				'post_name'      => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$new_ticket_id" ),
-				'post_title'     => sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#$new_ticket_id" ),
+				'post_name'      => sprintf( $x_content, "#$new_ticket_id" ),
+				'post_title'     => sprintf( $x_content, "#$new_ticket_id" ),
 				'post_status'    => 'unread',
 				'post_type'      => 'ticket_reply',
 				'ping_status'    => 'closed',

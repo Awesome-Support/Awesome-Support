@@ -515,11 +515,16 @@ function wpas_write_log( $handle, $message ) {
  * @since  3.0.2
  * @return void
  */
-function wpas_missing_dependencies() { ?>
-	<div class="error">
-        <p><?php printf( wp_kses_post(__( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' )), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
-    </div>
-<?php }
+function wpas_missing_dependencies() { 
+	// translators: %1$s is the name of the dependency or action needed, %2$s is the URL to install the production version of the plugin.
+	$x_content = __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %1$s before anything else. If you don’t know what this is you should <a href="%2$s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' );
+
+	?>
+		<div class="error">
+			<p><?php printf( wp_kses_post( $x_content), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
+		</div>
+	<?php 
+}
 
 /**
  * Wrap element into lis.
@@ -1281,7 +1286,7 @@ function wpas_is_support_ticket_type_active() {
  * @return string
  */
  function wpas_create_pseudo_guid(){
-	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(16384, 20479), wp_rand(32768, 49151), wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(0, 65535));
  }
 
 

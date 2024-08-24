@@ -11,7 +11,11 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+// translators: %1$s is the person who deleted the reply, %2$s is the time ago.
+$x_content = __( 'This reply has been deleted by %1$s <em class="wpas-time">%2$s ago.</em>', 'awesome-support' );
+
 ?>
 <td colspan="3">
-	<?php printf( wp_kses_post( __( 'This reply has been deleted by %s <em class="wpas-time">%s ago.</em>', 'awesome-support' ) ), '<strong>' . esc_html( $user_name ) . '</strong>', esc_html( human_time_diff( strtotime( $row->post_modified ), current_time( 'timestamp' ) ) ) ); ?>
+	<?php printf( wp_kses_post( $x_content ), '<strong>' . esc_html( $user_name ) . '</strong>', esc_html( human_time_diff( strtotime( $row->post_modified ), current_time( 'timestamp' ) ) ) ); ?>
 </td>
