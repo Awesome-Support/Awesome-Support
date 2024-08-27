@@ -130,7 +130,7 @@ class WPAS_File_Upload
 				'for' => true, 'class' => true
 			],
 			'input' => [
-				'style' => true, 'accept' => true, 'multiple', 'type' => true, 'value' => true, 'id' => true, 'pattern' => true,
+				'style' => true, 'accept' => true, 'multiple' => true, 'type' => true, 'value' => true, 'id' => true, 'pattern' => true,
 				'class' => true, 'name' => true, 'readonly' => true, 'required' => true, 'spellcheck' => true, 'placeholder' => true
 			],
 			'span' => [], 'code' => [],
