@@ -87,7 +87,7 @@ class WPAS_Editor_Email_Template_Tags_Button {
 		$list_tags = json_encode( $list_tags, true );
 		
 		$script = 'var wpas_editor_js_vars = { "template_tags": ' . $list_tags . ' };' ;
-		printf( ("<script type='text/javascript'>$script</script>") );
+		printf( wp_kses("<script type='text/javascript'>$script</script>", [ 'script' => [ 'type' => true ] ] ) );
 	}
 }
 

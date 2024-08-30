@@ -1,4 +1,3 @@
-
 <?php
 /**
  * @package   Awesome Support
@@ -162,7 +161,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			// Make sure we have a version of PHP that's not too old
 			if ( ! self::$instance->is_php_version_enough() ) {
-				// translators: %s is the minimum required WordPress version.
+				// translators: %s is the minimum required PHP version.
 				self::$instance->add_error( sprintf( esc_html__( 'Awesome Support requires PHP version %s or above. Read more information about ', 'awesome-support' ).'<a %s>'. esc_html__( 'how you can update', 'awesome-support' ).'</a>.', self::$instance->php_version_required, 'href="http://www.wpupdatephp.com/update/" target="_blank"' ) );
 
 			}

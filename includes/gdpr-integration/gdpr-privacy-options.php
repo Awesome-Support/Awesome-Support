@@ -420,7 +420,7 @@ class WPAS_Privacy_Option {
 										<span class="wpas-system-tools-desc">
 											<?php 
 												// translators: %s is the consent_name.
-												sprintf( esc_html_e( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ), $consent_name); 
+												sprintf( esc_html_e( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ),  $consent_name); 
 											?></span>
 									</td>
 								</tr>

@@ -56,6 +56,8 @@
 						'editor_id': editorId
 					};
 
+					console.log(data);
+					
 					// AJAX request
 					$.post(ajaxurl, data, function (response) {
 						// Append editor to DOM

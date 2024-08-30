@@ -688,7 +688,7 @@ class WPAS_File_Upload {
 		}
 
 		// Output the file contents
-		echo $file_contents;
+		print_r($file_contents);
 
 	}
 

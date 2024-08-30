@@ -179,7 +179,7 @@ elseif( 'closed' == $status ): ?>
 	?>
 	<div class="updated below-h2" style="margin-top: 2em;">
 		<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php esc_html_e('Ticket is closed', 'wpas'); ?></h2>
-		<p><?php printf( wp_kses_post(  ), esc_attr( wpas_get_open_ticket_url( $post->ID ) ) ); ?></p>
+		<p><?php printf( wp_kses_post( $x_content ), esc_attr( wpas_get_open_ticket_url( $post->ID ) ) ); ?></p>
 	</div>
 
 <?php endif;

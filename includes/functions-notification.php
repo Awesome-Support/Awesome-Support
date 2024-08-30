@@ -333,6 +333,9 @@ function get_allowed_html_wp_notifications()
 				'style' => true,
 				'id' => true,
 				'data-ticketid' => true,
+				'data-replyid' => true,
+				'data-wysiwygid' => true,
+				'data-origin' => true,
 				'class' => true,
 			],  'img' => [
 				'style' => true,

@@ -234,17 +234,26 @@ function wpas_register_post_status() {
 
 	$status = wpas_get_post_status();
 
-
 	foreach ( $status as $id => $custom_status ) {
 		// translators: %s is the custom_status.
-		$n_loop = _n_noop( " $custom_status <span class='count'>(%s)</span>", " $custom_status <span class='count'>(%s)</span>", 'awesome-support' );
+		$singular = " $custom_status <span class='count'>(%s)</span>";
+		$plural   = " $custom_status <span class='count'>(%s)</span>";
+		
+		
 		$args = array(
 				'label'                     => $custom_status,
 				'public'                    => true,
 				'exclude_from_search'       => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
-				'label_count'               => $n_loop,
+				'label_count'               => array(
+					0          => $singular,
+					1          => $plural,
+					'singular' => $singular,
+					'plural'   => $plural,
+					'context'  => null,
+					'domain'   => 'awesome-support',
+				),
 		);
 
 		register_post_status( $id, $args );

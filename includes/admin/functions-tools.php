@@ -717,31 +717,31 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	switch ( $template ) {
 
 		case 'blue_blocks' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/blue-block/';
 			break;
 
 		case 'blue_blocks-ss' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block-with-satisfaction-surveys/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/blue-block-with-satisfaction-surveys/';
 			break;
 
 		case 'elegant' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/elegant/';
 			break;
 
 		case 'elegant-ss' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant-with-with-satisfaction-surveys/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/elegant-with-with-satisfaction-surveys/';
 			break;
 
 		case 'simple' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/simple/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/simple/';
 			break;
 
 		case 'default' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/default/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/default/';
 			break;
 
 		case 'debug' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/debug/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/debug/';
 			break;
 	}
 

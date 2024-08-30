@@ -118,7 +118,7 @@ class WPAS_GDPR_User_Profile {
 		}
 
 		// Output the file contents
-		echo $file_contents;
+		print_r($file_contents);
 
 	}
 
