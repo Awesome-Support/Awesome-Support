@@ -349,8 +349,7 @@ class WPAS_Member_Query {
 			$like = array();
 
 			foreach ( $roles as $role ) {
-				$search_query = sprintf('CAST(%1$s AS CHAR) LIKE "%2$s"', "$wpdb->usermeta.meta_value", "%$role%");
-				$like[] = $wpdb->prepare("$search_query");
+				$like[] = $wpdb->prepare( 'CAST(%1$s AS CHAR) LIKE "'. '%2$s' .'"', "$wpdb->usermeta.meta_value", "%$role%" );
 			}
 
 			$like = implode( ' OR ', $like );
@@ -393,14 +392,11 @@ class WPAS_Member_Query {
 
 			$search_query = array();
 			$operator     = empty( $search_query ) ? 'OR' : $this->search['relation'];
-
 			foreach ( $this->search['fields'] as $field ) {
 				if( 'ID' === $field ) {
-					$s_query = sprintf('CAST(%1$s.%2$s AS CHAR) LIKE "%3$s"', $wpdb->users, $field , '%'.$this->search['query'].'%');
-					$search_query[] = $wpdb->prepare("$s_query") ;
+					$search_query[] = $wpdb->prepare( 'CAST(%1$s.%2$s AS CHAR) LIKE "'. '%3$s' .'"', $wpdb->users, $field , '%'.$this->search['query'].'%') ;
 				} else {
-					$s_query = sprintf( '%1$s.%2$s LIKE "%3$s"' ,$wpdb->users, $field, '%'.$this->search['query'].'%' );
-					$search_query[] = $wpdb->prepare( "$s_query" );
+					$search_query[] = $wpdb->prepare( '%1$s.%2$s LIKE "'. '%3$s' .'"' ,$wpdb->users, $field, '%'.$this->search['query'].'%' );
 				}
 			}
 
