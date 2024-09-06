@@ -2108,6 +2108,7 @@ SQL;
 				'data-wp-editor-id' => true,
 				'id' => true,
 				'class' => true,
+				'data-filename' => true,
 			], 'form' => [
 				'method' => true,
 				'action' => true,

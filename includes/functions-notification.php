@@ -355,6 +355,7 @@ function get_allowed_html_wp_notifications()
 				'data-optout-date' => true,
 				'data-onsubmit' => true,
 				'target' => true,
+				'data-filename' => true,
 			], 'label' => [
 				'for' => true,
 			], 'id' => [
@@ -363,6 +364,7 @@ function get_allowed_html_wp_notifications()
 			], 'button' => [
 				'type' => true,
 				'data-wp-editor-id' => true,
+				'data-filename' => true,
 				'id' => true,
 				'data-onsubmit' => true,
 				'class' => true,

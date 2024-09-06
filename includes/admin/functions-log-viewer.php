@@ -166,32 +166,22 @@ function wpas_log_viewer_read_last_lines( $file, $lines ) {
 	} 
 
 	$handle = $wp_filesystem->get_contents($file_path);
-	if( ! empty( $handle ) ) {
-		$linecounter = $lines;
-		$pos         = - 2;
-		$beginning   = false;
-		$text        = array();
-		while ( $linecounter > 0 ) {
-			$t = "";
-			while ( $t != "\n" ) {
-				if( fseek( $handle, $pos, SEEK_END ) == - 1 ) {
-					$beginning = true;
-					break;
-				}
-				$t = fgetc( $handle );
-				$pos --;
-			}
-			$linecounter --;
-			if( $beginning ) {
-				//rewind( $handle );
-			}
-			$text[ $lines - $linecounter - 1 ] = fgets( $handle );
-			if( $beginning ) {
-				break;
-			}
+	if ($handle !== false) {
+		$lines_array = explode("\n", $handle); // Diviser le contenu du fichier en lignes
+		$total_lines = count($lines_array);
+	
+		$linecounter = $lines;  // Le nombre de lignes à lire
+		$text = array();
+	
+		while ($linecounter > 0 && $total_lines > 0) {
+			$text[] = $lines_array[$total_lines - $linecounter];
+			$linecounter--;
 		}
-		foreach( $text as $line ) {
-			$result[] = $line;
+	
+		foreach ($text as $line) {
+			if($line){
+				$result[] = $line;
+			}
 		}
 
 		// translators: %d is the number of lines, %s is the source.
@@ -205,7 +195,7 @@ function wpas_log_viewer_read_last_lines( $file, $lines ) {
 			'fileinfo' => array(
 				'created' => gmdate ("F d Y H:i:s", filectime($file_path)),
 				'lastmodified' => gmdate ("F d Y H:i:s", filemtime($file_path)),
-			    'filesize' => wpas_formatbytes(filesize($file_path)),
+				'filesize' => wpas_formatbytes(filesize($file_path)),
 			),
 			'data'   => $result,
 		);
@@ -242,9 +232,9 @@ function wpas_log_viewer_read_full_file( $file ) {
 	} 
 	$handle = $wp_filesystem->get_contents($file_path);
 	$result = [];
-	if( ! empty( $handle ) ) {
-		while ( ! feof( $handle ) ) {
-			$line     = fgets( $handle );
+	if ($handle !== false) {
+		$lines_array = explode("\n", $handle); // Diviser le contenu du fichier en lignes
+		foreach ($lines_array as $line) {
 			$result[] = $line;
 		}
 		// translators: %1$d is the number of lines, %2$s is the source.

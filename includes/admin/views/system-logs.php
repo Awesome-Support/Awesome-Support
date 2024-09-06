@@ -92,6 +92,8 @@ function wpas_tools_log_viewer_ajax_script() {
 
     </style>
 
+    <!-- Load jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> 
     <script type="text/javascript">
 
         function makeSafeForCSS(name) {
@@ -204,7 +206,7 @@ function wpas_tools_log_viewer_ajax_script() {
                             $('.' + safeClassName + ' .created').html(data.data.fileinfo.created);
                             $('.' + safeClassName + ' .filesize').html(data.data.fileinfo.filesize);
 
-                            $('textarea#content').val(data.data.data);
+                            $('textarea#content').val(data.data.data.join(""));
 
                             console.log(data);
                         }

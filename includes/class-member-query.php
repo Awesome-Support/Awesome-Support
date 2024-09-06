@@ -412,10 +412,8 @@ class WPAS_Member_Query {
 		$order_type = $this->order ? $this->order : 'ASC';
 		
 		$sql .= " ORDER BY {$wpdb->users}.{$order_field} {$order_type}";	
-		
-		$prepared_query = $wpdb->prepare( "$sql" );				
-		
-		$this->members = $wpdb->get_results( "$prepared_query" );	
+				
+		$this->members = $wpdb->get_results( "$sql" );	
 		
 		// Cache the results
 		wp_cache_add( 'users_' . $this->hash, $this->members, 'wpas' );

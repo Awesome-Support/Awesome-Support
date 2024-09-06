@@ -362,6 +362,7 @@ class WPAS_Privacy_Option {
 	 * GDPR add consent html in cleanup section.
 	 */
 	function wpas_system_tools_after_gdpr_callback(){
+		die(57);
 		?>
 		<p><h3><?php esc_html_e( 'GDPR/Privacy', 'awesome-support' ); ?></h3></p>
 		<table class="widefat wpas-system-tools-table" id="wpas-system-tools-gdpr">
@@ -398,7 +399,7 @@ class WPAS_Privacy_Option {
 							if( 'terms_conditions' === $consent ){
 								$consent_name = 'Terms';
 							}
-							if( !empty( $consent_name ) ){
+							if( $consent_name && !empty( $consent_name ) ){
 								?>
 								<tr>
 									<td class="row-title"><label for="tablecell"><?php esc_html( $consent_name ); ?></label></td>

@@ -952,6 +952,7 @@ class WPAS_File_Upload {
 				'data-gdpr' => true,
 				'data-user' => true,
 				'data-optout-date' => true,
+				'data-filename' => true,
 			], 'label' => [
 				'for' => true,
 			], 'id' => [
@@ -962,6 +963,7 @@ class WPAS_File_Upload {
 				'data-wp-editor-id' => true,
 				'id' => true,
 				'class' => true,
+				'data-filename' => true,
 			], 'form' => [
 				'method' => true,
 				'action' => true,
