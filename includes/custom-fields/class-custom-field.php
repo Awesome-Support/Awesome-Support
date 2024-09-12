@@ -429,12 +429,12 @@
 
 			if ( empty( $value ) ) {
 
-				$queried_value = isset( $_GET[$this->get_field_id()] ) ? sanitize_text_field( $_GET[$this->get_field_id()] ) : '';
+				$queried_value = isset( $_GET[$this->get_field_id()] ) ? sanitize_text_field( wp_unslash( $_GET[$this->get_field_id()] ) ) : '';
 
 				if ( ! empty( $queried_value ) ) {
 					$value = is_array( $_GET[ $this->get_field_id() ] )
-						? array_map( 'sanitize_text_field', $_GET[ $this->get_field_id() ] )
-						: sanitize_text_field( $_GET[$this->get_field_id()] );
+						? array_map( 'sanitize_text_field', sanitize_text_field( wp_unslash( $_GET[ $this->get_field_id() ] ) ) )
+						: sanitize_text_field( wp_unslash( $_GET[$this->get_field_id()] ) );
 				}
 
 				$fields = WPAS()->session->get( 'submission_form' );

@@ -394,9 +394,9 @@ if ( ! function_exists( 'tf_upload_option_customizer_get_value' ) ) {
 
 		if ( ! empty( $_POST['nonce'] ) && ! empty( $_POST['id'] ) && ! empty( $_POST['size'] ) ) {
 
-			$nonce = sanitize_text_field( $_POST['nonce'] );
-			$attachmentID = sanitize_text_field( $_POST['id'] );
-			$size = sanitize_text_field( $_POST['size'] );
+			$nonce = sanitize_text_field( wp_unslash( $_POST['nonce'] ) );
+			$attachmentID = sanitize_text_field( wp_unslash( $_POST['id'] ) );
+			$size = sanitize_text_field( wp_unslash( $_POST['size'] ) );
 
 			if ( wp_verify_nonce( $nonce, 'tf_upload_option_nonce' ) ) {
 				$attachment = wp_get_attachment_image_src( $attachmentID, $size );

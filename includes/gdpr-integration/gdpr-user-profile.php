@@ -58,7 +58,7 @@ class WPAS_GDPR_User_Profile {
 		$current_url = home_url( add_query_arg( null, null ) );
 
 		if ( isset( $_GET['file'] ) && isset( $_GET['check'] ) ) {
-			$nonce = ( ! empty( $_GET['check'] ) ) ? sanitize_text_field( $_GET['check'] ) : '';
+			$nonce = ( ! empty( $_GET['check'] ) ) ? sanitize_text_field( wp_unslash( $_GET['check'] )) : '';
 			if ( wp_verify_nonce( $nonce, 'as-validate-download-url' )  && ( intval( $_GET['file'] ) == get_current_user_id() ) ) {
 				$user = intval( $_GET['file'] );
 				if ( ! $this->user_export_dir ) {
@@ -307,8 +307,8 @@ class WPAS_GDPR_User_Profile {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( $_POST['data']['nonce'] ) : '';
-		$user  = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] )) : '';
+		$user  = isset( $_POST['data']['nonce'] )  && isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
 		/**
 		 * Security checking
 		 */

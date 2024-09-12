@@ -356,7 +356,7 @@ class GASF_EDD_SL_Plugin { // Namespaced to PBS for error protection
 			wp_die( wp_kses_post(__( 'You do not have permission to install plugin updates', 'easy-digital-downloads' )), wp_kses_post(__( 'Error', 'easy-digital-downloads' )), array( 'response' => 403 ) );
 		}
 
-		$data         = $edd_plugin_data[ $_REQUEST['slug'] ];
+		$data         = $edd_plugin_data[ sanitize_key( wp_unslash( $_REQUEST['slug'] ) ) ];
 		$cache_key    = md5( 'edd_plugin_' . sanitize_key( $_REQUEST['plugin'] ) . '_version_info' );
 		$version_info = get_transient( $cache_key );
 
@@ -366,7 +366,7 @@ class GASF_EDD_SL_Plugin { // Namespaced to PBS for error protection
 				'edd_action' => 'get_version',
 				'item_name'  => isset( $data['item_name'] ) ? $data['item_name'] : false,
 				'item_id'    => isset( $data['item_id'] ) ? $data['item_id'] : false,
-				'slug'       => $_REQUEST['slug'],
+				'slug'       => sanitize_key( wp_unslash( $_REQUEST['slug'] ) ),
 				'author'     => $data['author'],
 				'url'        => home_url()
 			);

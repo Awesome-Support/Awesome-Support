@@ -102,8 +102,8 @@ if ( isset( $_GET['done'] ) ) {
 		case 'mark_closed_auto_del_attchmnts':
 		case 'remove_mark_closed_auto_del_attchmnts':
 
-			$done_parts = explode( '_', sanitize_text_field( $_GET['done'] ) );
-			$flag_added_removed = 'remove' === substr( sanitize_text_field( $_GET['done'] ), 0, 6 ) ? 'removed' : 'added';
+			$done_parts = explode( '_', sanitize_text_field( wp_unslash( $_GET['done'] ) ) );
+			$flag_added_removed = 'remove' === substr( sanitize_text_field( wp_unslash( $_GET['done'] ) ), 0, 6 ) ? 'removed' : 'added';
 			$flag_ticket_types = 'removed' === $flag_added_removed ? $done_parts[2] : $done_parts[1];
 
 
@@ -114,7 +114,7 @@ if ( isset( $_GET['done'] ) ) {
 			break;
 	}
 
-	$message = apply_filters('wpas_show_done_tool_message', $message, sanitize_text_field( $_GET['done'] ));
+	$message = apply_filters('wpas_show_done_tool_message', $message, sanitize_text_field( wp_unslash( $_GET['done'] ) ));
 
 }
 

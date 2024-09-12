@@ -1,8 +1,8 @@
 <?php
 
-$log_viewer_action       =  isset( $_GET['wpas_tools_log_viewer_action'] ) ? sanitize_text_field( $_GET['wpas_tools_log_viewer_action'] ) : '';
+$log_viewer_action       =  isset( $_GET['wpas_tools_log_viewer_action'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_tools_log_viewer_action'] ) ) : '';
 
-$log_viewer_current_file =  isset( $_GET['wpas_tools_log_viewer_current_file'] ) ? sanitize_text_field( $_GET['wpas_tools_log_viewer_current_file'] ) : '';
+$log_viewer_current_file =  isset( $_GET['wpas_tools_log_viewer_current_file'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_tools_log_viewer_current_file'] ) ) : '';
 
 /**
  * Scan AS logs folder for files.

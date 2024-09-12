@@ -29,7 +29,7 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 		if ( empty( $_POST['nonce'] ) ) {
 			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'gas-framework' ) );
 		}
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'tf-ajax-button' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'tf-ajax-button' ) ) {
 			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'gas-framework' ) );
 		}
 	}

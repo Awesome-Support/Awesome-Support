@@ -133,11 +133,11 @@ class GASFrameworkCustomizer {
 			return $value;
 		}
 		if ( array_key_exists( $option->getID(), $_POST ) ) {
-			return $_POST[ $option->getID() ];
+			return sanitize_key( wp_unslash( $_POST[ $option->getID() ] ) );
 		}
 
 		if ( ! empty( $_POST['customized'] ) ) {
-			$customizedSettings = (array) json_decode( stripslashes( $_POST['customized'] ) );
+			$customizedSettings = (array) json_decode( stripslashes( sanitize_key( wp_unslash( $_POST['customized'] ) ) ) );
 			if ( is_array( $customizedSettings ) && ! empty( $customizedSettings ) ) {
 				if ( array_key_exists( $option->getID(), $customizedSettings ) ) {
 					return $customizedSettings[ $option->getID() ];

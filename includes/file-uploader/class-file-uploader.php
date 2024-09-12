@@ -390,7 +390,7 @@ class WPAS_File_Upload {
 		$parent_id = filter_input( INPUT_POST, 'parent_id', FILTER_SANITIZE_NUMBER_INT );
 		$attachment_id = filter_input( INPUT_POST, 'att_id', FILTER_SANITIZE_NUMBER_INT );		
 	
-		$nonce = isset( $_POST['att_delete_nonce'] ) ? $_POST['att_delete_nonce'] : '';
+		$nonce = isset( $_POST['att_delete_nonce'] ) ? sanitize_file_name( wp_unslash( $_POST['att_delete_nonce'] ) ) : '';
 		
 		if ( empty( $nonce ) || !check_ajax_referer( 'wpas-delete-attachs', 'att_delete_nonce' ) ) { 		
 			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'wpas') ) );
@@ -476,7 +476,7 @@ class WPAS_File_Upload {
 
 		global $pagenow, $wpdb;
 
-		$action = isset( $_POST['action'] ) ? sanitize_text_field( $_POST['action'] ) : '';
+		$action = isset( $_POST['action'] ) ? sanitize_file_name( wp_unslash ( $_POST['action'] ) ) : '';
 
 		// Make sure the query is for the media library
 		if ( 'query-attachments' !== $action ) {
@@ -588,7 +588,6 @@ class WPAS_File_Upload {
 	 * @return void
 	 */
 	public function view_attachment() {
-
 		$attachment_id = get_query_var( 'wpas-attachment' );
 
 		if ( ! empty( $attachment_id ) ) {
@@ -646,7 +645,7 @@ class WPAS_File_Upload {
 					break ;
 
 				case 'attachment':
-					$this->custom_readfile( $_SERVER['DOCUMENT_ROOT'] . parse_url($attachment->guid, PHP_URL_PATH) );
+					$this->custom_readfile( ( isset( $_SERVER['DOCUMENT_ROOT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) : '' ) . parse_url($attachment->guid, PHP_URL_PATH) );
 					break ;
 
 				default:
@@ -765,7 +764,7 @@ class WPAS_File_Upload {
 		/* Create the directory if it doesn't exist yet, make sure it's protected otherwise */
 		if ( ! is_dir( $dir ) ) {
 
-		    if ( $_SERVER['REQUEST_METHOD'] == 'GET'
+		    if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] == 'GET'
 			    && isset( $_GET['action'] )
                 && $_GET['action'] === 'delete'
             ) {
@@ -1527,15 +1526,19 @@ class WPAS_File_Upload {
 	public function limit_upload( $file ) {
 
 		global $post;
+		if ( empty( $post ) ) { 
+			$server_protocol = isset( $_SERVER['SERVER_PROTOCOL'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PROTOCOL'] ) ) : null;
+			$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : null;
+			$server_port = isset( $_SERVER['SERVER_PORT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) : null;
+			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : null;
 
-		if ( empty( $post ) ) {
-			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
+			$protocol = stripos( $server_protocol, 'https' ) === true ? 'https://' : 'http://';
+			$post_id  = url_to_postid( $protocol . $server_name . ':' . $server_port . $request_uri );
 			$post     = get_post( $post_id );
 		}
 
 		$submission = (int) wpas_get_option( 'ticket_submit' );
-		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( $_GET[ 'post_type' ] ) : '' ; 
+		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] )) : '' ; 
 		
 		/**
 		 * On the front-end we only want to limit upload size
@@ -1640,36 +1643,42 @@ class WPAS_File_Upload {
 
 		$files_index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
 
-		if ( ! is_array( $_FILES[ $files_index ]['name'] ) ) {
-			return false;
-		}
+		if ( isset($_FILES[ $files_index ]['name']) && is_array( $_FILES[ $files_index ]['name'] ) ) {
+			
+			$file_names = isset($_FILES[ $files_index ]['name']) ? array_map('sanitize_file_name', wp_unslash(  $_FILES[ $files_index ]['name'] ) ) : null;
+			foreach ( $file_names as $id => $name ) {
+				$index                    = $files_index . '_' . $id;
+				$_FILES[ $index ]['name'] = $name;
+			}
 
-		foreach ( $_FILES[ $files_index ]['name'] as $id => $name ) {
-			$index                    = $files_index . '_' . $id;
-			$_FILES[ $index ]['name'] = $name;
-		}
+			$file_types = isset($_FILES[ $files_index ]['type']) ? array_map('sanitize_mime_type', wp_unslash(  $_FILES[ $files_index ]['type'] ) ) : null;
+			foreach ( $file_types as $id => $type ) {
+				$index                    = $files_index . '_' . $id;
+				$_FILES[ $index ]['type'] = $type;
+			}
 
-		foreach ( $_FILES[ $files_index ]['type'] as $id => $type ) {
-			$index                    = $files_index . '_' . $id;
-			$_FILES[ $index ]['type'] = $type;
-		}
+			$file_tmp_names = isset($_FILES[ $files_index ]['tmp_name']) ? array_map('sanitize_text_field', (  $_FILES[ $files_index ]['tmp_name'] ) ) : null;
+			foreach ( $file_tmp_names as $id => $tmp_name ) {
+				$index                        = $files_index . '_' . $id;
+				$_FILES[ $index ]['tmp_name'] = $tmp_name;
+			}
 
-		foreach ( $_FILES[ $files_index ]['tmp_name'] as $id => $tmp_name ) {
-			$index                        = $files_index . '_' . $id;
-			$_FILES[ $index ]['tmp_name'] = $tmp_name;
-		}
+			$file_errors = isset($_FILES[ $files_index ]['error']) ? array_map('sanitize_text_field', wp_unslash(  $_FILES[ $files_index ]['error'] ) ) : null;
+			foreach ( $file_errors as $id => $error ) {
+				$index                     = $files_index . '_' . $id;
+				$_FILES[ $index ]['error'] = $error;
+			}
 
-		foreach ( $_FILES[ $files_index ]['error'] as $id => $error ) {
-			$index                     = $files_index . '_' . $id;
-			$_FILES[ $index ]['error'] = $error;
-		}
+			$file_sizes = isset($_FILES[ $files_index ]['size']) ? array_map('sanitize_text_field', wp_unslash(  $_FILES[ $files_index ]['size'] ) ) : null;
+			foreach ( $file_sizes as $id => $size ) {
+				$index                    = $files_index . '_' . $id;
+				$_FILES[ $index ]['size'] = $size;
+			}
+			
+			return true;
 
-		foreach ( $_FILES[ $files_index ]['size'] as $id => $size ) {
-			$index                    = $files_index . '_' . $id;
-			$_FILES[ $index ]['size'] = $size;
 		}
-
-		return true;
+		return false;
 
 	}
 
@@ -1737,7 +1746,7 @@ class WPAS_File_Upload {
 		}
 
 		$this->post_id   = intval( $reply_id );
-		$this->parent_id = intval( $_POST['wpas_post_parent'] );
+		$this->parent_id = isset( $_POST['wpas_post_parent'] ) ? intval( $_POST['wpas_post_parent'] ) : null;
 		$this->process_upload();
 	}
 
@@ -1890,13 +1899,13 @@ class WPAS_File_Upload {
 		} 
 		
 		$upload    = wp_upload_dir();
-		$ticket_id = intval( $_POST[ 'ticket_id' ] );
+		$ticket_id = isset( $_POST[ 'ticket_id' ] ) ? intval( $_POST[ 'ticket_id' ] ) : null;
 		$user_id   = get_current_user_id();
 		
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
 		
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-ajax-upload-nonce', 'nonce' ) ) { 
 	
@@ -1949,12 +1958,12 @@ class WPAS_File_Upload {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
-		
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-ajax-upload-nonce', 'nonce' ) ) { 	
 
 			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );			
-			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( $_POST['attachment'] ) : '';		
+			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( wp_unslash( ( $_POST['attachment'] ) ) ) : '';		
 			
 			$upload     = wp_upload_dir();
 			$user_id    = get_current_user_id();
@@ -1996,7 +2005,7 @@ class WPAS_File_Upload {
 	public function ajax_delete_temp_directory() {
 
 		$upload     = wp_upload_dir();
-		$temp_dir   = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], intval( $_POST[ 'ticket_id' ] ), get_current_user_id() );
+		$temp_dir   = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], intval( isset($_POST[ 'ticket_id' ]) ? $_POST[ 'ticket_id' ] : 0 ), get_current_user_id() );
 
 		if ( is_dir( $temp_dir ) ) {
 			$this->remove_directory( $temp_dir );

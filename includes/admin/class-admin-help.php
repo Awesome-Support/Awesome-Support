@@ -54,8 +54,8 @@ class WPAS_Help {
 	 */
 	public function settings_general_contextual_help() {
 		
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		
 		if( 'ticket' !== $post_type || 'general' !== $tab ) {
 			return;
@@ -85,8 +85,9 @@ class WPAS_Help {
 	 */
 	public function settings_registration_help() {
 
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
+
 		if( 'ticket' !== $post_type || 'registration' !== $tab ) {
 			return;
 		}
@@ -107,8 +108,8 @@ class WPAS_Help {
 	 */
 	public function settings_moderated_registration_help() {
 		
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		
 		if( 'ticket' !== $post_type || 'modregistration' !== $tab ) {
 			return;
@@ -147,8 +148,8 @@ class WPAS_Help {
 	 */
 	public function settings_products_management_help() {
 
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		
 		if( 'ticket' !== $post_type || 'products-management' !== $tab ) {
 			return;
@@ -184,9 +185,8 @@ class WPAS_Help {
 	 */
 	public function settings_notifications_contextual_help() {
 
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
-		
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		if( 'ticket' !== $post_type || 'email' !== $tab ) {
 			return;
 		}
@@ -230,8 +230,8 @@ class WPAS_Help {
 	 */
 	public function settings_advanced_contextual_help() {
 
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		
 		if( 'ticket' !== $post_type || 'advanced' !== $tab ) {
 			return;

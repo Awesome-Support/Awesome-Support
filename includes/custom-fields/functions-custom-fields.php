@@ -198,7 +198,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	$hours = $minutes = $adj_hours = $adj_minutes = 0;
 
 	// Time spent on ticket (hh:mm:ss)
-	sscanf( $_POST['wpas_ttl_calculated_time_spent_on_ticket'], "%d:%d", $hours, $minutes );
+	sscanf( sanitize_file_name( wp_unslash( $_POST['wpas_ttl_calculated_time_spent_on_ticket'] ) ), "%d:%d", $hours, $minutes );
 
 	// Convert to seconds
 	$minutes = $hours * 60 + $minutes;
@@ -207,10 +207,10 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	if( isset ( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
 		&& ! empty( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
 	) {
-		sscanf( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'], "%d:%d", $adj_hours, $adj_minutes );
+		sscanf( sanitize_file_name( wp_unslash( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] ) ), "%d:%d", $adj_hours, $adj_minutes );
 		$adjustment_time = $adj_hours * 60 + $adj_minutes;
 
-		if( '+' === $_POST['wpas_time_adjustments_pos_or_neg'] ) {
+		if( isset($_POST['wpas_time_adjustments_pos_or_neg']) && '+' === $_POST['wpas_time_adjustments_pos_or_neg'] ) {
 			$minutes += $adjustment_time;
 		}
 		else {

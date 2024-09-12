@@ -345,8 +345,8 @@ function wpas_enqueue_assets_back_end() {
 			wp_dequeue_script( 'autosave' );
 		}
 		
-		$page = isset( $_GET['page'] ) ? wp_unslash( sanitize_text_field( $_GET['page'] ) ) : '';		
-		$action = isset( $_GET['action'] ) ? wp_unslash( sanitize_text_field( $_GET['action'] ) ) : '';
+		$page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : '';		
+		$action = isset( $_GET['action'] ) ? sanitize_text_field( wp_unslash( $_GET['action'] ) ) : '';
 		
 		if ( 'wpas-about' === $page ) {
 			wp_enqueue_script( 'wpas-admin-about-linkify' );

@@ -69,7 +69,7 @@ function wpas_admin_notices() {
 			case 'opened':
 ?>
 				<div class="updated">
-					<p><?php printf(esc_html($x_content1), intval($_GET['post'])); ?></p>
+					<p><?php printf(esc_html($x_content1), isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0); ?></p>
 				</div>
 			<?php
 				break;
@@ -77,7 +77,7 @@ function wpas_admin_notices() {
 			case 'closed':
 			?>
 				<div class="updated">
-					<p><?php printf(esc_html($x_content2), intval($_GET['post'])); ?></p>
+					<p><?php printf(esc_html($x_content2), isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0); ?></p>
 				</div>
 	<?php
 				break;

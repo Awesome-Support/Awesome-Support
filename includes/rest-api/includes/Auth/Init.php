@@ -186,6 +186,7 @@ class Init {
 	 * @return WP_User|bool
 	 */
 	public static function rest_api_auth_handler( $input_user ){
+
 		// Don't authenticate twice
 		if ( ! empty( $input_user ) ) {
 			return $input_user;
@@ -206,9 +207,9 @@ class Init {
 		}
 
 		// get the user by the username
-		$user = new User( 0,  wp_unslash( $_SERVER['PHP_AUTH_USER'] ) );
+		$user = new User( 0, sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) ));
 
-		if ( $user->authenticate( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) ) ) {
+		if ( $user->authenticate(  isset($_SERVER['PHP_AUTH_PW'] ) ? sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) ) : null ) ) {
 			return $user->ID;
 		}
 
@@ -225,11 +226,11 @@ class Init {
 		$response = array();
 
 		if ( isset( $_SERVER['PHP_AUTH_USER'] ) ) {
-			$response['PHP_AUTH_USER'] = wp_unslash( $_SERVER['PHP_AUTH_USER'] );
+			$response['PHP_AUTH_USER'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) );
 		}
 
 		if ( isset( $_SERVER['PHP_AUTH_PW'] ) ) {
-			$response['PHP_AUTH_PW'] = wp_unslash( $_SERVER['PHP_AUTH_PW'] );
+			$response['PHP_AUTH_PW'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
 		}
 
 		if ( empty( $response ) ) {
@@ -256,7 +257,7 @@ class Init {
 		}
 
 		// From our prior conditional, one of these must be set.
-		$header = isset( $_SERVER['REMOTE_USER'] ) ? wp_unslash( $_SERVER['REMOTE_USER'] ) : wp_unslash( $_SERVER['REDIRECT_REMOTE_USER'] );
+		$header = isset( $_SERVER['REMOTE_USER'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_USER'] ) ) : sanitize_text_field( wp_unslash( $_SERVER['REDIRECT_REMOTE_USER'] ) );
 
 		// Test to make sure the pattern matches expected.
 		if ( ! preg_match( '%^Basic [a-z\d/+]*={0,2}$%i', $header ) ) {

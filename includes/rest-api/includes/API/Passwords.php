@@ -295,11 +295,11 @@ class Passwords extends WP_REST_Controller {
 		$response = array();
 
 		if ( isset( $_SERVER['PHP_AUTH_USER'] ) ) {
-			$response['PHP_AUTH_USER'] = $_SERVER['PHP_AUTH_USER'];
+			$response['PHP_AUTH_USER'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) );
 		}
 
 		if ( isset( $_SERVER['PHP_AUTH_PW'] ) ) {
-			$response['PHP_AUTH_PW'] = $_SERVER['PHP_AUTH_PW'];
+			$response['PHP_AUTH_PW'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
 		}
 
 		if ( empty( $response ) ) {

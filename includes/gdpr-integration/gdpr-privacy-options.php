@@ -67,7 +67,7 @@ class WPAS_Privacy_Option {
 			return false;
 		}
 
-		if ( ! wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_nonce'] ) ), 'system_tool' ) ) {
 			return false;
 		}
 		$authors = array();
@@ -104,9 +104,9 @@ class WPAS_Privacy_Option {
 			case 'add_user_consent':
 
 				// $_status = (isset( $_GET['_status'] ) && !empty( isset( $_GET['_status'] ) ))? sanitize_text_field( $_GET['_status'] ): '';
-				$_status = ( isset( $_GET['_status'] ) && $_GET['_status'] ) ? sanitize_text_field( $_GET['_status'] ) : '';
+				$_status = ( isset( $_GET['_status'] ) && sanitize_text_field( wp_unslash( $_GET['_status'] ) ) ) ? sanitize_text_field( wp_unslash( $_GET['_status'] ) ) : '';
 				// $consent = ( isset( $_GET['_consent'] ) && !empty( isset( $_GET['_consent'] ) ) )? sanitize_text_field( $_GET['_consent'] ): '';
-				$consent = ( isset( $_GET['_consent'] ) && $_GET['_consent'] ) ? sanitize_text_field( $_GET['_consent'] ) : '';
+				$consent = ( isset( $_GET['_consent'] ) && sanitize_text_field( wp_unslash( $_GET['_consent'] ) ) ) ? sanitize_text_field( wp_unslash( $_GET['_consent'] ) ) : '';
 				if ( empty( $_status ) || empty( $consent ) ) {
 					return false;
 				}
@@ -362,7 +362,6 @@ class WPAS_Privacy_Option {
 	 * GDPR add consent html in cleanup section.
 	 */
 	function wpas_system_tools_after_gdpr_callback(){
-		die(57);
 		?>
 		<p><h3><?php esc_html_e( 'GDPR/Privacy', 'awesome-support' ); ?></h3></p>
 		<table class="widefat wpas-system-tools-table" id="wpas-system-tools-gdpr">
@@ -421,7 +420,7 @@ class WPAS_Privacy_Option {
 										<span class="wpas-system-tools-desc">
 											<?php 
 												// translators: %s is the consent_name.
-												sprintf( esc_html_e( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ),  $consent_name); 
+												sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ),  $consent_name); 
 											?></span>
 									</td>
 								</tr>
@@ -1000,7 +999,7 @@ class WPAS_Privacy_Option {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
+		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] ) ) : '';
 
 		/**
 		 * Security checking
@@ -1011,11 +1010,12 @@ class WPAS_Privacy_Option {
 			 *  Initiate form data parsing
 			 */
 			$form_data = array();
-			parse_str( $_POST['data']['form-data'], $form_data );
+			$data =  isset( $_POST['data']['form-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['form-data'] ) ) : '';
+			parse_str( $data, $form_data );
 
 			$subject = isset( $form_data['wpas-gdpr-ded-subject'] ) ? $form_data['wpas-gdpr-ded-subject'] : '';
 			$content = isset( $form_data['wpas-gdpr-ded-more-info'] ) && ! empty( $form_data['wpas-gdpr-ded-more-info'] ) ? $form_data['wpas-gdpr-ded-more-info'] : $subject; // Fallback to subject to avoid undefined!
-			$request_type = ( isset( $_POST['data']['request_type'] ) && !empty( $_POST['data']['request_type'] ))? sanitize_text_field( $_POST['data']['request_type'] ): '';
+			$request_type = ( isset( $_POST['data']['request_type'] ) && !empty( $_POST['data']['request_type'] ))? sanitize_text_field( wp_unslash( $_POST['data']['request_type'] ) ): '';
 
 			/**
 			 * New ticket submission
@@ -1092,18 +1092,18 @@ class WPAS_Privacy_Option {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
+		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] ) ): '';
 
 		/**
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item   	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
-			$user   	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+			$item   	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] )) : '';
+			$user   	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
 			$status 	= __( 'Opted-in', 'awesome-support' );
 			$opt_in 	= strtotime( 'NOW' );
-			$opt_out   	= isset( $_POST['data']['gdpr-optout'] ) ? strtotime( sanitize_text_field( $_POST['data']['gdpr-optout'] ) ) : '';
+			$opt_out   	= isset( $_POST['data']['gdpr-optout'] ) ? strtotime( sanitize_text_field( wp_unslash( $_POST['data']['gdpr-optout'] )) ) : '';
 			$gdpr_id 	= wpas_get_gdpr_data( $item );
 
 			/**
@@ -1162,18 +1162,19 @@ class WPAS_Privacy_Option {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
+		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] ) ): '';
+
 
 		/**
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item    	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
-			$user    	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+			$item    	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] )) : '';
+			$user    	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
 			$status  	= __( 'Opted-Out', 'awesome-support' );
 			$opt_out 	= strtotime( 'NOW' );
-			$opt_in   	= isset( $_POST['data']['gdpr-optin'] ) ? strtotime( sanitize_text_field( $_POST['data']['gdpr-optin'] ) ) : '';
+			$opt_in   	= isset( $_POST['data']['gdpr-optin'] ) ? strtotime( sanitize_text_field( wp_unslash( $_POST['data']['gdpr-optin'] )) ) : '';
 
 			/**
 			 * Who is the current user right now?

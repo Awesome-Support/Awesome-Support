@@ -95,7 +95,7 @@
 		</tr>
 		<tr class="alternate">
 			<td class="row-title">Software</td>
-			<td><?php echo esc_html( isset( $_SERVER['SERVER_SOFTWARE'] ) ? wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) : '' ); ?></td>
+			<td><?php echo esc_html( isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ): '' ); ?></td>
 		</tr>
 	</tbody>
 </table>

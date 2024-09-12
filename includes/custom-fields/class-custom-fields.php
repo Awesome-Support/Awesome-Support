@@ -952,7 +952,7 @@ class WPAS_Custom_Fields {
 				/* the custom field here to the name of the file that was uploaded. 																			 */
 				/* @TODO:  It is possible that this should be handled earlier in the custom fields process? 													 */
 				if( 'upload' === $field['args']['field_type'] && isset( $_FILES[ $field_name ] ) && !empty( $_FILES[ $field_name ] )  ) {
-						$data[ $field_name ] = $_FILES[ $field_name ];
+						$data[ $field_name ] = sanitize_file_name( wp_unslash( $_FILES[ $field_name ] ) );
 				}
 
 				/* Set error message if field is mandatory but no data is in the field. */

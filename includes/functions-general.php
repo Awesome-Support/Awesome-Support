@@ -199,10 +199,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 		global $post;
 
         if ( empty( $post ) ) {
-            $protocol = (isset($_SERVER['SERVER_PROTOCOL']) && stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true) ? 'https://' : 'http://';
-            $server_name = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
-            $server_port = isset($_SERVER['SERVER_PORT']) ? ':' . $_SERVER['SERVER_PORT'] : '';
-            $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+			  $request_uri = isset($_SERVER['REQUEST_URI']) ? sanitize_file_name( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
             $post_id  = url_to_postid( '' . '' . '' . $request_uri );
             $post     = get_post( $post_id );
         }
@@ -751,7 +748,7 @@ add_filter( 'locale','wpas_change_locale', 10, 1 );
  */
 function wpas_change_locale( $locale ) {    
 	
-	$wpas_locale = isset( $_GET['wpas_lang'] ) ? wp_unslash( sanitize_text_field( $_GET['wpas_lang'] ) ) : '';	
+	$wpas_locale = isset( $_GET['wpas_lang'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_lang'] ) ) : '';	
 	
 	if ( ! empty( $wpas_locale ) ) {
 		$locale = $wpas_locale;
@@ -1091,7 +1088,7 @@ function wpas_change_plugin_locale( $locale, $domain ) {
 	 * @var    string
 	 */
 	
-	$wpas_locale = isset( $_GET['wpas_locale'] ) ? wp_unslash( sanitize_text_field( $_GET['wpas_locale'] ) ) : '';
+	$wpas_locale = isset( $_GET['wpas_locale'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_locale'] ) ) : '';
 	
 	if ( ! empty( $wpas_locale ) ) {
 		$locale = $wpas_locale;
@@ -1315,14 +1312,14 @@ function wpas_is_support_ticket_type_active() {
  */
  function wpas_filter_input_server( $input_var = 'REQUEST_URI' ) {
 	
-	$filtered_input = isset( $_SERVER[$input_var] ) ?  sanitize_text_field( $_SERVER[$input_var] ) : '';	
+	$filtered_input = isset( $_SERVER[$input_var] ) ?  sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
 	 if ( empty( $filtered_input ) ) {
 
 		if ( filter_has_var(INPUT_SERVER, $input_var )) {
-				$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( $_SERVER[$input_var] ) : '';	
+				$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
 			} else {
 				if (isset($_SERVER["REQUEST_URI"]))
-					$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( $_SERVER[$input_var] ) : '';	
+					$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
 				else
 					$filtered_input = null;
 			}

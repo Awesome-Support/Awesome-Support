@@ -3613,11 +3613,11 @@ class gasscss_server {
 	protected function inputName() {
 		switch (true) {
 			case isset($_GET['p']):
-				return $_GET['p'];
+				return sanitize_text_field( wp_unslash( $_GET['p'] ) );
 			case isset($_SERVER['PATH_INFO']):
-				return $_SERVER['PATH_INFO'];
+				return sanitize_text_field( wp_unslash( $_SERVER['PATH_INFO'] ) );
 			case isset($_SERVER['DOCUMENT_URI']):
-				return substr($_SERVER['DOCUMENT_URI'], strlen($_SERVER['SCRIPT_NAME']));
+				return substr( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_URI'] ) ), strlen( isset($_SERVER['SCRIPT_NAME']) ? sanitize_text_field( wp_unslash( $_SERVER['SCRIPT_NAME'] ) ) : '' ));
 		}
 	}
 	/**

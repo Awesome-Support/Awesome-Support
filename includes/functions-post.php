@@ -15,8 +15,7 @@ function wpas_open_ticket( $data ) {
 	/**
 	 * Prepare vars
 	 */
-	$submit = isset( $_POST['_wp_http_referer'] ) ? wpas_get_submission_page_url( url_to_postid( $_POST['_wp_http_referer'] ) ) : wpas_get_submission_page_url();
-
+	$submit = isset( $_POST['_wp_http_referer'] ) ? wpas_get_submission_page_url( url_to_postid( sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) ) ) : wpas_get_submission_page_url();
 	// Fallback in case the referrer failed
 	if ( empty( $submit ) ) {
 		$submission_pages = wpas_get_option( 'ticket_submit' );
@@ -175,7 +174,7 @@ function wpas_new_ticket_submission( $data ) {
 
 			// Redirect to submit page
 			wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'awesome-support' ) );
-			wp_redirect( wp_sanitize_redirect( home_url( $_POST['_wp_http_referer'] ) ) );
+			wp_redirect( wp_sanitize_redirect( home_url( isset( $_POST['_wp_http_referer']) ? sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) : "" ) ) );
 			exit;
 		}
 
@@ -775,7 +774,8 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 
 	if ( empty( $content ) ) {
 		if ( isset( $_POST['reply_content'] ) ) {
-			$content = wp_kses( $_POST['reply_content'], wp_kses_allowed_html( 'post' ) );
+			$reply = isset($_POST['reply_content'] ) ? sanitize_text_field( wp_unslash( $_POST['reply_content'] ) ) : "";
+			$content = wp_kses( $reply, wp_kses_allowed_html( 'post' ) );
 		} else {
 			return false;
 		}
@@ -1941,9 +1941,8 @@ function wpas_edit_ticket_content() {
 	/**
 	 * Variables!
 	 */
-	$ticket_id = isset( $_POST['post_id'] ) ? sanitize_text_field( $_POST['post_id'] ) : '';
-	$content   = isset( $_POST['content'] ) ? wp_kses_post( $_POST['content'] ) : '';
-	
+	$ticket_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
+	$content = isset($_POST['content'] ) ? wp_kses_post( sanitize_text_field( wp_unslash( $_POST['content'] ) ) ) : '';
 
 	/**
 	 * Make sure we have ticket ID

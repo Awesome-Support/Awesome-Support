@@ -294,8 +294,8 @@ if ( ! function_exists( 'tf_file_upload_option_customizer_get_value' ) ) {
 
         if ( ! empty( $_POST['nonce'] ) && ! empty( $_POST['id'] ) ) {
 
-            $nonce = sanitize_text_field( $_POST['nonce'] );
-            $attachmentID = sanitize_text_field( $_POST['id'] );
+            $nonce = sanitize_text_field( wp_unslash( $_POST['nonce'] ) ); 
+            $attachmentID = sanitize_text_field( wp_unslash( $_POST['id'] ) );
             // $size = sanitize_text_field( $_POST['size'] );
 
             if ( wp_verify_nonce( $nonce, 'tf_file_upload_option_nonce' ) ) {

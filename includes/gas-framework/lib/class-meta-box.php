@@ -129,7 +129,7 @@ class GASFrameworkMetaBox {
 			}
 
 			if ( ! empty( $_POST[ $this->owner->optionNamespace . '_' . $option->settings['id'] ] ) ) {
-				$value = $_POST[ $this->owner->optionNamespace . '_' . $option->settings['id'] ];
+				$value = sanitize_text_field( wp_unslash( $_POST[ $this->owner->optionNamespace . '_' . $option->settings['id'] ] ) );
 			} else {
 				$value = '';
 			}

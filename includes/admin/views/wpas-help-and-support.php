@@ -40,7 +40,7 @@ $x_content4 = __( 'Documentation links are located in our <a href="%1$s">About P
 		<h2><?php esc_html_e( 'Do you need help and support for other plugins and themes or do you need emergency help for your site?', 'awesome-support' ); ?></h2>
 		<p><?php esc_attr_e( 'If so, check out our partners at ValiusWP.com where you can get unlimited 30 minute website fixes and support for one low price per month.', 'awesome-support' ); ?></p>
 		<p><?php esc_attr_e( 'Fast, friendly support for all things WordPress at one low monthly price!', 'awesome-support' ); ?></p>
-		<p><?php echo sprintf( wp_kses_post( $x_content ), 'https://valiuswp.com/', 'target="_blank"' ) ; ?></p>
+		<p><?php echo sprintf( wp_kses_post( $x_content3 ), 'https://valiuswp.com/', 'target="_blank"' ) ; ?></p>
 		<p><a href="https://valiuswp.com/"> <img src="<?php echo esc_url( WPAS_URL ); ?>assets/admin/images/ValiusWP-Ad-01.png" alt="ValiusWp Image"></a></p>
 
 		<h2><?php esc_html_e( 'Documentation', 'awesome-support' ); ?></h2>
