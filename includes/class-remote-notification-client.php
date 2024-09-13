@@ -716,6 +716,10 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		protected function remote_get_notification( $notification ) {
 
+			if ( !is_array( $notification ) ) {
+				return new WP_Error( 'invalid_notification', __( 'The notification data is invalid', 'awesome-support' ) );
+			}
+
 			/* Query the server */
 			$response = wp_remote_get( $this->build_query_url( $notification['server_url'], $this->get_payload( $notification ) ), array( 'timeout' => apply_filters( 'rn_http_request_timeout', 5 ) ) );
 
