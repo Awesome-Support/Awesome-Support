@@ -606,7 +606,7 @@ class WPAS_Product_Sync {
 
 		    }
 
-			if ( false !== $term ) {
+			if ( is_object( $term ) ) {
 
 				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $this->taxonomy );
 
