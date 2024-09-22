@@ -307,12 +307,12 @@ class WPAS_GDPR_User_Profile {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] )) : '';
-		$user  = isset( $_POST['data']['nonce'] )  && isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] )) : '';
+		$user  = isset( $_POST['nonce'] )  && isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
 		/**
 		 * Security checking
 		 */
-		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'nonce' ) ) {
 			if ((int) $user == get_current_user_id()) {
 				global $wp_filesystem;
 				// Initialize the filesystem 
@@ -345,6 +345,7 @@ class WPAS_GDPR_User_Profile {
 					$this->data_zip( $user_tickets, 'export-data.xml', $this->user_export_dir );
 
 					$upload_dir                     = wp_upload_dir();
+					$response['code'] 				= 200;
 					$response['message']['success'] = sprintf(
 						'<p>%s. <a href="%s" target="_blank" class="download-file-link">%s</a></p>',
 						__( 'Exporting data was successful!', 'awesome-support' ),
