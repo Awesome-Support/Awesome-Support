@@ -26,6 +26,9 @@ if( wpas_get_option( 'delete_existing_data_subject', false ) ) {
 	</div>
 	<div class="wpas-gdpr-notice delete-existing-data"></div>
 	<input type="hidden" name="wpas-user" value="<?php echo esc_attr( get_current_user_id() ); ?>">
+	<?php
+	wp_nonce_field( 'gdpr_privacy_nonce_confirm', 'gdpr_privacy_nonce', false, true );
+	?>
 	<table class="form-table wpas-gdpr-form-table">
 		<thead>
 			<tr class="headlines">

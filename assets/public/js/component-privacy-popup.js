@@ -40,10 +40,9 @@ jQuery(document).ready(function ($) {
 		jQuery( '#wpas-gdpr-ded-more-info' ).html( activeEditor_content );
 
 		var data = {
-			'action': 'wpas_gdpr_open_ticket',
-			'security' : WPAS_GDPR.nonce,
-			'data' 	: {
-				'nonce'		: WPAS_GDPR.nonce,
+			'action': 'wpas_gdpr_open_ticket',		
+			'nonce':  $('#gdpr_privacy_nonce').val(), 
+			'data' 	: {				
 				'request_type': 'delete',
 				'form-data'	: $( '#wpas-gdpr-rtbf-form' ).serialize()
 			}
@@ -55,10 +54,10 @@ jQuery(document).ready(function ($) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
 				if( response.message && response.code === 200 ) {
-					jQuery( '.wpas-gdpr-notice.delete-existing-data' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
-					jQuery( '.wpas-gdpr-form-table' ).remove();
+					jQuery( '#wpas-gdpr-rtbf-form .wpas-gdpr-notice.delete-existing-data' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+					jQuery( '#wpas-gdpr-rtbf-form .wpas-gdpr-form-table' ).remove();
 				}else{
-					jQuery( '.wpas-gdpr-notice.delete-existing-data' ).addClass( 'failure' ).html( '<p>' + response.message + '</p>' );
+					jQuery( '#wpas-gdpr-rtbf-form .wpas-gdpr-notice.delete-existing-data' ).addClass( 'failure' ).html( '<p>' + response.message + '</p>' );
 				}
 			}
 		);		
@@ -84,10 +83,9 @@ jQuery(document).ready(function ($) {
 			jQuery( '#wpas-gdpr-export-more-info' ).html( activeEditor_content );
 		}
 		var data = {
-			'action': 'wpas_gdpr_open_ticket',
-			'security' : WPAS_GDPR.nonce,
-			'data' 	: {
-				'nonce'		: WPAS_GDPR.nonce,
+			'action': 'wpas_gdpr_open_ticket',			
+			'nonce':  $('#gdpr_privacy_nonce').val(), 
+			'data' 	: {				
 				'request_type': 'export',
 				'form-data'	: $( '#wpas-gdpr-rted-form' ).serialize()
 			}
@@ -99,8 +97,8 @@ jQuery(document).ready(function ($) {
 				jQuery( '.wpas-gdpr-pre-loader' ).hide();
 				jQuery( '.wpas-gdpr-loader-background').hide();
 				if( response.message && response.code === 200 ) {
-					jQuery( '.wpas-gdpr-notice.export-existing-data' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
-					jQuery( '.wpas-gdpr-form-table' ).remove();
+					jQuery( '#wpas-gdpr-rted-form .wpas-gdpr-notice.export-existing-data' ).addClass( 'success' ).html( '<p>' + response.message + '</p>' );
+					jQuery( '#wpas-gdpr-rted-form .wpas-gdpr-form-table' ).remove();
 				}else{
 					jQuery( '.wpas-gdpr-notice.export-existing-data' ).addClass( 'failure' ).html( '<p>' + response.message + '</p>' );
 				}
@@ -209,7 +207,7 @@ jQuery(document).ready(function ($) {
 
 		var data = {
 			'action': 'wpas_gdpr_export_data',
-			'security' : WPAS_GDPR.nonce,
+			'nonce' : WPAS_GDPR.nonce,
 			'data' 	: {
 				'nonce'		: WPAS_GDPR.nonce,
 				'gdpr-user'	: jQuery(this).data( 'user' )
