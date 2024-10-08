@@ -11,8 +11,8 @@
 		tmplNewAppPass            = wp.template( 'new-wpas-api-password' ),
 		tmplAppPassRow            = wp.template( 'wpas-api-password-row' ),
 		tmplNotice                = wp.template( 'wpas-api-password-notice' ),
-		testBasicAuthUser         = Math.random().toString( 36 ).replace( /[^a-z]+/g, '' ),
-		testBasicAuthPassword     = Math.random().toString( 36 ).replace( /[^a-z]+/g, '' );
+		testBasicAuthUser         = Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => ('0' + byte.toString(36)).slice(-1)).join('').replace(/[^a-z]+/g, ''),
+		testBasicAuthPassword     = Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => ('0' + byte.toString(36)).slice(-1)).join('').replace(/[^a-z]+/g, '');
 
 	$.ajax( {
 		url:        wpasAPI.root + wpasAPI.namespace + '/test-basic-authorization-header',
