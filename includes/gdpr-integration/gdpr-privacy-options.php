@@ -999,11 +999,12 @@ class WPAS_Privacy_Option {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] ) ) : '';
+
 		/**
 		 * Security checking
 		 */
-		if ( ! empty( $nonce ) && check_ajax_referer( 'gdpr_privacy_nonce_confirm', 'nonce' ) ) {
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
 			/**
 			 *  Initiate form data parsing
