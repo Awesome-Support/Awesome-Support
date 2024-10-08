@@ -54,11 +54,11 @@ function wpas_tools_log_viewer_view() {
 
 	// Default number of lines to return
 	$lines = 100;
-	$file  = basename( sanitize_text_field( $_POST[ 'file' ] ) );
+	$file  = basename( sanitize_text_field( wp_unslash( $_POST[ 'file' ] )) );
 
 	// Get posted number of lines
 	if( isset( $_POST[ 'lines' ] ) ) {
-		$lines = sanitize_text_field( $_POST[ 'lines' ] );
+		$lines = sanitize_text_field( wp_unslash( $_POST[ 'lines' ] ));
 	}
 
 	wp_send_json_success( wpas_log_viewer_read_last_lines( $file, $lines ) );
@@ -82,7 +82,7 @@ function wpas_tools_log_viewer_download() {
 		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
 	}
 
-	$file = basename( sanitize_text_field( $_POST[ 'file' ] ) );
+	$file = basename( sanitize_text_field( wp_unslash( $_POST[ 'file' ] )) );
 
 	$content = array(
 		'status' => array(
@@ -113,7 +113,7 @@ function wpas_tools_log_viewer_delete() {
 		wp_die();
 	}
 
-	$file = basename( sanitize_text_field( $_POST[ 'file' ] ) );
+	$file = basename( sanitize_text_field( wp_unslash( $_POST[ 'file' ] )) );
 
 	wp_send_json_success(	wpas_log_viewer_delete_file( $file ) );
 
@@ -158,55 +158,61 @@ function wpas_log_viewer_read_last_lines( $file, $lines ) {
 	$result = [];
 	$file_path   = get_logs_path() . $file;
 
-	$handle = @fopen( $file_path, "r" );
-	if( ! empty( $handle ) ) {
-		$linecounter = $lines;
-		$pos         = - 2;
-		$beginning   = false;
-		$text        = array();
-		while ( $linecounter > 0 ) {
-			$t = "";
-			while ( $t != "\n" ) {
-				if( fseek( $handle, $pos, SEEK_END ) == - 1 ) {
-					$beginning = true;
-					break;
-				}
-				$t = fgetc( $handle );
-				$pos --;
+	global $wp_filesystem;
+	// Initialize the filesystem 
+	if (empty($wp_filesystem)) {
+		require_once(ABSPATH . '/wp-admin/includes/file.php');
+		WP_Filesystem();
+	} 
+
+	$handle = $wp_filesystem->get_contents($file_path);
+	if ($handle !== false) {
+		$lines_array = explode("\n", $handle); // Diviser le contenu du fichier en lignes
+		$total_lines = count($lines_array);
+	
+		$linecounter = $lines;  // Le nombre de lignes à lire
+		$text = array();
+	
+		while ($linecounter > 0 && $total_lines > 0) {
+			if(isset($lines_array[$total_lines - $linecounter])){
+				$text[] = $lines_array[$total_lines - $linecounter];
 			}
-			$linecounter --;
-			if( $beginning ) {
-				//rewind( $handle );
-			}
-			$text[ $lines - $linecounter - 1 ] = fgets( $handle );
-			if( $beginning ) {
-				break;
+			$linecounter--;
+		}
+	
+		foreach ($text as $line) {
+			if($line){
+				$result[] = $line;
 			}
 		}
-		fclose( $handle );
-		foreach( $text as $line ) {
-			$result[] = $line;
-		}
+
+		// translators: %d is the number of lines, %s is the source.
+		$x_content = __( 'Read %1$d lines from %2$s', 'awesome-support' );
 
 		return array(
 			'status' => array(
 				'code'    => '200',
-				'message' => sprintf(__( "Read %d lines from %s", 'awesome-support' ), count($result), esc_html( $file )),
+				'message' => sprintf( $x_content, count($result), esc_html( $file )),
 			),
 			'fileinfo' => array(
-				'created' => date ("F d Y H:i:s", filectime($file_path)),
-				'lastmodified' => date ("F d Y H:i:s", filemtime($file_path)),
-			    'filesize' => wpas_formatbytes(filesize($file_path)),
+				'created' => gmdate ("F d Y H:i:s", filectime($file_path)),
+				'lastmodified' => gmdate ("F d Y H:i:s", filemtime($file_path)),
+				'filesize' => wpas_formatbytes(filesize($file_path)),
 			),
 			'data'   => $result,
 		);
 	}
 	else {
 		//return printf( __( "Couldn't open the file %s. Make sure file is exists or is readable.", 'error-log-viewer' ), esc_html( $file ) );
+
+		// translators: %s is the file name that couldn't be opened.
+		$x_content = __( "Couldn't open the file %s. Make sure the file exists and is readable.", 'awesome-support' );
+
+
 		return array(
 			'status' => array(
 				'code'    => '404',
-				'message' => sprintf(__( "Couldn't open the file %s. Make sure the file exists and is readable.", 'awesome-support' ), esc_html( $file )),
+				'message' => sprintf($x_content, esc_html( $file )),
 			),
 			'data'   => [],
 		);
@@ -220,24 +226,31 @@ function wpas_log_viewer_read_full_file( $file ) {
 
 	$file_path = get_logs_path() . $file;
 
-	$handle = @fopen( $file_path, 'r' );
+	global $wp_filesystem;
+	// Initialize the filesystem 
+	if (empty($wp_filesystem)) {
+		require_once(ABSPATH . '/wp-admin/includes/file.php');
+		WP_Filesystem();
+	} 
+	$handle = $wp_filesystem->get_contents($file_path);
 	$result = [];
-	if( ! empty( $handle ) ) {
-		while ( ! feof( $handle ) ) {
-			$line     = fgets( $handle );
+	if ($handle !== false) {
+		$lines_array = explode("\n", $handle); // Diviser le contenu du fichier en lignes
+		foreach ($lines_array as $line) {
 			$result[] = $line;
 		}
-		fclose( $handle );
+		// translators: %1$d is the number of lines, %2$s is the source.
+		$x_content = __( 'Read %1$d lines from %2$s', 'awesome-support' );
 
 		return array(
 			'status' => array(
 				'code'    => '200',
 				//'message' => '',
-				'message' => sprintf(__( "Read %d lines from %s", 'awesome-support' ), count($result), esc_html( $file )),
+				'message' => sprintf($x_content, count($result), esc_html( $file )),
 			),
 			'fileinfo' => array(
-				'created' => date ("F d Y H:i:s", filectime($file_path)),
-				'lastmodified' => date ("F d Y H:i:s", filemtime($file_path)),
+				'created' => gmdate ("F d Y H:i:s", filectime($file_path)),
+				'lastmodified' => gmdate ("F d Y H:i:s", filemtime($file_path)),
 			    'filesize' => wpas_formatbytes(filesize($file_path)),
 			),
 			'data'   => $result,
@@ -245,10 +258,12 @@ function wpas_log_viewer_read_full_file( $file ) {
 	}
 	else {
 		//return printf( __( "Couldn't open the file %s. Make sure file is exists or is readable.", 'error-log-viewer' ), esc_html( $file ) );
+		// translators: %s is the file name that couldn't be opened.
+		$x_content = __( "Couldn't open the file %s. Make sure the file exists and is readable.", 'awesome-support' );
 		return array(
 			'status' => array(
 				'code'    => '404',
-				'message' => sprintf(__( "Couldn't open the file %s. Make sure the file exists and is readable.", 'awesome-support' ), esc_html( $file )),
+				'message' => sprintf( $x_content, esc_html( $file )),
 			),
 			'data'   => [],
 		);

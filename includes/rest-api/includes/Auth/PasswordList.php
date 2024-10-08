@@ -63,12 +63,12 @@ class PasswordList extends \WP_List_Table {
 				if ( empty( $item['created'] ) ) {
 					return '&mdash;';
 				}
-				return date( get_option( 'date_format', 'r' ), $item['created'] );
+				return gmdate( get_option( 'date_format', 'r' ), $item['created'] );
 			case 'last_used':
 				if ( empty( $item['last_used'] ) ) {
 					return '&mdash;';
 				}
-				return date( get_option( 'date_format', 'r' ), $item['last_used'] );
+				return gmdate( get_option( 'date_format', 'r' ), $item['last_used'] );
 			case 'last_ip':
 				if ( empty( $item['last_ip'] ) ) {
 					return '&mdash;';

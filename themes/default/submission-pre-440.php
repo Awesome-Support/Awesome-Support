@@ -41,7 +41,8 @@ global $post;
 		) );
 
 		$subject = new WPAS_Custom_Field( 'title', $subject_args );
-		echo $subject->get_output();
+		echo wp_kses($subject->get_output(), get_allowed_html_wp_notifications());
+
 
 		/**
 		 * The wpas_submission_form_inside_after_subject hook has to be placed
@@ -70,7 +71,8 @@ global $post;
 		) );
 
 		$body = new WPAS_Custom_Field( 'message', $body_args );
-		echo $body->get_output();
+		echo wp_kses($body->get_output(), get_allowed_html_wp_notifications());
+
 
 		/**
 		 * The wpas_submission_form_inside_before hook has to be placed

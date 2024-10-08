@@ -67,7 +67,7 @@ class WPAS_Privacy_Option {
 			return false;
 		}
 
-		if ( ! wp_verify_nonce( $_GET['_nonce'], 'system_tool' ) ) {
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_nonce'] ) ), 'system_tool' ) ) {
 			return false;
 		}
 		$authors = array();
@@ -104,9 +104,9 @@ class WPAS_Privacy_Option {
 			case 'add_user_consent':
 
 				// $_status = (isset( $_GET['_status'] ) && !empty( isset( $_GET['_status'] ) ))? sanitize_text_field( $_GET['_status'] ): '';
-				$_status = ( isset( $_GET['_status'] ) && $_GET['_status'] ) ? sanitize_text_field( $_GET['_status'] ) : '';
+				$_status = ( isset( $_GET['_status'] ) && sanitize_text_field( wp_unslash( $_GET['_status'] ) ) ) ? sanitize_text_field( wp_unslash( $_GET['_status'] ) ) : '';
 				// $consent = ( isset( $_GET['_consent'] ) && !empty( isset( $_GET['_consent'] ) ) )? sanitize_text_field( $_GET['_consent'] ): '';
-				$consent = ( isset( $_GET['_consent'] ) && $_GET['_consent'] ) ? sanitize_text_field( $_GET['_consent'] ) : '';
+				$consent = ( isset( $_GET['_consent'] ) && sanitize_text_field( wp_unslash( $_GET['_consent'] ) ) ) ? sanitize_text_field( wp_unslash( $_GET['_consent'] ) ) : '';
 				if ( empty( $_status ) || empty( $consent ) ) {
 					return false;
 				}
@@ -218,7 +218,7 @@ class WPAS_Privacy_Option {
 			        )
 			    ),
 			    'date_query' => array(
-					'before' => date('Y-m-d', strtotime('-' . $cronjob_max_age . ' days') )
+					'before' => gmdate('Y-m-d', strtotime('-' . $cronjob_max_age . ' days') )
 				)
 			);
 
@@ -282,7 +282,10 @@ class WPAS_Privacy_Option {
 								);
 								wp_update_post( $arg );
 								update_post_meta( $ticket_id, 'is_anonymize', true );
-								$messages = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+
+								// translators: %s is the ticket id.
+								$x_content = __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' );
+								$messages = sprintf( $x_content, (string) $ticket_id ) ;
 								wpas_write_log( 'anonymize_ticket', $messages );
 
 								//2b. Now handle the replies
@@ -312,13 +315,21 @@ class WPAS_Privacy_Option {
 									);
 									wp_update_post( $arg );
 									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
-									$messages = sprintf( __( 'Anonymize Reply on Awesome Support Ticket #: %s. The reply id is: %s', 'awesome-support' ), (string) $ticket_id, (string) $post->ID ) ;
+
+									// translators: %1$s is the ticket number, %2$s is the reply ID.
+									$x_content = __( 'Anonymize Reply on Awesome Support Ticket #: %1$s. The reply ID is: %2$s', 'awesome-support' );
+
+									$messages = sprintf( $x_content, (string) $ticket_id, (string) $post->ID ) ;
 									wpas_write_log( 'anonymize_ticket', $messages );
 								}
 							} else{
 								if ( wp_delete_post( $ticket_id, true ) ) {
 									$items_removed = true;
-									$messages = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+
+									// translators: %s is the ticket id.
+									$x_content = __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' );
+
+									$messages = sprintf( $x_content, (string) $ticket_id ) ;
 									wpas_write_log( 'anonymize_ticket_delete', $messages );
 								}
 							}
@@ -387,10 +398,10 @@ class WPAS_Privacy_Option {
 							if( 'terms_conditions' === $consent ){
 								$consent_name = 'Terms';
 							}
-							if( !empty( $consent_name ) ){
+							if( $consent_name && !empty( $consent_name ) ){
 								?>
 								<tr>
-									<td class="row-title"><label for="tablecell"><?php esc_html_e( $consent_name , 'awesome-support' ); ?></label></td>
+									<td class="row-title"><label for="tablecell"><?php esc_html( $consent_name ); ?></label></td>
 									<td>
 										<?php
 											$opt_in = array(
@@ -406,7 +417,11 @@ class WPAS_Privacy_Option {
 										);
 										?>
 										<a href="<?php echo esc_url( wpas_tool_link( 'add_user_consent', $opt_out ) ); ?>" class="button-secondary"><?php esc_html_e( 'OPT-OUT', 'awesome-support' ); ?></a>
-										<span class="wpas-system-tools-desc"><?php esc_html_e( 'Set ' . $consent_name . ' Consent status for all Awesome support Users', 'awesome-support' ); ?></span>
+										<span class="wpas-system-tools-desc">
+											<?php 
+												// translators: %s is the consent_name.
+												sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ),  $consent_name); 
+											?></span>
 									</td>
 								</tr>
 								<?php
@@ -557,15 +572,22 @@ class WPAS_Privacy_Option {
 
 									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
 								}
-								$messages[] = sprintf( __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+
+								// translators: %s is the ticket id.
+								$x_content = __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' );
+								$messages[] = sprintf( $x_content, (string) $ticket_id ) ;
 							} else{
 								if ( wp_delete_post( $ticket_id, true ) ) {
 									$items_removed = true;
-									$messages[] = sprintf( __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' ), (string) $ticket_id ) ;
+									// translators: %s is the ticket id.
+									$x_content =  __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' );
+									$messages[] = sprintf( $x_content, (string) $ticket_id ) ;
 								}
 							}
 						} else {
-							$messages[] = sprintf( __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' ), (string) $ticket_id ) ;
+							// translators: %s is the ticket id.
+							$x_content = __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' );
+							$messages[] = sprintf( $x_content, (string) $ticket_id ) ;
 							$messages = array_merge( $messages, $wpas_pe_msgs['messages'] ) ;
 						}
 
@@ -753,7 +775,8 @@ class WPAS_Privacy_Option {
 									foreach ( $value as $reply_key => $reply_data ) {
 										$reply_count ++;
 										if( isset( $reply_data['content'] ) && !empty( $reply_data['content'] )){
-											$name = __( 'Reply ' . $reply_count . ' Content', 'awesome-support' );
+											// translators: %s is the number of reply.
+											$name = sprintf(__( 'Reply %s Content', 'awesome-support' ), $reply_count);
 											if ( ! empty( $value ) ) {
 												$user_data_to_export[] = array(
 													'name'  => $name,
@@ -783,7 +806,7 @@ class WPAS_Privacy_Option {
 
 					$data_to_export[] = array(
 						'group_id'    => 'ticket_' . $item_id,
-						'group_label' => __( $ticket['subject'], 'awesome-support' ),
+						'group_label' => $ticket['subject'],
 						'item_id'     => $item_id,
 						'data'        => $user_data_to_export,
 					);
@@ -869,7 +892,7 @@ class WPAS_Privacy_Option {
 					<?php
 					$entry_header = wpas_get_option( 'privacy_popup_header', 'Privacy' );
 					if ( ! empty( $entry_header ) ) {
-						echo wp_kses_post('<div class="entry-header">' . wpautop( stripslashes( $entry_header ) ) . '</div>');
+						echo '<div class="entry-header">' . wp_kses(wpautop( stripslashes( $entry_header ) ),get_allowed_html_wp_notifications()) . '</div>';
 					}
 					?>
 					<div class="entry-content">
@@ -922,9 +945,9 @@ class WPAS_Privacy_Option {
 						</div>
 					</div>
 					<?php
-					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' );
+					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' ); 
 					if ( ! empty( $entry_footer ) ) {
-						echo wp_kses_post('<div class="entry-footer">' . wpautop( stripslashes( $entry_footer ) )  . '</div>');
+						echo '<div class="entry-footer">' . wp_kses(wpautop( stripslashes( $entry_footer ) ), get_allowed_html_wp_notifications())  . '</div>';
 					}
 					?>
 				</div> <!--  .entry entry-regular -->
@@ -976,22 +999,22 @@ class WPAS_Privacy_Option {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
-
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
 		/**
 		 * Security checking
 		 */
-		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
+		if ( ! empty( $nonce ) && check_ajax_referer( 'gdpr_privacy_nonce_confirm', 'nonce' ) ) {
 
 			/**
 			 *  Initiate form data parsing
 			 */
 			$form_data = array();
-			parse_str( $_POST['data']['form-data'], $form_data );
+			$data =  isset( $_POST['data']['form-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['form-data'] ) ) : '';
+			parse_str( $data, $form_data );
 
 			$subject = isset( $form_data['wpas-gdpr-ded-subject'] ) ? $form_data['wpas-gdpr-ded-subject'] : '';
 			$content = isset( $form_data['wpas-gdpr-ded-more-info'] ) && ! empty( $form_data['wpas-gdpr-ded-more-info'] ) ? $form_data['wpas-gdpr-ded-more-info'] : $subject; // Fallback to subject to avoid undefined!
-			$request_type = ( isset( $_POST['data']['request_type'] ) && !empty( $_POST['data']['request_type'] ))? sanitize_text_field( $_POST['data']['request_type'] ): '';
+			$request_type = ( isset( $_POST['data']['request_type'] ) && !empty( $_POST['data']['request_type'] ))? sanitize_text_field( wp_unslash( $_POST['data']['request_type'] ) ): '';
 
 			/**
 			 * New ticket submission
@@ -1068,18 +1091,18 @@ class WPAS_Privacy_Option {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
+		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] ) ): '';
 
 		/**
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item   	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
-			$user   	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+			$item   	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] )) : '';
+			$user   	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
 			$status 	= __( 'Opted-in', 'awesome-support' );
 			$opt_in 	= strtotime( 'NOW' );
-			$opt_out   	= isset( $_POST['data']['gdpr-optout'] ) ? strtotime( sanitize_text_field( $_POST['data']['gdpr-optout'] ) ) : '';
+			$opt_out   	= isset( $_POST['data']['gdpr-optout'] ) ? strtotime( sanitize_text_field( wp_unslash( $_POST['data']['gdpr-optout'] )) ) : '';
 			$gdpr_id 	= wpas_get_gdpr_data( $item );
 
 			/**
@@ -1101,7 +1124,7 @@ class WPAS_Privacy_Option {
 			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ), '', $current_user );
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-in', 'awesome-support' );
-			$response['message']['date']    = date( 'm/d/Y', $opt_in );
+			$response['message']['date']    = gmdate( 'm/d/Y', $opt_in );
 			$response['message']['status']    = $status;
 			/**
 			 * return buttons markup based on settings
@@ -1138,18 +1161,19 @@ class WPAS_Privacy_Option {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['data']['nonce'] ) ? $_POST['data']['nonce'] : '';
+		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] ) ): '';
+
 
 		/**
 		 * Security checking
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item    	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( $_POST['data']['gdpr-data'] ) : '';
-			$user    	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+			$item    	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] )) : '';
+			$user    	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
 			$status  	= __( 'Opted-Out', 'awesome-support' );
 			$opt_out 	= strtotime( 'NOW' );
-			$opt_in   	= isset( $_POST['data']['gdpr-optin'] ) ? strtotime( sanitize_text_field( $_POST['data']['gdpr-optin'] ) ) : '';
+			$opt_in   	= isset( $_POST['data']['gdpr-optin'] ) ? strtotime( sanitize_text_field( wp_unslash( $_POST['data']['gdpr-optin'] )) ) : '';
 
 			/**
 			 * Who is the current user right now?
@@ -1170,7 +1194,7 @@ class WPAS_Privacy_Option {
 
 			$response['code']               = 200;
 			$response['message']['success'] = __( 'You have successfully opted-out', 'awesome-support' );
-			$response['message']['date']    = date( 'm/d/Y', $opt_out );
+			$response['message']['date']    = gmdate( 'm/d/Y', $opt_out );
 			$response['message']['status']    = $status;
 			$response['message']['button']  = sprintf(
 				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',

@@ -11,6 +11,15 @@ function wpas_rest_api_settings( $def ) {
 
 	$settings  = array();
 
+	// translators: %s is the link to the documentation portal.
+	$x_desc1 = __( 'You can find documentation for this api in our developer portal located here: %s', 'awesome-support' );
+	
+	// translators: %s is the link to the addons-user.
+	$x_desc2 = __( '%s: This add-on uses the rest api to create tickets, send attachments, login users and pull configuration from a special remote tickets configuration post-type', 'awesome-support' );
+	
+	// translators: %s is the link to the addons-user.
+	$x_desc3 = __( '%s: This add-on uses the rest api to create tickets, list tickets, send attachments, login users, update custom fields and pull configuration from a special configuration post-type', 'awesome-support' );
+
 	$settings['rest-api'] = array(
 		'name'    => __( 'REST API', 'awesome-support' ),
 		'options' => array(
@@ -37,7 +46,7 @@ function wpas_rest_api_settings( $def ) {
 				'name'    => __( 'Documentation', 'awesome-support' ),
 				'id'      => 'rest_api_doc',
 				'type'    => 'note',
-				'desc'    => sprintf( __( 'You can find documentation for this api in our developer portal located here: %s', 'awesome-support' ), '<a href="https://developer.getawesomesupport.com" target="_blank">' . 'Developer Portal' . '</a>' ),
+				'desc'    => sprintf( $x_desc1, '<a href="https://developer.getawesomesupport.com" target="_blank">' . 'Developer Portal' . '</a>' ),
 			),
 			
 			array(
@@ -50,13 +59,13 @@ function wpas_rest_api_settings( $def ) {
 				'name'    => __( 'Remote Tickets', 'awesome-support' ),
 				'id'      => 'rest_api_remote_tickets',
 				'type'    => 'note',
-				'desc'    => sprintf( __( '%s: This add-on uses the rest api to create tickets, send attachments, login users and pull configuration from a special remote tickets configuration post-type', 'awesome-support' ), '<a href="https://getawesomesupport.com/addons/remote-tickets/" target="_blank">' . 'Remote Tickets' . '</a>' ),
+				'desc'    => sprintf( $x_desc2, '<a href="https://getawesomesupport.com/addons/remote-tickets/" target="_blank">' . 'Remote Tickets' . '</a>' ),
 			),
 			array(
 				'name'    => __( 'Client Tickets', 'awesome-support' ),
 				'id'      => 'rest_api_client_tickets',
 				'type'    => 'note',
-				'desc'    => sprintf( __( '%s: This add-on uses the rest api to create tickets, list tickets, send attachments, login users, update custom fields and pull configuration from a special configuration post-type', 'awesome-support' ), '<a href="https://getawesomesupport.com/addons/client-tickets-for-web-agencies-and-developers/" target="_blank">' . 'Client Tickets For Developers And Web Agencies' . '</a>' ),
+				'desc'    => sprintf( $x_desc3, '<a href="https://getawesomesupport.com/addons/client-tickets-for-web-agencies-and-developers/" target="_blank">' . 'Client Tickets For Developers And Web Agencies' . '</a>' ),
 			),			
 			
 		),

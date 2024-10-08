@@ -125,12 +125,12 @@ class Passwords extends WP_REST_Controller {
 			unset( $item['raw'] );
 			unset( $item['password'] );
 
-			$item['created'] = date( get_option( 'date_format', 'r' ), $item['created'] );
+			$item['created'] = gmdate( get_option( 'date_format', 'r' ), $item['created'] );
 
 			if ( empty( $item['last_used'] ) ) {
 				$item['last_used'] =  '—';
 			} else {
-				$item['last_used'] = date( get_option( 'date_format', 'r' ), $item['last_used'] );
+				$item['last_used'] = gmdate( get_option( 'date_format', 'r' ), $item['last_used'] );
 			}
 
 			if ( empty( $item['last_ip'] ) ) {
@@ -159,7 +159,7 @@ class Passwords extends WP_REST_Controller {
 		$new_item = $user->create_new_api_password( $request['name'] );
 
 		// Some tidying before we return it.
-		$new_item['created']   = date( get_option( 'date_format', 'r' ), $new_item['created'] );
+		$new_item['created']   = gmdate( get_option( 'date_format', 'r' ), $new_item['created'] );
 		$new_item['last_used'] = '—';
 		$new_item['last_ip']   = '—';
 
@@ -295,11 +295,11 @@ class Passwords extends WP_REST_Controller {
 		$response = array();
 
 		if ( isset( $_SERVER['PHP_AUTH_USER'] ) ) {
-			$response['PHP_AUTH_USER'] = $_SERVER['PHP_AUTH_USER'];
+			$response['PHP_AUTH_USER'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) );
 		}
 
 		if ( isset( $_SERVER['PHP_AUTH_PW'] ) ) {
-			$response['PHP_AUTH_PW'] = $_SERVER['PHP_AUTH_PW'];
+			$response['PHP_AUTH_PW'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
 		}
 
 		if ( empty( $response ) ) {

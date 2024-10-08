@@ -209,8 +209,11 @@ class Tickets extends TicketBase {
 				$term      = $request[ $base ];
 				$get_field = is_numeric( $term ) ? 'id' : 'slug';
 
+				// translators: %s is a tag value.
+				$x_content = __( 'That %s term does not exist.', 'awesome-support' );
+
 				if ( ! $term = get_term_by( $get_field, $request[ $base ], $base ) ) {
-					return new WP_Error( 'invalid_term', sprintf( __( 'That %s term does not exist.', 'awesome-support' ), $base ) );
+					return new WP_Error( 'invalid_term', sprintf($x_content, $base ) );
 				}
 
 				$field  = new WPAS_Custom_Field( $base, $custom_fields[ $base ] );
@@ -633,7 +636,10 @@ class Tickets extends TicketBase {
 
 		$custom_status = wpas_get_post_status();
 
-		wpas_log( $post->ID, sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), $custom_status[ $new_status ] ) );
+		// translators: %s is the ticket status.
+		$x_content = __( 'Ticket state changed to %s', 'awesome-support' );
+		
+		wpas_log( $post->ID, sprintf( $x_content, $custom_status[ $new_status ] ) );
 
 		remove_action( 'transition_post_status', '\WPAS_API\API\Tickets::record_post_status_transition', 10 );
 

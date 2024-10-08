@@ -183,7 +183,7 @@ function registerGASFrameworkOptionMulticheckControl() {
 			<label class='tf-multicheck-container'>
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
 				<?php
-				echo wp_kses_post($description);
+				echo wp_kses($description, get_allowed_html_wp_notifications());
 
 				if ( ! empty( $this->select_all ) ) {
 					$select_all_label = __( 'Select All' );

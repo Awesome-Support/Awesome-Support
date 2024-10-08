@@ -34,7 +34,7 @@ class GASFrameworkMetaBox {
 		$this->settings = array_merge( $this->defaultSettings, $settings );
 		// $this->options = $options;
 		if ( empty( $this->settings['name'] ) ) {
-			$this->settings['name'] = __( 'More Options', GASF_I18NDOMAIN );
+			$this->settings['name'] = __( 'More Options', 'gas-framework' );
 		}
 
 		if ( empty( $this->settings['id'] ) ) {
@@ -129,7 +129,7 @@ class GASFrameworkMetaBox {
 			}
 
 			if ( ! empty( $_POST[ $this->owner->optionNamespace . '_' . $option->settings['id'] ] ) ) {
-				$value = $_POST[ $this->owner->optionNamespace . '_' . $option->settings['id'] ];
+				$value = sanitize_text_field( wp_unslash( $_POST[ $this->owner->optionNamespace . '_' . $option->settings['id'] ] ) );
 			} else {
 				$value = '';
 			}

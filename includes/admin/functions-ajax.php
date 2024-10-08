@@ -24,7 +24,6 @@ function wpas_dismiss_free_addon_page() {
 	if ( ! current_user_can( 'administrator' ) ) {
 		wp_send_json([], 401);		
     }
-
 	return add_option( 'wpas_dismiss_free_addon_page', true );
 }
 
@@ -40,7 +39,6 @@ function wpas_skip_wizard_setup() {
 	if ( ! current_user_can( 'administrator' ) ) {
 		wp_send_json([], 401);		
     }
-
 	add_option( 'wpas_skip_wizard_setup', true );
 	wp_die();
 }
@@ -56,8 +54,9 @@ add_action( 'wp_ajax_wpas_get_ticket_for_print', 'wpas_get_ticket_for_print_ajax
 function wpas_get_ticket_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
+	$ticket = isset( $_POST['id'] ) ? wpas_get_ticket_by_id( sanitize_text_field( wp_unslash( $_POST['id'] ) ) ) : null;
 
-	if ( ! empty( $ticket = wpas_get_ticket_by_id( $_POST['id'] ) ) ) {
+	if ( ! empty( $ticket ) ) {
 
 		$replies = wpas_get_replies( $ticket->ID, 'any', [
             'posts_per_page' => - 1,
@@ -102,8 +101,8 @@ function wpas_get_tickets_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
 
-	$ids = isset( $_POST['ids'] ) ? (array) $_POST['ids'] : array();
-
+	$ids = isset( $_POST['ids'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['ids'] ) ) : array();
+	
 	foreach( $ids as $id ) {
 
 		if ( ! empty( $ticket = wpas_get_ticket_by_id( $id ) ) ) {
@@ -161,4 +160,3 @@ function wpas_ajax_close_ticket_prevent_client_notification() {
 
 	wp_send_json_success();
 }
-

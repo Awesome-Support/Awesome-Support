@@ -199,10 +199,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 		global $post;
 
         if ( empty( $post ) ) {
-            $protocol = (isset($_SERVER['SERVER_PROTOCOL']) && stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true) ? 'https://' : 'http://';
-            $server_name = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : '';
-            $server_port = isset($_SERVER['SERVER_PORT']) ? ':' . $_SERVER['SERVER_PORT'] : '';
-            $request_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
+			  $request_uri = isset($_SERVER['REQUEST_URI']) ? sanitize_file_name( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
             $post_id  = url_to_postid( '' . '' . '' . $request_uri );
             $post     = get_post( $post_id );
         }
@@ -336,9 +333,9 @@ function wpas_make_button( $label = null, $args = array() ) {
 	extract( shortcode_atts( $defaults, $args ) );
 
 	if ( 'link' === $args['type'] && !empty( $args['link'] ) ) {
-		?><a href="<?php echo esc_url( $args['link'] ); ?>" class="<?php echo esc_attr( $args['class'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo wp_kses_post("data-onsubmit='{$args['onsubmit']}'"); endif; ?>><?php echo esc_html( $label ); ?></a><?php
+		?><a href="<?php echo esc_url( $args['link'] ); ?>" class="<?php echo esc_attr( $args['class'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo esc_attr("data-onsubmit='{$args['onsubmit']}'"); endif; ?>><?php echo esc_html( $label ); ?></a><?php
 	} else {
-		?><button type="submit" class="<?php echo esc_attr( $args['class'] ); ?>" name="<?php echo esc_attr( $args['name'] ); ?>" value="<?php echo esc_attr( $args['value'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo wp_kses_post("data-onsubmit='{$args['onsubmit']}'"); endif; ?>><?php echo esc_html( $label ); ?></button><?php
+		?><button type="submit" class="<?php echo esc_attr( $args['class'] ); ?>" name="<?php echo esc_attr( $args['name'] ); ?>" value="<?php echo esc_attr( $args['value'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo esc_attr("data-onsubmit='{$args['onsubmit']}'"); endif; ?>><?php echo esc_html( $label ); ?></button><?php
 	}
 
 }
@@ -481,7 +478,7 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
 	if ( ! headers_sent() ) {
 		wp_redirect( $location, 302 );
 	} else {
-		echo "<meta http-equiv='refresh' content='0; url=" . wp_kses_post($location) . "'>";
+		echo "<meta http-equiv='refresh' content='0; url=" . esc_url($location) . "'>";
 	}
 
 	return true;
@@ -515,11 +512,16 @@ function wpas_write_log( $handle, $message ) {
  * @since  3.0.2
  * @return void
  */
-function wpas_missing_dependencies() { ?>
-	<div class="error">
-        <p><?php printf( wp_kses_post(__( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ) ); ?></p>
-    </div>
-<?php }
+function wpas_missing_dependencies() { 
+	// translators: %1$s is the name of the dependency or action needed, %2$s is the URL to install the production version of the plugin.
+	$x_content = __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %1$s before anything else. If you don’t know what this is you should <a href="%2$s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' );
+
+	?>
+		<div class="error">
+			<p><?php printf( wp_kses_post( $x_content), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
+		</div>
+	<?php 
+}
 
 /**
  * Wrap element into lis.
@@ -604,12 +606,12 @@ function wpas_dropdown( $args, $options ) {
 	<?php
 	if ($class[0] == 'search_and_list_dropdown') {
 	?>
-	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo wp_kses_post($args['name']); ?>" <?php if ( !empty( $class ) ) echo 'class="wpas-select2"'; ?> <?php if ( !empty( $id ) ) echo wp_kses_post("id='$id'"); ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo esc_attr($args['name']); ?>" <?php if ( !empty( $class ) ) echo 'class="wpas-select2"'; ?> <?php if ( !empty( $id ) ) echo esc_attr("id='$id'"); ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 	<?php
 	}
 	else {
 	?>
-	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo wp_kses_post($args['name']); ?>" <?php if ( !empty( $class ) ) echo wp_kses_post('class="' . implode( ' ' , $class ) . '"'); ?> <?php if ( !empty( $id ) ) echo wp_kses_post("id='$id'"); ?> <?php if ( ! empty( $data_attributes ) ): echo wp_kses_post($data_attributes); endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo esc_attr($args['name']); ?>" <?php if ( !empty( $class ) ) echo esc_attr('class=' . implode( ' ' , $class ) . ''); ?> <?php if ( !empty( $id ) ) echo esc_attr("id='$id'"); ?> <?php if ( ! empty( $data_attributes ) ): echo wp_kses_post($data_attributes); endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 	<?php
 	}
 	?>
@@ -617,8 +619,7 @@ function wpas_dropdown( $args, $options ) {
 		if ( $args['please_select'] ) {
 			echo '<option value="">' . esc_html__( 'Please select', 'awesome-support' ) . '</option>';
 		}
-
-		echo $options;
+		echo wp_kses( $options, get_allowed_html_wp_notifications());
 		?>
 	</select>
 	<?php
@@ -660,7 +661,7 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 		$options .= "<option value='$ticket->ID' " . selected( $args['selected'], $ticket->ID, false ) . ">$ticket->post_title</option>";
 	}
 
-	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
+	echo  wp_kses(wpas_dropdown( wp_parse_args( $args, $defaults ), $options ), get_allowed_html_wp_notifications());
 
 }
 
@@ -729,7 +730,8 @@ function wpas_show_assignee_dropdown_simple( $field_id, $class, $new_assignee = 
 		'data_attr' => array()
 	);
 
-	echo wpas_users_dropdown( $args );
+	echo  wp_kses( wpas_users_dropdown( $args ), get_allowed_html_wp_notifications());
+
 }
 
 add_filter( 'locale','wpas_change_locale', 10, 1 );
@@ -746,7 +748,7 @@ add_filter( 'locale','wpas_change_locale', 10, 1 );
  */
 function wpas_change_locale( $locale ) {    
 	
-	$wpas_locale = isset( $_GET['wpas_lang'] ) ? wp_unslash( sanitize_text_field( $_GET['wpas_lang'] ) ) : '';	
+	$wpas_locale = isset( $_GET['wpas_lang'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_lang'] ) ) : '';	
 	
 	if ( ! empty( $wpas_locale ) ) {
 		$locale = $wpas_locale;
@@ -902,7 +904,7 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
 	?>
 
-	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug ) { echo 'selected="selected"'; } ?>><?php echo wp_kses_post($option); ?></option>
+	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug ) { echo 'selected="selected"'; } ?>><?php echo  wp_kses( $option, get_allowed_html_wp_notifications()); ?></option>
 
 	<?php if ( isset( $term->children ) && !empty( $term->children ) ) {
 		++$level;
@@ -1086,7 +1088,7 @@ function wpas_change_plugin_locale( $locale, $domain ) {
 	 * @var    string
 	 */
 	
-	$wpas_locale = isset( $_GET['wpas_locale'] ) ? wp_unslash( sanitize_text_field( $_GET['wpas_locale'] ) ) : '';
+	$wpas_locale = isset( $_GET['wpas_locale'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_locale'] ) ) : '';
 	
 	if ( ! empty( $wpas_locale ) ) {
 		$locale = $wpas_locale;
@@ -1281,7 +1283,7 @@ function wpas_is_support_ticket_type_active() {
  * @return string
  */
  function wpas_create_pseudo_guid(){
-	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(16384, 20479), wp_rand(32768, 49151), wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(0, 65535));
  }
 
 
@@ -1310,14 +1312,14 @@ function wpas_is_support_ticket_type_active() {
  */
  function wpas_filter_input_server( $input_var = 'REQUEST_URI' ) {
 	
-	$filtered_input = isset( $_SERVER[$input_var] ) ?  sanitize_text_field( $_SERVER[$input_var] ) : '';	
+	$filtered_input = isset( $_SERVER[$input_var] ) ?  sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
 	 if ( empty( $filtered_input ) ) {
 
 		if ( filter_has_var(INPUT_SERVER, $input_var )) {
-				$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( $_SERVER[$input_var] ) : '';	
+				$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
 			} else {
 				if (isset($_SERVER["REQUEST_URI"]))
-					$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( $_SERVER[$input_var] ) : '';	
+					$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
 				else
 					$filtered_input = null;
 			}
@@ -2017,7 +2019,7 @@ function wpas_get_popup_window( $id, $content = '', $args = array() ) {
 		<div class="main_heading"><?php echo esc_html( $title ); ?></div>
 		<div class="wpas_mfp_window_wrapper">
 			<div class="wpas_msg"></div>
-			<div class="wpas_window_content"><?php echo $content; ?></div>
+			<div class="wpas_window_content"><?php echo  wp_kses( $content, get_allowed_html_wp_notifications());?></div>
 		</div>
 
 	</div>

@@ -58,17 +58,26 @@ function wpas_get_products_options() {
 
 		$plugin_name = ucwords( str_replace( array( '-', '_' ), ' ', $ecommerce_synced ) );
 
+		// translators: %1$s is the woocommerce plugin name.
+		$desc = __( 'We have detected that you are using the e-commerce plugin %1$s. Would you like to automatically synchronize your e-commerce products with Awesome Support?', 'awesome-support' );
+
+		// translators: %1$s is URL to delete product.
+		$desc1 = __( 'If you just disabled this option and want to remove the previously synchronized products, <a href="%1$s">please use the dedicated option &laquo;Delete Products&raquo;</a>', 'awesome-support' );
+
+		// translators: %s is the product name.
+		$name = __( 'Synchronize %s Products', 'awesome-support' );
+
 		$products[] = array(
-			'name'    => sprintf( esc_html__( 'Synchronize %s Products', 'awesome-support' ), $plugin_name ),
+			'name'    => sprintf( esc_html($name), $plugin_name ),
 			'id'      => 'support_products_' . $ecommerce_synced,
 			'type'    => 'checkbox',
-			'desc'    => sprintf( esc_html__( 'We have detected that you are using the e-commerce plugin %1$s. Would you like to automatically synchronize your e-commerce products with Awesome Support?', 'awesome-support' ), $plugin_name ),
+			'desc'    => sprintf( esc_html($desc), $plugin_name ),
 			'default' => true
 		);
 
 		$products[] = array(
 			'type' => 'note',
-			'desc' => wp_kses( sprintf( __( 'If you just disabled this option and want to remove the previously synchronized products, <a href="%1$s">please use the dedicated option &laquo;Delete Products&raquo;</a>', 'awesome-support' ), esc_url( add_query_arg( array(
+			'desc' => wp_kses( sprintf( $desc1, esc_url( add_query_arg( array(
 					'post_type' => 'ticket',
 					'page'      => 'wpas-status',
 					'tab'       => 'tools'

@@ -9,6 +9,9 @@ add_filter( 'wpas_plugin_settings', 'wpas_core_settings_fields', 5, 1 );
  */
 function wpas_core_settings_fields( $def ) {
 
+	// translators: %s link to the article.
+	$desc = __( 'We have two options that allow you to create custom fields. Please read <b><u><a %s>this article</a></b></u> on our website to learn about them.', 'awesome-support' );
+
 	$settings = array(
 		'Fields' => array(
 			'name'    => __( 'Fields', 'awesome-support' ),
@@ -157,7 +160,7 @@ function wpas_core_settings_fields( $def ) {
 
 				array(
 					'type' => 'Note',
-					'desc'    => sprintf( __( 'We have two options that allow you to create custom fields. Please read <b><u><a %s>this article</a></b></u> on our website to learn about them.', 'awesome-support' ), 'href="https://getawesomesupport.com/documentation/awesome-support/custom-fields/" target="_blank" ' )
+					'desc'    => sprintf( $desc, 'href="https://getawesomesupport.com/documentation/awesome-support/custom-fields/" target="_blank" ' )
 				),								
 			)
 		),

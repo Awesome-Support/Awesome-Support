@@ -37,7 +37,7 @@ class GASFrameworkOptionDate extends GASFrameworkOption {
 		add_action( 'admin_head', array( __CLASS__, 'createCalendarScript' ) );
 
 		if ( empty( self::$date_epoch ) ) {
-			self::$date_epoch = date( 'Y-m-d', 0 );
+			self::$date_epoch = gmdate( 'Y-m-d', 0 );
 		}
 	}
 
@@ -174,10 +174,10 @@ class GASFrameworkOptionDate extends GASFrameworkOption {
 		printf('<input class="input-date%s%s" name="%s" placeholder="%s" id="%s" type="text" value="%s" /> <p class="description">%s</p>',
 			( $this->settings['date'] ? ' date' : '' ),
 			( $this->settings['time'] ? ' time' : '' ),
-			wp_kses_post($this->getID()),
-			wp_kses_post($placeholder),
-			wp_kses_post($this->getID()),
-			esc_attr( $this->getValue() > 0 ? date( $dateFormat, $this->getDateValueInTime() ) : '' ),
+			esc_attr($this->getID()),
+			esc_attr($placeholder),
+			esc_attr($this->getID()),
+			esc_attr( $this->getValue() > 0 ? gmdate( $dateFormat, $this->getDateValueInTime() ) : '' ),
 			wp_kses_post($this->settings['desc'])
 		);
 		$this->echoOptionFooter( false );
@@ -244,11 +244,11 @@ function registerGASFrameworkOptionDateControl() {
 			?>
 			<label class='tf-date'>
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-				<input class="input-date<?php echo wp_kses_post($class) ?>" <?php $this->link(); ?> placeholder="<?php echo wp_kses_post($placeholder) ?>" type="text" value="<?php echo wp_kses_post($this->value()) ?>" />
+				<input class="input-date<?php echo esc_attr($class) ?>" <?php $this->link(); ?> placeholder="<?php echo esc_attr($placeholder) ?>" type="text" value="<?php echo wp_kses_post($this->value()) ?>" />
 
 				<?php
 				if ( ! empty( $this->description ) ) {
-					echo wp_kses_post("<p class='description'>{$this->description}</p>");
+					echo "<p class='description'>" . wp_kses_post($this->description) ."</p>";
 				}
 				?>
 			</label>

@@ -221,9 +221,12 @@ abstract class WPAS_Extension_Base {
 	public static function activate() {
 
 		if ( ! class_exists( 'Awesome_Support' ) ) {
+			// translators: %1$s is the URL to install Awesome Support.
+			$x_content =  __( 'You need Awesome Support to activate this addon. Please <a href="%1$s" target="_blank">install Awesome Support</a> before continuing.', 'awesome-support' );
+			
 			deactivate_plugins( basename( self::get_addon_path() ) );
 			wp_die(
-				sprintf( ( __( 'You need Awesome Support to activate this addon. Please <a href="%s" target="_blank">install Awesome Support</a> before continuing.', 'awesome-support' ) ), esc_url( 'http://getawesomesupport.com/?utm_source=internal&utm_medium=addon_loader&utm_campaign=Addons' ) )
+				sprintf( wp_kses_post( $x_content), esc_url( 'http://getawesomesupport.com/?utm_source=internal&utm_medium=addon_loader&utm_campaign=Addons' ) )
 			);
 		}
 
@@ -244,19 +247,27 @@ abstract class WPAS_Extension_Base {
 
 
 		if ( ! $this->is_core_active() ) {
-			$this->add_error( sprintf( __( '%s requires Awesome Support to be active. Please activate the core plugin first.', 'awesome-support' ), $plugin_name ) );
+			// translators: %1$s is the name of the feature or plugin that requires Awesome Support.
+			$x_content = __( '%1$s requires Awesome Support to be active. Please activate the core plugin first.', 'awesome-support' );
+			$this->add_error( sprintf( $x_content, $plugin_name ) );
 		}
 
 		if ( ! $this->is_php_version_enough() ) {
-			$this->add_error( sprintf( __( 'Unfortunately, %s can not run on PHP versions older than %s. Read more information about <a href="%s" target="_blank">how you can update</a>.', 'awesome-support' ), $plugin_name, $this->php_version_required, esc_url( 'http://www.wpupdatephp.com/update/' ) ) );
+			// translators: %1$s is the feature or plugin name, %2$s is the minimum PHP version required, %3$s is the URL with update instructions.
+			$x_content = __( 'Unfortunately, %1$s can not run on PHP versions older than %2$s. Read more information about <a href="%3$s" target="_blank">how you can update</a>.', 'awesome-support' );
+			$this->add_error( sprintf( $x_content, $plugin_name, $this->php_version_required, esc_url( 'http://www.wpupdatephp.com/update/' ) ) );
 		}
 
 		if ( ! $this->is_version_compatible() ) {
-			$this->add_error( sprintf( __( '%s requires Awesome Support version %s or greater. Please update the core plugin first.', 'awesome-support' ), $plugin_name, $this->version_required ) );
+			// translators: %1$s is the feature or plugin name, %2$s is the required version of Awesome Support.
+			$x_content = __( '%1$s requires Awesome Support version %2$s or greater. Please update the core plugin first.', 'awesome-support' );
+			$this->add_error( sprintf( $x_content, $plugin_name, $this->version_required ) );
 		}
 
 		if ( ! $this->dependencies_available() ) {
-			$this->add_error( sprintf( __( '%s requires some dependencies that aren&#039;t loaded. Please contact support.', 'awesome-support' ), $plugin_name ) );
+			// translators: %1$s is the name of the dependency or component.
+			$x_content = __( '%1$s requires some dependencies that aren&#039;t loaded. Please contact support.', 'awesome-support' );
+			$this->add_error( sprintf( $x_content, $plugin_name ) );
 		}
 
 		// Load the plugin translation.
@@ -574,7 +585,11 @@ abstract class WPAS_Extension_Base {
 		}
 
 		$link = wpas_get_settings_page_url( 'licenses' );
-		WPAS()->admin_notices->add_notice( 'error', "license_{$this->slug}", sprintf( __( 'Please <a href="%s">fill-in your product license</a> now. If you don\'t, your copy of <strong>%s</strong> will <strong>never be updated</strong>.', 'awesome-support' ), $link, $this->get_addon_name( false ) ) );
+
+		// translators: %1$s is the URL to the license page, %2$s is the name of the product.
+		$x_content = __( 'Please <a href="%1$s">fill-in your product license</a> now. If you don\'t, your copy of <strong>%2$s</strong> will <strong>never be updated</strong>.', 'awesome-support' );
+
+		WPAS()->admin_notices->add_notice( 'error', "license_{$this->slug}", sprintf( $x_content, $link, $this->get_addon_name( false ) ) );
 
 	}
 
@@ -599,7 +614,9 @@ abstract class WPAS_Extension_Base {
 		$license_page = wpas_get_settings_page_url( 'licenses' );
 
 		if ( plugin_basename( $this->addon_file ) === $plugin_file ) {
-			$plugin_meta[] = '<strong>' . sprintf( __( 'You must fill-in your product license in order to get future plugin updates. <a href="%s">Click here to do it</a>.', 'awesome-support' ), $license_page ) . '</strong>';
+			// translators: %s is the product license page link.
+			$x_content = __( 'You must fill-in your product license in order to get future plugin updates. <a href="%s">Click here to do it</a>.', 'awesome-support' );
+			$plugin_meta[] = '<strong>' . sprintf( $x_content, $license_page ) . '</strong>';
 		}
 
 		return $plugin_meta;

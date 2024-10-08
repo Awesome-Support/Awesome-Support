@@ -360,7 +360,7 @@
 				$title = $this->field[ 'args' ][ 'label' ];
 			}
 
-			return esc_attr( strip_tags( $title ) );
+			return esc_attr( wp_strip_all_tags( $title ) );
 
 		}
 
@@ -373,7 +373,7 @@
 		public function get_field_label() {
 
 			if ( isset( $this->field[ 'args' ][ 'label' ] ) && ! empty( $this->field[ 'args' ][ 'label' ] ) ) {
-				$label = esc_attr( strip_tags( $this->field[ 'args' ][ 'label' ] ) );
+				$label = esc_attr( wp_strip_all_tags( $this->field[ 'args' ][ 'label' ] ) );
 			} else {
 				$label = $this->get_field_title();
 			}
@@ -429,12 +429,12 @@
 
 			if ( empty( $value ) ) {
 
-				$queried_value = isset( $_GET[$this->get_field_id()] ) ? sanitize_text_field( $_GET[$this->get_field_id()] ) : '';
+				$queried_value = isset( $_GET[$this->get_field_id()] ) ? sanitize_text_field( wp_unslash( $_GET[$this->get_field_id()] ) ) : '';
 
 				if ( ! empty( $queried_value ) ) {
 					$value = is_array( $_GET[ $this->get_field_id() ] )
-						? array_map( 'sanitize_text_field', $_GET[ $this->get_field_id() ] )
-						: sanitize_text_field( $_GET[$this->get_field_id()] );
+						? array_map( 'sanitize_text_field', sanitize_text_field( wp_unslash( $_GET[ $this->get_field_id() ] ) ) )
+						: sanitize_text_field( wp_unslash( $_GET[$this->get_field_id()] ) );
 				}
 
 				$fields = WPAS()->session->get( 'submission_form' );

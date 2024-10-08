@@ -93,12 +93,14 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 
 		$status = wpas_get_post_status();
 
-		if ( array_key_exists( $_POST['post_status_override'], $status ) ) {
+		if ( array_key_exists( sanitize_text_field( wp_unslash( $_POST['post_status_override'] ) ), $status ) ) {
 
-			$data['post_status'] = $_POST['post_status_override'];
-
+			$data['post_status'] = sanitize_text_field( wp_unslash( $_POST['post_status_override'] ) );
+			
+			// translators: %s is the state of the ticket
+			$x_content = __( 'Ticket state changed to %s', 'awesome-support' );
 			if ( isset($postarr['original_post_status']) && $postarr['original_post_status'] !== $_POST['post_status_override'] && isset( $_POST['wpas_post_parent'] ) ) {
-				wpas_log_history( intval( $_POST['wpas_post_parent'] ), sprintf( __( 'Ticket state changed to %s', 'awesome-support' ), '&laquo;' . $status[ $_POST['post_status_override'] ] . '&raquo;' ) );
+				wpas_log_history( intval( $_POST['wpas_post_parent'] ), sprintf( $x_content, '&laquo;' . $status[ sanitize_text_field( wp_unslash( $_POST['post_status_override'] ) ) ] . '&raquo;' ) );
 			}
 		}
 
@@ -131,7 +133,7 @@ function wpas_save_ticket( $post_id ) {
 	}
 
 	/* Now we check the nonce */
-	if ( ! isset( $_POST['wpas_cf'] ) || ! wp_verify_nonce( $_POST['wpas_cf'], 'wpas_update_cf' ) ) {
+	if ( ! isset( $_POST['wpas_cf'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wpas_cf'] ) ), 'wpas_update_cf' ) ) {
 		return;
 	}
 
@@ -189,11 +191,13 @@ function wpas_save_ticket( $post_id ) {
 	/* Save the possible ticket reply */
 	if ( ! wpas_is_new_reply_empty( $post_id ) ) {
 
+		$ticket_reply = isset($_POST['wpas_reply_ticket']) ? sanitize_text_field( wp_unslash( $_POST['wpas_reply_ticket'] ) ) : null ;
+		
 		/* Check for the nonce */
-		if ( wp_verify_nonce( $_POST['wpas_reply_ticket'], 'reply_ticket' ) ) {
+		if ( wp_verify_nonce( $ticket_reply, 'reply_ticket' ) ) {
 
 			$user_id = $current_user->ID;
-			$content = wp_kses_post( $_POST['wpas_reply'] );
+			$content = isset( $_POST['wpas_reply'] ) ? wp_kses_post( wp_unslash( $_POST['wpas_reply'] ) ) : '';
 
 			$data = apply_filters( 'wpas_post_reply_admin_args', array(
 				'post_content'   => $content,
@@ -298,7 +302,7 @@ function wpas_save_ticket( $post_id ) {
 		do_action( 'wpas_ticket_after_update_admin_success', $post_id, $old_assignee, $_POST);
 
 		$gt_post      = null;
-		$where_after  = isset( $_POST['where_after'] ) ? sanitize_text_field( $_POST['where_after'] ) : '';
+		$where_after  = isset( $_POST['where_after'] ) ? sanitize_text_field( wp_unslash( $_POST['where_after'] ) ) : '';
 		$back_to_list = filter_input( INPUT_POST, 'wpas_back_to_list', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( true === (bool) $back_to_list ) {

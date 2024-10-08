@@ -124,7 +124,9 @@ class WPAS_Member {
 
 		global $wpdb;
 
-		$user = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM $wpdb->users WHERE ID = '%d'", $user_id ) );
+		$sql = "SELECT * FROM $wpdb->users WHERE ID = '%d'"; 
+		
+		$user = $wpdb->get_results( $wpdb->prepare( "$sql", $user_id ) );
 
 		if ( empty( $user ) ) {
 			return array();

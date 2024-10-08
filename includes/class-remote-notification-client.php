@@ -537,8 +537,8 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			$dismissed = array_filter( (array) get_user_option( '_rn_dismissed', $current_user->ID ) );
 
 			/* Add the current notice to the list if needed */
-			if ( is_array( $dismissed ) && ! in_array( $_GET['notification'], $dismissed ) ) {
-				array_push( $dismissed, $_GET['notification'] );
+			if ( is_array( $dismissed ) && ! in_array( $_GET['notification'], $dismissed ) && isset($_GET['notification'] ) ) {
+				array_push( $dismissed, sanitize_text_field( wp_unslash(  $_GET['notification'] ) ) );
 			}
 
 			/* Update option */
@@ -661,7 +661,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		public function remote_get_notice_ajax() {
 
 			if ( isset( $_POST['notices'] ) ) {
-				$notices = $_POST['notices'];
+				$notices = sanitize_text_field( wp_unslash( $_POST['notices'] ) );
 			} else {
 				echo 'No notice ID';
 				die();
@@ -716,6 +716,10 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		protected function remote_get_notification( $notification ) {
 
+			if ( !is_array( $notification ) ) {
+				return new WP_Error( 'invalid_notification', __( 'The notification data is invalid', 'awesome-support' ) );
+			}
+
 			/* Query the server */
 			$response = wp_remote_get( $this->build_query_url( $notification['server_url'], $this->get_payload( $notification ) ), array( 'timeout' => apply_filters( 'rn_http_request_timeout', 5 ) ) );
 
@@ -725,7 +729,9 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			if ( 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-				return new WP_Error( 'invalid_response', sprintf( __( 'The server response was invalid (code %s)', 'awesome-support' ), wp_remote_retrieve_response_code( $response ) ) );
+				// translators: %s is the code server response.
+				$x_content = __( 'The server response was invalid (code %s)', 'awesome-support' );
+				return new WP_Error( 'invalid_response', sprintf( $x_content, wp_remote_retrieve_response_code( $response ) ) );
 			}
 
 			$body = wp_remote_retrieve_body( $response );

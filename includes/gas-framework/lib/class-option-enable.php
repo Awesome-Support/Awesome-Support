@@ -59,15 +59,15 @@ class GASFrameworkOptionEnable extends GASFrameworkOption {
 		$this->echoOptionHeader();
 
 		if ( empty( $this->settings['enabled'] ) ) {
-			$this->settings['enabled'] = __( 'Enabled', GASF_I18NDOMAIN );
+			$this->settings['enabled'] = __( 'Enabled', 'gas-framework' );
 		}
 		if ( empty( $this->settings['disabled'] ) ) {
-			$this->settings['disabled'] = __( 'Disabled', GASF_I18NDOMAIN );
+			$this->settings['disabled'] = __( 'Disabled', 'gas-framework' );
 		}
 
 		?>
-		<input name="<?php echo wp_kses_post($this->getID()) ?>" type="checkbox" id="<?php echo wp_kses_post($this->getID()) ?>" value="1" <?php checked( $this->getValue(), 1 ) ?>>
-		<span class="button button-<?php echo checked( $this->getValue(), 1, false ) ? 'primary' : 'secondary' ?>"><?php echo wp_kses_post($this->settings['enabled']) ?></span><span class="button button-<?php echo checked( $this->getValue(), 1, false ) ? 'secondary' : 'primary' ?>"><?php echo wp_kses_post($this->settings['disabled']) ?></span>
+		<input name="<?php echo esc_attr($this->getID()) ?>" type="checkbox" id="<?php echo esc_attr($this->getID()) ?>" value="1" <?php checked( $this->getValue(), 1 ) ?>>
+		<span class="button button-<?php echo checked( $this->getValue(), 1, false ) ? 'primary' : 'secondary' ?>"><?php echo wp_kses_post($this->settings['enabled'] )?></span><span class="button button-<?php echo checked( $this->getValue(), 1, false ) ? 'secondary' : 'primary' ?>"><?php echo wp_kses_post($this->settings['disabled']) ?></span>
 		<?php
 
 		// load the javascript to init the colorpicker
@@ -138,10 +138,10 @@ function registerGASFrameworkOptionEnableControl() {
 		public function render_content() {
 
 			if ( empty( $this->options['enabled'] ) ) {
-				$this->options['enabled'] = __( 'Enabled', GASF_I18NDOMAIN );
+				$this->options['enabled'] = __( 'Enabled', 'gas-framework' );
 			}
 			if ( empty( $this->options['disabled'] ) ) {
-				$this->options['disabled'] = __( 'Disabled', GASF_I18NDOMAIN );
+				$this->options['disabled'] = __( 'Disabled', 'gas-framework' );
 			}
 			?>
 			<div class='tf-enable'>
@@ -151,7 +151,7 @@ function registerGASFrameworkOptionEnableControl() {
 			</div>
 			<?php
 
-			echo wp_kses_post("<p class='description'>{$this->description}</p>");
+			echo "<p class='description'>" . wp_kses_post($this->description) . "</p>";
 
 			// load the javascript to init the colorpicker
 			if ( self::$firstLoad ) :

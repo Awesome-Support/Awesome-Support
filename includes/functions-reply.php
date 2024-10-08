@@ -13,7 +13,7 @@ function wpas_count_user_replies( $ticket_id, $user_id ) {
 	$count = 0;
 	if($user_id) {
 		$query = $wpdb->prepare("SELECT count(*) FROM {$wpdb->prefix}posts WHERE post_author = %d AND post_parent = %d AND post_type = %s AND post_status != 'trash'", $user_id, $ticket_id, 'ticket_reply');
-		$count = $wpdb->get_var($query);
+		$count = $wpdb->get_var("$query");
 	}
 	
 	return $count;
@@ -33,7 +33,7 @@ function wpas_count_total_replies( $ticket_id ) {
 	$count = 0;
 	
 	$query = $wpdb->prepare("SELECT count(*) FROM {$wpdb->prefix}posts WHERE post_parent = %d AND post_type = %s AND post_status != 'trash'", $ticket_id, 'ticket_reply');
-	$count = $wpdb->get_var($query);
+	$count = $wpdb->get_var("$query");
 	
 	
 	return $count;

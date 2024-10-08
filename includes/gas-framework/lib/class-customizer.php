@@ -30,7 +30,7 @@ class GASFrameworkCustomizer {
 		$this->settings = array_merge( $this->defaultSettings, $settings );
 
 		if ( empty( $this->settings['name'] ) ) {
-			$this->settings['name'] = __( 'More Options', GASF_I18NDOMAIN );
+			$this->settings['name'] = __( 'More Options', 'gas-framework' );
 		}
 
 		if ( empty( $this->settings['id'] ) ) {
@@ -133,11 +133,11 @@ class GASFrameworkCustomizer {
 			return $value;
 		}
 		if ( array_key_exists( $option->getID(), $_POST ) ) {
-			return $_POST[ $option->getID() ];
+			return sanitize_key( wp_unslash( $_POST[ $option->getID() ] ) );
 		}
 
 		if ( ! empty( $_POST['customized'] ) ) {
-			$customizedSettings = (array) json_decode( stripslashes( $_POST['customized'] ) );
+			$customizedSettings = (array) json_decode( stripslashes( sanitize_key( wp_unslash( $_POST['customized'] ) ) ) );
 			if ( is_array( $customizedSettings ) && ! empty( $customizedSettings ) ) {
 				if ( array_key_exists( $option->getID(), $customizedSettings ) ) {
 					return $customizedSettings[ $option->getID() ];
@@ -249,7 +249,7 @@ class GASFrameworkCustomizer {
 			}
 
 			?>
-			wp.customize( '<?php echo wp_kses_post($option->getID()) ?>', function( v ) {
+			wp.customize( '<?php echo wp_kses_post($option->getID() )?>', function( v ) {
 				v.bind( function( value ) {
 					<?php
 
@@ -261,7 +261,7 @@ class GASFrameworkCustomizer {
 						 */
 						?>
 						if ( typeof localStorage !== 'undefined' ) {
-							localStorage.setItem( '<?php echo wp_kses_post($option->getID()) ?>', value );
+							localStorage.setItem( '<?php echo wp_kses_post($option->getID() )?>', value );
 						}
 						window.tf_refresh_css();
 						<?php
@@ -316,9 +316,9 @@ class GASFrameworkCustomizer {
 		if ( ! in_array( $this->owner->optionNamespace, self::$namespacesWithPrintedPreviewCSS ) ) {
 			self::$namespacesWithPrintedPreviewCSS[] = $this->owner->optionNamespace;
 
-			echo '<style id="gas-preview-' . esc_attr( $this->owner->optionNamespace ) . '">';
-			echo wp_kses_post($this->owner->cssInstance->generateCSS());
-			echo '</style>';
+			echo wp_kses_post('<style id="gas-preview-' . esc_attr( $this->owner->optionNamespace ) . '">'
+					. $this->owner->cssInstance->generateCSS() .
+				 '</style>', ['style' => [ 'id' => true] ]);
 		}
 	}
 

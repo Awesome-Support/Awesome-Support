@@ -117,6 +117,9 @@ function wpas_post_type_updated_messages( $messages ) {
 		return $messages;
 	}
 
+	// translators: %1$s is the scheduled ticket date.
+	$x_content = __( 'Ticket scheduled for: <strong>%1$s</strong>.', 'awesome-support' );
+
 	$messages[$post_type] = array(
 			0  => '', // Unused. Messages start at index 1.
 			1  => __( 'Ticket updated.', 'awesome-support' ),
@@ -129,7 +132,7 @@ function wpas_post_type_updated_messages( $messages ) {
 			7  => __( 'Ticket saved.', 'awesome-support' ),
 			8  => __( 'Ticket submitted.', 'awesome-support' ),
 			9  => sprintf(
-					__( 'Ticket scheduled for: <strong>%1$s</strong>.', 'awesome-support' ),
+					$x_content,
 					// translators: Publish box date format, see http://php.net/date
 					date_i18n( __( 'M j, Y @ G:i', 'awesome-support' ), strtotime( $post->post_date ) )
 			),
@@ -232,14 +235,25 @@ function wpas_register_post_status() {
 	$status = wpas_get_post_status();
 
 	foreach ( $status as $id => $custom_status ) {
-
+		// translators: %s is the custom_status.
+		$singular = " $custom_status <span class='count'>(%s)</span>";
+		$plural   = " $custom_status <span class='count'>(%s)</span>";
+		
+		
 		$args = array(
 				'label'                     => $custom_status,
 				'public'                    => true,
 				'exclude_from_search'       => false,
 				'show_in_admin_all_list'    => true,
 				'show_in_admin_status_list' => true,
-				'label_count'               => _n_noop( "$custom_status <span class='count'>(%s)</span>", "$custom_status <span class='count'>(%s)</span>", 'awesome-support' ),
+				'label_count'               => array(
+					0          => $singular,
+					1          => $plural,
+					'singular' => $singular,
+					'plural'   => $plural,
+					'context'  => null,
+					'domain'   => 'awesome-support',
+				),
 		);
 
 		register_post_status( $id, $args );

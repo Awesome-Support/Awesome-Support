@@ -192,8 +192,10 @@ class GASFramework {
 			
 			if ( is_admin() && isset( $this->optionsUsed[ $option->settings['id'] ] ) ) {
 				
+				// translators: %s is the ticket id.
+				$x_content = __( 'All option IDs per namespace must be unique. The id %s has been used multiple times.', 'gas-framework' );
 				self::displayFrameworkError(
-					sprintf( __( 'All option IDs per namespace must be unique. The id %s has been used multiple times.', GASF_I18NDOMAIN ),
+					sprintf( $x_content,
 						'<code>' . $option->settings['id'] . '</code>'
 					)
 				);
@@ -448,7 +450,10 @@ class GASFramework {
 	 */
 	public function createContainer( $settings ) {
 		if ( empty( $settings['type'] ) ) {
-			self::displayFrameworkError( sprintf( __( '%s needs a %s parameter.', GASF_I18NDOMAIN ), '<code>' . __FUNCTION__ . '</code>', '<code>type</code>' ) );
+			// translators: %1$s is the name of the component or function, %2$s is the missing parameter.
+			$x_content = __( '%1$s needs a %2$s parameter.', 'gas-framework' );
+
+			self::displayFrameworkError( sprintf( $x_content, '<code>' . __FUNCTION__ . '</code>', '<code>type</code>' ) );
 			return;
 		}
 
@@ -458,7 +463,11 @@ class GASFramework {
 		$container = false;
 
 		if ( ! class_exists( $class ) ) {
-			self::displayFrameworkError( sprintf( __( 'Container of type %s, does not exist.', GASF_I18NDOMAIN ), '<code>' . $settings['type'] . '</code>' ) );
+
+			// translators: %s is a type of container.
+			$x_content = __( 'Container of type %s, does not exist.', 'gas-framework' );
+
+			self::displayFrameworkError( sprintf( $x_content, '<code>' . $settings['type'] . '</code>' ) );
 			return;
 		}
 
@@ -674,7 +683,7 @@ class GASFramework {
 			<?php
 			if ( ! empty( $errorObject ) ) :
 				?>
-				<pre><code style="display: inline-block; padding: 10px"><?php echo wp_kses_post(print_r( $errorObject, true )) ?></code></pre>
+				<pre><code style="display: inline-block; padding: 10px"><?php echo esc_html(print_r( $errorObject, true )) ?></code></pre>
 				<?php
 			endif;
 			?>

@@ -27,10 +27,10 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 	 */
 	public function ajaxSecurityChecker() {
 		if ( empty( $_POST['nonce'] ) ) {
-			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', GASF_I18NDOMAIN ) );
+			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'gas-framework' ) );
 		}
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'tf-ajax-button' ) ) {
-			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', GASF_I18NDOMAIN ) );
+		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'tf-ajax-button' ) ) {
+			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'gas-framework' ) );
 		}
 	}
 
@@ -84,7 +84,7 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 			$this->settings['success_callback'][] = '';
 		}
 		while ( count( $this->settings['error_callback'] ) < count( $this->settings['action'] ) ) {
-			$this->settings['error_callback'][] = __( 'Something went wrong', GASF_I18NDOMAIN );
+			$this->settings['error_callback'][] = __( 'Something went wrong', 'gas-framework' );
 		}
 		while ( count( $this->settings['data_filter_callback'] ) < count( $this->settings['action'] ) ) {
 			$this->settings['data_filter_callback'][] = '';
@@ -92,12 +92,12 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 
 		foreach ( $this->settings['label'] as $i => $label ) {
 			if ( empty( $label ) ) {
-				$this->settings['label'][ $i ] = __( 'Click me', GASF_I18NDOMAIN );
+				$this->settings['label'][ $i ] = __( 'Click me', 'gas-framework' );
 			}
 		}
 		foreach ( $this->settings['wait_label'] as $i => $label ) {
 			if ( empty( $label ) ) {
-				$this->settings['wait_label'][ $i ] = __( 'Please wait...', GASF_I18NDOMAIN );
+				$this->settings['wait_label'][ $i ] = __( 'Please wait...', 'gas-framework' );
 			}
 		}
 		foreach ( $this->settings['error_label'] as $i => $label ) {
@@ -312,7 +312,7 @@ function registerGASFrameworkOptionAjaxButtonControl() {
 				}
 
 				if ( ! empty( $this->description ) ) {
-					echo "<p class='description'>" . wp_kses_post($this->description). '</p>';
+					echo "<p class='description'>" . wp_kses_post($this->description) . '</p>';
 				}
 
 			?></label><?php

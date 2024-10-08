@@ -38,7 +38,7 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
-	$post_type =  isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
+	$post_type =  isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
 
 	/* Make sure we only alter our post type */
 	if ( 'ticket' !== $post_type ) {
@@ -91,8 +91,8 @@ function wpas_limit_open( $query ) {
 		return false;
 	}
 
-	$post_type   = sanitize_text_field( $_GET['post_type'] );
-	$post_status = sanitize_text_field( $_GET['post_status'] );
+	$post_type   = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+	$post_status = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
 
 	/* Make sure we only alter our post type */
 	if ( 'ticket' !== $post_type ) {
@@ -174,7 +174,7 @@ function wpas_fix_tickets_count( $views ) {
 
 	$ticket_status = wpas_get_post_status(); // Our declared ticket status.
 	$status        = 'open';
-	$post_status   = isset( $_GET['post_status'] ) ? wp_unslash( sanitize_text_field( $_GET['post_status'] ) ) : '';
+	$post_status   = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
 
 	// Maybe apply filters.
 	if ( ! empty( $post_status ) ) {
@@ -200,7 +200,7 @@ function wpas_fix_tickets_count( $views ) {
 				$replace = $matches[1][0];
 			}
 
-			$label           = trim( strip_tags( str_replace( $replace, '', $label ) ) );
+			$label           = trim( wp_strip_all_tags( str_replace( $replace, '', $label ) ) );
 			$class           = isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view || isset( $wp_query->query_vars['post_status'] ) && 'all' === $view && null === $wp_query->query_vars['post_status'] ? ' class="current"' : '';
 			$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
 			$link            = esc_url( add_query_arg( $link_query_args, admin_url( 'edit.php' ) ) );

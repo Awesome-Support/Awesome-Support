@@ -8,6 +8,11 @@ add_filter( 'wpas_plugin_settings', 'wpas_core_settings_integration', 95, 1 );
  */
 function wpas_core_settings_integration( $def ) {
 
+	// translators: %s is the link to the addons.
+	$desc = __( 'Add the MY TICKETS and OPEN A TICKET links to the MY ACCOUNT page in WooCommerce. For more advanced integration features checkout our %s', 'awesome-support' );
+
+	// translators: %s is the link to the addons.
+	$desc1 = __( 'Integration options with MY CRED.  You must have the MY CRED plugin installed and activated before enabling anythign in this section. Get myCRED from here: %s', 'awesome-support' );
 	$settings = array(
 		'integration' => array(
 			'name'    => __( 'Integrations', 'awesome-support' ),
@@ -17,7 +22,7 @@ function wpas_core_settings_integration( $def ) {
 					'name'    => __( 'WooCommerce', 'awesome-support' ),
 					'id'      => 'simple_wc',
 					'type'    => 'heading',
-					'desc'    => sprintf( __( 'Add the MY TICKETS and OPEN A TICKET links to the MY ACCOUNT page in WooCommerce. For more advanced integration features checkout our %s', 'awesome-support' ), '<a href="https://getawesomesupport.com/addons/woocommerce/" target="_blank">' . 'WooCommerce Addon' . '</a>' ),
+					'desc'    => sprintf( $desc, '<a href="https://getawesomesupport.com/addons/woocommerce/" target="_blank">' . 'WooCommerce Addon' . '</a>' ),
 				),
 				array(
 					'name'    => __( 'Enable WooCommerce Integration', 'awesome-support' ),
@@ -48,7 +53,7 @@ function wpas_core_settings_integration( $def ) {
 					'name'    => __( 'myCRED', 'awesome-support' ),
 					'id'      => 'my_cred',
 					'type'    => 'heading',
-					'desc'    => sprintf( __( 'Integration options with MY CRED.  You must have the MY CRED plugin installed and activated before enabling anythign in this section. Get myCRED from here: %s', 'awesome-support' ), '<a href="https://wordpress.org/plugins/mycred/" target="_blank">' . 'myCRED' . '</a>' ),
+					'desc'    => sprintf( $desc1, '<a href="https://wordpress.org/plugins/mycred/" target="_blank">' . 'myCRED' . '</a>' ),
 				),
 				array(
 					'name'    => __( 'Enable myCRED Integration', 'awesome-support' ),

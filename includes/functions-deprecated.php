@@ -46,7 +46,7 @@ function wpas_get_field_class( $field_name = '', $extra = '', $echo = true ) {
 	}
 
 	if ( true === $echo ) {
-		echo wp_kses_post("class='$class'");
+		echo "class='" . wp_kses_post($class). "'";
 	} else {
 		return $class;
 	}
@@ -72,7 +72,7 @@ function wpas_get_field_value( $field_name ) {
 	$meta = get_post_meta( get_the_ID(), '_wpas_' . $field_name, true );
 
 	if ( isset( $_SESSION['wpas_submission_form'] ) && is_array( $_SESSION['wpas_submission_form'] ) && array_key_exists( $field_name, $_SESSION['wpas_submission_form'] ) ) {
-		$value = $_SESSION['wpas_submission_form'][$field_name];
+		$value = sanitize_text_field( $_SESSION['wpas_submission_form'][$field_name] );
 	} elseif ( !empty( $meta ) ) {
 		$value = $meta;
 	} else {
@@ -137,7 +137,7 @@ function wpas_get_message_textarea( $editor_args = array() ) {
 		$can_submit_empty = apply_filters( 'wpas_can_message_be_empty', false );
 		?>
 		<div class="wpas-submit-ticket-wysiwyg">
-			<textarea <?php wpas_get_field_class( 'wpas_message', $textarea_class ); ?> id="wpas-ticket-message" name="wpas_message" placeholder="<?php echo wp_kses_post(apply_filters( 'wpas_form_field_placeholder_wpas_message', __( 'Describe your problem as accurately as possible', 'awesome-support' ) )); ?>" rows="10" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>><?php echo (wpas_get_field_value( 'wpas_message' )); ?></textarea>
+			<textarea <?php wpas_get_field_class( 'wpas_message', wp_kses_post($textarea_class) ); ?> id="wpas-ticket-message" name="wpas_message" placeholder="<?php echo wp_kses_post(apply_filters( 'wpas_form_field_placeholder_wpas_message', __( 'Describe your problem as accurately as possible', 'awesome-support' ) )); ?>" rows="10" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>><?php echo wp_kses_post(wpas_get_field_value( 'wpas_message' )); ?></textarea>
 		</div>
 	<?php }
 

@@ -62,9 +62,9 @@ if ( ! defined( 'WPINC' ) ) {
 					'data_attr' => array( 'capability' => 'edit_ticket' )
 				);
 
-				echo (wpas_dropdown( $staff_atts, "<option value='$secondary_staff_id' selected='selected'>$secondary_staff_name</option>" ));
+				echo wp_kses(wpas_dropdown( $staff_atts, "<option value='$secondary_staff_id' selected='selected'>$secondary_staff_name</option>" ), get_allowed_html_wp_notifications());
 			} else {
-				echo (wpas_users_dropdown( array(
+				echo wp_kses(wpas_users_dropdown( array(
 					'cap'		=> 'edit_ticket',
 					'orderby'	=> 'display_name',
 					'order'		=> 'ASC',
@@ -73,7 +73,7 @@ if ( ! defined( 'WPINC' ) ) {
                     'class'     => 'search_and_list_dropdown',
 					'please_select' => true,
 					'selected' => $secondary_staff_id
-				) ));
+				) ), get_allowed_html_wp_notifications());
 			}
 			// Display dropdown for tertiary staff
 			?><label for="wpas-tertiary-assignee"><strong data-hint="<?php esc_html_e( 'Second additional agent who has an interest this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php esc_html_e( 'Additional Support Staff #2', 'awesome-support' ); ?></strong></label><?php
@@ -87,9 +87,9 @@ if ( ! defined( 'WPINC' ) ) {
 					'data_attr' => array( 'capability' => 'edit_ticket' )
 				);
 
-				echo (wpas_dropdown( $staff_atts, "<option value='$tertiary_staff_id' selected='selected'>$tertiary_staff_name</option>" ));
+				echo wp_kses(wpas_dropdown( $staff_atts, "<option value='$tertiary_staff_id' selected='selected'>$tertiary_staff_name</option>" ), get_allowed_html_wp_notifications());
 			} else {
-				echo (wpas_users_dropdown( array(
+				echo wp_kses(wpas_users_dropdown( array(
 					'cap'		=> 'edit_ticket',
 					'orderby'	=> 'display_name',
 					'order'		=> 'ASC',
@@ -98,7 +98,7 @@ if ( ! defined( 'WPINC' ) ) {
                     'class'     => 'search_and_list_dropdown',
 					'please_select' => true,
 					'selected' => $tertiary_staff_id
-				) ));
+				) ), get_allowed_html_wp_notifications());
 			}
 
 		// Create some space before showing free-form interested parties (name / email )

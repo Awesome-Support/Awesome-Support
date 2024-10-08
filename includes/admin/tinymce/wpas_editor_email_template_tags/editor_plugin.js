@@ -36,7 +36,7 @@
 					title: ed.getLang('wpas_editor_langs.window_title'),
 					width: winW*.95,
 					height: winH*.95,
-					url: url + '/wpas_editor_email_template_tags.php'
+					url: url + '/wpas_editor_email_template_tags.html'
 				}, {
 					// Pass variables to window
 					wpas_editor_js_vars: wpas_editor_js_vars

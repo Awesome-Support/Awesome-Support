@@ -269,7 +269,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 			}
 			$body['marketing_method'] = $this->marketing;
 
-			$body['server'] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '';
+			$body['server'] = isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ) : '';
 
 			// Retrieve current plugin information
 			if( ! function_exists( 'get_plugins' ) ) {
@@ -733,8 +733,8 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 		public function optin_notice() {
 			// Check for plugin args
 			if( isset( $_GET['plugin'] ) && isset( $_GET['plugin_action'] ) ) {
-				$plugin = sanitize_text_field( $_GET['plugin'] );
-				$action = sanitize_text_field( $_GET['plugin_action'] );
+				$plugin = sanitize_text_field( wp_unslash( $_GET['plugin'] ));
+				$action = sanitize_text_field( wp_unslash( $_GET['plugin_action'] ));
 				if( $action == 'yes' ) {
 					$this->set_is_tracking_allowed( true, $plugin );
 					// Run this straightaway
@@ -801,15 +801,21 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 
 				// Decide on notice text
 				if( $this->marketing != 1 ) {
+					// translators: %1$s is the plugin name
+					$s_content = __( 'Thank you for installing our %1$s. We would like to track its usage on your site. We don\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' );
+					
 					// Standard notice text
 					$notice_text = sprintf(
-						__( 'Thank you for installing our %1$s. We would like to track its usage on your site. We don\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' ),
+						$s_content,
 						$this->what_am_i
 					);
 				} else {
+					// translators: %1$s is the plugin name
+					$s_content = __( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' );
+
 					// If we have option 1 for marketing, we include reference to sending product information here
 					$notice_text = sprintf(
-						__( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' ),
+						$s_content,
 						$this->what_am_i
 					);
 				}
@@ -818,7 +824,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 
 				<div class="notice notice-info updated put-dismiss-notice">
 					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
-					<p><?php echo wp_kses_post($notice_text); ?></p>
+					<p><?php echo  wp_kses_post($notice_text) ; ?></p>
 					<p>
 						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-secondary"><?php esc_html_e( 'Allow', 'singularity' ); ?></a>
 						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php esc_html_e( 'Do Not Allow', 'singularity' ); ?></a>
@@ -839,7 +845,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 			// Check if user has opted in to marketing
 			if( isset( $_GET['marketing_optin'] ) ) {
 				// Set marketing optin
-				$this->set_can_collect_email( sanitize_text_field( $_GET['marketing_optin'] ), $this->plugin_name );
+				$this->set_can_collect_email( sanitize_text_field( wp_unslash( $_GET['marketing_optin'] ) ), $this->plugin_name );
 				// Do tracking
 				$this->do_tracking( true );
 			} else if( isset( $_GET['marketing'] ) && $_GET['marketing']=='yes' ) {
@@ -857,8 +863,11 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 					'marketing_optin'	=> 'no'
 				) );
 
+				// translators: %s is the plugin name
+				$s_content = __( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'singularity' );
+
 				$marketing_text = sprintf(
-					__( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'singularity' ),
+					$s_content,
 					$this->what_am_i
 				);
 				$marketing_text = apply_filters( 'wisdom_marketing_text_' . esc_attr( $this->plugin_name ), $marketing_text ); ?>
@@ -1009,7 +1018,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 						var url = document.getElementById("put-goodbye-link-<?php echo esc_attr( $this->plugin_name ); ?>");
 						$('body').toggleClass('put-form-active');
 						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").fadeIn();
-						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").html( '<?php echo $html; ?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php esc_html_e( 'Submit and Deactivate', 'singularity' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php esc_html_e( 'Just Deactivate', 'singularity' ); ?></a></p></div>');
+						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").html( '<?php echo wp_kses($html, get_allowed_html_wp_notifications()); ?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php esc_html_e( 'Submit and Deactivate', 'singularity' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php esc_html_e( 'Just Deactivate', 'singularity' ); ?></a></p></div>');
 						$('#put-submit-form').on('click', function(e){
 							// As soon as we click, the body of the form should disappear
 							$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?> .put-goodbye-form-body").fadeOut();
@@ -1026,7 +1035,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 								'action': 'goodbye_form',
 								'values': values,
 								'details': details,
-								'security': "<?php echo wp_create_nonce ( 'wisdom_goodbye_form' ); ?>",
+								'security': "<?php echo wp_kses_post(wp_create_nonce ( 'wisdom_goodbye_form' )); ?>",
 								'dataType': "json"
 							}
 							$.post(
@@ -1055,11 +1064,11 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 		public function goodbye_form_callback() {
 			check_ajax_referer( 'wisdom_goodbye_form', 'security' );
 			if( isset( $_POST['values'] ) ) {
-				$values = json_encode( wp_unslash( array_map( 'esc_attr', $_POST['values'] ) ) );
+				$values = isset( $_POST['values'] ) ? json_encode( array_map( 'sanitize_text_field', wp_unslash( $_POST['values'] ) ) ) : '';
 				update_option( 'wisdom_deactivation_reason_' . $this->plugin_name, $values );
 			}
 			if( isset( $_POST['details'] ) ) {
-				$details = sanitize_text_field( $_POST['details'] );
+				$details = (sanitize_text_field( wp_unslash( $_POST['details'] )));
 				update_option( 'wisdom_deactivation_details_' . $this->plugin_name, $details );
 			}
 			$this->do_tracking(); // Run this straightaway

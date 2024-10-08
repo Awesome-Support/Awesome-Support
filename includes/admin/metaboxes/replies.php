@@ -173,10 +173,13 @@ if( 'open' == $status ):
 
 /* The ticket was closed */
 elseif( 'closed' == $status ): ?>
-
+	<?php 
+		// translators: %s is the link to re-open the ticket.
+		$x_content = __( 'This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href="%s">re-open it first</a>.', 'awesome-support' );
+	?>
 	<div class="updated below-h2" style="margin-top: 2em;">
 		<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php esc_html_e('Ticket is closed', 'wpas'); ?></h2>
-		<p><?php printf( wp_kses_post( __( 'This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href="%s">re-open it first</a>.', 'awesome-support' ) ), esc_attr( wpas_get_open_ticket_url( $post->ID ) ) ); ?></p>
+		<p><?php printf( wp_kses_post( $x_content ), esc_attr( wpas_get_open_ticket_url( $post->ID ) ) ); ?></p>
 	</div>
 
 <?php endif;

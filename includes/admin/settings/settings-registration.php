@@ -12,6 +12,9 @@ function wpas_core_settings_registration( $def ) {
 	$user_registration = boolval( get_option( 'users_can_register' ) );
 	$registration_lbl  = ( true === $user_registration ) ? _x( 'allowed', 'User registration is allowed', 'awesome-support' ) : _x( 'not allowed', 'User registration is not allowed', 'awesome-support' );
 
+	// translators: %s is the registration text.
+	$desc = __( 'Allow users to register on the support page. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress.', 'awesome-support' );
+	
 	$settings = array(
 		'registration' => array(
 			'name'    => __( 'Registration', 'awesome-support' ),
@@ -25,7 +28,7 @@ function wpas_core_settings_registration( $def ) {
 					'name'    => __( 'Allow Registrations', 'awesome-support' ),
 					'id'      => 'allow_registrations',
 					'type'    => 'radio',
-					'desc'    => sprintf( __( 'Allow users to register on the support page. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress.', 'awesome-support' ),  "<strong>$registration_lbl</strong>" ),
+					'desc'    => sprintf( $desc,  "<strong>$registration_lbl</strong>" ),
 					'default' => 'allow',
 					'options' => array(
 						'allow'           => __( 'Allow registrations', 'awesome-support' ),

@@ -54,7 +54,10 @@ function wpas_reply_form_tab_content( $content = '' ) {
 		 * @param  string  Title to display
 		 * @param  WP_Post Current post object
 		 */
-		echo wp_kses_post( apply_filters( 'wpas_write_reply_title_admin', sprintf( esc_html_x( 'Write a reply to %s', 'Title of the reply editor in the back-end', 'awesome-support' ), '&laquo;' . esc_attr( get_the_title( $post->ID ) ) . '&raquo;' ), $post ) ); ?>
+
+		// translators: %s is the title of the reply.
+		$x_content = _x( 'Write a reply to %s', 'Title of the reply editor in the back-end', 'awesome-support' );
+		echo wp_kses_post( apply_filters( 'wpas_write_reply_title_admin', sprintf( esc_html($x_content), '&laquo;' . esc_attr( get_the_title( $post->ID ) ) . '&raquo;' ), $post ) ); ?>
 	</h2>
 
 	<div>

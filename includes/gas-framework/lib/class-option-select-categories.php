@@ -32,7 +32,7 @@ class GASFrameworkOptionSelectCategories extends GASFrameworkOptionSelect {
 			$categories = get_terms( $args );
 
 			$this->settings['options'] = array(
-				'' => '— ' . __( 'Select', GASF_I18NDOMAIN ) . ' —'
+				'' => '— ' . __( 'Select', 'gas-framework' ) . ' —'
 			);
 
 			foreach ( $categories as $category ) {

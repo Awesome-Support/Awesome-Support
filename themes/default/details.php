@@ -43,19 +43,23 @@ $author = get_user_by( 'id', $post->post_author );
 			<tr class="wpas-reply-single" valign="top">
 				<td style="width: 64px;">
 					<div class="wpas-user-profile">
-						<?php echo apply_filters('wpas_fe_template_detail_author_avatar', get_avatar( $post->post_author, '64', get_option( 'avatar_default' ) ), $post ); ?>
+						<?php echo wp_kses(apply_filters('wpas_fe_template_detail_author_avatar', get_avatar( $post->post_author, '64', get_option( 'avatar_default' ) ), $post ), get_allowed_html_wp_notifications()); ?>
 					</div>
 				</td>
 
 				<td>
 					<div class="wpas-reply-meta">
 						<div class="wpas-reply-user">
-							<strong class="wpas-profilename"><?php echo wp_kses_post(apply_filters('wpas_fe_template_detail_author_display_name', $author->data->display_name, $post )); ?></strong>
+							<strong class="wpas-profilename"><?php echo wp_kses(apply_filters('wpas_fe_template_detail_author_display_name', $author->data->display_name, $post ), get_allowed_html_wp_notifications()); ?></strong>
 						</div>
 						<div class="wpas-reply-time">
-							<time class="wpas-timestamp" datetime="<?php echo wp_kses_post(get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5()); ?>">
-								<span class="wpas-human-date"><?php echo wp_kses_post(get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID )); ?></span>
-								<span class="wpas-date-ago"><?php printf( esc_html__( '%s ago', 'awesome-support' ), wp_kses_post(human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) )) ); ?></span>
+							<?php
+								// translators: %s is days ago.
+								$x_content = __( '%s ago', 'awesome-support' );
+							?>
+							<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wp_kses(wpas_get_offset_html5(), get_allowed_html_wp_notifications()); ?>">
+								<span class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
+								<span class="wpas-date-ago"><?php printf( esc_html($x_content), wp_kses(human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) ), get_allowed_html_wp_notifications())); ?></span>
 							</time>
 						</div>
 					</div>
@@ -74,7 +78,7 @@ $author = get_user_by( 'id', $post->post_author );
 					/**
 					 * Display the original ticket's content
 					 */
-					echo '<div class="wpas-reply-content wpas-break-words">' .  make_clickable( apply_filters( 'the_content', $post->post_content ) ) . '</div>';
+					echo '<div class="wpas-reply-content wpas-break-words">' .  wp_kses(make_clickable( apply_filters( 'the_content', $post->post_content ) ),get_allowed_html_wp_notifications()) . '</div>';
 
 					/**
 					 * wpas_frontend_ticket_content_after hook
@@ -130,11 +134,14 @@ $author = get_user_by( 'id', $post->post_author );
 
 		$current = $replies->post_count;
 		$total   = (int) $replies->found_posts;
+		// translators: %1$s is the number of replies shown, %2$s is the total number of replies.
+		$x_content = _x( 'Showing %1$s replies of %2$s.', 'Showing X replies out of a total of X replies', 'awesome-support' );
+
 		?>
 
 		<div class="wpas-alert wpas-alert-info wpas-pagi">
 			<div class="wpas-pagi-loader"><?php esc_html_e( 'Loading...', 'awesome-support' ); ?></div>
-			<p class="wpas-pagi-text"><?php echo sprintf( _x( 'Showing %s replies of %s.', 'Showing X replies out of a total of X replies', 'awesome-support' ), "<span class='wpas-replies-current'>$current</span>", "<span class='wpas-replies-total'>$total</span>" ); ?>
+			<p class="wpas-pagi-text"><?php echo wp_kses_post( sprintf( $x_content, "<span class='wpas-replies-current'>$current</span>", "<span class='wpas-replies-total'>$total</span>" ) ); ?>
 				<?php
 				if ( 'ASC' == wpas_get_option( 'replies_order', 'ASC' ) ) {
 					$load_more_msg = __( 'Load newer replies', 'awesome-support' );

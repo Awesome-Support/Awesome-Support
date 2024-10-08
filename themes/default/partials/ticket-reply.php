@@ -30,26 +30,32 @@ $user_role = isset( $user->roles[0] ) ? $user->roles[0] : null;
 	 * If the reply has been deleted we display a warning message with the deletion date.
 	 */
 	if ( 'trash' === get_post_status() ): ?>
-
-		<td colspan="2"><?php printf( esc_html__( 'This reply has been deleted %s ago.', 'awesome-support' ), esc_html( $time_ago ) ); ?></td>
+		<?php 
+			// translators: %s is the user's name, %d is the number of new messages.
+			$x_lation = __( 'This reply has been deleted %s ago.', 'awesome-support' );
+		?>
+		<td colspan="2"><?php printf( esc_html($x_lation), esc_html( $time_ago ) ); ?></td>
 
 	<?php else: ?>
-
+		<?php 
+			// translators: %s is the user's name, %d is the number of new messages.
+			$x_lation = _x( '%s ago', 'Time ago (eg. 5 minutes ago)', 'awesome-support' );
+		?>
 		<td style="width: 64px;">
 			<div class="wpas-user-profile">
-				<?php echo wp_kses_post(apply_filters('wpas_fe_template_detail_reply_author_avatar', get_avatar( get_userdata( $user->ID )->user_email, 64, get_option( 'avatar_default' ) ), $post )); ?>
+				<?php echo wp_kses(apply_filters('wpas_fe_template_detail_reply_author_avatar', get_avatar( get_userdata( $user->ID )->user_email, 64, get_option( 'avatar_default' ) ), $post ), get_allowed_html_wp_notifications()); ?>
 			</div>
 		</td>
 
 		<td>
 			<div class="wpas-reply-meta">
 				<div class="wpas-reply-user">
-					<strong class="wpas-profilename"><?php echo wp_kses_post(apply_filters('wpas_fe_template_detail_reply_display_name', $user->data->display_name, $post )); ?></strong>
+					<strong class="wpas-profilename"><?php echo wp_kses(apply_filters('wpas_fe_template_detail_reply_display_name', $user->data->display_name, $post ), get_allowed_html_wp_notifications()); ?></strong>
 				</div>
 				<div class="wpas-reply-time">
-					<time class="wpas-timestamp" datetime="<?php echo wp_kses_post(get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5()); ?>">
-						<span class="wpas-human-date"><?php echo (get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID )); ?></span>
-						<span class="wpas-date-ago"><?php printf( esc_html_x( '%s ago', 'Time ago (eg. 5 minutes ago)', 'awesome-support' ), esc_html( $time_ago ) ); ?></span>
+					<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wp_kses(wpas_get_offset_html5(), get_allowed_html_wp_notifications()); ?>">
+						<span class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
+						<span class="wpas-date-ago"><?php printf( esc_html($x_lation), esc_html( $time_ago ) ); ?></span>
 					</time>
 				</div>
 			</div>
@@ -78,7 +84,7 @@ $user_role = isset( $user->roles[0] ) ? $user->roles[0] : null;
 	
 			?>
 
-			<div class="wpas-reply-content wpas-break-words ticket-reply"><?php echo force_balance_tags( $content_reply ); ?></div>
+			<div class="wpas-reply-content wpas-break-words ticket-reply"><?php echo  wp_kses(force_balance_tags( $content_reply ), get_allowed_html_wp_notifications()); ?></div>
 
 			<?php
 			/**

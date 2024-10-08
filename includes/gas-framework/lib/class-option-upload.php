@@ -155,7 +155,7 @@ class GASFrameworkOptionUpload extends GASFrameworkOption {
 		if ( ! empty( $value ) ) {
 			$previewImage = "<i class='dashicons dashicons-no-alt remove'></i><img src='" . esc_url( $value ) . "' style='display: none'/>";
 		}
-		echo wp_kses_post("<div class='thumbnail tf-image-preview'>" . $previewImage . '</div>');
+		echo "<div class='thumbnail tf-image-preview'>" . wp_kses($previewImage, get_allowed_html_wp_notifications()) . '</div>';
 
 		printf('<input name="%s" placeholder="%s" id="%s" type="hidden" value="%s" />',
 			wp_kses_post($this->getID()),
@@ -268,10 +268,10 @@ class GASFrameworkOptionUpload extends GASFrameworkOption {
 
 				// Uploader frame properties.
 				var frame = wp.media({
-					title: '<?php esc_html_e( 'Select Image', GASF_I18NDOMAIN ) ?>',
+					title: '<?php esc_html_e( 'Select Image', 'gas-framework' ) ?>',
 					multiple: false,
 					library: { type: 'image' },
-					button : { text : '<?php esc_html_e( 'Use image', GASF_I18NDOMAIN ) ?>' }
+					button : { text : '<?php esc_html_e( 'Use image', 'gas-framework' ) ?>' }
 				});
 
 				// Get the url when done.
@@ -367,13 +367,13 @@ function registerGASFrameworkOptionUploadControl() {
 			?>
 			<div class='tf-upload'>
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-				<div class='thumbnail tf-image-preview'><?php echo wp_kses_post($previewImage) ?></div>
+				<div class='thumbnail tf-image-preview'><?php echo wp_kses($previewImage, get_allowed_html_wp_notifications()) ?></div>
 				<input type='hidden' value="<?php echo esc_attr( $this->value() ); ?>" <?php $this->link(); ?>/>
 			</div>
 			<?php
 
 			if ( ! empty( $this->description ) ) {
-				echo wp_kses_post("<p class='description'>{$this->description}</p>");
+				echo wp_kses("<p class='description'>{$this->description}</p>", get_allowed_html_wp_notifications());
 			}
 		}
 	}
@@ -394,9 +394,9 @@ if ( ! function_exists( 'tf_upload_option_customizer_get_value' ) ) {
 
 		if ( ! empty( $_POST['nonce'] ) && ! empty( $_POST['id'] ) && ! empty( $_POST['size'] ) ) {
 
-			$nonce = sanitize_text_field( $_POST['nonce'] );
-			$attachmentID = sanitize_text_field( $_POST['id'] );
-			$size = sanitize_text_field( $_POST['size'] );
+			$nonce = sanitize_text_field( wp_unslash( $_POST['nonce'] ) );
+			$attachmentID = sanitize_text_field( wp_unslash( $_POST['id'] ) );
+			$size = sanitize_text_field( wp_unslash( $_POST['size'] ) );
 
 			if ( wp_verify_nonce( $nonce, 'tf_upload_option_nonce' ) ) {
 				$attachment = wp_get_attachment_image_src( $attachmentID, $size );

@@ -58,7 +58,11 @@ if ( isset( $post ) ) {
 		<div class="wpas-col">
 			<?php if ( isset( $post ) ): ?>
 				<strong><?php echo esc_html( $date ); ?></strong>
-				<em><?php printf( esc_html__( '%s ago', 'awesome-support' ), esc_html( $dateago ) ); ?></em>
+				<?php  
+					// translators: %sis the date ago.
+					$x_content = __( '%s ago', 'awesome-support' ); 
+				?>
+				<em><?php printf( esc_html($x_content), esc_html( $dateago ) ); ?></em>
 			<?php endif; ?>
 		</div>
 
@@ -76,7 +80,7 @@ if ( isset( $post ) ) {
 				<?php endforeach; ?>
 			</select>
 			<?php if ( isset( $_GET['post'] ) ): ?>
-				<input type="hidden" name="wpas_post_parent" value="<?php echo esc_attr( $_GET['post'] ); ?>">
+				<input type="hidden" name="wpas_post_parent" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_GET['post'] ) ) ); ?>">
 			<?php endif; ?>
 		</p>
 	<?php endif; ?>

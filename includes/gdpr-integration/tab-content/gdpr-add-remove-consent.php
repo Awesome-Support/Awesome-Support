@@ -64,8 +64,8 @@ if ( ! defined( 'WPINC' ) ) {
 			 * Convert Opt content into date
 			 * We stored Opt data as strtotime value
 			 */
-			$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? date( 'm/d/Y', $consent['opt_in'] ) : '';
-			$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? date( 'm/d/Y', $consent['opt_out'] ) : '';
+			$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? gmdate( 'm/d/Y', $consent['opt_in'] ) : '';
+			$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? gmdate( 'm/d/Y', $consent['opt_out'] ) : '';
 
 			/**
 			 * Determine 'Action' buttons
@@ -99,6 +99,7 @@ if ( ! defined( 'WPINC' ) ) {
 					);
 					$opt_button_label = __( 'Opt-in', 'awesome-support' );
 				}
+				get_allowed_html_wp_notifications();
 			}
 
 			/**
@@ -106,16 +107,16 @@ if ( ! defined( 'WPINC' ) ) {
 			 */
 			printf(
 				'<tr><td data-label="%s">%s</td><td data-label="%s">%s</td><td data-label="%s">%s</td><td data-label="%s">%s</td><td data-label="%s">%s</td></tr>',
-				wp_kses_post($item),
-				wp_kses_post($item),
-				wp_kses_post($status),
-				wp_kses_post($status),
-				wp_kses_post($opt_in),
-				wp_kses_post($opt_in),
-				wp_kses_post($opt_out),
-				wp_kses_post($opt_out),
-				wp_kses_post($opt_button_label),
-				wp_kses_post($opt_button)
+				esc_attr($item),
+				esc_attr($item),
+				esc_attr($status),
+				esc_attr($status),
+				esc_attr($opt_in),
+				esc_attr($opt_in),
+				esc_attr($opt_out),
+				esc_attr($opt_out),
+				esc_attr($opt_button_label),
+				esc_attr($opt_button)
 			);
 		}
 	}

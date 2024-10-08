@@ -54,8 +54,8 @@ class WPAS_Help {
 	 */
 	public function settings_general_contextual_help() {
 		
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		
 		if( 'ticket' !== $post_type || 'general' !== $tab ) {
 			return;
@@ -85,8 +85,9 @@ class WPAS_Help {
 	 */
 	public function settings_registration_help() {
 
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
+
 		if( 'ticket' !== $post_type || 'registration' !== $tab ) {
 			return;
 		}
@@ -107,8 +108,8 @@ class WPAS_Help {
 	 */
 	public function settings_moderated_registration_help() {
 		
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		
 		if( 'ticket' !== $post_type || 'modregistration' !== $tab ) {
 			return;
@@ -129,11 +130,12 @@ class WPAS_Help {
 		
 		$screen = get_current_screen();
 
-		
+		// translators: %s is a list of available template tags for email setup.
+		$content = sprintf( __( '<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add user-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s', 'awesome-support' ), $tags );
 		$screen->add_help_tab( array(
 			'id'      => 'user-email-template-tags',
 			'title'   => __( 'Email Template Tags', 'awesome-support' ),
-			'content' => sprintf( __( '<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add user-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s', 'awesome-support' ), $tags )
+			'content' => $content
 		) );
 		
 	}
@@ -146,8 +148,8 @@ class WPAS_Help {
 	 */
 	public function settings_products_management_help() {
 
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		
 		if( 'ticket' !== $post_type || 'products-management' !== $tab ) {
 			return;
@@ -183,9 +185,8 @@ class WPAS_Help {
 	 */
 	public function settings_notifications_contextual_help() {
 
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
-		
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		if( 'ticket' !== $post_type || 'email' !== $tab ) {
 			return;
 		}
@@ -211,10 +212,12 @@ class WPAS_Help {
 			'content' => __( '<h2>Use HTML Template</h2><p>Wrap all outgoing emails in a set of pretty HTML forms and tags.  With this option turned on you can set a LOGO and create fancy header and footers around your outgoing email alerts.</p><p>However, if you have another plugin installed that already wraps all WordPress outgoing emails in a fancy HTML template then you should turn this option OFF.</p>', 'awesome-support' )
 		) );
 		
+		// translators: %s is a list of available template tags for email setup.
+		$content = sprintf( __( '<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s', 'awesome-support' ), $tags );
 		$screen->add_help_tab( array(
 			'id'      => 'template-tags',
 			'title'   => __( 'Email Template Tags', 'awesome-support' ),
-			'content' => sprintf( __( '<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s', 'awesome-support' ), $tags )
+			'content' => $content
 		) );
 
 	}
@@ -227,8 +230,8 @@ class WPAS_Help {
 	 */
 	public function settings_advanced_contextual_help() {
 
-		$post_type = isset( $_GET['post_type'] ) ? wp_unslash( sanitize_text_field( $_GET['post_type'] ) ) : '';
-		$tab = isset( $_GET['tab'] ) ? wp_unslash( sanitize_text_field( $_GET['tab'] ) ) : '';
+		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : '';
 		
 		if( 'ticket' !== $post_type || 'advanced' !== $tab ) {
 			return;

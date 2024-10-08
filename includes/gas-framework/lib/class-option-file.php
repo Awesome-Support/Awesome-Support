@@ -126,7 +126,8 @@ class GASFrameworkOptionFile extends GASFrameworkOption {
         } else {
           $previewFile = $this->settings['label'];
         }
-        echo "<div class='tf-file-upload'>" . $previewFile . '</div>';
+
+        echo "<div class='tf-file-upload'>" . wp_kses($previewFile, get_allowed_html_wp_notifications()) . '</div>';
 
         printf('<input name="%s" placeholder="%s" id="%s" type="hidden" value="%s" />',
             wp_kses_post($this->getID()),
@@ -208,9 +209,9 @@ class GASFrameworkOptionFile extends GASFrameworkOption {
 
                     // Uploader frame properties.
                     var frame = wp.media({
-                        title: '<?php esc_html_e( 'Select File', GASF_I18NDOMAIN ) ?>',
+                        title: '<?php esc_html_e( 'Select File', 'gas-framework' ) ?>',
                         multiple: false,
-                        button : { text : '<?php esc_html_e( 'Use file', GASF_I18NDOMAIN ) ?>' }
+                        button : { text : '<?php esc_html_e( 'Use file', 'gas-framework' ) ?>' }
                     });
 
                     // Get the url when done.
@@ -266,13 +267,13 @@ function registerGASFrameworkOptionFileUploadControl() {
             ?>
             <div class='tf-file'>
                 <span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-                <div class='tf-file-upload'><?php echo $previewFile ?></div>
+                <div class='tf-file-upload'><?php echo wp_kses($previewFile, get_allowed_html_wp_notifications()); ?></div>
                 <input type='hidden' value="<?php echo esc_attr( $this->value() ); ?>" <?php $this->link(); ?>/>
             </div>
             <?php
 
             if ( ! empty( $this->description ) ) {
-                echo "<p class='description'>{$this->description}</p>";
+                echo "<p class='description'>" . wp_kses_post($this->description) . "</p>";
             }
         }
     }
@@ -293,8 +294,8 @@ if ( ! function_exists( 'tf_file_upload_option_customizer_get_value' ) ) {
 
         if ( ! empty( $_POST['nonce'] ) && ! empty( $_POST['id'] ) ) {
 
-            $nonce = sanitize_text_field( $_POST['nonce'] );
-            $attachmentID = sanitize_text_field( $_POST['id'] );
+            $nonce = sanitize_text_field( wp_unslash( $_POST['nonce'] ) ); 
+            $attachmentID = sanitize_text_field( wp_unslash( $_POST['id'] ) );
             // $size = sanitize_text_field( $_POST['size'] );
 
             if ( wp_verify_nonce( $nonce, 'tf_file_upload_option_nonce' ) ) {

@@ -22,8 +22,11 @@
 		</div>
 
 		<h2><?php esc_html_e( 'How to Get Your Free Addon', 'awesome-support' ); ?></h2>
-
-		<p><?php echo sprintf( wp_kses_post( __( 'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in Awesome Support, let you know when new or updated addons are being released and provide informative articles that show you how to use Awesome Support to its full potential. <a href="%s" %s>View our privacy policy</a>', 'awesome-support' ) ), 'https://getawesomesupport.com/legal/privacy-policy/', 'target="_blank"' ) ; ?></p>
+		<?php 
+			// translators: %1$s is the URL to view the privacy policy, %2$s are additional attributes for the privacy policy link.
+			$x_content = __( 'Getting your addon is dead simple: just subscribe to our newsletter and then you will get the free addon by e-mail. We will not spam you. We usually send out newsletters to talk about new features in Awesome Support, let you know when new or updated addons are being released and provide informative articles that show you how to use Awesome Support to its full potential. <a href="%1$s" %2$s>View our privacy policy</a>', 'awesome-support' );
+		?>
+		<p><?php echo sprintf( wp_kses_post( $x_content ), 'https://getawesomesupport.com/legal/privacy-policy/', 'target="_blank"' ) ; ?></p>
 
 		<div id="wpas-mailchimp-signup-form-wrapper">
 			<form action="<?php echo esc_url( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-optin' ), admin_url( 'edit.php' ) ) ); ?>" method="post" id="wpas-mailchimp-signup-form" name="wpas-mailchimp-signup-form">

@@ -8,6 +8,12 @@ add_filter( 'wpas_plugin_settings', 'wpas_addon_settings_file_upload', 10, 1 );
  */
 function wpas_addon_settings_file_upload( $def ) {
 
+	// translators: %s is the maximum size allowed for one file.
+	$desc = __( 'What is the maximum size allowed for one file (in <code>MB</code>)? Your server allows up to %s', 'awesome-support' );
+
+	// translators: %s is the file types.
+	$desc1 = __( 'Which file types do you allow your users to attach? Please separate each extension by a comma (%s)', 'awesome-support' );
+
 	$settings = array(
 		'file_upload' => array(
 			'name'    => __( 'File Upload', 'awesome-support' ),
@@ -31,14 +37,14 @@ function wpas_addon_settings_file_upload( $def ) {
 					'id'      => 'filesize_max',
 					'type'    => 'text',
 					'default' => 2,
-					'desc'    => sprintf( __( 'What is the maximum size allowed for one file (in <code>MB</code>)? Your server allows up to %s', 'awesome-support' ), ini_get('upload_max_filesize') )
+					'desc'    => sprintf( $desc, ini_get('upload_max_filesize') )
 				),
 				array(
 					'name'    => __( 'Allowed Files Types', 'awesome-support' ),
 					'id'      => 'attachments_filetypes',
 					'type'    => 'textarea',
 					'default' => 'jpg,jpeg,png,gif,pdf,doc,docx,ppt,pptx,pps,ppsx,odt,xls,xlsx,mp3,m4a,ogg,wav,mp4,m4v,mov,wmv,avi,mpg,ogv,3gp,3g2,zip',
-					'desc'    => sprintf( __( 'Which file types do you allow your users to attach? Please separate each extension by a comma (%s)', 'awesome-support' ), '<code>,</code>' )
+					'desc'    => sprintf( $desc1, '<code>,</code>' )
 				),
 				
 				array(

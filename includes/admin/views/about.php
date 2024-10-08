@@ -141,6 +141,6 @@ function wpas_admin_tabs_wpas_about_credits_content( $content ) {
 	<div class="about-text">Trusted by over 10,000+ Happy Users, Awesome Support is the most versatile WordPress support plugin.</div>
 	<hr />
 
-	<?php echo wpas_admin_tabs( 'wpas_about' ); ?>
+	<?php echo wp_kses(wpas_admin_tabs( 'wpas_about' ), get_allowed_html_wp_notifications()); ?>
 
 </div>

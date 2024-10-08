@@ -226,9 +226,11 @@ class TicketReplies extends TicketBase {
 	protected function prepare_item_for_database( $request ) {
 		$defaults = $request->get_default_params();
 
+		// translators: %s is the ticket id.
+		$x_content = __( 'Reply to ticket %s', 'awesome-support' );
 		$defaults['parent'] = $request['ticket_id'];
-		$defaults['title']  = sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#" . $request['ticket_id'] );
-		$defaults['slug']  = sprintf( __( 'Reply to ticket %s', 'awesome-support' ), "#" . $request['ticket_id'] );
+		$defaults['title']  = sprintf( $x_content, "#" . $request['ticket_id'] );
+		$defaults['slug']  = sprintf( $x_content, "#" . $request['ticket_id'] );
 
 		$request->set_default_params( $defaults );
 

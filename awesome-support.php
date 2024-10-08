@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           6.2.2
+ * Version:           6.3.0
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -155,17 +155,20 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			// Make sure the WordPress version is recent enough
 			if ( ! self::$instance->is_version_compatible() ) {
+				// translators: %s is the minimum required WordPress version.
 				self::$instance->add_error( sprintf( esc_html__( 'Awesome Support requires WordPress version %s or above. Please update WordPress to run this plugin.', 'awesome-support' ), self::$instance->wordpress_version_required ) );
 			}
 
 			// Make sure we have a version of PHP that's not too old
 			if ( ! self::$instance->is_php_version_enough() ) {
+				// translators: %s is the minimum required PHP version.
 				self::$instance->add_error( sprintf( esc_html__( 'Awesome Support requires PHP version %s or above. Read more information about ', 'awesome-support' ).'<a %s>'. esc_html__( 'how you can update', 'awesome-support' ).'</a>.', self::$instance->php_version_required, 'href="http://www.wpupdatephp.com/update/" target="_blank"' ) );
 
 			}
 			
 			// Check that the vendor directory is present
 			if ( ! self::$instance->dependencies_loaded() ) {
+				// translators: %s is the required version.
 				self::$instance->add_error( sprintf( esc_html__( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should','awesome-support').' <a href="%s" class="thickbox">'.esc_html__('install the production version', 'awesome-support' ).'</a>'.esc_html__(' of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array(
 						'tab'       => 'plugin-information',
 						'plugin'    => 'awesome-support',
@@ -249,7 +252,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '6.2.2' );
+			define( 'WPAS_VERSION',           '6.3.0' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -352,7 +355,6 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		public function display_error() {
-
 			if ( ! is_a( $this->error, 'WP_Error' ) ) {
 				return;
 			}

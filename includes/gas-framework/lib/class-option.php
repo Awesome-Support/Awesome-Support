@@ -115,8 +115,11 @@ class GASFrameworkOption {
 
 		// assume all the classes are already required
 		if ( ! class_exists( $className ) && ! class_exists( $settings['type'] ) ) {
+
+			// translators: %s is the class.
+			$x_content = __( 'Option type or extended class %s does not exist.', 'gas-framework' );
 			GASFramework::displayFrameworkError(
-				sprintf( __( 'Option type or extended class %s does not exist.', GASF_I18NDOMAIN ), '<code>' . $settings['type'] . '</code>', $settings ),
+				sprintf( $x_content, '<code>' . $settings['type'] . '</code>', $settings ),
 			$settings );
 			return null;
 		}
@@ -302,11 +305,11 @@ class GASFrameworkOption {
 		$style = $this->getHidden() == true ? 'style="display: none"' : '';
 
 		?>
-		<tr valign="top" class="row-<?php echo wp_kses_post(self::$rowIndex )?> <?php echo wp_kses_post($evenOdd) ?>" <?php echo wp_kses_post($style) ?>>
+		<tr valign="top" class="row-<?php echo esc_attr(self::$rowIndex )?> <?php echo esc_attr($evenOdd )?>" <?php echo wp_kses_post($style) ?>>
 		<th scope="row" class="first">
-			<label for="<?php echo wp_kses_post(! empty( $id ) ? $id : '') ?>"><?php echo wp_kses_post(! empty( $name ) ? $name : '') ?></label>
+			<label for="<?php echo esc_attr(! empty( $id ) ? $id : '') ?>"><?php echo wp_kses_post(! empty( $name ) ? $name : '') ?></label>
 		</th>
-		<td class="second tf-<?php echo wp_kses_post($this->settings['type']) ?>">
+		<td class="second tf-<?php echo esc_attr($this->settings['type']) ?>">
 		<?php
 
 		$desc = $this->getDesc();
@@ -343,8 +346,8 @@ class GASFrameworkOption {
 		$style = $this->getHidden() == true ? 'style="display: none"' : '';
 
 		?>
-		<tr valign="top" class="row-<?php echo wp_kses_post(self::$rowIndex )?> <?php echo wp_kses_post($evenOdd) ?>" <?php echo wp_kses_post($style) ?>>
-			<td class="second tf-<?php echo wp_kses_post($this->settings['type']) ?>">
+		<tr valign="top" class="row-<?php echo esc_attr(self::$rowIndex) ?> <?php echo esc_attr($evenOdd) ?>" <?php echo wp_kses_post($style) ?>>
+			<td class="second tf-<?php echo esc_attr($this->settings['type']) ?>">
 		<?php
 	}
 
@@ -370,14 +373,14 @@ class GASFrameworkOption {
 		$desc = $this->getDesc();
 		if ( ! empty( $desc ) && $showDesc ) :
 			?>
-			<p class='description'><?php echo wp_kses_post($desc) ?></p>
+			<p class='description'><?php echo wp_kses_post($desc )?></p>
 			<?php
 		endif;
 
 		$example = $this->getExample();
 		if ( ! empty( $example ) ) :
 			?>
-			<p class="description"><code><?php echo wp_kses_post(htmlentities( $example )) ?></code></p>
+			<p class="description"><code><?php echo wp_kses_post(getDesc(htmlentities( $example ))) ?></code></p>
 			<?php
 		endif;
 

@@ -58,7 +58,7 @@ class WPAS_GDPR_User_Profile {
 		$current_url = home_url( add_query_arg( null, null ) );
 
 		if ( isset( $_GET['file'] ) && isset( $_GET['check'] ) ) {
-			$nonce = ( ! empty( $_GET['check'] ) ) ? sanitize_text_field( $_GET['check'] ) : '';
+			$nonce = ( ! empty( $_GET['check'] ) ) ? sanitize_text_field( wp_unslash( $_GET['check'] )) : '';
 			if ( wp_verify_nonce( $nonce, 'as-validate-download-url' )  && ( intval( $_GET['file'] ) == get_current_user_id() ) ) {
 				$user = intval( $_GET['file'] );
 				if ( ! $this->user_export_dir ) {
@@ -71,12 +71,14 @@ class WPAS_GDPR_User_Profile {
 					header( 'Content-length: ' . filesize( $this->user_export_dir . '/exported-data.zip' ) );
 					header( 'Pragma: no-cache' );
 					header( 'Expires: 0' );
-					readfile( $this->user_export_dir . '/exported-data.zip' );
+					$this->custom_readfile( $this->user_export_dir . '/exported-data.zip' );
 					if (!unlink($this->user_export_dir . '/exported-data.zip') ){
-						return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/exported-data.zip', 'awesome-support' ) );
+						// translators: %s is the nuser export directory.
+						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/exported-data.zip', 'awesome-support' ), $this->user_export_dir) );
 					}
 					if (!unlink($this->user_export_dir . '/export-data.xml') ){
-						return new WP_Error( 'file_deleting_error', __( 'Error deleting ' . $this->user_export_dir . '/export-data.xml', 'awesome-support' ) );
+						// translators: %s is the nuser export directory.
+						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/export-data.xml', 'awesome-support' ), $this->user_export_dir) );
 					}
 				}
 				else {
@@ -86,6 +88,38 @@ class WPAS_GDPR_User_Profile {
 				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );
 			}
 		}
+	}
+
+	/**
+	 * custom_readfile
+	 *
+	 * @param  mixed $file_path
+	 * @return void
+	 */
+	private function custom_readfile($file_path) {
+		// Ensure the WP_Filesystem class is available
+		if ( !function_exists('get_filesystem_method') ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// Initialize WP_Filesystem
+		global $wp_filesystem;
+		if ( empty($wp_filesystem) ) {
+			WP_Filesystem();
+		}
+
+		// Get the file contents
+		$file_contents = $wp_filesystem->get_contents($file_path);
+
+		// Check if we successfully got the contents
+		if ( $file_contents === false ) {
+			// Handle the error if reading the file failed
+			return; // or handle the error appropriately
+		}
+
+		// Output the file contents
+		print_r($file_contents);
+
 	}
 
 	/**
@@ -180,8 +214,8 @@ class WPAS_GDPR_User_Profile {
 						 * Convert Opt content into date
 						 * We stored Opt data as strtotime value
 						 */
-					$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? date( 'm/d/Y', $consent['opt_in'] ) : '';
-					$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? date( 'm/d/Y', $consent['opt_out'] ) : '';
+					$opt_in  = isset( $consent['opt_in'] ) && ! empty( $consent['opt_in'] ) ? gmdate( 'm/d/Y', $consent['opt_in'] ) : '';
+					$opt_out = isset( $consent['opt_out'] ) && ! empty( $consent['opt_out'] ) ? gmdate( 'm/d/Y', $consent['opt_out'] ) : '';
 
 					/**
 						 * Determine 'Action' buttons
@@ -218,11 +252,11 @@ class WPAS_GDPR_User_Profile {
 						 */
 					printf(
 						'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-						wp_kses_post($item),
-						wp_kses_post($status),
-						wp_kses_post($opt_in),
-						wp_kses_post($opt_out),
-						wp_kses_post($opt_button)
+						wp_kses($item, get_allowed_html_wp_notifications()),
+						wp_kses($status, get_allowed_html_wp_notifications()),
+						wp_kses($opt_in, get_allowed_html_wp_notifications()),
+						wp_kses($opt_out, get_allowed_html_wp_notifications()),
+						wp_kses($opt_button, get_allowed_html_wp_notifications()),
 					);
 				}
 				?>
@@ -273,14 +307,19 @@ class WPAS_GDPR_User_Profile {
 		/**
 		 * Initiate nonce
 		 */
-		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( $_POST['data']['nonce'] ) : '';
-		$user  = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( $_POST['data']['gdpr-user'] ) : '';
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] )) : '';
+		$user  = isset( $_POST['nonce'] )  && isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
 		/**
 		 * Security checking
 		 */
-		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'nonce' ) ) {
 			if ((int) $user == get_current_user_id()) {
-
+				global $wp_filesystem;
+				// Initialize the filesystem 
+				if (empty($wp_filesystem)) {
+					require_once(ABSPATH . '/wp-admin/includes/file.php');
+					WP_Filesystem();
+				} 
 				$user_tickets = $this->wpas_gdpr_ticket_data( $user );
 				$user_consent = $this->wpas_gdpr_consent_data( $user );
 				if ( ! empty( $user_consent ) || ! empty( $user_tickets ) ) {
@@ -298,7 +337,7 @@ class WPAS_GDPR_User_Profile {
 
 					$data = apply_filters( 'wpas_gdpr_export_data_profile', $content, $user );
 
-					file_put_contents(
+					$wp_filesystem->put_contents(
 						$this->user_export_dir . '/export-data.xml',
 						$this->xml_conversion( $data )
 					);
@@ -306,6 +345,7 @@ class WPAS_GDPR_User_Profile {
 					$this->data_zip( $user_tickets, 'export-data.xml', $this->user_export_dir );
 
 					$upload_dir                     = wp_upload_dir();
+					$response['code'] 				= 200;
 					$response['message']['success'] = sprintf(
 						'<p>%s. <a href="%s" target="_blank" class="download-file-link">%s</a></p>',
 						__( 'Exporting data was successful!', 'awesome-support' ),
@@ -504,21 +544,24 @@ class WPAS_GDPR_User_Profile {
 	 * @return void
 	 */
 	protected function protect_upload_dir( $dir ) {
+		global $wp_filesystem;
 
-		if ( is_writable( $dir ) ) {
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		} 
+		
+		if ( $wp_filesystem->is_writable($dir) ) {
 
 			$filename = $dir . '/.htaccess';
 
 			$filecontents = 'Options -Indexes';
 
 			if ( ! file_exists( $filename ) ) {
-				$file = fopen( $filename, 'a+' );
-				if ( false <> $file ) {
-					fwrite( $file, $filecontents );
-					fclose( $file );
-				} else {
-					// attempt to record failure...
-					wpas_write_log( 'file-uploader', 'unable to write .htaccess file to folder ' . $dir );
+				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
+				if ( $result === false ) {
+					wpas_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
 				}
 			}
 		} else {

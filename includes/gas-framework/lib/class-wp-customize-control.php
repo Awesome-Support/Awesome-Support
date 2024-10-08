@@ -12,7 +12,7 @@ function registerGASFrameworkCustomizeControl() {
 
 		public function render_content() {
 			parent::render_content();
-			// echo wp_kses_post("<p class='description'>{$this->description}</p>");
+			// echo "<p class='description'>{$this->description}</p>";
 		}
 	}
 }

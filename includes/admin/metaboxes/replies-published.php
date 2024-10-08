@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 	/* Display avatar only for replies */
 	if( 'ticket_reply' == $row->post_type ) {
 
-		echo $user_avatar;
+		echo wp_kses_post( $user_avatar );
 
 		/**
 		 * Triggers an action right under the user avatar for ticket replies.
@@ -44,7 +44,14 @@ if ( ! defined( 'WPINC' ) ) {
 			<strong class="wpas-profilename"><?php echo esc_html( $user_name ); ?></strong><?php if ( $user_data ): ?> <span class="wpas-profilerole">(<?php echo esc_html( wpas_get_user_nice_role( $user_data->roles ) ); ?>)</span><?php endif; ?>
 		</div>
 		<div class="wpas-reply-time">
-			<time class="wpas-timestamp" datetime="<?php echo esc_attr( get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5() ); ?>"><span class="wpas-human-date"><?php echo esc_html( date( get_option( 'date_format' ), strtotime( $row->post_date ) ) ); ?> <?php if ( true === $show_extended_date_in_replies ) { printf( esc_html__( '(%s - %s since ticket was opened.)', 'awesome-support' ), esc_html( $date_full ), esc_html( $days_since_open ) ); } ?>  | </span><?php printf( esc_html__( '%s ago', 'awesome-support' ), esc_html( $date ) ); ?></time>
+			<?php 
+				// translators: %1$s is the duration since the ticket was opened, %2$s is the additional duration or details.
+				$x_content = __( '(%1$s - %2$s since ticket was opened.)', 'awesome-support' );
+
+				// translators: %s is the date ago.
+				$x_content1 = __( '%s ago', 'awesome-support' );
+			?>
+			<time class="wpas-timestamp" datetime="<?php echo esc_attr( get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5() ); ?>"><span class="wpas-human-date"><?php echo esc_html( gmdate( get_option( 'date_format' ), strtotime( $row->post_date ) ) ); ?> <?php if ( true === $show_extended_date_in_replies ) { printf( esc_html($x_content), esc_html( $date_full ), esc_html( $days_since_open ) ); } ?>  | </span><?php printf( esc_html($x_content1), esc_html( $date ) ); ?></time>
 		</div>
 	</div>
 

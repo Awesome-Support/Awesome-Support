@@ -16,7 +16,6 @@ class WPAS_Custom_Fields {
 	 */
 	public $options; 
 	public $remove_mb;
-	public $allow_html;
 
 	public function __construct() {
 
@@ -24,36 +23,6 @@ class WPAS_Custom_Fields {
 		 * Array where all custom fields will be stored.
 		 */
 		$this->options = array();
-
-		/**
-		 * Array where html to allow in escaping.
-		 */
-		$this->allow_html = array(
-			'label' => array(
-				'for' => true,
-			),
-			'input' => array(
-				'type' => true,
-				'value' => true,
-				'id' => true,
-				'class' => true,
-				'name' => true,
-				'readonly' => true,
-			),
-			'div' => array(
-				'class' => true,
-				'id' => true,
-			),
-			'select' => array(
-				'name' => true,
-				'class' => true,
-				'id' => true,
-			),
-			'option' => array(
-				'value' => true,
-				'selected' => true,
-			),
-		);
 
 		/**
 		 * Register the taxonomies
@@ -180,7 +149,9 @@ class WPAS_Custom_Fields {
 		/* Convert the callback for backwards compatibility */
 		if ( ! empty( $arguments['callback'] ) ) {
 
-			_deprecated_argument( 'WPAS_Custom_Fields::add_field()', '3.2', sprintf( wp_kses_post( __( 'Please use %s to register your custom field type', 'awesome-support' ) ), '<code>field_type</code>' ) );
+			// translators: %s is the field type.
+			$x_content = __( 'Please use %s to register your custom field type', 'awesome-support' );
+			_deprecated_argument( 'WPAS_Custom_Fields::add_field()', '3.2', sprintf( wp_kses_post( $x_content ), '<code>field_type</code>' ) );
 
 			switch ( $arguments['callback'] ) {
 
@@ -264,18 +235,37 @@ class WPAS_Custom_Fields {
 				$taxo_delete_terms 	= $option['args']['taxo_delete_terms'];
 				$taxo_assign_terms 	= $option['args']['taxo_assign_terms'];
 
+				// translators: %s is the search value.
+				$search_items =  __( 'Search %s', 'awesome-support' );
+				// translators: %s is the All value.
+				$all_items    =  __( 'All %s', 'awesome-support' );
+				// translators: %s is the Parent value.
+				$parent_item  =  __( 'Parent %s', 'awesome-support' );
+				// translators: %s is the Parent value.
+				$parent_item_colon = _x( 'Parent %s:', 'Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' );
+				// translators: %s is the Edit value.
+				$edit_item    =  __( 'Edit %s', 'awesome-support' );
+				// translators: %s is the Update value.
+				$update_item  =  __( 'Update %s', 'awesome-support' );
+				// translators: %s is the new value.
+				$add_new_item =  __( 'Add New %s', 'awesome-support' );
+				// translators: %s is the Name value.
+				$new_item_name =  _x( 'New %s Name', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' );
+				// translators: %s is the taxonomy value.
+				$back_to_items =  _x( 'Back to %s', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' );
+			
 				$labels = array(
 					'name'              => $plural,
 					'singular_name'     => $name,
-					'search_items'      => sprintf( __( 'Search %s', 'awesome-support' ), $plural ),
-					'all_items'         => sprintf( __( 'All %s', 'awesome-support' ), $plural ),
-					'parent_item'       => sprintf( __( 'Parent %s', 'awesome-support' ), $name ),
-					'parent_item_colon' => sprintf( _x( 'Parent %s:', 'Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' ), $name ),
-					'edit_item'         => sprintf( __( 'Edit %s', 'awesome-support' ), $name ),
-					'update_item'       => sprintf( __( 'Update %s', 'awesome-support' ), $name ),
-					'add_new_item'      => sprintf( __( 'Add New %s', 'awesome-support' ), $name ),
-					'new_item_name'     => sprintf( _x( 'New %s Name', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' ), $name ),
-					'back_to_items'     => sprintf( _x( 'Back to %s', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' ), $plural ),
+					'search_items'      => sprintf( $search_items, $plural ),
+					'all_items'         => sprintf( $all_items, $plural ),
+					'parent_item'       => sprintf( $parent_item, $name ),
+					'parent_item_colon' => sprintf( $parent_item_colon, $name ),
+					'edit_item'         => sprintf( $edit_item , $name ),
+					'update_item'       => sprintf( $update_item, $name ),
+					'add_new_item'      => sprintf( $add_new_item, $name ),
+					'new_item_name'     => sprintf( $new_item_name, $name ),
+					'back_to_items'     => sprintf( $back_to_items, $plural ),
 					'menu_name'         => $plural,
 				);
 
@@ -423,7 +413,7 @@ class WPAS_Custom_Fields {
 				}
 
 				/* Render the field */
-				echo $output;
+				echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
 
 				/* add the post-render action hook */
 				if ( ! empty( $field['args']['post_render_action_hook_fe'] ) ) {
@@ -439,6 +429,110 @@ class WPAS_Custom_Fields {
 			}
 		}
 
+	}
+
+	/**
+	 * get_allowed_html_wpas_custom_fields
+	 *
+	 * @return void
+	 */
+	function get_allowed_html_wpas_custom_fields()
+	{
+		return apply_filters(
+			'custom_allowed_html_wpas_custom_fields',
+			[
+				'div' => [
+					'class' => true,
+					'id' => true,
+					'style' => true,
+				], 'ul' => [
+					'class' => true,
+					'id' => true,
+				], 'li' => [
+					'data-tab-order' => true,
+					'rel' => true,
+					'class' => true,
+					'data-hint' => true,
+				], 'select' => [
+					'name' => true,
+					'class' => true,
+					'id' => true,
+					'data-capability' => true,
+					'data-allowClear' => true,
+					'data-placeholder' => true,
+				], 'option' => [
+					'value' => true,
+					'selected' => true,
+				], 'input' => [
+					'type' => true,
+					'value' => true,
+					'id' => true,
+					'class' => true,
+					'name' => true,
+					'readonly' => true,
+					'placeholder' => true,
+					'checked' => true,
+					'style' => true,
+					'accept' => true,
+					'multiple' => true,
+					'aria-label' => true,
+				],  'span' => [
+					'style' => true,
+					'id' => true,
+					'data-ticketid' => true,
+					'class' => true,
+				],  'img' => [
+					'style' => true,
+					'id' => true,
+					'class' => true,
+					'src' => true,
+					'alt' => true,
+					'height' => true,
+					'width' => true,
+				], 'a' => [
+					'href' => true,
+					'class' => true,
+					'id' => true,
+					'data-ticketid' => true,
+					'data-gdpr' => true,
+					'data-user' => true,
+					'data-optout-date' => true,
+				], 'label' => [
+					'for' => true,
+				], 'id' => [
+					'id' => true,
+					'class' => true,
+				], 'button' => [
+					'type' => true,
+					'data-wp-editor-id' => true,
+					'id' => true,
+					'class' => true,
+				], 'form' => [
+					'method' => true,
+					'action' => true,
+					'id' => true,
+					'class' => true,
+					'enctype' => true,
+				],
+				'textarea' => [
+					'type' => true,
+					'autocomplete' => true,
+					'id' => true,
+					'name' => true,
+					'rows' => true,
+					'cols' => true,
+					'class' => true,
+				], 'footer' => [
+					'style' => true,
+					'id' => true,
+					'class' => true,
+				], 'table' => [
+					'style' => true,
+					'id' => true,
+					'class' => true,
+				], 'tr' => [], 'tr' => [ 'id' => true], 'p' => [ 'class' => true, 'id' => true, 'style' => true ], 'code' => [], 'strong' => [], 'td' => ['colspan' => true, 'align' => true, 'width' => true], 'h2' => [], 'br' => [],
+			]
+		);
 	}
 
 	/**
@@ -477,7 +571,8 @@ class WPAS_Custom_Fields {
 					$this_field = new WPAS_Custom_Field( $name, $field );
 					$output     = $this_field->get_output();
 
-					echo $output;
+					echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
+
 				}
 
 			}
@@ -505,7 +600,8 @@ class WPAS_Custom_Fields {
 				$this_field = new WPAS_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
-				echo $output;
+				echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
+
 			}
 		}
 
@@ -856,7 +952,7 @@ class WPAS_Custom_Fields {
 				/* the custom field here to the name of the file that was uploaded. 																			 */
 				/* @TODO:  It is possible that this should be handled earlier in the custom fields process? 													 */
 				if( 'upload' === $field['args']['field_type'] && isset( $_FILES[ $field_name ] ) && !empty( $_FILES[ $field_name ] )  ) {
-						$data[ $field_name ] = $_FILES[ $field_name ];
+						$data[ $field_name ] = sanitize_file_name( wp_unslash( $_FILES[ $field_name ] ) );
 				}
 
 				/* Set error message if field is mandatory but no data is in the field. */
@@ -865,11 +961,14 @@ class WPAS_Custom_Fields {
 					/* Get field title */
 					$title = ! empty( $field['args']['title'] ) ? $field['args']['title'] : wpas_get_title_from_id( $field['name'] );
 
+					// translators: %s is the search value.
+					$x_content = __( 'The field %s is required.', 'awesome-support' );
+
 					/* Add the error message for this field. */
 					if ( ! is_object( $result ) ) {
-						$result = new WP_Error( 'required_field_missing', sprintf( __( 'The field %s is required.', 'awesome-support' ), "<a href='#$field_name'><code>$title</code></a>", array( 'errors' => $field_name ) ) );
+						$result = new WP_Error( 'required_field_missing', sprintf( $x_content, "<a href='#$field_name'><code>$title</code></a>", array( 'errors' => $field_name ) ) );
 					} else {
-						$result->add( 'required_field_missing', sprintf( __( 'The field %s is required.', 'awesome-support' ), "<a href='#$field_name'><code>$title</code></a>", array( 'errors' => $field_name ) ) );
+						$result->add( 'required_field_missing', sprintf( $x_content, "<a href='#$field_name'><code>$title</code></a>", array( 'errors' => $field_name ) ) );
 					}
 
 				}

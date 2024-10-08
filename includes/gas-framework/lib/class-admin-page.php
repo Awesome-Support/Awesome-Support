@@ -122,7 +122,7 @@ class GASFrameworkAdminPage {
 
 
 	public function addGasCreditText() {
-		return __( "<em>Options Page Created with <a href='#'>Gas Framework</a></em>", GASF_I18NDOMAIN );
+		return __( "<em>Options Page Created with <a href='#'>Gas Framework</a></em>", 'gas-framework' );
 	}
 
 
@@ -137,7 +137,7 @@ class GASFrameworkAdminPage {
 		}
 
 		if ( isset( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) ) {
-			$value = wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] );
+			$value = sanitize_text_field(wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ));
 		} else {
 			$value = '';
 		}
@@ -158,7 +158,7 @@ class GASFrameworkAdminPage {
 		 *  Save
 		 */
 
-		if ( $_POST['action'] == 'save' ) {
+		if ( isset($_POST['action']) && $_POST['action'] == 'save' ) {
 
 			// we are in a tab
 			if ( ! empty( $activeTab ) ) {
@@ -205,7 +205,7 @@ class GASFrameworkAdminPage {
 			* Reset
 			*/
 
-		} else if ( $_POST['action'] == 'reset' ) {
+		} else if ( isset( $_POST['action'] ) && $_POST['action'] == 'reset' ) {
 
 			// we are in a tab
 			if ( ! empty( $activeTab ) ) {
@@ -368,9 +368,9 @@ class GASFrameworkAdminPage {
 		// Display notification if we did something
 		if ( ! empty( $_GET['message'] ) ) {
 			if ( $_GET['message'] == 'saved' ) {
-				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings saved.', GASF_I18NDOMAIN ), esc_html( $_GET['message'] ) ) );
+				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings saved.', 'gas-framework' ) ), esc_html( isset($_GET['message']) ? sanitize_text_field( wp_unslash( $_GET['message'] ) ) : '' ) );
 			} else if ( $_GET['message'] == 'reset' ) {
-				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings reset to default.', GASF_I18NDOMAIN ), esc_html( $_GET['message'] ) ) );
+				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings reset to default.', 'gas-framework' ) ), esc_html( isset($_GET['message']) ? sanitize_text_field( wp_unslash( $_GET['message'] ) ) : '' ) );
 			}
 		}
 

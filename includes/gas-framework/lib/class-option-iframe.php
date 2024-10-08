@@ -32,8 +32,8 @@ class GASFrameworkOptionIframe extends GASFrameworkOption {
 		$this->echoOptionHeader();
 
 		printf( '<iframe frameborder="0" src="%s" style="height: %spx; width:100%%;"></iframe>',
-			wp_kses_post($this->settings['url']),
-			wp_kses_post($this->settings['height'])
+			esc_url($this->settings['url']),
+			esc_attr($this->settings['height'])
 		);
 		$this->echoOptionFooter();
 
@@ -90,12 +90,12 @@ function register_gas_framework_option_iframe_control() {
 				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
 				<?php
 				printf( '<iframe frameborder="0" src="%s" style="height: %spx; width:100%%;"></iframe>',
-					wp_kses_post($this->optionSettings['url']),
-					wp_kses_post($this->optionSettings['height'])
+					esc_url($this->optionSettings['url']),
+					esc_attr($this->optionSettings['height'])
 				);
 
 				if ( ! empty( $this->optionSettings['desc'] ) ) {
-					echo "<p class='description'>{$this->optionSettings['desc']}</p>";
+					echo "<p class='description'>" . wp_kses_post($this->optionSettings['desc']) . "</p>";
 				}
 				?>
 			</label>

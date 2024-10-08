@@ -41,7 +41,7 @@ function wpas_add_notification( $id, $message, $group = 'notifications' ) {
 	$id            = sanitize_text_field( $id );
 	// If $message is of string data type then sanitizes content for allowed HTML tags
 	if ( is_string( $message ) ) {
-		$message =  $message ;
+		$message = wp_kses_post( $message );
 	}
 	if ( false === $notifications ) {
 		wpas_set_notifications();
@@ -200,7 +200,7 @@ add_action( 'wpas_before_template', 'wpas_display_notifications', 10, 3 );
  * @return string Readable notifications
  */
 function wpas_display_notifications() {
-	echo wpas_get_display_notifications();
+	echo  wp_kses(wpas_get_display_notifications(), get_allowed_html_wp_notifications());
 	wpas_clean_notifications();
 }
 
@@ -229,7 +229,7 @@ function wpas_frontend_add_notifications_nav_button() {
 			$button_label = __('Notifications', 'awesome-support');
 		}
 		
-		echo wpas_full_screen_window_link( array(
+		echo wp_kses(wpas_full_screen_window_link( array(
 			'type'  => 'ajax',
 			'title' => __( 'Notifications', 'awesome-support' ),
 			'class'	=> 'wpas-btn wpas-btn-default wpas-link-notifications',
@@ -238,7 +238,7 @@ function wpas_frontend_add_notifications_nav_button() {
 				'id'	 => $post->ID,
 			),
 			'label' => $button_label,
-			));
+			)), get_allowed_html_wp_notifications());
 			
 	}
 
@@ -273,4 +273,125 @@ function wpas_ticket_notifications_window() {
 	) );
 	
 	die();
+}
+
+/**
+ * get_allowed_html_wp_notifications
+ *
+ * @return void
+ */
+function get_allowed_html_wp_notifications()
+{
+	return apply_filters(
+		'custom_allowed_html_wpas_admin_tabs',
+		[
+			'div' => [
+				'class' => true,
+				'id' => true,
+				'style' => true,
+			], 'ul' => [
+				'class' => true,
+				'id' => true,
+				'style' => true,
+			], 'ol' => [
+				'class' => true,
+				'id' => true,
+			],'li' => [
+				'data-tab-order' => true,
+				'rel' => true,
+				'class' => true,
+				'data-hint' => true,
+			], 'select' => [
+				'name' => true,
+				'class' => true,
+				'id' => true,
+				'data-capability' => true,
+				'data-allowClear' => true,
+				'data-placeholder' => true,
+				'multiple' => true,
+			], 'option' => [
+				'value' => true,
+				'selected' => true,
+			], 'input' => [
+				'type' => true,
+				'value' => true,
+				'id' => true,
+				'class' => true,
+				'name' => true,
+				'readonly' => true,
+				'placeholder' => true,
+				'checked' => true,
+				'style' => true,
+				'accept' => true,
+				'multiple' => true,
+				'aria-label' => true,
+			],  'script' => [
+				'id' => true,
+				'data-ticketid' => true,
+				'class' => true,
+			],  'span' => [
+				'style' => true,
+				'id' => true,
+				'data-ticketid' => true,
+				'data-replyid' => true,
+				'data-wysiwygid' => true,
+				'data-origin' => true,
+				'class' => true,
+			],  'img' => [
+				'style' => true,
+				'id' => true,
+				'class' => true,
+				'src' => true,
+				'alt' => true,
+				'height' => true,
+				'width' => true,
+			], 'a' => [
+				'href' => true,
+				'class' => true,
+				'id' => true,
+				'data-ticketid' => true,
+				'data-gdpr' => true,
+				'data-user' => true,
+				'data-optout-date' => true,
+				'data-onsubmit' => true,
+				'target' => true,
+				'data-filename' => true,
+			], 'label' => [
+				'for' => true,
+			], 'id' => [
+				'id' => true,
+				'class' => true,
+			], 'button' => [
+				'type' => true,
+				'data-wp-editor-id' => true,
+				'data-filename' => true,
+				'id' => true,
+				'data-onsubmit' => true,
+				'class' => true,
+			], 'form' => [
+				'method' => true,
+				'action' => true,
+				'id' => true,
+				'class' => true,
+				'enctype' => true,
+			],
+			'textarea' => [
+				'type' => true,
+				'autocomplete' => true,
+				'id' => true,
+				'name' => true,
+				'rows' => true,
+				'cols' => true,
+				'class' => true,
+			], 'footer' => [
+				'style' => true,
+				'id' => true,
+				'class' => true,
+			], 'table' => [
+				'style' => true,
+				'id' => true,
+				'class' => true,
+			], 'tr' => [], 'b' => [], 'em' => [], 'h1' => [], 'h2' => [],'h3' => [],'h4' => [], 'h5' => [], 'tr' => [ 'id' => true], 'p' => [ 'class' => true, 'id' => true, 'style' => true ], 'code' => [], 'strong' => [], 'td' => ['colspan' => true, 'class' => true, 'style' => true, 'align' => true, 'width' => true], 'h2' => [], 'br' => [],
+		]
+	);
 }

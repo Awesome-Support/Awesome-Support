@@ -149,10 +149,10 @@ function registerGASFrameworkOptionColorControl() {
 				alpha = ' data-alpha=true'; // Quotes added automatically.
 			}
 			#>
-			<?php echo $contents ?>
+			<?php echo esc_js($contents) ?>
 			</script>
 			<?php
-
+			
 			// Override the original color content template. Don't use jQuery here since it will be too late
 			// We're sure that the templates have already been printed out
 			// We can't modify the original output, so we just adjust the ID so that we won't use the original one

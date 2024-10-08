@@ -18,13 +18,13 @@ class GASFrameworkOptionSave extends GASFrameworkOption {
 		}
 
 		if ( empty( $this->settings['save'] ) ) {
-			$this->settings['save'] = __( 'Save Changes', GASF_I18NDOMAIN );
+			$this->settings['save'] = __( 'Save Changes', 'gas-framework' );
 		}
 		if ( empty( $this->settings['reset'] ) ) {
-			$this->settings['reset'] = __( 'Reset to Defaults', GASF_I18NDOMAIN );
+			$this->settings['reset'] = __( 'Reset to Defaults', 'gas-framework' );
 		}
 		if ( empty( $this->settings['reset_question'] ) ) {
-			$this->settings['reset_question'] = __( 'Are you sure you want to reset ALL options to their default values?', GASF_I18NDOMAIN );
+			$this->settings['reset_question'] = __( 'Are you sure you want to reset ALL options to their default values?', 'gas-framework' );
 		}
 
 		?>
@@ -40,8 +40,8 @@ class GASFrameworkOptionSave extends GASFrameworkOption {
 			if ( $this->settings['use_reset'] ) :
 			?>
 			<button name="action" class="button button-secondary"
-				onclick="javascript: if ( confirm( '<?php echo htmlentities( esc_attr( $this->settings['reset_question'] ) ) ?>' ) ) { jQuery( '#tf-reset-form' ).submit(); } jQuery(this).blur(); return false;">
-				<?php echo wp_kses_post($this->settings['reset'] )?>
+				onclick="javascript: if ( confirm( '<?php echo wp_kses_post(htmlentities( esc_attr( $this->settings['reset_question'] ) )) ?>' ) ) { jQuery( '#tf-reset-form' ).submit(); } jQuery(this).blur(); return false;">
+				<?php echo wp_kses_post($this->settings['reset']) ?>
 			</button>
 			<?php
 			endif;

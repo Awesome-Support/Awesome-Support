@@ -82,13 +82,12 @@ class WPAS_Editor_Email_Template_Tags_Button {
 	 * @return bool
 	 */
 	public function editor_after_wp_tiny_mce() {
-		
 		// Get WPAS email template tags
 		$list_tags = WPAS_Email_Notification::get_tags();
 		$list_tags = json_encode( $list_tags, true );
 		
 		$script = 'var wpas_editor_js_vars = { "template_tags": ' . $list_tags . ' };' ;
-		printf( '<script type="text/javascript">%s</script>', $script );
+		printf( wp_kses("<script type='text/javascript'>$script</script>", [ 'script' => [ 'type' => true ] ] ) );
 	}
 }
 

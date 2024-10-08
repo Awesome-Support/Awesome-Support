@@ -49,7 +49,7 @@ class GASFrameworkOptionSelect extends GASFrameworkOption {
 			$name = "{$name}[]";
 		}
 
-		?><select name="<?php echo wp_kses_post($name); ?>" <?php echo wp_kses_post($multiple); ?>><?php
+		?><select name="<?php echo esc_attr($name); ?>" <?php echo esc_attr($multiple); ?>><?php
 		gasf_parse_select_options( $this->settings['options'], $val );
 		?></select><?php
 
@@ -181,24 +181,24 @@ function gasf_parse_select_options( $options, $val = array() ) {
 		if ( is_array( $label ) ) {
 
 			?>
-			<optgroup label="<?php echo wp_kses_post($value) ?>"><?php
+			<optgroup label="<?php echo esc_attr($value) ?>"><?php
 			foreach ( $label as $subValue => $subLabel ) {
 
 				printf( '<option value="%s" %s %s>%s</option>',
-					wp_kses_post($subValue),
+					esc_attr($subValue),
 					in_array( $subValue, $val ) ? 'selected="selected"' : '',
 					disabled( stripos( $subValue, '!' ), 0, false ),
-					wp_kses_post($subLabel)
+					esc_attr($subLabel)
 				);
 			}
 			?></optgroup><?php
 			// This is for normal list of options.
 		} else {
 			printf( '<option value="%s" %s %s>%s</option>',
-				wp_kses_post($value),
+				esc_attr($value),
 				in_array( $value, $val ) ? 'selected="selected"' : '',
 				disabled( stripos( $value, '!' ), 0, false ),
-				wp_kses_post($label)
+				esc_attr($label)
 			);
 		}
 	}

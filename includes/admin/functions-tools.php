@@ -329,7 +329,7 @@ function wpas_clear_taxonomies() {
  */
 function wpas_delete_synced_products( $resync = false ) {
 
-	$post_type = sanitize_text_field( $_GET['pt'] );
+	$post_type = isset($_GET['pt']) ? sanitize_text_field( wp_unslash( $_GET['pt'] ) ) : null;
 
 	if ( empty( $post_type ) ) {
 		return false;
@@ -377,7 +377,8 @@ function wpas_delete_synced_products( $resync = false ) {
 
 	/* Now let's make sure we don't have some orphan post metas left */
 	global $wpdb;
-	$metas = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->postmeta} WHERE meta_key = '%s'", '_wpas_product_term' ) );
+	$sql = "SELECT * FROM {$wpdb->postmeta} WHERE meta_key = '%s'";
+	$metas = $wpdb->get_results( $wpdb->prepare( "$sql", '_wpas_product_term' ) );
 	if ( ! empty( $metas ) ) {
 		foreach ( $metas as $meta ) {
 			$value = unserialize( $meta->meta_value );
@@ -579,7 +580,7 @@ SQL;
 		update_post_meta( $ticket->ID, '_wpas_is_waiting_client_reply', 0 );
 	}
 
-	$replies = $wpdb->get_results( $sql );
+	$replies = $wpdb->get_results( "$sql" );
 
 	foreach ( $replies as $reply_post ) {
 
@@ -622,12 +623,12 @@ function wpas_delete_unclaimed_attachments() {
 
 				foreach ( $files as $file ) {
 					if ( $file->isDir() ) {
-						rmdir( $file->getRealPath() );
+						wp_rmdir( $file->getRealPath() );
 					} else {
 						unlink( $file->getRealPath() );
 					}
 				}
-				rmdir( $attachments_root . $basename );
+				wp_rmdir( $attachments_root . $basename );
 			}
 		}
 	}
@@ -635,6 +636,43 @@ function wpas_delete_unclaimed_attachments() {
 	return;
 
 }
+
+
+/**
+ * wp_rmdir
+ *
+ * Delete directory using wp functions
+ * @param  mixed $directory_path
+ * @return void
+ */
+function wp_rmdir($directory_path){
+	// Ensure WP_Filesystem is available and initialized
+	if ( !function_exists('get_filesystem_method') ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+
+	// Initialize WP_Filesystem
+	global $wp_filesystem;
+	if ( empty($wp_filesystem) ) {
+		WP_Filesystem();
+	}
+
+	// Check if the directory exists
+	if ( $wp_filesystem->is_dir($directory_path) ) {
+		// Remove the directory
+		if ( $wp_filesystem->rmdir($directory_path, true) ) {
+			// Directory removed successfully
+			echo "Directory removed successfully.";
+		} else {
+			// Handle error if directory could not be removed
+			echo "Failed to remove directory.";
+		}
+	} else {
+		// Handle the case where the directory does not exist
+		echo "Directory does not exist.";
+	}
+}
+
 
 /**
  * Reset all time tracking fields to zero
@@ -679,31 +717,31 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	switch ( $template ) {
 
 		case 'blue_blocks' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/blue-block/';
 			break;
 
 		case 'blue_blocks-ss' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/blue-block-with-satisfaction-surveys/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/blue-block-with-satisfaction-surveys/';
 			break;
 
 		case 'elegant' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/elegant/';
 			break;
 
 		case 'elegant-ss' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/elegant-with-with-satisfaction-surveys/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/elegant-with-with-satisfaction-surveys/';
 			break;
 
 		case 'simple' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/simple/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/simple/';
 			break;
 
 		case 'default' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/default/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/default/';
 			break;
 
 		case 'debug' :
-			$template_root_path = WPAS_PATH . 'assets/admin/email-templates/debug/';
+			$template_root_path = WPAS_URL . 'assets/admin/email-templates/debug/';
 			break;
 	}
 
@@ -726,8 +764,12 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	foreach ( $template_files as $key => $template_file ) {
 
 	if ( file_exists( $template_file ) ) {
+		// Ensure the HTTP API functions are available
+		if ( !function_exists('wp_remote_get') ) {
+			require_once ABSPATH . WPINC . '/http.php';
+		}
 
-		$template_contents = file_get_contents( $template_file );
+		$template_contents = wp_remote_get( $template_file );
 
 			if ( ! empty( $template_contents ) ) {
 

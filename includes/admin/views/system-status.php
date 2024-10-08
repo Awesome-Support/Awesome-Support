@@ -52,7 +52,10 @@
 				if ( $wp_upload_max <= $server_upload_max ) {
 					echo esc_html( size_format( $wp_upload_max ) );
 				} else {
-					echo '<span class="wpas-alert-danger">' . sprintf( esc_html__( '%s (The server only allows %s)', 'awesome-support' ), esc_html( size_format( $wp_upload_max ) ), esc_html( size_format( $server_upload_max ) ) ) . '</span>';
+					// translators: %1$s is the value being referenced, %2$s is the server's limit.
+					$x_content = __( '%1$s (The server only allows %2$s)', 'awesome-support' );
+
+					echo '<span class="wpas-alert-danger">' . sprintf( esc_html($x_content), esc_html( size_format( $wp_upload_max ) ), esc_html( size_format( $server_upload_max ) ) ) . '</span>';
 				}
 				?>
 			</td>
@@ -92,7 +95,7 @@
 		</tr>
 		<tr class="alternate">
 			<td class="row-title">Software</td>
-			<td><?php echo esc_html( isset( $_SERVER['SERVER_SOFTWARE'] ) ? wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) : '' ); ?></td>
+			<td><?php echo esc_html( isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ): '' ); ?></td>
 		</tr>
 	</tbody>
 </table>
@@ -145,14 +148,23 @@
 			<td class="row-title">Uploads Folder</td>
 			<td>
 				<?php
+				
+				global $wp_filesystem;
+
+				// Initialize the filesystem 
+				if (empty($wp_filesystem)) {
+					require_once(ABSPATH . '/wp-admin/includes/file.php');
+					WP_Filesystem();
+				} 
+
 				if ( !is_dir( ABSPATH . 'wp-content/uploads/awesome-support' ) ) {
-					if ( !is_writable( ABSPATH . 'wp-content/uploads' ) ) {
+					if ( !$wp_filesystem->is_writable( ABSPATH . 'wp-content/uploads' ) ) {
 						echo '<span class="wpas-alert-danger">' . esc_html__( 'The upload folder doesn\'t exist and can\'t be created', 'awesome-support' ) . '</span>';
 					} else {
 						echo '<span class="wpas-alert-success">' . esc_html__( 'The upload folder doesn\'t exist but can be created', 'awesome-support' ) . '</span>';
 					}
 				} else {
-					if ( !is_writable( ABSPATH . 'wp-content/uploads/awesome-support' ) ) {
+					if ( !$wp_filesystem->is_writable( ABSPATH . 'wp-content/uploads/awesome-support' ) ) {
 						echo '<span class="wpas-alert-danger">' . esc_html__( 'The upload folder exists but isn\'t writable', 'awesome-support' ) . '</span>';
 					} else {
 						echo '<span class="wpas-alert-success">' . esc_html__( 'The upload folder exists and is writable', 'awesome-support' ) . '</span>';
@@ -173,7 +185,7 @@
 					$filetypes = explode( ',', $filetypes );
 					foreach ( $filetypes as $key => $type ) { $filetypes[$key] = "<code>.$type</code>"; }
 					$filetypes = implode( ', ', $filetypes );
-					echo $filetypes;
+					echo wp_kses_post( $filetypes );
 				}
 				?>
 			</td>
@@ -212,7 +224,7 @@
 						array_push( $submission_pages, "<span class='wpas-alert-success'>" . esc_url( $page_submit_url ) . " (#$page_submit_id)</span>" );
 					}
 
-					echo wp_kses_post(implode( ', ', $submission_pages ));
+					echo wp_kses(implode( ', ', $submission_pages ), get_allowed_html_wp_notifications());
 
 				}
 				?>
@@ -227,7 +239,7 @@
 				$page_list = $page_list[0];
 			}
 			?>
-			<td><?php echo wp_kses_post(empty( $page_list ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . esc_url( get_permalink( $page_list ) ) . " (#$page_list)</span>"); ?></td>
+			<td><?php echo empty( $page_list ) ? '<span class="wpas-alert-danger">Not set</span>' : "<span class='wpas-alert-success'>" . esc_url( get_permalink( $page_list ) ) . " (#" . wp_kses($page_list , get_allowed_html_wp_notifications()) . ")</span>"; ?></td>
 		</tr>
 	</tbody>
 </table>
@@ -360,9 +372,9 @@
 				}
 				?>
 
-				<tr <?php if ( !empty( $cf_tr_class ) ) echo wp_kses_post("class='$cf_tr_class'"); ?>>
+				<tr <?php if ( !empty( $cf_tr_class ) ) echo "class='" . wp_kses($cf_tr_class,  get_allowed_html_wp_notifications()) . "'"; ?>>
 					<td class="row-title"><?php echo esc_html( wpas_get_field_title( $field ) ); ?></td>
-					<td><?php echo wp_kses_post(implode( ', ', $values )); ?></td>
+					<td><?php echo wp_kses(implode( ', ', $values ), [ 'strong' => [] ]); ?></td>
 				</tr>
 
 			<?php }
@@ -410,7 +422,8 @@
 				if ( sizeof( $wp_plugins ) == 0 )
 					echo '-';
 				else
-					echo wp_kses_post(implode( ', <br/>', $wp_plugins ));
+					echo wp_kses(implode( ', <br/>', $wp_plugins ),  get_allowed_html_wp_notifications());
+
 				?>
 			</td>
 		</tr>
@@ -508,7 +521,7 @@
 					if ( !empty( $overrides ) ) {
 						echo '<ul>';
 						foreach ( $overrides as $key => $override ) {
-							echo wp_kses_post("<li><code>$override</code></li>");
+							echo "<li><code>" . wp_kses($override,  get_allowed_html_wp_notifications()) . "</code></li>";
 						}
 						echo '</ul>';
 					} else {
@@ -522,7 +535,7 @@
 					if ( !empty( $overrides ) ) {
 						echo '<ul>';
 						foreach ( $overrides as $key => $override ) {
-							echo wp_kses_post("<li><code>$override</code></li>");
+							echo "<li><code>" . wp_kses($override,  get_allowed_html_wp_notifications()) . "</code></li>";
 						}
 						echo '</ul>';
 					} else {

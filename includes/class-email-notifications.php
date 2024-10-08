@@ -305,6 +305,9 @@ class WPAS_Email_Notification {
 	 */
 	public static function get_tags() {
 
+		// translators: %s is the current admin e-mail.
+		$desc = __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'awesome-support' );
+		
 		$tags = array(
 			array(
 				'tag' 	=> '{ticket_id}',
@@ -388,7 +391,7 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{admin_email}',
-				'desc' 	=> sprintf( __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'awesome-support' ), get_bloginfo( 'admin_email' ) )
+				'desc' 	=> sprintf( $desc, get_bloginfo( 'admin_email' ) )
 			),
 			array(
 				'tag' 	=> '{message}',
@@ -519,7 +522,7 @@ class WPAS_Email_Notification {
 					break;
 
 				case 'date':
-					$tag['value'] = date( get_option( 'date_format' ) );
+					$tag['value'] = gmdate( get_option( 'date_format' ) );
 					break;
 
 				case 'admin_email':

@@ -114,11 +114,11 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 			$this->echoOptionHeader();
 
 			printf( '<input class="regular-text" name="%s" placeholder="%s" id="%s" type="%s" value="%s" />',
-				wp_kses_post($this->getID()),
-				wp_kses_post($this->settings['placeholder']),
-				wp_kses_post($this->getID()),
-				$this->settings['is_password'] ? 'password' : 'text',
-				wp_kses_post($license) );
+				esc_attr($this->getID()),
+				esc_attr($this->settings['placeholder']),
+				esc_attr($this->getID()),
+				esc_attr($this->settings['is_password'] ? 'password' : 'text'),
+				esc_attr($license) );
 
 			/* If the license is set, we display its status and check it if necessary. */
 			if ( strlen( $license ) > 0 ) {
@@ -134,11 +134,11 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 				switch ( $status ) {
 
 					case 'valid':
-						?><p class="description"><?php esc_html_e( 'Your license is valid and active.', GASF_I18NDOMAIN ); ?></p><?php
+						?><p class="description"><?php esc_html_e( 'Your license is valid and active.', 'gas-framework' ); ?></p><?php
 					break;
 
 					case 'invalid':
-						?><p class="description"><?php esc_html_e( 'Your license is invalid.', GASF_I18NDOMAIN ); ?></p><?php
+						?><p class="description"><?php esc_html_e( 'Your license is invalid.', 'gas-framework' ); ?></p><?php
 					break;
 
 					case 'inactive':
@@ -151,28 +151,28 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 						}
 
 						$get['eddactivate'] = true;
-						$url                = esc_url( add_query_arg( $get, admin_url( $pagenow ) ) );
+						$url                =  add_query_arg( $get, admin_url( $pagenow ) );
 						?>
-						<a href="<?php echo wp_kses_post($url); ?>" class="button-secondary"><?php esc_html_e( 'Activate', GASF_I18NDOMAIN ); ?></a>
-						<p class="description"><?php esc_html_e( 'Your license is valid but inactive. Click the button above to activate it. If you see this message after attempting activation then please make sure that your license is not already active on another site.', GASF_I18NDOMAIN ); ?></p><?php
+						<a href="<?php echo esc_url($url); ?>" class="button-secondary"><?php esc_html_e( 'Activate', 'gas-framework' ); ?></a>
+						<p class="description"><?php esc_html_e( 'Your license is valid but inactive. Click the button above to activate it. If you see this message after attempting activation then please make sure that your license is not already active on another site.', 'gas-framework' ); ?></p><?php
 
 					break;
 
 					case 'no_response':
-						?><p class="description"><?php esc_html_e( 'The remote server did not return a valid response. You can retry by hitting the &laquo;Save&raquo; button again.', GASF_I18NDOMAIN ); ?></p><?php
+						?><p class="description"><?php esc_html_e( 'The remote server did not return a valid response. You can retry by hitting the &laquo;Save&raquo; button again.', 'gas-framework' ); ?></p><?php
 						break;
 
 					case 'expired':
-						?><p class="description"><?php esc_html_e( 'Your license is expired.', GASF_I18NDOMAIN ) ; ?></p><?php
+						?><p class="description"><?php esc_html_e( 'Your license is expired.', 'gas-framework' ) ; ?></p><?php
 						break ;
 
 					default:
-						?><p class="description"><?php esc_html_e( 'Unexpected response from server: ', GASF_I18NDOMAIN ) . $status ; ?></p><?php
+						?><p class="description"><?php esc_html_e( 'Unexpected response from server: ', 'gas-framework' ) . $status ; ?></p><?php
 						break;
 
 				}
 			} else {
-				?><p class="description"><?php esc_html_e( 'Entering your license key is mandatory to get the product updates.', GASF_I18NDOMAIN ); ?></p><?php
+				?><p class="description"><?php esc_html_e( 'Entering your license key is mandatory to get the product updates.', 'gas-framework' ); ?></p><?php
 			}
 
 			$this->echoOptionFooter();
@@ -350,7 +350,7 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 			/* Load the plugin updater class and add required parameters. */
 			if ( 'plugin' == $item_is ) {
 
-				if ( ! class_exists( 'GASF_EDD_SL_Plugin_Updater' ) ) {
+				if ( ! class_exists( 'GASF_EDD_SL_Plugin' ) ) {
 					include( GASF_PATH . 'inc/edd-licensing/EDD_SL_Plugin_Updater.php' );
 				}
 
@@ -379,6 +379,18 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 				$args['author']         = $theme->get( 'Author' );
 				$args['remote_api_url'] = esc_url( $this->settings['server'] );
 
+				// translators: is the expires date.
+				$x_expire = __( 'Expires %s.', 'edd-theme-updater' );
+
+				// translators: %1$s is the number of activated sites, %2$s is the total number of allowed sites.
+				$x_site = __( 'You have %1$s / %2$s sites activated.', 'edd-theme-updater' );
+
+				// translators: is the expires date.
+				$x_expire_key = __( 'License key expired %s.', 'edd-theme-updater' );
+
+				// translators: %1$s is the name of the update, %2$s is the version number, %3$s is the URL to view the update details, %4$s is the title attribute for the details link, %5$s is the URL to initiate the update, %6$s are additional attributes for the update link.
+				$x_update = __( '<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4$s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>.', 'edd-theme-updater' );
+
 				/* Set the update messages. */
 				$strings = array(
 					'theme-license'             => __( 'Theme License', 'edd-theme-updater' ),
@@ -391,9 +403,9 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 					'renew'                     => __( 'Renew?', 'edd-theme-updater' ),
 					'unlimited'                 => __( 'unlimited', 'edd-theme-updater' ),
 					'license-key-is-active'     => __( 'License key is active.', 'edd-theme-updater' ),
-					'expires%s'                 => __( 'Expires %s.', 'edd-theme-updater' ),
-					'%1$s/%2$-sites'            => __( 'You have %1$s / %2$s sites activated.', 'edd-theme-updater' ),
-					'license-key-expired-%s'    => __( 'License key expired %s.', 'edd-theme-updater' ),
+					'expires%s'                 => $x_expire,
+					'%1$s/%2$-sites'            => $x_site,
+					'license-key-expired-%s'    => $x_expire_key,
 					'license-key-expired'       => __( 'License key has expired.', 'edd-theme-updater' ),
 					'license-keys-do-not-match' => __( 'License keys do not match.', 'edd-theme-updater' ),
 					'license-is-inactive'       => __( 'License is inactive.', 'edd-theme-updater' ),
@@ -401,7 +413,7 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 					'site-is-inactive'          => __( 'Site is inactive.', 'edd-theme-updater' ),
 					'license-status-unknown'    => __( 'License status is unknown.', 'edd-theme-updater' ),
 					'update-notice'             => __( "Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update.", 'edd-theme-updater' ),
-					'update-available'          => __( '<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>.', 'edd-theme-updater' ),
+					'update-available'          => $x_update,
 				);
 
 			} /* What the hell is this?? */
@@ -414,7 +426,7 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 
 			/* Setup updater */
 			if ( 'plugin' == $item_is ) {
-				$edd_updater = new GASF_EDD_SL_Plugin_Updater( $endpoint, $this->settings['file'], $args );
+				$edd_updater = new GASF_EDD_SL_Plugin( $endpoint, $this->settings['file'], $args );
 			} else {
 				new GAST_EDD_Theme_Updater( $args, $strings );
 			}

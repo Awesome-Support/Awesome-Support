@@ -98,7 +98,7 @@ class WPAS_Editor_Ajax {
 	 * @since  3.1.5
 	 */
 	public function editor_html() {
-
+		
 		/**
 		 * Security checking. Verify ajax via nonce.
 		 */
@@ -108,7 +108,7 @@ class WPAS_Editor_Ajax {
 		}
 		
 		$post_id   = filter_input( INPUT_POST, 'post_id',         FILTER_SANITIZE_NUMBER_INT );	
-		$editor_id = isset( $_POST['editor_id'] ) ? wp_unslash( sanitize_text_field( $_POST['editor_id'] ) ) : '';	
+		$editor_id = isset( $_POST['editor_id'] ) ? sanitize_text_field( wp_unslash( $_POST['editor_id'] ) ) : '';	
 		
 		//Check permission for capability of current user
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
@@ -116,7 +116,7 @@ class WPAS_Editor_Ajax {
 			die();
 		}		
 			
-		$name = isset( $_POST['textarea_name'] ) ?  sanitize_text_field( $_POST['textarea_name'] ) : '';
+		$name = isset( $_POST['textarea_name'] ) ?  sanitize_text_field( wp_unslash( $_POST['textarea_name'] ) ) : '';
 		$settings  = (array) filter_input( INPUT_POST, 'editor_settings', FILTER_UNSAFE_RAW);
 
 		if ( empty( $editor_id ) ) {
@@ -134,7 +134,7 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Get the content and filter it.
 		 */
-		$editor_content = isset( $_POST['editor_content'] ) ? sanitize_text_field( $_POST['editor_content'] ) : '';	
+		$editor_content = isset( $_POST['editor_content'] ) ? sanitize_text_field( wp_unslash( $_POST['editor_content'] ) ) : '';	
 		$content = ( isset( $post ) && ! empty( $post ) ) ? $post->post_content : $editor_content;
 		$content = apply_filters( 'the_content', $content );
 
@@ -165,11 +165,10 @@ class WPAS_Editor_Ajax {
 		 * Update the TinyMCE and QuickTags pre-init objects.
 		 */
 		$mce_init = $this->get_mce_init( $editor_id );
-		$qt_init  = $this->get_qt_init( $editor_id ); ?>
-
+		$qt_init  = $this->get_qt_init( $editor_id ); ?> 
 		<script type="text/javascript">
-			tinyMCEPreInit.mceInit = jQuery.extend( tinyMCEPreInit.mceInit, <?php echo ($mce_init); ?>);
-			tinyMCEPreInit.qtInit = jQuery.extend( tinyMCEPreInit.qtInit, <?php echo ($qt_init); ?>);
+			tinyMCEPreInit.mceInit = jQuery.extend( tinyMCEPreInit.mceInit, <?php echo wp_kses_post($mce_init); ?>);
+			tinyMCEPreInit.qtInit = jQuery.extend( tinyMCEPreInit.qtInit, <?php echo wp_kses_post($qt_init); ?>);
 		</script>
 
 		<?php die();
@@ -211,7 +210,7 @@ class WPAS_Editor_Ajax {
 			die();
 		}
 
-		echo (apply_filters( 'the_content', ( $post->post_content ) ));
+		echo wp_kses_post(apply_filters( 'the_content',  $post->post_content ));
 		die();
 	}
 

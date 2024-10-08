@@ -59,7 +59,9 @@ function wpas_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
 			break;
 
 		case 'role':
-			echo wp_kses_post( sprintf( __( 'Support User since %s', 'awesome-support' ), '<strong>' . date( get_option( 'date_format' ), strtotime( $user->data->user_registered ) ) . '</strong>' ) );
+			// translators: %s is the date.
+			$x_content = __( 'Support User since %s', 'awesome-support' );
+			echo wp_kses_post( sprintf( $x_content, '<strong>' . gmdate( get_option( 'date_format' ), strtotime( $user->data->user_registered ) ) . '</strong>' ) );
 			break;
 
 		case 'email':

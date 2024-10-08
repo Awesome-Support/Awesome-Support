@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @author Pippin Williamson
  * @version 1.6.4
  */
-class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
+class GASF_EDD_SL_Plugin { // Namespaced to PBS for error protection
 
 	private $api_url     = '';
 	private $api_data    = array();
@@ -189,21 +189,28 @@ class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
 
 			// build a plugin list row, with update notification
 			$wp_list_table = _get_list_table( 'WP_Plugins_List_Table' );
-			echo wp_kses_post('<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count() . '" class="plugin-update colspanchange"><div class="update-message">');
+			echo '<tr class="plugin-update-tr"><td colspan="' . esc_attr($wp_list_table->get_column_count()) . '" class="plugin-update colspanchange"><div class="update-message">';
 
 			$changelog_link = self_admin_url( 'index.php?edd_sl_action=view_plugin_changelog&plugin=' . $this->name . '&slug=' . $this->slug . '&TB_iframe=true&width=772&height=911' );
 
 			if ( empty( $version_info->download_link ) ) {
+				// translators: %1$s is the name of the item with the new version, %2$s is the link text to view version details, %3$s is the version number, %4$s is the link closure or additional attributes.
+				$x_content = __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'easy-digital-downloads' );
+
 				printf(
-					__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'easy-digital-downloads' ),
+					wp_kses_post( $x_content),
 					esc_html( $version_info->name ),
 					'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
 					esc_html( $version_info->new_version ),
 					'</a>'
 				);
 			} else {
+
+				// translators: %1$s is the name of the item with the new version, %2$s is the link to view version details, %3$s is the version number, %4$s is the link closure for version details, %5$s is the link to update now, %6$s is the link closure for update now.
+				$x_content = __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'easy-digital-downloads' );
+
 				printf(
-					__( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'easy-digital-downloads' ),
+					wp_kses_post($x_content),
 					esc_html( $version_info->name ),
 					'<a target="_blank" class="thickbox" href="' . esc_url( $changelog_link ) . '">',
 					esc_html( $version_info->new_version ),
@@ -346,10 +353,10 @@ class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
 		}
 
 		if( ! current_user_can( 'update_plugins' ) ) {
-			wp_die( __( 'You do not have permission to install plugin updates', 'easy-digital-downloads' ), __( 'Error', 'easy-digital-downloads' ), array( 'response' => 403 ) );
+			wp_die( wp_kses_post(__( 'You do not have permission to install plugin updates', 'easy-digital-downloads' )), wp_kses_post(__( 'Error', 'easy-digital-downloads' )), array( 'response' => 403 ) );
 		}
 
-		$data         = $edd_plugin_data[ $_REQUEST['slug'] ];
+		$data         = $edd_plugin_data[ sanitize_key( wp_unslash( $_REQUEST['slug'] ) ) ];
 		$cache_key    = md5( 'edd_plugin_' . sanitize_key( $_REQUEST['plugin'] ) . '_version_info' );
 		$version_info = get_transient( $cache_key );
 
@@ -359,7 +366,7 @@ class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
 				'edd_action' => 'get_version',
 				'item_name'  => isset( $data['item_name'] ) ? $data['item_name'] : false,
 				'item_id'    => isset( $data['item_id'] ) ? $data['item_id'] : false,
-				'slug'       => $_REQUEST['slug'],
+				'slug'       => sanitize_key( wp_unslash( $_REQUEST['slug'] ) ),
 				'author'     => $data['author'],
 				'url'        => home_url()
 			);
@@ -381,7 +388,7 @@ class GASF_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
 		}
 
 		if( ! empty( $version_info ) && isset( $version_info->sections['changelog'] ) ) {
-			echo wp_kses_post('<div style="background:#fff;padding:10px;">' . $version_info->sections['changelog'] . '</div>');
+			echo '<div style="background:#fff;padding:10px;">' . wp_kses_post($version_info->sections['changelog']) . '</div>';
 		}
 
 		exit;

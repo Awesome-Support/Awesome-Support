@@ -56,6 +56,9 @@ function wpas_register_account( $data ) {
 	 */
 	do_action( 'wpas_pre_register_account', $user, $redirect_to, $data );
 
+	// translators: %s is the name of the checkbox that needs to be checked.
+	$x_content = __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' );
+
 	if ( wpas_get_option( 'terms_conditions', false ) && ( ! isset( $data['wpas_terms'] ) || $data['wpas_terms'][0] != "1" ) ) {
 		wpas_add_error( 'accept_terms_conditions', esc_html__( 'You did not accept the terms and conditions.', 'awesome-support' ) );
 		wp_safe_redirect( $redirect_to );
@@ -63,19 +66,19 @@ function wpas_register_account( $data ) {
 	}
 
 	if ( wpas_get_option( 'gdpr_notice_short_desc_01', false ) && wpas_get_option( 'gdpr_notice_mandatory_01', true) && ! isset( $data['wpas_gdpr01'] ) ) {
-		wpas_add_error( 'accept_gdpr01_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) ) );
+		wpas_add_error( 'accept_gdpr01_conditions', sprintf( $x_content, esc_html( wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 
 	if ( wpas_get_option( 'gdpr_notice_short_desc_02', false ) && wpas_get_option( 'gdpr_notice_mandatory_02', true)  && ! isset( $data['wpas_gdpr02'] ) ) {
-		wpas_add_error( 'accept_gdpr02_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) ) );
+		wpas_add_error( 'accept_gdpr02_conditions', sprintf( $x_content, esc_html( wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 
 	if ( wpas_get_option( 'gdpr_notice_short_desc_03', false ) && wpas_get_option( 'gdpr_notice_mandatory_03', true)  && ! isset( $data['wpas_gdpr03'] ) ) {
-		wpas_add_error( 'accept_gdpr03_conditions', sprintf( __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' ), esc_html( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) ) );
+		wpas_add_error( 'accept_gdpr03_conditions', sprintf( $x_content, esc_html( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
@@ -256,8 +259,11 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 				$user_id = new WP_Error();
 			}
 
+			// translators: %s is the name of the mandatory field.
+			$x_content = __( 'The %s field is mandatory for registering an account', 'awesome-support' );
+
 			// Add a new error to the object
-			$user_id->add( 'missing_field_' . $field, sprintf( esc_html__( 'The %s field is mandatory for registering an account', 'awesome-support' ), ucwords( str_replace( '_', ' ', $field ) ) ) );
+			$user_id->add( 'missing_field_' . $field, sprintf( esc_html($x_content), ucwords( str_replace( '_', ' ', $field ) ) ) );
 
 		}
 
@@ -392,7 +398,7 @@ function wpas_create_user_name( $user_args ) {
 
 		case 2:
 			// use a random number
-			$user_name = mt_rand();
+			$user_name = wp_rand();
 			break;
 
 		case 3:
@@ -939,8 +945,8 @@ add_action( 'profile_update', 'wpas_clear_get_users_cache' );
 function wpas_clear_get_users_cache() {
 
 	global $wpdb;
-
-	$wpdb->get_results( $wpdb->prepare( "DELETE FROM $wpdb->options WHERE option_name LIKE '%s'", '_transient_wpas_list_users_%' ) );
+	$sql = "DELETE FROM $wpdb->options WHERE option_name LIKE '%s'";
+	$wpdb->get_results( $wpdb->prepare( "$sql", '_transient_wpas_list_users_%' ) );
 
 }
 
@@ -1091,7 +1097,7 @@ function wpas_users_dropdown( $args = array() ) {
 function wpas_support_users_dropdown( $args = array() ) {
 	$args['cap_exclude'] = 'edit_ticket';
 	$args['cap']         = 'create_ticket';
-	echo wpas_users_dropdown( $args );
+	echo wp_kses(wpas_users_dropdown( $args ), get_allowed_html_wp_notifications());
 }
 
 /**
@@ -1211,7 +1217,9 @@ function wpas_mailgun_check( $data = '' ) {
 		$check = json_decode( $check );
 
 		if ( is_object( $check ) && isset( $check->did_you_mean ) && ! is_null( $check->did_you_mean ) ) {
-			printf( ( __( 'Did you mean %s', 'awesome-support' ) ), "<strong>{$check->did_you_mean}</strong>?" );
+			// translators: %s is the supposed value.
+			$x_content = __( 'Did you mean %s', 'awesome-support' );
+			printf( wp_kses_post( $x_content, "<strong>{$check->did_you_mean}</strong>?" ) );
 			die();
 		}
 
@@ -1421,7 +1429,7 @@ function wpas_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
 	 * If date is not given, set it today
 	 */
 	if( empty ( $date ) ) {
-		$date = date( 'm/d/Y', strtotime( 'NOW' ) );
+		$date = gmdate( 'm/d/Y', strtotime( 'NOW' ) );
 	}
 
 	/**

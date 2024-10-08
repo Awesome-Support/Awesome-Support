@@ -53,7 +53,6 @@ if ( isset( $post ) && is_a( $post, 'WP_Post' ) && 'auto-draft' !== $post->post_
 
 // Set post-independent vars
 $staff         = get_user_by( 'ID', $staff_id );
-$staff_name    = "";
 if (! empty( $staff ) ) {
 	$staff_name    = $staff->data->display_name;
 }
@@ -76,7 +75,7 @@ if (! empty( $staff ) ) {
 				$users_atts['selected'] = $post->post_author;
 			}
 
-			echo wpas_dropdown( $users_atts, $client_option );
+			echo wp_kses(wpas_dropdown( $users_atts, $client_option ), get_allowed_html_wp_notifications());
 
 		else: ?>
 			<a id="wpas-issuer" href="<?php echo esc_url( $client_link ); ?>"><?php echo esc_html( $client_name ); ?></a>
@@ -156,7 +155,9 @@ if (! empty( $staff ) ) {
 			) );
 		}
 		$support_staff_dropdown = apply_filters( 'ticket_support_staff_dropdown', $support_staff_dropdown, $post->ID, $staff_id, $staff_name );
-		echo $support_staff_dropdown;
+
+		echo wp_kses($support_staff_dropdown, get_allowed_html_wp_notifications());
+
 		?>
 	</p>
 </div>
