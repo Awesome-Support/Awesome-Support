@@ -898,7 +898,7 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 		for ( $i = 1; $i < ( $level - 1 ); $i++ ) {
 			$option .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 		}
-		$option .= '&angrt; ';
+		$option .= '&#8735; ';
 	}
 
 	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
