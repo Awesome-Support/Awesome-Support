@@ -611,8 +611,7 @@ function wpas_dropdown( $args, $options ) {
 	}
 	else {
 	?>
-	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo esc_attr($args['name']); ?>" <?php if ( !empty( $class ) ) echo esc_attr('class=' . implode( ' ' , $class ) . ''); ?> <?php if ( !empty( $id ) ) echo esc_attr("id='$id'"); ?> <?php if ( ! empty( $data_attributes ) ): echo wp_kses_post($data_attributes); endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
-	<?php
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo esc_attr($args['name']); ?>" class="<?php if ( !empty( $class ) ) echo esc_attr( implode( ' ' , $class ) ); ?>" id="<?php if ( !empty( $id ) ) echo esc_attr($id); ?>" <?php if ( ! empty( $data_attributes ) ): echo wp_kses_post($data_attributes); endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>><?php
 	}
 	?>
 		<?php
