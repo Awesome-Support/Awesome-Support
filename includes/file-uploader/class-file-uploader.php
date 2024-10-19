@@ -899,6 +899,8 @@ class WPAS_File_Upload {
 				'class' => true,
 				'id' => true,
 				'style' => true,
+				'data-ticket-id'=> true,
+				'data-enable-paste'=> true,
 			], 'ul' => [
 				'class' => true,
 				'id' => true,
@@ -2061,6 +2063,7 @@ class WPAS_File_Upload {
 	 */
 	public function process_ajax_upload($ticket_id, $reply_id, $data ) {
 
+		global $wp_filesystem;
 		$upload = wp_upload_dir();
 		$dir    = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . $data['post_author'] .'/';
 
