@@ -290,6 +290,9 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+= 6.3.0.2
+	* We fixed the conflict issue of Company Profile and Canned Responses add-ons.
+	
 = 6.3.0.1
 	* Fix Bug for Nested Departments.
 	
