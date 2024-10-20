@@ -337,6 +337,7 @@ function get_allowed_html_wp_notifications()
 				'data-wysiwygid' => true,
 				'data-origin' => true,
 				'class' => true,
+				'data-id' => true,
 			],  'img' => [
 				'style' => true,
 				'id' => true,
