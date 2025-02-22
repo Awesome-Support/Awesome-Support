@@ -189,7 +189,6 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	
 	// Default to saved value unchanged
 	$result = 0;
-	/* Ted disable the process saving time tracking =============
 	
 	// No time spent on this ticket
 	if ( ! isset ($_POST['wpas_ttl_calculated_time_spent_on_ticket']) ) {
@@ -199,7 +198,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	$hours = $minutes = $adj_hours = $adj_minutes = 0;
 	
 	// Time spent on ticket (hh:mm:ss)
-	sscanf( sanitize_file_name( wp_unslash( $_POST['wpas_ttl_calculated_time_spent_on_ticket'] ) ), "%d:%d", $hours, $minutes );
+	sscanf( sanitize_text_field( wp_unslash( $_POST['wpas_ttl_calculated_time_spent_on_ticket'] ) ), "%d:%d", $hours, $minutes );
 	
 	// Convert to seconds
 	$minutes = $hours * 60 + $minutes;	
@@ -208,7 +207,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	if( isset ( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
 		&& ! empty( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
 	) {
-		sscanf( sanitize_file_name( wp_unslash( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] ) ), "%d:%d", $adj_hours, $adj_minutes );		
+		sscanf( sanitize_text_field( wp_unslash( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] ) ), "%d:%d", $adj_hours, $adj_minutes );		
 
 		$adjustment_time = $adj_hours * 60 + $adj_minutes;
 		
@@ -220,8 +219,6 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 		}		
 	}
 	
-	*/
-	
 	/**
 	 * Get the current field value.
 	 */
@@ -229,7 +226,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	
 
 	/* Action: Update post meta */
-	if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
+	if ( ( isset( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
 		if ( $current !== $minutes ) {		
 			if ( false !== update_post_meta( $post_id, $field_id, $minutes, $current ) ) {
 				$result = 2;
@@ -277,7 +274,7 @@ function wpas_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
 	$current = get_post_meta( $post_id, $field_id, true );
 
 	/* Action: Update post meta */
-	if ( ( ! empty( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
+	if ( ( isset( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
 		if ( $current !== $minutes ) {
 			if ( false !== update_post_meta( $post_id, $field_id, $minutes, $current ) ) {
 				$result = 2;

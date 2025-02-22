@@ -50,14 +50,14 @@
 
 		// Activate time display filter
 		add_filter( 'wpas_cf_field_markup', 'wpas_cf_field_markup_time_display_hhmm', 10, 2 );
-		//WPAS()->custom_fields->display_single_field( 'ttl_calculated_time_spent_on_ticket' );
-		//WPAS()->custom_fields->display_single_field( 'ttl_adjustments_to_time_spent_on_ticket' );
-		//WPAS()->custom_fields->display_single_field( 'final_time_spent_on_ticket' );
+		WPAS()->custom_fields->display_single_field( 'ttl_calculated_time_spent_on_ticket' );
+		WPAS()->custom_fields->display_single_field( 'ttl_adjustments_to_time_spent_on_ticket' );
+		WPAS()->custom_fields->display_single_field( 'final_time_spent_on_ticket' );
         // Remove time display filter
 		remove_filter('wpas_cf_field_markup', 'wpas_cf_field_markup_time_display_hhmm');
 
-		//WPAS()->custom_fields->display_single_field( 'time_adjustments_pos_or_neg' );
-		//WPAS()->custom_fields->display_single_field( 'time_notes' );
+		WPAS()->custom_fields->display_single_field( 'time_adjustments_pos_or_neg' );
+		WPAS()->custom_fields->display_single_field( 'time_notes' );
 
 		do_action( 'wpas_mb_details_after_time_tracking_statistics' );
 	?>
