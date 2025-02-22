@@ -260,7 +260,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
  */
 function wpas_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
 
-	$hours = $minutes = 0;
+	$result = $hours = $minutes = 0;
 
 	// Time spent on ticket (hh:mm:ss)
 	sscanf( $value, "%d:%d", $hours, $minutes );
