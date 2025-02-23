@@ -202,7 +202,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	
 	// Convert to seconds
 	$minutes = $hours * 60 + $minutes;	
-
+	
 	// Calculate time adjustment
 	if( isset ( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
 		&& ! empty( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
@@ -224,9 +224,8 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	 */
 	$current = get_post_meta( $post_id, $field_id, true );
 	
-
 	/* Action: Update post meta */
-	if ( ( isset( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
+	if ( ( isset( $current ) || is_null( $current ) ) && is_numeric( $minutes ) ) {
 		if ( $current !== $minutes ) {		
 			if ( false !== update_post_meta( $post_id, $field_id, $minutes, $current ) ) {
 				$result = 2;
@@ -235,7 +234,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
 	}
 
 	/* Action: Add post meta */
-	elseif ( empty( $current ) && ! empty( $minutes ) ) {		
+	elseif ( empty( $current ) && is_numeric( $minutes ) ) {		
 		if ( false !== add_post_meta( $post_id, $field_id, $minutes, true ) ) {
 			$result = 1;
 		}
@@ -274,7 +273,7 @@ function wpas_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
 	$current = get_post_meta( $post_id, $field_id, true );
 
 	/* Action: Update post meta */
-	if ( ( isset( $current ) || is_null( $current ) ) && ! empty( $minutes ) ) {
+	if ( ( isset( $current ) || is_null( $current ) ) && is_numeric( $minutes ) ) {
 		if ( $current !== $minutes ) {
 			if ( false !== update_post_meta( $post_id, $field_id, $minutes, $current ) ) {
 				$result = 2;
@@ -283,7 +282,7 @@ function wpas_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
 	}
 
 	/* Action: Add post meta */
-	elseif ( empty( $current ) && ! empty( $minutes ) ) {
+	elseif ( empty( $current ) && is_numeric( $minutes ) ) {
 		if ( false !== add_post_meta( $post_id, $field_id, $minutes, true ) ) {
 			$result = 1;
 		}

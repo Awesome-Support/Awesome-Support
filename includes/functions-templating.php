@@ -1024,7 +1024,7 @@
 		$minutes = (int) get_post_meta( $post_id, '_wpas_' . $field, true );
 		$adjustment_operator = ($minutes < 0 ) ? '-' : ''; 
 		$minutes = ($minutes < 0 ) ? $minutes * (-1) : (int)$minutes;
-		if ( ! empty( $minutes ) ) {
+		if ( isset( $minutes ) && is_numeric( $minutes ) ) {
 			echo wp_kses(sprintf( $adjustment_operator."%02dh:%02dm", floor( $minutes / 60 ), ( $minutes ) % 60 ), get_allowed_html_wp_notifications());
 		}
 
@@ -1044,7 +1044,7 @@
 		$minutes = (int) get_post_meta( $post_id, '_wpas_' . $field, true );
 		$adjustment_operator = ($minutes < 0 ) ? '-' : ''; 
 		$minutes = ($minutes < 0 ) ? $minutes * (-1) : (int)$minutes;
-		if ( ! empty( $minutes ) ) {
+		if ( isset( $minutes ) && is_numeric( $minutes ) ) {
 			return wp_kses(sprintf( $adjustment_operator."%02dh:%02dm", floor( $minutes / 60 ), ( $minutes ) % 60 ), get_allowed_html_wp_notifications());
 		}
 
