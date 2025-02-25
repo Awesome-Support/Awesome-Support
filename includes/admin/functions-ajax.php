@@ -54,6 +54,9 @@ add_action( 'wp_ajax_wpas_get_ticket_for_print', 'wpas_get_ticket_for_print_ajax
 function wpas_get_ticket_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
+	if ( ! current_user_can( 'administrator' ) ) {
+		wp_send_json([], 401);		
+    }
 	$ticket = isset( $_POST['id'] ) ? wpas_get_ticket_by_id( sanitize_text_field( wp_unslash( $_POST['id'] ) ) ) : null;
 
 	if ( ! empty( $ticket ) ) {
@@ -100,7 +103,9 @@ add_action( 'wp_ajax_wpas_get_tickets_for_print', 'wpas_get_tickets_for_print_aj
 function wpas_get_tickets_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
-
+	if ( ! current_user_can( 'administrator' ) ) {
+		wp_send_json([], 401);		
+    }
 	$ids = isset( $_POST['ids'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['ids'] ) ) : array();
 	
 	foreach( $ids as $id ) {

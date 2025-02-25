@@ -393,7 +393,10 @@ if ( ! function_exists( 'tf_upload_option_customizer_get_value' ) ) {
 	function tf_upload_option_customizer_get_value() {
 
 		if ( ! empty( $_POST['nonce'] ) && ! empty( $_POST['id'] ) && ! empty( $_POST['size'] ) ) {
-
+			//Check permission for capability of current user
+			if ( ! current_user_can( 'read') ) {
+				wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+			}
 			$nonce = sanitize_text_field( wp_unslash( $_POST['nonce'] ) );
 			$attachmentID = sanitize_text_field( wp_unslash( $_POST['id'] ) );
 			$size = sanitize_text_field( wp_unslash( $_POST['size'] ) );

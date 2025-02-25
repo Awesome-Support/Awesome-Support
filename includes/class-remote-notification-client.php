@@ -667,6 +667,10 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 				die();
 			}
 
+			if ( ! current_user_can( 'read' ) ) {
+				wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+			}
+
 			if ( ! is_array( $notices ) ) {
 				$notices = array( $notices );
 			}

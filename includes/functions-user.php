@@ -1210,6 +1210,10 @@ function wpas_mailgun_check( $data = '' ) {
 		die();
 	}
 
+	if ( ! current_user_can( 'read' ) ) {
+		wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+	}
+
 	$mailgun = new WPAS_MailGun_EMail_Check();
 	$check   = $mailgun->check_email( $data );
 
