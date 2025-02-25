@@ -261,6 +261,10 @@ function wpas_ticket_notifications_window() {
 		return;
 	}
 
+	if ( ! current_user_can( 'read' ) ) {
+		wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+	}
+
 	$text = wpas_get_option( 'notifications_button_msg', __( 'Standard notifications are enabled.', 'awesome-support' ) ) ;
 
 	$content = '<div>' . $text . '</div>';

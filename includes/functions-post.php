@@ -927,6 +927,11 @@ function wpas_mark_reply_read_ajax() {
 
 	$ID = wpas_mark_reply_read();
 
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'read') ) {
+		wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+	}	
+
 	if ( false === $ID || is_wp_error( $ID ) ) {
 		$ID = $ID->get_error_message();
 	}
@@ -948,6 +953,11 @@ function wpas_edit_reply_ajax() {
 		die();
 	}
 	$ID = wpas_edit_reply();
+
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'read' ) ) {
+		wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+	}
 	
 	if ( false === $ID ) {
 		echo "Invalid data!";
@@ -1678,6 +1688,11 @@ function wpas_edit_reply_editor_ajax() {
 		die();
 	}
 
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'read' ) ) {
+		wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+	}
+
 	$post = get_post( $reply_id );
 
 	if ( 'ticket_reply' !== $post->post_type ) {
@@ -1786,6 +1801,11 @@ function wpas_get_ticket_replies_ajax() {
 	}
 	
 	$ticket_id = absint( $_POST['ticket_id'] );	
+
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'read' ) ) {
+		wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+	}	
 		
 	if( !check_ajax_referer( 'wpas_loads_replies', 'ticket_replies_nonce', false ) ) {		
 		wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
