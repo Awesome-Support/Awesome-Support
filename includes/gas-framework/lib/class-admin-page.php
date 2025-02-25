@@ -140,7 +140,7 @@ class GASFrameworkAdminPage {
 	                $array[$key] = $this->gas_sanitize_array($value);
 	            } else {
 	                // Otherwise, sanitize the text field
-	                $array[$key] = sanitize_text_field($value);
+	                $array[$key] = sanitize_text_field( wp_unslash( $value) );
 	            }
 	        }
 	    }
@@ -226,11 +226,12 @@ class GASFrameworkAdminPage {
 			{
 				if( !is_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) )
 				{
-					$value = sanitize_text_field(wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+					$value = sanitize_text_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+					
 				}
 				else
 				{
-					$value = array_map('sanitize_text_field' , wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ]  ) );
+					$value = $this->gas_sanitize_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ]);	
 				}
 			}
 		}
