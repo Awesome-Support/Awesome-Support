@@ -2157,27 +2157,13 @@ if( !function_exists( 'wpas_get_allowed_html_tags' ) ) {
 			'onmousewheel'=> true,
 			'onpaste'=> true,	
 			'onscroll'=> true,
-			/*
-			'data-reply'=> true,
-			'data-title'=> true,
-			'data-placement'=> true,
-			'data-html'=> true,	
-			'data-id'=> true, */				
 		];
 		
 		$gas_allowed_html = [
 			'div' => [
 				'hidefocus' => true,
 				'role' => true,
-				'aria-level' => true,		
-				/* 'data-index' => true,
-				'data-section' => true,
-				'data-type' => true,
-				'data-duid' => true,	
-				'data-src' => true,
-				'data-ticket-id'=> true,
-				'data-enable-paste'=> true,		
-				'data-dz-message'=> true,*/					
+				'aria-level' => true,	
 			], 
 			'ul' => [], 
 			'ol' => [], 
@@ -2196,23 +2182,12 @@ if( !function_exists( 'wpas_get_allowed_html_tags' ) ) {
 				'name' => true,			
 				'size' => true,
 				'required' => true,
-				/* 'data-capability' => true,
-				'data-allowClear' => true,
-				'data-placeholder' => true,
-				'data-opt-type' => true,
-				'data-name' => true,
-				'data-default' => true,
-				'data-action' => true,			
-				'data-setting' => true,
-				'data-user-setting' => true,*/ 
 			], 
 			'option' => [
 				'disabled' => true,	
 				'label' => true,	
 				'value' => true,
 				'selected' => true,
-				/* 'data-text' => true,
-				'data-id' => true,*/ 					
 			],
 			'optgroup' => [
 				'disabled' => true,	
@@ -2327,7 +2302,6 @@ if( !function_exists( 'wpas_get_allowed_html_tags' ) ) {
 				'required' => true,
 				'readonly' => true,
 				'placeholder' => true,	
-				/* 'data-setting' => true,	*/			
 			], 
 			'footer' =>  [],
 			'table' =>  [],
