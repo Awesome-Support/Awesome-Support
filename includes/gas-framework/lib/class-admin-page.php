@@ -130,6 +130,22 @@ class GASFrameworkAdminPage {
 		return $this->owner->optionNamespace;
 	}
 
+	private function gas_sanitize_array($array) {
+	    // Check if the input is an array
+	    if (is_array($array)) {
+	        // Loop through each element of the array
+	        foreach ($array as $key => $value) {
+	            // If the element is an array, recursively sanitize it
+	            if (is_array($value)) {
+	                $array[$key] = $this->gas_sanitize_array($value);
+	            } else {
+	                // Otherwise, sanitize the text field
+	                $array[$key] = sanitize_text_field($value);
+	            }
+	        }
+	    }
+	    return $array;
+	}
 
 	public function save_single_option( $option ) {
 		
@@ -190,6 +206,17 @@ class GASFrameworkAdminPage {
 							$value = array_map('sanitize_text_field' , wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ]  ) );
 						}					    
 					    break;
+					case 'multi-checkbox-options':
+					    //agent-front-end
+						if( !is_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) )
+						{
+							$value = sanitize_text_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+						}
+						else
+						{
+							$value = $this->gas_sanitize_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ]);	
+						}
+						break;
 					default:
 					    $value = sanitize_text_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
 				}
@@ -206,11 +233,10 @@ class GASFrameworkAdminPage {
 					$value = array_map('sanitize_text_field' , wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ]  ) );
 				}
 			}
-		}		
+		}
 
 		$option->setValue( $value );
 	}
-
 
 	public function saveOptions() {
 		if ( ! $this->verifySecurity() ) {
