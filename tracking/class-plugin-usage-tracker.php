@@ -1064,8 +1064,8 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 		public function goodbye_form_callback() {
 			check_ajax_referer( 'wisdom_goodbye_form', 'security' );
 			//Check permission for capability of current user
-			if ( ! current_user_can( 'read') ) {
-				wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+			if ( ! current_user_can( 'manage_options') ) {
+				wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to submit goodbye form.', 'awesome-support') ), 403);
 			}
 			if( isset( $_POST['values'] ) ) {
 				$values = isset( $_POST['values'] ) ? json_encode( array_map( 'sanitize_text_field', wp_unslash( $_POST['values'] ) ) ) : '';

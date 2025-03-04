@@ -88,7 +88,7 @@ class GASFrameworkCustomizer {
 
 		//Check permission for capability of current user
 		if ( ! current_user_can( 'read') ) {
-			wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to ajax handler for generating CSS.', 'awesome-support') ), 403);
 		}
 
 		foreach ( GASFramework::getAllInstances() as $framework ) {

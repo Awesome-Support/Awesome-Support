@@ -262,7 +262,7 @@ function wpas_ticket_notifications_window() {
 	}
 
 	if ( ! current_user_can( 'read' ) ) {
-		wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to generate content for notification popup window.', 'awesome-support') ), 403);		
 	}
 
 	$text = wpas_get_option( 'notifications_button_msg', __( 'Standard notifications are enabled.', 'awesome-support' ) ) ;
