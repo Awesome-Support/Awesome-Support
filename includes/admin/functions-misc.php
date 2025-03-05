@@ -167,7 +167,7 @@ function wpas_ticket_reply_controls($controls, $ticket_id, $reply) {
 		/* Add mark as read icon */
 		$controls['mark_read'] = array(
 			'tool_tip_text' => esc_html_x('Mark as Read', 'Mark a user reply as read', 'awesome-support'),
-			'icon' => 'prewriten-responses',
+			'icon' => 'icon-prewriten-responses',
 			'id_param' => 'css',
 			'classes' => 'wpas-mark-read',
 			'data' => array(
