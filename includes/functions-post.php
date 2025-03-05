@@ -928,7 +928,7 @@ function wpas_mark_reply_read_ajax() {
 	$ID = wpas_mark_reply_read();
 
 	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_posts') ) {
+	if ( ! current_user_can( 'edit_ticket') ) {
 		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to mark a ticket reply as read with Ajax.', 'awesome-support') ), 403);		
 	}	
 
@@ -955,7 +955,7 @@ function wpas_edit_reply_ajax() {
 	$ID = wpas_edit_reply();
 
 	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_posts') ) {
+	if ( ! current_user_can( 'edit_ticket') ) {
 		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to edit a reply with Ajax.', 'awesome-support') ), 403);		
 	}
 	
@@ -1689,7 +1689,7 @@ function wpas_edit_reply_editor_ajax() {
 	}
 
 	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_posts' ) ) {
+	if ( ! current_user_can( 'edit_ticket' ) ) {
 		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
     }
 
@@ -1803,7 +1803,7 @@ function wpas_get_ticket_replies_ajax() {
 	$ticket_id = absint( $_POST['ticket_id'] );	
 
 	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_posts' ) ) {
+	if ( ! current_user_can( 'edit_ticket' ) ) {
 		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
     }	
 		
