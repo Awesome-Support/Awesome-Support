@@ -54,7 +54,7 @@ add_action( 'wp_ajax_wpas_get_ticket_for_print', 'wpas_get_ticket_for_print_ajax
 function wpas_get_ticket_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
-	if ( ! current_user_can( 'edit_posts' ) ) {
+	if ( ! current_user_can( 'edit_ticket' ) ) {
 		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to get ticket for print.', 'awesome-support') ), 403);		
     }
 	$ticket = isset( $_POST['id'] ) ? wpas_get_ticket_by_id( sanitize_text_field( wp_unslash( $_POST['id'] ) ) ) : null;
@@ -103,7 +103,7 @@ add_action( 'wp_ajax_wpas_get_tickets_for_print', 'wpas_get_tickets_for_print_aj
 function wpas_get_tickets_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
-	if ( ! current_user_can( 'edit_posts' ) ) {
+	if ( ! current_user_can( 'edit_ticket' ) ) {
 		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to get tickets for print.', 'awesome-support') ), 403);		
     }
 	$ids = isset( $_POST['ids'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['ids'] ) ) : array();
