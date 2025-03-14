@@ -909,10 +909,10 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 	}
 
 	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
+	$term_value = get_term_by('slug', $value, $term->taxonomy);
 	?>
 
-	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug ) { echo 'selected="selected"'; } ?>><?php echo  wp_kses( $option, wpas_dropdown_allowed_html_tags()); ?></option>
-
+	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug || ($term_value && !is_wp_error($term_value) && $term_value->term_id === $term->term_id)) { echo 'selected="selected"'; } ?>><?php echo  wp_kses( $option, wpas_dropdown_allowed_html_tags()); ?></option>
 	<?php if ( isset( $term->children ) && !empty( $term->children ) ) {
 		++$level;
 		foreach ( $term->children as $child ) {
