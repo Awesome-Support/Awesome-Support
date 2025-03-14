@@ -310,7 +310,7 @@ class WPAS_GDPR_User_Profile {
 		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] )) : '';
 		$user  = isset( $_POST['nonce'] )  && isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
 		if ( ! current_user_can( 'read' ) ) {
-			wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to export user data.', 'awesome-support') ), 403);
 		}
 		/**
 		 * Security checking

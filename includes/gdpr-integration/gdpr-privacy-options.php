@@ -1036,7 +1036,7 @@ class WPAS_Privacy_Option {
 
 				//Check permission for capability of current user
 				if ( ! current_user_can( 'read') ) {
-					wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+					wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to Delete Existing Data.', 'awesome-support') ), 403);
 				}
 
 				$response['code']    = 200;
@@ -1100,7 +1100,7 @@ class WPAS_Privacy_Option {
 
 		//Check permission for capability of current user
 		if ( ! current_user_can( 'read') ) {
-			wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted in button.', 'awesome-support') ), 403);
 		}
 
 		/**
@@ -1175,7 +1175,7 @@ class WPAS_Privacy_Option {
 
 		//Check permission for capability of current user
 		if ( ! current_user_can( 'read') ) {
-			wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'awesome-support') ), 403);
 		}
 
 		/**
