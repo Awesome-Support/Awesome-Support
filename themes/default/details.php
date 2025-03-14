@@ -78,7 +78,7 @@ $author = get_user_by( 'id', $post->post_author );
 					/**
 					 * Display the original ticket's content
 					 */
-					echo '<div class="wpas-reply-content wpas-break-words">' .  wp_kses(make_clickable( apply_filters( 'the_content', $post->post_content ) ),get_allowed_html_wp_notifications()) . '</div>';
+					echo '<div class="wpas-reply-content wpas-break-words">' .  wp_kses(make_clickable( apply_filters( 'the_content', $post->post_content ) ),'post') . '</div>';
 
 					/**
 					 * wpas_frontend_ticket_content_after hook

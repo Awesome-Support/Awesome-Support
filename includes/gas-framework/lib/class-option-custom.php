@@ -30,13 +30,13 @@ class GASFrameworkOptionCustom extends GASFrameworkOption {
 		if ( ! empty( $this->settings['name'] ) ) {
 
 			$this->echoOptionHeader();
-			echo wp_kses_post($this->settings['custom']);
+			echo wp_kses($this->settings['custom'], wpas_get_allowed_html_tags());
 			$this->echoOptionFooter( false );
 
 		} else {
 
 			$this->echoOptionHeaderBare();
-			echo wp_kses_post($this->settings['custom']);
+			echo wp_kses($this->settings['custom'], wpas_get_allowed_html_tags());
 			$this->echoOptionFooterBare( false );
 
 		}
@@ -88,7 +88,7 @@ function register_gas_framework_option_custom_control() {
 		 * Renders the control
 		 */
 		public function render_content() {
-			echo wp_kses_post($this->custom);
+			echo wp_kses($this->custom, wpas_get_allowed_html_tags());
 		}
 	}
 }

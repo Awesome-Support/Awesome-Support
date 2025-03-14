@@ -45,18 +45,18 @@ class GASFrameworkCustomizer {
 		add_action( 'customize_register', array( $this, 'register' ) );
 
 		// Enqueue required customizer styles & scripts.
-		tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'loadUploaderScript' ) );
+		gas_tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'loadUploaderScript' ) );
 
 		// Clear local storage, we use it for remembering modified customizer values.
-		tf_add_action_once( 'customize_controls_print_footer_scripts', array( $this, 'initLocalStorage' ) );
+		gas_tf_add_action_once( 'customize_controls_print_footer_scripts', array( $this, 'initLocalStorage' ) );
 
 		// Generate the custom CSS for live previews.
-		tf_add_action_once( 'wp_ajax_tf_generate_customizer_css', array( $this, 'ajaxGenerateCustomizerCSS' ) );
+		gas_tf_add_action_once( 'wp_ajax_tf_generate_customizer_css', array( $this, 'ajaxGenerateCustomizerCSS' ) );
 
 		// Modify the values of the options for the generation of CSS with the values from the customizer $_POST.
 		global $wp_customize;
 		if ( isset( $wp_customize ) ) {
-			tf_add_filter_once( 'tf_pre_get_value_' . $this->owner->optionNamespace, array( $this, 'useCustomizerModifiedValue' ), 10, 3 );
+			gas_tf_add_filter_once( 'tf_pre_get_value_' . $this->owner->optionNamespace, array( $this, 'useCustomizerModifiedValue' ), 10, 3 );
 		}
 	}
 
@@ -85,6 +85,11 @@ class GASFrameworkCustomizer {
 		$generated = array(
 			'css' => '',
 		);
+
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'read') ) {
+			wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+		}
 
 		foreach ( GASFramework::getAllInstances() as $framework ) {
 
@@ -385,7 +390,7 @@ class GASFrameworkCustomizer {
 		}
 
 		add_action( 'wp_footer', array( $this, 'livePreview' ) );
-		tf_add_action_once( 'wp_footer', array( $this, 'livePreviewMainScript' ) );
+		gas_tf_add_action_once( 'wp_footer', array( $this, 'livePreviewMainScript' ) );
 	}
 
 	public function createOption( $settings ) {

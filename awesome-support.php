@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           6.3.0
+ * Version:           6.3.1
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -200,14 +200,14 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 					add_action( 'plugins_loaded', array( 'WPAS_Tickets_List', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_User', 'get_instance' ), 11, 0 );
 					add_action( 'plugins_loaded', array( 'WPAS_Gas', 'get_instance' ), 11, 0 );
-					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );
-
-					/* User stats tracking from the Wisdom plugin */
-					add_action( 'plugins_loaded', array( self::$instance, 'awesome_support_start_plugin_tracking' ), 11, 0);
-					add_filter( 'wisdom_notice_text_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_notification_text' ) );
-					add_filter( 'wisdom_delay_notification_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_delay_notification' ) );
-
+					add_action( 'plugins_loaded', array( 'WPAS_Help', 'get_instance' ), 11, 0 );					
 				}
+				
+				/* User stats tracking from the Wisdom plugin */
+				add_action( 'plugins_loaded', array( self::$instance, 'awesome_support_start_plugin_tracking' ), 11, 0);
+				add_filter( 'wisdom_notice_text_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_notification_text' ) );
+				add_filter( 'wisdom_delay_notification_' . basename( __FILE__, '.php' ), array( self::$instance, 'awesome_support_tracking_delay_notification' ) );
+
 
 			}
 
@@ -252,7 +252,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '6.3.0' );
+			define( 'WPAS_VERSION',           '6.3.1' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -518,11 +518,10 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				/* Load Gutenberg related files */
 				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg-post-type.php' );
 				require( WPAS_PATH . 'includes/admin/gutenberg/functions-gutenberg.php' );
-
-				/* Wisdom Tracking */
-				require( WPAS_PATH . '/tracking/class-plugin-usage-tracker.php' );
-
-			}
+			}		
+			
+			/* Wisdom Tracking */
+			require( WPAS_PATH . '/tracking/class-plugin-usage-tracker.php' );
 
 		}
 

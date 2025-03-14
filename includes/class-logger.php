@@ -46,6 +46,19 @@ class WPAS_Logger {
 	 */
 	public function __destruct() {
 		$file = $this->open();
+		
+		if ( is_resource ( $file ) ) {
+			
+			@fclose( $file );
+			
+		} else {
+			
+			// If we get here it means we don't have an actual file handle/resource.
+			// Take what we have and attempt to close anyway. Just in case.
+			// An error will be thrown if parameters are not compatible!
+			@fclose( escapeshellarg( $file ) );
+			
+		}
 	}
 
 	public function get_handles() {
@@ -150,19 +163,16 @@ class WPAS_Logger {
 			return false;
 		}
 
-		global $wp_filesystem;
-		// Initialize the filesystem 
-		if (empty($wp_filesystem)) {
-			require_once(ABSPATH . '/wp-admin/includes/file.php');
-			WP_Filesystem();
-		} 
-
 		$file = trailingslashit( $path ) . "log-$this->handle.txt";
 
 		if ( !file_exists( $file ) ) {
+			
+			$handle = fopen( $file, 'a' );
+			
+			if ( is_resource( $handle ) ) {
+				fclose( $handle );
+			}
 
-			$wp_filesystem->get_contents($file);
-		
 		}
 
 		return $file;
@@ -177,13 +187,7 @@ class WPAS_Logger {
 	 * @return  mixed Resource on success
 	 */
 	private function open() {
-		global $wp_filesystem;
-		// Initialize the filesystem 
-		if (empty($wp_filesystem)) {
-			require_once(ABSPATH . '/wp-admin/includes/file.php');
-			WP_Filesystem();
-		} 
-		$file = $wp_filesystem->get_contents($this->get_log_file_path());
+		$file = fopen( $this->get_log_file_path(), 'a' );
 		return $file;
 	}
 
@@ -196,16 +200,9 @@ class WPAS_Logger {
 	 */
 	public function add( $message ) {
 		$file = $this->open();
-		global $wp_filesystem;
-		// Initialize the filesystem 
-		if (empty($wp_filesystem)) {
-			require_once(ABSPATH . '/wp-admin/includes/file.php');
-			WP_Filesystem();
-		}
 		if ( $file && is_resource( $file ) ) {
 			$time = date_i18n( 'm-d-Y @ H:i:s -' ); // Grab Time
-			$wp_filesystem->put_contents($file, $time . " " . sanitize_text_field( $message ) . "\n", FS_CHMOD_FILE);
-
+			@fwrite( $file, $time . " " . sanitize_text_field( $message ) . "\n" );
 		}
 	}
 

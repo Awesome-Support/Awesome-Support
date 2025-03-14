@@ -39,31 +39,32 @@ if ( ! function_exists( 'tf_hex2rgb' ) ) {
  *
  * @return true Will always return true.
  */
-function tf_add_action_once( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
-	global $_gambitFiltersRan;
+if ( ! function_exists( 'gas_tf_add_action_once' ) ) {
+	function gas_tf_add_action_once( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
+		global $_gambitFiltersRan;
 
-	if ( ! isset( $_gambitFiltersRan ) ) {
-		$_gambitFiltersRan = array();
-	}
-
-	// Since references to $this produces a unique id, just use the class for identification purposes
-	$idxFunc = $function_to_add;
-	if ( is_array( $function_to_add ) ) {
-		if ( ! is_string( $function_to_add[0] ) ) {
-			$idxFunc[0] = get_class( $function_to_add[0] );
+		if ( ! isset( $_gambitFiltersRan ) ) {
+			$_gambitFiltersRan = array();
 		}
+
+		// Since references to $this produces a unique id, just use the class for identification purposes
+		$idxFunc = $function_to_add;
+		if ( is_array( $function_to_add ) ) {
+			if ( ! is_string( $function_to_add[0] ) ) {
+				$idxFunc[0] = get_class( $function_to_add[0] );
+			}
+		}
+		$idx = $tag . ':' . _wp_filter_build_unique_id( $tag, $idxFunc, $priority );
+
+		if ( ! in_array( $idx, $_gambitFiltersRan ) ) {
+			add_action( $tag, $function_to_add, $priority, $accepted_args );
+		}
+
+		$_gambitFiltersRan[] = $idx;
+
+		return true;
 	}
-	$idx = $tag . ':' . _wp_filter_build_unique_id( $tag, $idxFunc, $priority );
-
-	if ( ! in_array( $idx, $_gambitFiltersRan ) ) {
-		add_action( $tag, $function_to_add, $priority, $accepted_args );
-	}
-
-	$_gambitFiltersRan[] = $idx;
-
-	return true;
 }
-
 
 /**
  * Performs an add_filter only once. Helpful for factory constructors where an action only
@@ -83,31 +84,32 @@ function tf_add_action_once( $tag, $function_to_add, $priority = 10, $accepted_a
  *
  * @return true
  */
-function tf_add_filter_once( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
-	global $_gambitFiltersRan;
+if ( ! function_exists( 'gas_tf_add_filter_once' ) ) {
+	function gas_tf_add_filter_once( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
+		global $_gambitFiltersRan;
 
-	if ( ! isset( $_gambitFiltersRan ) ) {
-		$_gambitFiltersRan = array();
-	}
-
-	// Since references to $this produces a unique id, just use the class for identification purposes
-	$idxFunc = $function_to_add;
-	if ( is_array( $function_to_add ) ) {
-		if ( ! is_string( $function_to_add[0] ) ) {
-			$idxFunc[0] = get_class( $function_to_add[0] );
+		if ( ! isset( $_gambitFiltersRan ) ) {
+			$_gambitFiltersRan = array();
 		}
+
+		// Since references to $this produces a unique id, just use the class for identification purposes
+		$idxFunc = $function_to_add;
+		if ( is_array( $function_to_add ) ) {
+			if ( ! is_string( $function_to_add[0] ) ) {
+				$idxFunc[0] = get_class( $function_to_add[0] );
+			}
+		}
+		$idx = $tag . ':' . _wp_filter_build_unique_id( $tag, $idxFunc, $priority );
+
+		if ( ! in_array( $idx, $_gambitFiltersRan ) ) {
+			add_filter( $tag, $function_to_add, $priority, $accepted_args );
+		}
+
+		$_gambitFiltersRan[] = $idx;
+
+		return true;
 	}
-	$idx = $tag . ':' . _wp_filter_build_unique_id( $tag, $idxFunc, $priority );
-
-	if ( ! in_array( $idx, $_gambitFiltersRan ) ) {
-		add_filter( $tag, $function_to_add, $priority, $accepted_args );
-	}
-
-	$_gambitFiltersRan[] = $idx;
-
-	return true;
 }
-
 
 /**
  * Fetches post types. Based on helper functions developed inhouse.
@@ -117,38 +119,40 @@ function tf_add_filter_once( $tag, $function_to_add, $priority = 10, $accepted_a
  * @param boolean $public - Queries the get_post_types to fetch publicly-available post types.
  * @param string $value - Fetches post types that are builtin, custom, or both. Values can be 'builtin', 'custom', or the default value, 'all'.
  */
-function tf_get_post_types( $public = true, $value = 'all' ) {
+if ( ! function_exists( 'gas_tf_get_post_types' ) ) {
+	function gas_tf_get_post_types( $public = true, $value = 'all' ) {
 
-	// Fetch builtin post types.
-	$args_builtin = array(
-		'public' => $public,
-		'_builtin' => true,
-	);
+		// Fetch builtin post types.
+		$args_builtin = array(
+			'public' => $public,
+			'_builtin' => true,
+		);
 
-	$post_types_builtin = get_post_types( $args_builtin, 'objects' );
+		$post_types_builtin = get_post_types( $args_builtin, 'objects' );
 
-	// Fetch custom post types.
-	$args_custom = array(
-		'public' => $public,
-		'_builtin' => false,
-	);
+		// Fetch custom post types.
+		$args_custom = array(
+			'public' => $public,
+			'_builtin' => false,
+		);
 
-	$post_types_custom = get_post_types( $args_custom, 'objects' );
+		$post_types_custom = get_post_types( $args_custom, 'objects' );
 
-	// Converge or pick post types based on selection.
-	switch ( $value ) {
-		case 'builtin' :
-			$post_types = $post_types_builtin;
-		break;
+		// Converge or pick post types based on selection.
+		switch ( $value ) {
+			case 'builtin' :
+				$post_types = $post_types_builtin;
+			break;
 
-		case 'custom' :
-			$post_types = $post_types_custom;
-		break;
+			case 'custom' :
+				$post_types = $post_types_custom;
+			break;
 
-		default :
-			$post_types = array_merge( $post_types_builtin, $post_types_custom );
-		break;
+			default :
+				$post_types = array_merge( $post_types_builtin, $post_types_custom );
+			break;
+		}
+
+		return $post_types;
 	}
-
-	return $post_types;
 }

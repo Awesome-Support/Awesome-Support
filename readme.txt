@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,rwkiii,elindydotcom,SiamKreative,alaca
 Tags: helpdesk,ticket system,support,tickets,support ticket
 Requires at least: 4.0
-Tested up to: 6.6
-Stable tag: 6.3.0
+Tested up to: 6.7.1
+Stable tag: 6.3.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -291,6 +291,15 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.3.1
+	* Revised plugin deactivation process with feedback.
+	* We fixed issue of HTML Formatting Lost in Email Settings After Saving.
+	* We fixed issue of Crashing site with an infinite loop.
+	* We changed the column name from "creation date" to "last modified".
+	* We fixed the JavaScript error that appears when the user moves the browser window.
+	* We fixed the conflict issue of Company Profile and Canned Responses add-ons.
+	* Fix Bug for Nested Departments.
+	
 = 6.3.0
 	* Update General Rules and Improve Security, Performance, and Accessibility for Plugin Repository
 

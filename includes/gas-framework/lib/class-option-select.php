@@ -27,11 +27,11 @@ class GASFrameworkOptionSelect extends GASFrameworkOption {
 	function __construct( $settings, $owner ) {
 		parent::__construct( $settings, $owner );
 
-		tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'load_select_scripts' ) );
-		tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'load_select_scripts' ) );
+		gas_tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'load_select_scripts' ) );
+		gas_tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'load_select_scripts' ) );
 
-		tf_add_action_once( 'admin_head', array( $this, 'init_select_script' ) );
-		tf_add_action_once( 'customize_controls_print_footer_scripts', array( $this, 'init_select_script' ) );
+		gas_tf_add_action_once( 'admin_head', array( $this, 'init_select_script' ) );
+		gas_tf_add_action_once( 'customize_controls_print_footer_scripts', array( $this, 'init_select_script' ) );
 	}
 
 

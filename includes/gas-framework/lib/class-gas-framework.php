@@ -183,12 +183,7 @@ class GASFramework {
 	 * @return void
 	 */
 	public function rememberAllOptions( $option ) {
-		if ( ! empty( $option->settings['id'] ) ) {
-			
-			if( $option->settings['id'] == 'color_closed' ) 
-			{ 
-					//echo "option<pre>";var_dump($option);echo "<pre>"; exit;
-			}
+		if ( ! empty( $option->settings['id'] ) ) {		
 			
 			if ( is_admin() && isset( $this->optionsUsed[ $option->settings['id'] ] ) ) {
 				

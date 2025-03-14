@@ -75,7 +75,7 @@ if (! empty( $staff ) ) {
 				$users_atts['selected'] = $post->post_author;
 			}
 
-			echo wp_kses(wpas_dropdown( $users_atts, $client_option ), get_allowed_html_wp_notifications());
+			echo wp_kses(wpas_dropdown( $users_atts, $client_option ), wpas_dropdown_allowed_html_tags());
 
 		else: ?>
 			<a id="wpas-issuer" href="<?php echo esc_url( $client_link ); ?>"><?php echo esc_html( $client_name ); ?></a>
@@ -155,7 +155,8 @@ if (! empty( $staff ) ) {
 			) );
 		}
 		$support_staff_dropdown = apply_filters( 'ticket_support_staff_dropdown', $support_staff_dropdown, $post->ID, $staff_id, $staff_name );
-
+		//After filter, what is new attributes or event hass been added into element? Example: onclick, required, autofocus , etc.. ??
+		//This has been verify by html tags ted.
 		echo wp_kses($support_staff_dropdown, get_allowed_html_wp_notifications());
 
 		?>

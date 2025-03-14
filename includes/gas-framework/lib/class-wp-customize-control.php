@@ -11,8 +11,7 @@ function registerGASFrameworkCustomizeControl() {
 		public $description;
 
 		public function render_content() {
-			parent::render_content();
-			// echo "<p class='description'>{$this->description}</p>";
+			parent::render_content();			
 		}
 	}
 }

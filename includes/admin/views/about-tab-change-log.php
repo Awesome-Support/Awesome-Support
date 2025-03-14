@@ -5,6 +5,24 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.3.1</h1>
+				<h3>6.3.1 Revised plugin deactivation process with feedback.</h3>
+				<ul>
+					<li>We updated the plugin deactivation process when you deactivate the plugin and submit a feedback.</li>
+					<li>We fixed issue of HTML Formatting Lost in Email Settings After Saving.</li>
+					<li>We fixed issue of Crashing site with an infinite loop</li>
+					<li>We fixed the JavaScript error that appears when the user moves the browser window.</li>
+					<li>We changed the column name from "creation date" to "last modified".</li>
+					<li>We fixed the conflict issue of Company Profile and Canned Responses add-ons.</li>
+					<li>Fix Bug for Nested Departments.</li>					
+				</ul>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.3.0</h1>
 				<h3>6.3.0 Update General Rules and Improve Security, Performance, and Accessibility</h3>
 				<ul>

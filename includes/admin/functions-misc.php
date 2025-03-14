@@ -618,7 +618,7 @@ function wpas_admin_tabs($type, $tabs = array()) {
 
 			</ul>
 		</div>
-		<?php echo wp_kses(implode('', $tab_content_ar), get_allowed_html_wp_notifications()); ?>
+		<?php echo implode('', $tab_content_ar) ; //echo wp_kses(implode('', $tab_content_ar), get_allowed_html_wp_notifications()); ?>
 	</div>
 <?php
 

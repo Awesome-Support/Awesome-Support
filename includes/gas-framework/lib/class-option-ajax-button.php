@@ -29,6 +29,10 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 		if ( empty( $_POST['nonce'] ) ) {
 			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'gas-framework' ) );
 		}
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'read') ) {
+			wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+		}
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'tf-ajax-button' ) ) {
 			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'gas-framework' ) );
 		}
@@ -42,6 +46,10 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 	 * @return	void
 	 */
 	public function ajaxLastSuccess() {
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'read') ) {
+			wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+		}
 		wp_send_json_success();
 	}
 

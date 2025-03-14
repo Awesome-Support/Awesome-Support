@@ -294,6 +294,11 @@ if ( ! function_exists( 'tf_file_upload_option_customizer_get_value' ) ) {
 
         if ( ! empty( $_POST['nonce'] ) && ! empty( $_POST['id'] ) ) {
 
+            //Check permission for capability of current user
+            if ( ! current_user_can( 'read') ) {
+                wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+            }
+
             $nonce = sanitize_text_field( wp_unslash( $_POST['nonce'] ) ); 
             $attachmentID = sanitize_text_field( wp_unslash( $_POST['id'] ) );
             // $size = sanitize_text_field( $_POST['size'] );

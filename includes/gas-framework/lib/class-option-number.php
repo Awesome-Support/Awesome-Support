@@ -36,8 +36,8 @@ class GASFrameworkOptionNumber extends GASFrameworkOption {
 	function __construct( $settings, $owner ) {
 		parent::__construct( $settings, $owner );
 
-		tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'enqueueSlider' ) );
-		tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'enqueueSlider' ) );
+		gas_tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'enqueueSlider' ) );
+		gas_tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'enqueueSlider' ) );
 		add_action( 'admin_head', array( __CLASS__, 'createSliderScript' ) );
 	}
 

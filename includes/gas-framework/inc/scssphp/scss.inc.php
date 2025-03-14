@@ -3552,8 +3552,7 @@ class gasscss_formatter_nested extends gasscss_formatter {
 			echo wp_kses_post($inner . implode($glue, $block->lines));
 			if (!empty($block->children)) echo wp_kses_post($this->break);
 		}
-		foreach ($block->children as $i => $child) {
-			// echo "*** block: ".$block->depth." child: ".$child->depth."\n";
+		foreach ($block->children as $i => $child) {			
 			$this->block($child);
 			if ($i < count($block->children) - 1) {
 				echo wp_kses_post($this->break);

@@ -88,7 +88,7 @@ class WPAS_File_Upload {
 
 			// Cleanup action
 			add_action( 'attachments_dir_cleanup_action', array( $this, 'attachments_dir_cleanup' ) );
-
+			
 			// Schedule cleanup of unused attachments directories
 			add_action( 'wp', array( $this, 'attachments_dir_cleanup_schedule' ) );
 
@@ -819,7 +819,8 @@ class WPAS_File_Upload {
 			require_once(ABSPATH . '/wp-admin/includes/file.php');
 			WP_Filesystem();
 		} 
-		
+
+		//Process Unauthenticated Sensitive Information Exposure Through Unprotected Directory with htaccess
 		if ( $wp_filesystem->is_writable($dir) ) {
 
 			$filename = $dir . '/.htaccess';
@@ -839,6 +840,43 @@ class WPAS_File_Upload {
 			// folder isn't writable so no point in attempting to do it...
 			// log the error in our log files instead...
 			wpas_write_log('file-uploader','The folder ' . $dir . ' is not writable.  So we are unable to write a .htaccess file to this folder' ) ;
+		}
+
+		//Process Unauthenticated Sensitive Information Exposure Through Unprotected Directory with index
+		if ( $wp_filesystem->is_writable($dir) ) {
+
+			$filename = $dir  . '/index.php';	
+			$filecontents = str_replace('\n', PHP_EOL, '<?php\n\n// Silence is golden');			
+
+			if ( ! file_exists( $filename ) ) {
+				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
+				if ( $result === false ) {
+					wpas_write_log('file-uploader','unable to write .index file to folder ' . $dir ) ;
+				}
+			}
+		} else {
+			// folder isn't writable so no point in attempting to do it...
+			// log the error in our log files instead...
+			wpas_write_log('file-uploader','The folder ' . $dir . ' is not writable.  So we are unable to write a .index file to this folder' ) ;
+		}
+		
+		$found_pos =  strpos( $dir, 'uploads/awesome-support' );
+		$attachments_root = substr($dir, 0, $found_pos ) .'uploads/awesome-support';
+		if ( $wp_filesystem->is_writable($attachments_root) ) {
+
+			$filename = $attachments_root  . '/index.php';				
+			$filecontents = str_replace('\n', PHP_EOL, '<?php\n\n// Silence is golden');			
+
+			if ( ! file_exists( $filename ) ) {
+				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);				
+				if ( $result === false ) {
+					wpas_write_log('file-uploader','unable to write .index file to  awesome-support folder ' . $attachments_root ) ;
+				}
+			}
+		} else {
+			// folder isn't writable so no point in attempting to do it...
+			// log the error in our log files instead...
+			wpas_write_log('file-uploader','The folder ' . $attachments_root . ' is not writable.  So we are unable to write a .index file to awesome-support folder' ) ;
 		}
 
 	}
@@ -892,103 +930,9 @@ class WPAS_File_Upload {
 	 *
 	 * @return void
 	 */
-	private function get_allowed_html(){
-		return apply_filters('custom_allowed_html_wpas_file_upload',
-		[
-			'div' => [
-				'class' => true,
-				'id' => true,
-				'style' => true,
-			], 'ul' => [
-				'class' => true,
-				'id' => true,
-			], 'li' => [
-				'data-tab-order' => true,
-				'rel' => true,
-				'class' => true,
-				'data-hint' => true,
-			], 'select' => [
-				'name' => true,
-				'class' => true,
-				'id' => true,
-				'data-capability' => true,
-				'data-allowClear' => true,
-				'data-placeholder' => true,
-			], 'option' => [
-				'value' => true,
-				'selected' => true,
-			], 'input' => [
-				'type' => true,
-				'value' => true,
-				'id' => true,
-				'class' => true,
-				'name' => true,
-				'readonly' => true,
-				'placeholder' => true,
-				'checked' => true,
-				'style' => true,
-				'accept' => true,
-				'multiple' => true,
-				'aria-label' => true,
-			],  'span' => [
-				'style' => true,
-				'id' => true,
-				'data-ticketid' => true,
-				'class' => true,
-			],  'img' => [
-				'style' => true,
-				'id' => true,
-				'class' => true,
-				'src' => true,
-				'alt' => true,
-				'height' => true,
-				'width' => true,
-			], 'a' => [
-				'href' => true,
-				'class' => true,
-				'id' => true,
-				'data-ticketid' => true,
-				'data-gdpr' => true,
-				'data-user' => true,
-				'data-optout-date' => true,
-				'data-filename' => true,
-			], 'label' => [
-				'for' => true,
-			], 'id' => [
-				'id' => true,
-				'class' => true,
-			], 'button' => [
-				'type' => true,
-				'data-wp-editor-id' => true,
-				'id' => true,
-				'class' => true,
-				'data-filename' => true,
-			], 'form' => [
-				'method' => true,
-				'action' => true,
-				'id' => true,
-				'class' => true,
-				'enctype' => true,
-			],
-			'textarea' => [
-				'type' => true,
-				'autocomplete' => true,
-				'id' => true,
-				'name' => true,
-				'rows' => true,
-				'cols' => true,
-				'class' => true,
-			], 'footer' => [
-				'style' => true,
-				'id' => true,
-				'class' => true,
-			], 'table' => [
-				'style' => true,
-				'id' => true,
-				'class' => true,
-			], 'tr' => [], 'tr' => [ 'id' => true], 'p' => [ 'class' => true, 'id' => true, 'style' => true ], 'code' => [], 'strong' => [], 'td' => ['colspan' => true, 'align' => true, 'width' => true], 'h2' => [], 'br' => [],
-		]
-	);
+	private function get_allowed_html(){		
+
+		return apply_filters('custom_allowed_html_wpas_file_upload', wpas_get_allowed_html_tags() );
 	}
 
 	/**
@@ -1623,8 +1567,7 @@ class WPAS_File_Upload {
 				$mimes[ $type ] = wpas_get_mime_type( $type );
 			}
 
-		}
-
+		}		
 		return $mimes;
 
 	}
@@ -2061,6 +2004,7 @@ class WPAS_File_Upload {
 	 */
 	public function process_ajax_upload($ticket_id, $reply_id, $data ) {
 
+		global $wp_filesystem;
 		$upload = wp_upload_dir();
 		$dir    = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . $data['post_author'] .'/';
 
@@ -2127,7 +2071,10 @@ class WPAS_File_Upload {
 
 					// Move file from temp dir to ticket dir
 					$wp_filesystem->move($file, $new_file_upload); 
-
+					
+					//Set 0644 file permission to allow access the attachment. 
+					$wp_filesystem->chmod($new_file_upload, FS_CHMOD_FILE); 
+					
 					// Update attached file post meta data
 					update_attached_file($attachment_id, $new_file_relative);
 
@@ -2148,12 +2095,10 @@ class WPAS_File_Upload {
 				}
 
 			}
-
 			// Remove directory
 			$this->remove_directory( $dir );
 
 		}
-
 	}
 
 	/**
@@ -2164,11 +2109,11 @@ class WPAS_File_Upload {
 	 * @return void
 	 */
 	public function attachments_dir_cleanup_schedule() {
-
+		
 		if ( ! wp_next_scheduled( 'attachments_dir_cleanup_action' ) ) {
+			
 			wp_schedule_event( time(), 'daily', 'attachments_dir_cleanup_action');
 		}
-
 	}
 
 	/**
@@ -2181,6 +2126,7 @@ class WPAS_File_Upload {
 	 */
 	public function attachments_dir_cleanup() {
 
+		wpas_is_plugin_page();
 		$upload  = wp_get_upload_dir();
 		$folders = glob( trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_*' );
 

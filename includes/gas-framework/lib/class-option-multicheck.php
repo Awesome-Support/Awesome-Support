@@ -20,8 +20,8 @@ class GASFrameworkOptionMulticheck extends GASFrameworkOption {
 	function __construct( $settings, $owner ) {
 		parent::__construct( $settings, $owner );
 
-		tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'load_select_scripts' ) );
-		tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'load_select_scripts' ) );
+		gas_tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'load_select_scripts' ) );
+		gas_tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'load_select_scripts' ) );
 
 	}
 
