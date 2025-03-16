@@ -750,7 +750,8 @@ class WPAS_File_Upload {
 		}
 
 		/* We sort the uploads in sub-folders per ticket. */
-		$subdir = "/awesome-support/ticket_$ticket_id";
+		$ticket_id_encode = md5($ticket_id . NONCE_SALT);		
+		$subdir = "/awesome-support/ticket_$ticket_id_encode";
 
 		/* Create final URL and dir */
 		$dir = $upload['basedir'] . $subdir;
@@ -1080,7 +1081,9 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
-							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
+
+							$post_id_encode = md5($post_id . NONCE_SALT);
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
 
 							/**
@@ -1179,8 +1182,9 @@ class WPAS_File_Upload {
 							 */
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
-							$upload_dir = wp_upload_dir();
-							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
+							$upload_dir = wp_upload_dir();							
+							$post_id_encode = md5($post_id . NONCE_SALT);	
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
 
 							/**
@@ -2021,8 +2025,9 @@ class WPAS_File_Upload {
 			$accept = implode( ',', $accept );
 
 			foreach( glob( $dir . '{' . $accept . '}', GLOB_BRACE ) as $file ) {
-
-				$new_file_relative_dir = 'awesome-support/ticket_' . $reply_id;
+				
+				$reply_id_encode = md5($reply_id . NONCE_SALT);	
+				$new_file_relative_dir = 'awesome-support/ticket_' . $reply_id_encode;
 
 				$gas_file_base_name = $this->wpas_sanitize_file_name( basename( $file ) );
 

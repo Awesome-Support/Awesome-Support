@@ -89,7 +89,8 @@ function wpas_uninstall() {
 			wp_delete_post( $post->ID, true );
 
 			$upload_dir = wp_upload_dir();
-			$dirpath    = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post->ID";
+			$ticket_id_encode = md5($post->ID . NONCE_SALT);	
+			$dirpath    = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$ticket_id_encode";
 
 			if ( $post->post_parent == 0 && is_dir( $dirpath ) ) {
 

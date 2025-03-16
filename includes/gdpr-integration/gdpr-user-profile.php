@@ -649,7 +649,9 @@ class WPAS_GDPR_User_Profile {
 	 * @param int 	 $ticket_id Ticket ID.
 	 */
 	public function add_attachments( $zip, $ticket_id ){
-		$subdir = '/awesome-support/ticket_' . $ticket_id;
+		
+		$ticket_id_encode = md5($ticket_id . NONCE_SALT);	
+		$subdir = '/awesome-support/ticket_' . $ticket_id_encode;
 		$upload = wp_upload_dir();
 		/* Create final URL and dir */
 		$dir = $upload['basedir'] . $subdir;
