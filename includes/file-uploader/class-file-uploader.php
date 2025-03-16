@@ -41,6 +41,7 @@ class WPAS_File_Upload {
 
 		add_filter( 'upload_dir', array( $this, 'set_upload_dir' ) );
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'limit_upload' ), 10, 1 );
+		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sgpb_rename_uploaded_file' ), 10, 1 );
 		add_filter( 'upload_mimes', array( $this, 'custom_mime_types' ), 10, 1 );
 		add_action( 'pre_get_posts', array( $this, 'attachment_query_var' ), 10, 1 );
 		add_action( 'init', array( $this, 'attachment_endpoint' ), 10, 1 );
@@ -2208,4 +2209,18 @@ class WPAS_File_Upload {
 		return $sanitized_filename;
 	}
 
+	public function sgpb_rename_uploaded_file($file) {
+
+	    $info = pathinfo($file['name']);
+
+	    $ext  = !empty($info['extension']) ? '.' . $info['extension'] : '';
+
+	    $random_string = wp_generate_password(8, false); 
+
+	    $unique_name = $info['filename'] .  $random_string . time() . $ext;
+
+	    $file['name'] = $unique_name;
+
+	    return $file;
+	}
 }
