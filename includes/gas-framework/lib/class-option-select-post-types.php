@@ -24,7 +24,7 @@ class GASFrameworkOptionSelectPostTypes extends GASFrameworkOptionSelect {
 		$post_types = gas_tf_get_post_types( $this->settings['public'], $this->settings['value'] );
 
 		$this->settings['options'] = array(
-			'' => '— ' . __( 'Select', 'gas-framework' ) . ' —'
+			'' => '— ' . __( 'Select', 'awesome-support' ) . ' —'
 		);
 
 		// Print all the other pages

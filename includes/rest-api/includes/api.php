@@ -196,14 +196,14 @@ class WPAS_API {
 					'comment_karma' => $karma
 				) );
 				if ( false === $ret ) {
-					return new WP_Error( 'rest_comment_karma_failed', __( 'Failed to update comment karma.' ),
+					return new WP_Error( 'rest_comment_karma_failed', __( 'Failed to update comment karma.', 'awesome-support' ),
 						array( 'status' => 500 ) );
 				}
 
 				return true;
 			},
 			'schema'          => array(
-				'description' => __( 'Comment karma.' ),
+				'description' => __( 'Comment karma.', 'awesome-support' ),
 				'type'        => 'integer'
 			),
         ) );

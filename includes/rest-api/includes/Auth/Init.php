@@ -297,18 +297,18 @@ class Init {
 			'nonce'      => wp_create_nonce( 'wp_rest' ),
 			'user_id'    => $user->ID,
 			'text'       => array(
-				'no_credentials' => __( 'Due to a potential server misconfiguration, it seems that HTTP Basic Authorization may not work for the REST API on this site: `Authorization` headers are not being sent to WordPress by the web server. <a href="https://github.com/georgestephanis/application-passwords/wiki/Basic-Authorization-Header----Missing">You can learn more about this problem, and a possible solution, on our GitHub Wiki.</a>' ),
+				'no_credentials' => __( 'Due to a potential server misconfiguration, it seems that HTTP Basic Authorization may not work for the REST API on this site: `Authorization` headers are not being sent to WordPress by the web server. <a href="https://github.com/georgestephanis/application-passwords/wiki/Basic-Authorization-Header----Missing">You can learn more about this problem, and a possible solution, on our GitHub Wiki.</a>', 'awesome-support' ),
 			),
 		) );
 
 		?>
 		<div id="wpas_user_profile_segment">
 			<div class="wpas-api hide-if-no-js" id="wpas-api-section">
-				<h2 id="wpas-api"><?php esc_html_e( 'API Passwords' ); ?></h2>
+				<h2 id="wpas-api"><?php esc_html_e( 'API Passwords', 'awesome-support' ); ?></h2>
 				<p><?php esc_html_e( 'API passwords allow authentication via the REST API without providing your actual password. API passwords can be easily revoked. They cannot be used for traditional logins to your website.', 'awesome-support' ); ?></p>
 				<div class="create-wpas-api-password">
 					<input type="text" size="30" name="new_wp_api_password_name" placeholder="<?php esc_attr_e( 'New API Password Name', 'awesome-support' ); ?>" class="input" />
-					<?php submit_button( __( 'Add New' ), 'secondary', 'do_new_wp_api_password', false ); ?>
+					<?php submit_button( __( 'Add New', 'awesome-support' ), 'secondary', 'do_new_wp_api_password', false ); ?>
 				</div>
 
 				<div class="wpas-api-list-table-wrapper">
@@ -328,7 +328,7 @@ class Init {
 						<div class="new-wpas-api-password-content">
 							<?php
 							// translators: %1$s is the application name, %2$s is the new password.
-							$x_content = _x( 'Your new password for %1$s is: %2$s', 'application, password' );
+							$x_content = _x( 'Your new password for %1$s is: %2$s', 'application, password', 'awesome-support' );
 
 							printf(
 								esc_html($x_content),
@@ -337,8 +337,8 @@ class Init {
 							);
 							?>
 						</div>
-						<p><?php esc_attr_e( 'Be sure to save this in a safe location.  You will not be able to retrieve it.' ); ?></p>
-						<button class="button button-primary wpas-api-password-modal-dismiss"><?php esc_attr_e( 'Dismiss' ); ?></button>
+						<p><?php esc_attr_e( 'Be sure to save this in a safe location.  You will not be able to retrieve it.', 'awesome-support' ); ?></p>
+						<button class="button button-primary wpas-api-password-modal-dismiss"><?php esc_attr_e( 'Dismiss', 'awesome-support' ); ?></button>
 					</div>
 				</div>
 			</div>
@@ -346,20 +346,20 @@ class Init {
 
 		<script type="text/html" id="tmpl-wpas-api-password-row">
 			<tr data-slug="{{ data.slug }}">
-				<td class="name column-name has-row-actions column-primary" data-colname="<?php esc_attr_e( 'Name' ); ?>">
+				<td class="name column-name has-row-actions column-primary" data-colname="<?php esc_attr_e( 'Name', 'awesome-support' ); ?>">
 					{{ data.name }}
 				</td>
-				<td class="created column-created" data-colname="<?php esc_attr_e( 'Created' ); ?>">
+				<td class="created column-created" data-colname="<?php esc_attr_e( 'Created', 'awesome-support' ); ?>">
 					{{ data.created }}
 				</td>
-				<td class="last_used column-last_used" data-colname="<?php esc_attr_e( 'Last Used' ); ?>">
+				<td class="last_used column-last_used" data-colname="<?php esc_attr_e( 'Last Used', 'awesome-support' ); ?>">
 					{{ data.last_used }}
 				</td>
-				<td class="last_ip column-last_ip" data-colname="<?php esc_attr_e( 'Last IP' ); ?>">
+				<td class="last_ip column-last_ip" data-colname="<?php esc_attr_e( 'Last IP', 'awesome-support' ); ?>">
 					{{ data.last_ip }}
 				</td>
-				<td class="revoke column-revoke" data-colname="<?php esc_attr_e( 'Revoke' ); ?>">
-					<input type="submit" name="revoke-wpas-api-password" class="button delete" value="<?php esc_attr_e( 'Revoke' ); ?>">
+				<td class="revoke column-revoke" data-colname="<?php esc_attr_e( 'Revoke', 'awesome-support' ); ?>">
+					<input type="submit" name="revoke-wpas-api-password" class="button delete" value="<?php esc_attr_e( 'Revoke', 'awesome-support' ); ?>">
 				</td>
 			</tr>
 		</script>
@@ -373,35 +373,35 @@ class Init {
 	public static function get_password_schema() {
 		$schema = array(
 			'name'      => array(
-				'description' => __( "The name of the new password" ),
+				'description' => __( "The name of the new password", 'awesome-support' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
 			'password'  => array(
-				'description' => __( "The hashed password that was created" ),
+				'description' => __( "The hashed password that was created", 'awesome-support' ),
 				'type'        => 'string',
 				'format'      => 'date-time',
 				'context'     => array( 'edit' ),
 			),
 			'created'   => array(
-				'description' => __( 'The date the password was created' ),
+				'description' => __( 'The date the password was created', 'awesome-support' ),
 				'type'        => 'string',
 				'format'      => 'date-time',
 				'context'     => array( 'view', 'edit' ),
 			),
 			'last_used' => array(
-				'description' => __( 'The date the password was last used' ),
+				'description' => __( 'The date the password was last used', 'awesome-support' ),
 				'type'        => 'string',
 				'format'      => 'date-time',
 				'context'     => array( 'view', 'edit' ),
 			),
 			'last_ip'   => array(
-				'description' => __( 'The IP address that the password was last used from' ),
+				'description' => __( 'The IP address that the password was last used from', 'awesome-support' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 			),
 			'slug'      => array(
-				'description' => __( 'The password\'s unique sluge' ),
+				'description' => __( 'The password\'s unique sluge', 'awesome-support' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 			),

@@ -30,7 +30,7 @@ class GASFrameworkCustomizer {
 		$this->settings = array_merge( $this->defaultSettings, $settings );
 
 		if ( empty( $this->settings['name'] ) ) {
-			$this->settings['name'] = __( 'More Options', 'gas-framework' );
+			$this->settings['name'] = __( 'More Options',  'awesome-support' );
 		}
 
 		if ( empty( $this->settings['id'] ) ) {
@@ -85,11 +85,6 @@ class GASFrameworkCustomizer {
 		$generated = array(
 			'css' => '',
 		);
-
-		//Check permission for capability of current user
-		if ( ! current_user_can( 'read') ) {
-			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to ajax handler for generating CSS.', 'awesome-support') ), 403);
-		}
 
 		foreach ( GASFramework::getAllInstances() as $framework ) {
 

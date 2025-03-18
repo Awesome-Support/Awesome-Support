@@ -26,11 +26,11 @@ class PasswordList extends \WP_List_Table {
 	 */
 	public function get_columns() {
 		return array(
-			'name'      => wp_strip_all_tags( __( 'Name' ) ),
-			'created'   => wp_strip_all_tags( __( 'Created' ) ),
-			'last_used' => wp_strip_all_tags( __( 'Last Used' ) ),
-			'last_ip'   => wp_strip_all_tags( __( 'Last IP' ) ),
-			'revoke'    => wp_strip_all_tags( __( 'Revoke' ) ),
+			'name'      => wp_strip_all_tags( __( 'Name', 'awesome-support' ) ),
+			'created'   => wp_strip_all_tags( __( 'Created', 'awesome-support' ) ),
+			'last_used' => wp_strip_all_tags( __( 'Last Used', 'awesome-support' ) ),
+			'last_ip'   => wp_strip_all_tags( __( 'Last IP', 'awesome-support' ) ),
+			'revoke'    => wp_strip_all_tags( __( 'Revoke', 'awesome-support' ) ),
 		);
 	}
 
@@ -75,7 +75,7 @@ class PasswordList extends \WP_List_Table {
 				}
 				return $item['last_ip'];
 			case 'revoke':
-				return get_submit_button( __( 'Revoke' ), 'delete', 'revoke-wpas-api-passwords', false );
+				return get_submit_button( __( 'Revoke', 'awesome-support' ), 'delete', 'revoke-wpas-api-passwords', false );
 			default:
 				return '';
 		}

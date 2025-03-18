@@ -24,7 +24,7 @@ class TicketReplies extends TicketBase {
 		register_rest_route( $this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/' . $this->rest_base, array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.' ),
+					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -51,12 +51,12 @@ class TicketReplies extends TicketBase {
 		register_rest_route($this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/' . $this->rest_base . '/(?P<id>[\d]+)', array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.' ),
+					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
 				'id' => array(
-					'description' => __( 'Unique identifier for the reply.' ),
+					'description' => __( 'Unique identifier for the reply.', 'awesome-support' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -81,7 +81,7 @@ class TicketReplies extends TicketBase {
 					'force' => array(
 						'type'        => 'boolean',
 						'default'     => false,
-						'description' => __( 'Whether to bypass trash and force deletion.' ),
+						'description' => __( 'Whether to bypass trash and force deletion.', 'awesome-support' ),
 					),
 				),
 			),
@@ -140,7 +140,7 @@ class TicketReplies extends TicketBase {
 //		);
 
 		$schema['properties']['author'] = array(
-			'description' => __( 'The ID for the author of the object.' ),
+			'description' => __( 'The ID for the author of the object.', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit', 'embed' ),
 			'arg_options' => array(
@@ -149,7 +149,7 @@ class TicketReplies extends TicketBase {
 		);
 
 		$schema['properties']['parent'] = array(
-			'description' => __( 'The ID for the ticket of the reply.' ),
+			'description' => __( 'The ID for the ticket of the reply.', 'awesome-support' ),
 			'type'        => 'integer',
 			'readonly'    => true,
 			'context'     => array( 'view', 'edit' ),

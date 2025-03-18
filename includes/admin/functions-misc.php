@@ -618,7 +618,7 @@ function wpas_admin_tabs($type, $tabs = array()) {
 
 			</ul>
 		</div>
-		<?php echo implode('', $tab_content_ar) ; //echo wp_kses(implode('', $tab_content_ar), get_allowed_html_wp_notifications()); ?>
+		<?php echo wp_kses(implode('', $tab_content_ar), get_allowed_html_wp_notifications()); ?>
 	</div>
 <?php
 
@@ -666,12 +666,12 @@ if (is_admin()) {
 			'wp-color-picker',
 			'wpColorPickerL10n',
 			array(
-				'clear'            => __('Clear'),
-				'clearAriaLabel'   => __('Clear color'),
-				'defaultString'    => __('Default'),
-				'defaultAriaLabel' => __('Select default color'),
-				'pick'             => __('Select Color'),
-				'defaultLabel'     => __('Color value'),
+				'clear'            => __('Clear', 'awesome-support' ),
+				'clearAriaLabel'   => __('Clear color', 'awesome-support' ),
+				'defaultString'    => __('Default', 'awesome-support' ),
+				'defaultAriaLabel' => __('Select default color', 'awesome-support' ),
+				'pick'             => __('Select Color', 'awesome-support' ),
+				'defaultLabel'     => __('Color value', 'awesome-support' ),
 			)
 		);
 	}

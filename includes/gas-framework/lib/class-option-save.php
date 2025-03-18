@@ -18,13 +18,13 @@ class GASFrameworkOptionSave extends GASFrameworkOption {
 		}
 
 		if ( empty( $this->settings['save'] ) ) {
-			$this->settings['save'] = __( 'Save Changes', 'gas-framework' );
+			$this->settings['save'] = __( 'Save Changes', 'awesome-support' );
 		}
 		if ( empty( $this->settings['reset'] ) ) {
-			$this->settings['reset'] = __( 'Reset to Defaults', 'gas-framework' );
+			$this->settings['reset'] = __( 'Reset to Defaults', 'awesome-support' );
 		}
 		if ( empty( $this->settings['reset_question'] ) ) {
-			$this->settings['reset_question'] = __( 'Are you sure you want to reset ALL options to their default values?', 'gas-framework' );
+			$this->settings['reset_question'] = __( 'Are you sure you want to reset ALL options to their default values?', 'awesome-support' );
 		}
 
 		?>
