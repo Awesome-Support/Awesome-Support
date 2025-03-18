@@ -24,7 +24,7 @@ class GASFrameworkOptionSelectPages extends GASFrameworkOptionSelect {
 		}
 
 		$this->settings['options'] = array(
-			'' => '— ' . __( 'Select', 'gas-framework' ) . ' —'
+			'' => '— ' . __( 'Select',  'awesome-support' ) . ' —'
 		);
 
 		// Print all the other pages
@@ -32,7 +32,7 @@ class GASFrameworkOptionSelectPages extends GASFrameworkOptionSelect {
 			$title = $page->post_title;
 			if ( empty( $title ) ) {
 				// translators: %s is the title.
-				$x_content = __( 'Untitled %s', 'gas-framework' );
+				$x_content = __( 'Untitled %s',  'awesome-support' );
 				$title = sprintf( $x_content, '(ID #' . $page->ID . ')' );
 			}
 			$this->settings['options'][ $page->ID ] = $title;

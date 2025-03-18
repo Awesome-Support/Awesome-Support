@@ -24,7 +24,7 @@ class TicketHistory extends TicketBase {
 		register_rest_route( $this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/' . $this->rest_base, array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.' ),
+					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
 					'type'        => 'integer',
 				),
 			),
@@ -43,7 +43,7 @@ class TicketHistory extends TicketBase {
 		);
 		if ( isset( $schema['properties']['password'] ) ) {
 			$get_item_args['password'] = array(
-				'description' => __( 'The password for the post if it is password protected.' ),
+				'description' => __( 'The password for the post if it is password protected.', 'awesome-support' ),
 				'type'        => 'string',
 			);
 		}
@@ -51,11 +51,11 @@ class TicketHistory extends TicketBase {
 		register_rest_route($this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/' . $this->rest_base . '/(?P<id>[\d]+)', array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.' ),
+					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
 					'type'        => 'integer',
 				),
 				'id' => array(
-					'description' => __( 'Unique identifier for the history.' ),
+					'description' => __( 'Unique identifier for the history.', 'awesome-support' ),
 					'type'        => 'integer',
 				),
 			),
@@ -87,7 +87,7 @@ class TicketHistory extends TicketBase {
 		}
 
 		$schema['properties']['content'] = array(
-			'description' => __( 'The content for the object.' ),
+			'description' => __( 'The content for the object.', 'awesome-support' ),
 			'type'        => 'object',
 			'context'     => array( 'view', 'edit', 'embed' ),
 			'arg_options' => array(
@@ -95,18 +95,18 @@ class TicketHistory extends TicketBase {
 			),
 			'properties'  => array(
 				'raw'       => array(
-					'description' => __( 'Content for the object, as it exists in the database.' ),
+					'description' => __( 'Content for the object, as it exists in the database.', 'awesome-support' ),
 					'type'        => 'string',
 					'context'     => array( 'edit' ),
 				),
 				'rendered'  => array(
-					'description' => __( 'HTML content for the object, transformed for display.' ),
+					'description' => __( 'HTML content for the object, transformed for display.', 'awesome-support' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'protected' => array(
-					'description' => __( 'Whether the content is protected with a password.' ),
+					'description' => __( 'Whether the content is protected with a password.', 'awesome-support' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
