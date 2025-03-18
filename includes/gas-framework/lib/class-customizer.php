@@ -86,6 +86,11 @@ class GASFrameworkCustomizer {
 			'css' => '',
 		);
 
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'read') ) {
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to ajax handler for generating CSS.', 'awesome-support') ), 403);
+		}
+
 		foreach ( GASFramework::getAllInstances() as $framework ) {
 
 			// Modify the values of the options for the generation of CSS with the values from the customizer $_POST.
