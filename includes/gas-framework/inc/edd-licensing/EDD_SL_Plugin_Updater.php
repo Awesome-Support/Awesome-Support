@@ -174,6 +174,8 @@ class GASF_EDD_SL_Plugin { // Namespaced to PBS for error protection
 			$update_cache->last_checked = time();
 			$update_cache->checked[ $this->name ] = $this->version;
 
+			set_site_transient( 'update_plugins', $update_cache );
+			
 		} else {
 
 			$version_info = $update_cache->response[ $this->name ];
