@@ -37,7 +37,7 @@ class GASFrameworkOptionMulticheck extends GASFrameworkOption {
 		$savedValue = $this->getValue();
 
 		if ( ! empty( $this->settings['select_all'] ) ) {
-			$select_all_label = __( 'Select All' );
+			$select_all_label = __( 'Select All', 'awesome-support' );
 			if ( is_string(  $this->settings['select_all'] ) ) {
 				$select_all_label = $this->settings['select_all'];
 			}
@@ -186,7 +186,7 @@ function registerGASFrameworkOptionMulticheckControl() {
 				echo wp_kses($description, get_allowed_html_wp_notifications());
 
 				if ( ! empty( $this->select_all ) ) {
-					$select_all_label = __( 'Select All' );
+					$select_all_label = __( 'Select All', 'awesome-support' );
 					if ( is_string( $this->select_all ) ) {
 						$select_all_label = $this->select_all;
 					}

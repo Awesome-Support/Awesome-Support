@@ -40,7 +40,7 @@ if ( ! class_exists ( 'PUT_Example_Settings' ) ) { // Don't initialise if there'
 
 		// Add the menu item
 		public function add_settings_submenu() {
-			add_submenu_page( 'options-general.php', __( 'Example Settings', 'plugin-usage-tracker' ), __( 'Example Settings', 'plugin-usage-tracker' ), 'manage_options', 'example-settings-page', array ( $this, 'options_page' ) );
+			add_submenu_page( 'options-general.php', __( 'Example Settings','awesome-support' ), __( 'Example Settings','awesome-support' ), 'manage_options', 'example-settings-page', array ( $this, 'options_page' ) );
 		}
 
 		public function register_options_init() {
@@ -49,34 +49,34 @@ if ( ! class_exists ( 'PUT_Example_Settings' ) ) { // Don't initialise if there'
 
 			add_settings_section (
 				'wisdom_example_options_section',
-				__( 'Example Settings', 'plugin-usage-tracker' ),
+				__( 'Example Settings','awesome-support' ),
 				array ( $this, 'example_settings_section_callback' ),
 				'wisdom_example_options'
 			);
 			add_settings_field (
 				'text_field_example',
-				__( 'Text field:', 'plugin-usage-tracker' ),
+				__( 'Text field:','awesome-support' ),
 				array ( $this, 'text_field_example_render' ),
 				'wisdom_example_options',
 				'wisdom_example_options_section'
 			);
 			add_settings_field (
 				'checkbox_example',
-				__( 'Checkbox', 'plugin-usage-tracker' ),
+				__( 'Checkbox','awesome-support' ),
 				array ( $this, 'checkbox_example_render' ),
 				'wisdom_example_options',
 				'wisdom_example_options_section'
 			);
 			add_settings_field (
 				'select_example',
-				__( 'Select', 'plugin-usage-tracker' ),
+				__( 'Select','awesome-support' ),
 				array ( $this, 'select_example_render' ),
 				'wisdom_example_options',
 				'wisdom_example_options_section'
 			);
 			add_settings_field (
 				'wisdom_opt_out',
-				__( 'Opt out', 'plugin-usage-tracker' ),
+				__( 'Opt out','awesome-support' ),
 				array ( $this, 'opt_out_example_render' ),
 				'wisdom_example_options',
 				'wisdom_example_options_section'
@@ -94,7 +94,7 @@ if ( ! class_exists ( 'PUT_Example_Settings' ) ) { // Don't initialise if there'
 
 		public function get_default_options_settings() {
 			$defaults = array(
-				'text_field_example'		=>	__( 'Default setting', 'plugin-usage-tracker' ),
+				'text_field_example'		=>	__( 'Default setting','awesome-support' ),
 				'checkbox_example'			=> 1,
 				'select_example'			=> 'option-1',
 				'wisdom_opt_out'			=> '',
@@ -125,7 +125,7 @@ if ( ! class_exists ( 'PUT_Example_Settings' ) ) { // Don't initialise if there'
 			$options = get_option( 'wisdom_example_options_settings' );
 			?>
 			<input type='checkbox' name='wisdom_example_options_settings[wisdom_opt_out]' <?php checked ( ! empty ( $options['wisdom_opt_out'] ), 1 ); ?> value='1'>
-			<p class="description"><?php esc_html_e( 'You previously opted in to sending tracking details. You can change that setting here.', 'plugin-usage-tracker' ); ?></p>
+			<p class="description"><?php esc_html_e( 'You previously opted in to sending tracking details. You can change that setting here.','awesome-support' ); ?></p>
 			<?php
 		}
 
@@ -137,15 +137,15 @@ if ( ! class_exists ( 'PUT_Example_Settings' ) ) { // Don't initialise if there'
 			}
 			?>
 			<select name='wisdom_example_options_settings[select_example]'>
-				<option value="option-1" <?php selected( esc_attr( $value ), 'option-1' ); ?>><?php esc_html_e( 'Option 1', 'plugin-usage-tracker' ); ?></option>
-				<option value="option-2" <?php selected( esc_attr( $value ), 'option-2' ); ?>><?php esc_html_e( 'Option 2', 'plugin-usage-tracker' ); ?></option>
-				<option value="option-3" <?php selected( esc_attr( $value ), 'option-3' ); ?>><?php esc_html_e( 'Option 3', 'plugin-usage-tracker' ); ?></option>
+				<option value="option-1" <?php selected( esc_attr( $value ), 'option-1' ); ?>><?php esc_html_e( 'Option 1','awesome-support' ); ?></option>
+				<option value="option-2" <?php selected( esc_attr( $value ), 'option-2' ); ?>><?php esc_html_e( 'Option 2','awesome-support' ); ?></option>
+				<option value="option-3" <?php selected( esc_attr( $value ), 'option-3' ); ?>><?php esc_html_e( 'Option 3','awesome-support' ); ?></option>
 			</select>
 			<?php
 		}
 
 		public function example_settings_section_callback() {
-			echo '<p>' . esc_html__( 'These settings are for example only.', 'plugin-usage-tracker' ) . '</p>';
+			echo '<p>' . esc_html__( 'These settings are for example only.','awesome-support' ) . '</p>';
 		}
 
 		public function options_page() { ?>

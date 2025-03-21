@@ -33,7 +33,7 @@ class GASFrameworkOptionMulticheckPosts extends GASFrameworkOptionMulticheck {
 			$title = $post->post_title;
 			if ( empty( $title ) ) {
 				// translators: %s is the title.
-				$x_content = __( 'Untitled %s', 'gas-framework' );
+				$x_content = __( 'Untitled %s', 'awesome-support' );
 				$title = sprintf( $x_content, '(ID #' . $post->ID . ')' );
 			}
 			$this->settings['options'][ $post->ID ] = $title;
@@ -61,7 +61,7 @@ class GASFrameworkOptionMulticheckPosts extends GASFrameworkOptionMulticheck {
 			$title = $post->post_title;
 			if ( empty( $title ) ) {
 				// translators: %s is the title.
-				$x_content = __( 'Untitled %s', 'gas-framework' );
+				$x_content = __( 'Untitled %s', 'awesome-support' );
 				$title = sprintf( $x_content, '(ID #' . $post->ID . ')' );
 			}
 			$this->settings['options'][ $post->ID ] = $title;

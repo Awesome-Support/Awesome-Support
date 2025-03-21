@@ -293,7 +293,7 @@ class WPAS_File_Upload {
 		<div class="wpas-auto-delete-attachments-container">
 			<label for="wpas-auto-delete-attachments">
 				<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1" <?php checked(1, $flag_on); ?>>
-				<?php esc_html_e( 'Automatically delete attachments when a ticket is closed', 'wpas' ); ?>
+				<?php esc_html_e( 'Automatically delete attachments when a ticket is closed', 'awesome-support' ); ?>
 			</label>
 		</div>
 		<?php
@@ -394,7 +394,7 @@ class WPAS_File_Upload {
 		$nonce = isset( $_POST['att_delete_nonce'] ) ? sanitize_file_name( wp_unslash( $_POST['att_delete_nonce'] ) ) : '';
 		
 		if ( empty( $nonce ) || !check_ajax_referer( 'wpas-delete-attachs', 'att_delete_nonce' ) ) { 		
-			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'wpas') ) );
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'awesome-support') ) );
 			die();
 		}
 		$user = wp_get_current_user();
@@ -425,12 +425,12 @@ class WPAS_File_Upload {
 
 						if (!$attachment || $attachment->post_type !== 'attachment') {
 							// Attachment not found							
-							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'wpas') ) );
+							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'awesome-support') ) );
 							die();
 						}
 						
 						if ( ! current_user_can( 'delete_attachment', $attachment_id ) ) {							
-							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'wpas') ) );
+							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'awesome-support') ) );
 							die();
 						}
 						
@@ -451,9 +451,9 @@ class WPAS_File_Upload {
 		}
 
 		if( $deleted ) {
-			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'wpas' ) ) );
+			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'awesome-support' ) ) );
 		} else {
-			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'wpas') ) );
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'awesome-support') ) );
 		}
 
 		die();
@@ -1183,7 +1183,7 @@ class WPAS_File_Upload {
 							 */
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
-							$upload_dir = wp_upload_dir();							
+							$upload_dir = wp_upload_dir();
 							$post_id_encode = md5($post_id . NONCE_SALT);	
 							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
@@ -2026,7 +2026,7 @@ class WPAS_File_Upload {
 			$accept = implode( ',', $accept );
 
 			foreach( glob( $dir . '{' . $accept . '}', GLOB_BRACE ) as $file ) {
-				
+
 				$reply_id_encode = md5($reply_id . NONCE_SALT);	
 				$new_file_relative_dir = 'awesome-support/ticket_' . $reply_id_encode;
 

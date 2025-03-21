@@ -34,7 +34,7 @@ class GASFrameworkMetaBox {
 		$this->settings = array_merge( $this->defaultSettings, $settings );
 		// $this->options = $options;
 		if ( empty( $this->settings['name'] ) ) {
-			$this->settings['name'] = __( 'More Options', 'gas-framework' );
+			$this->settings['name'] = __( 'More Options', 'awesome-support' );
 		}
 
 		if ( empty( $this->settings['id'] ) ) {

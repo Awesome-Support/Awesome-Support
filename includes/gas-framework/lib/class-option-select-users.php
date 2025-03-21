@@ -16,7 +16,7 @@ class GASFrameworkOptionSelectUsers extends GASFrameworkOptionSelect {
         $users = get_users();
 
         $this->settings['options'] = array(
-            '' => '— ' . __( 'Select', 'gas-framework' ) . ' —'
+            '' => '— ' . __( 'Select', 'awesome-support' ) . ' —'
         );
 
         /** @var  $user WP_User */

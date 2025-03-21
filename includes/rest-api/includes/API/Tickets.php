@@ -769,7 +769,7 @@ class Tickets extends TicketBase {
 
 		$fields['state'] = array(
 			'default'     => 'open',
-			'description' => __( 'Limit result set to tickets in the specified state.' ),
+			'description' => __( 'Limit result set to tickets in the specified state.', 'awesome-support' ),
 			'type'        => 'string',
 			'query_cb'    => array( $this, 'query_state' ),
 			'update_cb'   => array( $this, 'update_state' ),
@@ -783,7 +783,7 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['author'] = array(
-			'description' => __( 'The ID for the author of the object.' ),
+			'description' => __( 'The ID for the author of the object.', 'awesome-support' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit', 'embed' ),
 			'query_cb'    => true,

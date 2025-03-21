@@ -35,7 +35,7 @@ class TicketStatus extends TicketBase {
 		register_rest_route( $this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/status', array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.' ),
+					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),

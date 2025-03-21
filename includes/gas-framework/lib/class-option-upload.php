@@ -268,10 +268,10 @@ class GASFrameworkOptionUpload extends GASFrameworkOption {
 
 				// Uploader frame properties.
 				var frame = wp.media({
-					title: '<?php esc_html_e( 'Select Image', 'gas-framework' ) ?>',
+					title: '<?php esc_html_e( 'Select Image', 'awesome-support' ) ?>',
 					multiple: false,
 					library: { type: 'image' },
-					button : { text : '<?php esc_html_e( 'Use image', 'gas-framework' ) ?>' }
+					button : { text : '<?php esc_html_e( 'Use image', 'awesome-support' ) ?>' }
 				});
 
 				// Get the url when done.
@@ -397,6 +397,7 @@ if ( ! function_exists( 'tf_upload_option_customizer_get_value' ) ) {
 			if ( ! current_user_can( 'read') ) {
                 wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to returns the image URL.', 'awesome-support') ), 403);
 			}
+			
 			$nonce = sanitize_text_field( wp_unslash( $_POST['nonce'] ) );
 			$attachmentID = sanitize_text_field( wp_unslash( $_POST['id'] ) );
 			$size = sanitize_text_field( wp_unslash( $_POST['size'] ) );

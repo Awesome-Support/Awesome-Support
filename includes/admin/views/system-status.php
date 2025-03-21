@@ -125,11 +125,11 @@
 		</tr>
 		<tr>
 			<td class="row-title">Multiple Products</td>
-			<td><?php true === boolval( wpas_get_option( 'support_products' ) ) ? esc_html_e( 'Enabled', 'awesome-support' ) : esc_html_e( 'Disabled', 'wpas '); ?></td>
+			<td><?php true === boolval( wpas_get_option( 'support_products' ) ) ? esc_html_e( 'Enabled', 'awesome-support' ) : esc_html_e( 'Disabled', 'awesome-support'); ?></td>
 		</tr>
 		<tr class="alt">
 			<td class="row-title">Registration Status</td>
-			<td><?php 'allow' === wpas_get_option( 'allow_registrations' ) ? esc_html_e( 'Open', 'awesome-support' ) : esc_html_e( 'Closed', 'wpas '); ?></td>
+			<td><?php 'allow' === wpas_get_option( 'allow_registrations' ) ? esc_html_e( 'Open', 'awesome-support' ) : esc_html_e( 'Closed', 'awesome-support'); ?></td>
 		</tr>
 		<tr>
 			<td class="row-title">Registration Page</td>
@@ -192,7 +192,7 @@
 		</tr>
 		<tr class="alt">
 			<td class="row-title">WYSIWYG On Front</td>
-			<td><?php true === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ? esc_html_e( 'Yes', 'awesome-support' ) : esc_html_e( 'No', 'wpas '); ?></td>
+			<td><?php true === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ? esc_html_e( 'Yes', 'awesome-support' ) : esc_html_e( 'No', 'awesome-support'); ?></td>
 		</tr>
 	</tbody>
 </table>
