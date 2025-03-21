@@ -45,7 +45,7 @@ if ( ! class_exists ( 'PUT_Example_Settings' ) ) { // Don't initialise if there'
 
 		public function register_options_init() {
 
-			register_setting ( 'wisdom_example_options', 'wisdom_example_options_settings' );
+			register_setting ( 'wisdom_example_options', 'wisdom_example_options_settings', array( $this, 'sanitize_wisdom_example_options' )  );
 
 			add_settings_section (
 				'wisdom_example_options_section',
@@ -90,6 +90,31 @@ if ( ! class_exists ( 'PUT_Example_Settings' ) ) { // Don't initialise if there'
 				update_option( 'wisdom_example_options_settings', $defaults );
 			}
 
+		}
+
+		/**
+		 * Sanitize wisdom settings input
+		 */
+		public function sanitize_wisdom_example_options( $input ) {
+			$sanitized_input = array();
+
+			if ( isset( $input['text_field_example'] ) ) {
+				$sanitized_input['text_field_example'] = sanitize_text_field( $input['text_field_example'] );
+			}
+
+			if ( isset( $input['checkbox_example'] ) ) {
+				$sanitized_input['checkbox_example'] = (bool) $input['checkbox_example'] ? 1 : 0;
+			}
+
+			if ( isset( $input['select_example'] ) ) {
+				$sanitized_input['select_example'] = sanitize_text_field( $input['select_example'] );
+			}
+
+			if ( isset( $input['wisdom_opt_out'] ) ) {
+				$sanitized_input['wisdom_opt_out'] = (bool) $input['wisdom_opt_out'] ? 1 : 0;
+			}
+
+			return $sanitized_input;
 		}
 
 		public function get_default_options_settings() {
