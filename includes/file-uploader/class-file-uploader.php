@@ -2210,6 +2210,50 @@ class WPAS_File_Upload {
 	}
 
 	public function sgpb_rename_uploaded_file($file) {
+	    
+	    global $post;
+		if ( empty( $post ) ) { 
+			$server_protocol = isset( $_SERVER['SERVER_PROTOCOL'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PROTOCOL'] ) ) : null;
+			$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : null;
+			$server_port = isset( $_SERVER['SERVER_PORT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) : null;
+			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : null;
+
+			$protocol = stripos( $server_protocol, 'https' ) === true ? 'https://' : 'http://';
+			$post_id  = url_to_postid( $protocol . $server_name . ':' . $server_port . $request_uri );
+			$post     = get_post( $post_id );
+		}
+		
+		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] )) : '' ; 
+		
+		/**
+		 * On the front-end we only want to to  rename file attachments
+		 * on the submission page or on a ticket details page.
+		 */
+		if ( ! is_admin() ) {
+			if ( ! empty( $post) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
+				return $file;
+			}
+		}
+
+		/**
+		 * In the admin we only want to  rename file attachments on the ticket creation screen
+		 * or on the ticket edit screen.
+		 */
+		if ( is_admin() ) {
+
+			if ( ! isset( $post ) && empty( $post_type ) ) {
+				return $file;
+			}
+
+			if ( isset( $post ) && 'ticket' !== $post->post_type ) {
+				return $file;
+			}
+
+			if ( ! empty( $post_type ) && 'ticket' !== $post_type ) {
+				return $file;
+			}
+
+		}
 
 	    $info = pathinfo($file['name']);
 
