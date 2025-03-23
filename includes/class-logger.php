@@ -50,9 +50,9 @@ class WPAS_Logger {
 		// Initialize WP_Filesystem if not already initialized
 		if ( empty( $wp_filesystem ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
-			WP_Filesystem();
 		}
-	
+		WP_Filesystem();
+
 		$file = $this->open();
 	
 		if ( $file && $wp_filesystem->exists( $file ) ) {
@@ -164,9 +164,9 @@ class WPAS_Logger {
 
 		if ( empty( $wp_filesystem ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
-			WP_Filesystem();
 		}
-	
+		WP_Filesystem();
+
 		$path = $this->get_logs_path();
 		if ( ! $path ) {
 			return false;
@@ -194,9 +194,9 @@ class WPAS_Logger {
 		// Initialize WP_Filesystem if not already initialized
 		if ( empty( $wp_filesystem ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
-			WP_Filesystem();
 		}
-	
+		WP_Filesystem();
+
 		// Get the log file path
 		$file = $this->get_log_file_path();
 	
@@ -222,9 +222,9 @@ class WPAS_Logger {
 		// Initialize WP_Filesystem if not already initialized
 		if ( empty( $wp_filesystem ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
-			WP_Filesystem();
 		}
-	
+		WP_Filesystem();
+		
 		// Get the log file path
 		$file = $this->open();
 	
