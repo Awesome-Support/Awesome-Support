@@ -992,8 +992,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		return false;
 	}
 
-	if ( ! current_user_can( 'reply_ticket' ) ) {
-		
+    if ( ! current_user_can( 'reply_ticket' ) && ( !defined( 'DOING_CRON' ) || !DOING_CRON ) ) {		
 		return false;
 	}
 
