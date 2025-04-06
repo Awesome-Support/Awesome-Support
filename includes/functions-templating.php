@@ -1022,10 +1022,33 @@
 	function wpas_cf_display_time_hhmm( $field, $post_id ) {
 
 		$minutes = (int) get_post_meta( $post_id, '_wpas_' . $field, true );
-
-		if ( ! empty( $minutes ) ) {
-			echo wp_kses(sprintf( "%02d:%02d", floor( $minutes / 60 ), ( $minutes ) % 60 ), get_allowed_html_wp_notifications());
+		$adjustment_operator = ($minutes < 0 ) ? '-' : ''; 
+		$minutes = ($minutes < 0 ) ? $minutes * (-1) : (int)$minutes;
+		if ( isset( $minutes ) && is_numeric( $minutes ) ) {
+			echo wp_kses(sprintf( $adjustment_operator."%02dh:%02dm", floor( $minutes / 60 ), ( $minutes ) % 60 ), get_allowed_html_wp_notifications());
 		}
+
+	}
+
+	/***
+	 * Display integer as hh:mm:ss
+	 *
+	 * @since 3.3.5
+	 *
+	 * @param $field
+	 *
+	 * @param $post_id
+	 */
+	function wpas_cf_email_display_time_hhmm( $field, $post_id ) {
+
+		$minutes = (int) get_post_meta( $post_id, '_wpas_' . $field, true );
+		$adjustment_operator = ($minutes < 0 ) ? '-' : ''; 
+		$minutes = ($minutes < 0 ) ? $minutes * (-1) : (int)$minutes;
+		if ( isset( $minutes ) && is_numeric( $minutes ) ) {
+			return wp_kses(sprintf( $adjustment_operator."%02dh:%02dm", floor( $minutes / 60 ), ( $minutes ) % 60 ), get_allowed_html_wp_notifications());
+		}
+
+		return $minutes;
 
 	}
 
@@ -1041,18 +1064,17 @@
 	function wpas_cf_display_time_adjustment_column( $field, $post_id ) {
 
 		$minutes = (int) get_post_meta( $post_id, '_wpas_ttl_adjustments_to_time_spent_on_ticket', true );
-		$minutes = sprintf( "%02d:%02d", floor( $minutes / 60 ), ( $minutes ) % 60 );
+		//$adjustment_operator = get_post_meta( $post_id, '_wpas_time_adjustments_pos_or_neg', true );
+		if ( ! empty( $minutes ) ) {
+			$adjustment_operator = ($minutes < 0 ) ? '-' : '+'; 
+			$minutes = ($minutes < 0 ) ? $minutes * (-1) : (int)$minutes;
+			$minutes = sprintf( "%02dh:%02dm", floor( $minutes / 60 ), ( $minutes ) % 60 );
+			if ( '+' === $adjustment_operator ) {
+				echo wp_kses("<span style='color: #6ddb32;'>$adjustment_operator</span> <span>$minutes</span>", get_allowed_html_wp_notifications());
+			} elseif ( '-' === $adjustment_operator ) {
+				echo wp_kses("<span style='color: #dd3333;'>$adjustment_operator</span> (<span style='color: #dd3333;'>$minutes</span>)", get_allowed_html_wp_notifications());
 
-		$adjustment_operator = get_post_meta( $post_id, '_wpas_time_adjustments_pos_or_neg', true );
-
-		if ( '+' === $adjustment_operator ) {
-
-			echo wp_kses("<span style='color: #6ddb32;'>$adjustment_operator</span> <span>$minutes</span>", get_allowed_html_wp_notifications());
-
-		} elseif ( '-' === $adjustment_operator ) {
-
-			echo wp_kses("<span style='color: #dd3333;'>$adjustment_operator</span> (<span style='color: #dd3333;'>$minutes</span>)", get_allowed_html_wp_notifications());
-
+			}
 		}
 
 	}

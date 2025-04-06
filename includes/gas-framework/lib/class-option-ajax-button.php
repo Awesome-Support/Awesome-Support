@@ -27,10 +27,14 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 	 */
 	public function ajaxSecurityChecker() {
 		if ( empty( $_POST['nonce'] ) ) {
-			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'gas-framework' ) );
+			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'awesome-support' ) );
+		}
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'read') ) {
+			wp_send_json_error(  array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ), 403 );
 		}
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'tf-ajax-button' ) ) {
-			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'gas-framework' ) );
+			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'awesome-support' ) );
 		}
 	}
 
@@ -42,6 +46,10 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 	 * @return	void
 	 */
 	public function ajaxLastSuccess() {
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'read') ) {
+			wp_send_json_error(  array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ), 403 );
+		}
 		wp_send_json_success();
 	}
 
@@ -84,7 +92,7 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 			$this->settings['success_callback'][] = '';
 		}
 		while ( count( $this->settings['error_callback'] ) < count( $this->settings['action'] ) ) {
-			$this->settings['error_callback'][] = __( 'Something went wrong', 'gas-framework' );
+			$this->settings['error_callback'][] = __( 'Something went wrong', 'awesome-support' );
 		}
 		while ( count( $this->settings['data_filter_callback'] ) < count( $this->settings['action'] ) ) {
 			$this->settings['data_filter_callback'][] = '';
@@ -92,12 +100,12 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 
 		foreach ( $this->settings['label'] as $i => $label ) {
 			if ( empty( $label ) ) {
-				$this->settings['label'][ $i ] = __( 'Click me', 'gas-framework' );
+				$this->settings['label'][ $i ] = __( 'Click me', 'awesome-support' );
 			}
 		}
 		foreach ( $this->settings['wait_label'] as $i => $label ) {
 			if ( empty( $label ) ) {
-				$this->settings['wait_label'][ $i ] = __( 'Please wait...', 'gas-framework' );
+				$this->settings['wait_label'][ $i ] = __( 'Please wait...', 'awesome-support' );
 			}
 		}
 		foreach ( $this->settings['error_label'] as $i => $label ) {

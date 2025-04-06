@@ -85,15 +85,15 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 	function __construct( $settings, $owner ) {
 		parent::__construct( $settings, $owner );
 
-		tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'loadAdminScripts' ) );
-		tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'loadAdminScripts' ) );
-		tf_add_action_once( 'admin_head', array( __CLASS__, 'createFontScript' ) );
-		tf_add_action_once( 'wp_enqueue_scripts', array( $this, 'enqueueGooglefonts' ) );
+		gas_tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'loadAdminScripts' ) );
+		gas_tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'loadAdminScripts' ) );
+		gas_tf_add_action_once( 'admin_head', array( __CLASS__, 'createFontScript' ) );
+		gas_tf_add_action_once( 'wp_enqueue_scripts', array( $this, 'enqueueGooglefonts' ) );
 		add_filter( 'tf_generate_css_font_' . $this->getOptionNamespace(), array( $this, 'generateCSS' ), 10, 2 );
 
 		// Customizer preview handling
-		tf_add_action_once( 'tf_generate_customizer_preview_js', array( $this, 'generateCustomizerPreviewJS' ) );
-		tf_add_filter_once( 'tf_generate_customizer_preview_css_' . $this->getOptionNamespace(), array( $this, 'generateCustomizerPreviewCSS' ) );
+		gas_tf_add_action_once( 'tf_generate_customizer_preview_js', array( $this, 'generateCustomizerPreviewJS' ) );
+		gas_tf_add_filter_once( 'tf_generate_customizer_preview_css_' . $this->getOptionNamespace(), array( $this, 'generateCustomizerPreviewCSS' ) );
 
 		if ( $this->settings['enqueue'] ) {
 			self::$optionsToEnqueue[] = $this;

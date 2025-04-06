@@ -18,7 +18,7 @@ class GASFrameworkOptionMulticheckPostTypes extends GASFrameworkOptionMulticheck
 	public function display() {
 
 		// Fetch post types.
-		$post_types = tf_get_post_types( $this->settings['public'], $this->settings['value'] );
+		$post_types = gas_tf_get_post_types( $this->settings['public'], $this->settings['value'] );
 
 		$this->settings['options'] = array();
 		foreach ( $post_types as $post_type ) {
@@ -44,7 +44,7 @@ class GASFrameworkOptionMulticheckPostTypes extends GASFrameworkOptionMulticheck
 	public function registerCustomizerControl( $wp_customize, $section, $priority = 1 ) {
 
 		// Fetch post types.
-		$post_types = tf_get_post_types( $this->settings['public'], $this->settings['value'] );
+		$post_types = gas_tf_get_post_types( $this->settings['public'], $this->settings['value'] );
 
 		$this->settings['options'] = array();
 		foreach ( $post_types as $post_type ) {

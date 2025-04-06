@@ -64,7 +64,7 @@ class CacheHandler extends SessionHandler
     {
         $session_key = $this->sanitize($key);
 
-        wp_cache_set("session_{$session_key}", $data, 'sessions', $this->getExpiration());
+        wp_cache_set("session_$session_key", $data, 'sessions', $this->getExpiration());
 
         return $next($key, $data);
     }
@@ -82,12 +82,12 @@ class CacheHandler extends SessionHandler
     {
         $session_key = $this->sanitize($key);
 
-        $data = wp_cache_get("session_{$session_key}", 'sessions');
+        $data = wp_cache_get("session_$session_key", 'sessions');
         if (false === $data) {
             // Passing the key unsanitized to the next handler to avoid weirdness.
             $data = $next($key);
             if (false !== $data) {
-                wp_cache_set("session_{$session_key}", $data, 'sessions', $this->getExpiration());
+                wp_cache_set("session_$session_key", $data, 'sessions', $this->getExpiration());
             }
         }
 
@@ -106,7 +106,7 @@ class CacheHandler extends SessionHandler
     {
         $session_key = $this->sanitize($key);
 
-        wp_cache_delete("session_{$session_key}", 'sessions');
+        wp_cache_delete("session_$session_key", 'sessions');
 
         return $next($key);
     }

@@ -540,36 +540,34 @@ function wpas_update_last_reply() {
 
 	global $wpdb;
 
-	$sql = <<<SQL
-SELECT
-	wpas_ticket.ID AS ticket_id,
-	wpas_reply.ID AS reply_id,
-	wpas_replies.latest_reply,
-	wpas_replies.latest_reply_gmt,
-	wpas_replies.post_author,
-	wpas_ticket.post_author=wpas_reply.post_author AS client_replied_last
-FROM
-	{$wpdb->posts} AS wpas_ticket
-	LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON wpas_ticket.ID=wpas_reply.post_parent
-	LEFT OUTER JOIN (
-		SELECT
-			post_parent AS ticket_id,
-			post_author as post_author,
-  			post_date_gmt AS latest_reply_gmt,
-			MAX(post_date) AS latest_reply
-		FROM
-			{$wpdb->posts}
-		WHERE 1=1
-			AND 'ticket_reply' = post_type
-		GROUP BY
-			post_parent
-	) wpas_replies ON wpas_replies.ticket_id=wpas_reply.post_parent AND wpas_replies.latest_reply=wpas_reply.post_date
-WHERE 1=1
-	AND wpas_replies.latest_reply IS NOT NULL
-	AND 'ticket_reply'=wpas_reply.post_type
-ORDER BY
-	wpas_replies.latest_reply ASC
-SQL;
+	$sql = "SELECT "
+    . "wpas_ticket.ID AS ticket_id, "
+    . "wpas_reply.ID AS reply_id, "
+    . "wpas_replies.latest_reply, "
+    . "wpas_replies.latest_reply_gmt, "
+    . "wpas_replies.post_author, "
+    . "wpas_ticket.post_author = wpas_reply.post_author AS client_replied_last "
+    . "FROM "
+    . "{$wpdb->posts} AS wpas_ticket "
+    . "LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON wpas_ticket.ID = wpas_reply.post_parent "
+    . "LEFT OUTER JOIN ( "
+    . "SELECT "
+    . "post_parent AS ticket_id, "
+    . "post_author AS post_author, "
+    . "post_date_gmt AS latest_reply_gmt, "
+    . "MAX(post_date) AS latest_reply "
+    . "FROM "
+    . "{$wpdb->posts} "
+    . "WHERE "
+    . "post_type = 'ticket_reply' "
+    . "GROUP BY "
+    . "post_parent "
+    . ") wpas_replies ON wpas_replies.ticket_id = wpas_reply.post_parent AND wpas_replies.latest_reply = wpas_reply.post_date "
+    . "WHERE "
+    . "wpas_replies.latest_reply IS NOT NULL "
+    . "AND wpas_reply.post_type = 'ticket_reply' "
+    . "ORDER BY "
+    . "wpas_replies.latest_reply ASC";
 
 	$test = wpas_get_tickets('any');
 

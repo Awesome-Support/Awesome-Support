@@ -32,8 +32,8 @@ class GASFrameworkOptionDate extends GASFrameworkOption {
 	function __construct( $settings, $owner ) {
 		parent::__construct( $settings, $owner );
 
-		tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'enqueueDatepicker' ) );
-		tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'enqueueDatepicker' ) );
+		gas_tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'enqueueDatepicker' ) );
+		gas_tf_add_action_once( 'customize_controls_enqueue_scripts', array( $this, 'enqueueDatepicker' ) );
 		add_action( 'admin_head', array( __CLASS__, 'createCalendarScript' ) );
 
 		if ( empty( self::$date_epoch ) ) {

@@ -175,7 +175,7 @@ class GASF_EDD_SL_Plugin { // Namespaced to PBS for error protection
 			$update_cache->checked[ $this->name ] = $this->version;
 
 			set_site_transient( 'update_plugins', $update_cache );
-
+			
 		} else {
 
 			$version_info = $update_cache->response[ $this->name ];
@@ -195,7 +195,7 @@ class GASF_EDD_SL_Plugin { // Namespaced to PBS for error protection
 
 			if ( empty( $version_info->download_link ) ) {
 				// translators: %1$s is the name of the item with the new version, %2$s is the link text to view version details, %3$s is the version number, %4$s is the link closure or additional attributes.
-				$x_content = __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'easy-digital-downloads' );
+				$x_content = __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s.', 'awesome-support' );
 
 				printf(
 					wp_kses_post( $x_content),
@@ -207,7 +207,7 @@ class GASF_EDD_SL_Plugin { // Namespaced to PBS for error protection
 			} else {
 
 				// translators: %1$s is the name of the item with the new version, %2$s is the link to view version details, %3$s is the version number, %4$s is the link closure for version details, %5$s is the link to update now, %6$s is the link closure for update now.
-				$x_content = __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'easy-digital-downloads' );
+				$x_content = __( 'There is a new version of %1$s available. %2$sView version %3$s details%4$s or %5$supdate now%6$s.', 'awesome-support' );
 
 				printf(
 					wp_kses_post($x_content),
@@ -353,7 +353,7 @@ class GASF_EDD_SL_Plugin { // Namespaced to PBS for error protection
 		}
 
 		if( ! current_user_can( 'update_plugins' ) ) {
-			wp_die( wp_kses_post(__( 'You do not have permission to install plugin updates', 'easy-digital-downloads' )), wp_kses_post(__( 'Error', 'easy-digital-downloads' )), array( 'response' => 403 ) );
+			wp_die( wp_kses_post(__( 'You do not have permission to install plugin updates', 'awesome-support' )), wp_kses_post(__( 'Error', 'awesome-support' )), array( 'response' => 403 ) );
 		}
 
 		$data         = $edd_plugin_data[ sanitize_key( wp_unslash( $_REQUEST['slug'] ) ) ];

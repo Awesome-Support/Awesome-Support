@@ -122,7 +122,7 @@ class GASFrameworkAdminPage {
 
 
 	public function addGasCreditText() {
-		return __( "<em>Options Page Created with <a href='#'>Gas Framework</a></em>", 'gas-framework' );
+		return __( "<em>Options Page Created with <a href='#'>Gas Framework</a></em>", 'awesome-support' );
 	}
 
 
@@ -130,21 +130,114 @@ class GASFrameworkAdminPage {
 		return $this->owner->optionNamespace;
 	}
 
+	private function gas_sanitize_array($array) {
+	    // Check if the input is an array
+	    if (is_array($array)) {
+	        // Loop through each element of the array
+	        foreach ($array as $key => $value) {
+	            // If the element is an array, recursively sanitize it
+	            if (is_array($value)) {
+	                $array[$key] = $this->gas_sanitize_array($value);
+	            } else {
+	                // Otherwise, sanitize the text field
+	                $array[$key] = sanitize_text_field( wp_unslash( $value) );
+	            }
+	        }
+	    }
+	    return $array;
+	}
 
 	public function save_single_option( $option ) {
+		
 		if ( empty( $option->settings['id'] ) ) {
 			return;
 		}
 
+		$value = '';	
 		if ( isset( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) ) {
-			$value = sanitize_text_field(wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ));
-		} else {
-			$value = '';
+
+			if ( !empty( $option->settings['type'] ) ) {	
+				
+				switch ( $option->settings['type'] ) {
+
+					case 'heading':	
+					case 'note':
+					case 'text':
+					case 'checkbox':
+					case 'radio':
+					case 'number':
+					case 'upload':
+					case 'color':
+					case 'custom':
+					case 'warningmessage':
+					case 'enable': //awesome-support-tasks-and-todos , awesome-support-service-level-agreements
+					case 'date':  //awesome-support-service-level-agreements
+					case 'email-test-config': //awesome-support-email-support
+						$value = sanitize_text_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+					    break;
+
+					case 'select':
+					    if( !is_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) )
+						{
+							$value = sanitize_text_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+						}
+						else
+						{
+							$value = array_map('sanitize_text_field' , wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ]  ) );
+						}					    
+					    break;
+					
+					case 'textarea':
+					    $value = sanitize_textarea_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+					    break;					
+					  
+					case 'editor':					    
+						$value = wp_kses_post( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ));		
+					    break;						    
+					
+					case 'multicheck':
+					    //reports-and-statistics
+						if( !is_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) )
+						{
+							$value = sanitize_text_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+						}
+						else
+						{
+							$value = array_map('sanitize_text_field' , wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ]  ) );
+						}					    
+					    break;
+					case 'multi-checkbox-options':
+					    //agent-front-end
+						if( !is_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) )
+						{
+							$value = sanitize_text_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+						}
+						else
+						{
+							$value = $this->gas_sanitize_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ]);	
+						}
+						break;
+					default:
+					    $value = sanitize_text_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+				}
+
+			}
+			else
+			{
+				if( !is_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) )
+				{
+					$value = sanitize_text_field( wp_unslash( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ] ) );
+					
+				}
+				else
+				{
+					$value = $this->gas_sanitize_array( $_POST[ $this->getOptionNamespace() . '_' . $option->settings['id'] ]);	
+				}
+			}
 		}
 
 		$option->setValue( $value );
 	}
-
 
 	public function saveOptions() {
 		if ( ! $this->verifySecurity() ) {
@@ -163,10 +256,11 @@ class GASFrameworkAdminPage {
 			// we are in a tab
 			if ( ! empty( $activeTab ) ) {
 				foreach ( $activeTab->options as $option ) {
+					
 					$this->save_single_option( $option );
 
 					if ( ! empty( $option->options ) ) {
-						foreach ( $option->options as $group_option ) {
+						foreach ( $option->options as $group_option ) {												
 							$this->save_single_option( $group_option );
 						}
 					}
@@ -273,8 +367,7 @@ class GASFrameworkAdminPage {
 		}
 
 		do_action( 'tf_admin_options_saved_' . $this->getOptionNamespace() );
-
-		wp_redirect( esc_url_raw( $url ) );
+		wp_redirect( esc_url_raw( $url ) );		
 	}
 
 	private function verifySecurity() {
@@ -368,9 +461,9 @@ class GASFrameworkAdminPage {
 		// Display notification if we did something
 		if ( ! empty( $_GET['message'] ) ) {
 			if ( $_GET['message'] == 'saved' ) {
-				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings saved.', 'gas-framework' ) ), esc_html( isset($_GET['message']) ? sanitize_text_field( wp_unslash( $_GET['message'] ) ) : '' ) );
+				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings saved.', 'awesome-support' ) ), esc_html( isset($_GET['message']) ? sanitize_text_field( wp_unslash( $_GET['message'] ) ) : '' ) );
 			} else if ( $_GET['message'] == 'reset' ) {
-				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings reset to default.', 'gas-framework' ) ), esc_html( isset($_GET['message']) ? sanitize_text_field( wp_unslash( $_GET['message'] ) ) : '' ) );
+				echo wp_kses_post(GASFrameworkAdminNotification::formNotification( __( 'Settings reset to default.', 'awesome-support' ) ), esc_html( isset($_GET['message']) ? sanitize_text_field( wp_unslash( $_GET['message'] ) ) : '' ) );
 			}
 		}
 

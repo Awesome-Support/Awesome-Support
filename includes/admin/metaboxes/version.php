@@ -14,5 +14,5 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-echo( esc_html__('Awesome Support Version: ', 'awesome_support') . esc_attr( WPAS_VERSION ) ) ;
+echo( esc_html__('Awesome Support Version: ', 'awesome-support') . esc_attr( WPAS_VERSION ) ) ;
 

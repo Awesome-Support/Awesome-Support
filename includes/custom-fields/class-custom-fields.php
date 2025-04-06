@@ -413,7 +413,7 @@ class WPAS_Custom_Fields {
 				}
 
 				/* Render the field */
-				echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
+				echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());			
 
 				/* add the post-render action hook */
 				if ( ! empty( $field['args']['post_render_action_hook_fe'] ) ) {
@@ -438,101 +438,7 @@ class WPAS_Custom_Fields {
 	 */
 	function get_allowed_html_wpas_custom_fields()
 	{
-		return apply_filters(
-			'custom_allowed_html_wpas_custom_fields',
-			[
-				'div' => [
-					'class' => true,
-					'id' => true,
-					'style' => true,
-				], 'ul' => [
-					'class' => true,
-					'id' => true,
-				], 'li' => [
-					'data-tab-order' => true,
-					'rel' => true,
-					'class' => true,
-					'data-hint' => true,
-				], 'select' => [
-					'name' => true,
-					'class' => true,
-					'id' => true,
-					'data-capability' => true,
-					'data-allowClear' => true,
-					'data-placeholder' => true,
-				], 'option' => [
-					'value' => true,
-					'selected' => true,
-				], 'input' => [
-					'type' => true,
-					'value' => true,
-					'id' => true,
-					'class' => true,
-					'name' => true,
-					'readonly' => true,
-					'placeholder' => true,
-					'checked' => true,
-					'style' => true,
-					'accept' => true,
-					'multiple' => true,
-					'aria-label' => true,
-				],  'span' => [
-					'style' => true,
-					'id' => true,
-					'data-ticketid' => true,
-					'class' => true,
-				],  'img' => [
-					'style' => true,
-					'id' => true,
-					'class' => true,
-					'src' => true,
-					'alt' => true,
-					'height' => true,
-					'width' => true,
-				], 'a' => [
-					'href' => true,
-					'class' => true,
-					'id' => true,
-					'data-ticketid' => true,
-					'data-gdpr' => true,
-					'data-user' => true,
-					'data-optout-date' => true,
-				], 'label' => [
-					'for' => true,
-				], 'id' => [
-					'id' => true,
-					'class' => true,
-				], 'button' => [
-					'type' => true,
-					'data-wp-editor-id' => true,
-					'id' => true,
-					'class' => true,
-				], 'form' => [
-					'method' => true,
-					'action' => true,
-					'id' => true,
-					'class' => true,
-					'enctype' => true,
-				],
-				'textarea' => [
-					'type' => true,
-					'autocomplete' => true,
-					'id' => true,
-					'name' => true,
-					'rows' => true,
-					'cols' => true,
-					'class' => true,
-				], 'footer' => [
-					'style' => true,
-					'id' => true,
-					'class' => true,
-				], 'table' => [
-					'style' => true,
-					'id' => true,
-					'class' => true,
-				], 'tr' => [], 'tr' => [ 'id' => true], 'p' => [ 'class' => true, 'id' => true, 'style' => true ], 'code' => [], 'strong' => [], 'td' => ['colspan' => true, 'align' => true, 'width' => true], 'h2' => [], 'br' => [],
-			]
-		);
+		return apply_filters( 'custom_allowed_html_wpas_custom_fields', wpas_get_allowed_html_tags() );
 	}
 
 	/**
@@ -952,7 +858,20 @@ class WPAS_Custom_Fields {
 				/* the custom field here to the name of the file that was uploaded. 																			 */
 				/* @TODO:  It is possible that this should be handled earlier in the custom fields process? 													 */
 				if( 'upload' === $field['args']['field_type'] && isset( $_FILES[ $field_name ] ) && !empty( $_FILES[ $field_name ] )  ) {
-						$data[ $field_name ] = sanitize_file_name( wp_unslash( $_FILES[ $field_name ] ) );
+					
+					if( is_array( $_FILES[ $field_name ] ) )
+					{
+						foreach( $_FILES[ $field_name ] as $key => $valuee)
+						{
+							$_FILES[ $field_name ][ $key ] = array_map( 'sanitize_file_name', wp_unslash( $_FILES[ $field_name ][ $key ] ) ); 
+						}
+						$data[ $field_name ] = wp_unslash( $_FILES[ $field_name ] ); 
+					}
+					else
+
+					{
+						$data[ $field_name ] = sanitize_file_name( wp_unslash( $_FILES[ $field_name ] ) ); 
+					}	
 				}
 
 				/* Set error message if field is mandatory but no data is in the field. */

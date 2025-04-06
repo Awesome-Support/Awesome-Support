@@ -774,7 +774,7 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 
 	if ( empty( $content ) ) {
 		if ( isset( $_POST['reply_content'] ) ) {
-			$reply = isset($_POST['reply_content'] ) ? sanitize_text_field( wp_unslash( $_POST['reply_content'] ) ) : "";
+			$reply = isset($_POST['reply_content'] ) ? wp_kses_post( wp_unslash( $_POST['reply_content'] ) ) : "";
 			$content = wp_kses( $reply, wp_kses_allowed_html( 'post' ) );
 		} else {
 			return false;
@@ -927,6 +927,11 @@ function wpas_mark_reply_read_ajax() {
 
 	$ID = wpas_mark_reply_read();
 
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'edit_ticket') ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to mark a ticket reply as read with Ajax.', 'awesome-support') ), 403);		
+	}	
+
 	if ( false === $ID || is_wp_error( $ID ) ) {
 		$ID = $ID->get_error_message();
 	}
@@ -948,6 +953,11 @@ function wpas_edit_reply_ajax() {
 		die();
 	}
 	$ID = wpas_edit_reply();
+
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'edit_ticket') ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to edit a reply with Ajax.', 'awesome-support') ), 403);		
+	}
 	
 	if ( false === $ID ) {
 		echo "Invalid data!";
@@ -982,8 +992,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		return false;
 	}
 
-	if ( ! current_user_can( 'reply_ticket' ) ) {
-		
+    if ( ! current_user_can( 'reply_ticket' ) && ( !defined( 'DOING_CRON' ) || !DOING_CRON ) ) {		
 		return false;
 	}
 
@@ -1678,6 +1687,11 @@ function wpas_edit_reply_editor_ajax() {
 		die();
 	}
 
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
+    }
+
 	$post = get_post( $reply_id );
 
 	if ( 'ticket_reply' !== $post->post_type ) {
@@ -1786,6 +1800,11 @@ function wpas_get_ticket_replies_ajax() {
 	}
 	
 	$ticket_id = absint( $_POST['ticket_id'] );	
+
+	//Check permission for capability of current user
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
+    }	
 		
 	if( !check_ajax_referer( 'wpas_loads_replies', 'ticket_replies_nonce', false ) ) {		
 		wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
@@ -1942,7 +1961,7 @@ function wpas_edit_ticket_content() {
 	 * Variables!
 	 */
 	$ticket_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
-	$content = isset($_POST['content'] ) ? wp_kses_post( sanitize_text_field( wp_unslash( $_POST['content'] ) ) ) : '';
+	$content = isset($_POST['content'] ) ? wp_kses_post(  wp_unslash( $_POST['content'] ) ) : '';
 
 	/**
 	 * Make sure we have ticket ID

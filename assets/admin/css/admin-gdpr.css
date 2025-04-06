@@ -25,3 +25,7 @@
 	margin: .5em 0;
     padding: 5px;
 }
+span#put-goodbye-form-awesome-support {
+    bottom: unset;
+    top: 0px;
+}

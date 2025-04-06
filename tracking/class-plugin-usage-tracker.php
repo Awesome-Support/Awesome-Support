@@ -142,11 +142,11 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 		public function schedule_weekly_event( $schedules ) {
 			$schedules['weekly'] = array(
 				'interval'	=> 604800,
-				'display'		=> __( 'Once Weekly' )
+				'display'		=> __( 'Once Weekly', 'awesome-support' )
 			);
 			$schedules['monthly'] = array(
 				'interval'	=> 2635200,
-				'display'		=> __( 'Once Monthly' )
+				'display'		=> __( 'Once Monthly', 'awesome-support' )
 			);
 			return $schedules;
 		}
@@ -310,7 +310,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 			if( empty( $plugin ) ) {
 				// We can't find the plugin data
 				// Send a message back to our home site
-				$body['message'] .= __( 'We can\'t detect any product information. This is most probably because you have not included the code snippet.', 'singularity' );
+				$body['message'] .= __( 'We can\'t detect any product information. This is most probably because you have not included the code snippet.', 'awesome-support' );
 				$body['status'] = 'Data not found'; // Never translated
 			} else {
 				if( isset( $plugin['Name'] ) ) {
@@ -802,7 +802,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 				// Decide on notice text
 				if( $this->marketing != 1 ) {
 					// translators: %1$s is the plugin name
-					$s_content = __( 'Thank you for installing our %1$s. We would like to track its usage on your site. We don\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' );
+					$s_content = __( 'Thank you for installing our %1$s. We would like to track its usage on your site. We don\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'awesome-support' );
 					
 					// Standard notice text
 					$notice_text = sprintf(
@@ -811,7 +811,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 					);
 				} else {
 					// translators: %1$s is the plugin name
-					$s_content = __( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'singularity' );
+					$s_content = __( 'Thank you for installing our %1$s. We\'d like your permission to track its usage on your site and subscribe you to our newsletter. We won\'t record any sensitive data, only information regarding the WordPress environment and %1$s settings, which we will use to help us make improvements to the %1$s. Tracking is completely optional.', 'awesome-support' );
 
 					// If we have option 1 for marketing, we include reference to sending product information here
 					$notice_text = sprintf(
@@ -826,8 +826,8 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
 					<p><?php echo  wp_kses_post($notice_text) ; ?></p>
 					<p>
-						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-secondary"><?php esc_html_e( 'Allow', 'singularity' ); ?></a>
-						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php esc_html_e( 'Do Not Allow', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_yes ); ?>" class="button-secondary"><?php esc_html_e( 'Allow', 'awesome-support' ); ?></a>
+						<a href="<?php echo esc_url( $url_no ); ?>" class="button-secondary"><?php esc_html_e( 'Do Not Allow', 'awesome-support' ); ?></a>
 					</p>
 				</div>
 			<?php
@@ -864,7 +864,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 				) );
 
 				// translators: %s is the plugin name
-				$s_content = __( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'singularity' );
+				$s_content = __( 'Thank you for opting in to tracking. Would you like to receive occasional news about this %s, including details of new features and special offers?', 'awesome-support' );
 
 				$marketing_text = sprintf(
 					$s_content,
@@ -876,8 +876,8 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 					<p><?php echo '<strong>' . esc_html( $plugin_name ) . '</strong>'; ?></p>
 					<p><?php echo esc_html( $marketing_text ); ?></p>
 					<p>
-						<a href="<?php echo esc_url( $url_yes ); ?>" data-putnotice="yes" class="button-secondary"><?php esc_html_e( 'Yes Please', 'singularity' ); ?></a>
-						<a href="<?php echo esc_url( $url_no ); ?>" data-putnotice="no" class="button-secondary"><?php esc_html_e( 'No Thank You', 'singularity' ); ?></a>
+						<a href="<?php echo esc_url( $url_yes ); ?>" data-putnotice="yes" class="button-secondary"><?php esc_html_e( 'Yes Please', 'awesome-support' ); ?></a>
+						<a href="<?php echo esc_url( $url_no ); ?>" data-putnotice="no" class="button-secondary"><?php esc_html_e( 'No Thank You', 'awesome-support' ); ?></a>
 					</p>
 				</div>
 				<?php }
@@ -908,18 +908,18 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 		 */
 		public function form_default_text() {
 			$form = array();
-			$form['heading'] = __( 'Sorry to see you go', 'singularity' );
-			$form['body'] = __( 'Before you deactivate the plugin, would you quickly give us your reason for doing so?', 'singularity' );
+			$form['heading'] = __( 'Sorry to see you go', 'awesome-support' );
+			$form['body'] = __( 'Before you deactivate the plugin, would you quickly give us your reason for doing so?', 'awesome-support' );
 			$form['options'] = array(
-				__( 'Set up is too difficult', 'singularity' ),
-				__( 'Lack of documentation', 'singularity' ),
-				__( 'Not the features I wanted', 'singularity' ),
-				__( 'Found a better plugin', 'singularity' ),
-				__( 'Installed by mistake', 'singularity' ),
-				__( 'Only required temporarily', 'singularity' ),
-				__( 'Didn\'t work', 'singularity' )
+				__( 'Set up is too difficult', 'awesome-support' ),
+				__( 'Lack of documentation', 'awesome-support' ),
+				__( 'Not the features I wanted', 'awesome-support' ),
+				__( 'Found a better plugin', 'awesome-support' ),
+				__( 'Installed by mistake', 'awesome-support' ),
+				__( 'Only required temporarily', 'awesome-support' ),
+				__( 'Didn\'t work', 'awesome-support' )
 			);
-			$form['details'] = __( 'Details (optional)', 'singularity' );
+			$form['details'] = __( 'Details (optional)', 'awesome-support' );
 			return $form;
 		}
 
@@ -958,7 +958,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 				$html .= '</div><!-- .put-goodbye-options -->';
 			}
 			$html .= '</div><!-- .put-goodbye-form-body -->';
-			$html .= '<p class="deactivating-spinner"><span class="spinner"></span> ' . __( 'Submitting form', 'singularity' ) . '</p>';
+			$html .= '<p class="deactivating-spinner"><span class="spinner"></span> ' . __( 'Submitting form', 'awesome-support' ) . '</p>';
 			?>
 			<div class="put-goodbye-form-bg"></div>
 			<style type="text/css">
@@ -1018,7 +1018,7 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 						var url = document.getElementById("put-goodbye-link-<?php echo esc_attr( $this->plugin_name ); ?>");
 						$('body').toggleClass('put-form-active');
 						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").fadeIn();
-						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").html( '<?php echo wp_kses($html, get_allowed_html_wp_notifications()); ?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php esc_html_e( 'Submit and Deactivate', 'singularity' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php esc_html_e( 'Just Deactivate', 'singularity' ); ?></a></p></div>');
+						$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?>").html( '<?php echo wp_kses($html, get_allowed_html_wp_notifications()); ?>' + '<div class="put-goodbye-form-footer"><p><a id="put-submit-form" class="button primary" href="#"><?php esc_html_e( 'Submit and Deactivate', 'awesome-support' ); ?></a>&nbsp;<a class="secondary button" href="'+url+'"><?php esc_html_e( 'Just Deactivate', 'awesome-support' ); ?></a></p></div>');
 						$('#put-submit-form').on('click', function(e){
 							// As soon as we click, the body of the form should disappear
 							$("#put-goodbye-form-<?php echo esc_attr( $this->plugin_name ); ?> .put-goodbye-form-body").fadeOut();
@@ -1063,6 +1063,11 @@ if( ! class_exists( 'Plugin_Usage_Tracker') ) {
 		 */
 		public function goodbye_form_callback() {
 			check_ajax_referer( 'wisdom_goodbye_form', 'security' );
+			//Check permission for capability of current user
+			if ( ! current_user_can( 'manage_options') ) {
+				wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to submit goodbye form.', 'awesome-support') ), 403);
+ 
+			}
 			if( isset( $_POST['values'] ) ) {
 				$values = isset( $_POST['values'] ) ? json_encode( array_map( 'sanitize_text_field', wp_unslash( $_POST['values'] ) ) ) : '';
 				update_option( 'wisdom_deactivation_reason_' . $this->plugin_name, $values );

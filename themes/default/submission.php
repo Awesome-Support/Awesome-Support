@@ -18,7 +18,7 @@ global $post;
 	do_action( 'wpas_ticket_submission_form_outside_top' );
 	?>
 
-	<form class="wpas-form" role="form" method="post" action="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" id="wpas-new-ticket" enctype="multipart/form-data">
+	<form class="wpas-form new2" role="form" method="post" action="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" id="wpas-new-ticket" enctype="multipart/form-data">
 
 		<?php
 		/**

@@ -178,7 +178,7 @@ elseif( 'closed' == $status ): ?>
 		$x_content = __( 'This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href="%s">re-open it first</a>.', 'awesome-support' );
 	?>
 	<div class="updated below-h2" style="margin-top: 2em;">
-		<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php esc_html_e('Ticket is closed', 'wpas'); ?></h2>
+		<h2 style="margin: 0.5em 0; padding: 0; line-height: 100%;"><?php esc_html_e('Ticket is closed', 'awesome-support'); ?></h2>
 		<p><?php printf( wp_kses_post( $x_content ), esc_attr( wpas_get_open_ticket_url( $post->ID ) ) ); ?></p>
 	</div>
 
@@ -187,7 +187,7 @@ elseif( 'closed' == $status ): ?>
 /** Reply History popup */
 ?>
 <div class="wpas-reply-history-lightbox pop">
-	<div class="icon-remove-sign"><a href="#"><?php esc_html_e('X', 'wpas'); ?></a></div>
+	<div class="icon-remove-sign"><a href="#"><?php esc_html_e('X', 'awesome-support'); ?></a></div>
 	<div class="wpas-reply-history-wrapper">
 		<div class="wpas-reply-notification"></div>
 		<div class="wpas-reply-history-table">

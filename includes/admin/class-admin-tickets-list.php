@@ -303,13 +303,13 @@ class WPAS_Tickets_List {
 		$new    = array();
 		$custom = array();
 		$fields = $this->get_custom_fields();
-
+		
 		/**
 		 * Prepare all custom fields that are supposed to show up
 		 * in the admin columns.
 		 */
 		foreach ( $fields as $field ) {
-
+			
 			/* If CF is a regular taxonomy we don't handle it, WordPress does */
 			if ( 'taxonomy' == $field[ 'args' ][ 'field_type' ] && true === $field[ 'args' ][ 'taxo_std' ] ) {
 				continue;
@@ -338,7 +338,7 @@ class WPAS_Tickets_List {
 				$new[ 'title' ] = esc_html__( 'Title', 'awesome-support' );
 
 				if ( array_key_exists( 'ticket_priority', $custom ) ) {
-					$new[ 'ticket_priority' ] = $this->get_cf_title( 'ticket_priority', 'Priority' );
+					$new[ 'ticket_priority' ] = $this->get_cf_title( 'ticket_priority', 'Priority' );		
 				}
 
 				$new[ 'id' ] = esc_html__( 'ID', 'awesome-support' );
@@ -370,8 +370,9 @@ class WPAS_Tickets_List {
 				$new[ 'assignee' ] = $this->get_cf_title( 'assignee', 'Agent' );
 
 				// Add the date
-				$new[ 'date' ] = $columns[ 'date' ];
-
+				$new[ 'date' ] = esc_html__( 'Last modified', 'awesome-support' );
+				
+				// Add the activity
 				$new[ 'wpas-activity' ] = $this->get_cf_title( 'wpas-activity', 'Activity' );
 
 			} else {
@@ -407,7 +408,7 @@ class WPAS_Tickets_List {
 		}
 
 		switch ( $field_title ) {
-			case 'Priority':
+			case 'Priority':			    
 				$translated_field_title = esc_html__( 'Priority', 'awesome-support' );
 				break;
 			case 'Product':
@@ -434,6 +435,7 @@ class WPAS_Tickets_List {
 			case 'Activity':
 				$translated_field_title = esc_html__( 'Activity', 'awesome-support' );
 				break;
+			
 			default:
 				$translated_field_title = esc_html( $field_title );
 				break;
@@ -585,7 +587,7 @@ class WPAS_Tickets_List {
 							);
 
 							// translators: %s is the formatted_reply_string.
-							$translated_reply_string = sprintf(_x( '%s.', 'Number of replies to a ticket' ), $formatted_reply_string);
+							$translated_reply_string = sprintf(_x( '%s.', 'Number of replies to a ticket', 'awesome-support' ), $formatted_reply_string);
 
 							// Output the escaped and translated string
 							echo esc_html( $translated_reply_string );
@@ -874,8 +876,7 @@ class WPAS_Tickets_List {
 
 			global $wpdb;
 
-			$sql = <<<SQL
-SELECT
+			$sql = "SELECT
 	wpas_ticket.ID AS ticket_id,
 	wpas_ticket.post_title AS ticket_title,
 	wpas_reply.ID AS reply_id,
@@ -903,8 +904,7 @@ WHERE 1=1
 	AND wpas_replies.latest_reply IS NOT NULL
 	AND 'ticket_reply'=wpas_reply.post_type
 ORDER BY
-	wpas_replies.latest_reply ASC
-SQL;
+	wpas_replies.latest_reply ASC";
 
 			$no_replies = $client_replies = $agent_replies = array();
 			$replies = $wpdb->get_results( "$sql" );
@@ -1219,7 +1219,7 @@ SQL;
 		$dropdown .= "<option value='closed' $closed_selected>" . __( 'Closed', 'awesome-support' ) . "</option>";
 		$dropdown .= '</select>';
 
-		echo wp_kses($dropdown, $this->get_allowed_html());
+		echo wp_kses($dropdown, wpas_dropdown_allowed_html_tags());
 
 
 		/* STATUS */
@@ -1245,7 +1245,7 @@ SQL;
 
 			$dropdown .= '</select>';
 
-			echo wp_kses($dropdown, $this->get_allowed_html());
+			echo wp_kses($dropdown, wpas_dropdown_allowed_html_tags());
 		}
 
 
@@ -1271,7 +1271,7 @@ SQL;
 
 		$dropdown .= '</select>';
 
-		echo wp_kses($dropdown, $this->get_allowed_html());
+		echo wp_kses($dropdown, wpas_dropdown_allowed_html_tags());
 
 
 		$fields = $this->get_custom_fields();
@@ -1311,7 +1311,7 @@ SQL;
 				$staff_atts[ 'selected' ] = $staff_id;
 			}
 
-			echo wp_kses(wpas_dropdown( $staff_atts, "<option value='" . $selected_value . "'>" . $selected . "</option>" ), $this->get_allowed_html());
+			echo wp_kses(wpas_dropdown( $staff_atts, "<option value='" . $selected_value . "'>" . $selected . "</option>" ), wpas_dropdown_allowed_html_tags());
 
 		}
 
@@ -1344,7 +1344,7 @@ SQL;
 			$client_atts[ 'selected' ] = $client_id;
 		}
 
-		echo wp_kses(wpas_dropdown( $client_atts, "<option value='" . $selected_value . "'>" . $selected . "</option>" ), $this->get_allowed_html());
+		echo wp_kses(wpas_dropdown( $client_atts, "<option value='" . $selected_value . "'>" . $selected . "</option>" ), wpas_dropdown_allowed_html_tags());
 
 		/* Force a new line if the SAAS/Imported ticket ID is turned on for the list */
 		if ( boolval( wpas_get_option( 'importer_id_enable', false) ) && boolval( wpas_get_option( 'importer_id_show_in_tkt_list', false) ) ) {
@@ -1722,11 +1722,11 @@ SQL;
 				 *  Alias taxonomy tables used by sorting in
 				 *  case there is an active taxonomy filter. (is_tax())
 				 */
-				$clauses[ 'join' ] .= <<<SQL
-LEFT OUTER JOIN {$wpdb->term_relationships} AS t_rel ON {$wpdb->posts}.ID=t_rel.object_id
-LEFT OUTER JOIN {$wpdb->term_taxonomy} AS t_t ON t_t.term_taxonomy_id=t_rel.term_taxonomy_id
-LEFT OUTER JOIN {$wpdb->terms} AS tms ON tms.term_id=t_t.term_id
-SQL;
+
+				$clauses['join'] .= 
+					" LEFT OUTER JOIN {$wpdb->term_relationships} AS t_rel ON {$wpdb->posts}.ID = t_rel.object_id" .
+					" LEFT OUTER JOIN {$wpdb->term_taxonomy} AS t_t ON t_t.term_taxonomy_id = t_rel.term_taxonomy_id" .
+					" LEFT OUTER JOIN {$wpdb->terms} AS tms ON tms.term_id = t_t.term_id";
 
 				$clauses[ 'where' ]   .= " AND (t_t.taxonomy = '" . $orderby . "' AND t_t.taxonomy IS NOT NULL)";
 				$clauses[ 'groupby' ] = "t_rel.object_id";
@@ -2038,101 +2038,9 @@ SQL;
 	 * @return void
 	 */
 	private function get_allowed_html(){
-		return apply_filters('custom_allowed_html_wpas_ticket_list',
-		[
-			'div' => [
-				'class' => true,
-				'id' => true,
-				'style' => true,
-			], 'ul' => [
-				'class' => true,
-				'id' => true,
-			], 'li' => [
-				'data-tab-order' => true,
-				'rel' => true,
-				'class' => true,
-				'data-hint' => true,
-			], 'select' => [
-				'name' => true,
-				'class' => true,
-				'id' => true,
-				'data-capability' => true,
-				'data-allowClear' => true,
-				'data-placeholder' => true,
-			], 'option' => [
-				'value' => true,
-				'selected' => true,
-			], 'input' => [
-				'type' => true,
-				'value' => true,
-				'id' => true,
-				'class' => true,
-				'name' => true,
-				'readonly' => true,
-				'placeholder' => true,
-				'checked' => true,
-				'style' => true,
-				'accept' => true,
-				'multiple' => true,
-				'aria-label' => true,
-			],  'span' => [
-				'style' => true,
-				'id' => true,
-				'data-ticketid' => true,
-				'class' => true,
-			],  'img' => [
-				'style' => true,
-				'id' => true,
-				'class' => true,
-				'src' => true,
-				'alt' => true,
-				'height' => true,
-				'width' => true,
-			], 'a' => [
-				'href' => true,
-				'class' => true,
-				'id' => true,
-				'data-ticketid' => true,
-				'data-gdpr' => true,
-				'data-user' => true,
-				'data-optout-date' => true,
-			], 'label' => [
-				'for' => true,
-			], 'id' => [
-				'id' => true,
-				'class' => true,
-			], 'button' => [
-				'type' => true,
-				'data-wp-editor-id' => true,
-				'id' => true,
-				'class' => true,
-				'data-filename' => true,
-			], 'form' => [
-				'method' => true,
-				'action' => true,
-				'id' => true,
-				'class' => true,
-				'enctype' => true,
-			],
-			'textarea' => [
-				'type' => true,
-				'autocomplete' => true,
-				'id' => true,
-				'name' => true,
-				'rows' => true,
-				'cols' => true,
-				'class' => true,
-			], 'footer' => [
-				'style' => true,
-				'id' => true,
-				'class' => true,
-			], 'table' => [
-				'style' => true,
-				'id' => true,
-				'class' => true,
-			], 'tr' => [], 'tr' => [ 'id' => true], 'p' => [ 'class' => true, 'id' => true, 'style' => true ], 'code' => [], 'strong' => [], 'td' => ['colspan' => true, 'align' => true, 'width' => true], 'h2' => [], 'br' => [],
-		]
-	);
+
+		
+		return apply_filters('custom_allowed_html_wpas_ticket_list', wpas_get_allowed_html_tags() );
 	}
 
 }

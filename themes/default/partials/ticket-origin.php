@@ -74,7 +74,7 @@ do_action( 'wpas_before_original_post' ); ?>
 				/**
 				 * Display the original ticket's content
 				 */
-				echo wp_kses(apply_filters( 'the_content', $post->post_content ),get_allowed_html_wp_notifications());
+				echo wp_kses(apply_filters( 'the_content', $post->post_content ),'post');
 
 				/**
 				 * wpas_original_post_content_after hook

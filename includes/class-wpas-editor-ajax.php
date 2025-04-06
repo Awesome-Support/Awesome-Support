@@ -134,7 +134,7 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Get the content and filter it.
 		 */
-		$editor_content = isset( $_POST['editor_content'] ) ? sanitize_text_field( wp_unslash( $_POST['editor_content'] ) ) : '';	
+		$editor_content = isset( $_POST['editor_content'] ) ? wp_kses_post( wp_unslash( $_POST['editor_content'] ) ) : '';	
 		$content = ( isset( $post ) && ! empty( $post ) ) ? $post->post_content : $editor_content;
 		$content = apply_filters( 'the_content', $content );
 

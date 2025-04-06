@@ -84,7 +84,7 @@ $user_role = isset( $user->roles[0] ) ? $user->roles[0] : null;
 	
 			?>
 
-			<div class="wpas-reply-content wpas-break-words ticket-reply"><?php echo  wp_kses(force_balance_tags( $content_reply ), get_allowed_html_wp_notifications()); ?></div>
+			<div class="wpas-reply-content wpas-break-words ticket-reply"><?php echo  wp_kses(force_balance_tags( $content_reply ), 'post'); ?></div>
 
 			<?php
 			/**

@@ -667,6 +667,10 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 				die();
 			}
 
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to fetches notices.', 'awesome-support') ), 403);		
+			}
+
 			if ( ! is_array( $notices ) ) {
 				$notices = array( $notices );
 			}

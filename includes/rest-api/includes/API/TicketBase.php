@@ -128,7 +128,7 @@ class TicketBase extends WP_REST_Posts_Controller {
 	 */
 	public function create_item_permissions_check( $request ) {
 		if ( ! empty( $request['id'] ) ) {
-			return new WP_Error( 'rest_post_exists', __( 'Cannot create existing post.' ), array( 'status' => 400 ) );
+			return new WP_Error( 'rest_post_exists', __( 'Cannot create existing post.', 'awesome-support' ), array( 'status' => 400 ) );
 		}
 
 		$post_type = get_post_type_object( $this->post_type );

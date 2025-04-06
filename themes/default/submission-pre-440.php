@@ -13,7 +13,7 @@ global $post;
 
 	<?php wpas_get_template( 'partials/ticket-navigation' ); ?>
 
-	<form class="wpas-form" role="form" method="post" action="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" id="wpas-new-ticket" enctype="multipart/form-data">
+	<form class="wpas-form NEW" role="form" method="post" action="<?php echo esc_url( get_permalink( $post->ID ) ); ?>" id="wpas-new-ticket" enctype="multipart/form-data">
 
 		<?php
 		/**
@@ -41,8 +41,7 @@ global $post;
 		) );
 
 		$subject = new WPAS_Custom_Field( 'title', $subject_args );
-		echo wp_kses($subject->get_output(), get_allowed_html_wp_notifications());
-
+		echo wp_kses($subject->get_output(), get_allowed_html_wp_notifications());		
 
 		/**
 		 * The wpas_submission_form_inside_after_subject hook has to be placed
@@ -71,8 +70,7 @@ global $post;
 		) );
 
 		$body = new WPAS_Custom_Field( 'message', $body_args );
-		echo wp_kses($body->get_output(), get_allowed_html_wp_notifications());
-
+		echo wp_kses($body->get_output(), get_allowed_html_wp_notifications());	
 
 		/**
 		 * The wpas_submission_form_inside_before hook has to be placed

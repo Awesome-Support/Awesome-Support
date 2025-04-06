@@ -445,7 +445,7 @@ class WPAS_Privacy_Option {
 	 */
 	public function wp_register_asdata_personal_data_eraser( $erasers ){
 		$erasers['awesome-support-data'] = array(
-			'eraser_friendly_name' => __( 'Awesome Support Data' ),
+			'eraser_friendly_name' => __( 'Awesome Support Data', 'awesome-support' ),
 			'callback'             => array( $this, 'wpas_users_personal_data_eraser' ),
 		);
 
@@ -708,7 +708,7 @@ class WPAS_Privacy_Option {
 	 */
 	public function wp_privacy_personal_asdata_exporters( $exporters ){
 		$exporters['awesome-support-data-test'] = array(
-			'exporter_friendly_name' => __( 'Awesome Support Data' ),
+			'exporter_friendly_name' => __( 'Awesome Support Data', 'awesome-support' ),
 			'callback'               => array( $this, 'wpas_users_personal_data_exporter' ),
 		);
 
@@ -1034,6 +1034,11 @@ class WPAS_Privacy_Option {
 
 			if ( ! empty( $ticket_id ) ) {
 
+				//Check permission for capability of current user
+				if ( ! current_user_can( 'read') ) {
+					wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'awesome-support') ), 403);
+				}
+				
 				$response['code']    = 200;
 				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
 
@@ -1092,6 +1097,11 @@ class WPAS_Privacy_Option {
 		 * Initiate nonce
 		 */
 		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] ) ): '';
+
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'read') ) {
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'awesome-support') ), 403);
+		}
 
 		/**
 		 * Security checking
@@ -1163,6 +1173,10 @@ class WPAS_Privacy_Option {
 		 */
 		$nonce = isset( $_POST['data']['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['nonce'] ) ): '';
 
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'read') ) {
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'awesome-support') ), 403);
+		}
 
 		/**
 		 * Security checking

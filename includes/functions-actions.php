@@ -70,13 +70,19 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 	if ( ! empty( $redirect_to ) ) {
 		$field .= sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'redirect_to', wp_sanitize_redirect( $redirect_to ) );
 	}
-
+	//This has been verify by html tags ted.
+	$allow_html_tags_wpas_do_field = array(
+			'input' => [
+				'type' => true,
+				'name' => true,
+				'value' => true,
+				'id' => true,			
+			]
+		);	
 	if ( $echo ) {
-		echo wp_kses($field, get_allowed_html_wp_notifications());
+		echo wp_kses($field, $allow_html_tags_wpas_do_field);	
 	}
-
 	return $field;
-
 }
 
 /**

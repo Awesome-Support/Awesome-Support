@@ -21,8 +21,8 @@ class GASFrameworkOptionColor extends GASFrameworkOption {
 
 	function __construct( $settings, $owner ) {
 		parent::__construct( $settings, $owner );
-		tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'enqueueColorPickerScript' ) );
-		tf_add_action_once( 'admin_footer', array( $this, 'startColorPicker' ) );
+		gas_tf_add_action_once( 'admin_enqueue_scripts', array( $this, 'enqueueColorPickerScript' ) );
+		gas_tf_add_action_once( 'admin_footer', array( $this, 'startColorPicker' ) );
 	}
 
 
@@ -118,7 +118,7 @@ function registerGASFrameworkOptionColorControl() {
 
 		function __construct( $manager, $id, $args = array() ) {
 			parent::__construct( $manager, $id, $args );
-			tf_add_action_once( 'customize_controls_print_footer_scripts', array( $this, 'printOpacityOverrideTemplate' ) );
+			gas_tf_add_action_once( 'customize_controls_print_footer_scripts', array( $this, 'printOpacityOverrideTemplate' ) );
 		}
 
 		public function enqueue() {

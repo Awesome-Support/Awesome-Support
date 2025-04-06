@@ -8,7 +8,7 @@ add_filter( 'wpas_plugin_settings', 'wpas_core_settings_notifications', 5, 1 );
  * @return array      Updated settings
  */
 function wpas_core_settings_notifications( $def ) {
-
+	
 	// translators: %1$s is the URL to the email template, %2$s is the target attribute for the link (e.g., "_blank").
 	$desc = __( 'Please note that the <a href="%1$s" target="%2$s">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add additional fancy styling through the editors you should do so with caution in order to avoid breaking the layouts on some devices.', 'awesome-support' );
 

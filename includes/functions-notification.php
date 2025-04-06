@@ -261,6 +261,10 @@ function wpas_ticket_notifications_window() {
 		return;
 	}
 
+	if ( ! current_user_can( 'read' ) ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to generate content for notification popup window.', 'awesome-support') ), 403);		
+	}
+
 	$text = wpas_get_option( 'notifications_button_msg', __( 'Standard notifications are enabled.', 'awesome-support' ) ) ;
 
 	$content = '<div>' . $text . '</div>';
@@ -282,116 +286,5 @@ function wpas_ticket_notifications_window() {
  */
 function get_allowed_html_wp_notifications()
 {
-	return apply_filters(
-		'custom_allowed_html_wpas_admin_tabs',
-		[
-			'div' => [
-				'class' => true,
-				'id' => true,
-				'style' => true,
-			], 'ul' => [
-				'class' => true,
-				'id' => true,
-				'style' => true,
-			], 'ol' => [
-				'class' => true,
-				'id' => true,
-			],'li' => [
-				'data-tab-order' => true,
-				'rel' => true,
-				'class' => true,
-				'data-hint' => true,
-			], 'select' => [
-				'name' => true,
-				'class' => true,
-				'id' => true,
-				'data-capability' => true,
-				'data-allowClear' => true,
-				'data-placeholder' => true,
-				'multiple' => true,
-			], 'option' => [
-				'value' => true,
-				'selected' => true,
-			], 'input' => [
-				'type' => true,
-				'value' => true,
-				'id' => true,
-				'class' => true,
-				'name' => true,
-				'readonly' => true,
-				'placeholder' => true,
-				'checked' => true,
-				'style' => true,
-				'accept' => true,
-				'multiple' => true,
-				'aria-label' => true,
-			],  'script' => [
-				'id' => true,
-				'data-ticketid' => true,
-				'class' => true,
-			],  'span' => [
-				'style' => true,
-				'id' => true,
-				'data-ticketid' => true,
-				'data-replyid' => true,
-				'data-wysiwygid' => true,
-				'data-origin' => true,
-				'class' => true,
-			],  'img' => [
-				'style' => true,
-				'id' => true,
-				'class' => true,
-				'src' => true,
-				'alt' => true,
-				'height' => true,
-				'width' => true,
-			], 'a' => [
-				'href' => true,
-				'class' => true,
-				'id' => true,
-				'data-ticketid' => true,
-				'data-gdpr' => true,
-				'data-user' => true,
-				'data-optout-date' => true,
-				'data-onsubmit' => true,
-				'target' => true,
-				'data-filename' => true,
-			], 'label' => [
-				'for' => true,
-			], 'id' => [
-				'id' => true,
-				'class' => true,
-			], 'button' => [
-				'type' => true,
-				'data-wp-editor-id' => true,
-				'data-filename' => true,
-				'id' => true,
-				'data-onsubmit' => true,
-				'class' => true,
-			], 'form' => [
-				'method' => true,
-				'action' => true,
-				'id' => true,
-				'class' => true,
-				'enctype' => true,
-			],
-			'textarea' => [
-				'type' => true,
-				'autocomplete' => true,
-				'id' => true,
-				'name' => true,
-				'rows' => true,
-				'cols' => true,
-				'class' => true,
-			], 'footer' => [
-				'style' => true,
-				'id' => true,
-				'class' => true,
-			], 'table' => [
-				'style' => true,
-				'id' => true,
-				'class' => true,
-			], 'tr' => [], 'b' => [], 'em' => [], 'h1' => [], 'h2' => [],'h3' => [],'h4' => [], 'h5' => [], 'tr' => [ 'id' => true], 'p' => [ 'class' => true, 'id' => true, 'style' => true ], 'code' => [], 'strong' => [], 'td' => ['colspan' => true, 'class' => true, 'style' => true, 'align' => true, 'width' => true], 'h2' => [], 'br' => [],
-		]
-	);
+	return apply_filters( 'custom_allowed_html_wpas_admin_tabs', wpas_get_allowed_html_tags() );
 }

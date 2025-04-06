@@ -1097,7 +1097,8 @@ function wpas_users_dropdown( $args = array() ) {
 function wpas_support_users_dropdown( $args = array() ) {
 	$args['cap_exclude'] = 'edit_ticket';
 	$args['cap']         = 'create_ticket';
-	echo wp_kses(wpas_users_dropdown( $args ), get_allowed_html_wp_notifications());
+	//This has been verify by html tags ted.
+	echo wp_kses(wpas_users_dropdown( $args ), wpas_dropdown_allowed_html_tags());
 }
 
 /**
@@ -1207,6 +1208,10 @@ function wpas_mailgun_check( $data = '' ) {
 	if ( ! isset( $data['email'] ) ) {
 		echo '';
 		die();
+	}
+
+	if ( ! current_user_can( 'read' ) ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to check if an e-mail is valid during registration using the MailGun API.', 'awesome-support') ), 403);
 	}
 
 	$mailgun = new WPAS_MailGun_EMail_Check();

@@ -117,7 +117,7 @@ class GASFrameworkOption {
 		if ( ! class_exists( $className ) && ! class_exists( $settings['type'] ) ) {
 
 			// translators: %s is the class.
-			$x_content = __( 'Option type or extended class %s does not exist.', 'gas-framework' );
+			$x_content = __( 'Option type or extended class %s does not exist.', 'awesome-support' );
 			GASFramework::displayFrameworkError(
 				sprintf( $x_content, '<code>' . $settings['type'] . '</code>', $settings ),
 			$settings );

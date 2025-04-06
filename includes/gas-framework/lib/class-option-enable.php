@@ -59,10 +59,10 @@ class GASFrameworkOptionEnable extends GASFrameworkOption {
 		$this->echoOptionHeader();
 
 		if ( empty( $this->settings['enabled'] ) ) {
-			$this->settings['enabled'] = __( 'Enabled', 'gas-framework' );
+			$this->settings['enabled'] = __( 'Enabled', 'awesome-support' );
 		}
 		if ( empty( $this->settings['disabled'] ) ) {
-			$this->settings['disabled'] = __( 'Disabled', 'gas-framework' );
+			$this->settings['disabled'] = __( 'Disabled', 'awesome-support' );
 		}
 
 		?>
@@ -138,10 +138,10 @@ function registerGASFrameworkOptionEnableControl() {
 		public function render_content() {
 
 			if ( empty( $this->options['enabled'] ) ) {
-				$this->options['enabled'] = __( 'Enabled', 'gas-framework' );
+				$this->options['enabled'] = __( 'Enabled', 'awesome-support' );
 			}
 			if ( empty( $this->options['disabled'] ) ) {
-				$this->options['disabled'] = __( 'Disabled', 'gas-framework' );
+				$this->options['disabled'] = __( 'Disabled', 'awesome-support' );
 			}
 			?>
 			<div class='tf-enable'>

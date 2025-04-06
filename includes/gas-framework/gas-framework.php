@@ -177,15 +177,15 @@ class GASFrameworkPlugin {
 		if ( GASF_PLUGIN_BASENAME === $plugin_file ) {
 			$plugin_meta[] = sprintf( "<a href='%s' target='_blank'>%s</a>",
 				'#',
-				__( 'Documentation', 'gas-framework' )
+				__( 'Documentation', 'awesome-support' )
 			);
 			$plugin_meta[] = sprintf( "<a href='%s' target='_blank'>%s</a>",
 				'https://github.com/tednh/GAS-Framework',
-				__( 'GitHub Repo', 'gas-framework' )
+				__( 'GitHub Repo', 'awesome-support' )
 			);
 			$plugin_meta[] = sprintf( "<a href='%s' target='_blank'>%s</a>",
 				'https://github.com/tednh/GAS-Framework/issues',
-				__( 'Issue Tracker', 'gas-framework' )
+				__( 'Issue Tracker', 'awesome-support' )
 			);
 		}
 		return $plugin_meta;

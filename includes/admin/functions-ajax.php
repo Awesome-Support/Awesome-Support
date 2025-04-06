@@ -21,8 +21,8 @@ add_action( 'wp_ajax_wpas_dismiss_free_addon_page', 'wpas_dismiss_free_addon_pag
  */
 function wpas_dismiss_free_addon_page() {
 	check_ajax_referer('wpas_admin_optin', 'nonce');
-	if ( ! current_user_can( 'administrator' ) ) {
-		wp_send_json([], 401);		
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to hide the free addon page from the menu.', 'awesome-support') ), 403);		
     }
 	return add_option( 'wpas_dismiss_free_addon_page', true );
 }
@@ -36,8 +36,8 @@ add_action( 'wp_ajax_wpas_skip_wizard_setup', 'wpas_skip_wizard_setup' );
  */
 function wpas_skip_wizard_setup() {
 	check_ajax_referer('wpas_admin_wizard', 'nonce');
-	if ( ! current_user_can( 'administrator' ) ) {
-		wp_send_json([], 401);		
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to skip Setup Wizard.', 'awesome-support') ), 403);		
     }
 	add_option( 'wpas_skip_wizard_setup', true );
 	wp_die();
@@ -54,6 +54,9 @@ add_action( 'wp_ajax_wpas_get_ticket_for_print', 'wpas_get_ticket_for_print_ajax
 function wpas_get_ticket_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to get ticket for print.', 'awesome-support') ), 403);		
+    }
 	$ticket = isset( $_POST['id'] ) ? wpas_get_ticket_by_id( sanitize_text_field( wp_unslash( $_POST['id'] ) ) ) : null;
 
 	if ( ! empty( $ticket ) ) {
@@ -100,7 +103,9 @@ add_action( 'wp_ajax_wpas_get_tickets_for_print', 'wpas_get_tickets_for_print_aj
 function wpas_get_tickets_for_print_ajax() {
 
 	check_ajax_referer( 'wpas_print_ticket', 'nonce' );
-
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to get tickets for print.', 'awesome-support') ), 403);		
+    }
 	$ids = isset( $_POST['ids'] ) ? array_map( 'sanitize_text_field', wp_unslash( (array) $_POST['ids'] ) ) : array();
 	
 	foreach( $ids as $id ) {

@@ -62,7 +62,7 @@ if ( ! defined( 'WPINC' ) ) {
 					'data_attr' => array( 'capability' => 'edit_ticket' )
 				);
 
-				echo wp_kses(wpas_dropdown( $staff_atts, "<option value='$secondary_staff_id' selected='selected'>$secondary_staff_name</option>" ), get_allowed_html_wp_notifications());
+				echo wp_kses(wpas_dropdown( $staff_atts, "<option value='$secondary_staff_id' selected='selected'>$secondary_staff_name</option>" ), wpas_dropdown_allowed_html_tags());
 			} else {
 				echo wp_kses(wpas_users_dropdown( array(
 					'cap'		=> 'edit_ticket',
@@ -73,7 +73,7 @@ if ( ! defined( 'WPINC' ) ) {
                     'class'     => 'search_and_list_dropdown',
 					'please_select' => true,
 					'selected' => $secondary_staff_id
-				) ), get_allowed_html_wp_notifications());
+				) ), wpas_dropdown_allowed_html_tags());
 			}
 			// Display dropdown for tertiary staff
 			?><label for="wpas-tertiary-assignee"><strong data-hint="<?php esc_html_e( 'Second additional agent who has an interest this ticket', 'awesome-support' ); ?>" class="hint-left hint-anim"><?php esc_html_e( 'Additional Support Staff #2', 'awesome-support' ); ?></strong></label><?php
@@ -87,7 +87,7 @@ if ( ! defined( 'WPINC' ) ) {
 					'data_attr' => array( 'capability' => 'edit_ticket' )
 				);
 
-				echo wp_kses(wpas_dropdown( $staff_atts, "<option value='$tertiary_staff_id' selected='selected'>$tertiary_staff_name</option>" ), get_allowed_html_wp_notifications());
+				echo wp_kses(wpas_dropdown( $staff_atts, "<option value='$tertiary_staff_id' selected='selected'>$tertiary_staff_name</option>" ), wpas_dropdown_allowed_html_tags());
 			} else {
 				echo wp_kses(wpas_users_dropdown( array(
 					'cap'		=> 'edit_ticket',
@@ -98,7 +98,7 @@ if ( ! defined( 'WPINC' ) ) {
                     'class'     => 'search_and_list_dropdown',
 					'please_select' => true,
 					'selected' => $tertiary_staff_id
-				) ), get_allowed_html_wp_notifications());
+				) ), wpas_dropdown_allowed_html_tags());
 			}
 
 		// Create some space before showing free-form interested parties (name / email )
