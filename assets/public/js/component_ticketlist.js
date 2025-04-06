@@ -28,6 +28,22 @@
 				}
 			});
 
+			//Escape HTML function
+			function escapeHtml(text) {
+				return text.replace(/[&<>"'`=\/]/g, function (s) {
+					return ({
+						'&': '&amp;',
+						'<': '&lt;',
+						'>': '&gt;',
+						'"': '&quot;',
+						"'": '&#39;',
+						'/': '&#x2F;',
+						'`': '&#x60;',
+						'=': '&#x3D;'
+					})[s];
+				});
+			}
+
 			// Create the status dropdown
 			var statusesArr = [];
 			var statusesOptions = '';
@@ -35,7 +51,7 @@
 				var status = $(el).find('.wpas-label-status').text();
 				if (statusesArr.indexOf(status) == -1) {
 					statusesArr.push(status);
-					statusesOptions += '<option value="' + status + '">' + status + '</option>';
+					statusesOptions += '<option value="' + escapeHtml(status) + '">' + escapeHtml(status) + '</option>';
 				}
 			});
 
