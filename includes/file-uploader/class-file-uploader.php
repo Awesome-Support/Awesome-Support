@@ -41,6 +41,7 @@ class WPAS_File_Upload {
 
 		add_filter( 'upload_dir', array( $this, 'set_upload_dir' ) );
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'limit_upload' ), 10, 1 );
+		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sgpb_rename_uploaded_file' ), 10, 1 );
 		add_filter( 'upload_mimes', array( $this, 'custom_mime_types' ), 10, 1 );
 		add_action( 'pre_get_posts', array( $this, 'attachment_query_var' ), 10, 1 );
 		add_action( 'init', array( $this, 'attachment_endpoint' ), 10, 1 );
@@ -292,7 +293,7 @@ class WPAS_File_Upload {
 		<div class="wpas-auto-delete-attachments-container">
 			<label for="wpas-auto-delete-attachments">
 				<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1" <?php checked(1, $flag_on); ?>>
-				<?php esc_html_e( 'Automatically delete attachments when a ticket is closed', 'wpas' ); ?>
+				<?php esc_html_e( 'Automatically delete attachments when a ticket is closed', 'awesome-support' ); ?>
 			</label>
 		</div>
 		<?php
@@ -393,7 +394,7 @@ class WPAS_File_Upload {
 		$nonce = isset( $_POST['att_delete_nonce'] ) ? sanitize_file_name( wp_unslash( $_POST['att_delete_nonce'] ) ) : '';
 		
 		if ( empty( $nonce ) || !check_ajax_referer( 'wpas-delete-attachs', 'att_delete_nonce' ) ) { 		
-			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'wpas') ) );
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'awesome-support') ) );
 			die();
 		}
 		$user = wp_get_current_user();
@@ -424,12 +425,12 @@ class WPAS_File_Upload {
 
 						if (!$attachment || $attachment->post_type !== 'attachment') {
 							// Attachment not found							
-							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'wpas') ) );
+							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'awesome-support') ) );
 							die();
 						}
 						
 						if ( ! current_user_can( 'delete_attachment', $attachment_id ) ) {							
-							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'wpas') ) );
+							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'awesome-support') ) );
 							die();
 						}
 						
@@ -450,9 +451,9 @@ class WPAS_File_Upload {
 		}
 
 		if( $deleted ) {
-			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'wpas' ) ) );
+			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'awesome-support' ) ) );
 		} else {
-			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'wpas') ) );
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'awesome-support') ) );
 		}
 
 		die();
@@ -750,7 +751,8 @@ class WPAS_File_Upload {
 		}
 
 		/* We sort the uploads in sub-folders per ticket. */
-		$subdir = "/awesome-support/ticket_$ticket_id";
+		$ticket_id_encode = md5($ticket_id . NONCE_SALT);		
+		$subdir = "/awesome-support/ticket_$ticket_id_encode";
 
 		/* Create final URL and dir */
 		$dir = $upload['basedir'] . $subdir;
@@ -1080,7 +1082,9 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
-							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
+
+							$post_id_encode = md5($post_id . NONCE_SALT);
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
 
 							/**
@@ -1180,7 +1184,8 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
-							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
+							$post_id_encode = md5($post_id . NONCE_SALT);	
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
 
 							/**
@@ -2022,7 +2027,8 @@ class WPAS_File_Upload {
 
 			foreach( glob( $dir . '{' . $accept . '}', GLOB_BRACE ) as $file ) {
 
-				$new_file_relative_dir = 'awesome-support/ticket_' . $reply_id;
+				$reply_id_encode = md5($reply_id . NONCE_SALT);	
+				$new_file_relative_dir = 'awesome-support/ticket_' . $reply_id_encode;
 
 				$gas_file_base_name = $this->wpas_sanitize_file_name( basename( $file ) );
 
@@ -2203,4 +2209,62 @@ class WPAS_File_Upload {
 		return $sanitized_filename;
 	}
 
+	public function sgpb_rename_uploaded_file($file) {
+	    
+	    global $post;
+		if ( empty( $post ) ) { 
+			$server_protocol = isset( $_SERVER['SERVER_PROTOCOL'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PROTOCOL'] ) ) : null;
+			$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : null;
+			$server_port = isset( $_SERVER['SERVER_PORT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) : null;
+			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : null;
+
+			$protocol = stripos( $server_protocol, 'https' ) === true ? 'https://' : 'http://';
+			$post_id  = url_to_postid( $protocol . $server_name . ':' . $server_port . $request_uri );
+			$post     = get_post( $post_id );
+		}
+		
+		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] )) : '' ; 
+		
+		/**
+		 * On the front-end we only want to to  rename file attachments
+		 * on the submission page or on a ticket details page.
+		 */
+		if ( ! is_admin() ) {
+			if ( ! empty( $post) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
+				return $file;
+			}
+		}
+
+		/**
+		 * In the admin we only want to  rename file attachments on the ticket creation screen
+		 * or on the ticket edit screen.
+		 */
+		if ( is_admin() ) {
+
+			if ( ! isset( $post ) && empty( $post_type ) ) {
+				return $file;
+			}
+
+			if ( isset( $post ) && 'ticket' !== $post->post_type ) {
+				return $file;
+			}
+
+			if ( ! empty( $post_type ) && 'ticket' !== $post_type ) {
+				return $file;
+			}
+
+		}
+
+	    $info = pathinfo($file['name']);
+
+	    $ext  = !empty($info['extension']) ? '.' . $info['extension'] : '';
+
+	    $random_string = wp_generate_password(8, false); 
+
+	    $unique_name = $info['filename'] .  $random_string . time() . $ext;
+
+	    $file['name'] = $unique_name;
+
+	    return $file;
+	}
 }

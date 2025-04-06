@@ -46,7 +46,7 @@ class CustomFields extends WP_REST_Controller {
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<ticket_id>[\d]+)/custom-fields', array(
             'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique ticket identifier.' ),
+					'description' => __( 'Unique ticket identifier.', 'awesome-support' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -64,7 +64,7 @@ class CustomFields extends WP_REST_Controller {
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<ticket_id>[\d]+)/custom-fields', array(
             'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique ticket identifier.' ),
+					'description' => __( 'Unique ticket identifier.', 'awesome-support' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),

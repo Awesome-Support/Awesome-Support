@@ -587,7 +587,7 @@ class WPAS_Tickets_List {
 							);
 
 							// translators: %s is the formatted_reply_string.
-							$translated_reply_string = sprintf(_x( '%s.', 'Number of replies to a ticket' ), $formatted_reply_string);
+							$translated_reply_string = sprintf(_x( '%s.', 'Number of replies to a ticket', 'awesome-support' ), $formatted_reply_string);
 
 							// Output the escaped and translated string
 							echo esc_html( $translated_reply_string );
@@ -876,8 +876,7 @@ class WPAS_Tickets_List {
 
 			global $wpdb;
 
-			$sql = <<<SQL
-SELECT
+			$sql = "SELECT
 	wpas_ticket.ID AS ticket_id,
 	wpas_ticket.post_title AS ticket_title,
 	wpas_reply.ID AS reply_id,
@@ -905,8 +904,7 @@ WHERE 1=1
 	AND wpas_replies.latest_reply IS NOT NULL
 	AND 'ticket_reply'=wpas_reply.post_type
 ORDER BY
-	wpas_replies.latest_reply ASC
-SQL;
+	wpas_replies.latest_reply ASC";
 
 			$no_replies = $client_replies = $agent_replies = array();
 			$replies = $wpdb->get_results( "$sql" );
@@ -1724,11 +1722,11 @@ SQL;
 				 *  Alias taxonomy tables used by sorting in
 				 *  case there is an active taxonomy filter. (is_tax())
 				 */
-				$clauses[ 'join' ] .= <<<SQL
-LEFT OUTER JOIN {$wpdb->term_relationships} AS t_rel ON {$wpdb->posts}.ID=t_rel.object_id
-LEFT OUTER JOIN {$wpdb->term_taxonomy} AS t_t ON t_t.term_taxonomy_id=t_rel.term_taxonomy_id
-LEFT OUTER JOIN {$wpdb->terms} AS tms ON tms.term_id=t_t.term_id
-SQL;
+
+				$clauses['join'] .= 
+					" LEFT OUTER JOIN {$wpdb->term_relationships} AS t_rel ON {$wpdb->posts}.ID = t_rel.object_id" .
+					" LEFT OUTER JOIN {$wpdb->term_taxonomy} AS t_t ON t_t.term_taxonomy_id = t_rel.term_taxonomy_id" .
+					" LEFT OUTER JOIN {$wpdb->terms} AS tms ON tms.term_id = t_t.term_id";
 
 				$clauses[ 'where' ]   .= " AND (t_t.taxonomy = '" . $orderby . "' AND t_t.taxonomy IS NOT NULL)";
 				$clauses[ 'groupby' ] = "t_rel.object_id";

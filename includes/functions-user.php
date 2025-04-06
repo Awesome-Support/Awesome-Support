@@ -1211,7 +1211,7 @@ function wpas_mailgun_check( $data = '' ) {
 	}
 
 	if ( ! current_user_can( 'read' ) ) {
-		wp_send_json_error( __( 'Unauthorized action.', 'awesome-support' ), 403 );
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to check if an e-mail is valid during registration using the MailGun API.', 'awesome-support') ), 403);
 	}
 
 	$mailgun = new WPAS_MailGun_EMail_Check();

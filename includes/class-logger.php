@@ -45,21 +45,24 @@ class WPAS_Logger {
 	 * @return void
 	 */
 	public function __destruct() {
+		global $wp_filesystem;
+	
+		// Initialize WP_Filesystem if not already initialized
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		WP_Filesystem();
+
 		$file = $this->open();
-		
-		if ( is_resource ( $file ) ) {
-			
-			@fclose( $file );
-			
+	
+		if ( $file && $wp_filesystem->exists( $file ) ) {
+			// No need to close a file, as WP_Filesystem does not use file handles.
+			// Just ensure the file exists and log an appropriate message if needed.
 		} else {
-			
-			// If we get here it means we don't have an actual file handle/resource.
-			// Take what we have and attempt to close anyway. Just in case.
-			// An error will be thrown if parameters are not compatible!
-			@fclose( escapeshellarg( $file ) );
-			
+			error_log( "Invalid file reference in __destruct(): " . esc_html( $file ) );
 		}
 	}
+	
 
 	public function get_handles() {
 		return apply_filters( 'wpas_logs_handles', $this->handles );
@@ -157,24 +160,23 @@ class WPAS_Logger {
 	 * @return mixed Path if the log file exists, false otherwise
 	 */
 	public function get_log_file_path() {
+		global $wp_filesystem;
+
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		WP_Filesystem();
 
 		$path = $this->get_logs_path();
-		if ( !$path ) {
+		if ( ! $path ) {
 			return false;
 		}
-
 		$file = trailingslashit( $path ) . "log-$this->handle.txt";
-
-		if ( !file_exists( $file ) ) {
-			
-			$handle = fopen( $file, 'a' );
-			
-			if ( is_resource( $handle ) ) {
-				fclose( $handle );
-			}
-
+	
+		if ( ! $wp_filesystem->exists( $file ) ) {
+			$wp_filesystem->put_contents( $file, '', FS_CHMOD_FILE ); // Create an empty file
 		}
-
+	
 		return $file;
 
 	}
@@ -187,7 +189,23 @@ class WPAS_Logger {
 	 * @return  mixed Resource on success
 	 */
 	private function open() {
-		$file = fopen( $this->get_log_file_path(), 'a' );
+		global $wp_filesystem;
+
+		// Initialize WP_Filesystem if not already initialized
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		WP_Filesystem();
+
+		// Get the log file path
+		$file = $this->get_log_file_path();
+	
+		// Ensure the file exists, and if not, create it
+		if ( ! $wp_filesystem->exists( $file ) ) {
+			$wp_filesystem->put_contents( $file, '', FS_CHMOD_FILE ); // Create an empty file if it doesn't exist
+		}
+	
+		// Return the file path, as WP_Filesystem works with file contents, not file handles
 		return $file;
 	}
 
@@ -199,10 +217,30 @@ class WPAS_Logger {
 	 * @return void
 	 */
 	public function add( $message ) {
+		global $wp_filesystem;
+	
+		// Initialize WP_Filesystem if not already initialized
+		if ( empty( $wp_filesystem ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+		WP_Filesystem();
+		
+		// Get the log file path
 		$file = $this->open();
-		if ( $file && is_resource( $file ) ) {
+	
+		if ( $file ) {
+			// Get the existing content of the log file, if any
+			$existing_content = $wp_filesystem->exists( $file ) ? $wp_filesystem->get_contents( $file ) : '';
+	
+			// Format the new message with the current time
 			$time = date_i18n( 'm-d-Y @ H:i:s -' ); // Grab Time
-			@fwrite( $file, $time . " " . sanitize_text_field( $message ) . "\n" );
+			$new_message = $time . " " . sanitize_text_field( $message ) . "\n";
+	
+			// Append the new message to the existing content
+			$updated_content = $existing_content . $new_message;
+	
+			// Write the updated content back to the file
+			$wp_filesystem->put_contents( $file, $updated_content, FS_CHMOD_FILE );
 		}
 	}
 
