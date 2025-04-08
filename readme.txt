@@ -291,6 +291,8 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.3.2.1	
+	* We fixed Bug ticket reply from cron job (IMAP ADDON).
 = 6.3.2	
 	* We fixed vulnerability Issue with ticket folder. 
 

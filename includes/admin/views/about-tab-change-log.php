@@ -5,6 +5,17 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.3.2.1</h1>
+				<h3>6.3.2.1 Revised plugin deactivation process with feedback.</h3>
+				<ul>
+					<li>We fixed Bug ticket reply from cron job (IMAP ADDON).</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.3.2</h1>
 				<h3>6.3.2 Revised plugin deactivation process with feedback.</h3>
 				<ul>
