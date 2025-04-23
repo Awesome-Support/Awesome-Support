@@ -761,29 +761,31 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	// Read the template files into the appropriate option based on the key-fiile mapping array above.
 	foreach ( $template_files as $key => $template_file ) {
 
-	if ( file_exists( $template_file ) ) {
-		// Ensure the HTTP API functions are available
-		if ( !function_exists('wp_remote_get') ) {
-			require_once ABSPATH . WPINC . '/http.php';
-		}
-
-		$template_contents = wp_remote_get( $template_file );
-
-			if ( ! empty( $template_contents ) ) {
-
-				// Is there any existing value in the option?
-				$existing_contents = wpas_get_option( $key );
-
-				if ( ! empty( $existing_contents ) && ! $overwrite ) {
-					// do not overwrite existing contents
-					continue ;
-				}
-
-				wpas_update_option( $key, $template_contents, true ) ;
+		// Validate the URL
+		if (wp_http_validate_url( esc_url_raw( $template_file ) ) ) {
+			// Ensure the HTTP API functions are available
+			if ( !function_exists('wp_remote_get') ) {
+				require_once ABSPATH . WPINC . '/http.php';
 			}
 
+			$template_contents = wp_remote_get( $template_file );
+
+			if ( !is_wp_error( $template_contents ) ) {
+
+		        $body_template_contents = wp_remote_retrieve_body( $template_contents );
+		        
+		        if ( ! empty( $body_template_contents ) ) {
+
+					// Is there any existing value in the option?
+					$existing_contents = wpas_get_option( $key );
+
+					if ( ! empty( $existing_contents ) && ! $overwrite ) {
+						// do not overwrite existing contents
+						continue ;
+					}
+					wpas_update_option( $key, $body_template_contents, true ) ;
+				}		        
+	   		}
 		}
 	}
-
-
 }

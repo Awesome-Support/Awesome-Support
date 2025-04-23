@@ -87,7 +87,14 @@ class WPAS_Editor_Email_Template_Tags_Button {
 		$list_tags = json_encode( $list_tags, true );
 		
 		$script = 'var wpas_editor_js_vars = { "template_tags": ' . $list_tags . ' };' ;
-		printf( wp_kses("<script type='text/javascript'>$script</script>", [ 'script' => [ 'type' => true ] ] ) );
+
+		// Proper wp_kses usage with allowed tags and attributes
+		$allowed_html_wpas_editor = array(
+		    'script' => array(
+		        'type' => true,
+		    ),
+		);
+		echo wp_kses("<script type='text/javascript'>$script</script>", $allowed_html_wpas_editor );
 	}
 }
 
