@@ -465,7 +465,7 @@ function wpas_is_free_addon_page_dismissed() {
 	return (bool) get_option('wpas_dismiss_free_addon_page', false);
 }
 
-add_action('plugins_loaded', 'wpas_free_addon_notice');
+add_action('admin_notices', 'wpas_free_addon_notice');
 /**
  * Add free addon notice
  *
@@ -511,7 +511,7 @@ function wpas_free_addon_notice() {
 	), admin_url('edit.php'))), array('strong' => array(), 'a' => array('href' => array()))));
 }
 
-add_action('plugins_loaded', 'wpas_request_first_5star_rating');
+add_action('admin_notices', 'wpas_request_first_5star_rating');
 /**
  * Request 5 star rating after 25 closed tickets.
  *

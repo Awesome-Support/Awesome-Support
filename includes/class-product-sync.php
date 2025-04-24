@@ -970,7 +970,7 @@ class WPAS_Product_Sync {
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( $x_content, "<code>$this->post_type</code>" ) );
 
 		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) {
-			wp_die( esc_html( $message ), esc_html__( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );
+			wp_die( wp_kses_post( $message ), esc_html__( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );
 		}
 
 	}
