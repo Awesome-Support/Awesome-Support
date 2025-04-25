@@ -12,6 +12,7 @@
 name: "CodeQL Advanced"
 
 on:
+  workflow_dispatch:
   push:
     branches: [ "develop", "fix-security-code-scanning-from-develop" ]
   pull_request:
