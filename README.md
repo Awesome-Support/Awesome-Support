@@ -44,7 +44,6 @@ Don't sweat it! It's no big deal. Dependencies are managed by Composer. Once you
 
 ```
 composer install
-
 ```
 
 This command will do a few things for you:
