@@ -1,6 +1,14 @@
 function stringToBool(t) {
     return "true" === (t + "").toLowerCase();
 }
+function escapeHtml(str) {
+    return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 function clearFileInput(t) {
     if (t.value) {
         var e, a, n;
@@ -797,12 +805,12 @@ function clearFileInput(t) {
                         (e = t(
                             n.background ||
                                 [
-                                    '<div class="' + e + "-loading " + e + '">',
-                                    '<div class="' + e + '-content">',
-                                    '<span class="' + e + "-close-icon " + n.namespace + '-close">',
-                                    n.closeIcon,
+                                    '<div class="' + escapeHtml(e) + "-loading " + escapeHtml(e) + '">',
+                                    '<div class="' + escapeHtml(e) + '-content">',
+                                    '<span class="' + escapeHtml(e) + "-close-icon " +escapeHtml( n.namespace) + '-close">',
+                                    escapeHtml(n.closeIcon),
                                     "</span>",
-                                    '<div class="' + n.namespace + '-inner">' + n.loading + "</div>",
+                                    '<div class="' + escapeHtml(n.namespace) + '-inner">' + escapeHtml(n.loading) + "</div>",
                                     "</div>",
                                     "</div>",
                                 ].join("")
@@ -1436,7 +1444,7 @@ function clearFileInput(t) {
                         return !1;
                     var r = a.find("> td:visible").length;
                     return (
-                        (e = n.hasClass(l.detail)) || ((n = t('<tr class="' + l.detail + '"><td class="' + l.detailCell + '"><div class="' + l.detailInner + '"></div></td></tr>')), a.after(n)),
+                        (e = n.hasClass(l.detail)) || ((n = t('<tr class="' + escapeHtml(l.detail) + '"><td class="' + escapeHtml(l.detailCell) + '"><div class="' + escapeHtml(l.detailInner )+ '"></div></td></tr>')), a.after(n)),
                         n.find("> td:first").attr("colspan", r),
                         (r = n.find("." + l.detailInner).empty()),
                         s.createDetail(r, i, s.createGroupedDetail, s.detailSeparator, l),
@@ -2338,7 +2346,7 @@ function clearFileInput(t) {
                   (a = []),
                   (n = ""),
                   r.each(function (e, i) {
-                      (i = t(i).find(".wpas-label-status").text()), -1 == a.indexOf(i) && (a.push(i), (n += '<option value="' + i + '">' + i + "</option>"));
+                      (i = t(i).find(".wpas-label-status").text()), -1 == a.indexOf(i) && (a.push(i), (n += '<option value="' + escapeHtml(i) + '">' + escapeHtml(i) + "</option>"));
                   }),
                   1 < a.length ? e.append(n) : e.hide(),
                   e.on("change", function (e) {
