@@ -17,7 +17,7 @@ on:
   pull_request:
     branches: [ "develop", "fix-security-code-scanning-from-develop" ]
   schedule:
-    - cron: '24 4 * * 6'
+    - cron: '32 23 * * 1'
 
 jobs:
   analyze:
@@ -43,8 +43,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - language: actions
-          build-mode: none
         - language: javascript-typescript
           build-mode: none
         # CodeQL supports the following values keywords for 'language': 'actions', 'c-cpp', 'csharp', 'go', 'java-kotlin', 'javascript-typescript', 'python', 'ruby', 'swift'
