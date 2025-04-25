@@ -76,8 +76,7 @@ class CustomFields extends WP_REST_Controller {
                 'args' => array( 
                     'custom_fields' => array(
                         'required'    => true,
-                        'description' => 'List of custom fields',
-                        'type'        => 'array'
+                        'description' => 'List of custom fields',                       
                     )
                 )
             )
@@ -215,25 +214,42 @@ class CustomFields extends WP_REST_Controller {
     */
     public function update_custom_fields( $request ) {
 
+  
         if ( ! isset( $request[ 'custom_fields' ] ) || empty( $request[ 'custom_fields' ] ) ) {
             return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter cannot be empty.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
         }
 
         if ( ! $this->is_user_ticket( $request[ 'ticket_id' ] ) ) {
             return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update custom fields for this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
-        } 
+        }
 
+        $request[ 'custom_fields' ] = (array) $request[ 'custom_fields' ];   
         foreach ( $this->get_fields() as $field => $data ) {
 
             if ( array_key_exists( 'wpas_' . $field, $request[ 'custom_fields' ] ) ) {
 
-                $custom_field = new WPAS_Custom_Field( $field, $data );
-                $custom_field->update_value( $request[ 'custom_fields' ][ 'wpas_' . $field ], $request[ 'ticket_id' ] );
-                
+                $custom_field = new WPAS_Custom_Field( $field, $data );                
+                $custom_field->update_value( $request[ 'custom_fields' ][ 'wpas_' . $field ], $request[ 'ticket_id' ] );                
             }
-    
+            else
+            {
+                //Per documentation, We did not mention to add prefix "wpas_" whe push request to API, so this solution to reolve it
+                if ( array_key_exists( $field, $request[ 'custom_fields' ] ) ) {
+                    $custom_field = new WPAS_Custom_Field( $field, $data );                
+                    $custom_field->update_value( $request[ 'custom_fields' ][ $field ], $request[ 'ticket_id' ] );                
+                }
+                else
+                {                    
+                    return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter is not existed .', 'awesome-support' ), array( 'status' => 404, 'data_received' => $request->get_params() ) );
+                }
+            }
         }
+        $data = array(
+            'message' => 'Success update your custom fields',
+            'data_received' => $request->get_params()
+        );
 
+        return new WP_REST_Response($data, 200);        
     }
 
 

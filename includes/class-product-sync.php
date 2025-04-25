@@ -608,19 +608,22 @@ class WPAS_Product_Sync {
 
 			if ( false !== $term ) {
 
-				$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $this->taxonomy );
+				if( is_a( $term, 'WP_Term' ) )
+				{
+					$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $this->taxonomy );
 
-				if ( 'id' === $args['orderby'] ) {
+					if ( 'id' === $args['orderby'] ) {
 
-					$sort[] = (int) $term->{$args['orderby']};
+						$sort[] = (int) $term->{$args['orderby']};
 
-				} else {
-
-					$sort[] = strtolower( $term->{$args['orderby']} ); // Make lower case to get a natural sort since mixed case yields undesired results.
-				}
-
+					} else {					
+						if( isset( $term->{$args['orderby']} ) )
+						{
+							$sort[] = strtolower( $term->{$args['orderby']} ); // Make lower case to get a natural sort since mixed case yields undesired results.
+						}										
+					}
+				}				
 			}
-
 		}
 
 		// Ensure terms are sorted according to the supplied args.
@@ -967,7 +970,7 @@ class WPAS_Product_Sync {
 		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( $x_content, "<code>$this->post_type</code>" ) );
 
 		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) {
-			wp_die( esc_html( $message ), esc_html__( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );
+			wp_die( wp_kses_post( $message ), esc_html__( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );
 		}
 
 	}
