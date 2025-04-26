@@ -6,8 +6,8 @@
  * @package   Awesome_Support
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 class WPAS_File_Upload {
 
@@ -41,6 +41,7 @@ class WPAS_File_Upload {
 
 		add_filter( 'upload_dir', array( $this, 'set_upload_dir' ) );
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'limit_upload' ), 10, 1 );
+		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sgpb_rename_uploaded_file' ), 10, 1 );
 		add_filter( 'upload_mimes', array( $this, 'custom_mime_types' ), 10, 1 );
 		add_action( 'pre_get_posts', array( $this, 'attachment_query_var' ), 10, 1 );
 		add_action( 'init', array( $this, 'attachment_endpoint' ), 10, 1 );
@@ -55,8 +56,6 @@ class WPAS_File_Upload {
 			require_once( ABSPATH . 'wp-admin/includes/media.php' );
 			require_once( ABSPATH . 'wp-admin/includes/template.php' );
 
-			add_action( 'wpas_open_ticket_after', array( $this, 'new_ticket_attachment' ), 10, 2 ); // Save attachments after user opened a new ticket
-			add_action( 'wpas_add_reply_public_after', array( $this, 'new_reply_attachment' ), 10, 2 );  // Save attachments after user submitted a new reply
 			add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'upload_field' ) );                  // Load the dropzone after description textarea
 			add_action( 'wpas_ticket_details_reply_textarea_after', array( $this, 'upload_field' ) );                  // Load dropzone after reply textarea
 
@@ -70,15 +69,396 @@ class WPAS_File_Upload {
 		if ( is_admin() ) {
 
 			add_action( 'wpas_add_reply_admin_after', array( $this, 'new_reply_backend_attachment' ), 10, 2 );
+
+
 			add_action( 'post_edit_form_tag', array( $this, 'add_form_enctype' ), 10, 1 );
-			add_action( 'wpas_admin_after_wysiwyg', array( $this, 'upload_field' ), 10, 0 );
+
+			add_filter( 'wpas_admin_tabs_after_reply_wysiwyg', array( $this, 'upload_field_add_tab' ) , 11, 1 ); // Register attachments tab under reply wysiwyg
+			add_filter( 'wpas_admin_tabs_after_reply_wysiwyg_attachments_content', array( $this, 'upload_field_tab_content' ) , 11, 1 ); // Return content for attachments tab
+
 			add_action( 'before_delete_post', array( $this, 'delete_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
 			add_action( 'wpas_backend_reply_content_after', array( $this, 'show_attachments' ), 10, 1 );
+			add_action( 'wpas_backend_reply_content_after_with_image', array( $this, 'show_attachments_with_image' ), 10, 1 );
 			add_filter( 'wpas_cf_wrapper_class', array( $this, 'add_wrapper_class_admin' ), 10, 2 );
 
 		}
+
+		// If Ajax upload is enabled
+		if ( boolval( wpas_get_option( 'ajax_upload', false ) ) || boolval( wpas_get_option( 'ajax_upload_all', false ) ) ) {
+
+			// Cleanup action
+			add_action( 'attachments_dir_cleanup_action', array( $this, 'attachments_dir_cleanup' ) );
+			
+			// Schedule cleanup of unused attachments directories
+			add_action( 'wp', array( $this, 'attachments_dir_cleanup_schedule' ) );
+
+
+			// After Add Reply action hook
+			if ( is_admin() ) {
+				add_action( 'admin_enqueue_scripts', array( $this, 'load_ajax_uploader_assets' ), 10 );
+			} else {
+				add_action( 'wp_enqueue_scripts',    array( $this, 'load_ajax_uploader_assets' ), 10 );
+			}
+
+			add_action( 'wpas_open_ticket_after', array( $this, 'new_ticket_ajax_attachments' ), 10, 2 ); // Check for ajax attachments after user opened a new ticket
+			add_action( 'wpas_add_reply_after', array( $this, 'new_reply_ajax_attachments' ), 20, 2 );  // Check for ajax attachments after user submitted a new reply
+
+			add_action( 'wp_ajax_wpas_upload_attachment',      array( $this, 'ajax_upload_attachment' ) );
+			add_action( 'wp_ajax_wpas_delete_temp_attachment', array( $this, 'ajax_delete_temp_attachment' ) );
+			add_action( 'wp_ajax_wpas_delete_temp_directory',  array( $this, 'ajax_delete_temp_directory' ) );
+
+		}
+		else
+		{
+			add_action( 'wpas_open_ticket_after', array( $this, 'new_ticket_attachment' ), 10, 2 ); // Save attachments after user opened a new ticket
+			add_action( 'wpas_add_reply_public_after', array( $this, 'new_reply_attachment' ), 10, 2 );  // Save attachments after user submitted a new reply
+		}
+
+		add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'add_auto_delete_button_fe_submission' ) );
+		add_action( 'wpas_ticket_details_reply_close_checkbox_after',		 array( $this, 'add_auto_delete_button_fe_ticket' ) );
+		add_action( 'wpas_backend_ticket_status_before_actions', array( $this, 'admin_add_auto_delete_button'), 100 );
+
+		add_action( 'wp_ajax_wpas_auto_delete_attachment_flag',  array( $this, 'auto_delete_attachment_flag' ) );
+
+		add_action( 'wp_ajax_wpas_delete_attachment',			 array( $this, 'ajax_delete_attachment' ) );
+
+		add_action( 'wpas_ticket_after_saved',					 array( $this, 'ticket_after_saved' ) );
+		add_action( 'wpas_open_ticket_after',			array( $this, 'wpas_open_ticket_after' ), 11, 2 );
+
+		add_action( 'wpas_after_close_ticket',			array( $this, 'wpas_maybe_delete_attachments_after_close_ticket' ), 11, 3 );
+
 	}
+
+
+	/**
+	 * From backend tools add or remove auto delete attachments flag for open, closed or all tickets
+	 *
+	 * @global object $wpdb
+	 *
+	 * @param string $type
+	 * @param boolean $auto_delete
+	 */
+	public static function mark_tickets_auto_delete_attachments( $type = 'all', $auto_delete = true ) {
+
+		global $wpdb;
+
+		$type_clause = "pm.meta_value IN ('open', 'closed')";
+
+		if( 'all' !== $type ) {
+			$type_clause = 'pm.meta_value = "' . $type . '"';
+		}
+
+		$meta_value = $auto_delete ? '1' : '';
+
+
+
+		$select_q = "SELECT pm.post_id, 'auto_delete_attachments' as meta_key, '{$meta_value}' as meta_value from $wpdb->postmeta pm
+					LEFT JOIN $wpdb->postmeta pm2 ON pm2.post_id = pm.post_id AND pm2.meta_key = 'auto_delete_attachments'
+					INNER JOIN $wpdb->posts p ON p.ID = pm.post_id AND p.post_type='ticket'
+					WHERE pm.meta_key = '_wpas_status' AND $type_clause";
+
+
+		$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value = %s WHERE meta_key = %s AND post_id IN(
+					select post_ids.post_id from ( $select_q AND !isnull( pm2.meta_id ) group by pm.post_id ) as post_ids
+				)", $meta_value, 'auto_delete_attachments' ));
+
+		$wpdb->query( "INSERT INTO $wpdb->postmeta( post_id, meta_key, meta_value ) ( $select_q AND isnull( pm2.meta_id ) group by pm.post_id )" );
+	}
+
+
+	/**
+	 * Save auto delete attachments flag from backend after ticket is saved
+	 *
+	 * @param int $ticket_id
+	 *
+	 * @return void
+	 */
+	function ticket_after_saved( $ticket_id ) {
+
+		if( !is_admin() ) {
+			return;
+		}
+
+		//$old_auto_save = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
+		$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
+
+		//if( $auto_delete !== $old_auto_save ) {
+		//	$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
+		//}
+
+		if ( wpas_agent_can_set_auto_delete_attachments() || wpas_is_asadmin() ) {
+			$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
+		}
+
+	}
+
+	/**
+	 * Save auto delete attachments flag from front-end
+	 */
+	function auto_delete_attachment_flag() {
+
+		$ticket_id = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
+		$auto_delete = filter_input( INPUT_POST, 'auto_delete', FILTER_SANITIZE_NUMBER_INT );
+
+		if( $ticket_id && ( 0 == $auto_delete || 1 == $auto_delete ) ) {
+			$this->update_auto_delete_flag( $ticket_id, $auto_delete );
+		}
+	}
+
+	/**
+	 * update auto delete attachments flag
+	 *
+	 * @param int $ticket_id
+	 * @param boolean $auto_delete
+	 * @param string $type
+	 */
+	function update_auto_delete_flag( $ticket_id, $auto_delete, $type = 'user' ) {
+
+		$auto_delete = $auto_delete ? '1' : '';
+
+		update_post_meta( $ticket_id, 'auto_delete_attachments', $auto_delete );
+		update_post_meta( $ticket_id, 'auto_delete_attachments_type', $type );
+	}
+
+	/**
+	 * Add field to mark auto delete attachments on ticket submission form
+	 */
+	function add_auto_delete_button_fe_submission() {
+		global $post;
+
+		$flag_on = '';
+
+
+		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+
+		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
+
+		if( !$auto_delete || !$user_can_set_flag ) {
+			return;
+		}
+
+
+		if( $auto_delete ) {
+			$flag_on = '1';
+		}
+
+
+		$this->auto_delete_field( $flag_on );
+
+	}
+
+
+	/**
+	 * Add field to mark auto delete attachments on ticket edit page front end
+	 */
+	function add_auto_delete_button_fe_ticket() {
+		global $post;
+
+		$auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
+
+		if( wpas_user_can_set_auto_delete_attachments()  && true == $auto_delete ) {
+			$flag_on = get_post_meta( $post->ID, 'auto_delete_attachments', true );
+			$this->auto_delete_field( $flag_on );
+		}
+
+	}
+
+
+	/**
+	 * Add field to mark auto delete attachments on ticket close
+	 */
+	function admin_add_auto_delete_button() {
+
+		/* Exit if agents are not allowed to set auto-delete flag */
+		if ( ! wpas_is_asadmin() &&  ! boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments', false ) ) ) {
+			return ;
+		}
+
+		/* Got here so ok to paint the field */
+		global $post_id;
+
+		$flag_on = get_post_meta( $post_id, 'auto_delete_attachments', true );
+
+		echo '<p>';
+
+		$this->auto_delete_field( $flag_on );
+		echo '</p>';
+
+	}
+
+	function auto_delete_field( $flag_on = false ) {
+		?>
+
+		<div class="wpas-auto-delete-attachments-container">
+			<label for="wpas-auto-delete-attachments">
+				<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1" <?php checked(1, $flag_on); ?>>
+				<?php esc_html_e( 'Automatically delete attachments when a ticket is closed', 'awesome-support' ); ?>
+			</label>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Check and auto delete attachment after ticket is closed
+	 *
+	 * @param int $ticket_id
+	 * @param boolean $update
+	 * @param int $user_id
+	 */
+	public function wpas_maybe_delete_attachments_after_close_ticket( $ticket_id, $update, $user_id ) {
+
+
+		$delete_attachments = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
+
+		if( $delete_attachments ) {
+
+			// Get attachments on ticket
+			$attachments = get_attached_media( '', $ticket_id );
+
+			// Create array of attachments from replies..
+			$replies = wpas_get_replies( $ticket_id );
+			foreach( $replies as $reply ) {
+				$attachments = array_merge( $attachments, get_attached_media( '', $reply->ID ) );
+			}
+
+			// Now delete them all
+			$logs = array() ; // hold log messages to be written later to ticket
+
+			$attachments = apply_filters( 'attachments_list_for_auto_delete', $attachments, $ticket_id );
+
+			// translators: %s is the attachment.
+			$x_content = __( '%s attachment auto deleted', 'awesome-support' );
+			foreach ( $attachments as $attachment ) {
+
+				$filename   = explode( '/', $attachment->guid );
+				$name = $filename[ count( $filename ) - 1 ];
+
+				wp_delete_attachment( $attachment->ID );
+
+				$logs[] = '<li>' . sprintf( $x_content, $name ) . '</li>';
+
+			}
+
+			// Write logs to ticket
+			if( !empty( $logs ) ) {
+				$log_content = '<ul>'. implode( '', $logs ).'</ul>';
+				wpas_log( $ticket_id, $log_content );
+			}
+		}
+	}
+
+	/**
+	 * Add auto close mark after a new ticket is submitted
+	 *
+	 * @param int $ticket_id
+	 * @param array $data
+	 */
+	function wpas_open_ticket_after( $ticket_id, $data ) {
+
+
+		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+
+		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
+
+		if( !$auto_delete && !$user_can_set_flag ) {
+			return;
+		}
+
+		$auto_delete_type = '';
+
+		if( $user_can_set_flag ) {
+			$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
+			$auto_delete_type = 'user';
+		} elseif( $auto_delete ) {
+			$auto_delete_type = 'auto';
+		}
+
+		$auto_delete = $auto_delete ? '1' : '';
+
+		if( $auto_delete ) {
+			update_post_meta( $ticket_id, 'auto_delete_attachments', $auto_delete );
+			update_post_meta( $ticket_id, 'auto_delete_attachments_type', $auto_delete_type );
+		}
+	}
+
+
+	/**
+	 * Delete single attachment from front-end or backend
+	 */
+	function ajax_delete_attachment() {
+
+		$parent_id = filter_input( INPUT_POST, 'parent_id', FILTER_SANITIZE_NUMBER_INT );
+		$attachment_id = filter_input( INPUT_POST, 'att_id', FILTER_SANITIZE_NUMBER_INT );		
+	
+		$nonce = isset( $_POST['att_delete_nonce'] ) ? sanitize_file_name( wp_unslash( $_POST['att_delete_nonce'] ) ) : '';
+		
+		if ( empty( $nonce ) || !check_ajax_referer( 'wpas-delete-attachs', 'att_delete_nonce' ) ) { 		
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'awesome-support') ) );
+			die();
+		}
+		$user = wp_get_current_user();
+		$deleted = false;
+
+		if( $user && $parent_id && $attachment_id ) {
+
+			$ticket_id = $parent_id;
+
+			$can_delete = wpas_can_delete_attachments();	
+	
+			if( $can_delete ) {
+
+				$parent = get_post( $parent_id );				
+				
+				if( 'ticket_reply' === $parent->post_type ) {
+					$ticket_id = $parent->post_parent;
+				}
+
+				if( 'ticket' === $parent->post_type || 'ticket_reply' === $parent->post_type ) {
+					
+					$author_id = get_post_field( 'post_author', $attachment_id );
+					
+				
+					if( wpas_is_agent() || ( get_current_user_id() == $author_id ) )
+					{
+						$attachment = get_post( $attachment_id );
+
+						if (!$attachment || $attachment->post_type !== 'attachment') {
+							// Attachment not found							
+							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'awesome-support') ) );
+							die();
+						}
+						
+						if ( ! current_user_can( 'delete_attachment', $attachment_id ) ) {							
+							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'awesome-support') ) );
+							die();
+						}
+						
+						$filename   = explode( '/', $attachment->guid );
+						$name = $filename[ count( $filename ) - 1 ];
+
+						// translators: %1$s is the type of attachment, %2$s is the person who deleted it.
+						$x_content = __( '%1$s attachment deleted by %2$s', 'awesome-support' );
+
+						wp_delete_attachment( $attachment_id, true );
+
+						wpas_log( $ticket_id, sprintf( $x_content, $name, $user->display_name ) );
+						
+						$deleted = true;
+					}					
+				}
+			}
+		}
+
+		if( $deleted ) {
+			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'awesome-support' ) ) );
+		} else {
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'awesome-support') ) );
+		}
+
+		die();
+	}
+
 
 	/**
 	 * Filter out tickets and ticket replies attachments
@@ -97,7 +477,7 @@ class WPAS_File_Upload {
 
 		global $pagenow, $wpdb;
 
-		$action = isset( $_POST['action'] ) ? $_POST['action'] : '';
+		$action = isset( $_POST['action'] ) ? sanitize_file_name( wp_unslash ( $_POST['action'] ) ) : '';
 
 		// Make sure the query is for the media library
 		if ( 'query-attachments' !== $action ) {
@@ -119,8 +499,17 @@ class WPAS_File_Upload {
 			return $clauses;
 		}
 
-		$clauses['join'] .= " LEFT OUTER JOIN $wpdb->posts daddy ON daddy.ID = $wpdb->posts.post_parent";
-		$clauses['where'] .= " AND ( daddy.post_type NOT IN ( 'ticket', 'ticket_reply' ) OR daddy.ID IS NULL )";
+		$post_types = apply_filters( 'wpas_filter_out_media_attachment_post_types', array(
+			'ticket', 'ticket_reply'
+		) );
+
+		if( !empty( $post_types ) ) {
+
+			$post_types_list  = "'". implode( "', '", $post_types ) . "'";
+
+			$clauses['join'] .= " LEFT OUTER JOIN $wpdb->posts daddy ON daddy.ID = $wpdb->posts.post_parent";
+			$clauses['where'] .= " AND ( daddy.post_type NOT IN ( $post_types_list ) OR daddy.ID IS NULL )";
+		}
 
 		return $clauses;
 
@@ -200,7 +589,6 @@ class WPAS_File_Upload {
 	 * @return void
 	 */
 	public function view_attachment() {
-
 		$attachment_id = get_query_var( 'wpas-attachment' );
 
 		if ( ! empty( $attachment_id ) ) {
@@ -227,30 +615,80 @@ class WPAS_File_Upload {
 			}
 
 			if ( 'attachment' !== $attachment->post_type ) {
-				wp_die( __( 'The file you requested is not a valid attachment', 'awesome-support' ) );
+				wp_die( esc_html__( 'The file you requested is not a valid attachment', 'awesome-support' ) );
 			}
 
 			if ( empty( $attachment->post_parent ) ) {
-				wp_die( __( 'The attachment you requested is not attached to any ticket', 'awesome-support' ) );
+				wp_die( esc_html__( 'The attachment you requested is not attached to any ticket', 'awesome-support' ) );
 			}
 
 			$parent    = get_post( $attachment->post_parent ); // Get the parent. It can be a ticket or a ticket reply
 			$parent_id = empty( $parent->post_parent ) ? $parent->ID : $parent->post_parent;
 
 			if ( true !== wpas_can_view_ticket( $parent_id ) ) {
-				wp_die( __( 'You are not allowed to view this attachment', 'awesome-support' ) );
+				wp_die( esc_html__( 'You are not allowed to view this attachment', 'awesome-support' ) );
 			}
+
+			$render_method = wpas_get_option( 'attachment_render_method', 'inline');  // returns 'inline' or 'attachment'.
 
 			$filename = basename( $attachment->guid );
 
+			ob_clean();
+			ob_end_flush();
+
 			ini_set( 'user_agent', 'Awesome Support/' . WPAS_VERSION . '; ' . get_bloginfo( 'url' ) );
 			header( "Content-Type: $attachment->post_mime_type" );
-			header( "Content-Disposition: inline; filename=\"$filename\"" );
-			readfile( $attachment->guid );
+			header( "Content-Disposition: $render_method; filename=\"$filename\"" );
+
+			switch ($render_method) {
+				case 'inline':
+					$this->custom_readfile( $attachment->guid );
+					break ;
+
+				case 'attachment':
+					$this->custom_readfile( ( isset( $_SERVER['DOCUMENT_ROOT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) : '' ) . parse_url($attachment->guid, PHP_URL_PATH) );
+					break ;
+
+				default:
+					$this->custom_readfile( $attachment->guid );
+					break ;
+			};
 
 			die();
 
 		}
+
+	}
+	
+	/**
+	 * custom_readfile
+	 *
+	 * @param  mixed $file_path
+	 * @return void
+	 */
+	private function custom_readfile($file_path) {
+		// Ensure the WP_Filesystem class is available
+		if ( !function_exists('get_filesystem_method') ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// Initialize WP_Filesystem
+		global $wp_filesystem;
+		if ( empty($wp_filesystem) ) {
+			WP_Filesystem();
+		}
+
+		// Get the file contents
+		$file_contents = $wp_filesystem->get_contents($file_path);
+
+		// Check if we successfully got the contents
+		if ( $file_contents === false ) {
+			// Handle the error if reading the file failed
+			return; // or handle the error appropriately
+		}
+
+		// Output the file contents
+		print_r($file_contents);
 
 	}
 
@@ -302,50 +740,19 @@ class WPAS_File_Upload {
 	public function set_upload_dir( $upload ) {
 
 		/* Get the ticket ID */
-		$ticket_id = ! is_null( $this->parent_id ) ? $this->parent_id : $this->post_id;
+		$ticket_id = ! empty( $this->parent_id ) ? $this->parent_id : $this->post_id;
 
 		if ( empty( $ticket_id ) ) {
 			return $upload;
 		}
-
-		if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) {
-			/* On the front-end, we make sure that a new ticket or a reply is being submitted */
-			//if ( ! is_admin() ) {
-			//	if ( ! isset( $_POST['wpas_title'] ) && ! isset( $_POST['wpas_user_reply'] ) ) {
-			//		return $upload;
-			//	}
-			//}
-
-			//if ( is_admin() ) {
-
-			/* Are we in the right post type? */
-
-			//if ( ! isset( $_POST['post_type'] ) || 'ticket' !== $_POST['post_type'] && 'wpas_unassigned_mail' !== $_POST['post_type'] ) {
-			//	return $upload;
-			//}
-
-			//if ( ! isset( $_POST['wpas_reply'] ) ) {
-			//	return $upload;
-			//}
-
-			//}
-		} elseif ( $_SERVER['REQUEST_METHOD'] == 'GET' ) {
-
-			if ( ! isset( $_GET['action'] ) || $_GET['action'] !== 'delete' ) {
-				return $upload;
-			}
-
-		} else {
-			return $upload;
-		}
-
 
 		if ( ! $this->can_attach_files() ) {
 			return $upload;
 		}
 
 		/* We sort the uploads in sub-folders per ticket. */
-		$subdir = "/awesome-support/ticket_$ticket_id";
+		$ticket_id_encode = md5($ticket_id . NONCE_SALT);		
+		$subdir = "/awesome-support/ticket_$ticket_id_encode";
 
 		/* Create final URL and dir */
 		$dir = $upload['basedir'] . $subdir;
@@ -358,6 +765,14 @@ class WPAS_File_Upload {
 
 		/* Create the directory if it doesn't exist yet, make sure it's protected otherwise */
 		if ( ! is_dir( $dir ) ) {
+
+		    if ( isset( $_SERVER['REQUEST_METHOD'] ) && $_SERVER['REQUEST_METHOD'] == 'GET'
+			    && isset( $_GET['action'] )
+                && $_GET['action'] === 'delete'
+            ) {
+				return $upload;
+			}
+
 			$this->create_upload_dir( $dir );
 		} else {
 			$this->protect_upload_dir( $dir );
@@ -378,7 +793,7 @@ class WPAS_File_Upload {
 	 */
 	public function create_upload_dir( $dir ) {
 
-		$make = mkdir( $dir );
+		$make = wp_mkdir_p ( $dir );
 
 		if ( true === $make ) {
 			$this->protect_upload_dir( $dir );
@@ -397,14 +812,73 @@ class WPAS_File_Upload {
 	 *
 	 * @return void
 	 */
-	protected function protect_upload_dir( $dir ) {
+	protected function protect_upload_dir( $dir ) { 
+		
+		global $wp_filesystem;
 
-		$filename = $dir . '/.htaccess';
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		} 
 
-		if ( ! file_exists( $filename ) ) {
-			$file = fopen( $filename, 'a+' );
-			fwrite( $file, 'Options -Indexes' );
-			fclose( $file );
+		//Process Unauthenticated Sensitive Information Exposure Through Unprotected Directory with htaccess
+		if ( $wp_filesystem->is_writable($dir) ) {
+
+			$filename = $dir . '/.htaccess';
+
+			$filecontents = wpas_get_option( 'htaccess_contents_for_attachment_folders', 'Options -Indexes' ) ;
+			if ( empty( $filecontents ) ) {
+				$filecontents = 'Options -Indexes' ;
+			}
+
+			if ( ! file_exists( $filename ) ) {
+				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
+				if ( $result === false ) {
+					wpas_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
+				}
+			}
+		} else {
+			// folder isn't writable so no point in attempting to do it...
+			// log the error in our log files instead...
+			wpas_write_log('file-uploader','The folder ' . $dir . ' is not writable.  So we are unable to write a .htaccess file to this folder' ) ;
+		}
+
+		//Process Unauthenticated Sensitive Information Exposure Through Unprotected Directory with index
+		if ( $wp_filesystem->is_writable($dir) ) {
+
+			$filename = $dir  . '/index.php';	
+			$filecontents = str_replace('\n', PHP_EOL, '<?php\n\n// Silence is golden');			
+
+			if ( ! file_exists( $filename ) ) {
+				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
+				if ( $result === false ) {
+					wpas_write_log('file-uploader','unable to write .index file to folder ' . $dir ) ;
+				}
+			}
+		} else {
+			// folder isn't writable so no point in attempting to do it...
+			// log the error in our log files instead...
+			wpas_write_log('file-uploader','The folder ' . $dir . ' is not writable.  So we are unable to write a .index file to this folder' ) ;
+		}
+		
+		$found_pos =  strpos( $dir, 'uploads/awesome-support' );
+		$attachments_root = substr($dir, 0, $found_pos ) .'uploads/awesome-support';
+		if ( $wp_filesystem->is_writable($attachments_root) ) {
+
+			$filename = $attachments_root  . '/index.php';				
+			$filecontents = str_replace('\n', PHP_EOL, '<?php\n\n// Silence is golden');			
+
+			if ( ! file_exists( $filename ) ) {
+				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);				
+				if ( $result === false ) {
+					wpas_write_log('file-uploader','unable to write .index file to  awesome-support folder ' . $attachments_root ) ;
+				}
+			}
+		} else {
+			// folder isn't writable so no point in attempting to do it...
+			// log the error in our log files instead...
+			wpas_write_log('file-uploader','The folder ' . $attachments_root . ' is not writable.  So we are unable to write a .index file to awesome-support folder' ) ;
 		}
 
 	}
@@ -428,6 +902,9 @@ class WPAS_File_Upload {
 		$filetypes = implode( ', ', $filetypes );
 		$accept    = implode( ',', $accept );
 
+		// translators: %1$d is the maximum number of files, %2$d is the maximum file size in MB, %3$s is the list of allowed file types.
+		$x_content = __( 'You can upload up to %1$d files (maximum %2$d MB each) of the following types: %3$s', 'awesome-support' );
+		
 		/**
 		 * Output the upload field using a custom field
 		 */
@@ -438,14 +915,55 @@ class WPAS_File_Upload {
 				'capability' => 'edit_ticket',
 				'field_type' => 'upload',
 				'multiple'   => true,
+				'use_ajax_uploader' => ( boolval( wpas_get_option( 'ajax_upload', false ) ) ),
+				'enable_paste' => ( boolval( wpas_get_option( 'ajax_upload_paste_image', false ) ) ),
 				'label'      => __( 'Attachments', 'awesome-support' ),
-				'desc'       => sprintf( __( ' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'awesome-support' ), (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) ),
+				'desc'       => sprintf( $x_content, (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) ),
 			),
 		) );
 
 		$attachments = new WPAS_Custom_Field( $this->index, $attachments_args );
-		echo $attachments->get_output();
+		echo wp_kses($attachments->get_output(),$this->get_allowed_html());
 
+	}
+
+	/**
+	 * get_allowed_html
+	 *
+	 * @return void
+	 */
+	private function get_allowed_html(){		
+
+		return apply_filters('custom_allowed_html_wpas_file_upload', wpas_get_allowed_html_tags() );
+	}
+
+	/**
+	 *
+	 * Register attachments tab under reply wysiwyg
+	 *
+	 * @param array $tabs
+	 *
+	 * @return array
+	 */
+	public function upload_field_add_tab( $tabs ) {
+
+		$tabs['attachments'] = __( 'Attachments' , 'awesome-support' );
+
+		return $tabs;
+	}
+
+	/**
+	 *
+	 * Return content for attachments tab
+	 *
+	 * @param string $content
+	 *
+	 * @return string
+	 */
+	public function upload_field_tab_content( $content ) {
+		ob_start();
+		$this->upload_field();
+		return ob_get_clean();
 	}
 
 	/**
@@ -537,9 +1055,12 @@ class WPAS_File_Upload {
 		if ( ! empty( $attachments ) ): ?>
 
 			<div class="wpas-reply-attachements">
-				<strong><?php _e( 'Attachments:', 'awesome-support' ); ?></strong>
+				<strong><?php esc_html_e( 'Attachments:', 'awesome-support' ); ?></strong>
 				<ul>
 					<?php
+
+					$can_delete = wpas_can_delete_attachments();
+
 					foreach ( $attachments as $attachment_id => $attachment ):
 
 						/**
@@ -561,16 +1082,139 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
-							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id/$filename";
+
+							$post_id_encode = md5($post_id . NONCE_SALT);
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
 
 							/**
 							 * Prepare attachment link
 							 */
-							$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
+							if ( false === boolval( wpas_get_option( 'unmask_attachment_links', false ) ) ) {
+								// mask or obscure attachment links
+								$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
+							} else {
+								// show full link
+								$link = $attachment['url'];
+							}
 
 							?>
-							<li><a href="<?php echo $link; ?>" target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
+							<li>
+									<?php
+									if( $can_delete ) {
+										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
+									}
+
+
+
+									?>
+
+									<a href="<?php echo esc_url( $link ); ?>" target="_blank"><?php echo esc_html( $name ); ?></a> <?php echo esc_html( $filesize ); ?></li><?php
+
+						} /**
+						 * Now if we have a different upload source we delegate the computing
+						 * to whatever will hook on wpas_attachment_display_$source
+						 */
+						else {
+
+							$source = sanitize_text_field( $metadata['wpas_upload_source'] );
+
+							/**
+							 * wpas_attachment_display_$source fires if the current attachment
+							 * was uploaded by an unknown source.
+							 *
+							 * @since  3.1.5
+							 *
+							 * @param  integer $attachment_id ID of this attachment
+							 * @param  array   $attachment    The attachment array
+							 * @param  integer $post_id       ID of the post we're displaying attachments for
+							 */
+							do_action( 'wpas_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id );
+
+						}
+
+					endforeach; ?>
+				</ul>
+			</div>
+		<?php endif;
+	}
+	
+	/**
+	 * Show ticket attachments.
+	 *
+	 * Displays a ticket or reply attachments (Shows Images instead of link).
+	 *
+	 * @since  3.0.0
+	 *
+	 * @param  integer $post_id ID of the post to get attachment for
+	 *
+	 * @return void
+	 */
+	public function show_attachments_with_image( $post_id ) {
+
+		$attachments = $this->get_attachments( $post_id );
+
+		if ( ! empty( $attachments ) ): ?>
+
+			<div class="wpas-reply-attachements">
+				<strong><?php esc_html_e( 'Attachments:', 'awesome-support' ); ?></strong>
+				<ul>
+					<?php
+
+					$can_delete = wpas_can_delete_attachments();
+
+					foreach ( $attachments as $attachment_id => $attachment ):
+
+						/**
+						 * Get attachment metadata.
+						 *
+						 * @var array
+						 */
+						$metadata = wp_get_attachment_metadata( $attachment_id );
+
+						/**
+						 * This is the default case where an attachment was uploaded by the WordPress uploader.
+						 * In this case we get the media from the ticket's attachments directory.
+						 */
+						if ( ! isset( $metadata['wpas_upload_source'] ) || 'wordpress' === $metadata['wpas_upload_source'] ) {
+
+							/**
+							 * Get filename.
+							 */
+							$filename   = explode( '/', $attachment['url'] );
+							$filename   = $name = $filename[ count( $filename ) - 1 ];
+							$upload_dir = wp_upload_dir();
+							$post_id_encode = md5($post_id . NONCE_SALT);	
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
+							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
+
+							/**
+							 * Prepare attachment link
+							 */
+							if ( false === boolval( wpas_get_option( 'unmask_attachment_links', false ) ) ) {
+								// mask or obscure attachment links
+								$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
+							} else {
+								// show full link
+								$link = $attachment['url'];
+							}
+
+							?>
+							<li>
+									<?php
+									if( $can_delete ) {
+										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
+									}
+									
+									if( strpos( $name, '.jpeg' ) !== false || strpos( $name, '.jpg' ) !== false || strpos( $name, '.png' ) !== false || strpos( $name, '.gif' ) !== false ) {
+									?>
+									<img style="width:100%;" src="<?php echo esc_url( $link ); ?>" alt="<?php echo esc_html( $name ); ?>">
+									<?php
+									} else {
+									?>
+									<a href="<?php echo esc_url( $link ); ?>" target="_blank"><?php echo esc_html( $name ); ?></a> <?php echo esc_html( $filesize ); ?></li>
+									<?php
+									}
 
 						} /**
 						 * Now if we have a different upload source we delegate the computing
@@ -650,7 +1294,7 @@ class WPAS_File_Upload {
 				return false;
 			}
 
-			$max = wpas_get_option( 'attachments_max' );
+			$max = wpas_get_option( 'attachments_max', 2 );
 			$id  = false; // Declare a default value for $id
 
 			if ( $this->individualize_files() ) {
@@ -699,7 +1343,7 @@ class WPAS_File_Upload {
 	 */
 	public function process_attachments( $post_id, $attachments ) {
 
-		$max           = wpas_get_option( 'attachments_max' );      // Core AS Max Files (File Upload settings)
+		$max           = wpas_get_option( 'attachments_max', 2 );   // Core AS Max Files (File Upload settings)
 		$cnt           = 0;                                         // Initialize count of current attachments
 		$errors        = false;                                     // No errors/rejections yet
 		$this->post_id = $post_id;                                  // Set post id for /ticket_nnnn folder creation
@@ -709,12 +1353,15 @@ class WPAS_File_Upload {
 
 		foreach ( $attachments as $attachment ) {
 
-			$filename = $attachment['filename'];                    // Base filename
+			$filename = $this->wpas_sanitize_file_name( $attachment['filename'] );                    // Base filename
 			$data     = $attachment['data'];                        // Raw file contents
+			
+			// translators: %1$s is the identifier or message, %2$d is the maximum number of files.
+			$x_content = __( '%1$s -> Max files (%2$d) exceeded.', 'awesome-support' );
 
 			/* Limit the number of uploaded files */
 			if ( $cnt + 1 > $max ) {
-				$errors[] = sprintf( __( '%s -> Max files (%d) exceeded.', 'awesome-support' ), $filename, $max );
+				$errors[] = sprintf( $x_content, $filename, $max );
 				continue;
 			}
 
@@ -740,6 +1387,13 @@ class WPAS_File_Upload {
 					continue;
 
 				} else {
+
+					// Make sure a required function exists - for some reason
+					// sometimes it does not, especially when called from our
+					// gravity forms add-on.
+					if ( ! function_exists('wp_generate_attachment_metadata') ) {
+						require_once( ABSPATH . 'wp-admin/includes/image.php' );
+					}
 
 					$attach_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
 
@@ -771,7 +1425,7 @@ class WPAS_File_Upload {
 				$log .= $error . '<br/>';
 			}
 
-			wpas_log( $this->parent_id ? $this->parent_id : $post_id, $log );
+			wpas_log_history( $this->parent_id ? $this->parent_id : $post_id, $log );
 
 		}
 
@@ -795,7 +1449,10 @@ class WPAS_File_Upload {
 		$url   = remove_query_arg( 'message', $location );
 		$error = is_array( $this->error_message ) ? implode( ', ', $this->error_message ) : $this->error_message;
 
-		wpas_add_error( 'files_not_uploaded', sprintf( __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'awesome-support' ), $error ) );
+		// translators: %s is the attachment.
+		$x_content = __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'awesome-support' );
+
+		wpas_add_error( 'files_not_uploaded', sprintf( $x_content, $error ) );
 
 		$location = wp_sanitize_redirect( $url );
 
@@ -818,22 +1475,26 @@ class WPAS_File_Upload {
 	public function limit_upload( $file ) {
 
 		global $post;
+		if ( empty( $post ) ) { 
+			$server_protocol = isset( $_SERVER['SERVER_PROTOCOL'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PROTOCOL'] ) ) : null;
+			$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : null;
+			$server_port = isset( $_SERVER['SERVER_PORT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) : null;
+			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : null;
 
-		if ( empty( $post ) ) {
-			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
+			$protocol = stripos( $server_protocol, 'https' ) === true ? 'https://' : 'http://';
+			$post_id  = url_to_postid( $protocol . $server_name . ':' . $server_port . $request_uri );
 			$post     = get_post( $post_id );
 		}
 
 		$submission = (int) wpas_get_option( 'ticket_submit' );
-		$post_type  = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
-
+		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] )) : '' ; 
+		
 		/**
 		 * On the front-end we only want to limit upload size
 		 * on the submission page or on a ticket details page.
 		 */
 		if ( ! is_admin() ) {
-			if ( 'ticket' !== $post->post_type && $submission !== $post->ID ) {
+			if ( ! empty( $post) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
 				return $file;
 			}
 		}
@@ -864,7 +1525,10 @@ class WPAS_File_Upload {
 		$max_size_bytes = $max_size * 1024 * 1024;
 
 		if ( ! in_array( $ext, $filetypes ) ) {
-			$file['error'] = sprintf( __( 'You are not allowed to upload files of this type (%s)', 'awesome-support' ), $ext );
+			// translators: %s is the attachment.
+			$x_content = __( 'You are not allowed to upload files of this type (%s)', 'awesome-support' );
+
+			$file['error'] = sprintf( $x_content, $ext );
 		}
 
 		if ( $file['size'] <= 0 ) {
@@ -872,7 +1536,10 @@ class WPAS_File_Upload {
 		}
 
 		if ( $file['size'] > $max_size_bytes ) {
-			$file['error'] = sprintf( __( 'Your attachment is too big. You are allowed to attach files up to %s', 'awesome-support' ), "$max_size Mo" );
+			// translators: %s is the attachment.
+			$x_content = __( 'Your attachment is too big. You are allowed to attach files up to %s', 'awesome-support' );
+
+			$file['error'] = sprintf( $x_content, "$max_size Mo" );
 		}
 
 		return $file;
@@ -905,8 +1572,7 @@ class WPAS_File_Upload {
 				$mimes[ $type ] = wpas_get_mime_type( $type );
 			}
 
-		}
-
+		}		
 		return $mimes;
 
 	}
@@ -925,36 +1591,42 @@ class WPAS_File_Upload {
 
 		$files_index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
 
-		if ( ! is_array( $_FILES[ $files_index ]['name'] ) ) {
-			return false;
-		}
+		if ( isset($_FILES[ $files_index ]['name']) && is_array( $_FILES[ $files_index ]['name'] ) ) {
+			
+			$file_names = isset($_FILES[ $files_index ]['name']) ? array_map('sanitize_file_name', wp_unslash(  $_FILES[ $files_index ]['name'] ) ) : null;
+			foreach ( $file_names as $id => $name ) {
+				$index                    = $files_index . '_' . $id;
+				$_FILES[ $index ]['name'] = $name;
+			}
 
-		foreach ( $_FILES[ $files_index ]['name'] as $id => $name ) {
-			$index                    = $files_index . '_' . $id;
-			$_FILES[ $index ]['name'] = $name;
-		}
+			$file_types = isset($_FILES[ $files_index ]['type']) ? array_map('sanitize_mime_type', wp_unslash(  $_FILES[ $files_index ]['type'] ) ) : null;
+			foreach ( $file_types as $id => $type ) {
+				$index                    = $files_index . '_' . $id;
+				$_FILES[ $index ]['type'] = $type;
+			}
 
-		foreach ( $_FILES[ $files_index ]['type'] as $id => $type ) {
-			$index                    = $files_index . '_' . $id;
-			$_FILES[ $index ]['type'] = $type;
-		}
+			$file_tmp_names = isset($_FILES[ $files_index ]['tmp_name']) ? array_map('sanitize_text_field', (  $_FILES[ $files_index ]['tmp_name'] ) ) : null;
+			foreach ( $file_tmp_names as $id => $tmp_name ) {
+				$index                        = $files_index . '_' . $id;
+				$_FILES[ $index ]['tmp_name'] = $tmp_name;
+			}
 
-		foreach ( $_FILES[ $files_index ]['tmp_name'] as $id => $tmp_name ) {
-			$index                        = $files_index . '_' . $id;
-			$_FILES[ $index ]['tmp_name'] = $tmp_name;
-		}
+			$file_errors = isset($_FILES[ $files_index ]['error']) ? array_map('sanitize_text_field', wp_unslash(  $_FILES[ $files_index ]['error'] ) ) : null;
+			foreach ( $file_errors as $id => $error ) {
+				$index                     = $files_index . '_' . $id;
+				$_FILES[ $index ]['error'] = $error;
+			}
 
-		foreach ( $_FILES[ $files_index ]['error'] as $id => $error ) {
-			$index                     = $files_index . '_' . $id;
-			$_FILES[ $index ]['error'] = $error;
-		}
+			$file_sizes = isset($_FILES[ $files_index ]['size']) ? array_map('sanitize_text_field', wp_unslash(  $_FILES[ $files_index ]['size'] ) ) : null;
+			foreach ( $file_sizes as $id => $size ) {
+				$index                    = $files_index . '_' . $id;
+				$_FILES[ $index ]['size'] = $size;
+			}
+			
+			return true;
 
-		foreach ( $_FILES[ $files_index ]['size'] as $id => $size ) {
-			$index                    = $files_index . '_' . $id;
-			$_FILES[ $index ]['size'] = $size;
 		}
-
-		return true;
+		return false;
 
 	}
 
@@ -988,7 +1660,15 @@ class WPAS_File_Upload {
 
 		if ( ( isset( $_POST['wpas_nonce'] ) || isset( $_POST['client_reply'] ) ) || isset( $_POST['wpas_reply'] ) ) {
 			$this->post_id   = intval( $reply_id );
-			$this->parent_id = intval( $_POST['ticket_id'] );
+			if( isset( $_POST['ticket_id'] ) ){
+				$this->parent_id = intval( $_POST['ticket_id'] );
+			}else{
+				/**
+				 * Ruleset bug fix on missing parent ID
+				 * Get parent post ID from reply ID
+				*/
+				$this->parent_id = wp_get_post_parent_id( $reply_id );
+			}
 			$this->process_upload();
 		}
 	}
@@ -1014,7 +1694,7 @@ class WPAS_File_Upload {
 		}
 
 		$this->post_id   = intval( $reply_id );
-		$this->parent_id = intval( $_POST['wpas_post_parent'] );
+		$this->parent_id = isset( $_POST['wpas_post_parent'] ) ? intval( $_POST['wpas_post_parent'] ) : null;
 		$this->process_upload();
 	}
 
@@ -1031,11 +1711,18 @@ class WPAS_File_Upload {
 	 */
 	public function delete_attachments( $post_id ) {
 
-		global $post_type;
+		global $wp_filesystem;
 
-		if ( 'ticket' !== $post_type && 'wpas_unassigned_mail' !== $post_type ) {
-			return;
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
 		}
+
+		$post = get_post( $post_id );
+		if( empty( $post ) || 'ticket' !== $post->post_type ) {
+		    return;
+        }
 
 		$this->post_id = $post_id;
 
@@ -1044,6 +1731,13 @@ class WPAS_File_Upload {
 		if ( ! empty( $attachments ) ) {
 
 			$args = array();
+
+			// Remove attachment folder
+			$upload = wp_get_upload_dir();
+
+			if ( ! file_exists( $upload['path'] ) ) {
+				return;
+			}
 
 			/**
 			 * wpas_attachments_before_delete fires before deleting attachments
@@ -1059,24 +1753,18 @@ class WPAS_File_Upload {
 				wp_delete_attachment( $id, true );
 			}
 
-			// Remove attachment folder
-			$upload = wp_get_upload_dir();
-
-			if ( ! file_exists( $upload['path'] ) ) {
-				return;
-			}
-
 			$it    = new RecursiveDirectoryIterator( $upload['path'], RecursiveDirectoryIterator::SKIP_DOTS );
 			$files = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
 
 			foreach ( $files as $file ) {
 				if ( $file->isDir() ) {
-					rmdir( $file->getRealPath() );
+					$wp_filesystem->delete($file->getRealPath(), true);
 				} else {
 					unlink( $file->getRealPath() );
 				}
 			}
-			rmdir( $upload['path'] );
+			$wp_filesystem->delete($upload['path'], true);
+
 
 			/**
 			 * wpas_attachments_after_delete fires after deleting attachments
@@ -1093,4 +1781,490 @@ class WPAS_File_Upload {
 
 	}
 
+	/**
+	 * Load dropzone assets
+	 */
+
+	public function load_ajax_uploader_assets() {
+
+		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/vendor/dropzone.css', null, WPAS_VERSION );
+		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/vendor/dropzone.js', array( 'jquery' ), WPAS_VERSION );
+		wp_register_script( 'wpas-ajax-upload', WPAS_URL . 'assets/admin/js/admin-ajax-upload.js', array( 'jquery' ), WPAS_VERSION, true );
+
+		wp_enqueue_style( 'wpas-dropzone' );
+		wp_enqueue_script( 'wpas-dropzone' );
+
+		$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+		$accept    = array();
+
+		foreach ( $filetypes as $key => $type ) {
+			array_push( $accept, ".$type" );
+		}
+
+		$accept = implode( ',', $accept );
+
+		if ( ! $max_execution_time = ini_get('max_execution_time') ) {
+			$max_execution_time = 30;
+		}
+
+		// translators: %s is the number of files.
+		$x_content = __( 'Max files (%s) exceeded.', 'awesome-support' );
+
+		wp_localize_script( 'wpas-ajax-upload', 'WPAS_AJAX', array(
+			'nonce'              => wp_create_nonce( 'wpas-ajax-upload-nonce' ),
+			'ajax_url'           => admin_url( 'admin-ajax.php' ),
+			'accept'             => $accept,
+			'max_execution_time' => ( $max_execution_time * 1000 ), // Convert to miliseconds
+			'max_files'          => wpas_get_option( 'attachments_max' ),
+			'max_size'           => wpas_get_option( 'filesize_max' ),
+			'exceeded'           => sprintf( $x_content, wpas_get_option( 'attachments_max' ) )
+		) );
+
+		wp_enqueue_script( 'wpas-ajax-upload' );
+
+	}
+
+
+	/**
+	 * Upload attachment using ajax
+	 *
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	public function ajax_upload_attachment() {
+
+		if ( ! $this->can_attach_files() ) {
+			return false;
+		}
+
+		global $wp_filesystem;
+
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		} 
+		
+		$upload    = wp_upload_dir();
+		$ticket_id = isset( $_POST[ 'ticket_id' ] ) ? intval( $_POST[ 'ticket_id' ] ) : null;
+		$user_id   = get_current_user_id();
+		
+		/**
+		 * Initiate nonce
+		 */
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+		
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-ajax-upload-nonce', 'nonce' ) ) { 
+	
+			/**
+			 * wpas_before_ajax_file_upload fires before uploading attachments
+			 *
+			 * @since 5.1.1
+			 *
+			 * @param int $ticket_id   ID of the ticket
+			 * @param int $user_id     ID of the current logged in user
+			 */
+			do_action( 'wpas_before_ajax_file_upload', $ticket_id, $user_id );
+
+			$dir = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . $user_id;
+
+			// Create temp directory if not exists
+			if ( ! is_dir( $dir ) ) {
+				$this->create_upload_dir( $dir );
+			}
+
+			// Check if file is set
+			if ( ! empty( $file = $_FILES[ 'wpas_' . $this->index ] ) ) {
+				// Get file extension
+				$extension = pathinfo( $file[ 'name' ], PATHINFO_EXTENSION );
+				// Get allowed file extensions
+				$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+
+				// Check file extension
+				if ( in_array( $extension, $filetypes ) ) {
+					// Upload file
+					$wp_filesystem->move($file[ 'tmp_name' ], trailingslashit( $dir ) . $this->wpas_sanitize_file_name( basename( $file[ 'name' ] ) ), true); 
+				}
+			}
+		}
+		wp_die();
+
+	}
+
+
+	/**
+	 * Delete temporary attachment using ajax
+	 *
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+
+	public function ajax_delete_temp_attachment() {
+
+		/**
+		 * Initiate nonce
+		 */
+		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] ) ) : '';
+
+		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-ajax-upload-nonce', 'nonce' ) ) { 	
+
+			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );			
+			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( wp_unslash( ( $_POST['attachment'] ) ) ) : '';		
+			
+			$upload     = wp_upload_dir();
+			$user_id    = get_current_user_id();
+
+			$file = sprintf( '%s/awesome-support/temp_%d_%d/%s', $upload['basedir'], $ticket_id, $user_id, $attachment );			
+			
+			$realBaseDir = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], $ticket_id, $user_id );
+			$realFilePath = realpath($file);
+			$realBasePath = realpath( $realBaseDir ) . DIRECTORY_SEPARATOR;
+			
+			if ($realFilePath === false || strpos($realFilePath, $realBasePath) !== 0) {
+				echo "Permission denied!";
+				wp_die();
+			}
+			/**
+			 * wpas_before_delete_temp_attachment fires before deleting temp attachment
+			 *
+			 * @since 5.1.1
+			 *
+			 * @param int $ticket_id     ID of the ticket
+			 * @param int $user_id       ID of the current logged in user
+			 * @param string $attachment Attachment filename
+			 */
+			do_action( 'wpas_before_delete_temp_attachment', $ticket_id, $user_id, $attachment );
+
+			if ( file_exists( $file ) ) {
+				unlink( $file );
+			}			
+		}
+		wp_die();
+	}	
+	/**
+	 * Delete temporary attachment folder
+	 *
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	public function ajax_delete_temp_directory() {
+
+		$upload     = wp_upload_dir();
+		$temp_dir   = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], intval( isset($_POST[ 'ticket_id' ]) ? $_POST[ 'ticket_id' ] : 0 ), get_current_user_id() );
+
+		if ( is_dir( $temp_dir ) ) {
+			$this->remove_directory( $temp_dir );
+		}
+
+		wp_die();
+
+	}
+
+	/**
+	 * Process attachments uploaded via ajax for new tickets
+	 *
+	 * @param int $ticket_id
+	 * @param array $data
+	 *
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	public function new_ticket_ajax_attachments( $ticket_id, $data ) {
+		if( isset( $_POST['ticket_id'] ) ){
+			$submission_ticket_id = intval( $_POST['ticket_id'] );
+		} else {
+			return;
+		}
+		$this->process_ajax_upload($submission_ticket_id, $ticket_id, $data);
+	}
+
+	/**
+	 * Process attachments uploaded via ajax for new replies
+	 *
+	 * @param int $reply_id
+	 * @param array $data
+	 *
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	public function new_reply_ajax_attachments( $reply_id, $data ) {
+		$this->process_ajax_upload($data[ 'post_parent' ], $reply_id, $data);
+	}
+
+	/**
+	 * Process attachments uploaded via ajax
+	 *
+	 * @param int $ticket_id
+	 * @param int $reply_id
+	 * @param array $data
+	 *
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	public function process_ajax_upload($ticket_id, $reply_id, $data ) {
+
+		global $wp_filesystem;
+		$upload = wp_upload_dir();
+		$dir    = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . $data['post_author'] .'/';
+
+		// If temp directory exists, it means that user is uploaded attachments
+		if ( is_dir( $dir ) ) {
+
+			$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+			$accept    = array();
+
+			foreach ( $filetypes as $key => $type ) {
+				array_push( $accept, '*.' . $type );
+			}
+
+			$accept = implode( ',', $accept );
+
+			foreach( glob( $dir . '{' . $accept . '}', GLOB_BRACE ) as $file ) {
+
+				$reply_id_encode = md5($reply_id . NONCE_SALT);	
+				$new_file_relative_dir = 'awesome-support/ticket_' . $reply_id_encode;
+
+				$gas_file_base_name = $this->wpas_sanitize_file_name( basename( $file ) );
+
+				$new_file_relative = $new_file_relative_dir . '/' . $gas_file_base_name;
+
+				$new_file_url = trailingslashit( $upload['baseurl'] ) . $new_file_relative;
+				
+				// https://trello.com/c/ksKkxT9e fix fileinfo.dll not enable on server
+				if(!function_exists("mime_content_type"))
+				{					
+					require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
+					$file_pathinfo = pathinfo($file, PATHINFO_EXTENSION);
+					$post_mime_type = wpas_get_mime_type( $file_pathinfo );
+				}
+				else
+				{
+					$post_mime_type = mime_content_type( $file );
+				}			
+				
+				// Prepare an array of post data for the attachment.
+				$attachment = array(
+					'guid'           => $new_file_url,
+					'post_mime_type' => $post_mime_type,
+					'post_title'     => preg_replace( '/\.[^.]+$/', '', $gas_file_base_name ),
+					'post_content'   => '',
+					'post_status'    => 'inherit'
+				);
+
+				// Insert the attachment.
+				$attachment_id = wp_insert_attachment( $attachment, $file, $reply_id );
+
+				if ( is_wp_error( $attachment_id ) ) {
+
+					$errors[] = sprintf( '%s -> %s', $file, $attachment_id->get_error_message() );
+					continue;
+
+				} else {
+
+					$new_file_upload_dir = trailingslashit( $upload['basedir'] ) . $new_file_relative_dir;
+					$new_file_upload = $new_file_upload_dir . '/' . $gas_file_base_name;
+
+					// Create ticket attachment directory if not exists
+					if ( ! file_exists( $new_file_upload_dir ) ) {
+						$this->create_upload_dir( $new_file_upload_dir );
+					}
+
+					// Move file from temp dir to ticket dir
+					$wp_filesystem->move($file, $new_file_upload); 
+					
+					//Set 0644 file permission to allow access the attachment. 
+					$wp_filesystem->chmod($new_file_upload, FS_CHMOD_FILE); 
+					
+					// Update attached file post meta data
+					update_attached_file($attachment_id, $new_file_relative);
+
+					// Generate and update attachment metadata
+					$attach_data = wp_generate_attachment_metadata( $attachment_id, $new_file_upload );
+
+					if ( ! empty( $attach_data ) ) {
+
+						wp_update_attachment_metadata( $attachment_id, $attach_data );
+
+					} else {
+						$fileMeta = array(
+							'file' => $new_file_upload,
+						);
+						add_post_meta( $attachment_id, '_wp_attachment_metadata', $fileMeta );
+
+					}
+				}
+
+			}
+			// Remove directory
+			$this->remove_directory( $dir );
+
+		}
+	}
+
+	/**
+	 * Schedule cleanup of unused attachments dir
+	 *
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	public function attachments_dir_cleanup_schedule() {
+		
+		if ( ! wp_next_scheduled( 'attachments_dir_cleanup_action' ) ) {
+			
+			wp_schedule_event( time(), 'daily', 'attachments_dir_cleanup_action');
+		}
+	}
+
+	/**
+	 * Attachments dir cleanup action.
+	 * Removes temporary attachment folders
+	 *
+	 * @since  5.1.1
+	 *
+	 * @return void
+	 */
+	public function attachments_dir_cleanup() {
+
+		wpas_is_plugin_page();
+		$upload  = wp_get_upload_dir();
+		$folders = glob( trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_*' );
+
+		foreach ( $folders as $folder ) {
+
+			$mtime = filemtime( $folder );
+
+			if ( ( time() - $mtime ) > 60 * 60 * 24 ) { // Delete temp folder after 24 hours
+				$this->remove_directory( $folder );
+			}
+
+		}
+
+	}
+
+	/**
+	 * Remove directory
+	 *
+	 * @since  5.2.0
+	 *
+	 * @return void
+	 */
+	public function remove_directory( $directory ) {
+
+		if ( ! is_dir( $directory ) ) {
+			return false;
+		}
+
+		global $wp_filesystem;
+
+		// Initialize the filesystem 
+		if (empty($wp_filesystem)) {
+			require_once(ABSPATH . '/wp-admin/includes/file.php');
+			WP_Filesystem();
+		} 
+
+		$it    = new RecursiveDirectoryIterator( $directory, RecursiveDirectoryIterator::SKIP_DOTS );
+		$files = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
+
+		foreach ( $files as $file ) {
+			if ( $file->isDir() ) {
+				$wp_filesystem->delete($file->getRealPath(), true);
+
+			} else {
+				unlink( $file->getRealPath() );
+			}
+		}
+		$wp_filesystem->delete($directory, true);
+
+	}
+
+	/**
+	 * Convert and clean uploaded filenames in WordPress.
+	 * - Remove chars with accents etc, also replaces € with E.
+	 * - Remove every character except A-Z a-z 0-9 . - _ and spaces.
+	 * - Replace spaces (blanks) with an underscore.
+	 *
+	 * @author awesomesupport.com
+	 * @param  string $filename
+	 * @return string
+	 */
+
+	public function wpas_sanitize_file_name( $filename ) {
+
+		// Remove chars with accents etc, also replaces € with E.
+		$sanitized_filename = remove_accents( $filename );
+
+		// Remove every character except A-Z a-z 0-9 . - _ and spaces.
+		$sanitized_filename = preg_replace( '/[^A-Za-z0-9-_\.[:blank:]]/', '', $sanitized_filename );
+
+		// Replace spaces (blanks) with an underscore.
+		$sanitized_filename = preg_replace( '/[[:blank:]]+/', '_', $sanitized_filename );
+
+		return $sanitized_filename;
+	}
+
+	public function sgpb_rename_uploaded_file($file) {
+	    
+	    global $post;
+		if ( empty( $post ) ) { 
+			$server_protocol = isset( $_SERVER['SERVER_PROTOCOL'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PROTOCOL'] ) ) : null;
+			$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : null;
+			$server_port = isset( $_SERVER['SERVER_PORT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PORT'] ) ) : null;
+			$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : null;
+
+			$protocol = stripos( $server_protocol, 'https' ) === true ? 'https://' : 'http://';
+			$post_id  = url_to_postid( $protocol . $server_name . ':' . $server_port . $request_uri );
+			$post     = get_post( $post_id );
+		}
+		
+		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] )) : '' ; 
+		
+		/**
+		 * On the front-end we only want to to  rename file attachments
+		 * on the submission page or on a ticket details page.
+		 */
+		if ( ! is_admin() ) {
+			if ( ! empty( $post) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
+				return $file;
+			}
+		}
+
+		/**
+		 * In the admin we only want to  rename file attachments on the ticket creation screen
+		 * or on the ticket edit screen.
+		 */
+		if ( is_admin() ) {
+
+			if ( ! isset( $post ) && empty( $post_type ) ) {
+				return $file;
+			}
+
+			if ( isset( $post ) && 'ticket' !== $post->post_type ) {
+				return $file;
+			}
+
+			if ( ! empty( $post_type ) && 'ticket' !== $post_type ) {
+				return $file;
+			}
+
+		}
+
+	    $info = pathinfo($file['name']);
+
+	    $ext  = !empty($info['extension']) ? '.' . $info['extension'] : '';
+
+	    $random_string = wp_generate_password(8, false); 
+
+	    $unique_name = $info['filename'] .  $random_string . time() . $ext;
+
+	    $file['name'] = $unique_name;
+
+	    return $file;
+	}
 }

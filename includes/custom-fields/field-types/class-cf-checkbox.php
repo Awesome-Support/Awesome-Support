@@ -13,41 +13,8 @@ class WPAS_CF_Checkbox extends WPAS_Custom_Field {
 		// Call parent constructor
 		parent::__construct( $field_id, $field );
 
-		// Checkboxes need a custom wrapper class
-		add_filter( 'wpas_cf_wrapper_class', array( $this, 'wrapper_class' ), 10, 2 );
-
 	}
 
-	/**
-	 * Add a specific wrapper class for checkboxes and remove the default one
-	 *
-	 * @since 3.3
-	 *
-	 * @param array $classes Wrapper classes
-	 * @param array $field   Field data
-	 *
-	 * @return array
-	 */
-	public function wrapper_class( $classes, $field ) {
-
-		if ( 'checkbox' !== $field['args']['field_type'] ) {
-			return $classes;
-		}
-
-		// Remove the default wrapper class if it's here
-		$key = array_search( 'wpas-form-group', $classes );
-
-		if ( false !== $key ) {
-			unset( $classes[ $key ] );
-		}
-
-		if ( ! in_array( 'wpas-checkbox', $classes ) ) {
-			$classes[] = 'wpas-checkbox';
-		}
-
-		return $classes;
-
-	}
 
 	/**
 	 * Return the field markup for the front-end.
@@ -72,7 +39,7 @@ class WPAS_CF_Checkbox extends WPAS_Custom_Field {
 
 		foreach ( $this->options as $option_id => $option_label ) {
 			$selected = in_array( $option_id, $values ) ? 'checked="checked"' : '';
-			$output .= sprintf( "<label><input type='checkbox' name='%s' value='%s' %s> %s</label>", $name_attr, $option_id, $selected, $option_label );
+			$output .= sprintf( "<div class='wpas-checkbox'><label><input type='checkbox' name='%s' value='%s' %s> %s</label></div>", $name_attr, $option_id, $selected, $option_label );
 		}
 
 		return $output;

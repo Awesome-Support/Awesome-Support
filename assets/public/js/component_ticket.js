@@ -9,7 +9,9 @@
 		 */
 		if ($('.wpas-reply-content').length) {
 			$('.wpas-reply-content').each(function (index, el) {
-				el.innerHTML = Autolinker.link(el.innerHTML);
+				if (typeof wpas !== 'undefined' && stringToBool(wpas.useAutolinker)) {
+					el.innerHTML = Autolinker.link(el.innerHTML);
+				}
 			});
 		}
 

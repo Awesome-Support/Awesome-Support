@@ -13,7 +13,7 @@ function wpas_count_user_replies( $ticket_id, $user_id ) {
 	$count = 0;
 	if($user_id) {
 		$query = $wpdb->prepare("SELECT count(*) FROM {$wpdb->prefix}posts WHERE post_author = %d AND post_parent = %d AND post_type = %s AND post_status != 'trash'", $user_id, $ticket_id, 'ticket_reply');
-		$count = $wpdb->get_var($query);
+		$count = $wpdb->get_var("$query");
 	}
 	
 	return $count;
@@ -33,7 +33,7 @@ function wpas_count_total_replies( $ticket_id ) {
 	$count = 0;
 	
 	$query = $wpdb->prepare("SELECT count(*) FROM {$wpdb->prefix}posts WHERE post_parent = %d AND post_type = %s AND post_status != 'trash'", $ticket_id, 'ticket_reply');
-	$count = $wpdb->get_var($query);
+	$count = $wpdb->get_var("$query");
 	
 	
 	return $count;
@@ -48,7 +48,7 @@ function wpas_count_total_replies( $ticket_id ) {
  */
 function wpas_num_agent_replies( $ticket_id ) {
 	
-	$count = get_post_meta( $ticket_id, 'ttl_replies_by_agent', true );
+	$count = wpas_get_cf_value( 'ttl_replies_by_agent', $ticket_id );
 	return ( $count ? $count : 0 );
 	
 }
@@ -62,7 +62,7 @@ function wpas_num_agent_replies( $ticket_id ) {
  */
 function wpas_num_customer_replies( $ticket_id ) {
 	
-	$count = get_post_meta( $ticket_id, 'ttl_replies_by_customer', true );
+	$count = wpas_get_cf_value( 'ttl_replies_by_customer', $ticket_id );
 	return ( $count ? $count : 0 );
 	
 }
@@ -75,7 +75,7 @@ function wpas_num_customer_replies( $ticket_id ) {
  */
 function wpas_num_total_replies( $ticket_id ) {
 	
-	$count = get_post_meta( $ticket_id, 'ttl_replies', true );
+	$count = wpas_get_cf_value( 'ttl_replies', $ticket_id );
 	return ( $count ? $count : 0 );
 	
 }
@@ -87,33 +87,37 @@ function wpas_num_total_replies( $ticket_id ) {
 function wpas_count_replies( $ticket_id ) {
 	
 	$ticket = get_post( $ticket_id );
-	$agent_id = (int) get_post_meta( $ticket_id, '_wpas_assignee', true );
-	$customer_id = (int) $ticket->post_author;
 	
-	$total_replies_count = wpas_count_total_replies($ticket_id);
-	$customer_replies_count = wpas_count_user_replies($ticket_id, $customer_id);
-	$agent_replies_count = $total_replies_count - $customer_replies_count;
+	if ( 'ticket' == get_post_type( $ticket ) ) {
 	
-	update_post_meta( $ticket_id, 'ttl_replies_by_customer', $customer_replies_count );
-	update_post_meta( $ticket_id, 'ttl_replies_by_agent', $agent_replies_count );
-	update_post_meta( $ticket_id, 'ttl_replies', $total_replies_count );
-	
+		$agent_id = (int) get_post_meta( $ticket_id, '_wpas_assignee', true );
+		$customer_id = (int) $ticket->post_author;
+		
+		$total_replies_count = wpas_count_total_replies($ticket_id);
+		$customer_replies_count = wpas_count_user_replies($ticket_id, $customer_id);
+		$agent_replies_count = $total_replies_count - $customer_replies_count;
+		
+		update_post_meta( $ticket_id, '_wpas_ttl_replies_by_customer', $customer_replies_count );
+		update_post_meta( $ticket_id, '_wpas_ttl_replies_by_agent', $agent_replies_count );
+		update_post_meta( $ticket_id, '_wpas_ttl_replies', $total_replies_count );
+		
+	}
+		
 }
 
 
 add_action( 'wpas_add_reply_after', 'wpas_ticket_reset_replies_count', 10, 2 );
-add_action( 'wpas_admin_reply_trashed', 'wpas_ticket_reset_replies_count' );
+add_action( 'wpas_admin_reply_trashed', 'wpas_ticket_reset_replies_count', 10, 3 );
 
 /**
  * Reset replies count
  * @param int $reply_id
  * @param array $data
+ * @param int $ticket_id
  */
-function wpas_ticket_reset_replies_count( $reply_id, $data = array()) {
+function wpas_ticket_reset_replies_count( $reply_id, $data = array(), $ticket_id = '' ) {
 	
-	if(isset($data['post_parent'])) {
-		$ticket_id = $data['post_parent'];
-	} else {
+	if ( empty( $ticket_id ) ) {
 		$ticket_id = wp_get_post_parent_id($reply_id);
 	}
 	

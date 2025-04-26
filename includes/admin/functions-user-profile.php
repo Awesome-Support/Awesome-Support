@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Admin/Functions/User Profile
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -48,18 +48,24 @@ function wpas_user_profile_get_contact_info( $ticket_id ) {
  */
 function wpas_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
 
+	if ( !$user ) {
+		return;
+	}
+
 	switch ( $info ) {
 
 		case 'name':
-			echo apply_filters( 'wpas_user_profile_contact_name', $user->data->display_name, $user, $ticket_id );
+			echo wp_kses_post(apply_filters( 'wpas_user_profile_contact_name', $user->data->display_name, $user, $ticket_id ));
 			break;
 
 		case 'role':
-			echo wp_kses_post( sprintf( __( 'Support User since %s', 'awesome-support' ), '<strong>' . date( get_option( 'date_format' ), strtotime( $user->data->user_registered ) ) . '</strong>' ) );
+			// translators: %s is the date.
+			$x_content = __( 'Support User since %s', 'awesome-support' );
+			echo wp_kses_post( sprintf( $x_content, '<strong>' . gmdate( get_option( 'date_format' ), strtotime( $user->data->user_registered ) ) . '</strong>' ) );
 			break;
 
 		case 'email':
-			printf( '<a href="mailto:%1$s">%1$s</a>', $user->data->user_email );
+			printf( '<a href="mailto:%1$s">%1$s</a>', esc_attr( $user->data->user_email ) );
 			break;
 
 		default:

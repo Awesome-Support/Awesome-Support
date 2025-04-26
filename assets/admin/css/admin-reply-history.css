@@ -1,0 +1,125 @@
+.pop {
+     display: none;
+     position: fixed;
+     top: 0;
+     left: 0 ;
+     z-index: 99999;
+     margin: 0px;
+     width: 100%;
+     height: 100%;
+     padding: 20px;
+     background: #eeeeee;
+     color: #000;
+     text-align: center;
+}
+ .pop .icon-remove-sign {
+     position: absolute;
+     right: 4em;
+     top: 0.75em;
+     cursor: pointer;
+}
+ .pop .icon-remove-sign a:hover {
+     color: black;
+}
+ .pop .icon-remove-sign a {
+     text-decoration: none;
+     font-size: 2rem;
+}
+ .pop .icon-remove-sign a:before {
+    /* placeholder */
+}
+ @media only screen and (min-width: 481px) {
+     .pop {
+        /* placeholder */
+    }
+}
+ @media (max-width: 768px) {
+     .pop {
+        /* placeholder */
+    }
+}
+ .wpas-reply-history-table table{
+     width: 100%;
+}
+ .wpas-reply-notification.success{
+     background-color: #46b450;
+     color: #ffffff;
+     border-left: 0;
+     border-radius: 5px;
+}
+ .wpas-reply-notification.failed{
+     background-color: #ff3232;
+     color: #ffffff;
+     border-left: 0;
+     border-radius: 5px;
+}
+ .wpas-reply-notification p{
+     font-size: 14px;
+     font-weight: bolder;
+     padding: 10px;
+     margin-top: 0;
+}
+ .wpas-reply-notification.success p{
+     font-size: 2em;
+}
+ .wpas-reply-history-wrapper{
+     width: 98%;
+     overflow: hidden;
+     overflow-y: auto;
+     margin-top: 2em;
+     padding-right: 10px;
+    /* Center the contents of the wrapper in the light box. */
+     position: relative;
+     top: 50%;
+     left: 50%;
+     transform: translateY(-50%);
+     transform: translateX(-50%);
+     -moz-transform: translate(-50%, -50%);
+     -ms-transform: translate(-50%, -50%);
+     -webkit-transform: translate(-50%, -50%);
+}
+ .wpas-reply-history-table table {
+     padding: 15px;
+}
+ .icon-remove-sign a {
+     color: #666;
+}
+ .wp-list-table tr td {
+     padding-bottom: 20px;
+     box-shadow: 0px 1px 2px #c8c8c8;
+     border-left: 5px solid #d0d0d0;
+     display: block;
+     margin-bottom: 10px;
+}
+ .wp-list-table tr {
+     background-color: #f9f9f9;
+}
+ .wpas-reply-history-log-table {
+     padding: 10px;
+}
+ .wp-list-table tr .title {
+     color: #999;
+     text-transform: uppercase;
+     font-size: 12px;
+     font-weight: 500;
+}
+ .wp-list-table tr .content {
+     text-align: left;
+     margin-top: 10px;
+}
+ .wpas-reply-history-wrapper::-webkit-scrollbar-track {
+     border-radius: 0px;
+     background-color: #F5F5F5;
+}
+ .wpas-reply-history-wrapper::-webkit-scrollbar {
+     width: 10px;
+     background-color: #F5F5F5;
+}
+ .wpas-reply-history-wrapper::-webkit-scrollbar-thumb {
+     border-radius: 0px;
+     background-color: #d2d2d2;
+}
+ #adminmenuback {
+     z-index: 2;
+     // Increasing by 1 to change stacking order. Do not apply large sums here 
+}

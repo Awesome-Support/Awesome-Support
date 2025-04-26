@@ -132,12 +132,12 @@ msgstr "Awaiting Support Reply"
 msgid "Old"
 msgstr "Old"
 
-#: includes/admin/class-admin-titan.php:88 includes/admin/class-admin.php:200
+#: includes/admin/class-admin-gas.php:88 includes/admin/class-admin.php:200
 #: includes/admin/class-admin.php:497
 msgid "Settings"
 msgstr "Settings"
 
-#: includes/admin/class-admin-titan.php:89
+#: includes/admin/class-admin-gas.php:89
 msgid "Awesome Support Settings"
 msgstr "Awesome Support Settings"
 
@@ -1784,3 +1784,11 @@ msgstr "New %s Name"
 msgctxt "Login form"
 msgid "Show Password"
 msgstr "Show Password"
+
+#: includes/custom-fields/functions-custom-fields.php:401
+msgid "Ticket Type"
+msgstr ""
+
+#: includes/custom-fields/functions-custom-fields.php:402
+msgid "Ticket Types"
+msgstr ""

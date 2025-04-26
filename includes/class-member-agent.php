@@ -5,8 +5,8 @@
  * @package   Awesome Support/Agent
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 add_action( 'wpas_ticket_assignee_changed', 'wpas_update_ticket_count_on_transfer', 10, 2 );
@@ -52,7 +52,11 @@ class WPAS_Member_Agent extends WPAS_Member {
 	public function is_agent() {
 
 		if ( false === $this->is_member() ) {
-			return new WP_Error( 'user_not_exists', sprintf( __( 'The user with ID %d does not exist', 'awesome-support' ), $this->user_id ) );
+			
+			// translators: %d is the user id.
+			$x_content = __( 'The user with ID %d does not exist', 'awesome-support' );
+
+			return new WP_Error( 'user_not_exists', sprintf( $x_content, $this->user_id ) );
 		}
 
 		if ( false === $this->has_cap( 'edit_ticket' ) ) {
@@ -71,7 +75,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 */
 	public function can_be_assigned() {
 
-		$can = esc_attr( get_user_meta( $this->user_id, 'wpas_can_be_assigned', true ) );
+		$can = esc_attr( get_user_option( 'wpas_can_be_assigned', $this->user_id ) );
 
 		return empty( $can ) ? false : true;
 	}
@@ -85,11 +89,11 @@ class WPAS_Member_Agent extends WPAS_Member {
 	public function open_tickets() {
 
 		// Deactivate this for now as it is not reliable enough. Needs more work. Ticket count not correctly updated in certain situations, like when a ticket is transferred from an agent to another
-//		$count = get_user_meta( $this->user_id, 'wpas_open_tickets', true );
+//		$count = get_user_option( 'wpas_open_tickets', $this->user_id );
 		$count = false;
 		if ( false === $count ) {
 			$count = count( $this->get_open_tickets() );
-			update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
+			update_user_option( $this->user_id, 'wpas_open_tickets', $count );
 		}
 
 		return $count;
@@ -110,7 +114,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 		$count = (int) $this->open_tickets();
 		$count = $count + $num;
 
-		update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
+		update_user_option( $this->user_id, 'wpas_open_tickets', $count );
 
 		return $count;
 
@@ -130,7 +134,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 		$count = (int) $this->open_tickets();
 		$count = $count - $num;
 
-		update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
+		update_user_option( $this->user_id, 'wpas_open_tickets', $count );
 
 		return $count;
 
@@ -166,13 +170,13 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 */
 	public function in_department() {
 
-		if ( false === wpas_get_option( 'departments', false ) ) {
+		if ( false == wpas_get_option( 'departments', false ) ) {
 			return false;
 		}
 
 		if ( is_null( $this->department ) ) {
 
-			$this->department = get_the_author_meta( 'wpas_department', $this->user_id );
+			$this->department = get_user_option( 'wpas_department', $this->user_id );
 
 			if ( empty( $this->department ) ) {
 				$this->department = array();

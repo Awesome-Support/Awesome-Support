@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Admin/Functions/List Table
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -38,47 +38,34 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
-	$post_type = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
+	$post_type =  isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
 
 	/* Make sure we only alter our post type */
 	if ( 'ticket' !== $post_type ) {
 		return false;
 	}
 
-	/* If admins can see all tickets do nothing */
-	if ( current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
-		return false;
-	}
-
-	/* If agents can see all tickets do nothing */
-	if ( current_user_can( 'edit_ticket' ) && ! current_user_can( 'administrator' ) && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
-		return false;
-	}
-
-	global $current_user;
-
+	global $current_user;	
+	
+	
 	// We need to update the original meta_query and not replace it to avoid filtering issues.
 	$meta_query = $query->get( 'meta_query' );
 
 	if ( ! is_array( $meta_query ) ) {
 		$meta_query = array_filter( (array) $meta_query );
 	}
-
-	$meta_query[] = array(
-		'key'     => '_wpas_assignee',
-		'value'   => (int) $current_user->ID,
-		'compare' => '=',
-		'type'    => 'NUMERIC',
-	);
-
-	$query->set( 'meta_query', $meta_query );
-
+	
+	$agents_meta_query = wpas_ticket_listing_assignee_meta_query_args( $current_user->ID );
+	
+	if( !empty( $agents_meta_query ) ) {
+		$meta_query[] = $agents_meta_query;
+		$query->set( 'meta_query', $meta_query );
+	}
+	
 	return true;
 
 }
 
-
-add_action( 'pre_get_posts', 'wpas_limit_open', 10, 1 );
 /**
  * Limit the list of tickets to open.
  *
@@ -104,8 +91,8 @@ function wpas_limit_open( $query ) {
 		return false;
 	}
 
-	$post_type   = filter_input( INPUT_GET, 'post_type', FILTER_SANITIZE_STRING );
-	$post_status = filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING );
+	$post_type   = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
+	$post_status = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
 
 	/* Make sure we only alter our post type */
 	if ( 'ticket' !== $post_type ) {
@@ -159,9 +146,9 @@ function wpas_ticket_action_row( $actions, $post ) {
 		$status = wpas_get_ticket_status( $post->ID );
 
 		if ( 'open' === $status ) {
-			$actions['close'] = '<a href="' . wpas_get_close_ticket_url( $post->ID ) . '">' . __( 'Close', 'awesome-support' ) . '</a>';
+			$actions['closeticket'] = '<a href="' . wpas_get_close_ticket_url( $post->ID ) . '">' . __( 'Close', 'awesome-support' ) . '</a>';
 		} elseif ( 'closed' === $status ) {
-			$actions['open'] = '<a href="' . wpas_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'awesome-support' ) . '</a>';
+			$actions['openticket'] = '<a href="' . wpas_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'awesome-support' ) . '</a>';
 		}
 	}
 
@@ -187,7 +174,7 @@ function wpas_fix_tickets_count( $views ) {
 
 	$ticket_status = wpas_get_post_status(); // Our declared ticket status.
 	$status        = 'open';
-	$post_status   = filter_input( INPUT_GET, 'post_status', FILTER_SANITIZE_STRING );
+	$post_status   = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
 
 	// Maybe apply filters.
 	if ( ! empty( $post_status ) ) {
@@ -213,7 +200,7 @@ function wpas_fix_tickets_count( $views ) {
 				$replace = $matches[1][0];
 			}
 
-			$label           = trim( strip_tags( str_replace( $replace, '', $label ) ) );
+			$label           = trim( wp_strip_all_tags( str_replace( $replace, '', $label ) ) );
 			$class           = isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view || isset( $wp_query->query_vars['post_status'] ) && 'all' === $view && null === $wp_query->query_vars['post_status'] ? ' class="current"' : '';
 			$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
 			$link            = esc_url( add_query_arg( $link_query_args, admin_url( 'edit.php' ) ) );
@@ -224,4 +211,64 @@ function wpas_fix_tickets_count( $views ) {
 
 	return $views;
 
+}
+
+
+add_filter( 'bulk_actions-edit-ticket', 'wpas_manage_ticket_bulk_actions', 11, 1 );
+
+/**
+ * Remove bulk edit action from ticket listing page
+ * 
+ * @param array $bulk_actions
+ * @return array
+ */
+function wpas_manage_ticket_bulk_actions( $bulk_actions ) {
+	
+	if( isset( $bulk_actions['edit'] ) ) {
+		unset( $bulk_actions['edit'] );
+	}
+	
+	return $bulk_actions;
+}
+
+
+add_filter( 'post_row_actions', 'wpas_add_print_quick_action', 10, 2 );
+/**
+ * Add print quick action to tickets list table
+ * 
+ * @since 5.1.1
+ * 
+ * @param array $actions
+ * @param object $post
+ * 
+ * @return array
+ */
+function wpas_add_print_quick_action( $actions, $post ) {
+
+	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' ) {
+		$actions['wpas_print'] = sprintf( '<a href="#" class="wpas-admin-quick-action-print" data-id="%s">%s</a>', $post->ID, __( 'Print', 'awesome-support' ) );
+	}
+	
+	return $actions;
+	
+}
+
+
+add_filter( 'bulk_actions-edit-ticket', 'wpas_add_print_bulk_action' );
+/**
+ * Add print tickets bulk action to tickets list table
+ * 
+ * @since 5.1.1
+ * 
+ * @param array $actions
+ * 
+ * @return array
+ */
+function wpas_add_print_bulk_action( $actions ) {
+
+	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' ) {
+		$actions['wpas_print_tickets'] = __( 'Print Tickets', 'awesome-support' );
+	}
+
+	return $actions;
 }

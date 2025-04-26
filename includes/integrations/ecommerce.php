@@ -9,8 +9,8 @@
  * @package   Awesome Support/Integrations/eCommerce
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  *
  */
 
@@ -48,6 +48,14 @@ final class WPAS_eCommerce_Integration {
 	public $locked_msg = '';
 
 	/**
+	 * Type to display when a taxonomy is locked
+	 *
+	 * @since 3.3
+	 * @var string
+	 */
+	public $locked_msg_type = '';
+
+	/**
 	 * Whether or not the synchronization is enabled for this e-commerce plugin
 	 *
 	 * @since 3.3
@@ -57,6 +65,21 @@ final class WPAS_eCommerce_Integration {
 
 	protected function __construct() {
 
+		// translators: %s is the link
+		$locked_taxo_msg1 = 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.';
+		
+		// translators: %s is the link
+		$locked_taxo_msg2 = 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.';
+		
+		// translators: %s is the link
+		$locked_taxo_msg3 = 'You cannot edit this term from here because it is linked to an Exchange product. <a href="%s">Please edit the product directly</a>.';
+		
+		// translators: %s is the link
+		$locked_taxo_msg4 ='You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.';
+		
+		// translators: %s is the link
+		$locked_taxo_msg5 = 'You cannot edit this term from here because it is linked to a WP eCommerce product. <a href="%s">Please edit the product directly</a>.';
+
 		// Set our default integrations
 		$this->plugins = array(
 			'edd'         => array(
@@ -64,35 +87,35 @@ final class WPAS_eCommerce_Integration {
 				'class'           => 'Easy_Digital_Downloads',
 				'post_type'       => 'download',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'download', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => $locked_taxo_msg1,
 			),
 			'woocommerce' => array(
 				'file'            => 'woocommerce.php',
 				'class'           => 'WC_Integration',
 				'post_type'       => 'product',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => $locked_taxo_msg2,
 			),
 			'exchange'    => array(
 				'file'            => 'init.php',
 				'class'           => 'IT_Exchange',
 				'post_type'       => 'it_exchange_prod',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to an Exchange product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'it_exchange_prod', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => $locked_taxo_msg3,
 			),
 			'jigoshop'    => array(
 				'file'            => 'jigoshop.php',
 				'class'           => 'Jigoshop_Base',
 				'post_type'       => 'product',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => $locked_taxo_msg4,
 			),
 			'wpecommerce' => array(
 				'file'            => 'wp-shopping-cart.php',
 				'class'           => 'WP_eCommerce',
 				'post_type'       => 'wpsc-product',
 				'append'          => true,
-				'locked_taxo_msg' => sprintf( __( 'You cannot edit this term from here because it is linked to a WP eCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' ), add_query_arg( 'post_type', 'wpsc-product', admin_url( 'edit.php' ) ) ),
+				'locked_taxo_msg' => $locked_taxo_msg5,
 			),
 		);
 
@@ -206,6 +229,7 @@ final class WPAS_eCommerce_Integration {
 		if ( true === $current ) {
 			$this->synced     = true;
 			$this->locked_msg = wp_kses_post( $plugin['locked_taxo_msg'] );
+			$this->locked_msg_type = $plugin['post_type'];
 		}
 
 	}
@@ -289,7 +313,8 @@ final class WPAS_eCommerce_Integration {
 		if ( empty( $this->locked_msg ) ) {
 			return $message;
 		}
-
+		$this->locked_msg = __( $this->locked_msg, 'awesome-support' );
+		$this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', $this->locked_msg_type, admin_url( 'edit.php' ) ) );
 		return $this->locked_msg;
 
 	}

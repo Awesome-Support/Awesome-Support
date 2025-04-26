@@ -1,0 +1,1 @@
+changes to deprecated.php - remove all the doing_it_wrong function calls.

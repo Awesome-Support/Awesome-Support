@@ -1,0 +1,150 @@
+body {
+	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+	background: #f9f9f9;
+}
+
+a {
+	text-decoration: none;
+	color: #444;
+}
+
+select, 
+input, 
+textarea {
+	border-radius: 3px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	cursor: pointer;
+}
+
+input[type="submit"] {
+	cursor: pointer;
+	background: #FFF;
+	margin: 0 5px;
+	transition: .3s ease;
+}
+
+input[type="submit"]:hover {
+	color: #69a463;
+	background: #FFF;
+	border-color: #69a463;
+}
+
+a:focus, 
+select:focus, 
+input:focus, 
+textarea:focus {
+	outline: none;
+}
+
+#as-logo {
+	color: #444;
+	margin: 0;
+	text-align: center;
+}
+
+.as-setup-wizard {
+	padding: 80px 20px;
+	margin: 0 auto;
+	max-width: 900px;
+}
+
+.as-setup-steps {
+	padding: 0;
+	margin: 1em 0 2em;
+	text-align: center;
+}
+
+.as-setup-steps li {
+	display: inline-block;
+	padding: 12px;
+	font-weight: 500;
+	color: #666;
+	margin: 0 -3px;
+	z-index: 1;
+	counter-increment: step-counter;
+	position: relative;
+	max-width: 128px;
+	width: 100%;
+}
+
+.as-setup-steps li .hint {
+	margin-bottom: 12px;
+	font-weight: 300;
+	font-size: 16px;
+	color: #999;
+}
+
+.as-setup-steps li:before {
+	border-bottom: 4px solid transparent;
+	position: absolute;
+	bottom: 18px;
+	content: '';
+	width: 100%;
+	z-index: -1;
+	left: 0;
+	right: 50%;
+	display: inline-block;
+
+	background-image: linear-gradient(to right, #e5e5e5 0%, #e5e5e5 100%);
+	background-origin: border-box;
+	background-position: top left, top right, bottom right, bottom left;
+	background-repeat: no-repeat;
+}
+
+.as-setup-steps li:after {
+    content: counter(step-counter);
+    margin-right: 5px;
+    font-size: 80%;
+    background-color: rgb(200,200,200);
+    color: white;
+    font-weight: bold;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+.as-setup-steps li.done:after {
+	background-color: #6aa463;
+	content: '\2713';
+}
+
+.as-setup-steps li.done:before {
+	background-image: linear-gradient(to right, #6aa463 0%, #6aa463 100%);
+}
+
+.as-setup-steps li.active .hint {
+	color: #333;
+}
+
+.as-setup-steps li.active:before {
+	border-bottom: 4px solid transparent;
+	background-image: linear-gradient(to right, #6aa463 0%,#6aa463 50%,#e5e5e5 51%,#e5e5e5 100%);
+	background-origin: border-box;
+	background-position: top left, top right, bottom right, bottom left;
+	background-repeat: no-repeat;
+}
+
+.as-setup-steps li.active:after {
+	background-color: #a6c7a2;
+}
+
+.as-setup-content {
+	background: #fff;
+	padding: 40px 60px;
+	color: #666;
+	box-shadow: 0px 0 4px -2px #000;
+}
+
+.not-now {
+	display: block;
+	float: right;
+	margin-top: 10px;
+	padding: 8px 16px;
+	background: #ebebeb;
+	border: none;
+	border-radius: 3px;
+}
+
+.contrast-link{
+	color: blue;
+}

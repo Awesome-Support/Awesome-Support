@@ -39,8 +39,10 @@ function wpas_add_notification( $id, $message, $group = 'notifications' ) {
 
 	$notifications = WPAS()->session->get( $group );
 	$id            = sanitize_text_field( $id );
-	$message       = wp_kses_post( $message );
-
+	// If $message is of string data type then sanitizes content for allowed HTML tags
+	if ( is_string( $message ) ) {
+		$message = wp_kses_post( $message );
+	}
 	if ( false === $notifications ) {
 		wpas_set_notifications();
 	}
@@ -198,6 +200,91 @@ add_action( 'wpas_before_template', 'wpas_display_notifications', 10, 3 );
  * @return string Readable notifications
  */
 function wpas_display_notifications() {
-	echo wpas_get_display_notifications();
+	echo  wp_kses(wpas_get_display_notifications(), get_allowed_html_wp_notifications());
 	wpas_clean_notifications();
+}
+
+
+add_action( 'wpas_frontend_add_nav_buttons', 'wpas_frontend_add_notifications_nav_button', 8 );
+
+/**
+ * Add new notifications nav option on front-end ticket page
+ * 
+ * @global object $post
+ * 
+ * @return void
+ */
+function wpas_frontend_add_notifications_nav_button() {
+	
+	if ( true === boolval( wpas_get_option( 'enable_notification_button', true ) ) ) {
+		global $post;
+
+		if( 'ticket' !== get_post_type( $post ) ) {
+			return;
+		}
+		
+		/* Set button label - if set to blank in settings, it will go through the normal translation functions */
+		$button_label = wpas_get_option('notifications_button_label','');
+		if ( true == empty( $button_label ) ) {
+			$button_label = __('Notifications', 'awesome-support');
+		}
+		
+		echo wp_kses(wpas_full_screen_window_link( array(
+			'type'  => 'ajax',
+			'title' => __( 'Notifications', 'awesome-support' ),
+			'class'	=> 'wpas-btn wpas-btn-default wpas-link-notifications',
+			'ajax_params' => array(
+				'action' => 'wpas_ticket_notifications_window',
+				'id'	 => $post->ID,
+			),
+			'label' => $button_label,
+			)), get_allowed_html_wp_notifications());
+			
+	}
+
+		
+}
+
+
+add_action( 'wp_ajax_wpas_ticket_notifications_window', 'wpas_ticket_notifications_window', 11 );
+
+/**
+ * Generate content for notification popup window
+ * 
+ * @return void
+ */
+function wpas_ticket_notifications_window() {
+		
+	$ticket_id = filter_input( INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT );
+	
+	if( !$ticket_id || 'ticket' !== get_post_type( $ticket_id ) ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'read' ) ) {
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to generate content for notification popup window.', 'awesome-support') ), 403);		
+	}
+
+	$text = wpas_get_option( 'notifications_button_msg', __( 'Standard notifications are enabled.', 'awesome-support' ) ) ;
+
+	$content = '<div>' . $text . '</div>';
+
+
+	$content = apply_filters( 'wpas_ticket_notifications_window_content', $content, $ticket_id );
+
+	wpas_get_full_screen_popup_window( 'wpas_ticket_notifications_window', $content, array(
+		'title' => __( 'Notifications', 'awesome-support' )
+	) );
+	
+	die();
+}
+
+/**
+ * get_allowed_html_wp_notifications
+ *
+ * @return void
+ */
+function get_allowed_html_wp_notifications()
+{
+	return apply_filters( 'custom_allowed_html_wpas_admin_tabs', wpas_get_allowed_html_tags() );
 }

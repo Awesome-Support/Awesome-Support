@@ -16,7 +16,7 @@
 		 */
 		var is_tinyMCE_active = false;
 		if (typeof (tinyMCE) != "undefined") {
-			if (tinyMCE.activeEditor === null || tinyMCE.activeEditor.isHidden() !== false) {
+			if (tinyMCE.activeEditor != "undefined") {
 				is_tinyMCE_active = true;
 			}
 		}
@@ -51,6 +51,7 @@
 					// AJAX data
 					data = {
 						'action': 'wp_editor_ajax',
+						'nonce' : wpasL10n.reply_nonce, 
 						'post_id': replyId,
 						'editor_id': editorId
 					};
@@ -60,7 +61,11 @@
 						// Append editor to DOM
 						$('.wpas-editwrap-' + replyId).addClass('wp_editor_active').show();
 						$('.wpas-editwrap-' + replyId + ' .wpas-wp-editor').html(response);
-
+						
+						/* GAS 6.0.14 - BUG : Edit ticket content not working. */
+						$('#wp-wpas-editreply-' + replyId + '-media-buttons').hide();						
+						$('.wpas-editwrap-' + replyId + ' .wpas-wp-editor').append($('#wpas-reply-' + replyId + ' .wpas-reply-attachements').clone());
+						
 						// Init TinyMCE
 						tinyMCE.init(tinyMCEPreInit.mceInit[data.editor_id]);
 
@@ -68,6 +73,7 @@
 						// Will not work because of https://core.trac.wordpress.org/ticket/26183
 						try {
 							quicktags(tinyMCEPreInit.qtInit[data.editor_id]);
+                                                        $( '#wp-' + data.editor_id + '-wrap' ).removeClass('html-active').addClass('tmce-active');
 						} catch (e) {}
 					});
 
@@ -84,6 +90,7 @@
 					var tinyMCEContent = tinyMCE.get(editorId).getContent();
 					var data = {
 						'action': 'wpas_edit_reply',
+						'nonce' : wpasL10n.reply_nonce, 
 						'reply_id': replyId,
 						'reply_content': tinyMCEContent
 					};
@@ -94,7 +101,18 @@
 
 							// Revert to save button
 							btnSave.prop('disabled', false).val('Save changes');
+                                                        
+							// Reattach the attachment links to the reply
+                            var attachmentsEle = reply.find('.wpas-reply-attachements')
+								.clone()
+								.wrapAll("<div/>")
+								.parent()
+								.html();
+                                                        
 							reply.html(tinyMCEContent).show();
+                                                        
+							reply.append( attachmentsEle );
+                                                        
 							editorRow.hide();
 						} else {
 							alert(response);
@@ -108,6 +126,7 @@
 
 					var data = {
 						'action': 'wp_editor_content_ajax',
+						'nonce' : wpasL10n.editor_content_nonce, 
 						'post_id': replyId
 					};
 					$.post(ajaxurl, data, function (response) {
@@ -122,7 +141,7 @@
 				});
 			});
 
-			btnDelete.click(function (e) {
+			btnDelete.on("click", function (e) {
 				if (confirm(wpasL10n.alertDelete)) {
 					return true;
 				} else {
@@ -137,7 +156,7 @@
 				alert(wpasL10n.alertNoTinyMCE);
 			});
 		}
-
+                
 	});
 
 }(jQuery));

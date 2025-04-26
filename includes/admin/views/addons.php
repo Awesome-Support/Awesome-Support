@@ -1,10 +1,10 @@
 <?php
 /**
  * Try to get addons from the transient.
- * 
+ *
  * @var object
  */
-$items = get_transient( 'wpas_addons' );
+$items = get_transient( 'wpas_addonsx' );
 setlocale( LC_MONETARY, get_locale() );
 
 if ( false === $items ) {
@@ -12,16 +12,17 @@ if ( false === $items ) {
 	$route    = esc_url( 'http://getawesomesupport.com/edd-api/products/' );
 	$api_key  = trim( 'd83df1849d3204ed6641faa92ed55eb2' );
 	$token    = trim( '39e17c3737d608900e2f403b55dda68d' );
-	$endpoint = add_query_arg( array( 'key' => $api_key, 'token' => $token ), $route );
+	$pagesize = 50;
+	$endpoint = add_query_arg( array( 'key' => $api_key, 'token' => $token, 'number' => $pagesize ), $route );
 	$response = wp_remote_get( $endpoint );
 
 	if ( 200 === wp_remote_retrieve_response_code( $response ) ) {
 
 		$body = wp_remote_retrieve_body( $response );
 		$content = json_decode( $body );
-		
+
 		if ( is_object( $content ) && isset( $content->products ) ) {
-			set_transient( 'wpas_addons', $content->products, 60 * 60 * 24 ); // Cache for 24 hours
+			set_transient( 'wpas_addonsx', $content->products, 60 * 60 * 24 ); // Cache for 24 hours
 			$items = $content->products;
 		}
 
@@ -36,7 +37,7 @@ if ( false === $items ) {
 .wpas-addon-item + .wpas-addon-item {
 	margin-top: 40px;
 	padding-top: 40px;
-	border-top: 1px solid #ddd;	
+	border-top: 1px solid #ddd;
 }
 .wpas-addon-item .inside {
 	padding-left: 30px;
@@ -68,7 +69,7 @@ if ( false === $items ) {
 		if ( false === $items ):
 			?><p>To check out all our addons please visit <a href="http://getawesomesupport.com/addons" target="_blank">http://getawesomesupport.com/addons</a></p><?php
 		else:
-			// wpas_debug_display( $items );
+
 			foreach ( $items as $key => $item ):
 
 				/* Get the item price */
@@ -80,9 +81,18 @@ if ( false === $items ) {
 				}
 
 				/* This item has variable pricing */
+				/* 'singlesite' object element covers most pricing items for awesome support. */
+				/* But some items like paid support starts at 2 sites. Note the use of curly  */
+				/* brackets for those because the object element starts with a number.        */
 				else {
 					if ( isset( $item->pricing->singlesite ) ) {
 						$price = number_format( $item->pricing->singlesite, 0 );
+					} elseif ( isset( $item->pricing->{'2sites'} ) ) {
+						$price = number_format( $item->pricing->{'2sites'}, 0 );
+					} elseif ( isset( $item->pricing->{'singleserver'} ) ) {
+						$price = number_format( $item->pricing->{'singleserver'}, 0 );
+					} elseif ( isset( $item->pricing->singlesiteupdatesonlynosupport ) ) {
+						$price = number_format( $item->pricing->singlesiteupdatesonlynosupport, 0 );
 					}
 				} ?>
 
@@ -92,10 +102,10 @@ if ( false === $items ) {
 					</div>
 					<div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
 						<div class="inside">
-							<h3><?php echo esc_attr( $item->info->title ); ?> <small class="wpas-addon-item-pricing">from <?php if ( false !== $price ): ?><strong>$<?php echo $price; ?></strong><?php endif; ?></small></h3>
-							<p><?php if ( !empty( $item->info->excerpt ) ): echo wpautop( $item->info->excerpt ); endif; ?></p>
+							<h3><?php echo esc_attr( $item->info->title ); ?> <small class="wpas-addon-item-pricing">from <?php if ( false !== $price ): ?><strong>$<?php echo esc_html( $price ); ?></strong><?php endif; ?></small></h3>
+							<p><?php if ( !empty( $item->info->excerpt ) ): echo wp_kses_post( wpautop( $item->info->excerpt ) ); endif; ?></p>
 							<div class="wpas-btn-group">
-								<span class="button-secondary"><?php if ( false !== $price ): ?>$<?php echo $price; ?><?php endif; ?></span><a class="button-primary" href="<?php echo esc_url( $item->info->link ); ?>&amp;utm_source=plugin&amp;utm_medium=addon_page&amp;utm_campaign=promote_addons" target="_blank">Details and Buy</a>
+								<span class="button-secondary"><?php if ( false !== $price ): ?>$<?php echo esc_html( $price ); ?><?php endif; ?></span><a class="button-primary" href="<?php echo esc_url( $item->info->link ); ?>&amp;utm_source=plugin&amp;utm_medium=addon_page&amp;utm_campaign=promote_addons" target="_blank">Details and Buy</a>
 							</div>
 						</div>
 					</div>

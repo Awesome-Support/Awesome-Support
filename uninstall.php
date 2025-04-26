@@ -5,8 +5,8 @@
  * @package   Awesome Support/Uninstallation
  * @author    Julien Liabeuf <julien@liabeuf.Fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 // If uninstall not called from WordPress, then exit
@@ -42,7 +42,14 @@ else {
 function wpas_uninstall() {
 
 	$options = maybe_unserialize( get_option( 'wpas_options' ) );
+	global $wp_filesystem;
 
+	// Initialize the filesystem 
+	if (empty($wp_filesystem)) {
+		require_once(ABSPATH . '/wp-admin/includes/file.php');
+		WP_Filesystem();
+	} 
+	
 	/* Make sure that the user wants to remove all the data. */
 	if ( isset( $options['delete_data'] ) && '1' === $options['delete_data'] ) {
 
@@ -51,6 +58,8 @@ function wpas_uninstall() {
 		delete_option( 'wpas_db_version' );
 		delete_option( 'wpas_version' );
 		delete_option( 'wpas_dismiss_free_addon_page' );
+		delete_option( 'wpas_plugin_setup' );
+		delete_option( 'wpas_skip_wizard_setup' );
 
 		/* Delete the plugin pages.	 */
 		wp_delete_post( intval( $options['ticket_submit'] ), true );
@@ -80,15 +89,25 @@ function wpas_uninstall() {
 			wp_delete_post( $post->ID, true );
 
 			$upload_dir = wp_upload_dir();
-			$dirpath    = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post->ID";
+			$ticket_id_encode = md5($post->ID . NONCE_SALT);	
+			$dirpath    = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$ticket_id_encode";
 
-			if ( $post->post_parent == 0 ) {
+			if ( $post->post_parent == 0 && is_dir( $dirpath ) ) {
 
-				/* Delete the uploads folder */
-				if ( is_dir( $dirpath ) ) {
-					rmdir( $dirpath );
+				$it    = new RecursiveDirectoryIterator( $dirpath, RecursiveDirectoryIterator::SKIP_DOTS );
+				$files = new RecursiveIteratorIterator( $it, RecursiveIteratorIterator::CHILD_FIRST );
+
+				/* Delete each file */
+				foreach ( $files as $file ) {
+					if ( $file->isDir() ) {
+						$wp_filesystem->delete($file->getRealPath(), true);
+					} else {
+						unlink( $file->getRealPath() );
+					}
 				}
 
+				/* Delete the uploads folder */
+				$wp_filesystem->delete($dirpath, true);
 				/* Remove transients */
 				delete_transient( "wpas_activity_meta_post_$post->ID" );
 			}
@@ -101,10 +120,28 @@ function wpas_uninstall() {
 		 * Delete all products if the taxonomy
 		 * was in use on this install.
 		 */
-		if ( '1' === $options['support_products'] ) {
-			wpas_delete_taxonomy( 'product' );
-		}
+		wpas_delete_taxonomy( 'product' );
 
+		/**
+		* Delete all deparments
+		*/
+		wpas_delete_taxonomy( 'department' );
+		
+		/**
+		* Delete Priority taxonomy
+		*/
+		wpas_delete_taxonomy( 'ticket_priority' );
+		
+		/**
+		* Delete ticket type taxonomy
+		*/
+		wpas_delete_taxonomy( 'ticket_type' );				
+		
+		/**
+		* Delete Channel taxonomy
+		*/
+		wpas_delete_taxonomy( 'ticket_channel' );				
+		
 	}
 
 }
@@ -125,14 +162,13 @@ function wpas_uninstall() {
 function wpas_delete_taxonomy( $taxonomy ) {
 
 	global $wpdb;
-
-	$query = 'SELECT t.name, t.term_id
+	$sql = 'SELECT t.name, t.term_id
 			FROM ' . $wpdb->terms . ' AS t
 			INNER JOIN ' . $wpdb->term_taxonomy . ' AS tt
 			ON t.term_id = tt.term_id
 			WHERE tt.taxonomy = "' . $taxonomy . '"';
-
-	$terms = $wpdb->get_results($query);
+			
+	$terms = $wpdb->get_results("$sql");
 
 	foreach ( $terms as $term ) {
 		wp_delete_term( $term->term_id, $taxonomy );

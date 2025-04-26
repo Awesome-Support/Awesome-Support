@@ -47,8 +47,10 @@ class WPAS_MailGun_EMail_Check {
 			)
 		);
 
+		// translators: %s is the URL to the email validation api.
+		$desc =  __( 'You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href="%s">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups.', 'awesome-support' );
 		array_push( $settings['general']['options'], array(
-				'desc' => sprintf( __( 'You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href="%s">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups.', 'awesome-support' ), esc_url( 'http://www.mailgun.com/email-validation' ) ),
+				'desc' => sprintf( $desc, esc_url( 'http://www.mailgun.com/email-validation' ) ),
 				'type' => 'note',
 			)
 		);
@@ -62,12 +64,14 @@ class WPAS_MailGun_EMail_Check {
 				)
 		);
 
+		// translators: %s is the URL to the MailGun Public API Key.
+		$desc = __( 'If you don&#39;t have a MailGun account you can <a href="%s" target="_blank">create one for free here</a>.', 'awesome-support' );
 		array_push( $settings['general']['options'], array(
 				'name'    => __( 'MailGun Public API Key', 'awesome-support' ),
 				'id'      => 'mailgun_api_key',
 				'type'    => 'text',
 				'default' => '',
-				'desc'    => sprintf( __( 'If you don&#39;t have a MailGun account you can <a href="%s" target="_blank">create one for free here</a>.', 'awesome-support' ), esc_url( 'https://mailgun.com/signup' ) )
+				'desc'    => sprintf( $desc, esc_url( 'https://mailgun.com/signup' ) )
 				)
 		);
 

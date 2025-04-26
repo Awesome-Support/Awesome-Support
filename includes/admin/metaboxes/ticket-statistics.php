@@ -14,22 +14,19 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 } ?>
 
-<div class="wpas-ticket-statistics-mb">
+<div class="wpas-custom-fields wpas-ticket-statistics-mb">
 	<?php
 	do_action( 'wpas_mb_details_before_ticket_statistics' );
 	?>
 	
 	<div class="wpas-row">
-		<div class="wpas-col">Replies by agent</div>
-		<div class="wpas-col"><?php echo wpas_num_agent_replies( get_the_ID() ); ?></div>
+        <?php WPAS()->custom_fields->display_single_field( 'ttl_replies_by_agent' ); ?>
 	</div>
 	<div class="wpas-row">
-		<div class="wpas-col">Replies by customer</div>
-		<div class="wpas-col"><?php echo wpas_num_customer_replies( get_the_ID() ); ?></div>
+        <?php WPAS()->custom_fields->display_single_field( 'ttl_replies_by_customer' ); ?>
 	</div>
 	<div class="wpas-row">
-		<div class="wpas-col">Total replies</div>
-		<div class="wpas-col"><?php echo wpas_num_total_replies( get_the_ID() ); ?></div>
+        <?php WPAS()->custom_fields->display_single_field( 'ttl_replies' ); ?>
 	</div>
 	
 	<?php

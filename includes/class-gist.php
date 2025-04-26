@@ -9,10 +9,10 @@
  * (https://github.com/miya0001/oembed-gist) by Takayuki Miyauchi.
  *
  * @package   Awesome Support
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  * @since     3.1.3
  */
 
@@ -97,7 +97,6 @@ class WPAS_Gist {
 		}
 
 		$url  = $matches[1];  // Gist full URL
-		$id   = $matches[3];  // Gist ID
 		$file = $matches[7];  // Gist file
 		$url  = $url . '.js'; // Append the .js extension
 
@@ -107,7 +106,9 @@ class WPAS_Gist {
 			$url = $url . '?file=' . $file;
 		}
 
-		$noscript = sprintf( __( 'View the code on <a href="%s">Gist</a>.', 'awesome-support' ), esc_url( $url ) );
+		// translators: %s is the URL to view the code on Gist.
+		$x_content = __( 'View the code on <a href="%s">Gist</a>.', 'awesome-support' );
+		$noscript = sprintf( $x_content, esc_url( $url ) );
 		$embed = sprintf( '<div class="oembed-gist"><script src="%s"></script><noscript>%s</noscript></div>', $url, $noscript );
 
 		return apply_filters( 'embed_gist', $embed, $matches, $attr, $url, $rawattr );

@@ -1,4 +1,59 @@
-@charset 'UTF-8';
+@charset "UTF-8";
+
+/*
+==========================================================================
+Toolbar
+==========================================================================
+*/
+.wpas-toolbar {
+        list-style-type: none !important;
+        margin : 0;
+        
+        li {
+                float: left;
+                margin: 0 6px;
+                
+                
+                &.clear {
+                        float: none !important;
+                }
+                
+                a {
+                        display: block;
+                        margin: 0;
+                }
+                
+                .wpas-icon {
+        
+                        cursor: pointer;
+                        /* border: 1px solid #cacfd3; */
+                        /* border-radius: 20px; */
+                        display: inline-block;
+						color: black;
+
+                        &:hover {
+								/* border-top: 1px solid #cacfd3; */
+								/* border-radius: 20px; */
+                                /* border-color: #14a1e4; */
+                                color: #D0D0D0;
+								
+                                &:before {
+                                        /* color: #14a1e4; */
+                                }
+                                
+                        }
+                }
+        }
+}
+
+.wpas_btn_msg {
+        position: relative;
+}
+
+#wp-wpas-main-ticket-message-editor-wrap {
+        margin-top: 30px;
+}
+
 
 .wpas-cf {
 	&:before,
@@ -77,6 +132,14 @@ Ticket List
 ==========================================================================
 */
 
+
+.ticket_listing_search_types {
+        margin-top: 20px;
+        label {
+                margin-right: 20px;
+        }
+}
+
 table.wp-list-table {
 	table-layout: auto;
 
@@ -147,6 +210,13 @@ Ticket Replies
 */
 
 .wpas-table-replies {
+	table-layout: auto;
+	.col1 {
+		width: 90px;
+	}
+	.col2 {
+		width: 100%;
+	}
 	tr > td {
 		vertical-align: top;
 		padding-top: 2.25em;
@@ -186,25 +256,25 @@ Ticket Replies
 		margin: 0 0 10px 0;
 		padding: 0;
 	}
-	ul { 
-		list-style-type: disc; 
-		list-style-position: inside; 
+	ul {
+		list-style-type: disc;
+		list-style-position: inside;
 	}
-	ol { 
-		list-style-type: decimal; 
-		list-style-position: inside; 
+	ol {
+		list-style-type: decimal;
+		list-style-position: inside;
 	}
 	ul ul,
-	ol ul { 
-		list-style-type: circle; 
-		list-style-position: inside; 
-		margin-left: 15px; 
+	ol ul {
+		list-style-type: circle;
+		list-style-position: inside;
+		margin-left: 15px;
 	}
 	ol ol,
-	td ul ol { 
-		list-style-type: lower-latin; 
-		list-style-position: inside; 
-		margin-left: 15px; 
+	td ul ol {
+		list-style-type: lower-latin;
+		list-style-position: inside;
+		margin-left: 15px;
 	}
 }
 .wpas-ticket-controls,
@@ -225,24 +295,102 @@ Ticket Replies
 		}
 	}
 }
+
+/*
+==========================================================================
+Ticket Detail Toolbar
+==========================================================================
+*/
+
+#wpas_ticekt_main_toolbar {
+    display: none;
+    position: absolute;
+    top: 48px;
+    right: 12px;
+}
+
+#wpas_admin_tabs_ticket_main_ticket:hover #wpas_ticekt_main_toolbar {
+        display: block;
+}
+
+.wpas-middle-toolbar-links {
+	/* Style the images for the toolbar images and links in the ticket detail screen in admin */
+	cursor: pointer ;
+	text-decoration: none;
+}
+
+.wpas-replies-middle-toolbar-item {
+    border: 1px solid #cacfd3;
+    width: 24px;
+    height: 24px;
+    border-radius: 15px;
+    margin: 0 6px;
+    display: inline-block;
+    
+    &:hover {
+        border-color: #0073AA ;
+	border-width: 1px;
+    }
+}
+
+#wpas-mb-toolbar .ui-sortable-handle,
+#wpas-mb-toolbar .handlediv {
+	/* Remove the chrome from the toolbar metabox */
+	display:none;
+}
+
+#wpas-mb-toolbar {
+	/* Remove the background from the toolbar metabox and tighten up spaces */
+	background-color:rgba(255,255,255,0.0);
+	border-color:rgba(255,255,255,0.0);
+	margin: 0px;
+	border: 0px;
+	padding: 0px;
+}
+
+.wpas-replies-links-bottom {
+	/* Style the links at the bottom of the replies in the ticket detail screen in admin (eg: TOGGLE REPLIES)*/
+	cursor: pointer ;
+	text-decoration: underline;
+	color: #0074A2;
+}
+
+/*
+==========================================================================
+Ticket Controls
+==========================================================================
+*/
 .wpas-ticket-controls {
 	position: absolute;
-	top: 50px;
+	top: auto;
 	right: 0;
-
-	.wpas-delete:first-child {
-		border-top-right-radius: 0px;
-		border-bottom-right-radius: 0px;
-		border-right: none;
-	}
-	.wpas-edit:last-child {
-		border-top-left-radius: 0px;
-		border-bottom-left-radius: 0px;
-	}
+        
+        
+        a {
+                vertical-align: top;
+                margin-top: 3px;
+                display: inline-block;
+                span {
+                        display: none;
+                }
+        }
+        .reply_icon {
+                border: solid 1px #cacfd3;
+                width: 24px;
+                height: 24px;
+                border-radius: 15px;
+                margin: 0 6px;
+                display: inline-block;
+                
+                &:hover {
+                        border-color: #14a1e4;
+                        border-width: 1px;
+                }
+        }
+        
 }
 .wpas-reply-meta {
 	.wpas-cf;
-	padding-bottom: 0.75em;
 
 	.wpas-reply-user {
 		float: left;
@@ -279,7 +427,8 @@ Ticket Replies
 	opacity: 0.5;
 }
 .wpas-reply-attachements {
-	margin-top: 2em;
+	margin-top: 1em;
+	margin-bottom: 1em;
 	background-color: #f1f1f1;
 	border: 1px solid #ddd;
 	padding: 1.5em;
@@ -313,7 +462,21 @@ Ticket Replies
 		max-width: 100%;
 		height: auto;
 	}
+	// Force responsive preformatted
+	pre {
+		width: 100%;
+		overflow: auto;
+		max-width: 50vw;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
+		word-break: break-all;
+	}
 }
+
+.wpas-reply-content {
+        margin-top: 28px;
+}
+
 .wpas-table-replies td {
 	/* Restore default paragraph style */
 	p + p {
@@ -324,8 +487,24 @@ Ticket Replies
 #wp-wpas_reply-wrap {
 	margin-bottom: 15px;
 }
+
+.wpas_footer_note {
+	/* Make text smaller and less gray - usually used for things that go at the bottom of a reply or ticket	*/
+	font-size: 0.75em;
+	font-color: light-gray;
+}
+
 .wp-core-ui {
 	.wpas-reply-actions {
+
+		fieldset {
+			margin: 1.25em 0 1.25em 0;
+		}
+
+		fieldset label {
+			margin-right: 1.25em;
+		}
+
 		.button,
 		.button-primary,
 		.button-secondary {
@@ -343,6 +522,15 @@ Ticket Replies
 			line-height: 1.6;
 		}
 	}
+	
+	.wpas-ticket-content,
+	.wpas-reply-content {
+		// Force responsive preformatted
+		pre {
+			max-width: 80vw;
+		}
+	}	
+	
 	.wpas-reply-meta {
 		.wpas-reply-user,
 		.wpas-reply-time {
@@ -387,6 +575,8 @@ http://select2.github.io/select2/
 	outline: none;
 	-webkit-transition: 0.05s border-color ease-in-out;
 	transition: 0.05s border-color ease-in-out;
+        height: 28px;
+        margin: 0;
 }
 .select2-dropdown {
 	border: 1px solid #ddd;
@@ -408,71 +598,24 @@ Metaboxes - Custom Fields
 ==========================================================================
 */
 .wpas-custom-fields {
-	.wpas-form-group + .wpas-form-group {
+	.wpas-form-group {
 		margin-top: 1em;
 	}
-	.wpas-form-control, select, input, textarea {
+	input:read-only, input:disabled {
+		cursor: not-allowed;
+	}
+	.wpas-form-control, select, input:not([type='radio']), textarea {
 		width: 100%;
 	}
 	label {
 		display: block;
 		margin-bottom: .25em;
 	}
+    .wpas-radio label {
+        display:inline-block;
+    }
 }
 
-/*
-==========================================================================
-Metaboxes - Ticket Statistics Fields
-==========================================================================
-*/
-.wpas-ticket-statistics-mb {
-	.wpas-form-group + .wpas-form-group {
-		margin-top: 1em;
-	}
-	.wpas-form-control, select, input, textarea {
-		width: 100%;
-	}
-	label {
-		display: block;
-		margin-bottom: .25em;
-	}
-}
-
-/*
-==========================================================================
-Metaboxes - Time Tracking Statistics Fields
-==========================================================================
-*/
-.wpas-time-tracking-statistics-mb {
-	.wpas-form-group + .wpas-form-group {
-		margin-top: 1em;
-	}
-	.wpas-form-control, select, input, textarea {
-		width: 100%;
-	}
-	label {
-		display: block;
-		margin-bottom: .25em;
-	}
-}
-
-/*
-==========================================================================
-Metaboxes - Ticket additional interested parties
-==========================================================================
-*/
-.wpas-ticket-addl-parties-mb {
-	.wpas-form-group + .wpas-form-group {
-		margin-top: 1em;
-	}
-	.wpas-form-control, select, input, textarea {
-		width: 100%;
-	}
-	label {
-		display: block;
-		margin-bottom: .25em;
-	}
-}
 
 /*
 ==========================================================================
@@ -526,7 +669,7 @@ Metaboxes - Ticket Details
 		&:after {
 			font-size: 100%;
 		}
-	}	
+	}
 }
 
 #wpas-mb-details {
@@ -552,6 +695,10 @@ Metaboxes - Ticket Details
 			margin-bottom: 5px;
 		}
 	}
+}
+
+.wpas-ticket-status select {
+        width : 100%;
 }
 
 /*
@@ -600,4 +747,356 @@ div.about-wrap {
 		margin-bottom: .25em;
 		border: 1px solid #ddd;
 	}
+}
+
+
+/*
+==========================================================================
+Admin Tabs
+==========================================================================
+*/
+
+.wpas_admin_tabs {
+        
+        background: #fff;
+        font-size: 14px;
+        margin: 0;
+        line-height: 1.4;
+        border : 1px solid #eee;
+        
+        .wpas_admin_tabs_names_wrapper {
+            position: relative;
+            background : #FFF;
+            border-bottom : 1px solid #eee;
+            ul, ul li {
+                margin-bottom: 0; 
+                margin-top: 0; 
+            }
+            
+            ul .clear {
+                clear: both;
+                margin: 0;
+                float: none;
+                width: 0;
+            }
+            
+            .wpas_tab_name {
+                float : left;
+                padding: 10px;
+                cursor: pointer;
+                background: #FFF;
+                color:rgb(68,68,68);
+
+                &:hover, &.active {
+                    
+                    position: relative;
+					background: #F5F5F5;  // This color creates the 'tab' effect
+                    &::after {
+                        content: "";
+                        width: 100%;
+                        height: 2px;
+                        position: absolute;
+                        left: 0;
+                        bottom: -2px;
+                        z-index: 1;
+                        background: #e5e5e5;
+                        -webkit-transition: height .3s ease;
+                        -o-transition: height .3s ease;
+                        transition: height .3s ease;
+                        background: #19c395;
+                    }
+                }
+                
+                &:not(.active):hover::after {
+                        background: #8745E5;
+                }
+            }
+            
+            .moreTab {
+                    display: none;
+                    float: right;
+                    
+                    &:before {
+                        content: "\f228";
+                        display: inline-block;
+                        float: left;
+                        font: 400 24px/30px dashicons;
+                        vertical-align: middle;
+                        outline: 0;
+                        margin: 0;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        height: 38px;
+                        width: 38px;
+                        padding: 4px 0;
+                        border: none;
+                        text-align: center;
+                        text-decoration: none;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                    }
+                    
+                    &:hover ul {
+                        display : block;
+                    }
+
+                    ul {
+                        display: none;
+                        position: absolute;
+                        right: 0;
+                        z-index: 100;
+                        background: #FFF;
+                        border: #dedede solid 1px;
+                        padding-bottom: 1px;
+
+                        li {
+                            float: none;
+                            margin: 0;
+                            
+                            &.active {
+                                background: #e5e5e5;
+                                border: 0;
+                            }
+                            
+                            &:hover {
+                                background: #eaeaea;
+                            }
+                        }
+                    }
+            }
+            
+        }
+        
+        .wpas_admin_tab_content {
+            display : none;
+            padding: 20px 10px;
+            background: #FFF;
+            margin-bottom: 20px;
+        }
+        
+        
+}
+
+#wpas_admin_tabs_after_reply_wysiwyg {
+        margin-top: 20px;
+}
+
+/*
+==========================================================================
+Ticket Listing Page Tabs
+==========================================================================
+*/
+.post-type-ticket #posts-filter {
+        .tablenav.top {
+                height: auto;
+                
+                
+                .alignleft.actions {
+                        float : none;
+                }
+                
+                .actions.bulkactions, .search-box, #post-query-submit, #filter-by-date {
+                        display : none;
+                }
+                
+                .filter_btn_container {
+                        float: left;
+                        #post-query-submit {
+                                display: inline-block;
+                        }
+                }
+
+                #search_tab_content_placeholder .search-box {
+                        display: block !important;
+                        float : none;
+                }
+
+                .filter_by_date_container #filter-by-date {
+                        display: inline-block;
+                }
+        }
+        
+}	
+
+
+@media screen and (max-width: 782px) {
+        
+        
+        /*
+        ==========================================================================
+        Fix ticket listing table for smaller screens
+        ==========================================================================
+        */
+        .post-type-ticket {
+        
+                .wp-list-table {
+                        
+                        tr:not(.inline-edit-row):not(.no-items) td:not(.check-column) {
+                                
+                                &.column-status {
+                                        display: table-cell !important;
+                                }
+                                
+                        }
+                        
+                        tr td.column-status:not(.column-primary)::before {
+                                display: none;
+                        }
+                        
+                        td.column-title {
+                                max-width: 100%;
+                        }
+                }
+                
+        }
+}
+
+
+@media screen and (max-width: 420px) {
+        
+        /*
+        ==========================================================================
+        Fix ticket listing table for smaller screens
+        ==========================================================================
+        */
+        .post-type-ticket {
+        
+                .wp-list-table {
+                        
+                        thead .column-status, tfoot .column-status {
+                                display: none;
+                        }
+                        
+                        #the-list {
+                                .column-status, .column-title {
+                                        display: block !important;
+                                }
+                        }
+                }
+                
+        }
+}
+
+/*
+==========================================================================
+WordPress overrides
+==========================================================================
+*/
+
+/* Make the pagination arrows in the wp-admin ticket list screen full-height - fix for bootstrap 4 themes otherwise locking it at 16px for some reason...*/
+.tablenav-pages-navspan {
+	height: auto;
+}
+
+
+/*
+==========================================================================
+Ticket Page : Main tabs
+==========================================================================
+*/
+
+
+.wpas-post-body-content #wp-content-editor-tools {
+        background: none;
+}
+
+#wpas-mb-ticket-main-tabs {
+        background: none;
+        border: none;
+        box-shadow: none;
+        -webkit-box-shadow: none;
+}
+#wpas-mb-ticket-main-tabs .handlediv, 
+#wpas-mb-ticket-main-tabs h2.hndle {
+        display: none;
+}
+
+#wpas-mb-ticket-main-tabs .inside {
+        padding: 0;
+}
+
+/* Custom fields tab */
+#wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields:first-child {
+        margin-bottom: 20px;
+}
+
+#wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields h2 {
+        font-weight: bold;
+}
+
+#wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields .wpas-form-group {
+        width: 33%;
+        float: left;
+        box-sizing: border-box;
+        padding: 0 10px;
+}
+
+@media only screen and (max-width: 1200px) {
+    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields .wpas-form-group {
+        width: 50%;
+    }
+}
+
+
+@media only screen and (max-width: 720px) {
+    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields .wpas-form-group {
+        width: 100%;
+        padding: 0;
+    }
+    
+    #wpas_admin_tabs_ticket_main_custom_fields .wpas-custom-fields h2 {
+        padding-left: 0;
+    }
+}
+
+/* Tabs on ticket listing page */
+#wpas_admin_tabs_tickets_tablenav {
+        margin-top: 20px;
+}
+
+.btn_delete_attachment {
+        margin-right: 3px;        
+        display: inline-block;
+        color: red;
+        text-decoration: none;
+        box-shadow: none;
+        &:hover {
+                font-weight: bold;
+                color: red;
+        }
+}
+
+.wpas-show-history-popup {
+	background: rgba(0, 0, 0, 0.70);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    display: none;
+
+    &.is-visible {
+    	display: block;
+    	z-index: 1;
+    }
+}
+
+
+.mr-deny-user-btn {
+        margin-left: 20px !important;
+}
+
+
+
+/*
+==========================================================================
+User Profile Elements
+==========================================================================
+*/
+#wpas_user_profile_segment {
+        border: #e7e7e7 solid 1px;
+        padding: 10px;
+        background: #ececec;
+        margin: 20px 0;
 }

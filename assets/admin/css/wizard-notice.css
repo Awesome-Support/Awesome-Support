@@ -1,0 +1,62 @@
+/* This file contains the styling for the wizard notice that appears at the top of the admin screen when Awesome Support is first installed. */
+.wrap .wpas-wizard-notice{
+    background-color: #46b450;
+    color: #F6EBF9;
+    border-left: 0;
+    border-radius: 5px;
+	padding-bottom: 15px;
+}
+.wpas-wizard-notice .wizard-main-heading {
+	color: #F6EBF9;
+	font-weight:700;
+}
+
+.wpas-wizard-notice p{
+	font-size: 14px;
+	font-weight: 500;
+}
+
+.wpas-wizard-notice p.wizard-normal {
+	font-weight: normal;
+}
+
+.wpas-wizard-notice .wizard-normal a {
+	font-weight: normal;
+	color: #F6EBF9;
+}
+
+.wpas-wizard-notice .wizard-first-line {
+	margin-top: 0px;
+}
+
+.wpas-wizard-notice .wizard-second-line {
+	margin-top: 0px;
+	padding-top: 0px;
+	padding-bottom: 8px;
+}
+
+#menu-dashboard .wp-submenu.wp-submenu-wrap li a[href="as-setup"]{
+	display: none;
+}
+
+.wpas-wizard-notice .wpas-button-wizard-primary {
+	/* Style the CLICK HERE button at the top of the admin screen that starts the wizard */
+	border: 1px;
+	border: solid:;
+	border-color: orange;
+	background-color: orange;
+	padding: 10px;
+	margin-top: 20px;
+	vertical-align: middle;
+	border-radius: 5px;
+}
+.wpas-wizard-notice .wpas-button-wizard-primary a {
+	color: white;
+	text-decoration: none;
+	vertical-align: middle;
+}
+
+.wpas-wizard-notice .wpas-button-wizard-skip a {
+	color: #F6EBF9;
+	margin-left: 10px;
+}

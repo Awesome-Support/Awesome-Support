@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Get plugin option.
  *
@@ -95,7 +96,7 @@ function wpas_get_close_ticket_url( $ticket_id ) {
 
 /**
  * Get safe tags for content output.
- * 
+ *
  * @return array List of allowed tags
  * @since  3.0.0
  */
@@ -158,11 +159,11 @@ function wpas_is_plugin_page( $slug = '' ) {
 	if( ! is_array( $ticket_list ) ) { $ticket_list = (array) $ticket_list; }
 	if( ! is_array( $ticket_submit ) ) { $ticket_submit = (array) $ticket_submit; }
 
-	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket' ) );
+	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'faq', 'wpas_gadget', 'as_security_profile', 'ruleset', 'trackedtimes', 'wpas_sla', 'wpas_issue_tracking', 'wpas_company_profile' ) );
 	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
 	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
-	/* Check for plugin pages in the admin */
+	/* Check for plugin pages in the admin */	
 	if ( is_admin() ) {
 
 		/* First of all let's check if there is a specific slug given */
@@ -189,17 +190,29 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		return false;
 
+	} elseif ( wpas_is_wp_cli() || !isset( $_SERVER ) ) {
+
+		/* running from wp_cli so just return false */				
+		return false;
+
 	} else {
 
 		global $post;
 
-		if ( empty( $post ) ) {
-			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
-			$post     = get_post( $post_id );
-		}
+        if ( empty( $post ) ) {
+        	$request_uri = isset($_SERVER['REQUEST_URI']) ? esc_url( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+			$post_id  = url_to_postid( '' . '' . '' . $request_uri );
+            $post     = get_post( $post_id );
+        }
 
 		if ( is_singular( 'ticket' ) ) {
+			return true;
+		}
+
+		/**
+		 * Check if the current page has our shortcodes
+		 */
+		if ( $post && isset( $post->post_content ) && $post->post_content && ( has_shortcode( $post->post_content, 'ticket-submit' ) || has_shortcode( $post->post_content, 'tickets' ) ) ) {
 			return true;
 		}
 
@@ -221,6 +234,43 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 	}
 
+}
+
+/**
+ * Determine if the current page is front-end
+ *
+ * It will return true if the current page is for Submit Ticket & My Ticket page
+ *
+ * @since 5.2.2
+ *
+ * @return boolean
+ */
+function wpas_is_front_end_plugin_page() {
+	global $post;
+
+	if ( ! $post ) {
+		return false;
+	}
+
+	/**
+	 * Check if the current page/post has the following shortcode
+	 *
+	 * [ticket-submit] | [tickets]
+	 *
+	 * ticket-submit is for submission while tickets for list of submission
+	 */
+	if ( has_shortcode( $post->post_content, 'ticket-submit' ) || has_shortcode( $post->post_content, 'tickets' ) ) {
+		return true;
+	}
+
+	/**
+	 * Check if we're viewing a 'ticket' single page'.
+	 */
+	if ( is_singular( 'ticket' ) ) {
+		return true;
+	}
+
+	return false ;
 }
 
 /**
@@ -284,9 +334,9 @@ function wpas_make_button( $label = null, $args = array() ) {
 	extract( shortcode_atts( $defaults, $args ) );
 
 	if ( 'link' === $args['type'] && !empty( $args['link'] ) ) {
-		?><a href="<?php echo esc_url( $args['link'] ); ?>" class="<?php echo $args['class']; ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo $label; ?></a><?php
+		?><a href="<?php echo esc_url( $args['link'] ); ?>" class="<?php echo esc_attr( $args['class'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo esc_attr("data-onsubmit='{$args['onsubmit']}'"); endif; ?>><?php echo esc_html( $label ); ?></a><?php
 	} else {
-		?><button type="submit" class="<?php echo $args['class']; ?>" name="<?php echo $args['name']; ?>" value="<?php echo $args['value']; ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo $label; ?></button><?php
+		?><button type="submit" class="<?php echo esc_attr( $args['class'] ); ?>" name="<?php echo esc_attr( $args['name'] ); ?>" value="<?php echo esc_attr( $args['value'] ); ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo esc_attr("data-onsubmit='{$args['onsubmit']}'"); endif; ?>><?php echo esc_html( $label ); ?></button><?php
 	}
 
 }
@@ -429,7 +479,7 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
 	if ( ! headers_sent() ) {
 		wp_redirect( $location, 302 );
 	} else {
-		echo "<meta http-equiv='refresh' content='0; url=$location'>";
+		echo "<meta http-equiv='refresh' content='0; url=" . esc_url($location) . "'>";
 	}
 
 	return true;
@@ -448,7 +498,7 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
  * @param  string $message The message to write
  * @return void
  */
-function wpas_write_log( $handle, $message ) {
+function wpas_write_log( $handle, $message ) {	
 	$log = new WPAS_Logger( $handle );
 	$log->add( $message );
 }
@@ -457,17 +507,22 @@ function wpas_write_log( $handle, $message ) {
  * Show a warning if dependencies aren't loaded.
  *
  * If the dependencies aren't present in the plugin folder
- * we display a warning to the user and explain him how to 
+ * we display a warning to the user and explain him how to
  * fix the issue.
  *
  * @since  3.0.2
  * @return void
  */
-function wpas_missing_dependencies() { ?>
-	<div class="error">
-        <p><?php printf( __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
-    </div>
-<?php }
+function wpas_missing_dependencies() { 
+	// translators: %1$s is the name of the dependency or action needed, %2$s is the URL to install the production version of the plugin.
+	$x_content = __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %1$s before anything else. If you don’t know what this is you should <a href="%2$s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' );
+
+	?>
+		<div class="error">
+			<p><?php printf( wp_kses_post( $x_content), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
+		</div>
+	<?php 
+}
 
 /**
  * Wrap element into lis.
@@ -521,7 +576,8 @@ function wpas_dropdown( $args, $options ) {
 		'please_select' => false,
 		'select2'       => false,
 		'disabled'      => false,
-		'data_attr'     => array()
+		'data_attr'     => array(),
+		'multiple'	=> false,
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -544,19 +600,35 @@ function wpas_dropdown( $args, $options ) {
 
 	}
 
+	$id = $args['id'];
+
 	/* Start the buffer */
 	ob_start(); ?>
-
-	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<?php
+	if ($class[0] == 'search_and_list_dropdown') {
+	?>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo esc_attr($args['name']); ?>" <?php if ( !empty( $class ) ) echo 'class="wpas-select2"'; ?> <?php if ( !empty( $id ) ) echo esc_attr("id='$id'"); ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<?php
+	}
+	else {
+	?>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo esc_attr($args['name']); ?>" class="<?php if ( !empty( $class ) ) echo esc_attr( implode( ' ' , $class ) ); ?>" id="<?php if ( !empty( $id ) ) echo esc_attr($id); ?>" <?php if ( ! empty( $data_attributes ) ): echo wp_kses_post($data_attributes); endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>><?php
+	}
+	?>
 		<?php
 		if ( $args['please_select'] ) {
-			echo '<option value="">' . __( 'Please select', 'awesome-support' ) . '</option>';
+			echo '<option value="">' . esc_html__( 'Please select', 'awesome-support' ) . '</option>';
 		}
-
-		echo $options;
+		//This has been verify by html tags ted.
+		$allow_html_tags_wpas_dropdown = array(
+				'option' => [					
+					'value' => true,
+					'selected' => true,								
+				]
+			);
+		echo wp_kses( $options, $allow_html_tags_wpas_dropdown );		
 		?>
 	</select>
-
 	<?php
 	/* Get the buffer contents */
 	$contents = ob_get_contents();
@@ -593,10 +665,79 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	$options = '';
 
 	foreach ( $tickets as $ticket ) {
-		$options .= "<option value='$ticket->ID'>$ticket->post_title</option>";
+		$options .= "<option value='$ticket->ID' " . selected( $args['selected'], $ticket->ID, false ) . ">$ticket->post_title</option>";
 	}
+	//This has been verify by html tags ted.		
+	echo  wp_kses(wpas_dropdown( wp_parse_args( $args, $defaults ), $options ), wpas_dropdown_allowed_html_tags() );
 
-	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
+}
+ 
+/**
+ * Generate html markup for drop-downs that pull data from taxonomies
+ *
+ * Example use: echo show_dropdown( 'department', "html_inboxrules_rule_new_dept", "wpas-multi-inbox-config-item wpas-multi-inbox-config-item-select", $new_dept );
+ *
+ * @since 4.0.3
+ *
+ * @param string    $taxonomy       The taxonomy to be used as the dropdown passed as a string parameter
+ * @param string    $field_id       The html id name to be used in the generated markup - passed as a string
+ * @param string    $class          The HTML class string to wrap around the dropdown - passed as a string
+ * @param string    $selected       Returns the item that was selected by the user.  If this has an initial value the selected value in the dropdown will be set to that item.
+ * @param bool      $showcount      A flag to control whether or not to show the taxonomy count in parens next to each item in the dropdown.
+ *
+ * @return string
+ */
+function wpas_show_taxonomy_terms_dropdown( $taxonomy, $field_id, $class, $selected, $showcount = false ) {
+	$categories = get_categories( array( 'taxonomy' => $taxonomy, 'hide_empty' => false ) );
+
+	$select = "<select name='$field_id' id='$field_id' class='$class'>";
+	$select .= "<option value='-1'>Select</option>";
+
+	foreach( $categories as $category ) {
+		$is_selected = (int)$selected === $category->term_id ? ' selected ' : '';
+
+		$countstr='';
+		if ( true === $showcount ) {
+			$countstr = " (" . $category->count . ") ";
+		}
+
+		$select .= "<option value='" . $category->term_id . "' " . $is_selected . "' >" . $category->name . $countstr . "</option>";
+	}
+	$select .= "</select>";
+
+	return $select;
+}
+
+
+/**
+ * Generate html markup for a standard html agent dropdown
+ *
+ * @since 4.0.3
+ *
+ * @param string    $field_id       The html id name to be used in the generated markup - passed as a string
+ * @param string    $class          The HTML class string to wrap around the dropdown - passed as a string
+ * @param string	$new_assignee	Returns the item that was selected by the user.  If this has an initial value the selected value in the dropdown will be set to that item.
+ *
+ * Note: We should move this to CORE AS later!
+ */
+function wpas_show_assignee_dropdown_simple( $field_id, $class, $new_assignee = "" ) {
+
+	$args = array(
+		'name' => $field_id,
+		'id' => $field_id,
+		'class' => $class,
+		'exclude' => array(),
+		'selected' => empty($new_assignee) ? false : $new_assignee,
+		'cap' => 'edit_ticket',
+		'cap_exclude' => '',
+		'agent_fallback' => false,
+		'please_select' => 'Select',
+		'select2' => false,
+		'disabled' => false,
+		'data_attr' => array()
+	);
+	//This has been verify by html tags ted.
+	echo  wp_kses( wpas_users_dropdown( $args ), wpas_dropdown_allowed_html_tags());
 
 }
 
@@ -612,10 +753,10 @@ add_filter( 'locale','wpas_change_locale', 10, 1 );
  * @param  string $locale Site locale
  * @return string         Possibly modified locale
  */
-function wpas_change_locale( $locale ) {
-
-   $wpas_locale = filter_input( INPUT_GET, 'wpas_lang', FILTER_SANITIZE_STRING );
-
+function wpas_change_locale( $locale ) {    
+	
+	$wpas_locale = isset( $_GET['wpas_lang'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_lang'] ) ) : '';	
+	
 	if ( ! empty( $wpas_locale ) ) {
 		$locale = $wpas_locale;
 	}
@@ -638,6 +779,21 @@ function wpas_get_settings_page_url( $tab = '' ) {
 	if ( ! empty( $tab ) ) {
 		$query_args['tab'] = sanitize_text_field( $tab );
 	}
+
+	return add_query_arg( $query_args, $admin_url );
+
+}
+
+/**
+ * Get plugin ABOUT page URL.
+ *
+ * @since  5.2.0
+ * @return string      URL to the about page
+ */
+function wpas_get_about_page_url() {
+
+	$admin_url  = admin_url( 'edit.php' );
+	$query_args = array( 'post_type' => 'ticket', 'page' => 'wpas-about' );
 
 	return add_query_arg( $query_args, $admin_url );
 
@@ -749,14 +905,14 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 		for ( $i = 1; $i < ( $level - 1 ); $i++ ) {
 			$option .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 		}
-		$option .= '&angrt; ';
+		$option .= '&#8735; ';
 	}
 
 	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
+	$term_value = get_term_by('slug', $value, $term->taxonomy);
 	?>
 
-	<option value="<?php echo $term->term_id; ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug ) { echo 'selected="selected"'; } ?>><?php echo $option; ?></option>
-
+	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug || ($term_value && !is_wp_error($term_value) && $term_value->term_id === $term->term_id)) { echo 'selected="selected"'; } ?>><?php echo  wp_kses( $option, wpas_dropdown_allowed_html_tags()); ?></option>
 	<?php if ( isset( $term->children ) && !empty( $term->children ) ) {
 		++$level;
 		foreach ( $term->children as $child ) {
@@ -793,7 +949,7 @@ function wpas_get_submission_page_url( $post_id = false ) {
 		$url = get_permalink( (int) $submission[0] );
 	}
 
-	return wp_sanitize_redirect( $url );
+	return wp_sanitize_redirect( apply_filters( 'wpas_submission_page_url', $url, $post_id ) );
 
 }
 
@@ -834,7 +990,7 @@ function wpas_get_tickets_list_page_url() {
 		$list = $list[0];
 	}
 
-	return wp_sanitize_redirect( get_permalink( (int) $list ) );
+	return wp_sanitize_redirect( apply_filters( 'wpas_tickets_list_page_url', get_permalink( (int) $list ) ) );
 
 }
 
@@ -938,8 +1094,9 @@ function wpas_change_plugin_locale( $locale, $domain ) {
 	 * @since  3.1.5
 	 * @var    string
 	 */
-	$wpas_locale = filter_input( INPUT_GET, 'wpas_locale', FILTER_SANITIZE_STRING );
-
+	
+	$wpas_locale = isset( $_GET['wpas_locale'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_locale'] ) ) : '';
+	
 	if ( ! empty( $wpas_locale ) ) {
 		$locale = $wpas_locale;
 	}
@@ -1091,11 +1248,11 @@ function wpas_get_the_time_timestamp() {
  */
 function wpas_is_multi_agent_active() {
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
-	
+
 	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -1105,10 +1262,1189 @@ function wpas_is_multi_agent_active() {
  */
 function wpas_is_support_priority_active() {
 	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
-	
+
 	if ( isset( $options['support_priority'] ) && true === boolval( $options['support_priority'] ) ) {
 		return true;
 	}
-	
+
 	return false;
+}
+
+/**
+ * Check if ticket type is active
+ * @return boolean
+ */
+function wpas_is_support_ticket_type_active() {
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+
+	if ( isset( $options['support_ticket_type'] ) && true === boolval( $options['support_ticket_type'] ) ) {
+		return true;
+	}
+
+	return false;
+}
+
+/**
+ * Create a pseduo GUID
+ *
+ * @return string
+ */
+ function wpas_create_pseudo_guid(){
+	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(16384, 20479), wp_rand(32768, 49151), wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(0, 65535));
+ }
+
+
+/**
+ * Create a random MD5 based hash.
+ *
+ * @return string
+ */
+ function wpas_random_hash() {
+
+	$time  = time();
+	$the_hash = md5( $time . (string) random_int(0, getrandmax()) );
+
+	return $the_hash;
+
+}
+
+/**
+ * Wrapper for FILTER_INPUT using the INPUT_SERVER parameter.
+ * Includes a work-around for a known issue.
+ * See: https://github.com/xwp/stream/issues/254
+ *
+ * @since 4.3.3
+ *
+ * @return string
+ */
+ function wpas_filter_input_server( $input_var = 'REQUEST_URI' ) {
+	
+	$filtered_input = isset( $_SERVER[$input_var] ) ?  sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
+	 if ( empty( $filtered_input ) ) {
+
+		if ( filter_has_var(INPUT_SERVER, $input_var )) {
+				$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
+			} else {
+				if (isset($_SERVER["REQUEST_URI"]))
+					$filtered_input = isset( $_SERVER[$input_var] ) ? sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
+				else
+					$filtered_input = null;
+			}
+	 }
+
+	 return $filtered_input ;
+
+ }
+
+ /**
+ * Returns TRUE if running in SAAS mode, False otherwise
+ *
+ * @since 4.3.6
+ *
+ * @return boolean
+ */
+ function is_saas() {
+
+	if ( ! defined( 'WPAS_SAAS' ) ) {
+		return false ;
+	} elseif  ( ( defined( 'WPAS_SAAS' ) && false === WPAS_SAAS ) ) {
+		return false ;
+	} elseif  ( ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) ) {
+		return true ;
+	}
+
+	return false ;
+
+ }
+
+ /**
+ * Returns TRUE if we are declaring compatibility with GUTENBERG.
+ * Returns FALSE if not.  The default is FALSE - we are not
+ * compatible
+ *
+ * Deprecated as of Version 5.8.1.  We are using the use_block_editor_for_post_type
+ * and Gutenberg_can_edit_post_type filters instead to disable Gutenberge on the
+ * the ticket pages.  See file admin/gutenberg/functions-gutenberg-post-type.php.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+ function wpas_gutenberg_meta_box_compatible() {
+	 $is_compatible = false ;
+
+	 /**
+	  * if our REST API is NOT enabled, return TRUE since the lack of a REST API will force GUTENBERG
+	  * to fallback to the regular editor anyway.  This will then prevent the "Gutenberg Incompatible Meta Box"
+	  * message from showing up in our metaboxes
+	  */
+	  if ( ! class_exists( 'WPAS_API' ) ) {
+		  $is_compatible = true ;
+	  }
+
+	 // Override everything anyway based on a variable in the wp-config file.
+	 if ( defined('WPAS_GUTENBERG_META_BOX_COMPATIBLE') && true === WPAS_GUTENBERG_META_BOX_COMPATIBLE )  {
+		 $is_compatible = true ;
+	 }
+
+	 return $is_compatible;
+ }
+
+ /**
+ * Returns TRUE if the current user is an agent
+ * Returns FALSE if not.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+ function wpas_is_agent( $agent_id = false ) {
+
+	if ( ! $agent_id ) {
+		// assume current user;
+		return current_user_can( 'edit_ticket' ) ;
+	} else {
+		// we got an agent id to check
+		return user_can( $agent_id, 'edit_ticket' ) ;
+	}
+
+}
+
+ /**
+ * Returns TRUE if the current user is an Awesome Support Admin
+ * Returns FALSE if not.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+ function wpas_is_asadmin() {
+	return ( is_super_admin() || current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
+ }
+
+ /**
+ * Returns TRUE if the current user is an agent on the ticket
+ * Returns FALSE if not.
+ *
+ * @since 4.4.0
+ *
+ * @param int|post Ticket id or post object
+ *
+ * @return boolean
+ */
+ function wpas_is_user_agent_on_ticket( $ticket ) {
+
+	$ticket_id = null;
+	$post = null ;
+	$is_agent_on_ticket = false ;
+
+	/**
+	 * Get the post data if $ticket passed in is a ticket id.
+	 * Otherwise, get the id if $ticket passed is a post/ticket object.
+	 */
+	if ( 'array' == gettype( $ticket ) || 'object' === gettype( $ticket ) ) {
+		$post = $ticket;
+		if ( ! empty( $post ) ) {
+			$ticket_id = $post->ID;
+		}
+	} else {
+		$ticket_id = $ticket ;
+		if ( ! empty( $ticket ) ) {
+			$post = get_post( $ticket_id );
+		}
+	}
+
+	if (!empty($post)) {
+
+		/**
+		 * Get author and agent ids on the ticket
+		 */
+		$author_id = intval( $post->post_author );
+		$agent_id = intval(get_post_meta( $post->ID, '_wpas_assignee', true ));
+		$agent_id2 = intval(get_post_meta( $post->ID, '_wpas_secondary_assignee', true ));
+		$agent_id3 = intval(get_post_meta( $post->ID, '_wpas_tertiary_assignee', true ));
+
+		$current_user = get_current_user_id();
+
+		if (   ( $current_user === $author_id  && current_user_can( 'view_ticket' ) )
+			|| ( $current_user === $agent_id  && current_user_can( 'view_ticket' ) )
+			|| ( $current_user === $agent_id2  && current_user_can( 'view_ticket' ) )
+			|| ( $current_user === $agent_id3  && current_user_can( 'view_ticket' ) ) ) {
+
+			$is_agent_on_ticket = true;
+
+		}
+
+	}
+
+	return apply_filters('wpas_is_user_agent_on_ticket', $is_agent_on_ticket);
+
+ }
+
+
+ /**
+ * Returns the role of the current logged in user.
+ *
+ * Returns FALSE if user is not logged in.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+function wpas_get_current_user_role() {
+
+	if( is_user_logged_in() ) {
+
+		$user = wp_get_current_user();
+		$role = ( array ) $user->roles;
+		if( isset( $role[0] ) )
+		{
+			return $role[0];
+		}
+		return false;
+
+	} else {
+		
+		return false;
+	}
+ }
+
+ /**
+ * Returns ALL the roles of the current logged in user.
+ *
+ * This is sometimes needed when using a plugin like USER ROLE EDITOR
+ * that can assign multiple roles to a user.
+ *
+ * Returns FALSE if user is not logged in.
+ *
+ * @since 4.4.0
+ *
+ * @return boolean
+ */
+function wpas_get_current_user_roles() {
+
+	if( is_user_logged_in() ) {
+
+		$user = wp_get_current_user();
+		$role = ( array ) $user->roles;
+		return $role;
+
+	} else {
+
+		return false;
+
+	}
+ }
+
+ /**
+ * Checks to see if a role is in a list of roles.
+ *
+ * Returns true if $role is in $role_list.
+ * otherwise returns false.
+ *
+ * $role_list is a comma separate list of values.
+ *
+ * Since all parameters are strings this could be a generic search for a string in a comma separated list of strings...
+ *
+ * @since 4.4.0
+ *
+ * @param string $role 		The name of the role to search for
+ * @param string $role_list	The list of roles to search in - comma separated values.
+ *
+ * @return boolean
+ */
+ function wpas_role_in_list( $role, $role_list ) {
+
+	$roles = explode( ',', $role_list ) ;
+
+	if ( empty( $roles) ) return false ;  // no roles listed so return false - row is not in the list ;
+
+	if ( in_array( $role, $roles, true ) ) {
+		return true ;
+	} else {
+		return false ;
+	}
+
+ }
+
+ /**
+ * Checks to see if the current user's role is in a list of roles.
+ *
+ * Returns true if the current user's role is in $role_list.
+ * otherwise returns false.
+ *
+ * $role_list is a comma separate list of values.
+ *
+ *
+ * @since 4.4.0
+ *
+ * @param string $role_list	The list of roles to search in - comma separated values.
+ *
+ * @return boolean
+ */
+ function wpas_current_role_in_list( $role_list ) {
+
+	 // If list of roles is empty for some reason return false
+	 if ( true === empty( $role_list ) ) {
+		 return false ;
+	 }
+
+	$current_roles = wpas_get_current_user_roles();  // note that we are expecting an array of roles.
+
+	if ( empty( $current_roles ) ) return false ;  // user not logged in for some reason so return false ;
+
+	foreach ( $current_roles as $current_role ) {
+
+		if ( true === wpas_role_in_list( $current_role, $role_list ) ) {
+			// role found so break prematurely and just return;
+			return true ;
+		}
+
+	}
+
+	return false ;
+
+
+ }
+
+/**
+* Return whether or not the logged in user can view the custom fields tab
+*
+* @return boolean
+*/
+function wpas_can_view_custom_field_tab() {
+	if ( wpas_current_role_in_list( wpas_get_option( 'hide_cf_tab_roles' ) ) ) {
+		return false ;
+	} else {
+		return true ;
+	}
+}
+
+/**
+ * Return whether or not the logged in user can view the additional interested parties tab
+ *
+ * @return boolean
+ */
+function wpas_can_view_ai_tab() {
+	if ( wpas_current_role_in_list( wpas_get_option( 'hide_ai_tab_roles' ) ) ) {
+
+		return false ;
+
+	} else {
+
+		$show_multiple_agents_per_ticket = boolval( wpas_get_option( 'multiple_agents_per_ticket', false ) );
+		$show_third_party_fields = boolval( wpas_get_option( 'show_third_party_fields', false ) );
+
+		if ( true === $show_multiple_agents_per_ticket or true === $show_third_party_fields ) {
+
+			return true ;
+
+		} else {
+
+			return false ;
+
+		}
+	}
+}
+
+/**
+ * Helper function that list the fields that are in the additional interested parties tab.
+ * This function is used for special processing of these fields by certain routines -
+ * for example the custom fields routines.
+ *
+ * @return array
+ */
+function wpas_fields_in_ai_tab() {
+
+	$fields[] = 'secondary_assignee';
+	$fields[] = 'tertiary_assignee';
+
+	$fields[] = 'first_addl_interested_party_name';
+	$fields[] = 'first_addl_interested_party_email';
+	$fields[] = 'second_addl_interested_party_name';
+	$fields[] = 'second_addl_interested_party_email';
+
+	return $fields;
+}
+
+/**
+ * Helper function that checks to see if a custom field is in the additional interested
+ * parties tab. This function is used for special processing of these fields by
+ * certain routines - for example the custom fields routines.
+ *
+ * @return boolean
+ */
+function wpas_is_field_in_ai_tab( $field_name ) {
+
+	$found = array_search( $field_name, wpas_fields_in_ai_tab() );
+
+	if ( false === $found ) {
+		return false ;
+	} else {
+		return true ;
+	}
+
+}
+
+/**
+ * Check if user or agent can delete attachments
+ *
+ * @return boolean
+ */
+function wpas_can_delete_attachments() {
+
+	$can = false;
+	$user = wp_get_current_user();
+	if( wpas_is_agent() ) {
+	    // gets the Agent role
+		$wpas_agent_role = get_role( 'wpas_agent' );
+		if( $wpas_agent_role )
+		{
+			if( wpas_agent_can_delete_attachments() ) {		
+				// This only works, because it accesses the class instance.			
+				$wpas_agent_role->add_cap( 'delete_attachment' ); 			
+				$can = true;
+			}
+			else
+			{
+				// This only works, because it accesses the class instance.			
+				$wpas_agent_role->remove_cap( 'delete_attachment' );  
+			}
+		}
+	} else {
+		// gets the Support User role
+		$wpas_user_role = get_role( 'wpas_user' );
+		if( $wpas_user_role )
+		{
+			if( wpas_user_can_delete_attachments() ) {			
+				// This only works, because it accesses the class instance.			
+				$wpas_user_role->add_cap( 'delete_attachment' ); 			
+				$can = true;
+			}
+			else
+			{
+				// This only works, because it accesses the class instance.			
+				$wpas_user_role->remove_cap( 'delete_attachment' );  
+			}
+		}
+	}
+
+	return apply_filters( 'wpas_can_delete_attachments', $can );
+}
+
+/**
+ * Check if agent can delete attachments
+ *
+ * @return boolean
+ */
+function wpas_agent_can_delete_attachments() {
+	return boolval( wpas_get_option( 'agents_can_delete_attachments' ) );
+}
+
+/**
+ * Check if user can delete attachments
+ *
+ * @return boolean
+ */
+function wpas_user_can_delete_attachments() {
+	return boolval( wpas_get_option( 'users_can_delete_attachments' ) );
+}
+
+/**
+ * Check if agent can set auto delete attachments flag
+ *
+ * @return boolean
+ */
+function wpas_agent_can_set_auto_delete_attachments() {
+	return boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments' ) );
+}
+
+/**
+ * Check if user can set auto delete attachments flag
+ *
+ * @return boolean
+ */
+function wpas_user_can_set_auto_delete_attachments() {
+	return boolval( wpas_get_option( 'user_can_set_auto_delete_attachments' ) );
+}
+
+
+/**
+ * Returns a ticket id related to the provided post id.
+ *
+ * Given a post id which could be a child id of a ticket, return the ticket id.
+ *
+ * @since 5.2.0
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ *
+ * @return int|boolean
+ */
+function wpas_get_ticket_id( $post_id ) {
+
+	$ticket_id = false ;
+
+	// Is the post id passed in ticket id?  If so, use that as the ticket id.
+	$maybe_ticket = get_post($post_id) ;
+	if ( $maybe_ticket && ! is_wp_error( $maybe_ticket) && 'ticket' === get_post_type( $maybe_ticket ) ) {
+		$ticket_id = $maybe_ticket->ID ;
+	}
+
+	// If we still don't have a ticket id yet, the id passed in is likely a child where the ticket id is in the parent...
+	if ( ! $ticket_id && ! is_wp_error( $maybe_ticket) ) {
+
+		$maybe_parent = wp_get_post_parent_id( $post_id );
+		if ( $maybe_parent && ! is_wp_error( $maybe_parent) ) {
+			$maybe_ticket2 = get_post( $maybe_parent  ) ;
+
+			if ( $maybe_ticket2 && ! is_wp_error( $maybe_ticket2) && 'ticket' === get_post_type( $maybe_ticket2 ) ) {
+				$ticket_id = $maybe_ticket2->ID ;
+			}
+
+		}
+	}
+
+	return $ticket_id ;
+
+}
+
+/**
+ * Returns a list of users involved in a ticket
+ *
+ * The list of agents will include only those with the specified capabilities.
+ *
+ * @since 5.2.0
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ * @param string $cap - the capabilities to restrict the user list to.
+ *
+ * @return array<int>|boolean
+ */
+function wpas_get_all_users_on_ticket( $post_id, $cap = 'edit_ticket' ) {
+
+	$users = array();
+	$ticket_id = wpas_get_ticket_id( $post_id) ;
+
+	// If we have a ticket id get all the children of the ticket and extract the agents...
+	if ( $ticket_id ) {
+
+		$args = array(
+			'post_parent'            => $ticket_id,
+			'post_type'              => apply_filters( 'wpas_get_users_on_ticket_post_types', array( 'ticket_reply' ) ),
+			'post_status'            => 'any',
+			'order'                  => wpas_get_option( 'replies_order', 'ASC' ),
+			'orderby'                => 'date',
+			'posts_per_page'         => - 1,
+			'no_found_rows'          => true,
+			'cache_results'          => false,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);
+
+		$query = new WP_Query( $args );
+
+		if (!is_wp_error( $query )) {
+			foreach ($query->posts as $reply) {
+				if (!in_array($reply->post_author, $users) && user_can( $reply->post_author, $cap )) {
+					$users[] = $reply->post_author;
+				}
+			}
+		}
+
+	} else {
+
+		return false ;
+
+	}
+
+	return $users ;
+
+}
+
+/**
+ * Returns a list of agents involved in a ticket
+ *
+ * The list of agents will include those assigned
+ * to the ticket or who have replied to the ticket
+ * in some way.
+ *
+ * @since 5.2.0
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ *
+ * @return array<int>|boolean
+ */
+function wpas_get_all_agents_on_ticket( $post_id ) {
+
+	$agents = wpas_get_all_users_on_ticket( $post_id, 'edit_ticket' );
+
+	if ( ! $agents or empty( $agents ) ) {
+		$agents = array();
+	}
+
+	// Now get the assigned agents and other agents on the ticket.
+	$ticket_id = wpas_get_ticket_id( $post_id) ;
+	$formal_agents = wpas_get_ticket_agents( $ticket_id) ;
+	$formal_agent_ids = array();
+
+	foreach ($formal_agents as $agent) {
+		$formal_agent_ids[] = $agent->ID;
+	}
+
+	// Merge the different arrays...
+	$all_agents = array_unique( array_merge( $agents, $formal_agent_ids ) ) ;
+
+	// Return the unique array of agent ids.
+	return $all_agents ;
+
+}
+
+
+/**
+ * Returns a list of end users involved in a ticket
+ *
+ * The list of end users/clients/customers will include the user
+ * that opened the ticket.
+ *
+ * @since 5.2.2
+ *
+ * @param int $post_id - the ID of a post associated with the ticket - can be the ticket ID itself or one of the replies, private notes etc.
+ *
+ * @return array<int>|boolean
+ */
+function wpas_get_support_users_on_ticket( $post_id ) {
+
+	$users = wpas_get_all_users_on_ticket( $post_id, 'view_ticket' );
+
+	if ( ! $users or empty( $users ) ) {
+		$users = array();
+	}
+
+	$agents = wpas_get_all_agents_on_ticket( $post_id ) ;
+
+	if ( ! $agents or empty( $agents ) ) {
+		$agents = array();
+	}
+
+	// Need to take the difference between the users and the agents because users will include agents.
+	$all_users = array_unique( array_diff ($users, $agents ) );
+
+	// Return the unique array of user ids.
+	return $all_users ;
+
+}
+
+/**
+ * Checks to see if we're being called by wp_cli
+ *
+ * @return boolean
+ *
+ */
+function wpas_is_wp_cli() {
+	return ( defined( 'WP_CLI' ) && WP_CLI ) ;
+}
+
+/**
+ * Returns the primary agent on a ticket
+ *
+ *
+ * @since 5.8.1
+ *
+ * @param int $ticket_id - the ID of the ticket
+ *
+ * @return int|boolean
+ */
+function wpas_get_primary_agent_by_ticket_id( $ticket_id ){
+
+	$agent_id = get_post_meta( $ticket_id, '_wpas_assignee', true );
+	if ( ! is_wp_error( $agent_id) && agent_id && wpas_is_agent( $agent_id ) ) {
+		return $agent_id;
+	} else {
+		return false ;
+	}
+
+}
+
+
+/**
+ * Enqueue magnific popup
+ */
+function wpas_add_magnific() {
+
+
+	wp_register_style( 'wpas-magnific', WPAS_URL . 'assets/admin/css/vendor/magnific-popup.css', null, WPAS_VERSION );
+	wp_register_script( 'wpas-magnific', WPAS_URL . 'assets/admin/js/vendor/jquery.magnific-popup.min.js', array( 'jquery' ), WPAS_VERSION );
+
+	wp_register_script( 'wpas-admin-popup', WPAS_URL . 'assets/admin/js/admin-popup.js', array( 'jquery', 'wpas-magnific' ), WPAS_VERSION );
+	wp_register_style( 'wpas-admin-popup', WPAS_URL . 'assets/admin/css/admin-popup.css', null, WPAS_VERSION );
+
+	wp_enqueue_script( 'wpas-magnific' );
+	wp_enqueue_style( 'wpas-magnific' );
+	wp_enqueue_script( 'wpas-admin-popup' );
+	wp_enqueue_style( 'wpas-admin-popup' );
+}
+
+/**
+ * Prepare content for full screen popup window
+ *
+ * @param string $id
+ * @param string $content
+ * @param array $args
+ */
+function wpas_get_full_screen_popup_window( $id, $content = '', $args = array() ) {
+	wpas_get_popup_window( $id, $content, $args );
+}
+
+/**
+ * Prepare content for a popup window
+ *
+ * @param string $id
+ * @param string $content
+ * @param array $args
+ */
+function wpas_get_popup_window( $id, $content = '', $args = array() ) {
+
+
+	$theme = isset( $args['theme'] )  ? $args['theme'] : 'white-popup';
+	$hide  = isset( $args['hide'] )  ? $args['hide'] : 'mfp-hide';
+
+	$title = isset( $args['title'] ) ? $args['title'] : '';
+
+	$classes = array();
+
+	if( $theme ) {
+		 $classes[] = $theme;
+	}
+
+	if( $hide ) {
+		 $classes[] = $hide;
+	}
+
+	?>
+
+	<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" id="<?php echo esc_attr( $id ) ?>">
+		<div class="main_heading"><?php echo esc_html( $title ); ?></div>
+		<div class="wpas_mfp_window_wrapper">
+			<div class="wpas_msg"></div>
+			<div class="wpas_window_content"><?php echo  wp_kses( $content, get_allowed_html_wp_notifications() );?></div> 
+		</div>
+
+	</div>
+
+	<?php
+}
+
+/**
+ * Generate link for full screen popup window
+ *
+ * @param array $args
+ *
+ * @return string
+ */
+function wpas_full_screen_window_link( $args ) {
+
+	$args['window_class'] = 'wpas-mfp-fullscreen-popup';
+
+	return wpas_window_link( $args );
+}
+
+if( !function_exists( 'wpas_window_link' ) ) {
+
+	/**
+	 * Generate link for popup window
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	function wpas_window_link( $args ) {
+
+		$defaults = array(
+			'type'  => 'inline',
+			'data'  => array(),
+			'label' => '',
+			'title' => '',
+			'ajax_params' => array(),
+			'window_class' => 'wpas-mfp-fullscreen-popup' // for now full screen window is default
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		$class = 'wpas_win_link ' . $args['class'];
+		$title = isset( $args['title'] ) ? $args['title'] : "";
+
+		$link = '#';
+
+		$data_attrs = array_merge( $args['data'],  array( 'win_type' => $args['type'] ) );
+
+		if( !empty( $args['ajax_params'] ) ) {
+			$data_attrs['ajax_params'] = json_encode( $args['ajax_params']);
+		}
+
+		if( $args['window_class'] ) {
+			$data_attrs['window_class'] = $args['window_class'];
+		}
+
+		$data_attr_list = array();
+
+		foreach( $data_attrs as $attr_name => $attr_val ) {
+			$data_attr_list[] = "data-{$attr_name}=\"" . esc_attr($attr_val) . '"';
+		}
+
+		$data_params = implode( ' ', $data_attr_list );
+
+
+		$label = $args['label'];
+
+		return sprintf( '<a href="%s" %s title="%s" class="%s">%s</a>', $link, $data_params, $title, $class, $label );
+
+	}
+}
+if( !function_exists( 'wpas_get_allowed_html_tags' ) ) {
+
+	/**
+	 * Generate link for popup window
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	function wpas_get_allowed_html_tags() {
+
+		
+		$global_html_attributes = [
+			'accesskey' => true,
+			'class' => true,
+			'data-*' => true,
+			'draggable' => true,
+			'dir' => true,
+			'hidden' => true,
+			'id' => true,
+			'lang' => true,
+			'spellcheck' => true,
+			'style' => true,
+			'title' => true,
+			'tabindex' => true,
+			'translate' => true,
+			'enterkeyhint' => true,	
+			'onchange'=> true,	
+			'onclick'=> true,		
+			'onblur'=> true,		
+			'oncontextmenu'=> true,		
+			'oncopy'=> true,	
+			'oncut'=> true,	
+			'ondblclick'=> true,	
+			'ondrag'=> true,	
+			'ondragend'=> true,	
+			'ondragenter'=> true,	
+			'ondragleave'=> true,	
+			'ondragover'=> true,	
+			'ondragstart'=> true,	
+			'ondrop'=> true,	
+			'onfocus'=> true,	
+			'oninput'=> true,	
+			'oninvalid'=> true,	
+			'onkeydown'=> true,
+			'onkeypress'=> true,	
+			'onkeyup'=> true,	
+			'onload'=> true,	
+			'onmousedown'=> true,	
+			'onmousemove'=> true,	
+			'onmouseout'=> true,	
+			'onmouseover'=> true,
+			'onmouseup'=> true,
+			'onmouseover'=> true,
+			'onmousewheel'=> true,
+			'onpaste'=> true,	
+			'onscroll'=> true,
+		];
+		
+		$gas_allowed_html = [
+			'div' => [
+				'hidefocus' => true,
+				'role' => true,
+				'aria-level' => true,	
+			], 
+			'ul' => [], 
+			'ol' => [], 
+			'li' => [
+				'rel' => true,	
+				/*'data-tab-order' => true,					
+				'data-hint' => true,
+				'value' => true,
+				'data-value' => true,*/			
+			], 
+			'select' => [
+				'autofocus' => true,
+				'disabled' => true,
+				'form' => true,
+				'multiple' => true,
+				'name' => true,			
+				'size' => true,
+				'required' => true,
+			], 
+			'option' => [
+				'disabled' => true,	
+				'label' => true,	
+				'value' => true,
+				'selected' => true,
+			],
+			'optgroup' => [
+				'disabled' => true,	
+				'label' => true,
+			],		  
+			'input' => [
+				'accept' => true,
+				'alt' => true,
+				'autocomplete' => true,
+				'autofocus' => true,
+				'checked' => true,
+				'dirname' => true,
+				'disabled' => true,
+				'form' => true,
+				'formaction' => true,
+				'height' => true,
+				'list' => true,
+				'maxlength' => true,
+				'min' => true,
+				'multiple' => true,
+				'name' => true,
+				'placeholder' => true,	
+				'size' => true,
+				'src' => true,	
+				'type' => true,			
+				'value' => true,
+				'readonly' => true,	
+				'dirname' => true, 		
+				'width' => true,			
+				'required' => true,	
+				'aria-label' => true,			
+			],  
+			'script' => [	
+				'async' => true,
+				'charset' => true,	
+				'defer' => true,			
+				'src' => true,		
+				'type' => true,							
+			],  
+			'style' => [	
+				'media' => true,
+				'type' => true,	
+			],  
+			'span' => [						
+			],  
+			'img' => [	
+				'alt' => true,	
+				'height' => true,
+				'ismap'=> true,	
+				'sizes'=> true,	
+				'src' => true,	
+				'width' => true,
+				'usemap'=> true,			
+			], 
+			'link' => [
+				'rel' => true,
+				'id' => true,
+				'href' => true,	
+				'media' => true,	
+			],
+			'a' => [
+				'download' => true,
+				'href' => true,
+				'hreflang' => true,	
+				'media' => true,	
+				'rel' => true,
+				'type' => true,
+				'target' => true,			
+			], 
+			'label' => [
+				'for' => true,	
+				'form' => true,				
+			], 
+			'output' => [
+				'for' => true,	
+				'form' => true,	
+			],
+			'fieldset' => [					
+				'disabled' => true,	
+				'form' => true,	
+				'name' => true,	
+			], 
+			'button' => [
+				'autofocus' => true, 
+				'disabled' => true,
+				'form' => true,
+				'formaction' => true,
+				'name' => true,
+				'type' => true,
+				'value' => true,						
+			], 
+			'form' => [
+				'accept-charset' => true,
+				'action' => true,
+				'autocomplete' =>  true,		
+				'enctype' => true,
+				'method' => true,	
+				'name' => true,
+				'novalidate' => true,
+				'onsubmit' => true,	
+				'target' => true,				
+				'rel' => true,
+				'role' => true,			
+			],
+			'textarea' => [
+				'type' => true,
+				'autocomplete' => true,	
+				'autofocus' => true,
+				'cols' => true,		
+				'dirname' => true,
+				'disabled' => true,
+				'form' => true,
+				'maxlength' => true,
+				'name' => true,
+				'rows' => true,	
+				'aria-describedby' => true,	
+				'wrap' => true,				
+				'required' => true,
+				'readonly' => true,
+				'placeholder' => true,	
+			], 
+			'footer' =>  [],
+			'table' =>  [],
+			'thead' => [],
+			'tbody' => [],
+			'tfoot' => [],
+			'tr' => [], 
+			'th' => [	
+				'colspan' => true, 
+				'headers' => true,
+				'scope' => true, 			
+				'rowspan' => true, 				
+			], 
+			'td' => [
+				'colspan' => true,
+				'headers' => true,  
+				'rowspan' => true, 		
+				'align' => true,
+				'width' => true,								
+			], 
+			'b' => [		
+			],
+			'em' => [],
+			'h1' => [], 
+			'h2' => [], 
+			'h3' => [], 
+			'h4' => [], 
+			'h5' => [], 
+			'h6' => [], 
+			'p' => [], 
+			'code' => [], 
+			'strong' => [], 		
+			'br' => [],
+			'i' => [],
+			'iframe' => [], 
+			'col' => ['span' => true,],		
+			'abbr' => [],
+			'del' => [],		
+			'hr' => [],
+			'acronym' => [],
+		]; 
+		
+		foreach ($gas_allowed_html as $key => $value) {
+			$gas_allowed_html[$key] = array_merge( $global_html_attributes,$value ); 
+		}
+		return $gas_allowed_html;  
+
+	}
+}
+if( !function_exists( 'wpas_dropdown_allowed_html_tags' ) ) {
+
+	/**
+	 * Generate link for popup window
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	function wpas_dropdown_allowed_html_tags() {
+
+		//Gas basic allow html tags for dropdown
+		$gas_wpas_dropdown_allowed_html_tags = [	
+			'select' => [
+				'class' => true,
+				'id' => true,	
+				'multiple' => true,
+				'name' => true,
+				'disabled' => true,			
+				'data-*' => true,		
+			], 
+			'option' => [	
+				'value' => true,
+				'selected' => true,										
+			]
+		];	
+		//Gas add-on allow html tags for dropdown	
+
+		return apply_filters( 'custom_wpas_dropdown_allowed_html_tags', $gas_wpas_dropdown_allowed_html_tags ); 
+
+	}
+}
+if( !function_exists( 'wpas_registration_allowed_html_tags' ) ) {
+
+	/**
+	 * Generate link for popup window
+	 *
+	 * @param array $args
+	 *
+	 * @return string
+	 */
+	function wpas_registration_allowed_html_tags() {
+
+		//Gas basic allow html tags for dropdown
+		$gas_wpas_registration_allowed_html_tags = [	
+			'div' => [
+				'class' => true,
+				'id' => true,	
+			], 
+			'input' => [
+				'value' => true,
+				'type' => true,	
+				'name' => true,
+				'spellcheck' => true,
+				'required' => true,	
+				'placeholder' => true,	
+				'class' => true,
+				'id' => true,
+				'autocomplete' => true,				
+				'accept' => true,
+				'alt' => true,
+				'autofocus' => true,
+				'checked' => true,
+				'dirname' => true,
+				'disabled' => true,
+				'form' => true,
+				'formaction' => true,
+				'height' => true,
+				'list' => true,
+				'maxlength' => true,
+				'min' => true,
+				'multiple' => true,	
+				'size' => true,
+				'src' => true,		
+				'readonly' => true,	
+				'dirname' => true, 		
+				'width' => true,	
+				'aria-label' => true,						
+			],   
+			'label' => [	
+				'for' => true,
+				'class' => true,
+				'id' => true,												
+			]
+		];	
+		//Gas add-on allow html tags for dropdown	
+
+		return apply_filters( 'custom_wpas_registration_allowed_html_tags', $gas_wpas_registration_allowed_html_tags ); 
+
+	}
 }

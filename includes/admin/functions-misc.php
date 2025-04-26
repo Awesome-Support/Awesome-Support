@@ -1,18 +1,19 @@
 <?php
+
 /**
  * @package   Awesome Support/Admin/Functions/Misc
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
 
-add_filter( 'plugin_action_links_' . WPAS_PLUGIN_BASENAME, 'wpas_settings_page_link' );
+add_filter('plugin_action_links_' . WPAS_PLUGIN_BASENAME, 'wpas_settings_page_link');
 /**
  * Add a link to the settings page.
  *
@@ -22,16 +23,15 @@ add_filter( 'plugin_action_links_' . WPAS_PLUGIN_BASENAME, 'wpas_settings_page_l
  *
  * @return array        Links with the settings
  */
-function wpas_settings_page_link( $links ) {
+function wpas_settings_page_link($links) {
 
 	$link    = wpas_get_settings_page_url();
-	$links[] = "<a href='$link'>" . __( 'Settings', 'awesome-support' ) . "</a>";
+	$links[] = "<a href='$link'>" . __('Settings', 'awesome-support') . "</a>";
 
 	return $links;
-
 }
 
-add_filter( 'postbox_classes_ticket_wpas-mb-details', 'wpas_add_metabox_details_classes' );
+add_filter('postbox_classes_ticket_wpas-mb-details', 'wpas_add_metabox_details_classes');
 /**
  * Add new class to the details metabox.
  *
@@ -39,13 +39,13 @@ add_filter( 'postbox_classes_ticket_wpas-mb-details', 'wpas_add_metabox_details_
  *
  * @return array The updated list of classes
  */
-function wpas_add_metabox_details_classes( $classes ) {
-	array_push( $classes, 'submitdiv' );
+function wpas_add_metabox_details_classes($classes) {
+	array_push($classes, 'submitdiv');
 
 	return $classes;
 }
 
-add_action( 'admin_notices', 'wpas_admin_notices' );
+add_action('admin_notices', 'wpas_admin_notices');
 /**
  * Display custom admin notices.
  *
@@ -55,33 +55,37 @@ add_action( 'admin_notices', 'wpas_admin_notices' );
  * @return void
  */
 function wpas_admin_notices() {
+	
+	if (isset($_GET['wpas-message'])) {
 
-	if ( isset( $_GET['wpas-message'] ) ) {
+		// translators: %s is the ticket id.
+		$x_content1 = __('The ticket #%s has been (re)opened.', 'awesome-support');
 
-		switch ( $_GET['wpas-message'] ) {
+		// translators: %s is the ticket id.
+		$x_content2 = __('The ticket #%s has been closed.', 'awesome-support');
+
+		switch ($_GET['wpas-message']) {
 
 			case 'opened':
-				?>
+?>
 				<div class="updated">
-					<p><?php printf( __( 'The ticket #%s has been (re)opened.', 'awesome-support' ), intval( $_GET['post'] ) ); ?></p>
+					<p><?php printf(esc_html($x_content1), isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0); ?></p>
 				</div>
-				<?php
+			<?php
 				break;
 
 			case 'closed':
-				?>
+			?>
 				<div class="updated">
-					<p><?php printf( __( 'The ticket #%s has been closed.', 'awesome-support' ), intval( $_GET['post'] ) ); ?></p>
+					<p><?php printf(esc_html($x_content2), isset( $_GET['post'] ) ? intval( $_GET['post'] ) : 0); ?></p>
 				</div>
-				<?php
+	<?php
 				break;
-
 		}
-
 	}
 }
 
-add_filter( 'wpas_ticket_reply_controls', 'wpas_ticket_reply_controls', 10, 3 );
+add_filter('wpas_toolbar_ticket_reply', 'wpas_ticket_reply_controls', 10, 3);
 /**
  * Add ticket reply controls
  *
@@ -93,31 +97,86 @@ add_filter( 'wpas_ticket_reply_controls', 'wpas_ticket_reply_controls', 10, 3 );
  *
  * @return array
  */
-function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
+function wpas_ticket_reply_controls($controls, $ticket_id, $reply) {
 
-	if ( 0 !== $ticket_id && get_current_user_id() == $reply->post_author ) {
+	if (0 !== $ticket_id) {
 
-		$_GET['del_id'] = $reply->ID;
-		$url            = add_query_arg( $_GET, admin_url( 'post.php' ) );
-		$url            = remove_query_arg( 'message', $url );
-		$delete         = wpas_do_url( admin_url( 'post.php' ), 'admin_trash_reply', array( 'post' => $ticket_id, 'action' => 'edit', 'reply_id' => $reply->ID ) );
-		$edit           = wp_nonce_url( add_query_arg( array(
+		// Create a delete link and then add the delete reply icon.
+		if (((true === boolval(wpas_get_option('agent_delete_own_reply', false)) && get_current_user_id() == $reply->post_author))
+			|| true === wpas_is_asadmin()
+			|| true === wpas_current_role_in_list(wpas_get_option('roles_delete_all_replies', '')) ) {
+
+			// Create delete link
+			$_GET['del_id'] = $reply->ID;
+			$url            = add_query_arg($_GET, admin_url('post.php'));
+			remove_query_arg('message', $url);
+			$delete         = wpas_do_url(admin_url('post.php'), 'admin_trash_reply', array('post' => $ticket_id, 'action' => 'edit', 'reply_id' => $reply->ID));
+			wp_nonce_url(add_query_arg(array(
 				'post'   => $ticket_id,
 				'rid'    => $reply->ID,
 				'action' => 'edit_reply'
-		), admin_url( 'post.php' ) ), 'delete_reply_' . $reply->ID );
+			), admin_url('post.php')), 'delete_reply_' . $reply->ID);
 
-		$controls['delete_reply'] = sprintf( '<a class="%1$s" href="%2$s" title="%3$s">%3$s</a>', 'wpas-delete', esc_url( $delete ), esc_html_x( 'Delete', 'Link to delete a ticket reply', 'awesome-support' ) );
-		$controls['edit_reply']   = sprintf( '<a class="%1$s" href="%2$s" data-origin="%3$s" data-replyid="%4$d" data-reply="%5$s" data-wysiwygid="%6$s" title="%7$s">%7$s</a>', 'wpas-edit', '#', "#wpas-reply-$reply->ID", $reply->ID, "wpas-editwrap-$reply->ID", "wpas-editreply-$reply->ID", esc_html_x( 'Edit', 'Link ot edit a ticket reply', 'awesome-support' ) );
+			/* Add delete reply icon */
+			$controls['delete_reply'] = array(
+				'tool_tip_text' => esc_html_x('Delete', 'Link to delete a ticket reply', 'awesome-support'),
+				'type' => 'link',
+				'link'	=> esc_url($delete),
+				'icon'  => 'icon-delete-ticket-replies',
+				'id_param' => 'css',
+				'classes' => 'wpas-delete'
+			);
+		}
 
+		/* Add edit reply icon */
+		if (((true === boolval(wpas_get_option('agent_edit_own_reply', false)) && get_current_user_id() == $reply->post_author))
+			|| true === wpas_is_asadmin()
+			|| true === wpas_current_role_in_list(wpas_get_option('roles_edit_all_replies', '')) ) {
+
+			$controls['edit_reply'] = array(
+				'tool_tip_text' => esc_html_x('Edit', 'Link to edit a ticket reply', 'awesome-support'),
+				'icon' => 'icon-edit-ticket-replies',
+				'id_param' => 'css',
+				'classes' => 'wpas-edit',
+				'data' => array(
+					'origin' => "#wpas-reply-{$reply->ID}",
+					'replyid' => $reply->ID,
+					'reply' => "wpas-editwrap-{$reply->ID}",
+					'wysiwygid' => "wpas-editreply-{$reply->ID}"
+				)
+			);
+		}
+
+		/** Add reply history icon */
+		if (get_current_user_id() == $reply->post_author || true === wpas_is_asadmin()) {
+
+			$controls['reply_history'] = array(
+				'tool_tip_text' => esc_html_x('History', 'View ticket reply history', 'awesome-support'),
+				'icon' => 'icon-due-date',
+				'id_param' => 'css',
+				'classes' => 'wpas-show-reply-history',
+				'data' => array(
+					'replyid' => $reply->ID
+				)
+			);
+		}
 	}
 
-	if ( get_current_user_id() !== $reply->post_author && 'unread' === $reply->post_status ) {
-		$controls['mark_read'] = sprintf( '<a class="%1$s" href="%2$s" data-replyid="%3$d" title="%4$s">%4$s</a>', 'wpas-mark-read', '#', $reply->ID, esc_html_x( 'Mark as Read', 'Mark a user reply as read', 'awesome-support' ) );
+	if (get_current_user_id() !== $reply->post_author && 'unread' === $reply->post_status) {
+
+		/* Add mark as read icon */
+		$controls['mark_read'] = array(
+			'tool_tip_text' => esc_html_x('Mark as Read', 'Mark a user reply as read', 'awesome-support'),
+			'icon' => 'icon-prewriten-responses',
+			'id_param' => 'css',
+			'classes' => 'wpas-mark-read',
+			'data' => array(
+				'replyid' => $reply->ID
+			)
+		);
 	}
 
 	return $controls;
-
 }
 
 /**
@@ -135,15 +194,15 @@ function wpas_ticket_reply_controls( $controls, $ticket_id, $reply ) {
  *
  * @return boolean          True if the ticket is old, false otherwise
  */
-function wpas_is_ticket_old( $post_id, $replies = null ) {
+function wpas_is_ticket_old($post_id, $replies = null) {
 
-	if ( 'closed' === wpas_get_ticket_status( $post_id ) ) {
+	if ('closed' === wpas_get_ticket_status($post_id)) {
 		return false;
 	}
 
 	// Prepare the new object
-	if ( is_null( $replies ) || is_object( $replies ) && ! is_a( $replies, 'WP_Query' ) ) {
-		$replies = WPAS_Tickets_List::get_instance()->get_replies_query( $post_id );
+	if (is_null($replies) || is_object($replies) && !is_a($replies, 'WP_Query')) {
+		$replies = WPAS_Tickets_List::get_instance()->get_replies_query($post_id);
 	}
 
 	/**
@@ -151,31 +210,28 @@ function wpas_is_ticket_old( $post_id, $replies = null ) {
 	 * Then, we compute the ticket age and if it is considered as
 	 * old, we display an informational tag.
 	 */
-	if ( empty( $replies->posts ) ) {
+	if (empty($replies->posts)) {
 
-		$post = get_post( $post_id );
+		$post = get_post($post_id);
 
 		/* We get the post date */
 		$date_created = $post->post_date;
-
 	} else {
 
 		$last = $replies->post_count - 1;
 
 		/* We get the post date */
-		$date_created = $replies->posts[ $last ]->post_date;
-
+		$date_created = $replies->posts[$last]->post_date;
 	}
 
-	$old_after           = (int) wpas_get_option( 'old_ticket' );
-	$post_date_timestamp = mysql2date( 'U', $date_created );
+	$old_after           = (int) wpas_get_option('old_ticket');
+	$post_date_timestamp = mysql2date('U', $date_created);
 
-	if ( $post_date_timestamp + ( $old_after * 86400 ) < strtotime( 'now' ) ) {
+	if ($post_date_timestamp + ($old_after * 86400) < strtotime('now')) {
 		return true;
 	}
 
 	return false;
-
 }
 
 /**
@@ -194,58 +250,184 @@ function wpas_is_ticket_old( $post_id, $replies = null ) {
  *
  * @return boolean          True if a reply is needed, false otherwise
  */
-function wpas_is_reply_needed( $post_id, $replies = null ) {
+function wpas_is_reply_needed($post_id, $replies = null) {
 
-	if ( 'closed' === wpas_get_ticket_status( $post_id ) ) {
+	if ('closed' === wpas_get_ticket_status($post_id)) {
 		return false;
 	}
 
 	/* Prepare the new object */
-	if ( is_null( $replies ) || is_object( $replies ) && ! is_a( $replies, 'WP_Query' ) ) {
-		$replies = WPAS_Tickets_List::get_instance()->get_replies_query( $post_id );
+	if (is_null($replies) || is_object($replies) && !is_a($replies, 'WP_Query')) {
+		$replies = WPAS_Tickets_List::get_instance()->get_replies_query($post_id);
 	}
 
 	/* No reply yet. */
-	if ( empty( $replies->posts ) ) {
+	if (empty($replies->posts)) {
 
-		$post = get_post( $post_id );
+		$post = get_post($post_id);
 
 		/* Make sure the ticket wan not created by an agent on behalf of the client. */
-		if ( ! user_can( $post->post_author, 'edit_ticket' ) ) {
+		if (!user_can($post->post_author, 'edit_ticket')) {
 			return true;
 		}
-
 	} else {
 
 		$last = $replies->post_count - 1;
 
-		// If the last agent reply was not from the currently logged-in agent then there are two possible scenarios
-		if ( user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && (int) $replies->posts[ $last ]->post_author !== get_current_user_id() ) {
+		// If the last reply was from an agent then return false - the ticket is waiting for the customer to reply.
+		if (user_can($replies->posts[$last]->post_author, 'edit_ticket')) {
 
-			// First, the plugin is set to show all tickets to every agent. In this case, we don't want all agents to see the awaiting reply tag
-			if ( true === (bool) wpas_get_option( 'agent_see_all' ) ) {
-				return false;
-			}
+			return false;
+		} else {
 
 			// Or the ticket has just been transferred, in which case we want to show the awaiting reply tag
-			else {
-				return true;
-			}
-
-		}
-
-		// If the last reply is not from an agent and the reply is still unread we need the ticket to stand out
-		if ( ! user_can( $replies->posts[ $last ]->post_author, 'edit_ticket' ) && 'unread' === $replies->posts[ $last ]->post_status ) {
 			return true;
 		}
 
+		// If the last reply is not from an agent return true since ticket is waiting for a reply from an agent...
+		if (!user_can($replies->posts[$last]->post_author, 'edit_ticket')) {
+			return true;
+		}
 	}
 
 	return false;
-
 }
 
-add_filter( 'admin_footer_text', 'wpas_admin_footer_text', 999, 1 );
+/**
+ * Check if the ticket is a ticket template.
+ *
+ *
+ * @since  5.9.0
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return boolean       True if the ticket is a ticket template, false otherwise
+ */
+function wpas_is_ticket_template($post_id) {
+	return boolval(get_post_meta($post_id, '_wpas_is_ticket_template', true));
+}
+
+/**
+ * Returns the close date of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.4
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  Close date of ticket, an empty string otherwise
+ */
+function wpas_get_close_date($post_id) {
+
+	$close_date = get_post_meta($post_id, '_ticket_closed_on', true);
+
+	if (!empty($close_date)) {
+		return $close_date;
+	} else {
+		return '';
+	}
+}
+
+/**
+ * Returns the close date in GMT of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.5
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  Close date of ticket, an empty string otherwise
+ */
+function wpas_get_close_date_gmt($post_id) {
+
+	$close_date = get_post_meta($post_id, '_ticket_closed_on_gmt', true);
+
+	if (!empty($close_date)) {
+		return $close_date;
+	} else {
+		return '';
+	}
+}
+
+/**
+ * Returns the open date of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.5
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  open date of ticket, an empty string otherwise
+ */
+function wpas_get_open_date($post_id) {
+
+	// Return if not a ticket...
+	if ('ticket' <> get_post_type($post_id)) {
+		return '';
+	}
+
+	$the_ticket = get_post($post_id);
+
+	$open_date = $the_ticket->post_date;
+
+	if (!empty($open_date)) {
+		return $open_date;
+	} else {
+		return '';
+	}
+}
+
+/**
+ * Returns the open date in GMT of the ticket based on the ticket/post id passed
+ *
+ * @since  4.0.5
+ *
+ * @param  integer       $post_id The ID of the ticket to check
+ *
+ * @return date|string  open date of ticket, an empty string otherwise
+ */
+function wpas_get_open_date_gmt($post_id) {
+
+	// Return if not a ticket...
+	if ('ticket' <> get_post_type($post_id)) {
+		return '';
+	}
+
+	$the_ticket = get_post($post_id);
+
+	$open_date = $the_ticket->post_date_gmt;
+
+	if (!empty($open_date)) {
+		return $open_date;
+	} else {
+		return '';
+	}
+}
+
+/**
+ * Returns difference between two dates in string format to help with debugging.
+ * Formatted string will look like this sample : 0 day(s) 14 hour(s) 33 minute(s)
+ *
+ * @since  4.0.5
+ *
+ * @param  date $firstdate 	First date in the format you get when using post->post_date to get a date from a post
+ * @param  date $seconddate Second date in the format you get when using post->post_date to get a date from a post
+ *
+ * @return string  difference between two dates, an empty string otherwise
+ */
+function wpas_get_date_diff_string($firstdate, $seconddate) {
+
+	// Calculate difference object...
+	$date1 = new DateTime($firstdate);
+	$date2 = new DateTime($seconddate);
+	$diff_dates = $date2->diff($date1);
+
+	$date_string = '';
+	$date_string .= ' ' . $diff_dates->format('%d') .  __(' day(s)', 'awesome-support');
+	$date_string .=  ' ' . $diff_dates->format('%h') .  __(' hour(s)', 'awesome-support');
+	$date_string .=  ' ' . $diff_dates->format('%i') .  __(' minute(s)', 'awesome-support');
+
+	return $date_string;
+}
+
+add_filter('admin_footer_text', 'wpas_admin_footer_text', 999, 1);
 /**
  * Add a custom admin footer text
  *
@@ -255,14 +437,22 @@ add_filter( 'admin_footer_text', 'wpas_admin_footer_text', 999, 1 );
  *
  * @return string
  */
-function wpas_admin_footer_text( $text ) {
+function wpas_admin_footer_text($text) {
 
-	if ( ! is_admin() || ! wpas_is_plugin_page() ) {
+	if (!is_admin() || !wpas_is_plugin_page()) {
 		return $text;
 	}
 
-	return sprintf( __(  'If you like Awesome Support <a %s>please leave us a %s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support' ), 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733' );
+	// Do not show message if installed in an SAAS environment
+	if (defined('WPAS_SAAS') && true === WPAS_SAAS) {
+		return;
+	}
 
+	if (!boolval(wpas_get_option('remove_admin_ratings_request', false))) {
+		// translators: %1$s is the HTML attribute for the link, %2$s is the rating (e.g., star) the user is asked to leave.
+		$x_content = __('If you like Awesome Support <a %1$s>please leave us a %2$s rating</a>. Many thanks from the Awesome Support team in advance :)', 'awesome-support');
+		return sprintf($x_content, 'href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"', '&#9733&#9733&#9733&#9733&#9733 ');
+	}
 }
 
 /**
@@ -272,10 +462,10 @@ function wpas_admin_footer_text( $text ) {
  * @return bool
  */
 function wpas_is_free_addon_page_dismissed() {
-	return (bool) get_option( 'wpas_dismiss_free_addon_page', false );
+	return (bool) get_option('wpas_dismiss_free_addon_page', false);
 }
 
-add_action( 'plugins_loaded', 'wpas_free_addon_notice' );
+add_action('admin_notices', 'wpas_free_addon_notice');
 /**
  * Add free addon notice
  *
@@ -287,29 +477,203 @@ add_action( 'plugins_loaded', 'wpas_free_addon_notice' );
  */
 function wpas_free_addon_notice() {
 
+	// Do not show message if installed in an SAAS environment
+	if (defined('WPAS_SAAS') && true === WPAS_SAAS) {
+		return;
+	}
+
 	// Only show this message to admins
-	if ( ! current_user_can( 'administrator' ) ) {
+	if (!current_user_can('administrator')) {
 		return;
 	}
 
 	// Don't show the notice if user already claimed the addon
-	if ( wpas_is_free_addon_page_dismissed() ) {
+	if (wpas_is_free_addon_page_dismissed()) {
 		return;
 	}
 
 	// Only show the notice on the plugin pages
-	if ( ! wpas_is_plugin_page() ) {
+	if (!wpas_is_plugin_page()) {
 		return;
 	}
 
 	// No need to show the notice on the free addon page itself
-	if ( isset( $_GET['page'] ) && 'wpas-optin' === $_GET['page'] ) {
+	if (isset($_GET['page']) && 'wpas-optin' === $_GET['page']) {
 		return;
 	}
 
-	WPAS()->admin_notices->add_notice( 'updated', 'wpas_get_free_addon', wp_kses( sprintf( __( 'Hey! Did you know you can get a <strong>free add-on for unlimited sites</strong> (a $61.00 USD value) for Awesome Support? <a href="%1$s">Click here to read more</a>.', 'awesome-support' ), add_query_arg( array(
+	// translators: %1$s is the URL for more information about the free add-on.
+	$x_content = __('Hey! Did you know you can get a <strong>free add-on for unlimited sites</strong> (a $61.00 USD value) for Awesome Support? <a href="%1$s">Click here to read more</a>.', 'awesome-support');
+
+	WPAS()->admin_notices->add_notice('updated', 'wpas_get_free_addon', wp_kses(sprintf($x_content, add_query_arg(array(
 		'post_type' => 'ticket',
 		'page'      => 'wpas-optin',
-	), admin_url( 'edit.php' ) ) ), array( 'strong' => array(), 'a' => array( 'href' => array() ) ) ) );
+	), admin_url('edit.php'))), array('strong' => array(), 'a' => array('href' => array()))));
+}
 
+add_action('admin_notices', 'wpas_request_first_5star_rating');
+/**
+ * Request 5 star rating after 25 closed tickets.
+ *
+ * After 25 closed tickets we ask the admin for a 5 star rating
+ *
+ * @since 4.0.0
+ * @return void
+ */
+function wpas_request_first_5star_rating() {
+
+	// Do not show message if installed in an SAAS environment
+	if (defined('WPAS_SAAS') && true === WPAS_SAAS) {
+		return;
+	}
+
+	// Only show this message to admins
+	if (!current_user_can('administrator')) {
+		return;
+	}
+
+	// Only show the notice on the plugin pages
+	if (!wpas_is_plugin_page()) {
+		return;
+	}
+
+	// If notice has been dismissed, return since everything else after this is expensive operations!
+	if (wpas_is_notice_dismissed('wpas_request_first_5star_rating')) {
+		return;
+	}
+
+	// How many tickets have been closed?
+	$closed_tickets = wpas_get_tickets('closed', array('posts_per_page' => 1), 'any', true, true);
+
+	// Show notice if number of closed tickets greater than 25.
+	if ($closed_tickets >= 25) {
+
+		// translators: %1$s is the URL where users can leave a rating.
+		$x_content = __('Wow! It looks like you have closed a lot of tickets which is pretty awesome! We guess you must really like Awesome Support, huh? Could you please do us a favor and leave a 5 star rating on WordPress? It will only take a minute and helps to motivate our developers and volunteers. <a href="%1$s">Yes, you deserve it!</a>.', 'awesome-support');
+
+		WPAS()->admin_notices->add_notice('updated', 'wpas_request_first_5star_rating', wp_kses(
+			sprintf( $x_content, 'https://wordpress.org/support/plugin/awesome-support/reviews/'),
+			array('strong' => array(), 'a' => array('href' => array()))
+		));
+	}
+}
+
+/**
+ * Generate admin tabs html
+ *
+ * @param string $type
+ * @param array $tabs
+ *
+ * @return string
+ */
+function wpas_admin_tabs($type, $tabs = array()) {
+
+	// Unique tabs widget id
+	$id = "wpas_admin_tabs_{$type}";
+
+
+	$tabs = apply_filters($id, $tabs);
+
+	// Stop processing if no tab exist
+	if (empty($tabs)) {
+		return;
+	}
+
+
+	$tab_order = 1;
+	$tab_content_items_ar = array();
+	$tab_content_ar = array();
+
+	foreach ($tabs as $tab_id => $tab_name) {
+		$_id = "{$id}_{$tab_id}";
+
+		$tab_content = apply_filters("{$_id}_content", "");
+
+		if ($tab_content) {
+			$tab_content_items_ar[] = sprintf('<li data-tab-order="%s" rel="%s" class="wpas_tab_name">%s</li>', $tab_order, $_id, $tab_name);
+			$tab_content_ar[] = '<div class="wpas_admin_tab_content" id="' . $_id . '">' . $tab_content . '</div>';
+			$tab_order++;
+		}
+	}
+
+
+	// Stop processing if no tab's data exist
+	if (empty($tab_content_items_ar)) {
+		return;
+	}
+
+	ob_start();
+
+	?>
+
+
+	<div class="wpas_admin_tabs" id="<?php echo esc_attr($id); ?>">
+		<div class="wpas_admin_tabs_names_wrapper">
+			<ul>
+				<?php echo wp_kses(implode('', $tab_content_items_ar), get_allowed_html_wp_notifications()); ?>
+				<li class="moreTab">
+					<ul class="dropdown-menu tabs_collapsed"></ul>
+				</li>
+				<li class="clear clearfix"></li>
+
+			</ul>
+		</div>
+		<?php echo wp_kses(implode('', $tab_content_ar), get_allowed_html_wp_notifications()); ?>
+	</div>
+<?php
+
+
+	$output = ob_get_contents();
+	ob_end_clean();
+	return apply_filters('wpas_admin_tabs', $output, $tab_content_items_ar, $tab_content_ar, $id, $tabs);
+}
+
+
+add_action('wpas_admin_after_wysiwyg', 'reply_tabs', 8, 0);
+
+/**
+ * Add tabs under reply wysiwyg editor
+ */
+function reply_tabs() {
+
+	$tabs_content = wpas_admin_tabs('after_reply_wysiwyg');
+	echo wp_kses($tabs_content, get_allowed_html_wp_notifications());
+}
+
+/**
+ * If a session has already been started by some external system, end one!
+ * Added this functionality due to new site health check system added by WordPress.org.
+ */
+function wpas_end_session() {
+	if (session_status() === PHP_SESSION_ACTIVE) {
+		session_write_close();
+	}
+}
+
+// End session, if we're not in the CLI.
+if (session_status() !== PHP_SESSION_DISABLED && (!defined('WP_CLI') || false === WP_CLI)) {
+	// If we're not in a cron, end the session
+	if (!defined('DOING_CRON') || false === DOING_CRON) {
+		add_action('wp_loaded', 'wpas_end_session', 10, 0);
+	}
+}
+
+if (is_admin()) {
+	function wp_default_custom_scripts($scripts)
+	{
+		$scripts->add('wp-color-picker', "/wp-admin/js/color-picker.js", array('iris'), false, 1);
+		did_action('init') && $scripts->localize(
+			'wp-color-picker',
+			'wpColorPickerL10n',
+			array(
+				'clear'            => __('Clear', 'awesome-support' ),
+				'clearAriaLabel'   => __('Clear color', 'awesome-support' ),
+				'defaultString'    => __('Default', 'awesome-support' ),
+				'defaultAriaLabel' => __('Select default color', 'awesome-support' ),
+				'pick'             => __('Select Color', 'awesome-support' ),
+				'defaultLabel'     => __('Color value', 'awesome-support' ),
+			)
+		);
+	}
+	add_action('wp_default_scripts', 'wp_default_custom_scripts');
 }

@@ -6,15 +6,21 @@ if ( $wpas_tickets->have_posts() ):
 
 	/* Get list of columns to display */
 	$columns 		  = wpas_get_tickets_list_columns();
-	
+
 	/* Get number of tickets per page */
 	$tickets_per_page = wpas_get_option( 'tickets_per_page_front_end' );
 	If ( empty($tickets_per_page) ) {
 		$tickets_per_page = 5 ; // default number of tickets per page to 5 if no value specified.
 	}
-	
+
 	?>
-	<div class="wpas wpas-ticket-list">
+	<style type="text/css">
+	.wrap .content-area main article .entry-content
+	{
+		min-width: 100%;
+	}
+	</style>
+	<div class="wpas wpas-ticket-list alignwide">
 
 		<?php wpas_get_template( 'partials/ticket-navigation' ); ?>
 
@@ -33,7 +39,7 @@ if ( $wpas_tickets->have_posts() ):
 		</div>
 
 		<!-- List of tickets -->
-		<table id="wpas_ticketlist" class="wpas-table wpas-table-hover" data-filter="#wpas_filter" data-filter-text-only="true" data-page-navigation=".wpas_table_pagination" data-page-size=" <?php echo $tickets_per_page ?> ">
+		<table id="wpas_ticketlist" class="wpas-table wpas-table-hover" data-filter="#wpas_filter" data-filter-text-only="true" data-page-navigation=".wpas_table_pagination" data-page-size=" <?php echo esc_attr( $tickets_per_page ); ?> ">
 			<thead>
 				<tr>
 					<?php foreach ( $columns as $column_id => $column ) {
@@ -45,7 +51,7 @@ if ( $wpas_tickets->have_posts() ):
 							$data_attributes = wpas_array_to_data_attributes( $column['column_attributes']['head'] );
 						}
 
-						printf( '<th id="wpas-ticket-%1$s" %3$s>%2$s</th>', $column_id, $column['title'], $data_attributes );
+						printf( '<th id="wpas-ticket-%1$s" %3$s>%2$s</th>', esc_attr($column_id), wp_kses_post($column['title']), wp_kses($data_attributes, get_allowed_html_wp_notifications()) );
 
 					} ?>
 				</tr>
@@ -56,7 +62,7 @@ if ( $wpas_tickets->have_posts() ):
 
 					$wpas_tickets->the_post();
 
-					echo '<tr class="wpas-status-' . wpas_get_ticket_status( $wpas_tickets->post->ID ) . '" id="wpas_ticket_' . $wpas_tickets->post->ID . '">';
+					echo '<tr class="wpas-status-' . esc_attr( wpas_get_ticket_status( $wpas_tickets->post->ID ) ) . '" id="wpas_ticket_' . esc_attr( $wpas_tickets->post->ID ) . '">';
 
 					foreach ( $columns as $column_id => $column ) {
 
@@ -67,7 +73,7 @@ if ( $wpas_tickets->have_posts() ):
 							$data_attributes = wpas_array_to_data_attributes( $column['column_attributes']['body'], true );
 						}
 
-						printf( '<td %s>', $data_attributes );
+						printf( '<td %s>', wp_kses($data_attributes, get_allowed_html_wp_notifications()) );
 
 						/* Display the content for this column */
 						wpas_get_tickets_list_column_content( $column_id, $column );
@@ -77,7 +83,7 @@ if ( $wpas_tickets->have_posts() ):
 					}
 
 					echo '</tr>';
-				
+
 				endwhile;
 
 				wp_reset_query(); ?>
@@ -92,5 +98,7 @@ if ( $wpas_tickets->have_posts() ):
 		</table>
 	</div>
 <?php else:
-	echo wpas_get_notification_markup( 'info', sprintf( __( 'You haven\'t submitted a ticket yet. <a href="%s">Click here to submit your first ticket</a>.', 'awesome-support' ), wpas_get_submission_page_url() ) );
+	// translators: %s is the submit ticket link.
+	$x_content = __( 'You haven\'t submitted a ticket yet. <a href="%s">Click here to submit your first ticket</a>.', 'awesome-support' );
+	echo wp_kses(wpas_get_notification_markup( 'info', sprintf( $x_content, wpas_get_submission_page_url() ) ), get_allowed_html_wp_notifications());
 endif; ?>

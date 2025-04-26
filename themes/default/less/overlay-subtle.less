@@ -1,0 +1,153 @@
+/*
+
+1) Import
+2) Variables
+3) Mixins
+4) General Scaffolding
+5) Forms + Buttons + Labels
+6) Tables
+7) Pages
+8) Pagination
+9) Ticket List
+10) Overlay Media Queries
+
+*/
+
+
+/*
+==========================================================================
+Import
+==========================================================================
+*/
+
+@import 'style.less';
+
+/*
+==========================================================================
+Variables - many of these override those in preboot.less
+==========================================================================
+*/
+
+// Brand colors
+@brand-primary:           #428bca;
+@brand-success:           #5cb85c;
+@brand-warning:           #f0ad4e;
+@brand-danger:            #d9534f;
+@brand-info:              #65BEFF;
+@brand-misc: 			  #E2E2E2;
+
+// Links
+@link-color:              @brand-primary;
+@link-color-hover:        darken(@link-color, 15%);
+
+/*
+==========================================================================
+Mixins
+==========================================================================
+*/
+
+
+/*
+==========================================================================
+General Scaffolding
+==========================================================================
+*/
+
+/*
+==========================================================================
+Forms + Buttons + Labels
+==========================================================================
+*/
+
+/*
+==========================================================================
+Tables
+==========================================================================
+*/
+
+
+/*
+==========================================================================
+Pages
+==========================================================================
+
+/*
+==========================================================================
+Pagination for ticket replies
+==========================================================================
+
+/*
+==========================================================================
+Ticket List
+==========================================================================
+
+/*
+==========================================================================
+Overlay Media Queries - by using a minimum width of 1px defined in the
+@grid-start variable we force these overrides since media queries override
+the baseline css.
+==========================================================================
+*/
+
+@media (min-width: @grid-start	) {
+
+	/* Make all buttons have a bit of roundedness and font size smaller */
+	.wpas-btn {
+		border-radius: 3px;
+		font-size: @font-size-small;		
+	}
+
+	/* Make sure the logout button doesn't hang out on the right side of the screen and remove image */
+	.wpas-ticket-buttons-top {
+		
+		.wpas-link-logout{
+			
+			float:inherit;
+			
+				&:after {
+					background-image: none ;
+					width: inherit;					
+				}
+				
+		}
+		
+	}
+
+	/* Make all other input elements have a bit of roundedness and font size smaller */
+	input, select {
+		border-radius: 3px;
+		font-size: @font-size-small;
+	}    
+	
+	/* Ticketlist: All elements - make font size smaller */
+	.wpas-ticket-list {
+		font-size: @font-size-small;
+	}
+
+	/* Ticketlist: table background color when user hovers over row */
+	#wpas_ticketlist {
+		tr {
+			transition: background 0.2s ease-in; 
+		}
+		
+		/* Row hover */		
+		tbody tr:nth-child(n+1):hover {
+			cursor: pointer;
+			border-radius: 3px;
+			cursor: inherit;
+			border-bottom: 4px;
+			border-bottom-style: solid;
+			border-bottom-color:@brand-info;			
+		}
+		
+		/* Alternating background colors in table */
+		tr:nth-child(odd) {
+			background: white;
+		}		  
+		tr:nth-child(even) {
+			background: @brand-misc;
+		}				  
+		
+	}
+	
+}

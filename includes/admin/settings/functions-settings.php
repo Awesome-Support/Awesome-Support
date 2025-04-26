@@ -77,6 +77,37 @@ function wpas_list_themes() {
 }
 
 /**
+ * Get theme overlay list.
+ *
+ * Returns a list of .CSS files that can be used in place of the default style.css
+ *
+ * @TODO: Right now this is hardcoded but really it should read the entire 
+ * theme styles folder and return the css file list.
+ * 
+ * @return array
+ * @since  5.8.0
+ */
+function wpas_list_overlays() {
+	
+	$overlay['style.css'] = 'Default';
+	$overlay['overlay-subtle.css'] = 'Subtle';
+	$overlay['overlay-angle.css'] = 'Angle';
+	$overlay['overlay-dark.css'] = 'Dark';	
+	$overlay['overlay-orange-blend.css'] = 'Orange Blend';	
+	$overlay['overlay-royal-blend.css'] = 'Royal Blend';	
+	$overlay['overlay-purple-haze.css'] = 'Purple Haze';
+	$overlay['overlay-green-envy.css'] = 'Green Envy';
+	$overlay['overlay-plain-gray.css'] = 'Plain Gray';
+	$overlay['overlay-basic-blue.css'] = 'Basic Blue';
+	$overlay['overlay-basic-green.css'] = 'Basic Green';
+	$overlay['overlay-basic-red.css'] = 'Basic Red';
+	
+	return apply_filters('wpas_list_overlays',$overlay);
+	
+
+}
+
+/**
  * Get plugin settings list
  *
  * Get all plugin settings filtered.

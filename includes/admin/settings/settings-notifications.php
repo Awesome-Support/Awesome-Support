@@ -8,7 +8,13 @@ add_filter( 'wpas_plugin_settings', 'wpas_core_settings_notifications', 5, 1 );
  * @return array      Updated settings
  */
 function wpas_core_settings_notifications( $def ) {
+	
+	// translators: %1$s is the URL to the email template, %2$s is the target attribute for the link (e.g., "_blank").
+	$desc = __( 'Please note that the <a href="%1$s" target="%2$s">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add additional fancy styling through the editors you should do so with caution in order to avoid breaking the layouts on some devices.', 'awesome-support' );
 
+	// translators: %s is the URL to the documentation.
+	$desc1 = __( 'We include a default set of designs for the six core emails below.  You can use these designs in other email templates by simply copying them to the target email template editor and modifying them there.  You can also install new designs from the TICKETS->TOOLS->CLEANUP area. Samples of some of the email templates can be found in our <a href="%s">documentation</a>.', 'awesome-support' );
+	
 	$settings = array(
 		'email' => array(
 			'name'    => __( 'E-Mails', 'awesome-support' ),
@@ -18,19 +24,20 @@ function wpas_core_settings_notifications( $def ) {
 					'desc' => __( 'For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen.', 'awesome-support' )
 				),
 				array(
-					'name' => __( 'E-Mail Template', 'awesome-support' ),
+					'name' => __( 'Global E-Mail Template', 'awesome-support' ),
+					'desc' => __( 'The HTML E-Mail Template options below controls how the logo, header and footer appear in ALL your outgoing Awesome Support emails.  You can completely disable this global template if necessary.', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
-					'name'    => __( 'Use Template', 'awesome-support' ),
+					'name'    => __( 'Use HTML Template', 'awesome-support' ),
 					'id'      => 'use_email_template',
 					'type'    => 'checkbox',
 					'default' => true,
-					'desc'    => __( 'Outgoing notifications are styled with a built-in template. If you are using an e-mail templating plugin you should deactivate this option.', 'awesome-support' )
+					'desc'    => __( 'Outgoing notifications are styled with a built-in html template. If you are using an e-mail templating plugin you should deactivate this option.', 'awesome-support' )
 				),
 				array(
 					'type' => 'note',
-					'desc' => wp_kses( sprintf( __( 'Please note that the <a href="%1$s" target="%2$s">e-mail template we use</a> is optimized for all e-mail clients and devices. If you add fancy styling through the editors hereafter, we cannot guarantee full compatibility anymore.', 'awesome-support' ), 'https://github.com/mailgun/transactional-email-templates', '_blank' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) )
+					'desc' => wp_kses( sprintf( $desc, 'https://github.com/mailgun/transactional-email-templates', '_blank' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) )
 				),
 				array(
 					'name'    => __( 'Logo', 'awesome-support' ),
@@ -75,9 +82,27 @@ function wpas_core_settings_notifications( $def ) {
 					'type'    => 'text',
 					'default' => get_bloginfo( 'admin_email' )
 				),
+				
+				array(
+					'name' => __( 'Email Contents', 'awesome-support' ),
+					'desc' => __( 'Configure the contents of your emails below.', 'awesome-support' ),
+					'type' => 'heading',
+				),
+				array(
+					'name'    => __( 'Design Notes', 'awesome-support' ),
+					'id'      => 'reply_design_notes',
+					'type'    => 'note',
+					'desc' => sprintf( $desc1, 'https://getawesomesupport.com/documentation/awesome-support/admin-email-template-sets/' ),
+				),				
+				array(				
+					'name'    => __( 'Template Tags', 'awesome-support' ),				
+					'type' => 'note',
+					'desc' => __( 'Email template tags allow you to insert real-time information into your outgoing emails.  For example you can use tags to refer to the users name or the agent name.  For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen.  You can also click on the <b>{ }</b> icon in each of the editors for a pop-up list.', 'awesome-support' )
+				),
 				/* Submission confirmation */
 				array(
 					'name' => __( 'Submission Confirmation', 'awesome-support' ),
+					'desc' => __( 'This is sent to the user when they open a new ticket.', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -97,12 +122,12 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_confirmation',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{client_name}</em>,</strong></p><p>Your request (<a href="{ticket_url}">#{ticket_id}</a>) has been received, and is being reviewed by our support staff.</p><p>To add additional comments, follow the link below:</p><h2><a href="{ticket_url}">View Ticket</a></h2><p>or follow this link: {ticket_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* New assignment */
 				array(
 					'name' => __( 'New Assignment', 'awesome-support' ),
+					'desc' => __( 'This is sent to the agent when they are assigned to a ticket.', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -122,12 +147,12 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_assignment',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p><p>The request <strong>{ticket_title}</strong> (<a href="{ticket_admin_url}">#{ticket_id}</a>) has been assigned to you.</p><h2><a href="{ticket_admin_url}">View  Ticket</a></h2><p>or follow this link: {ticket_admin_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* New reply from agent */
 				array(
 					'name' => __( 'New Reply from Agent', 'awesome-support' ),
+					'desc' => __( 'This is sent to the user when an agent replies to a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -147,12 +172,12 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_reply_agent',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{client_name}</em>,</strong></p><p>An agent just replied to your ticket "<strong>{ticket_title}</strong>" (<a href="{ticket_url}">#{ticket_id}</a>). To view his reply or add additional comments, click the button below:</p><h2><a href="{ticket_url}">View Ticket</a></h2><p>or follow this link: {ticket_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* New reply from client */
 				array(
 					'name' => __( 'New Reply from Client', 'awesome-support' ),
+					'desc' => __( 'This is sent to agents when a new reply is received from a user.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -172,37 +197,18 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_reply_client',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p><p>A client you are in charge of just posted a new reply to his ticket "<strong>{ticket_title}</strong>".</p><h2><a href="{ticket_admin_url}">View  Ticket</a></h2><p>or follow this link: {ticket_admin_link}</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				/* Ticket will close */
 				array(
 					'name' => __( 'Ticket Will Be Closed', 'awesome-support' ),
+					'desc' => __( 'These are sent as alerts to the user before a ticket is automatically closed (requires auto-close add-on otherwise this section is blank).', 'awesome-support' ),					
 					'type' => 'heading',
 				),
-				/*array(
-					'name'    => __( 'Enable', 'awesome-support' ),
-					'id'      => 'enable_will_close',
-					'type'    => 'checkbox',
-					'default' => true,
-					'desc'    => __( 'Do you want to activate this e-mail template?', 'awesome-support' )
-				),
+				/* Ticket closed by agent */
 				array(
-					'name'    => __( 'Subject', 'awesome-support' ),
-					'id'      => 'subject_will_close',
-					'type'    => 'text',
-					'default' => ''
-				),
-				array(
-					'name'     => __( 'Content', 'awesome-support' ),
-					'id'       => 'content_will_close',
-					'type'     => 'editor',
-					'default'  => '',
-					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),*/
-				/* Ticket closed */
-				array(
-					'name' => __( 'Ticket Closed (by agent)', 'awesome-support' ),
+					'name' => __( 'Ticket Closed (by Agent)', 'awesome-support' ),
+					'desc' => __( 'This is sent to the user when an agent closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -222,11 +228,19 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_closed',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{client_name},</em></strong></p>Your request (<a href="{ticket_url}">#{ticket_id}</a>) has been closed by <strong>{agent_name}</strong>.</p><hr><p>Regards,<br>{site_name}</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 				array(
+					'name'    => __( 'Agents Can Suppress?', 'awesome-support' ),
+					'id'      => 'agents_can_suppress_closing_emails',
+					'type'    => 'checkbox',
+					'default' => false,
+					'desc'    => '<em>' . __( 'Can agents prevent a closing confirmation email from being sent to a customer? Note: If this enabled it only applies to the emails defined in the core plugin and not to emails created by add-ons such as our Notification or Business Rules Engine add-ons', 'awesome-support' ) . '</em>'
+				),
+				/* Ticket closed by client*/				
+				array(
 					'name' => __( 'Ticket Closed (by client)', 'awesome-support' ),
+					'desc' => __( 'This is sent to the agent when a user closes a ticket.', 'awesome-support' ),					
 					'type' => 'heading',
 				),
 				array(
@@ -246,13 +260,12 @@ function wpas_core_settings_notifications( $def ) {
 					'name'     => __( 'Content', 'awesome-support' ),
 					'id'       => 'content_closed_client',
 					'type'     => 'editor',
-					'default'  => '<p>Hi <strong><em>{agent_name},</em></strong></p>The ticket (<a href="{ticket_admin_url}">#{ticket_id}</a>) has been closed by <strong>{client_name}</strong>.</p><p>Good job!</p>',
 					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
 				),
 			)
 		),
 	);
 
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_notifications', $settings )  );
 
 }

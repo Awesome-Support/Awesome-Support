@@ -1,0 +1,26 @@
+body {
+	padding: 10px 20px;
+}
+#tag_table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+#tag_table td, #tag_table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+#tag_table tr:nth-child(even) {
+	background-color: #f2f2f2;
+}
+#tag_table tr:hover {
+	background-color: #ddd; 
+	cursor: pointer;
+}
+#tag_table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #AAA;
+    color: white;
+}

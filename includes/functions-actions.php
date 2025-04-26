@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Functions/Actions
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -25,11 +25,11 @@ add_action( 'init', 'wpas_process_actions', 50 );
 function wpas_process_actions() {
 
 	$nonce = false;
-
+	
 	if ( isset( $_POST['wpas-do-nonce'] ) ) {
-		$nonce = $_POST['wpas-do-nonce'];
+		$nonce = sanitize_text_field( wp_unslash(  $_POST['wpas-do-nonce'] ) );
 	} elseif ( isset( $_GET['wpas-do-nonce'] ) ) {
-		$nonce = $_GET['wpas-do-nonce'];
+		$nonce = sanitize_text_field( wp_unslash(  $_GET['wpas-do-nonce'] ) );
 	}
 
 	if ( ! $nonce || ! wp_verify_nonce( $nonce, 'trigger_custom_action' ) ) {
@@ -37,11 +37,13 @@ function wpas_process_actions() {
 	}
 
 	if ( isset( $_POST['wpas-do'] ) ) {
-		do_action( 'wpas_do_' . $_POST['wpas-do'], $_POST );
+		$wpas_do = sanitize_text_field( wp_unslash(  $_POST['wpas-do'] ) );
+		do_action( 'wpas_do_' . $wpas_do, $_POST );
 	}
 
 	if ( isset( $_GET['wpas-do'] ) ) {
-		do_action( 'wpas_do_' . $_GET['wpas-do'], $_GET );
+		$wpas_do = sanitize_text_field( wp_unslash(  $_GET['wpas-do'] ) );
+		do_action( 'wpas_do_' . $wpas_do, $_GET );
 	}
 
 }
@@ -60,18 +62,27 @@ function wpas_process_actions() {
 function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 
 	$field = sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'wpas-do', $action );
+
 	$field .= wp_nonce_field( 'trigger_custom_action', 'wpas-do-nonce', true, false );
+
+	$field = str_replace( 'id="wpas-do-nonce"' , 'id="wpas-do-nonce-' . $action . '"' , $field );
 
 	if ( ! empty( $redirect_to ) ) {
 		$field .= sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'redirect_to', wp_sanitize_redirect( $redirect_to ) );
 	}
-
+	//This has been verify by html tags ted.
+	$allow_html_tags_wpas_do_field = array(
+			'input' => [
+				'type' => true,
+				'name' => true,
+				'value' => true,
+				'id' => true,			
+			]
+		);	
 	if ( $echo ) {
-		echo $field;
+		echo wp_kses($field, $allow_html_tags_wpas_do_field);	
 	}
-
 	return $field;
-
 }
 
 /**

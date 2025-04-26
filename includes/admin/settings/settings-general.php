@@ -12,12 +12,18 @@ function wpas_core_settings_general( $def ) {
 	$user_registration = boolval( get_option( 'users_can_register' ) );
 	$registration_lbl  = ( true === $user_registration ) ? _x( 'allowed', 'User registration is allowed', 'awesome-support' ) : _x( 'not allowed', 'User registration is not allowed', 'awesome-support' );
 
+	// translators: %s is the shortcode value.
+	$desc = __( 'The page used for ticket submission. This page should contain the shortcode %s', 'awesome-support' );
+
+	// translators: %s is the shortcode value.
+	$desc1 = __( 'The page that will list all tickets for a client. This page should contain the shortcode %s', 'awesome-support' );
+	
 	$settings = array(
 		'general' => array(
 			'name'    => __( 'General', 'awesome-support' ),
 			'options' => array(
 				array(
-					'name' => __( 'Misc', 'awesome-support' ),
+					'name' => __( 'General Admin and Agent Options', 'awesome-support' ),
 					'type' => 'heading',
 				),
 				array(
@@ -29,24 +35,12 @@ function wpas_core_settings_general( $def ) {
 					'default' => ''
 				),
 				array(
-					'name'    => __( 'Allow Registrations', 'awesome-support' ),
-					'id'      => 'allow_registrations',
-					'type'    => 'radio',
-					'desc'    => sprintf( __( 'Allow users to register on the support page. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress.', 'awesome-support' ),  "<strong>$registration_lbl</strong>" ),
-					'default' => 'allow',
-					'options' => array(
-						'allow'           => __( 'Allow registrations', 'awesome-support' ),
-						'disallow'        => __( 'Disallow registrations', 'awesome-support' ),
-						'disallow_silent' => __( 'Disallow registrations without notice (just show the login form)', 'awesome-support' ),
-					)
-				),
-				array(
-					'name'    => __( 'Tickets Per Page (Front End)', 'awesome-support' ),
-					'id'      => 'tickets_per_page_front_end',
-					'type'    => 'text',
-					'default' => 5,
-					'desc'    => __( 'How many tickets per page should be displayed to the customer/client/end-user?', 'awesome-support' ),
-				),				
+                        'name'    => __( 'Use SELECT2 For Staff Drop-downs', 'awesome-support' ),
+                        'id'      => "support_staff_select2_enabled",
+                        'type'    => 'checkbox',
+                        'default' => false,
+                        'desc'    => __( 'On ticket screen turn the staff dropdown into select2 box.', 'awesome-support' )
+                ),
 				array(
 					'name'    => __( 'Replies Order', 'awesome-support' ),
 					'id'      => 'replies_order',
@@ -63,10 +57,10 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'How many replies should be displayed per page on a ticket details screen?', 'awesome-support' )
 				),
 				array(
-					'name'    => __( 'Hide Closed', 'awesome-support' ),
+					'name'    => __( 'Hide Closed Tickets', 'awesome-support' ),
 					'id'      => 'hide_closed',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Only show open tickets when clicking the "All Tickets" link.', 'awesome-support' ),
+					'desc'    => __( 'Only show open tickets when agents click the "All Tickets" link.', 'awesome-support' ),
 					'default' => true
 				),
 				array(
@@ -83,52 +77,118 @@ function wpas_core_settings_general( $def ) {
 					'default' => 10,
 					'desc'    => __( 'After how many days should a ticket be considered &laquo;old&raquo;?', 'awesome-support' )
 				),
+
 				array(
-					'name'    => __( 'Departments', 'awesome-support' ),
-					'id'      => 'departments',
+					'name' => __( 'Front-end Options', 'awesome-support' ),
+					'type' => 'heading',
+					'desc' => __( 'These settings control the user experience when they submit or view their tickets', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'Tickets Per Page', 'awesome-support' ),
+					'id'      => 'tickets_per_page_front_end',
+					'type'    => 'text',
+					'default' => 5,
+					'desc'    => __( 'How many tickets per page should be displayed to the customer/client/end-user?', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'Hide Closed Tickets', 'awesome-support' ),
+					'id'      => 'hide_closed_fe',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Enable departments management.', 'awesome-support' ),
+					'desc'    => __( 'Only show open tickets to clients on the front-end.', 'awesome-support' ),
 					'default' => false
 				),
 				array(
-					'name' => __( 'Products Management', 'awesome-support' ),
-					'type' => 'heading',
-					'options' => wpas_get_products_options()
+					'name'    => __( 'Hide Ticket ID', 'awesome-support' ),
+					'id'      => 'hide_ticket_id_title_fe',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Do not show the ticket id in the title when viewing the ticket list', 'awesome-support' ),
+					'default' => false
 				),
 				array(
-					'name' => __( 'Priority Management', 'awesome-support' ),
+					'name'    => __( 'Show Close Ticket Checkbox', 'awesome-support' ),
+					'id'      => 'allow_user_to_close_tickets',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Show the checkbox that allow users to close tickets. This affects ALL users. (If you would like to restrict closing tickets to only some users, use WordPress roles and the close_ticket capability instead.)', 'awesome-support' ),
+					'default' => true
+				),
+
+				/* Notification buttons */
+				array(
+					'name' => __( 'Notification Button', 'awesome-support' ),
+					'desc' => __( 'Options for the notification button at the top of the single ticket screen on the front-end', 'awesome-support' ),
 					'type' => 'heading',
-					'options' => wpas_get_priority_options()
 				),
 				array(
-					'name' => __( 'Other Field Settings', 'awesome-support' ),
+					'name'    => __( 'Enable', 'awesome-support' ),
+					'id'      => 'enable_notification_button',
+					'type'    => 'checkbox',
+					'default' => true,
+					'desc'    => __( 'Show the notification button on the front-end?', 'awesome-support' )
+				),
+				array(
+					'name'     => __( 'Button Label', 'awesome-support' ),
+					'desc'    => __( 'This is the label for the button', 'awesome-support' ),
+					'id'       => 'notifications_button_label',
+					'type'     => 'text',
+					'default'  => __( 'Notifications', 'awesome-support' ),
+				),
+				array(
+					'name'     => __( 'Content', 'awesome-support' ),
+					'desc'    => __( 'This is the message that the user will see when they click the notifications button', 'awesome-support' ),
+					'id'       => 'notifications_button_msg',
+					'type'     => 'editor',
+					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 ),
+					'default'  => __( 'You are receiving the default standard notifications for this ticket. Among others, they include replies from agents, a notification when the ticket is closed, a notification if the ticket is reopened by the agent and a confirmation when the ticket was first submitted. ', 'awesome-support' ),
+				),
+
+				array(
+					'name' => __( 'Redirects', 'awesome-support' ),
 					'type' => 'heading',
-				),				
+					'desc'    => __( 'Configure where the user should be sent after certain actions', 'awesome-support' ),
+				),
 				array(
-					'name'    => __( 'Show Channel Field', 'awesome-support' ),
-					'id'      => 'channel_show_in_ticket_list',
-					'type'    => 'checkbox',
-					'desc'    => __( 'Show Channel Field In Ticket List? (Channel allows you to select where a ticket originated - web, email, facebook etc.)', 'awesome-support' ),
-					'default' => false
-				),								
+					'name'    => __( 'Logout Redirect', 'awesome-support' ),
+					'id'      => 'logout_redirect_fe',
+					'type'    => 'text',
+					'desc' 	  => __( 'When the user clicks the logout button on an Awesome Support page, where should they be redirected to?  Enter the FULL url starting with http or https.', 'awesome-support' ),
+				),
 				array(
-					'name'    => __( 'Enable Multiple Agents Per Ticket', 'awesome-support' ),
-					'id'      => 'multiple_agents_per_ticket',
+					'name'    => __( 'New Ticket Redirect', 'awesome-support' ),
+					'id'      => 'new_ticket_redirect_fe',
+					'type'    => 'text',
+					'desc' 	  => __( 'After the user enters a new ticket they are usually taken to the newly entered ticket.  But, if you would like to redirect them someplace else, enter that location here. Enter the FULL url starting with http or https.', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'New Ticket Form Redirect', 'awesome-support' ),
+					'id'      => 'new_ticket_form_redirect_fe',
+					'type'    => 'text',
+					'desc' 	  => __( 'If you would like to use a custom form for your new ticket form but still use our login screen then enter the full URL to the custom form. An example where this would be useful would be if you are using a Gravity Form in conjunction with our Gravity Form bridge. Enter the FULL url starting with http or https. Note that if you use this option you will never be able to see or use our standard ticket form! ', 'awesome-support' ),
+				),
+
+				array(
+					'name' => __( 'Toolbars', 'awesome-support' ),
+					'type' => 'heading',
+					'desc'    => __( 'Control whether certain toolbars are visible to agents', 'awesome-support' ),
+				),
+				array(
+					'name'    => __( 'Show Ticket Details Toolbar', 'awesome-support' ),
+					'id'      => 'ticket_detail_show_toolbar',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show the two extra agent fields on the ticket?', 'awesome-support' ),
-					'default' => false
-				),								
-				
+					'default' => true,
+					'desc'    => __( 'Show the toolbar on the ticket detail screen when an agent is viewing the ticket?', 'awesome-support' ),
+				),
+
 				array(
 					'name' => __( 'Plugin Pages', 'awesome-support' ),
 					'type' => 'heading',
+					'desc' => __( 'Configure pages where tickets will be displayed - we take special actions when these pages are viewed by the user', 'awesome-support' ),
 				),
 				array(
 					'name'     => __( 'Ticket Submission', 'awesome-support' ),
 					'id'       => 'ticket_submit',
 					'type'     => 'select',
 					'multiple' => true,
-					'desc'     => sprintf( __( 'The page used for ticket submission. This page should contain the shortcode %s', 'awesome-support' ), '<code>[ticket-submit]</code>' ),
+					'desc'     => sprintf( $desc, '<code>[ticket-submit]</code>' ),
 					'options'  => wpas_list_pages(),
 					'default'  => ''
 				),
@@ -137,22 +197,16 @@ function wpas_core_settings_general( $def ) {
 					'id'       => 'ticket_list',
 					'type'     => 'select',
 					'multiple' => false,
-					'desc'     => sprintf( __( 'The page that will list all tickets for a client. This page should contain the shortcode %s', 'awesome-support' ), '<code>[tickets]</code>' ),
+					'desc'     => sprintf( $desc1, '<code>[tickets]</code>' ),
 					'options'  => wpas_list_pages(),
 					'default'  => ''
 				),
+
 				array(
-					'name' => __( 'Terms & Conditions', 'awesome-support' ),
+					'name' => __( 'Misc', 'awesome-support' ),
 					'type' => 'heading',
 				),
-				array(
-					'name'     => __( 'Content', 'awesome-support' ),
-					'id'       => 'terms_conditions',
-					'type'     => 'editor',
-					'default'  => '',
-					'desc'     => __( 'Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won\'t be able to register if they don\'t accept your terms', 'awesome-support' ),
-					'settings' => array( 'quicktags' => true, 'textarea_rows' => 7 )
-				),
+
 				array(
 					'name' => __( 'Credit', 'awesome-support' ),
 					'type' => 'heading',
@@ -164,139 +218,17 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'Do you like this plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page.', 'awesome-support' ),
 					'default' => false
 				),
+				array(
+					'name'    => __( 'Admin Rating Request', 'awesome-support' ),
+					'id'      => 'remove_admin_ratings_request',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Remove the rating request footer in the admin screen.', 'awesome-support' ),
+					'default' => false
+				),
 			)
 		),
 	);
 
-	return array_merge( $def, $settings );
+	return array_merge( $def, apply_filters('wpas_settings_general', $settings )  );
 
-}
-
-/**
- * Prepare the available options for the products
- *
- * @since 3.3
- * @return array
- */
-function wpas_get_products_options() {
-
-	$products = array(
-		array(
-			'name'    => __( 'Multiple Products', 'awesome-support' ),
-			'id'      => 'support_products',
-			'type'    => 'checkbox',
-			'desc'    => __( 'If you need to provide support for multiple products, please enable this option. You will then be able to add your products.', 'awesome-support' ),
-			'default' => false
-		),
-	);
-
-	$ecommerce_synced = WPAS_eCommerce_Integration::get_instance()->plugin;
-
-	if ( ! is_null( $ecommerce_synced ) ) {
-
-		$plugin_name = ucwords( str_replace( array( '-', '_' ), ' ', $ecommerce_synced ) );
-
-		$products[] = array(
-			'name'    => sprintf( esc_html__( 'Synchronize %s Products', 'awesome-support' ), $plugin_name ),
-			'id'      => 'support_products_' . $ecommerce_synced,
-			'type'    => 'checkbox',
-			'desc'    => sprintf( esc_html__( 'We have detected that you are using the e-commerce plugin %1$s. Would you like to automatically synchronize your e-commerce products with Awesome Support?', 'awesome-support' ), $plugin_name ),
-			'default' => true
-		);
-
-		$products[] = array(
-			'type' => 'note',
-			'desc' => wp_kses( sprintf( __( 'If you just disabled this option and want to remove the previously synchronized products, <a href="%1$s">please use the dedicated option &laquo;Delete Products&raquo;</a>', 'awesome-support' ), esc_url( add_query_arg( array(
-					'post_type' => 'ticket',
-					'page'      => 'wpas-status',
-					'tab'       => 'tools'
-				), admin_url( 'edit.php' ) )
-			) ), array(
-				'a' => array(
-					'href'  => array(),
-					'title' => array()
-				)
-			) )
-		);
-
-		$registered = WPAS_eCommerce_Integration::get_instance()->get_plugins();
-		$post_type  = $registered[ $ecommerce_synced ]['post_type'];
-
-		$products[] = array(
-			'name'     => __( 'Include Products', 'awesome-support' ),
-			'id'       => 'support_products_' . $ecommerce_synced . '_include',
-			'type'     => 'select',
-			'multiple' => true,
-			'desc'     => esc_html__( 'Which products do you want to synchronize with Awesome Support (leave blank for all products)', 'awesome-support' ),
-			'options'  => wpas_list_pages( $post_type ),
-			'default'  => ''
-		);
-
-		$products[] = array(
-			'name'     => __( 'Exclude Products', 'awesome-support' ),
-			'id'       => 'support_products_' . $ecommerce_synced . '_exclude',
-			'type'     => 'select',
-			'multiple' => true,
-			'desc'     => esc_html__( 'Which products do you want to exclude from synchronization with Awesome Support (leave blank for no exclusion)', 'awesome-support' ),
-			'options'  => wpas_list_pages( $post_type ),
-			'default'  => ''
-		);
-
-		$products[] = array(
-			'type' => 'note',
-			'desc' => esc_html__( 'You cannot use the include and exclude options at the same time. Please use one or the other. You should use the option where you need to select the least amount of products.', 'awesome-support' )
-		);
-
-	}
-
-	return $products;
-
-}
-
-
-/**
- * Prepare the available options for priority
- *
- * @since 3.3.5
- * @return array
- */
-function wpas_get_priority_options() {
-
-	$priority = array(
-		array(
-			'name'    => __( 'Use Priority Field', 'awesome-support' ),
-			'id'      => 'support_priority',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to use the priority field in your tickets?', 'awesome-support' ),
-			'default' => false
-		),
-
-		array(
-			'name'    => __( 'Mandatory?', 'awesome-support' ),
-			'id'      => 'support_priority_mandatory',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to make the priority field mandatory in your tickets?', 'awesome-support' ),
-			'default' => false
-		),
-
-		array(
-			'name'    => __( 'Show On Front End?', 'awesome-support' ),
-			'id'      => 'support_priority_show_fe',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to show the field to the end user (unchecked restricts it to admin use only)?', 'awesome-support' ),
-			'default' => true
-		),		
-
-		array(
-			'name'    => __( 'Show In Column List?', 'awesome-support' ),
-			'id'      => 'support_priority_show_in_ticket_list',
-			'type'    => 'checkbox',
-			'desc'    => __( 'Would you like to show the field in the ticket listing?', 'awesome-support' ),
-			'default' => false
-		)		
-		
-	);
-		
-	
-	return $priority;
 }

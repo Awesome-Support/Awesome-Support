@@ -10,13 +10,15 @@
  * using the standard WordPress hooks. A "dismiss" option is added
  * in order to let the user hide the notification.
  *
+ * No data is ever stored on the remote server.
+ *
  * @package   Remote Dashboard Notifications
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
+ * @link      https://getawesomesupport.com
  * @link      http://wordpress.org/plugins/remote-dashboard-notifications/
  * @link 	  https://github.com/ThemeAvenue/Remote-Dashboard-Notifications
- * @copyright 2016 ThemeAvenue
+ * @copyright 2016-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -107,7 +109,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 				add_action( 'admin_footer', array( self::$instance, 'script' ) );
 			}
 
-			add_action( 'wp_ajax_rdn_fetch_notifications', array( $this, 'remote_get_notice_ajax' ) );
+			add_action( 'wp_ajax_rdn_fetch_notifications', array( self::$instance, 'remote_get_notice_ajax' ) );
 			add_filter( 'heartbeat_received', array( self::$instance, 'heartbeat' ), 10, 2 );
 
 		}
@@ -123,7 +125,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public function __clone() {
 			// Cloning instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 		}
 
 		/**
@@ -134,7 +136,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public function __wakeup() {
 			// Unserializing instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
 		}
 
 		/**
@@ -202,7 +204,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			);
 
 			// Generate the notice unique ID
-			$notification['notice_id'] = $notification['channel_id'] . substr( $channel_key, 0, 5 );
+			$notification['notice_id'] = $notification['channel_id'] . (string) strtotime('today');
 
 			// Double check that the required info is here
 			if ( '' === ( $notification['channel_id'] || $notification['channel_key'] || $notification['server_url'] ) ) {
@@ -282,6 +284,11 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public function show_notices() {
 
+			// Don't put notices on page unless its an admin!
+			if ( ! wpas_is_asadmin() ) {
+				return ;
+			}
+
 			foreach ( $this->notifications as $id => $notification ) {
 
 				$rn = $this->get_remote_notification( $notification );
@@ -311,7 +318,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 				}
 
 				// Output the admin notice
-				$this->create_admin_notice( $rn->content, $this->get_notice_class( isset( $rn->style ) ? $rn->style : 'updated' ), $this->get_notice_dismissal_url( $rn->slug ) );
+				$this->create_admin_notice( $rn->message, $this->get_notice_class( isset( $rn->style ) ? $rn->style : 'updated' ), $this->get_notice_dismissal_url( $rn->slug ) );
 
 			}
 
@@ -330,7 +337,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 
 			global $current_user;
 
-			$dismissed = array_filter( (array) get_user_meta( $current_user->ID, '_rn_dismissed', true ) );
+			$dismissed = array_filter( (array) get_user_option( '_rn_dismissed', $current_user->ID ) );
 
 			if ( is_array( $dismissed ) && in_array( $slug, $dismissed ) ) {
 				return true;
@@ -473,11 +480,11 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			$args  = array();
 			$nonce = wp_create_nonce( 'rn-dismiss' );
 
-			array_push( $args, "rn=$nonce" );
-			array_push( $args, "notification=$slug" );
+			$args['rn'] = $nonce;
+			$args['notification'] = $slug;
 
 			foreach ( $_GET as $key => $value ) {
-				array_push( $args, "$key=$value" );
+				$args[$key] = $value ;
 			}
 
 			return esc_url( add_query_arg( $args, '' ) );
@@ -496,9 +503,9 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 * @return void
 		 */
 		protected function create_admin_notice( $contents, $class, $dismiss ) { ?>
-			<div class="<?php echo $class; ?>">
-				<a href="<?php echo $dismiss; ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php _e( 'Dismiss notification', 'remote-notifications' ); ?>">&times;</a>
-				<p><?php echo html_entity_decode( $contents ); ?></p>
+			<div class="<?php echo esc_attr( $class ); ?>">
+				<a href="<?php echo wp_kses_post($dismiss); ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php esc_html_e( 'Dismiss notification', 'awesome-support' ); ?>">&times;</a>
+				<p><?php echo wp_kses_post(html_entity_decode( $contents )); ?></p>
 			</div>
 		<?php }
 
@@ -527,15 +534,15 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			/* Get dismissed list */
-			$dismissed = array_filter( (array) get_user_meta( $current_user->ID, '_rn_dismissed', true ) );
+			$dismissed = array_filter( (array) get_user_option( '_rn_dismissed', $current_user->ID ) );
 
 			/* Add the current notice to the list if needed */
-			if ( is_array( $dismissed ) && ! in_array( $_GET['notification'], $dismissed ) ) {
-				array_push( $dismissed, $_GET['notification'] );
+			if ( is_array( $dismissed ) && ! in_array( $_GET['notification'], $dismissed ) && isset($_GET['notification'] ) ) {
+				array_push( $dismissed, sanitize_text_field( wp_unslash(  $_GET['notification'] ) ) );
 			}
 
 			/* Update option */
-			update_user_meta( $current_user->ID, '_rn_dismissed', $dismissed );
+			update_user_option( $current_user->ID, '_rn_dismissed', $dismissed );
 
 			/* Get redirect URL */
 			$args = array();
@@ -564,6 +571,11 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public function script() {
 
+		// Don't put script on page unless its an admin!
+			if ( ! wpas_is_asadmin() ) {
+				return ;
+			}
+
 			$maybe_fetch = array();
 
 			foreach ( $this->get_notifications() as $id => $n ) {
@@ -581,7 +593,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 					// Listen for the custom event "heartbeat-tick" on $(document).
 					$(document).on('heartbeat-tick', function (e, data) {
 
-						if (data.rdn_fetch !== '') {
+						if (typeof(data.rdn_fetch) !== 'undefined' && data.rdn_fetch !== '') {
 
 							ajax_data = {
 								'action': 'rdn_fetch_notifications',
@@ -649,10 +661,14 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		public function remote_get_notice_ajax() {
 
 			if ( isset( $_POST['notices'] ) ) {
-				$notices = $_POST['notices'];
+				$notices = sanitize_text_field( wp_unslash( $_POST['notices'] ) );
 			} else {
 				echo 'No notice ID';
 				die();
+			}
+
+			if ( ! current_user_can( 'manage_options' ) ) {
+				wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to fetches notices.', 'awesome-support') ), 403);		
 			}
 
 			if ( ! is_array( $notices ) ) {
@@ -665,7 +681,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 				$rn           = $this->remote_get_notification( $notification );
 
 				if ( is_wp_error( $rn ) ) {
-					echo $rn->get_error_message();
+					echo wp_kses_post($rn->get_error_message());
 				} else {
 					echo json_encode( $rn );
 				}
@@ -704,6 +720,10 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		protected function remote_get_notification( $notification ) {
 
+			if ( !is_array( $notification ) ) {
+				return new WP_Error( 'invalid_notification', __( 'The notification data is invalid', 'awesome-support' ) );
+			}
+
 			/* Query the server */
 			$response = wp_remote_get( $this->build_query_url( $notification['server_url'], $this->get_payload( $notification ) ), array( 'timeout' => apply_filters( 'rn_http_request_timeout', 5 ) ) );
 
@@ -713,19 +733,21 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			if ( 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-				return new WP_Error( 'invalid_response', sprintf( __( 'The server response was invalid (code %s)', 'remote-notifications' ), wp_remote_retrieve_response_code( $response ) ) );
+				// translators: %s is the code server response.
+				$x_content = __( 'The server response was invalid (code %s)', 'awesome-support' );
+				return new WP_Error( 'invalid_response', sprintf( $x_content, wp_remote_retrieve_response_code( $response ) ) );
 			}
 
 			$body = wp_remote_retrieve_body( $response );
 
 			if ( empty( $body ) ) {
-				return new WP_Error( 'empty_response', __( 'The server response is empty', 'remote-notifications' ) );
+				return new WP_Error( 'empty_response', __( 'The server response is empty', 'awesome-support' ) );
 			}
 
 			$body = json_decode( $body );
 
 			if ( is_null( $body ) ) {
-				return new WP_Error( 'json_decode_error', __( 'Cannot decode the response content', 'remote-notifications' ) );
+				return new WP_Error( 'json_decode_error', __( 'Cannot decode the response content', 'awesome-support' ) );
 			}
 
 			set_transient( 'rn_last_notification_' . $notification['notice_id'], $body, $notification['cache_lifetime'] * 60 * 60 );

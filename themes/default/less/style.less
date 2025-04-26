@@ -7,6 +7,10 @@
 5) Forms + Buttons + Labels
 6) Tables
 7) Pages
+8) Pagination
+9) Ticket List
+10) Media Queries
+
 
 */
 
@@ -34,7 +38,13 @@ Variables
 
 @grid-columns:            12;
 @grid-column-padding:     @spacing;
-@grid-float-breakpoint:   768px;
+@grid-start:				  1px;
+@grid-small:		  	  768px;
+@grid-medium:			  992px;
+@grid-large:			  1200px;
+@grid-extra-large:		  1600px;
+
+@grid-float-breakpoint:   @grid-small;
 
 /*
 ==========================================================================
@@ -68,7 +78,7 @@ General Scaffolding
 	.make-row();
 }
 .wpas-one-half {
-	.make-column(6);
+	.make-column(round(6));
 }
 .wpas-one-third {
 	.make-column(4);
@@ -87,17 +97,17 @@ Forms + Buttons + Labels
 .wpas-form-group {
 	margin-bottom: @spacing;
 }
-.wpas-checkbox + .wpas-checkbox {
-	margin-bottom: @spacing;
+.wpas-checkbox {
 	label {
 		font-weight: normal;
 	}
 }
 .wpas-form-group {
-	label {
+	> label {
 		display: inline-block;
 		max-width: 100%;
 		margin-bottom: @spacing/3;
+		margin-right: @spacing;
 		font-weight: 700;
 	}
 }
@@ -140,6 +150,8 @@ textarea.wpas-form-control {
 .wpas-btn {
 	display: inline-block;
 	padding: 6px 12px;
+	margin-right: 8px;
+	margin-top: 6px;	
 	margin-bottom: 0;
 	font-size: @font-size-base;
 	font-weight: 400;
@@ -203,6 +215,10 @@ Tables
 	border: none;
 	table-layout: auto;
 }
+.wpas-table-responsive {
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}
 .wpas-table>caption+thead>tr:first-child>th,
 .wpas-table>colgroup+thead>tr:first-child>th,
 .wpas-table>thead:first-child>tr:first-child>th,
@@ -247,7 +263,7 @@ Pages
 		}
 	}
 	.wpas-form-group {
-		label {
+		> label {
 			.wpas-sr-only;
 		}
 	}
@@ -316,6 +332,13 @@ Pages
 	margin-bottom: 0px;
 }
 .wpas-ticket-replies {
+	table-layout: fixed;
+	.col1 {
+		width: 90px;
+	}
+	.col2 {
+		width: 100%;
+	}
 	> tbody {
 		> tr {
 			> td {
@@ -341,6 +364,11 @@ Pages
 				}
 			}
 		}
+	}
+	// Force responsive preformatted
+	pre {
+		width: 100%;
+		overflow: auto;
 	}
 }
 .wpas-reply-meta {
@@ -594,4 +622,51 @@ https://github.com/Awesome-Support/Awesome-Support/issues/302
 .wpas_table_pagination-sm > li:last-child > a, .wpas_table_pagination-sm > li:last-child > span {
 	border-bottom-right-radius: 3px;
 	border-top-right-radius: 3px;
+}
+
+/*
+==========================================================================
+Responsive Overrides
+==========================================================================
+*/
+
+@media (max-width: @grid-medium) {
+	/* Make sure the logout button doesn't hang out on the side in a weird fashion */
+	.wpas-ticket-buttons-top .wpas-link-logout{
+		float:inherit;
+	}	
+	
+	/* Only show the first five columns in the table */
+	.wpas-table td:nth-child(n+5){
+		display: none ;
+	}	
+	.wpas-table th:nth-child(n+5){
+		display: none ;
+	}	
+}
+
+@media (max-width: @grid-small) {
+	/* On really small screens the search box will be under the status dropdown so give it some vertical space between them */
+	#wpas_filter {
+		margin-top: 0.5em;
+	}	
+	
+	/* Only show the first couple of columns in the table */
+	.wpas-table td:nth-child(n+3){
+		display: none ;
+	}	
+	.wpas-table th:nth-child(n+3){
+		display: none ;
+	}	
+	
+}
+
+@media (max-width: @grid-large) {	
+	/* Only show the first eight columns in the table */
+	.wpas-table td:nth-child(n+8){
+		display: none ;
+	}	
+	.wpas-table th:nth-child(n+8){
+		display: none ;
+	}	
 }

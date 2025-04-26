@@ -133,12 +133,12 @@ msgstr ""
 msgid "Old"
 msgstr ""
 
-#: includes/admin/class-admin-titan.php:88 includes/admin/class-admin.php:200
+#: includes/admin/class-admin-gas.php:88 includes/admin/class-admin.php:200
 #: includes/admin/class-admin.php:497
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/class-admin-titan.php:89
+#: includes/admin/class-admin-gas.php:89
 msgid "Awesome Support Settings"
 msgstr ""
 
@@ -1785,3 +1785,11 @@ msgstr "Jina %s Mpya"
 msgctxt "Login form"
 msgid "Show Password"
 msgstr "Onyesha Nenosiri"
+
+#: includes/custom-fields/functions-custom-fields.php:401
+msgid "Ticket Type"
+msgstr "Aina ya Tiketi"
+
+#: includes/custom-fields/functions-custom-fields.php:402
+msgid "Ticket Types"
+msgstr ""

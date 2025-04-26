@@ -8,13 +8,17 @@ jQuery(document).ready(function ($) {
 	 */
 	var selector = $('.wpas-select2');
 	var condition = selector.length && $.fn.select2 && typeof ajaxurl !== 'undefined';
-	if (condition) getUserList();
+	if (condition) getUserList( selector );
 
 	/**
 	 * Get User List via AJAX
 	 * https://select2.github.io/examples.html#data-ajax
 	 */
-	function getUserList() {
+        
+        
+        
+        
+	function getUserList( selector ) {
 		selector.each(function (index, el) {
 			var capability = $(el).attr('data-capability');
 			if (capability) {
@@ -27,6 +31,7 @@ jQuery(document).ready(function ($) {
 						data: function (params) {
 							return {
 								action: 'wpas_get_users',
+								get_users_nonce: WPAS_get_users.get_users_nonce,
 								cap: capability,
 								q: params.term
 							};
@@ -36,7 +41,7 @@ jQuery(document).ready(function ($) {
 								results: $.map(data, function (obj) {
 									return {
 										id: obj.user_id,
-										text: obj.user_name
+										text: "#" +  obj.user_id + " " + obj.user_name + " (" +  obj.user_email + ")"
 									};
 								})
 							};
@@ -47,5 +52,7 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	}
+        
+        window.getUserListSelect2 = getUserList;
 
 });

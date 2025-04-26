@@ -1,0 +1,48 @@
+@page {
+    margin: 0;
+    padding-top: 0;
+    size: A4;
+}
+
+body {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+    padding: 0 25px 25px 25px;
+    margin: 0;
+    font-size: 13px;
+}
+
+table {
+    width: 100%;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+th {
+    text-align: left;
+}
+td {
+    text-align: left;
+    padding: 5px 0;
+}
+ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+h3 {
+    margin-top: 30px;
+}
+
+.wpas-print-ticket-history td {
+    text-align: center !important;
+}
+
+.wpas-print-ticket-container {
+    margin-bottom: 50px;
+    page-break-after: always;
+}
+
+
+img.emoji {
+    width: 22px;
+}

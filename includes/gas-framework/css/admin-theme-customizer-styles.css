@@ -1,0 +1,339 @@
+/*
+ * TODO: separate styles into multiple imports
+ */
+
+@import "class-option-font.css";
+@import "class-option-date.css";
+
+.tf-googlefont-area label {
+	display: block;
+}
+
+/* radio-palette */
+.tf-radio-palette span {
+	display: inline-block;
+	height: 40px;
+}
+.tf-radio-palette span span {
+	width: 15px;
+}
+.tf-radio-palette > label > span {
+	padding: 2px;
+	border: 1px solid #ddd;
+}
+.tf-radio-palette input[type=radio] {
+	vertical-align: top;
+	margin-top: 17px;
+}
+.tf-radio-palette label {
+	margin-left: 30px;
+	white-space: nowrap;
+}
+.tf-radio-palette label:first-child {
+	margin-left: 0
+}
+.tf-radio-palette {
+	margin-top: 10px;
+	display: inline-block;
+	margin-right: 5px;
+}
+
+/* radio image */
+.tf-radio-image img, .tf-radio-image-font-icon {
+	vertical-align: middle;
+}
+.tf-radio-image {
+	margin-top: 10px;
+	display: inline-block;
+	margin-right: 5px;
+}
+.tf-radio-image input[type=radio] {
+	margin-top: 0;
+}
+/* code */
+.tf-code {
+	border-radius: 3px;
+	border: 1px solid #DDD;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	position: relative;
+	font-size: 14px;
+}
+/* sortable */
+.tf-sortable li {
+	cursor: move;
+	background: #fafafa;
+	padding: 0 0 0 15px;
+	border: 1px solid #DDD;
+	position: relative;
+	line-height: 40px;
+}
+.tf-sortable ul {
+	margin-top: 0;
+	background: rgba(0, 0, 0, 0);
+	border: 1px solid #EEE;
+	padding: 5px;
+	display: inline-block;
+}
+.tf-sortable ul li:last-of-type {
+	margin-bottom: 0;
+}
+.tf-sortable ul li i {
+	float: right;
+	background: #fcfcfc;
+	display: inline-block;
+	border-left: 1px solid #ddd;
+	border-bottom: 1px solid #DDD;
+	width: 40px;
+	line-height: 40px;
+	text-align: center;
+	color: #777;
+}
+.tf-sortable ul li i.visibility {
+	cursor: pointer;
+}
+.tf-sortable ul li i:last-of-type {
+	margin-left: 50px;
+}
+.tf-sortable li.tf-invisible {
+	color: #ccc;
+	background: transparent;
+}
+/* number slider */
+.tf-number .ui-slider-handle {
+    position: absolute;
+    z-index: 2;
+	border-radius: 3px;
+    cursor: move;
+	margin-left: -6px;
+	pointer-events: none;
+	outline: none;
+	top: -5px;
+	background: #EEE;
+	border: 1px solid #CCC;
+	height: 23px;
+	width: 12px;
+}
+.tf-number .ui-slider a:focus {
+	outline: none;
+}
+.tf-number .ui-slider-range {
+    background: #eee;
+    height: 100%;
+}
+.tf-number .number-slider {
+	position: relative;
+	background: #fcfcfc;
+    border: 1px solid #ddd;
+	border-radius: 3px;
+	height: 15px;
+	width: 120px;
+	display: inline-block;
+	vertical-align: middle;
+	margin: 15px 15px 15px 0;
+}
+.tf-number input.small-text {
+	width: 65px;
+	vertical-align: middle;
+}
+/* google webfont new */
+.tf-font label {
+	vertical-align: middle;
+	padding: 4px 4px 4px 13px;
+	background: transparent;
+	margin-bottom: 0;
+	display: flex;
+	text-align: right;
+	white-space: nowrap;
+	margin-right: 0;
+	font-size: 12px;
+	line-height: 28px;
+	border: 0;
+}
+.tf-font label {
+    padding-left: 9px;
+}
+.tf-font .wp-picker-container.wp-picker-active {
+	left: -30px;
+	top: 30px;
+	height: auto;
+	margin-left: auto;
+	margin-bottom: 30px;
+}
+.tf-font .wp-picker-container .wp-picker-input-wrap label {
+	display: inline-block;
+	padding: 0;
+}
+.tf-font .wp-picker-container .wp-picker-default {
+	margin: 0 5px;
+}
+.tf-font label.tf-picker-open {
+	background: transparent;
+	border-color: transparent;
+	position: relative;
+}
+.tf-font label.tf-picker-open .wp-picker-container .wp-color-result {
+	margin-left: 0;
+}
+.tf-font select {
+	margin-left: 10px;
+}
+.tf-font .wp-picker-container {
+	line-height: 28px;
+	height: 28px;
+	margin: 1px;
+	margin-left: 10px;
+}
+.tf-font .wp-picker-container > a {
+	margin: 2px 7px 2px 10px;
+}
+.tf-font .wp-picker-container .wp-picker-default {
+	margin: 2px 2px 2px 7px;
+}
+.tf-font iframe {
+	width: 100%;
+	height: 200px;
+	background: #FCFCFC;
+	border: 1px solid #DDD;
+}
+.tf-font div {
+	position: relative;
+}
+.tf-font > div {
+    padding: 5px 0;
+    background-color: rgba(255,255,255,.5);
+    margin-bottom: 4px;
+}
+.tf-font i {
+	position: absolute;
+	top: 0;
+	left: 0;
+	line-height: 30px !important;
+	width: 30px;
+	background: #EEE;
+	text-align: center;
+	border: 1px solid #DDD;
+	cursor: pointer;
+}
+.tf-font i:hover {
+	background: #333;
+	color: #FFF;
+	border-bottom: 1px solid #333;
+	border-right: 1px solid #333;
+}
+.tf-font .wp-picker-container {
+	z-index: 8;
+}
+.tf-font .tf-font-sel-family {
+	width: 150px;
+}
+
+
+/*
+ * Enable option styles
+ */
+
+
+.tf-enable input {
+	width: 0;
+	height: 0;
+	overflow: hidden;
+	float: right;
+	z-index: -9999;
+	position: absolute;
+	border: 0;
+	opacity: 0;
+}
+.tf-enable .button {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+.tf-enable .button + .button-primary {
+	background: #6C7A89;
+	border-color: #56606B;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	color: #fff;
+	pointer-events: none;
+}
+.tf-enable .button-primary:nth-of-type(2) {
+	pointer-events: none;
+}
+.tf-enable .button:nth-of-type(2) {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.tf-enable .button-secondary:nth-of-type(2) {
+	-webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.08);
+	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.08);
+}
+.tf-enable .button + .button {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	-webkit-box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.08);
+	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.08);
+}
+.tf-date-datepicker.ui-widget-content {
+	left: 270px !important;
+}
+
+
+.tf-ajax-button .button {
+	display: block;
+    width: 100%;
+}
+.tf-ajax-button .button + .button {
+    margin-top: 5px;
+}
+
+p.description {
+	margin-bottom: 30px;
+}
+p.description:empty {
+	margin-bottom: 5px;
+}
+
+.tf-upload .tf-image-preview img {
+    margin-top: 0px;
+    margin-left: 0px;
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+}
+
+
+.tf-heading {
+	border-top: 1px solid #dadada;
+    background-color: #e1e1e1;
+    padding: .5em 12px;
+    margin: 0 -12px;
+    border-bottom: 1px solid #ddd;
+}
+.tf-heading .description {
+	margin: 0;
+    color: #666;
+    font-weight: normal;
+}
+.tf-file-upload {
+	min-height: 20px;
+	padding: 10px 20px;
+	width: 215px;
+	background-color: #FAFAFA;
+  box-shadow: inset 0 0 0 1px #EEE;
+	cursor: pointer;
+	position: relative;
+}
+.tf-file-upload p{
+	margin: 0 !important;
+}
+.tf-file-upload i{
+	position: absolute;
+	right: 10px;
+}

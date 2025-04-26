@@ -9,7 +9,7 @@
 		var rowCount = rows.length;
 		var controls = $('#wpas_ticketlist_filters');
 		var condition = selector.length && rowCount >= 5 && $.fn.footable && typeof wpas !== 'undefined';
-		condition ? drawTable() : controls.hide();
+		var res = ( false !== condition ) ? drawTable() : controls.hide();
 
 		function drawTable() {
 
@@ -28,14 +28,30 @@
 				}
 			});
 
+			//Escape HTML function
+			function escapeHtml(text) {
+				return text.replace(/[&<>"'`=\/]/g, function (s) {
+					return ({
+						'&': '&amp;',
+						'<': '&lt;',
+						'>': '&gt;',
+						'"': '&quot;',
+						"'": '&#39;',
+						'/': '&#x2F;',
+						'`': '&#x60;',
+						'=': '&#x3D;'
+					})[s];
+				});
+			}
+
 			// Create the status dropdown
 			var statusesArr = [];
 			var statusesOptions = '';
 			rows.each(function (index, el) {
-				var status = $(el).find('.wpas-label').text();
+				var status = $(el).find('.wpas-label-status').text();
 				if (statusesArr.indexOf(status) == -1) {
 					statusesArr.push(status);
-					statusesOptions += '<option value="' + status + '">' + status + '</option>';
+					statusesOptions += '<option value="' + escapeHtml(status) + '">' + escapeHtml(status) + '</option>';
 				}
 			});
 
@@ -55,7 +71,7 @@
 			});
 
 			// Clear status dropdown and search box
-			$('.wpas-clear-filter').click(function (e) {
+			$('.wpas-clear-filter').on("click", function (e) {
 				e.preventDefault();
 				statusDropdown.val('');
 				selector.trigger('footable_clear_filter');

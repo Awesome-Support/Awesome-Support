@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Install
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2015 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2015-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -13,6 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
+register_deactivation_hook( WPAS_PLUGIN_FILE, 'wpas_deactivation' );
 /**
  * Fired when the plugin is activated.
  *
@@ -25,31 +26,24 @@ register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
  */
 function wpas_install( $network_wide ) {
 
-	if ( function_exists( 'is_multisite' ) && is_multisite() ) {
-
-		if ( $network_wide ) {
-
-			// Get all blog ids
-			$blog_ids = wpas_get_blog_ids();
-
-			foreach ( $blog_ids as $blog_id ) {
-
-				switch_to_blog( $blog_id );
-				wpas_single_activate();
-			}
-
-			restore_current_blog();
-
-		} else {
-			wpas_single_activate();
-		}
-
-	} else {
+	if ( false === $network_wide || ! function_exists( 'is_multisite' ) || ( function_exists( 'is_multisite' ) && ! is_multisite() ) ) {
 		wpas_single_activate();
 	}
-
 }
-
+function wpas_deactivation( $network_wide ) {
+	
+    remove_action('deactivate_awesome-support/awesome-support.php','wpas_deactivation');
+    if ( false === $network_wide || ! function_exists( 'is_multisite' ) || ( function_exists( 'is_multisite' ) && ! is_multisite() ) ) {
+        $plugins = get_plugins();
+        foreach($plugins as $name => $data) {
+            if (strpos($data['Name'], 'Awesome Support') !== false) {
+                deactivate_plugins($name);
+            }   
+        }
+        wp_redirect( admin_url() . 'plugins.php?deactivate=true' );
+        exit;
+    }       
+}
 add_action( 'wpmu_new_blog', 'wpas_activate_new_site', 10, 6 );
 /**
  * Fired when a new site is activated with a WPMU environment.
@@ -96,12 +90,37 @@ function wpas_single_activate() {
 		'delete_private_ticket',
 		'delete_other_ticket',
 		'assign_ticket',
+		'assign_ticket_creator',
 		'close_ticket',
 		'reply_ticket',
 		'settings_tickets',
 		'ticket_taxonomy',
 		'create_ticket',
-		'attach_files'
+		'attach_files',
+		'view_all_tickets',
+		'view_unassigned_tickets',
+		'manage_licenses_for_awesome_support',
+		'administer_awesome_support',
+		'ticket_manage_tags',
+		'ticket_edit_tags',
+		'ticket_delete_tags',
+		'ticket_manage_products',
+		'ticket_edit_products',
+		'ticket_delete_products',
+		'ticket_manage_departments',
+		'ticket_edit_departments',
+		'ticket_delete_departments',
+		'ticket_manage_priorities',
+		'ticket_edit_priorities',
+		'ticket_delete_priorities',
+		'ticket_manage_channels',
+		'ticket_edit_channels',
+		'ticket_delete_channels',
+		'ticket_manage_privacy',
+		'ticket_manage_ticket_type',
+		'ticket_edit_ticket_type',
+		'ticket_delete_ticket_type',
+		'ticket_manage_ticket_templates'
 	) );
 
 	/**
@@ -120,11 +139,19 @@ function wpas_single_activate() {
 		'edit_other_ticket',
 		'edit_private_ticket',
 		'assign_ticket',
+		'assign_ticket_creator',
 		'close_ticket',
 		'reply_ticket',
 		'create_ticket',
 		'delete_reply',
-		'attach_files'
+		'attach_files',
+		'ticket_manage_tags',
+		'ticket_manage_products',
+		'ticket_manage_departments',
+		'ticket_manage_priorities',
+		'ticket_manage_channels',
+		'ticket_manage_privacy',
+		'ticket_manage_ticket_type',
 	) );
 
 	/**
@@ -167,11 +194,10 @@ function wpas_single_activate() {
 		// Add full plugin capacities only to technical manager
 		if ( null != $tech )
 			$tech->add_cap( $cap );
-
 	}
 
 	/**
-	 * Add limited capacities ot agents
+	 * Add limited capacities to agents
 	 */
 	foreach ( $agent_cap as $cap ) {
 		if ( null != $agent ) {
@@ -188,10 +214,14 @@ function wpas_single_activate() {
 		}
 	}
 
+	// Now, remove the "view_all_tickets" capability from admin.
+	// We need to do this because this capability will override the
+	// settings for administrators in TICKETS->SETTINGS->ADVANCED.
+	// We don't want to do that!
+	$admin->remove_cap('view_all_tickets');
+
 	add_option( 'wpas_options', serialize( get_settings_defaults() ) );
 	add_option( 'wpas_setup', 'pending' );
-	add_option( 'wpas_redirect_about', true );
-	add_option( 'wpas_support_products', 'pending' );
 	add_option( 'wpas_db_version', WPAS_DB_VERSION );
 	add_option( 'wpas_version', WPAS_VERSION );
 
@@ -210,12 +240,9 @@ function wpas_get_blog_ids() {
 
 	global $wpdb;
 
-	// get an array of blog ids
-	$sql = "SELECT blog_id FROM $wpdb->blogs
+	return $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0'
-			AND deleted = '0'";
-
-	return $wpdb->get_col( $sql );
+			AND deleted = '0'" );
 
 }
 
@@ -298,35 +325,41 @@ function wpas_flush_rewrite_rules() {
 }
 
 /**
- * Multiple products support.
- *
- * Ask the user to choose if the support site will manage
- * multiple products or not.
- *
- * @since  3.0.0
- * @return void
+ * As Setup Wizard.
+ * Ask the user to setup plugin using Setup Wizard.
  */
-function wpas_ask_support_products() {
-
-	global $pagenow;
-
-	$args_single = $args_multiple = $_GET;
-
-	if ( ! isset( $get ) || ! is_array( $get ) ) {
-		$get = array();
-	}
-
-	$args_single['products']   = 'single';
-	$args_multiple['products'] = 'multiple';
+function wpas_ask_setup_wizard() {
+	if ( wpas_is_asadmin() ) {
 	?>
-	<div class="updated">
-		<p><?php _e( 'Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>', 'awesome-support' ); ?></p>
-
-		<p>
-			<a href="<?php echo wp_sanitize_redirect( wpas_do_url( admin_url( $pagenow ), 'admin_products_option', $args_single ) ); ?>"
-			   class="button-secondary"><?php _e( 'Single Product', 'awesome-support' ); ?></a>
-			<a href="<?php echo wp_sanitize_redirect( wpas_do_url( admin_url( $pagenow ), 'admin_products_option', $args_multiple ) ); ?>"
-			   class="button-secondary"><?php _e( 'Multiple Products', 'awesome-support' ); ?></a>
+	<div class="updated wpas-wizard-notice">
+		<h1 class="wizard-main-heading"><?php esc_html_e( 'Awesome Support: First Time Install' , 'awesome-support' ); ?></h1>
+		<p class="wizard-first-line"><?php esc_html_e( 'Thank you for installing Awesome Support. Please choose an option below to get started.' , 'awesome-support' ); ?></p>
+		<p class="wizard-normal wizard-second-line"><?php esc_html_e( 'If this is not the first time you are using Awesome Support or you would like to manually configure your initial settings, then you should choose to skip this process. Otherwise proceed by clicking the orange button.' , 'awesome-support' ); ?></p>
+		<p><span class="wpas-button-wizard-primary">	
+			<a href="<?php echo esc_url( admin_url( 'index.php?page=as-setup' ) ); ?>">
+				<?php esc_html_e( 'Click here To Get Started Now' , 'awesome-support' ); ?>
+			</a>
+			</span>
+			<span class="wpas-button-wizard-skip"><a href="#" id="wpas-skip-wizard"><?php esc_html_e( 'Or skip this process' , 'awesome-support' ); ?></a></span>
 		</p>
 	</div>
-<?php }
+	<?php
+	}
+}
+
+
+/**
+ * Install the default email templates.
+ *
+ * Hook: init
+ * Hooked in awesomesupport.php
+ *
+ */
+function wpas_install_default_email_templates() {
+
+	if (function_exists('wpas_install_email_template')) {
+		wpas_install_email_template( 'elegant', false );
+		add_option( 'wpas_setup_email_templates', 'complete' );
+	}
+
+}

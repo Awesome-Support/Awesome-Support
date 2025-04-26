@@ -21,6 +21,14 @@ function wpas_core_settings_style( $def ) {
 					'default' => 'default'
 				),
 				array(
+					'name'    => __( 'Overlay', 'awesome-support' ),
+					'id'      => 'theme_overlay',
+					'type'    => 'select',
+					'desc'    => __( 'An overlay is generally a pure css variation on the theme selected above that overides the colors of the selected theme.  The default overlay is the most widely compatible overlay - other overlays may or may not work with your theme.  There is limited technical support for overlays other than the default.', 'awesome-support' ),
+					'options' => wpas_list_overlays(),
+					'default' => 'style.css'
+				),				
+				array(
 					'name'    => __( 'Theme Stylesheet', 'awesome-support' ),
 					'id'      => 'theme_stylesheet',
 					'type'    => 'checkbox',
@@ -31,7 +39,14 @@ function wpas_core_settings_style( $def ) {
 					'name'    => __( 'Use editor in front-end', 'awesome-support' ),
 					'id'      => 'frontend_wysiwyg_editor',
 					'type'    => 'checkbox',
-					'desc'    => __( 'Show a editor editor for the ticket description when user submits a ticket.', 'awesome-support' ),
+					'desc'    => __( 'Show an editor for the ticket description when user submits a ticket.', 'awesome-support' ),
+					'default' => true
+				),
+				array(
+					'name'    => __( 'Use automatic linker', 'awesome-support' ),
+					'id'      => 'use_autolinker',
+					'type'    => 'checkbox',
+					'desc'    => __( 'Automatically link URLs, email addresses, phone numbers, twitter handles, and hashtags', 'awesome-support' ),
 					'default' => true
 				),
 				array(
@@ -46,7 +61,7 @@ function wpas_core_settings_style( $def ) {
 				),
 				array(
 					'name'    => __( 'Closed Status', 'awesome-support' ),
-					'id'      => 'color_closed',
+					'id'      => 'gas_color_closed',
 					'type'    => 'color',
 					'default' => '#dd3333',
 				),
@@ -62,6 +77,12 @@ function wpas_core_settings_style( $def ) {
 					'type'    => 'color',
 					'default' => '#0074a2',
 				),
+				array(
+					'name'    => __( 'Ticket Template Type', 'awesome-support' ),
+					'id'      => 'color_ticket_template_type',
+					'type'    => 'color',
+					'default' => '#1383D9',
+				),				
 			)
 		),
 	);
@@ -74,19 +95,19 @@ function wpas_core_settings_style( $def ) {
 		'hold'       => '#b56629',
 		'unknown'    => '#169baa'
 	) );
-
+	
 	foreach ( $status as $id => $label ) {
-
+		
 		$option = array(
 			'name'    => $label,
 			'id'      => 'color_' . $id,
 			'type'    => 'color',
-			'default' => isset( $defaults[$id] ) ? $defaults[$id] : $defaults['unknown'],
+			'default' => isset( $defaults[$id] ) ? $defaults[$id] : wpas_get_option( "color_$id", $defaults['unknown'] ),
 		);
 
 		array_push( $settings['style']['options'], $option );
 	}
-
-	return array_merge( $def, $settings );
+	
+	return array_merge( $def, apply_filters('wpas_settings_style', $settings )  );
 
 }

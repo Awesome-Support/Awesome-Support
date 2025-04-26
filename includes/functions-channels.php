@@ -39,18 +39,24 @@ function wpas_add_default_channel_terms($reset = false) {
 	if (!$reset) {
 		
 		$added_before = boolval( get_option( 'wpas_default_channels_added', false ) );
-		$is_channel_field_active = boolval( wpas_get_option('channel_show_in_ticket_list', false) );
 		
-		if ( false === $is_channel_field_active || true ===  $added_before) {
+		if ( true ===  $added_before) {
 			return;
 		}
 	}
+
+
+	if ( true === taxonomy_exists('ticket_channel') ) {	
 	
-	$channels = wpas_default_channels();
-	foreach($channels as $channel) {
-		wp_insert_term($channel, 'ticket_channel');
+		$channels = wpas_default_channels();
+		
+		foreach($channels as $channel) {
+			wp_insert_term($channel, 'ticket_channel');
+		}
+		
+		update_option('wpas_default_channels_added', true);
+		
 	}
-	update_option('wpas_default_channels_added', true);
 	
 	return true;
 	

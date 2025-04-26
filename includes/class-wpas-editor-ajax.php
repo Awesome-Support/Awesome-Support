@@ -98,10 +98,25 @@ class WPAS_Editor_Ajax {
 	 * @since  3.1.5
 	 */
 	public function editor_html() {
-
-		$post_id   = filter_input( INPUT_POST, 'post_id',         FILTER_SANITIZE_NUMBER_INT );
-		$editor_id = filter_input( INPUT_POST, 'editor_id',       FILTER_SANITIZE_STRING );
-		$name      = filter_input( INPUT_POST, 'textarea_name',   FILTER_SANITIZE_STRING );
+		
+		/**
+		 * Security checking. Verify ajax via nonce.
+		 */
+		if( !check_ajax_referer( 'wpas_edit_reply', 'nonce', false ) ) {
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			die();
+		}
+		
+		$post_id   = filter_input( INPUT_POST, 'post_id',         FILTER_SANITIZE_NUMBER_INT );	
+		$editor_id = isset( $_POST['editor_id'] ) ? sanitize_text_field( wp_unslash( $_POST['editor_id'] ) ) : '';	
+		
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			die();
+		}		
+			
+		$name = isset( $_POST['textarea_name'] ) ?  sanitize_text_field( wp_unslash( $_POST['textarea_name'] ) ) : '';
 		$settings  = (array) filter_input( INPUT_POST, 'editor_settings', FILTER_UNSAFE_RAW);
 
 		if ( empty( $editor_id ) ) {
@@ -119,7 +134,8 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Get the content and filter it.
 		 */
-		$content = ( isset( $post ) && ! empty( $post ) ) ? $post->post_content : filter_input( INPUT_POST, 'editor_content', FILTER_SANITIZE_STRING );
+		$editor_content = isset( $_POST['editor_content'] ) ? wp_kses_post( wp_unslash( $_POST['editor_content'] ) ) : '';	
+		$content = ( isset( $post ) && ! empty( $post ) ) ? $post->post_content : $editor_content;
 		$content = apply_filters( 'the_content', $content );
 
 		/**
@@ -130,6 +146,7 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Force QuickTags to false due to the WordPress bug
 		 */
+		// Forced QuickTags to false due to the editor content update issue.
 		$settings['quicktags'] = false;
 
 		/**
@@ -148,11 +165,10 @@ class WPAS_Editor_Ajax {
 		 * Update the TinyMCE and QuickTags pre-init objects.
 		 */
 		$mce_init = $this->get_mce_init( $editor_id );
-		$qt_init  = $this->get_qt_init( $editor_id ); ?>
-
+		$qt_init  = $this->get_qt_init( $editor_id ); ?> 
 		<script type="text/javascript">
-			tinyMCEPreInit.mceInit = jQuery.extend( tinyMCEPreInit.mceInit, <?php echo $mce_init ?>);
-			tinyMCEPreInit.qtInit = jQuery.extend( tinyMCEPreInit.qtInit, <?php echo $qt_init ?>);
+			tinyMCEPreInit.mceInit = jQuery.extend( tinyMCEPreInit.mceInit, <?php echo wp_kses_post($mce_init); ?>);
+			tinyMCEPreInit.qtInit = jQuery.extend( tinyMCEPreInit.qtInit, <?php echo wp_kses_post($qt_init); ?>);
 		</script>
 
 		<?php die();
@@ -166,13 +182,27 @@ class WPAS_Editor_Ajax {
 	 */
 	public function get_content() {
 
+		/**
+		 * Security checking. Verify ajax via nonce.
+		 */
+		if( !check_ajax_referer( 'wpas-editor-content-nonce', 'nonce', false ) ) {
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			die();
+		}
+		
 		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( empty( $post_id ) ) {
-			echo '';
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
 			die();
 		}
-
+		
+		//Check permission for capability of current user
+		if ( ! current_user_can( 'edit_ticket', $post_id ) || !wpas_can_view_ticket( $post_id ) ) {
+			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			die();
+		}
+		
 		$post = get_post( $post_id );
 
 		if ( empty( $post ) ) {
@@ -180,7 +210,7 @@ class WPAS_Editor_Ajax {
 			die();
 		}
 
-		echo apply_filters( 'the_content', $post->post_content );
+		echo wp_kses_post(apply_filters( 'the_content',  $post->post_content ));
 		die();
 	}
 
@@ -304,7 +334,7 @@ class WPAS_Editor_Ajax {
 				$val = $v ? 'true' : 'false';
 				$options .= $k . ':' . $val . ',';
 				continue;
-			} elseif ( !empty($v) && is_string($v) && ( ('{' == $v{0} && '}' == $v{strlen($v) - 1}) || ('[' == $v{0} && ']' == $v{strlen($v) - 1}) || preg_match('/^\(?function ?\(/', $v) ) ) {
+			} elseif ( !empty($v) && is_string($v) && ( ('{' == $v[0] && '}' == $v[strlen($v) - 1]) || ('[' == $v[0] && ']' == $v[strlen($v) - 1]) || preg_match('/^\(?function ?\(/', $v) ) ) {
 				$options .= $k . ':' . $v . ',';
 				continue;
 			}
