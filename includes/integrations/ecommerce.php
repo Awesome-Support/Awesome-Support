@@ -88,6 +88,7 @@ final class WPAS_eCommerce_Integration {
 				'post_type'       => 'download',
 				'append'          => true,
 				'locked_taxo_msg' => $locked_taxo_msg1,
+				'gasplugin_type' => 'edd',
 			),
 			'woocommerce' => array(
 				'file'            => 'woocommerce.php',
@@ -95,6 +96,7 @@ final class WPAS_eCommerce_Integration {
 				'post_type'       => 'product',
 				'append'          => true,
 				'locked_taxo_msg' => $locked_taxo_msg2,
+				'gasplugin_type' => 'woocommerce',
 			),
 			'exchange'    => array(
 				'file'            => 'init.php',
@@ -102,6 +104,7 @@ final class WPAS_eCommerce_Integration {
 				'post_type'       => 'it_exchange_prod',
 				'append'          => true,
 				'locked_taxo_msg' => $locked_taxo_msg3,
+				'gasplugin_type' => 'exchange',
 			),
 			'jigoshop'    => array(
 				'file'            => 'jigoshop.php',
@@ -109,6 +112,7 @@ final class WPAS_eCommerce_Integration {
 				'post_type'       => 'product',
 				'append'          => true,
 				'locked_taxo_msg' => $locked_taxo_msg4,
+				'gasplugin_type' => 'jigoshop',
 			),
 			'wpecommerce' => array(
 				'file'            => 'wp-shopping-cart.php',
@@ -116,6 +120,7 @@ final class WPAS_eCommerce_Integration {
 				'post_type'       => 'wpsc-product',
 				'append'          => true,
 				'locked_taxo_msg' => $locked_taxo_msg5,
+				'gasplugin_type' => 'wpecommerce',
 			),
 		);
 
@@ -229,7 +234,7 @@ final class WPAS_eCommerce_Integration {
 		if ( true === $current ) {
 			$this->synced     = true;
 			$this->locked_msg = wp_kses_post( $plugin['locked_taxo_msg'] );
-			$this->locked_msg_type = $plugin['post_type'];
+			$this->locked_msg_type = $plugin['gasplugin_type'];
 		}
 
 	}
@@ -313,10 +318,39 @@ final class WPAS_eCommerce_Integration {
 		if ( empty( $this->locked_msg ) ) {
 			return $message;
 		}
-		$this->locked_msg = __( $this->locked_msg, 'awesome-support' );
-		$this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', $this->locked_msg_type, admin_url( 'edit.php' ) ) );
-		return $this->locked_msg;
 
+		switch ( $this->locked_msg_type ) {
+			
+		    case 'edd':
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.', 'awesome-support');
+		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'download', admin_url( 'edit.php' ) ) );
+		        break;
+
+		    case 'woocommerce':
+		       	$this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
+		        break;
+
+		    case 'exchange':
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to an Exchange product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'it_exchange_prod', admin_url( 'edit.php' ) ) );
+		        break;
+
+		    case 'jigoshop':
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
+		        break;
+
+		    case 'wpecommerce':
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WP eCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'wpsc-product', admin_url( 'edit.php' ) ) );
+		        break;     
+
+		    default:
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
+		}		
+		return $this->locked_msg;
 	}
 	
 }
