@@ -320,33 +320,39 @@ final class WPAS_eCommerce_Integration {
 		}
 
 		switch ( $this->locked_msg_type ) {
-			
+
 		    case 'edd':
+		        // translators: %s is the link
 		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.', 'awesome-support');
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'download', admin_url( 'edit.php' ) ) );
 		        break;
 
 		    case 'woocommerce':
+		       	// translators: %s is the link
 		       	$this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
 		        break;
 
 		    case 'exchange':
+		        // translators: %s is the link
 		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to an Exchange product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'it_exchange_prod', admin_url( 'edit.php' ) ) );
 		        break;
 
 		    case 'jigoshop':
+		        // translators: %s is the link
 		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
 		        break;
 
 		    case 'wpecommerce':
+		        // translators: %s is the link
 		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WP eCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'wpsc-product', admin_url( 'edit.php' ) ) );
 		        break;     
 
 		    default:
+		        // translators: %s is the link
 		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
 		}		
