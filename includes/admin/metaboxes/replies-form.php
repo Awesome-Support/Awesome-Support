@@ -60,7 +60,7 @@ function wpas_reply_form_tab_content( $content = '' ) {
 		echo wp_kses_post( apply_filters( 'wpas_write_reply_title_admin', sprintf( esc_html($x_content), '&laquo;' . esc_attr( get_the_title( $post->ID ) ) . '&raquo;' ), $post ) ); ?>
 	</h2>
 
-	<div>
+	<div class="wpas-wp-editor-reply-tab-div">
 		<?php
 		// Load the WordPress WYSIWYG with minimal options
 		wp_editor( apply_filters( 'wpas_admin_reply_form_reply_content', '' ), 'wpas_reply', apply_filters( 'wpas_admin_reply_form_args', array(
