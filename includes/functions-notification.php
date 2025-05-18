@@ -45,8 +45,9 @@ function wpas_add_notification( $id, $message, $group = 'notifications' ) {
 	}
 	if ( false === $notifications ) {
 		wpas_set_notifications();
+		$notifications = array();
 	}
-
+	
 	$notifications[ $id ] = $message;
 
 	WPAS()->session->add( $group, $notifications );

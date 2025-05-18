@@ -5,6 +5,18 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.3.3</h1>
+				<h3>6.3.3 Revised plugin deactivation process with feedback.</h3>
+				<ul>
+					<li>We fixed Bug ticket reply from cron job (IMAP ADDON).</li>
+					<li>We fixed the compatibility with Wordpress version 6.8.</li>					
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.3.2</h1>
 				<h3>6.3.2 Revised plugin deactivation process with feedback.</h3>
 				<ul>

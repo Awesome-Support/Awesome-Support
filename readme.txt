@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,rwkiii,elindydotcom,SiamKreative,alaca
 Tags: helpdesk,ticket system,support,tickets,support ticket
 Requires at least: 4.0
-Tested up to: 6.7.1
-Stable tag: 6.3.2
+Tested up to: 6.8
+Stable tag: 6.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -291,6 +291,9 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.3.3	
+	* We fixed Bug ticket reply from cron job (IMAP ADDON).
+	* We fixed the compatibility with Wordpress version 6.8.
 = 6.3.2	
 	* We fixed vulnerability Issue with ticket folder. 
 

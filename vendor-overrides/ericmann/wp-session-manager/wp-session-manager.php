@@ -143,7 +143,7 @@ function wp_session_manager_deactivated_notice()
 if ( ! function_exists( 'wp_session_manager_start_session' )) {
     function wp_session_manager_start_session()
     {
-        if (session_status() !== PHP_SESSION_ACTIVE) {
+        if (session_status() !== PHP_SESSION_ACTIVE  && !headers_sent()) {
             session_start();
         }
     }
@@ -159,7 +159,7 @@ if (version_compare(PHP_VERSION, WP_SESSION_MINIMUM_PHP_VERSION, '<')) {
 
         // If we're not in a cron, start the session
         if (!defined('DOING_CRON') || false === DOING_CRON) {
-            add_action('plugins_loaded', 'wp_session_manager_start_session', 10, 0);
+            add_action('init', 'wp_session_manager_start_session', 1);
         }
     }
 }

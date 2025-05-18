@@ -69,20 +69,20 @@ if ( ! class_exists( 'GASFrameworkChecker' ) ) {
 			// If the plugin does not exist, throw admin notice to install.
 			if ( ! $this->plugin_exists() ) {
 				echo "<div class='error'><p><strong>"
-					. esc_html( apply_filters( 'gas_checker_installation_notice', __( 'Gas Framework needs to be installed.', 'default' ) ) )
+					. esc_html( apply_filters( 'gas_checker_installation_notice', __( 'Gas Framework needs to be installed.', 'awesome-support' ) ) )
 					. sprintf( " <a href='%s'>%s</a>",
 						esc_url( admin_url( 'plugin-install.php?tab=search&type=term&s=gas+framework' ) ),
-						esc_html( apply_filters( 'gas_checker_search_plugin_notice', __( 'Click here to search for the plugin.', 'default' ) ) )
+						esc_html( apply_filters( 'gas_checker_search_plugin_notice', __( 'Click here to search for the plugin.', 'awesome-support' ) ) )
 					)
 					. '</strong></p></div>';
 
 				// If the class doesn't exist, the plugin is inactive. Throw admin notice to activate plugin.
 			} else if ( ! class_exists( apply_filters( 'tf_framework_checker_gas_class', self::GASF_CLASS ) ) ) {
 				echo "<div class='error'><p><strong>"
-					. esc_html( apply_filters( 'gas_checker_activation_notice', __( 'Gas Framework needs to be activated.', 'default' ) ) )
+					. esc_html( apply_filters( 'gas_checker_activation_notice', __( 'Gas Framework needs to be activated.', 'awesome-support' ) ) )
 					. sprintf( " <a href='%s'>%s</a>",
 						esc_url( admin_url( 'plugins.php' ) ),
-						esc_html( apply_filters( 'gas_checker_activate_plugin_notice', __( 'Click here to go to the plugins page and activate it.', 'default' ) ) )
+						esc_html( apply_filters( 'gas_checker_activate_plugin_notice', __( 'Click here to go to the plugins page and activate it.', 'awesome-support' ) ) )
 					)
 					. '</strong></p></div>';
 			}

@@ -285,8 +285,8 @@ abstract class WPAS_Extension_Base {
 		if ( is_admin() ) {
 
 			// Add the license admin notice
-			$this->add_license_notice();
-
+			//$this->add_license_notice();
+			add_action( 'admin_notices', array( $this, 'add_license_notice' ), 9, 0 );
 			add_filter( 'wpas_addons_licenses', array( $this, 'addon_license' ),       10, 1 );
 			add_filter( 'plugin_row_meta',      array( $this, 'license_notice_meta' ), 10, 4 );
 		}
