@@ -1496,12 +1496,8 @@ function wpas_get_current_user_role() {
 	if( is_user_logged_in() ) {
 
 		$user = wp_get_current_user();
-		$role = ( array ) $user->roles;
-		if( isset( $role[0] ) )
-		{
-			return $role[0];
-		}
-		return false;
+		$role = ( is_object( $user ) && ! empty( $user->roles ) && is_array( $user->roles ) ) ? reset( $user->roles ) : false;
+		return $role;
 
 	} else {
 		
