@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /* Get the user role */
-$user_role = isset( $user->roles[0] ) ? $user->roles[0] : null;
+$user_role = ( is_object( $user ) && ! empty( $user->roles ) && is_array( $user->roles ) ) ? reset( $user->roles ) : null;
 ?>
 
 <tr id="reply-<?php echo esc_attr( the_ID() ); ?>" class="wpas-reply-single wpas-status-<?php echo esc_attr( get_post_status() ); ?> wpas_user_<?php echo esc_attr( $user_role ); ?>" valign="top">
