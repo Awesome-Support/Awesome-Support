@@ -271,8 +271,7 @@ class AS_Admin_Setup_Wizard {
 			} else{
 				if (!current_theme_supports('menus')) {
 					$get_next_step_link = esc_url_raw( $this->get_next_step_link() );
-					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a style="color: #69a463;
-    background: #FFF;border-color: #69a463;border-radius: 3px; padding: 8px;border: 1px solid #ccc;" href="'. esc_url( $get_next_step_link ).'">'.__( 'here', 'awesome-support' ).'</a> to continue';
+					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a class="not-menu-ignore" href="'. esc_url( $get_next_step_link ).'">'.__( 'Here', 'awesome-support' ).'</a> to continue';
 				
 					// translators: %s is the text.
 					$x_content = __( '%s.' , 'awesome-support' );
@@ -280,7 +279,7 @@ class AS_Admin_Setup_Wizard {
 				}
 				else
 				{
-					$x_text = 'It looks like you have a brand new install of WordPress without any menus.  So please setup at least one menu first. Click <a href="'. admin_url( 'nav-menus.php').'" class="contrast-link">here</a> to setup your first menu';
+					$x_text = 'It looks like you have a brand new install of WordPress without any menus.  So please setup at least one menu first. Click <a href="'. admin_url( 'nav-menus.php').'" class="contrast-link">Here</a> to setup your first menu';
 				
 					// translators: %s is the text.
 					$x_content = __( '%s.' , 'awesome-support' );
@@ -337,8 +336,7 @@ class AS_Admin_Setup_Wizard {
 			} else{
 				if (!current_theme_supports('menus')) {
 					$get_next_step_link = esc_url_raw( $this->get_next_step_link() );
-					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a style="color: #69a463;
-    background: #FFF;border-color: #69a463;border-radius: 3px; padding: 8px;border: 1px solid #ccc;" href="'. esc_url( $get_next_step_link ).'">'.__( 'here', 'awesome-support' ).'</a> to continue';
+					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a class="not-menu-ignore" href="'. esc_url( $get_next_step_link ).'">'.__( 'Here', 'awesome-support' ).'</a> to continue';
 				
 					// translators: %s is the text.
 					$x_content = __( '%s.' , 'awesome-support' );
