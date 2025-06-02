@@ -83,7 +83,7 @@ class WPAS_Log_History {
 			/* Get custom fields */
 			$fields = WPAS()->custom_fields->get_custom_fields();
 
-			$content .= '<ul class="wpas-log-list ted">';
+			$content .= '<ul class="wpas-log-list">';
 
 			foreach ( $this->contents as $key => $update ) {
 
