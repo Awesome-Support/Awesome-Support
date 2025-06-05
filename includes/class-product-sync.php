@@ -234,11 +234,13 @@ class WPAS_Product_Sync {
 
 				case 'slug':
 				case 'name':					
-					if(is_array($value) && count($value) < 1)
-					{
-						$value = '';
-					}	
-					$clean_args['name'] = sanitize_title( (string) $value );
+					$clean_args['name'] = '';
+					if ( is_array( $value ) ) {
+						$name = reset( $value );						
+						$clean_args['name'] = is_string( $name ) ? sanitize_title( $name ) : '';
+					} elseif ( is_string( $value ) ) {
+						$clean_args['name'] = sanitize_title( $value );
+					}					
 					break;
 
 				case 'parent':

@@ -2213,7 +2213,8 @@ if( !function_exists( 'wpas_get_allowed_html_tags' ) ) {
 				'dirname' => true, 		
 				'width' => true,			
 				'required' => true,	
-				'aria-label' => true,			
+				'aria-label' => true,
+				'pattern' => true,			
 			],  
 			'script' => [	
 				'async' => true,
