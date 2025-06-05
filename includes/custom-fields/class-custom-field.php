@@ -245,11 +245,6 @@
 				// Enable paste using ctrl+v commands
 				'enable_paste' => true,
 				
-				// @since 6.0.7
-				// (Optional) The maximum character length allowed for the input field.
-				// @var int
-				'maxlength' => '',
-
 				// @since 6.1.3
 				// Google, Microsoft can get your passwords via web browsers spellcheck
 				'spellcheck' => '',
@@ -619,11 +614,6 @@
 				}
 			}
 
-			/* Add the field maxlength */
-			if ( ! empty( $this->field[ 'args' ][ 'maxlength' ] ) && is_numeric($this->field[ 'args' ][ 'maxlength' ]) ) {
-				array_push( $atts, "maxlength='{$this->field['args']['maxlength']}'" );
-			}
-			
 			$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field, $this->field ) ), $field );
 			$field = str_replace( '{{label_atts}}', implode( ' ', $label_atts ), $field );
 			$field = str_replace( '{{label}}', $this->get_field_label(), $field );
