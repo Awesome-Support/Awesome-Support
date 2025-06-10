@@ -1802,7 +1802,7 @@ function wpas_get_ticket_replies_ajax() {
 	$ticket_id = absint( $_POST['ticket_id'] );	
 
 	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_ticket' ) ) {
+	if ( ! current_user_can( 'reply_ticket' ) ) {
 		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
     }	
 		
