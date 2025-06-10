@@ -46,6 +46,7 @@ global $post;
 		 * The wpas_submission_form_inside_after_subject action
 		 * hook is also declared as a post-render hook.
 		 */
+		$maximum_ticket_subject_front_end = wpas_get_option( 'maximum_ticket_subject_front_end' );
 		$subject_args = apply_filters( 'wpas_subject_field_args', array(
 			'name' => 'title',
 			'args' => array(
@@ -56,6 +57,7 @@ global $post;
 				'order'		 => '-2',
 				'pre_render_action_hook_fe'		=> 'wpas_submission_form_inside_before_subject',
 				'post_render_action_hook_fe'	=> 'wpas_submission_form_inside_after_subject',
+				'maxlength' => ( (int)$maximum_ticket_subject_front_end > 0 ) ? (int)$maximum_ticket_subject_front_end : '',
 			)
 		) );
 

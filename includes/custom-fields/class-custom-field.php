@@ -249,6 +249,11 @@
 				// Google, Microsoft can get your passwords via web browsers spellcheck
 				'spellcheck' => '',
 
+				// @since 6.0.7
+				// (Optional) The maximum character length allowed for the input field.
+				// @var int
+				'maxlength' => '',
+
 			);
 
 			return $defaults;
@@ -612,6 +617,11 @@
 				if ( true === apply_filters( 'wpas_cf_field_markup_readonly', $this->field[ 'args' ][ 'readonly' ], $this->field ) ) {
 					array_push( $atts, 'readonly' );
 				}
+			}
+
+			/* Add the field maxlength */
+			if ( ! empty( $this->field[ 'args' ][ 'maxlength' ] ) && is_numeric($this->field[ 'args' ][ 'maxlength' ]) ) {
+				array_push( $atts, "maxlength='{$this->field['args']['maxlength']}'" );
 			}
 
 			$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field, $this->field ) ), $field );
