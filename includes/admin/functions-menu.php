@@ -51,19 +51,41 @@ function wpas_tickets_count() {
 
 	global $menu, $current_user;
 
-	if ( wpas_is_asadmin()
-		 && false === boolval( wpas_get_option( 'admin_see_all' ) )
-		 || ! wpas_is_asadmin()
-			&& wpas_is_agent()
-			&& false === boolval( wpas_get_option( 'agent_see_all' ) )
-	) {
+	$count_cache = get_site_transient( 'wpas_tickets_counts' );
+	
+	if( !is_array($count_cache) )
+	{
+		$count_cache = array();
+	}
+	if ( wpas_is_asadmin() && false === boolval( wpas_get_option( 'admin_see_all' ) )
+		 || ! wpas_is_asadmin() && wpas_is_agent() && false === boolval( wpas_get_option( 'agent_see_all' ) )
+	) {		
+		// Display tickets was assign to current user
+		if( is_array( $count_cache ) && isset( $count_cache[ $current_user->ID ] ) )
+		{
+			$count = $count_cache[ $current_user->ID ];			
+		}
+		else
+		{
+			$agent = new WPAS_Member_Agent( $current_user->ID );
+			$count = $agent->open_tickets();
+			$count_cache[$current_user->ID] = $count;
+			set_site_transient( 'wpas_tickets_counts', $count_cache, DAY_IN_SECONDS  );			
+		}		
 
-		$agent = new WPAS_Member_Agent( $current_user->ID );
-		$count = $agent->open_tickets();
-
-	} else {
+	} else {	
 		
-		$count = wpas_get_tickets( 'open', [], 'any', true, true );
+		// Display all Opened tickets
+		if( is_array( $count_cache ) && isset( $count_cache['all'] ) )
+		{
+			$count = $count_cache['all'];			
+		}
+		else
+		{
+			$count = wpas_get_tickets( 'open', [], 'any', true, true );
+			$count_cache['all'] = $count;
+			set_site_transient( 'wpas_tickets_counts', $count_cache, DAY_IN_SECONDS  );			
+		}		
 	}
 	
 	if ( 0 === $count ) {

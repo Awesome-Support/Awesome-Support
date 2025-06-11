@@ -336,7 +336,7 @@ function wpas_save_ticket( $post_id ) {
 	}
 
 	do_action( 'wpas_ticket_after_saved', $post_id );
-
+	wpas_admin_clean_ticketcount_cache( $post_id );
 }
 
 add_action( 'wpas_add_reply_after', 'wpas_mark_replies_read', 10, 2 );
@@ -777,3 +777,21 @@ function wpas_close_ticket_prevent_client_notification_field( $ticket_id ) {
 	</div>
 	<?php
 }
+
+add_action( 'trashed_post', 'wpas_admin_clean_ticketcount_cache' );
+add_action( 'untrashed_post', 'wpas_admin_clean_ticketcount_cache' );
+/**
+ * Delete ticket count cache on ticket update
+ *
+ * @param int $ticket_id
+ */
+function wpas_admin_clean_ticketcount_cache( $ticket_id = '' )
+{
+	$post   = get_post( $ticket_id );
+
+	if (isset( $post ) && isset( $post->post_type) && $post->post_type !== 'ticket') {
+        return;
+    }   
+    set_site_transient( 'wpas_tickets_counts', null, 24 * HOUR_IN_SECONDS );   
+}
+

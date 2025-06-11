@@ -306,7 +306,7 @@ class Tickets extends TicketBase {
 		do_action( 'wpas_api_tickets_update_additional_fields_after', $object, $request );
 
 		if ( $this->is_item_new( $request ) ) {
-			do_action( 'wpas_open_ticket_after', $object->ID, get_post( $object->ID, 'ARRAY_A' ) );
+			do_action( 'wpas_open_ticket_after', $object->ID, get_post( $object->ID, 'ARRAY_A' ) );			
 		}
 
 		return parent::update_additional_fields_for_object( $object, $request );
