@@ -22,12 +22,26 @@ add_action( 'admin_menu', 'wpas_register_submenu_items' );
 function wpas_register_submenu_items() {
 
 	add_submenu_page( 'edit.php?post_type=ticket', __( 'Debugging Tools', 'awesome-support' ), __( 'Tools', 'awesome-support' ), 'administrator', 'wpas-status', 'wpas_display_status_page' );
+	
 	add_submenu_page( 'edit.php?post_type=ticket', __( 'Awesome Support Addons', 'awesome-support' ), '<span style="color:#f39c12;">' . __( 'Addons', 'awesome-support' ) . '</span>', 'edit_posts', 'wpas-addons', 'wpas_display_addons_page' );
 	
 	if ( ! defined( 'WPAS_SAAS' ) || ( defined( 'WPAS_SAAS' ) && false === WPAS_SAAS ) ) {
+		
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Get a Free Addon', 'awesome-support' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'awesome-support' ) . '</span>', 'administrator', 'wpas-optin', 'wpas_display_optin_page' );
+		
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Help & Support', 'awesome-support' ), '<span style="color:#4CBBA7;">' . esc_html__( 'Help & Support', 'awesome-support' ) . '</span>', 'administrator', 'wpas-help-and-support', 'wpas_display_help_and_support_page' );		
+		
+		/**
+		 * Provides a hook for Addons to add their menu item in the right location, i.e. above the "About" page.
+		 *
+		 * @since 4.3.3
+		 *
+		 * @param string Passes the Awesome Support parent slug to the addon.
+		 */
+		do_action( 'wpas_addon_submenu_page',  'edit.php?post_type=ticket' );
+
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'awesome-support' ), __( 'About', 'awesome-support' ), 'edit_posts', 'wpas-about', 'wpas_display_about_page' );	
+
 	}				
 
 	// Hide the free addon page if the user already claimed it
