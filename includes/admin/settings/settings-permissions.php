@@ -10,11 +10,7 @@ add_filter( 'wpas_plugin_settings', 'wpas_core_settings_permissions', 5, 1 );
 function wpas_core_settings_permissions( $def ) {
 
 	// translators: %s is the URL to the article.
-	$desc = __( 'Basic user and agent permissions are handled by WordPress ROLES and CAPABILITIES. <br />
-	When this plugin was installed, we automatically included roles for agents and users named SUPPORT AGENT and SUPPORT USER.  <br />
-	You can use these when you set up new users and they are automatically assigned to users that register on our login page.  <br />
-	BUT, if you have existing users with existing roles that need to open tickets please read <b><u><a %s>this article</a></b></u> on our website. <br />
-	The rest of this page helps you to control the appearance of some items on your ticket screens.', 'awesome-support' );
+	$desc = __( 'Basic user and agent permissions are handled by WordPress ROLES and CAPABILITIES. <br />When this plugin was installed, we automatically included roles for agents and users named SUPPORT AGENT and SUPPORT USER.  <br />You can use these when you set up new users and they are automatically assigned to users that register on our login page.  <br />BUT, if you have existing users with existing roles that need to open tickets please read <b><u><a %s>this article</a></b></u> on our website. <br />The rest of this page helps you to control the appearance of some items on your ticket screens.', 'awesome-support' );
 
 	$settings = array(
 		'permissions' => array(
@@ -102,7 +98,7 @@ function wpas_core_settings_permissions( $def ) {
 				array(
 					'name' => __( 'Editing History', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => 'This section allows you to control whether ticket and ticket replies can be edited by agents. Allowing this can distort the ticket history but might be necessary to comply with certain privacy regulations - for example removing user ids, passwords or other sensitive data.',
+					'desc' => __( 'This section allows you to control whether ticket and ticket replies can be edited by agents. Allowing this can distort the ticket history but might be necessary to comply with certain privacy regulations - for example removing user ids, passwords or other sensitive data.', 'awesome-support' ),
 					'options' => wpas_get_editing_history_options()
 				),
 			)

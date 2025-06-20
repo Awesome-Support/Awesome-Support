@@ -1,4 +1,4 @@
-<div class="about-text"><b>Thanks for choosing Awesome Support!. At this point you should have already completed our setup wizard.  You can now use the tabs to the right to obtain more information, link to documentation and learn more about your new support system!</b></div>
+<div class="about-text"><b><?php echo esc_html__( 'Thanks for choosing Awesome Support!. At this point you should have already completed our setup wizard.  You can now use the tabs to the right to obtain more information, link to documentation and learn more about your new support system!', 'awesome-support' );?></b></div>
 
 <hr />
 <div>

@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support 5.2.0\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
-"POT-Creation-Date: 2025-06-18 13:15+0000\n"
+"POT-Creation-Date: 2025-06-20 11:56+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -202,6 +202,13 @@ msgstr ""
 msgid ".htaccess Contents"
 msgstr ""
 
+#: includes/admin/views/about-tab-getting-started.php:14
+msgid ""
+"1. A new page named <b>SUBMIT TICKET</b> has been automatically created for "
+"you. You need to add this page to your WordPress menu so that your customers "
+"can start submitting tickets on your site!"
+msgstr ""
+
 #: includes/admin/class-admin-tickets-list.php:1171
 msgid "1. All Extensions"
 msgstr ""
@@ -214,6 +221,17 @@ msgstr ""
 msgid "1. User Guide"
 msgstr ""
 
+#: includes/admin/views/about-tab-getting-started.php:15
+msgid ""
+"2. <b>Handle Existing users:</b> If you have existing users you will need to "
+"update their roles to be <b>Support User</b>. Or update their existing roles "
+"to <a href=\"https://getawesomesupport.com/documentation/awesome-"
+"support/admin-handling-existing-users-after-installation/\" "
+"target=\"_blank\" >add the proper WordPress security capabilities for "
+"Awesome Support ticket users. </a>  This will grant them the permissions "
+"necessary to submit tickets."
+msgstr ""
+
 #: includes/admin/class-admin-tickets-list.php:1158
 msgid "2. Administration Guide"
 msgstr ""
@@ -224,6 +242,14 @@ msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:1174
 msgid "2. REST API"
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:16
+msgid ""
+"3. <b>Set up new agents:</b> Your primary WordPress Admin is now an agent "
+"and will automatically be assigned all new tickets unless you <a href= "
+"\"https://getawesomesupport.com/documentation/awesome-support/basic-admin-"
+"add-agent/\" target=\"_blank\" > set up additional agents.</a>"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:1161
@@ -272,6 +298,31 @@ msgstr ""
 #: includes/admin/views/wpas-help-and-support.php:3
 #, php-format
 msgid "<a href=\"%1$s\">Open a ticket directly with us</a>"
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:47
+msgid ""
+"<b>Existing Users:</b> If you have existing users you will need to update "
+"their roles to be <b>Support User</b>. Or update their existing roles to <a "
+"href=\"https://getawesomesupport.com/documentation/awesome-support/how-to-"
+"fix-you-do-not-have-the-capacity-to-open-a-new-ticket/\">add the proper "
+"WordPress security capabilities for Awesome Support ticket users. </a>  This "
+"will grant them the permissions necessary to submit tickets."
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:13
+msgid ""
+"<b>If you completed the SETUP wizard then your ticket system is all ready to "
+"go! If you did not complete the wizard follow these steps to quickly set "
+"things up. </b>"
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:46
+msgid ""
+"<b>Set up new agents:</b> Your primary WordPress Admin is now an agent and "
+"will automatically be assigned all new tickets unless you <a href= \"https:"
+"//getawesomesupport.com/documentation/awesome-support/basic-admin-add-"
+"agent/\"> set up additional agents.</a>"
 msgstr ""
 
 #: includes/gas-framework/lib/class-admin-page.php:125
@@ -602,6 +653,10 @@ msgid ""
 "time tracking fields"
 msgstr ""
 
+#: includes/admin/views/about-tab-getting-started.php:35
+msgid "Admin Documentation Image Link"
+msgstr ""
+
 #: includes/functions-post-type.php:190
 msgctxt "admin menu"
 msgid "Ticket History"
@@ -736,6 +791,10 @@ msgstr ""
 msgid "All custom taxonomies terms were cleared"
 msgstr ""
 
+#: includes/admin/views/about-tab-videos.php:5
+msgid "All of our informative videos in one place"
+msgstr ""
+
 #. %s is the ticket id.
 #: includes/gas-framework/lib/class-gas-framework.php:191
 #, php-format
@@ -789,11 +848,11 @@ msgstr ""
 msgid "Allow"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:150
+#: includes/admin/settings/settings-permissions.php:146
 msgid "Allow Agents To Delete Their Own Replies"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:134
+#: includes/admin/settings/settings-permissions.php:130
 msgid "Allow Agents To Edit Their Own Replies"
 msgstr ""
 
@@ -821,6 +880,10 @@ msgid ""
 "Allow users to register on the support page. This setting can be enabled "
 "even though the WordPress setting is disabled. Currently, registrations are "
 "%s by WordPress."
+msgstr ""
+
+#: includes/admin/views/system-status.php:177
+msgid "Allowed File Types"
 msgstr ""
 
 #: includes/admin/views/system-status.php:183
@@ -1171,16 +1234,14 @@ msgstr ""
 #, php-format
 msgid ""
 "Basic user and agent permissions are handled by WordPress ROLES and "
-"CAPABILITIES. <br />\n"
-"\tWhen this plugin was installed, we automatically included roles for agents "
-"and users named SUPPORT AGENT and SUPPORT USER.  <br />\n"
-"\tYou can use these when you set up new users and they are automatically "
-"assigned to users that register on our login page.  <br />\n"
-"\tBUT, if you have existing users with existing roles that need to open "
-"tickets please read <b><u><a %s>this article</a></b></u> on our website. <br "
-"/>\n"
-"\tThe rest of this page helps you to control the appearance of some items on "
-"your ticket screens."
+"CAPABILITIES. <br />When this plugin was installed, we automatically "
+"included roles for agents and users named SUPPORT AGENT and SUPPORT USER.  "
+"<br />You can use these when you set up new users and they are automatically "
+"assigned to users that register on our login page.  <br />BUT, if you have "
+"existing users with existing roles that need to open tickets please read <b>"
+"<u><a %s>this article</a></b></u> on our website. <br />The rest of this "
+"page helps you to control the appearance of some items on your ticket "
+"screens."
 msgstr ""
 
 #: includes/rest-api/includes/Auth/Init.php:340
@@ -1209,6 +1270,10 @@ msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:145
 msgid "Bootstrap Support (Experimental)"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:41
+msgid "Browse extensions"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:993
@@ -1305,6 +1370,10 @@ msgstr ""
 msgid "Cerulean"
 msgstr ""
 
+#: includes/admin/views/about.php:26
+msgid "Change Log"
+msgstr ""
+
 #: includes/admin/class-admin-tickets-list.php:359
 #: includes/admin/class-admin-tickets-list.php:424
 #: includes/custom-fields/functions-custom-fields.php:608
@@ -1334,7 +1403,7 @@ msgstr ""
 msgid "Check this to allow agents to delete attachments"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:169
+#: includes/admin/settings/settings-permissions.php:165
 msgid ""
 "Check this to allow replies to be permanently deleted. If you do not check "
 "this option, deleted items will end up in the WordPress trash bin which will "
@@ -1417,6 +1486,12 @@ msgstr ""
 
 #: includes/gas-framework/lib/class-option-ajax-button.php:103
 msgid "Click me"
+msgstr ""
+
+#: includes/admin/views/about-tab-videos.php:7
+msgid ""
+"Clicking the image below will take you a page on our website where you can "
+"view them all."
 msgstr ""
 
 #: includes/rest-api/includes/settings-api.php:65
@@ -1550,13 +1625,17 @@ msgstr ""
 msgid "Content for the object, as it exists in the database."
 msgstr ""
 
+#: includes/admin/views/about-tab-credits.php:11
+msgid "Contributing"
+msgstr ""
+
 #: includes/admin/settings/settings-privacy.php:19
 msgid ""
 "Control how the PRIVACY button appears to the user and the options available "
 "with it"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:36
+#: includes/admin/settings/settings-permissions.php:32
 msgid ""
 "Control whether certain tabs are visible at the top of the admin ticket list"
 msgstr ""
@@ -1569,7 +1648,7 @@ msgstr ""
 msgid "Control who can delete ticket or reply attachments"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:78
+#: includes/admin/settings/settings-permissions.php:74
 msgid ""
 "Control who can view certain ticket tabs on the ticket detail screen in wp-"
 "admin"
@@ -1733,6 +1812,10 @@ msgstr ""
 msgid "Credit"
 msgstr ""
 
+#: includes/admin/views/about.php:27
+msgid "Credits"
+msgstr ""
+
 #: includes/admin/settings/settings-privacy.php:145
 msgid "Cron Job Interval"
 msgstr ""
@@ -1773,6 +1856,7 @@ msgstr ""
 #: includes/admin/metaboxes/custom-fields.php:19
 #: includes/admin/metaboxes/ticket-main-tabs.php:30
 #: includes/admin/settings/settings-fields.php:157
+#: includes/admin/views/system-status.php:333
 msgid "Custom Fields"
 msgstr ""
 
@@ -1831,6 +1915,10 @@ msgstr ""
 #: includes/functions-templating.php:343 includes/functions-templating.php:645
 #: includes/admin/views/print-ticket.php:25
 msgid "Date"
+msgstr ""
+
+#: includes/admin/views/system-status.php:115
+msgid "DB Version"
 msgstr ""
 
 #: includes/gas-framework/lib/class-option-edd-license.php:400
@@ -1971,6 +2059,15 @@ msgid "Didn't work"
 msgstr ""
 
 #: includes/admin/views/system-status.php:128
+#: includes/admin/views/system-status.php:275
+#: includes/admin/views/system-status.php:281
+#: includes/admin/views/system-status.php:287
+#: includes/admin/views/system-status.php:293
+#: includes/admin/views/system-status.php:299
+#: includes/admin/views/system-status.php:306
+#: includes/admin/views/system-status.php:312
+#: includes/admin/views/system-status.php:318
+#: includes/admin/views/system-status.php:324
 #: includes/gas-framework/lib/class-option-enable.php:65
 #: includes/gas-framework/lib/class-option-enable.php:144
 msgid "Disabled"
@@ -2097,6 +2194,7 @@ msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:1001
 #: includes/gas-framework/gas-framework.php:180
+#: includes/admin/views/about.php:24
 #: includes/admin/views/wpas-help-and-support.php:46
 #: includes/rest-api/includes/settings-api.php:46
 msgid "Documentation"
@@ -2153,6 +2251,10 @@ msgstr ""
 msgid "E-Mail Defaults"
 msgstr ""
 
+#: includes/admin/views/system-status.php:249
+msgid "E-Mail Notifications"
+msgstr ""
+
 #: themes/default/registration.php:38 themes/default/registration.php:39
 msgid "E-mail or username"
 msgstr ""
@@ -2195,7 +2297,7 @@ msgstr ""
 msgid "Edited on"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:103
+#: includes/admin/settings/settings-permissions.php:99
 msgid "Editing History"
 msgstr ""
 
@@ -2209,6 +2311,10 @@ msgstr ""
 
 #: themes/default/registration.php:137 themes/default/registration.php:138
 msgid "Email"
+msgstr ""
+
+#: includes/admin/views/opt-in.php:37
+msgid "Email Address"
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:94
@@ -2365,7 +2471,7 @@ msgstr ""
 msgid "Enable Third Party Fields"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:63
+#: includes/admin/settings/settings-permissions.php:59
 msgid "Enable Ticket Templates"
 msgstr ""
 
@@ -2378,12 +2484,21 @@ msgid "Enable WooCommerce Integration"
 msgstr ""
 
 #: includes/admin/views/system-status.php:128
+#: includes/admin/views/system-status.php:275
+#: includes/admin/views/system-status.php:281
+#: includes/admin/views/system-status.php:287
+#: includes/admin/views/system-status.php:293
+#: includes/admin/views/system-status.php:299
+#: includes/admin/views/system-status.php:306
+#: includes/admin/views/system-status.php:312
+#: includes/admin/views/system-status.php:318
+#: includes/admin/views/system-status.php:324
 #: includes/gas-framework/lib/class-option-enable.php:62
 #: includes/gas-framework/lib/class-option-enable.php:141
 msgid "Enabled"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:161
+#: includes/admin/settings/settings-permissions.php:157
 msgid ""
 "Enter a comma separated list of roles that should be able to delete any "
 "agent and user reply. Roles should be the internal WordPress role id such as "
@@ -2391,7 +2506,7 @@ msgid ""
 "commas and role names when entering multiple roles."
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:145
+#: includes/admin/settings/settings-permissions.php:141
 msgid ""
 "Enter a comma separated list of roles that should be able to edit any agent "
 "and user reply. Roles should be the internal WordPress role id such as "
@@ -2399,7 +2514,7 @@ msgid ""
 "commas and role names when entering multiple roles."
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:129
+#: includes/admin/settings/settings-permissions.php:125
 msgid ""
 "Enter a comma separated list of roles that should NOT be able to edit ticket "
 "content. Roles should be the internal WordPress role id such as wpas_agent "
@@ -2407,7 +2522,7 @@ msgid ""
 "role names when entering multiple roles."
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:91
+#: includes/admin/settings/settings-permissions.php:87
 msgid ""
 "Enter a comma separated list of roles that should not see the ADDITIONAL "
 "INTERESTED PARTIES tab. Roles should be the internal WordPress role id such "
@@ -2415,7 +2530,7 @@ msgid ""
 "commas and role names when entering multiple roles."
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:84
+#: includes/admin/settings/settings-permissions.php:80
 msgid ""
 "Enter a comma separated list of roles that should not see the CUSTOM FIELDS "
 "tab. Roles should be the internal WordPress role id such as wpas_agent and "
@@ -2423,7 +2538,7 @@ msgid ""
 "names when entering multiple roles."
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:98
+#: includes/admin/settings/settings-permissions.php:94
 msgid ""
 "Enter a comma separated list of roles that should not see the tags metabox. "
 "Roles should be the internal WordPress role id such as wpas_agent and are "
@@ -2476,6 +2591,7 @@ msgstr ""
 msgid "Entering your license key is mandatory to get the product updates."
 msgstr ""
 
+#: includes/admin/views/opt-in.php:47
 #: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:356
 msgid "Error"
 msgstr ""
@@ -2501,6 +2617,13 @@ msgid ""
 "Even more trouble-shooting tips and other frequently asked questions. 404 "
 "pages, missing tabs, PHP errors and conflicts are just some of the topics "
 "covered here!"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:40
+msgid ""
+"Even though Awesome Support has a lot of built-in features, it is impossible "
+"to make everyone happy. This is why we have lots of addons to help you "
+"tailor your support system."
 msgstr ""
 
 #: tracking/class-example-settings.php:43
@@ -2547,6 +2670,10 @@ msgstr ""
 msgid "Exporting data was successful!"
 msgstr ""
 
+#: includes/admin/views/about-tab-credits.php:39
+msgid "Extending the Possibilities"
+msgstr ""
+
 #: includes/rest-api/includes/api.php:199
 msgid "Failed to update comment karma."
 msgstr ""
@@ -2581,6 +2708,7 @@ msgid "First additional agent who has an interest this ticket"
 msgstr ""
 
 #: themes/default/registration.php:100 themes/default/registration.php:101
+#: includes/admin/views/opt-in.php:35
 msgid "First Name"
 msgstr ""
 
@@ -2708,6 +2836,10 @@ msgstr ""
 msgid "Get Your Free Addon!"
 msgstr ""
 
+#: includes/admin/views/about.php:23
+msgid "Getting Started"
+msgstr ""
+
 #. %1$s is the URL to view the privacy policy, %2$s are additional attributes for the privacy policy link.
 #: includes/admin/views/opt-in.php:27
 #, php-format
@@ -2804,7 +2936,7 @@ msgstr ""
 msgid "Hide Ticket ID"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:179
+#: includes/admin/settings/settings-permissions.php:175
 msgid ""
 "High - log the original contents before the reply was edited so that a full "
 "history could be maintained"
@@ -2812,6 +2944,10 @@ msgstr ""
 
 #: includes/admin/class-admin-user.php:87
 msgid "Home Phone"
+msgstr ""
+
+#: includes/admin/views/system-status.php:22
+msgid "Home URL"
 msgstr ""
 
 #: includes/admin/settings/settings-fields.php:139
@@ -3036,6 +3172,13 @@ msgid ""
 "thanks from the Awesome Support team in advance :)"
 msgstr ""
 
+#: includes/admin/views/about-tab-credits.php:17
+msgid ""
+"If you like the plugin, make sure to rate it on the WordPress Repository "
+"website. This is perhaps one of the best way to share the love for our "
+"plugin!"
+msgstr ""
+
 #: includes/admin/settings/settings-products-management.php:42
 msgid ""
 "If you need to provide support for multiple products, please enable this "
@@ -3115,6 +3258,10 @@ msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:53
 msgid "Importer Integration"
+msgstr ""
+
+#: includes/admin/views/opt-in.php:12
+msgid "Improved Custom Fields"
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:229
@@ -3207,6 +3354,10 @@ msgid ""
 "template fields"
 msgstr ""
 
+#: includes/admin/views/system-status.php:393
+msgid "Installed"
+msgstr ""
+
 #: tracking/class-plugin-usage-tracker.php:918
 msgid "Installed by mistake"
 msgstr ""
@@ -3244,6 +3395,10 @@ msgstr ""
 #: includes/rest-api/includes/API/UserData.php:98
 #: includes/rest-api/includes/API/UserData.php:105
 msgid "Invalid username."
+msgstr ""
+
+#: includes/admin/views/system-status.php:460
+msgid "Is Child Theme:"
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:149
@@ -3359,6 +3514,10 @@ msgstr ""
 msgid "Let's Go"
 msgstr ""
 
+#: includes/admin/views/about-tab-credits.php:22
+msgid "Libraries"
+msgstr ""
+
 #: includes/gas-framework/lib/class-option-edd-license.php:399
 msgid "License Action"
 msgstr ""
@@ -3463,11 +3622,11 @@ msgid ""
 "Load the theme stylesheet. Don't uncheck if you don't know what this means"
 msgstr ""
 
-#: themes/default/details.php:143
+#: themes/default/details.php:143 includes/admin/views/about-tab-credits.php:5
 msgid "Loading..."
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:174
+#: includes/admin/settings/settings-permissions.php:170
 msgid "Log content edits"
 msgstr ""
 
@@ -3508,7 +3667,7 @@ msgstr ""
 msgid "Logout Redirect"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:178
+#: includes/admin/settings/settings-permissions.php:174
 msgid ""
 "Low - only logs whether the ticket or reply was edited. This prevents "
 "additional sensitive data from being stored in the log when the intention is "
@@ -3611,6 +3770,22 @@ msgstr ""
 msgid "Moderated Registration Email Templates"
 msgstr ""
 
+#: includes/admin/views/system-status.php:304
+msgid "Moderated Registration: Admin Alert"
+msgstr ""
+
+#: includes/admin/views/system-status.php:316
+msgid "Moderated Registration: User Approved"
+msgstr ""
+
+#: includes/admin/views/system-status.php:322
+msgid "Moderated Registration: User Denied"
+msgstr ""
+
+#: includes/admin/views/system-status.php:310
+msgid "Moderated Registration: User Waiting Approval"
+msgstr ""
+
 #: includes/admin/settings/settings-registration.php:37
 msgid "Moderated registrations"
 msgstr ""
@@ -3639,6 +3814,7 @@ msgstr ""
 
 #: includes/admin/class-admin-help.php:162
 #: includes/admin/settings/settings-products-management.php:39
+#: includes/admin/views/system-status.php:127
 msgid "Multiple Products"
 msgstr ""
 
@@ -3719,12 +3895,21 @@ msgid ""
 "Then this is the guide you need!"
 msgstr ""
 
+#: includes/admin/views/system-status.php:285
+msgid "New Agent Reply"
+msgstr ""
+
 #: includes/rest-api/includes/Auth/Init.php:310
 msgid "New API Password Name"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:129
+#: includes/admin/views/system-status.php:279
 msgid "New Assignment"
+msgstr ""
+
+#: includes/admin/views/system-status.php:291
+msgid "New Client Reply"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:154
@@ -3765,6 +3950,10 @@ msgstr ""
 
 #: includes/admin/settings/settings-general.php:49
 msgid "New to Old"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:4
+msgid "Newsfeed"
 msgstr ""
 
 #: includes/functions-templating.php:1349
@@ -4114,6 +4303,14 @@ msgstr ""
 msgid "Open a ticket"
 msgstr ""
 
+#: includes/admin/views/about-tab-credits.php:12
+msgid "Open Source"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:23
+msgid "Open Source Libraries"
+msgstr ""
+
 #: includes/admin/settings/settings-style.php:57
 msgid "Open Status"
 msgstr ""
@@ -4301,6 +4498,18 @@ msgctxt ""
 msgid "Parent %s:"
 msgstr ""
 
+#: includes/admin/views/system-status.php:476
+msgid "Parent Theme Author URL:"
+msgstr ""
+
+#: includes/admin/views/system-status.php:468
+msgid "Parent Theme Name:"
+msgstr ""
+
+#: includes/admin/views/system-status.php:472
+msgid "Parent Theme Version:"
+msgstr ""
+
 #: includes/functions-post-type.php:199
 msgid "Parent Ticket History:"
 msgstr ""
@@ -4342,13 +4551,13 @@ msgstr ""
 msgid "Permalinks Warning:"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:166
+#: includes/admin/settings/settings-permissions.php:162
 msgid "Permanently Delete Replies"
 msgstr ""
 
 #: includes/file-uploader/settings-file-upload.php:85
-#: includes/admin/settings/settings-permissions.php:21
-#: includes/admin/settings/settings-permissions.php:24
+#: includes/admin/settings/settings-permissions.php:17
+#: includes/admin/settings/settings-permissions.php:20
 msgid "Permissions"
 msgstr ""
 
@@ -4404,7 +4613,12 @@ msgid "Please wait..."
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:189
+#: includes/admin/views/system-status.php:202
 msgid "Plugin Pages"
+msgstr ""
+
+#: includes/admin/views/system-status.php:387
+msgid "Plugins"
 msgstr ""
 
 #: includes/integrations/my-cred/my-cred.php:43
@@ -4556,8 +4770,16 @@ msgstr ""
 msgid "Products Management"
 msgstr ""
 
+#: includes/admin/views/system-status.php:123
+msgid "Products Slug"
+msgstr ""
+
 #: includes/admin/settings/settings-advanced.php:181
 msgid "Pulse"
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:5
+msgid "Quick Start With The Basics"
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:48
@@ -4566,6 +4788,14 @@ msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:199
 msgid "Random one-way hash"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:16
+msgid "Rate the plugin"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:18
+msgid "Rate the plugin now!"
 msgstr ""
 
 #: includes/admin/metaboxes/details.php:95
@@ -4653,6 +4883,14 @@ msgstr ""
 
 #: includes/admin/settings/settings-registration.php:77
 msgid "Registration Field Descriptions"
+msgstr ""
+
+#: includes/admin/views/system-status.php:135
+msgid "Registration Page"
+msgstr ""
+
+#: includes/admin/views/system-status.php:131
+msgid "Registration Status"
 msgstr ""
 
 #: includes/admin/settings/settings-moderated-registration.php:27
@@ -4760,6 +4998,7 @@ msgid "Reply to ticket %s"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:80
+#: includes/admin/views/system-status.php:267
 msgid "Reply-To E-Mail"
 msgstr ""
 
@@ -4864,28 +5103,28 @@ msgstr ""
 msgid "Roles"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:88
+#: includes/admin/settings/settings-permissions.php:84
 msgid ""
 "Roles That Are NOT Allowed Access To The Additional Interested Parties Tab"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:81
+#: includes/admin/settings/settings-permissions.php:77
 msgid "Roles That Are NOT Allowed Access To The Custom Fields Tab"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:95
+#: includes/admin/settings/settings-permissions.php:91
 msgid "Roles That Are NOT Allowed Access To The Tags Metabox"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:126
+#: includes/admin/settings/settings-permissions.php:122
 msgid "Roles That Are NOT Allowed to Edit Ticket Content"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:158
+#: includes/admin/settings/settings-permissions.php:154
 msgid "Roles That Can Delete All Replies"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:142
+#: includes/admin/settings/settings-permissions.php:138
 msgid "Roles That Can Edit All Replies"
 msgstr ""
 
@@ -4906,7 +5145,6 @@ msgid "Save changes"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:1134
-msgctxt "Save Preferences"
 msgid "Save Preferences"
 msgstr ""
 
@@ -5031,10 +5269,12 @@ msgid ""
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:74
+#: includes/admin/views/system-status.php:261
 msgid "Sender E-Mail"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:68
+#: includes/admin/views/system-status.php:255
 msgid "Sender Name"
 msgstr ""
 
@@ -5073,6 +5313,7 @@ msgstr ""
 
 #: includes/admin/class-admin-gas.php:90 includes/admin/class-admin-gas.php:91
 #: includes/admin/functions-misc.php:29
+#: includes/admin/views/system-status.php:105
 #: includes/rest-api/includes/API/Settings.php:416
 msgid "Settings"
 msgstr ""
@@ -5103,7 +5344,7 @@ msgstr ""
 msgid "Show Basic Time Tracking Fields"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:45
+#: includes/admin/settings/settings-permissions.php:41
 msgid "Show Bulk Actions Tab"
 msgstr ""
 
@@ -5153,7 +5394,7 @@ msgstr ""
 msgid "Show Delete Existing Data Tab"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:39
+#: includes/admin/settings/settings-permissions.php:35
 msgid "Show Documentation Tab"
 msgstr ""
 
@@ -5181,7 +5422,7 @@ msgstr ""
 msgid "Show Final Time On Front-end Ticket List"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:69
+#: includes/admin/settings/settings-permissions.php:65
 msgid "Show Flag In Ticket List"
 msgstr ""
 
@@ -5217,7 +5458,7 @@ msgstr ""
 msgid "Show Original Ticket ID In Column List?"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:51
+#: includes/admin/settings/settings-permissions.php:47
 msgid "Show Preferences Tab"
 msgstr ""
 
@@ -5349,6 +5590,10 @@ msgstr ""
 
 #: includes/gas-framework/lib/class-option-edd-license.php:413
 msgid "Site is inactive."
+msgstr ""
+
+#: includes/admin/views/system-status.php:18
+msgid "Site URL"
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:184
@@ -5510,6 +5755,7 @@ msgid "Subject"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:104
+#: includes/admin/views/system-status.php:273
 msgid "Submission Confirmation"
 msgstr ""
 
@@ -5536,6 +5782,10 @@ msgstr ""
 
 #: tracking/class-plugin-usage-tracker.php:961
 msgid "Submitting form"
+msgstr ""
+
+#: includes/admin/views/opt-in.php:39
+msgid "Subscribe"
 msgstr ""
 
 #: includes/install.php:178
@@ -5614,8 +5864,24 @@ msgstr ""
 msgid "Template"
 msgstr ""
 
+#: includes/admin/views/system-status.php:505
+msgid "Template Overrides:"
+msgstr ""
+
 #: includes/admin/settings/settings-notifications.php:98
 msgid "Template Tags"
+msgstr ""
+
+#: includes/admin/views/system-status.php:499
+msgid "Template Theme Overlay:"
+msgstr ""
+
+#: includes/admin/views/system-status.php:493
+msgid "Template:"
+msgstr ""
+
+#: includes/admin/views/system-status.php:487
+msgid "Templates"
 msgstr ""
 
 #: includes/class-product-sync.php:975
@@ -5675,6 +5941,14 @@ msgstr ""
 msgid ""
 "Thank you for opting in to tracking. Would you like to receive occasional "
 "news about this %s, including details of new features and special offers?"
+msgstr ""
+
+#: includes/admin/views/about-tab-welcome.php:1
+msgid ""
+"Thanks for choosing Awesome Support!. At this point you should have already "
+"completed our setup wizard.  You can now use the tabs to the right to obtain "
+"more information, link to documentation and learn more about your new "
+"support system!"
 msgstr ""
 
 #: includes/functions-post.php:755
@@ -5750,6 +6024,13 @@ msgstr ""
 msgid ""
 "The chosen agent does not have the sufficient capabilities to be assigned a "
 "ticket"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:13
+msgid ""
+"The code is open source and <a href=\"https://github.com/ThemeAvenue/Awesome-"
+"Support\" target=\"_blank\">available on GitHub</a> for anyone to contribute."
+" Even you."
 msgstr ""
 
 #: includes/rest-api/includes/API/TicketTaxonomy.php:41
@@ -5830,6 +6111,13 @@ msgstr ""
 
 #: includes/scripts.php:442
 msgid "The following file(s) are too big to be uploaded:"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:24
+msgid ""
+"The following open source libraries were used in this plugin. We are very "
+"grateful to the authors for sharing their work so freely with us and the "
+"world!"
 msgstr ""
 
 #: includes/admin/settings/settings-registration.php:120
@@ -5947,6 +6235,13 @@ msgstr ""
 
 #: includes/rest-api/includes/Auth/Init.php:404
 msgid "The password's unique sluge"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:15
+msgid ""
+"The plugin is fully localized. You can <a href=\"https://poeditor."
+"com/join/project/P6HgfPnBt4\" target=\"_blank\">translate the plugin</a> in "
+"any language!"
 msgstr ""
 
 #: includes/class-email-notifications.php:68
@@ -6117,15 +6412,28 @@ msgid "The user with ID %d does not exist"
 msgstr ""
 
 #: includes/admin/settings/settings-style.php:16
+#: includes/admin/views/system-status.php:435
 msgid "Theme"
+msgstr ""
+
+#: includes/admin/views/system-status.php:454
+msgid "Theme Author URL:"
 msgstr ""
 
 #: includes/gas-framework/lib/class-option-edd-license.php:396
 msgid "Theme License"
 msgstr ""
 
+#: includes/admin/views/system-status.php:441
+msgid "Theme Name:"
+msgstr ""
+
 #: includes/admin/settings/settings-style.php:32
 msgid "Theme Stylesheet"
+msgstr ""
+
+#: includes/admin/views/system-status.php:448
+msgid "Theme Version:"
 msgstr ""
 
 #: includes/admin/settings/settings-advanced.php:89
@@ -6148,6 +6456,12 @@ msgstr ""
 #, php-format
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
+msgstr ""
+
+#: includes/admin/views/system-status.php:528
+#: includes/admin/views/system-status.php:542
+#: includes/admin/views/system-status.php:546
+msgid "There is no template override"
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:205
@@ -6262,6 +6576,14 @@ msgid ""
 "This reply has been deleted by %1$s <em class=\"wpas-time\">%2$s ago.</em>"
 msgstr ""
 
+#: includes/admin/settings/settings-permissions.php:101
+msgid ""
+"This section allows you to control whether ticket and ticket replies can be "
+"edited by agents. Allowing this can distort the ticket history but might be "
+"necessary to comply with certain privacy regulations - for example removing "
+"user ids, passwords or other sensitive data."
+msgstr ""
+
 #. %s is the link to re-open the ticket.
 #: includes/admin/metaboxes/replies.php:178
 #, php-format
@@ -6307,6 +6629,10 @@ msgstr ""
 msgid "Ticket cloning failed"
 msgstr ""
 
+#: includes/admin/views/system-status.php:297
+msgid "Ticket Closed"
+msgstr ""
+
 #: includes/admin/settings/settings-notifications.php:210
 msgid "Ticket Closed (by Agent)"
 msgstr ""
@@ -6345,7 +6671,7 @@ msgstr ""
 msgid "Ticket Details"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:76
+#: includes/admin/settings/settings-permissions.php:72
 msgid "Ticket Details Tabs And Metaboxes"
 msgstr ""
 
@@ -6380,7 +6706,7 @@ msgstr ""
 msgid "Ticket is closed"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:34
+#: includes/admin/settings/settings-permissions.php:30
 msgid "Ticket List Tabs"
 msgstr ""
 
@@ -6459,6 +6785,7 @@ msgid "Ticket Subject"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:194
+#: includes/admin/views/system-status.php:208
 msgid "Ticket Submission"
 msgstr ""
 
@@ -6483,11 +6810,11 @@ msgstr ""
 msgid "Ticket Template?"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:58
+#: includes/admin/settings/settings-permissions.php:54
 msgid "Ticket Templates"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:60
+#: includes/admin/settings/settings-permissions.php:56
 msgid ""
 "Ticket templates are tickets that can be copied by add-ons to make new "
 "tickets. The options in this section offers control of this feature."
@@ -6524,6 +6851,7 @@ msgid "Ticket Will Be Closed"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:203
+#: includes/admin/views/system-status.php:234
 msgid "Tickets List"
 msgstr ""
 
@@ -6539,8 +6867,16 @@ msgstr ""
 msgid "Tickets Per Page"
 msgstr ""
 
+#: includes/admin/views/system-status.php:119
+msgid "Tickets Slug"
+msgstr ""
+
 #: includes/admin/settings/settings-privacy.php:168
 msgid "Tickets to Anonymize"
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:43
+msgid "Tickets, Agents and Users"
 msgstr ""
 
 #: includes/custom-fields/functions-custom-fields.php:761
@@ -6616,6 +6952,16 @@ msgstr ""
 
 #: awesome-support.php:658
 msgid "Tracking is completely optional"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:14
+msgid "Translation Ready"
+msgstr ""
+
+#: includes/admin/views/about.php:141
+msgid ""
+"Trusted by over 10,000+ Happy Users, Awesome Support is the most versatile "
+"WordPress support plugin."
 msgstr ""
 
 #: includes/admin/settings/settings-basic-time-tracking.php:127
@@ -6817,6 +7163,10 @@ msgid ""
 "stop, 'OK' to update."
 msgstr ""
 
+#: includes/admin/views/system-status.php:148
+msgid "Uploads Folder"
+msgstr ""
+
 #: includes/admin/settings/settings-registration.php:69
 msgid "Use a GUID"
 msgstr ""
@@ -6881,6 +7231,30 @@ msgstr ""
 msgid "Use the user id below"
 msgstr ""
 
+#: includes/admin/settings/settings-fields.php:33
+msgid ""
+"Use these options to control how the priority field is used and shown.  To "
+"change the labels used for this field please see our POWER-PACK add-on."
+msgstr ""
+
+#: includes/admin/settings/settings-fields.php:39
+msgid ""
+"Use these options to control how the Ticket Type options are used and shown. "
+" To change the labels used for this field please see our POWER-PACK add-on."
+msgstr ""
+
+#: includes/admin/settings/settings-fields.php:46
+msgid ""
+"Use these options to control whether multiple agents can actively handle a "
+"single ticket. To change the labels please see our POWER-PACK add-on."
+msgstr ""
+
+#: includes/admin/settings/settings-fields.php:75
+msgid ""
+"Use these options to control whether third parties show in the ticket list.  "
+"To change the labels for 3rd party fields please see our POWER-PACK add-on."
+msgstr ""
+
 #: includes/admin/settings/settings-privacy.php:207
 msgid ""
 "Use this user id for all anonymized tickets. Warning: This should be a VALID "
@@ -6909,6 +7283,10 @@ msgstr ""
 
 #: includes/file-uploader/settings-file-upload.php:112
 msgid "User Controls Auto-delete Flag?"
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:30
+msgid "User Documentation Image Link"
 msgstr ""
 
 #: includes/functions-user.php:1667
@@ -7000,12 +7378,38 @@ msgid ""
 "WordPress.org forum."
 msgstr ""
 
+#: includes/admin/views/system-status.php:87
+#: includes/admin/views/system-status.php:93
+#: includes/admin/views/system-status.php:97
+#: includes/admin/views/system-status.php:111
+msgid "Version"
+msgstr ""
+
+#: includes/admin/views/about.php:25
+msgid "Videos"
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:21
+#: includes/admin/views/about-tab-videos.php:8
+msgid "Videos Image Link"
+msgstr ""
+
+#: includes/admin/views/about-tab-change-log.php:1
+msgid ""
+"View a full changelog on <a href=\"https://wordpress.org/plugins/awesome-"
+"support/#developers\">WordPress.org</a>"
+msgstr ""
+
 #: includes/admin/class-admin-user.php:247
 msgid "View All Tickets"
 msgstr ""
 
 #: includes/admin/functions-toolbar.php:159
 msgid "View History"
+msgstr ""
+
+#: includes/admin/views/about-tab-credits.php:6
+msgid "View more news"
 msgstr ""
 
 #: awesome-support.php:659
@@ -7116,6 +7520,14 @@ msgstr ""
 msgid "We were unable to log you in for an unknown reason."
 msgstr ""
 
+#: includes/admin/views/about.php:22
+msgid "Welcome"
+msgstr ""
+
+#: includes/admin/views/about.php:140
+msgid "Welcome to Awesome Support "
+msgstr ""
+
 #: includes/admin/class-as-admin-setup-wizard.php:213
 msgid ""
 "Welcome to Awesome Support! This setup wizard will help you to quickly "
@@ -7145,7 +7557,7 @@ msgid ""
 "documentation for more information."
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:177
+#: includes/admin/settings/settings-permissions.php:173
 msgid "What level should edits to ticket content and replies be logged?"
 msgstr ""
 
@@ -7286,14 +7698,14 @@ msgstr ""
 msgid "Would you like a discount on your next Awesome Support purchase?"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:153
+#: includes/admin/settings/settings-permissions.php:149
 msgid ""
 "Would you like agents to be able to delete their own replies? (FYI: We "
 "really do not recommend allowing deletes but you do have the option if you "
 "want it!)"
 msgstr ""
 
-#: includes/admin/settings/settings-permissions.php:137
+#: includes/admin/settings/settings-permissions.php:133
 msgid "Would you like agents to be able to edit their own replies?"
 msgstr ""
 
@@ -7351,8 +7763,44 @@ msgid ""
 "deserve it!</a>."
 msgstr ""
 
+#: includes/admin/views/system-status.php:42
+msgid "WP Active Plugins"
+msgstr ""
+
+#: includes/admin/views/system-status.php:38
+msgid "WP Debug Mode"
+msgstr ""
+
+#: includes/admin/views/system-status.php:34
+msgid "WP Language"
+msgstr ""
+
+#: includes/admin/views/system-status.php:46
+msgid "WP Max Upload Size"
+msgstr ""
+
+#: includes/admin/views/system-status.php:64
+msgid "WP Memory Limit"
+msgstr ""
+
+#: includes/admin/views/system-status.php:30
+msgid "WP Multisite"
+msgstr ""
+
+#: includes/admin/views/system-status.php:68
+msgid "WP Timezone"
+msgstr ""
+
+#: includes/admin/views/system-status.php:26
+msgid "WP Version"
+msgstr ""
+
 #: themes/default/details.php:167
 msgid "Write a reply"
+msgstr ""
+
+#: includes/admin/views/system-status.php:194
+msgid "WYSIWYG On Front"
 msgstr ""
 
 #: includes/file-uploader/class-file-uploader.php:1105
@@ -7453,6 +7901,12 @@ msgid ""
 "mails. The verification is done using <a href=\"%s\">Email validation API</a>"
 " and requires a (free) MailGun account. This helps reducing typos in email "
 "addresses during sign ups."
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:45
+msgid ""
+"You can find a list of new and existing tickets under the TICKETS menu "
+"option - this is your main dashboard for managing tickets."
 msgstr ""
 
 #. %s is the link to the documentation portal.
@@ -7708,6 +8162,12 @@ msgstr ""
 
 #: includes/functions-post.php:757
 msgid "Your reply has been submitted. Your agent will reply ASAP."
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:48
+msgid ""
+"Your users can find a list of their tickets on the MY TICKETS page - you "
+"just need to add that page to your WordPress menu as well."
 msgstr ""
 
 #: includes/admin/views/system-tools.php:191

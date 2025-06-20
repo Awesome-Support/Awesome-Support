@@ -1,4 +1,4 @@
-<p>View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a></p>
+<p><?php echo __( 'View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a>', 'awesome-support' );?></p>
 
 <div class="changelog">
 

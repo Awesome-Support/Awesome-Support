@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Awesome Support Core\n"
 "Language: \n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"POT-Creation-Date: 2025-06-18 13:21+0000\n"
+"POT-Creation-Date: 2025-06-20 09:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -4893,7 +4893,6 @@ msgid "Save changes"
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:1134
-msgctxt "Save Preferences"
 msgid "Save Preferences"
 msgstr ""
 
@@ -6866,6 +6865,30 @@ msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:200
 msgid "Use the user id below"
+msgstr ""
+
+#: includes/admin/settings/settings-fields.php:33
+msgid ""
+"Use these options to control how the priority field is used and shown.  To "
+"change the labels used for this field please see our POWER-PACK add-on."
+msgstr ""
+
+#: includes/admin/settings/settings-fields.php:39
+msgid ""
+"Use these options to control how the Ticket Type options are used and shown. "
+" To change the labels used for this field please see our POWER-PACK add-on."
+msgstr ""
+
+#: includes/admin/settings/settings-fields.php:46
+msgid ""
+"Use these options to control whether multiple agents can actively handle a "
+"single ticket. To change the labels please see our POWER-PACK add-on."
+msgstr ""
+
+#: includes/admin/settings/settings-fields.php:75
+msgid ""
+"Use these options to control whether third parties show in the ticket list.  "
+"To change the labels for 3rd party fields please see our POWER-PACK add-on."
 msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:207

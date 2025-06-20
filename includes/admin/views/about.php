@@ -19,12 +19,12 @@ add_filter( 'wpas_admin_tabs_wpas_about_credits_content',			'wpas_admin_tabs_wpa
  */
 function wpas_about_register_tabs( $tabs ) {
 
-		$tabs['welcome']		 = 'Welcome';
-		$tabs['getting_started'] = 'Getting Started';
-		$tabs['docs']			 = 'Documentation';
-		$tabs['videos']			 = 'Videos';
-		$tabs['change_log']		 = 'Change Log';
-		$tabs['credits']		 = 'Credits';
+		$tabs['welcome']		 = __( 'Welcome', 'awesome-support' );
+		$tabs['getting_started'] = __( 'Getting Started', 'awesome-support' );
+		$tabs['docs']			 = __( 'Documentation', 'awesome-support' );
+		$tabs['videos']			 = __( 'Videos', 'awesome-support' );
+		$tabs['change_log']		 = __( 'Change Log', 'awesome-support' );
+		$tabs['credits']		 = __( 'Credits', 'awesome-support' );
 
 		return $tabs;
 }
@@ -137,8 +137,8 @@ function wpas_admin_tabs_wpas_about_credits_content( $content ) {
 
 <div class="wrap about-wrap">
 
-	<h1>Welcome to Awesome Support&nbsp;<?php echo esc_html( WPAS_VERSION ); ?></h1>
-	<div class="about-text">Trusted by over 10,000+ Happy Users, Awesome Support is the most versatile WordPress support plugin.</div>
+	<h1><?php echo esc_html__( 'Welcome to Awesome Support ', 'awesome-support' );?><?php echo esc_html( WPAS_VERSION ); ?></h1>
+	<div class="about-text"><?php echo esc_html__( 'Trusted by over 10,000+ Happy Users, Awesome Support is the most versatile WordPress support plugin.', 'awesome-support' );?></div>
 	<hr />
 
 	<?php echo wp_kses(wpas_admin_tabs( 'wpas_about' ), get_allowed_html_wp_notifications()); ?>

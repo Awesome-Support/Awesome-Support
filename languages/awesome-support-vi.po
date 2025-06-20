@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Awesome Support Core\n"
 "POT-Creation-Date: 2025-06-18 12:57+0000\n"
-"PO-Revision-Date: 2025-06-18 17:53+0000\n"
+"PO-Revision-Date: 2025-06-20 11:56+0000\n"
 "Last-Translator: Ted Admin\n"
 "Language-Team: Tiếng Việt\n"
 "Language: vi\n"
@@ -229,6 +229,16 @@ msgstr ""
 msgid ".htaccess Contents"
 msgstr "Nội dung tệp .htaccess"
 
+#: includes/admin/views/about-tab-getting-started.php:14
+msgid ""
+"1. A new page named <b>SUBMIT TICKET</b> has been automatically created for "
+"you. You need to add this page to your WordPress menu so that your customers "
+"can start submitting tickets on your site!"
+msgstr ""
+"1. Một trang mới có tên <b>SUBMIT TICKET</b> đã được tự động tạo cho bạn. "
+"Bạn cần thêm trang này vào menu WordPress của mình để khách hàng có thể bắt "
+"đầu gửi vé trên trang web của bạn!"
+
 #: includes/admin/class-admin-tickets-list.php:1171
 msgid "1. All Extensions"
 msgstr "1. Tất cả tiện ích mở rộng"
@@ -241,6 +251,24 @@ msgstr "1. Cài đặt công cụ nhập miễn phí"
 msgid "1. User Guide"
 msgstr "1. Hướng dẫn người dùng"
 
+#: includes/admin/views/about-tab-getting-started.php:15
+msgid ""
+"2. <b>Handle Existing users:</b> If you have existing users you will need to "
+"update their roles to be <b>Support User</b>. Or update their existing roles "
+"to <a href=\"https://getawesomesupport.com/documentation/awesome-"
+"support/admin-handling-existing-users-after-installation/\" "
+"target=\"_blank\" >add the proper WordPress security capabilities for "
+"Awesome Support ticket users. </a>  This will grant them the permissions "
+"necessary to submit tickets."
+msgstr ""
+"2. <b>Xử lý người dùng hiện tại:</b> Nếu bạn có người dùng hiện tại, bạn sẽ "
+"cần cập nhật vai trò của họ thành <b>Người dùng hỗ trợ</b>. Hoặc cập nhật "
+"vai trò hiện tại của họ thành <a href=\"https://getawesomesupport."
+"com/documentation/awesome-support/admin-handling-existing-users-after-"
+"installation/\" target=\"_blank\" >thêm khả năng bảo mật WordPress phù hợp "
+"cho người dùng phiếu hỗ trợ Awesome.</a> Điều này sẽ cấp cho họ các quyền "
+"cần thiết để gửi phiếu."
+
 #: includes/admin/class-admin-tickets-list.php:1158
 msgid "2. Administration Guide"
 msgstr "2. Hướng dẫn quản trị viên"
@@ -252,6 +280,19 @@ msgstr "2. Tài liệu hướng dẫn nhập dữ liệu"
 #: includes/admin/class-admin-tickets-list.php:1174
 msgid "2. REST API"
 msgstr "2. REST API"
+
+#: includes/admin/views/about-tab-getting-started.php:16
+msgid ""
+"3. <b>Set up new agents:</b> Your primary WordPress Admin is now an agent "
+"and will automatically be assigned all new tickets unless you <a href= "
+"\"https://getawesomesupport.com/documentation/awesome-support/basic-admin-"
+"add-agent/\" target=\"_blank\" > set up additional agents.</a>"
+msgstr ""
+"3. <b>Thiết lập tác nhân mới:</b> Quản trị viên WordPress chính của bạn hiện "
+"là tác nhân và sẽ tự động được chỉ định tất cả các phiếu yêu cầu mới trừ khi "
+"bạn <a href= \"https://getawesomesupport.com/documentation/awesome-"
+"support/basic-admin-add-agent/\" target=\"_blank\" > thiết lập thêm các tác "
+"nhân khác.</a>"
 
 #: includes/admin/class-admin-tickets-list.php:1161
 msgid "3. Troubleshooting"
@@ -306,7 +347,46 @@ msgstr ""
 #, php-format
 #| msgid "<a href=\"%s\">Open a ticket directly with us</a>"
 msgid "<a href=\"%1$s\">Open a ticket directly with us</a>"
-msgstr "<a href=\"%1$s\">Open a ticket directly with us</a>"
+msgstr "<a href=\"%1$s\">Mở một vé trực tiếp với chúng tôi</a>"
+
+#: includes/admin/views/about-tab-getting-started.php:47
+msgid ""
+"<b>Existing Users:</b> If you have existing users you will need to update "
+"their roles to be <b>Support User</b>. Or update their existing roles to <a "
+"href=\"https://getawesomesupport.com/documentation/awesome-support/how-to-"
+"fix-you-do-not-have-the-capacity-to-open-a-new-ticket/\">add the proper "
+"WordPress security capabilities for Awesome Support ticket users. </a>  This "
+"will grant them the permissions necessary to submit tickets."
+msgstr ""
+"<b>Người dùng hiện tại:</b> Nếu bạn có người dùng hiện tại, bạn sẽ cần cập "
+"nhật vai trò của họ thành <b>Người dùng hỗ trợ</b>. Hoặc cập nhật vai trò "
+"hiện tại của họ để <a href=\"https://getawesomesupport."
+"com/documentation/awesome-support/how-to-fix-you-do-not-have-the-capacity-to-"
+"open-a-new-ticket/\">thêm các khả năng bảo mật WordPress phù hợp cho người "
+"dùng phiếu hỗ trợ Awesome.</a> Điều này sẽ cấp cho họ các quyền cần thiết để "
+"gửi phiếu."
+
+#: includes/admin/views/about-tab-getting-started.php:13
+msgid ""
+"<b>If you completed the SETUP wizard then your ticket system is all ready to "
+"go! If you did not complete the wizard follow these steps to quickly set "
+"things up. </b>"
+msgstr ""
+"<b>Nếu bạn đã hoàn tất trình hướng dẫn THIẾT LẬP thì hệ thống vé của bạn đã "
+"sẵn sàng hoạt động! Nếu bạn chưa hoàn tất trình hướng dẫn, hãy làm theo các "
+"bước sau để thiết lập nhanh chóng.</b>"
+
+#: includes/admin/views/about-tab-getting-started.php:46
+msgid ""
+"<b>Set up new agents:</b> Your primary WordPress Admin is now an agent and "
+"will automatically be assigned all new tickets unless you <a href= \"https:"
+"//getawesomesupport.com/documentation/awesome-support/basic-admin-add-"
+"agent/\"> set up additional agents.</a>"
+msgstr ""
+"<b>Thiết lập tác nhân mới:</b> Quản trị viên WordPress chính của bạn hiện là "
+"tác nhân và sẽ tự động được chỉ định tất cả các phiếu yêu cầu mới trừ khi "
+"bạn <a href= \"https://getawesomesupport.com/documentation/awesome-"
+"support/basic-admin-add-agent/\"> thiết lập thêm các tác nhân khác.</a>"
 
 #: includes/gas-framework/lib/class-admin-page.php:125
 msgid "<em>Options Page Created with <a href='#'>Gas Framework</a></em>"
@@ -592,15 +672,15 @@ msgstr "Phản hồi ticket mới"
 
 #: includes/admin/views/system-tools.php:326
 msgid "Add or Remove auto delete attachments flag on all tickets."
-msgstr "Add or Remove auto delete attachments flag on all tickets."
+msgstr "Thêm hoặc xóa cờ tự động xóa tệp đính kèm trên tất cả các phiếu."
 
 #: includes/admin/views/system-tools.php:342
 msgid "Add or Remove auto delete attachments flag on closed tickets."
-msgstr "Add or Remove auto delete attachments flag on closed tickets."
+msgstr "Thêm hoặc xóa cờ tự động xóa tệp đính kèm trên phiếu đã đóng."
 
 #: includes/admin/views/system-tools.php:334
 msgid "Add or Remove auto delete attachments flag on open tickets."
-msgstr "Add or Remove auto delete attachments flag on open tickets."
+msgstr "Thêm hoặc xóa cờ tự động xóa tệp đính kèm trên phiếu mở."
 
 #: includes/admin/settings/settings-integration.php:31
 msgid ""
@@ -714,6 +794,10 @@ msgid ""
 msgstr ""
 "Thêm ghi chú nội bộ vào phiếu mỗi lần ai đó cập nhật trường theo dõi thời "
 "gian cơ bản"
+
+#: includes/admin/views/about-tab-getting-started.php:35
+msgid "Admin Documentation Image Link"
+msgstr ""
 
 #: includes/functions-post-type.php:190
 msgctxt "admin menu"
@@ -862,6 +946,10 @@ msgstr "Tất cả khách"
 msgid "All custom taxonomies terms were cleared"
 msgstr "Tất cả các thuật ngữ phân loại tùy chỉnh đã được xóa"
 
+#: includes/admin/views/about-tab-videos.php:5
+msgid "All of our informative videos in one place"
+msgstr "Tất cả các video thông tin của chúng tôi ở một nơi"
+
 #. %s is the ticket id.
 #: includes/gas-framework/lib/class-gas-framework.php:191
 #, php-format
@@ -917,11 +1005,11 @@ msgstr "Tất cả thư mục đính kèm của ticket chưa được nhận đ�
 msgid "Allow"
 msgstr "Cho phép"
 
-#: includes/admin/settings/settings-permissions.php:150
+#: includes/admin/settings/settings-permissions.php:146
 msgid "Allow Agents To Delete Their Own Replies"
 msgstr "Cho phép các đại lý xóa các phản hồi của họ"
 
-#: includes/admin/settings/settings-permissions.php:134
+#: includes/admin/settings/settings-permissions.php:130
 msgid "Allow Agents To Edit Their Own Replies"
 msgstr "Cho phép các đại lý chỉnh sửa câu trả lời của riêng họ"
 
@@ -952,6 +1040,10 @@ msgid ""
 msgstr ""
 "Cho phép người dùng đăng ký trên trang hỗ trợ. Cài đặt này có thể được bật "
 "ngay cả khi cài đặt WordPress bị tắt. Hiện tại, đăng ký là %s của WordPress."
+
+#: includes/admin/views/system-status.php:177
+msgid "Allowed File Types"
+msgstr "Các loại tệp được phép"
 
 #: includes/admin/views/system-status.php:183
 msgctxt "Allowed file types for attachments"
@@ -1009,7 +1101,7 @@ msgstr "Ẩn danh phiếu hỗ trợ số #: %s"
 
 #: includes/admin/settings/settings-privacy.php:175
 msgid "Anonymize CLOSED tickets"
-msgstr "Anonymize CLOSED tickets"
+msgstr "Các vé Ẩn danh ĐÃ ĐÓNG"
 
 #: includes/admin/settings/settings-privacy.php:99
 msgid "Anonymize instead of Delete"
@@ -1017,7 +1109,7 @@ msgstr "Ẩn danh thay vì Xóa"
 
 #: includes/admin/settings/settings-privacy.php:182
 msgid "Anonymize OPEN tickets"
-msgstr "Anonymize OPEN tickets"
+msgstr "Ẩn danh vé MỞ"
 
 #. %1$s is the ticket number, %2$s is the reply ID.
 #: includes/gdpr-integration/gdpr-privacy-options.php:320
@@ -1029,11 +1121,11 @@ msgstr "Ẩn danh phản hồi trên phiếu hỗ trợ số: #: %1$s. ID phản
 
 #: includes/admin/settings/settings-privacy.php:204
 msgid "Anonymized User ID"
-msgstr "Anonymized User ID"
+msgstr "ID người dùng ẩn danh"
 
 #: includes/admin/settings/settings-privacy.php:187
 msgid "Anonymized User ID Options"
-msgstr "Anonymized User ID Options"
+msgstr "Tùy chọn ID người dùng ẩn danh"
 
 #: includes/admin/metaboxes/replies.php:64
 #: includes/admin/metaboxes/replies.php:70
@@ -1124,7 +1216,7 @@ msgstr "Tệp đính kèm:"
 
 #: includes/admin/views/system-tools.php:316
 msgid "Auto Delete Attachments Flag"
-msgstr "Auto Delete Attachments Flag"
+msgstr "Tự động xóa tệp đính kèm Cờ"
 
 #. %1$s is the flag or status, %2$s is the number of tickets.
 #: includes/admin/views/system-tools.php:111
@@ -1342,31 +1434,38 @@ msgstr "Theo dõi thời gian cơ bản"
 #. %s is the URL to the article.
 #: includes/admin/settings/settings-permissions.php:13
 #, php-format
+#| msgid ""
+#| "Basic user and agent permissions are handled by WordPress ROLES and "
+#| "CAPABILITIES. <br />\n"
+#| "\tWhen this plugin was installed, we automatically included roles for "
+#| "agents and users named SUPPORT AGENT and SUPPORT USER.  <br />\n"
+#| "\tYou can use these when you set up new users and they are automatically "
+#| "assigned to users that register on our login page.  <br />\n"
+#| "\tBUT, if you have existing users with existing roles that need to open "
+#| "tickets please read <b><u><a %s>this article</a></b></u> on our website. "
+#| "<br />\n"
+#| "\tThe rest of this page helps you to control the appearance of some items "
+#| "on your ticket screens."
 msgid ""
 "Basic user and agent permissions are handled by WordPress ROLES and "
-"CAPABILITIES. <br />\n"
-"\tWhen this plugin was installed, we automatically included roles for agents "
-"and users named SUPPORT AGENT and SUPPORT USER.  <br />\n"
-"\tYou can use these when you set up new users and they are automatically "
-"assigned to users that register on our login page.  <br />\n"
-"\tBUT, if you have existing users with existing roles that need to open "
-"tickets please read <b><u><a %s>this article</a></b></u> on our website. <br "
-"/>\n"
-"\tThe rest of this page helps you to control the appearance of some items on "
-"your ticket screens."
+"CAPABILITIES. <br />When this plugin was installed, we automatically "
+"included roles for agents and users named SUPPORT AGENT and SUPPORT USER.  "
+"<br />You can use these when you set up new users and they are automatically "
+"assigned to users that register on our login page.  <br />BUT, if you have "
+"existing users with existing roles that need to open tickets please read <b>"
+"<u><a %s>this article</a></b></u> on our website. <br />The rest of this "
+"page helps you to control the appearance of some items on your ticket "
+"screens."
 msgstr ""
 "Quyền cơ bản của người dùng và tác nhân được xử lý bởi ROLES và CAPABILITIES "
-"của WordPress. <br />\n"
-"Khi plugin này được cài đặt, chúng tôi tự động bao gồm các vai trò cho tác "
-"nhân và người dùng có tên là SUPPORT AGENT và SUPPORT USER. <br />\n"
-"Bạn có thể sử dụng các vai trò này khi thiết lập người dùng mới và chúng sẽ "
-"tự động được chỉ định cho những người dùng đăng ký trên trang đăng nhập của "
-"chúng tôi. <br />\n"
-"NHƯNG, nếu bạn có những người dùng hiện tại với các vai trò hiện tại cần mở "
-"phiếu, vui lòng đọc <b><u><a %s>bài viết này</a></b></u> trên trang web của "
-"chúng tôi. <br />\n"
-"Phần còn lại của trang này giúp bạn kiểm soát giao diện của một số mục trên "
-"màn hình phiếu của mình."
+"của WordPress. <br />Khi plugin này được cài đặt, chúng tôi tự động bao gồm "
+"các vai trò cho tác nhân và người dùng có tên là SUPPORT AGENT và SUPPORT "
+"USER. <br />Bạn có thể sử dụng các vai trò này khi thiết lập người dùng mới "
+"và chúng sẽ tự động được chỉ định cho những người dùng đăng ký trên trang "
+"đăng nhập của chúng tôi. <br />NHƯNG, nếu bạn có những người dùng hiện tại "
+"với các vai trò hiện tại cần mở phiếu, vui lòng đọc <b><u><a %s>bài viết "
+"này</a></b></u> trên trang web của chúng tôi. <br />Phần còn lại của trang "
+"này giúp bạn kiểm soát giao diện của một số mục trên màn hình phiếu của mình."
 
 #: includes/rest-api/includes/Auth/Init.php:340
 msgid ""
@@ -1388,7 +1487,7 @@ msgstr "Blue Blocks"
 
 #: includes/admin/views/system-tools.php:219
 msgid "Blue Blocks With Satisfaction Survey Elements"
-msgstr "Blue Blocks With Satisfaction Survey Elements"
+msgstr "Các khối màu xanh với các yếu tố khảo sát sự hài lòng"
 
 #: includes/admin/settings/settings-advanced.php:165
 msgid "Bootstrap 4 Theme"
@@ -1397,6 +1496,10 @@ msgstr "Giao diện Bootstrap 4"
 #: includes/admin/settings/settings-advanced.php:145
 msgid "Bootstrap Support (Experimental)"
 msgstr "Hỗ trợ Bootstrap (thử nghiệm)"
+
+#: includes/admin/views/about-tab-credits.php:41
+msgid "Browse extensions"
+msgstr "Duyệt phần mở rộng"
 
 #: includes/admin/class-admin-tickets-list.php:993
 msgid "Bulk Actions"
@@ -1507,6 +1610,10 @@ msgstr "Khả năng"
 msgid "Cerulean"
 msgstr "Cerulean"
 
+#: includes/admin/views/about.php:26
+msgid "Change Log"
+msgstr "Nhật ký thay đổi"
+
 #: includes/admin/class-admin-tickets-list.php:359
 #: includes/admin/class-admin-tickets-list.php:424
 #: includes/custom-fields/functions-custom-fields.php:608
@@ -1536,7 +1643,7 @@ msgstr "Gian la hả?"
 msgid "Check this to allow agents to delete attachments"
 msgstr "Đánh dấu vào đây để cho phép nhân viên hỗ trợ xóa tệp đính kèm"
 
-#: includes/admin/settings/settings-permissions.php:169
+#: includes/admin/settings/settings-permissions.php:165
 msgid ""
 "Check this to allow replies to be permanently deleted. If you do not check "
 "this option, deleted items will end up in the WordPress trash bin which will "
@@ -1627,6 +1734,14 @@ msgstr "Nhấp vào đây để tìm kiếm plugin."
 msgid "Click me"
 msgstr "Nhấp vào tôi"
 
+#: includes/admin/views/about-tab-videos.php:7
+msgid ""
+"Clicking the image below will take you a page on our website where you can "
+"view them all."
+msgstr ""
+"Nhấp vào hình ảnh bên dưới sẽ đưa bạn đến một trang trên trang web của chúng "
+"tôi, nơi bạn có thể xem tất cả hình ảnh."
+
 #: includes/rest-api/includes/settings-api.php:65
 msgid "Client Tickets"
 msgstr "Vé khách hàng"
@@ -1672,7 +1787,7 @@ msgstr "Trạng thái đã đóng"
 #: includes/admin/settings/settings-privacy.php:172
 #: includes/admin/views/system-tools.php:338
 msgid "Closed Tickets"
-msgstr "Closed Tickets"
+msgstr "Vé đã đóng"
 
 #: includes/functions-priority.php:38 includes/functions-priority.php:58
 #: includes/functions-ticket-type.php:38 includes/functions-ticket-type.php:58
@@ -1763,6 +1878,10 @@ msgstr "Nội dung"
 msgid "Content for the object, as it exists in the database."
 msgstr "Nội dung của đối tượng như hiện có trong cơ sở dữ liệu."
 
+#: includes/admin/views/about-tab-credits.php:11
+msgid "Contributing"
+msgstr "Đóng góp"
+
 #: includes/admin/settings/settings-privacy.php:19
 msgid ""
 "Control how the PRIVACY button appears to the user and the options available "
@@ -1771,7 +1890,7 @@ msgstr ""
 "Kiểm soát cách nút RIÊNG TƯ xuất hiện với người dùng và các tùy chọn có sẵn "
 "với nút này"
 
-#: includes/admin/settings/settings-permissions.php:36
+#: includes/admin/settings/settings-permissions.php:32
 msgid ""
 "Control whether certain tabs are visible at the top of the admin ticket list"
 msgstr "Kiểm soát tab nào hiển thị trên đầu danh sách phiếu của admin"
@@ -1786,7 +1905,7 @@ msgstr ""
 msgid "Control who can delete ticket or reply attachments"
 msgstr "Kiểm soát ai có thể xóa phiếu hoặc tệp đính kèm trong phản hồi"
 
-#: includes/admin/settings/settings-permissions.php:78
+#: includes/admin/settings/settings-permissions.php:74
 msgid ""
 "Control who can view certain ticket tabs on the ticket detail screen in wp-"
 "admin"
@@ -1798,15 +1917,15 @@ msgstr "Chuyển đổi thành địa chỉ email của nhân viên"
 
 #: includes/class-email-notifications.php:322
 msgid "Converts into agent name (WordPress Display Name)"
-msgstr "Converts into agent name (WordPress Display Name)"
+msgstr "Chuyển đổi thành tên tác nhân (Tên hiển thị WordPress)"
 
 #: includes/class-email-notifications.php:366
 msgid "Converts into author e-mail address"
-msgstr "Converts into author e-mail address"
+msgstr "Chuyển đổi thành địa chỉ email của tác giả"
 
 #: includes/class-email-notifications.php:354
 msgid "Converts into author name (WordPress Display Name)"
-msgstr "Converts into author name (WordPress Display Name)"
+msgstr "Chuyển đổi thành tên tác giả (Tên hiển thị WordPress)"
 
 #: includes/class-email-notifications.php:350
 msgid "Converts into client e-mail address"
@@ -1814,7 +1933,7 @@ msgstr "Chuyển thành địa chỉ email của khách hàng"
 
 #: includes/class-email-notifications.php:338
 msgid "Converts into client name (WordPress Display Name)"
-msgstr "Converts into client name (WordPress Display Name)"
+msgstr "Chuyển đổi thành tên khách hàng (Tên hiển thị WordPress)"
 
 #: includes/class-email-notifications.php:390
 #: includes/class-user-email-notification.php:282
@@ -1827,27 +1946,27 @@ msgstr "Chuyển thành tiêu đề yêu cầu hiện tại"
 
 #: includes/class-email-notifications.php:326
 msgid "Converts into the first name of the agent"
-msgstr "Converts into the first name of the agent"
+msgstr "Chuyển đổi thành tên của Agent"
 
 #: includes/class-email-notifications.php:358
 msgid "Converts into the first name of the author"
-msgstr "Converts into the first name of the author"
+msgstr "Chuyển đổi thành tên đầu tiên của tác giả"
 
 #: includes/class-email-notifications.php:342
 msgid "Converts into the first name of the client"
-msgstr "Converts into the first name of the client"
+msgstr "Chuyển đổi thành tên đầu tiên của client"
 
 #: includes/class-email-notifications.php:330
 msgid "Converts into the last name of the agent"
-msgstr "Converts into the last name of the agent"
+msgstr "Chuyển đổi thành họ của agent"
 
 #: includes/class-email-notifications.php:362
 msgid "Converts into the last name of the author"
-msgstr "Converts into the last name of the author"
+msgstr "Chuyển đổi thành họ của tác giả"
 
 #: includes/class-email-notifications.php:346
 msgid "Converts into the last name of the client"
-msgstr "Converts into the last name of the client"
+msgstr "Chuyển đổi thành họ của khách hàng"
 
 #: includes/class-user-email-notification.php:274
 msgid "Converts into the user's email address"
@@ -1863,7 +1982,7 @@ msgstr "Chuyển đổi thành ID yêu cầu"
 
 #: includes/class-user-email-notification.php:254
 msgid "Converts into user ID"
-msgstr "Converts into user ID"
+msgstr "Chuyển đổi thành ID người dùng"
 
 #: includes/class-user-email-notification.php:266
 msgid "Converts into user name (WordPress Display Name)"
@@ -1952,6 +2071,10 @@ msgstr "Đang tạo tài khoản…"
 msgid "Credit"
 msgstr "Ghi nhận"
 
+#: includes/admin/views/about.php:27
+msgid "Credits"
+msgstr "Tín dụng"
+
 #: includes/admin/settings/settings-privacy.php:145
 msgid "Cron Job Interval"
 msgstr "Khoảng thời gian công việc định kì"
@@ -1994,6 +2117,7 @@ msgstr "đã cập nhật %1$s thành %2$s"
 #: includes/admin/metaboxes/custom-fields.php:19
 #: includes/admin/metaboxes/ticket-main-tabs.php:30
 #: includes/admin/settings/settings-fields.php:157
+#: includes/admin/views/system-status.php:333
 msgid "Custom Fields"
 msgstr "Trường tùy chỉnh"
 
@@ -2043,7 +2167,7 @@ msgstr "Darkly"
 
 #: includes/admin/views/system-tools.php:273
 msgid "Data Conversion Tools"
-msgstr "Data Conversion Tools"
+msgstr "Công cụ chuyển đổi dữ liệu"
 
 #: includes/admin/settings/settings-licenses.php:23
 msgid "Data Sharing Disclosure"
@@ -2054,13 +2178,17 @@ msgstr "Tiết lộ chia sẻ dữ liệu"
 msgid "Date"
 msgstr "Ngày"
 
+#: includes/admin/views/system-status.php:115
+msgid "DB Version"
+msgstr "Phiên bản Database"
+
 #: includes/gas-framework/lib/class-option-edd-license.php:400
 msgid "Deactivate License"
 msgstr "Hủy kích hoạt giấy phép"
 
 #: includes/admin/views/system-tools.php:258
 msgid "Debug"
-msgstr "Debug"
+msgstr "Gỡ lỗi"
 
 #: includes/admin/functions-menu.php:24
 msgid "Debugging Tools"
@@ -2130,15 +2258,14 @@ msgstr "Xóa sản phẩm"
 
 #: includes/admin/settings/settings-privacy.php:160
 msgid "Delete Tickets"
-msgstr "Delete Tickets"
+msgstr "Xóa Vé"
 
 #: includes/admin/settings/settings-privacy.php:164
 msgid ""
 "Delete tickets instead of anonymizing them.  WARNING: Deleted tickets CANNOT "
 "be recovered!"
 msgstr ""
-"Delete tickets instead of anonymizing them.  WARNING: Deleted tickets CANNOT "
-"be recovered!"
+"Xóa vé thay vì ẩn danh chúng. CẢNH BÁO: KHÔNG THỂ khôi phục lại vé đã xóa!"
 
 #: includes/class-product-sync.php:1098
 msgid "Delete unused Product Terms"
@@ -2195,6 +2322,15 @@ msgid "Didn't work"
 msgstr "Không hoạt động"
 
 #: includes/admin/views/system-status.php:128
+#: includes/admin/views/system-status.php:275
+#: includes/admin/views/system-status.php:281
+#: includes/admin/views/system-status.php:287
+#: includes/admin/views/system-status.php:293
+#: includes/admin/views/system-status.php:299
+#: includes/admin/views/system-status.php:306
+#: includes/admin/views/system-status.php:312
+#: includes/admin/views/system-status.php:318
+#: includes/admin/views/system-status.php:324
 #: includes/gas-framework/lib/class-option-enable.php:65
 #: includes/gas-framework/lib/class-option-enable.php:144
 msgid "Disabled"
@@ -2289,8 +2425,8 @@ msgid ""
 "Do you need help and support for other plugins and themes or do you need "
 "emergency help for your site?"
 msgstr ""
-"Do you need help and support for other plugins and themes or do you need "
-"emergency help for your site?"
+"Bạn có cần trợ giúp và hỗ trợ cho các plugin và chủ đề khác hay bạn cần trợ "
+"giúp khẩn cấp cho trang web của mình không?"
 
 #: includes/admin/settings/settings-notifications.php:113
 #: includes/admin/settings/settings-notifications.php:138
@@ -2335,6 +2471,7 @@ msgstr "Bạn có muốn bật chức năng Departments không?"
 
 #: includes/admin/class-admin-tickets-list.php:1001
 #: includes/gas-framework/gas-framework.php:180
+#: includes/admin/views/about.php:24
 #: includes/admin/views/wpas-help-and-support.php:46
 #: includes/rest-api/includes/settings-api.php:46
 msgid "Documentation"
@@ -2349,7 +2486,9 @@ msgstr "Tài liệu cho REST API."
 #, php-format
 #| msgid "Documentation links are located in our <a href=\"%s\">About Page</a>"
 msgid "Documentation links are located in our <a href=\"%1$s\">About Page</a>"
-msgstr "Documentation links are located in our <a href=\"%1$s\">About Page</a>"
+msgstr ""
+"Các liên kết tài liệu nằm trong <a href=\"%1$s\">Trang Giới thiệu</a> của "
+"chúng tôi"
 
 #: includes/admin/settings/settings-registration.php:142
 #: includes/admin/settings/settings-registration.php:177
@@ -2399,6 +2538,10 @@ msgstr "Kiểm tra Email"
 msgid "E-Mail Defaults"
 msgstr "Mặc định Email"
 
+#: includes/admin/views/system-status.php:249
+msgid "E-Mail Notifications"
+msgstr "Thông báo qua E-mail"
+
 #: themes/default/registration.php:38 themes/default/registration.php:39
 msgid "E-mail or username"
 msgstr "Email hoặc tên người dùng"
@@ -2441,7 +2584,7 @@ msgstr "Chỉnh sửa phản hồi ticket"
 msgid "Edited on"
 msgstr "Đã chỉnh sửa vào"
 
-#: includes/admin/settings/settings-permissions.php:103
+#: includes/admin/settings/settings-permissions.php:99
 msgid "Editing History"
 msgstr "Lịch sử chỉnh sửa"
 
@@ -2456,6 +2599,10 @@ msgstr "Các yếu tố khảo sát sự hài lòng thanh lịch"
 #: themes/default/registration.php:137 themes/default/registration.php:138
 msgid "Email"
 msgstr "Email"
+
+#: includes/admin/views/opt-in.php:37
+msgid "Email Address"
+msgstr ""
 
 #: includes/admin/settings/settings-registration.php:94
 msgid "Email address description"
@@ -2474,7 +2621,7 @@ msgstr "Nội dung Email"
 
 #: includes/admin/views/system-tools.php:206
 msgid "Email Template Sets"
-msgstr "Email Template Sets"
+msgstr "Bộ mẫu email"
 
 #: includes/admin/class-admin-help.php:137
 #: includes/admin/class-admin-help.php:219
@@ -2623,9 +2770,9 @@ msgstr "Kích hoạt quy trình định kỳ sẽ ẩn danh hoặc xóa các phi
 msgid "Enable Third Party Fields"
 msgstr "Bật các trường bên thứ ba"
 
-#: includes/admin/settings/settings-permissions.php:63
+#: includes/admin/settings/settings-permissions.php:59
 msgid "Enable Ticket Templates"
-msgstr "Enable Ticket Templates"
+msgstr "Kích hoạt mẫu vé"
 
 #: includes/admin/settings/settings-fields.php:237
 msgid "Enable Ticket Types"
@@ -2636,12 +2783,21 @@ msgid "Enable WooCommerce Integration"
 msgstr "Bật tích hợp với WooCommerce"
 
 #: includes/admin/views/system-status.php:128
+#: includes/admin/views/system-status.php:275
+#: includes/admin/views/system-status.php:281
+#: includes/admin/views/system-status.php:287
+#: includes/admin/views/system-status.php:293
+#: includes/admin/views/system-status.php:299
+#: includes/admin/views/system-status.php:306
+#: includes/admin/views/system-status.php:312
+#: includes/admin/views/system-status.php:318
+#: includes/admin/views/system-status.php:324
 #: includes/gas-framework/lib/class-option-enable.php:62
 #: includes/gas-framework/lib/class-option-enable.php:141
 msgid "Enabled"
 msgstr "Đã bật"
 
-#: includes/admin/settings/settings-permissions.php:161
+#: includes/admin/settings/settings-permissions.php:157
 msgid ""
 "Enter a comma separated list of roles that should be able to delete any "
 "agent and user reply. Roles should be the internal WordPress role id such as "
@@ -2653,7 +2809,7 @@ msgstr ""
 "WordPress nội bộ như wpas_agent và phân biệt chữ hoa chữ thường. Không được "
 "có khoảng trắng giữa dấu phẩy và tên vai trò khi nhập nhiều vai trò."
 
-#: includes/admin/settings/settings-permissions.php:145
+#: includes/admin/settings/settings-permissions.php:141
 msgid ""
 "Enter a comma separated list of roles that should be able to edit any agent "
 "and user reply. Roles should be the internal WordPress role id such as "
@@ -2665,7 +2821,7 @@ msgstr ""
 "WordPress nội bộ như wpas_agent và phân biệt chữ hoa chữ thường. Không được "
 "có khoảng trắng giữa dấu phẩy và tên vai trò khi nhập nhiều vai trò."
 
-#: includes/admin/settings/settings-permissions.php:129
+#: includes/admin/settings/settings-permissions.php:125
 msgid ""
 "Enter a comma separated list of roles that should NOT be able to edit ticket "
 "content. Roles should be the internal WordPress role id such as wpas_agent "
@@ -2677,7 +2833,7 @@ msgstr ""
 "như wpas_agent và phân biệt chữ hoa chữ thường. Không được có khoảng trắng "
 "giữa dấu phẩy và tên vai trò khi nhập nhiều vai trò."
 
-#: includes/admin/settings/settings-permissions.php:91
+#: includes/admin/settings/settings-permissions.php:87
 msgid ""
 "Enter a comma separated list of roles that should not see the ADDITIONAL "
 "INTERESTED PARTIES tab. Roles should be the internal WordPress role id such "
@@ -2689,7 +2845,7 @@ msgstr ""
 "wpas_agent và phân biệt chữ hoa chữ thường. Không được có khoảng trắng giữa "
 "dấu phẩy và tên vai trò khi nhập nhiều vai trò."
 
-#: includes/admin/settings/settings-permissions.php:84
+#: includes/admin/settings/settings-permissions.php:80
 msgid ""
 "Enter a comma separated list of roles that should not see the CUSTOM FIELDS "
 "tab. Roles should be the internal WordPress role id such as wpas_agent and "
@@ -2701,7 +2857,7 @@ msgstr ""
 "wpas_agent và phân biệt chữ hoa chữ thường. Không được có khoảng trắng giữa "
 "dấu phẩy và tên vai trò khi nhập nhiều vai trò."
 
-#: includes/admin/settings/settings-permissions.php:98
+#: includes/admin/settings/settings-permissions.php:94
 msgid ""
 "Enter a comma separated list of roles that should not see the tags metabox. "
 "Roles should be the internal WordPress role id such as wpas_agent and are "
@@ -2755,9 +2911,9 @@ msgid ""
 "this, please go to the WordPress SETTINGS->PERMALINKS page and click the "
 "save button to force WP to update its configuration with your new value"
 msgstr ""
-"Enter the slug you would like to use for your product urls. If you change "
-"this, please go to the WordPress SETTINGS->PERMALINKS page and click the "
-"save button to force WP to update its configuration with your new value"
+"Nhập slug bạn muốn sử dụng cho url sản phẩm của mình. Nếu bạn thay đổi slug "
+"này, vui lòng vào trang WordPress SETTINGS->PERMALINKS và nhấp vào nút lưu "
+"để buộc WP cập nhật cấu hình của nó với giá trị mới của bạn"
 
 #: includes/gas-framework/lib/class-option-edd-license.php:397
 msgid "Enter your theme license key."
@@ -2767,6 +2923,7 @@ msgstr "Nhập khóa cấp phép Theme của bạn."
 msgid "Entering your license key is mandatory to get the product updates."
 msgstr "Bạn phải nhập mã bản quyền để nhận được bản cập nhật sản phẩm."
 
+#: includes/admin/views/opt-in.php:47
 #: includes/gas-framework/inc/edd-licensing/EDD_SL_Plugin_Updater.php:356
 msgid "Error"
 msgstr "Lỗi"
@@ -2796,6 +2953,16 @@ msgstr ""
 "Thậm chí còn có nhiều mẹo khắc phục sự cố hơn và các câu hỏi thường gặp khác."
 " Trang 404, thiếu tab, lỗi và xung đột PHP chỉ là một số chủ đề được đề cập "
 "ở đây!"
+
+#: includes/admin/views/about-tab-credits.php:40
+msgid ""
+"Even though Awesome Support has a lot of built-in features, it is impossible "
+"to make everyone happy. This is why we have lots of addons to help you "
+"tailor your support system."
+msgstr ""
+"Mặc dù Awesome Support có nhiều tính năng tích hợp, nhưng không thể làm hài "
+"lòng tất cả mọi người. Đây là lý do tại sao chúng tôi có nhiều tiện ích bổ "
+"sung để giúp bạn tùy chỉnh hệ thống hỗ trợ của mình."
 
 #: tracking/class-example-settings.php:43
 #: tracking/class-example-settings.php:52
@@ -2841,6 +3008,10 @@ msgstr "Xuất vé"
 msgid "Exporting data was successful!"
 msgstr "Xuất dữ liệu thành công!"
 
+#: includes/admin/views/about-tab-credits.php:39
+msgid "Extending the Possibilities"
+msgstr "Khả năng Mở rộng"
+
 #: includes/rest-api/includes/api.php:199
 msgid "Failed to update comment karma."
 msgstr "Không cập nhật được karma bình luận."
@@ -2849,7 +3020,8 @@ msgstr "Không cập nhật được karma bình luận."
 msgid ""
 "Fast, friendly support for all things WordPress at one low monthly price!"
 msgstr ""
-"Fast, friendly support for all things WordPress at one low monthly price!"
+"Hỗ trợ nhanh chóng, thân thiện cho mọi thứ liên quan đến WordPress với mức "
+"giá hàng tháng thấp!"
 
 #: includes/admin/settings/settings-fields.php:17
 msgid "Fields"
@@ -2878,6 +3050,7 @@ msgid "First additional agent who has an interest this ticket"
 msgstr "Người đại  bổ sung đầu tiên có liên quan đến phiếu này"
 
 #: themes/default/registration.php:100 themes/default/registration.php:101
+#: includes/admin/views/opt-in.php:35
 msgid "First Name"
 msgstr "Tên"
 
@@ -2900,7 +3073,7 @@ msgid ""
 "corner of this screen."
 msgstr ""
 "Để biết thêm thông tin về các thẻ mẫu có thể sử dụng trong mẫu email, vui "
-"lòng nhấp vào&laquo;Help&raquo; nút ở góc trên bên phải của màn hình này."
+"lòng nhấp vào &laquo;Help&raquo; nút ở góc trên bên phải của màn hình này."
 
 #: themes/default/registration.php:84
 msgid "Forgot password?"
@@ -2996,7 +3169,7 @@ msgstr "Tùy chọn quản trị chung và đại lý"
 
 #: includes/admin/views/system-tools.php:129
 msgid "General Tools"
-msgstr "General Tools"
+msgstr "Công cụ chung"
 
 #: includes/admin/functions-menu.php:30
 msgid "Get a Free Addon"
@@ -3009,6 +3182,10 @@ msgstr "Chi tiết phiếu!"
 #: includes/admin/views/opt-in.php:3
 msgid "Get Your Free Addon!"
 msgstr "Nhận tiện ích mở rộng miễn phí!"
+
+#: includes/admin/views/about.php:23
+msgid "Getting Started"
+msgstr "Bắt đầu"
 
 #. %1$s is the URL to view the privacy policy, %2$s are additional attributes for the privacy policy link.
 #: includes/admin/views/opt-in.php:27
@@ -3078,7 +3255,7 @@ msgstr "Trợ giúp & Hỗ trợ"
 
 #: includes/admin/views/wpas-help-and-support.php:17
 msgid "Help and Support Options"
-msgstr "Help and Support Options"
+msgstr "Tùy chọn Trợ giúp và Hỗ trợ"
 
 #: includes/custom-fields/functions-custom-fields.php:915
 msgid "Help Desk SaaS Ticket ID"
@@ -3106,7 +3283,9 @@ msgstr "Đây"
 
 #: includes/admin/views/wpas-help-and-support.php:19
 msgid "Here are three ways to get help and support for your new helpdesk!"
-msgstr "Here are three ways to get help and support for your new helpdesk!"
+msgstr ""
+"Sau đây là ba cách để nhận trợ giúp và hỗ trợ cho bộ phận trợ giúp mới của "
+"bạn!"
 
 #. %1$s is the URL for more information about the free add-on.
 #: includes/admin/functions-misc.php:506
@@ -3129,7 +3308,7 @@ msgstr "Ẩn vé đã đóng"
 msgid "Hide Ticket ID"
 msgstr "Ẩn ID vé"
 
-#: includes/admin/settings/settings-permissions.php:179
+#: includes/admin/settings/settings-permissions.php:175
 msgid ""
 "High - log the original contents before the reply was edited so that a full "
 "history could be maintained"
@@ -3140,6 +3319,10 @@ msgstr ""
 #: includes/admin/class-admin-user.php:87
 msgid "Home Phone"
 msgstr "Điện thoại nhà"
+
+#: includes/admin/views/system-status.php:22
+msgid "Home URL"
+msgstr "Trang chủ URL"
 
 #: includes/admin/settings/settings-fields.php:139
 msgid ""
@@ -3211,8 +3394,8 @@ msgid ""
 "How old should tickets be before they are anonymized or deleted?  Enter a "
 "value in days - default is 180 days or approximately six months."
 msgstr ""
-"How old should tickets be before they are anonymized or deleted?  Enter a "
-"value in days - default is 180 days or approximately six months."
+"Vé phải có thời hạn bao lâu trước khi được ẩn danh hoặc xóa? Nhập giá trị "
+"theo ngày - mặc định là 180 ngày hoặc khoảng sáu tháng."
 
 #: includes/admin/settings/settings-advanced.php:96
 msgid ""
@@ -3234,7 +3417,7 @@ msgstr "Chúng ta nên tạo tên người dùng như thế nào?"
 
 #: includes/admin/settings/settings-privacy.php:193
 msgid "How should we create the anonymized user?"
-msgstr "How should we create the anonymized user?"
+msgstr "Chúng ta nên tạo người dùng ẩn danh như thế nào?"
 
 #: includes/admin/views/opt-in.php:24
 msgid "How to Get Your Free Addon"
@@ -3328,8 +3511,9 @@ msgid ""
 "If so, check out our partners at ValiusWP.com where you can get unlimited 30 "
 "minute website fixes and support for one low price per month."
 msgstr ""
-"If so, check out our partners at ValiusWP.com where you can get unlimited 30 "
-"minute website fixes and support for one low price per month."
+"Nếu vậy, hãy xem xét các đối tác của chúng tôi tại ValiusWP.com, nơi bạn có "
+"thể nhận được dịch vụ sửa chữa và hỗ trợ trang web không giới hạn trong 30 "
+"phút với mức giá thấp mỗi tháng."
 
 #. %1$s are additional attributes for the link to the article.
 #: includes/admin/class-as-admin-setup-wizard.php:529
@@ -3418,6 +3602,16 @@ msgid ""
 msgstr ""
 "Nếu bạn thích Awesome Support <a %1$s>vui lòng để lại cho chúng tôi đánh giá "
 "%2$s</a>. Cảm ơn rất nhiều từ nhóm Awesome Support trước :)"
+
+#: includes/admin/views/about-tab-credits.php:17
+msgid ""
+"If you like the plugin, make sure to rate it on the WordPress Repository "
+"website. This is perhaps one of the best way to share the love for our "
+"plugin!"
+msgstr ""
+"Nếu bạn thích plugin này, hãy đảm bảo đánh giá nó trên trang web WordPress "
+"Repository. Đây có lẽ là một trong những cách tốt nhất để chia sẻ tình yêu "
+"dành cho plugin của chúng tôi!"
 
 #: includes/admin/settings/settings-products-management.php:42
 msgid ""
@@ -3533,6 +3727,10 @@ msgstr "Quan trọng! Bạn muốn xử lý người dùng hiện tại của m�
 msgid "Importer Integration"
 msgstr "Tích hợp trình nhập"
 
+#: includes/admin/views/opt-in.php:12
+msgid "Improved Custom Fields"
+msgstr ""
+
 #: includes/admin/settings/settings-advanced.php:229
 msgid "In The Absolute Path Specified Below"
 msgstr "Trong đường dẫn tuyệt đối chỉ định bên dưới"
@@ -3573,59 +3771,54 @@ msgstr "Nội tuyến"
 #: includes/admin/views/system-tools.php:252
 #: includes/admin/views/system-tools.php:260
 msgid "Install"
-msgstr "Install"
+msgstr "Cài đặt"
 
 #: includes/admin/views/system-tools.php:261
 msgid ""
 "Install a debugging email template set into the TICKETS->SETTINGS->EMAIL "
 "template fields"
 msgstr ""
-"Install a debugging email template set into the TICKETS->SETTINGS->EMAIL "
-"template fields"
+"Cài đặt bộ mẫu email gỡ lỗi vào các trường mẫu TICKETS->SETTINGS->EMAIL"
 
 #: includes/admin/views/system-tools.php:201
 msgid "Install an email template set"
-msgstr "Install an email template set"
+msgstr "Cài đặt bộ mẫu email"
 
 #: includes/admin/views/system-tools.php:215
 msgid ""
 "Install the Blue Blocks email template set into the TICKETS->SETTINGS->EMAIL "
 "template fields"
 msgstr ""
-"Install the Blue Blocks email template set into the TICKETS->SETTINGS->EMAIL "
-"template fields"
+"Cài đặt bộ mẫu email Blue Blocks vào các trường mẫu TICKETS->SETTINGS->EMAIL"
 
 #: includes/admin/views/system-tools.php:222
 msgid ""
 "Install the Blue Blocks with Satisfaction Survey Elements email template set "
 "into the TICKETS->SETTINGS->EMAIL template fields"
 msgstr ""
-"Install the Blue Blocks with Satisfaction Survey Elements email template set "
-"into the TICKETS->SETTINGS->EMAIL template fields"
+"Cài đặt mẫu email Blue Blocks với Satisfaction Survey Elements vào các "
+"trường mẫu TICKETS->SETTINGS->EMAIL"
 
 #: includes/admin/views/system-tools.php:253
 msgid ""
 "Install the Default email template set into the TICKETS->SETTINGS->EMAIL "
 "template fields"
-msgstr ""
-"Install the Default email template set into the TICKETS->SETTINGS->EMAIL "
-"template fields"
+msgstr "Cài đặt mẫu email mặc định vào các trường mẫu TICKETS->SETTINGS->EMAIL"
 
 #: includes/admin/views/system-tools.php:230
 msgid ""
 "Install the Elegant email template set into the TICKETS->SETTINGS->EMAIL "
 "template fields"
 msgstr ""
-"Install the Elegant email template set into the TICKETS->SETTINGS->EMAIL "
-"template fields"
+"Cài đặt bộ mẫu email Elegant vào các trường mẫu TICKETS->SETTINGS->EMAIL"
 
 #: includes/admin/views/system-tools.php:237
 msgid ""
 "Install the Elegant email template set with Satisfaction Survey Elements "
 "into the TICKETS->SETTINGS->EMAIL template fields"
 msgstr ""
-"Install the Elegant email template set with Satisfaction Survey Elements "
-"into the TICKETS->SETTINGS->EMAIL template fields"
+"Cài đặt bộ mẫu email Elegant với Satisfaction Survey Elements vào các trường "
+"mẫu TICKETS->SETTINGS->EMAIL"
 
 #: awesome-support.php:172
 msgid "install the production version"
@@ -3636,8 +3829,11 @@ msgid ""
 "Install the Simple email template set into the TICKETS->SETTINGS->EMAIL "
 "template fields"
 msgstr ""
-"Install the Simple email template set into the TICKETS->SETTINGS->EMAIL "
-"template fields"
+"Cài đặt bộ mẫu email đơn giản vào các trường mẫu TICKETS->SETTINGS->EMAIL"
+
+#: includes/admin/views/system-status.php:393
+msgid "Installed"
+msgstr "Đã cài đặt"
 
 #: tracking/class-plugin-usage-tracker.php:918
 msgid "Installed by mistake"
@@ -3679,6 +3875,10 @@ msgstr "Tên người dùng hoặc mật khẩu không hợp lệ."
 #: includes/rest-api/includes/API/UserData.php:105
 msgid "Invalid username."
 msgstr "Tên người dùng không hợp lệ."
+
+#: includes/admin/views/system-status.php:460
+msgid "Is Child Theme:"
+msgstr "Là chủ đề con:"
 
 #: includes/admin/settings/settings-registration.php:149
 #: includes/admin/settings/settings-registration.php:184
@@ -3795,6 +3995,10 @@ msgstr "Lần sử dụng cuối cùng"
 msgid "Let's Go"
 msgstr "Bắt đầu thôi"
 
+#: includes/admin/views/about-tab-credits.php:22
+msgid "Libraries"
+msgstr "Thư viện"
+
 #: includes/gas-framework/lib/class-option-edd-license.php:399
 msgid "License Action"
 msgstr "Hành động cấp phép"
@@ -3836,7 +4040,7 @@ msgstr "Tình trạng giấy phép chưa rõ."
 
 #: includes/admin/views/wpas-help-and-support.php:26
 msgid "Licensed Users"
-msgstr "Licensed Users"
+msgstr "Người dùng được cấp phép"
 
 #: includes/admin/settings/settings-licenses.php:32
 msgid "Licenses"
@@ -3901,11 +4105,11 @@ msgstr ""
 "Tải tệp định kiểu của giao diện. Đừng bỏ chọn nếu bạn không hiểu rõ ý nghĩa "
 "của tùy chọn này"
 
-#: themes/default/details.php:143
+#: themes/default/details.php:143 includes/admin/views/about-tab-credits.php:5
 msgid "Loading..."
 msgstr "Đang tải..."
 
-#: includes/admin/settings/settings-permissions.php:174
+#: includes/admin/settings/settings-permissions.php:170
 msgid "Log content edits"
 msgstr "Ghi nhật ký chỉnh sửa nội dung"
 
@@ -3946,7 +4150,7 @@ msgstr "Đăng"
 msgid "Logout Redirect"
 msgstr "Chuyển hướng khi đăng xuất"
 
-#: includes/admin/settings/settings-permissions.php:178
+#: includes/admin/settings/settings-permissions.php:174
 msgid ""
 "Low - only logs whether the ticket or reply was edited. This prevents "
 "additional sensitive data from being stored in the log when the intention is "
@@ -4033,11 +4237,11 @@ msgstr "Minty"
 
 #: includes/admin/settings/settings-general.php:213
 msgid "Misc"
-msgstr "Khá"
+msgstr "Lặt vặt Khác"
 
 #: includes/admin/functions-metaboxes.php:61
 msgid "Misc and Debug"
-msgstr "Khác và Gỡ lỗi"
+msgstr "Lặt vặt Khác và Gỡ lỗi"
 
 #: includes/admin/class-admin-user.php:79
 msgid "Mobile Phone"
@@ -4052,9 +4256,25 @@ msgstr "Đăng ký được kiểm duyệt"
 msgid "Moderated Registration Email Templates"
 msgstr "Mẫu Email Đăng Ký Được Kiểm Duyệt"
 
+#: includes/admin/views/system-status.php:304
+msgid "Moderated Registration: Admin Alert"
+msgstr "Đăng ký có kiểm duyệt: Cảnh báo của quản trị viên"
+
+#: includes/admin/views/system-status.php:316
+msgid "Moderated Registration: User Approved"
+msgstr "Đăng ký được kiểm duyệt: Người dùng chấp thuận"
+
+#: includes/admin/views/system-status.php:322
+msgid "Moderated Registration: User Denied"
+msgstr "Đăng ký được kiểm duyệt: Người dùng bị từ chối"
+
+#: includes/admin/views/system-status.php:310
+msgid "Moderated Registration: User Waiting Approval"
+msgstr "Đăng ký được kiểm duyệt: Người dùng đang chờ phê duyệt"
+
 #: includes/admin/settings/settings-registration.php:37
 msgid "Moderated registrations"
-msgstr "Moderated registrations"
+msgstr "Đăng ký có kiểm duyệt"
 
 #: includes/admin/settings/settings-moderated-registration.php:23
 msgid ""
@@ -4084,6 +4304,7 @@ msgstr "Nhiều Agent"
 
 #: includes/admin/class-admin-help.php:162
 #: includes/admin/settings/settings-products-management.php:39
+#: includes/admin/views/system-status.php:127
 msgid "Multiple Products"
 msgstr "Nhiều sản phẩm"
 
@@ -4171,13 +4392,22 @@ msgstr ""
 "Bạn cần thay đổi giao diện trang vé của mình? Có thể thêm một số trường tùy "
 "chỉnh? Vậy thì đây chính là hướng dẫn bạn cần!"
 
+#: includes/admin/views/system-status.php:285
+msgid "New Agent Reply"
+msgstr "Trả lời mới của agent"
+
 #: includes/rest-api/includes/Auth/Init.php:310
 msgid "New API Password Name"
 msgstr "Tên mật khẩu API mới"
 
 #: includes/admin/settings/settings-notifications.php:129
+#: includes/admin/views/system-status.php:279
 msgid "New Assignment"
 msgstr "Phân công mới"
+
+#: includes/admin/views/system-status.php:291
+msgid "New Client Reply"
+msgstr "Phản hồi mới từ khách hàng"
 
 #: includes/admin/settings/settings-notifications.php:154
 msgid "New Reply from Agent"
@@ -4218,6 +4448,10 @@ msgstr "Phản hồi ticket mới"
 #: includes/admin/settings/settings-general.php:49
 msgid "New to Old"
 msgstr "Mới đến Cũ"
+
+#: includes/admin/views/about-tab-credits.php:4
+msgid "Newsfeed"
+msgstr "Nguồn cấp tin tức"
 
 #: includes/functions-templating.php:1349
 msgid "Next Page"
@@ -4604,6 +4838,14 @@ msgstr "Mở một phiếu hỗ trợ"
 msgid "Open a ticket"
 msgstr "Mở yêu cầu"
 
+#: includes/admin/views/about-tab-credits.php:12
+msgid "Open Source"
+msgstr "Nguồn mở"
+
+#: includes/admin/views/about-tab-credits.php:23
+msgid "Open Source Libraries"
+msgstr "Thư viện nguồn mở"
+
 #: includes/admin/settings/settings-style.php:57
 msgid "Open Status"
 msgstr "Trạng thái đang mở"
@@ -4615,7 +4857,7 @@ msgstr "Vé mở"
 #: includes/admin/settings/settings-privacy.php:179
 #: includes/admin/views/system-tools.php:330
 msgid "Open Tickets"
-msgstr "Open Tickets"
+msgstr "Vé mở"
 
 #: includes/functions-admin-bar.php:60
 msgid "Open tickets assigned to you"
@@ -4801,6 +5043,18 @@ msgctxt ""
 msgid "Parent %s:"
 msgstr "Cha %s:"
 
+#: includes/admin/views/system-status.php:476
+msgid "Parent Theme Author URL:"
+msgstr "URL tác giả chủ đề gốc:"
+
+#: includes/admin/views/system-status.php:468
+msgid "Parent Theme Name:"
+msgstr "Tên Giao diện cha:"
+
+#: includes/admin/views/system-status.php:472
+msgid "Parent Theme Version:"
+msgstr "Phiên bản chủ đề gốc:"
+
 #: includes/functions-post-type.php:199
 msgid "Parent Ticket History:"
 msgstr "Cha lịch sử Tickets:"
@@ -4842,13 +5096,13 @@ msgstr "Định kỳ ẩn danh"
 msgid "Permalinks Warning:"
 msgstr "Cảnh báo liên kết tĩnh:"
 
-#: includes/admin/settings/settings-permissions.php:166
+#: includes/admin/settings/settings-permissions.php:162
 msgid "Permanently Delete Replies"
 msgstr "Xóa vĩnh viễn trả lời"
 
 #: includes/file-uploader/settings-file-upload.php:85
-#: includes/admin/settings/settings-permissions.php:21
-#: includes/admin/settings/settings-permissions.php:24
+#: includes/admin/settings/settings-permissions.php:17
+#: includes/admin/settings/settings-permissions.php:20
 msgid "Permissions"
 msgstr "Quyền"
 
@@ -4914,8 +5168,13 @@ msgid "Please wait..."
 msgstr "Vui lòng chờ..."
 
 #: includes/admin/settings/settings-general.php:189
+#: includes/admin/views/system-status.php:202
 msgid "Plugin Pages"
 msgstr "Trang bổ trợ"
+
+#: includes/admin/views/system-status.php:387
+msgid "Plugins"
+msgstr "Các Plugins"
 
 #: includes/integrations/my-cred/my-cred.php:43
 msgid "Points for agent closing ticket #"
@@ -5066,9 +5325,17 @@ msgstr "Các sản phẩm"
 msgid "Products Management"
 msgstr "Quản lý sản phẩm"
 
+#: includes/admin/views/system-status.php:123
+msgid "Products Slug"
+msgstr "Sản phẩm Slug"
+
 #: includes/admin/settings/settings-advanced.php:181
 msgid "Pulse"
 msgstr "Pulse"
+
+#: includes/admin/views/about-tab-getting-started.php:5
+msgid "Quick Start With The Basics"
+msgstr "Bắt đầu nhanh với những điều cơ bản"
 
 #: includes/admin/settings/settings-advanced.php:48
 msgid "Random Number"
@@ -5076,7 +5343,15 @@ msgstr "Số ngẫu nhiên"
 
 #: includes/admin/settings/settings-privacy.php:199
 msgid "Random one-way hash"
-msgstr "Random one-way hash"
+msgstr "Băm một chiều ngẫu nhiên"
+
+#: includes/admin/views/about-tab-credits.php:16
+msgid "Rate the plugin"
+msgstr "Đánh giá plugin"
+
+#: includes/admin/views/about-tab-credits.php:18
+msgid "Rate the plugin now!"
+msgstr "Đánh giá plugin ngay!"
 
 #: includes/admin/metaboxes/details.php:95
 msgid "Re-open"
@@ -5174,6 +5449,14 @@ msgstr "Cảnh báo đăng ký"
 msgid "Registration Field Descriptions"
 msgstr "Mô tả các trường đăng ký"
 
+#: includes/admin/views/system-status.php:135
+msgid "Registration Page"
+msgstr "Trang đăng ký"
+
+#: includes/admin/views/system-status.php:131
+msgid "Registration Status"
+msgstr "Trạng thái đăng ký"
+
 #: includes/admin/settings/settings-moderated-registration.php:27
 msgid "Registration Submission Message"
 msgstr "Tin nhắn gửi đăng ký"
@@ -5195,7 +5478,7 @@ msgstr "Vé từ xa"
 #: includes/admin/views/system-tools.php:333
 #: includes/admin/views/system-tools.php:341
 msgid "Remove"
-msgstr "Remove"
+msgstr "Di dời"
 
 #: includes/admin/settings/settings-general.php:232
 msgid "Remove the rating request footer in the admin screen."
@@ -5280,6 +5563,7 @@ msgid "Reply to ticket %s"
 msgstr "Trả lời yêu cầu %s"
 
 #: includes/admin/settings/settings-notifications.php:80
+#: includes/admin/views/system-status.php:267
 msgid "Reply-To E-Mail"
 msgstr "Email trả lời"
 
@@ -5387,34 +5671,34 @@ msgstr "Quyền được lãng quên thư"
 msgid "Roles"
 msgstr "Vai trò người dùng"
 
-#: includes/admin/settings/settings-permissions.php:88
+#: includes/admin/settings/settings-permissions.php:84
 msgid ""
 "Roles That Are NOT Allowed Access To The Additional Interested Parties Tab"
 msgstr "Vai trò không được phép truy cập tab Các Bên Liên Quan Bổ Sung"
 
-#: includes/admin/settings/settings-permissions.php:81
+#: includes/admin/settings/settings-permissions.php:77
 msgid "Roles That Are NOT Allowed Access To The Custom Fields Tab"
 msgstr "Vai trò không được phép truy cập tab Trường Tùy Chỉnh"
 
-#: includes/admin/settings/settings-permissions.php:95
+#: includes/admin/settings/settings-permissions.php:91
 msgid "Roles That Are NOT Allowed Access To The Tags Metabox"
 msgstr "Vai trò không được phép truy cập hộp thẻ"
 
-#: includes/admin/settings/settings-permissions.php:126
+#: includes/admin/settings/settings-permissions.php:122
 msgid "Roles That Are NOT Allowed to Edit Ticket Content"
 msgstr "Các vai trò KHÔNG được phép chỉnh sửa nội dung phiếu"
 
-#: includes/admin/settings/settings-permissions.php:158
+#: includes/admin/settings/settings-permissions.php:154
 msgid "Roles That Can Delete All Replies"
 msgstr "Vai trò có thể xóa tất cả các trả lời"
 
-#: includes/admin/settings/settings-permissions.php:142
+#: includes/admin/settings/settings-permissions.php:138
 msgid "Roles That Can Edit All Replies"
 msgstr "Vai trò có thể chỉnh sửa tất cả các câu trả lời"
 
 #: includes/admin/settings/settings-advanced.php:182
 msgid "Sandstone"
-msgstr "Sandstone"
+msgstr "Đá sa thạch"
 
 #: includes/admin/metaboxes/message.php:59
 msgid "Save"
@@ -5429,7 +5713,6 @@ msgid "Save changes"
 msgstr "Lưu thay đổi"
 
 #: includes/admin/class-admin-tickets-list.php:1134
-msgctxt "Save Preferences"
 msgid "Save Preferences"
 msgstr "Lưu tùy chọn"
 
@@ -5564,10 +5847,12 @@ msgstr ""
 "cấp bậc và các điểm khác."
 
 #: includes/admin/settings/settings-notifications.php:74
+#: includes/admin/views/system-status.php:261
 msgid "Sender E-Mail"
 msgstr "Email người gửi"
 
 #: includes/admin/settings/settings-notifications.php:68
+#: includes/admin/views/system-status.php:255
 msgid "Sender Name"
 msgstr "Tên người gửi"
 
@@ -5607,6 +5892,7 @@ msgstr "Thiết lập quá khó"
 
 #: includes/admin/class-admin-gas.php:90 includes/admin/class-admin-gas.php:91
 #: includes/admin/functions-misc.php:29
+#: includes/admin/views/system-status.php:105
 #: includes/rest-api/includes/API/Settings.php:416
 msgid "Settings"
 msgstr "Cài đặt"
@@ -5643,7 +5929,7 @@ msgstr "Hiển thị trình soạn thảo cho mô tả phiếu khi người dùn
 msgid "Show Basic Time Tracking Fields"
 msgstr "Hiển thị các trường theo dõi thời gian cơ bản"
 
-#: includes/admin/settings/settings-permissions.php:45
+#: includes/admin/settings/settings-permissions.php:41
 msgid "Show Bulk Actions Tab"
 msgstr "Hiển thị tab hành động hàng loạt"
 
@@ -5695,7 +5981,7 @@ msgstr "Hiển thị trường ngày trong cột hoạt động"
 msgid "Show Delete Existing Data Tab"
 msgstr "Hiển thị trang Xóa dữ liệu hiện có"
 
-#: includes/admin/settings/settings-permissions.php:39
+#: includes/admin/settings/settings-permissions.php:35
 msgid "Show Documentation Tab"
 msgstr "Hiển thị tab tài liệu"
 
@@ -5723,7 +6009,7 @@ msgstr "Hiển thị thời gian cuối cùng trên vé Front-end"
 msgid "Show Final Time On Front-end Ticket List"
 msgstr "Hiển thị thời gian cuối cùng trên danh sách vé đầu trang"
 
-#: includes/admin/settings/settings-permissions.php:69
+#: includes/admin/settings/settings-permissions.php:65
 msgid "Show Flag In Ticket List"
 msgstr "Hiển thị Cờ trong Danh sách Vé"
 
@@ -5759,7 +6045,7 @@ msgstr "Hiển thị ngày mở theo GMT"
 msgid "Show Original Ticket ID In Column List?"
 msgstr "Hiển thị ID phiếu gốc trong danh sách cột?"
 
-#: includes/admin/settings/settings-permissions.php:51
+#: includes/admin/settings/settings-permissions.php:47
 msgid "Show Preferences Tab"
 msgstr "Hiển thị tab tùy chọn"
 
@@ -5891,15 +6177,19 @@ msgstr "Hiển thị %1$s phản hồi trong tổng số %2$s."
 
 #: includes/admin/views/system-tools.php:242
 msgid "Simple"
-msgstr "Simple"
+msgstr "Đơn giản"
 
 #: includes/admin/settings/settings-advanced.php:183
 msgid "Simplex"
-msgstr "Simplex"
+msgstr "Đơn giản Simplex"
 
 #: includes/gas-framework/lib/class-option-edd-license.php:413
 msgid "Site is inactive."
 msgstr "Trang web không hoạt động."
+
+#: includes/admin/views/system-status.php:18
+msgid "Site URL"
+msgstr "Địa chỉ trang web (URL)"
 
 #: includes/admin/settings/settings-advanced.php:184
 msgid "Slate"
@@ -6069,6 +6359,7 @@ msgid "Subject"
 msgstr "Tiêu đề"
 
 #: includes/admin/settings/settings-notifications.php:104
+#: includes/admin/views/system-status.php:273
 msgid "Submission Confirmation"
 msgstr "Xác nhận gửi đi"
 
@@ -6096,6 +6387,10 @@ msgstr "Trang gửi yêu cầu hỗ trợ"
 #: tracking/class-plugin-usage-tracker.php:961
 msgid "Submitting form"
 msgstr "Đang gửi biểu mẫu"
+
+#: includes/admin/views/opt-in.php:39
+msgid "Subscribe"
+msgstr "Đặt mua"
 
 #: includes/install.php:178
 msgid "Support Agent"
@@ -6173,9 +6468,25 @@ msgstr "Teamviewer"
 msgid "Template"
 msgstr "Bản mẫu"
 
+#: includes/admin/views/system-status.php:505
+msgid "Template Overrides:"
+msgstr "Ghi đè mẫu:"
+
 #: includes/admin/settings/settings-notifications.php:98
 msgid "Template Tags"
 msgstr "Thẻ Bản mẫu"
+
+#: includes/admin/views/system-status.php:499
+msgid "Template Theme Overlay:"
+msgstr "Mẫu chủ đề phủ lên:"
+
+#: includes/admin/views/system-status.php:493
+msgid "Template:"
+msgstr "Bản mẫu:"
+
+#: includes/admin/views/system-status.php:487
+msgid "Templates"
+msgstr "Mẫu"
 
 #: includes/class-product-sync.php:975
 msgid "Term Locked"
@@ -6253,6 +6564,18 @@ msgstr ""
 "Cảm ơn bạn đã chọn theo dõi. Bạn có muốn nhận tin tức thỉnh thoảng về %s này,"
 " bao gồm thông tin chi tiết về các tính năng mới và ưu đãi đặc biệt không?"
 
+#: includes/admin/views/about-tab-welcome.php:1
+msgid ""
+"Thanks for choosing Awesome Support!. At this point you should have already "
+"completed our setup wizard.  You can now use the tabs to the right to obtain "
+"more information, link to documentation and learn more about your new "
+"support system!"
+msgstr ""
+"Cảm ơn bạn đã chọn Awesome Support!. Đến thời điểm này, bạn hẳn đã hoàn tất "
+"trình hướng dẫn thiết lập của chúng tôi. Bây giờ bạn có thể sử dụng các tab "
+"bên phải để biết thêm thông tin, liên kết đến tài liệu và tìm hiểu thêm về "
+"hệ thống hỗ trợ mới của bạn!"
+
 #: includes/functions-post.php:755
 msgid "Thanks for your reply. The ticket is now closed."
 msgstr "Cảm ơn phản hồi của bạn. Yêu cầu hiện đã được đóng."
@@ -6325,21 +6648,31 @@ msgstr ""
 
 #: includes/admin/views/system-tools.php:71
 msgid "The Blue Blocks Email Template Set Has Been Installed"
-msgstr "The Blue Blocks Email Template Set Has Been Installed"
+msgstr "Bộ mẫu email Blue Blocks đã được cài đặt"
 
 #: includes/admin/views/system-tools.php:75
 msgid ""
 "The Blue Blocks With Satisfaction Survey Elements Email Template Set Has "
 "Been Installed"
 msgstr ""
-"The Blue Blocks With Satisfaction Survey Elements Email Template Set Has "
-"Been Installed"
+"Bộ mẫu email khảo sát sự hài lòng của Blue Blocks With Satisfaction đã được "
+"cài đặt"
 
 #: includes/functions-post.php:1363
 msgid ""
 "The chosen agent does not have the sufficient capabilities to be assigned a "
 "ticket"
 msgstr "Nhân viên được chọn không có đủ quyền để được gán yêu cầu"
+
+#: includes/admin/views/about-tab-credits.php:13
+msgid ""
+"The code is open source and <a href=\"https://github.com/ThemeAvenue/Awesome-"
+"Support\" target=\"_blank\">available on GitHub</a> for anyone to contribute."
+" Even you."
+msgstr ""
+"Mã này là mã nguồn mở và <a href=\"https://github.com/ThemeAvenue/Awesome-"
+"Support\" target=\"_blank\">có sẵn trên GitHub</a> để bất kỳ ai cũng có thể "
+"đóng góp. Ngay cả bạn."
 
 #: includes/rest-api/includes/API/TicketTaxonomy.php:41
 msgid "The color for this priority"
@@ -6393,15 +6726,13 @@ msgstr "Tệp đích không tồn tại!"
 
 #: includes/admin/views/system-tools.php:79
 msgid "The Elegant Email Template Set Has Been Installed"
-msgstr "The Elegant Email Template Set Has Been Installed"
+msgstr "Bộ mẫu email thanh lịch đã được cài đặt"
 
 #: includes/admin/views/system-tools.php:83
 msgid ""
 "The Elegant With Satisfaction Survey Elements Email Template Set Has Been "
 "Installed"
-msgstr ""
-"The Elegant With Satisfaction Survey Elements Email Template Set Has Been "
-"Installed"
+msgstr "Bộ mẫu email khảo sát sự hài lòng thanh lịch đã được cài đặt"
 
 #: includes/admin/class-admin-tickets-list.php:1156
 msgid ""
@@ -6429,6 +6760,16 @@ msgstr "Thời gian điều chỉnh cuối cùng cho vé tính bằng phút"
 #: includes/scripts.php:442
 msgid "The following file(s) are too big to be uploaded:"
 msgstr "Tập tin sau quá lớn để tải lên:"
+
+#: includes/admin/views/about-tab-credits.php:24
+msgid ""
+"The following open source libraries were used in this plugin. We are very "
+"grateful to the authors for sharing their work so freely with us and the "
+"world!"
+msgstr ""
+"Các thư viện nguồn mở sau đây đã được sử dụng trong plugin này. Chúng tôi "
+"rất biết ơn các tác giả đã chia sẻ công trình của họ một cách tự do với "
+"chúng tôi và thế giới!"
 
 #: includes/admin/settings/settings-registration.php:120
 msgid ""
@@ -6556,6 +6897,16 @@ msgstr "Slug duy nhất của mật khẩu"
 msgid "The password's unique sluge"
 msgstr "Sluge duy nhất của mật khẩu"
 
+#: includes/admin/views/about-tab-credits.php:15
+msgid ""
+"The plugin is fully localized. You can <a href=\"https://poeditor."
+"com/join/project/P6HgfPnBt4\" target=\"_blank\">translate the plugin</a> in "
+"any language!"
+msgstr ""
+"Plugin được bản địa hóa hoàn toàn. Bạn có thể <a href=\"https://poeditor."
+"com/join/project/P6HgfPnBt4\" target=\"_blank\">dịch plugin</a> sang bất kỳ "
+"ngôn ngữ nào!"
+
 #: includes/class-email-notifications.php:68
 msgid "The post ID provided does not match any of the plugin post types"
 msgstr ""
@@ -6596,10 +6947,10 @@ msgid ""
 "Awesome Support capabilities in order for users to be able to submit tickets."
 " Check our documentation for more information."
 msgstr ""
-"The role should be the internal WordPress role id such as wpas_user and is "
-"case sensitive.  Do not leave this blank!  This role should have the 5 core "
-"Awesome Support capabilities in order for users to be able to submit tickets."
-" Check our documentation for more information."
+"Vai trò phải là id vai trò WordPress nội bộ như wpas_user và phân biệt chữ "
+"hoa chữ thường. Không để trống mục này! Vai trò này phải có 5 khả năng cốt "
+"lõi của Awesome Support để người dùng có thể gửi phiếu yêu cầu. Kiểm tra tài "
+"liệu của chúng tôi để biết thêm thông tin."
 
 #: includes/rest-api/includes/API/Tickets.php:805
 msgid "The secondary assignee for this ticket"
@@ -6631,7 +6982,7 @@ msgstr ""
 
 #: includes/admin/views/system-tools.php:87
 msgid "The Simple Email Template Set Has Been Installed"
-msgstr "The Simple Email Template Set Has Been Installed"
+msgstr "Bộ mẫu email đơn giản đã được cài đặt"
 
 #: includes/rest-api/includes/API/Passwords.php:77
 msgid "The slug of the password to delete."
@@ -6745,16 +7096,29 @@ msgid "The user with ID %d does not exist"
 msgstr "Người dùng với ID %d không tồn tại"
 
 #: includes/admin/settings/settings-style.php:16
+#: includes/admin/views/system-status.php:435
 msgid "Theme"
 msgstr "Giao diện"
+
+#: includes/admin/views/system-status.php:454
+msgid "Theme Author URL:"
+msgstr "URL tác giả chủ đề:"
 
 #: includes/gas-framework/lib/class-option-edd-license.php:396
 msgid "Theme License"
 msgstr "Giấy phép sử dụng Theme"
 
+#: includes/admin/views/system-status.php:441
+msgid "Theme Name:"
+msgstr "Tên Giao diện:"
+
 #: includes/admin/settings/settings-style.php:32
 msgid "Theme Stylesheet"
 msgstr "Tệp định kiểu của giao diện"
+
+#: includes/admin/views/system-status.php:448
+msgid "Theme Version:"
+msgstr "Phiên bản chủ đề:"
 
 #: includes/admin/settings/settings-advanced.php:89
 msgid ""
@@ -6782,6 +7146,12 @@ msgstr ""
 msgid ""
 "There is a new version of %1$s available. %2$sView version %3$s details%4$s."
 msgstr "Có phiên bản mới của %1$s. %2$sXem chi tiết phiên bản %3$s%4$s."
+
+#: includes/admin/views/system-status.php:528
+#: includes/admin/views/system-status.php:542
+#: includes/admin/views/system-status.php:546
+msgid "There is no template override"
+msgstr "Không có mẫu ghi đè"
 
 #: includes/admin/settings/settings-notifications.php:205
 msgid ""
@@ -6925,6 +7295,18 @@ msgid ""
 msgstr ""
 "Trả lời này đã bị xóa bởi %1$s <em class=\"wpas-time\">%2$s trước.</em>"
 
+#: includes/admin/settings/settings-permissions.php:101
+msgid ""
+"This section allows you to control whether ticket and ticket replies can be "
+"edited by agents. Allowing this can distort the ticket history but might be "
+"necessary to comply with certain privacy regulations - for example removing "
+"user ids, passwords or other sensitive data."
+msgstr ""
+"Phần này cho phép bạn kiểm soát xem vé và phản hồi vé có thể được chỉnh sửa "
+"bởi các tác nhân hay không. Cho phép điều này có thể làm sai lệch lịch sử vé "
+"nhưng có thể cần thiết để tuân thủ một số quy định về quyền riêng tư - ví dụ "
+"như xóa ID người dùng, mật khẩu hoặc dữ liệu nhạy cảm khác."
+
 #. %s is the link to re-open the ticket.
 #: includes/admin/metaboxes/replies.php:178
 #, php-format
@@ -6972,6 +7354,10 @@ msgstr "Tệp đính kèm của ticket"
 msgid "Ticket cloning failed"
 msgstr "Sao chép vé không thành công"
 
+#: includes/admin/views/system-status.php:297
+msgid "Ticket Closed"
+msgstr "Ticket đã đóng"
+
 #: includes/admin/settings/settings-notifications.php:210
 #| msgid "Ticket Closed (by agent)"
 msgid "Ticket Closed (by Agent)"
@@ -7011,7 +7397,7 @@ msgstr "Mô tả phiếu"
 msgid "Ticket Details"
 msgstr "Hồ sơ người dùng"
 
-#: includes/admin/settings/settings-permissions.php:76
+#: includes/admin/settings/settings-permissions.php:72
 msgid "Ticket Details Tabs And Metaboxes"
 msgstr "Các tab và hộp thông tin chi tiết phiếu"
 
@@ -7046,7 +7432,7 @@ msgstr "Thiếu mã phiếu. Yêu cầu không hợp lệ!"
 msgid "Ticket is closed"
 msgstr "Vé đã đóng"
 
-#: includes/admin/settings/settings-permissions.php:34
+#: includes/admin/settings/settings-permissions.php:30
 msgid "Ticket List Tabs"
 msgstr "Tab danh sách phiếu"
 
@@ -7125,6 +7511,7 @@ msgid "Ticket Subject"
 msgstr "Chủ đề phiếu"
 
 #: includes/admin/settings/settings-general.php:194
+#: includes/admin/views/system-status.php:208
 msgid "Ticket Submission"
 msgstr "Gửi vé"
 
@@ -7149,11 +7536,11 @@ msgstr "Loại mẫu vé"
 msgid "Ticket Template?"
 msgstr "Mẫu vé?"
 
-#: includes/admin/settings/settings-permissions.php:58
+#: includes/admin/settings/settings-permissions.php:54
 msgid "Ticket Templates"
 msgstr "Những mẫu vé"
 
-#: includes/admin/settings/settings-permissions.php:60
+#: includes/admin/settings/settings-permissions.php:56
 msgid ""
 "Ticket templates are tickets that can be copied by add-ons to make new "
 "tickets. The options in this section offers control of this feature."
@@ -7192,6 +7579,7 @@ msgid "Ticket Will Be Closed"
 msgstr "Phiếu hỗ trợ sẽ bị đóng"
 
 #: includes/admin/settings/settings-general.php:203
+#: includes/admin/views/system-status.php:234
 msgid "Tickets List"
 msgstr "Danh sách vé"
 
@@ -7207,9 +7595,17 @@ msgstr "Siêu dữ liệu của phiếu hỗ trợ đã được xóa"
 msgid "Tickets Per Page"
 msgstr "Vé mỗi trang"
 
+#: includes/admin/views/system-status.php:119
+msgid "Tickets Slug"
+msgstr "Vé Slug"
+
 #: includes/admin/settings/settings-privacy.php:168
 msgid "Tickets to Anonymize"
-msgstr "Tickets to Anonymize"
+msgstr "Vé để ẩn danh"
+
+#: includes/admin/views/about-tab-getting-started.php:43
+msgid "Tickets, Agents and Users"
+msgstr "Vé, Đại lý và Người dùng"
 
 #: includes/custom-fields/functions-custom-fields.php:761
 msgid "Time Adjustments"
@@ -7271,7 +7667,7 @@ msgstr "Công cụ"
 
 #: includes/admin/views/system-tools.php:312
 msgid "Tools to handle ticket and reply attachments"
-msgstr "Tools to handle ticket and reply attachments"
+msgstr "Công cụ xử lý phiếu và trả lời đính kèm"
 
 #: includes/admin/views/system-tools.php:269
 msgid ""
@@ -7291,6 +7687,18 @@ msgstr "Tổng số phản hồi trên ticket"
 #: awesome-support.php:658
 msgid "Tracking is completely optional"
 msgstr "Theo dõi là hoàn toàn tùy chọn"
+
+#: includes/admin/views/about-tab-credits.php:14
+msgid "Translation Ready"
+msgstr "Sẵn sàng dịch"
+
+#: includes/admin/views/about.php:141
+msgid ""
+"Trusted by over 10,000+ Happy Users, Awesome Support is the most versatile "
+"WordPress support plugin."
+msgstr ""
+"Được hơn 10.000+ người dùng hài lòng tin dùng, Awesome Support là plugin hỗ "
+"trợ WordPress linh hoạt nhất."
 
 #: includes/admin/settings/settings-basic-time-tracking.php:127
 msgid ""
@@ -7462,7 +7870,7 @@ msgstr "United"
 
 #: includes/admin/views/wpas-help-and-support.php:33
 msgid "Unlicensed  and Trial Users"
-msgstr "Unlicensed  and Trial Users"
+msgstr "Người dùng chưa có giấy phép và dùng thử"
 
 #: includes/gas-framework/lib/class-option-edd-license.php:404
 msgid "unlimited"
@@ -7516,6 +7924,10 @@ msgid ""
 msgstr ""
 "Việc cập nhật chủ đề này sẽ mất mọi tùy chỉnh bạn đã thực hiện. 'Hủy' để "
 "dừng, 'OK' để cập nhật."
+
+#: includes/admin/views/system-status.php:148
+msgid "Uploads Folder"
+msgstr " Thư mụcTải lên"
 
 #: includes/admin/settings/settings-registration.php:69
 msgid "Use a GUID"
@@ -7581,7 +7993,43 @@ msgstr ""
 
 #: includes/admin/settings/settings-privacy.php:200
 msgid "Use the user id below"
-msgstr "Use the user id below"
+msgstr "Sử dụng ID người dùng bên dưới"
+
+#: includes/admin/settings/settings-fields.php:33
+msgid ""
+"Use these options to control how the priority field is used and shown.  To "
+"change the labels used for this field please see our POWER-PACK add-on."
+msgstr ""
+"Sử dụng các tùy chọn này để kiểm soát cách sử dụng và hiển thị trường ưu "
+"tiên. Để thay đổi nhãn được sử dụng cho trường này, vui lòng xem tiện ích bổ "
+"sung POWER-PACK của chúng tôi."
+
+#: includes/admin/settings/settings-fields.php:39
+msgid ""
+"Use these options to control how the Ticket Type options are used and shown. "
+" To change the labels used for this field please see our POWER-PACK add-on."
+msgstr ""
+"Sử dụng các tùy chọn này để kiểm soát cách sử dụng và hiển thị các tùy chọn "
+"Loại vé. Để thay đổi nhãn được sử dụng cho trường này, vui lòng xem tiện ích "
+"bổ sung POWER-PACK của chúng tôi."
+
+#: includes/admin/settings/settings-fields.php:46
+msgid ""
+"Use these options to control whether multiple agents can actively handle a "
+"single ticket. To change the labels please see our POWER-PACK add-on."
+msgstr ""
+"Sử dụng các tùy chọn này để kiểm soát xem nhiều tác nhân có thể chủ động xử "
+"lý một phiếu duy nhất hay không. Để thay đổi nhãn, vui lòng xem tiện ích bổ "
+"sung POWER-PACK của chúng tôi."
+
+#: includes/admin/settings/settings-fields.php:75
+msgid ""
+"Use these options to control whether third parties show in the ticket list.  "
+"To change the labels for 3rd party fields please see our POWER-PACK add-on."
+msgstr ""
+"Sử dụng các tùy chọn này để kiểm soát xem bên thứ ba có hiển thị trong danh "
+"sách phiếu hay không. Để thay đổi nhãn cho các trường của bên thứ ba, vui "
+"lòng xem tiện ích bổ sung POWER-PACK của chúng tôi."
 
 #: includes/admin/settings/settings-privacy.php:207
 msgid ""
@@ -7589,9 +8037,10 @@ msgid ""
 "user id otherwise you will corrupt your database.  This only applies if the "
 "above option is set to USE THE USER ID BELOW."
 msgstr ""
-"Use this user id for all anonymized tickets. Warning: This should be a VALID "
-"user id otherwise you will corrupt your database.  This only applies if the "
-"above option is set to USE THE USER ID BELOW."
+"Sử dụng ID người dùng này cho tất cả các vé ẩn danh. Cảnh báo: Đây phải là "
+"ID người dùng HỢP LỆ nếu không bạn sẽ làm hỏng cơ sở dữ liệu của mình. Điều "
+"này chỉ áp dụng nếu tùy chọn trên được đặt thành SỬ DỤNG ID NGƯỜI DÙNG BÊN "
+"DƯỚI."
 
 #: themes/default/partials/ticket-origin.php:28
 msgid "User"
@@ -7615,6 +8064,10 @@ msgstr "Đã xóa sự đồng ý của người dùng"
 #: includes/file-uploader/settings-file-upload.php:112
 msgid "User Controls Auto-delete Flag?"
 msgstr "Kiểm soát của người dùng Tự động xóa cờ?"
+
+#: includes/admin/views/about-tab-getting-started.php:30
+msgid "User Documentation Image Link"
+msgstr ""
 
 #: includes/functions-user.php:1667
 msgid "User has been denied."
@@ -7698,16 +8151,40 @@ msgid ""
 "Users with an active subscription license to one or more of our addons or "
 "bundles can open a ticket directly with us."
 msgstr ""
-"Users with an active subscription license to one or more of our addons or "
-"bundles can open a ticket directly with us."
+"Người dùng có giấy phép đăng ký đang hoạt động cho một hoặc nhiều tiện ích "
+"bổ sung hoặc gói của chúng tôi có thể mở phiếu trực tiếp với chúng tôi."
 
 #: includes/admin/views/wpas-help-and-support.php:34
 msgid ""
 "Users without a license can open a ticket on our free community supported "
 "WordPress.org forum."
 msgstr ""
-"Users without a license can open a ticket on our free community supported "
-"WordPress.org forum."
+"Người dùng không có giấy phép có thể mở phiếu trên diễn đàn WordPress.org "
+"được cộng đồng hỗ trợ miễn phí của chúng tôi."
+
+#: includes/admin/views/system-status.php:87
+#: includes/admin/views/system-status.php:93
+#: includes/admin/views/system-status.php:97
+#: includes/admin/views/system-status.php:111
+msgid "Version"
+msgstr "Phiên bản"
+
+#: includes/admin/views/about.php:25
+msgid "Videos"
+msgstr ""
+
+#: includes/admin/views/about-tab-getting-started.php:21
+#: includes/admin/views/about-tab-videos.php:8
+msgid "Videos Image Link"
+msgstr ""
+
+#: includes/admin/views/about-tab-change-log.php:1
+msgid ""
+"View a full changelog on <a href=\"https://wordpress.org/plugins/awesome-"
+"support/#developers\">WordPress.org</a>"
+msgstr ""
+"Xem nhật ký thay đổi đầy đủ trên <a href=\"https://wordpress."
+"org/plugins/awesome-support/#developers\">WordPress.org</a>"
 
 #: includes/admin/class-admin-user.php:247
 msgid "View All Tickets"
@@ -7716,6 +8193,10 @@ msgstr "Xem tất cả các yêu cầu"
 #: includes/admin/functions-toolbar.php:159
 msgid "View History"
 msgstr "Xem lịch sử"
+
+#: includes/admin/views/about-tab-credits.php:6
+msgid "View more news"
+msgstr "Xem thêm tin tức"
 
 #: awesome-support.php:659
 msgid "View our privacy policy."
@@ -7765,8 +8246,8 @@ msgid ""
 "Warning: Using these options will overwrite your email templates in TICKETS->"
 "SETTINGS->EMAILS!"
 msgstr ""
-"Warning: Using these options will overwrite your email templates in TICKETS->"
-"SETTINGS->EMAILS!"
+"Cảnh báo: Sử dụng các tùy chọn này sẽ ghi đè lên mẫu email của bạn trong "
+"TICKETS->SETTINGS->EMAILS!"
 
 #: tracking/class-plugin-usage-tracker.php:313
 msgid ""
@@ -7850,6 +8331,14 @@ msgstr ""
 msgid "We were unable to log you in for an unknown reason."
 msgstr "Không thể đăng nhập vì lý do không xác định."
 
+#: includes/admin/views/about.php:22
+msgid "Welcome"
+msgstr "Chào mừng"
+
+#: includes/admin/views/about.php:140
+msgid "Welcome to Awesome Support "
+msgstr "Chào mừng đến với Awesome Support"
+
 #: includes/admin/class-as-admin-setup-wizard.php:213
 msgid ""
 "Welcome to Awesome Support! This setup wizard will help you to quickly "
@@ -7891,7 +8380,7 @@ msgstr ""
 "là <em>mycred_default</em>. Xem màn hình cài đặt myCRED và tài liệu để biết "
 "thêm thông tin."
 
-#: includes/admin/settings/settings-permissions.php:177
+#: includes/admin/settings/settings-permissions.php:173
 msgid "What level should edits to ticket content and replies be logged?"
 msgstr "Nội dung phiếu và phản hồi cần được chỉnh sửa ở mức độ nào?"
 
@@ -7912,8 +8401,8 @@ msgid ""
 "When anonymizing tickets a random user is created to replace the existing "
 "user.  These options control how you create the anonymized user names"
 msgstr ""
-"When anonymizing tickets a random user is created to replace the existing "
-"user.  These options control how you create the anonymized user names"
+"Khi ẩn danh vé, một người dùng ngẫu nhiên được tạo để thay thế người dùng "
+"hiện tại. Các tùy chọn này kiểm soát cách bạn tạo tên người dùng ẩn danh"
 
 #: includes/admin/settings/settings-general.php:160
 msgid ""
@@ -8060,7 +8549,7 @@ msgstr ""
 "Bạn có muốn được giảm giá cho lần mua hàng tiếp theo tại Awesome Support "
 "không?"
 
-#: includes/admin/settings/settings-permissions.php:153
+#: includes/admin/settings/settings-permissions.php:149
 msgid ""
 "Would you like agents to be able to delete their own replies? (FYI: We "
 "really do not recommend allowing deletes but you do have the option if you "
@@ -8070,7 +8559,7 @@ msgstr ""
 "Chúng tôi thực sự không khuyến khích việc cho phép xóa nhưng bạn vẫn có tùy "
 "chọn này nếu muốn!)"
 
-#: includes/admin/settings/settings-permissions.php:137
+#: includes/admin/settings/settings-permissions.php:133
 msgid "Would you like agents to be able to edit their own replies?"
 msgstr "Bạn có muốn các đại lý có thể tự chỉnh sửa câu trả lời của mình không?"
 
@@ -8138,9 +8627,45 @@ msgstr ""
 "chỉ mất một phút và giúp thúc đẩy các nhà phát triển và tình nguyện viên của "
 "chúng tôi. <a href=\"%1$s\">Đúng vậy, bạn xứng đáng được như vậy!</a>."
 
+#: includes/admin/views/system-status.php:42
+msgid "WP Active Plugins"
+msgstr "Plugin đang hoạt động"
+
+#: includes/admin/views/system-status.php:38
+msgid "WP Debug Mode"
+msgstr "Chế độ gỡ lỗi WP"
+
+#: includes/admin/views/system-status.php:34
+msgid "WP Language"
+msgstr "Ngôn ngữ WP"
+
+#: includes/admin/views/system-status.php:46
+msgid "WP Max Upload Size"
+msgstr "Kích thước tải lên tối đa của WP"
+
+#: includes/admin/views/system-status.php:64
+msgid "WP Memory Limit"
+msgstr "Giới hạn bộ nhớ WP"
+
+#: includes/admin/views/system-status.php:30
+msgid "WP Multisite"
+msgstr "WP Đa trang web"
+
+#: includes/admin/views/system-status.php:68
+msgid "WP Timezone"
+msgstr "Múi giờ WP"
+
+#: includes/admin/views/system-status.php:26
+msgid "WP Version"
+msgstr "Phiên bản WP"
+
 #: themes/default/details.php:167
 msgid "Write a reply"
 msgstr "Viết phản hồi"
+
+#: includes/admin/views/system-status.php:194
+msgid "WYSIWYG On Front"
+msgstr "WYSIWYG ở mặt trước"
 
 #: includes/file-uploader/class-file-uploader.php:1105
 #: includes/file-uploader/class-file-uploader.php:1206
@@ -8252,6 +8777,14 @@ msgstr ""
 "Việc xác minh được thực hiện bằng <a href=\"%s\">API xác thực email</a> và "
 "yêu cầu tài khoản MailGun (miễn phí). Điều này giúp giảm lỗi đánh máy trong "
 "địa chỉ email khi đăng ký."
+
+#: includes/admin/views/about-tab-getting-started.php:45
+msgid ""
+"You can find a list of new and existing tickets under the TICKETS menu "
+"option - this is your main dashboard for managing tickets."
+msgstr ""
+"Bạn có thể tìm danh sách vé mới và vé hiện có trong tùy chọn menu VÉ - đây "
+"là bảng điều khiển chính để quản lý vé."
 
 #. %s is the link to the documentation portal.
 #: includes/rest-api/includes/settings-api.php:15
@@ -8556,6 +9089,14 @@ msgstr ""
 msgid "Your reply has been submitted. Your agent will reply ASAP."
 msgstr ""
 "Phản hồi của bạn đã được gửi. Nhân viên hỗ trợ sẽ trả lời sớm nhất có thể."
+
+#: includes/admin/views/about-tab-getting-started.php:48
+msgid ""
+"Your users can find a list of their tickets on the MY TICKETS page - you "
+"just need to add that page to your WordPress menu as well."
+msgstr ""
+"Người dùng của bạn có thể tìm thấy danh sách vé của họ trên trang VÉ CỦA TÔI "
+"- bạn chỉ cần thêm trang đó vào menu WordPress của mình."
 
 #: includes/admin/views/system-tools.php:191
 msgid "Zero Out All Time Fields"
