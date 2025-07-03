@@ -5,6 +5,20 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.3.4</h1>
+				<h3>6.3.4 Revised plugin deactivation process with feedback.</h3>
+				<ul>
+					<li>We improved the Wordpress Editor 'Zoom In, Zoom out' feature.</li>
+					<li>New feature to export the Reports and statiscs data in csv, graphs and pdf.</li>	
+					<li>We improved the tutorial process when user setups the plugin first time.</li>	
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.3.3</h1>
 				<h3>6.3.3 Revised plugin deactivation process with feedback.</h3>
 				<ul>
@@ -14,6 +28,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="row">
 		<div>
 			<div class="about-body">

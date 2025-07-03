@@ -1492,18 +1492,19 @@ function wpas_is_support_ticket_type_active() {
  * @return boolean
  */
 function wpas_get_current_user_role() {
-
-	if( is_user_logged_in() ) {
-
-		$user = wp_get_current_user();
-		$role = ( is_object( $user ) && ! empty( $user->roles ) && is_array( $user->roles ) ) ? reset( $user->roles ) : false;
-		return $role;
-
-	} else {
-		
+  
+	if ( ! is_user_logged_in() ) {
 		return false;
 	}
- }
+
+	$user = wp_get_current_user();
+
+	if ( is_object( $user ) && ! empty( $user->roles ) && is_array( $user->roles ) ) {
+		return reset( $user->roles );
+	}
+
+	return false;
+}
 
  /**
  * Returns ALL the roles of the current logged in user.
@@ -1518,19 +1519,18 @@ function wpas_get_current_user_role() {
  * @return boolean
  */
 function wpas_get_current_user_roles() {
-
-	if( is_user_logged_in() ) {
-
-		$user = wp_get_current_user();
-		$role = ( array ) $user->roles;
-		return $role;
-
-	} else {
-
+	if ( ! is_user_logged_in() ) {
 		return false;
-
 	}
- }
+
+	$user = wp_get_current_user();
+
+	if ( ! is_object( $user ) || empty( $user->roles ) || ! is_array( $user->roles ) ) {
+		return [];
+	}
+
+	return array_values( $user->roles ); // Return a numerically indexed array of roles
+}
 
  /**
  * Checks to see if a role is in a list of roles.

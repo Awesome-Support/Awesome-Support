@@ -117,6 +117,17 @@ class WPAS_Log_History {
 
 				}
 
+				/**
+				 * Final time is a specific case. We transform its value from time is seconds  to hh::mm format
+				 */
+				if( 'final_time_spent_on_ticket' == $update['field_id'] ) {
+					
+					$final_time = ($value < 0 ) ? $value * (-1) : (int)$value; 
+		          	$final_hours = (int)$final_time / 60 ;
+		          	$final_hours = floor( $final_hours );
+		          	$final_minutes = $final_time - ( (int)$final_hours * 60 );
+		          	$value = $final_hours . " hour(s) " . $final_minutes . " minute(s)";
+				}
 				// translators: %1$s is the old value, %2$s is the new value.
 				$x_updated = _x( 'updated %1$s to %2$s', 'Custom field value was updated', 'awesome-support' );
 				

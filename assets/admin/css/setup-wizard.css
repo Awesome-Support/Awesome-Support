@@ -148,3 +148,10 @@ textarea:focus {
 .contrast-link{
 	color: blue;
 }
+a.not-menu-ignore {
+	color: #69a463;
+	background: #FFF;
+	border-color: #69a463;
+	border-radius: 3px; 
+	padding: 8px;border: 1px solid #ccc;
+}

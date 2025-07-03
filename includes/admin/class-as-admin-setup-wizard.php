@@ -254,10 +254,13 @@ class AS_Admin_Setup_Wizard {
 		<form method="post">
 			<p><b><?php esc_html_e( 'Which menu would you like to add the SUBMIT TICKET page to?', 'awesome-support' );?> </b></p>
 			<p><?php esc_html_e( 'We have created a new page that users can access to submit tickets to your new support system.  However, the page first needs to be added to one of your menus so that the user can easily access it.', 'awesome-support' );?> </p>
-			<p><?php esc_html_e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'awesome-support' );?></p>
+			
 			<?php
 			$menu_lists = wp_get_nav_menus();
 			if( !empty( $menu_lists )){
+				?>
+				<p><?php esc_html_e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'awesome-support' );?></p>
+				<?php
 				echo '<select name="wpas_ticket_submit_manu">';
 				foreach ($menu_lists as $key => $menu ) {
 					echo '<option value="' . esc_attr( $menu->term_id ) . '">' . esc_html( $menu->name ) . '</option>';
@@ -266,11 +269,22 @@ class AS_Admin_Setup_Wizard {
 				echo '<input type="submit" name="save_step" value="Continue">';
 				wp_nonce_field( 'as-setup' );
 			} else{
-				$x_text = 'It looks like you have a brand new install of WordPress without any menus.  So please setup at least one menu first. Click <a href="'. admin_url( 'nav-menus.php').'" class="contrast-link">here</a> to setup your first menu';
+				if (!current_theme_supports('menus')) {
+					$get_next_step_link = esc_url_raw( $this->get_next_step_link() );
+					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a class="not-menu-ignore" href="'. esc_url( $get_next_step_link ).'">'.__( 'Here', 'awesome-support' ).'</a> to continue';
 				
-				// translators: %s is the text.
-				$x_content = __( '%s.' , 'awesome-support' );
-				echo wp_kses_post( sprintf( $x_content, $x_text) );
+					// translators: %s is the text.
+					$x_content = __( '%s.' , 'awesome-support' );
+					echo wp_kses_post( sprintf( $x_content, $x_text) );
+				}
+				else
+				{
+					$x_text = 'It looks like you have a brand new install of WordPress without any menus.  So please setup at least one menu first. Click <a href="'. admin_url( 'nav-menus.php').'" class="contrast-link">Here</a> to setup your first menu';
+				
+					// translators: %s is the text.
+					$x_content = __( '%s.' , 'awesome-support' );
+					echo wp_kses_post( sprintf( $x_content, $x_text) );
+				}				
 			}
 			?>
 		</form>
@@ -301,22 +315,35 @@ class AS_Admin_Setup_Wizard {
 	/**
 	 * Awesome Support my tickets page setup view.
 	 */
-	public function as_setup_my_ticket_page(){
+	public function as_setup_my_ticket_page(){			
 		?>
 		<form method="post">
 			<p><b><?php esc_html_e( 'Which menu would you like to add the MY TICKETS page to?', 'awesome-support' );?> </b></p>
-			<p><?php esc_html_e( 'We have created a new page that users can access to view their existing tickets.  This step allows you to add that page to one of your existing menus so users can easily access it.', 'awesome-support' );?></p>
-			<p><?php esc_html_e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'awesome-support' );?></p>
+			<p><?php esc_html_e( 'We have created a new page that users can access to view their existing tickets.  This step allows you to add that page to one of your existing menus so users can easily access it.', 'awesome-support' );?></p>			
 			<?php
 			$menu_lists = wp_get_nav_menus();
-			echo '<select name="wpas_ticket_list_menu">';
-			foreach ($menu_lists as $key => $menu ) {
-				echo '<option value="' . esc_attr( $menu->term_id ) . '">' . esc_html( $menu->name ) . '</option>';
-			}
-			echo '<select>';
-			?>
-			<input type="submit" name="save_step" value="Continue">
-			<?php wp_nonce_field( 'as-setup' ); ?>
+			if( !empty( $menu_lists )){
+				?>
+				<p><?php esc_html_e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'awesome-support' );?></p>
+				<?php
+				echo '<select name="wpas_ticket_list_menu">';
+				foreach ($menu_lists as $key => $menu ) {
+					echo '<option value="' . esc_attr( $menu->term_id ) . '">' . esc_html( $menu->name ) . '</option>';
+				}
+				echo '<select>';
+				echo '<input type="submit" name="save_step" value="Continue">';
+				wp_nonce_field( 'as-setup' );
+			} else{
+				if (!current_theme_supports('menus')) {
+					$get_next_step_link = esc_url_raw( $this->get_next_step_link() );
+					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a class="not-menu-ignore" href="'. esc_url( $get_next_step_link ).'">'.__( 'Here', 'awesome-support' ).'</a> to continue';
+				
+					// translators: %s is the text.
+					$x_content = __( '%s.' , 'awesome-support' );
+					echo wp_kses_post( sprintf( $x_content, $x_text) );
+				}			
+			}	
+			?>			
 		</form>
 		<?php
 	}
