@@ -1011,7 +1011,10 @@ function wpas_get_mime_type( $extension ) {
 		'zip'          => 'application/zip',
 		'zir'          => 'application/vnd.zul',
 		'zirz'         => 'application/vnd.zul',
-		'zmm'          => 'application/vnd.handheld-entertainment+xml'
+		'zmm'          => 'application/vnd.handheld-entertainment+xml',
+		'k'	       => 'text/plain',
+		'raw'	       => 'image/x-raw',
+		'dyn'	       => 'text/plain'
 	);
 
 	if ( array_key_exists( $extension, $mime_types_map ) ) {
