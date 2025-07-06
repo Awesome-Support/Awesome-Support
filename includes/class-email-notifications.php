@@ -22,7 +22,7 @@ class WPAS_Email_Notification {
 
 	/**
 	 * ID of the post to notify about.
-	 * 
+	 *
 	 * @var integer
 	 */
 	protected $post_id;
@@ -31,32 +31,32 @@ class WPAS_Email_Notification {
 	 * ID of the related ticket.
 	 *
 	 * The ticket ID can be the same as the post ID if the provided post ID
-	 * is a new ticket. Otherwise $post_id is a reply or some other post type 
+	 * is a new ticket. Otherwise $post_id is a reply or some other post type
 	 * registered an add-on such as private notes.
 	 *
 	 * @var  integer
 	 */
 	protected $ticket_id;
-	
+
 	/**
-	 * Contents of a reply 
+	 * Contents of a reply
 	 *
 	 * Holds the contents of a reply.
 	 *
 	 * @var  boolean|object
-	 */	
+	 */
 	protected $reply;
-	
+
 	/**
 	 * The entire contents of a ticket post
 	 *
 	 * @var  boolean|object
-	 */	
-	protected $ticket;	
-	
+	 */
+	protected $ticket;
+
 	/**
 	 * Class constructor.
-	 * 
+	 *
 	 * @param integer $post_id ID of the post to notify about
 	 */
 	public function __construct( $post_id ) {
@@ -73,7 +73,7 @@ class WPAS_Email_Notification {
 
 		/* Set the post ID */
 		$this->post_id = $post_id;
-		
+
 		/**
 		 * Define the ticket ID, be it $post_id or not.
 		 */
@@ -82,7 +82,7 @@ class WPAS_Email_Notification {
 		} else {
 			$reply           = $this->get_reply();
 			$this->ticket_id = $reply->post_parent;
-		} 
+		}
 
 	}
 
@@ -173,13 +173,13 @@ class WPAS_Email_Notification {
 		$option = $options[$case];
 
 		/* Replace the valueless tags array by the new one */
-		return (bool) apply_filters( 'wpas_email_notifications_case_is_active', wpas_get_option( $option, false ), $case ); 
-		
+		return (bool) apply_filters( 'wpas_email_notifications_case_is_active', wpas_get_option( $option, false ), $case );
+
 	}
 
 	/**
 	 * Check if the requested notification exists.
-	 * 
+	 *
 	 * @param  string  $case The notification case requested
 	 * @return boolean       True if such a case exists, false otherwise
 	 */
@@ -280,13 +280,13 @@ class WPAS_Email_Notification {
 	public function fetch( $contents ) {
 
 		$tags = $this->get_tags_values();
-		
+
 		foreach ( $tags as $tag ) {
 
 			$id       = $tag['tag'];
 			$value    = isset( $tag['value'] ) ? $tag['value'] : '';
 			$contents = str_replace( $id, $value, $contents );
-			
+
 		}
 
 		return $contents;
@@ -307,7 +307,7 @@ class WPAS_Email_Notification {
 
 		// translators: %s is the current admin e-mail.
 		$desc = __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'awesome-support' );
-		
+
 		$tags = array(
 			array(
 				'tag' 	=> '{ticket_id}',
@@ -344,7 +344,7 @@ class WPAS_Email_Notification {
 			array(
 				'tag' 	=> '{client_last_name}',
 				'desc' 	=> __( 'Converts into the last name of the client', 'awesome-support' )
-			),			
+			),
 			array(
 				'tag' 	=> '{client_email}',
 				'desc' 	=> __( 'Converts into client e-mail address', 'awesome-support' )
@@ -360,7 +360,7 @@ class WPAS_Email_Notification {
 			array(
 				'tag' 	=> '{author_last_name}',
 				'desc' 	=> __( 'Converts into the last name of the author', 'awesome-support' )
-			),			
+			),
 			array(
 				'tag' 	=> '{author_email}',
 				'desc' 	=> __( 'Converts into author e-mail address', 'awesome-support' )
@@ -427,7 +427,7 @@ class WPAS_Email_Notification {
 
 		$agent  = get_user_by( 'id', (int) $agent_id  );
 		$client = get_user_by( 'id', $this->get_ticket()->post_author );
-		$author = get_user_by( 'id', $this->ticket_id === $this->post_id ? 
+		$author = get_user_by( 'id', $this->ticket_id === $this->post_id ?
 			$this->get_ticket()->post_author : $this->get_reply()->post_author);
 
 		/* Get the ticket links */
@@ -463,7 +463,7 @@ class WPAS_Email_Notification {
 				case 'agent_last_name':
 					$tag['value'] = !empty($agent) ? $agent->last_name : '';
 					break;
-					
+
 				/* E-mail of the agent assigned to this ticket */
 				case 'agent_email':
 					$tag['value'] = !empty($agent) ? $agent->user_email : '';
@@ -472,15 +472,15 @@ class WPAS_Email_Notification {
 				case 'client_name':
 					$tag['value'] = !empty($client) ? $client->display_name : '';
 					break;
-					
+
 				case 'client_first_name':
 					$tag['value'] = !empty($client) ? $client->first_name : '';
-					break;					
-				
+					break;
+
 				case 'client_last_name':
 					$tag['value'] = !empty($client) ? $client->last_name : '';
 					break;
-					
+
 				case 'client_email':
 					$tag['value'] = !empty($client) ? $client->user_email : '';
 					break;
@@ -488,15 +488,15 @@ class WPAS_Email_Notification {
 				case 'author_name':
 					$tag['value'] = !empty($author) ? $author->display_name : '';
 					break;
-					
+
 				case 'author_first_name':
 					$tag['value'] = !empty($author) ? $author->first_name : '';
-					break;					
-				
+					break;
+
 				case 'author_last_name':
 					$tag['value'] = !empty($author) ? $author->last_name : '';
 					break;
-					
+
 				case 'author_email':
 					$tag['value'] = !empty($author) ? $author->user_email : '';
 					break;
@@ -622,15 +622,18 @@ class WPAS_Email_Notification {
 				break;
 
 		}
-		
+
 		$pre_fetch_content = apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id, $case );
-		
+
 		if( 'content' === $part && false !== strpos( $pre_fetch_content, '{attachments}' ) ) {
 			$this->link_attachments = true;
+			// Replace {attachments} tag with actual attachments HTML
+			$attachments_html = $this->get_attachments_for_body();
+			$pre_fetch_content = str_replace( '{attachments}', $attachments_html, $pre_fetch_content );
 		}
 
 		return $this->fetch( stripcslashes( $pre_fetch_content ) );
-		
+
 	}
 
 	/**
@@ -697,6 +700,79 @@ class WPAS_Email_Notification {
 	}
 
 	/**
+	 * Get attachments for the current ticket/reply and format them for email body.
+	 *
+	 * @since  3.0.2
+	 * @return string HTML formatted attachments list
+	 */
+	public function get_attachments_for_body() {
+
+		if ( !isset( $this->link_attachments ) || true !== $this->link_attachments ) {
+			return '';
+		}
+
+		$attachments = array();
+
+		// Get attachments for the current post (ticket or reply)
+		if ( $this->ticket_id === $this->post_id ) {
+			// This is a ticket
+			$attachments = get_attached_media( '', $this->post_id );
+		} else {
+			// This is a reply
+			$attachments = get_attached_media( '', $this->post_id );
+		}
+
+		if ( empty( $attachments ) ) {
+			return '';
+		}
+
+		$attachments_html = '<div style="margin-top: 20px; border-top: 1px solid #eee;">';
+		$attachments_html .= '<h4 style="margin-bottom: 10px; color: #333;">' . __( 'Attachments:', 'awesome-support' ) . '</h4>';
+
+		foreach ( $attachments as $attachment ) {
+			$file_url = wp_get_attachment_url( $attachment->ID );
+			$file_name = basename( get_attached_file( $attachment->ID ) );
+			$file_size = size_format( filesize( get_attached_file( $attachment->ID ) ) );
+			$mime_type = get_post_mime_type( $attachment->ID );
+
+			// Check if this is an image
+			if ( strpos( $mime_type, 'image/' ) === 0 ) {
+				// Get image dimensions
+				$image_data = wp_get_attachment_image_src( $attachment->ID, 'medium' );
+				if ( $image_data ) {
+					$image_url = $image_data[0];
+					$image_width = $image_data[1];
+					$image_height = $image_data[2];
+
+					// Limit image size for email compatibility
+					$max_width = 600;
+					if ( $image_width > $max_width ) {
+						$ratio = $max_width / $image_width;
+						$image_width = $max_width;
+						$image_height = round( $image_height * $ratio );
+					}
+
+					$attachments_html .= '<div style="margin-bottom: 15px;">';
+					$attachments_html .= '<img src="' . esc_url( $image_url ) . '" alt="' . esc_attr( $file_name ) . '" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 4px;" width="' . $image_width . '" height="' . $image_height . '">';
+					$attachments_html .= '</div>';
+				}
+			} else {
+				// For non-image files, show as download link
+				$attachments_html .= '<div style="margin-bottom: 8px;">';
+				$attachments_html .= '<a href="' . esc_url( $file_url ) . '" style="color: #0073aa; text-decoration: none;">';
+				$attachments_html .= '<span style="font-weight: bold;">' . esc_html( $file_name ) . '</span>';
+				$attachments_html .= '</a>';
+				$attachments_html .= '<span style="color: #666; font-size: 12px; margin-left: 10px;">(' . $file_size . ')</span>';
+				$attachments_html .= '</div>';
+			}
+		}
+
+		$attachments_html .= '</div>';
+
+		return apply_filters( 'wpas_email_notifications_attachments_body', $attachments_html, $attachments, $this->ticket_id, $this->post_id );
+	}
+
+	/**
 	 * Send out the e-mail notification.
 	 *
 	 * @since  3.0.2
@@ -739,7 +815,7 @@ class WPAS_Email_Notification {
 				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_tertiary_assignee', true ) ) );
 				break;
 		}
-		
+
 		/**
 		 * Filter the $user variable to allow cases that aren't in the above switch
 		 *
@@ -759,7 +835,7 @@ class WPAS_Email_Notification {
 		} else {
 			$recipients[] = $user;
 		}
-		
+
 		if( wpas_is_multi_agent_active() ) {
 			// We need to notify other agents
 			if( $case == 'agent_reply' ) {
@@ -776,7 +852,7 @@ class WPAS_Email_Notification {
 			}
 
 		}
-		
+
 		/**
 		 * Get the sender information
 		 */
@@ -810,14 +886,14 @@ class WPAS_Email_Notification {
 
 		/**
 		 * Strip slashes off the body text
-		 * 
+		 *
 		 * @var array
 		 */
 		$body = stripslashes($body);
 
 		/**
 		 * Prepare e-mail headers
-		 * 
+		 *
 		 * @var array
 		 */
 		$headers = array(
@@ -840,57 +916,57 @@ class WPAS_Email_Notification {
 			'attachments'     => ''
 			),
 			$case,
-			$this->ticket_id, 
+			$this->ticket_id,
 			$this->post_id
 		);
-		
+
 		$attachments = array();
 		if( isset( $this->link_attachments ) && true === $this->link_attachments ) {
 			$attachments = apply_filters( 'wpas_email_notification_attachments', $attachments, $case, $this->ticket_id, $this->post_id );
 		}
-		
-		
+
+
 		if( !is_array( $email['recipient_email'] ) ) {
 			$email['recipient_email'] = array( $email['recipient_email'] );
 		}
-		
-		
+
+
 		// We need to send notifications separately per recipient.
 		$mail = false;
-		
+
 		$email_sent_recipients = array();
-		
+
 		if( !isset( $email['subject'] ) || empty( $email['subject'] ) )
 		{
-			$email['subject'] = str_replace( "_", " ", $case ); 
+			$email['subject'] = str_replace( "_", " ", $case );
 		}
-		
+
 		foreach( $email['recipient_email'] as $r_email ) {
-			
+
 			$email_headers = $email['headers'];
-			
+
 			$to_email = $r_email;
-			
+
 			if( is_array( $r_email ) &&  isset( $r_email['email'] ) && $r_email['email'] ) {
 				$to_email = $r_email['email'];
 			}
-			
+
 			/* Make sure that the email is not already in the array - don't want dupes! */
 			if( in_array( $to_email, $email_sent_recipients ) ) {
 				continue;
 			}
-			
+
 			$email_sent_recipients[] = $to_email;
-			
+
 			if( is_array( $r_email ) && isset( $r_email['cc_addresses'] ) && !empty( $r_email['cc_addresses'] ) ) {
 				$email_headers[] = 'Cc: ' . implode( ',', $r_email['cc_addresses'] );
 			}
-			
+
 			if( wp_mail( $to_email, $email['subject'], $email['body'], $email_headers, $attachments ) ) {
 				$mail = true;
 			}
-		}		
-		
+		}
+
 		return $mail;
 
 	}
