@@ -131,7 +131,15 @@ function wpas_notify_reply( $reply_id, $data ) {
 		return;
 	}
 
-	$case = user_can( $data['post_author'], 'edit_ticket' ) ? 'agent_reply' : 'client_reply';
+	$ticket_author = $data['post_author'] ;
+	if(isset( $data['post_type'] ) &&  $data['post_type'] == 'ticket_reply' && isset( $data['post_parent'] ) )
+	{
+		$ticket = get_post( $data['post_parent'] );		
+		$ticket_author = (int) $ticket->post_author;
+	}
+
+	$case = ( user_can( $data['post_author'], 'edit_ticket' ) && $ticket_author != $data['post_author'] ) ? 'agent_reply' : 'client_reply';
+	
 	wpas_email_notify( $reply_id, $case );
 }
 
