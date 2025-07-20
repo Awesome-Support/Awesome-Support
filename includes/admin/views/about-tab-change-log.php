@@ -5,6 +5,22 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.3.5</h1>
+				<h3>6.3.5 Revised plugin deactivation process with feedback.</h3>
+				<ul>
+					<li>We improved the cache admin menu ticket count.</li>
+					<li>New feature to support custom file type such as "*.k" and "*.dyn".</li>	
+					<li>New feature to set the Maximum Lenght in the subject of ticket on Submit Ticket Form of front-end.</li>
+					<li>We fixed Bug in load more ticket replies interface.</li>
+					<li>New feature to allow embed images on Email notifications when replying.	</li> 
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.3.4</h1>
 				<h3>6.3.4 Revised plugin deactivation process with feedback.</h3>
 				<ul>
