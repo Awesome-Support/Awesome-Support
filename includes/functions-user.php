@@ -198,7 +198,7 @@ function wpas_register_account( $data ) {
 		if( 'moderated' === $registration ) {
 			update_user_option( $user_id, 'mr_user_not_activated', 'yes' );
 
-			wpas_add_notification( 'moderated_account_created', esc_html( wpas_get_option( 'mr_success_message' ) ) );
+			wpas_add_notification( 'moderated_account_created', wp_kses( wpas_get_option( 'mr_success_message' ), get_allowed_html_wp_notifications() ) );
 			wp_safe_redirect( $redirect_to );
 			exit;
 		}
