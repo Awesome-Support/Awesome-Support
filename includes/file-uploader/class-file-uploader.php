@@ -2259,9 +2259,9 @@ class WPAS_File_Upload {
 
 	    $ext  = !empty($info['extension']) ? '.' . $info['extension'] : '';
 
-	    $random_string = wp_generate_password(8, false); 
+	    // $random_string = wp_generate_password(8, false); 
 
-	    $unique_name = $info['filename'] .  $random_string . time() . $ext;
+	    // $unique_name = $info['filename'] .  $random_string . time() . $ext;
 
 	    $file['name'] = $unique_name;
 
