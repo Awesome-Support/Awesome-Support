@@ -414,8 +414,15 @@
          * Only run this if main tabs exist in ticket add|edit page
          */
         if( 0 < $('#wpas_admin_tabs_ticket_main_custom_fields').length ) {
-                $('#postdivrich').prependTo('.wpas-post-body-content');
+            $('#postdivrich').prependTo('.wpas-post-body-content');
+            const parentDiv = $('#wpas-mb-ticket-main-tabs').parent();
+            parentDiv.css({
+                'opacity': '1',
+                'position': 'relative',
+                'z-index': '999998'
+            });
         }
+        
         
         
         /* Arrange metaboxes in ticket edit page on small screens */

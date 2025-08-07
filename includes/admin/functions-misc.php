@@ -625,9 +625,6 @@ function wpas_admin_tabs($type, $tabs = array()) {
 
 	$output = ob_get_contents();
 	ob_end_clean();
-	if (!isset($_GET['post']) && !isset($_GET['action'])) {
-		$output = '';
-	}
 	return apply_filters('wpas_admin_tabs', $output, $tab_content_items_ar, $tab_content_ar, $id, $tabs);
 }
 
