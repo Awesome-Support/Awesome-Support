@@ -415,12 +415,8 @@
          */
         if( 0 < $('#wpas_admin_tabs_ticket_main_custom_fields').length ) {
             $('#postdivrich').prependTo('.wpas-post-body-content');
-            const parentDiv = $('#wpas-mb-ticket-main-tabs').parent();
-            parentDiv.css({
-                'opacity': '1',
-                'position': 'relative',
-                'z-index': '999998'
-            });
+            $('#wpas-mb-ticket-main-tabs').parent().css('opacity', '1');
+            $("#postbox-container-2").appendTo("#post-body-content");
         }
         
         
