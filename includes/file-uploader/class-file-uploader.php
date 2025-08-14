@@ -1912,7 +1912,8 @@ class WPAS_File_Upload {
 
 			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );			
 			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( wp_unslash( ( $_POST['attachment'] ) ) ) : '';		
-			
+			$attachment = $this->wpas_sanitize_file_name($attachment);
+
 			$upload     = wp_upload_dir();
 			$user_id    = get_current_user_id();
 
@@ -1920,7 +1921,7 @@ class WPAS_File_Upload {
 			
 			$realBaseDir = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], $ticket_id, $user_id );
 			$realFilePath = realpath($file);
-			$realBasePath = realpath( $realBaseDir ) . DIRECTORY_SEPARATOR;
+			$realBasePath = realpath( $realBaseDir ) . DIRECTORY_SEPARATOR;			
 			
 			if ($realFilePath === false || strpos($realFilePath, $realBasePath) !== 0) {
 				echo "Permission denied!";
