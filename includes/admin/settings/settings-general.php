@@ -77,6 +77,13 @@ function wpas_core_settings_general( $def ) {
 					'default' => 10,
 					'desc'    => __( 'After how many days should a ticket be considered &laquo;old&raquo;?', 'awesome-support' )
 				),
+				array(
+					'name'    => __( 'Automatically change ticket`s status when assignment?', 'awesome-support' ),
+					'id'      => 'turn_auto_change_status',
+					'type'    => 'checkbox',
+					'desc'    => __( 'An option to change the ticket owner with automatically updating the ticket status.', 'awesome-support' ),
+					'default' => true
+				),
 
 				array(
 					'name' => __( 'Front-end Options', 'awesome-support' ),
