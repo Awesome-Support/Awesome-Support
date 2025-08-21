@@ -78,10 +78,10 @@ function wpas_core_settings_general( $def ) {
 					'desc'    => __( 'After how many days should a ticket be considered &laquo;old&raquo;?', 'awesome-support' )
 				),
 				array(
-					'name'    => __( 'Automatically change ticket`s status when assignment?', 'awesome-support' ),
+					'name'    => __( 'Automatically change ticket status when assigned', 'awesome-support' ),
 					'id'      => 'turn_auto_change_status',
 					'type'    => 'checkbox',
-					'desc'    => __( 'An option to change the ticket owner with automatically updating the ticket status.', 'awesome-support' ),
+					'desc'    => __( 'When the ticket asignee is changed, the status is change to `In Progress`.', 'awesome-support' ),
 					'default' => true
 				),
 
