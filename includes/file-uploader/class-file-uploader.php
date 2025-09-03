@@ -28,6 +28,13 @@ class WPAS_File_Upload {
 	 */
 	protected $error_message;
 
+	/**
+	 * WordPress upload directory.
+	 *
+	 * @var array
+	 */
+	private $wp_upload_dir = null;
+
 	public function __construct() {
 
 		/**
@@ -39,6 +46,7 @@ class WPAS_File_Upload {
 			return;
 		}
 
+		$this->wp_upload_dir = wp_upload_dir();
 		add_filter( 'upload_dir', array( $this, 'set_upload_dir' ) );
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'limit_upload' ), 10, 1 );
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sgpb_rename_uploaded_file' ), 10, 1 );
@@ -841,9 +849,7 @@ class WPAS_File_Upload {
 		}
 		
 		// SECURITY FIX: Validate directory path to prevent directory traversal
-		$upload_dir = wp_upload_dir();
-		$allowed_base = $upload_dir['basedir'];
-		
+		$allowed_base = $this->wp_upload_dir['basedir'];
 		if ( strpos( $dir, $allowed_base ) !== 0 ) {
 			wpas_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
 			return;

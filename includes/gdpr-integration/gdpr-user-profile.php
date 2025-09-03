@@ -34,8 +34,17 @@ class WPAS_GDPR_User_Profile {
 	 * Store the potential error messages.
 	 */
 	protected $error_message;
+	
+	/**
+	 * WordPress upload directory.
+	 *
+	 * @var array
+	 */
+	private $wp_upload_dir = null;
+
 
 	public function __construct() {
+		$this->wp_upload_dir = wp_upload_dir();
 		add_action( 'show_user_profile', array( $this, 'wpas_user_profile_fields' ), 10, 1 );
 		add_action( 'edit_user_profile', array( $this, 'wpas_user_profile_fields' ), 10, 1 );
 
@@ -569,8 +578,7 @@ class WPAS_GDPR_User_Profile {
 		}
 
 		// SECURITY FIX: Validate directory path to prevent directory traversal
-		$upload_dir = wp_upload_dir();
-		$allowed_base = $upload_dir['basedir'];
+		$allowed_base = $this->wp_upload_dir['basedir'];
 		if ( strpos( $dir, $allowed_base ) !== 0 ) {
 			wpas_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
 			return;
