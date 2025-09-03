@@ -850,7 +850,6 @@ class WPAS_File_Upload {
 		
 		// SECURITY FIX: Validate directory path to prevent directory traversal
 		$allowed_base = $this->wp_upload_dir['basedir'];
-
 		if ( strpos( $dir, $allowed_base ) !== 0 ) {
 			wpas_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
 			return;
