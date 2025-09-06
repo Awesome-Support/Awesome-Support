@@ -199,7 +199,8 @@ function wpas_save_ticket( $post_id ) {
 		if ( wp_verify_nonce( $ticket_reply, 'reply_ticket' ) ) {
 
 			$user_id = $current_user->ID;
-			$content = isset( $_POST['wpas_reply'] ) ? wp_kses_post( wp_unslash( $_POST['wpas_reply'] ) ) : '';
+			$content = isset( $_POST['wpas_reply'] ) ? wp_kses_post( $_POST['wpas_reply'] ) : '';
+
 
 			$data = apply_filters( 'wpas_post_reply_admin_args', array(
 				'post_content'   => $content,
