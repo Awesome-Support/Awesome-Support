@@ -12,7 +12,8 @@
 					<li>New feature to support custom file type such as "*.k" and "*.dyn".</li>	
 					<li>New feature to set the Maximum Lenght in the subject of ticket on Submit Ticket Form of front-end.</li>
 					<li>We fixed Bug in load more ticket replies interface.</li>
-					<li>New feature to allow embed images on Email notifications when replying.	</li> 
+					<li>New feature to allow embed images on Email notifications when replying.</li>
+					<li>Fix vulnerable issue</li> 
 				</ul>
 			</div>
 		</div>

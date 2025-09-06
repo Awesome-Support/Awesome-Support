@@ -290,14 +290,14 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
-= 6.3.5.1
-	* Fix vulnerable issue.
+
 = 6.3.5
 	* We improved the cache admin menu ticket count.
 	* New feature to support custom file type such as "*.k" and "*.dyn".
 	* New feature to set the Maximum Lenght in the subject of ticket on Submit Ticket Form of front-end.
 	* We fixed Bug in load more ticket replies interface.
 	* New feature to allow embed images on Email notifications when replying.
+	* Fix vulnerable issue.
 = 6.3.4	
 	* We improved the Editor 'Zoom In, Zoom out' feature.
 	* New feature to export the Reports and statiscs data in csv, graphs and pdf.
