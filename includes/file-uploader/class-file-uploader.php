@@ -1119,6 +1119,8 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
+							$original_files = get_option('wpas_original_files', []);
+							$name = isset($original_files[$filename])  ? $original_files[$filename] : $name;
 
 							$post_id_encode = md5($post_id . NONCE_SALT);
 							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
@@ -1221,6 +1223,9 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
+							$original_files = get_option('wpas_original_files', []);
+							$name = isset($original_files[$filename])  ? $original_files[$filename] : $name;
+
 							$post_id_encode = md5($post_id . NONCE_SALT);	
 							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
@@ -2300,6 +2305,12 @@ class WPAS_File_Upload {
 	    $random_string = wp_generate_password(8, false); 
 
 	    $unique_name = $info['filename'] .  $random_string . time() . $ext;
+
+		$original_files = get_option('wpas_original_files', []);
+        
+		$original_files[$unique_name] = $file['name']; 
+		
+		update_option('wpas_original_files', $original_files);
 
 	    $file['name'] = $unique_name;
 
