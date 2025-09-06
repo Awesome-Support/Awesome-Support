@@ -81,12 +81,14 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 		}
 
 		// @TODO: Its possible this if statement below might need an additional qualifier to see if $agent_replied = true.
-		// For now the ticket is going to IN PROCESS properly but if there is an issue later then using the additional
-		// qualifier might be warranted.
-		if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
-			$_POST['post_status_override'] = 'processing';
-		}
-
+		// For now the ticket is going to IN PROCESS properly but if there is an issue later then using the additional 6655750  
+		$turn_auto_change_status = (bool) wpas_get_option( 'turn_auto_change_status' );
+  		if ( true === $turn_auto_change_status ) {
+  			// qualifier might be warranted.
+			if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
+				$_POST['post_status_override'] = 'processing';
+			}
+  		}	
 	}
 
 	if ( isset( $_POST['post_status_override'] ) && ! empty( $_POST['post_status_override'] ) ) {
@@ -197,7 +199,8 @@ function wpas_save_ticket( $post_id ) {
 		if ( wp_verify_nonce( $ticket_reply, 'reply_ticket' ) ) {
 
 			$user_id = $current_user->ID;
-			$content = isset( $_POST['wpas_reply'] ) ? wp_kses_post( wp_unslash( $_POST['wpas_reply'] ) ) : '';
+			$content = isset( $_POST['wpas_reply'] ) ? wp_kses_post( $_POST['wpas_reply'] ) : '';
+
 
 			$data = apply_filters( 'wpas_post_reply_admin_args', array(
 				'post_content'   => $content,

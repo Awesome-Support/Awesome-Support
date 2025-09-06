@@ -34,8 +34,17 @@ class WPAS_GDPR_User_Profile {
 	 * Store the potential error messages.
 	 */
 	protected $error_message;
+	
+	/**
+	 * WordPress upload directory.
+	 *
+	 * @var array
+	 */
+	private $wp_upload_dir = null;
+
 
 	public function __construct() {
+		$this->wp_upload_dir = wp_upload_dir();
 		add_action( 'show_user_profile', array( $this, 'wpas_user_profile_fields' ), 10, 1 );
 		add_action( 'edit_user_profile', array( $this, 'wpas_user_profile_fields' ), 10, 1 );
 
@@ -97,6 +106,13 @@ class WPAS_GDPR_User_Profile {
 	 * @return void
 	 */
 	private function custom_readfile($file_path) {
+		$uploads = wp_upload_dir();
+		// public url
+		$baseurl = $uploads['baseurl']; 
+		// filesystem path
+		$basedir = $uploads['basedir']; 
+		// replace public url with filesystem path
+		$file_path = str_replace($baseurl, $basedir, $file_path);
 		// Ensure the WP_Filesystem class is available
 		if ( !function_exists('get_filesystem_method') ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -554,12 +570,28 @@ class WPAS_GDPR_User_Profile {
 			require_once(ABSPATH . '/wp-admin/includes/file.php');
 			WP_Filesystem();
 		} 
+
+		// SECURITY FIX: Check if user is authenticated before protecting directories
+		if ( ! is_user_logged_in() ) {
+			wpas_write_log('file-uploader', 'Security: Unauthorized access attempt to protect upload directory: ' . $dir );
+			return;
+		}
+
+		// SECURITY FIX: Validate directory path to prevent directory traversal
+		$allowed_base = $this->wp_upload_dir['basedir'];
+		if ( strpos( $dir, $allowed_base ) !== 0 ) {
+			wpas_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
+			return;
+		}
 		
 		if ( $wp_filesystem->is_writable($dir) ) {
 
 			$filename = $dir . '/.htaccess';
 
-			$filecontents = 'Options -Indexes';
+			$filecontents  = "Options -Indexes\n";
+			$filecontents .= "<FilesMatch \".*\">\n";
+			$filecontents .= "Deny from all\n";
+			$filecontents .= "</FilesMatch>\n";
 
 			if ( ! file_exists( $filename ) ) {
 				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
