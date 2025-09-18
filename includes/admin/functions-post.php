@@ -735,6 +735,7 @@ function wpas_is_new_reply_empty( $ticket_id ) {
 
 				foreach ( $filetypes as $key => $type ) {
 					array_push( $accept, '*.' . $type );
+					array_push( $accept, '*.' . strtoupper( $type ) );
 				}
 
 				$accept = implode( ',', $accept );

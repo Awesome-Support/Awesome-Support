@@ -934,6 +934,7 @@ class WPAS_File_Upload {
 		foreach ( $filetypes as $key => $type ) {
 			$filetypes[ $key ] = "<code>.$type</code>";
 			array_push( $accept, ".$type" );
+			array_push( $accept, "." . strtoupper( $type ) );
 		}
 
 		$filetypes = implode( ', ', $filetypes );
@@ -1841,6 +1842,7 @@ class WPAS_File_Upload {
 
 		foreach ( $filetypes as $key => $type ) {
 			array_push( $accept, ".$type" );
+			array_push( $accept, "." . strtoupper( $type ) );
 		}
 
 		$accept = implode( ',', $accept );
@@ -2064,6 +2066,7 @@ class WPAS_File_Upload {
 
 			foreach ( $filetypes as $key => $type ) {
 				array_push( $accept, '*.' . $type );
+				array_push( $accept, "*." . strtoupper( $type ) );
 			}
 
 			$accept = implode( ',', $accept );
