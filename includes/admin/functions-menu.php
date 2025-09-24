@@ -31,6 +31,11 @@ function wpas_register_submenu_items() {
 		
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Help & Support', 'awesome-support' ), '<span style="color:#4CBBA7;">' . esc_html__( 'Help & Support', 'awesome-support' ) . '</span>', 'administrator', 'wpas-help-and-support', 'wpas_display_help_and_support_page' );		
 		
+		// Premium-only Get Help button (visible when at least one addon is active)
+		if ( ! empty( WPAS()->addons ) ) {
+			add_submenu_page( 'edit.php?post_type=ticket', __( 'Get Help', 'awesome-support' ), '<span style="display:inline-block; background:#4CBBA7; font-weight:600; border-radius:3px; padding:2px 8px; color:#fff;">' . esc_html__( 'Get Help', 'awesome-support' ) . '</span>', 'edit_posts', 'wpas-get-help', 'wpas_display_get_help_page' );
+		}
+
 		/**
 		 * Provides a hook for Addons to add their menu item in the right location, i.e. above the "About" page.
 		 *
@@ -158,4 +163,24 @@ function wpas_display_help_and_support_page() {
  */
 function wpas_display_status_page() {
 	include_once( WPAS_PATH . 'includes/admin/views/status.php' );
+}
+
+/**
+ * Redirect to the Get Help page.
+ *
+ * @since    3.0.0
+ */
+function wpas_display_get_help_page() {
+	$link = 'https://getawesomesupport.com/submit-ticket/';
+    if ( ! headers_sent() ) {
+        wp_redirect( $link );
+        exit;
+    } else {
+		include_once( WPAS_PATH . 'includes/admin/views/wpas-help-and-support.php' );
+        echo '<script type="text/javascript">';
+        echo 'window.location.href="'.$link.'";';
+        echo '</script>';
+        echo '<noscript><meta http-equiv="refresh" content="0;url='.$link.'" /></noscript>';
+        exit;
+    }
 }
