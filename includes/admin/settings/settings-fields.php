@@ -30,20 +30,20 @@ function wpas_core_settings_fields( $def ) {
 				array(
 					'name' => __( 'Priority Management', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => 'Use these options to control how the priority field is used and shown.  To change the labels used for this field please see our POWER-PACK add-on.',
+					'desc' => __( 'Use these options to control how the priority field is used and shown.  To change the labels used for this field please see our POWER-PACK add-on.', 'awesome-support' ),
 					'options' => wpas_get_priority_options()
 				),
 				array(
 					'name' => __( 'Ticket Type Management', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => 'Use these options to control how the Ticket Type options are used and shown.  To change the labels used for this field please see our POWER-PACK add-on.',
+					'desc' => __( 'Use these options to control how the Ticket Type options are used and shown.  To change the labels used for this field please see our POWER-PACK add-on.', 'awesome-support' ),
 					'options' => wpas_get_ticket_type_options()
 				),				
 				
 				array(
 					'name' => __( 'Multiple Agents', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => 'Use these options to control whether multiple agents can actively handle a single ticket. To change the labels please see our POWER-PACK add-on.'
+					'desc' => __( 'Use these options to control whether multiple agents can actively handle a single ticket. To change the labels please see our POWER-PACK add-on.', 'awesome-support' )
 				),
 				array(
 					'name'    => __( 'Enable Multiple Agents Per Ticket', 'awesome-support' ),
@@ -72,7 +72,7 @@ function wpas_core_settings_fields( $def ) {
 				array(
 					'name' => __( 'Third Parties', 'awesome-support' ),
 					'type' => 'heading',
-					'desc' => 'Use these options to control whether third parties show in the ticket list.  To change the labels for 3rd party fields please see our POWER-PACK add-on.'
+					'desc' => __( 'Use these options to control whether third parties show in the ticket list.  To change the labels for 3rd party fields please see our POWER-PACK add-on.', 'awesome-support' )
 				),
 				
 				array(

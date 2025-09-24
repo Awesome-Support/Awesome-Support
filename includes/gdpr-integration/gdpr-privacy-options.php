@@ -401,7 +401,7 @@ class WPAS_Privacy_Option {
 							if( $consent_name && !empty( $consent_name ) ){
 								?>
 								<tr>
-									<td class="row-title"><label for="tablecell"><?php esc_html( $consent_name ); ?></label></td>
+									<td class="row-title"><label for="tablecell"><?php echo esc_html( $consent_name ); ?></label></td>
 									<td>
 										<?php
 											$opt_in = array(
@@ -420,7 +420,7 @@ class WPAS_Privacy_Option {
 										<span class="wpas-system-tools-desc">
 											<?php 
 												// translators: %s is the consent_name.
-												sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ),  $consent_name); 
+												echo sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ),  $consent_name); 
 											?></span>
 									</td>
 								</tr>

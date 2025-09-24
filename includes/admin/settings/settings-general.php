@@ -77,6 +77,13 @@ function wpas_core_settings_general( $def ) {
 					'default' => 10,
 					'desc'    => __( 'After how many days should a ticket be considered &laquo;old&raquo;?', 'awesome-support' )
 				),
+				array(
+					'name'    => __( 'Automatically change ticket status when assigned', 'awesome-support' ),
+					'id'      => 'turn_auto_change_status',
+					'type'    => 'checkbox',
+					'desc'    => __( 'When the ticket asignee is changed, the status is change to `In Progress`.', 'awesome-support' ),
+					'default' => true
+				),
 
 				array(
 					'name' => __( 'Front-end Options', 'awesome-support' ),
@@ -110,6 +117,13 @@ function wpas_core_settings_general( $def ) {
 					'type'    => 'checkbox',
 					'desc'    => __( 'Show the checkbox that allow users to close tickets. This affects ALL users. (If you would like to restrict closing tickets to only some users, use WordPress roles and the close_ticket capability instead.)', 'awesome-support' ),
 					'default' => true
+				),
+				array(
+					'name'    => __( 'Maximum Lenght in the Ticket Subject', 'awesome-support' ),
+					'id'      => 'maximum_ticket_subject_front_end',
+					'type'    => 'text',
+					'default' => 0,
+					'desc'    => __( 'Set the Maximum Lenght in the Ticket Subject field of the Submit Ticket Form on the front-end.', 'awesome-support' ),
 				),
 
 				/* Notification buttons */

@@ -66,8 +66,7 @@ function wpas_admin_action_close_ticket( $data ) {
 	$post_id = (int) $data['post'];
 
 	$closed = wpas_close_ticket( $post_id );
-
-	
+		
 	if( $closed ) {
 	
 		// Read-only redirect
@@ -116,7 +115,7 @@ function wpas_admin_action_open_ticket( $data ) {
 	$post_id = (int) $data['post'];
 
 	wpas_reopen_ticket( $post_id );
-
+	
 	// Read-only redirect
 	$redirect_to = add_query_arg( array(
 		'action'       => 'edit',

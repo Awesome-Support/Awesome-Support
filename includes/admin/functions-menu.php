@@ -22,12 +22,26 @@ add_action( 'admin_menu', 'wpas_register_submenu_items' );
 function wpas_register_submenu_items() {
 
 	add_submenu_page( 'edit.php?post_type=ticket', __( 'Debugging Tools', 'awesome-support' ), __( 'Tools', 'awesome-support' ), 'administrator', 'wpas-status', 'wpas_display_status_page' );
+	
 	add_submenu_page( 'edit.php?post_type=ticket', __( 'Awesome Support Addons', 'awesome-support' ), '<span style="color:#f39c12;">' . __( 'Addons', 'awesome-support' ) . '</span>', 'edit_posts', 'wpas-addons', 'wpas_display_addons_page' );
 	
 	if ( ! defined( 'WPAS_SAAS' ) || ( defined( 'WPAS_SAAS' ) && false === WPAS_SAAS ) ) {
+		
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Get a Free Addon', 'awesome-support' ), '<span style="color:#f39c12;">' . esc_html__( 'Get a Free Addon!', 'awesome-support' ) . '</span>', 'administrator', 'wpas-optin', 'wpas_display_optin_page' );
+		
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'Help & Support', 'awesome-support' ), '<span style="color:#4CBBA7;">' . esc_html__( 'Help & Support', 'awesome-support' ) . '</span>', 'administrator', 'wpas-help-and-support', 'wpas_display_help_and_support_page' );		
+		
+		/**
+		 * Provides a hook for Addons to add their menu item in the right location, i.e. above the "About" page.
+		 *
+		 * @since 4.3.3
+		 *
+		 * @param string Passes the Awesome Support parent slug to the addon.
+		 */
+		do_action( 'wpas_addon_submenu_page',  'edit.php?post_type=ticket' );
+
 		add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'awesome-support' ), __( 'About', 'awesome-support' ), 'edit_posts', 'wpas-about', 'wpas_display_about_page' );	
+
 	}				
 
 	// Hide the free addon page if the user already claimed it
@@ -51,19 +65,41 @@ function wpas_tickets_count() {
 
 	global $menu, $current_user;
 
-	if ( wpas_is_asadmin()
-		 && false === boolval( wpas_get_option( 'admin_see_all' ) )
-		 || ! wpas_is_asadmin()
-			&& wpas_is_agent()
-			&& false === boolval( wpas_get_option( 'agent_see_all' ) )
-	) {
+	$count_cache = get_site_transient( 'wpas_tickets_counts' );
+	
+	if( !is_array($count_cache) )
+	{
+		$count_cache = array();
+	}
+	if ( wpas_is_asadmin() && false === boolval( wpas_get_option( 'admin_see_all' ) )
+		 || ! wpas_is_asadmin() && wpas_is_agent() && false === boolval( wpas_get_option( 'agent_see_all' ) )
+	) {		
+		// Display tickets was assign to current user
+		if( is_array( $count_cache ) && isset( $count_cache[ $current_user->ID ] ) )
+		{
+			$count = $count_cache[ $current_user->ID ];			
+		}
+		else
+		{
+			$agent = new WPAS_Member_Agent( $current_user->ID );
+			$count = $agent->open_tickets();
+			$count_cache[$current_user->ID] = $count;
+			set_site_transient( 'wpas_tickets_counts', $count_cache, DAY_IN_SECONDS  );			
+		}		
 
-		$agent = new WPAS_Member_Agent( $current_user->ID );
-		$count = $agent->open_tickets();
-
-	} else {
+	} else {	
 		
-		$count = wpas_get_tickets( 'open', [], 'any', true, true );
+		// Display all Opened tickets
+		if( is_array( $count_cache ) && isset( $count_cache['all'] ) )
+		{
+			$count = $count_cache['all'];			
+		}
+		else
+		{
+			$count = wpas_get_tickets( 'open', [], 'any', true, true );
+			$count_cache['all'] = $count;
+			set_site_transient( 'wpas_tickets_counts', $count_cache, DAY_IN_SECONDS  );			
+		}		
 	}
 	
 	if ( 0 === $count ) {

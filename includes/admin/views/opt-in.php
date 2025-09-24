@@ -9,7 +9,7 @@
 		<div class="row">
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 				<div class="about-body">
-					<img src="<?php echo esc_url( WPAS_URL ); ?>assets/admin/images/custom-status.png" alt="Improved Custom Fields">
+					<img src="<?php echo esc_url( WPAS_URL ); ?>assets/admin/images/custom-status.png" alt="<?php echo esc_html__( 'Improved Custom Fields', 'awesome-support' );?>">
 				</div>
 			</div>
 			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -32,11 +32,11 @@
 			<form action="<?php echo esc_url( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-optin' ), admin_url( 'edit.php' ) ) ); ?>" method="post" id="wpas-mailchimp-signup-form" name="wpas-mailchimp-signup-form">
 				<table class="form-table">
 					<tr>
-						<td class="row-title"><label for="mce-FNAME">First Name</label> <input type="text" value="" name="FNAME" class="medium-text" id="mce-FNAME"></td>
+						<td class="row-title"><label for="mce-FNAME"><?php echo esc_html__( 'First Name', 'awesome-support' );?></label> <input type="text" value="" name="FNAME" class="medium-text" id="mce-FNAME"></td>
 						<td class="row-title">
-							<label for="mce-EMAIL">Email Address</label>
+							<label for="mce-EMAIL"><?php echo esc_html__( 'Email Address', 'awesome-support' );?></label>
 							<input type="email" value="" name="EMAIL" class="regular-text required email" id="mce-EMAIL">
-							<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="button-secondary">
+							<input type="submit" value="<?php echo esc_html__( 'Subscribe', 'awesome-support' );?>" name="subscribe" id="mc-embedded-subscribe" class="button-secondary">
 						</td>
 					</tr>
 				</table>
@@ -44,7 +44,7 @@
 					<input type="text" name="b_46ccfe899f0d2648a8b74454a_ad9db57f69" tabindex="-1" value="">
 				</div>
 				<div id="mce-responses" class="clear">
-					<div class="wpas-alert-danger" id="wpas-mailchimp-signup-result-error" style="display:none;">Error</div>
+					<div class="wpas-alert-danger" id="wpas-mailchimp-signup-result-error" style="display:none;"><?php echo esc_html__( 'Error', 'awesome-support' );?></div>
 					<div class="wpas-alert-success" id="wpas-mailchimp-signup-result-success" style="display:none; color: green;"><?php esc_html_e( 'Thanks for your subscription! You will need to confirm the double opt-in e-mail that you will receive in a coupe of minutes. After you confirmed it, you will receive the free addon directly in your inbox.', 'awesome-support' ); ?></div>
 				</div>
 			</form>

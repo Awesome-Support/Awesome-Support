@@ -338,42 +338,42 @@ class WPAS_Tickets_List {
 				$new[ 'title' ] = esc_html__( 'Title', 'awesome-support' );
 
 				if ( array_key_exists( 'ticket_priority', $custom ) ) {
-					$new[ 'ticket_priority' ] = $this->get_cf_title( 'ticket_priority', 'Priority' );		
+					$new[ 'ticket_priority' ] = $this->get_cf_title( 'ticket_priority', __( 'Priority', 'awesome-support' ) );		
 				}
 
 				$new[ 'id' ] = esc_html__( 'ID', 'awesome-support' );
 
 				if ( array_key_exists( 'product', $custom ) ) {
-					$new[ 'product' ] = $this->get_cf_title( 'product', 'Product' );
+					$new[ 'product' ] = $this->get_cf_title( 'product', __( 'Product', 'awesome-support' ) );
 				}
 
 				if ( array_key_exists( 'department', $custom ) ) {
-					$new[ 'department' ] = $this->get_cf_title( 'department', 'Department' );
+					$new[ 'department' ] = $this->get_cf_title( 'department', __( 'Department', 'awesome-support' ) );
 				}
 
 				if ( array_key_exists( 'ticket_type', $custom ) ) {
-					$new[ 'ticket_type' ] = $this->get_cf_title( 'ticket_type', 'Ticket Type' );
+					$new[ 'ticket_type' ] = $this->get_cf_title( 'ticket_type', __( 'Ticket Type', 'awesome-support' ) );
 				}
 
 				if ( array_key_exists( 'ticket_channel', $custom ) ) {
-					$new[ 'ticket_channel' ] = $this->get_cf_title( 'ticket_channel', 'Channel' );
+					$new[ 'ticket_channel' ] = $this->get_cf_title( 'ticket_channel', __( 'Channel', 'awesome-support' ) );
 				}
 
 				if ( array_key_exists( 'ticket-tag', $custom ) ) {
-					$new[ 'ticket-tag' ] = $this->get_cf_title( 'ticket-tag', 'Tag' );
+					$new[ 'ticket-tag' ] = $this->get_cf_title( 'ticket-tag', __( 'Tag', 'awesome-support' ) );
 				}
 
 				// Add the client column
-				$new[ 'wpas-client' ] = $this->get_cf_title( 'wpas-client', 'Created by' );
+				$new[ 'wpas-client' ] = $this->get_cf_title( 'wpas-client', __( 'Created by', 'awesome-support' ) );
 
 				// assignee/agent...
-				$new[ 'assignee' ] = $this->get_cf_title( 'assignee', 'Agent' );
+				$new[ 'assignee' ] = $this->get_cf_title( 'assignee', __( 'Agent', 'awesome-support' ) );
 
 				// Add the date
 				$new[ 'date' ] = esc_html__( 'Last modified', 'awesome-support' );
 				
 				// Add the activity
-				$new[ 'wpas-activity' ] = $this->get_cf_title( 'wpas-activity', 'Activity' );
+				$new[ 'wpas-activity' ] = $this->get_cf_title( 'wpas-activity', __( 'Activity', 'awesome-support' ) );
 
 			} else {
 				$new[ $col_id ] = $col_label;
@@ -592,14 +592,13 @@ class WPAS_Tickets_List {
 							// Output the escaped and translated string
 							echo esc_html( $translated_reply_string );
 							echo '<br>';
-							$x_url = '<a href="%s" target="' . $this->edit_link_target() . '">Last replied</a> %s ago by %s (%s)';
+
+							// translators:  %1$s Edit replied URL. %2$s is the months total. , %3$s is who replied and %4$s is role of replier
+							$x_url = '<a href="%1$s" target="' . $this->edit_link_target() . '">'. __('Last replied', 'awesome-support') .'</a> %2$s'. __(' ago by','awesome-support').' %3$s (%4$s)';
 							
 							// translators: %s is the Last reply ago url.
 							$x_content = _x( '%s.', 'Last reply ago', 'awesome-support' );
-							printf( wp_kses_post( sprintf($x_content, $x_url) ), esc_url(add_query_arg( array(
-								                                                                                                                                                                 'post'   => $post_id,
-								                                                                                                                                                                 'action' => 'edit',
-							                                                                                                                                                                 ), admin_url( 'post.php' ) )) . '#wpas-post-' . esc_attr($last_reply->ID), esc_html(human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) )), '<a href="' . esc_url($last_user_link) . '">' . esc_html($user_nicename) . '</a>', esc_html($role) );
+							printf( wp_kses_post( sprintf($x_content, $x_url) ), esc_url(add_query_arg( array(								                                                                                                                                                                 'post'   => $post_id,								                                                                                                                                                                 'action' => 'edit',							                                                                                                                                                                 ), admin_url( 'post.php' ) )) . '#wpas-post-' . esc_attr($last_reply->ID), esc_html(human_time_diff( strtotime( $last_reply->post_date ), current_time( 'timestamp' ) )), '<a href="' . esc_url($last_user_link) . '">' . esc_html($user_nicename) . '</a>', esc_html($role) );
 						}
 
 						// Add open date
@@ -612,7 +611,7 @@ class WPAS_Tickets_List {
 
 								if ( ! empty( $open_date_string_tokens ) ) {
 									echo '<br>';
-									echo esc_html__( 'Opened on: ', 'awesome-support' ) . wp_kses_post($open_date_string_tokens[ 0 ]) . ' at: ' . wp_kses_post($open_date_string_tokens[ 1 ]);
+									echo esc_html__( 'Opened on: ', 'awesome-support' ) . wp_kses_post($open_date_string_tokens[ 0 ]) . esc_html__( ' at: ', 'awesome-support' ) . wp_kses_post($open_date_string_tokens[ 1 ]);
 								}
 							}
 						}
@@ -627,7 +626,7 @@ class WPAS_Tickets_List {
 
 								if ( ! empty( $open_date_string_tokens_gmt ) ) {
 									echo '<br>';
-									echo esc_html__( 'Opened on GMT: ', 'awesome-support' ) . wp_kses_post($open_date_string_tokens_gmt[ 0 ]) . ' at: ' . wp_kses_post($open_date_string_tokens_gmt[ 1 ]);
+									echo esc_html__( 'Opened on GMT: ', 'awesome-support' ) . wp_kses_post($open_date_string_tokens_gmt[ 0 ]) . esc_html__( ' at: ', 'awesome-support' ) . wp_kses_post($open_date_string_tokens_gmt[ 1 ]);
 								}
 							}
 						}
@@ -642,7 +641,7 @@ class WPAS_Tickets_List {
 							if ( 'closed' == wpas_get_ticket_status( $post_id ) ) {
 								if ( ! empty( $close_date_string_tokens ) ) {
 									echo '<br>';
-									echo esc_html__( 'Closed on: ', 'awesome-support' ) . wp_kses_post($close_date_string_tokens[ 0 ]) . ' at: ' . wp_kses_post($close_date_string_tokens[ 1 ]);
+									echo esc_html__( 'Closed on: ', 'awesome-support' ) . wp_kses_post($close_date_string_tokens[ 0 ]) . esc_html__( ' at: ', 'awesome-support' ) . wp_kses_post($close_date_string_tokens[ 1 ]);
 								}
 							} else {
 								echo '<br>';
@@ -1126,13 +1125,13 @@ ORDER BY
 		$selected    = isset( $current_val ) && $current_val === 'yes' ? 'checked' : '';
 
 		echo "<table style='max-width: 640px; min-width: 300px;'>";
-		echo "<tr><td colspan='2'><h2>Preferences</h2><br/></td></tr>";
+		echo "<tr><td colspan='2'><h2>". esc_html__('Preferences','awesome-support') . "</h2><br/></td></tr>";
 
 		echo "<tr><td width='100' align='right'>";
 		echo "<input type='checkbox' name='edit_ticket_in_new_window' id='edit_ticket_in_new_window' value='yes' " . esc_attr( $selected ) . " />";
 		echo "</td><td><label for='edit_ticket_in_new_window'>" . esc_html__('Edit ticket in new Window when the ticket ID is clicked', 'awesome-support') . "</label></td></tr>";
 
-		echo "<tr><td></td><td><br/><input type='submit' name='save_preferences' class='button' value='Save Preferences' /></td></tr>";
+		echo "<tr><td></td><td><br/><input type='submit' name='save_preferences' class='button' value='". esc_html__('Save Preferences','awesome-support') . "' /></td></tr>";
 		echo "</table>";
 
 		$content = ob_get_clean();
@@ -1357,7 +1356,7 @@ ORDER BY
 			$selected_value = sanitize_text_field( wp_unslash( $_GET['id'] ) );
 		}
 
-		echo '<input type="text" placeholder="Ticket ID" name="id" id="id" value="' . esc_attr( $selected_value ) . '" />';
+		echo '<input type="text" placeholder="'.__( 'Ticket ID', 'awesome-support' ).'" name="id" id="id" value="' . esc_attr( $selected_value ) . '" />';
 
 		/* SAAS TICKET ID */
 		$show_saas_id = boolval( wpas_get_option( 'importer_id_enable', false) );
@@ -1815,7 +1814,7 @@ ORDER BY
 
 		$link = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
 
-		return "<a href='".esc_url($link)."'>Reset Filters</a>";
+		return "<a href='".esc_url($link)."'>". __( 'Reset Filters', 'awesome-support' )."</a>";
 
 	}
 

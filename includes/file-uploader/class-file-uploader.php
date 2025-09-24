@@ -28,6 +28,13 @@ class WPAS_File_Upload {
 	 */
 	protected $error_message;
 
+	/**
+	 * WordPress upload directory.
+	 *
+	 * @var array
+	 */
+	private $wp_upload_dir = null;
+
 	public function __construct() {
 
 		/**
@@ -39,6 +46,7 @@ class WPAS_File_Upload {
 			return;
 		}
 
+		$this->wp_upload_dir = wp_upload_dir();
 		add_filter( 'upload_dir', array( $this, 'set_upload_dir' ) );
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'limit_upload' ), 10, 1 );
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sgpb_rename_uploaded_file' ), 10, 1 );
@@ -667,6 +675,18 @@ class WPAS_File_Upload {
 	 * @return void
 	 */
 	private function custom_readfile($file_path) {
+
+		$uploads = wp_upload_dir();
+
+		// public url
+		$baseurl = $uploads['baseurl']; 
+
+		// filesystem path
+		$basedir = $uploads['basedir']; 
+
+		// replace public url with filesystem path
+		$file_path = str_replace($baseurl, $basedir, $file_path);
+
 		// Ensure the WP_Filesystem class is available
 		if ( !function_exists('get_filesystem_method') ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -820,16 +840,33 @@ class WPAS_File_Upload {
 		if (empty($wp_filesystem)) {
 			require_once(ABSPATH . '/wp-admin/includes/file.php');
 			WP_Filesystem();
-		} 
+		}
+
+		// SECURITY FIX: Check if user is authenticated before protecting directories
+		if ( ! is_user_logged_in() ) {
+			wpas_write_log('file-uploader', 'Security: Unauthorized access attempt to protect upload directory: ' . $dir );
+			return;
+		}
+		
+		// SECURITY FIX: Validate directory path to prevent directory traversal
+		$allowed_base = $this->wp_upload_dir['basedir'];
+		if ( strpos( $dir, $allowed_base ) !== 0 ) {
+			wpas_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
+			return;
+		}
 
 		//Process Unauthenticated Sensitive Information Exposure Through Unprotected Directory with htaccess
 		if ( $wp_filesystem->is_writable($dir) ) {
 
 			$filename = $dir . '/.htaccess';
 
-			$filecontents = wpas_get_option( 'htaccess_contents_for_attachment_folders', 'Options -Indexes' ) ;
+			// Default fallback rules
+			$filecontents = wpas_get_option( 'htaccess_contents_for_attachment_folders', '' );
 			if ( empty( $filecontents ) ) {
-				$filecontents = 'Options -Indexes' ;
+				$filecontents  = "Options -Indexes\n";
+				$filecontents .= "<FilesMatch \".*\">\n";
+				$filecontents .= "Deny from all\n";
+				$filecontents .= "</FilesMatch>\n";
 			}
 
 			if ( ! file_exists( $filename ) ) {
@@ -1082,6 +1119,8 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
+							$original_files = get_option('wpas_original_files', []);
+							$name = isset($original_files[$filename])  ? $original_files[$filename] : $name;
 
 							$post_id_encode = md5($post_id . NONCE_SALT);
 							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
@@ -1184,6 +1223,9 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
+							$original_files = get_option('wpas_original_files', []);
+							$name = isset($original_files[$filename])  ? $original_files[$filename] : $name;
+
 							$post_id_encode = md5($post_id . NONCE_SALT);	
 							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
@@ -1911,7 +1953,8 @@ class WPAS_File_Upload {
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-ajax-upload-nonce', 'nonce' ) ) { 	
 
 			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );			
-			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( wp_unslash( ( $_POST['attachment'] ) ) ) : '';		
+			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( wp_unslash( ( $_POST['attachment'] ) ) ) : '';
+			$attachment = $this->wpas_sanitize_file_name($attachment);		
 			
 			$upload     = wp_upload_dir();
 			$user_id    = get_current_user_id();
@@ -2262,6 +2305,12 @@ class WPAS_File_Upload {
 	    $random_string = wp_generate_password(8, false); 
 
 	    $unique_name = $info['filename'] .  $random_string . time() . $ext;
+
+		$original_files = get_option('wpas_original_files', []);
+        
+		$original_files[$unique_name] = $file['name']; 
+		
+		update_option('wpas_original_files', $original_files);
 
 	    $file['name'] = $unique_name;
 

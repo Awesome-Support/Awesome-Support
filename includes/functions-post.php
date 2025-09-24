@@ -1,4 +1,15 @@
 <?php
+
+/**
+ * Delete ticket count cache on ticket update
+ *
+ * @since  3.0.0
+ * @param  null 
+ */
+function wpas_clean_ticketcount_cache() {
+	
+	set_site_transient( 'wpas_tickets_counts', null, 24 * HOUR_IN_SECONDS );
+}
 /**
  * Open a new ticket.
  *
@@ -7,7 +18,7 @@
  * @return boolean
  */
 function wpas_open_ticket( $data ) {
-
+		
 	$title   			= isset( $data['title'] ) ? wp_strip_all_tags( $data['title'] ) : false;
 	$content 			= isset( $data['message'] ) ? wp_kses( $data['message'], wp_kses_allowed_html( 'post' ) ) : false;
 	$bypass_pre_checks  = isset( $data['bypass_pre_checks'] ) ? boolval(wp_kses( $data['bypass_pre_checks'], false ) ) : false;  // Bypass pre-submission filter checks?
@@ -236,7 +247,7 @@ function wpas_new_ticket_submission( $data ) {
  * @return bool|int|WP_Error
  */
 function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false, $channel_term = 'other' ) {
-
+	
 	// Save the original data array
 	$incoming_data = $data;
 
@@ -386,6 +397,9 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	do_action( 'wpas_open_ticket_after', $ticket_id, $data );
 
 	do_action( 'wpas_ticket_after_saved', $ticket_id );
+	
+	//Delete ticket count cache on ticket update
+	wpas_clean_ticketcount_cache();
 
 	return $ticket_id;
 
@@ -1564,7 +1578,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 		 * @since  3.0.0
 		 */
 		do_action( 'wpas_after_close_ticket', $ticket_id, $update, $user_id );
-
+		
 		if ( is_admin() ) {
 
 			/**
@@ -1592,6 +1606,9 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 			do_action( 'wpas_after_close_ticket_public', $ticket_id, $user_id, $update );
 
 		}
+
+		//Delete ticket count cache on ticket update
+		wpas_clean_ticketcount_cache();
 
 		return $update;
 
@@ -1632,6 +1649,9 @@ function wpas_reopen_ticket( $ticket_id ) {
 	 */
 	do_action( 'wpas_after_reopen_ticket', intval( $ticket_id ), $update );
 
+	//Delete ticket count cache on ticket update
+	wpas_clean_ticketcount_cache();
+
 	return $update;
 
 }
@@ -1663,6 +1683,7 @@ function wpas_reopen_ticket_trigger( $data ) {
 		do_action( 'wpas_before_customer_reopen_ticket', $ticket_id );
 
 		wpas_reopen_ticket( $ticket_id );
+
 		wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'awesome-support' ) );
 		wpas_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );
 		exit;
@@ -1802,7 +1823,7 @@ function wpas_get_ticket_replies_ajax() {
 	$ticket_id = absint( $_POST['ticket_id'] );	
 
 	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_ticket' ) ) {
+	if ( ! current_user_can( 'reply_ticket' ) ) {
 		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
     }	
 		
@@ -2240,8 +2261,7 @@ function wpas_clone_ticket_before_assigned( $new_ticket_id, $data, $incoming_dat
  * @return integer|WP_Error           New ticket ID on success or WP_Error on failure
  */
 function wpas_clone_ticket( $ticket_id, $args = array() ) {
-
-
+	
 	$defaults = array(
 		'clone_replies'				=> true,
 		'clone_custom_fields_list'	=> array( "product", "department", "ticket_priority" ),

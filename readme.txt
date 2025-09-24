@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,rwkiii,elindydotcom,SiamKreative,alaca
 Tags: helpdesk,ticket system,support,tickets,support ticket
 Requires at least: 4.0
-Tested up to: 6.8.1
-Stable tag: 6.3.4
+Tested up to: 6.8.2
+Stable tag: 6.3.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -291,6 +291,13 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.3.5
+	* We improved the cache admin menu ticket count.
+	* New feature to support custom file type such as "*.k" and "*.dyn".
+	* New feature to set the Maximum Lenght in the subject of ticket on Submit Ticket Form of front-end.
+	* We fixed Bug in load more ticket replies interface.
+	* New feature to allow embed images on Email notifications when replying.
+	* Fix vulnerable issue.
 = 6.3.4	
 	* We improved the Editor 'Zoom In, Zoom out' feature.
 	* New feature to export the Reports and statiscs data in csv, graphs and pdf.

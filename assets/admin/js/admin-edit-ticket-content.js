@@ -44,7 +44,7 @@
                  * Remove content
                  */
                 $('.wpas-main-ticket-message').empty();
-                $('.wpas-main-ticket-message').html('<textarea id="wpas-main-ticket-message-editor" style="width: 100%; border: none; height: 350px;"></textarea>');
+                $('.wpas-main-ticket-message').html('<div class="wpas-wp-editor-reply-tab-div"><textarea id="wpas-main-ticket-message-editor" style="width: 100%; border: none; height: 350px;"></textarea></div>');
 
                 // AJAX request
 				$.post(ajaxurl, data, function (response) {

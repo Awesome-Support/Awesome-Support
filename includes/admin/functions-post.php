@@ -81,12 +81,14 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 		}
 
 		// @TODO: Its possible this if statement below might need an additional qualifier to see if $agent_replied = true.
-		// For now the ticket is going to IN PROCESS properly but if there is an issue later then using the additional
-		// qualifier might be warranted.
-		if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
-			$_POST['post_status_override'] = 'processing';
-		}
-
+		// For now the ticket is going to IN PROCESS properly but if there is an issue later then using the additional 6655750  
+		$turn_auto_change_status = (bool) wpas_get_option( 'turn_auto_change_status' );
+  		if ( true === $turn_auto_change_status ) {
+  			// qualifier might be warranted.
+			if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
+				$_POST['post_status_override'] = 'processing';
+			}
+  		}	
 	}
 
 	if ( isset( $_POST['post_status_override'] ) && ! empty( $_POST['post_status_override'] ) ) {
@@ -197,7 +199,8 @@ function wpas_save_ticket( $post_id ) {
 		if ( wp_verify_nonce( $ticket_reply, 'reply_ticket' ) ) {
 
 			$user_id = $current_user->ID;
-			$content = isset( $_POST['wpas_reply'] ) ? wp_kses_post( wp_unslash( $_POST['wpas_reply'] ) ) : '';
+			$content = isset( $_POST['wpas_reply'] ) ? wp_kses_post( $_POST['wpas_reply'] ) : '';
+
 
 			$data = apply_filters( 'wpas_post_reply_admin_args', array(
 				'post_content'   => $content,
@@ -336,7 +339,7 @@ function wpas_save_ticket( $post_id ) {
 	}
 
 	do_action( 'wpas_ticket_after_saved', $post_id );
-
+	wpas_admin_clean_ticketcount_cache( $post_id );
 }
 
 add_action( 'wpas_add_reply_after', 'wpas_mark_replies_read', 10, 2 );
@@ -777,3 +780,21 @@ function wpas_close_ticket_prevent_client_notification_field( $ticket_id ) {
 	</div>
 	<?php
 }
+
+add_action( 'trashed_post', 'wpas_admin_clean_ticketcount_cache' );
+add_action( 'untrashed_post', 'wpas_admin_clean_ticketcount_cache' );
+/**
+ * Delete ticket count cache on ticket update
+ *
+ * @param int $ticket_id
+ */
+function wpas_admin_clean_ticketcount_cache( $ticket_id = '' )
+{
+	$post   = get_post( $ticket_id );
+
+	if (isset( $post ) && isset( $post->post_type) && $post->post_type !== 'ticket') {
+        return;
+    }   
+    set_site_transient( 'wpas_tickets_counts', null, 24 * HOUR_IN_SECONDS );   
+}
+

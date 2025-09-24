@@ -146,10 +146,24 @@ class GASFrameworkOptionDate extends GASFrameworkOption {
 	 * @since	1.0
 	 */
 	public function getDateValueInTime() {
+
 		if ( empty( $this->getValue() ) ) {
 			return '';
 		}
-		return strtotime( $this->getValue() );
+
+		$value = $this->getValue();
+
+		// Nếu là số nguyên, coi như là giây kể từ 00:00:00
+		if ( is_numeric( $value ) ) {
+			// Trả về timestamp hôm nay + $value giây
+			$midnight = strtotime( 'today midnight' ); // hoặc strtotime( 'today 00:00:00' )
+			return $midnight + (int) $value;
+		}
+
+		// Ngược lại xử lý chuỗi ngày giờ thông thường
+		$timestamp = strtotime( $value );
+
+		return $timestamp !== false ? $timestamp : '';
 	}
 
 
@@ -170,7 +184,7 @@ class GASFrameworkOptionDate extends GASFrameworkOption {
 			$dateFormat = 'H:i';
 			$placeholder = 'HH:MM';
 		}
-
+		
 		printf('<input class="input-date%s%s" name="%s" placeholder="%s" id="%s" type="text" value="%s" /> <p class="description">%s</p>',
 			( $this->settings['date'] ? ' date' : '' ),
 			( $this->settings['time'] ? ' time' : '' ),

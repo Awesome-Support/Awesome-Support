@@ -15,35 +15,35 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title"><label for="tablecell">Site URL</label></td>
+			<td class="row-title"><label for="tablecell"><?php echo esc_html__( 'Site URL', 'awesome-support' );?></label></td>
 			<td><?php echo esc_url( site_url() ); ?></td>
 		</tr>
 		<tr class="alternate">
-			<td class="row-title"><label for="tablecell">Home URL</label></td>
+			<td class="row-title"><label for="tablecell"><?php echo esc_html__( 'Home URL', 'awesome-support' );?></label></td>
 			<td><?php echo esc_url( home_url() ); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title">WP Version</td>
+			<td class="row-title"><?php echo esc_html__( 'WP Version', 'awesome-support' );?></td>
 			<td><?php bloginfo('version'); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">WP Multisite</td>
+			<td class="row-title"><?php echo esc_html__( 'WP Multisite', 'awesome-support' );?></td>
 			<td><?php if ( is_multisite() ) esc_html_e( 'Yes', 'awesome-support' ); else esc_html_e( 'No', 'awesome-support' ); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title">WP Language</td>
+			<td class="row-title"><?php echo esc_html__( 'WP Language', 'awesome-support' );?></td>
 			<td><?php echo esc_html( get_locale() ); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">WP Debug Mode</td>
+			<td class="row-title"><?php echo esc_html__( 'WP Debug Mode', 'awesome-support' );?></td>
 			<td><?php if ( defined('WP_DEBUG') && WP_DEBUG ) esc_html_e( 'Yes', 'awesome-support' ); else esc_html_e( 'No', 'awesome-support' ); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title">WP Active Plugins</td>
+			<td class="row-title"><?php echo esc_html__( 'WP Active Plugins', 'awesome-support' );?></td>
 			<td><?php echo count( (array) get_option( 'active_plugins' ) ); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">WP Max Upload Size</td>
+			<td class="row-title"><?php echo esc_html__( 'WP Max Upload Size', 'awesome-support' );?></td>
 			<td>
 				<?php
 				$wp_upload_max     = wp_max_upload_size();
@@ -61,11 +61,11 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">WP Memory Limit</td>
+			<td class="row-title"><?php echo esc_html__( 'WP Memory Limit', 'awesome-support' );?></td>
 			<td><?php echo esc_html( WP_MEMORY_LIMIT ); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">WP Timezone</td>
+			<td class="row-title"><?php echo esc_html__( 'WP Timezone', 'awesome-support' );?></td>
 			<td>
 				<?php
 				$timezone = get_option( 'timezone_string' );
@@ -84,17 +84,17 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-server">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title">Server</th>
+			<th data-override="key" class="row-title"><?php echo esc_html__( 'Version', 'awesome-support' );?>Server</th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title">PHP Version</td>
+			<td class="row-title"><?php echo esc_html__( 'Version', 'awesome-support' );?>PHP Version</td>
 			<td><?php if ( function_exists( 'phpversion' ) ) echo esc_html( phpversion() ); ?></td>
 		</tr>
 		<tr class="alternate">
-			<td class="row-title">Software</td>
+			<td class="row-title"><?php echo esc_html__( 'Version', 'awesome-support' );?>Software</td>
 			<td><?php echo esc_html( isset( $_SERVER['SERVER_SOFTWARE'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_SOFTWARE'] ) ): '' ); ?></td>
 		</tr>
 	</tbody>
@@ -102,37 +102,37 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-settings">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title">Settings</th>
+			<th data-override="key" class="row-title"><?php echo esc_html__( 'Settings', 'awesome-support' );?></th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title">Version</td>
+			<td class="row-title"><?php echo esc_html__( 'Version', 'awesome-support' );?></td>
 			<td><?php echo esc_html( WPAS_VERSION ); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">DB Version</td>
+			<td class="row-title"><?php echo esc_html__( 'DB Version', 'awesome-support' );?></td>
 			<td><?php echo esc_html( WPAS_DB_VERSION ); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title">Tickets Slug</td>
+			<td class="row-title"><?php echo esc_html__( 'Tickets Slug', 'awesome-support' );?></td>
 			<td><code><?php echo defined( 'WPAS_SLUG' ) ? esc_html( WPAS_SLUG ) : 'ticket'; ?></code></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">Products Slug</td>
+			<td class="row-title"><?php echo esc_html__( 'Products Slug', 'awesome-support' );?></td>
 			<td><code><?php echo defined( 'WPAS_PRODUCT_SLUG' ) ? esc_html( WPAS_PRODUCT_SLUG ) : 'product'; ?></code></td>
 		</tr>
 		<tr>
-			<td class="row-title">Multiple Products</td>
+			<td class="row-title"><?php echo esc_html__( 'Multiple Products', 'awesome-support' );?></td>
 			<td><?php true === boolval( wpas_get_option( 'support_products' ) ) ? esc_html_e( 'Enabled', 'awesome-support' ) : esc_html_e( 'Disabled', 'awesome-support'); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">Registration Status</td>
+			<td class="row-title"><?php echo esc_html__( 'Registration Status', 'awesome-support' );?></td>
 			<td><?php 'allow' === wpas_get_option( 'allow_registrations' ) ? esc_html_e( 'Open', 'awesome-support' ) : esc_html_e( 'Closed', 'awesome-support'); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title">Registration Page</td>
+			<td class="row-title"><?php echo esc_html__( 'Registration Page', 'awesome-support' );?></td>
 			<td>
 				<?php
 				$login_page = wpas_get_option( 'login_page' );
@@ -145,7 +145,7 @@
 			</td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">Uploads Folder</td>
+			<td class="row-title"><?php echo esc_html__( 'Uploads Folder', 'awesome-support' );?></td>
 			<td>
 				<?php
 				
@@ -174,7 +174,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">Allowed File Types</td>
+			<td class="row-title"><?php echo esc_html__( 'Allowed File Types', 'awesome-support' );?></td>
 			<td>
 				<?php
 				$filetypes = apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) );
@@ -191,7 +191,7 @@
 			</td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">WYSIWYG On Front</td>
+			<td class="row-title"><?php echo esc_html__( 'WYSIWYG On Front', 'awesome-support' );?></td>
 			<td><?php true === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ? esc_html_e( 'Yes', 'awesome-support' ) : esc_html_e( 'No', 'awesome-support'); ?></td>
 		</tr>
 	</tbody>
@@ -199,13 +199,13 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-pages">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title">Plugin Pages</th>
+			<th data-override="key" class="row-title"><?php echo esc_html__( 'Plugin Pages', 'awesome-support' );?></th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title">Ticket Submission</td>
+			<td class="row-title"><?php echo esc_html__( 'Ticket Submission', 'awesome-support' );?></td>
 			<?php $page_submit = wpas_get_option( 'ticket_submit' ); ?>
 			<td>
 				<?php
@@ -231,7 +231,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">Tickets List</td>
+			<td class="row-title"><?php echo esc_html__( 'Tickets List', 'awesome-support' );?></td>
 			<?php
 			$page_list = wpas_get_option( 'ticket_list' );
 
@@ -246,82 +246,82 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-email-notifications">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title">E-Mail Notifications</th>
+			<th data-override="key" class="row-title"><?php echo esc_html__( 'E-Mail Notifications', 'awesome-support' );?></th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title">Sender Name</td>
+			<td class="row-title"><?php echo esc_html__( 'Sender Name', 'awesome-support' );?></td>
 			<td>
 				<?php echo esc_html( wpas_get_option( 'sender_name', get_bloginfo( 'name' ) ) ); ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">Sender E-Mail</td>
+			<td class="row-title"><?php echo esc_html__( 'Sender E-Mail', 'awesome-support' );?></td>
 			<td>
 				<?php echo esc_html( wpas_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ) ); ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">Reply-To E-Mail</td>
+			<td class="row-title"><?php echo esc_html__( 'Reply-To E-Mail', 'awesome-support' );?></td>
 			<td>
 				<?php echo esc_html( wpas_get_option( 'reply_email', get_bloginfo( 'admin_email' ) ) ); ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">Submission Confirmation</td>
+			<td class="row-title"><?php echo esc_html__( 'Submission Confirmation', 'awesome-support' );?></td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_confirmation' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_confirmation' ) ) ? '<span class="wpas-alert-success">'. esc_html__( 'Enabled', 'awesome-support' ) .'</span>' : '<span class="wpas-alert-danger">'. esc_html__( 'Disabled', 'awesome-support' ) .'</span>'; ?>
 			</td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">New Assignment</td>
+			<td class="row-title"><?php echo esc_html__( 'New Assignment', 'awesome-support' );?></td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_assignment' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_assignment' ) ) ? '<span class="wpas-alert-success">'. esc_html__( 'Enabled', 'awesome-support' ) .'</span>' : '<span class="wpas-alert-danger">'. esc_html__( 'Disabled', 'awesome-support' ) .'</span>'; ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">New Agent Reply</td>
+			<td class="row-title"><?php echo esc_html__( 'New Agent Reply', 'awesome-support' );?></td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_reply_agent' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_reply_agent' ) ) ? '<span class="wpas-alert-success">'. esc_html__( 'Enabled', 'awesome-support' ) .'</span>' : '<span class="wpas-alert-danger">'. esc_html__( 'Disabled', 'awesome-support' ) .'</span>'; ?>
 			</td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">New Client Reply</td>
+			<td class="row-title"><?php echo esc_html__( 'New Client Reply', 'awesome-support' );?></td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_reply_client' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_reply_client' ) ) ? '<span class="wpas-alert-success">'. esc_html__( 'Enabled', 'awesome-support' ) .'</span>' : '<span class="wpas-alert-danger">'. esc_html__( 'Disabled', 'awesome-support' ) .'</span>'; ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">Ticket Closed</td>
+			<td class="row-title"><?php echo esc_html__( 'Ticket Closed', 'awesome-support' );?></td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_closed' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_closed' ) ) ? '<span class="wpas-alert-success">'. esc_html__( 'Enabled', 'awesome-support' ) .'</span>' : '<span class="wpas-alert-danger">'. esc_html__( 'Disabled', 'awesome-support' ) .'</span>'; ?>
 			</td>
 		</tr>
 
 		<tr>
-			<td class="row-title">Moderated Registration: Admin Alert</td>
+			<td class="row-title"><?php echo esc_html__( 'Moderated Registration: Admin Alert', 'awesome-support' );?></td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_admin_email' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_admin_email' ) ) ? '<span class="wpas-alert-success">'. esc_html__( 'Enabled', 'awesome-support' ) .'</span>' : '<span class="wpas-alert-danger">'. esc_html__( 'Disabled', 'awesome-support' ) .'</span>'; ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">Moderated Registration: User Waiting Approval</td>
+			<td class="row-title"><?php echo esc_html__( 'Moderated Registration: User Waiting Approval', 'awesome-support' );?></td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_user_email' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_user_email' ) ) ? '<span class="wpas-alert-success">'. esc_html__( 'Enabled', 'awesome-support' ) .'</span>' : '<span class="wpas-alert-danger">'. esc_html__( 'Disabled', 'awesome-support' ) .'</span>'; ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">Moderated Registration: User Approved</td>
+			<td class="row-title"><?php echo esc_html__( 'Moderated Registration: User Approved', 'awesome-support' );?></td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_approved_user_email' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_approved_user_email' ) ) ? '<span class="wpas-alert-success">'. esc_html__( 'Enabled', 'awesome-support' ) .'</span>' : '<span class="wpas-alert-danger">'. esc_html__( 'Disabled', 'awesome-support' ) .'</span>'; ?>
 			</td>
 		</tr>
 		<tr>
-			<td class="row-title">Moderated Registration: User Denied</td>
+			<td class="row-title"><?php echo esc_html__( 'Moderated Registration: User Denied', 'awesome-support' );?></td>
 			<td>
-				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_denied_user_email' ) ) ? '<span class="wpas-alert-success">Enabled</span>' : '<span class="wpas-alert-danger">Disabled</span>'; ?>
+				<?php echo true === boolval( wpas_get_option( 'enable_moderated_registration_denied_user_email' ) ) ? '<span class="wpas-alert-success">'. esc_html__( 'Enabled', 'awesome-support' ) .'</span>' : '<span class="wpas-alert-danger">'. esc_html__( 'Disabled', 'awesome-support' ) .'</span>'; ?>
 			</td>
 		</tr>
 
@@ -330,7 +330,7 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-custom-fields">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title">Custom Fields</th>
+			<th data-override="key" class="row-title"><?php echo esc_html__( 'Custom Fields', 'awesome-support' );?></th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
@@ -384,13 +384,13 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-plugins">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title">Plugins</th>
+			<th data-override="key" class="row-title"><?php echo esc_html__( 'Plugins', 'awesome-support' );?></th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title">Installed</td>
+			<td class="row-title"><?php echo esc_html__( 'Installed', 'awesome-support' );?></td>
 			<td>
 				<?php
 				$active_plugins = (array) get_option( 'active_plugins', array() );
@@ -432,32 +432,32 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-theme">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title">Theme</th>
+			<th data-override="key" class="row-title"><?php echo esc_html__( 'Theme', 'awesome-support' );?></th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title">Theme Name:</td>
+			<td class="row-title"><?php echo esc_html__( 'Theme Name:', 'awesome-support' );?></td>
 			<td><?php
 				$active_theme = wp_get_theme();
 				echo esc_html( $active_theme->Name );
 			?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">Theme Version:</td>
+			<td class="row-title"><?php echo esc_html__( 'Theme Version:', 'awesome-support' );?></td>
 			<td><?php
 				echo esc_html( $active_theme->Version );
 			?></td>
 		</tr>
 		<tr>
-			<td class="row-title">Theme Author URL:</td>
+			<td class="row-title"><?php echo esc_html__( 'Theme Author URL:', 'awesome-support' );?></td>
 			<td><?php
 				echo esc_url( $active_theme->{'Author URI'} );
 			?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">Is Child Theme:</td>
+			<td class="row-title"><?php echo esc_html__( 'Is Child Theme:', 'awesome-support' );?></td>
 			<td><?php echo is_child_theme() ? esc_html__( 'Yes', 'awesome-support' ) : esc_html__( 'No', 'awesome-support' ); ?></td>
 		</tr>
 		<?php
@@ -465,15 +465,15 @@
 			$parent_theme = wp_get_theme( $active_theme->Template );
 		?>
 		<tr>
-			<td class="row-title">Parent Theme Name:</td>
+			<td class="row-title"><?php echo esc_html__( 'Parent Theme Name:', 'awesome-support' );?></td>
 			<td><?php echo esc_html( $parent_theme->Name ); ?></td>
 		</tr>
 		<tr class="alt">
-			<td class="row-title">Parent Theme Version:</td>
+			<td class="row-title"><?php echo esc_html__( 'Parent Theme Version:', 'awesome-support' );?></td>
 			<td><?php echo esc_html( $parent_theme->Version ); ?></td>
 		</tr>
 		<tr>
-			<td class="row-title">Parent Theme Author URL:</td>
+			<td class="row-title"><?php echo esc_html__( 'Parent Theme Author URL:', 'awesome-support' );?></td>
 			<td><?php
 				echo esc_url( $parent_theme->{'Author URI'} );
 			?></td>
@@ -484,25 +484,25 @@
 <table class="widefat wpas-system-status-table" id="wpas-system-status-templates">
 	<thead>
 		<tr>
-			<th data-override="key" class="row-title">Templates</th>
+			<th data-override="key" class="row-title"><?php echo esc_html__( 'Templates', 'awesome-support' );?></th>
 			<th data-override="value"></th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td class="row-title">Template:</td>
+			<td class="row-title"><?php echo esc_html__( 'Template:', 'awesome-support' );?></td>
 			<td><?php
 				echo esc_html( wpas_get_theme() );
 			?></td>
 		</tr>
 		<tr>
-			<td class="row-title">Template Theme Overlay:</td>
+			<td class="row-title"><?php echo esc_html__( 'Template Theme Overlay:', 'awesome-support' );?></td>
 			<td><?php
 				echo esc_html( wpas_get_Overlay() );
 			?></td>
 		</tr>
 		<tr>
-			<td class="row-title">Template Overrides:</td>
+			<td class="row-title"><?php echo esc_html__( 'Template Overrides:', 'awesome-support' );?></td>
 			<td>
 				<?php
 				$theme_directory       = trailingslashit( get_template_directory() ) . 'awesome-support';
@@ -525,7 +525,7 @@
 						}
 						echo '</ul>';
 					} else {
-						echo 'There is no template override';
+						echo esc_html__( 'There is no template override', 'awesome-support' );
 					}
 
 				} elseif ( is_dir( $theme_directory ) ) {
@@ -539,11 +539,11 @@
 						}
 						echo '</ul>';
 					} else {
-						echo 'There is no template override';
+						echo esc_html__( 'There is no template override', 'awesome-support' );
 					}
 
 				} else {
-					echo 'There is no template override';
+					echo esc_html__( 'There is no template override', 'awesome-support' );
 				}
 				?>
 			</td>
