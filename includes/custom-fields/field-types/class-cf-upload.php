@@ -99,6 +99,7 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 		foreach ( $filetypes as $key => $type ) {
 			$filetypes[ $key ] = "<code>.$type</code>";
 			array_push( $accept, ".$type" );
+			array_push( $accept, "." . strtoupper( $type ) );
 		}
 
 		$accept = implode( ',', $accept );
