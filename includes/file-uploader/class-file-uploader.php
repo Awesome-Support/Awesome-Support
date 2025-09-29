@@ -934,6 +934,7 @@ class WPAS_File_Upload {
 		foreach ( $filetypes as $key => $type ) {
 			$filetypes[ $key ] = "<code>.$type</code>";
 			array_push( $accept, ".$type" );
+			array_push( $accept, "." . strtoupper( $type ) );
 		}
 
 		$filetypes = implode( ', ', $filetypes );
@@ -1516,7 +1517,7 @@ class WPAS_File_Upload {
 	 */
 	public function limit_upload( $file ) {
 
-		global $post;
+		global $post,$wp;
 		if ( empty( $post ) ) { 
 			$server_protocol = isset( $_SERVER['SERVER_PROTOCOL'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_PROTOCOL'] ) ) : null;
 			$server_name = isset( $_SERVER['SERVER_NAME'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_NAME'] ) ) : null;
@@ -1538,6 +1539,16 @@ class WPAS_File_Upload {
 		if ( ! is_admin() ) {
 			if ( ! empty( $post) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
 				return $file;
+			}			
+			// This is a NOT GAS REST API  submission, apply restrictions
+			$is_rest = defined( 'REST_REQUEST' ) && REST_REQUEST;
+			if ( $is_rest && isset( $wp->query_vars['rest_route'] ) ) {
+			    $route = $wp->query_vars['rest_route'];
+			    //Check whether the request is from the REST API.
+			    if ( strpos( $route, '/wpas-api/v1' ) === false ) {
+			        // Skip restrictions			        
+			        return $file;	
+		        }		   
 			}
 		}
 
@@ -1841,6 +1852,7 @@ class WPAS_File_Upload {
 
 		foreach ( $filetypes as $key => $type ) {
 			array_push( $accept, ".$type" );
+			array_push( $accept, "." . strtoupper( $type ) );
 		}
 
 		$accept = implode( ',', $accept );
@@ -2064,6 +2076,7 @@ class WPAS_File_Upload {
 
 			foreach ( $filetypes as $key => $type ) {
 				array_push( $accept, '*.' . $type );
+				array_push( $accept, "*." . strtoupper( $type ) );
 			}
 
 			$accept = implode( ',', $accept );
