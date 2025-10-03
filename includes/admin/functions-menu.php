@@ -171,6 +171,16 @@ function wpas_display_status_page() {
  * @since    3.0.0
  */
 function wpas_display_get_help_page() {
-	wp_redirect( 'https://getawesomesupport.com/submit-ticket/' );
-	exit;
+	$link = 'https://getawesomesupport.com/submit-ticket/';
+    if ( ! headers_sent() ) {
+        wp_redirect( $link );
+        exit;
+    } else {
+		include_once( WPAS_PATH . 'includes/admin/views/wpas-help-and-support.php' );
+        echo '<script type="text/javascript">';
+        echo 'window.location.href="'.$link.'";';
+        echo '</script>';
+        echo '<noscript><meta http-equiv="refresh" content="0;url='.$link.'" /></noscript>';
+        exit;
+    }
 }
