@@ -17,4 +17,6 @@ jQuery(document).ready(function(){
 			}
 		});
 	});
+	jQuery('a[href="edit.php?post_type=ticket&page=wpas-get-help"]').attr("target", '_blank');
+	jQuery('a[href="edit.php?post_type=ticket&page=wpas-get-help"]').attr("href", 'https://getawesomesupport.com/submit-ticket/');
 });
