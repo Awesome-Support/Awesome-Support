@@ -87,7 +87,7 @@ class GASFrameworkOptionMulticheck extends GASFrameworkOption {
 		if ( is_string( $value ) ) {
 			$value = explode( ',', $value );
 		}
-		return serialize( $value );
+		return wp_json_encode( $value );
 	}
 
 	public function cleanValueForGetting( $value ) {
@@ -97,12 +97,21 @@ class GASFrameworkOptionMulticheck extends GASFrameworkOption {
 		if ( is_array( $value ) ) {
 			return $value;
 		}
+
+		// Handle JSON (new format)
+		$decoded = json_decode( $value, true );
+		if ( json_last_error() === JSON_ERROR_NONE && is_array( $decoded ) ) {
+			return $decoded;
+		}
+
 		if ( is_serialized( $value ) ) {
 			return unserialize( $value );
 		}
 		if ( is_string( $value ) ) {
 			return explode( ',', $value );
 		}
+
+		return array();
 	}
 
 	/*

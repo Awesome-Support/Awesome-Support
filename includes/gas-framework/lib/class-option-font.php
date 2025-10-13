@@ -519,7 +519,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 			}
 
 			// Update hidden save field
-			$container.find('.tf-for-saving').val(serialize(params));
+			$container.find('.tf-for-saving').val(JSON.stringify(params));
 			if ( doTrigger ) {
 				$container.find('.tf-for-saving').trigger('change');
 			}
@@ -889,7 +889,7 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 		<?php
 
 		if ( ! is_serialized( $value ) ) {
-			$value = serialize( $value );
+			$value = wp_json_encode( $value );
 		}
 
 		printf("<input type='hidden' class='tf-for-saving' name='%s' id='%s' value='%s' />",
@@ -911,7 +911,10 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 	 */
 	public function cleanValueForSaving( $value ) {
 		if ( is_array( $value ) ) {
-			$value = serialize( $value );
+    		$value = wp_json_encode( $value );
+		} elseif ( is_string( $value ) && null === json_decode( $value, true ) ) {
+		    // If it's a string but not valid JSON, encode it too
+		    $value = wp_json_encode( $value );
 		}
 		return stripslashes( $value );
 	}
@@ -925,8 +928,23 @@ class GASFrameworkOptionFont extends GASFrameworkOption {
 	 * @since	1.4
 	 */
 	public function cleanValueForGetting( $value ) {
+
 		if ( is_string( $value ) ) {
-			$value = maybe_unserialize( stripslashes( $value ) );
+
+			$raw = stripslashes( $value );
+
+			// Try JSON first
+			$decoded = json_decode( $raw, true );
+
+			if ( json_last_error() === JSON_ERROR_NONE && is_array( $decoded ) ) {
+				$value = $decoded;
+			} else {
+
+				if ( is_serialized( $raw ) ) {
+			        // Fallback to unserialize for legacy values
+					$value = maybe_unserialize( $raw );
+			    }				
+			}
 		}
 		if ( is_array( $value ) ) {
 			$value = array_merge( self::$defaultStyling, $value );
@@ -988,8 +1006,16 @@ function registerGASFrameworkOptionFontControl() {
 
 			// Get the current value and merge with defaults
 			$value = $this->value();
-			if ( is_serialized( $value ) ) {
-				$value = unserialize( $value );
+			if ( is_string( $value ) ) {
+				$decoded = json_decode( $value, true );
+				if ( json_last_error() === JSON_ERROR_NONE && is_array( $decoded ) ) {
+					$value = $decoded;
+				} else {
+						if ( is_serialized( $value ) ) {
+				        // Fallback to unserialize for legacy values
+						$value = maybe_unserialize( $value );
+				    }					
+				}
 			}
 			if ( ! is_array( $value ) ) {
 				$value = array();
@@ -1331,8 +1357,11 @@ function registerGASFrameworkOptionFontControl() {
 			</div>
 			<?php
 
-			if ( ! is_serialized( $value ) ) {
-				$value = serialize( $value );
+			if ( is_array( $value ) ) {
+			    $value = wp_json_encode( $value );
+			} elseif ( is_string( $value ) && null === json_decode( $value, true ) ) {
+			    // If it's a string but not valid JSON, encode it too
+			    $value = wp_json_encode( $value );
 			}
 
 			?>

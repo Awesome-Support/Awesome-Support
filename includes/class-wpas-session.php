@@ -89,9 +89,13 @@ class WPAS_Session {
 			}
 
 			$new                   = array_push( $old, $value );
-			$this->session[ $key ] = serialize( $new );
+			$this->session[ $key ] = wp_json_encode( $old );
 
 		} else {
+			
+			if ( is_array( $value ) || is_object( $value ) ) {
+	            $value = json_encode( $value );
+	        }
 			$this->session[ $key ] = $value;
 		}
 
@@ -116,7 +120,21 @@ class WPAS_Session {
 			$value = $this->session[ $key ];
 		}
 
-		return maybe_unserialize( $value );
+		//Try JSON decode first
+	    if ( is_string( $value ) ) {
+	        $decoded = json_decode( $value, true );
+	        if ( json_last_error() === JSON_ERROR_NONE ) {
+	            return $decoded;
+	        }
+	    }
+
+	    //Fallback to unserialize (for legacy data)
+	    if ( is_serialized( $value ) ) {
+	        return maybe_unserialize( $value );
+	    }
+
+	    //Return as is (plain string or scalar)
+    	return $value;
 
 	}
 
@@ -175,7 +193,7 @@ class WPAS_Session {
 	public function sanitize( $value ) {
 
 		if ( is_array( $value ) || is_object( $value ) ) {
-			$value = serialize( $value );
+			$value = wp_json_encode( $value );
 		}
 
 		return $value;
