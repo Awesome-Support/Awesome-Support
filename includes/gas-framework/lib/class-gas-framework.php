@@ -259,7 +259,20 @@ class GASFramework {
 
 		// Put all the available options in our global variable for future checking.
 		if ( ! empty( $currentOptions ) && ! count( $this->adminOptions ) ) {
-			$this->adminOptions = unserialize( $currentOptions );
+			// Safe unserialization to prevent PHP Object Injection
+			if ( is_serialized( $currentOptions ) ) {
+				$unserialized = @unserialize( $currentOptions, ['allowed_classes' => false] );
+				if ( $unserialized !== false || $currentOptions === 'b:0;' ) {
+					$this->adminOptions = $unserialized;
+				} else {
+					$this->adminOptions = array();
+				}
+			} elseif ( is_array( $currentOptions ) ) {
+				// If the options are already stored as array (e.g., newer WP versions)
+				$this->adminOptions = $currentOptions;
+			} else {
+				$this->adminOptions = array();
+			}
 		}
 
 		if ( empty( $this->adminOptions ) ) {
@@ -822,7 +835,10 @@ class GASFramework {
 						// Try and unserialize if possible.
 						$tempValue = $value[ $themeModName ];
 						if ( is_serialized( $tempValue ) ) {
-							$tempValue = unserialize( $tempValue );
+							$unserialized = @unserialize( $tempValue, ['allowed_classes' => false] );
+							if ( $unserialized !== false || $tempValue === 'b:0;' ) {
+								$tempValue = $unserialized;
+							}
 						}
 
 						// Hook 'tf_save_option_{namespace}'.

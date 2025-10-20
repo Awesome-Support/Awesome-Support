@@ -257,53 +257,65 @@ function wpas_get_blog_ids() {
  */
 function wpas_create_pages() {
 
-	$options = unserialize( get_option( 'wpas_options', array() ) );
-	$update  = false;
+	$raw_options = get_option( 'wpas_options', array() );
 
-	if ( empty( $options['ticket_list'] ) ) {
-
-		$list_args = array(
-				'post_content'   => '[tickets]',
-				'post_title'     => wp_strip_all_tags( __( 'My Tickets', 'awesome-support' ) ),
-				'post_name'      => sanitize_title( __( 'My Tickets', 'awesome-support' ) ),
-				'post_type'      => 'page',
-				'post_status'    => 'publish',
-				'ping_status'    => 'closed',
-				'comment_status' => 'closed'
-		);
-
-		$list = wp_insert_post( $list_args, true );
-
-		if ( ! is_wp_error( $list ) && is_int( $list ) ) {
-			$options['ticket_list'] = $list;
-			$update                 = true;
-		}
+	if ( is_serialized( $raw_options ) ) {
+		$options = @unserialize( $raw_options, ['allowed_classes' => false] );
+	} elseif ( is_array( $raw_options ) ) {
+		$options = $raw_options;
+	} else {
+		$options = array();
 	}
 
-	if ( empty( $options['ticket_submit'] ) ) {
+	if ( ! empty( $options ) ) {
 
-		$submit_args = array(
-				'post_content'   => '[ticket-submit]',
-				'post_title'     => wp_strip_all_tags( __( 'Submit Ticket', 'awesome-support' ) ),
-				'post_name'      => sanitize_title( __( 'Submit Ticket', 'awesome-support' ) ),
-				'post_type'      => 'page',
-				'post_status'    => 'publish',
-				'ping_status'    => 'closed',
-				'comment_status' => 'closed'
-		);
+		$update  = false;
+		if ( empty( $options['ticket_list'] ) ) {
 
-		$submit = wp_insert_post( $submit_args, true );
+			$list_args = array(
+					'post_content'   => '[tickets]',
+					'post_title'     => wp_strip_all_tags( __( 'My Tickets', 'awesome-support' ) ),
+					'post_name'      => sanitize_title( __( 'My Tickets', 'awesome-support' ) ),
+					'post_type'      => 'page',
+					'post_status'    => 'publish',
+					'ping_status'    => 'closed',
+					'comment_status' => 'closed'
+			);
 
-		if ( ! is_wp_error( $submit ) && is_int( $submit ) ) {
-			$options['ticket_submit'] = $submit;
-			$update                   = true;
+			$list = wp_insert_post( $list_args, true );
+
+			if ( ! is_wp_error( $list ) && is_int( $list ) ) {
+				$options['ticket_list'] = $list;
+				$update                 = true;
+			}
 		}
 
-	}
+		if ( empty( $options['ticket_submit'] ) ) {
 
-	if ( $update ) {
-		update_option( 'wpas_options', serialize( $options ) );
-	}
+			$submit_args = array(
+					'post_content'   => '[ticket-submit]',
+					'post_title'     => wp_strip_all_tags( __( 'Submit Ticket', 'awesome-support' ) ),
+					'post_name'      => sanitize_title( __( 'Submit Ticket', 'awesome-support' ) ),
+					'post_type'      => 'page',
+					'post_status'    => 'publish',
+					'ping_status'    => 'closed',
+					'comment_status' => 'closed'
+			);
+
+			$submit = wp_insert_post( $submit_args, true );
+
+			if ( ! is_wp_error( $submit ) && is_int( $submit ) ) {
+				$options['ticket_submit'] = $submit;
+				$update                   = true;
+			}
+
+		}
+
+		if ( $update ) {
+			update_option( 'wpas_options', serialize( $options ) );
+		}
+
+	}	
 
 	if ( ! empty( $options['ticket_submit'] ) && ! empty( $options['ticket_list'] ) ) {
 		delete_option( 'wpas_setup' );

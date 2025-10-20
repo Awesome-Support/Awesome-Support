@@ -3667,10 +3667,19 @@ class gasscss_server {
 		// look for modified imports
 		$icache = $this->importsCacheName($out);
 		if (is_readable($icache)) {
-			$imports = unserialize(wp_remote_get($icache));
-			foreach ($imports as $import) {
-				if (filemtime($import) > $mtime) return true;
-			}
+			$response = wp_remote_get($icache);
+			if ( ! is_wp_error($response) ) {
+				$body = wp_remote_retrieve_body($response);
+
+				if ( is_serialized( $body ) ) {
+					$imports = @unserialize( $body, ['allowed_classes' => false] );
+					if ( is_array( $imports ) ) {
+						foreach ( $imports as $import ) {
+							if ( filemtime( $import ) > $mtime ) return true;
+						}
+					}
+				}
+			}			
 		}
 		return false;
 	}

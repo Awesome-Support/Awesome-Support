@@ -105,7 +105,11 @@ class GASFrameworkOptionMulticheck extends GASFrameworkOption {
 		}
 
 		if ( is_serialized( $value ) ) {
-			return unserialize( $value );
+			$unserialized = @unserialize( $value, ['allowed_classes' => false] );
+			if ( $unserialized !== false || $value === 'b:0;' ) {
+				return $unserialized;
+			}
+			return array();
 		}
 		if ( is_string( $value ) ) {
 			return explode( ',', $value );

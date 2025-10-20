@@ -247,7 +247,17 @@ class WPAS_Member_Query {
 
 		global $wp_roles;
 
-		$r     = unserialize( $user->meta_value );
+		$raw_meta = $user->meta_value;
+		$r = array();
+
+		// Safely unserialize if needed
+		if ( is_serialized( $raw_meta ) ) {
+			$decoded = @unserialize( $raw_meta, ['allowed_classes' => false] );
+			if ( is_array( $decoded ) ) {
+				$r = $decoded;
+			}
+		}
+
 		$roles = array();
 		$class = '';
 

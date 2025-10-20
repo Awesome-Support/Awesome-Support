@@ -70,7 +70,12 @@ class GASFrameworkOptionRadioPalette extends GASFrameworkOption {
 		}
 		$value = stripslashes( $value );
 		if ( is_serialized( $value ) ) {
-			return unserialize( $value );
+			$unserialized = @unserialize( $value, ['allowed_classes' => false] );
+			// If unserialization fails, return original or a safe default
+			if ( $unserialized !== false || $value === 'b:0;' ) { // 'b:0;' is serialized false
+				return $unserialized;
+			}
+			return $value;
 		}
 		if ( empty( $value ) ) {
 			$value = 0;

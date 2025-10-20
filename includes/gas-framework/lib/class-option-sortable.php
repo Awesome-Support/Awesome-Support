@@ -218,7 +218,8 @@ class GASFrameworkOptionSortable extends GASFrameworkOption {
 			return $value;
 		}
 		if ( is_serialized( stripslashes( $value ) ) ) {
-			return unserialize( $value );
+			$unserialized = @unserialize( $value, ['allowed_classes' => false] );
+			return $unserialized !== false ? $unserialized : $value;
 		}
 		return $value;
 	}
@@ -286,7 +287,12 @@ function registerGASFrameworkOptionSortableControl() {
 				$values = array_keys( $this->options );
 			}
 			if ( is_serialized( $values ) ) {
-				$values = unserialize( $values );
+			    $temp = @unserialize( $values, ['allowed_classes' => false] );
+			    if ( $temp !== false && is_array( $temp ) ) {
+			        $values = $temp;
+			    } else {
+			        $values = array(); // fallback to an empty array or default
+			    }
 			}
 			if ( count( $values ) != count( $this->options ) ) {
 				$this->visible_button = true;
