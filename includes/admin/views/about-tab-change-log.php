@@ -5,6 +5,19 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.3.6</h1>
+				<h3>6.3.6 Revised plugin deactivation process with feedback.</h3>
+				<ul>
+					<li>Fix vulnerable issue of PHP Object Injection.</li>
+					<li>Create a Get Help button to reach out to Support (Free and Premium).</li>						
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.3.5</h1>
 				<h3>6.3.5 Revised plugin deactivation process with feedback.</h3>
 				<ul>

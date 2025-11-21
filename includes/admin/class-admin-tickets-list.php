@@ -1413,7 +1413,7 @@ ORDER BY
 				$tax_obj = get_taxonomy( $tax_slug );
 
 				$args = array(
-					'show_option_all' => esc_html( 'All ' . $tax_obj->label ),
+					'show_option_all' => esc_html( sprintf( __( 'All %s', 'awesome-support' ), $tax_obj->label ) ),
 					'taxonomy'        => $tax_slug,
 					'name'            => $tax_obj->name,
 					'orderby'         => 'name',
@@ -1814,7 +1814,8 @@ ORDER BY
 
 		$link = add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) );
 
-		return "<a href='".esc_url($link)."'>". __( 'Reset Filters', 'awesome-support' )."</a>";
+		return "<a href='" . esc_url( $link ) . "'>" . esc_html__( 'Reset Filters', 'awesome-support' ) . "</a>";
+
 
 	}
 

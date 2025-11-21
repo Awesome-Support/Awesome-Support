@@ -81,14 +81,39 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 		}
 
 		// @TODO: Its possible this if statement below might need an additional qualifier to see if $agent_replied = true.
-		// For now the ticket is going to IN PROCESS properly but if there is an issue later then using the additional 6655750  
-		$turn_auto_change_status = (bool) wpas_get_option( 'turn_auto_change_status' );
-  		if ( true === $turn_auto_change_status ) {
-  			// qualifier might be warranted.
-			if ( ! isset( $_POST['post_status_override'] ) || 'queued' === $_POST['post_status_override'] ) {
-				$_POST['post_status_override'] = 'processing';
-			}
-  		}	
+		// For now, tickets move to "IN PROCESS" correctly. If issues arise, see reference 6655750.
+		$turn_auto_change_status = (bool) wpas_get_option('turn_auto_change_status', true);
+
+		// Get old/new authors (ticket owners)
+		$old_author = (int) get_post_field('post_author', $postarr['ID'], 'raw');
+		$new_author = isset($_POST['post_author']) ? (int) sanitize_text_field($_POST['post_author']) : 0;
+
+		// Get old/new assignees
+		$old_assignee = (int) get_post_meta($postarr['ticket_id'], '_wpas_assignee', true);
+		$new_assignee = isset($_POST['wpas_assignee']) ? (int) sanitize_text_field($_POST['wpas_assignee']) : 0;
+
+		// Detect changes
+		$author_changed   = ($new_author !== $old_author);
+		$assignee_changed = ($new_assignee !== $old_assignee);
+
+		// Helper: apply default "processing" status
+		$maybe_set_processing = function () {
+		    if (!isset($_POST['post_status_override']) || $_POST['post_status_override'] === 'queued') {
+		        $_POST['post_status_override'] = 'processing';
+		    }
+		};
+
+		if ($turn_auto_change_status) {
+		    // Auto status change enabled
+		    $maybe_set_processing();
+		} else {
+		    // Auto status change disabled
+		    if (!$author_changed && !$assignee_changed) {
+		        // Only apply if it's not an assignment or ownership change
+		        $maybe_set_processing();
+		    }		    
+		}
+  			
 	}
 
 	if ( isset( $_POST['post_status_override'] ) && ! empty( $_POST['post_status_override'] ) ) {
@@ -735,6 +760,7 @@ function wpas_is_new_reply_empty( $ticket_id ) {
 
 				foreach ( $filetypes as $key => $type ) {
 					array_push( $accept, '*.' . $type );
+					array_push( $accept, '*.' . strtoupper( $type ) );
 				}
 
 				$accept = implode( ',', $accept );

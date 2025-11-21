@@ -62,7 +62,7 @@ add_action( 'wpas_ticket_after_update_admin_success', 'wpas_notify_admin_assignm
  */
 function wpas_notify_admin_assignment( $ticket_id, $old_assignee, $current_ticket ) {
 	
-	If ( (int) $current_ticket['wpas_assignee'] <> (int) $old_assignee ) {
+	if ( (int) $current_ticket['wpas_assignee'] <> (int) $old_assignee ) {
 		wpas_email_notify( $ticket_id, 'new_ticket_assigned' );
 	}
 }

@@ -381,11 +381,16 @@ function wpas_delete_synced_products( $resync = false ) {
 	$metas = $wpdb->get_results( $wpdb->prepare( "$sql", '_wpas_product_term' ) );
 	if ( ! empty( $metas ) ) {
 		foreach ( $metas as $meta ) {
-			$value = unserialize( $meta->meta_value );
-			$term = get_term_by( 'id', $value['term_id'], 'product' );
-			if ( empty( $term ) ) {
-				delete_post_meta( $meta->post_id, '_wpas_product_term' );
-			}
+			$raw_value = $meta->meta_value;
+			if ( is_serialized( $raw_value ) ) {
+				$value = @unserialize( $raw_value, ['allowed_classes' => false] );
+				if ( is_array( $value ) && isset( $value['term_id'] ) ) {
+					$term = get_term_by( 'id', (int) $value['term_id'], 'product' );
+					if ( empty( $term ) ) {
+						delete_post_meta( $meta->post_id, '_wpas_product_term' );
+					}
+				}
+			}			
 		}
 	}
 	if ( true === $resync ) {

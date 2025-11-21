@@ -172,7 +172,10 @@ class GASFrameworkCSS {
 	 */
 	private function formCSSVariables( $id, $type, $value, $key = false, $cssString = '' ) {
 		if ( is_serialized( $value ) ) {
-			$value = unserialize( stripslashes( $value ) );
+			$unserialized = @unserialize( stripslashes( $value ), ['allowed_classes' => false] );
+			if ( $unserialized !== false || $value === 'b:0;' ) {
+				$value = $unserialized;
+			}
 		}
 		if ( is_array( $value ) ) {
 			foreach ( $value as $subKey => $subValue ) {
