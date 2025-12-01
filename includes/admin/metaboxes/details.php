@@ -52,7 +52,7 @@ if ( isset( $post ) ) {
 				wpas_cf_display_status( '', $post->ID );
 			?>
 			<?php else: ?>
-				<span><?php _x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
+				<span><?php echo _x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
 			<?php endif; ?>
 		</div>
 		<div class="wpas-col">
@@ -123,4 +123,5 @@ if ( isset( $post ) ) {
 	<?php do_action( 'wpas_backend_ticket_status_after_actions', $post->ID ); ?>
 
 </div>
+
 
