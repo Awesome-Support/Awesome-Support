@@ -64,7 +64,7 @@ class Passwords extends WP_REST_Controller {
 				'permission_callback' => array( $this, 'get_passwords_permissions_check' ),
 			),
 			'schema' => array( $this, 'get_public_item_schema' ),
-		) );
+		) ); 
 
 		register_rest_route( $this->namespace, '/users/(?P<user_id>[\d]+)/' . $this->rest_base . '/(?P<slug>[\da-fA-F]{12})', array(
 			'args' => array(
@@ -88,11 +88,12 @@ class Passwords extends WP_REST_Controller {
 		) );
 
 		// Some hosts that run PHP in FastCGI mode won't be given the Authentication header.
+		// SECURITY FIX: CVE-2025-53340 - Restrict access to administrators only
 		register_rest_route( $this->namespace, '/test-basic-authorization-header/', array(
 			array(
 				'methods' => WP_REST_Server::READABLE . ', ' . WP_REST_Server::CREATABLE,
 				'callback' => array( $this, 'test_basic_authorization_header' ),
-				'permission_callback' => '__return_true',
+				'permission_callback' => array( $this, 'test_basic_auth_permissions_check' ),
 			),
 			'schema' => array( $this, 'test_schema' ),
 		) );
@@ -108,6 +109,19 @@ class Passwords extends WP_REST_Controller {
 	public function get_passwords_permissions_check( $request ) {
 		$check = empty( $request['user_id'] ) ? current_user_can( 'edit_users' ) : current_user_can( 'edit_user', $request['user_id'] );
 		return apply_filters( 'wpas_api_get_password_permissions_check', $check, $request );
+	}
+
+	/**
+	 * Checks if a given request has access to test Basic Auth headers.
+	 * Only administrators can access this diagnostic endpoint.
+	 * 
+	 * SECURITY FIX: CVE-2025-53340 - Restrict access to prevent unauthenticated access
+	 *
+	 * @param WP_REST_Request $request Full details about the request.
+	 * @return bool True if the request has access, otherwise false.
+	 */
+	public function test_basic_auth_permissions_check( $request ) {
+		return is_user_logged_in() && current_user_can( 'manage_options' );
 	}
 
 	/**
@@ -293,14 +307,15 @@ class Passwords extends WP_REST_Controller {
 	 */
 
 	public function test_basic_authorization_header() {
+		
 		$response = array();
 
 		if ( isset( $_SERVER['PHP_AUTH_USER'] ) ) {
-			$response['PHP_AUTH_USER'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) );
+			$response['BASIC_AUTH_USER'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) );
 		}
 
 		if ( isset( $_SERVER['PHP_AUTH_PW'] ) ) {
-			$response['PHP_AUTH_PW'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
+			$response['BASIC_AUTH_PW'] = sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) );
 		}
 
 		if ( empty( $response ) ) {

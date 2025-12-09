@@ -29,7 +29,7 @@
 			}
 		}
 	} ).done( function( response ) {
-		if ( response.PHP_AUTH_USER === testBasicAuthUser && response.PHP_AUTH_PW === testBasicAuthPassword ) {
+		if ( response.BASIC_AUTH_USER === testBasicAuthUser && response.BASIC_AUTH_PW === testBasicAuthPassword ) {
 			// Save the success in SessionStorage or the like, so we don't do it on every page load?
 		} else {
 			$newAppPassForm.before( tmplNotice( {
