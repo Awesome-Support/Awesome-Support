@@ -1717,10 +1717,17 @@
 		}
 
 		/* Check if the current user can view the ticket */
-		if ( ! wpas_can_view_ticket( $post->ID ) ) {
+		$can_view = wpas_can_view_ticket( $post->ID );
+		
+		/* Check if the ticket is public (wpas_pbtk_flag) */
+		if ( 'public' === get_post_meta( $post->ID, '_wpas_pbtk_flag', true ) ) {
+			$can_view = true;
+		}
+		
+		if ( ! $can_view ) {
 			/* Replace the ticket title with a generic title to prevent information disclosure */
 			if ( isset( $title_parts['title'] ) ) {
-				$title_parts['title'] = __( 'No Tickets Found', 'awesome-support' );
+				$title_parts['title'] = __( 'No tickets found.', 'awesome-support' );
 			}
 		}
 
