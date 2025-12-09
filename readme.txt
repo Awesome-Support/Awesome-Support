@@ -292,6 +292,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 == Changelog ==
 
 = 6.3.6
+  * Fix vulnerable issue of Unauthenticated Sensitive Information Disclosure.
 	* Fix vulnerable issue of PHP Object Injection.
 	* Create a Get Help button to reach out to Support (Free and Premium).
 = 6.3.5
