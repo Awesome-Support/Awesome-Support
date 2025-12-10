@@ -1719,8 +1719,8 @@
 		/* Check if the current user can view the ticket */
 		$can_view = wpas_can_view_ticket( $post->ID );
 		
-		/* Check if the ticket is public (wpas_pbtk_flag) */
-		if ( 'public' === get_post_meta( $post->ID, '_wpas_pbtk_flag', true ) ) {
+		/* Check if the ticket is public (wpas_pbtk_flag) - only allow public access if the Public Tickets add-on is active */
+		if ( class_exists( 'AS_Publictickets_Loader' ) && 'public' === get_post_meta( $post->ID, '_wpas_pbtk_flag', true ) ) {
 			$can_view = true;
 		}
 		
