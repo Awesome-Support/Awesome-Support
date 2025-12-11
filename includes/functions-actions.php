@@ -25,25 +25,26 @@ add_action( 'init', 'wpas_process_actions', 50 );
 function wpas_process_actions() {
 
 	$nonce = false;
-	
-	if ( isset( $_POST['wpas-do-nonce'] ) ) {
-		$nonce = sanitize_text_field( wp_unslash(  $_POST['wpas-do-nonce'] ) );
-	} elseif ( isset( $_GET['wpas-do-nonce'] ) ) {
-		$nonce = sanitize_text_field( wp_unslash(  $_GET['wpas-do-nonce'] ) );
+	$action = '';	
+    if ( isset( $_POST['wpas-do-nonce'] ) ) {
+        $nonce = sanitize_text_field( wp_unslash( $_POST['wpas-do-nonce'] ) );
+        $action = isset( $_POST['wpas-do'] ) ? sanitize_text_field( wp_unslash( $_POST['wpas-do'] ) ) : '';
+    } elseif ( isset( $_GET['wpas-do-nonce'] ) ) {
+        $nonce = sanitize_text_field( wp_unslash( $_GET['wpas-do-nonce'] ) );
+        $action = isset( $_GET['wpas-do'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas-do'] ) ) : '';	
 	}
 
-	if ( ! $nonce || ! wp_verify_nonce( $nonce, 'trigger_custom_action' ) ) {
-		return;
+	// FIX: Use action-specific nonce verification
+    if ( ! $nonce || ! $action || ! wp_verify_nonce( $nonce, 'wpas_do_' . $action ) ) {
+        return;
+    }
+
+	if ( isset( $_POST['wpas-do'] ) ) {		
+		do_action( 'wpas_do_' . $action, $_POST );
 	}
 
-	if ( isset( $_POST['wpas-do'] ) ) {
-		$wpas_do = sanitize_text_field( wp_unslash(  $_POST['wpas-do'] ) );
-		do_action( 'wpas_do_' . $wpas_do, $_POST );
-	}
-
-	if ( isset( $_GET['wpas-do'] ) ) {
-		$wpas_do = sanitize_text_field( wp_unslash(  $_GET['wpas-do'] ) );
-		do_action( 'wpas_do_' . $wpas_do, $_GET );
+	if ( isset( $_GET['wpas-do'] ) ) {		
+		do_action( 'wpas_do_' . $action, $_GET );
 	}
 
 }
@@ -63,7 +64,7 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 
 	$field = sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'wpas-do', $action );
 
-	$field .= wp_nonce_field( 'trigger_custom_action', 'wpas-do-nonce', true, false );
+	$field .= wp_nonce_field( 'wpas_do_' . $action, 'wpas-do-nonce', true, false );
 
 	$field = str_replace( 'id="wpas-do-nonce"' , 'id="wpas-do-nonce-' . $action . '"' , $field );
 
@@ -99,7 +100,7 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 function wpas_do_url( $url, $action, $args = array() ) {
 
 	$args['wpas-do']       = $action;
-	$args['wpas-do-nonce'] = wp_create_nonce( 'trigger_custom_action' );
+	$args['wpas-do-nonce'] = wp_create_nonce( 'wpas_do_' . $action );
 	$url                   = esc_url( add_query_arg( $args, $url ) );
 
 	return $url;

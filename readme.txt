@@ -292,6 +292,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 == Changelog ==
 = 6.3.7
   * Fix vulnerable issue of Unauthenticated Sensitive Information Disclosure.
+  * Fix Missing Authorization to Unauthenticated Role Demotion.
 = 6.3.6
 	* Fix vulnerability to sensitive data exposure.
 	* Fix vulnerable issue of PHP Object Injection.

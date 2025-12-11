@@ -1683,6 +1683,16 @@ function wpas_do_mr_activate_user( $data ) {
 
 	if( $user_id ) {
 
+		// FIX: Add capability check
+        if ( ! current_user_can( 'edit_users' ) ) {
+            wp_die( __( 'You do not have permission to activate users.', 'awesome-support' ), 403 );
+        }
+        
+        // FIX: Verify current user can edit the target user
+        if ( ! current_user_can( 'edit_user', $user_id ) ) {
+            wp_die( __( 'You do not have permission to edit this user.', 'awesome-support' ), 403 );
+        }
+
 		$role = wpas_get_option( 'moderated_activated_user_role' );
 
 		$updated = wp_update_user( array( 'ID' => $user_id, 'role' => $role ) );
