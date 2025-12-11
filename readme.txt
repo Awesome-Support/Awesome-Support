@@ -4,7 +4,7 @@ Contributors: awesomesupport,julien731,rwkiii,elindydotcom,SiamKreative,alaca
 Tags: helpdesk,ticket system,support,tickets,support ticket
 Requires at least: 4.0
 Tested up to: 6.8.3
-Stable tag: 6.3.6
+Stable tag: 6.3.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -293,6 +293,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 = 6.3.7
   * Fix vulnerable issue of Unauthenticated Sensitive Information Disclosure.
   * Fix Missing Authorization to Unauthenticated Role Demotion.
+  * Update default fallback rules for the .htaccess file in the ticket folder.
 = 6.3.6
 	* Fix vulnerability to sensitive data exposure.
 	* Fix vulnerable issue of PHP Object Injection.

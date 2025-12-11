@@ -586,12 +586,7 @@ class WPAS_GDPR_User_Profile {
 		
 		if ( $wp_filesystem->is_writable($dir) ) {
 
-			$filename = $dir . '/.htaccess';
-
-			$filecontents  = "Options -Indexes\n";
-			$filecontents .= "<FilesMatch \".*\">\n";
-			$filecontents .= "Deny from all\n";
-			$filecontents .= "</FilesMatch>\n";
+			$filecontents = 'Options -Indexes';
 
 			if ( ! file_exists( $filename ) ) {
 				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
