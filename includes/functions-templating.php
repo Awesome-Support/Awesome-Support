@@ -1682,3 +1682,57 @@
 	}
 	// Add filter to `the_title` hook.
 	add_filter( 'the_title', 'wpas_single_ticket_title', 10, 1 );
+
+	/**
+	 * Alter document title for single ticket to prevent information disclosure.
+	 *
+	 * This function prevents the ticket title from being leaked in the HTML page title
+	 * for unauthenticated users or users who don't have permission to view the ticket.
+	 *
+	 * @since 6.0.0
+	 *
+	 * @param  array $title_parts The document title parts
+	 *
+	 * @return array  Modified title parts
+	 */
+	function wpas_single_ticket_document_title( $title_parts = array() ) {
+
+		global $post;
+
+		$slug = 'ticket';
+
+		/* Don't touch the admin */
+		if ( is_admin() ) {
+			return $title_parts;
+		}
+
+		/* Only apply this on the ticket single. */
+		if ( ! $post || $slug !== $post->post_type ) {
+			return $title_parts;
+		}
+
+		/* Only apply this on the main query. */
+		if ( ! is_main_query() ) {
+			return $title_parts;
+		}
+
+		/* Check if the current user can view the ticket */
+		$can_view = wpas_can_view_ticket( $post->ID );
+		
+		/* Check if the ticket is public (wpas_pbtk_flag) - only allow public access if the Public Tickets add-on is active */
+		if ( class_exists( 'AS_Publictickets_Loader' ) && 'public' === get_post_meta( $post->ID, '_wpas_pbtk_flag', true ) ) {
+			$can_view = true;
+		}
+		
+		if ( ! $can_view ) {
+			/* Replace the ticket title with a generic title to prevent information disclosure */
+			if ( isset( $title_parts['title'] ) ) {
+				$title_parts['title'] = __( 'No tickets found.', 'awesome-support' );
+			}
+		}
+
+		return $title_parts;
+
+	}
+	// Add filter to `document_title_parts` hook (WordPress 4.4+).
+	add_filter( 'document_title_parts', 'wpas_single_ticket_document_title', 10, 1 );
