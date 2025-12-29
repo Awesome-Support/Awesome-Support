@@ -2171,15 +2171,13 @@ class WPAS_File_Upload {
 				$new_file_url = trailingslashit( $upload['baseurl'] ) . $new_file_relative;
 				
 				// https://trello.com/c/ksKkxT9e fix fileinfo.dll not enable on server
-				if(!function_exists("mime_content_type"))
-				{					
-					require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
-					$file_pathinfo = pathinfo($file, PATHINFO_EXTENSION);
-					$post_mime_type = wpas_get_mime_type( $file_pathinfo );
-				}
-				else
-				{
-					$post_mime_type = mime_content_type( $file );
+				if (file_exists($file) && is_readable($file) && function_exists("mime_content_type")) {
+				    $post_mime_type = mime_content_type($file);
+				} else {
+				    require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
+				    $post_mime_type = wpas_get_mime_type(
+				        pathinfo($file, PATHINFO_EXTENSION)
+				    );
 				}			
 				
 				// Prepare an array of post data for the attachment.
@@ -2210,7 +2208,17 @@ class WPAS_File_Upload {
 					}
 
 					// Move file from temp dir to ticket dir
-					$wp_filesystem->move($file, $new_file_upload); 
+					$moved = $wp_filesystem->move($file, $new_file_upload); 
+					if ( ! $moved || ! $wp_filesystem->exists($new_file_upload) ) {
+
+					    $errors[] = sprintf(
+					        'File move failed: %s → %s',
+					        $file,
+					        $new_file_upload
+					    );
+
+					    continue;
+					}
 					
 					//Set 0644 file permission to allow access the attachment. 
 					$wp_filesystem->chmod($new_file_upload, FS_CHMOD_FILE); 
