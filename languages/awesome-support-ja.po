@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.3\n"
 "Project-Id-Version: Awesome Support Core\n"
-"Language: ja\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.8\n"
 
 #: awesome-support.php:239 awesome-support.php:250
 #: includes/admin/functions-notices.php:131
@@ -552,13 +552,13 @@ msgstr "カスタムログイン/登録ページ"
 msgid ""
 "Only use this option if you know how to create your own registration page, "
 "otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" target=\"_blank"
-"\">start by reading this guide</a>."
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
 msgstr ""
 "独自の登録ページを作成する方法が分かっている場合にのみ、このオプションを使用"
 "してください。そうしないと、無限のリダイレクトが作成される可能性があります。 "
-"登録ページの作成に関するヘルプが必要な場合は、<a href=\"%s\" target=\"_blank"
-"\">このガイドを読んで開始する</a>必要があります。"
+"登録ページの作成に関するヘルプが必要な場合は、<a href=\"%s\" "
+"target=\"_blank\">このガイドを読んで開始する</a>必要があります。"
 
 #: includes/admin/settings/settings-advanced.php:24
 msgid "Admins See All"
@@ -1308,8 +1308,8 @@ msgstr "MailGunパブリックAPIキー"
 
 #: includes/class-mailgun-email-check.php:70
 msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" target="
-"\"_blank\">create one for free here</a>."
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
 msgstr ""
 "MailGunアカウントをお持ちでない場合は、<a href=\"%s\" target=\"_blank\">ここ"
 "で無料で作成</a>できます。"
@@ -1931,8 +1931,8 @@ msgid ""
 "open a new ticket</a>."
 msgstr ""
 "申し訳ございませんが、サポートチームのメンバーはここからチケットを提出できま"
-"せん。チケットを開く必要がある場合は、管理パネルにアクセスするか、<a href="
-"\"%s\">ここをクリックして新しいチケットを開きます</a>。"
+"せん。チケットを開く必要がある場合は、管理パネルにアクセスするか、<a "
+"href=\"%s\">ここをクリックして新しいチケットを開きます</a>。"
 
 #: themes/default/partials/ticket-reply.php:34
 msgid "This reply has been deleted %s ago."
@@ -2410,9 +2410,9 @@ msgid ""
 "strong> (a $61.00 USD value) for Awesome Support? <a href=\"%1$s\">Click "
 "here to read more</a>."
 msgstr ""
-"ねえ！Awesome Supportの<無制限のアドオンを無制限のサイトに追加</ "
-"strong>（61.00米ドルの値）で入手できますか？<a href=\"%1$s\">ここをクリックし"
-"て詳細</a>をご覧ください。"
+"ねえ！Awesome Supportの<無制限のアドオンを無制限のサイトに追加</ strong>"
+"（61.00米ドルの値）で入手できますか？<a href=\"%1$s\">ここをクリックして詳細"
+"</a>をご覧ください。"
 
 #: includes/admin/functions-user-profile.php:62
 msgid "Support User since %s"
@@ -2859,8 +2859,8 @@ msgid ""
 "synchronized products, <a href=\"%1$s\">please use the dedicated option "
 "&laquo;Delete Products&raquo;</a>"
 msgstr ""
-"このオプションを無効にして以前に同期した商品を削除する場合は、<a href=\"%1$s"
-"\">商品の削除＆raquo;専用オプションを使用してください</a>"
+"このオプションを無効にして以前に同期した商品を削除する場合は、<a "
+"href=\"%1$s\">商品の削除＆raquo;専用オプションを使用してください</a>"
 
 #: includes/admin/settings/settings-products-management.php:91
 msgid "Include Products"
@@ -3791,11 +3791,11 @@ msgid ""
 "modifications to this setting!"
 msgstr ""
 "チケットのアップロードフォルダの内容は、Apacheサーバー上のhtaccessファイルで"
-"保護することができます。<br />これを空白のままにしておくと、<b> options -"
-"Indexes </ b>の値が自動的にファイルに追加され、他の人がディレクトリを参照でき"
-"なくなります。<br />あなたがスーパーデュパーのApacheサーバの専門家である場合"
-"にのみ、これに加えてください！<br />この設定を変更するための技術サポートはあ"
-"りません。"
+"保護することができます。<br />これを空白のままにしておくと、<b> options "
+"-Indexes </ b>の値が自動的にファイルに追加され、他の人がディレクトリを参照で"
+"きなくなります。<br />あなたがスーパーデュパーのApacheサーバの専門家である場"
+"合にのみ、これに加えてください！<br />この設定を変更するための技術サポートは"
+"ありません。"
 
 #: includes/admin/settings/settings-advanced.php:94
 #: includes/admin/settings/settings-advanced.php:106
@@ -7067,6 +7067,14 @@ msgstr ""
 
 #: includes/scripts.php:205
 msgid "Include history"
+msgstr ""
+
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
 msgstr ""
 
 #: includes/scripts.php:206

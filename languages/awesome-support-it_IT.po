@@ -11,20 +11,19 @@ msgstr ""
 "Project-Id-Version: Awesome Support\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
 "POT-Creation-Date: 2015-10-23 03:18:35+00:00\n"
-"PO-Revision-Date: 2021-05-16 07:51-0500\n"
+"PO-Revision-Date: 2026-01-14 12:47+0100\n"
 "Last-Translator: Alin Ionescu <alinbody@gmail.com>\n"
 "Language-Team: Italian (Italy) (http://www.transifex.com/themeavenue/awesome-"
 "support/language/it_IT/)\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: it_IT\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.8\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
-"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
-"esc_html_x:1,2c\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -251,8 +250,7 @@ msgstr "Vecchio"
 msgid "Settings"
 msgstr "Impostazioni"
 
-#: includes/admin/class-admin-gas.php:89
-#: includes/admin/class-admin-gas.php:91
+#: includes/admin/class-admin-gas.php:89 includes/admin/class-admin-gas.php:91
 msgid "Awesome Support Settings"
 msgstr "Impostazioni di Awesome Support"
 
@@ -724,8 +722,8 @@ msgstr "Pagina personalizzata Login / Registrazione"
 msgid ""
 "Only use this option if you know how to create your own registration page, "
 "otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" target=\"_blank"
-"\">start by reading this guide</a>."
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
 msgstr ""
 "Usa questa impostazione solo se sai come creare la tua pagina di "
 "registrazione, altrimenti potresti creare un redirect infinito. Se hai "
@@ -1671,8 +1669,8 @@ msgstr "Chiave API Pubblica MailGun"
 #: includes/class-mailgun-email-check.php:65
 #: includes/class-mailgun-email-check.php:70
 msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" target="
-"\"_blank\">create one for free here</a>."
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
 msgstr ""
 "Se non hai un account MailGun puoi <a href=\"%s\" target=\"_blank\">crearne "
 "uno gratuito</a>."
@@ -2191,8 +2189,8 @@ msgid ""
 msgstr ""
 "Le dipendenze di Awesome Supporto sono mancanti. Il plugin non può essere "
 "caricato correttamente. Per favore esegui %s prima di ogni altra cosa. Se "
-"non sai di cosa si tratta dovresti invece<a href=\"%s\" class=\"thickbox"
-"\">installare la versione di produzione</a> di questo plugin."
+"non sai di cosa si tratta dovresti invece<a href=\"%s\" "
+"class=\"thickbox\">installare la versione di produzione</a> di questo plugin."
 
 #: includes/functions-post.php:33 includes/functions-post.php:34
 msgid "You do not have the capacity to open a new ticket."
@@ -7830,6 +7828,14 @@ msgstr ""
 
 #: includes/scripts.php:205
 msgid "Include history"
+msgstr ""
+
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
 msgstr ""
 
 #: includes/scripts.php:206

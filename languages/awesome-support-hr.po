@@ -6,21 +6,20 @@ msgstr ""
 "Project-Id-Version: Awesome Support\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
 "POT-Creation-Date: 2015-10-23 03:18:35+00:00\n"
-"PO-Revision-Date: 2021-05-16 07:48-0500\n"
+"PO-Revision-Date: 2026-01-14 12:38+0100\n"
 "Last-Translator: Julien Liabeuf\n"
 "Language-Team: Croatian (http://www.transifex.com/themeavenue/awesome-"
 "support/language/hr/)\n"
+"Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hr\n"
-"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Poedit 2.4.3\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Poedit 3.8\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
-"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
-"esc_html_x:1,2c\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -159,8 +158,8 @@ msgid ""
 msgstr ""
 "<p>Tijekom postavljanja email predložaka, vi možete koristiti određeni broj "
 "oznaka predložaka što vam omogućuje da dinamički dodate informacije vezane "
-"uz tiket u trenutku slanja email poruke. Ovdje je popis dostupnih oznaka:</p>"
-"%s"
+"uz tiket u trenutku slanja email poruke. Ovdje je popis dostupnih oznaka:</"
+"p>%s"
 
 #: includes/admin/class-admin-help.php:133
 #: includes/admin/class-admin-help.php:136
@@ -244,8 +243,7 @@ msgstr "Staro"
 msgid "Settings"
 msgstr "Postavke"
 
-#: includes/admin/class-admin-gas.php:89
-#: includes/admin/class-admin-gas.php:91
+#: includes/admin/class-admin-gas.php:89 includes/admin/class-admin-gas.php:91
 msgid "Awesome Support Settings"
 msgstr "Awesome Support Postavke"
 
@@ -713,13 +711,13 @@ msgstr "Prilagođena stranica za Login / Registraciju"
 msgid ""
 "Only use this option if you know how to create your own registration page, "
 "otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" target=\"_blank"
-"\">start by reading this guide</a>."
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
 msgstr ""
 "Ovu opciju koristite samo ako znate kako kreirati vlastitu stranicu za "
 "registraciju, u suprotno možete stvoriti beskonačno preusmjerevanje. Ako "
-"trebate pomoć u kreiranju stranice za registraciju trebali biste <a href=\"%s"
-"\" target=\"_blank\">započeti čitajući ovaj priručnik</a>."
+"trebate pomoć u kreiranju stranice za registraciju trebali biste <a "
+"href=\"%s\" target=\"_blank\">započeti čitajući ovaj priručnik</a>."
 
 #: includes/admin/settings/settings-advanced.php:24
 msgid "Admins See All"
@@ -1637,11 +1635,11 @@ msgstr "MailGun API javni ključ"
 #: includes/class-mailgun-email-check.php:65
 #: includes/class-mailgun-email-check.php:70
 msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" target="
-"\"_blank\">create one for free here</a>."
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
 msgstr ""
-"Ako nemate MailGun račun, vi možete <a href=\"%s\" target=\"_blank"
-"\">besplatno otvoriti ovdje</a>."
+"Ako nemate MailGun račun, vi možete <a href=\"%s\" "
+"target=\"_blank\">besplatno otvoriti ovdje</a>."
 
 #: includes/class-mailgun-email-check.php:76
 #: includes/class-mailgun-email-check.php:81
@@ -7804,6 +7802,14 @@ msgstr ""
 
 #: includes/scripts.php:205
 msgid "Include history"
+msgstr ""
+
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
 msgstr ""
 
 #: includes/scripts.php:206

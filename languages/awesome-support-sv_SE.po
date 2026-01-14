@@ -10,20 +10,19 @@ msgstr ""
 "Project-Id-Version: Awesome Support\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
 "POT-Creation-Date: 2015-10-23 03:18:35+00:00\n"
-"PO-Revision-Date: 2021-05-16 08:10-0500\n"
+"PO-Revision-Date: 2026-01-14 12:39+0100\n"
 "Last-Translator: Stefan Berg <stefan@axelsons.se>\n"
 "Language-Team: Swedish (Sweden) (http://www.transifex.com/themeavenue/"
 "awesome-support/language/sv_SE/)\n"
+"Language: sv_SE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sv_SE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.8\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
-"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
-"esc_html_x:1,2c\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -249,8 +248,7 @@ msgstr "Gammal"
 msgid "Settings"
 msgstr "Inställningar"
 
-#: includes/admin/class-admin-gas.php:89
-#: includes/admin/class-admin-gas.php:91
+#: includes/admin/class-admin-gas.php:89 includes/admin/class-admin-gas.php:91
 msgid "Awesome Support Settings"
 msgstr "Awesome Support inställningar"
 
@@ -721,8 +719,8 @@ msgstr "Egen Inloggnings Sida / Registrerings sida"
 msgid ""
 "Only use this option if you know how to create your own registration page, "
 "otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" target=\"_blank"
-"\">start by reading this guide</a>."
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
 msgstr ""
 "Använd bara det här alternativet om du vet hur man skapar din egen "
 "registreringssida, annars kan du skapa en oändlig omdirigering. Om du "
@@ -1660,11 +1658,11 @@ msgstr "MailGun Publik API-nyckel"
 #: includes/class-mailgun-email-check.php:65
 #: includes/class-mailgun-email-check.php:70
 msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" target="
-"\"_blank\">create one for free here</a>."
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
 msgstr ""
-"Om du inte har et MailGun konto kan du <a href=\"%s\" target=\"_blank"
-"\">register ett här gratis</a>."
+"Om du inte har et MailGun konto kan du <a href=\"%s\" "
+"target=\"_blank\">register ett här gratis</a>."
 
 #: includes/class-mailgun-email-check.php:76
 #: includes/class-mailgun-email-check.php:81
@@ -7840,6 +7838,14 @@ msgstr ""
 
 #: includes/scripts.php:205
 msgid "Include history"
+msgstr ""
+
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
 msgstr ""
 
 #: includes/scripts.php:206

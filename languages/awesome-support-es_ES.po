@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.3\n"
 "Project-Id-Version: Awesome Support Core\n"
-"Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.8\n"
 
 #: awesome-support.php:220 awesome-support.php:231
 #: includes/admin/functions-notices.php:131
@@ -213,13 +213,11 @@ msgid "Old"
 msgstr "Antiguo"
 
 #: includes/admin/class-admin-gas.php:89 includes/admin/functions-misc.php:28
-#: includes/admin/class-admin-gas.php:88
-#: includes/admin/class-admin-gas.php:90
+#: includes/admin/class-admin-gas.php:88 includes/admin/class-admin-gas.php:90
 msgid "Settings"
 msgstr "Ajustes"
 
-#: includes/admin/class-admin-gas.php:90
-#: includes/admin/class-admin-gas.php:89
+#: includes/admin/class-admin-gas.php:90 includes/admin/class-admin-gas.php:89
 #: includes/admin/class-admin-gas.php:91
 msgid "Awesome Support Settings"
 msgstr "Ajustes de Awesome Support"
@@ -654,8 +652,8 @@ msgstr "Registro personalizado / Página de registro"
 msgid ""
 "Only use this option if you know how to create your own registration page, "
 "otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" target=\"_blank"
-"\">start by reading this guide</a>."
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
 msgstr ""
 "Usa esta opción sólo si sabes crear tu propia página de registro, porque "
 "podrías crear un bucle infinito de redirecciones. Si necesitas ayuda para "
@@ -1506,11 +1504,11 @@ msgstr "API pública de MailGun"
 
 #: includes/class-mailgun-email-check.php:70
 msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" target="
-"\"_blank\">create one for free here</a>."
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
 msgstr ""
-"Si no tienes una cuenta de MailGun puedes <a href=\"%s\" target=\"_blank"
-"\">crear una gratis aquí</a>."
+"Si no tienes una cuenta de MailGun puedes <a href=\"%s\" "
+"target=\"_blank\">crear una gratis aquí</a>."
 
 #: includes/class-mailgun-email-check.php:81
 msgid "No API key was provided"
@@ -1694,8 +1692,8 @@ msgstr "Un ID de editor es obligatirio para cargar una instancia de TinyMCE"
 msgid ""
 "The custom field class does not contain the mandatory method \"display\""
 msgstr ""
-"La clase del campo personalizado no contiene el método obligatorio \"display"
-"\""
+"La clase del campo personalizado no contiene el método obligatorio "
+"\"display\""
 
 #: includes/custom-fields/class-custom-field.php:465
 #: includes/custom-fields/class-custom-field.php:469
@@ -2219,8 +2217,8 @@ msgid ""
 "open a new ticket</a>."
 msgstr ""
 "Lo sentimos, el personal de soporte no puede enviar tickets desde aquí. Si "
-"quieres abrir un ticket, por favor ve al panel de administración o <a href="
-"\"%s\">haz click aquí para abrir un ticket nuevo</a>."
+"quieres abrir un ticket, por favor ve al panel de administración o <a "
+"href=\"%s\">haz click aquí para abrir un ticket nuevo</a>."
 
 #: themes/default/partials/ticket-reply.php:35
 #: themes/default/partials/ticket-reply.php:34
@@ -7631,6 +7629,14 @@ msgstr ""
 
 #: includes/scripts.php:205
 msgid "Include history"
+msgstr ""
+
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
 msgstr ""
 
 #: includes/scripts.php:206

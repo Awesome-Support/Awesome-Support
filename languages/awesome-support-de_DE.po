@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Awesome Support\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
 "POT-Creation-Date: 2015-10-23 03:18:35+00:00\n"
-"PO-Revision-Date: 2021-12-23 14:05+0700\n"
+"PO-Revision-Date: 2026-01-14 12:48+0100\n"
 "Last-Translator: Sven Hartmann <sven@savennick.de>\n"
 "Language-Team: German (Germany) (http://www.transifex.com/themeavenue/"
 "awesome-support/language/de_DE/)\n"
@@ -21,11 +21,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.8\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
-"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
-"esc_html_x:1,2c\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -225,8 +224,7 @@ msgstr "Alt"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: includes/admin/class-admin-gas.php:89
-#: includes/admin/class-admin-gas.php:91
+#: includes/admin/class-admin-gas.php:89 includes/admin/class-admin-gas.php:91
 msgid "Awesome Support Settings"
 msgstr "Awesome Support Einstellungen"
 
@@ -666,12 +664,12 @@ msgstr "Individuelle Login / Registrierungs Seite"
 msgid ""
 "Only use this option if you know how to create your own registration page, "
 "otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" target=\"_blank"
-"\">start by reading this guide</a>."
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
 msgstr ""
 "Benutzen sie diese Möglichkeit nur, wenn sie wissen wie man eine eigene "
-"Anmelde-Seite erstellt. Wenn sie Hilfe bei der Erstellung benötigen <a href="
-"\"%s\" target=\"_blank\">lesen sie bitte diese Anleitung</a>."
+"Anmelde-Seite erstellt. Wenn sie Hilfe bei der Erstellung benötigen <a "
+"href=\"%s\" target=\"_blank\">lesen sie bitte diese Anleitung</a>."
 
 #: includes/admin/settings/settings-advanced.php:24
 msgid "Admins See All"
@@ -1644,9 +1642,9 @@ msgid ""
 msgstr ""
 "Sie können hier die Überprüfung der, bei der Anmeldung des Kunden "
 "angegebenen, e-Mail-Adresse aktivieren. Ist die Option aktiviert, werden nur "
-"gültige e-Mail-Adressen zugelassen. Die Prüfung erfolgt mittels <a href=\"%s"
-"\">einer speziellen Programmierschnittstelle (API)</a> und benötigt ein "
-"(kostenloses) MailGun-Konto."
+"gültige e-Mail-Adressen zugelassen. Die Prüfung erfolgt mittels <a "
+"href=\"%s\">einer speziellen Programmierschnittstelle (API)</a> und benötigt "
+"ein (kostenloses) MailGun-Konto."
 
 #: includes/class-mailgun-email-check.php:52
 #: includes/class-mailgun-email-check.php:57
@@ -1666,11 +1664,11 @@ msgstr "Öffentlicher MailGun API-Schlüssel"
 #: includes/class-mailgun-email-check.php:65
 #: includes/class-mailgun-email-check.php:70
 msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" target="
-"\"_blank\">create one for free here</a>."
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
 msgstr ""
-"Wenn Du keinen MailGun-Account hast, kannst du <a href=\"%s\" target=\"_blank"
-"\">einen kostenlosen Zugang erstellen</a>."
+"Wenn Du keinen MailGun-Account hast, kannst du <a href=\"%s\" "
+"target=\"_blank\">einen kostenlosen Zugang erstellen</a>."
 
 #: includes/class-mailgun-email-check.php:76
 #: includes/class-mailgun-email-check.php:81
@@ -2183,8 +2181,9 @@ msgid ""
 msgstr ""
 "Erforderliche Voraussetzungen für das Plugin \"Awesome Support\" fehlen. Das "
 "Plugin konnte nicht geladen werden. Bitte führen Sie %s aus, bevor Sie etwas "
-"anderes versuchen. Wenn Sie Schwierigkeiten damit haben <a href=\"%s\" class="
-"\"thickbox\">installieren Sie bitte die offizielle Version des Plugins</a>."
+"anderes versuchen. Wenn Sie Schwierigkeiten damit haben <a href=\"%s\" "
+"class=\"thickbox\">installieren Sie bitte die offizielle Version des "
+"Plugins</a>."
 
 #: includes/functions-post.php:33 includes/functions-post.php:34
 msgid "You do not have the capacity to open a new ticket."
@@ -5739,8 +5738,8 @@ msgid ""
 "You need Awesome Support to activate this addon. Please <a href=\"%s\" "
 "target=\"_blank\">install Awesome Support</a> before continuing."
 msgstr ""
-"Sie benötigen Awesome Support, um dieses Addon zu aktivieren. Bitte <a href="
-"\"%s\" target=\"_blank\"> Awesome Support installieren </a>, bevor Sie "
+"Sie benötigen Awesome Support, um dieses Addon zu aktivieren. Bitte <a "
+"href=\"%s\" target=\"_blank\"> Awesome Support installieren </a>, bevor Sie "
 "fortfahren."
 
 #: includes/class-extension-base.php:247
@@ -7899,6 +7898,14 @@ msgstr ""
 
 #: includes/scripts.php:205
 msgid "Include history"
+msgstr ""
+
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
 msgstr ""
 
 #: includes/scripts.php:206
