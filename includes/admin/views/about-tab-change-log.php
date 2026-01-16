@@ -5,6 +5,20 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.3.7</h1>
+				<h3>6.3.7 Revised plugin deactivation process with feedback.</h3>
+				<ul>
+					<li>Update default fallback rules for the .htaccess file in the ticket folder.</li>
+					<li>Fix Missing Authorization to Unauthenticated Role Demotion.</li>
+					<li>Fix vulnerable issue of Unauthenticated Sensitive Information Disclosure.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.3.6</h1>
 				<h3>6.3.6 Revised plugin deactivation process with feedback.</h3>
 				<ul>

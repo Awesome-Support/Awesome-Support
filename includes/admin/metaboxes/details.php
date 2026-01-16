@@ -51,8 +51,8 @@ if ( isset( $post ) ) {
 			<?php if ( 'post-new.php' != $pagenow ):
 				wpas_cf_display_status( '', $post->ID );
 			?>
-			<?php else: ?>
-				<span><?php _x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
+			<?php else: ?>				
+				<span><?php echo _x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
 			<?php endif; ?>
 		</div>
 		<div class="wpas-col">

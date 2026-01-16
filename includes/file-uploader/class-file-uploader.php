@@ -136,6 +136,9 @@ class WPAS_File_Upload {
 
 		add_action( 'wpas_after_close_ticket',			array( $this, 'wpas_maybe_delete_attachments_after_close_ticket' ), 11, 3 );
 
+		// One-time fix for .htaccess files containing 'Deny from all'
+		add_action( 'admin_init', array( $this, 'fix_htaccess_files_once' ), 10 );
+
 	}
 
 
@@ -860,13 +863,9 @@ class WPAS_File_Upload {
 
 			$filename = $dir . '/.htaccess';
 
-			// Default fallback rules
-			$filecontents = wpas_get_option( 'htaccess_contents_for_attachment_folders', '' );
+			$filecontents = wpas_get_option( 'htaccess_contents_for_attachment_folders', 'Options -Indexes' ) ;
 			if ( empty( $filecontents ) ) {
-				$filecontents  = "Options -Indexes\n";
-				$filecontents .= "<FilesMatch \".*\">\n";
-				$filecontents .= "Deny from all\n";
-				$filecontents .= "</FilesMatch>\n";
+				$filecontents = 'Options -Indexes' ;
 			}
 
 			if ( ! file_exists( $filename ) ) {
@@ -918,6 +917,85 @@ class WPAS_File_Upload {
 			wpas_write_log('file-uploader','The folder ' . $attachments_root . ' is not writable.  So we are unable to write a .index file to awesome-support folder' ) ;
 		}
 
+	}
+
+	/**
+	 * One-time fix for .htaccess files containing 'Deny from all'
+	 * 
+	 * This function runs once to fix all .htaccess files containing 'Deny from all'
+	 * in the attachment folders of all existing tickets.
+	 * It replaces the content with the content defined in the options.
+	 *
+	 * @since 1.0.0
+	 * @return void
+	 */
+	public function fix_htaccess_files_once() {
+
+		// Check if the fix has already been performed
+		$fix_done = get_option( 'wpas_htaccess_deny_all_fixed', false );
+		
+		if ( $fix_done ) {
+			return;
+		}
+
+		global $wp_filesystem;
+
+		// Initialize the filesystem
+		if ( empty( $wp_filesystem ) ) {
+			require_once( ABSPATH . '/wp-admin/includes/file.php' );
+			WP_Filesystem();
+		}
+
+		// Get the correct content for .htaccess files
+		$filecontents = wpas_get_option( 'htaccess_contents_for_attachment_folders', 'Options -Indexes' );
+		if ( empty( $filecontents ) ) {
+			$filecontents = 'Options -Indexes';
+		}
+
+		// Get all tickets
+		$tickets = get_posts( array(
+			'post_type'      => 'ticket',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		) );
+
+		$upload_dir = wp_upload_dir();
+		$base_dir = $upload_dir['basedir'];
+		$fixed_count = 0;
+
+		// Loop through all tickets
+		foreach ( $tickets as $ticket_id ) {
+			
+			// Calculate the attachment folder name (same method as in set_upload_dir)
+			$ticket_id_encode = md5( $ticket_id . NONCE_SALT );
+			$ticket_dir = $base_dir . '/awesome-support/ticket_' . $ticket_id_encode;
+			$htaccess_file = $ticket_dir . '/.htaccess';
+
+			// Check if the .htaccess file exists
+			if ( file_exists( $htaccess_file ) ) {
+				
+				// Read the current content
+				$current_content = $wp_filesystem->get_contents( $htaccess_file );
+				
+				// Check if the file contains 'Deny from all' (case insensitive)
+				if ( $current_content !== false && stripos( $current_content, 'Deny from all' ) !== false ) {
+					
+					// Replace the content with the new content
+					$result = $wp_filesystem->put_contents( $htaccess_file, $filecontents, FS_CHMOD_FILE );
+					
+					if ( $result !== false ) {
+						$fixed_count++;
+						wpas_write_log( 'file-uploader', '.htaccess file fixed for ticket #' . $ticket_id . ' (' . $htaccess_file . ')' );
+					} else {
+						wpas_write_log( 'file-uploader', 'Unable to fix .htaccess file for ticket #' . $ticket_id . ' (' . $htaccess_file . ')' );
+					}
+				}
+			}
+		}
+
+		// Mark the fix as completed
+		update_option( 'wpas_htaccess_deny_all_fixed', true );
 	}
 
 	/**
