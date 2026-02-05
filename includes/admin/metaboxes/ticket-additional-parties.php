@@ -61,8 +61,14 @@ if ( ! defined( 'WPINC' ) ) {
 					'select2'   => true,
 					'data_attr' => array( 'capability' => 'edit_ticket' )
 				);
-
-				echo wp_kses(wpas_dropdown( $staff_atts, "<option value='$secondary_staff_id' selected='selected'>$secondary_staff_name</option>" ), wpas_dropdown_allowed_html_tags());
+				if ( $secondary_staff_id !== 0 && $secondary_staff_name !== '' ) {
+					$secondary_staff_option = "<option value='$secondary_staff_id' selected='selected'>$secondary_staff_name</option>";
+				}
+				else
+				{
+					$secondary_staff_option = '';
+				}
+				echo wp_kses(wpas_dropdown( $staff_atts, $secondary_staff_option), wpas_dropdown_allowed_html_tags());
 			} else {
 				echo wp_kses(wpas_users_dropdown( array(
 					'cap'		=> 'edit_ticket',

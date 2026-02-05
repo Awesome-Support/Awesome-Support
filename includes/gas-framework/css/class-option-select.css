@@ -76,3 +76,6 @@ Select Multiple
 .select2-container--default .select2-search--inline {
 	margin-bottom: none;
 }
+div#wpas_admin_tabs_ticket_main_ai_parties .select2-container.select2-container--default {
+    width: 254px !important;
+}
