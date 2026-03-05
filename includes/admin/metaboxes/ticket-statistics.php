@@ -16,7 +16,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 <div class="wpas-custom-fields wpas-ticket-statistics-mb">
 	<?php
-	do_action( 'wpas_mb_details_before_ticket_statistics' );
+	do_action( 'mumei_ayuda_mb_details_before_ticket_statistics' );
 	?>
 	
 	<div class="wpas-row">
@@ -30,6 +30,6 @@ if ( ! defined( 'WPINC' ) ) {
 	</div>
 	
 	<?php
-	do_action( 'wpas_mb_details_after_ticket_statistics' );
+	do_action( 'mumei_ayuda_mb_details_after_ticket_statistics' );
 	?>
 </div>

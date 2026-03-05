@@ -11,14 +11,14 @@
  * the pluggable function wp_mail(). It is recommended to use a proper SMTP
  * server for e-mail routing in order to ensure a safe delivery.
  *
- * @package   Awesome Support
+ * @package   Ayuda – Help Desk
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
 #[AllowDynamicProperties]
-class WPAS_Email_Notification {
+class MUMEI_AYUDA_Email_Notification {
 
 	/**
 	 * ID of the post to notify about.
@@ -62,10 +62,10 @@ class WPAS_Email_Notification {
 	public function __construct( $post_id ) {
 
 		/* Make sure the given post belongs to our plugin. Private notes will likely be one of the post types that gets registered using the filter below. */
-		$post_types = apply_filters( 'wpas_email_notifications_post_types', array( 'ticket', 'ticket_reply' ) );
+		$post_types = apply_filters( 'mumei_ayuda_email_notifications_post_types', array( 'ticket', 'ticket_reply' ) );
 
 		if ( !in_array( get_post_type( $post_id ), $post_types ) ) {
-			return new WP_Error( 'incorrect_post_type', __( 'The post ID provided does not match any of the plugin post types', 'awesome-support' ) );
+			return new WP_Error( 'incorrect_post_type', __( 'The post ID provided does not match any of the plugin post types', 'ayuda-help-desk' ) );
 		}
 
 		/* Set the e-mail content type to HTML */
@@ -110,7 +110,7 @@ class WPAS_Email_Notification {
 			return $this->reply;
 		}
 
-		$reply_types = apply_filters( 'wpas_email_notifications_reply_types', array( 'ticket_reply' ) );
+		$reply_types = apply_filters( 'mumei_ayuda_email_notifications_reply_types', array( 'ticket_reply' ) );
 
 		if ( !in_array( get_post_type( $this->post_id ), $reply_types ) ) {
 			return false;
@@ -173,7 +173,7 @@ class WPAS_Email_Notification {
 		$option = $options[$case];
 
 		/* Replace the valueless tags array by the new one */
-		return (bool) apply_filters( 'wpas_email_notifications_case_is_active', wpas_get_option( $option, false ), $case );
+		return (bool) apply_filters( 'mumei_ayuda_email_notifications_case_is_active', mumei_ayuda_get_option( $option, false ), $case );
 
 	}
 
@@ -215,7 +215,7 @@ class WPAS_Email_Notification {
 			'ticket_closed_client',
 		);
 
-		return apply_filters( 'wpas_email_notifications_cases', $cases );
+		return apply_filters( 'mumei_ayuda_email_notifications_cases', $cases );
 
 	}
 
@@ -238,7 +238,7 @@ class WPAS_Email_Notification {
 		$cases['ticket_closed_agent'] 			= 'enable_closed';
 		$cases['ticket_closed_client'] 			= 'enable_closed_client';
 
-		return apply_filters( 'wpas_email_notifications_cases_active_option', $cases );
+		return apply_filters( 'mumei_ayuda_email_notifications_cases_active_option', $cases );
 	}
 
 	/**
@@ -254,14 +254,14 @@ class WPAS_Email_Notification {
 		}
 
 		$data = array(
-			'from_name'   => stripslashes( wpas_get_option( 'sender_name', get_bloginfo( 'name' ) ) ),
-			'from_email'  => wpas_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ),
-			'reply_email' => wpas_get_option( 'reply_email', get_bloginfo( 'admin_email' ) ),
+			'from_name'   => stripslashes( mumei_ayuda_get_option( 'sender_name', get_bloginfo( 'name' ) ) ),
+			'from_email'  => mumei_ayuda_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ),
+			'reply_email' => mumei_ayuda_get_option( 'reply_email', get_bloginfo( 'admin_email' ) ),
 		);
 
 		$data['reply_name']  = $data['from_name'];
 
-		$this->data = apply_filters( 'wpas_email_notifications_sender_data', $data, $this );
+		$this->data = apply_filters( 'mumei_ayuda_email_notifications_sender_data', $data, $this );
 
 		return $this->data;
 
@@ -306,88 +306,88 @@ class WPAS_Email_Notification {
 	public static function get_tags() {
 
 		// translators: %s is the current admin e-mail.
-		$desc = __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'awesome-support' );
+		$desc = __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'ayuda-help-desk' );
 
 		$tags = array(
 			array(
 				'tag' 	=> '{ticket_id}',
-				'desc' 	=> __( 'Converts into ticket ID', 'awesome-support' )
+				'desc' 	=> __( 'Converts into ticket ID', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{site_name}',
-				'desc' 	=> __( 'Converts into website name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into website name', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{agent_name}',
-				'desc' 	=> __( 'Converts into agent name (WordPress Display Name)', 'awesome-support' )
+				'desc' 	=> __( 'Converts into agent name (WordPress Display Name)', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{agent_first_name}',
-				'desc' 	=> __( 'Converts into the first name of the agent', 'awesome-support' )
+				'desc' 	=> __( 'Converts into the first name of the agent', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{agent_last_name}',
-				'desc' 	=> __( 'Converts into the last name of the agent', 'awesome-support' )
+				'desc' 	=> __( 'Converts into the last name of the agent', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{agent_email}',
-				'desc' 	=> __( 'Converts into agent e-mail address', 'awesome-support' )
+				'desc' 	=> __( 'Converts into agent e-mail address', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{client_name}',
-				'desc' 	=> __( 'Converts into client name (WordPress Display Name)', 'awesome-support' )
+				'desc' 	=> __( 'Converts into client name (WordPress Display Name)', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{client_first_name}',
-				'desc' 	=> __( 'Converts into the first name of the client', 'awesome-support' )
+				'desc' 	=> __( 'Converts into the first name of the client', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{client_last_name}',
-				'desc' 	=> __( 'Converts into the last name of the client', 'awesome-support' )
+				'desc' 	=> __( 'Converts into the last name of the client', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{client_email}',
-				'desc' 	=> __( 'Converts into client e-mail address', 'awesome-support' )
+				'desc' 	=> __( 'Converts into client e-mail address', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{author_name}',
-				'desc' 	=> __( 'Converts into author name (WordPress Display Name)', 'awesome-support' )
+				'desc' 	=> __( 'Converts into author name (WordPress Display Name)', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{author_first_name}',
-				'desc' 	=> __( 'Converts into the first name of the author', 'awesome-support' )
+				'desc' 	=> __( 'Converts into the first name of the author', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{author_last_name}',
-				'desc' 	=> __( 'Converts into the last name of the author', 'awesome-support' )
+				'desc' 	=> __( 'Converts into the last name of the author', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{author_email}',
-				'desc' 	=> __( 'Converts into author e-mail address', 'awesome-support' )
+				'desc' 	=> __( 'Converts into author e-mail address', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{ticket_title}',
-				'desc' 	=> __( 'Converts into current ticket title', 'awesome-support' )
+				'desc' 	=> __( 'Converts into current ticket title', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{ticket_link}',
-				'desc' 	=> __( 'Displays a link to the ticket', 'awesome-support' )
+				'desc' 	=> __( 'Displays a link to the ticket', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{ticket_url}',
-				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link) to the ticket', 'awesome-support' )
+				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link) to the ticket', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{ticket_admin_link}',
-				'desc' 	=> __( 'Displays a link to ticket details in admin (for agents)', 'awesome-support' )
+				'desc' 	=> __( 'Displays a link to ticket details in admin (for agents)', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{ticket_admin_url}',
-				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)', 'awesome-support' )
+				'desc' 	=> __( 'Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{date}',
-				'desc' 	=> __( 'Converts into current date', 'awesome-support' )
+				'desc' 	=> __( 'Converts into current date', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{admin_email}',
@@ -395,11 +395,11 @@ class WPAS_Email_Notification {
 			),
 			array(
 				'tag' 	=> '{message}',
-				'desc' 	=> __( 'Converts into ticket content or reply content', 'awesome-support' )
+				'desc' 	=> __( 'Converts into ticket content or reply content', 'ayuda-help-desk' )
 			)
 		);
 
-		return apply_filters( 'wpas_email_notifications_template_tags', $tags );
+		return apply_filters( 'mumei_ayuda_email_notifications_template_tags', $tags );
 
 	}
 
@@ -418,11 +418,11 @@ class WPAS_Email_Notification {
 		$new = array();
 
 		/* Get the involved users' information */
-		$agent_id = get_post_meta( $this->ticket_id, '_wpas_assignee', true );
+		$agent_id = get_post_meta( $this->ticket_id, '_mumei_ayuda_assignee', true );
 
 		// Fallback to the default assignee if for some reason there is no agent assigned
 		if ( empty( $agent_id ) ) {
-			$agent_id = wpas_get_option( 'assignee_default', 1 );
+			$agent_id = mumei_ayuda_get_option( 'assignee_default', 1 );
 		}
 
 		$agent  = get_user_by( 'id', (int) $agent_id  );
@@ -541,7 +541,7 @@ class WPAS_Email_Notification {
 		}
 
 		/* Replace the valueless tags array by the new one */
-		$tags = apply_filters( 'wpas_email_notifications_tags_values', $new, $this->post_id );
+		$tags = apply_filters( 'mumei_ayuda_email_notifications_tags_values', $new, $this->post_id );
 
 		return $tags;
 
@@ -556,7 +556,7 @@ class WPAS_Email_Notification {
 	 * @return string E-mail subject
 	 */
 	private function get_subject( $case ) {
-		return apply_filters( 'wpas_email_notifications_subject', $this->get_content( 'subject', $case ), $this->post_id, $case );
+		return apply_filters( 'mumei_ayuda_email_notifications_subject', $this->get_content( 'subject', $case ), $this->post_id, $case );
 	}
 
 	/**
@@ -568,7 +568,7 @@ class WPAS_Email_Notification {
 	 * @return string E-mail body
 	 */
 	private function get_body( $case ) {
-		return apply_filters( 'wpas_email_notifications_body', $this->get_content( 'content', $case ), $this->post_id, $case );
+		return apply_filters( 'mumei_ayuda_email_notifications_body', $this->get_content( 'content', $case ), $this->post_id, $case );
 	}
 
 	/**
@@ -595,35 +595,35 @@ class WPAS_Email_Notification {
 		switch ( $case ) {
 
 			case 'submission_confirmation':
-				$value = wpas_get_option( "{$part}_confirmation", "" );
+				$value = mumei_ayuda_get_option( "{$part}_confirmation", "" );
 				break;
 
 			case 'new_ticket_assigned':
 			case 'new_ticket_assigned_secondary':
 			case 'new_ticket_assigned_tertiary':
-				$value = wpas_get_option( "{$part}_assignment", "" );
+				$value = mumei_ayuda_get_option( "{$part}_assignment", "" );
 				break;
 
 			case 'agent_reply':
-				$value = wpas_get_option( "{$part}_reply_agent", "" );
+				$value = mumei_ayuda_get_option( "{$part}_reply_agent", "" );
 				break;
 
 			case 'client_reply':
-				$value = wpas_get_option( "{$part}_reply_client", "" );
+				$value = mumei_ayuda_get_option( "{$part}_reply_client", "" );
 				break;
 
 			case 'ticket_closed':
 			case 'ticket_closed_agent':
-				$value = wpas_get_option( "{$part}_closed", "" );
+				$value = mumei_ayuda_get_option( "{$part}_closed", "" );
 				break;
 
 			case 'ticket_closed_client':
-				$value = wpas_get_option( "{$part}_closed_client", "" );
+				$value = mumei_ayuda_get_option( "{$part}_closed_client", "" );
 				break;
 
 		}
 
-		$pre_fetch_content = apply_filters( 'wpas_email_notifications_pre_fetch_' . $part, $value, $this->post_id, $case );
+		$pre_fetch_content = apply_filters( 'mumei_ayuda_email_notifications_pre_fetch_' . $part, $value, $this->post_id, $case );
 
 		if( 'content' === $part && false !== strpos( $pre_fetch_content, '{attachments}' ) ) {
 			$this->link_attachments = true;
@@ -647,7 +647,7 @@ class WPAS_Email_Notification {
 	 */
 	public function get_formatted_email( $content = '' ) {
 
-		if ( false === (bool) wpas_get_option( 'use_email_template', true ) ) {
+		if ( false === (bool) mumei_ayuda_get_option( 'use_email_template', true ) ) {
 			return $content;
 		}
 
@@ -655,7 +655,7 @@ class WPAS_Email_Notification {
 
 		// Get the e-mail notification template. This template can be customized by the user.
 		// See https://getawesomesupport.com/documentation-new/documentation-awesome-support-core-customization/
-		wpas_get_template( 'email-notification' );
+		mumei_ayuda_get_template( 'email-notification' );
 
 		$template = ob_get_contents();
 
@@ -663,10 +663,10 @@ class WPAS_Email_Notification {
 		ob_end_clean();
 
 		$template = str_replace( '{content}', wpautop( $content ), $template ); // Inject content
-		$template = str_replace( '{footer}', stripslashes( wpas_get_option( 'email_template_footer', '' ) ), $template ); // Inject footer
-		$template = str_replace( '{header}', stripslashes( wpas_get_option( 'email_template_header', '' ) ), $template ); // Inject header
+		$template = str_replace( '{footer}', stripslashes( mumei_ayuda_get_option( 'email_template_footer', '' ) ), $template ); // Inject footer
+		$template = str_replace( '{header}', stripslashes( mumei_ayuda_get_option( 'email_template_header', '' ) ), $template ); // Inject header
 
-		if ( '' !== $logo = wpas_get_option( 'email_template_logo', '' ) ) {
+		if ( '' !== $logo = mumei_ayuda_get_option( 'email_template_logo', '' ) ) {
 			$logo = wp_get_attachment_image_src( $logo, 'full' );
 			$logo = '<img src="' . $logo[0] . '">';
 		}
@@ -727,7 +727,7 @@ class WPAS_Email_Notification {
 		}
 
 		$attachments_html = '<div style="margin-top: 20px; border-top: 1px solid #eee;">';
-		$attachments_html .= '<h4 style="margin-bottom: 10px; color: #333;">' . __( 'Attachments:', 'awesome-support' ) . '</h4>';
+		$attachments_html .= '<h4 style="margin-bottom: 10px; color: #333;">' . __( 'Attachments:', 'ayuda-help-desk' ) . '</h4>';
 
 		foreach ( $attachments as $attachment ) {
 			$file_url = wp_get_attachment_url( $attachment->ID );
@@ -769,7 +769,7 @@ class WPAS_Email_Notification {
 
 		$attachments_html .= '</div>';
 
-		return apply_filters( 'wpas_email_notifications_attachments_body', $attachments_html, $attachments, $this->ticket_id, $this->post_id );
+		return apply_filters( 'mumei_ayuda_email_notifications_attachments_body', $attachments_html, $attachments, $this->ticket_id, $this->post_id );
 	}
 
 	/**
@@ -782,11 +782,11 @@ class WPAS_Email_Notification {
 	public function notify( $case ) {
 
 		if ( !$this->notification_exists( $case ) ) {
-			return new WP_Error( 'unknown_notification', __( 'The requested notification does not exist', 'awesome-support' ) );
+			return new WP_Error( 'unknown_notification', __( 'The requested notification does not exist', 'ayuda-help-desk' ) );
 		}
 
 		if ( !$this->is_active( $case ) ) {
-			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'awesome-support' ) );
+			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'ayuda-help-desk' ) );
 		}
 
 		// Define the $user var to avoid undefined var notices when using a custom $case
@@ -806,13 +806,13 @@ class WPAS_Email_Notification {
 			case 'new_ticket_assigned':
 			case 'client_reply':
 			case 'ticket_closed_client':
-				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_assignee', true ) ) );
+				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_mumei_ayuda_assignee', true ) ) );
 				break;
 			case 'new_ticket_assigned_secondary':
-				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_secondary_assignee', true ) ) );
+				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_mumei_ayuda_secondary_assignee', true ) ) );
 				break;
 			case 'new_ticket_assigned_tertiary':
-				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_wpas_tertiary_assignee', true ) ) );
+				$user = get_user_by( 'id', intval( get_post_meta( $this->ticket_id, '_mumei_ayuda_tertiary_assignee', true ) ) );
 				break;
 		}
 
@@ -827,7 +827,7 @@ class WPAS_Email_Notification {
 		 * @param int     $ticket_id
 		 * @param int     $post_id
 		 */
-		$user = apply_filters( 'wpas_email_notifications_notify_user', $user, $case, $this->ticket_id, $this->post_id );
+		$user = apply_filters( 'mumei_ayuda_email_notifications_notify_user', $user, $case, $this->ticket_id, $this->post_id );
 
 		$recipients = $recipient_emails = array();
 		if (is_array($user)) {
@@ -836,13 +836,13 @@ class WPAS_Email_Notification {
 			$recipients[] = $user;
 		}
 
-		if( wpas_is_multi_agent_active() ) {
+		if( mumei_ayuda_is_multi_agent_active() ) {
 			// We need to notify other agents
 			if( $case == 'agent_reply' ) {
 				$recipients = array_merge($recipients,
-					wpas_get_ticket_agents( $this->ticket_id, array($this->get_reply()->post_author) ) );
+					mumei_ayuda_get_ticket_agents( $this->ticket_id, array($this->get_reply()->post_author) ) );
 			} elseif( $case == 'client_reply' ) {
-				$recipients = wpas_get_ticket_agents( $this->ticket_id );
+				$recipients = mumei_ayuda_get_ticket_agents( $this->ticket_id );
 			}
 		}
 
@@ -874,7 +874,7 @@ class WPAS_Email_Notification {
 		 *
 		 * @var  string
 		 */
-		$body = apply_filters( 'wpas_email_notification_body_before_template', $this->get_body( $case ), $case, $this->ticket_id );
+		$body = apply_filters( 'mumei_ayuda_email_notification_body_before_template', $this->get_body( $case ), $case, $this->ticket_id );
 
 		/**
 		 * Filter the e-mail body after the template has been applied
@@ -882,7 +882,7 @@ class WPAS_Email_Notification {
 		 * @since 3.3.3
 		 * @var string
 		 */
-		$body = apply_filters( 'wpas_email_notification_body_after_template', $this->get_formatted_email( $body ), $case, $this->ticket_id );
+		$body = apply_filters( 'mumei_ayuda_email_notification_body_after_template', $this->get_formatted_email( $body ), $case, $this->ticket_id );
 
 		/**
 		 * Strip slashes off the body text
@@ -902,13 +902,13 @@ class WPAS_Email_Notification {
 			"From: $from_name <$from_email>",
 			"Reply-To: $reply_name <$reply_email>",
 			// "Subject: $subject",
-			"X-Mailer: Awesome Support/" . WPAS_VERSION,
+			"X-Mailer: Ayuda – Help Desk/" . MUMEI_AYUDA_VERSION,
 		);
 
 		/**
-		 * Merge all the e-mail variables and apply the wpas_email_notifications_email filter.
+		 * Merge all the e-mail variables and apply the mumei_ayuda_email_notifications_email filter.
 		 */
-		$email = apply_filters( 'wpas_email_notifications_email', array(
+		$email = apply_filters( 'mumei_ayuda_email_notifications_email', array(
 			'recipient_email' => $recipient_emails,
 			'subject'         => $subject,
 			'body'            => $body,
@@ -922,7 +922,7 @@ class WPAS_Email_Notification {
 
 		$attachments = array();
 		if( isset( $this->link_attachments ) && true === $this->link_attachments ) {
-			$attachments = apply_filters( 'wpas_email_notification_attachments', $attachments, $case, $this->ticket_id, $this->post_id );
+			$attachments = apply_filters( 'mumei_ayuda_email_notification_attachments', $attachments, $case, $this->ticket_id, $this->post_id );
 		}
 
 
@@ -981,9 +981,9 @@ class WPAS_Email_Notification {
  * @param  string|array    $cases   The case(s) to notify for
  * @return boolean|object           True if the notification was sent, WP_Error or false otherwise
  */
-function wpas_email_notify( $post_id, $cases ) {
+function mumei_ayuda_email_notify( $post_id, $cases ) {
 
-	$notify = new WPAS_Email_Notification( $post_id );
+	$notify = new MUMEI_AYUDA_Email_Notification( $post_id );
 	$error  = false;
 
 	if ( is_wp_error( $notify ) ) {

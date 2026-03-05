@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WPAS_CF_Date_Field extends WPAS_Custom_Field {
+class MUMEI_AYUDA_CF_Date_Field extends MUMEI_AYUDA_Custom_Field {
 
 	public function __construct( $field_id, $field ) {
 
 		/* Call the parent constructor */
 		parent::__construct( $field_id, $field );
 
-		add_filter( 'wpas_cf_field_class', array( $this, 'add_date_class' ), 10, 2 );
+		add_filter( 'mumei_ayuda_cf_field_class', array( $this, 'add_date_class' ), 10, 2 );
 
 	}
 

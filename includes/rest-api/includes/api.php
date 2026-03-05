@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Awesome Support API main plugin class.
+ * Ayuda – Help Desk API main plugin class.
  *
  * @since 1.0.0
  */
-class WPAS_API {
+class MUMEI_AYUDA_API {
 
 	/**
-	 * @var object WPAS_API\Auth\Init
+	 * @var object MUMEI_AYUDA_API\Auth\Init
 	 */
 	public $auth;
 
@@ -21,7 +21,7 @@ class WPAS_API {
 	protected static $instance = null;
 
 	/**
-	 * WPAS_API constructor.
+	 * MUMEI_AYUDA_API constructor.
 	 */
 	private function __construct() {
 
@@ -58,7 +58,7 @@ class WPAS_API {
 	 * @return string
 	 */
 	public function get_api_namespace() {
-		return apply_filters( 'wpas_api_get_api_namespace', 'wpas-api/v1' );
+		return apply_filters( 'mumei_ayuda_api_get_api_namespace', 'wpas-api/v1' );
 	}
 
 
@@ -103,7 +103,7 @@ class WPAS_API {
 	 * @since 1.0.0
 	 */
 	protected function includes() {
-		$this->auth = WPAS_API\Auth\Init::get_instance();
+		$this->auth = MUMEI_AYUDA_API\Auth\Init::get_instance();
 	}
 
 
@@ -113,8 +113,8 @@ class WPAS_API {
 	public function load_text_domain() {
 
 		// Set filter for plugin's languages directory
-		$wpas_api_lang_dir = AS_API_PATH . '/languages/';
-		$wpas_api_lang_dir = apply_filters( 'wpas_api_languages_directory', $wpas_api_lang_dir );
+		$mumei_ayuda_api_lang_dir = AS_API_PATH . '/languages/';
+		$mumei_ayuda_api_lang_dir = apply_filters( 'mumei_ayuda_api_languages_directory', $mumei_ayuda_api_lang_dir );
 
 
 		// Traditional WordPress plugin locale filter
@@ -131,22 +131,22 @@ class WPAS_API {
 		 * @var string $get_locale The locale to use. Uses get_user_locale()` in WordPress 4.7 or greater,
 		 *                  otherwise uses `get_locale()`.
 		 */
-		$locale = apply_filters( 'plugin_locale', $get_locale, 'awesome-support' );
-		$mofile = sprintf( '%1$s-%2$s.mo', 'awesome-support', $locale );
+		$locale = apply_filters( 'plugin_locale', $get_locale, 'ayuda-help-desk' );
+		$mofile = sprintf( '%1$s-%2$s.mo', 'ayuda-help-desk', $locale );
 
 		// Setup paths to current locale file
-		$mofile_local  = $wpas_api_lang_dir . $mofile;
+		$mofile_local  = $mumei_ayuda_api_lang_dir . $mofile;
 		$mofile_global = WP_LANG_DIR . '/awesome-support-api/' . $mofile;
 
 		if ( file_exists( $mofile_global ) ) {
 			// Look in global /wp-content/languages/awesome-support-api folder
-			load_textdomain( 'awesome-support', $mofile_global );
+			load_textdomain( 'ayuda-help-desk', $mofile_global );
 		} elseif ( file_exists( $mofile_local ) ) {
 			// Look in local /wp-content/plugins/awesome-support-api/languages/ folder
-			load_textdomain( 'awesome-support', $mofile_local );
+			load_textdomain( 'ayuda-help-desk', $mofile_local );
 		} else {
 			// Load the default language files
-			load_plugin_textdomain( 'awesome-support', false, $wpas_api_lang_dir );
+			load_plugin_textdomain( 'ayuda-help-desk', false, $mumei_ayuda_api_lang_dir );
 		}
 
 	}
@@ -156,25 +156,25 @@ class WPAS_API {
 	 */
 	public function load_api_routes() {
 
-		$controller = new WPAS_API\API\Settings();
+		$controller = new MUMEI_AYUDA_API\API\Settings();
 		$controller->register_routes();
 
-		$controller = new WPAS_API\API\Users();
+		$controller = new MUMEI_AYUDA_API\API\Users();
 		$controller->register_routes();
 
-		$controller = new WPAS_API\API\UserData();
+		$controller = new MUMEI_AYUDA_API\API\UserData();
 		$controller->register_routes();
 
-		$controller = new WPAS_API\API\TicketStatus();
+		$controller = new MUMEI_AYUDA_API\API\TicketStatus();
 		$controller->register_routes();
 
-		$controller = new WPAS_API\API\CustomFields();
+		$controller = new MUMEI_AYUDA_API\API\CustomFields();
 		$controller->register_routes();
 
-		$controller = new WPAS_API\API\Passwords();
+		$controller = new MUMEI_AYUDA_API\API\Passwords();
 		$controller->register_routes();
 
-		$controller = new WPAS_API\API\Attachments();
+		$controller = new MUMEI_AYUDA_API\API\Attachments();
         $controller->register_routes();
         
 	}
@@ -184,7 +184,7 @@ class WPAS_API {
 	 */
 	public function user_fields() {
 
-		register_rest_field( 'users', 'wpas_can_be_assigned', array(
+		register_rest_field( 'users', 'mumei_ayuda_can_be_assigned', array(
 			'get_callback'    => function ( $comment_arr ) {
 				$comment_obj = get_comment( $comment_arr['id'] );
 
@@ -196,14 +196,14 @@ class WPAS_API {
 					'comment_karma' => $karma
 				) );
 				if ( false === $ret ) {
-					return new WP_Error( 'rest_comment_karma_failed', __( 'Failed to update comment karma.', 'awesome-support' ),
+					return new WP_Error( 'rest_comment_karma_failed', __( 'Failed to update comment karma.', 'ayuda-help-desk' ),
 						array( 'status' => 500 ) );
 				}
 
 				return true;
 			},
 			'schema'          => array(
-				'description' => __( 'Comment karma.', 'awesome-support' ),
+				'description' => __( 'Comment karma.', 'ayuda-help-desk' ),
 				'type'        => 'integer'
 			),
         ) );
@@ -223,19 +223,19 @@ class WPAS_API {
 			case 'ticket' :
 				$args['show_in_rest'] = true;
 				$args['rest_base'] = 'tickets';
-				$args['rest_controller_class'] = 'WPAS_API\API\Tickets';
+				$args['rest_controller_class'] = 'MUMEI_AYUDA_API\API\Tickets';
 				break;
 
 			case 'ticket_reply' :
 				$args['show_in_rest'] = true;
 				$args['rest_base'] = 'replies';
-				$args['rest_controller_class'] = 'WPAS_API\API\TicketReplies';
+				$args['rest_controller_class'] = 'MUMEI_AYUDA_API\API\TicketReplies';
 				break;
 
 			case 'ticket_history' :
 				$args['show_in_rest'] = true;
 				$args['rest_base'] = 'history';
-				$args['rest_controller_class'] = 'WPAS_API\API\TicketHistory';
+				$args['rest_controller_class'] = 'MUMEI_AYUDA_API\API\TicketHistory';
 				break;
 
 		}
@@ -253,7 +253,7 @@ class WPAS_API {
 		if ( in_array( 'ticket', (array) $post_type ) ) {
 			$args['show_in_rest'] = true;
 			$args['rest_base'] = $taxonomy;
-			$args['rest_controller_class'] = 'WPAS_API\API\TicketTaxonomy';
+			$args['rest_controller_class'] = 'MUMEI_AYUDA_API\API\TicketTaxonomy';
 		}
 
 		return $args;
@@ -273,7 +273,7 @@ class WPAS_API {
 
 		if ( in_array( 'ticket', $taxonomy->object_type ) ) {
 			$response->remove_link( 'https://api.w.org/items' );
-			$response->add_link( 'https://api.w.org/items', rest_url( wpas_api()->get_api_namespace() . '/' . $base ) );
+			$response->add_link( 'https://api.w.org/items', rest_url( mumei_ayuda_api()->get_api_namespace() . '/' . $base ) );
 		}
 
 		return $response;
@@ -306,11 +306,11 @@ class WPAS_API {
 
 
 /**
- * Returns the One True Instance of WPAS_API
+ * Returns the One True Instance of MUMEI_AYUDA_API
  *
  * @since 1.0.0
- * @return object | WPAS_API
+ * @return object | MUMEI_AYUDA_API
  */
-function wpas_api() {
-	return WPAS_API::get_instance();
+function mumei_ayuda_api() {
+	return MUMEI_AYUDA_API::get_instance();
 }

@@ -9,14 +9,14 @@
  * @return mixed           Value for the requested option
  * @since  1.0.0
  */
-function wpas_get_option( $option, $default = false ) {
+function mumei_ayuda_get_option( $option, $default = false ) {
 
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	$options = maybe_unserialize( get_option( 'mumei_ayuda_options', array() ) );
 
 	/* Return option value if exists */
 	$value = isset( $options[ $option ] ) ? $options[ $option ] : $default;
 
-	return apply_filters( 'wpas_option_' . $option, $value );
+	return apply_filters( 'mumei_ayuda_option_' . $option, $value );
 
 }
 
@@ -31,9 +31,9 @@ function wpas_get_option( $option, $default = false ) {
  *
  * @return bool
  */
-function wpas_update_option( $option, $value, $add = false ) {
+function mumei_ayuda_update_option( $option, $value, $add = false ) {
 
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	$options = maybe_unserialize( get_option( 'mumei_ayuda_options', array() ) );
 
 	// Add a new option key if it doesn't yet exist
 	if ( ! array_key_exists( $option, $options ) && true === $add ) {
@@ -50,7 +50,7 @@ function wpas_update_option( $option, $value, $add = false ) {
 
 	$options[ $option ] = $value;
 
-	return update_option( 'wpas_options', serialize( $options ) );
+	return update_option( 'mumei_ayuda_options', serialize( $options ) );
 
 }
 
@@ -61,7 +61,7 @@ function wpas_update_option( $option, $value, $add = false ) {
  *
  * @return string
  */
-function wpas_get_open_ticket_url( $ticket_id ) {
+function mumei_ayuda_get_open_ticket_url( $ticket_id ) {
 
 	$remove = array( 'post', 'message' );
 	$args   = $_GET;
@@ -76,7 +76,7 @@ function wpas_get_open_ticket_url( $ticket_id ) {
 
 	$args['post'] = intval( $ticket_id );
 
-	return wpas_do_url( add_query_arg( $args, admin_url( 'post.php' ) ), 'admin_open_ticket', array( 'post' => (int) $ticket_id ) );
+	return mumei_ayuda_do_url( add_query_arg( $args, admin_url( 'post.php' ) ), 'admin_open_ticket', array( 'post' => (int) $ticket_id ) );
 
 }
 
@@ -87,11 +87,11 @@ function wpas_get_open_ticket_url( $ticket_id ) {
  *
  * @return string
  */
-function wpas_get_close_ticket_url( $ticket_id ) {
+function mumei_ayuda_get_close_ticket_url( $ticket_id ) {
 
 	$url = add_query_arg( 'post_type', 'ticket', admin_url( 'edit.php' ) );
 
-	return wpas_do_url( $url, 'admin_close_ticket', array( 'post' => $ticket_id ) );
+	return mumei_ayuda_do_url( $url, 'admin_close_ticket', array( 'post' => $ticket_id ) );
 }
 
 /**
@@ -100,7 +100,7 @@ function wpas_get_close_ticket_url( $ticket_id ) {
  * @return array List of allowed tags
  * @since  3.0.0
  */
-function wpas_get_safe_tags() {
+function mumei_ayuda_get_safe_tags() {
 
 	$tags = array(
 		'a' => array(
@@ -132,7 +132,7 @@ function wpas_get_safe_tags() {
 		'p' => array(),
 	);
 
-	return apply_filters( 'wpas_get_safe_tags', $tags );
+	return apply_filters( 'mumei_ayuda_get_safe_tags', $tags );
 
 }
 
@@ -148,20 +148,20 @@ function wpas_get_safe_tags() {
  * @return boolean ether or not the current page belongs to the plugin
  * @since  3.0.0
  */
-function wpas_is_plugin_page( $slug = '' ) {
+function mumei_ayuda_is_plugin_page( $slug = '' ) {
 
 	global $post;
 
-	$ticket_list   = wpas_get_option( 'ticket_list' );
-	$ticket_submit = wpas_get_option( 'ticket_submit' );
+	$ticket_list   = mumei_ayuda_get_option( 'ticket_list' );
+	$ticket_submit = mumei_ayuda_get_option( 'ticket_submit' );
 
 	/* Make sure these are arrays. Multiple selects were only used since 3.2, in earlier versions those options are strings */
 	if( ! is_array( $ticket_list ) ) { $ticket_list = (array) $ticket_list; }
 	if( ! is_array( $ticket_submit ) ) { $ticket_submit = (array) $ticket_submit; }
 
-	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'faq', 'wpas_gadget', 'as_security_profile', 'ruleset', 'trackedtimes', 'wpas_sla', 'wpas_issue_tracking', 'wpas_company_profile' ) );
-	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
-	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
+	$plugin_post_types     = apply_filters( 'mumei_ayuda_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'faq', 'mumei_ayuda_gadget', 'as_security_profile', 'ruleset', 'trackedtimes', 'mumei_ayuda_sla', 'mumei_ayuda_issue_tracking', 'mumei_ayuda_company_profile' ) );
+	$plugin_admin_pages    = apply_filters( 'mumei_ayuda_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
+	$plugin_frontend_pages = apply_filters( 'mumei_ayuda_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
 	/* Check for plugin pages in the admin */	
 	if ( is_admin() ) {
@@ -190,7 +190,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		return false;
 
-	} elseif ( wpas_is_wp_cli() || !isset( $_SERVER ) ) {
+	} elseif ( mumei_ayuda_is_wp_cli() || !isset( $_SERVER ) ) {
 
 		/* running from wp_cli so just return false */				
 		return false;
@@ -245,7 +245,7 @@ function wpas_is_plugin_page( $slug = '' ) {
  *
  * @return boolean
  */
-function wpas_is_front_end_plugin_page() {
+function mumei_ayuda_is_front_end_plugin_page() {
 	global $post;
 
 	if ( ! $post ) {
@@ -283,16 +283,16 @@ function wpas_is_front_end_plugin_page() {
  * @param  string $id ID to transform
  * @return string     Nicely formatted title
  */
-function wpas_get_title_from_id( $id ) {
+function mumei_ayuda_get_title_from_id( $id ) {
 	return ucwords( str_replace( array( '-', '_' ), ' ', $id ) );
 }
 
-function wpas_get_field_title( $field ) {
+function mumei_ayuda_get_field_title( $field ) {
 
 	if ( !empty( $field['args']['title'] ) ) {
 		return sanitize_text_field( $field['args']['title'] );
 	} else {
-		return wpas_get_title_from_id( $field['name'] );
+		return mumei_ayuda_get_title_from_id( $field['name'] );
 	}
 
 }
@@ -308,22 +308,22 @@ function wpas_get_field_title( $field ) {
  * @param  mixed $thing Data to display
  * @return void
  */
-function wpas_debug_display( $thing ) {
+function mumei_ayuda_debug_display( $thing ) {
 	echo '<pre>';
 	print_r( $thing );
 	echo '</pre>';
 }
 
-function wpas_make_button( $label = null, $args = array() ) {
+function mumei_ayuda_make_button( $label = null, $args = array() ) {
 
 	if ( is_null( $label ) ) {
-		$label = __( 'Submit', 'awesome-support' );
+		$label = __( 'Submit', 'ayuda-help-desk' );
 	}
 
 	$defaults = array(
 		'type'     => 'button',
 		'link'     => '',
-		'class'    => apply_filters( 'wpas_make_button_class', 'wpas-btn wpas-btn-default' ),
+		'class'    => apply_filters( 'mumei_ayuda_make_button_class', 'wpas-btn wpas-btn-default' ),
 		'name'     => 'submit',
 		'value'    => '',
 		'onsubmit' => ''
@@ -351,14 +351,14 @@ function wpas_make_button( $label = null, $args = array() ) {
  * @param  mixed $post_id ID of the ticket to check
  * @return string         Current status of the ticket
  */
-function wpas_get_ticket_status( $post_id = null ) {
+function mumei_ayuda_get_ticket_status( $post_id = null ) {
 
 	if ( is_null( $post_id ) ) {
 		global $post;
 		$post_id = $post->ID;
 	}
 
-	return get_post_meta( $post_id, '_wpas_status', true );
+	return get_post_meta( $post_id, '_mumei_ayuda_status', true );
 
 }
 
@@ -374,20 +374,20 @@ function wpas_get_ticket_status( $post_id = null ) {
  *
  * @return string           Ticket status / state
  */
-function wpas_get_ticket_status_state( $post_id ) {
+function mumei_ayuda_get_ticket_status_state( $post_id ) {
 
-	$status = wpas_get_ticket_status( $post_id );
+	$status = mumei_ayuda_get_ticket_status( $post_id );
 
 	if ( 'closed' === $status ) {
-		$output = __( 'Closed', 'awesome-support' );
+		$output = __( 'Closed', 'ayuda-help-desk' );
 	} else {
 
 		$post          = get_post( $post_id );
 		$post_status   = $post->post_status;
-		$custom_status = wpas_get_post_status();
+		$custom_status = mumei_ayuda_get_post_status();
 
 		if ( ! array_key_exists( $post_status, $custom_status ) ) {
-			$output = __( 'Open', 'awesome-support' );
+			$output = __( 'Open', 'ayuda-help-desk' );
 		} else {
 			$output = $custom_status[ $post_status ];
 		}
@@ -403,7 +403,7 @@ function wpas_get_ticket_status_state( $post_id ) {
  * Gets the ticket status. If the ticket is closed nothing fancy.
  * If not, we return the ticket state instead of the "Open" status.
  *
- * The difference with wpas_get_ticket_status_state() is that only slugs are returned. No translation or capitalized
+ * The difference with mumei_ayuda_get_ticket_status_state() is that only slugs are returned. No translation or capitalized
  * terms.
  *
  * @since  3.3
@@ -412,9 +412,9 @@ function wpas_get_ticket_status_state( $post_id ) {
  *
  * @return string           Ticket status / state
  */
-function wpas_get_ticket_status_state_slug( $post_id ) {
+function mumei_ayuda_get_ticket_status_state_slug( $post_id ) {
 
-	$status = wpas_get_ticket_status( $post_id );
+	$status = mumei_ayuda_get_ticket_status( $post_id );
 
 	if ( 'closed' === $status ) {
 		return $status;
@@ -422,7 +422,7 @@ function wpas_get_ticket_status_state_slug( $post_id ) {
 
 	$post          = get_post( $post_id );
 	$post_status   = $post->post_status;
-	$custom_status = wpas_get_post_status();
+	$custom_status = mumei_ayuda_get_post_status();
 
 	if ( ! array_key_exists( $post_status, $custom_status ) ) {
 		return 'open';
@@ -432,7 +432,7 @@ function wpas_get_ticket_status_state_slug( $post_id ) {
 
 }
 
-function wpas_get_current_admin_url() {
+function mumei_ayuda_get_current_admin_url() {
 
 	global $pagenow;
 
@@ -461,7 +461,7 @@ function wpas_get_current_admin_url() {
  *
  * @return integer           Returns false if location is not provided, true otherwise
  */
-function wpas_redirect( $case, $location = null, $post_id = null ) {
+function mumei_ayuda_redirect( $case, $location = null, $post_id = null ) {
 
 	if ( is_null( $location ) ) {
 		return false;
@@ -473,7 +473,7 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
 	 * @param  string $location URL to redirect to
 	 * @param  mixed  $post_id  ID of the post to redirect to or null if none specified
 	 */
-	$location = apply_filters( "wpas_redirect_$case", $location, $post_id );
+	$location = apply_filters( "mumei_ayuda_redirect_$case", $location, $post_id );
 	$location = wp_sanitize_redirect( $location );
 
 	if ( ! headers_sent() ) {
@@ -489,7 +489,7 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
 /**
  * Write log file.
  *
- * Wrapper function for WPAS_Logger. The function
+ * Wrapper function for MUMEI_AYUDA_Logger. The function
  * will open (or create if needed) a log file
  * and write the $message at the end of it.
  *
@@ -498,8 +498,8 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
  * @param  string $message The message to write
  * @return void
  */
-function wpas_write_log( $handle, $message ) {	
-	$log = new WPAS_Logger( $handle );
+function mumei_ayuda_write_log( $handle, $message ) {	
+	$log = new MUMEI_AYUDA_Logger( $handle );
 	$log->add( $message );
 }
 
@@ -513,13 +513,13 @@ function wpas_write_log( $handle, $message ) {
  * @since  3.0.2
  * @return void
  */
-function wpas_missing_dependencies() { 
+function mumei_ayuda_missing_dependencies() { 
 	// translators: %1$s is the name of the dependency or action needed, %2$s is the URL to install the production version of the plugin.
-	$x_content = __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %1$s before anything else. If you don’t know what this is you should <a href="%2$s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' );
+	$x_content = __( 'Ayuda – Help Desk dependencies are missing. The plugin can’t be loaded properly. Please run %1$s before anything else. If you don’t know what this is you should <a href="%2$s" class="thickbox">install the production version</a> of this plugin instead.', 'ayuda-help-desk' );
 
 	?>
 		<div class="error">
-			<p><?php printf( wp_kses_post( $x_content), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
+			<p><?php printf( wp_kses_post( $x_content), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'ayuda-help-desk', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
 		</div>
 	<?php 
 }
@@ -534,10 +534,10 @@ function wpas_missing_dependencies() {
  * @param  string $entry  The entry to wrap
  * @return string         The wrapped element
  */
-function wpas_wrap_li( $entry ) {
+function mumei_ayuda_wrap_li( $entry ) {
 
 	if ( is_array( $entry ) ) {
-		$entry = wpas_array_to_ul( $entry );
+		$entry = mumei_ayuda_array_to_ul( $entry );
 	}
 
 	$entry = wp_kses_post( $entry );
@@ -552,8 +552,8 @@ function wpas_wrap_li( $entry ) {
  * @param  array $array Array to convert
  * @return string       Unordered list
  */
-function wpas_array_to_ul( $array ) {
-	$wrapped = array_map( 'wpas_wrap_li', $array );
+function mumei_ayuda_array_to_ul( $array ) {
+	$wrapped = array_map( 'mumei_ayuda_wrap_li', $array );
 	return '<ul>' . implode( '', $wrapped ) . '</ul>';
 }
 
@@ -567,10 +567,10 @@ function wpas_array_to_ul( $array ) {
  *
  * @return string          Dropdown with custom options
  */
-function wpas_dropdown( $args, $options ) {
+function mumei_ayuda_dropdown( $args, $options ) {
 
 	$defaults = array(
-		'name'          => 'wpas_user',
+		'name'          => 'mumei_ayuda_user',
 		'id'            => '',
 		'class'         => '',
 		'please_select' => false,
@@ -617,16 +617,16 @@ function wpas_dropdown( $args, $options ) {
 	?>
 		<?php
 		if ( $args['please_select'] ) {
-			echo '<option value="">' . esc_html__( 'Please select', 'awesome-support' ) . '</option>';
+			echo '<option value="">' . esc_html__( 'Please select', 'ayuda-help-desk' ) . '</option>';
 		}
 		//This has been verify by html tags ted.
-		$allow_html_tags_wpas_dropdown = array(
+		$allow_html_tags_mumei_ayuda_dropdown = array(
 				'option' => [					
 					'value' => true,
 					'selected' => true,								
 				]
 			);
-		echo wp_kses( $options, $allow_html_tags_wpas_dropdown );		
+		echo wp_kses( $options, $allow_html_tags_mumei_ayuda_dropdown );		
 		?>
 	</select>
 	<?php
@@ -648,10 +648,10 @@ function wpas_dropdown( $args, $options ) {
  * @param  string $status Specific ticket status to look for
  * @return void
  */
-function wpas_tickets_dropdown( $args = array(), $status = '' ) {
+function mumei_ayuda_tickets_dropdown( $args = array(), $status = '' ) {
 
 	$defaults = array(
-		'name'          => 'wpas_tickets',
+		'name'          => 'mumei_ayuda_tickets',
 		'id'            => '',
 		'class'         => '',
 		'exclude'       => array(),
@@ -661,14 +661,14 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	);
 
 	/* List all tickets */
-	$tickets = wpas_get_tickets( $status );
+	$tickets = mumei_ayuda_get_tickets( $status );
 	$options = '';
 
 	foreach ( $tickets as $ticket ) {
 		$options .= "<option value='$ticket->ID' " . selected( $args['selected'], $ticket->ID, false ) . ">$ticket->post_title</option>";
 	}
 	//This has been verify by html tags ted.		
-	echo  wp_kses(wpas_dropdown( wp_parse_args( $args, $defaults ), $options ), wpas_dropdown_allowed_html_tags() );
+	echo  wp_kses(mumei_ayuda_dropdown( wp_parse_args( $args, $defaults ), $options ), mumei_ayuda_dropdown_allowed_html_tags() );
 
 }
  
@@ -687,7 +687,7 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
  *
  * @return string
  */
-function wpas_show_taxonomy_terms_dropdown( $taxonomy, $field_id, $class, $selected, $showcount = false ) {
+function mumei_ayuda_show_taxonomy_terms_dropdown( $taxonomy, $field_id, $class, $selected, $showcount = false ) {
 	$categories = get_categories( array( 'taxonomy' => $taxonomy, 'hide_empty' => false ) );
 
 	$select = "<select name='$field_id' id='$field_id' class='$class'>";
@@ -720,7 +720,7 @@ function wpas_show_taxonomy_terms_dropdown( $taxonomy, $field_id, $class, $selec
  *
  * Note: We should move this to CORE AS later!
  */
-function wpas_show_assignee_dropdown_simple( $field_id, $class, $new_assignee = "" ) {
+function mumei_ayuda_show_assignee_dropdown_simple( $field_id, $class, $new_assignee = "" ) {
 
 	$args = array(
 		'name' => $field_id,
@@ -737,11 +737,11 @@ function wpas_show_assignee_dropdown_simple( $field_id, $class, $new_assignee = 
 		'data_attr' => array()
 	);
 	//This has been verify by html tags ted.
-	echo  wp_kses( wpas_users_dropdown( $args ), wpas_dropdown_allowed_html_tags());
+	echo  wp_kses( mumei_ayuda_users_dropdown( $args ), mumei_ayuda_dropdown_allowed_html_tags());
 
 }
 
-add_filter( 'locale','wpas_change_locale', 10, 1 );
+add_filter( 'locale','mumei_ayuda_change_locale', 10, 1 );
 /**
  * Change the site's locale.
  *
@@ -753,12 +753,12 @@ add_filter( 'locale','wpas_change_locale', 10, 1 );
  * @param  string $locale Site locale
  * @return string         Possibly modified locale
  */
-function wpas_change_locale( $locale ) {    
+function mumei_ayuda_change_locale( $locale ) {    
 	
-	$wpas_locale = isset( $_GET['wpas_lang'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_lang'] ) ) : '';	
+	$mumei_ayuda_locale = isset( $_GET['mumei_ayuda_lang'] ) ? sanitize_text_field( wp_unslash( $_GET['mumei_ayuda_lang'] ) ) : '';	
 	
-	if ( ! empty( $wpas_locale ) ) {
-		$locale = $wpas_locale;
+	if ( ! empty( $mumei_ayuda_locale ) ) {
+		$locale = $mumei_ayuda_locale;
 	}
 
 	return $locale;
@@ -771,7 +771,7 @@ function wpas_change_locale( $locale ) {
  * @param  string $tab Tab ID
  * @return string      URL to the required settings page
  */
-function wpas_get_settings_page_url( $tab = '' ) {
+function mumei_ayuda_get_settings_page_url( $tab = '' ) {
 
 	$admin_url  = admin_url( 'edit.php' );
 	$query_args = array( 'post_type' => 'ticket', 'page' => 'wpas-settings' );
@@ -790,7 +790,7 @@ function wpas_get_settings_page_url( $tab = '' ) {
  * @since  5.2.0
  * @return string      URL to the about page
  */
-function wpas_get_about_page_url() {
+function mumei_ayuda_get_about_page_url() {
 
 	$admin_url  = admin_url( 'edit.php' );
 	$query_args = array( 'post_type' => 'ticket', 'page' => 'wpas-about' );
@@ -830,13 +830,13 @@ if ( ! function_exists( 'shuffle_assoc' ) ) {
 	}
 }
 
-if ( ! function_exists( 'wpas_get_admin_path_from_url' ) ) {
+if ( ! function_exists( 'mumei_ayuda_get_admin_path_from_url' ) ) {
 	/**
 	 * Get the admin path based on the URL.
 	 *
 	 * @return string Admin path
 	 */
-	function wpas_get_admin_path_from_url() {
+	function mumei_ayuda_get_admin_path_from_url() {
 
 		$admin_url      = get_admin_url();
 		$site_url       = get_bloginfo( 'url' );
@@ -870,7 +870,7 @@ if ( ! function_exists( 'wpas_get_admin_path_from_url' ) ) {
  *
  * @link   http://wordpress.stackexchange.com/a/99516/16176
  */
-function wpas_sort_terms_hierarchicaly( &$cats = array(), &$into = array(), $parentId = 0 ) {
+function mumei_ayuda_sort_terms_hierarchicaly( &$cats = array(), &$into = array(), $parentId = 0 ) {
 
 	foreach ( $cats as $i => $cat ) {
 		if ( $cat->parent == $parentId ) {
@@ -881,7 +881,7 @@ function wpas_sort_terms_hierarchicaly( &$cats = array(), &$into = array(), $par
 
 	foreach ( $into as $topCat ) {
 		$topCat->children = array();
-		wpas_sort_terms_hierarchicaly( $cats, $topCat->children, $topCat->term_id );
+		mumei_ayuda_sort_terms_hierarchicaly( $cats, $topCat->children, $topCat->term_id );
 	}
 }
 
@@ -896,7 +896,7 @@ function wpas_sort_terms_hierarchicaly( &$cats = array(), &$into = array(), $par
  *
  * @return void
  */
-function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 ) {
+function mumei_ayuda_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 ) {
 
 	$option = '';
 
@@ -908,15 +908,15 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 		$option .= '&#8735; ';
 	}
 
-	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
+	$option .= apply_filters( 'mumei_ayuda_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
 	$term_value = get_term_by('slug', $value, $term->taxonomy);
 	?>
 
-	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug || ($term_value && !is_wp_error($term_value) && $term_value->term_id === $term->term_id)) { echo 'selected="selected"'; } ?>><?php echo  wp_kses( $option, wpas_dropdown_allowed_html_tags()); ?></option>
+	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug || ($term_value && !is_wp_error($term_value) && $term_value->term_id === $term->term_id)) { echo 'selected="selected"'; } ?>><?php echo  wp_kses( $option, mumei_ayuda_dropdown_allowed_html_tags()); ?></option>
 	<?php if ( isset( $term->children ) && !empty( $term->children ) ) {
 		++$level;
 		foreach ( $term->children as $child ) {
-			wpas_hierarchical_taxonomy_dropdown_options( $child, $value, $level );
+			mumei_ayuda_hierarchical_taxonomy_dropdown_options( $child, $value, $level );
 		}
 	}
 
@@ -935,9 +935,9 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
  *
  * @return string
  */
-function wpas_get_submission_page_url( $post_id = false ) {
+function mumei_ayuda_get_submission_page_url( $post_id = false ) {
 
-	$submission = wpas_get_submission_pages();
+	$submission = mumei_ayuda_get_submission_pages();
 
 	if ( empty( $submission ) ) {
 		return '';
@@ -949,7 +949,7 @@ function wpas_get_submission_page_url( $post_id = false ) {
 		$url = get_permalink( (int) $submission[0] );
 	}
 
-	return wp_sanitize_redirect( apply_filters( 'wpas_submission_page_url', $url, $post_id ) );
+	return wp_sanitize_redirect( apply_filters( 'mumei_ayuda_submission_page_url', $url, $post_id ) );
 
 }
 
@@ -959,9 +959,9 @@ function wpas_get_submission_page_url( $post_id = false ) {
  * @since 3.2.3
  * @return array
  */
-function wpas_get_submission_pages() {
+function mumei_ayuda_get_submission_pages() {
 
-	$submission = wpas_get_option( 'ticket_submit' );
+	$submission = mumei_ayuda_get_option( 'ticket_submit' );
 
 	if ( ! is_array( $submission ) ) {
 		$submission = array_filter( (array) $submission );
@@ -978,9 +978,9 @@ function wpas_get_submission_pages() {
  *
  * @return string
  */
-function wpas_get_tickets_list_page_url() {
+function mumei_ayuda_get_tickets_list_page_url() {
 
-	$list = wpas_get_option( 'ticket_list' );
+	$list = mumei_ayuda_get_option( 'ticket_list' );
 
 	if ( empty( $list ) ) {
 		return '';
@@ -990,7 +990,7 @@ function wpas_get_tickets_list_page_url() {
 		$list = $list[0];
 	}
 
-	return wp_sanitize_redirect( apply_filters( 'wpas_tickets_list_page_url', get_permalink( (int) $list ) ) );
+	return wp_sanitize_redirect( apply_filters( 'mumei_ayuda_tickets_list_page_url', get_permalink( (int) $list ) ) );
 
 }
 
@@ -1003,7 +1003,7 @@ function wpas_get_tickets_list_page_url() {
  *
  * @return string|bool Reply link or false if the reply doesn't exist
  */
-function wpas_get_reply_link( $reply_id ) {
+function mumei_ayuda_get_reply_link( $reply_id ) {
 
 	$reply = get_post( $reply_id );
 
@@ -1015,7 +1015,7 @@ function wpas_get_reply_link( $reply_id ) {
 		return false;
 	}
 
-	$replies = wpas_get_replies( $reply->post_parent, array( 'read', 'unread' ) );
+	$replies = mumei_ayuda_get_replies( $reply->post_parent, array( 'read', 'unread' ) );
 
 	if ( empty( $replies ) ) {
 		return false;
@@ -1032,7 +1032,7 @@ function wpas_get_reply_link( $reply_id ) {
 	}
 
 	// We have more replies that what's displayed on one page, so let's set a session var to force displaying all replies
-	if ( $position > wpas_get_option( 'replies_per_page', 10 ) ) {
+	if ( $position > mumei_ayuda_get_option( 'replies_per_page', 10 ) ) {
 		WPAS()->session->add( 'force_all_replies', true );
 	}
 
@@ -1042,7 +1042,7 @@ function wpas_get_reply_link( $reply_id ) {
 
 }
 
-add_action( 'wpas_after_template', 'wpas_credit', 10, 3 );
+add_action( 'mumei_ayuda_after_template', 'mumei_ayuda_credit', 10, 3 );
 /**
  * Display a link to the plugin page.
  *
@@ -1050,19 +1050,19 @@ add_action( 'wpas_after_template', 'wpas_credit', 10, 3 );
  * @var string $name Template name
  * @return void
  */
-function wpas_credit( $name ) {
+function mumei_ayuda_credit( $name ) {
 
 	if ( ! in_array( $name, array( 'details', 'registration', 'submission', 'list' ) ) ) {
 		return;
 	}
 
-	if ( true === (bool) wpas_get_option( 'credit_link' ) ) {
-		echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
+	if ( true === (bool) mumei_ayuda_get_option( 'credit_link' ) ) {
+		echo '<p class="wpas-credit">Built with Ayuda – Help Desk,<br> the most versatile <a href="https://wordpress.org/plugins/ayuda-help-desk/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
 	}
 
 }
 
-add_filter( 'plugin_locale', 'wpas_change_plugin_locale', 10, 2 );
+add_filter( 'plugin_locale', 'mumei_ayuda_change_plugin_locale', 10, 2 );
 /**
  * Change the plugin locale
  *
@@ -1076,7 +1076,7 @@ add_filter( 'plugin_locale', 'wpas_change_plugin_locale', 10, 2 );
  *
  * @return string
  */
-function wpas_change_plugin_locale( $locale, $domain ) {
+function mumei_ayuda_change_plugin_locale( $locale, $domain ) {
 
 	if ( 'wpas' !== $domain ) {
 		return $locale;
@@ -1085,7 +1085,7 @@ function wpas_change_plugin_locale( $locale, $domain ) {
 	/**
 	 * Custom locale.
 	 *
-	 * The custom locale defined by the URL var $wpas_locale
+	 * The custom locale defined by the URL var $mumei_ayuda_locale
 	 * is used for debugging purpose. It makes testing language
 	 * files easy without changing the site main language.
 	 * It can also be useful when doing support on a site that's
@@ -1095,17 +1095,17 @@ function wpas_change_plugin_locale( $locale, $domain ) {
 	 * @var    string
 	 */
 	
-	$wpas_locale = isset( $_GET['wpas_locale'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_locale'] ) ) : '';
+	$mumei_ayuda_locale = isset( $_GET['mumei_ayuda_locale'] ) ? sanitize_text_field( wp_unslash( $_GET['mumei_ayuda_locale'] ) ) : '';
 	
-	if ( ! empty( $wpas_locale ) ) {
-		$locale = $wpas_locale;
+	if ( ! empty( $mumei_ayuda_locale ) ) {
+		$locale = $mumei_ayuda_locale;
 	}
 
 	return $locale;
 
 }
 
-add_filter( 'wpas_logs_handles', 'wpas_default_log_handles', 10, 1 );
+add_filter( 'mumei_ayuda_logs_handles', 'mumei_ayuda_default_log_handles', 10, 1 );
 /**
  * Register default logs handles.
  *
@@ -1115,13 +1115,13 @@ add_filter( 'wpas_logs_handles', 'wpas_default_log_handles', 10, 1 );
  *
  * @return array          Array of registered handles with the default ones added
  */
-function wpas_default_log_handles( $handles ) {
+function mumei_ayuda_default_log_handles( $handles ) {
 	array_push( $handles, 'error' );
 
 	return $handles;
 }
 
-add_filter( 'wp_link_query_args', 'wpas_remove_tinymce_links_internal', 10, 1 );
+add_filter( 'wp_link_query_args', 'mumei_ayuda_remove_tinymce_links_internal', 10, 1 );
 /**
  * Filter the link query arguments to remove completely internal links from the list.
  *
@@ -1131,7 +1131,7 @@ add_filter( 'wp_link_query_args', 'wpas_remove_tinymce_links_internal', 10, 1 );
  *
  * @return array $query
  */
-function wpas_remove_tinymce_links_internal( $query ) {
+function mumei_ayuda_remove_tinymce_links_internal( $query ) {
 
 	/**
 	 * Getting the post ID this way is quite dirty but it seems to be the only way
@@ -1140,7 +1140,7 @@ function wpas_remove_tinymce_links_internal( $query ) {
 	$url     = wp_get_referer();
 	$post_id = url_to_postid( $url );
 
-	if ( $post_id === wpas_get_option( 'ticket_submit' ) ) {
+	if ( $post_id === mumei_ayuda_get_option( 'ticket_submit' ) ) {
 		$query['post_type'] = array( 'none' );
 	}
 
@@ -1159,7 +1159,7 @@ function wpas_remove_tinymce_links_internal( $query ) {
  *
  * @return string
  */
-function wpas_array_to_key_value_string( $array ) {
+function mumei_ayuda_array_to_key_value_string( $array ) {
 
 	$pairs = array();
 
@@ -1190,7 +1190,7 @@ function wpas_array_to_key_value_string( $array ) {
  *
  * @return array
  */
-function wpas_array_to_data_attributes( $array, $user_funct = false ) {
+function mumei_ayuda_array_to_data_attributes( $array, $user_funct = false ) {
 
 	$clean = array();
 
@@ -1225,7 +1225,7 @@ function wpas_array_to_data_attributes( $array, $user_funct = false ) {
 
 	}
 
-	return wpas_array_to_key_value_string( $clean );
+	return mumei_ayuda_array_to_key_value_string( $clean );
 
 }
 
@@ -1234,11 +1234,11 @@ function wpas_array_to_data_attributes( $array, $user_funct = false ) {
  *
  * This function is used as a user callback when preparing the front-end tickets list table.
  *
- * @see   wpas_get_tickets_list_columns()
+ * @see   mumei_ayuda_get_tickets_list_columns()
  * @since 3.3
  * @return string
  */
-function wpas_get_the_time_timestamp() {
+function mumei_ayuda_get_the_time_timestamp() {
 	return get_the_time( 'U' );
 }
 
@@ -1246,8 +1246,8 @@ function wpas_get_the_time_timestamp() {
  * Check if multi agent is enabled
  * @return boolean
  */
-function wpas_is_multi_agent_active() {
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+function mumei_ayuda_is_multi_agent_active() {
+	$options = maybe_unserialize( get_option( 'mumei_ayuda_options', array() ) );
 
 	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
 		return true;
@@ -1260,8 +1260,8 @@ function wpas_is_multi_agent_active() {
  * Check if support priority is active
  * @return boolean
  */
-function wpas_is_support_priority_active() {
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+function mumei_ayuda_is_support_priority_active() {
+	$options = maybe_unserialize( get_option( 'mumei_ayuda_options', array() ) );
 
 	if ( isset( $options['support_priority'] ) && true === boolval( $options['support_priority'] ) ) {
 		return true;
@@ -1274,8 +1274,8 @@ function wpas_is_support_priority_active() {
  * Check if ticket type is active
  * @return boolean
  */
-function wpas_is_support_ticket_type_active() {
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+function mumei_ayuda_is_support_ticket_type_active() {
+	$options = maybe_unserialize( get_option( 'mumei_ayuda_options', array() ) );
 
 	if ( isset( $options['support_ticket_type'] ) && true === boolval( $options['support_ticket_type'] ) ) {
 		return true;
@@ -1289,7 +1289,7 @@ function wpas_is_support_ticket_type_active() {
  *
  * @return string
  */
- function wpas_create_pseudo_guid(){
+ function mumei_ayuda_create_pseudo_guid(){
 	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(16384, 20479), wp_rand(32768, 49151), wp_rand(0, 65535), wp_rand(0, 65535), wp_rand(0, 65535));
  }
 
@@ -1299,7 +1299,7 @@ function wpas_is_support_ticket_type_active() {
  *
  * @return string
  */
- function wpas_random_hash() {
+ function mumei_ayuda_random_hash() {
 
 	$time  = time();
 	$the_hash = md5( $time . (string) random_int(0, getrandmax()) );
@@ -1317,7 +1317,7 @@ function wpas_is_support_ticket_type_active() {
  *
  * @return string
  */
- function wpas_filter_input_server( $input_var = 'REQUEST_URI' ) {
+ function mumei_ayuda_filter_input_server( $input_var = 'REQUEST_URI' ) {
 	
 	$filtered_input = isset( $_SERVER[$input_var] ) ?  sanitize_text_field( wp_unslash( $_SERVER[$input_var] ) ) : '';	
 	 if ( empty( $filtered_input ) ) {
@@ -1345,11 +1345,11 @@ function wpas_is_support_ticket_type_active() {
  */
  function is_saas() {
 
-	if ( ! defined( 'WPAS_SAAS' ) ) {
+	if ( ! defined( 'MUMEI_AYUDA_SAAS' ) ) {
 		return false ;
-	} elseif  ( ( defined( 'WPAS_SAAS' ) && false === WPAS_SAAS ) ) {
+	} elseif  ( ( defined( 'MUMEI_AYUDA_SAAS' ) && false === MUMEI_AYUDA_SAAS ) ) {
 		return false ;
-	} elseif  ( ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) ) {
+	} elseif  ( ( defined( 'MUMEI_AYUDA_SAAS' ) && true === MUMEI_AYUDA_SAAS ) ) {
 		return true ;
 	}
 
@@ -1370,7 +1370,7 @@ function wpas_is_support_ticket_type_active() {
  *
  * @return boolean
  */
- function wpas_gutenberg_meta_box_compatible() {
+ function mumei_ayuda_gutenberg_meta_box_compatible() {
 	 $is_compatible = false ;
 
 	 /**
@@ -1378,12 +1378,12 @@ function wpas_is_support_ticket_type_active() {
 	  * to fallback to the regular editor anyway.  This will then prevent the "Gutenberg Incompatible Meta Box"
 	  * message from showing up in our metaboxes
 	  */
-	  if ( ! class_exists( 'WPAS_API' ) ) {
+	  if ( ! class_exists( 'MUMEI_AYUDA_API' ) ) {
 		  $is_compatible = true ;
 	  }
 
 	 // Override everything anyway based on a variable in the wp-config file.
-	 if ( defined('WPAS_GUTENBERG_META_BOX_COMPATIBLE') && true === WPAS_GUTENBERG_META_BOX_COMPATIBLE )  {
+	 if ( defined('MUMEI_AYUDA_GUTENBERG_META_BOX_COMPATIBLE') && true === MUMEI_AYUDA_GUTENBERG_META_BOX_COMPATIBLE )  {
 		 $is_compatible = true ;
 	 }
 
@@ -1398,7 +1398,7 @@ function wpas_is_support_ticket_type_active() {
  *
  * @return boolean
  */
- function wpas_is_agent( $agent_id = false ) {
+ function mumei_ayuda_is_agent( $agent_id = false ) {
 
 	if ( ! $agent_id ) {
 		// assume current user;
@@ -1411,14 +1411,14 @@ function wpas_is_support_ticket_type_active() {
 }
 
  /**
- * Returns TRUE if the current user is an Awesome Support Admin
+ * Returns TRUE if the current user is an Ayuda – Help Desk Admin
  * Returns FALSE if not.
  *
  * @since 4.4.0
  *
  * @return boolean
  */
- function wpas_is_asadmin() {
+ function mumei_ayuda_is_asadmin() {
 	return ( is_super_admin() || current_user_can( 'administrator' ) || current_user_can( 'administer_awesome_support' ) );
  }
 
@@ -1432,7 +1432,7 @@ function wpas_is_support_ticket_type_active() {
  *
  * @return boolean
  */
- function wpas_is_user_agent_on_ticket( $ticket ) {
+ function mumei_ayuda_is_user_agent_on_ticket( $ticket ) {
 
 	$ticket_id = null;
 	$post = null ;
@@ -1460,9 +1460,9 @@ function wpas_is_support_ticket_type_active() {
 		 * Get author and agent ids on the ticket
 		 */
 		$author_id = intval( $post->post_author );
-		$agent_id = intval(get_post_meta( $post->ID, '_wpas_assignee', true ));
-		$agent_id2 = intval(get_post_meta( $post->ID, '_wpas_secondary_assignee', true ));
-		$agent_id3 = intval(get_post_meta( $post->ID, '_wpas_tertiary_assignee', true ));
+		$agent_id = intval(get_post_meta( $post->ID, '_mumei_ayuda_assignee', true ));
+		$agent_id2 = intval(get_post_meta( $post->ID, '_mumei_ayuda_secondary_assignee', true ));
+		$agent_id3 = intval(get_post_meta( $post->ID, '_mumei_ayuda_tertiary_assignee', true ));
 
 		$current_user = get_current_user_id();
 
@@ -1477,7 +1477,7 @@ function wpas_is_support_ticket_type_active() {
 
 	}
 
-	return apply_filters('wpas_is_user_agent_on_ticket', $is_agent_on_ticket);
+	return apply_filters('mumei_ayuda_is_user_agent_on_ticket', $is_agent_on_ticket);
 
  }
 
@@ -1491,7 +1491,7 @@ function wpas_is_support_ticket_type_active() {
  *
  * @return boolean
  */
-function wpas_get_current_user_role() {
+function mumei_ayuda_get_current_user_role() {
   
 	if ( ! is_user_logged_in() ) {
 		return false;
@@ -1518,7 +1518,7 @@ function wpas_get_current_user_role() {
  *
  * @return boolean
  */
-function wpas_get_current_user_roles() {
+function mumei_ayuda_get_current_user_roles() {
 	if ( ! is_user_logged_in() ) {
 		return false;
 	}
@@ -1549,7 +1549,7 @@ function wpas_get_current_user_roles() {
  *
  * @return boolean
  */
- function wpas_role_in_list( $role, $role_list ) {
+ function mumei_ayuda_role_in_list( $role, $role_list ) {
 
 	$roles = explode( ',', $role_list ) ;
 
@@ -1578,20 +1578,20 @@ function wpas_get_current_user_roles() {
  *
  * @return boolean
  */
- function wpas_current_role_in_list( $role_list ) {
+ function mumei_ayuda_current_role_in_list( $role_list ) {
 
 	 // If list of roles is empty for some reason return false
 	 if ( true === empty( $role_list ) ) {
 		 return false ;
 	 }
 
-	$current_roles = wpas_get_current_user_roles();  // note that we are expecting an array of roles.
+	$current_roles = mumei_ayuda_get_current_user_roles();  // note that we are expecting an array of roles.
 
 	if ( empty( $current_roles ) ) return false ;  // user not logged in for some reason so return false ;
 
 	foreach ( $current_roles as $current_role ) {
 
-		if ( true === wpas_role_in_list( $current_role, $role_list ) ) {
+		if ( true === mumei_ayuda_role_in_list( $current_role, $role_list ) ) {
 			// role found so break prematurely and just return;
 			return true ;
 		}
@@ -1608,8 +1608,8 @@ function wpas_get_current_user_roles() {
 *
 * @return boolean
 */
-function wpas_can_view_custom_field_tab() {
-	if ( wpas_current_role_in_list( wpas_get_option( 'hide_cf_tab_roles' ) ) ) {
+function mumei_ayuda_can_view_custom_field_tab() {
+	if ( mumei_ayuda_current_role_in_list( mumei_ayuda_get_option( 'hide_cf_tab_roles' ) ) ) {
 		return false ;
 	} else {
 		return true ;
@@ -1621,15 +1621,15 @@ function wpas_can_view_custom_field_tab() {
  *
  * @return boolean
  */
-function wpas_can_view_ai_tab() {
-	if ( wpas_current_role_in_list( wpas_get_option( 'hide_ai_tab_roles' ) ) ) {
+function mumei_ayuda_can_view_ai_tab() {
+	if ( mumei_ayuda_current_role_in_list( mumei_ayuda_get_option( 'hide_ai_tab_roles' ) ) ) {
 
 		return false ;
 
 	} else {
 
-		$show_multiple_agents_per_ticket = boolval( wpas_get_option( 'multiple_agents_per_ticket', false ) );
-		$show_third_party_fields = boolval( wpas_get_option( 'show_third_party_fields', false ) );
+		$show_multiple_agents_per_ticket = boolval( mumei_ayuda_get_option( 'multiple_agents_per_ticket', false ) );
+		$show_third_party_fields = boolval( mumei_ayuda_get_option( 'show_third_party_fields', false ) );
 
 		if ( true === $show_multiple_agents_per_ticket or true === $show_third_party_fields ) {
 
@@ -1650,7 +1650,7 @@ function wpas_can_view_ai_tab() {
  *
  * @return array
  */
-function wpas_fields_in_ai_tab() {
+function mumei_ayuda_fields_in_ai_tab() {
 
 	$fields[] = 'secondary_assignee';
 	$fields[] = 'tertiary_assignee';
@@ -1670,9 +1670,9 @@ function wpas_fields_in_ai_tab() {
  *
  * @return boolean
  */
-function wpas_is_field_in_ai_tab( $field_name ) {
+function mumei_ayuda_is_field_in_ai_tab( $field_name ) {
 
-	$found = array_search( $field_name, wpas_fields_in_ai_tab() );
+	$found = array_search( $field_name, mumei_ayuda_fields_in_ai_tab() );
 
 	if ( false === $found ) {
 		return false ;
@@ -1687,45 +1687,45 @@ function wpas_is_field_in_ai_tab( $field_name ) {
  *
  * @return boolean
  */
-function wpas_can_delete_attachments() {
+function mumei_ayuda_can_delete_attachments() {
 
 	$can = false;
 	$user = wp_get_current_user();
-	if( wpas_is_agent() ) {
+	if( mumei_ayuda_is_agent() ) {
 	    // gets the Agent role
-		$wpas_agent_role = get_role( 'wpas_agent' );
-		if( $wpas_agent_role )
+		$mumei_ayuda_agent_role = get_role( 'mumei_ayuda_agent' );
+		if( $mumei_ayuda_agent_role )
 		{
-			if( wpas_agent_can_delete_attachments() ) {		
+			if( mumei_ayuda_agent_can_delete_attachments() ) {		
 				// This only works, because it accesses the class instance.			
-				$wpas_agent_role->add_cap( 'delete_attachment' ); 			
+				$mumei_ayuda_agent_role->add_cap( 'delete_attachment' ); 			
 				$can = true;
 			}
 			else
 			{
 				// This only works, because it accesses the class instance.			
-				$wpas_agent_role->remove_cap( 'delete_attachment' );  
+				$mumei_ayuda_agent_role->remove_cap( 'delete_attachment' );  
 			}
 		}
 	} else {
 		// gets the Support User role
-		$wpas_user_role = get_role( 'wpas_user' );
-		if( $wpas_user_role )
+		$mumei_ayuda_user_role = get_role( 'mumei_ayuda_user' );
+		if( $mumei_ayuda_user_role )
 		{
-			if( wpas_user_can_delete_attachments() ) {			
+			if( mumei_ayuda_user_can_delete_attachments() ) {			
 				// This only works, because it accesses the class instance.			
-				$wpas_user_role->add_cap( 'delete_attachment' ); 			
+				$mumei_ayuda_user_role->add_cap( 'delete_attachment' ); 			
 				$can = true;
 			}
 			else
 			{
 				// This only works, because it accesses the class instance.			
-				$wpas_user_role->remove_cap( 'delete_attachment' );  
+				$mumei_ayuda_user_role->remove_cap( 'delete_attachment' );  
 			}
 		}
 	}
 
-	return apply_filters( 'wpas_can_delete_attachments', $can );
+	return apply_filters( 'mumei_ayuda_can_delete_attachments', $can );
 }
 
 /**
@@ -1733,8 +1733,8 @@ function wpas_can_delete_attachments() {
  *
  * @return boolean
  */
-function wpas_agent_can_delete_attachments() {
-	return boolval( wpas_get_option( 'agents_can_delete_attachments' ) );
+function mumei_ayuda_agent_can_delete_attachments() {
+	return boolval( mumei_ayuda_get_option( 'agents_can_delete_attachments' ) );
 }
 
 /**
@@ -1742,8 +1742,8 @@ function wpas_agent_can_delete_attachments() {
  *
  * @return boolean
  */
-function wpas_user_can_delete_attachments() {
-	return boolval( wpas_get_option( 'users_can_delete_attachments' ) );
+function mumei_ayuda_user_can_delete_attachments() {
+	return boolval( mumei_ayuda_get_option( 'users_can_delete_attachments' ) );
 }
 
 /**
@@ -1751,8 +1751,8 @@ function wpas_user_can_delete_attachments() {
  *
  * @return boolean
  */
-function wpas_agent_can_set_auto_delete_attachments() {
-	return boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments' ) );
+function mumei_ayuda_agent_can_set_auto_delete_attachments() {
+	return boolval( mumei_ayuda_get_option( 'agent_can_set_auto_delete_attachments' ) );
 }
 
 /**
@@ -1760,8 +1760,8 @@ function wpas_agent_can_set_auto_delete_attachments() {
  *
  * @return boolean
  */
-function wpas_user_can_set_auto_delete_attachments() {
-	return boolval( wpas_get_option( 'user_can_set_auto_delete_attachments' ) );
+function mumei_ayuda_user_can_set_auto_delete_attachments() {
+	return boolval( mumei_ayuda_get_option( 'user_can_set_auto_delete_attachments' ) );
 }
 
 
@@ -1776,7 +1776,7 @@ function wpas_user_can_set_auto_delete_attachments() {
  *
  * @return int|boolean
  */
-function wpas_get_ticket_id( $post_id ) {
+function mumei_ayuda_get_ticket_id( $post_id ) {
 
 	$ticket_id = false ;
 
@@ -1816,19 +1816,19 @@ function wpas_get_ticket_id( $post_id ) {
  *
  * @return array<int>|boolean
  */
-function wpas_get_all_users_on_ticket( $post_id, $cap = 'edit_ticket' ) {
+function mumei_ayuda_get_all_users_on_ticket( $post_id, $cap = 'edit_ticket' ) {
 
 	$users = array();
-	$ticket_id = wpas_get_ticket_id( $post_id) ;
+	$ticket_id = mumei_ayuda_get_ticket_id( $post_id) ;
 
 	// If we have a ticket id get all the children of the ticket and extract the agents...
 	if ( $ticket_id ) {
 
 		$args = array(
 			'post_parent'            => $ticket_id,
-			'post_type'              => apply_filters( 'wpas_get_users_on_ticket_post_types', array( 'ticket_reply' ) ),
+			'post_type'              => apply_filters( 'mumei_ayuda_get_users_on_ticket_post_types', array( 'ticket_reply' ) ),
 			'post_status'            => 'any',
-			'order'                  => wpas_get_option( 'replies_order', 'ASC' ),
+			'order'                  => mumei_ayuda_get_option( 'replies_order', 'ASC' ),
 			'orderby'                => 'date',
 			'posts_per_page'         => - 1,
 			'no_found_rows'          => true,
@@ -1870,17 +1870,17 @@ function wpas_get_all_users_on_ticket( $post_id, $cap = 'edit_ticket' ) {
  *
  * @return array<int>|boolean
  */
-function wpas_get_all_agents_on_ticket( $post_id ) {
+function mumei_ayuda_get_all_agents_on_ticket( $post_id ) {
 
-	$agents = wpas_get_all_users_on_ticket( $post_id, 'edit_ticket' );
+	$agents = mumei_ayuda_get_all_users_on_ticket( $post_id, 'edit_ticket' );
 
 	if ( ! $agents or empty( $agents ) ) {
 		$agents = array();
 	}
 
 	// Now get the assigned agents and other agents on the ticket.
-	$ticket_id = wpas_get_ticket_id( $post_id) ;
-	$formal_agents = wpas_get_ticket_agents( $ticket_id) ;
+	$ticket_id = mumei_ayuda_get_ticket_id( $post_id) ;
+	$formal_agents = mumei_ayuda_get_ticket_agents( $ticket_id) ;
 	$formal_agent_ids = array();
 
 	foreach ($formal_agents as $agent) {
@@ -1908,15 +1908,15 @@ function wpas_get_all_agents_on_ticket( $post_id ) {
  *
  * @return array<int>|boolean
  */
-function wpas_get_support_users_on_ticket( $post_id ) {
+function mumei_ayuda_get_support_users_on_ticket( $post_id ) {
 
-	$users = wpas_get_all_users_on_ticket( $post_id, 'view_ticket' );
+	$users = mumei_ayuda_get_all_users_on_ticket( $post_id, 'view_ticket' );
 
 	if ( ! $users or empty( $users ) ) {
 		$users = array();
 	}
 
-	$agents = wpas_get_all_agents_on_ticket( $post_id ) ;
+	$agents = mumei_ayuda_get_all_agents_on_ticket( $post_id ) ;
 
 	if ( ! $agents or empty( $agents ) ) {
 		$agents = array();
@@ -1936,7 +1936,7 @@ function wpas_get_support_users_on_ticket( $post_id ) {
  * @return boolean
  *
  */
-function wpas_is_wp_cli() {
+function mumei_ayuda_is_wp_cli() {
 	return ( defined( 'WP_CLI' ) && WP_CLI ) ;
 }
 
@@ -1950,10 +1950,10 @@ function wpas_is_wp_cli() {
  *
  * @return int|boolean
  */
-function wpas_get_primary_agent_by_ticket_id( $ticket_id ){
+function mumei_ayuda_get_primary_agent_by_ticket_id( $ticket_id ){
 
-	$agent_id = get_post_meta( $ticket_id, '_wpas_assignee', true );
-	if ( ! is_wp_error( $agent_id) && agent_id && wpas_is_agent( $agent_id ) ) {
+	$agent_id = get_post_meta( $ticket_id, '_mumei_ayuda_assignee', true );
+	if ( ! is_wp_error( $agent_id) && agent_id && mumei_ayuda_is_agent( $agent_id ) ) {
 		return $agent_id;
 	} else {
 		return false ;
@@ -1965,14 +1965,14 @@ function wpas_get_primary_agent_by_ticket_id( $ticket_id ){
 /**
  * Enqueue magnific popup
  */
-function wpas_add_magnific() {
+function mumei_ayuda_add_magnific() {
 
 
-	wp_register_style( 'wpas-magnific', WPAS_URL . 'assets/admin/css/vendor/magnific-popup.css', null, WPAS_VERSION );
-	wp_register_script( 'wpas-magnific', WPAS_URL . 'assets/admin/js/vendor/jquery.magnific-popup.min.js', array( 'jquery' ), WPAS_VERSION );
+	wp_register_style( 'wpas-magnific', MUMEI_AYUDA_URL . 'assets/admin/css/vendor/magnific-popup.css', null, MUMEI_AYUDA_VERSION );
+	wp_register_script( 'wpas-magnific', MUMEI_AYUDA_URL . 'assets/admin/js/vendor/jquery.magnific-popup.min.js', array( 'jquery' ), MUMEI_AYUDA_VERSION );
 
-	wp_register_script( 'wpas-admin-popup', WPAS_URL . 'assets/admin/js/admin-popup.js', array( 'jquery', 'wpas-magnific' ), WPAS_VERSION );
-	wp_register_style( 'wpas-admin-popup', WPAS_URL . 'assets/admin/css/admin-popup.css', null, WPAS_VERSION );
+	wp_register_script( 'wpas-admin-popup', MUMEI_AYUDA_URL . 'assets/admin/js/admin-popup.js', array( 'jquery', 'wpas-magnific' ), MUMEI_AYUDA_VERSION );
+	wp_register_style( 'wpas-admin-popup', MUMEI_AYUDA_URL . 'assets/admin/css/admin-popup.css', null, MUMEI_AYUDA_VERSION );
 
 	wp_enqueue_script( 'wpas-magnific' );
 	wp_enqueue_style( 'wpas-magnific' );
@@ -1987,8 +1987,8 @@ function wpas_add_magnific() {
  * @param string $content
  * @param array $args
  */
-function wpas_get_full_screen_popup_window( $id, $content = '', $args = array() ) {
-	wpas_get_popup_window( $id, $content, $args );
+function mumei_ayuda_get_full_screen_popup_window( $id, $content = '', $args = array() ) {
+	mumei_ayuda_get_popup_window( $id, $content, $args );
 }
 
 /**
@@ -1998,7 +1998,7 @@ function wpas_get_full_screen_popup_window( $id, $content = '', $args = array() 
  * @param string $content
  * @param array $args
  */
-function wpas_get_popup_window( $id, $content = '', $args = array() ) {
+function mumei_ayuda_get_popup_window( $id, $content = '', $args = array() ) {
 
 
 	$theme = isset( $args['theme'] )  ? $args['theme'] : 'white-popup';
@@ -2020,9 +2020,9 @@ function wpas_get_popup_window( $id, $content = '', $args = array() ) {
 
 	<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" id="<?php echo esc_attr( $id ) ?>">
 		<div class="main_heading"><?php echo esc_html( $title ); ?></div>
-		<div class="wpas_mfp_window_wrapper">
-			<div class="wpas_msg"></div>
-			<div class="wpas_window_content"><?php echo  wp_kses( $content, get_allowed_html_wp_notifications() );?></div> 
+		<div class="mumei_ayuda_mfp_window_wrapper">
+			<div class="mumei_ayuda_msg"></div>
+			<div class="mumei_ayuda_window_content"><?php echo  wp_kses( $content, get_allowed_html_wp_notifications() );?></div> 
 		</div>
 
 	</div>
@@ -2037,14 +2037,14 @@ function wpas_get_popup_window( $id, $content = '', $args = array() ) {
  *
  * @return string
  */
-function wpas_full_screen_window_link( $args ) {
+function mumei_ayuda_full_screen_window_link( $args ) {
 
 	$args['window_class'] = 'wpas-mfp-fullscreen-popup';
 
-	return wpas_window_link( $args );
+	return mumei_ayuda_window_link( $args );
 }
 
-if( !function_exists( 'wpas_window_link' ) ) {
+if( !function_exists( 'mumei_ayuda_window_link' ) ) {
 
 	/**
 	 * Generate link for popup window
@@ -2053,7 +2053,7 @@ if( !function_exists( 'wpas_window_link' ) ) {
 	 *
 	 * @return string
 	 */
-	function wpas_window_link( $args ) {
+	function mumei_ayuda_window_link( $args ) {
 
 		$defaults = array(
 			'type'  => 'inline',
@@ -2066,7 +2066,7 @@ if( !function_exists( 'wpas_window_link' ) ) {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		$class = 'wpas_win_link ' . $args['class'];
+		$class = 'mumei_ayuda_win_link ' . $args['class'];
 		$title = isset( $args['title'] ) ? $args['title'] : "";
 
 		$link = '#';
@@ -2096,7 +2096,7 @@ if( !function_exists( 'wpas_window_link' ) ) {
 
 	}
 }
-if( !function_exists( 'wpas_get_allowed_html_tags' ) ) {
+if( !function_exists( 'mumei_ayuda_get_allowed_html_tags' ) ) {
 
 	/**
 	 * Generate link for popup window
@@ -2105,7 +2105,7 @@ if( !function_exists( 'wpas_get_allowed_html_tags' ) ) {
 	 *
 	 * @return string
 	 */
-	function wpas_get_allowed_html_tags() {
+	function mumei_ayuda_get_allowed_html_tags() {
 
 		
 		$global_html_attributes = [
@@ -2354,7 +2354,7 @@ if( !function_exists( 'wpas_get_allowed_html_tags' ) ) {
 
 	}
 }
-if( !function_exists( 'wpas_dropdown_allowed_html_tags' ) ) {
+if( !function_exists( 'mumei_ayuda_dropdown_allowed_html_tags' ) ) {
 
 	/**
 	 * Generate link for popup window
@@ -2363,10 +2363,10 @@ if( !function_exists( 'wpas_dropdown_allowed_html_tags' ) ) {
 	 *
 	 * @return string
 	 */
-	function wpas_dropdown_allowed_html_tags() {
+	function mumei_ayuda_dropdown_allowed_html_tags() {
 
 		//Gas basic allow html tags for dropdown
-		$gas_wpas_dropdown_allowed_html_tags = [	
+		$gas_mumei_ayuda_dropdown_allowed_html_tags = [	
 			'select' => [
 				'class' => true,
 				'id' => true,	
@@ -2382,11 +2382,11 @@ if( !function_exists( 'wpas_dropdown_allowed_html_tags' ) ) {
 		];	
 		//Gas add-on allow html tags for dropdown	
 
-		return apply_filters( 'custom_wpas_dropdown_allowed_html_tags', $gas_wpas_dropdown_allowed_html_tags ); 
+		return apply_filters( 'custom_mumei_ayuda_dropdown_allowed_html_tags', $gas_mumei_ayuda_dropdown_allowed_html_tags ); 
 
 	}
 }
-if( !function_exists( 'wpas_registration_allowed_html_tags' ) ) {
+if( !function_exists( 'mumei_ayuda_registration_allowed_html_tags' ) ) {
 
 	/**
 	 * Generate link for popup window
@@ -2395,10 +2395,10 @@ if( !function_exists( 'wpas_registration_allowed_html_tags' ) ) {
 	 *
 	 * @return string
 	 */
-	function wpas_registration_allowed_html_tags() {
+	function mumei_ayuda_registration_allowed_html_tags() {
 
 		//Gas basic allow html tags for dropdown
-		$gas_wpas_registration_allowed_html_tags = [	
+		$gas_mumei_ayuda_registration_allowed_html_tags = [	
 			'div' => [
 				'class' => true,
 				'id' => true,	
@@ -2441,7 +2441,7 @@ if( !function_exists( 'wpas_registration_allowed_html_tags' ) ) {
 		];	
 		//Gas add-on allow html tags for dropdown	
 
-		return apply_filters( 'custom_wpas_registration_allowed_html_tags', $gas_wpas_registration_allowed_html_tags ); 
+		return apply_filters( 'custom_mumei_ayuda_registration_allowed_html_tags', $gas_mumei_ayuda_registration_allowed_html_tags ); 
 
 	}
 }

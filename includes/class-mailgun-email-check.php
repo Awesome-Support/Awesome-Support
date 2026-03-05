@@ -1,10 +1,10 @@
 <?php
 /* Load the MailGun e-mail check settings */
 if ( is_admin() ) {
-	add_filter( 'wpas_plugin_settings', array( 'WPAS_MailGun_EMail_Check', 'settings' ), 10, 1 );
+	add_filter( 'mumei_ayuda_plugin_settings', array( 'MUMEI_AYUDA_MailGun_EMail_Check', 'settings' ), 10, 1 );
 }
 
-class WPAS_MailGun_EMail_Check {
+class MUMEI_AYUDA_MailGun_EMail_Check {
 
 	/**
 	 * MailGun Public API Key
@@ -26,7 +26,7 @@ class WPAS_MailGun_EMail_Check {
 	}
 
 	protected function get_api_key() {
-		return wpas_get_option( 'mailgun_api_key', '' );
+		return mumei_ayuda_get_option( 'mailgun_api_key', '' );
 	}
 	
 	/**
@@ -42,13 +42,13 @@ class WPAS_MailGun_EMail_Check {
 		}
 
 		array_push( $settings['general']['options'], array(
-				'name' => __( 'E-Mail Checking', 'awesome-support' ),
+				'name' => __( 'E-Mail Checking', 'ayuda-help-desk' ),
 				'type' => 'heading',
 			)
 		);
 
 		// translators: %s is the URL to the email validation api.
-		$desc =  __( 'You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href="%s">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups.', 'awesome-support' );
+		$desc =  __( 'You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href="%s">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups.', 'ayuda-help-desk' );
 		array_push( $settings['general']['options'], array(
 				'desc' => sprintf( $desc, esc_url( 'http://www.mailgun.com/email-validation' ) ),
 				'type' => 'note',
@@ -56,18 +56,18 @@ class WPAS_MailGun_EMail_Check {
 		);
 
 		array_push( $settings['general']['options'], array(
-				'name'    => __( 'Enable E-Mail Checking', 'awesome-support' ),
+				'name'    => __( 'Enable E-Mail Checking', 'ayuda-help-desk' ),
 				'id'      => 'enable_mail_check',
 				'type'    => 'checkbox',
 				'default' => false,
-				'desc'    => __( 'Do you want to check e-mail addresses on new registrations?', 'awesome-support' )
+				'desc'    => __( 'Do you want to check e-mail addresses on new registrations?', 'ayuda-help-desk' )
 				)
 		);
 
 		// translators: %s is the URL to the MailGun Public API Key.
-		$desc = __( 'If you don&#39;t have a MailGun account you can <a href="%s" target="_blank">create one for free here</a>.', 'awesome-support' );
+		$desc = __( 'If you don&#39;t have a MailGun account you can <a href="%s" target="_blank">create one for free here</a>.', 'ayuda-help-desk' );
 		array_push( $settings['general']['options'], array(
-				'name'    => __( 'MailGun Public API Key', 'awesome-support' ),
+				'name'    => __( 'MailGun Public API Key', 'ayuda-help-desk' ),
 				'id'      => 'mailgun_api_key',
 				'type'    => 'text',
 				'default' => '',
@@ -82,19 +82,19 @@ class WPAS_MailGun_EMail_Check {
 	public function check_email( $data = '' ) {
 
 		if ( empty( $this->public_key ) ) {
-			return new WP_Error( 'no_api_key', __( 'No API key was provided', 'awesome-support' ) );
+			return new WP_Error( 'no_api_key', __( 'No API key was provided', 'ayuda-help-desk' ) );
 		}
 
 		if ( empty( $data ) ) {
 			if ( isset( $_POST ) ) {
 				$data = $_POST;
 			} else {
-				return new WP_Error( 'no_data', __( 'No data to check', 'awesome-support' ) );
+				return new WP_Error( 'no_data', __( 'No data to check', 'ayuda-help-desk' ) );
 			}
 		}
 
 		if ( !isset( $data['email'] ) ) {
-			return new WP_Error( 'no_email', __( 'No e-mail to check', 'awesome-support' ) );
+			return new WP_Error( 'no_email', __( 'No e-mail to check', 'ayuda-help-desk' ) );
 		}
 
 		global $wp_version;

@@ -10,11 +10,11 @@
  * @deprecated 3.2.0
  * @return string             The class tag with appropriate classes
  */
-function wpas_get_field_container_class( $field_name = '', $extra = '' ) {
+function mumei_ayuda_get_field_container_class( $field_name = '', $extra = '' ) {
 
 	$class = 'wpas-form-group';
 
-	if ( isset( $_SESSION['wpas_submission_error'] ) && is_array( $_SESSION['wpas_submission_error'] ) && in_array( $field_name, $_SESSION['wpas_submission_error'] ) ) {
+	if ( isset( $_SESSION['mumei_ayuda_submission_error'] ) && is_array( $_SESSION['mumei_ayuda_submission_error'] ) && in_array( $field_name, $_SESSION['mumei_ayuda_submission_error'] ) ) {
 		$class .= ' has-error';
 	}
 
@@ -37,7 +37,7 @@ function wpas_get_field_container_class( $field_name = '', $extra = '' ) {
  * @deprecated 3.2.0
  * @return string             The class tag with appropriate classes
  */
-function wpas_get_field_class( $field_name = '', $extra = '', $echo = true ) {
+function mumei_ayuda_get_field_class( $field_name = '', $extra = '', $echo = true ) {
 
 	$class = 'wpas-form-control';
 
@@ -67,19 +67,19 @@ function wpas_get_field_class( $field_name = '', $extra = '', $echo = true ) {
  * @since  3.0.0
  * @deprecated 3.2.0
  */
-function wpas_get_field_value( $field_name ) {
+function mumei_ayuda_get_field_value( $field_name ) {
 
-	$meta = get_post_meta( get_the_ID(), '_wpas_' . $field_name, true );
+	$meta = get_post_meta( get_the_ID(), '_mumei_ayuda_' . $field_name, true );
 
-	if ( isset( $_SESSION['wpas_submission_form'] ) && is_array( $_SESSION['wpas_submission_form'] ) && array_key_exists( $field_name, $_SESSION['wpas_submission_form'] ) ) {
-		$value = sanitize_text_field( $_SESSION['wpas_submission_form'][$field_name] );
+	if ( isset( $_SESSION['mumei_ayuda_submission_form'] ) && is_array( $_SESSION['mumei_ayuda_submission_form'] ) && array_key_exists( $field_name, $_SESSION['mumei_ayuda_submission_form'] ) ) {
+		$value = sanitize_text_field( $_SESSION['mumei_ayuda_submission_form'][$field_name] );
 	} elseif ( !empty( $meta ) ) {
 		$value = $meta;
 	} else {
 		$value = '';
 	}
 
-	return apply_filters( 'wpas_get_field_value', esc_attr( wp_unslash( $value ) ), $field_name );
+	return apply_filters( 'mumei_ayuda_get_field_value', esc_attr( wp_unslash( $value ) ), $field_name );
 
 }
 
@@ -98,23 +98,23 @@ function wpas_get_field_value( $field_name ) {
  *
  * @return void
  */
-function wpas_get_message_textarea( $editor_args = array() ) {
+function mumei_ayuda_get_message_textarea( $editor_args = array() ) {
 
 	/**
 	 * Check if the description field should use the WYSIWYG editor
 	 *
 	 * @var string
 	 */
-	$textarea_class = ( true === ( $wysiwyg = boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ) ) ? 'wpas-wysiwyg' : 'wpas-textarea';
+	$textarea_class = ( true === ( $wysiwyg = boolval( mumei_ayuda_get_option( 'frontend_wysiwyg_editor' ) ) ) ) ? 'wpas-wysiwyg' : 'wpas-textarea';
 
 	if ( true === $wysiwyg ) {
 
-		$editor_defaults = apply_filters( 'wpas_ticket_editor_args', array(
+		$editor_defaults = apply_filters( 'mumei_ayuda_ticket_editor_args', array(
 			'media_buttons' => false,
-			'textarea_name' => 'wpas_message',
+			'textarea_name' => 'mumei_ayuda_message',
 			'textarea_rows' => 10,
 			'tabindex'      => 2,
-			'editor_class'  => wpas_get_field_class( 'wpas_message', $textarea_class, false ),
+			'editor_class'  => mumei_ayuda_get_field_class( 'mumei_ayuda_message', $textarea_class, false ),
 			'quicktags'     => false,
 			'tinymce'       => array(
 				'toolbar1' => 'bold,italic,underline,strikethrough,hr,|,bullist,numlist,|,link,unlink',
@@ -123,7 +123,7 @@ function wpas_get_message_textarea( $editor_args = array() ) {
 		) );
 
 		?><div class="wpas-submit-ticket-wysiwyg"><?php
-		wp_editor( wpas_get_field_value( 'wpas_message' ), 'wpas-ticket-message', apply_filters( 'wpas_reply_wysiwyg_args', $editor_defaults ) );
+		wp_editor( mumei_ayuda_get_field_value( 'mumei_ayuda_message' ), 'wpas-ticket-message', apply_filters( 'mumei_ayuda_reply_wysiwyg_args', $editor_defaults ) );
 		?></div><?php
 
 	} else {
@@ -134,10 +134,10 @@ function wpas_get_message_textarea( $editor_args = array() ) {
 		 * @since  3.0.0
 		 * @var boolean
 		 */
-		$can_submit_empty = apply_filters( 'wpas_can_message_be_empty', false );
+		$can_submit_empty = apply_filters( 'mumei_ayuda_can_message_be_empty', false );
 		?>
 		<div class="wpas-submit-ticket-wysiwyg">
-			<textarea <?php wpas_get_field_class( 'wpas_message', wp_kses_post($textarea_class) ); ?> id="wpas-ticket-message" name="wpas_message" placeholder="<?php echo wp_kses_post(apply_filters( 'wpas_form_field_placeholder_wpas_message', __( 'Describe your problem as accurately as possible', 'awesome-support' ) )); ?>" rows="10" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>><?php echo wp_kses_post(wpas_get_field_value( 'wpas_message' )); ?></textarea>
+			<textarea <?php mumei_ayuda_get_field_class( 'mumei_ayuda_message', wp_kses_post($textarea_class) ); ?> id="wpas-ticket-message" name="mumei_ayuda_message" placeholder="<?php echo wp_kses_post(apply_filters( 'mumei_ayuda_form_field_placeholder_mumei_ayuda_message', __( 'Describe your problem as accurately as possible', 'ayuda-help-desk' ) )); ?>" rows="10" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>><?php echo wp_kses_post(mumei_ayuda_get_field_value( 'mumei_ayuda_message' )); ?></textarea>
 		</div>
 	<?php }
 
@@ -158,10 +158,10 @@ function wpas_get_message_textarea( $editor_args = array() ) {
  *
  * @return string        The sanitized field value if any, an empty string otherwise
  */
-function wpas_get_registration_field_value( $field ) {
+function mumei_ayuda_get_registration_field_value( $field ) {
 
-	if ( isset( $_SESSION ) && isset( $_SESSION['wpas_registration_form'][ $field ] ) ) {
-		return sanitize_text_field( $_SESSION['wpas_registration_form'][ $field ] );
+	if ( isset( $_SESSION ) && isset( $_SESSION['mumei_ayuda_registration_form'][ $field ] ) ) {
+		return sanitize_text_field( $_SESSION['mumei_ayuda_registration_form'][ $field ] );
 	} else {
 		return '';
 	}
@@ -182,10 +182,10 @@ function wpas_get_registration_field_value( $field ) {
  * @param  boolean        $echo    Whether to echo or return the notification
  *
  * @return string           Notification (with markup)
- * @see        WPAS_Notification
+ * @see        MUMEI_AYUDA_Notification
  */
-function wpas_notification( $case, $message = '', $echo = true ) {
-	_deprecated_function( __FUNCTION__, '3.2', 'wpas_get_notification_markup()' );
+function mumei_ayuda_notification( $case, $message = '', $echo = true ) {
+	_deprecated_function( __FUNCTION__, '3.2', 'mumei_ayuda_get_notification_markup()' );
 }
 
 /**
@@ -201,7 +201,7 @@ function wpas_notification( $case, $message = '', $echo = true ) {
  *
  * @return string          Encoded message
  */
-function wpas_create_notification( $message ) {
+function mumei_ayuda_create_notification( $message ) {
 	_deprecated_function( __FUNCTION__, '3.2' );
 }
 
@@ -218,11 +218,11 @@ function wpas_create_notification( $message ) {
  * @since      3.0.0
  * @deprecated 3.3
  */
-function wpas_url_add_custom_action( $url, $action ) {
+function mumei_ayuda_url_add_custom_action( $url, $action ) {
 
-	_deprecated_function( 'wpas_url_add_custom_action', '3.3', 'wpas_do_url' );
+	_deprecated_function( 'mumei_ayuda_url_add_custom_action', '3.3', 'mumei_ayuda_do_url' );
 
-	return wpas_do_url( $url, sanitize_text_field( $action ) );
+	return mumei_ayuda_do_url( $url, sanitize_text_field( $action ) );
 }
 
 /**
@@ -235,9 +235,9 @@ function wpas_url_add_custom_action( $url, $action ) {
  * @return boolean        Nonce validity
  * @deprecated 3.3
  */
-function wpas_check_nonce( $nonce ) {
-	_deprecated_function( 'wpas_check_nonce', '3.3', 'wpas_do_url' );
-	return wp_verify_nonce( $nonce, 'wpas_custom_action' );
+function mumei_ayuda_check_nonce( $nonce ) {
+	_deprecated_function( 'mumei_ayuda_check_nonce', '3.3', 'mumei_ayuda_do_url' );
+	return wp_verify_nonce( $nonce, 'mumei_ayuda_custom_action' );
 }
 
 /**
@@ -252,9 +252,9 @@ function wpas_check_nonce( $nonce ) {
  * @since      3.0.0
  * @deprecated 3.3
  */
-function wpas_nonce_url( $url ) {
+function mumei_ayuda_nonce_url( $url ) {
 
-	_deprecated_function( 'wpas_nonce_url', '3.3', 'wpas_do_url' );
+	_deprecated_function( 'mumei_ayuda_nonce_url', '3.3', 'mumei_ayuda_do_url' );
 
-	return add_query_arg( array( 'wpas-nonce' => wp_create_nonce( 'wpas_custom_action' ) ), $url );
+	return add_query_arg( array( 'wpas-nonce' => wp_create_nonce( 'mumei_ayuda_custom_action' ) ), $url );
 }

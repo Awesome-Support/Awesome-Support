@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Functions/Actions
+ * @package   Ayuda – Help Desk/Functions/Actions
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'init', 'wpas_process_actions', 50 );
+add_action( 'init', 'mumei_ayuda_process_actions', 50 );
 /**
  * Process actions that can be triggered by $_GET or $_POST vars
  *
@@ -22,7 +22,7 @@ add_action( 'init', 'wpas_process_actions', 50 );
  * @since 3.3
  * @return void
  */
-function wpas_process_actions() {
+function mumei_ayuda_process_actions() {
 
 	$nonce = false;
 	$action = '';	
@@ -35,16 +35,16 @@ function wpas_process_actions() {
 	}
 
 	// FIX: Use action-specific nonce verification
-    if ( ! $nonce || ! $action || ! wp_verify_nonce( $nonce, 'wpas_do_' . $action ) ) {
+    if ( ! $nonce || ! $action || ! wp_verify_nonce( $nonce, 'mumei_ayuda_do_' . $action ) ) {
         return;
     }
 
 	if ( isset( $_POST['wpas-do'] ) ) {		
-		do_action( 'wpas_do_' . $action, $_POST );
+		do_action( 'mumei_ayuda_do_' . $action, $_POST );
 	}
 
 	if ( isset( $_GET['wpas-do'] ) ) {		
-		do_action( 'wpas_do_' . $action, $_GET );
+		do_action( 'mumei_ayuda_do_' . $action, $_GET );
 	}
 
 }
@@ -60,11 +60,11 @@ function wpas_process_actions() {
  *
  * @return string
  */
-function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
+function mumei_ayuda_do_field( $action, $redirect_to = '', $echo = true ) {
 
 	$field = sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'wpas-do', $action );
 
-	$field .= wp_nonce_field( 'wpas_do_' . $action, 'wpas-do-nonce', true, false );
+	$field .= wp_nonce_field( 'mumei_ayuda_do_' . $action, 'wpas-do-nonce', true, false );
 
 	$field = str_replace( 'id="wpas-do-nonce"' , 'id="wpas-do-nonce-' . $action . '"' , $field );
 
@@ -72,7 +72,7 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 		$field .= sprintf( '<input type="hidden" name="%1$s" value="%2$s">', 'redirect_to', wp_sanitize_redirect( $redirect_to ) );
 	}
 	//This has been verify by html tags ted.
-	$allow_html_tags_wpas_do_field = array(
+	$allow_html_tags_mumei_ayuda_do_field = array(
 			'input' => [
 				'type' => true,
 				'name' => true,
@@ -81,7 +81,7 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
 			]
 		);	
 	if ( $echo ) {
-		echo wp_kses($field, $allow_html_tags_wpas_do_field);	
+		echo wp_kses($field, $allow_html_tags_mumei_ayuda_do_field);	
 	}
 	return $field;
 }
@@ -97,10 +97,10 @@ function wpas_do_field( $action, $redirect_to = '', $echo = true ) {
  *
  * @return string
  */
-function wpas_do_url( $url, $action, $args = array() ) {
+function mumei_ayuda_do_url( $url, $action, $args = array() ) {
 
 	$args['wpas-do']       = $action;
-	$args['wpas-do-nonce'] = wp_create_nonce( 'wpas_do_' . $action );
+	$args['wpas-do-nonce'] = wp_create_nonce( 'mumei_ayuda_do_' . $action );
 	$url                   = esc_url( add_query_arg( $args, $url ) );
 
 	return $url;

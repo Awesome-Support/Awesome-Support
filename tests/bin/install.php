@@ -57,7 +57,7 @@ if ( file_exists( WP_TESTS_VERSION_FILE ) ) {
 	}
 }
 
-echo "Installing Awesome Support…" . PHP_EOL;
+echo "Installing Ayuda – Help Desk…" . PHP_EOL;
 
 wp_install( WP_TESTS_TITLE, 'admin', WP_TESTS_EMAIL, true, '', 'a' );
 

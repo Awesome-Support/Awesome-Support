@@ -1,6 +1,6 @@
 <?php
 
-	class WPAS_Custom_Field {
+	class MUMEI_AYUDA_Custom_Field {
 
 		/**
 		 * ID of the custom field.
@@ -125,7 +125,7 @@
 				// Saving callback if a specific saving method is required
 				'show_column'           => false,
 				// Show field content in the tickets list & in the admin
-				'column_callback'       => 'wpas_cf_value',
+				'column_callback'       => 'mumei_ayuda_cf_value',
 				// Column callback function
 				'sortable_column'       => false,
 				// Not compatible with taxonomies
@@ -161,7 +161,7 @@
 				'label'                 => '',
 				'label_plural'          => '',
 				'taxo_hierarchical'     => true,
-				'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+				'update_count_callback' => 'mumei_ayuda_update_ticket_tag_terms_count',
 				'taxo_manage_terms' 	=> 'create_ticket',
 				'taxo_edit_terms'   	=> 'settings_tickets',
 				'taxo_delete_terms' 	=> 'settings_tickets',
@@ -295,7 +295,7 @@
 					'-',
 					'_',
 				), ' ', $this->field_type ) ) );
-				$this->class_name = "WPAS_CF_$type";
+				$this->class_name = "MUMEI_AYUDA_CF_$type";
 			}
 
 			return $this->class_name;
@@ -310,7 +310,7 @@
 		 */
 		protected function require_field_type_class() {
 
-			$field_class_path = WPAS_PATH . "includes/custom-fields/field-types/class-cf-{$this->field['args']['field_type']}.php";
+			$field_class_path = MUMEI_AYUDA_PATH . "includes/custom-fields/field-types/class-cf-{$this->field['args']['field_type']}.php";
 
 			if ( file_exists( $field_class_path ) ) {
 
@@ -337,7 +337,7 @@
 		 */
 		public function get_field_id( $save = false ) {
 
-			$id = 'wpas_' . $this->field_id;
+			$id = 'mumei_ayuda_' . $this->field_id;
 
 			if ( true === $save ) {
 				$id = "_$id";
@@ -383,7 +383,7 @@
 				$label = $this->get_field_title();
 			}
 
-			return apply_filters( 'wpas_cf_field_label', $label, $this->field, $label );
+			return apply_filters( 'mumei_ayuda_cf_field_label', $label, $this->field, $label );
 		}
 
 		/**
@@ -479,7 +479,7 @@
 				$default = sprintf( '<div class="%s" id="%s">{{field}}</div>', $this->get_wrapper_class(), $wrapper_id );
 			}
 
-			return apply_filters( 'wpas_cf_wrapper_markup', $default, $this->field, $this->get_wrapper_class(), $wrapper_id );
+			return apply_filters( 'mumei_ayuda_cf_wrapper_markup', $default, $this->field, $this->get_wrapper_class(), $wrapper_id );
 
 		}
 
@@ -534,7 +534,7 @@
 						if ( ! current_user_can( $this->field[ 'args' ][ 'capability' ] ) && method_exists( $instance, 'display_no_edit' ) ) {
 							$field = $instance->display_no_edit();
 						} elseif ( current_user_can( $this->field[ 'args' ][ 'capability' ] ) && method_exists( $instance, 'display_admin' ) ) {
-							$field = apply_filters( 'wpas_cf_display_admin_markup', $instance->display_admin(), $this->field, $this->populate() );
+							$field = apply_filters( 'mumei_ayuda_cf_display_admin_markup', $instance->display_admin(), $this->field, $this->populate() );
 						} else {
 							$field = $instance->display();
 						}
@@ -543,17 +543,17 @@
 					}
 
 				} else {
-					$field = '<!-- ' . __( 'The custom field class does not contain the mandatory method "display"', 'awesome-support' ) . ' -->';
+					$field = '<!-- ' . __( 'The custom field class does not contain the mandatory method "display"', 'ayuda-help-desk' ) . ' -->';
 					$error = true;
 				}
 
 			} /* In case the field type / callback function does not exist */
 			else {
-				$field = '<!-- ' . __( 'The type of custom field you are trying to use does not exist', 'awesome-support' ) . ' -->';
+				$field = '<!-- ' . __( 'The type of custom field you are trying to use does not exist', 'ayuda-help-desk' ) . ' -->';
 				$error = true;
 			}
 
-			return false === $error ? $this->process_field_markup( apply_filters( 'wpas_cf_field_markup', $field, $this->populate(), $this->field ) ) : $field;
+			return false === $error ? $this->process_field_markup( apply_filters( 'mumei_ayuda_cf_field_markup', $field, $this->populate(), $this->field ) ) : $field;
 
 		}
 
@@ -574,7 +574,7 @@
 			$atts        = array();
 			$label_atts  = array();
 			$label_class = isset( $this->field[ 'args' ][ 'label_class' ] ) ? $this->field[ 'args' ][ 'label_class' ] : '';
-			$label_class = apply_filters( 'wpas_cf_field_label_class', $label_class, $this->field );
+			$label_class = apply_filters( 'mumei_ayuda_cf_field_label_class', $label_class, $this->field );
 
 			/* Add the field ID */
 			array_push( $atts, "id='{$this->get_field_id()}'" );
@@ -614,7 +614,7 @@
 			/* Add the readonly attribute */
 			if ( ! empty( $this->field[ 'args' ][ 'readonly' ] ) && true === $this->field[ 'args' ][ 'readonly' ] ) {
 				/* Allow filter to change readonly setting */
-				if ( true === apply_filters( 'wpas_cf_field_markup_readonly', $this->field[ 'args' ][ 'readonly' ], $this->field ) ) {
+				if ( true === apply_filters( 'mumei_ayuda_cf_field_markup_readonly', $this->field[ 'args' ][ 'readonly' ], $this->field ) ) {
 					array_push( $atts, 'readonly' );
 				}
 			}
@@ -624,11 +624,11 @@
 				array_push( $atts, "maxlength='{$this->field['args']['maxlength']}'" );
 			}
 
-			$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'wpas_cf_field_atts', $atts, $field, $this->field ) ), $field );
+			$field = str_replace( '{{atts}}', implode( ' ', apply_filters( 'mumei_ayuda_cf_field_atts', $atts, $field, $this->field ) ), $field );
 			$field = str_replace( '{{label_atts}}', implode( ' ', $label_atts ), $field );
 			$field = str_replace( '{{label}}', $this->get_field_label(), $field );
 
-			return apply_filters( 'wpas_cf_field_markup_processed', $field, $this->field );
+			return apply_filters( 'mumei_ayuda_cf_field_markup_processed', $field, $this->field );
 
 		}
 
@@ -676,12 +676,12 @@
 			}
 
 			/* Add the error class if needed */
-			if ( isset( $_SESSION[ 'wpas_submission_error' ] ) && is_array( $_SESSION[ 'wpas_submission_error' ] ) && in_array( $this->get_field_id(), $_SESSION[ 'wpas_submission_error' ] ) ) {
+			if ( isset( $_SESSION[ 'mumei_ayuda_submission_error' ] ) && is_array( $_SESSION[ 'mumei_ayuda_submission_error' ] ) && in_array( $this->get_field_id(), $_SESSION[ 'mumei_ayuda_submission_error' ] ) ) {
 				array_push( $classes, 'has-error' );
 			}
 
 			/* Filter the final list */
-			$classes = apply_filters( 'wpas_cf_wrapper_class', $classes, $this->field );
+			$classes = apply_filters( 'mumei_ayuda_cf_wrapper_class', $classes, $this->field );
 
 			/**
 			 * Possibly add the extra classes.
@@ -705,7 +705,7 @@
 				 *
 				 * @var $erase bool
 				 */
-				$erase = apply_filters( 'wpas_cf_wrapper_class_force_erase_extra', false );
+				$erase = apply_filters( 'mumei_ayuda_cf_wrapper_class_force_erase_extra', false );
 
 				if ( false === $erase ) {
 					$classes = array_merge( $classes, $class );
@@ -755,7 +755,7 @@
 			}
 
 			/* Filter the final list */
-			$classes = apply_filters( 'wpas_cf_field_class', $classes, $this->field );
+			$classes = apply_filters( 'mumei_ayuda_cf_field_class', $classes, $this->field );
 
 			/**
 			 * Possibly add the extra classes.
@@ -779,7 +779,7 @@
 				 *
 				 * @var $erase bool
 				 */
-				$erase = apply_filters( 'wpas_cf_field_class_force_erase_extra', false );
+				$erase = apply_filters( 'mumei_ayuda_cf_field_class_force_erase_extra', false );
 
 				if ( false === $erase ) {
 					$classes = array_merge( $classes, $class );
@@ -806,7 +806,7 @@
 			 *
 			 * @var $classes array
 			 */
-			$classes = apply_filters( 'wpas_cf_field_description_class', array(
+			$classes = apply_filters( 'mumei_ayuda_cf_field_description_class', array(
 				'backend'  => 'description',
 				'frontend' => 'wpas-help-block',
 			), $this->field );
@@ -816,7 +816,7 @@
 				$description = sprintf( '<p class="%s">%s</p>', $class, wp_kses_post( $this->field[ 'args' ][ 'desc' ] ) );
 			}
 
-			return apply_filters( 'wpas_cf_description_markup', $description );
+			return apply_filters( 'mumei_ayuda_cf_description_markup', $description );
 
 		}
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
-use WPAS_API\Auth\User;
+use MUMEI_AYUDA_API\Auth\User;
 use WP_REST_Controller;
 use WP_REST_Server;
 use WP_REST_Request;
@@ -18,7 +18,7 @@ use WP_Error;
 class TicketStatus extends TicketBase {
 
 	public function __construct() {
-		$this->namespace = wpas_api()->get_api_namespace();
+		$this->namespace = mumei_ayuda_api()->get_api_namespace();
     }
 
 	
@@ -35,7 +35,7 @@ class TicketStatus extends TicketBase {
 		register_rest_route( $this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/status', array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
+					'description' => __( 'Unique identifier for the ticket.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -47,7 +47,7 @@ class TicketStatus extends TicketBase {
 				'args' => array(
 					'status' => array(
 						'type'        => 'string',
-						'description' => __( 'Ticket status', 'awesome-support' ),
+						'description' => __( 'Ticket status', 'ayuda-help-desk' ),
 						'required'    => true
 					)
 				)
@@ -83,21 +83,21 @@ class TicketStatus extends TicketBase {
 	public function update_status( $request ) {
 
 		if ( ! isset( $request['status'] ) ) {
-			return new WP_Error( 'invalid_status_parameter', __( 'Invalid status parameter', 'awesome-support' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_status_parameter', __( 'Invalid status parameter', 'ayuda-help-desk' ), array( 'status' => 400 ) );
 		}
 
 		$post = get_post( intval( $request['ticket_id'] ) );
 
 		if ( $post->post_author != get_current_user_id() ) {
-			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update status of this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update status of this ticket.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		$status = ( $request['status'] == 'open' ) 
-				? wpas_reopen_ticket( $request[ 'ticket_id' ] ) 
-				: wpas_close_ticket( $request[ 'ticket_id' ] );
+				? mumei_ayuda_reopen_ticket( $request[ 'ticket_id' ] ) 
+				: mumei_ayuda_close_ticket( $request[ 'ticket_id' ] );
 
 		if ( ! $status ) {
-			return new WP_Error( 'ticket_status_error', __( 'Cannot change ticket status', 'awesome-support' ), array( 'status' => 400 ) );
+			return new WP_Error( 'ticket_status_error', __( 'Cannot change ticket status', 'ayuda-help-desk' ), array( 'status' => 400 ) );
 		}
 
 		return true;

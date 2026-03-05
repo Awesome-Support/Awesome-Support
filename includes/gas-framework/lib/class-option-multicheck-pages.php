@@ -26,7 +26,7 @@ class GASFrameworkOptionMulticheckPages extends GASFrameworkOptionMulticheck {
 			$title = $page->post_title;
 			if ( empty( $title ) ) {
 				// translators: %s is the title.
-				$x_content = __( 'Untitled %s', 'awesome-support' );
+				$x_content = __( 'Untitled %s', 'ayuda-help-desk' );
 				$title = sprintf( $x_content, '(ID #' . $page->ID . ')' );
 			}
 			$this->settings['options'][ $page->ID ] = $title;
@@ -49,7 +49,7 @@ class GASFrameworkOptionMulticheckPages extends GASFrameworkOptionMulticheck {
 			$title = $page->post_title;
 			if ( empty( $title ) ) {
 				// translators: %s is the title.
-				$x_content = __( 'Untitled %s', 'awesome-support' );
+				$x_content = __( 'Untitled %s', 'ayuda-help-desk' );
 				$title = sprintf( $x_content, '(ID #' . $page->ID . ')' );
 			}
 			$this->settings['options'][ $page->ID ] = $title;

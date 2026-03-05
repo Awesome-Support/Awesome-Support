@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Admin/Functions/List Table
+ * @package   Ayuda – Help Desk/Admin/Functions/List Table
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'pre_get_posts', 'wpas_hide_others_tickets', 10, 1 );
+add_action( 'pre_get_posts', 'mumei_ayuda_hide_others_tickets', 10, 1 );
 /**
  * Hide tickets not assigned to current user.
  *
@@ -26,7 +26,7 @@ add_action( 'pre_get_posts', 'wpas_hide_others_tickets', 10, 1 );
  *
  * @return boolean       True if the main query was modified, false otherwise
  */
-function wpas_hide_others_tickets( $query ) {
+function mumei_ayuda_hide_others_tickets( $query ) {
 
 	/* Make sure this is the main query */
 	if ( ! $query->is_main_query() ) {
@@ -55,7 +55,7 @@ function wpas_hide_others_tickets( $query ) {
 		$meta_query = array_filter( (array) $meta_query );
 	}
 	
-	$agents_meta_query = wpas_ticket_listing_assignee_meta_query_args( $current_user->ID );
+	$agents_meta_query = mumei_ayuda_ticket_listing_assignee_meta_query_args( $current_user->ID );
 	
 	if( !empty( $agents_meta_query ) ) {
 		$meta_query[] = $agents_meta_query;
@@ -79,7 +79,7 @@ function wpas_hide_others_tickets( $query ) {
  *
  * @return boolean True if the tickets were filtered, false otherwise
  */
-function wpas_limit_open( $query ) {
+function mumei_ayuda_limit_open( $query ) {
 
 	/* Make sure this is the main query */
 	if ( ! $query->is_main_query() ) {
@@ -99,7 +99,7 @@ function wpas_limit_open( $query ) {
 		return false;
 	}
 
-	if ( array_key_exists( $post_status, wpas_get_post_status() ) || empty( $post_status ) && true === (bool) wpas_get_option( 'hide_closed', false ) ) {
+	if ( array_key_exists( $post_status, mumei_ayuda_get_post_status() ) || empty( $post_status ) && true === (bool) mumei_ayuda_get_option( 'hide_closed', false ) ) {
 
 		// We need to update the original meta_query and not replace it to avoid filtering issues.
 		$meta_query = $query->get( 'meta_query' );
@@ -109,7 +109,7 @@ function wpas_limit_open( $query ) {
 		}
 
 		$meta_query[] = array(
-				'key'     => '_wpas_status',
+				'key'     => '_mumei_ayuda_status',
 				'value'   => 'open',
 				'compare' => '=',
 				'type'    => 'CHAR',
@@ -125,7 +125,7 @@ function wpas_limit_open( $query ) {
 
 }
 
-add_filter( 'post_row_actions', 'wpas_ticket_action_row', 10, 2 );
+add_filter( 'post_row_actions', 'mumei_ayuda_ticket_action_row', 10, 2 );
 /**
  * Add items in action row.
  *
@@ -139,23 +139,23 @@ add_filter( 'post_row_actions', 'wpas_ticket_action_row', 10, 2 );
  *
  * @return array           List of options with ours added
  */
-function wpas_ticket_action_row( $actions, $post ) {
+function mumei_ayuda_ticket_action_row( $actions, $post ) {
 
 	if ( 'ticket' === $post->post_type ) {
 
-		$status = wpas_get_ticket_status( $post->ID );
+		$status = mumei_ayuda_get_ticket_status( $post->ID );
 
 		if ( 'open' === $status ) {
-			$actions['closeticket'] = '<a href="' . wpas_get_close_ticket_url( $post->ID ) . '">' . __( 'Close', 'awesome-support' ) . '</a>';
+			$actions['closeticket'] = '<a href="' . mumei_ayuda_get_close_ticket_url( $post->ID ) . '">' . __( 'Close', 'ayuda-help-desk' ) . '</a>';
 		} elseif ( 'closed' === $status ) {
-			$actions['openticket'] = '<a href="' . wpas_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'awesome-support' ) . '</a>';
+			$actions['openticket'] = '<a href="' . mumei_ayuda_get_open_ticket_url( $post->ID ) . '">' . __( 'Open', 'ayuda-help-desk' ) . '</a>';
 		}
 	}
 
 	return $actions;
 }
 
-add_filter( 'views_edit-ticket', 'wpas_fix_tickets_count' );
+add_filter( 'views_edit-ticket', 'mumei_ayuda_fix_tickets_count' );
 /**
  * Fix the ticket count in the ticket list screen
  *
@@ -168,11 +168,11 @@ add_filter( 'views_edit-ticket', 'wpas_fix_tickets_count' );
  *
  * @return array All views with accurate count
  */
-function wpas_fix_tickets_count( $views ) {
+function mumei_ayuda_fix_tickets_count( $views ) {
 
 	global $wp_query;
 
-	$ticket_status = wpas_get_post_status(); // Our declared ticket status.
+	$ticket_status = mumei_ayuda_get_post_status(); // Our declared ticket status.
 	$status        = 'open';
 	$post_status   = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
 
@@ -192,7 +192,7 @@ function wpas_fix_tickets_count( $views ) {
 
 		if ( array_key_exists( $view, $ticket_status ) || 'all' === $view ) {
 
-			$count   = 'all' === $view ? wpas_get_ticket_count_by_status( '', $status ) : wpas_get_ticket_count_by_status( $view, $status );
+			$count   = 'all' === $view ? mumei_ayuda_get_ticket_count_by_status( '', $status ) : mumei_ayuda_get_ticket_count_by_status( $view, $status );
 			$regex   = '.*?(\\(.*\\))';
 			$replace = '';
 
@@ -214,7 +214,7 @@ function wpas_fix_tickets_count( $views ) {
 }
 
 
-add_filter( 'bulk_actions-edit-ticket', 'wpas_manage_ticket_bulk_actions', 11, 1 );
+add_filter( 'bulk_actions-edit-ticket', 'mumei_ayuda_manage_ticket_bulk_actions', 11, 1 );
 
 /**
  * Remove bulk edit action from ticket listing page
@@ -222,7 +222,7 @@ add_filter( 'bulk_actions-edit-ticket', 'wpas_manage_ticket_bulk_actions', 11, 1
  * @param array $bulk_actions
  * @return array
  */
-function wpas_manage_ticket_bulk_actions( $bulk_actions ) {
+function mumei_ayuda_manage_ticket_bulk_actions( $bulk_actions ) {
 	
 	if( isset( $bulk_actions['edit'] ) ) {
 		unset( $bulk_actions['edit'] );
@@ -232,7 +232,7 @@ function wpas_manage_ticket_bulk_actions( $bulk_actions ) {
 }
 
 
-add_filter( 'post_row_actions', 'wpas_add_print_quick_action', 10, 2 );
+add_filter( 'post_row_actions', 'mumei_ayuda_add_print_quick_action', 10, 2 );
 /**
  * Add print quick action to tickets list table
  * 
@@ -243,10 +243,10 @@ add_filter( 'post_row_actions', 'wpas_add_print_quick_action', 10, 2 );
  * 
  * @return array
  */
-function wpas_add_print_quick_action( $actions, $post ) {
+function mumei_ayuda_add_print_quick_action( $actions, $post ) {
 
 	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' ) {
-		$actions['wpas_print'] = sprintf( '<a href="#" class="wpas-admin-quick-action-print" data-id="%s">%s</a>', $post->ID, __( 'Print', 'awesome-support' ) );
+		$actions['mumei_ayuda_print'] = sprintf( '<a href="#" class="wpas-admin-quick-action-print" data-id="%s">%s</a>', $post->ID, __( 'Print', 'ayuda-help-desk' ) );
 	}
 	
 	return $actions;
@@ -254,7 +254,7 @@ function wpas_add_print_quick_action( $actions, $post ) {
 }
 
 
-add_filter( 'bulk_actions-edit-ticket', 'wpas_add_print_bulk_action' );
+add_filter( 'bulk_actions-edit-ticket', 'mumei_ayuda_add_print_bulk_action' );
 /**
  * Add print tickets bulk action to tickets list table
  * 
@@ -264,10 +264,10 @@ add_filter( 'bulk_actions-edit-ticket', 'wpas_add_print_bulk_action' );
  * 
  * @return array
  */
-function wpas_add_print_bulk_action( $actions ) {
+function mumei_ayuda_add_print_bulk_action( $actions ) {
 
 	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' ) {
-		$actions['wpas_print_tickets'] = __( 'Print Tickets', 'awesome-support' );
+		$actions['mumei_ayuda_print_tickets'] = __( 'Print Tickets', 'ayuda-help-desk' );
 	}
 
 	return $actions;

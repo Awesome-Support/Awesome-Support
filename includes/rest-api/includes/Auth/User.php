@@ -1,6 +1,6 @@
 <?php
 
-namespace WPAS_API\Auth;
+namespace MUMEI_AYUDA_API\Auth;
 
 // Load the parent class if it doesn't exist.
 if ( ! class_exists( 'WP_User' ) ) {
@@ -33,7 +33,7 @@ class User extends \WP_User {
 
 		$password = isset( $passwords[ $slug ] ) ? $passwords[ $slug ] : false;
 
-		return apply_filters( 'wpas_get_api_password', $password, $slug, $this );
+		return apply_filters( 'mumei_ayuda_get_api_password', $password, $slug, $this );
 	}
 
 	/**
@@ -100,7 +100,7 @@ class User extends \WP_User {
 		$new_item['password'] = self::chunk_password( $new_password );
 		$new_item['slug']     = $slug;
 
-		return apply_filters( 'wpas_api_create_new_api_password', $new_item, $name, $this );
+		return apply_filters( 'mumei_ayuda_api_create_new_api_password', $new_item, $name, $this );
 	}
 
 	/**
@@ -118,7 +118,7 @@ class User extends \WP_User {
 				$this->set_api_passwords( $passwords );
 
 				// notify addons of password deletion
-				apply_filters( 'wpas_api_delete_api_password', $item, $this );
+				apply_filters( 'mumei_ayuda_api_delete_api_password', $item, $this );
 
 				return true;
 			}
@@ -182,11 +182,11 @@ class User extends \WP_User {
 			}
 		}
 
-		if ( ! $authenticated && $this->user_pass && apply_filters( 'wpas_api_allow_password_authentication', true ) ) {
+		if ( ! $authenticated && $this->user_pass && apply_filters( 'mumei_ayuda_api_allow_password_authentication', true ) ) {
 			$authenticated = wp_check_password( $password, $this->user_pass, $this->ID );
 		}
 
-		return apply_filters( 'wpas_api_user_authenticate', $authenticated, $password, $this );
+		return apply_filters( 'mumei_ayuda_api_user_authenticate', $authenticated, $password, $this );
 	}
 
 	/**

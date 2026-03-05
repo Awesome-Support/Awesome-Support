@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WPAS_CF_Radio extends WPAS_Custom_Field {
+class MUMEI_AYUDA_CF_Radio extends MUMEI_AYUDA_Custom_Field {
 
 	public $options = array();
 
@@ -24,7 +24,7 @@ class WPAS_CF_Radio extends WPAS_Custom_Field {
 
 		// Radio buttons cannot be set to readonly. (A missing HTML spec??) To overcome this
 		// we set the selected radio button option to 'checked' and all others to 'disabled'.
-		$readonly = wpas_cf_field_markup_time_tracking_readonly( $this->get_field_arg( 'readonly', false ), $this->field ) ? 'disabled' : '';
+		$readonly = mumei_ayuda_cf_field_markup_time_tracking_readonly( $this->get_field_arg( 'readonly', false ), $this->field ) ? 'disabled' : '';
 
         $index = 1;
         foreach ( $this->options as $option_id => $option_label ) {

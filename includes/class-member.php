@@ -1,8 +1,8 @@
 <?php
 /**
- * Awesome Support Member.
+ * Ayuda – Help Desk Member.
  *
- * @package   Awesome Support
+ * @package   Ayuda – Help Desk
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -15,11 +15,11 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Class WPAS_Member
+ * Class MUMEI_AYUDA_Member
  *
  * @since 3.3
  */
-class WPAS_Member {
+class MUMEI_AYUDA_Member {
 
 	/**
 	 * User ID
@@ -54,7 +54,7 @@ class WPAS_Member {
 	public $caps;
 
 	/**
-	 * Whether or not the user requested is a member of Awesome Support
+	 * Whether or not the user requested is a member of Ayuda – Help Desk
 	 *
 	 * @since 3.3
 	 * @var bool
@@ -62,7 +62,7 @@ class WPAS_Member {
 	public $is_member;
 
 	/**
-	 * WPAS_Member constructor.
+	 * MUMEI_AYUDA_Member constructor.
 	 *
 	 * @param int|stdClass $user The user ID or stdClass
 	 * @throws Exception
@@ -146,7 +146,7 @@ class WPAS_Member {
 	 */
 	protected function data_defaults() {
 
-		return apply_filters( 'wpas_member_data_defaults', array(
+		return apply_filters( 'mumei_ayuda_member_data_defaults', array(
 			'ID'              => '',
 			'user_login'      => '',
 			'user_nicename'   => '',
@@ -206,7 +206,7 @@ class WPAS_Member {
 	}
 
 	/**
-	 * Check if the current user actually is an Awesome Support member
+	 * Check if the current user actually is an Ayuda – Help Desk member
 	 *
 	 * @since 3.3
 	 * @return bool
@@ -217,7 +217,7 @@ class WPAS_Member {
 		$cap = 'view_ticket';
 
 		if ( is_null( $this->is_member ) ) {
-			$this->is_member = apply_filters( 'wpas_member_is_member', array_key_exists( $cap, $this->caps ), $this->user_id, $cap, $this->roles, $this->caps );
+			$this->is_member = apply_filters( 'mumei_ayuda_member_is_member', array_key_exists( $cap, $this->caps ), $this->user_id, $cap, $this->roles, $this->caps );
 		}
 
 		// If the user is not a member we reset its profile data

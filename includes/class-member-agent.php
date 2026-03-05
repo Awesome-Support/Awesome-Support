@@ -1,19 +1,19 @@
 <?php
 /**
- * Awesome Support Agent.
+ * Ayuda – Help Desk Agent.
  *
- * @package   Awesome Support/Agent
+ * @package   Ayuda – Help Desk/Agent
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
 
-add_action( 'wpas_ticket_assignee_changed', 'wpas_update_ticket_count_on_transfer', 10, 2 );
+add_action( 'mumei_ayuda_ticket_assignee_changed', 'mumei_ayuda_update_ticket_count_on_transfer', 10, 2 );
 /**
  * Update the open agent tickets count when a ticket is transferred from one agent to another
  *
- * We do not need to add a new ticket to the new agent because it is automatically done in wpas_assign_ticket()
+ * We do not need to add a new ticket to the new agent because it is automatically done in mumei_ayuda_assign_ticket()
  *
  * @since 3.2.8
  *
@@ -22,14 +22,14 @@ add_action( 'wpas_ticket_assignee_changed', 'wpas_update_ticket_count_on_transfe
  *
  * @return void
  */
-function wpas_update_ticket_count_on_transfer( $agent_id, $previous_agent_id ) {
+function mumei_ayuda_update_ticket_count_on_transfer( $agent_id, $previous_agent_id ) {
 
-	$agent_prev = new WPAS_Member_Agent( $previous_agent_id );
+	$agent_prev = new MUMEI_AYUDA_Member_Agent( $previous_agent_id );
 	$agent_prev->ticket_minus();
 
 }
 
-class WPAS_Member_Agent extends WPAS_Member {
+class MUMEI_AYUDA_Member_Agent extends MUMEI_AYUDA_Member {
 
 	/**
 	 * Agent's departments
@@ -54,13 +54,13 @@ class WPAS_Member_Agent extends WPAS_Member {
 		if ( false === $this->is_member() ) {
 			
 			// translators: %d is the user id.
-			$x_content = __( 'The user with ID %d does not exist', 'awesome-support' );
+			$x_content = __( 'The user with ID %d does not exist', 'ayuda-help-desk' );
 
 			return new WP_Error( 'user_not_exists', sprintf( $x_content, $this->user_id ) );
 		}
 
 		if ( false === $this->has_cap( 'edit_ticket' ) ) {
-			return new WP_Error( 'user_not_agent', __( 'The user exists but is not a support agent', 'awesome-support' ) );
+			return new WP_Error( 'user_not_agent', __( 'The user exists but is not a support agent', 'ayuda-help-desk' ) );
 		}
 
 		return true;
@@ -75,7 +75,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 */
 	public function can_be_assigned() {
 
-		$can = esc_attr( get_user_option( 'wpas_can_be_assigned', $this->user_id ) );
+		$can = esc_attr( get_user_option( 'mumei_ayuda_can_be_assigned', $this->user_id ) );
 
 		return empty( $can ) ? false : true;
 	}
@@ -89,11 +89,11 @@ class WPAS_Member_Agent extends WPAS_Member {
 	public function open_tickets() {
 
 		// Deactivate this for now as it is not reliable enough. Needs more work. Ticket count not correctly updated in certain situations, like when a ticket is transferred from an agent to another
-//		$count = get_user_option( 'wpas_open_tickets', $this->user_id );
+//		$count = get_user_option( 'mumei_ayuda_open_tickets', $this->user_id );
 		$count = false;
 		if ( false === $count ) {
 			$count = count( $this->get_open_tickets() );
-			update_user_option( $this->user_id, 'wpas_open_tickets', $count );
+			update_user_option( $this->user_id, 'mumei_ayuda_open_tickets', $count );
 		}
 
 		return $count;
@@ -114,7 +114,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 		$count = (int) $this->open_tickets();
 		$count = $count + $num;
 
-		update_user_option( $this->user_id, 'wpas_open_tickets', $count );
+		update_user_option( $this->user_id, 'mumei_ayuda_open_tickets', $count );
 
 		return $count;
 
@@ -134,7 +134,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 		$count = (int) $this->open_tickets();
 		$count = $count - $num;
 
-		update_user_option( $this->user_id, 'wpas_open_tickets', $count );
+		update_user_option( $this->user_id, 'mumei_ayuda_open_tickets', $count );
 
 		return $count;
 
@@ -150,13 +150,13 @@ class WPAS_Member_Agent extends WPAS_Member {
 
 		$args                 = array();
 		$args['meta_query'][] = array(
-				'key'     => '_wpas_assignee',
+				'key'     => '_mumei_ayuda_assignee',
 				'value'   => $this->user_id,
 				'compare' => '=',
 				'type'    => 'NUMERIC',
 		);
 
-		$open_tickets = wpas_get_tickets( 'open', $args );
+		$open_tickets = mumei_ayuda_get_tickets( 'open', $args );
 
 		return $open_tickets;
 
@@ -170,13 +170,13 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 */
 	public function in_department() {
 
-		if ( false == wpas_get_option( 'departments', false ) ) {
+		if ( false == mumei_ayuda_get_option( 'departments', false ) ) {
 			return false;
 		}
 
 		if ( is_null( $this->department ) ) {
 
-			$this->department = get_user_option( 'wpas_department', $this->user_id );
+			$this->department = get_user_option( 'mumei_ayuda_department', $this->user_id );
 
 			if ( empty( $this->department ) ) {
 				$this->department = array();
@@ -184,7 +184,7 @@ class WPAS_Member_Agent extends WPAS_Member {
 
 		}
 
-		return apply_filters( 'wpas_agent_department', $this->department, $this->user_id );
+		return apply_filters( 'mumei_ayuda_agent_department', $this->department, $this->user_id );
 
 	}
 

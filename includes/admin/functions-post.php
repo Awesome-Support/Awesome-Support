@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Admin/Functions/Post
+ * @package   Ayuda – Help Desk/Admin/Functions/Post
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_filter( 'wp_insert_post_data', 'wpas_filter_ticket_data', 99, 2 );
+add_filter( 'wp_insert_post_data', 'mumei_ayuda_filter_ticket_data', 99, 2 );
 /**
  * Filter ticket data before insertion.
  *
@@ -27,7 +27,7 @@ add_filter( 'wp_insert_post_data', 'wpas_filter_ticket_data', 99, 2 );
  *
  * @return array          Modified post data for insertion
  */
-function wpas_filter_ticket_data( $data, $postarr ) {
+function mumei_ayuda_filter_ticket_data( $data, $postarr ) {
 
 	global $current_user;
 
@@ -66,7 +66,7 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 
 		// @TODO:  Its possible that this entire section of code to set the $agent_replied flag might not be needed.
 		// We'll keep it for now but its not used in this function at this time.
-		$replies       = wpas_get_replies( intval( $postarr['ID'] ) );
+		$replies       = mumei_ayuda_get_replies( intval( $postarr['ID'] ) );
 		$agent_replied = false;
 
 		if ( 0 !== count( $replies ) ) {
@@ -82,15 +82,15 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 
 		// @TODO: Its possible this if statement below might need an additional qualifier to see if $agent_replied = true.
 		// For now, tickets move to "IN PROCESS" correctly. If issues arise, see reference 6655750.
-		$turn_auto_change_status = (bool) wpas_get_option('turn_auto_change_status', true);
+		$turn_auto_change_status = (bool) mumei_ayuda_get_option('turn_auto_change_status', true);
 
 		// Get old/new authors (ticket owners)
 		$old_author = (int) get_post_field('post_author', $postarr['ID'], 'raw');
 		$new_author = isset($_POST['post_author']) ? (int) sanitize_text_field($_POST['post_author']) : 0;
 
 		// Get old/new assignees
-		$old_assignee = (int) get_post_meta($postarr['ticket_id'], '_wpas_assignee', true);
-		$new_assignee = isset($_POST['wpas_assignee']) ? (int) sanitize_text_field($_POST['wpas_assignee']) : 0;
+		$old_assignee = (int) get_post_meta($postarr['ticket_id'], '_mumei_ayuda_assignee', true);
+		$new_assignee = isset($_POST['mumei_ayuda_assignee']) ? (int) sanitize_text_field($_POST['mumei_ayuda_assignee']) : 0;
 
 		// Detect changes
 		$author_changed   = ($new_author !== $old_author);
@@ -118,16 +118,16 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 
 	if ( isset( $_POST['post_status_override'] ) && ! empty( $_POST['post_status_override'] ) ) {
 
-		$status = wpas_get_post_status();
+		$status = mumei_ayuda_get_post_status();
 
 		if ( array_key_exists( sanitize_text_field( wp_unslash( $_POST['post_status_override'] ) ), $status ) ) {
 
 			$data['post_status'] = sanitize_text_field( wp_unslash( $_POST['post_status_override'] ) );
 			
 			// translators: %s is the state of the ticket
-			$x_content = __( 'Ticket state changed to %s', 'awesome-support' );
-			if ( isset($postarr['original_post_status']) && $postarr['original_post_status'] !== $_POST['post_status_override'] && isset( $_POST['wpas_post_parent'] ) ) {
-				wpas_log_history( intval( $_POST['wpas_post_parent'] ), sprintf( $x_content, '&laquo;' . $status[ sanitize_text_field( wp_unslash( $_POST['post_status_override'] ) ) ] . '&raquo;' ) );
+			$x_content = __( 'Ticket state changed to %s', 'ayuda-help-desk' );
+			if ( isset($postarr['original_post_status']) && $postarr['original_post_status'] !== $_POST['post_status_override'] && isset( $_POST['mumei_ayuda_post_parent'] ) ) {
+				mumei_ayuda_log_history( intval( $_POST['mumei_ayuda_post_parent'] ), sprintf( $x_content, '&laquo;' . $status[ sanitize_text_field( wp_unslash( $_POST['post_status_override'] ) ) ] . '&raquo;' ) );
 			}
 		}
 
@@ -136,7 +136,7 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 	return $data;
 }
 
-add_action( 'save_post_ticket', 'wpas_save_ticket' );
+add_action( 'save_post_ticket', 'mumei_ayuda_save_ticket' );
 /**
  * Save ticket custom fields.
  *
@@ -148,7 +148,7 @@ add_action( 'save_post_ticket', 'wpas_save_ticket' );
  *
  * @since  3.0.0
  */
-function wpas_save_ticket( $post_id ) {
+function mumei_ayuda_save_ticket( $post_id ) {
 
 	/* We should already being avoiding Ajax, but let's make sure */
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE || wp_is_post_revision( $post_id ) ) {
@@ -160,7 +160,7 @@ function wpas_save_ticket( $post_id ) {
 	}
 
 	/* Now we check the nonce */
-	if ( ! isset( $_POST['wpas_cf'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wpas_cf'] ) ), 'wpas_update_cf' ) ) {
+	if ( ! isset( $_POST['mumei_ayuda_cf'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mumei_ayuda_cf'] ) ), 'mumei_ayuda_update_cf' ) ) {
 		return;
 	}
 
@@ -179,7 +179,7 @@ function wpas_save_ticket( $post_id ) {
 	/**
 	 * Save old assignee - will need to pass it to action hooks later
 	 */
-	 $old_assignee = get_post_meta( $post_id, '_wpas_assignee', true );
+	 $old_assignee = get_post_meta( $post_id, '_mumei_ayuda_assignee', true );
 
 	/* Now we can save the custom fields */
 	WPAS()->custom_fields->save_custom_fields( $post_id, $_POST );
@@ -189,20 +189,20 @@ function wpas_save_ticket( $post_id ) {
 	 * the agent is creating a ticket on behalf of the user. There are
 	 * a couple of things that we need to do then.
 	 */
-	if ( '' === $original_status = get_post_meta( $post_id, '_wpas_status', true ) ) {
+	if ( '' === $original_status = get_post_meta( $post_id, '_mumei_ayuda_status', true ) ) {
 
 		/**
 		 * First of all, set the ticket as open. This is very important.
 		 */
-		add_post_meta( $post_id, '_wpas_status', 'open', true );
+		add_post_meta( $post_id, '_mumei_ayuda_status', 'open', true );
 
 		/* Next - update other some meta values. If you add or delete from this list you also */
 		/* need to do the same thing in the /includes/functions-post.php file */
-		add_post_meta( $post_id, '_wpas_last_reply_date', null, true );
-		add_post_meta( $post_id, '_wpas_last_reply_date_gmt', null, true );
+		add_post_meta( $post_id, '_mumei_ayuda_last_reply_date', null, true );
+		add_post_meta( $post_id, '_mumei_ayuda_last_reply_date_gmt', null, true );
 
 		/* Set the slug */
-		wpas_set_ticket_slug( $post_id );
+		mumei_ayuda_set_ticket_slug( $post_id );
 
 		/**
 		 * Fire hook when a new ticket is being added - works great for notifications
@@ -211,23 +211,23 @@ function wpas_save_ticket( $post_id ) {
 		 *
 		 * @param int   $post_id Ticket ID
 		 */
-		do_action( 'wpas_post_new_ticket_admin', $post_id );
+		do_action( 'mumei_ayuda_post_new_ticket_admin', $post_id );
 
 	}
 
 	/* Save the possible ticket reply */
-	if ( ! wpas_is_new_reply_empty( $post_id ) ) {
+	if ( ! mumei_ayuda_is_new_reply_empty( $post_id ) ) {
 
-		$ticket_reply = isset($_POST['wpas_reply_ticket']) ? sanitize_text_field( wp_unslash( $_POST['wpas_reply_ticket'] ) ) : null ;
+		$ticket_reply = isset($_POST['mumei_ayuda_reply_ticket']) ? sanitize_text_field( wp_unslash( $_POST['mumei_ayuda_reply_ticket'] ) ) : null ;
 		
 		/* Check for the nonce */
 		if ( wp_verify_nonce( $ticket_reply, 'reply_ticket' ) ) {
 
 			$user_id = $current_user->ID;
-			$content = isset( $_POST['wpas_reply'] ) ? wp_kses_post( $_POST['wpas_reply'] ) : '';
+			$content = isset( $_POST['mumei_ayuda_reply'] ) ? wp_kses_post( $_POST['mumei_ayuda_reply'] ) : '';
 
 
-			$data = apply_filters( 'wpas_post_reply_admin_args', array(
+			$data = apply_filters( 'mumei_ayuda_post_reply_admin_args', array(
 				'post_content'   => $content,
 				'post_status'    => 'read',
 				'post_type'      => 'ticket_reply',
@@ -241,7 +241,7 @@ function wpas_save_ticket( $post_id ) {
 			 * Remove the save_post hook now as we're going to trigger
 			 * a new one by inserting the reply (and logging the history later).
 			 */
-			remove_action( 'save_post_ticket', 'wpas_save_ticket' );
+			remove_action( 'save_post_ticket', 'mumei_ayuda_save_ticket' );
 
 			/**
 			 * Fires right before a ticket reply is submitted
@@ -251,10 +251,10 @@ function wpas_save_ticket( $post_id ) {
 			 * @param int   $post_id Ticket ID
 			 * @param array $data    Data to be inserted as the reply
 			 */
-			do_action( 'wpas_post_reply_admin_before', $post_id, $data );
+			do_action( 'mumei_ayuda_post_reply_admin_before', $post_id, $data );
 
 			/* Insert the reply in DB */
-			$reply = wpas_add_reply( $data, $post_id );
+			$reply = mumei_ayuda_add_reply( $data, $post_id );
 
 			/**
 			 * Fires right after a ticket reply is submitted
@@ -265,44 +265,44 @@ function wpas_save_ticket( $post_id ) {
 			 * @param array    $data    Data to be inserted as the reply
 			 * @param bool|int Reply    ID on success, false on failure
 			 */
-			do_action( 'wpas_post_reply_admin_after', $post_id, $data, $reply );
+			do_action( 'mumei_ayuda_post_reply_admin_after', $post_id, $data, $reply );
 
 			/* In case the insertion failed... */
 			if ( is_wp_error( $reply ) ) {
 
 				// Fire action hook for failed reply inserted via admin
-				do_action( 'wpas_insert_reply_admin_failed', $post_id, $data, $reply );
+				do_action( 'mumei_ayuda_insert_reply_admin_failed', $post_id, $data, $reply );
 
 				/* Set the redirection */
-				$_SESSION['wpas_redirect'] = add_query_arg( array( 'wpas-message' => 'wpas_reply_error' ), get_permalink( $post_id ) );
+				$_SESSION['mumei_ayuda_redirect'] = add_query_arg( array( 'wpas-message' => 'mumei_ayuda_reply_error' ), get_permalink( $post_id ) );
 
 			} else {
 
 				/**
 				 * Fire action hook for reply inserted via admin - great place for notifications...
 				 */
-				do_action( 'wpas_insert_reply_admin_success', $post_id, $data, $reply );
+				do_action( 'mumei_ayuda_insert_reply_admin_success', $post_id, $data, $reply );
 
 				/* The agent wants to close the ticket */
-				if ( isset( $_POST['wpas_do'] ) && 'reply_close' == $_POST['wpas_do'] ) {
+				if ( isset( $_POST['mumei_ayuda_do'] ) && 'reply_close' == $_POST['mumei_ayuda_do'] ) {
 
 					/* Confirm the post type and close */
 					if ( 'ticket' == get_post_type( $post_id ) ) {
 
 						/**
-						 * wpas_ticket_before_close_by_agent hook
+						 * mumei_ayuda_ticket_before_close_by_agent hook
 						 */
-						do_action( 'wpas_ticket_before_close_by_agent', $post_id );
+						do_action( 'mumei_ayuda_ticket_before_close_by_agent', $post_id );
 
 						/* Close */
-						$closed = wpas_close_ticket( $post_id );
+						$closed = mumei_ayuda_close_ticket( $post_id );
 
 						/**
-						 * wpas_ticket_closed_by_agent hook
+						 * mumei_ayuda_ticket_closed_by_agent hook
 						 */
 
 						if( $closed ) {
-							do_action( 'wpas_ticket_closed_by_agent', $post_id );
+							do_action( 'mumei_ayuda_ticket_closed_by_agent', $post_id );
 						}
 					}
 
@@ -316,7 +316,7 @@ function wpas_save_ticket( $post_id ) {
 
 	/* Log the action */
 	if ( ! empty( $log ) ) {
-		wpas_log_history( $post_id, $log );
+		mumei_ayuda_log_history( $post_id, $log );
 	}
 
 	/* If this was a ticket update, we need to fire some action hooks and then figure out where to go next... */
@@ -327,11 +327,11 @@ function wpas_save_ticket( $post_id ) {
 		 *
 		 * @since 4.0.0
 		 */
-		do_action( 'wpas_ticket_after_update_admin_success', $post_id, $old_assignee, $_POST);
+		do_action( 'mumei_ayuda_ticket_after_update_admin_success', $post_id, $old_assignee, $_POST);
 
 		$gt_post      = null;
 		$where_after  = isset( $_POST['where_after'] ) ? sanitize_text_field( wp_unslash( $_POST['where_after'] ) ) : '';
-		$back_to_list = filter_input( INPUT_POST, 'wpas_back_to_list', FILTER_SANITIZE_NUMBER_INT );
+		$back_to_list = filter_input( INPUT_POST, 'mumei_ayuda_back_to_list', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( true === (bool) $back_to_list ) {
 			$where_after = 'back_to_list';
@@ -345,11 +345,11 @@ function wpas_save_ticket( $post_id ) {
 				break;
 
 			case 'next_ticket':
-				$gt_post = wpas_get_next_ticket( $post_id );
+				$gt_post = mumei_ayuda_get_next_ticket( $post_id );
 				break;
 
 			case 'previous_ticket':
-				$gt_post = wpas_get_previous_ticket( $post_id );
+				$gt_post = mumei_ayuda_get_previous_ticket( $post_id );
 				break;
 
 		}
@@ -363,11 +363,11 @@ function wpas_save_ticket( $post_id ) {
 		}
 	}
 
-	do_action( 'wpas_ticket_after_saved', $post_id );
-	wpas_admin_clean_ticketcount_cache( $post_id );
+	do_action( 'mumei_ayuda_ticket_after_saved', $post_id );
+	mumei_ayuda_admin_clean_ticketcount_cache( $post_id );
 }
 
-add_action( 'wpas_add_reply_after', 'wpas_mark_replies_read', 10, 2 );
+add_action( 'mumei_ayuda_add_reply_after', 'mumei_ayuda_mark_replies_read', 10, 2 );
 /**
  * Mark replies as read.
  *
@@ -383,29 +383,29 @@ add_action( 'wpas_add_reply_after', 'wpas_mark_replies_read', 10, 2 );
  *
  * @return void
  */
-function wpas_mark_replies_read( $reply_id, $data ) {
+function mumei_ayuda_mark_replies_read( $reply_id, $data ) {
 
-	$replies = wpas_get_replies( intval( $data['post_parent'] ), 'unread' );
+	$replies = mumei_ayuda_get_replies( intval( $data['post_parent'] ), 'unread' );
 
 	foreach ( $replies as $reply ) {
-		wpas_mark_reply_read( $reply->ID );
+		mumei_ayuda_mark_reply_read( $reply->ID );
 	}
 
 }
 
-add_action( 'before_delete_post', 'wpas_delete_ticket_dependencies', 10, 1 );
+add_action( 'before_delete_post', 'mumei_ayuda_delete_ticket_dependencies', 10, 1 );
 /**
  * Delete ticket dependencies.
  *
  * Delete all ticket dependencies when a ticket is deleted. This includes
  * ticket replies and ticket history. Ticket attachments are deleted by
- * WPAS_File_Upload::delete_attachments()
+ * MUMEI_AYUDA_File_Upload::delete_attachments()
  *
  * @param  integer $post_id ID of the post to be deleted
  *
  * @return void
  */
-function wpas_delete_ticket_dependencies( $post_id ) {
+function mumei_ayuda_delete_ticket_dependencies( $post_id ) {
 
 	global $post_type;
 
@@ -414,11 +414,11 @@ function wpas_delete_ticket_dependencies( $post_id ) {
 	}
 
 	/* First of all we remove this action to avoid creating a loop */
-	remove_action( 'before_delete_post', 'wpas_delete_ticket_dependencies', 10 );
+	remove_action( 'before_delete_post', 'mumei_ayuda_delete_ticket_dependencies', 10 );
 
 	$args = array(
 		'post_parent'            => $post_id,
-		'post_type'              => apply_filters( 'wpas_replies_post_type', array(
+		'post_type'              => apply_filters( 'mumei_ayuda_replies_post_type', array(
 			'ticket_history',
 			'ticket_reply',
 			'ticket_log'
@@ -435,22 +435,22 @@ function wpas_delete_ticket_dependencies( $post_id ) {
 
 	foreach ( $posts->posts as $id => $post ) {
 
-		do_action( 'wpas_before_delete_dependency', $post->ID, $post );
+		do_action( 'mumei_ayuda_before_delete_dependency', $post->ID, $post );
 
 		wp_delete_post( $post->ID, true );
 
-		do_action( 'wpas_after_delete_dependency', $post->ID, $post );
+		do_action( 'mumei_ayuda_after_delete_dependency', $post->ID, $post );
 	}
 
 	/* Decrement the number of tickets open for this agent */
-	$agent_id = get_post_meta( $post_id, '_wpas_assignee', true );
-	$agent    = new WPAS_Member_Agent( $agent_id );
+	$agent_id = get_post_meta( $post_id, '_mumei_ayuda_assignee', true );
+	$agent    = new MUMEI_AYUDA_Member_Agent( $agent_id );
 	$agent->ticket_minus();
 
 }
 
 
-add_filter( 'redirect_post_location', 'wpas_redirect_ticket_after_save', 10, 2 );
+add_filter( 'redirect_post_location', 'mumei_ayuda_redirect_ticket_after_save', 10, 2 );
 
 /**
  * Redirect user after updating ticket
@@ -460,7 +460,7 @@ add_filter( 'redirect_post_location', 'wpas_redirect_ticket_after_save', 10, 2 )
  *
  * @return string
  */
-function wpas_redirect_ticket_after_save( $location, $post_id ) {
+function mumei_ayuda_redirect_ticket_after_save( $location, $post_id ) {
 	if ( is_admin() ) {
 
 		$post = get_post( $post_id );
@@ -487,9 +487,9 @@ function wpas_redirect_ticket_after_save( $location, $post_id ) {
  *
  * @return int
  */
-function wpas_get_next_ticket( $current_ticket ) {
+function mumei_ayuda_get_next_ticket( $current_ticket ) {
 
-	return wpas_get_adjacent_ticket( $current_ticket );
+	return mumei_ayuda_get_adjacent_ticket( $current_ticket );
 
 }
 
@@ -499,9 +499,9 @@ function wpas_get_next_ticket( $current_ticket ) {
  *
  * @return int
  */
-function wpas_get_previous_ticket( $current_ticket ) {
+function mumei_ayuda_get_previous_ticket( $current_ticket ) {
 
-	return wpas_get_adjacent_ticket( $current_ticket, false );
+	return mumei_ayuda_get_adjacent_ticket( $current_ticket, false );
 
 }
 
@@ -515,7 +515,7 @@ function wpas_get_previous_ticket( $current_ticket ) {
  *
  * @return int
  */
-function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
+function mumei_ayuda_get_adjacent_ticket( $ticket_id , $next = true ) {
 
 	/* Make sure this is the admin screen */
 	if ( ! is_admin() ) {
@@ -530,10 +530,10 @@ function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
 		$order_type = 'DESC';
 	}
 
-	$custom_post_status = wpas_get_post_status();
+	$custom_post_status = mumei_ayuda_get_post_status();
 	$custom_post_status['open'] = 'Open';
 
-	$meta_query = wpas_ticket_listing_assignee_meta_query_args();
+	$meta_query = mumei_ayuda_ticket_listing_assignee_meta_query_args();
 
 	$args = array(
 		'post_type' => 'ticket',
@@ -543,7 +543,7 @@ function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
 		'post_status' => array_keys( $custom_post_status ),
 		'meta_query' => $meta_query,
 		'next_previous_adjacent' => "{$adjacent} {$ticket_id}",
-		'wpas_tickets_query' => 'listing'
+		'mumei_ayuda_tickets_query' => 'listing'
 	);
 
 	$query = new WP_Query( $args );
@@ -557,7 +557,7 @@ function wpas_get_adjacent_ticket( $ticket_id , $next = true ) {
 	return $adjacent_post_id;
 }
 
-add_filter( 'posts_clauses', 'wpas_get_adjacent_ticket_posts_clauses', 30, 2 );
+add_filter( 'posts_clauses', 'mumei_ayuda_get_adjacent_ticket_posts_clauses', 30, 2 );
 
 /**
  * Modify get_adjacent_ticket query
@@ -568,7 +568,7 @@ add_filter( 'posts_clauses', 'wpas_get_adjacent_ticket_posts_clauses', 30, 2 );
  *
  * @return array
  */
-function wpas_get_adjacent_ticket_posts_clauses( $pieces , $wp_query ) {
+function mumei_ayuda_get_adjacent_ticket_posts_clauses( $pieces , $wp_query ) {
 	global $wpdb;
 
 	if ( isset( $wp_query->query['next_previous_adjacent'] ) ) {
@@ -586,11 +586,11 @@ function wpas_get_adjacent_ticket_posts_clauses( $pieces , $wp_query ) {
  *
  * @return array|int
  */
-function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
+function mumei_ayuda_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
 
 	global $current_user;
 
-	$custom_post_status = wpas_get_post_status();
+	$custom_post_status = mumei_ayuda_get_post_status();
 	$custom_post_status['open'] = 'Open';
 
 	foreach($custom_post_status as $status => $label) {
@@ -611,7 +611,7 @@ function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
 	if ( 'any' !== $ticket_status ) {
 		if ( in_array( $ticket_status, array( 'open', 'closed' ) ) ) {
 			$meta_query[] = array(
-					'key'     => '_wpas_status',
+					'key'     => '_mumei_ayuda_status',
 					'value'   => $ticket_status,
 					'compare' => '=',
 					'type'    => 'CHAR'
@@ -621,13 +621,13 @@ function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
 
 
 
-	$meta_query = wpas_ticket_listing_assignee_meta_query_args();
+	$meta_query = mumei_ayuda_ticket_listing_assignee_meta_query_args();
 
 	if( !empty( $meta_query ) ) {
 		$args['meta_query'] = $meta_query;
 	}
 
-	$args['wpas_tickets_query'] = 'listing';
+	$args['mumei_ayuda_tickets_query'] = 'listing';
 
 	$query = new WP_Query( $args );
 	if ( empty( $query->posts ) ) {
@@ -644,40 +644,40 @@ function wpas_get_agent_tickets( $args = array(), $ticket_status = 'any' ) {
  * @param type $use_id
  * @return type
  */
-function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_filter = true ) {
+function mumei_ayuda_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_filter = true ) {
 
 	if( 0 ===  $user_id ) {
 		$user_id = get_current_user_id();
 	}
 
-	$user_can_see_all = wpas_can_user_see_all_tickets();
+	$user_can_see_all = mumei_ayuda_can_user_see_all_tickets();
 
 	$meta_query = array();
 
 	if( false === $user_can_see_all ) {
 
 		$primary_agent_meta_query = array(
-			'key'     => '_wpas_assignee',
+			'key'     => '_mumei_ayuda_assignee',
 			'value'   => (int) $user_id,
 			'compare' => '=',
 			'type'    => 'NUMERIC',
 		);
 
-		if( wpas_is_multi_agent_active() ) {
+		if( mumei_ayuda_is_multi_agent_active() ) {
 			// Check if agent is set as secondary or tertiary agent
 			$multi_agents_meta_query = array();
 			$multi_agents_meta_query['relation'] = 'OR';
 			$multi_agents_meta_query[] = $primary_agent_meta_query;
 
 			$multi_agents_meta_query[] = array(
-				'key'     => '_wpas_secondary_assignee',
+				'key'     => '_mumei_ayuda_secondary_assignee',
 				'value'   => (int) $user_id,
 				'compare' => '=',
 				'type'    => 'NUMERIC',
 			);
 
 			$multi_agents_meta_query[] = array(
-				'key'     => '_wpas_tertiary_assignee',
+				'key'     => '_mumei_ayuda_tertiary_assignee',
 				'value'   => (int) $user_id,
 				'compare' => '=',
 				'type'    => 'NUMERIC',
@@ -690,7 +690,7 @@ function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_fi
 		}
 	}
 
-	return apply_filters( 'wpas_assignee_meta_query', $meta_query, $user_id, $profile_filter );
+	return apply_filters( 'mumei_ayuda_assignee_meta_query', $meta_query, $user_id, $profile_filter );
 
 }
 
@@ -703,7 +703,7 @@ function wpas_ticket_listing_assignee_meta_query_args( $user_id = 0, $profile_fi
  *
  * @return string
  */
-function wpas_reply_control_item( $id , $args = array() ) {
+function mumei_ayuda_reply_control_item( $id , $args = array() ) {
 
 	$link = isset( $args['link'] ) ? $args['link'] : '#';
 	$title = isset( $args['title'] ) ? $args['title'] : '';
@@ -738,24 +738,24 @@ function wpas_reply_control_item( $id , $args = array() ) {
 /**
  * Check if reply content or attachments provided with new reply
  */
-function wpas_is_new_reply_empty( $ticket_id ) {
+function mumei_ayuda_is_new_reply_empty( $ticket_id ) {
 
-	$content_empty = isset( $_POST['wpas_reply'] ) && isset( $_POST['wpas_reply_ticket'] ) && '' !== $_POST['wpas_reply'] ? false : true;
+	$content_empty = isset( $_POST['mumei_ayuda_reply'] ) && isset( $_POST['mumei_ayuda_reply_ticket'] ) && '' !== $_POST['mumei_ayuda_reply'] ? false : true;
 
 	$attachments_empty = true;
 
 	// Check if agent uploaded attachments
 	if( $content_empty ) {
 
-		if ( boolval( wpas_get_option( 'ajax_upload', false ) ) || boolval( wpas_get_option( 'ajax_upload_all', false ) ) ) {
+		if ( boolval( mumei_ayuda_get_option( 'ajax_upload', false ) ) || boolval( mumei_ayuda_get_option( 'ajax_upload_all', false ) ) ) {
 
 			$upload = wp_upload_dir();
-			$dir    = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . get_current_user_id() .'/';
+			$dir    = trailingslashit( $upload['basedir'] ) . 'ayuda-help-desk/temp_' . $ticket_id . '_' . get_current_user_id() .'/';
 
 			// If temp directory exists, it means that user is uploaded attachments
 			if ( is_dir( $dir ) ) {
 
-				$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+				$filetypes = explode( ',', apply_filters( 'mumei_ayuda_attachments_filetypes', mumei_ayuda_get_option( 'attachments_filetypes' ) ) );
 				$accept    = array();
 
 				foreach ( $filetypes as $key => $type ) {
@@ -772,7 +772,7 @@ function wpas_is_new_reply_empty( $ticket_id ) {
 
 
 		} else {
-			$attachments_empty = $_FILES && isset( $_FILES['wpas_files'] ) && !empty( $_FILES['wpas_files']['name'][0] ) ? false : true;
+			$attachments_empty = $_FILES && isset( $_FILES['mumei_ayuda_files'] ) && !empty( $_FILES['mumei_ayuda_files']['name'][0] ) ? false : true;
 		}
 
 	}
@@ -780,47 +780,47 @@ function wpas_is_new_reply_empty( $ticket_id ) {
 	return ( $content_empty && $attachments_empty );
 }
 
-add_action( 'wpas_backend_ticket_status_before_actions', 'wpas_close_ticket_prevent_client_notification_field', 12 );
+add_action( 'mumei_ayuda_backend_ticket_status_before_actions', 'mumei_ayuda_close_ticket_prevent_client_notification_field', 12 );
 /**
  * Add Checkbox to prevent client notification about ticket close
  *
  * @param int $ticket_id
  */
-function wpas_close_ticket_prevent_client_notification_field( $ticket_id ) {
+function mumei_ayuda_close_ticket_prevent_client_notification_field( $ticket_id ) {
 
 	/* Do not show the checkbox if not enabled in settings */
-	if ( ! boolval( wpas_get_option( 'agents_can_suppress_closing_emails', false ) ) ) {
+	if ( ! boolval( mumei_ayuda_get_option( 'agents_can_suppress_closing_emails', false ) ) ) {
 		return ;
 	}
 
-	$close_ticket_prevent_client_notification = get_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', true );
+	$close_ticket_prevent_client_notification = get_post_meta( $ticket_id, 'mumei_ayuda_close_ticket_prevent_client_notification', true );
 	?>
 
 	<div>
 	<p>
 		<label>
 			<input type="checkbox" value="1" data-nonce="<?php echo esc_attr( wp_create_nonce( 'prevent_client_notification' ) ); ?>" name="close_ticket_prevent_client_notification" <?php checked( '1', $close_ticket_prevent_client_notification); ?> />
-			<?php esc_html_e( 'Do NOT send closing ticket email to customer', 'awesome-support' ); ?>
+			<?php esc_html_e( 'Do NOT send closing ticket email to customer', 'ayuda-help-desk' ); ?>
 		</label>
 	</p>
 	</div>
 	<?php
 }
 
-add_action( 'trashed_post', 'wpas_admin_clean_ticketcount_cache' );
-add_action( 'untrashed_post', 'wpas_admin_clean_ticketcount_cache' );
+add_action( 'trashed_post', 'mumei_ayuda_admin_clean_ticketcount_cache' );
+add_action( 'untrashed_post', 'mumei_ayuda_admin_clean_ticketcount_cache' );
 /**
  * Delete ticket count cache on ticket update
  *
  * @param int $ticket_id
  */
-function wpas_admin_clean_ticketcount_cache( $ticket_id = '' )
+function mumei_ayuda_admin_clean_ticketcount_cache( $ticket_id = '' )
 {
 	$post   = get_post( $ticket_id );
 
 	if (isset( $post ) && isset( $post->post_type) && $post->post_type !== 'ticket') {
         return;
     }   
-    set_site_transient( 'wpas_tickets_counts', null, 24 * HOUR_IN_SECONDS );   
+    set_site_transient( 'mumei_ayuda_tickets_counts', null, 24 * HOUR_IN_SECONDS );   
 }
 

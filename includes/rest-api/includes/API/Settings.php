@@ -1,8 +1,8 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
-use WPAS_API\Auth\User;
+use MUMEI_AYUDA_API\Auth\User;
 use WP_REST_Controller;
 use WP_REST_Server;
 use WP_REST_Request;
@@ -41,7 +41,7 @@ class Settings extends WP_REST_Settings_Controller {
 	public function __construct() {
 		parent::__construct();
 
-		$this->namespace = wpas_api()->get_api_namespace();
+		$this->namespace = mumei_ayuda_api()->get_api_namespace();
 		$this->rest_base = 'settings';
 
 		self::load_settings_framework();
@@ -366,14 +366,14 @@ class Settings extends WP_REST_Settings_Controller {
 			return;
 		}
 
-		require_once( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
-		require_once( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
-		require_once( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
-		require_once( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
-		require_once( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
-		require_once( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
-		require_once( WPAS_PATH . 'includes/admin/settings/settings-products-management.php' );
-		require_once( WPAS_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
+		require_once( MUMEI_AYUDA_PATH . 'includes/admin/settings/functions-settings.php' );
+		require_once( MUMEI_AYUDA_PATH . 'includes/admin/settings/settings-general.php' );
+		require_once( MUMEI_AYUDA_PATH . 'includes/admin/settings/settings-style.php' );
+		require_once( MUMEI_AYUDA_PATH . 'includes/admin/settings/settings-notifications.php' );
+		require_once( MUMEI_AYUDA_PATH . 'includes/admin/settings/settings-advanced.php' );
+		require_once( MUMEI_AYUDA_PATH . 'includes/admin/settings/settings-licenses.php' );
+		require_once( MUMEI_AYUDA_PATH . 'includes/admin/settings/settings-products-management.php' );
+		require_once( MUMEI_AYUDA_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
 
 		/**
 		 * When using the embedded framework, use it only if the framework
@@ -403,7 +403,7 @@ class Settings extends WP_REST_Settings_Controller {
 
 		// Use the embedded Gas Framework
 		if ( $useEmbeddedFramework && ! class_exists( 'GASFramework' ) ) {
-			require_once( WPAS_PATH . 'includes/gas-framework/gas-framework.php' );
+			require_once( MUMEI_AYUDA_PATH . 'includes/gas-framework/gas-framework.php' );
 		}
 
 		/*
@@ -413,8 +413,8 @@ class Settings extends WP_REST_Settings_Controller {
 
 		$settings = self::$_titan->createContainer( array(
 				'type'       => 'admin-page',
-				'name'       => __( 'Settings', 'awesome-support' ),
-				'title'      => __( 'Awesome Support Settings', 'awesome-support' ),
+				'name'       => __( 'Settings', 'ayuda-help-desk' ),
+				'title'      => __( 'Ayuda – Help Desk Settings', 'ayuda-help-desk' ),
 				'id'         => 'wpas-settings',
 				'parent'     => '',
 				'capability' => 'settings_tickets'
@@ -427,7 +427,7 @@ class Settings extends WP_REST_Settings_Controller {
 		 * @var  (array)
 		 * @see  admin/includes/settings.php
 		 */
-		$options = wpas_get_raw_settings();
+		$options = mumei_ayuda_get_raw_settings();
 
 		/* Parse options */
 		foreach ( $options as $option ) {

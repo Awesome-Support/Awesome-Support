@@ -1,9 +1,9 @@
 <?php
-add_action( 'wpas_do_register', 'wpas_register_account' );
+add_action( 'mumei_ayuda_do_register', 'mumei_ayuda_register_account' );
 /**
  * Register user account.
  *
- * This function is hooked onto wpas_do_register so that the registration process can be triggered
+ * This function is hooked onto mumei_ayuda_do_register so that the registration process can be triggered
  * when the registration form is submitted.
  *
  * @param array $data User data
@@ -11,7 +11,7 @@ add_action( 'wpas_do_register', 'wpas_register_account' );
  * @since  1.0.0
  * @return void
  */
-function wpas_register_account( $data ) {
+function mumei_ayuda_register_account( $data ) {
 
 	// Get the redirect URL
 	$redirect_to = home_url();
@@ -30,83 +30,83 @@ function wpas_register_account( $data ) {
 	}
 
 	/* Make sure registrations are open */
-	$registration = wpas_get_option( 'allow_registrations', 'allow' );
+	$registration = mumei_ayuda_get_option( 'allow_registrations', 'allow' );
 
 	if ( 'allow' !== $registration && 'moderated' !== $registration ) {
-		wpas_add_error( 'registration_not_allowed', __( 'Registrations are currently not allowed.', 'awesome-support' ) );
+		mumei_ayuda_add_error( 'registration_not_allowed', __( 'Registrations are currently not allowed.', 'ayuda-help-desk' ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 
 	// Prepare user data
 	$user = array(
-		'email'      => isset( $data['wpas_email'] ) ? $data['wpas_email'] : '',
-		'first_name' => isset( $data['wpas_first_name'] ) ? $data['wpas_first_name'] : '',
-		'last_name'  => isset( $data['wpas_last_name'] ) ? $data['wpas_last_name'] : '',
-		'pwd'        => isset( $data['wpas_password'] ) ? $data['wpas_password'] : '',
+		'email'      => isset( $data['mumei_ayuda_email'] ) ? $data['mumei_ayuda_email'] : '',
+		'first_name' => isset( $data['mumei_ayuda_first_name'] ) ? $data['mumei_ayuda_first_name'] : '',
+		'last_name'  => isset( $data['mumei_ayuda_last_name'] ) ? $data['mumei_ayuda_last_name'] : '',
+		'pwd'        => isset( $data['mumei_ayuda_password'] ) ? $data['mumei_ayuda_password'] : '',
 	);
 
 	/**
-	 * wpas_pre_register_account hook
+	 * mumei_ayuda_pre_register_account hook
 	 *
 	 * This hook is triggered all the time
 	 * even if the checks don't pass.
 	 *
 	 * @since  3.0.1
 	 */
-	do_action( 'wpas_pre_register_account', $user, $redirect_to, $data );
+	do_action( 'mumei_ayuda_pre_register_account', $user, $redirect_to, $data );
 
 	// translators: %s is the name of the checkbox that needs to be checked.
-	$x_content = __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'awesome-support' );
+	$x_content = __( 'You must check the <b>%s</b> box in order to register a support account on this site.', 'ayuda-help-desk' );
 
-	if ( wpas_get_option( 'terms_conditions', false ) && ( ! isset( $data['wpas_terms'] ) || $data['wpas_terms'][0] != "1" ) ) {
-		wpas_add_error( 'accept_terms_conditions', esc_html__( 'You did not accept the terms and conditions.', 'awesome-support' ) );
+	if ( mumei_ayuda_get_option( 'terms_conditions', false ) && ( ! isset( $data['mumei_ayuda_terms'] ) || $data['mumei_ayuda_terms'][0] != "1" ) ) {
+		mumei_ayuda_add_error( 'accept_terms_conditions', esc_html__( 'You did not accept the terms and conditions.', 'ayuda-help-desk' ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 
-	if ( wpas_get_option( 'gdpr_notice_short_desc_01', false ) && wpas_get_option( 'gdpr_notice_mandatory_01', true) && ! isset( $data['wpas_gdpr01'] ) ) {
-		wpas_add_error( 'accept_gdpr01_conditions', sprintf( $x_content, esc_html( wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) ) );
+	if ( mumei_ayuda_get_option( 'gdpr_notice_short_desc_01', false ) && mumei_ayuda_get_option( 'gdpr_notice_mandatory_01', true) && ! isset( $data['mumei_ayuda_gdpr01'] ) ) {
+		mumei_ayuda_add_error( 'accept_gdpr01_conditions', sprintf( $x_content, esc_html( mumei_ayuda_get_option( 'gdpr_notice_short_desc_01', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 
-	if ( wpas_get_option( 'gdpr_notice_short_desc_02', false ) && wpas_get_option( 'gdpr_notice_mandatory_02', true)  && ! isset( $data['wpas_gdpr02'] ) ) {
-		wpas_add_error( 'accept_gdpr02_conditions', sprintf( $x_content, esc_html( wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) ) );
+	if ( mumei_ayuda_get_option( 'gdpr_notice_short_desc_02', false ) && mumei_ayuda_get_option( 'gdpr_notice_mandatory_02', true)  && ! isset( $data['mumei_ayuda_gdpr02'] ) ) {
+		mumei_ayuda_add_error( 'accept_gdpr02_conditions', sprintf( $x_content, esc_html( mumei_ayuda_get_option( 'gdpr_notice_short_desc_02', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 
-	if ( wpas_get_option( 'gdpr_notice_short_desc_03', false ) && wpas_get_option( 'gdpr_notice_mandatory_03', true)  && ! isset( $data['wpas_gdpr03'] ) ) {
-		wpas_add_error( 'accept_gdpr03_conditions', sprintf( $x_content, esc_html( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) ) );
+	if ( mumei_ayuda_get_option( 'gdpr_notice_short_desc_03', false ) && mumei_ayuda_get_option( 'gdpr_notice_mandatory_03', true)  && ! isset( $data['mumei_ayuda_gdpr03'] ) ) {
+		mumei_ayuda_add_error( 'accept_gdpr03_conditions', sprintf( $x_content, esc_html( mumei_ayuda_get_option( 'gdpr_notice_short_desc_03', false ) ) ) );
 		wp_safe_redirect( $redirect_to );
 		exit;
 	}
 
 	/**
-	 * wpas_register_account_before hook
+	 * mumei_ayuda_register_account_before hook
 	 *
 	 * Fired right before the user is added to the database.
 	 */
-	do_action( 'wpas_register_account_before', $user );
+	do_action( 'mumei_ayuda_register_account_before', $user );
 
 	// Try and insert the new user in the database
-	$user_id = wpas_insert_user( $user );
+	$user_id = mumei_ayuda_insert_user( $user );
 
 	if ( is_wp_error( $user_id ) ) {
 
 		/**
-		 * wpas_register_account_before hook
+		 * mumei_ayuda_register_account_before hook
 		 *
 		 * Fired right after a failed attempt to register a user.
 		 *
 		 * @since  3.0.1
 		 */
-		do_action( 'wpas_register_account_failed', $user_id, $user );
+		do_action( 'mumei_ayuda_register_account_failed', $user_id, $user );
 
 		$errors = implode( '<br>', $user_id->get_error_messages() );
 
-		wpas_add_error( 'missing_fields', $errors );
+		mumei_ayuda_add_error( 'missing_fields', $errors );
 		wp_safe_redirect( $redirect_to );
 
 		exit;
@@ -121,12 +121,12 @@ function wpas_register_account( $data ) {
 		/**
 		 * Record Term and Conditions consent
 		 */
-		if ( wpas_get_option( 'terms_conditions', false ) ) {
-			$status = isset( $data['wpas_terms'] ) ? isset( $data['wpas_terms'] ) : "";
+		if ( mumei_ayuda_get_option( 'terms_conditions', false ) ) {
+			$status = isset( $data['mumei_ayuda_terms'] ) ? isset( $data['mumei_ayuda_terms'] ) : "";
 			$opt_in = ! empty ( $status ) ? strtotime( 'NOW' ) : "";
 
-			wpas_track_consent( array(
-				'item' 		=> wpas_get_option( 'terms_conditions', false ),
+			mumei_ayuda_track_consent( array(
+				'item' 		=> mumei_ayuda_get_option( 'terms_conditions', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
 				'opt_out' 	=> "",
@@ -137,13 +137,13 @@ function wpas_register_account( $data ) {
 		/**
 		 * Record GDPR 1 consent
 		 */
-		if ( wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) {
-			$status 	= isset( $data['wpas_gdpr01'] ) ? isset( $data['wpas_gdpr01'] ) : "";
+		if ( mumei_ayuda_get_option( 'gdpr_notice_short_desc_01', false ) ) {
+			$status 	= isset( $data['mumei_ayuda_gdpr01'] ) ? isset( $data['mumei_ayuda_gdpr01'] ) : "";
 			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
 			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 
-			wpas_track_consent( array(
-				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_01', false ),
+			mumei_ayuda_track_consent( array(
+				'item' 		=> mumei_ayuda_get_option( 'gdpr_notice_short_desc_01', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
 				'opt_out' 	=> '',
@@ -154,13 +154,13 @@ function wpas_register_account( $data ) {
 		/**
 		 * Record GDPR 2 consent
 		 */
-		if ( wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) {
-			$status 	= isset( $data['wpas_gdpr02'] ) ? isset( $data['wpas_gdpr02'] ) : "";
+		if ( mumei_ayuda_get_option( 'gdpr_notice_short_desc_02', false ) ) {
+			$status 	= isset( $data['mumei_ayuda_gdpr02'] ) ? isset( $data['mumei_ayuda_gdpr02'] ) : "";
 			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
 			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 
-			wpas_track_consent( array(
-				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_02', false ),
+			mumei_ayuda_track_consent( array(
+				'item' 		=> mumei_ayuda_get_option( 'gdpr_notice_short_desc_02', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
 				'opt_out' 	=> '',
@@ -171,13 +171,13 @@ function wpas_register_account( $data ) {
 		/**
 		 * Record GDPR 3 consent
 		 */
-		if ( wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) {
-			$status 	= isset( $data['wpas_gdpr03'] ) ? isset( $data['wpas_gdpr03'] ) : "";
+		if ( mumei_ayuda_get_option( 'gdpr_notice_short_desc_03', false ) ) {
+			$status 	= isset( $data['mumei_ayuda_gdpr03'] ) ? isset( $data['mumei_ayuda_gdpr03'] ) : "";
 			$opt_in 	= ! empty ( $status ) ? strtotime( 'NOW' ) : "";
 			$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 
-			wpas_track_consent( array(
-				'item' 		=> wpas_get_option( 'gdpr_notice_short_desc_03', false ),
+			mumei_ayuda_track_consent( array(
+				'item' 		=> mumei_ayuda_get_option( 'gdpr_notice_short_desc_03', false ),
 				'status' 	=> $status,
 				'opt_in' 	=> $opt_in,
 				'opt_out' 	=> '',
@@ -186,25 +186,25 @@ function wpas_register_account( $data ) {
 		}
 
 		/**
-		 * wpas_register_account_before hook
+		 * mumei_ayuda_register_account_before hook
 		 *
 		 * Fired right after the user is successfully added to the database.
 		 *
 		 * @since  3.0.1
 		 */
-		do_action( 'wpas_register_account_after', $user_id, $user, $data );
+		do_action( 'mumei_ayuda_register_account_after', $user_id, $user, $data );
 
 		// For moderated registration print message and redirect, so we don't auto login.
 		if( 'moderated' === $registration ) {
 			update_user_option( $user_id, 'mr_user_not_activated', 'yes' );
 
-			wpas_add_notification( 'moderated_account_created', wp_kses( wpas_get_option( 'mr_success_message' ), get_allowed_html_wp_notifications() ) );
+			mumei_ayuda_add_notification( 'moderated_account_created', wp_kses( mumei_ayuda_get_option( 'mr_success_message' ), get_allowed_html_wp_notifications() ) );
 			wp_safe_redirect( $redirect_to );
 			exit;
 		}
 
 		if ( headers_sent() ) {
-			wpas_add_notification( 'account_created', esc_html__( 'Your account has been created. Please log-in.', 'awesome-support' ) );
+			mumei_ayuda_add_notification( 'account_created', esc_html__( 'Your account has been created. Please log-in.', 'ayuda-help-desk' ) );
 			wp_safe_redirect( $redirect_to );
 			exit;
 		}
@@ -224,7 +224,7 @@ function wpas_register_account( $data ) {
 }
 
 /**
- * Insert a new Awesome Support user in the WordPress users table
+ * Insert a new Ayuda – Help Desk user in the WordPress users table
  *
  * @since 3.3.2
  *
@@ -233,10 +233,10 @@ function wpas_register_account( $data ) {
  *
  * @return int|WP_Error The new user ID or an error object on failure
  */
-function wpas_insert_user( $data = array(), $notify = true ) {
+function mumei_ayuda_insert_user( $data = array(), $notify = true ) {
 
 	// Set the default and required user info
-	$defaults = apply_filters( 'wpas_insert_user_default_args', array(
+	$defaults = apply_filters( 'mumei_ayuda_insert_user_default_args', array(
 		'email'      => '',
 		'first_name' => '',
 		'last_name'  => '',
@@ -247,7 +247,7 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 	$user_id = false;
 
 	// Set our final user data array
-	$user = apply_filters( 'wpas_insert_user_args', array_merge( $defaults, $data ) );
+	$user = apply_filters( 'mumei_ayuda_insert_user_args', array_merge( $defaults, $data ) );
 
 	// Now we need to make sure that all the required fields are filled before creating the user
 	foreach ( $defaults as $field => $value ) {
@@ -260,7 +260,7 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 			}
 
 			// translators: %s is the name of the mandatory field.
-			$x_content = __( 'The %s field is mandatory for registering an account', 'awesome-support' );
+			$x_content = __( 'The %s field is mandatory for registering an account', 'ayuda-help-desk' );
 
 			// Add a new error to the object
 			$user_id->add( 'missing_field_' . $field, sprintf( esc_html($x_content), ucwords( str_replace( '_', ' ', $field ) ) ) );
@@ -296,21 +296,21 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 		// Let's create the user username and make sure it's unique
 		if ( isset( $data['user_login'] ) ) {
 			$username = $data['user_login'];
-			$username = wpas_check_duplicate_user_name( $username ) ;
+			$username = mumei_ayuda_check_duplicate_user_name( $username ) ;
 		} else {
-			$username = wpas_create_user_name( $user ) ;  // This function will create a user name AND automatically check and fix duplicates
+			$username = mumei_ayuda_create_user_name( $user ) ;  // This function will create a user name AND automatically check and fix duplicates
 		}
 
-		$registration_type = wpas_get_option( 'allow_registrations', 'allow' );
-		$new_user_role = 'moderated' === $registration_type ? wpas_get_option( 'moderated_pending_user_role' ) : wpas_get_option( 'new_user_role', 'wpas_user' );
+		$registration_type = mumei_ayuda_get_option( 'allow_registrations', 'allow' );
+		$new_user_role = 'moderated' === $registration_type ? mumei_ayuda_get_option( 'moderated_pending_user_role' ) : mumei_ayuda_get_option( 'new_user_role', 'mumei_ayuda_user' );
 
 		/**
-		 * wpas_insert_user_data filter
+		 * mumei_ayuda_insert_user_data filter
 		 *
 		 * @since  3.1.5
 		 * @var    array User account arguments
 		 */
-		$args = apply_filters( 'wpas_insert_user_data', array(
+		$args = apply_filters( 'mumei_ayuda_insert_user_data', array(
 			'user_login'   => $username,
 			'user_email'   => $user['email'],
 			'first_name'   => $user['first_name'],
@@ -326,16 +326,16 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 		 * @since 3.2.0
 		 * @var false|WP_Error
 		 */
-		$user_id = apply_filters( 'wpas_register_account_errors', $user_id, $args['first_name'], $args['last_name'], $args['user_email'] );
+		$user_id = apply_filters( 'mumei_ayuda_register_account_errors', $user_id, $args['first_name'], $args['last_name'], $args['user_email'] );
 
 		if ( ! is_wp_error( $user_id ) ) {
 
 			/**
-			 * wpas_register_account_before hook
+			 * mumei_ayuda_register_account_before hook
 			 *
 			 * Fired right before the user is added to the database.
 			 */
-			do_action( 'wpas_insert_user_before', $args );
+			do_action( 'mumei_ayuda_insert_user_before', $args );
 
 			$user_id = wp_insert_user( $args );
 
@@ -347,12 +347,12 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 			 * @param int|WP_Error $user_id The user ID or a WP_Error object
 			 * @param array        $args    The user data
 			 */
-			do_action( 'wpas_insert_user_after', $user_id, $args );
+			do_action( 'mumei_ayuda_insert_user_after', $user_id, $args );
 
 			// Notify the new user if needed
-			if ( ! is_wp_error( $user_id ) && true === apply_filters( 'wpas_new_user_notification', $notify ) ) {
+			if ( ! is_wp_error( $user_id ) && true === apply_filters( 'mumei_ayuda_new_user_notification', $notify ) ) {
 
-				$receive_alert = wpas_get_option('reg_notify_users', 'both');  // Who should receive alerts?
+				$receive_alert = mumei_ayuda_get_option('reg_notify_users', 'both');  // Who should receive alerts?
 
 				if ( 'none' <> $receive_alert ) {
 					wp_new_user_notification( $user_id, null, $receive_alert );
@@ -377,11 +377,11 @@ function wpas_insert_user( $data = array(), $notify = true ) {
  *
  * @return string username
  */
-function wpas_create_user_name( $user_args ) {
+function mumei_ayuda_create_user_name( $user_args ) {
 
 	$name_ary = explode( '@', $user_args['email'] ); 	// extract whatever name we can from the email address...
 
-	$user_name_construction = (int) wpas_get_option( 'reg_user_name_construction', 6 );	// get setting for how user name is to be constructed...
+	$user_name_construction = (int) mumei_ayuda_get_option( 'reg_user_name_construction', 6 );	// get setting for how user name is to be constructed...
 
 	$user_name = '' ; // initialize the user name variable...
 
@@ -403,7 +403,7 @@ function wpas_create_user_name( $user_args ) {
 
 		case 3:
 			// use a guid
-			$user_name = wpas_create_pseudo_guid();
+			$user_name = mumei_ayuda_create_pseudo_guid();
 			break;
 
 		case 4:
@@ -428,7 +428,7 @@ function wpas_create_user_name( $user_args ) {
 
 	// Now verify that the selected username is not already in use.
 	// If it is, append a postfix and return it.
-	return wpas_check_duplicate_user_name( $user_name );
+	return mumei_ayuda_check_duplicate_user_name( $user_name );
 
 }
 
@@ -443,7 +443,7 @@ function wpas_create_user_name( $user_args ) {
  *
  * @return string username
  */
-function wpas_check_duplicate_user_name( $user_name ) {
+function mumei_ayuda_check_duplicate_user_name( $user_name ) {
 
 	$user_check = get_user_by( 'login', $user_name );
 
@@ -461,25 +461,25 @@ function wpas_check_duplicate_user_name( $user_name ) {
 
 }
 
-add_action( 'wpas_do_login', 'wpas_try_login' );
+add_action( 'mumei_ayuda_do_login', 'mumei_ayuda_try_login' );
 /**
  * Try to log the user in.
  *
- * This function is hooked onto wpas_do_login so that the login process can be triggered
+ * This function is hooked onto mumei_ayuda_do_login so that the login process can be triggered
  * when the login form is submitted.
  *
  * @since 2.0
  *
- * @param array $data Function arguments (the superglobal vars if the function is triggered by wpas_do_login)
+ * @param array $data Function arguments (the superglobal vars if the function is triggered by mumei_ayuda_do_login)
  *
  * @return void
  */
-function wpas_try_login( $data ) {
+function mumei_ayuda_try_login( $data ) {
 
 	/**
 	 * Try to log the user if credentials are submitted.
 	 */
-	if ( isset( $data['wpas_log'] ) ) {
+	if ( isset( $data['mumei_ayuda_log'] ) ) {
 
 		// Get the redirect URL
 		$redirect_to = home_url();
@@ -498,14 +498,14 @@ function wpas_try_login( $data ) {
 		}
 
 		$credentials = array(
-				'user_login' => $data['wpas_log'],
+				'user_login' => $data['mumei_ayuda_log'],
 		);
 
 		if ( isset( $data['rememberme'] ) ) {
 			$credentials['remember'] = true;
 		}
 
-		$credentials['user_password'] = isset( $data['wpas_pwd'] ) ? $data['wpas_pwd'] : '';
+		$credentials['user_password'] = isset( $data['mumei_ayuda_pwd'] ) ? $data['mumei_ayuda_pwd'] : '';
 
 		/**
 		 * Give a chance to third-parties to add new checks to the login process
@@ -513,11 +513,11 @@ function wpas_try_login( $data ) {
 		 * @since 3.2.0
 		 * @var bool|WP_Error
 		 */
-		$login = apply_filters( 'wpas_try_login', false );
+		$login = apply_filters( 'mumei_ayuda_try_login', false );
 
 		if ( is_wp_error( $login ) ) {
 			$error = $login->get_error_message();
-			wpas_add_error( 'login_failed', $error );
+			mumei_ayuda_add_error( 'login_failed', $error );
 			wp_safe_redirect( $redirect_to );
 			exit;
 		}
@@ -531,10 +531,10 @@ function wpas_try_login( $data ) {
 
 			// Pre-populate the user login if the problem is with the password
 			if ( 'incorrect_password' === $code ) {
-				$redirect_to = add_query_arg( 'wpas_log', $credentials['user_login'], $redirect_to );
+				$redirect_to = add_query_arg( 'mumei_ayuda_log', $credentials['user_login'], $redirect_to );
 			}
 
-			wpas_add_error( 'login_failed', $error );
+			mumei_ayuda_add_error( 'login_failed', $error );
 			wp_safe_redirect( $redirect_to );
 			exit;
 
@@ -544,19 +544,19 @@ function wpas_try_login( $data ) {
 			// Logout if user is not activated and print message
 			if( 'yes' === $user_not_activated ) {
 				wp_logout();
-				wpas_add_error( 'login_not_activated', __( 'Your account is not activated yet. Try again later', 'awesome-support' ) );
+				mumei_ayuda_add_error( 'login_not_activated', __( 'Your account is not activated yet. Try again later', 'ayuda-help-desk' ) );
 				wp_safe_redirect( $redirect_to );
 				exit;
 			}
 
 			// Filter to allow redirection of successful login
-			$redirect_to = apply_filters( 'wpas_try_login_redirect', $redirect_to, $redirect_to, $login );
+			$redirect_to = apply_filters( 'mumei_ayuda_try_login_redirect', $redirect_to, $redirect_to, $login );
 
 			wp_safe_redirect( $redirect_to );
 			exit;
 
 		} else {
-			wpas_add_error( 'login_failed', __( 'We were unable to log you in for an unknown reason.', 'awesome-support' ) );
+			mumei_ayuda_add_error( 'login_failed', __( 'We were unable to log you in for an unknown reason.', 'ayuda-help-desk' ) );
 			wp_safe_redirect( $redirect_to );
 			exit;
 		}
@@ -574,7 +574,7 @@ function wpas_try_login( $data ) {
  *
  * @return boolean
  */
-function wpas_can_view_ticket( $post_id ) {
+function mumei_ayuda_can_view_ticket( $post_id ) {
 
 	/**
 	 * Set the return value to false by default to avoid giving unwanted access.
@@ -596,15 +596,15 @@ function wpas_can_view_ticket( $post_id ) {
 
 		if ( is_user_logged_in() ) {
 			if (   ( get_current_user_id() === $author_id && current_user_can( 'view_ticket' ) )
-				|| ( wpas_is_user_agent_on_ticket( $post_id ) && current_user_can( 'view_ticket' ) )
-				|| wpas_can_user_see_all_tickets() ) {
+				|| ( mumei_ayuda_is_user_agent_on_ticket( $post_id ) && current_user_can( 'view_ticket' ) )
+				|| mumei_ayuda_can_user_see_all_tickets() ) {
 				$can = true;
 			}
 		}
 
 	}
 
-	return apply_filters( 'wpas_can_view_ticket', $can, $post_id, $author_id );
+	return apply_filters( 'mumei_ayuda_can_view_ticket', $can, $post_id, $author_id );
 
 }
 
@@ -614,24 +614,24 @@ function wpas_can_view_ticket( $post_id ) {
  * @global object $current_user
  * @return boolean
  */
-function wpas_can_user_see_all_tickets() {
+function mumei_ayuda_can_user_see_all_tickets() {
 
 	$user_can_see_all = false;
 
 	/* Check if admins can see all tickets */
-	if ( wpas_is_asadmin() && true === (bool) wpas_get_option( 'admin_see_all' ) ) {
+	if ( mumei_ayuda_is_asadmin() && true === (bool) mumei_ayuda_get_option( 'admin_see_all' ) ) {
 		$user_can_see_all = true;
 	}
 
 	/* Check if agents can see all tickets */
-	if ( wpas_is_agent() && ! wpas_is_asadmin() && true === (bool) wpas_get_option( 'agent_see_all' ) ) {
+	if ( mumei_ayuda_is_agent() && ! mumei_ayuda_is_asadmin() && true === (bool) mumei_ayuda_get_option( 'agent_see_all' ) ) {
 		$user_can_see_all = true;
 	}
 
 	global $current_user;
 
 	/* If current user can see all tickets */
-	if ( current_user_can( 'view_all_tickets' ) || true === (bool) get_user_option( 'wpas_view_all_tickets', (int) $current_user->ID )  ) {
+	if ( current_user_can( 'view_all_tickets' ) || true === (bool) get_user_option( 'mumei_ayuda_view_all_tickets', (int) $current_user->ID )  ) {
 		$user_can_see_all = true;
 	}
 
@@ -648,14 +648,14 @@ function wpas_can_user_see_all_tickets() {
  *
  * @return boolean                 True if the user can reply
  */
-function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
+function mumei_ayuda_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
 
 	if ( is_null( $post_id ) ) {
 		global $post;
 		$post_id = $post->ID;
 	}
 
-	$admins_allowed = apply_filters( 'wpas_can_agent_reply_frontend', $admins_allowed ); /* Allow admins to post through front-end. The filter overwrites the function parameter. */
+	$admins_allowed = apply_filters( 'mumei_ayuda_can_agent_reply_frontend', $admins_allowed ); /* Allow admins to post through front-end. The filter overwrites the function parameter. */
 	$post           = get_post( $post_id );
 	$author_id      = $post->post_author;
 
@@ -665,7 +665,7 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
 
 		if ( ! current_user_can( 'reply_ticket' ) ) {
 			// return false;
-			return apply_filters( 'wpas_can_also_reply_ticket', false, $post_id, $author_id, 1 );
+			return apply_filters( 'mumei_ayuda_can_also_reply_ticket', false, $post_id, $author_id, 1 );
 		}
 
 		$user_id = $current_user->data->ID;
@@ -673,22 +673,22 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
 		/* If the current user is the author then yes */
 		if ( $user_id == $author_id ) {
 			// return true;
-			return apply_filters( 'wpas_can_also_reply_ticket', true, $post_id, $author_id, 2 );
+			return apply_filters( 'mumei_ayuda_can_also_reply_ticket', true, $post_id, $author_id, 2 );
 		} else {
 
 			if ( current_user_can( 'edit_ticket' ) && true === $admins_allowed ) {
 				// return true;
-				return apply_filters( 'wpas_can_also_reply_ticket', true, $post_id, $author_id, 3 );
+				return apply_filters( 'mumei_ayuda_can_also_reply_ticket', true, $post_id, $author_id, 3 );
 			} else {
 				// return false;
-				return apply_filters( 'wpas_can_also_reply_ticket', false, $post_id, $author_id, 4 );
+				return apply_filters( 'mumei_ayuda_can_also_reply_ticket', false, $post_id, $author_id, 4 );
 			}
 
 		}
 
 	} else {
 		// return false;
-		return apply_filters( 'wpas_can_also_reply_ticket', false, $post_id, $author_id, 5 );
+		return apply_filters( 'mumei_ayuda_can_also_reply_ticket', false, $post_id, $author_id, 5 );
 	}
 
 }
@@ -702,7 +702,7 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
  *
  * @return string       Nicely formatted user role
  */
-function wpas_get_user_nice_role( $role ) {
+function mumei_ayuda_get_user_nice_role( $role ) {
 
 	/* Get first role if role is an array */
 	if ( is_array($role) ) {
@@ -712,7 +712,7 @@ function wpas_get_user_nice_role( $role ) {
 	}
 
 	/* Remove the prefix on WPAS roles */
-	if ( 'wpas_' === substr( $role, 0, 5 ) ) {
+	if ( 'mumei_ayuda_' === substr( $role, 0, 5 ) ) {
 		$role = substr( $role, 5 );
 	}
 
@@ -733,7 +733,7 @@ function wpas_get_user_nice_role( $role ) {
  *
  * @return bool
  */
-function wpas_can_submit_ticket( $ticket_id = 0 ) {
+function mumei_ayuda_can_submit_ticket( $ticket_id = 0 ) {
 
 	$can = false;
 
@@ -755,7 +755,7 @@ function wpas_can_submit_ticket( $ticket_id = 0 ) {
 
 	}
 
-	return apply_filters( 'wpas_can_submit_ticket', $can );
+	return apply_filters( 'mumei_ayuda_can_submit_ticket', $can );
 
 }
 
@@ -768,7 +768,7 @@ function wpas_can_submit_ticket( $ticket_id = 0 ) {
  *
  * @return array An array of users objects
  */
-function wpas_get_users( $args = array() ) {
+function mumei_ayuda_get_users( $args = array() ) {
 
 	$defaults = array(
 		'exclude'     => array(),
@@ -785,19 +785,19 @@ function wpas_get_users( $args = array() ) {
 
 	/* Merge arguments. */
 	$args  = wp_parse_args( $args, $defaults );
-	$users = new WPAS_Member_Query( $args );
+	$users = new MUMEI_AYUDA_Member_Query( $args );
 
-	return apply_filters( 'wpas_get_users', $users );
+	return apply_filters( 'mumei_ayuda_get_users', $users );
 
 }
 
 /**
- * Get all Awesome Support members
+ * Get all Ayuda – Help Desk members
  *
  * @since 3.3
  * @return array
  */
-function wpas_get_members() {
+function mumei_ayuda_get_members() {
 
 	global $wpdb;
 
@@ -807,12 +807,12 @@ function wpas_get_members() {
 		return $query;
 	}
 
-	return wpas_users_sql_result_to_wpas_member( $query );
+	return mumei_ayuda_users_sql_result_to_mumei_ayuda_member( $query );
 
 }
 
 /**
- * Get all Awesome Support members by their user ID
+ * Get all Ayuda – Help Desk members by their user ID
  *
  * @since 3.3
  *
@@ -820,7 +820,7 @@ function wpas_get_members() {
  *
  * @return array
  */
-function wpas_get_members_by_id( $ids ) {
+function mumei_ayuda_get_members_by_id( $ids ) {
 
 	if ( ! is_array( $ids ) ) {
 		$ids = (array) $ids;
@@ -837,19 +837,19 @@ function wpas_get_members_by_id( $ids ) {
 		return $query;
 	}
 
-	return wpas_users_sql_result_to_wpas_member( $query );
+	return mumei_ayuda_users_sql_result_to_mumei_ayuda_member( $query );
 
 }
 
 /**
- * Transform a users SQL query into WPAS_Member_User objects
+ * Transform a users SQL query into MUMEI_AYUDA_Member_User objects
  *
  * @param array  $results SQL results
- * @param string $class   The WPAS_Member subclass to use. Possible values are user and agent
+ * @param string $class   The MUMEI_AYUDA_Member subclass to use. Possible values are user and agent
  *
  * @return array
  */
-function wpas_users_sql_result_to_wpas_member( $results, $class = 'user' ) {
+function mumei_ayuda_users_sql_result_to_mumei_ayuda_member( $results, $class = 'user' ) {
 
 	$users      = array();
 	$class_name = '';
@@ -857,11 +857,11 @@ function wpas_users_sql_result_to_wpas_member( $results, $class = 'user' ) {
 	switch ( $class ) {
 
 		case 'user':
-			$class_name = 'WPAS_Member_User';
+			$class_name = 'MUMEI_AYUDA_Member_User';
 			break;
 
 		case 'agent':
-			$class_name = 'WPAS_member_Agent';
+			$class_name = 'MUMEI_AYUDA_member_Agent';
 			break;
 
 	}
@@ -890,9 +890,9 @@ function wpas_users_sql_result_to_wpas_member( $results, $class = 'user' ) {
  * @since 3.3
  * @return int
  */
-function wpas_count_wp_users() {
+function mumei_ayuda_count_wp_users() {
 
-	$count = get_transient( 'wpas_wp_users_count' );
+	$count = get_transient( 'mumei_ayuda_wp_users_count' );
 
 	if ( false === $count ) {
 
@@ -901,7 +901,7 @@ function wpas_count_wp_users() {
 		$query = $wpdb->get_results( "SELECT ID FROM $wpdb->users WHERE 1" );
 		$count = count( $query );
 
-		set_transient( 'wpas_wp_users_count', $count, apply_filters( 'wpas_wp_users_count_transient_lifetime', 604800 ) ); // Default to 1 week
+		set_transient( 'mumei_ayuda_wp_users_count', $count, apply_filters( 'mumei_ayuda_wp_users_count_transient_lifetime', 604800 ) ); // Default to 1 week
 
 	}
 
@@ -915,12 +915,12 @@ function wpas_count_wp_users() {
  * @since 3.3
  * @return bool
  */
-function wpas_has_too_many_users() {
+function mumei_ayuda_has_too_many_users() {
 
 	// We consider 3000 users to be too many to query at once
-	$limit = apply_filters( 'wpas_has_too_many_users_limit', 3000 );
+	$limit = apply_filters( 'mumei_ayuda_has_too_many_users_limit', 3000 );
 
-	if ( wpas_count_wp_users() > $limit ) {
+	if ( mumei_ayuda_count_wp_users() > $limit ) {
 		return true;
 	}
 
@@ -928,9 +928,9 @@ function wpas_has_too_many_users() {
 
 }
 
-add_action( 'user_register',  'wpas_clear_get_users_cache' );
-add_action( 'delete_user',    'wpas_clear_get_users_cache' );
-add_action( 'profile_update', 'wpas_clear_get_users_cache' );
+add_action( 'user_register',  'mumei_ayuda_clear_get_users_cache' );
+add_action( 'delete_user',    'mumei_ayuda_clear_get_users_cache' );
+add_action( 'profile_update', 'mumei_ayuda_clear_get_users_cache' );
 /**
  * Clear all the users lists transients
  *
@@ -942,11 +942,11 @@ add_action( 'profile_update', 'wpas_clear_get_users_cache' );
  * @since 3.2.0
  * @return void
  */
-function wpas_clear_get_users_cache() {
+function mumei_ayuda_clear_get_users_cache() {
 
 	global $wpdb;
 	$sql = "DELETE FROM $wpdb->options WHERE option_name LIKE '%s'";
-	$wpdb->get_results( $wpdb->prepare( "$sql", '_transient_wpas_list_users_%' ) );
+	$wpdb->get_results( $wpdb->prepare( "$sql", '_transient_mumei_ayuda_list_users_%' ) );
 
 }
 
@@ -962,12 +962,12 @@ function wpas_clear_get_users_cache() {
  * @return array       A list of users
  * @since  3.0.0
  */
-function wpas_list_users( $cap = 'all' ) {
+function mumei_ayuda_list_users( $cap = 'all' ) {
 
 	$list = array();
 
 	/* List all users */
-	$all_users = wpas_get_users( array( 'cap' => $cap ) );
+	$all_users = mumei_ayuda_get_users( array( 'cap' => $cap ) );
 
 	foreach ( $all_users->members as $user ) {
 		$user_id          = $user->ID;
@@ -975,7 +975,7 @@ function wpas_list_users( $cap = 'all' ) {
 		$list[ $user_id ] = $user_name;
 	}
 
-	return apply_filters( 'wpas_users_list', $list );
+	return apply_filters( 'mumei_ayuda_users_list', $list );
 
 }
 
@@ -986,12 +986,12 @@ function wpas_list_users( $cap = 'all' ) {
  * @param  array  $args Arguments
  * @return string       Users dropdown
  */
-function wpas_users_dropdown( $args = array() ) {
+function mumei_ayuda_users_dropdown( $args = array() ) {
 
 	global $current_user, $post;
 
 	$defaults = array(
-		'name'           => 'wpas_user',
+		'name'           => 'mumei_ayuda_user',
 		'id'             => '',
 		'class'          => '',
 		'exclude'        => array(),
@@ -1011,7 +1011,7 @@ function wpas_users_dropdown( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 
 	/* List all users */
-	$all_users = wpas_get_users( array( 'cap' => $args['cap'], 'cap_exclude' => $args['cap_exclude'], 'exclude' => $args['exclude'], 'ids' => $args['ids'], 'orderby' => $args['orderby'], 'order' => $args['order'] ) );
+	$all_users = mumei_ayuda_get_users( array( 'cap' => $args['cap'], 'cap_exclude' => $args['cap_exclude'], 'exclude' => $args['exclude'], 'ids' => $args['ids'], 'orderby' => $args['orderby'], 'order' => $args['order'] ) );
 
 	/**
 	 * We use a marker to keep track of when a user was selected.
@@ -1077,7 +1077,7 @@ function wpas_users_dropdown( $args = array() ) {
 		$options .= "<option value='{$fallback->ID}' $fb_selected>{$fallback->data->display_name}</option>";
 	}
 
-	$contents = wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
+	$contents = mumei_ayuda_dropdown( wp_parse_args( $args, $defaults ), $options );
 
 	return $contents;
 
@@ -1086,7 +1086,7 @@ function wpas_users_dropdown( $args = array() ) {
 /**
  * Display a dropdown of the support users.
  *
- * Wrapper function for wpas_users_dropdown where
+ * Wrapper function for mumei_ayuda_users_dropdown where
  * the cap_exclude is set to exclude all users with
  * the capability to edit a ticket.
  *
@@ -1094,17 +1094,17 @@ function wpas_users_dropdown( $args = array() ) {
  * @param  array  $args Arguments
  * @return string       HTML dropdown
  */
-function wpas_support_users_dropdown( $args = array() ) {
+function mumei_ayuda_support_users_dropdown( $args = array() ) {
 	$args['cap_exclude'] = 'edit_ticket';
 	$args['cap']         = 'create_ticket';
 	//This has been verify by html tags ted.
-	echo wp_kses(wpas_users_dropdown( $args ), wpas_dropdown_allowed_html_tags());
+	echo wp_kses(mumei_ayuda_users_dropdown( $args ), mumei_ayuda_dropdown_allowed_html_tags());
 }
 
 /**
  * Wrapper function to easily get a user tickets
  *
- * This function is a wrapper for wpas_get_user_tickets() with the user ID preset
+ * This function is a wrapper for mumei_ayuda_get_user_tickets() with the user ID preset
  *
  * @since 3.2.2
  *
@@ -1114,7 +1114,7 @@ function wpas_support_users_dropdown( $args = array() ) {
  *
  * @return array
  */
-function wpas_get_user_tickets( $user_id = 0, $ticket_status = 'open', $post_status = 'any' ) {
+function mumei_ayuda_get_user_tickets( $user_id = 0, $ticket_status = 'open', $post_status = 'any' ) {
 
 	if ( 0 === $user_id ) {
 		$user_id = get_current_user_id();
@@ -1124,13 +1124,13 @@ function wpas_get_user_tickets( $user_id = 0, $ticket_status = 'open', $post_sta
 		'author' => $user_id,
 	);
 
-	$tickets = wpas_get_tickets( $ticket_status, $args, $post_status );
+	$tickets = mumei_ayuda_get_tickets( $ticket_status, $args, $post_status );
 
 	return $tickets;
 
 }
 
-add_filter( 'authenticate', 'wpas_email_signon', 20, 3 );
+add_filter( 'authenticate', 'mumei_ayuda_email_signon', 20, 3 );
 /**
  * Allow e-mail to be used as the login.
  *
@@ -1142,7 +1142,7 @@ add_filter( 'authenticate', 'wpas_email_signon', 20, 3 );
  *
  * @return object                          WP_User if authentication succeed, WP_Error on failure
  */
-function wpas_email_signon( $user, $username, $password ) {
+function mumei_ayuda_email_signon( $user, $username, $password ) {
 
 	/* Authentication was successful, we don't touch it */
 	if ( is_object( $user ) && is_a( $user, 'WP_User' ) ) {
@@ -1188,13 +1188,13 @@ function wpas_email_signon( $user, $username, $password ) {
 
 }
 
-add_action( 'wp_ajax_nopriv_email_validation', 'wpas_mailgun_check' );
+add_action( 'wp_ajax_nopriv_email_validation', 'mumei_ayuda_mailgun_check' );
 /**
  * Check if an e-mail is valid during registration using the MailGun API
  *
  * @param string $data
  */
-function wpas_mailgun_check( $data = '' ) {
+function mumei_ayuda_mailgun_check( $data = '' ) {
 
 	if ( empty( $data ) ) {
 		if ( isset( $_POST ) ) {
@@ -1211,10 +1211,10 @@ function wpas_mailgun_check( $data = '' ) {
 	}
 
 	if ( ! current_user_can( 'read' ) ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to check if an e-mail is valid during registration using the MailGun API.', 'awesome-support') ), 403);
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to check if an e-mail is valid during registration using the MailGun API.', 'ayuda-help-desk') ), 403);
 	}
 
-	$mailgun = new WPAS_MailGun_EMail_Check();
+	$mailgun = new MUMEI_AYUDA_MailGun_EMail_Check();
 	$check   = $mailgun->check_email( $data );
 
 	if ( ! is_wp_error( $check ) ) {
@@ -1223,7 +1223,7 @@ function wpas_mailgun_check( $data = '' ) {
 
 		if ( is_object( $check ) && isset( $check->did_you_mean ) && ! is_null( $check->did_you_mean ) ) {
 			// translators: %s is the supposed value.
-			$x_content = __( 'Did you mean %s', 'awesome-support' );
+			$x_content = __( 'Did you mean %s', 'ayuda-help-desk' );
 			printf( wp_kses_post( $x_content, "<strong>{$check->did_you_mean}</strong>?" ) );
 			die();
 		}
@@ -1234,7 +1234,7 @@ function wpas_mailgun_check( $data = '' ) {
 
 }
 
-add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax',11,0 );
+add_action( 'wp_ajax_mumei_ayuda_get_users', 'mumei_ayuda_get_users_ajax',11,0 );
 /**
  * Get AS users using Ajax
  *
@@ -1244,7 +1244,7 @@ add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax',11,0 );
  *
  * @return void
  */
-function wpas_get_users_ajax( $args = array() ) {
+function mumei_ayuda_get_users_ajax( $args = array() ) {
 
 	global $wpdb;	
 	
@@ -1281,11 +1281,11 @@ function wpas_get_users_ajax( $args = array() ) {
 	
 	$args = wp_parse_args( $args, $defaults );
 
-	$department_assignment = get_user_option( 'wpas_department_assignment', get_current_user_id() );
+	$department_assignment = get_user_option( 'mumei_ayuda_department_assignment', get_current_user_id() );
 	$ids = [];
 	if (!empty($department_assignment)) {
 		$args_user  = array(
-			'meta_key' => $wpdb->get_blog_prefix() . 'wpas_department',
+			'meta_key' => $wpdb->get_blog_prefix() . 'mumei_ayuda_department',
 			'meta_compare' => 'EXISTS'
 		);
 
@@ -1293,7 +1293,7 @@ function wpas_get_users_ajax( $args = array() ) {
 
 		if (! empty( $user_query->get_results() )) {
 			foreach ( $user_query->get_results() as $user ) {
-				$departments = get_user_option( 'wpas_department', $user->ID );
+				$departments = get_user_option( 'mumei_ayuda_department', $user->ID );
 				if (!empty($departments)) {
 					foreach ($departments as $department) {
 						if (in_array($department, $department_assignment)) {
@@ -1307,9 +1307,9 @@ function wpas_get_users_ajax( $args = array() ) {
 	}
 
 	/**
-	 * @var WPAS_Member_Query $users
+	 * @var MUMEI_AYUDA_Member_Query $users
 	 */
-	$users = wpas_get_users(
+	$users = mumei_ayuda_get_users(
 		array(
 			'cap'         => array_map( 'sanitize_text_field', array_filter( (array) $args['cap'] ) ),
 			'cap_exclude' => array_map( 'sanitize_text_field', array_filter( (array) $args['cap_exclude'] ) ),
@@ -1352,7 +1352,7 @@ function wpas_get_users_ajax( $args = array() ) {
  *
  * @return bool
  */
-function wpas_has_smart_tickets_order( $user_id = 0 ) {
+function mumei_ayuda_has_smart_tickets_order( $user_id = 0 ) {
 
 	// Set the value to false by default
 	$value = false;
@@ -1364,7 +1364,7 @@ function wpas_has_smart_tickets_order( $user_id = 0 ) {
 	// If the user is not an agent this is irrelevant. Just return false.
 	if ( user_can( $user_id, 'edit_ticket' ) ) {
 
-		$smart = esc_attr( get_user_option( 'wpas_smart_tickets_order', $user_id ) );
+		$smart = esc_attr( get_user_option( 'mumei_ayuda_smart_tickets_order', $user_id ) );
 
 		if ( 'yes' === $smart ) {
 			$value = true;
@@ -1372,7 +1372,7 @@ function wpas_has_smart_tickets_order( $user_id = 0 ) {
 
 	}
 
-	return apply_filters( 'wpas_has_smart_tickets_order', $value, $user_id );
+	return apply_filters( 'mumei_ayuda_has_smart_tickets_order', $value, $user_id );
 
 }
 
@@ -1382,18 +1382,18 @@ function wpas_has_smart_tickets_order( $user_id = 0 ) {
  * @param array $exclude
  * @return array
  */
-function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
+function mumei_ayuda_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
 
 	$agent_ids = $agents = array();
 
-	$primary_agent_id    = intval( get_post_meta( $ticket_id, '_wpas_assignee', true ) );
+	$primary_agent_id    = intval( get_post_meta( $ticket_id, '_mumei_ayuda_assignee', true ) );
 	if( $primary_agent_id && !in_array( $primary_agent_id, $exclude ) ) {
 		$agent_ids[] = $primary_agent_id;
 	}
 
-	if( wpas_is_multi_agent_active() ) {
-		$secondary_agent_id  = intval( get_post_meta( $ticket_id, '_wpas_secondary_assignee', true ) );
-		$tertiary_agent_id   = intval( get_post_meta( $ticket_id, '_wpas_tertiary_assignee', true ) );
+	if( mumei_ayuda_is_multi_agent_active() ) {
+		$secondary_agent_id  = intval( get_post_meta( $ticket_id, '_mumei_ayuda_secondary_assignee', true ) );
+		$tertiary_agent_id   = intval( get_post_meta( $ticket_id, '_mumei_ayuda_tertiary_assignee', true ) );
 		if( $secondary_agent_id && !in_array( $secondary_agent_id, $exclude ) && !in_array( $secondary_agent_id, $agent_ids ) ) {
 			$agent_ids[] = $secondary_agent_id;
 		}
@@ -1419,15 +1419,15 @@ function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
  * @param {*} action
  * @param {*} date
  */
-function wpas_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
+function mumei_ayuda_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
 	/**
 	 * Label parameter is required, WP_Error if none given
 	 */
 	if( ! $label ) {
-		return new WP_Error( 'consent_label_missing', __( 'Consent label is required!', 'awesome-support' ) );
+		return new WP_Error( 'consent_label_missing', __( 'Consent label is required!', 'ayuda-help-desk' ) );
 	}
 	if( ! $action ) {
-		return new WP_Error( 'consent_action_missing', __( 'Consent action is required! Options are - "opted-in" or "opted-out"', 'awesome-support' ) );
+		return new WP_Error( 'consent_action_missing', __( 'Consent action is required! Options are - "opted-in" or "opted-out"', 'ayuda-help-desk' ) );
 	}
 
 	/**
@@ -1441,37 +1441,37 @@ function wpas_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
 	 * Determine user, we need to log when admin opt out as well
 	 */
 	if( empty ( $user ) ) {
-		$user = __( 'user', 'awesome-support' );
+		$user = __( 'user', 'ayuda-help-desk' );
 	}
 
 	/**
-	 * Consent logs are stored in wpas_consent_log option
+	 * Consent logs are stored in mumei_ayuda_consent_log option
 	 */
-	$logged_consent = get_user_option( 'wpas_consent_log', $user_id );
-	$consent = apply_filters( 'wpas_logged_consent_new', sprintf(
+	$logged_consent = get_user_option( 'mumei_ayuda_consent_log', $user_id );
+	$consent = apply_filters( 'mumei_ayuda_logged_consent_new', sprintf(
 		'%s - %s %s %s %s',
 		$label,
 		$user,
 		$action,
-		__( 'on', 'awesome-support' ),
+		__( 'on', 'ayuda-help-desk' ),
 		$date
 	) );
 
 	if( ! empty ( $logged_consent ) && is_array( $logged_consent ) ) {
-		update_user_option( $user_id, 'wpas_consent_log', array_merge( $logged_consent, array( $consent ) ) );
+		update_user_option( $user_id, 'mumei_ayuda_consent_log', array_merge( $logged_consent, array( $consent ) ) );
 	}else{
-		update_user_option( $user_id, 'wpas_consent_log', array( $consent ) );
+		update_user_option( $user_id, 'mumei_ayuda_consent_log', array( $consent ) );
 	}
 
 	/**
 	 * After logging consent action hook
 	 */
-	do_action( 'wpas_log_consent_after', $user_id, $label, $action, $date , $user, $consent );
+	do_action( 'mumei_ayuda_log_consent_after', $user_id, $label, $action, $date , $user, $consent );
 
 }
 
 /**
- * Similar to wpas_log_consent()
+ * Similar to mumei_ayuda_log_consent()
  * This function tracks the consent instead of just
  * logging them. This is the primary function in consent
  * table information in both on user profile and on the
@@ -1479,11 +1479,11 @@ function wpas_log_consent( $user_id, $label, $action, $date = "", $user = "" ) {
  *
  * @param {*} data
  */
-function wpas_track_consent( $data, $user_id, $opt_type = "" ){
+function mumei_ayuda_track_consent( $data, $user_id, $opt_type = "" ){
 	/**
-	 * Consent logs are stored in wpas_consent_tracking option
+	 * Consent logs are stored in mumei_ayuda_consent_tracking option
 	 */
-	$tracked_consent = get_user_option( 'wpas_consent_tracking', $user_id );
+	$tracked_consent = get_user_option( 'mumei_ayuda_consent_tracking', $user_id );
 
 	if( ! empty ( $tracked_consent ) && is_array( $tracked_consent ) ) {
 		/**
@@ -1508,36 +1508,36 @@ function wpas_track_consent( $data, $user_id, $opt_type = "" ){
 					$tracked_consent[$found_key]['status'] = $data['status'];
 				}
 			}
-			update_user_option( $user_id, 'wpas_consent_tracking', $tracked_consent );
+			update_user_option( $user_id, 'mumei_ayuda_consent_tracking', $tracked_consent );
 
 			/**
 			 * After consent tracking update existing meta action hook
 			 */
-			do_action( 'wpas_track_consent_update_existing_after', $data, $user_id, $opt_type, $tracked_consent ) ;
+			do_action( 'mumei_ayuda_track_consent_update_existing_after', $data, $user_id, $opt_type, $tracked_consent ) ;
 
 		}else{
-			update_user_option( $user_id, 'wpas_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
+			update_user_option( $user_id, 'mumei_ayuda_consent_tracking', array_merge( $tracked_consent, array( $data ) ) );
 			/**
 			 * After new consent tracking action hook
 			 */
-			do_action( 'wpas_track_consent_update_new_too', $data, $user_id, $opt_type, $tracked_consent ) ;
+			do_action( 'mumei_ayuda_track_consent_update_new_too', $data, $user_id, $opt_type, $tracked_consent ) ;
 		}
 	}else{
-		update_user_option( $user_id, 'wpas_consent_tracking', array( $data ) );
+		update_user_option( $user_id, 'mumei_ayuda_consent_tracking', array( $data ) );
 
 		/**
 		 * After new consent tracking action hook
 		 */
-		do_action( 'wpas_track_consent_update_new', $data, $user_id, $opt_type, $tracked_consent ) ;
+		do_action( 'mumei_ayuda_track_consent_update_new', $data, $user_id, $opt_type, $tracked_consent ) ;
 	}
 	/**
 	 * After consent tracking action hook
 	 */
-	do_action( 'wpas_track_consent_after', $data, $user_id, $opt_type ) ;
+	do_action( 'mumei_ayuda_track_consent_after', $data, $user_id, $opt_type ) ;
 
 }
 
-add_action( 'wpas_register_account_after', 'wpas_moderated_registeration_notify', 11, 2 );
+add_action( 'mumei_ayuda_register_account_after', 'mumei_ayuda_moderated_registeration_notify', 11, 2 );
 
 /**
  * Notify user and admin about moderated registration
@@ -1545,20 +1545,20 @@ add_action( 'wpas_register_account_after', 'wpas_moderated_registeration_notify'
  * @param int $user_id
  * @param array $user
  */
-function wpas_moderated_registeration_notify( $user_id, $user ) {
+function mumei_ayuda_moderated_registeration_notify( $user_id, $user ) {
 
 
-	$registration_type = wpas_get_option( 'allow_registrations', 'allow' );
+	$registration_type = mumei_ayuda_get_option( 'allow_registrations', 'allow' );
 
 	if( 'moderated' === $registration_type ) {
 
 		$admin_email = get_bloginfo( 'admin_email' );
 
-		$admin_notify = new WPAS_User_Email_Notification( $user_id, $admin_email );
+		$admin_notify = new MUMEI_AYUDA_User_Email_Notification( $user_id, $admin_email );
 		$admin_notify->notify( 'moderated_registration_admin' );
 
 
-		$user_notify = new WPAS_User_Email_Notification( $user_id, $user['email'] );
+		$user_notify = new MUMEI_AYUDA_User_Email_Notification( $user_id, $user['email'] );
 		$user_notify->notify( 'moderated_registration_user' );
 	}
 }
@@ -1568,7 +1568,7 @@ function wpas_moderated_registeration_notify( $user_id, $user ) {
  *
  * @return array
  */
-function wpas_mr_notification_cases() {
+function mumei_ayuda_mr_notification_cases() {
 
 	return array(
 		'moderated_registration_admin',
@@ -1578,7 +1578,7 @@ function wpas_mr_notification_cases() {
 	);
 }
 
-add_filter( 'wpas__user_email_notifications_case_is_active', 'wpas_mr_enabled_email_notification_case', 11, 2 );
+add_filter( 'mumei_ayuda__user_email_notifications_case_is_active', 'mumei_ayuda_mr_enabled_email_notification_case', 11, 2 );
 
 /**
  * Check if moderated registration notification is enabled
@@ -1588,13 +1588,13 @@ add_filter( 'wpas__user_email_notifications_case_is_active', 'wpas_mr_enabled_em
  *
  * @return boolean
  */
-function wpas_mr_enabled_email_notification_case( $enabled, $case ) {
+function mumei_ayuda_mr_enabled_email_notification_case( $enabled, $case ) {
 
 
-	$cases = wpas_mr_notification_cases();
+	$cases = mumei_ayuda_mr_notification_cases();
 
 	if( in_array( $case, $cases ) ) {
-		$enabled = wpas_get_option( "enable_{$case}_email", true );
+		$enabled = mumei_ayuda_get_option( "enable_{$case}_email", true );
 	}
 
 	return $enabled;
@@ -1602,7 +1602,7 @@ function wpas_mr_enabled_email_notification_case( $enabled, $case ) {
 
 
 
-add_filter( 'wpas__user_email_notifications_pre_fetch_subject'  , 'wpas_registration_user_email_notifications_pre_fetch_subject' ,11, 3 );
+add_filter( 'mumei_ayuda__user_email_notifications_pre_fetch_subject'  , 'mumei_ayuda_registration_user_email_notifications_pre_fetch_subject' ,11, 3 );
 
 /**
  * Set email subject for moderated registration notification
@@ -1613,14 +1613,14 @@ add_filter( 'wpas__user_email_notifications_pre_fetch_subject'  , 'wpas_registra
  *
  * @return string
  */
-function wpas_registration_user_email_notifications_pre_fetch_subject( $subject, $user_id, $case ) {
+function mumei_ayuda_registration_user_email_notifications_pre_fetch_subject( $subject, $user_id, $case ) {
 
-	$subject = wpas_get_option( "{$case}_email__subject" );
+	$subject = mumei_ayuda_get_option( "{$case}_email__subject" );
 
 	return $subject;
 }
 
-add_filter( 'wpas__user_email_notifications_pre_fetch_content'	, 'wpas_registration_user_email_notifications_pre_fetch_content' , 11, 3 );
+add_filter( 'mumei_ayuda__user_email_notifications_pre_fetch_content'	, 'mumei_ayuda_registration_user_email_notifications_pre_fetch_content' , 11, 3 );
 
 /**
  * Set email content for moderated registration notification
@@ -1631,23 +1631,23 @@ add_filter( 'wpas__user_email_notifications_pre_fetch_content'	, 'wpas_registrat
  *
  * @return string
  */
-function wpas_registration_user_email_notifications_pre_fetch_content( $body, $user_id, $case ) {
+function mumei_ayuda_registration_user_email_notifications_pre_fetch_content( $body, $user_id, $case ) {
 
-	$body = wpas_get_option( "{$case}_email__content" );
+	$body = mumei_ayuda_get_option( "{$case}_email__content" );
 
 	return $body;
 
 }
 
-add_action( 'edit_user_profile', 'wpas_add_activate_user_button' , 10, 1 ); // Display tickets on user profile page
-add_action( 'show_user_profile', 'wpas_add_activate_user_button' , 9, 1 ); // Display tickets on user profile page
+add_action( 'edit_user_profile', 'mumei_ayuda_add_activate_user_button' , 10, 1 ); // Display tickets on user profile page
+add_action( 'show_user_profile', 'mumei_ayuda_add_activate_user_button' , 9, 1 ); // Display tickets on user profile page
 
 /**
  * Add activate user button on back-end edit user page
  *
  * @param object $user
  */
-function wpas_add_activate_user_button( $user ) {
+function mumei_ayuda_add_activate_user_button( $user ) {
 
 	$not_activated = get_user_option( 'mr_user_not_activated', $user->ID );
 	$user_denied   = get_user_option( 'mr_user_denied', $user->ID );
@@ -1656,28 +1656,28 @@ function wpas_add_activate_user_button( $user ) {
 	if( 'yes' === $not_activated && 'yes' !== $user_denied ) {
 
 		$edit_user_link = add_query_arg( 'user_id', $user->ID, self_admin_url( 'user-edit.php' ) );
-		$activate_url = wpas_do_url( $edit_user_link, 'mr_activate_user' );
-		$deny_url = wpas_do_url( $edit_user_link, 'mr_deny_user' );
+		$activate_url = mumei_ayuda_do_url( $edit_user_link, 'mr_activate_user' );
+		$deny_url = mumei_ayuda_do_url( $edit_user_link, 'mr_deny_user' );
 
-		printf( '<a href="%s" class="button button-primary">%s</a>', esc_url( $activate_url ), esc_html__( 'Activate User', 'awesome-support' ) );
+		printf( '<a href="%s" class="button button-primary">%s</a>', esc_url( $activate_url ), esc_html__( 'Activate User', 'ayuda-help-desk' ) );
 
-		printf( '<a href="%s" class="button button-primary mr-deny-user-btn">%s</a>', esc_url( $deny_url ), esc_html__( 'Deny User', 'awesome-support' ) );
+		printf( '<a href="%s" class="button button-primary mr-deny-user-btn">%s</a>', esc_url( $deny_url ), esc_html__( 'Deny User', 'ayuda-help-desk' ) );
 
 	} elseif( 'yes' === $user_denied ) {
-		printf( '<div><p>%s</p></div>', esc_html__( 'User has been denied.', 'awesome-support' ) );
+		printf( '<div><p>%s</p></div>', esc_html__( 'User has been denied.', 'ayuda-help-desk' ) );
 	}
 
 }
 
 
-add_action( 'wpas_do_mr_activate_user', 'wpas_do_mr_activate_user' );
+add_action( 'mumei_ayuda_do_mr_activate_user', 'mumei_ayuda_do_mr_activate_user' );
 
 /**
  * Activate moderated user
  *
  * @param array $data
  */
-function wpas_do_mr_activate_user( $data ) {
+function mumei_ayuda_do_mr_activate_user( $data ) {
 
 	$user_id = $data['user_id'];
 
@@ -1685,15 +1685,15 @@ function wpas_do_mr_activate_user( $data ) {
 
 		// FIX: Add capability check
         if ( ! current_user_can( 'edit_users' ) ) {
-            wp_die( __( 'You do not have permission to activate users.', 'awesome-support' ), 403 );
+            wp_die( __( 'You do not have permission to activate users.', 'ayuda-help-desk' ), 403 );
         }
         
         // FIX: Verify current user can edit the target user
         if ( ! current_user_can( 'edit_user', $user_id ) ) {
-            wp_die( __( 'You do not have permission to edit this user.', 'awesome-support' ), 403 );
+            wp_die( __( 'You do not have permission to edit this user.', 'ayuda-help-desk' ), 403 );
         }
 
-		$role = wpas_get_option( 'moderated_activated_user_role' );
+		$role = mumei_ayuda_get_option( 'moderated_activated_user_role' );
 
 		$updated = wp_update_user( array( 'ID' => $user_id, 'role' => $role ) );
 
@@ -1707,7 +1707,7 @@ function wpas_do_mr_activate_user( $data ) {
 
 			// Notify to user
 			$user = get_user_by( 'id', $user_id );
-			$user_notify = new WPAS_User_Email_Notification( $user_id, $user->user_email );
+			$user_notify = new MUMEI_AYUDA_User_Email_Notification( $user_id, $user->user_email );
 			$user_notify->notify( 'moderated_registration_approved_user' );
 
 			$redirect_to = add_query_arg( array(
@@ -1716,19 +1716,19 @@ function wpas_do_mr_activate_user( $data ) {
 			), admin_url( 'user-edit.php' ) );
 		}
 
-		wpas_redirect( 'mr_activation', $redirect_to );
+		mumei_ayuda_redirect( 'mr_activation', $redirect_to );
 	}
 
 }
 
-add_action( 'wpas_do_mr_deny_user', 'wpas_do_mr_deny_user' );
+add_action( 'mumei_ayuda_do_mr_deny_user', 'mumei_ayuda_do_mr_deny_user' );
 
 /**
  * Deny moderated user registration
  *
  * @param array $data
  */
-function wpas_do_mr_deny_user( $data ) {
+function mumei_ayuda_do_mr_deny_user( $data ) {
 
 	$user_id = $data['user_id'];
 
@@ -1738,7 +1738,7 @@ function wpas_do_mr_deny_user( $data ) {
 
 		// Notify to user
 		$user = get_user_by( 'id', $user_id );
-		$user_notify = new WPAS_User_Email_Notification( $user_id, $user->user_email );
+		$user_notify = new MUMEI_AYUDA_User_Email_Notification( $user_id, $user->user_email );
 		$user_notify->notify( 'moderated_registration_denied_user' );
 
 		$redirect_to = add_query_arg( array(
@@ -1747,26 +1747,26 @@ function wpas_do_mr_deny_user( $data ) {
 		), admin_url( 'user-edit.php' ) );
 
 
-		wpas_redirect( 'mr_activation', $redirect_to );
+		mumei_ayuda_redirect( 'mr_activation', $redirect_to );
 	}
 }
 
 
-add_action( 'admin_init', 'wpas_mr_activation_notices', 10, 0 );
+add_action( 'admin_init', 'mumei_ayuda_mr_activation_notices', 10, 0 );
 
 /**
  * Register moderated user activation notices
  */
-function wpas_mr_activation_notices() {
+function mumei_ayuda_mr_activation_notices() {
 
 	if ( isset( $_GET['wpas-mr-message'] ) ) {
 
 		$_SERVER['REQUEST_URI'] = remove_query_arg( 'wpas-mr-message' );
 
 		if ( 'success' === $_GET['wpas-mr-message'] ) {
-			add_action( 'admin_notices', 'wpas_mr_activation_success_notice' );
+			add_action( 'admin_notices', 'mumei_ayuda_mr_activation_success_notice' );
 		} else {
-			add_action( 'admin_notices', 'wpas_mr_activation_failed_notice' );
+			add_action( 'admin_notices', 'mumei_ayuda_mr_activation_failed_notice' );
 		}
 
 	} elseif ( isset( $_GET['wpas-mr-deny-message'] ) ) {
@@ -1774,7 +1774,7 @@ function wpas_mr_activation_notices() {
 		$_SERVER['REQUEST_URI'] = remove_query_arg( 'wpas-mr-deny-message' );
 
 		if ( 'success' === $_GET['wpas-mr-deny-message'] ) {
-			add_action( 'admin_notices', 'wpas_mr_deny_success_notice' );
+			add_action( 'admin_notices', 'mumei_ayuda_mr_deny_success_notice' );
 		}
 
 	}
@@ -1783,34 +1783,34 @@ function wpas_mr_activation_notices() {
 /**
  * Print notice once a moderated user successfully activated
  */
-function wpas_mr_activation_success_notice() {
+function mumei_ayuda_mr_activation_success_notice() {
 
-	printf( '<div class="updated"><p>%s</p></div>', esc_html__( 'User successfully activated.', 'awesome-support' ) );
+	printf( '<div class="updated"><p>%s</p></div>', esc_html__( 'User successfully activated.', 'ayuda-help-desk' ) );
 
 }
 
 /**
  * Print notice once a moderated user activation failed
  */
-function wpas_mr_activation_failed_notice() {
+function mumei_ayuda_mr_activation_failed_notice() {
 
-	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'Error while activating user, try again later.', 'awesome-support' ) );
+	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'Error while activating user, try again later.', 'ayuda-help-desk' ) );
 
 }
 
 /**
  * Print notice once a moderated user registration denied
  */
-function wpas_mr_deny_success_notice() {
+function mumei_ayuda_mr_deny_success_notice() {
 
-	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'User successfully denied.', 'awesome-support' ) );
+	printf( '<div class="updated error"><p>%s</p></div>', esc_html__( 'User successfully denied.', 'ayuda-help-desk' ) );
 
 }
 
 /**
  * Takes a one dimensional array of user ids and returns an array of user objects
  */
-function wpas_id_to_user_object( $user_ids ) {
+function mumei_ayuda_id_to_user_object( $user_ids ) {
 	$user_objects = array();
 	foreach ($user_ids as $id) {
 		$user_objects[] = get_user_by('id', $id);
@@ -1825,24 +1825,24 @@ function wpas_id_to_user_object( $user_ids ) {
  * @param	string	$redirect_to	Redirect to URL
  * @param	array	$data			HTTP Request data
  */
-function wpas_pre_register_temp_value_save( $user, $redirect_to, $data )
+function mumei_ayuda_pre_register_temp_value_save( $user, $redirect_to, $data )
 {
 	if ( isset( $user["first_name"] ) && $user["first_name"] ) {
-		$_SESSION["wpas_registration_form"]["first_name"] = $user["first_name"];
+		$_SESSION["mumei_ayuda_registration_form"]["first_name"] = $user["first_name"];
 	}
 	if ( isset( $user["last_name"] ) && $user["last_name"] ) {
-		$_SESSION["wpas_registration_form"]["last_name"] = $user["last_name"];
+		$_SESSION["mumei_ayuda_registration_form"]["last_name"] = $user["last_name"];
 	}
 	if ( isset($user["email"] ) && $user["email"] ) {
-		$_SESSION["wpas_registration_form"]["email"] = $user["email"];
+		$_SESSION["mumei_ayuda_registration_form"]["email"] = $user["email"];
 	}
 }
-add_action( "wpas_pre_register_account", "wpas_pre_register_temp_value_save", 10, 3 );
+add_action( "mumei_ayuda_pre_register_account", "mumei_ayuda_pre_register_temp_value_save", 10, 3 );
 
 /**
  * Clear temporary $_SESSION variables once registration form values are displayed in relative fields.
  */
-function wpas_after_registration_clean_temp() {
-	unset( $_SESSION["wpas_registration_form"] );
+function mumei_ayuda_after_registration_clean_temp() {
+	unset( $_SESSION["mumei_ayuda_registration_form"] );
 }
-add_action( "wpas_after_registration_fields", "wpas_after_registration_clean_temp", 10 );
+add_action( "mumei_ayuda_after_registration_fields", "mumei_ayuda_after_registration_clean_temp", 10 );

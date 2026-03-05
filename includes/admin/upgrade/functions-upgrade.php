@@ -11,14 +11,14 @@
  * @since 3.2.0
  * @return void
  */
-function wpas_upgrade_320() {
+function mumei_ayuda_upgrade_320() {
 
-	$registrations = (bool) wpas_get_option( 'allow_registrations', true );
+	$registrations = (bool) mumei_ayuda_get_option( 'allow_registrations', true );
 
 	if ( true === $registrations ) {
-		wpas_update_option( 'allow_registrations', 'allow' );
+		mumei_ayuda_update_option( 'allow_registrations', 'allow' );
 	} else {
-		wpas_update_option( 'allow_registrations', 'disallow' );
+		mumei_ayuda_update_option( 'allow_registrations', 'disallow' );
 	}
 
 }
@@ -29,12 +29,12 @@ function wpas_upgrade_320() {
  * @since 3.2.1
  * @return void
  */
-function wpas_upgrade_321() {
+function mumei_ayuda_upgrade_321() {
 
-	$agents = wpas_list_users( 'edit_ticket' );
+	$agents = mumei_ayuda_list_users( 'edit_ticket' );
 
 	foreach ( $agents as $agent_id => $agent_name ) {
-		update_user_option( $agent_id, 'wpas_can_be_assigned', 'yes' );
+		update_user_option( $agent_id, 'mumei_ayuda_can_be_assigned', 'yes' );
 	}
 
 }
@@ -45,11 +45,11 @@ function wpas_upgrade_321() {
  * @since 3.2.8
  * @return void
  */
-function wpas_upgrade_328() {
+function mumei_ayuda_upgrade_328() {
 
 	// Clear agents metas in order to apply the fix for incorrect open tickets counts
-	if ( function_exists( 'wpas_clear_agents_metas' ) ) {
-		wpas_clear_agents_metas();
+	if ( function_exists( 'mumei_ayuda_clear_agents_metas' ) ) {
+		mumei_ayuda_clear_agents_metas();
 	}
 
 }
@@ -60,12 +60,12 @@ function wpas_upgrade_328() {
  * @since 3.3.0
  * @return void
  */
-function wpas_upgrade_330() {
+function mumei_ayuda_upgrade_330() {
 
 	// Add default values for e-mail template when client closes own ticket
-	wpas_update_option( 'enable_closed_client', get_settings_defaults( 'enable_closed_client' ) );
-	wpas_update_option( 'subject_closed_client', get_settings_defaults( 'subject_closed_client' ) );
-	wpas_update_option( 'content_closed_client', get_settings_defaults( 'content_closed_client' ) );
+	mumei_ayuda_update_option( 'enable_closed_client', get_settings_defaults( 'enable_closed_client' ) );
+	mumei_ayuda_update_option( 'subject_closed_client', get_settings_defaults( 'subject_closed_client' ) );
+	mumei_ayuda_update_option( 'content_closed_client', get_settings_defaults( 'content_closed_client' ) );
 
 }
 
@@ -77,11 +77,11 @@ function wpas_upgrade_330() {
  * @since 3.3.3
  * @return void
  */
-function wpas_upgrade_333() {
-	wpas_update_option( 'use_email_template', true, true );
-	wpas_update_option( 'email_template_logo', '', true );
-	wpas_update_option( 'email_template_header', get_settings_defaults( 'email_template_header' ), true );
-	wpas_update_option( 'email_template_footer', get_settings_defaults( 'email_template_footer' ), true );
+function mumei_ayuda_upgrade_333() {
+	mumei_ayuda_update_option( 'use_email_template', true, true );
+	mumei_ayuda_update_option( 'email_template_logo', '', true );
+	mumei_ayuda_update_option( 'email_template_header', get_settings_defaults( 'email_template_header' ), true );
+	mumei_ayuda_update_option( 'email_template_footer', get_settings_defaults( 'email_template_footer' ), true );
 }
 
 /**
@@ -92,7 +92,7 @@ function wpas_upgrade_333() {
  * @since 4.0.0
  * @return void
  */
-function wpas_upgrade_406() {
+function mumei_ayuda_upgrade_406() {
 
 	/* Add new capabilities to these roles and all users assigned these roles:
 	 *
@@ -166,11 +166,11 @@ function wpas_upgrade_406() {
 		'ticket_delete_channels'
 	);
 
-	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
-	$supportmanager = get_role( 'wpas_support_manager' );
+	$manager 		= get_role( 'mumei_ayuda_manager' );  //aka support supervisors
+	$supportmanager = get_role( 'mumei_ayuda_support_manager' );
 	$admin   		= get_role( 'administrator' );
 	$as_admin  		= get_role( 'as_admin' );
-	$agent	 		= get_role( 'wpas_agent' );
+	$agent	 		= get_role( 'mumei_ayuda_agent' );
 
 
 	/**
@@ -229,8 +229,8 @@ function wpas_upgrade_406() {
  * @since 4.1.0
  * @return void
  */
-function wpas_upgrade_410() {
-	wpas_update_last_reply();
+function mumei_ayuda_upgrade_410() {
+	mumei_ayuda_update_last_reply();
 }
 
 /**
@@ -241,8 +241,8 @@ function wpas_upgrade_410() {
  * @since 4.4.0
  * @return void
  */
-function wpas_upgrade_440() {
-	wpas_upgrade_511();
+function mumei_ayuda_upgrade_440() {
+	mumei_ayuda_upgrade_511();
 }
 
 /**
@@ -253,7 +253,7 @@ function wpas_upgrade_440() {
  * @since 5.1.1
  * @return void
  */
-function wpas_upgrade_511() {
+function mumei_ayuda_upgrade_511() {
 
 	/* Add new capabilities to these roles and all users assigned these roles:
 	 *
@@ -277,11 +277,11 @@ function wpas_upgrade_511() {
 		'assign_ticket_creator'
 	);
 
-	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
-	$supportmanager = get_role( 'wpas_support_manager' );
+	$manager 		= get_role( 'mumei_ayuda_manager' );  //aka support supervisors
+	$supportmanager = get_role( 'mumei_ayuda_support_manager' );
 	$admin   		= get_role( 'administrator' );
 	$as_admin		= get_role( 'as_admin' );
-	$agent	 		= get_role( 'wpas_agent' );
+	$agent	 		= get_role( 'mumei_ayuda_agent' );
 
 
 	/**
@@ -332,7 +332,7 @@ function wpas_upgrade_511() {
  * @since 5.2.0
  * @return void
  */
-function wpas_upgrade_520() {
+function mumei_ayuda_upgrade_520() {
 
 	/* Add new capabilities to these roles and all users assigned these roles:
 	 *
@@ -356,11 +356,11 @@ function wpas_upgrade_520() {
 		'ticket_manage_privacy'
 	);
 
-	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
-	$supportmanager = get_role( 'wpas_support_manager' );
+	$manager 		= get_role( 'mumei_ayuda_manager' );  //aka support supervisors
+	$supportmanager = get_role( 'mumei_ayuda_support_manager' );
 	$admin   		= get_role( 'administrator' );
 	$as_admin		= get_role( 'as_admin' );
-	$agent	 		= get_role( 'wpas_agent' );
+	$agent	 		= get_role( 'mumei_ayuda_agent' );
 
 
 	/**
@@ -429,7 +429,7 @@ function wpas_upgrade_520() {
 
 
 	foreach ( $moderated_registration_settings as $mr_setting_name ) {
-		wpas_update_option( $mr_setting_name, get_settings_defaults( $mr_setting_name ), true );
+		mumei_ayuda_update_option( $mr_setting_name, get_settings_defaults( $mr_setting_name ), true );
 	}
 
 }
@@ -442,13 +442,13 @@ function wpas_upgrade_520() {
  * @since 5.5.0
  * @return void
  */
-function wpas_upgrade_550() {
+function mumei_ayuda_upgrade_550() {
 	// Run the 520 upgrade option for version 550.
 	// The 520 upgrade was the internal upgrade option during testing of the 550 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 550 routine.
 	// But we do want early 520 adopters to get the later changes to the update routine.  So
 	// we create this 550 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_520();
+	mumei_ayuda_upgrade_520();
 }
 
 /**
@@ -459,7 +459,7 @@ function wpas_upgrade_550() {
  * @since 5.8.1
  * @return void
  */
-function wpas_upgrade_581() {
+function mumei_ayuda_upgrade_581() {
 
 	/* Add new capabilities to these roles and all users assigned these roles:
 	 *
@@ -491,11 +491,11 @@ function wpas_upgrade_581() {
 		'ticket_delete_ticket_type'
 	);
 
-	$manager 		= get_role( 'wpas_manager' );  //aka support supervisors
-	$supportmanager = get_role( 'wpas_support_manager' );
+	$manager 		= get_role( 'mumei_ayuda_manager' );  //aka support supervisors
+	$supportmanager = get_role( 'mumei_ayuda_support_manager' );
 	$admin   		= get_role( 'administrator' );
 	$as_admin  		= get_role( 'as_admin' );
-	$agent	 		= get_role( 'wpas_agent' );
+	$agent	 		= get_role( 'mumei_ayuda_agent' );
 
 
 	/**
@@ -546,13 +546,13 @@ function wpas_upgrade_581() {
  * @since 5.9.0
  * @return void
  */
-function wpas_upgrade_590() {
+function mumei_ayuda_upgrade_590() {
 	// Run the 581 upgrade option for version 590.
 	// The 581 upgrade was the internal upgrade option during testing of the 590 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 590 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 590 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -563,13 +563,13 @@ function wpas_upgrade_590() {
  * @since 6.0.0
  * @return void
  */
-function wpas_upgrade_600() {
+function mumei_ayuda_upgrade_600() {
 	// Run the 581 upgrade option for version 600.
 	// The 581 upgrade was the internal upgrade option during testing of the 600 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 600 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 600 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -580,13 +580,13 @@ function wpas_upgrade_600() {
  * @since 6.0.5
  * @return void
  */
-function wpas_upgrade_605() {
+function mumei_ayuda_upgrade_605() {
 	// Run the 581 upgrade option for version 604.
 	// The 581 upgrade was the internal upgrade option during testing of the 604 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 604 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 604 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -597,13 +597,13 @@ function wpas_upgrade_605() {
  * @since 6.0.6
  * @return void
  */
-function wpas_upgrade_606() {
+function mumei_ayuda_upgrade_606() {
 	// Run the 581 upgrade option for version 606.
 	// The 581 upgrade was the internal upgrade option during testing of the 606 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 606 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 606 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -614,13 +614,13 @@ function wpas_upgrade_606() {
  * @since 6.0.7
  * @return void
  */
-function wpas_upgrade_607() {
+function mumei_ayuda_upgrade_607() {
 	// Run the 581 upgrade option for version 606.
 	// The 581 upgrade was the internal upgrade option during testing of the 606 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 607 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 607 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -631,13 +631,13 @@ function wpas_upgrade_607() {
  * @since 6.0.8
  * @return void
  */
-function wpas_upgrade_608() {
+function mumei_ayuda_upgrade_608() {
 	// Run the 581 upgrade option for version 608.
 	// The 581 upgrade was the internal upgrade option during testing of the 608 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 608 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 608 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -648,13 +648,13 @@ function wpas_upgrade_608() {
  * @since 6.0.9
  * @return void
  */
-function wpas_upgrade_609() {
+function mumei_ayuda_upgrade_609() {
 	// Run the 581 upgrade option for version 609.
 	// The 581 upgrade was the internal upgrade option during testing of the 609 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 609 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 609 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -665,13 +665,13 @@ function wpas_upgrade_609() {
  * @since 6.0.10
  * @return void
  */
-function wpas_upgrade_6010() {
+function mumei_ayuda_upgrade_6010() {
 	// Run the 581 upgrade option for version 6010.
 	// The 581 upgrade was the internal upgrade option during testing of the 6010 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6010 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6010 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -682,13 +682,13 @@ function wpas_upgrade_6010() {
  * @since 6.0.11
  * @return void
  */
-function wpas_upgrade_6011() {
+function mumei_ayuda_upgrade_6011() {
 	// Run the 581 upgrade option for version 6011.
 	// The 581 upgrade was the internal upgrade option during testing of the 6011 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6011 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6011 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -699,13 +699,13 @@ function wpas_upgrade_6011() {
  * @since 6.0.12
  * @return void
  */
-function wpas_upgrade_6012() {
+function mumei_ayuda_upgrade_6012() {
 	// Run the 581 upgrade option for version 6012.
 	// The 581 upgrade was the internal upgrade option during testing of the 6012 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6012 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6012 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -716,13 +716,13 @@ function wpas_upgrade_6012() {
  * @since 6.0.13
  * @return void
  */
-function wpas_upgrade_6013() {
+function mumei_ayuda_upgrade_6013() {
 	// Run the 581 upgrade option for version 6013.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6013 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 /**
  * Upgrade function for version 6.0.14
@@ -732,13 +732,13 @@ function wpas_upgrade_6013() {
  * @since 6.0.14
  * @return void
  */
-function wpas_upgrade_6014() {
+function mumei_ayuda_upgrade_6014() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 /**
  * Upgrade function for version 6.1.0
@@ -748,13 +748,13 @@ function wpas_upgrade_6014() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6100() {
+function mumei_ayuda_upgrade_6100() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 /**
  * Upgrade function for version 6.1.1
@@ -764,13 +764,13 @@ function wpas_upgrade_6100() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6110() {
+function mumei_ayuda_upgrade_6110() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 /**
  * Upgrade function for version 6.1.2
@@ -780,13 +780,13 @@ function wpas_upgrade_6110() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6120() {
+function mumei_ayuda_upgrade_6120() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 /**
  * Upgrade function for version 6.1.3
@@ -796,13 +796,13 @@ function wpas_upgrade_6120() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6130() {
+function mumei_ayuda_upgrade_6130() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -813,13 +813,13 @@ function wpas_upgrade_6130() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6140() {
+function mumei_ayuda_upgrade_6140() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -830,13 +830,13 @@ function wpas_upgrade_6140() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6150() {
+function mumei_ayuda_upgrade_6150() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -847,13 +847,13 @@ function wpas_upgrade_6150() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6160() {
+function mumei_ayuda_upgrade_6160() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 /**
  * Upgrade function for version 6.1.7
@@ -863,13 +863,13 @@ function wpas_upgrade_6160() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6170() {
+function mumei_ayuda_upgrade_6170() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -880,13 +880,13 @@ function wpas_upgrade_6170() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6180() {
+function mumei_ayuda_upgrade_6180() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -897,13 +897,13 @@ function wpas_upgrade_6180() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_6190() {
+function mumei_ayuda_upgrade_6190() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -914,13 +914,13 @@ function wpas_upgrade_6190() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_61100() {
+function mumei_ayuda_upgrade_61100() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }
 
 /**
@@ -931,11 +931,11 @@ function wpas_upgrade_61100() {
  * @since 6.1
  * @return void
  */
-function wpas_upgrade_61110() {
+function mumei_ayuda_upgrade_61110() {
 	// Run the 581 upgrade option for version 6014.
 	// The 581 upgrade was the internal upgrade option during testing of the 6013 release.
 	// Therefore the two routines are the same and there is no reason to write a separate 6013 routine.
 	// But we do want early 581 adopters to get the later changes to the update routine.  So
 	// we create this 6014 routine to make sure it runs for early 520 adopters.
-	wpas_upgrade_581();
+	mumei_ayuda_upgrade_581();
 }

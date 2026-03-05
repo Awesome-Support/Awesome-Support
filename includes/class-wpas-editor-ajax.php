@@ -23,9 +23,9 @@
 /**
  * Load the WP Editor Ajax class.
  */
-add_action( 'plugins_loaded', array( 'WPAS_Editor_Ajax', 'get_instance' ), 11, 0 );
+add_action( 'plugins_loaded', array( 'MUMEI_AYUDA_Editor_Ajax', 'get_instance' ), 11, 0 );
 
-class WPAS_Editor_Ajax {
+class MUMEI_AYUDA_Editor_Ajax {
 
 	/**
 	 * Instance of this class.
@@ -62,7 +62,7 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Add new settings
 		 */
-		// add_filter( 'wpas_ajax_editor_tinymce_settings', array( $this, 'add_instance_callback' ), 10, 1 );
+		// add_filter( 'mumei_ayuda_ajax_editor_tinymce_settings', array( $this, 'add_instance_callback' ), 10, 1 );
 
 		/**
 		 * Ajax calls to load the editor.
@@ -102,8 +102,8 @@ class WPAS_Editor_Ajax {
 		/**
 		 * Security checking. Verify ajax via nonce.
 		 */
-		if( !check_ajax_referer( 'wpas_edit_reply', 'nonce', false ) ) {
-			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+		if( !check_ajax_referer( 'mumei_ayuda_edit_reply', 'nonce', false ) ) {
+			mumei_ayuda_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'ayuda-help-desk') ) );
 			die();
 		}
 		
@@ -112,7 +112,7 @@ class WPAS_Editor_Ajax {
 		
 		//Check permission for capability of current user
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			mumei_ayuda_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'ayuda-help-desk') ) );
 			die();
 		}		
 			
@@ -120,7 +120,7 @@ class WPAS_Editor_Ajax {
 		$settings  = (array) filter_input( INPUT_POST, 'editor_settings', FILTER_UNSAFE_RAW);
 
 		if ( empty( $editor_id ) ) {
-			wpas_debug_display( __( 'An editor ID is mandatory to load a new instance of TinyMCE', 'awesome-support' ) );
+			mumei_ayuda_debug_display( __( 'An editor ID is mandatory to load a new instance of TinyMCE', 'ayuda-help-desk' ) );
 			die;
 		}
 
@@ -186,20 +186,20 @@ class WPAS_Editor_Ajax {
 		 * Security checking. Verify ajax via nonce.
 		 */
 		if( !check_ajax_referer( 'wpas-editor-content-nonce', 'nonce', false ) ) {
-			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			mumei_ayuda_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'ayuda-help-desk') ) );
 			die();
 		}
 		
 		$post_id = filter_input( INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT );
 
 		if ( empty( $post_id ) ) {
-			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+			mumei_ayuda_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'ayuda-help-desk') ) );
 			die();
 		}
 		
 		//Check permission for capability of current user
-		if ( ! current_user_can( 'edit_ticket', $post_id ) || !wpas_can_view_ticket( $post_id ) ) {
-			wpas_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ) );
+		if ( ! current_user_can( 'edit_ticket', $post_id ) || !mumei_ayuda_can_view_ticket( $post_id ) ) {
+			mumei_ayuda_debug_display( array( 'message' => __( "You don't have access to perform this action." , 'ayuda-help-desk') ) );
 			die();
 		}
 		
@@ -259,8 +259,8 @@ class WPAS_Editor_Ajax {
 	 * @return string            Unmodified settings
 	 */
 	public function get_quicktags_settings( $qtInit, $editor_id ) {
-		$this->qt_settings = apply_filters( 'wpas_ajax_editor_quicktags_settings', $qtInit );
-		return apply_filters( 'wpas_ajax_editor_quicktags_settings', $qtInit );
+		$this->qt_settings = apply_filters( 'mumei_ayuda_ajax_editor_quicktags_settings', $qtInit );
+		return apply_filters( 'mumei_ayuda_ajax_editor_quicktags_settings', $qtInit );
 	}
 
 	/**
@@ -275,8 +275,8 @@ class WPAS_Editor_Ajax {
 	 * @return string            Unmodified settings
 	 */
 	public function get_tinymce_settings( $mceInit, $editor_id ) {
-		$this->mce_settings = apply_filters( 'wpas_ajax_editor_tinymce_settings', $mceInit );
-		return apply_filters( 'wpas_ajax_editor_tinymce_settings', $mceInit );
+		$this->mce_settings = apply_filters( 'mumei_ayuda_ajax_editor_tinymce_settings', $mceInit );
+		return apply_filters( 'mumei_ayuda_ajax_editor_tinymce_settings', $mceInit );
 	}
 
 	/**

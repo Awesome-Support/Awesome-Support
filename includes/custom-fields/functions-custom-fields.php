@@ -18,12 +18,12 @@
  * @param  object $taxonomy Taxonomy of update
  * @return void
  */
-function wpas_update_ticket_tag_terms_count( $terms, $taxonomy ) {
+function mumei_ayuda_update_ticket_tag_terms_count( $terms, $taxonomy ) {
 
 	global $wpdb;
 
 	$object_types   = (array) $taxonomy->object_type;
-	$post_status    = wpas_get_post_status();
+	$post_status    = mumei_ayuda_get_post_status();
 	$allowed_status = array();
 
 	foreach ( $post_status as $status => $label ) {
@@ -80,9 +80,9 @@ function wpas_update_ticket_tag_terms_count( $terms, $taxonomy ) {
  * @return mixed            Meta value
  * @since  3.0.0
  */
-function wpas_get_cf_value( $name, $post_id, $default = false ) {
+function mumei_ayuda_get_cf_value( $name, $post_id, $default = false ) {
 
-	$field = new WPAS_Custom_Field( $name );
+	$field = new MUMEI_AYUDA_Custom_Field( $name );
 
 	$cf_value = $field->get_field_value( $default, $post_id );
 
@@ -101,7 +101,7 @@ function wpas_get_cf_value( $name, $post_id, $default = false ) {
 /**
  * Echo a custom field value.
  *
- * This function is just a wrapper function for wpas_get_cf_value()
+ * This function is just a wrapper function for mumei_ayuda_get_cf_value()
  * that echoes the result instead of returning it.
  *
  * @param  string  $name    Option name
@@ -111,8 +111,8 @@ function wpas_get_cf_value( $name, $post_id, $default = false ) {
  * @return mixed            Meta value
  * @since  3.0.0
  */
-function wpas_cf_value( $name, $post_id, $default = false ) {
-	echo wp_kses(wpas_get_cf_value( $name, $post_id, $default ), get_allowed_html_wp_notifications());
+function mumei_ayuda_cf_value( $name, $post_id, $default = false ) {
+	echo wp_kses(mumei_ayuda_get_cf_value( $name, $post_id, $default ), get_allowed_html_wp_notifications());
 }
 
 /**
@@ -125,7 +125,7 @@ function wpas_cf_value( $name, $post_id, $default = false ) {
  *
  * @return boolean        Returns true on success or false on failure
  */
-function wpas_add_custom_field( $name, $args = array() ) {
+function mumei_ayuda_add_custom_field( $name, $args = array() ) {
 	return WPAS()->custom_fields->add_field( $name, $args );
 }
 
@@ -138,7 +138,7 @@ function wpas_add_custom_field( $name, $args = array() ) {
  *
  * @return boolean        Returns true if it exists of false otherwise
  */
-function wpas_custom_field_exists( $name ) {
+function mumei_ayuda_custom_field_exists( $name ) {
 	
 	if ( isset( WPAS()->custom_fields->get_custom_fields()[ $name ] ) ) {
 		return true ;		
@@ -158,11 +158,11 @@ function wpas_custom_field_exists( $name ) {
  *
  * @return boolean        Returns true on success or false on failure
  */
-function wpas_add_custom_taxonomy( $name, $args = array() ) {
+function mumei_ayuda_add_custom_taxonomy( $name, $args = array() ) {
 
 	/* Force the custom fields type to be a taxonomy. */
 	$args['field_type']      = 'taxonomy';
-	$args['column_callback'] = 'wpas_show_taxonomy_column';
+	$args['column_callback'] = 'mumei_ayuda_show_taxonomy_column';
 
 	/* Add the taxonomy. */
 	WPAS()->custom_fields->add_field( $name, $args );
@@ -185,33 +185,33 @@ function wpas_add_custom_taxonomy( $name, $args = array() ) {
  *
  * @return  int|array           Returns result of add/update post meta
  */
-function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field ) {	
+function mumei_ayuda_update_time_spent_on_ticket( $value, $post_id, $field_id, $field ) {	
 	
 	// Default to saved value unchanged
 	$result = 0;
 	
 	// No time spent on this ticket
-	if ( ! isset ($_POST['wpas_ttl_calculated_time_spent_on_ticket']) ) {
+	if ( ! isset ($_POST['mumei_ayuda_ttl_calculated_time_spent_on_ticket']) ) {
 		return $result;
 	}
 
 	$hours = $minutes = $adj_hours = $adj_minutes = 0;
 	
 	// Time spent on ticket (hh:mm:ss)
-	sscanf( sanitize_text_field( wp_unslash( $_POST['wpas_ttl_calculated_time_spent_on_ticket'] ) ), "%d:%d", $hours, $minutes );
+	sscanf( sanitize_text_field( wp_unslash( $_POST['mumei_ayuda_ttl_calculated_time_spent_on_ticket'] ) ), "%d:%d", $hours, $minutes );
 	
 	// Convert to seconds
 	$minutes = $hours * 60 + $minutes;	
 	
 	// Calculate time adjustment
-	if( isset ( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
-		&& ! empty( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] )
+	if( isset ( $_POST['mumei_ayuda_ttl_adjustments_to_time_spent_on_ticket'] )
+		&& ! empty( $_POST['mumei_ayuda_ttl_adjustments_to_time_spent_on_ticket'] )
 	) {
-		sscanf( sanitize_text_field( wp_unslash( $_POST['wpas_ttl_adjustments_to_time_spent_on_ticket'] ) ), "%d:%d", $adj_hours, $adj_minutes );		
+		sscanf( sanitize_text_field( wp_unslash( $_POST['mumei_ayuda_ttl_adjustments_to_time_spent_on_ticket'] ) ), "%d:%d", $adj_hours, $adj_minutes );		
 
 		$adjustment_time = $adj_hours * 60 + $adj_minutes;
 		
-		if( isset($_POST['wpas_time_adjustments_pos_or_neg']) && '+' === $_POST['wpas_time_adjustments_pos_or_neg'] ) {
+		if( isset($_POST['mumei_ayuda_time_adjustments_pos_or_neg']) && '+' === $_POST['mumei_ayuda_time_adjustments_pos_or_neg'] ) {
 			$minutes += $adjustment_time;
 		}
 		else {
@@ -257,7 +257,7 @@ function wpas_update_time_spent_on_ticket( $value, $post_id, $field_id, $field )
  *
  * @param $field
  */
-function wpas_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
+function mumei_ayuda_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
 
 	$result = $hours = $minutes = 0;
 
@@ -291,16 +291,16 @@ function wpas_cf_save_time_hhmm( $value, $post_id, $field_id, $field ) {
 }
 
 
-add_action( 'init', 'wpas_register_core_fields' );
+add_action( 'init', 'mumei_ayuda_register_core_fields' );
 /**
  * Register the cure custom fields.
  *
  * @since  3.0.0
  * @return void
  */
-function wpas_register_core_fields() {
+function mumei_ayuda_register_core_fields() {
 
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	$options = maybe_unserialize( get_option( 'mumei_ayuda_options', array() ) );
 
 	/*******************************************************************/
 	/* Add Agent/Assignee field                                        */
@@ -310,17 +310,17 @@ function wpas_register_core_fields() {
 	$show_assignee = true ;
 
 	/** Get the label for the agent field if one is provided */
-	$as_label_for_agent_singular = isset( $options[ 'label_for_agent_singular' ] ) ? $options[ 'label_for_agent_singular' ] : __( 'Agent', 'awesome-support' );
+	$as_label_for_agent_singular = isset( $options[ 'label_for_agent_singular' ] ) ? $options[ 'label_for_agent_singular' ] : __( 'Agent', 'ayuda-help-desk' );
 
 	/** Create the custom field for agents */
-	wpas_add_custom_field( 'assignee', array(
+	mumei_ayuda_add_custom_field( 'assignee', array(
 		'core'            => true,
 		'show_column'     => $show_assignee,
 		'sortable_column' => $show_assignee,
 		'filterable'      => $show_assignee,
-		'column_callback' => 'wpas_show_assignee_column',
+		'column_callback' => 'mumei_ayuda_show_assignee_column',
 		'log'             => true,
-		'title'           => __( $as_label_for_agent_singular, 'awesome-support' )
+		'title'           => __( $as_label_for_agent_singular, 'ayuda-help-desk' )
 	) );
 
 	/*******************************************************************/
@@ -328,18 +328,18 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 
 	/** Get the label for the status field if one is provided */
-	$as_label_for_status_singular = isset( $options[ 'label_for_status_singular' ] ) ? $options[ 'label_for_status_singular' ] : __( 'Status', 'awesome-support' );
+	$as_label_for_status_singular = isset( $options[ 'label_for_status_singular' ] ) ? $options[ 'label_for_status_singular' ] : __( 'Status', 'ayuda-help-desk' );
 
 	/** Create the custom field for status */
-	wpas_add_custom_field( 'status', array(
+	mumei_ayuda_add_custom_field( 'status', array(
 		'core'            => true,
 		'show_column'     => true,
 		'log'             => false,
 		'field_type'      => false,
 		'sortable_column' => true,
-		'column_callback' => 'wpas_cf_display_status',
+		'column_callback' => 'mumei_ayuda_cf_display_status',
 		'save_callback'   => null,
-		'title'           => __( $as_label_for_status_singular, 'awesome-support' )
+		'title'           => __( $as_label_for_status_singular, 'ayuda-help-desk' )
 	) );
 
 
@@ -348,29 +348,29 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 
 	/** Get the labels for the ticket tags field if they are provided */
-	$as_label_for_ticket_tag_singular 	= isset( $options[ 'label_for_ticket_tag_singular' ] ) ? $options[ 'label_for_ticket_tag_singular' ] : __( 'Tag', 'awesome-support' );
-	$as_label_for_ticket_tag_plural 	= isset( $options[ 'label_for_ticket_tag_plural' ] ) ? $options[ 'label_for_ticket_tag_plural' ] : __( 'Tags', 'awesome-support' );
+	$as_label_for_ticket_tag_singular 	= isset( $options[ 'label_for_ticket_tag_singular' ] ) ? $options[ 'label_for_ticket_tag_singular' ] : __( 'Tag', 'ayuda-help-desk' );
+	$as_label_for_ticket_tag_plural 	= isset( $options[ 'label_for_ticket_tag_plural' ] ) ? $options[ 'label_for_ticket_tag_plural' ] : __( 'Tags', 'ayuda-help-desk' );
 
 	/** Create the custom field for ticket tags */
-	wpas_add_custom_field( 'ticket-tag', array(
+	mumei_ayuda_add_custom_field( 'ticket-tag', array(
 		'core'                  => true,
 		'show_column'           => true,
 		'log'                   => true,
 		'field_type'            => 'taxonomy',
 		'sortable_column'       => true,
 		'taxo_std'              => false,
-		'column_callback'       => 'wpas_show_taxonomy_column',
+		'column_callback'       => 'mumei_ayuda_show_taxonomy_column',
 		'save_callback'         => null,
-		'label'                 => __( $as_label_for_ticket_tag_singular, 'awesome-support' ),
-		'name'                  => __( $as_label_for_ticket_tag_singular, 'awesome-support' ),
-		'label_plural'          => __( $as_label_for_ticket_tag_plural, 'awesome-support' ),
+		'label'                 => __( $as_label_for_ticket_tag_singular, 'ayuda-help-desk' ),
+		'name'                  => __( $as_label_for_ticket_tag_singular, 'ayuda-help-desk' ),
+		'label_plural'          => __( $as_label_for_ticket_tag_plural, 'ayuda-help-desk' ),
 		'taxo_hierarchical'     => false,
-		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+		'update_count_callback' => 'mumei_ayuda_update_ticket_tag_terms_count',
 		'select2'               => false,
 		'taxo_manage_terms' 	=> 'ticket_manage_tags',
 		'taxo_edit_terms'   	=> 'ticket_edit_tags',
 		'taxo_delete_terms' 	=> 'ticket_delete_tags',
-		'title'           		=> __( $as_label_for_ticket_tag_singular, 'awesome-support' )
+		'title'           		=> __( $as_label_for_ticket_tag_singular, 'ayuda-help-desk' )
 	) );
 
 
@@ -379,7 +379,7 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 	if ( isset( $options[ 'support_ticket_type' ] ) && true === boolval( $options[ 'support_ticket_type' ] ) ) {
 
-		$slug = defined( 'WPAS_TICKET_TYPE_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_type';
+		$slug = defined( 'MUMEI_AYUDA_TICKET_TYPE_SLUG' ) ? MUMEI_AYUDA_PRIORITY_SLUG : 'ticket_type';
 
 		$show_ticket_type_column_in_list = false;
 		$show_ticket_type_column_in_list = ( isset( $options[ 'support_ticket_type_show_in_ticket_list' ] ) && true === boolval( $options[ 'support_ticket_type_show_in_ticket_list' ] ) );
@@ -400,20 +400,20 @@ function wpas_register_core_fields() {
 		}
 
 		/** Get the labels for the priority field if they are provided */
-		$as_label_for_ticket_type_singular 	= isset( $options[ 'label_for_ticket_type_singular' ] ) ? $options[ 'label_for_ticket_type_singular' ] : __( 'Ticket Type', 'awesome-support' );
-		$as_label_for_ticket_type_plural 	= isset( $options[ 'label_for_ticket_type_plural' ] ) ? $options[ 'label_for_ticket_type_plural' ] : __( 'Ticket Types', 'awesome-support' );
+		$as_label_for_ticket_type_singular 	= isset( $options[ 'label_for_ticket_type_singular' ] ) ? $options[ 'label_for_ticket_type_singular' ] : __( 'Ticket Type', 'ayuda-help-desk' );
+		$as_label_for_ticket_type_plural 	= isset( $options[ 'label_for_ticket_type_plural' ] ) ? $options[ 'label_for_ticket_type_plural' ] : __( 'Ticket Types', 'ayuda-help-desk' );
 
 
 		/* Filter the priority taxonomy labels */
-		$labels = apply_filters( 'wpas_priority_taxonomy_labels', array(
-				'label'        => __( $as_label_for_ticket_type_singular, 'awesome-support' ),
-				'name'         => __( $as_label_for_ticket_type_singular, 'awesome-support' ),
-				'label_plural' => __( $as_label_for_ticket_type_plural, 'awesome-support' )
+		$labels = apply_filters( 'mumei_ayuda_priority_taxonomy_labels', array(
+				'label'        => __( $as_label_for_ticket_type_singular, 'ayuda-help-desk' ),
+				'name'         => __( $as_label_for_ticket_type_singular, 'ayuda-help-desk' ),
+				'label_plural' => __( $as_label_for_ticket_type_plural, 'ayuda-help-desk' )
 		) );
 
 
 		/** Create the custom field for ticket types */
-		wpas_add_custom_field( 'ticket_type', array(
+		mumei_ayuda_add_custom_field( 'ticket_type', array(
 			'core'                  => false,
 			'show_column'           => $show_ticket_type_column_in_list,
 			'hide_front_end'        => !$show_ticket_type_on_front_end,  //inverse of what the user specificed in settings because of how this attribute works...
@@ -421,12 +421,12 @@ function wpas_register_core_fields() {
 			'log'                   => true,
 			'field_type'            => 'taxonomy',
 			'taxo_std'              => false,
-			'column_callback'       => 'wpas_cf_display_ticket_type',
+			'column_callback'       => 'mumei_ayuda_cf_display_ticket_type',
 			'label'                 => $labels[ 'label' ],
 			'name'                  => $labels[ 'name' ],
 			'label_plural'          => $labels[ 'label_plural' ],
 			'taxo_hierarchical'     => true,
-			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'update_count_callback' => 'mumei_ayuda_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'sortable_column'       => true,
 			'select2'               => false,
@@ -435,7 +435,7 @@ function wpas_register_core_fields() {
 			'taxo_delete_terms' 	=> 'ticket_delete_ticket_type',			
 			'filterable'            => true,
 			'required'              => $show_ticket_type_required,
-			'title'           		=> __( $as_label_for_ticket_type_singular, 'awesome-support' ),
+			'title'           		=> __( $as_label_for_ticket_type_singular, 'ayuda-help-desk' ),
 			'order'           		=> -10  // Yes, -10 for this one so that it appears by default above the subject and description fields on the front-end form.
 		) );
 
@@ -447,41 +447,41 @@ function wpas_register_core_fields() {
 
 	if ( isset( $options[ 'support_products' ] ) && true === boolval( $options[ 'support_products' ] ) ) {
 
-		$slug = defined( 'WPAS_PRODUCT_SLUG' ) ? WPAS_PRODUCT_SLUG : wpas_get_option( 'products_slug', 'product');
+		$slug = defined( 'MUMEI_AYUDA_PRODUCT_SLUG' ) ? MUMEI_AYUDA_PRODUCT_SLUG : mumei_ayuda_get_option( 'products_slug', 'product');
 
 		/** Get the labels for the products field if they are provided */
-		$as_label_for_product_singular 	= isset( $options[ 'label_for_product_singular' ] ) ? $options[ 'label_for_product_singular' ] : __( 'Product', 'awesome-support' );
-		$as_label_for_product_plural 	= isset( $options[ 'label_for_product_plural' ] ) ? $options[ 'label_for_product_plural' ] : __( 'Products', 'awesome-support' );
+		$as_label_for_product_singular 	= isset( $options[ 'label_for_product_singular' ] ) ? $options[ 'label_for_product_singular' ] : __( 'Product', 'ayuda-help-desk' );
+		$as_label_for_product_plural 	= isset( $options[ 'label_for_product_plural' ] ) ? $options[ 'label_for_product_plural' ] : __( 'Products', 'ayuda-help-desk' );
 
 		/* Filter the product taxonomy labels */
-		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
-				'label'        => __( $as_label_for_product_singular, 'awesome-support' ),
-				'name'         => __( $as_label_for_product_singular, 'awesome-support' ),
-				'label_plural' => __( $as_label_for_product_plural, 'awesome-support' )
+		$labels = apply_filters( 'mumei_ayuda_product_taxonomy_labels', array(
+				'label'        => __( $as_label_for_product_singular, 'ayuda-help-desk' ),
+				'name'         => __( $as_label_for_product_singular, 'ayuda-help-desk' ),
+				'label_plural' => __( $as_label_for_product_plural, 'ayuda-help-desk' )
 			)
 		);
 
 		/** Create the custom field for products */
-		wpas_add_custom_field( 'product', array(
+		mumei_ayuda_add_custom_field( 'product', array(
 			'core'                  => false,
 			'show_column'           => true,
 			'log'                   => true,
 			'field_type'            => 'taxonomy',
 			'taxo_std'              => false,
-			'column_callback'       => 'wpas_show_taxonomy_column',
+			'column_callback'       => 'mumei_ayuda_show_taxonomy_column',
 			'label'                 => $labels[ 'label' ],
 			'name'                  => $labels[ 'name' ],
 			'label_plural'          => $labels[ 'label_plural' ],
 			'taxo_hierarchical'     => true,
 			'sortable_column'       => true,
 			'filterable'            => false,
-			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'update_count_callback' => 'mumei_ayuda_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
 			'taxo_manage_terms' 	=> 'ticket_manage_products',
 			'taxo_edit_terms'   	=> 'ticket_edit_products',
 			'taxo_delete_terms' 	=> 'ticket_delete_products',
-			'title'           		=> __( $as_label_for_product_singular, 'awesome-support' ),
+			'title'           		=> __( $as_label_for_product_singular, 'ayuda-help-desk' ),
 			'order'           		=> 30,
 			'taxo_sortorder'		=> 'asc'
 		) );
@@ -493,40 +493,40 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 	if ( isset( $options[ 'departments' ] ) && true === boolval( $options[ 'departments' ] ) ) {
 
-		$slug = defined( 'WPAS_DEPARTMENT_SLUG' ) ? WPAS_DEPARTMENT_SLUG : 'department';
+		$slug = defined( 'MUMEI_AYUDA_DEPARTMENT_SLUG' ) ? MUMEI_AYUDA_DEPARTMENT_SLUG : 'department';
 
 		/** Get the labels for the department field if they are provided */
-		$as_label_for_department_singular 	= isset( $options[ 'label_for_department_singular' ] ) ? $options[ 'label_for_department_singular' ] : __( 'Department', 'awesome-support' );
-		$as_label_for_department_plural 	= isset( $options[ 'label_for_department_plural' ] ) ? $options[ 'label_for_department_plural' ] : __( 'Departments', 'awesome-support' );
+		$as_label_for_department_singular 	= isset( $options[ 'label_for_department_singular' ] ) ? $options[ 'label_for_department_singular' ] : __( 'Department', 'ayuda-help-desk' );
+		$as_label_for_department_plural 	= isset( $options[ 'label_for_department_plural' ] ) ? $options[ 'label_for_department_plural' ] : __( 'Departments', 'ayuda-help-desk' );
 
 		/* Filter the department taxonomy labels */
-		$labels = apply_filters( 'wpas_department_taxonomy_labels', array(
-			'label'        => __( $as_label_for_department_singular, 'awesome-support' ),
-			'name'         => __( $as_label_for_department_singular, 'awesome-support' ),
-			'label_plural' => __( $as_label_for_department_plural, 'awesome-support' )
+		$labels = apply_filters( 'mumei_ayuda_department_taxonomy_labels', array(
+			'label'        => __( $as_label_for_department_singular, 'ayuda-help-desk' ),
+			'name'         => __( $as_label_for_department_singular, 'ayuda-help-desk' ),
+			'label_plural' => __( $as_label_for_department_plural, 'ayuda-help-desk' )
 		) );
 
 		/** Create the custom field for department */
-		wpas_add_custom_field( 'department', array(
+		mumei_ayuda_add_custom_field( 'department', array(
 			'core'                  => false,
 			'show_column'           => true,
 			'log'                   => true,
 			'field_type'            => 'taxonomy',
 			'taxo_std'              => false,
-			'column_callback'       => 'wpas_show_taxonomy_column',
+			'column_callback'       => 'mumei_ayuda_show_taxonomy_column',
 			'label'                 => $labels[ 'label' ],
 			'name'                  => $labels[ 'name' ],
 			'label_plural'          => $labels[ 'label_plural' ],
 			'taxo_hierarchical'     => true,
 			'sortable_column'       => true,
 			'filterable'            => true,
-			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'update_count_callback' => 'mumei_ayuda_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'select2'               => false,
 			'taxo_manage_terms' 	=> 'ticket_manage_departments',
 			'taxo_edit_terms'   	=> 'ticket_edit_departments',
 			'taxo_delete_terms' 	=> 'ticket_delete_departments',			
-			'title'           		=> __( $as_label_for_department_singular, 'awesome-support' ),
+			'title'           		=> __( $as_label_for_department_singular, 'ayuda-help-desk' ),
 			'order'           		=> 20			
 		) );
 
@@ -537,7 +537,7 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 	if ( isset( $options[ 'support_priority' ] ) && true === boolval( $options[ 'support_priority' ] ) ) {
 
-		$slug = defined( 'WPAS_PRIORITY_SLUG' ) ? WPAS_PRIORITY_SLUG : 'ticket_priority';
+		$slug = defined( 'MUMEI_AYUDA_PRIORITY_SLUG' ) ? MUMEI_AYUDA_PRIORITY_SLUG : 'ticket_priority';
 
 		$show_priority_column_in_list = false;
 		$show_priority_column_in_list = ( isset( $options[ 'support_priority_show_in_ticket_list' ] ) && true === boolval( $options[ 'support_priority_show_in_ticket_list' ] ) );
@@ -558,20 +558,20 @@ function wpas_register_core_fields() {
 		}
 
 		/** Get the labels for the priority field if they are provided */
-		$as_label_for_priority_singular 	= isset( $options[ 'label_for_priority_singular' ] ) ? $options[ 'label_for_priority_singular' ] : __( 'Priority', 'awesome-support' );
-		$as_label_for_priority_plural 	= isset( $options[ 'label_for_priority_plural' ] ) ? $options[ 'label_for_priority_plural' ] : __( 'Priorities', 'awesome-support' );
+		$as_label_for_priority_singular 	= isset( $options[ 'label_for_priority_singular' ] ) ? $options[ 'label_for_priority_singular' ] : __( 'Priority', 'ayuda-help-desk' );
+		$as_label_for_priority_plural 	= isset( $options[ 'label_for_priority_plural' ] ) ? $options[ 'label_for_priority_plural' ] : __( 'Priorities', 'ayuda-help-desk' );
 
 
 		/* Filter the priority taxonomy labels */
-		$labels = apply_filters( 'wpas_priority_taxonomy_labels', array(
-				'label'        => __( $as_label_for_priority_singular, 'awesome-support' ),
-				'name'         => __( $as_label_for_priority_singular, 'awesome-support' ),
-				'label_plural' => __( $as_label_for_priority_plural, 'awesome-support' )
+		$labels = apply_filters( 'mumei_ayuda_priority_taxonomy_labels', array(
+				'label'        => __( $as_label_for_priority_singular, 'ayuda-help-desk' ),
+				'name'         => __( $as_label_for_priority_singular, 'ayuda-help-desk' ),
+				'label_plural' => __( $as_label_for_priority_plural, 'ayuda-help-desk' )
 		) );
 
 
 		/** Create the custom field for priority */
-		wpas_add_custom_field( 'ticket_priority', array(
+		mumei_ayuda_add_custom_field( 'ticket_priority', array(
 			'core'                  => false,
 			'show_column'           => $show_priority_column_in_list,
 			'hide_front_end'        => !$show_priority_on_front_end,  //inverse of what the user specificed in settings because of how this attribute works...
@@ -579,12 +579,12 @@ function wpas_register_core_fields() {
 			'log'                   => true,
 			'field_type'            => 'taxonomy',
 			'taxo_std'              => false,
-			'column_callback'       => 'wpas_cf_display_priority',
+			'column_callback'       => 'mumei_ayuda_cf_display_priority',
 			'label'                 => $labels[ 'label' ],
 			'name'                  => $labels[ 'name' ],
 			'label_plural'          => $labels[ 'label_plural' ],
 			'taxo_hierarchical'     => true,
-			'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+			'update_count_callback' => 'mumei_ayuda_update_ticket_tag_terms_count',
 			'rewrite'               => array( 'slug' => $slug ),
 			'sortable_column'       => true,
 			'select2'               => false,
@@ -593,7 +593,7 @@ function wpas_register_core_fields() {
 			'taxo_delete_terms' 	=> 'ticket_delete_priorities',			
 			'filterable'            => true,
 			'required'              => $show_priority_required,
-			'title'           		=> __( $as_label_for_priority_singular, 'awesome-support' ),
+			'title'           		=> __( $as_label_for_priority_singular, 'ayuda-help-desk' ),
 			'order'           		=> 40			
 		) );
 
@@ -602,18 +602,18 @@ function wpas_register_core_fields() {
 	/*******************************************************************/
 	/* Add ticket channel field (where did the ticket originate from?) */
 	/*******************************************************************/
-	$slug = defined( 'WPAS_CHANNEL_SLUG' ) ? WPAS_CHANNEL_SLUG : 'ticket_channel';
+	$slug = defined( 'MUMEI_AYUDA_CHANNEL_SLUG' ) ? MUMEI_AYUDA_CHANNEL_SLUG : 'ticket_channel';
 
 	/** Get the labels for the channel field if they are provided */
-	$as_label_for_channel_singular 	= isset( $options[ 'label_for_channel_singular' ] ) ? $options[ 'label_for_channel_singular' ] : __( 'Channel', 'awesome-support' );
-	$as_label_for_channel_plural 	= isset( $options[ 'label_for_channel_plural' ] ) ? $options[ 'label_for_channel_plural' ] : __( 'Channels', 'awesome-support' );
+	$as_label_for_channel_singular 	= isset( $options[ 'label_for_channel_singular' ] ) ? $options[ 'label_for_channel_singular' ] : __( 'Channel', 'ayuda-help-desk' );
+	$as_label_for_channel_plural 	= isset( $options[ 'label_for_channel_plural' ] ) ? $options[ 'label_for_channel_plural' ] : __( 'Channels', 'ayuda-help-desk' );
 
 
 	/* Filter the channel taxonomy labels */
-	$labels = apply_filters( 'wpas_channel_taxonomy_labels', array(
-			'label'        => __( $as_label_for_channel_singular, 'awesome-support' ),
-			'name'         => __( $as_label_for_channel_singular, 'awesome-support' ),
-			'label_plural' => __( $as_label_for_channel_plural, 'awesome-support' )
+	$labels = apply_filters( 'mumei_ayuda_channel_taxonomy_labels', array(
+			'label'        => __( $as_label_for_channel_singular, 'ayuda-help-desk' ),
+			'name'         => __( $as_label_for_channel_singular, 'ayuda-help-desk' ),
+			'label_plural' => __( $as_label_for_channel_plural, 'ayuda-help-desk' )
 		)
 	);
 
@@ -621,7 +621,7 @@ function wpas_register_core_fields() {
 
 
 	/** Create the custom field for channel */
-	wpas_add_custom_field( 'ticket_channel', array(
+	mumei_ayuda_add_custom_field( 'ticket_channel', array(
 		'core'                  => false,
 		'show_column'           => $show_channel_column_in_list,
 		'hide_front_end'        => true,
@@ -629,12 +629,12 @@ function wpas_register_core_fields() {
 		'log'                   => true,
 		'field_type'            => 'taxonomy',
 		'taxo_std'              => false,
-		'column_callback'       => 'wpas_show_taxonomy_column',
+		'column_callback'       => 'mumei_ayuda_show_taxonomy_column',
 		'label'                 => $labels[ 'label' ],
 		'name'                  => $labels[ 'name' ],
 		'label_plural'          => $labels[ 'label_plural' ],
 		'taxo_hierarchical'     => true,
-		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
+		'update_count_callback' => 'mumei_ayuda_update_ticket_tag_terms_count',
 		'rewrite'               => array( 'slug' => $slug ),
 		'sortable_column'       => $show_channel_column_in_list,
 		'select2'               => false,
@@ -643,7 +643,7 @@ function wpas_register_core_fields() {
 		'taxo_delete_terms' 	=> 'ticket_delete_channels',		
 		'filterable'            => $show_channel_column_in_list,
 		'default'               => 'standard ticket form',
-		'title'           		=> __( $as_label_for_channel_singular, 'awesome-support' )
+		'title'           		=> __( $as_label_for_channel_singular, 'ayuda-help-desk' )
 	) );
 	
 	/*******************************************************************/
@@ -660,33 +660,33 @@ function wpas_register_core_fields() {
 
 
 		/** Get the label for the secondary agent field if one is provided */
-		$as_label_for_secondary_agent_singular = isset( $options[ 'label_for_secondary_agent_singular' ] ) ? $options[ 'label_for_secondary_agent_singular' ] : __( 'Additional Support Staff #1', 'awesome-support' );
+		$as_label_for_secondary_agent_singular = isset( $options[ 'label_for_secondary_agent_singular' ] ) ? $options[ 'label_for_secondary_agent_singular' ] : __( 'Additional Support Staff #1', 'ayuda-help-desk' );
 
 		/*** Create the secondary assignee custom field */
-		wpas_add_custom_field( 'secondary_assignee', array(
+		mumei_ayuda_add_custom_field( 'secondary_assignee', array(
 			'core'           	=> false,
 			'show_column'    	=> $show_secondary_agent_in_list,
 			'sortable_column'	=> $show_secondary_agent_in_list,
 			'filterable'        => $show_secondary_agent_in_list,
 			'hide_front_end' 	=> true,
 			'log'            	=> true,
-			'column_callback' 	=> 'wpas_show_secondary_assignee_column',
-			'title'          	=> __( $as_label_for_secondary_agent_singular, 'awesome-support' )
+			'column_callback' 	=> 'mumei_ayuda_show_secondary_assignee_column',
+			'title'          	=> __( $as_label_for_secondary_agent_singular, 'ayuda-help-desk' )
 		) );
 
 		/** Get the label for the tertiary agent field if one is provided */
-		$as_label_for_tertiary_agent_singular = isset( $options[ 'label_for_tertiary_agent_singular' ] ) ? $options[ 'label_for_tertiary_agent_singular' ] : __( 'Additional Support Staff #2', 'awesome-support' );
+		$as_label_for_tertiary_agent_singular = isset( $options[ 'label_for_tertiary_agent_singular' ] ) ? $options[ 'label_for_tertiary_agent_singular' ] : __( 'Additional Support Staff #2', 'ayuda-help-desk' );
 
 		/*** Create the tertiary assignee custom field */
-		wpas_add_custom_field( 'tertiary_assignee', array(
+		mumei_ayuda_add_custom_field( 'tertiary_assignee', array(
 			'core'           	=> false,
 			'hide_front_end' 	=> true,
 			'show_column'    	=> $show_tertiary_agent_in_list,
 			'sortable_column'	=> $show_tertiary_agent_in_list,
 			'filterable'        => $show_tertiary_agent_in_list,
 			'log'            	=> true,
-			'column_callback' 	=> 'wpas_show_tertiary_assignee_column',
-			'title'          	=> __( $as_label_for_tertiary_agent_singular, 'awesome-support' )
+			'column_callback' 	=> 'mumei_ayuda_show_tertiary_assignee_column',
+			'title'          	=> __( $as_label_for_tertiary_agent_singular, 'ayuda-help-desk' )
 		) );
 	}
 
@@ -697,33 +697,33 @@ function wpas_register_core_fields() {
 
 	/** Get the labels for these replies statistic fields if they are provided */
 
-	$as_label_for_ttl_replies_by_agent_singular 	= isset( $options[ 'label_for_ttl_replies_by_agent_singular' ] ) ? $options[ 'label_for_ttl_replies_by_agent_singular' ] : __( 'Number of Replies By Agent', 'awesome-support' );
-	$as_label_for_ttl_replies_by_customer_singular 	= isset( $options[ 'label_for_ttl_replies_by_customer_singular' ] ) ? $options[ 'label_for_ttl_replies_by_customer_singular' ] : __( 'Number of Replies By Customer', 'awesome-support' );
-	$as_label_for_ttl_replies_singular 				= isset( $options[ 'label_for_ttl_replies_singular' ] ) ? $options[ 'label_for_ttl_replies_singular' ] : __( 'Total Replies On Ticket', 'awesome-support' );
+	$as_label_for_ttl_replies_by_agent_singular 	= isset( $options[ 'label_for_ttl_replies_by_agent_singular' ] ) ? $options[ 'label_for_ttl_replies_by_agent_singular' ] : __( 'Number of Replies By Agent', 'ayuda-help-desk' );
+	$as_label_for_ttl_replies_by_customer_singular 	= isset( $options[ 'label_for_ttl_replies_by_customer_singular' ] ) ? $options[ 'label_for_ttl_replies_by_customer_singular' ] : __( 'Number of Replies By Customer', 'ayuda-help-desk' );
+	$as_label_for_ttl_replies_singular 				= isset( $options[ 'label_for_ttl_replies_singular' ] ) ? $options[ 'label_for_ttl_replies_singular' ] : __( 'Total Replies On Ticket', 'ayuda-help-desk' );
 
 	/** Now create the replies statistics fields */
-	wpas_add_custom_field( 'ttl_replies_by_agent', array(
+	mumei_ayuda_add_custom_field( 'ttl_replies_by_agent', array(
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
 		'readonly'    => true,
-		'title'       => __( $as_label_for_ttl_replies_by_agent_singular, 'awesome-support' ),
+		'title'       => __( $as_label_for_ttl_replies_by_agent_singular, 'ayuda-help-desk' ),
 	) );
 
-	wpas_add_custom_field( 'ttl_replies_by_customer', array(
+	mumei_ayuda_add_custom_field( 'ttl_replies_by_customer', array(
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
 		'readonly'    => true,
-		'title'       => __( $as_label_for_ttl_replies_by_customer_singular, 'awesome-support' )
+		'title'       => __( $as_label_for_ttl_replies_by_customer_singular, 'ayuda-help-desk' )
 	) );
 
-	wpas_add_custom_field( 'ttl_replies', array(
+	mumei_ayuda_add_custom_field( 'ttl_replies', array(
 		'core'        => true,
 		'show_column' => false,
 		'log'         => false,
 		'readonly'    => true,
-		'title'       => __( $as_label_for_ttl_replies_singular, 'awesome-support' )
+		'title'       => __( $as_label_for_ttl_replies_singular, 'ayuda-help-desk' )
 	) );
 
 	/*******************************************************************/
@@ -757,13 +757,13 @@ function wpas_register_core_fields() {
 	}
 
 	/** Get the labels for these time related fields if they are provided */
-	$as_label_for_gross_time_singular 			= isset( $options[ 'label_for_gross_time_singular' ] ) ? $options[ 'label_for_gross_time_singular' ] : __( 'Gross Time', 'awesome-support' );
-	$as_label_for_time_adjustments_singular 	= isset( $options[ 'label_for_time_adjustments_singular' ] ) ? $options[ 'label_for_time_adjustments_singular' ] : __( 'Time Adjustments', 'awesome-support' );
-	$as_label_for_time_adjustments_dir_singular = isset( $options[ 'label_for_time_adjustments_dir_singular' ] ) ? $options[ 'label_for_time_adjustments_dir_singular' ] : __( '+ive or -ive Adj?', 'awesome-support' );
-	$as_label_for_final_time_singular 			= isset( $options[ 'label_for_final_time_singular' ] ) ? $options[ 'label_for_final_time_singular' ] : __( 'Final Time', 'awesome-support' );
-	$as_label_for_time_notes_singular 			= isset( $options[ 'label_for_time_notes_singular' ] ) ? $options[ 'label_for_time_notes_singular' ] : __( 'Notes', 'awesome-support' );
+	$as_label_for_gross_time_singular 			= isset( $options[ 'label_for_gross_time_singular' ] ) ? $options[ 'label_for_gross_time_singular' ] : __( 'Gross Time', 'ayuda-help-desk' );
+	$as_label_for_time_adjustments_singular 	= isset( $options[ 'label_for_time_adjustments_singular' ] ) ? $options[ 'label_for_time_adjustments_singular' ] : __( 'Time Adjustments', 'ayuda-help-desk' );
+	$as_label_for_time_adjustments_dir_singular = isset( $options[ 'label_for_time_adjustments_dir_singular' ] ) ? $options[ 'label_for_time_adjustments_dir_singular' ] : __( '+ive or -ive Adj?', 'ayuda-help-desk' );
+	$as_label_for_final_time_singular 			= isset( $options[ 'label_for_final_time_singular' ] ) ? $options[ 'label_for_final_time_singular' ] : __( 'Final Time', 'ayuda-help-desk' );
+	$as_label_for_time_notes_singular 			= isset( $options[ 'label_for_time_notes_singular' ] ) ? $options[ 'label_for_time_notes_singular' ] : __( 'Notes', 'ayuda-help-desk' );
 
-	wpas_add_custom_field( 'ttl_calculated_time_spent_on_ticket', array(
+	mumei_ayuda_add_custom_field( 'ttl_calculated_time_spent_on_ticket', array(
 		'core'        		=> false,
 		'show_column' 		=> $show_total_time_in_list,
 		'log'         		=> $audit_log_for_time_tracking_fields,
@@ -772,16 +772,16 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'column_callback'   => 'wpas_cf_display_time_hhmm',
-		'save_callback'     => 'wpas_cf_save_time_hhmm',
+		'column_callback'   => 'mumei_ayuda_cf_display_time_hhmm',
+		'save_callback'     => 'mumei_ayuda_cf_save_time_hhmm',
 		'sortable_column'	=> true,
-		'title'       		=> __( $as_label_for_gross_time_singular, 'awesome-support' ),
-		'desc'       		=> __( 'Enter the cummulative time spent on ticket by the agent', 'awesome-support' ),
+		'title'       		=> __( $as_label_for_gross_time_singular, 'ayuda-help-desk' ),
+		'desc'       		=> __( 'Enter the cummulative time spent on ticket by the agent', 'ayuda-help-desk' ),
 		'readonly'			=> $allow_agents_to_enter_time,
-		'display_email_template' => 'wpas_cf_email_display_time_hhmm'
+		'display_email_template' => 'mumei_ayuda_cf_email_display_time_hhmm'
 	) );
 
-	wpas_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
+	mumei_ayuda_add_custom_field( 'ttl_adjustments_to_time_spent_on_ticket', array(
 		'core'        		=> false,
 		'show_column' 		=> $show_total_time_adj_in_list,
 		'log'         		=> $audit_log_for_time_tracking_fields,
@@ -790,16 +790,16 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',		
-		'column_callback'   => 'wpas_cf_display_time_adjustment_column',
-		'save_callback'     => 'wpas_cf_save_time_hhmm',
+		'column_callback'   => 'mumei_ayuda_cf_display_time_adjustment_column',
+		'save_callback'     => 'mumei_ayuda_cf_save_time_hhmm',
 		'sortable_column'	=> true,
-		'title'       		=> __( $as_label_for_time_adjustments_singular, 'awesome-support' ),
-		'desc'       		=> __( 'Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin.', 'awesome-support' ),
+		'title'       		=> __( $as_label_for_time_adjustments_singular, 'ayuda-help-desk' ),
+		'desc'       		=> __( 'Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin.', 'ayuda-help-desk' ),
 		'readonly'			=> $allow_agents_to_enter_time,
-		'display_email_template' => 'wpas_cf_email_display_time_hhmm'
+		'display_email_template' => 'mumei_ayuda_cf_email_display_time_hhmm'
 	) );
 	
-	wpas_add_custom_field( 'time_adjustments_pos_or_neg', array(
+	mumei_ayuda_add_custom_field( 'time_adjustments_pos_or_neg', array(
 		'core'        		=> false,
 		'field_type'		=> 'radio',
 		'options' 			=> array( '+' => '+ive', '-' => '-ive' ),
@@ -808,11 +808,11 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'title'       		=> __( $as_label_for_time_adjustments_dir_singular, 'awesome-support' ),
+		'title'       		=> __( $as_label_for_time_adjustments_dir_singular, 'ayuda-help-desk' ),
 		'readonly'			=> $allow_agents_to_enter_time
 	) );		
 
-	wpas_add_custom_field( 'final_time_spent_on_ticket', array(
+	mumei_ayuda_add_custom_field( 'final_time_spent_on_ticket', array(
 		'core'        		=> false,
 		'show_column' 		=> $show_final_time_in_list,
 		'log'         		=> $audit_log_for_time_tracking_fields,
@@ -823,16 +823,16 @@ function wpas_register_core_fields() {
 		'backend_display_type'	=> 'custom',
 		'show_frontend_list' 	=> $show_final_time_in_fe_list,
 		'show_frontend_detail'	=> $show_final_time_in_fe_ticket,
-		'column_callback'   => 'wpas_cf_display_time_hhmm',
+		'column_callback'   => 'mumei_ayuda_cf_display_time_hhmm',
 		'sortable_column'	=> true,
-		'title'       		=> __( $as_label_for_final_time_singular, 'awesome-support' ),
-		'desc'       		=> __( 'This is the time calculated by the system - a sum of gross time and adjustments/credits granted.', 'awesome-support' ),						
-		'save_callback'     => 'wpas_update_time_spent_on_ticket',
+		'title'       		=> __( $as_label_for_final_time_singular, 'ayuda-help-desk' ),
+		'desc'       		=> __( 'This is the time calculated by the system - a sum of gross time and adjustments/credits granted.', 'ayuda-help-desk' ),						
+		'save_callback'     => 'mumei_ayuda_update_time_spent_on_ticket',
 		'readonly'          => true,
-		'display_email_template' => 'wpas_cf_email_display_time_hhmm'
+		'display_email_template' => 'mumei_ayuda_cf_email_display_time_hhmm'
 	) );
 	
-	wpas_add_custom_field( 'time_notes', array(
+	mumei_ayuda_add_custom_field( 'time_notes', array(
 		'field_type'		=> 'wysiwyg',
 		'core'        		=> false,
 		'show_column' 		=> false,
@@ -840,7 +840,7 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,		
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'title'       		=> __( $as_label_for_time_notes_singular, 'awesome-support' ),
+		'title'       		=> __( $as_label_for_time_notes_singular, 'ayuda-help-desk' ),
 		'readonly'			=> $allow_agents_to_enter_time		
 	) );
 	
@@ -855,48 +855,48 @@ function wpas_register_core_fields() {
 	$show_thirdparty02_in_list = ( isset( $options[ 'show_third_party_02_in_ticket_list' ] ) && true === boolval( $options[ 'show_third_party_02_in_ticket_list' ] ) );
 
 	/** Get the labels for these additional interested party fields if they are provided */
-	$as_label_for_first_addl_interested_party_name_singular 			= isset( $options[ 'label_for_first_addl_interested_party_name_singular' ] ) ? $options[ 'label_for_first_addl_interested_party_name_singular' ] : __( 'Name Of Additional Interested Party #1', 'awesome-support' );
-	$as_label_for_first_addl_interested_party_email_singular 			= isset( $options[ 'label_for_first_addl_interested_party_email_singular' ] ) ? $options[ 'label_for_first_addl_interested_party_email_singular' ] : __( 'Additional Interested Party Email #1', 'awesome-support' );
-	$as_label_for_second_addl_interested_party_name_singular 			= isset( $options[ 'label_for_second_addl_interested_party_name_singular' ] ) ? $options[ 'label_for_second_addl_interested_party_name_singular' ] : __( 'Name Of Additional Interested Party #2', 'awesome-support' );
-	$as_label_for_second_addl_interested_party_email_singular 			= isset( $options[ 'label_for_second_addl_interested_party_email_singular' ] ) ? $options[ 'label_for_second_addl_interested_party_email_singular' ] : __( 'Additional Interested Party Email #2', 'awesome-support' );
+	$as_label_for_first_addl_interested_party_name_singular 			= isset( $options[ 'label_for_first_addl_interested_party_name_singular' ] ) ? $options[ 'label_for_first_addl_interested_party_name_singular' ] : __( 'Name Of Additional Interested Party #1', 'ayuda-help-desk' );
+	$as_label_for_first_addl_interested_party_email_singular 			= isset( $options[ 'label_for_first_addl_interested_party_email_singular' ] ) ? $options[ 'label_for_first_addl_interested_party_email_singular' ] : __( 'Additional Interested Party Email #1', 'ayuda-help-desk' );
+	$as_label_for_second_addl_interested_party_name_singular 			= isset( $options[ 'label_for_second_addl_interested_party_name_singular' ] ) ? $options[ 'label_for_second_addl_interested_party_name_singular' ] : __( 'Name Of Additional Interested Party #2', 'ayuda-help-desk' );
+	$as_label_for_second_addl_interested_party_email_singular 			= isset( $options[ 'label_for_second_addl_interested_party_email_singular' ] ) ? $options[ 'label_for_second_addl_interested_party_email_singular' ] : __( 'Additional Interested Party Email #2', 'ayuda-help-desk' );
 
-	wpas_add_custom_field( 'first_addl_interested_party_name', array(
+	mumei_ayuda_add_custom_field( 'first_addl_interested_party_name', array(
 		'core'           	=> false,
 		'show_column'    	=> $show_thirdparty01_in_list,
 		'sortable_column'	=> $show_thirdparty01_in_list,
 		'filterable'        => $show_thirdparty01_in_list,
-		'column_callback'	=> 'wpas_show_3rd_party01_column',
+		'column_callback'	=> 'mumei_ayuda_show_3rd_party01_column',
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
-		'title'          	=> __( $as_label_for_first_addl_interested_party_name_singular, 'awesome-support' )
+		'title'          	=> __( $as_label_for_first_addl_interested_party_name_singular, 'ayuda-help-desk' )
 	) );
-	wpas_add_custom_field( 'first_addl_interested_party_email', array(
+	mumei_ayuda_add_custom_field( 'first_addl_interested_party_email', array(
 		'core'           	=> false,
 		'show_column'    	=> false,  // set to false because this is handled by the callback function on the name field above
 		'sortable_column'	=> false,
 		'filterable'        => false,
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
-		'title'          	=> __( $as_label_for_first_addl_interested_party_email_singular, 'awesome-support' )
+		'title'          	=> __( $as_label_for_first_addl_interested_party_email_singular, 'ayuda-help-desk' )
 	) );
-	wpas_add_custom_field( 'second_addl_interested_party_name', array(
+	mumei_ayuda_add_custom_field( 'second_addl_interested_party_name', array(
 		'core'           	=> false,
 		'show_column'    	=> $show_thirdparty02_in_list,
 		'sortable_column'	=> $show_thirdparty02_in_list,
 		'filterable'        => $show_thirdparty02_in_list,
-		'column_callback'	=> 'wpas_show_3rd_party02_column',
+		'column_callback'	=> 'mumei_ayuda_show_3rd_party02_column',
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
-		'title'          	=> __( $as_label_for_second_addl_interested_party_name_singular, 'awesome-support' )
+		'title'          	=> __( $as_label_for_second_addl_interested_party_name_singular, 'ayuda-help-desk' )
 	) );
-	wpas_add_custom_field( 'second_addl_interested_party_email', array(
+	mumei_ayuda_add_custom_field( 'second_addl_interested_party_email', array(
 		'core'           	=> false,
 		'show_column'    	=> false,  // set to false because this is handled by the callback function on the name field above
 		'sortable_column'	=> false,
 		'filterable'        => false,
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
-		'title'          	=> __( $as_label_for_second_addl_interested_party_email_singular, 'awesome-support' )
+		'title'          	=> __( $as_label_for_second_addl_interested_party_email_singular, 'ayuda-help-desk' )
 	) );
 	
 	
@@ -912,16 +912,16 @@ function wpas_register_core_fields() {
 		$show_saas_id_in_list = ( isset( $options[ 'importer_id_show_in_tkt_list' ] ) && true === boolval( $options[ 'importer_id_show_in_tkt_list' ] ) );	
 		
 		$saas_id_label = 'Help Desk SaaS Ticket ID';
-		$saas_id_label = isset( $options[ 'importer_id_label' ] ) ? $options[ 'importer_id_label' ] : __( 'Help Desk SaaS Ticket ID', 'awesome-support' );
+		$saas_id_label = isset( $options[ 'importer_id_label' ] ) ? $options[ 'importer_id_label' ] : __( 'Help Desk SaaS Ticket ID', 'ayuda-help-desk' );
 
-		wpas_add_custom_field( 'help_desk_ticket_id', array(
+		mumei_ayuda_add_custom_field( 'help_desk_ticket_id', array(
 			'core'           	=> false,
 			'show_column'    	=> $show_saas_id_in_list,
 			'sortable_column'	=> true,
 			'filterable'        => true,
 			'backend_only' 		=> true,
 			'log'            	=> true,
-			'title'          	=> __( $saas_id_label, 'awesome-support' ),
+			'title'          	=> __( $saas_id_label, 'ayuda-help-desk' ),
 		) );	
 	}
 	
@@ -935,9 +935,9 @@ function wpas_register_core_fields() {
 	$show_ticket_template_in_list = ( isset( $options[ 'show_ticket_template_in_ticket_list' ] ) && true === boolval( $options[ 'show_ticket_template_in_ticket_list' ] ) );	
 	
 	
-	if ( true === $show_ticket_template_option && ( current_user_can('ticket_manage_ticket_templates') || wpas_is_asadmin() ) ) {
+	if ( true === $show_ticket_template_option && ( current_user_can('ticket_manage_ticket_templates') || mumei_ayuda_is_asadmin() ) ) {
 		
-		wpas_add_custom_field( 'is_ticket_template', array(
+		mumei_ayuda_add_custom_field( 'is_ticket_template', array(
 			'field_type'		=> 'select',		
 			'core'           	=> false,
 			'show_column'    	=> $show_ticket_template_in_list,
@@ -946,10 +946,10 @@ function wpas_register_core_fields() {
 			'filterable'        => true,
 			'backend_only' 		=> true,
 			'log'            	=> true,
-			'title'          	=> __( 'Ticket Template?', 'awesome-support' ),
+			'title'          	=> __( 'Ticket Template?', 'ayuda-help-desk' ),
 		) );
 		
-		wpas_add_custom_field( 'ticket_template_short_desc', array(
+		mumei_ayuda_add_custom_field( 'ticket_template_short_desc', array(
 			'field_type'		=> 'text',
 			'core'           	=> false,
 			'show_column'    	=> false,
@@ -957,7 +957,7 @@ function wpas_register_core_fields() {
 			'filterable'        => false,
 			'backend_only' 		=> true,
 			'log'            	=> true,
-			'title'          	=> __( 'Ticket Template Description', 'awesome-support' ),
+			'title'          	=> __( 'Ticket Template Description', 'ayuda-help-desk' ),
 		) );			
 				
 		
@@ -968,7 +968,7 @@ function wpas_register_core_fields() {
 	
 	/* Trigger backend custom ticket list columns */
 	if ( is_admin() ) {
-		apply_filters( 'wpas_add_custom_fields', array() );
+		apply_filters( 'mumei_ayuda_add_custom_fields', array() );
 	}
 
 }
@@ -981,5 +981,5 @@ add_action( 'admin_init', 'insert_channel_terms' );
  * @return void
  */
 function insert_channel_terms() {
-	wpas_add_default_channel_terms(false);
+	mumei_ayuda_add_default_channel_terms(false);
 }

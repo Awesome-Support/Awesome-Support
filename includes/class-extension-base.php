@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support Extension Base Class
+ * @package   Ayuda – Help Desk Extension Base Class
  */
 
 // If this file is called directly, abort.
@@ -9,7 +9,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 
-abstract class WPAS_Extension_Base {
+abstract class MUMEI_AYUDA_Extension_Base {
 
 	/**
 	 * ID of the item.
@@ -200,10 +200,10 @@ abstract class WPAS_Extension_Base {
 			$this->addon_root = trailingslashit( dirname( plugin_basename( $this->addon_file ) ) );
 
 
-			define( "WPAS_{$this->uid}_VERSION", $this->version );
-			define( "WPAS_{$this->uid}_URL",     $this->addon_url );
-			define( "WPAS_{$this->uid}_PATH",    $this->addon_path );
-			define( "WPAS_{$this->uid}_ROOT",    $this->addon_root );
+			define( "MUMEI_AYUDA_{$this->uid}_VERSION", $this->version );
+			define( "MUMEI_AYUDA_{$this->uid}_URL",     $this->addon_url );
+			define( "MUMEI_AYUDA_{$this->uid}_PATH",    $this->addon_path );
+			define( "MUMEI_AYUDA_{$this->uid}_ROOT",    $this->addon_root );
 
 		}
 	}
@@ -212,7 +212,7 @@ abstract class WPAS_Extension_Base {
 	 * Activate the plugin.
 	 *
 	 * The activation method just checks if the main plugin
-	 * Awesome Support is installed (active or inactive) on the site.
+	 * Ayuda – Help Desk is installed (active or inactive) on the site.
 	 * If not, the addon installation is aborted and an error message is displayed.
 	 *
 	 * @since  0.1.0
@@ -220,9 +220,9 @@ abstract class WPAS_Extension_Base {
 	 */
 	public static function activate() {
 
-		if ( ! class_exists( 'Awesome_Support' ) ) {
-			// translators: %1$s is the URL to install Awesome Support.
-			$x_content =  __( 'You need Awesome Support to activate this addon. Please <a href="%1$s" target="_blank">install Awesome Support</a> before continuing.', 'awesome-support' );
+		if ( ! class_exists( 'Mumei_Ayuda_Support' ) ) {
+			// translators: %1$s is the URL to install Ayuda – Help Desk.
+			$x_content =  __( 'You need Ayuda – Help Desk to activate this addon. Please <a href="%1$s" target="_blank">install Ayuda – Help Desk</a> before continuing.', 'ayuda-help-desk' );
 			
 			deactivate_plugins( basename( self::get_addon_path() ) );
 			wp_die(
@@ -247,26 +247,26 @@ abstract class WPAS_Extension_Base {
 
 
 		if ( ! $this->is_core_active() ) {
-			// translators: %1$s is the name of the feature or plugin that requires Awesome Support.
-			$x_content = __( '%1$s requires Awesome Support to be active. Please activate the core plugin first.', 'awesome-support' );
+			// translators: %1$s is the name of the feature or plugin that requires Ayuda – Help Desk.
+			$x_content = __( '%1$s requires Ayuda – Help Desk to be active. Please activate the core plugin first.', 'ayuda-help-desk' );
 			$this->add_error( sprintf( $x_content, $plugin_name ) );
 		}
 
 		if ( ! $this->is_php_version_enough() ) {
 			// translators: %1$s is the feature or plugin name, %2$s is the minimum PHP version required, %3$s is the URL with update instructions.
-			$x_content = __( 'Unfortunately, %1$s can not run on PHP versions older than %2$s. Read more information about <a href="%3$s" target="_blank">how you can update</a>.', 'awesome-support' );
+			$x_content = __( 'Unfortunately, %1$s can not run on PHP versions older than %2$s. Read more information about <a href="%3$s" target="_blank">how you can update</a>.', 'ayuda-help-desk' );
 			$this->add_error( sprintf( $x_content, $plugin_name, $this->php_version_required, esc_url( 'http://www.wpupdatephp.com/update/' ) ) );
 		}
 
 		if ( ! $this->is_version_compatible() ) {
-			// translators: %1$s is the feature or plugin name, %2$s is the required version of Awesome Support.
-			$x_content = __( '%1$s requires Awesome Support version %2$s or greater. Please update the core plugin first.', 'awesome-support' );
+			// translators: %1$s is the feature or plugin name, %2$s is the required version of Ayuda – Help Desk.
+			$x_content = __( '%1$s requires Ayuda – Help Desk version %2$s or greater. Please update the core plugin first.', 'ayuda-help-desk' );
 			$this->add_error( sprintf( $x_content, $plugin_name, $this->version_required ) );
 		}
 
 		if ( ! $this->dependencies_available() ) {
 			// translators: %1$s is the name of the dependency or component.
-			$x_content = __( '%1$s requires some dependencies that aren&#039;t loaded. Please contact support.', 'awesome-support' );
+			$x_content = __( '%1$s requires some dependencies that aren&#039;t loaded. Please contact support.', 'ayuda-help-desk' );
 			$this->add_error( sprintf( $x_content, $plugin_name ) );
 		}
 
@@ -287,7 +287,7 @@ abstract class WPAS_Extension_Base {
 			// Add the license admin notice
 			//$this->add_license_notice();
 			add_action( 'admin_notices', array( $this, 'add_license_notice' ), 9, 0 );
-			add_filter( 'wpas_addons_licenses', array( $this, 'addon_license' ),       10, 1 );
+			add_filter( 'mumei_ayuda_addons_licenses', array( $this, 'addon_license' ),       10, 1 );
 			add_filter( 'plugin_row_meta',      array( $this, 'license_notice_meta' ), 10, 4 );
 		}
 
@@ -296,7 +296,7 @@ abstract class WPAS_Extension_Base {
 		/**
 		 * Register the addon
 		 */
-		wpas_register_addon( $this->slug, array( $this, 'load' ) );
+		mumei_ayuda_register_addon( $this->slug, array( $this, 'load' ) );
 
 		register_deactivation_hook( $this->addon_file, array( $this, 'deactivate' ) ) ;
 
@@ -359,7 +359,7 @@ abstract class WPAS_Extension_Base {
 	 * @return boolean Whether or not the core is active
 	 */
 	protected function is_core_active() {
-		if ( in_array( 'awesome-support/awesome-support.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		if ( in_array( 'mumei-ayuda-help-desk/mumei-ayuda-help-desk.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 			return true;
 		} else {
 			return false;
@@ -386,11 +386,11 @@ abstract class WPAS_Extension_Base {
 			return true;
 		}
 
-		if ( ! defined( 'WPAS_VERSION' ) ) {
+		if ( ! defined( 'MUMEI_AYUDA_VERSION' ) ) {
 			return false;
 		}
 
-		if ( version_compare( WPAS_VERSION, $this->version_required, '<' ) ) {
+		if ( version_compare( MUMEI_AYUDA_VERSION, $this->version_required, '<' ) ) {
 			return false;
 		}
 
@@ -523,7 +523,7 @@ abstract class WPAS_Extension_Base {
 		$plugin_name = $this->plugin_data( 'Name' );
 
 		if( $trim_as ) {
-			$plugin_name = trim( str_replace( 'Awesome Support:', '', $plugin_name ) ); // Remove the Awesome Support prefix from the addon name
+			$plugin_name = trim( str_replace( 'Ayuda – Help Desk:', '', $plugin_name ) ); // Remove the Ayuda – Help Desk prefix from the addon name
 		}
 
 		return $plugin_name;
@@ -575,7 +575,7 @@ abstract class WPAS_Extension_Base {
 			return;
 		}
 
-		$license = wpas_get_option( "license_{$this->slug}", '' );
+		$license = mumei_ayuda_get_option( "license_{$this->slug}", '' );
 
 		/**
 		 * Do not show the notice if the license key has already been entered.
@@ -584,10 +584,10 @@ abstract class WPAS_Extension_Base {
 			return;
 		}
 
-		$link = wpas_get_settings_page_url( 'licenses' );
+		$link = mumei_ayuda_get_settings_page_url( 'licenses' );
 
 		// translators: %1$s is the URL to the license page, %2$s is the name of the product.
-		$x_content = __( 'Please <a href="%1$s">fill-in your product license</a> now. If you don\'t, your copy of <strong>%2$s</strong> will <strong>never be updated</strong>.', 'awesome-support' );
+		$x_content = __( 'Please <a href="%1$s">fill-in your product license</a> now. If you don\'t, your copy of <strong>%2$s</strong> will <strong>never be updated</strong>.', 'ayuda-help-desk' );
 
 		WPAS()->admin_notices->add_notice( 'error', "license_{$this->slug}", sprintf( $x_content, $link, $this->get_addon_name( false ) ) );
 
@@ -605,17 +605,17 @@ abstract class WPAS_Extension_Base {
 	 */
 	public function license_notice_meta( $plugin_meta, $plugin_file ) {
 
-		$license   = wpas_get_option( "license_{$this->slug}", '' );
+		$license   = mumei_ayuda_get_option( "license_{$this->slug}", '' );
 
 		if( ! empty( $license ) ) {
 			return $plugin_meta;
 		}
 
-		$license_page = wpas_get_settings_page_url( 'licenses' );
+		$license_page = mumei_ayuda_get_settings_page_url( 'licenses' );
 
 		if ( plugin_basename( $this->addon_file ) === $plugin_file ) {
 			// translators: %s is the product license page link.
-			$x_content = __( 'You must fill-in your product license in order to get future plugin updates. <a href="%s">Click here to do it</a>.', 'awesome-support' );
+			$x_content = __( 'You must fill-in your product license in order to get future plugin updates. <a href="%s">Click here to do it</a>.', 'ayuda-help-desk' );
 			$plugin_meta[] = '<strong>' . sprintf( $x_content, $license_page ) . '</strong>';
 		}
 

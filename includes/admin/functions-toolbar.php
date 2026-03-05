@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Admin/Functions/Toolbar
+ * @package   Ayuda – Help Desk/Admin/Functions/Toolbar
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -20,7 +20,7 @@ if ( ! defined( 'WPINC' ) ) {
  * 
  * @return string
  */
-function wpas_toolbar_item( $args ) {
+function mumei_ayuda_toolbar_item( $args ) {
 	
 	$defaults = array(
 		'id_param'		=> 'id',
@@ -50,7 +50,7 @@ function wpas_toolbar_item( $args ) {
 	if( 'id' === $args['id_param'] ) {
 		$attributes = " id=\"{$id}\"";
 	} else {
-		$classes .= " wpas_toolbar_item_{$id}";
+		$classes .= " mumei_ayuda_toolbar_item_{$id}";
 	}
 	
 	
@@ -62,7 +62,7 @@ function wpas_toolbar_item( $args ) {
 	
 	$item = "";
 	
-	$wrapper_classes = "hint-bottom hint-anim wpas_toolbar_item";
+	$wrapper_classes = "hint-bottom hint-anim mumei_ayuda_toolbar_item";
 	
 	if( 'link' === $type ) {
 		
@@ -83,9 +83,9 @@ function wpas_toolbar_item( $args ) {
  * 
  * @return string
  */
-function wpas_toolbar( $type, $fun_args = array() ) {
+function mumei_ayuda_toolbar( $type, $fun_args = array() ) {
 	
-	$id = "wpas_toolbar_{$type}";
+	$id = "mumei_ayuda_toolbar_{$type}";
 	
 	$args = array();
 	
@@ -111,7 +111,7 @@ function wpas_toolbar( $type, $fun_args = array() ) {
 		
 		$item['id'] = $item_id;
 		
-		$items[] = wpas_toolbar_item( $item );
+		$items[] = mumei_ayuda_toolbar_item( $item );
 	}
 	
 	
@@ -121,7 +121,7 @@ function wpas_toolbar( $type, $fun_args = array() ) {
 }
 
 
-add_filter( 'wpas_toolbar_ticket', 'wpas_toolbar_ticket_items', 11, 2 );
+add_filter( 'mumei_ayuda_toolbar_ticket', 'mumei_ayuda_toolbar_ticket_items', 11, 2 );
 
 
 /**
@@ -132,22 +132,22 @@ add_filter( 'wpas_toolbar_ticket', 'wpas_toolbar_ticket_items', 11, 2 );
  * 
  * @return array
  */
-function wpas_toolbar_ticket_items( $items, $ticket_id ) {
+function mumei_ayuda_toolbar_ticket_items( $items, $ticket_id ) {
 	
 	$items['wpas-collapse-replies-top'] = array(
 			'icon' => 'icon-hide-ticket-replies',
-			'tool_tip_text' => __( 'Toggle Replies (Hide All Replies Except The Last 3)', 'awesome-support' )
+			'tool_tip_text' => __( 'Toggle Replies (Hide All Replies Except The Last 3)', 'ayuda-help-desk' )
 		);
 	
 	
 	$items['wpas-toggle-ticket-slug'] = array(
 			'icon' => 'icon-hide-ticket-urls',
-			'tool_tip_text' => __( 'Show/Hide The Ticket Slug', 'awesome-support' )
+			'tool_tip_text' => __( 'Show/Hide The Ticket Slug', 'ayuda-help-desk' )
 		);
 	
 	$items['wpas-edit-main-ticket-message'] = array(
 			'icon' => 'icon-edit-ticket-replies',
-			'tool_tip_text' => __( 'Edit Ticket', 'awesome-support' ),
+			'tool_tip_text' => __( 'Edit Ticket', 'ayuda-help-desk' ),
 			'data' => array(
 				'ticketid' => $ticket_id
 			)
@@ -156,7 +156,7 @@ function wpas_toolbar_ticket_items( $items, $ticket_id ) {
 	
 	$items['wpas-view-edit-main-ticket-message'] = array(
 			'icon' => 'icon-due-date',
-			'tool_tip_text' => __( 'View History', 'awesome-support' ),
+			'tool_tip_text' => __( 'View History', 'ayuda-help-desk' ),
 			'data' => array(
 				'ticketid' => $ticket_id
 			)
@@ -171,9 +171,9 @@ function wpas_toolbar_ticket_items( $items, $ticket_id ) {
 /**
  * Print main ticket toolbar
  */
-function wpas_ticket_toolbar() {
+function mumei_ayuda_ticket_toolbar() {
 	
-	$tabs_content = wpas_toolbar( 'ticket', func_get_args() );
+	$tabs_content = mumei_ayuda_toolbar( 'ticket', func_get_args() );
 	echo wp_kses($tabs_content, get_allowed_html_wp_notifications());
 	
 }
@@ -181,9 +181,9 @@ function wpas_ticket_toolbar() {
 /**
  * Print toolbar with each reply
  */
-function wpas_ticket_reply_toolbar() {
+function mumei_ayuda_ticket_reply_toolbar() {
 	
-	$tabs_content = wpas_toolbar( 'ticket_reply', func_get_args() );
+	$tabs_content = mumei_ayuda_toolbar( 'ticket_reply', func_get_args() );
 	echo wp_kses($tabs_content, get_allowed_html_wp_notifications());
 	
 }

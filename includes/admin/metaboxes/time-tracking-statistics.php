@@ -15,15 +15,15 @@
 <div class="wpas-custom-fields wpas-time-tracking-statistics-mb">
 	<?php
 
-		do_action( 'wpas_mb_details_before_time_tracking_statistics' );
+		do_action( 'mumei_ayuda_mb_details_before_time_tracking_statistics' );
 
 		// Show time fields
 	?>
     <b>
         <div class="wpas-time-tracking-statistics-mb-time-display-header">
 			<?php
-			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', false ) ) ){
-				echo esc_html__( 'Note: Read-only Configuration - You Are Not Permitted To Edit Time Data', 'awesome-support' );
+			if ( false === boolval( mumei_ayuda_get_option( 'allow_agents_to_enter_time', false ) ) ){
+				echo esc_html__( 'Note: Read-only Configuration - You Are Not Permitted To Edit Time Data', 'ayuda-help-desk' );
 			 }
 			 ?>
         </div>
@@ -34,7 +34,7 @@
         /*
          * Filter time fields - display minutes integer in hh:mm format
          */
-		function wpas_cf_field_markup_time_display_hhmm( $field, $populate ) {
+		function mumei_ayuda_cf_field_markup_time_display_hhmm( $field, $populate ) {
 
 		    if( empty( $populate ) || ! is_numeric( $populate ) ) {
 		        return $field;
@@ -49,16 +49,16 @@
 		}
 
 		// Activate time display filter
-		add_filter( 'wpas_cf_field_markup', 'wpas_cf_field_markup_time_display_hhmm', 10, 2 );
+		add_filter( 'mumei_ayuda_cf_field_markup', 'mumei_ayuda_cf_field_markup_time_display_hhmm', 10, 2 );
 		WPAS()->custom_fields->display_single_field( 'ttl_calculated_time_spent_on_ticket' );
 		WPAS()->custom_fields->display_single_field( 'ttl_adjustments_to_time_spent_on_ticket' );
 		WPAS()->custom_fields->display_single_field( 'final_time_spent_on_ticket' );
         // Remove time display filter
-		remove_filter('wpas_cf_field_markup', 'wpas_cf_field_markup_time_display_hhmm');
+		remove_filter('mumei_ayuda_cf_field_markup', 'mumei_ayuda_cf_field_markup_time_display_hhmm');
 
 		WPAS()->custom_fields->display_single_field( 'time_adjustments_pos_or_neg' );
 		WPAS()->custom_fields->display_single_field( 'time_notes' );
 
-		do_action( 'wpas_mb_details_after_time_tracking_statistics' );
+		do_action( 'mumei_ayuda_mb_details_after_time_tracking_statistics' );
 	?>
 </div>

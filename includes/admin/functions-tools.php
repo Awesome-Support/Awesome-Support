@@ -1,7 +1,7 @@
 <?php
 
-add_action( 'admin_init', 'wpas_system_tools', 10, 0 );
-function wpas_system_tools() {
+add_action( 'admin_init', 'mumei_ayuda_system_tools', 10, 0 );
+function mumei_ayuda_system_tools() {
 
 	if ( ! isset( $_GET['tool'] ) || ! isset( $_GET['_nonce'] ) ) {
 		return false;
@@ -15,96 +15,96 @@ function wpas_system_tools() {
 
 		/* Clear all tickets metas */
 		case 'tickets_metas';
-			wpas_clear_tickets_metas();
+			mumei_ayuda_clear_tickets_metas();
 			break;
 
 		case 'agents_metas':
-			wpas_clear_agents_metas();
+			mumei_ayuda_clear_agents_metas();
 			break;
 
 		case 'clear_taxonomies':
-			wpas_clear_taxonomies();
+			mumei_ayuda_clear_taxonomies();
 			break;
 
 		case 'resync_products':
-			wpas_delete_synced_products( true );
+			mumei_ayuda_delete_synced_products( true );
 			break;
 
 		case 'delete_products':
-			wpas_delete_synced_products();
+			mumei_ayuda_delete_synced_products();
 			break;
 
 		case 'delete_unused_terms':
-			wpas_delete_unused_terms();
+			mumei_ayuda_delete_unused_terms();
 			break;
 
 		case 'ticket_attachments':
-			wpas_delete_unclaimed_attachments();
+			mumei_ayuda_delete_unclaimed_attachments();
 			break;
 
 		case 'update_last_reply':
-			wpas_update_last_reply();
+			mumei_ayuda_update_last_reply();
 			break;
 
 		case 'reset_replies_count':
-			wpas_reset_replies_count();
+			mumei_ayuda_reset_replies_count();
 			break;
 
 		case 'reset_channels':
-			wpas_reset_channel_terms();
+			mumei_ayuda_reset_channel_terms();
 			break;
 
 		case 'reset_ticket_types':
-			wpas_reset_ticket_types();
+			mumei_ayuda_reset_ticket_types();
 			break;
 
 		case 'reset_time_fields':
-			wpas_reset_time_fields_to_zero();
+			mumei_ayuda_reset_time_fields_to_zero();
 			break;
 
 		case 'rerun_334_to_400_conversion':
-			wpas_upgrade_406();
+			mumei_ayuda_upgrade_406();
 			break ;
 
 		case 'rerun_400_to_440_conversion':
-			wpas_upgrade_440();
+			mumei_ayuda_upgrade_440();
 			break;
 
 		case 'rerun_400_to_500_conversion':
-			wpas_upgrade_511();
-			wpas_upgrade_520();
+			mumei_ayuda_upgrade_511();
+			mumei_ayuda_upgrade_520();
 			break;
 
 		case 'rerun_580_to_590_conversion':
-			wpas_upgrade_590();
+			mumei_ayuda_upgrade_590();
 			break;
 
 		case 'install_blue_blocks_email_template':
-			wpas_install_email_template( 'blue_blocks' );
+			mumei_ayuda_install_email_template( 'blue_blocks' );
 			break;
 
 		case 'install_blue_blocks_ss_email_template':
-			wpas_install_email_template( 'blue_blocks-ss' );
+			mumei_ayuda_install_email_template( 'blue_blocks-ss' );
 			break;
 
 		case 'install_elegant_email_template':
-			wpas_install_email_template( 'elegant' );
+			mumei_ayuda_install_email_template( 'elegant' );
 			break;
 
 		case 'install_elegant_ss_email_template':
-			wpas_install_email_template( 'elegant-ss' );
+			mumei_ayuda_install_email_template( 'elegant-ss' );
 			break;
 
 		case 'install_simple_email_template':
-			wpas_install_email_template( 'simple' );
+			mumei_ayuda_install_email_template( 'simple' );
 			break;
 
 		case 'install_default_email_template':
-			wpas_install_email_template( 'default' );
+			mumei_ayuda_install_email_template( 'default' );
 			break;
 
 		case 'install_debug_email_template':
-			wpas_install_email_template( 'debug' );
+			mumei_ayuda_install_email_template( 'debug' );
 			break;
 
 		case 'mark_all_auto_del_attchmnts':
@@ -119,7 +119,7 @@ function wpas_system_tools() {
 			$flag_added = 'remove' === substr( $act, 0, 6 ) ? false : true;
 			$flag_ticket_type = $flag_added ? $act_parts[1] : $act_parts[2];
 
-			WPAS_File_Upload::mark_tickets_auto_delete_attachments( $flag_ticket_type, $flag_added );
+			MUMEI_AYUDA_File_Upload::mark_tickets_auto_delete_attachments( $flag_ticket_type, $flag_added );
 
 			break;
 	}
@@ -145,7 +145,7 @@ function wpas_system_tools() {
 * run the 3.3.4 to 4.0.0 upgrade process on demand.
 * We can remove it or find a better way to handle it later (after a couple of 4.x releases).
 */
-require_once( WPAS_PATH . 'includes/admin/upgrade/functions-upgrade.php' );
+require_once( MUMEI_AYUDA_PATH . 'includes/admin/upgrade/functions-upgrade.php' );
 
 /**
  * Add default channels.
@@ -153,8 +153,8 @@ require_once( WPAS_PATH . 'includes/admin/upgrade/functions-upgrade.php' );
  * @return boolean
  *
  */
-function wpas_reset_channel_terms() {
-	return wpas_add_default_channel_terms(true);
+function mumei_ayuda_reset_channel_terms() {
+	return mumei_ayuda_add_default_channel_terms(true);
 }
 
 /**
@@ -163,8 +163,8 @@ function wpas_reset_channel_terms() {
  * @return boolean
  *
  */
-function wpas_reset_ticket_types() {
-	return wpas_add_default_ticket_types(true);
+function mumei_ayuda_reset_ticket_types() {
+	return mumei_ayuda_add_default_ticket_types(true);
 }
 
 /**
@@ -176,7 +176,7 @@ function wpas_reset_ticket_types() {
  * @return boolean
  *
  */
-function wpas_reset_replies_count() {
+function mumei_ayuda_reset_replies_count() {
 	$args = array(
 		'post_type'              => 'ticket',
 		'post_status'            => 'any',
@@ -195,7 +195,7 @@ function wpas_reset_replies_count() {
 	}
 
 	foreach( $query->posts as $post ) {
-		if ( wpas_count_replies( $post->ID ) && false === $reset ) {
+		if ( mumei_ayuda_count_replies( $post->ID ) && false === $reset ) {
 			$reset = true;
 		}
 	}
@@ -214,8 +214,8 @@ function wpas_reset_replies_count() {
  * @return boolean            True if meta was cleared, false otherwise
  *
  */
-function wpas_clear_ticket_activity_meta( $ticket_id ) {
-	return delete_transient( "wpas_activity_meta_post_$ticket_id" );
+function mumei_ayuda_clear_ticket_activity_meta( $ticket_id ) {
+	return delete_transient( "mumei_ayuda_activity_meta_post_$ticket_id" );
 }
 
 /**
@@ -228,7 +228,7 @@ function wpas_clear_ticket_activity_meta( $ticket_id ) {
  * @return  True if some metas were cleared, false otherwise
  *
  */
-function wpas_clear_tickets_metas() {
+function mumei_ayuda_clear_tickets_metas() {
 
 	$args = array(
 		'post_type'              => 'ticket',
@@ -248,7 +248,7 @@ function wpas_clear_tickets_metas() {
 	}
 
 	foreach( $query->posts as $post ) {
-		if ( wpas_clear_ticket_activity_meta( $post->ID ) && false === $cleared ) {
+		if ( mumei_ayuda_clear_ticket_activity_meta( $post->ID ) && false === $cleared ) {
 			$cleared = true;
 		}
 	}
@@ -264,7 +264,7 @@ function wpas_clear_tickets_metas() {
  * @param  string $taxonomy Taxonomy name
  * @return boolean          True if terms were deleted, false otherwise
  */
-function wpas_clear_taxonomy( $taxonomy ) {
+function mumei_ayuda_clear_taxonomy( $taxonomy ) {
 
 	$terms  = get_terms( $taxonomy, array( 'hide_empty' => false ) );
 	$delete = false;
@@ -289,7 +289,7 @@ function wpas_clear_taxonomy( $taxonomy ) {
  * @since  3.0.0
  * @return boolean True if terms were deleted, false otherwise
  */
-function wpas_clear_taxonomies() {
+function mumei_ayuda_clear_taxonomies() {
 
 	$taxonomies = (array) WPAS()->custom_fields->get_custom_fields();
 	$deleted    = false;
@@ -304,7 +304,7 @@ function wpas_clear_taxonomies() {
 			continue;
 		}
 
-		if ( wpas_clear_taxonomy( $taxonomy['name'] ) && false === $deleted ) {
+		if ( mumei_ayuda_clear_taxonomy( $taxonomy['name'] ) && false === $deleted ) {
 			$deleted = true;
 		}
 
@@ -327,7 +327,7 @@ function wpas_clear_taxonomies() {
  * @return        boolean True if the operation completed, false otherwise
  * @since 3.1.7
  */
-function wpas_delete_synced_products( $resync = false ) {
+function mumei_ayuda_delete_synced_products( $resync = false ) {
 
 	$post_type = isset($_GET['pt']) ? sanitize_text_field( wp_unslash( $_GET['pt'] ) ) : null;
 
@@ -335,7 +335,7 @@ function wpas_delete_synced_products( $resync = false ) {
 		return false;
 	}
 
-	$sync  = new WPAS_Product_Sync( '', 'product' );
+	$sync  = new MUMEI_AYUDA_Product_Sync( '', 'product' );
 	$posts = new WP_Query( array( 'post_type' => $post_type, 'posts_per_page' => -1, 'post_status' => 'any' ) );
 	$sync->set_post_type( $post_type );
 
@@ -364,7 +364,7 @@ function wpas_delete_synced_products( $resync = false ) {
 			if($unsync_term == true){
 
 				/* Is the product term on a ticket?  Only if its not used on a ticket should we remove it from the product taxonomy */
-				if( wpas_product_has_tickets($product_term->term_id) === false ){
+				if( mumei_ayuda_product_has_tickets($product_term->term_id) === false ){
 
 					wp_delete_term( (int) $product_term->term_id, 'product' );
 
@@ -378,7 +378,7 @@ function wpas_delete_synced_products( $resync = false ) {
 	/* Now let's make sure we don't have some orphan post metas left */
 	global $wpdb;
 	$sql = "SELECT * FROM {$wpdb->postmeta} WHERE meta_key = '%s'";
-	$metas = $wpdb->get_results( $wpdb->prepare( "$sql", '_wpas_product_term' ) );
+	$metas = $wpdb->get_results( $wpdb->prepare( "$sql", '_mumei_ayuda_product_term' ) );
 	if ( ! empty( $metas ) ) {
 		foreach ( $metas as $meta ) {
 			$raw_value = $meta->meta_value;
@@ -387,7 +387,7 @@ function wpas_delete_synced_products( $resync = false ) {
 				if ( is_array( $value ) && isset( $value['term_id'] ) ) {
 					$term = get_term_by( 'id', (int) $value['term_id'], 'product' );
 					if ( empty( $term ) ) {
-						delete_post_meta( $meta->post_id, '_wpas_product_term' );
+						delete_post_meta( $meta->post_id, '_mumei_ayuda_product_term' );
 					}
 				}
 			}			
@@ -395,8 +395,8 @@ function wpas_delete_synced_products( $resync = false ) {
 	}
 	if ( true === $resync ) {
 		/* Delete the initial synchronization marker so that it's done again */
-		// delete_option( "wpas_sync_$post_type" );
-		update_option( "wpas_sync_$post_type", 0 );
+		// delete_option( "mumei_ayuda_sync_$post_type" );
+		update_option( "mumei_ayuda_sync_$post_type", 0 );
 		/* Synchronize */
 		$sync->run_initial_sync();
 	}
@@ -408,7 +408,7 @@ function wpas_delete_synced_products( $resync = false ) {
  *
  * @since 4.0.0
  * @return boolean */
-function wpas_product_has_tickets($term_id) {
+function mumei_ayuda_product_has_tickets($term_id) {
 	$args = array(
 		'post_type' => 'ticket',
 		'status' => 'publish',
@@ -433,7 +433,7 @@ function wpas_product_has_tickets($term_id) {
 /**
  * @return array
  */
-function wpas_delete_unused_terms() {
+function mumei_ayuda_delete_unused_terms() {
 
 	$statistics = array(
 		'count'     => 0,
@@ -481,13 +481,13 @@ function wpas_delete_unused_terms() {
  * @since 3.2
  * @return void
  */
-function wpas_clear_agents_metas() {
+function mumei_ayuda_clear_agents_metas() {
 
-	$agents = wpas_get_users( array( 'cap' => 'edit_ticket' ) );
+	$agents = mumei_ayuda_get_users( array( 'cap' => 'edit_ticket' ) );
 
 	foreach ( $agents as $user ) {
-		delete_user_option( $user->ID, 'wpas_open_tickets' ); 		// Delete the open tickets count
-		delete_user_option( $user->ID, 'wpas_open_tickets',true ); // Delete it as well at the global level just in case it exists there (which it shouldn't!)
+		delete_user_option( $user->ID, 'mumei_ayuda_open_tickets' ); 		// Delete the open tickets count
+		delete_user_option( $user->ID, 'mumei_ayuda_open_tickets',true ); // Delete it as well at the global level just in case it exists there (which it shouldn't!)
 	}
 
 }
@@ -502,7 +502,7 @@ function wpas_clear_agents_metas() {
  * @param  string $dir Directory to check
  * @return array       Array of overridden templates
  */
-function wpas_check_templates_override( $dir ) {
+function mumei_ayuda_check_templates_override( $dir ) {
 
 	$templates = array(
 			'details.php',
@@ -541,20 +541,20 @@ function wpas_check_templates_override( $dir ) {
  * @return boolean
  *
  */
-function wpas_update_last_reply() {
+function mumei_ayuda_update_last_reply() {
 
 	global $wpdb;
 
 	$sql = "SELECT "
-    . "wpas_ticket.ID AS ticket_id, "
-    . "wpas_reply.ID AS reply_id, "
-    . "wpas_replies.latest_reply, "
-    . "wpas_replies.latest_reply_gmt, "
-    . "wpas_replies.post_author, "
-    . "wpas_ticket.post_author = wpas_reply.post_author AS client_replied_last "
+    . "mumei_ayuda_ticket.ID AS ticket_id, "
+    . "mumei_ayuda_reply.ID AS reply_id, "
+    . "mumei_ayuda_replies.latest_reply, "
+    . "mumei_ayuda_replies.latest_reply_gmt, "
+    . "mumei_ayuda_replies.post_author, "
+    . "mumei_ayuda_ticket.post_author = mumei_ayuda_reply.post_author AS client_replied_last "
     . "FROM "
-    . "{$wpdb->posts} AS wpas_ticket "
-    . "LEFT OUTER JOIN {$wpdb->posts} AS wpas_reply ON wpas_ticket.ID = wpas_reply.post_parent "
+    . "{$wpdb->posts} AS mumei_ayuda_ticket "
+    . "LEFT OUTER JOIN {$wpdb->posts} AS mumei_ayuda_reply ON mumei_ayuda_ticket.ID = mumei_ayuda_reply.post_parent "
     . "LEFT OUTER JOIN ( "
     . "SELECT "
     . "post_parent AS ticket_id, "
@@ -567,20 +567,20 @@ function wpas_update_last_reply() {
     . "post_type = 'ticket_reply' "
     . "GROUP BY "
     . "post_parent "
-    . ") wpas_replies ON wpas_replies.ticket_id = wpas_reply.post_parent AND wpas_replies.latest_reply = wpas_reply.post_date "
+    . ") mumei_ayuda_replies ON mumei_ayuda_replies.ticket_id = mumei_ayuda_reply.post_parent AND mumei_ayuda_replies.latest_reply = mumei_ayuda_reply.post_date "
     . "WHERE "
-    . "wpas_replies.latest_reply IS NOT NULL "
-    . "AND wpas_reply.post_type = 'ticket_reply' "
+    . "mumei_ayuda_replies.latest_reply IS NOT NULL "
+    . "AND mumei_ayuda_reply.post_type = 'ticket_reply' "
     . "ORDER BY "
-    . "wpas_replies.latest_reply ASC";
+    . "mumei_ayuda_replies.latest_reply ASC";
 
-	$test = wpas_get_tickets('any');
+	$test = mumei_ayuda_get_tickets('any');
 
 	/* Set some defaults or all tickets */
 	foreach ( $test as $ticket) {
-		update_post_meta( $ticket->ID, '_wpas_last_reply_date', $ticket->post_date );
-		update_post_meta( $ticket->ID, '_wpas_last_reply_date_gmt', $ticket->post_date_gmt );
-		update_post_meta( $ticket->ID, '_wpas_is_waiting_client_reply', 0 );
+		update_post_meta( $ticket->ID, '_mumei_ayuda_last_reply_date', $ticket->post_date );
+		update_post_meta( $ticket->ID, '_mumei_ayuda_last_reply_date_gmt', $ticket->post_date_gmt );
+		update_post_meta( $ticket->ID, '_mumei_ayuda_is_waiting_client_reply', 0 );
 	}
 
 	$replies = $wpdb->get_results( "$sql" );
@@ -590,9 +590,9 @@ function wpas_update_last_reply() {
 		if( null !== get_post( $reply_post->ticket_id) ) {
 
 			/* . */
-			update_post_meta( $reply_post->ticket_id, '_wpas_last_reply_date', $reply_post->latest_reply );
-			update_post_meta( $reply_post->ticket_id, '_wpas_last_reply_date_gmt', $reply_post->latest_reply_gmt );
-			update_post_meta( $reply_post->ticket_id, '_wpas_is_waiting_client_reply', (int)$reply_post->client_replied_last );
+			update_post_meta( $reply_post->ticket_id, '_mumei_ayuda_last_reply_date', $reply_post->latest_reply );
+			update_post_meta( $reply_post->ticket_id, '_mumei_ayuda_last_reply_date_gmt', $reply_post->latest_reply_gmt );
+			update_post_meta( $reply_post->ticket_id, '_mumei_ayuda_is_waiting_client_reply', (int)$reply_post->client_replied_last );
 
 		}
 	}
@@ -605,10 +605,10 @@ function wpas_update_last_reply() {
  * @since 3.3.4
  * @return void
  */
-function wpas_delete_unclaimed_attachments() {
+function mumei_ayuda_delete_unclaimed_attachments() {
 
 	$upload           = wp_get_upload_dir();
-	$attachments_root = trailingslashit( $upload['basedir'] ) . 'awesome-support/';
+	$attachments_root = trailingslashit( $upload['basedir'] ) . 'ayuda-help-desk/';
 	$ticket_folders   = glob( $attachments_root . 'ticket_*' );
 
 	foreach ( $ticket_folders as $folder ) {
@@ -684,7 +684,7 @@ function wp_rmdir($directory_path){
  * @return void
  */
 
-function wpas_reset_time_fields_to_zero() {
+function mumei_ayuda_reset_time_fields_to_zero() {
 
 	$args = array(
 		'post_type'              => 'ticket',
@@ -704,15 +704,15 @@ function wpas_reset_time_fields_to_zero() {
 	}
 
 	foreach( $query->posts as $post ) {
-		update_post_meta( $post->ID, '_wpas_ttl_calculated_time_spent_on_ticket', 0 );
-		update_post_meta( $post->ID, '_wpas_ttl_adjustments_to_time_spent_on_ticket', 0 );
-		update_post_meta( $post->ID, '_wpas_final_time_spent_on_ticket', 0 );
+		update_post_meta( $post->ID, '_mumei_ayuda_ttl_calculated_time_spent_on_ticket', 0 );
+		update_post_meta( $post->ID, '_mumei_ayuda_ttl_adjustments_to_time_spent_on_ticket', 0 );
+		update_post_meta( $post->ID, '_mumei_ayuda_final_time_spent_on_ticket', 0 );
 	}
 
 	return $reset;
 }
 
-function wpas_install_email_template( $template, $overwrite = true ) {
+function mumei_ayuda_install_email_template( $template, $overwrite = true ) {
 
 	$template_root_path = '';  // the file path to the folder containing the template set
 
@@ -720,36 +720,36 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	switch ( $template ) {
 
 		case 'blue_blocks' :
-			$template_root_path = WPAS_URL . 'assets/admin/email-templates/blue-block/';
+			$template_root_path = MUMEI_AYUDA_URL . 'assets/admin/email-templates/blue-block/';
 			break;
 
 		case 'blue_blocks-ss' :
-			$template_root_path = WPAS_URL . 'assets/admin/email-templates/blue-block-with-satisfaction-surveys/';
+			$template_root_path = MUMEI_AYUDA_URL . 'assets/admin/email-templates/blue-block-with-satisfaction-surveys/';
 			break;
 
 		case 'elegant' :
-			$template_root_path = WPAS_URL . 'assets/admin/email-templates/elegant/';
+			$template_root_path = MUMEI_AYUDA_URL . 'assets/admin/email-templates/elegant/';
 			break;
 
 		case 'elegant-ss' :
-			$template_root_path = WPAS_URL . 'assets/admin/email-templates/elegant-with-with-satisfaction-surveys/';
+			$template_root_path = MUMEI_AYUDA_URL . 'assets/admin/email-templates/elegant-with-with-satisfaction-surveys/';
 			break;
 
 		case 'simple' :
-			$template_root_path = WPAS_URL . 'assets/admin/email-templates/simple/';
+			$template_root_path = MUMEI_AYUDA_URL . 'assets/admin/email-templates/simple/';
 			break;
 
 		case 'default' :
-			$template_root_path = WPAS_URL . 'assets/admin/email-templates/default/';
+			$template_root_path = MUMEI_AYUDA_URL . 'assets/admin/email-templates/default/';
 			break;
 
 		case 'debug' :
-			$template_root_path = WPAS_URL . 'assets/admin/email-templates/debug/';
+			$template_root_path = MUMEI_AYUDA_URL . 'assets/admin/email-templates/debug/';
 			break;
 	}
 
 	// Allow other add-ons to set this path
-	$template_root_path = apply_filters( 'wpas_email_template_root_path', $template_root_path ) ;
+	$template_root_path = apply_filters( 'mumei_ayuda_email_template_root_path', $template_root_path ) ;
 
 	// Create array with option names and corresponding file names
 	$template_files['content_confirmation'] 	= $template_root_path . 'New-Ticket-Confirmation-Going-To-End-User.html';
@@ -761,7 +761,7 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 	$template_files['content_closed_client'] 	= $template_root_path . 'Ticket-Closed-By-Client.html';
 
 	// Allow other add-ons to update this array
-	$template_files = apply_filters( 'wpas_email_template_map_to_files', $template_files );
+	$template_files = apply_filters( 'mumei_ayuda_email_template_map_to_files', $template_files );
 
 	// Read the template files into the appropriate option based on the key-fiile mapping array above.
 	foreach ( $template_files as $key => $template_file ) {
@@ -782,13 +782,13 @@ function wpas_install_email_template( $template, $overwrite = true ) {
 		        if ( ! empty( $body_template_contents ) ) {
 
 					// Is there any existing value in the option?
-					$existing_contents = wpas_get_option( $key );
+					$existing_contents = mumei_ayuda_get_option( $key );
 
 					if ( ! empty( $existing_contents ) && ! $overwrite ) {
 						// do not overwrite existing contents
 						continue ;
 					}
-					wpas_update_option( $key, $body_template_contents, true ) ;
+					mumei_ayuda_update_option( $key, $body_template_contents, true ) ;
 				}		        
 	   		}
 		}

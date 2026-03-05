@@ -1,15 +1,15 @@
 <?php
 
 /**
- * Awesome Support File Uploader.
+ * Ayuda – Help Desk File Uploader.
  *
- * @package   Awesome_Support
+ * @package   Mumei_Ayuda_Support
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
-class WPAS_File_Upload {
+class MUMEI_AYUDA_File_Upload {
 
 	/**
 	 * Instance of this class.
@@ -40,7 +40,7 @@ class WPAS_File_Upload {
 		/**
 		 * Load the addon settings
 		 */
-		require_once( WPAS_PATH . 'includes/file-uploader/settings-file-upload.php' );
+		require_once( MUMEI_AYUDA_PATH . 'includes/file-uploader/settings-file-upload.php' );
 
 		if ( ! $this->can_attach_files() ) {
 			return;
@@ -64,36 +64,36 @@ class WPAS_File_Upload {
 			require_once( ABSPATH . 'wp-admin/includes/media.php' );
 			require_once( ABSPATH . 'wp-admin/includes/template.php' );
 
-			add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'upload_field' ) );                  // Load the dropzone after description textarea
-			add_action( 'wpas_ticket_details_reply_textarea_after', array( $this, 'upload_field' ) );                  // Load dropzone after reply textarea
+			add_action( 'mumei_ayuda_submission_form_inside_before_submit', array( $this, 'upload_field' ) );                  // Load the dropzone after description textarea
+			add_action( 'mumei_ayuda_ticket_details_reply_textarea_after', array( $this, 'upload_field' ) );                  // Load dropzone after reply textarea
 
 		}
 
 		// We need those during Ajax requests and admin-ajax.php is considered to be part of the admin
-		add_action( 'wpas_frontend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
-		add_action( 'wpas_frontend_reply_content_after', array( $this, 'show_attachments' ), 10, 1 );
-		add_action( 'wpas_process_ticket_attachments', array( $this, 'process_attachments' ), 10, 2 );
+		add_action( 'mumei_ayuda_frontend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
+		add_action( 'mumei_ayuda_frontend_reply_content_after', array( $this, 'show_attachments' ), 10, 1 );
+		add_action( 'mumei_ayuda_process_ticket_attachments', array( $this, 'process_attachments' ), 10, 2 );
 
 		if ( is_admin() ) {
 
-			add_action( 'wpas_add_reply_admin_after', array( $this, 'new_reply_backend_attachment' ), 10, 2 );
+			add_action( 'mumei_ayuda_add_reply_admin_after', array( $this, 'new_reply_backend_attachment' ), 10, 2 );
 
 
 			add_action( 'post_edit_form_tag', array( $this, 'add_form_enctype' ), 10, 1 );
 
-			add_filter( 'wpas_admin_tabs_after_reply_wysiwyg', array( $this, 'upload_field_add_tab' ) , 11, 1 ); // Register attachments tab under reply wysiwyg
-			add_filter( 'wpas_admin_tabs_after_reply_wysiwyg_attachments_content', array( $this, 'upload_field_tab_content' ) , 11, 1 ); // Return content for attachments tab
+			add_filter( 'mumei_ayuda_admin_tabs_after_reply_wysiwyg', array( $this, 'upload_field_add_tab' ) , 11, 1 ); // Register attachments tab under reply wysiwyg
+			add_filter( 'mumei_ayuda_admin_tabs_after_reply_wysiwyg_attachments_content', array( $this, 'upload_field_tab_content' ) , 11, 1 ); // Return content for attachments tab
 
 			add_action( 'before_delete_post', array( $this, 'delete_attachments' ), 10, 1 );
-			add_action( 'wpas_backend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
-			add_action( 'wpas_backend_reply_content_after', array( $this, 'show_attachments' ), 10, 1 );
-			add_action( 'wpas_backend_reply_content_after_with_image', array( $this, 'show_attachments_with_image' ), 10, 1 );
-			add_filter( 'wpas_cf_wrapper_class', array( $this, 'add_wrapper_class_admin' ), 10, 2 );
+			add_action( 'mumei_ayuda_backend_ticket_content_after', array( $this, 'show_attachments' ), 10, 1 );
+			add_action( 'mumei_ayuda_backend_reply_content_after', array( $this, 'show_attachments' ), 10, 1 );
+			add_action( 'mumei_ayuda_backend_reply_content_after_with_image', array( $this, 'show_attachments_with_image' ), 10, 1 );
+			add_filter( 'mumei_ayuda_cf_wrapper_class', array( $this, 'add_wrapper_class_admin' ), 10, 2 );
 
 		}
 
 		// If Ajax upload is enabled
-		if ( boolval( wpas_get_option( 'ajax_upload', false ) ) || boolval( wpas_get_option( 'ajax_upload_all', false ) ) ) {
+		if ( boolval( mumei_ayuda_get_option( 'ajax_upload', false ) ) || boolval( mumei_ayuda_get_option( 'ajax_upload_all', false ) ) ) {
 
 			// Cleanup action
 			add_action( 'attachments_dir_cleanup_action', array( $this, 'attachments_dir_cleanup' ) );
@@ -109,32 +109,32 @@ class WPAS_File_Upload {
 				add_action( 'wp_enqueue_scripts',    array( $this, 'load_ajax_uploader_assets' ), 10 );
 			}
 
-			add_action( 'wpas_open_ticket_after', array( $this, 'new_ticket_ajax_attachments' ), 10, 2 ); // Check for ajax attachments after user opened a new ticket
-			add_action( 'wpas_add_reply_after', array( $this, 'new_reply_ajax_attachments' ), 20, 2 );  // Check for ajax attachments after user submitted a new reply
+			add_action( 'mumei_ayuda_open_ticket_after', array( $this, 'new_ticket_ajax_attachments' ), 10, 2 ); // Check for ajax attachments after user opened a new ticket
+			add_action( 'mumei_ayuda_add_reply_after', array( $this, 'new_reply_ajax_attachments' ), 20, 2 );  // Check for ajax attachments after user submitted a new reply
 
-			add_action( 'wp_ajax_wpas_upload_attachment',      array( $this, 'ajax_upload_attachment' ) );
-			add_action( 'wp_ajax_wpas_delete_temp_attachment', array( $this, 'ajax_delete_temp_attachment' ) );
-			add_action( 'wp_ajax_wpas_delete_temp_directory',  array( $this, 'ajax_delete_temp_directory' ) );
+			add_action( 'wp_ajax_mumei_ayuda_upload_attachment',      array( $this, 'ajax_upload_attachment' ) );
+			add_action( 'wp_ajax_mumei_ayuda_delete_temp_attachment', array( $this, 'ajax_delete_temp_attachment' ) );
+			add_action( 'wp_ajax_mumei_ayuda_delete_temp_directory',  array( $this, 'ajax_delete_temp_directory' ) );
 
 		}
 		else
 		{
-			add_action( 'wpas_open_ticket_after', array( $this, 'new_ticket_attachment' ), 10, 2 ); // Save attachments after user opened a new ticket
-			add_action( 'wpas_add_reply_public_after', array( $this, 'new_reply_attachment' ), 10, 2 );  // Save attachments after user submitted a new reply
+			add_action( 'mumei_ayuda_open_ticket_after', array( $this, 'new_ticket_attachment' ), 10, 2 ); // Save attachments after user opened a new ticket
+			add_action( 'mumei_ayuda_add_reply_public_after', array( $this, 'new_reply_attachment' ), 10, 2 );  // Save attachments after user submitted a new reply
 		}
 
-		add_action( 'wpas_submission_form_inside_before_submit', array( $this, 'add_auto_delete_button_fe_submission' ) );
-		add_action( 'wpas_ticket_details_reply_close_checkbox_after',		 array( $this, 'add_auto_delete_button_fe_ticket' ) );
-		add_action( 'wpas_backend_ticket_status_before_actions', array( $this, 'admin_add_auto_delete_button'), 100 );
+		add_action( 'mumei_ayuda_submission_form_inside_before_submit', array( $this, 'add_auto_delete_button_fe_submission' ) );
+		add_action( 'mumei_ayuda_ticket_details_reply_close_checkbox_after',		 array( $this, 'add_auto_delete_button_fe_ticket' ) );
+		add_action( 'mumei_ayuda_backend_ticket_status_before_actions', array( $this, 'admin_add_auto_delete_button'), 100 );
 
-		add_action( 'wp_ajax_wpas_auto_delete_attachment_flag',  array( $this, 'auto_delete_attachment_flag' ) );
+		add_action( 'wp_ajax_mumei_ayuda_auto_delete_attachment_flag',  array( $this, 'auto_delete_attachment_flag' ) );
 
-		add_action( 'wp_ajax_wpas_delete_attachment',			 array( $this, 'ajax_delete_attachment' ) );
+		add_action( 'wp_ajax_mumei_ayuda_delete_attachment',			 array( $this, 'ajax_delete_attachment' ) );
 
-		add_action( 'wpas_ticket_after_saved',					 array( $this, 'ticket_after_saved' ) );
-		add_action( 'wpas_open_ticket_after',			array( $this, 'wpas_open_ticket_after' ), 11, 2 );
+		add_action( 'mumei_ayuda_ticket_after_saved',					 array( $this, 'ticket_after_saved' ) );
+		add_action( 'mumei_ayuda_open_ticket_after',			array( $this, 'mumei_ayuda_open_ticket_after' ), 11, 2 );
 
-		add_action( 'wpas_after_close_ticket',			array( $this, 'wpas_maybe_delete_attachments_after_close_ticket' ), 11, 3 );
+		add_action( 'mumei_ayuda_after_close_ticket',			array( $this, 'mumei_ayuda_maybe_delete_attachments_after_close_ticket' ), 11, 3 );
 
 		// One-time fix for .htaccess files containing 'Deny from all'
 		add_action( 'admin_init', array( $this, 'fix_htaccess_files_once' ), 10 );
@@ -167,7 +167,7 @@ class WPAS_File_Upload {
 		$select_q = "SELECT pm.post_id, 'auto_delete_attachments' as meta_key, '{$meta_value}' as meta_value from $wpdb->postmeta pm
 					LEFT JOIN $wpdb->postmeta pm2 ON pm2.post_id = pm.post_id AND pm2.meta_key = 'auto_delete_attachments'
 					INNER JOIN $wpdb->posts p ON p.ID = pm.post_id AND p.post_type='ticket'
-					WHERE pm.meta_key = '_wpas_status' AND $type_clause";
+					WHERE pm.meta_key = '_mumei_ayuda_status' AND $type_clause";
 
 
 		$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->postmeta SET meta_value = %s WHERE meta_key = %s AND post_id IN(
@@ -198,7 +198,7 @@ class WPAS_File_Upload {
 		//	$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
 		//}
 
-		if ( wpas_agent_can_set_auto_delete_attachments() || wpas_is_asadmin() ) {
+		if ( mumei_ayuda_agent_can_set_auto_delete_attachments() || mumei_ayuda_is_asadmin() ) {
 			$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
 		}
 
@@ -241,9 +241,9 @@ class WPAS_File_Upload {
 		$flag_on = '';
 
 
-		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+		$auto_delete = mumei_ayuda_get_option( 'auto_delete_attachments' );
 
-		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
+		$user_can_set_flag = mumei_ayuda_user_can_set_auto_delete_attachments();
 
 		if( !$auto_delete || !$user_can_set_flag ) {
 			return;
@@ -266,9 +266,9 @@ class WPAS_File_Upload {
 	function add_auto_delete_button_fe_ticket() {
 		global $post;
 
-		$auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
+		$auto_delete = boolval( mumei_ayuda_get_option( 'auto_delete_attachments' ) );
 
-		if( wpas_user_can_set_auto_delete_attachments()  && true == $auto_delete ) {
+		if( mumei_ayuda_user_can_set_auto_delete_attachments()  && true == $auto_delete ) {
 			$flag_on = get_post_meta( $post->ID, 'auto_delete_attachments', true );
 			$this->auto_delete_field( $flag_on );
 		}
@@ -282,7 +282,7 @@ class WPAS_File_Upload {
 	function admin_add_auto_delete_button() {
 
 		/* Exit if agents are not allowed to set auto-delete flag */
-		if ( ! wpas_is_asadmin() &&  ! boolval( wpas_get_option( 'agent_can_set_auto_delete_attachments', false ) ) ) {
+		if ( ! mumei_ayuda_is_asadmin() &&  ! boolval( mumei_ayuda_get_option( 'agent_can_set_auto_delete_attachments', false ) ) ) {
 			return ;
 		}
 
@@ -304,7 +304,7 @@ class WPAS_File_Upload {
 		<div class="wpas-auto-delete-attachments-container">
 			<label for="wpas-auto-delete-attachments">
 				<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1" <?php checked(1, $flag_on); ?>>
-				<?php esc_html_e( 'Automatically delete attachments when a ticket is closed', 'awesome-support' ); ?>
+				<?php esc_html_e( 'Automatically delete attachments when a ticket is closed', 'ayuda-help-desk' ); ?>
 			</label>
 		</div>
 		<?php
@@ -317,7 +317,7 @@ class WPAS_File_Upload {
 	 * @param boolean $update
 	 * @param int $user_id
 	 */
-	public function wpas_maybe_delete_attachments_after_close_ticket( $ticket_id, $update, $user_id ) {
+	public function mumei_ayuda_maybe_delete_attachments_after_close_ticket( $ticket_id, $update, $user_id ) {
 
 
 		$delete_attachments = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
@@ -328,7 +328,7 @@ class WPAS_File_Upload {
 			$attachments = get_attached_media( '', $ticket_id );
 
 			// Create array of attachments from replies..
-			$replies = wpas_get_replies( $ticket_id );
+			$replies = mumei_ayuda_get_replies( $ticket_id );
 			foreach( $replies as $reply ) {
 				$attachments = array_merge( $attachments, get_attached_media( '', $reply->ID ) );
 			}
@@ -339,7 +339,7 @@ class WPAS_File_Upload {
 			$attachments = apply_filters( 'attachments_list_for_auto_delete', $attachments, $ticket_id );
 
 			// translators: %s is the attachment.
-			$x_content = __( '%s attachment auto deleted', 'awesome-support' );
+			$x_content = __( '%s attachment auto deleted', 'ayuda-help-desk' );
 			foreach ( $attachments as $attachment ) {
 
 				$filename   = explode( '/', $attachment->guid );
@@ -354,7 +354,7 @@ class WPAS_File_Upload {
 			// Write logs to ticket
 			if( !empty( $logs ) ) {
 				$log_content = '<ul>'. implode( '', $logs ).'</ul>';
-				wpas_log( $ticket_id, $log_content );
+				mumei_ayuda_log( $ticket_id, $log_content );
 			}
 		}
 	}
@@ -365,12 +365,12 @@ class WPAS_File_Upload {
 	 * @param int $ticket_id
 	 * @param array $data
 	 */
-	function wpas_open_ticket_after( $ticket_id, $data ) {
+	function mumei_ayuda_open_ticket_after( $ticket_id, $data ) {
 
 
-		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+		$auto_delete = mumei_ayuda_get_option( 'auto_delete_attachments' );
 
-		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
+		$user_can_set_flag = mumei_ayuda_user_can_set_auto_delete_attachments();
 
 		if( !$auto_delete && !$user_can_set_flag ) {
 			return;
@@ -405,7 +405,7 @@ class WPAS_File_Upload {
 		$nonce = isset( $_POST['att_delete_nonce'] ) ? sanitize_file_name( wp_unslash( $_POST['att_delete_nonce'] ) ) : '';
 		
 		if ( empty( $nonce ) || !check_ajax_referer( 'wpas-delete-attachs', 'att_delete_nonce' ) ) { 		
-			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'awesome-support') ) );
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'ayuda-help-desk') ) );
 			die();
 		}
 		$user = wp_get_current_user();
@@ -415,7 +415,7 @@ class WPAS_File_Upload {
 
 			$ticket_id = $parent_id;
 
-			$can_delete = wpas_can_delete_attachments();	
+			$can_delete = mumei_ayuda_can_delete_attachments();	
 	
 			if( $can_delete ) {
 
@@ -430,18 +430,18 @@ class WPAS_File_Upload {
 					$author_id = get_post_field( 'post_author', $attachment_id );
 					
 				
-					if( wpas_is_agent() || ( get_current_user_id() == $author_id ) )
+					if( mumei_ayuda_is_agent() || ( get_current_user_id() == $author_id ) )
 					{
 						$attachment = get_post( $attachment_id );
 
 						if (!$attachment || $attachment->post_type !== 'attachment') {
 							// Attachment not found							
-							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'awesome-support') ) );
+							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'ayuda-help-desk') ) );
 							die();
 						}
 						
 						if ( ! current_user_can( 'delete_attachment', $attachment_id ) ) {							
-							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'awesome-support') ) );
+							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'ayuda-help-desk') ) );
 							die();
 						}
 						
@@ -449,11 +449,11 @@ class WPAS_File_Upload {
 						$name = $filename[ count( $filename ) - 1 ];
 
 						// translators: %1$s is the type of attachment, %2$s is the person who deleted it.
-						$x_content = __( '%1$s attachment deleted by %2$s', 'awesome-support' );
+						$x_content = __( '%1$s attachment deleted by %2$s', 'ayuda-help-desk' );
 
 						wp_delete_attachment( $attachment_id, true );
 
-						wpas_log( $ticket_id, sprintf( $x_content, $name, $user->display_name ) );
+						mumei_ayuda_log( $ticket_id, sprintf( $x_content, $name, $user->display_name ) );
 						
 						$deleted = true;
 					}					
@@ -462,9 +462,9 @@ class WPAS_File_Upload {
 		}
 
 		if( $deleted ) {
-			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'awesome-support' ) ) );
+			wp_send_json_success( array( 'msg' => __( 'Attachment deleted.', 'ayuda-help-desk' ) ) );
 		} else {
-			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'awesome-support') ) );
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action", 'ayuda-help-desk') ) );
 		}
 
 		die();
@@ -510,7 +510,7 @@ class WPAS_File_Upload {
 			return $clauses;
 		}
 
-		$post_types = apply_filters( 'wpas_filter_out_media_attachment_post_types', array(
+		$post_types = apply_filters( 'mumei_ayuda_filter_out_media_attachment_post_types', array(
 			'ticket', 'ticket_reply'
 		) );
 
@@ -626,28 +626,28 @@ class WPAS_File_Upload {
 			}
 
 			if ( 'attachment' !== $attachment->post_type ) {
-				wp_die( esc_html__( 'The file you requested is not a valid attachment', 'awesome-support' ) );
+				wp_die( esc_html__( 'The file you requested is not a valid attachment', 'ayuda-help-desk' ) );
 			}
 
 			if ( empty( $attachment->post_parent ) ) {
-				wp_die( esc_html__( 'The attachment you requested is not attached to any ticket', 'awesome-support' ) );
+				wp_die( esc_html__( 'The attachment you requested is not attached to any ticket', 'ayuda-help-desk' ) );
 			}
 
 			$parent    = get_post( $attachment->post_parent ); // Get the parent. It can be a ticket or a ticket reply
 			$parent_id = empty( $parent->post_parent ) ? $parent->ID : $parent->post_parent;
 
-			if ( true !== wpas_can_view_ticket( $parent_id ) ) {
-				wp_die( esc_html__( 'You are not allowed to view this attachment', 'awesome-support' ) );
+			if ( true !== mumei_ayuda_can_view_ticket( $parent_id ) ) {
+				wp_die( esc_html__( 'You are not allowed to view this attachment', 'ayuda-help-desk' ) );
 			}
 
-			$render_method = wpas_get_option( 'attachment_render_method', 'inline');  // returns 'inline' or 'attachment'.
+			$render_method = mumei_ayuda_get_option( 'attachment_render_method', 'inline');  // returns 'inline' or 'attachment'.
 
 			$filename = basename( $attachment->guid );
 
 			ob_clean();
 			ob_end_flush();
 
-			ini_set( 'user_agent', 'Awesome Support/' . WPAS_VERSION . '; ' . get_bloginfo( 'url' ) );
+			ini_set( 'user_agent', 'Ayuda – Help Desk/' . MUMEI_AYUDA_VERSION . '; ' . get_bloginfo( 'url' ) );
 			header( "Content-Type: $attachment->post_mime_type" );
 			header( "Content-Disposition: $render_method; filename=\"$filename\"" );
 
@@ -723,7 +723,7 @@ class WPAS_File_Upload {
 	 */
 	public function can_attach_files() {
 
-		if ( false === boolval( wpas_get_option( 'enable_attachments' ) ) ) {
+		if ( false === boolval( mumei_ayuda_get_option( 'enable_attachments' ) ) ) {
 			return false;
 		}
 
@@ -731,7 +731,7 @@ class WPAS_File_Upload {
 
 		if ( defined( 'DOING_CRON' ) && 0 === $current_user->ID ) {
 
-		    $default_id = (int) wpas_get_option( 'assignee_default', 1 );
+		    $default_id = (int) mumei_ayuda_get_option( 'assignee_default', 1 );
 
 		    wp_set_current_user( $default_id );
 
@@ -745,7 +745,7 @@ class WPAS_File_Upload {
 	}
 
 	public function get_allowed_filetypes() {
-		return apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) );
+		return apply_filters( 'mumei_ayuda_attachments_filetypes', mumei_ayuda_get_option( 'attachments_filetypes' ) );
 	}
 
 	/**
@@ -775,7 +775,7 @@ class WPAS_File_Upload {
 
 		/* We sort the uploads in sub-folders per ticket. */
 		$ticket_id_encode = md5($ticket_id . NONCE_SALT);		
-		$subdir = "/awesome-support/ticket_$ticket_id_encode";
+		$subdir = "/ayuda-help-desk/ticket_$ticket_id_encode";
 
 		/* Create final URL and dir */
 		$dir = $upload['basedir'] . $subdir;
@@ -847,14 +847,14 @@ class WPAS_File_Upload {
 
 		// SECURITY FIX: Check if user is authenticated before protecting directories
 		if ( ! is_user_logged_in() ) {
-			wpas_write_log('file-uploader', 'Security: Unauthorized access attempt to protect upload directory: ' . $dir );
+			mumei_ayuda_write_log('file-uploader', 'Security: Unauthorized access attempt to protect upload directory: ' . $dir );
 			return;
 		}
 		
 		// SECURITY FIX: Validate directory path to prevent directory traversal
 		$allowed_base = $this->wp_upload_dir['basedir'];
 		if ( strpos( $dir, $allowed_base ) !== 0 ) {
-			wpas_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
+			mumei_ayuda_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
 			return;
 		}
 
@@ -863,7 +863,7 @@ class WPAS_File_Upload {
 
 			$filename = $dir . '/.htaccess';
 
-			$filecontents = wpas_get_option( 'htaccess_contents_for_attachment_folders', 'Options -Indexes' ) ;
+			$filecontents = mumei_ayuda_get_option( 'htaccess_contents_for_attachment_folders', 'Options -Indexes' ) ;
 			if ( empty( $filecontents ) ) {
 				$filecontents = 'Options -Indexes' ;
 			}
@@ -871,13 +871,13 @@ class WPAS_File_Upload {
 			if ( ! file_exists( $filename ) ) {
 				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
 				if ( $result === false ) {
-					wpas_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
+					mumei_ayuda_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
 				}
 			}
 		} else {
 			// folder isn't writable so no point in attempting to do it...
 			// log the error in our log files instead...
-			wpas_write_log('file-uploader','The folder ' . $dir . ' is not writable.  So we are unable to write a .htaccess file to this folder' ) ;
+			mumei_ayuda_write_log('file-uploader','The folder ' . $dir . ' is not writable.  So we are unable to write a .htaccess file to this folder' ) ;
 		}
 
 		//Process Unauthenticated Sensitive Information Exposure Through Unprotected Directory with index
@@ -889,17 +889,17 @@ class WPAS_File_Upload {
 			if ( ! file_exists( $filename ) ) {
 				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
 				if ( $result === false ) {
-					wpas_write_log('file-uploader','unable to write .index file to folder ' . $dir ) ;
+					mumei_ayuda_write_log('file-uploader','unable to write .index file to folder ' . $dir ) ;
 				}
 			}
 		} else {
 			// folder isn't writable so no point in attempting to do it...
 			// log the error in our log files instead...
-			wpas_write_log('file-uploader','The folder ' . $dir . ' is not writable.  So we are unable to write a .index file to this folder' ) ;
+			mumei_ayuda_write_log('file-uploader','The folder ' . $dir . ' is not writable.  So we are unable to write a .index file to this folder' ) ;
 		}
 		
-		$found_pos =  strpos( $dir, 'uploads/awesome-support' );
-		$attachments_root = substr($dir, 0, $found_pos ) .'uploads/awesome-support';
+		$found_pos =  strpos( $dir, 'uploads/ayuda-help-desk' );
+		$attachments_root = substr($dir, 0, $found_pos ) .'uploads/ayuda-help-desk';
 		if ( $wp_filesystem->is_writable($attachments_root) ) {
 
 			$filename = $attachments_root  . '/index.php';				
@@ -908,13 +908,13 @@ class WPAS_File_Upload {
 			if ( ! file_exists( $filename ) ) {
 				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);				
 				if ( $result === false ) {
-					wpas_write_log('file-uploader','unable to write .index file to  awesome-support folder ' . $attachments_root ) ;
+					mumei_ayuda_write_log('file-uploader','unable to write .index file to  awesome-support folder ' . $attachments_root ) ;
 				}
 			}
 		} else {
 			// folder isn't writable so no point in attempting to do it...
 			// log the error in our log files instead...
-			wpas_write_log('file-uploader','The folder ' . $attachments_root . ' is not writable.  So we are unable to write a .index file to awesome-support folder' ) ;
+			mumei_ayuda_write_log('file-uploader','The folder ' . $attachments_root . ' is not writable.  So we are unable to write a .index file to awesome-support folder' ) ;
 		}
 
 	}
@@ -932,7 +932,7 @@ class WPAS_File_Upload {
 	public function fix_htaccess_files_once() {
 
 		// Check if the fix has already been performed
-		$fix_done = get_option( 'wpas_htaccess_deny_all_fixed', false );
+		$fix_done = get_option( 'mumei_ayuda_htaccess_deny_all_fixed', false );
 		
 		if ( $fix_done ) {
 			return;
@@ -947,7 +947,7 @@ class WPAS_File_Upload {
 		}
 
 		// Get the correct content for .htaccess files
-		$filecontents = wpas_get_option( 'htaccess_contents_for_attachment_folders', 'Options -Indexes' );
+		$filecontents = mumei_ayuda_get_option( 'htaccess_contents_for_attachment_folders', 'Options -Indexes' );
 		if ( empty( $filecontents ) ) {
 			$filecontents = 'Options -Indexes';
 		}
@@ -969,7 +969,7 @@ class WPAS_File_Upload {
 			
 			// Calculate the attachment folder name (same method as in set_upload_dir)
 			$ticket_id_encode = md5( $ticket_id . NONCE_SALT );
-			$ticket_dir = $base_dir . '/awesome-support/ticket_' . $ticket_id_encode;
+			$ticket_dir = $base_dir . '/ayuda-help-desk/ticket_' . $ticket_id_encode;
 			$htaccess_file = $ticket_dir . '/.htaccess';
 
 			// Check if the .htaccess file exists
@@ -986,16 +986,16 @@ class WPAS_File_Upload {
 					
 					if ( $result !== false ) {
 						$fixed_count++;
-						wpas_write_log( 'file-uploader', '.htaccess file fixed for ticket #' . $ticket_id . ' (' . $htaccess_file . ')' );
+						mumei_ayuda_write_log( 'file-uploader', '.htaccess file fixed for ticket #' . $ticket_id . ' (' . $htaccess_file . ')' );
 					} else {
-						wpas_write_log( 'file-uploader', 'Unable to fix .htaccess file for ticket #' . $ticket_id . ' (' . $htaccess_file . ')' );
+						mumei_ayuda_write_log( 'file-uploader', 'Unable to fix .htaccess file for ticket #' . $ticket_id . ' (' . $htaccess_file . ')' );
 					}
 				}
 			}
 		}
 
 		// Mark the fix as completed
-		update_option( 'wpas_htaccess_deny_all_fixed', true );
+		update_option( 'mumei_ayuda_htaccess_deny_all_fixed', true );
 	}
 
 	/**
@@ -1019,26 +1019,26 @@ class WPAS_File_Upload {
 		$accept    = implode( ',', $accept );
 
 		// translators: %1$d is the maximum number of files, %2$d is the maximum file size in MB, %3$s is the list of allowed file types.
-		$x_content = __( 'You can upload up to %1$d files (maximum %2$d MB each) of the following types: %3$s', 'awesome-support' );
+		$x_content = __( 'You can upload up to %1$d files (maximum %2$d MB each) of the following types: %3$s', 'ayuda-help-desk' );
 		
 		/**
 		 * Output the upload field using a custom field
 		 */
-		$attachments_args = apply_filters( 'wpas_ticket_attachments_field_args', array(
+		$attachments_args = apply_filters( 'mumei_ayuda_ticket_attachments_field_args', array(
 			'name' => $this->index,
 			'args' => array(
 				'required'   => false,
 				'capability' => 'edit_ticket',
 				'field_type' => 'upload',
 				'multiple'   => true,
-				'use_ajax_uploader' => ( boolval( wpas_get_option( 'ajax_upload', false ) ) ),
-				'enable_paste' => ( boolval( wpas_get_option( 'ajax_upload_paste_image', false ) ) ),
-				'label'      => __( 'Attachments', 'awesome-support' ),
-				'desc'       => sprintf( $x_content, (int) wpas_get_option( 'attachments_max' ), (int) wpas_get_option( 'filesize_max' ), apply_filters( 'wpas_attachments_filetypes_display', $filetypes ) ),
+				'use_ajax_uploader' => ( boolval( mumei_ayuda_get_option( 'ajax_upload', false ) ) ),
+				'enable_paste' => ( boolval( mumei_ayuda_get_option( 'ajax_upload_paste_image', false ) ) ),
+				'label'      => __( 'Attachments', 'ayuda-help-desk' ),
+				'desc'       => sprintf( $x_content, (int) mumei_ayuda_get_option( 'attachments_max' ), (int) mumei_ayuda_get_option( 'filesize_max' ), apply_filters( 'mumei_ayuda_attachments_filetypes_display', $filetypes ) ),
 			),
 		) );
 
-		$attachments = new WPAS_Custom_Field( $this->index, $attachments_args );
+		$attachments = new MUMEI_AYUDA_Custom_Field( $this->index, $attachments_args );
 		echo wp_kses($attachments->get_output(),$this->get_allowed_html());
 
 	}
@@ -1050,7 +1050,7 @@ class WPAS_File_Upload {
 	 */
 	private function get_allowed_html(){		
 
-		return apply_filters('custom_allowed_html_wpas_file_upload', wpas_get_allowed_html_tags() );
+		return apply_filters('custom_allowed_html_mumei_ayuda_file_upload', mumei_ayuda_get_allowed_html_tags() );
 	}
 
 	/**
@@ -1063,7 +1063,7 @@ class WPAS_File_Upload {
 	 */
 	public function upload_field_add_tab( $tabs ) {
 
-		$tabs['attachments'] = __( 'Attachments' , 'awesome-support' );
+		$tabs['attachments'] = __( 'Attachments' , 'ayuda-help-desk' );
 
 		return $tabs;
 	}
@@ -1171,11 +1171,11 @@ class WPAS_File_Upload {
 		if ( ! empty( $attachments ) ): ?>
 
 			<div class="wpas-reply-attachements">
-				<strong><?php esc_html_e( 'Attachments:', 'awesome-support' ); ?></strong>
+				<strong><?php esc_html_e( 'Attachments:', 'ayuda-help-desk' ); ?></strong>
 				<ul>
 					<?php
 
-					$can_delete = wpas_can_delete_attachments();
+					$can_delete = mumei_ayuda_can_delete_attachments();
 
 					foreach ( $attachments as $attachment_id => $attachment ):
 
@@ -1190,7 +1190,7 @@ class WPAS_File_Upload {
 						 * This is the default case where an attachment was uploaded by the WordPress uploader.
 						 * In this case we get the media from the ticket's attachments directory.
 						 */
-						if ( ! isset( $metadata['wpas_upload_source'] ) || 'wordpress' === $metadata['wpas_upload_source'] ) {
+						if ( ! isset( $metadata['mumei_ayuda_upload_source'] ) || 'wordpress' === $metadata['mumei_ayuda_upload_source'] ) {
 
 							/**
 							 * Get filename.
@@ -1198,17 +1198,17 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
-							$original_files = get_option('wpas_original_files', []);
+							$original_files = get_option('mumei_ayuda_original_files', []);
 							$name = isset($original_files[$filename])  ? $original_files[$filename] : $name;
 
 							$post_id_encode = md5($post_id . NONCE_SALT);
-							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "ayuda-help-desk/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
 
 							/**
 							 * Prepare attachment link
 							 */
-							if ( false === boolval( wpas_get_option( 'unmask_attachment_links', false ) ) ) {
+							if ( false === boolval( mumei_ayuda_get_option( 'unmask_attachment_links', false ) ) ) {
 								// mask or obscure attachment links
 								$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
 							} else {
@@ -1220,7 +1220,7 @@ class WPAS_File_Upload {
 							<li>
 									<?php
 									if( $can_delete ) {
-										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
+										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'ayuda-help-desk' ) );
 									}
 
 
@@ -1231,14 +1231,14 @@ class WPAS_File_Upload {
 
 						} /**
 						 * Now if we have a different upload source we delegate the computing
-						 * to whatever will hook on wpas_attachment_display_$source
+						 * to whatever will hook on mumei_ayuda_attachment_display_$source
 						 */
 						else {
 
-							$source = sanitize_text_field( $metadata['wpas_upload_source'] );
+							$source = sanitize_text_field( $metadata['mumei_ayuda_upload_source'] );
 
 							/**
-							 * wpas_attachment_display_$source fires if the current attachment
+							 * mumei_ayuda_attachment_display_$source fires if the current attachment
 							 * was uploaded by an unknown source.
 							 *
 							 * @since  3.1.5
@@ -1247,7 +1247,7 @@ class WPAS_File_Upload {
 							 * @param  array   $attachment    The attachment array
 							 * @param  integer $post_id       ID of the post we're displaying attachments for
 							 */
-							do_action( 'wpas_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id );
+							do_action( 'mumei_ayuda_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id );
 
 						}
 
@@ -1275,11 +1275,11 @@ class WPAS_File_Upload {
 		if ( ! empty( $attachments ) ): ?>
 
 			<div class="wpas-reply-attachements">
-				<strong><?php esc_html_e( 'Attachments:', 'awesome-support' ); ?></strong>
+				<strong><?php esc_html_e( 'Attachments:', 'ayuda-help-desk' ); ?></strong>
 				<ul>
 					<?php
 
-					$can_delete = wpas_can_delete_attachments();
+					$can_delete = mumei_ayuda_can_delete_attachments();
 
 					foreach ( $attachments as $attachment_id => $attachment ):
 
@@ -1294,7 +1294,7 @@ class WPAS_File_Upload {
 						 * This is the default case where an attachment was uploaded by the WordPress uploader.
 						 * In this case we get the media from the ticket's attachments directory.
 						 */
-						if ( ! isset( $metadata['wpas_upload_source'] ) || 'wordpress' === $metadata['wpas_upload_source'] ) {
+						if ( ! isset( $metadata['mumei_ayuda_upload_source'] ) || 'wordpress' === $metadata['mumei_ayuda_upload_source'] ) {
 
 							/**
 							 * Get filename.
@@ -1302,17 +1302,17 @@ class WPAS_File_Upload {
 							$filename   = explode( '/', $attachment['url'] );
 							$filename   = $name = $filename[ count( $filename ) - 1 ];
 							$upload_dir = wp_upload_dir();
-							$original_files = get_option('wpas_original_files', []);
+							$original_files = get_option('mumei_ayuda_original_files', []);
 							$name = isset($original_files[$filename])  ? $original_files[$filename] : $name;
 
 							$post_id_encode = md5($post_id . NONCE_SALT);	
-							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$post_id_encode/$filename";
+							$filepath   = trailingslashit( $upload_dir['basedir'] ) . "ayuda-help-desk/ticket_$post_id_encode/$filename";
 							$filesize   = file_exists( $filepath ) ? $this->human_filesize( filesize( $filepath ), 0 ) : '';
 
 							/**
 							 * Prepare attachment link
 							 */
-							if ( false === boolval( wpas_get_option( 'unmask_attachment_links', false ) ) ) {
+							if ( false === boolval( mumei_ayuda_get_option( 'unmask_attachment_links', false ) ) ) {
 								// mask or obscure attachment links
 								$link = add_query_arg( array( 'wpas-attachment' => $attachment['id'] ), home_url() );
 							} else {
@@ -1324,7 +1324,7 @@ class WPAS_File_Upload {
 							<li>
 									<?php
 									if( $can_delete ) {
-										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
+										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'ayuda-help-desk' ) );
 									}
 									
 									if( strpos( $name, '.jpeg' ) !== false || strpos( $name, '.jpg' ) !== false || strpos( $name, '.png' ) !== false || strpos( $name, '.gif' ) !== false ) {
@@ -1339,14 +1339,14 @@ class WPAS_File_Upload {
 
 						} /**
 						 * Now if we have a different upload source we delegate the computing
-						 * to whatever will hook on wpas_attachment_display_$source
+						 * to whatever will hook on mumei_ayuda_attachment_display_$source
 						 */
 						else {
 
-							$source = sanitize_text_field( $metadata['wpas_upload_source'] );
+							$source = sanitize_text_field( $metadata['mumei_ayuda_upload_source'] );
 
 							/**
-							 * wpas_attachment_display_$source fires if the current attachment
+							 * mumei_ayuda_attachment_display_$source fires if the current attachment
 							 * was uploaded by an unknown source.
 							 *
 							 * @since  3.1.5
@@ -1355,7 +1355,7 @@ class WPAS_File_Upload {
 							 * @param  array   $attachment    The attachment array
 							 * @param  integer $post_id       ID of the post we're displaying attachments for
 							 */
-							do_action( 'wpas_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id );
+							do_action( 'mumei_ayuda_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id );
 
 						}
 
@@ -1406,7 +1406,7 @@ class WPAS_File_Upload {
 	 */
 	public function process_upload() {
 
-		$index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
+		$index = "mumei_ayuda_$this->index"; // We need to prefix the index as the custom fields are always prefixed
 
 		/* We have a submission with a $_FILES var set */
 		if ( $_POST && $_FILES && isset( $_FILES[ $index ] ) ) {
@@ -1415,7 +1415,7 @@ class WPAS_File_Upload {
 				return false;
 			}
 
-			$max = wpas_get_option( 'attachments_max', 2 );
+			$max = mumei_ayuda_get_option( 'attachments_max', 2 );
 			$id  = false; // Declare a default value for $id
 
 			if ( $this->individualize_files() ) {
@@ -1437,7 +1437,7 @@ class WPAS_File_Upload {
 			if ( is_wp_error( $id ) ) {
 
 				$this->error_message = $id->get_error_message();
-				add_filter( 'wpas_redirect_reply_added', array( $this, 'redirect_error' ), 10, 2 );
+				add_filter( 'mumei_ayuda_redirect_reply_added', array( $this, 'redirect_error' ), 10, 2 );
 
 				return false;
 
@@ -1464,7 +1464,7 @@ class WPAS_File_Upload {
 	 */
 	public function process_attachments( $post_id, $attachments ) {
 
-		$max           = wpas_get_option( 'attachments_max', 2 );   // Core AS Max Files (File Upload settings)
+		$max           = mumei_ayuda_get_option( 'attachments_max', 2 );   // Core AS Max Files (File Upload settings)
 		$cnt           = 0;                                         // Initialize count of current attachments
 		$errors        = false;                                     // No errors/rejections yet
 		$this->post_id = $post_id;                                  // Set post id for /ticket_nnnn folder creation
@@ -1474,11 +1474,11 @@ class WPAS_File_Upload {
 
 		foreach ( $attachments as $attachment ) {
 
-			$filename = $this->wpas_sanitize_file_name( $attachment['filename'] );                    // Base filename
+			$filename = $this->mumei_ayuda_sanitize_file_name( $attachment['filename'] );                    // Base filename
 			$data     = $attachment['data'];                        // Raw file contents
 			
 			// translators: %1$s is the identifier or message, %2$d is the maximum number of files.
-			$x_content = __( '%1$s -> Max files (%2$d) exceeded.', 'awesome-support' );
+			$x_content = __( '%1$s -> Max files (%2$d) exceeded.', 'ayuda-help-desk' );
 
 			/* Limit the number of uploaded files */
 			if ( $cnt + 1 > $max ) {
@@ -1540,13 +1540,13 @@ class WPAS_File_Upload {
 		// Log any errors
 		if ( $errors ) {
 
-			$log = __( 'Attachment Errors:', 'awesome-support' ) . '<br />';
+			$log = __( 'Attachment Errors:', 'ayuda-help-desk' ) . '<br />';
 
 			foreach ( $errors as $error ) {
 				$log .= $error . '<br/>';
 			}
 
-			wpas_log_history( $this->parent_id ? $this->parent_id : $post_id, $log );
+			mumei_ayuda_log_history( $this->parent_id ? $this->parent_id : $post_id, $log );
 
 		}
 
@@ -1571,9 +1571,9 @@ class WPAS_File_Upload {
 		$error = is_array( $this->error_message ) ? implode( ', ', $this->error_message ) : $this->error_message;
 
 		// translators: %s is the attachment.
-		$x_content = __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'awesome-support' );
+		$x_content = __( 'Your reply has been correctly submitted but the attachment was not uploaded. %s', 'ayuda-help-desk' );
 
-		wpas_add_error( 'files_not_uploaded', sprintf( $x_content, $error ) );
+		mumei_ayuda_add_error( 'files_not_uploaded', sprintf( $x_content, $error ) );
 
 		$location = wp_sanitize_redirect( $url );
 
@@ -1607,7 +1607,7 @@ class WPAS_File_Upload {
 			$post     = get_post( $post_id );
 		}
 
-		$submission = (int) wpas_get_option( 'ticket_submit' );
+		$submission = (int) mumei_ayuda_get_option( 'ticket_submit' );
 		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] )) : '' ; 
 		
 		/**
@@ -1652,23 +1652,23 @@ class WPAS_File_Upload {
 
 		$filetypes      = explode( ',', $this->get_allowed_filetypes() );
 		$ext            = strtolower( pathinfo( $file['name'], PATHINFO_EXTENSION ) );
-		$max_size       = wpas_get_option( 'filesize_max', 1 );
+		$max_size       = mumei_ayuda_get_option( 'filesize_max', 1 );
 		$max_size_bytes = $max_size * 1024 * 1024;
 
 		if ( ! in_array( $ext, $filetypes ) ) {
 			// translators: %s is the attachment.
-			$x_content = __( 'You are not allowed to upload files of this type (%s)', 'awesome-support' );
+			$x_content = __( 'You are not allowed to upload files of this type (%s)', 'ayuda-help-desk' );
 
 			$file['error'] = sprintf( $x_content, $ext );
 		}
 
 		if ( $file['size'] <= 0 ) {
-			$file['error'] = __( 'You cannot upload empty attachments. You attachments weights 0 bytes', 'awesome-support' );
+			$file['error'] = __( 'You cannot upload empty attachments. You attachments weights 0 bytes', 'ayuda-help-desk' );
 		}
 
 		if ( $file['size'] > $max_size_bytes ) {
 			// translators: %s is the attachment.
-			$x_content = __( 'Your attachment is too big. You are allowed to attach files up to %s', 'awesome-support' );
+			$x_content = __( 'Your attachment is too big. You are allowed to attach files up to %s', 'ayuda-help-desk' );
 
 			$file['error'] = sprintf( $x_content, "$max_size Mo" );
 		}
@@ -1689,7 +1689,7 @@ class WPAS_File_Upload {
 	public function custom_mime_types( $mimes ) {
 
 		/* We don't want to allow those extra file types on other pages that the plugin ones */
-		if ( ! wpas_is_plugin_page() ) {
+		if ( ! mumei_ayuda_is_plugin_page() ) {
 			return $mimes;
 		}
 
@@ -1697,10 +1697,10 @@ class WPAS_File_Upload {
 
 		if ( ! empty( $filetypes ) ) {
 
-			require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
+			require_once( MUMEI_AYUDA_PATH . 'includes/file-uploader/mime-types.php' );
 
 			foreach ( $filetypes as $type ) {
-				$mimes[ $type ] = wpas_get_mime_type( $type );
+				$mimes[ $type ] = mumei_ayuda_get_mime_type( $type );
 			}
 
 		}		
@@ -1720,7 +1720,7 @@ class WPAS_File_Upload {
 	 */
 	public function individualize_files() {
 
-		$files_index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
+		$files_index = "mumei_ayuda_$this->index"; // We need to prefix the index as the custom fields are always prefixed
 
 		if ( isset($_FILES[ $files_index ]['name']) && is_array( $_FILES[ $files_index ]['name'] ) ) {
 			
@@ -1772,7 +1772,7 @@ class WPAS_File_Upload {
 	 */
 	public function new_ticket_attachment( $ticket_id ) {
 
-		if ( isset( $_POST['wpas_title'] ) ) {
+		if ( isset( $_POST['mumei_ayuda_title'] ) ) {
 			$this->post_id = intval( $ticket_id );
 			$this->process_upload();
 		}
@@ -1789,7 +1789,7 @@ class WPAS_File_Upload {
 	 */
 	public function new_reply_attachment( $reply_id ) {
 
-		if ( ( isset( $_POST['wpas_nonce'] ) || isset( $_POST['client_reply'] ) ) || isset( $_POST['wpas_reply'] ) ) {
+		if ( ( isset( $_POST['mumei_ayuda_nonce'] ) || isset( $_POST['client_reply'] ) ) || isset( $_POST['mumei_ayuda_reply'] ) ) {
 			$this->post_id   = intval( $reply_id );
 			if( isset( $_POST['ticket_id'] ) ){
 				$this->parent_id = intval( $_POST['ticket_id'] );
@@ -1825,7 +1825,7 @@ class WPAS_File_Upload {
 		}
 
 		$this->post_id   = intval( $reply_id );
-		$this->parent_id = isset( $_POST['wpas_post_parent'] ) ? intval( $_POST['wpas_post_parent'] ) : null;
+		$this->parent_id = isset( $_POST['mumei_ayuda_post_parent'] ) ? intval( $_POST['mumei_ayuda_post_parent'] ) : null;
 		$this->process_upload();
 	}
 
@@ -1871,14 +1871,14 @@ class WPAS_File_Upload {
 			}
 
 			/**
-			 * wpas_attachments_before_delete fires before deleting attachments
+			 * mumei_ayuda_attachments_before_delete fires before deleting attachments
 			 *
 			 * @since  3.3.3
 			 *
 			 * @param  integer $post_id    ID of the post we're displaying attachments for
 			 * @param  array   $attachment The attachment array
 			 */
-			do_action( 'wpas_attachments_before_delete', $post_id, $attachments, $args );
+			do_action( 'mumei_ayuda_attachments_before_delete', $post_id, $attachments, $args );
 
 			foreach ( $attachments as $id => $attachment ) {
 				wp_delete_attachment( $id, true );
@@ -1898,7 +1898,7 @@ class WPAS_File_Upload {
 
 
 			/**
-			 * wpas_attachments_after_delete fires after deleting attachments
+			 * mumei_ayuda_attachments_after_delete fires after deleting attachments
 			 * to allow cleanup of attachment folders
 			 *
 			 * @since  3.3.3
@@ -1906,7 +1906,7 @@ class WPAS_File_Upload {
 			 * @param  integer $post_id    ID of the post we're displaying attachments for
 			 * @param  array   $attachment The attachment array
 			 */
-			do_action( 'wpas_attachments_after_delete', $post_id, $attachments, $args );
+			do_action( 'mumei_ayuda_attachments_after_delete', $post_id, $attachments, $args );
 
 		}
 
@@ -1918,14 +1918,14 @@ class WPAS_File_Upload {
 
 	public function load_ajax_uploader_assets() {
 
-		wp_register_style( 'wpas-dropzone', WPAS_URL . 'assets/admin/css/vendor/dropzone.css', null, WPAS_VERSION );
-		wp_register_script( 'wpas-dropzone', WPAS_URL . 'assets/admin/js/vendor/dropzone.js', array( 'jquery' ), WPAS_VERSION );
-		wp_register_script( 'wpas-ajax-upload', WPAS_URL . 'assets/admin/js/admin-ajax-upload.js', array( 'jquery' ), WPAS_VERSION, true );
+		wp_register_style( 'wpas-dropzone', MUMEI_AYUDA_URL . 'assets/admin/css/vendor/dropzone.css', null, MUMEI_AYUDA_VERSION );
+		wp_register_script( 'wpas-dropzone', MUMEI_AYUDA_URL . 'assets/admin/js/vendor/dropzone.js', array( 'jquery' ), MUMEI_AYUDA_VERSION );
+		wp_register_script( 'wpas-ajax-upload', MUMEI_AYUDA_URL . 'assets/admin/js/admin-ajax-upload.js', array( 'jquery' ), MUMEI_AYUDA_VERSION, true );
 
 		wp_enqueue_style( 'wpas-dropzone' );
 		wp_enqueue_script( 'wpas-dropzone' );
 
-		$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+		$filetypes = explode( ',', apply_filters( 'mumei_ayuda_attachments_filetypes', mumei_ayuda_get_option( 'attachments_filetypes' ) ) );
 		$accept    = array();
 
 		foreach ( $filetypes as $key => $type ) {
@@ -1940,16 +1940,16 @@ class WPAS_File_Upload {
 		}
 
 		// translators: %s is the number of files.
-		$x_content = __( 'Max files (%s) exceeded.', 'awesome-support' );
+		$x_content = __( 'Max files (%s) exceeded.', 'ayuda-help-desk' );
 
-		wp_localize_script( 'wpas-ajax-upload', 'WPAS_AJAX', array(
+		wp_localize_script( 'wpas-ajax-upload', 'MUMEI_AYUDA_AJAX', array(
 			'nonce'              => wp_create_nonce( 'wpas-ajax-upload-nonce' ),
 			'ajax_url'           => admin_url( 'admin-ajax.php' ),
 			'accept'             => $accept,
 			'max_execution_time' => ( $max_execution_time * 1000 ), // Convert to miliseconds
-			'max_files'          => wpas_get_option( 'attachments_max' ),
-			'max_size'           => wpas_get_option( 'filesize_max' ),
-			'exceeded'           => sprintf( $x_content, wpas_get_option( 'attachments_max' ) )
+			'max_files'          => mumei_ayuda_get_option( 'attachments_max' ),
+			'max_size'           => mumei_ayuda_get_option( 'filesize_max' ),
+			'exceeded'           => sprintf( $x_content, mumei_ayuda_get_option( 'attachments_max' ) )
 		) );
 
 		wp_enqueue_script( 'wpas-ajax-upload' );
@@ -1990,16 +1990,16 @@ class WPAS_File_Upload {
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-ajax-upload-nonce', 'nonce' ) ) { 
 	
 			/**
-			 * wpas_before_ajax_file_upload fires before uploading attachments
+			 * mumei_ayuda_before_ajax_file_upload fires before uploading attachments
 			 *
 			 * @since 5.1.1
 			 *
 			 * @param int $ticket_id   ID of the ticket
 			 * @param int $user_id     ID of the current logged in user
 			 */
-			do_action( 'wpas_before_ajax_file_upload', $ticket_id, $user_id );
+			do_action( 'mumei_ayuda_before_ajax_file_upload', $ticket_id, $user_id );
 
-			$dir = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . $user_id;
+			$dir = trailingslashit( $upload['basedir'] ) . 'ayuda-help-desk/temp_' . $ticket_id . '_' . $user_id;
 
 			// Create temp directory if not exists
 			if ( ! is_dir( $dir ) ) {
@@ -2007,16 +2007,16 @@ class WPAS_File_Upload {
 			}
 
 			// Check if file is set
-			if ( ! empty( $file = $_FILES[ 'wpas_' . $this->index ] ) ) {
+			if ( ! empty( $file = $_FILES[ 'mumei_ayuda_' . $this->index ] ) ) {
 				// Get file extension
 				$extension = pathinfo( $file[ 'name' ], PATHINFO_EXTENSION );
 				// Get allowed file extensions
-				$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+				$filetypes = explode( ',', apply_filters( 'mumei_ayuda_attachments_filetypes', mumei_ayuda_get_option( 'attachments_filetypes' ) ) );
 
 				// Check file extension
 				if ( in_array( $extension, $filetypes ) ) {
 					// Upload file
-					$wp_filesystem->move($file[ 'tmp_name' ], trailingslashit( $dir ) . $this->wpas_sanitize_file_name( basename( $file[ 'name' ] ) ), true); 
+					$wp_filesystem->move($file[ 'tmp_name' ], trailingslashit( $dir ) . $this->mumei_ayuda_sanitize_file_name( basename( $file[ 'name' ] ) ), true); 
 				}
 			}
 		}
@@ -2044,14 +2044,14 @@ class WPAS_File_Upload {
 
 			$ticket_id  = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );			
 			$attachment  = isset( $_POST['attachment'] ) ? sanitize_text_field( wp_unslash( ( $_POST['attachment'] ) ) ) : '';
-			$attachment = $this->wpas_sanitize_file_name($attachment);		
+			$attachment = $this->mumei_ayuda_sanitize_file_name($attachment);		
 			
 			$upload     = wp_upload_dir();
 			$user_id    = get_current_user_id();
 
-			$file = sprintf( '%s/awesome-support/temp_%d_%d/%s', $upload['basedir'], $ticket_id, $user_id, $attachment );			
+			$file = sprintf( '%s/ayuda-help-desk/temp_%d_%d/%s', $upload['basedir'], $ticket_id, $user_id, $attachment );			
 			
-			$realBaseDir = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], $ticket_id, $user_id );
+			$realBaseDir = sprintf( '%s/ayuda-help-desk/temp_%d_%d', $upload['basedir'], $ticket_id, $user_id );
 			$realFilePath = realpath($file);
 			$realBasePath = realpath( $realBaseDir ) . DIRECTORY_SEPARATOR;
 			
@@ -2060,7 +2060,7 @@ class WPAS_File_Upload {
 				wp_die();
 			}
 			/**
-			 * wpas_before_delete_temp_attachment fires before deleting temp attachment
+			 * mumei_ayuda_before_delete_temp_attachment fires before deleting temp attachment
 			 *
 			 * @since 5.1.1
 			 *
@@ -2068,7 +2068,7 @@ class WPAS_File_Upload {
 			 * @param int $user_id       ID of the current logged in user
 			 * @param string $attachment Attachment filename
 			 */
-			do_action( 'wpas_before_delete_temp_attachment', $ticket_id, $user_id, $attachment );
+			do_action( 'mumei_ayuda_before_delete_temp_attachment', $ticket_id, $user_id, $attachment );
 
 			if ( file_exists( $file ) ) {
 				unlink( $file );
@@ -2086,7 +2086,7 @@ class WPAS_File_Upload {
 	public function ajax_delete_temp_directory() {
 
 		$upload     = wp_upload_dir();
-		$temp_dir   = sprintf( '%s/awesome-support/temp_%d_%d', $upload['basedir'], intval( isset($_POST[ 'ticket_id' ]) ? $_POST[ 'ticket_id' ] : 0 ), get_current_user_id() );
+		$temp_dir   = sprintf( '%s/ayuda-help-desk/temp_%d_%d', $upload['basedir'], intval( isset($_POST[ 'ticket_id' ]) ? $_POST[ 'ticket_id' ] : 0 ), get_current_user_id() );
 
 		if ( is_dir( $temp_dir ) ) {
 			$this->remove_directory( $temp_dir );
@@ -2144,12 +2144,12 @@ class WPAS_File_Upload {
 
 		global $wp_filesystem;
 		$upload = wp_upload_dir();
-		$dir    = trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_' . $ticket_id . '_' . $data['post_author'] .'/';
+		$dir    = trailingslashit( $upload['basedir'] ) . 'ayuda-help-desk/temp_' . $ticket_id . '_' . $data['post_author'] .'/';
 
 		// If temp directory exists, it means that user is uploaded attachments
 		if ( is_dir( $dir ) ) {
 
-			$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+			$filetypes = explode( ',', apply_filters( 'mumei_ayuda_attachments_filetypes', mumei_ayuda_get_option( 'attachments_filetypes' ) ) );
 			$accept    = array();
 
 			foreach ( $filetypes as $key => $type ) {
@@ -2162,9 +2162,9 @@ class WPAS_File_Upload {
 			foreach( glob( $dir . '{' . $accept . '}', GLOB_BRACE ) as $file ) {
 
 				$reply_id_encode = md5($reply_id . NONCE_SALT);	
-				$new_file_relative_dir = 'awesome-support/ticket_' . $reply_id_encode;
+				$new_file_relative_dir = 'ayuda-help-desk/ticket_' . $reply_id_encode;
 
-				$gas_file_base_name = $this->wpas_sanitize_file_name( basename( $file ) );
+				$gas_file_base_name = $this->mumei_ayuda_sanitize_file_name( basename( $file ) );
 
 				$new_file_relative = $new_file_relative_dir . '/' . $gas_file_base_name;
 
@@ -2173,9 +2173,9 @@ class WPAS_File_Upload {
 				// https://trello.com/c/ksKkxT9e fix fileinfo.dll not enable on server
 				if(!function_exists("mime_content_type"))
 				{					
-					require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
+					require_once( MUMEI_AYUDA_PATH . 'includes/file-uploader/mime-types.php' );
 					$file_pathinfo = pathinfo($file, PATHINFO_EXTENSION);
-					$post_mime_type = wpas_get_mime_type( $file_pathinfo );
+					$post_mime_type = mumei_ayuda_get_mime_type( $file_pathinfo );
 				}
 				else
 				{
@@ -2266,9 +2266,9 @@ class WPAS_File_Upload {
 	 */
 	public function attachments_dir_cleanup() {
 
-		wpas_is_plugin_page();
+		mumei_ayuda_is_plugin_page();
 		$upload  = wp_get_upload_dir();
-		$folders = glob( trailingslashit( $upload['basedir'] ) . 'awesome-support/temp_*' );
+		$folders = glob( trailingslashit( $upload['basedir'] ) . 'ayuda-help-desk/temp_*' );
 
 		foreach ( $folders as $folder ) {
 
@@ -2329,7 +2329,7 @@ class WPAS_File_Upload {
 	 * @return string
 	 */
 
-	public function wpas_sanitize_file_name( $filename ) {
+	public function mumei_ayuda_sanitize_file_name( $filename ) {
 
 		// Remove chars with accents etc, also replaces € with E.
 		$sanitized_filename = remove_accents( $filename );
@@ -2397,11 +2397,11 @@ class WPAS_File_Upload {
 
 	    $unique_name = $info['filename'] .  $random_string . time() . $ext;
 
-		$original_files = get_option('wpas_original_files', []);
+		$original_files = get_option('mumei_ayuda_original_files', []);
         
 		$original_files[$unique_name] = $file['name']; 
 		
-		update_option('wpas_original_files', $original_files);
+		update_option('mumei_ayuda_original_files', $original_files);
 
 	    $file['name'] = $unique_name;
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Admin/Functions/Editor
+ * @package   Ayuda – Help Desk/Admin/Functions/Editor
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-class WPAS_Editor_Email_Template_Tags_Button {
+class MUMEI_AYUDA_Editor_Email_Template_Tags_Button {
 	
 	public function __construct() {
 		
@@ -47,7 +47,7 @@ class WPAS_Editor_Email_Template_Tags_Button {
 		
 		$screen = get_current_screen();
 			
-		array_push( $buttons, 'wpas_editor_email_template_tags' );
+		array_push( $buttons, 'mumei_ayuda_editor_email_template_tags' );
 		return $buttons;
 	}
 	
@@ -59,7 +59,7 @@ class WPAS_Editor_Email_Template_Tags_Button {
 	 */
 	public function add_plugin_array( $plugin_array ) {
 		
-		$plugin_array['wpas_editor_email_template_tags'] = plugins_url( '/includes/admin/tinymce/wpas_editor_email_template_tags/editor_plugin.js', dirname( dirname( __FILE__ ) ) );
+		$plugin_array['mumei_ayuda_editor_email_template_tags'] = plugins_url( '/includes/admin/tinymce/mumei_ayuda_editor_email_template_tags/editor_plugin.js', dirname( dirname( __FILE__ ) ) );
 		return $plugin_array;
 	}
 	
@@ -71,7 +71,7 @@ class WPAS_Editor_Email_Template_Tags_Button {
 	 */
 	public function editor_tinymce_langs( $locales ) {
 		
-		$locales['wpas_editor_langs'] = plugin_dir_path ( dirname( dirname( __FILE__ ) ) ) . 'includes/admin/tinymce/langs/wpas_editor_langs.php';
+		$locales['mumei_ayuda_editor_langs'] = plugin_dir_path ( dirname( dirname( __FILE__ ) ) ) . 'includes/admin/tinymce/langs/mumei_ayuda_editor_langs.php';
     	return $locales;
 	}
 	
@@ -83,19 +83,19 @@ class WPAS_Editor_Email_Template_Tags_Button {
 	 */
 	public function editor_after_wp_tiny_mce() {
 		// Get WPAS email template tags
-		$list_tags = WPAS_Email_Notification::get_tags();
+		$list_tags = MUMEI_AYUDA_Email_Notification::get_tags();
 		$list_tags = json_encode( $list_tags, true );
 		
-		$script = 'var wpas_editor_js_vars = { "template_tags": ' . $list_tags . ' };' ;
+		$script = 'var mumei_ayuda_editor_js_vars = { "template_tags": ' . $list_tags . ' };' ;
 
 		// Proper wp_kses usage with allowed tags and attributes
-		$allowed_html_wpas_editor = array(
+		$allowed_html_mumei_ayuda_editor = array(
 		    'script' => array(
 		        'type' => true,
 		    ),
 		);
-		echo wp_kses("<script type='text/javascript'>$script</script>", $allowed_html_wpas_editor );
+		echo wp_kses("<script type='text/javascript'>$script</script>", $allowed_html_mumei_ayuda_editor );
 	}
 }
 
-$WPAS_Editor_Email_Template_Tags_Button = new WPAS_Editor_Email_Template_Tags_Button();
+$MUMEI_AYUDA_Editor_Email_Template_Tags_Button = new MUMEI_AYUDA_Editor_Email_Template_Tags_Button();

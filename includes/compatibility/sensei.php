@@ -1,10 +1,10 @@
 <?php
 /**
- * @package   Awesome Support/Compatibility/Sensei
+ * @package   Ayuda – Help Desk/Compatibility/Sensei
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
- * @copyright 2016 Awesome Support
+ * @copyright 2016 Ayuda – Help Desk
  */
 
 // If this file is called directly, abort.
@@ -12,23 +12,23 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'admin_enqueue_scripts', 'wpas_remove_sensei_select2_assets', 999 );
+add_action( 'admin_enqueue_scripts', 'mumei_ayuda_remove_sensei_select2_assets', 999 );
 /**
  * Fix compatibility issue with Sensei's select2
  *
- * Sensei uses select2, just like Awesome Support. However, instead of loading select2's assets only where it is used
+ * Sensei uses select2, just like Ayuda – Help Desk. However, instead of loading select2's assets only where it is used
  * by Sensei, they load the assets everywhere, which messes us with our own instances of select2 if the versions of
- * select2 used by Awesome Support and Sensei don't match.
+ * select2 used by Ayuda – Help Desk and Sensei don't match.
  *
- * This function will de-register Sensei's select2 on Awesome Support's pages.
+ * This function will de-register Sensei's select2 on Ayuda – Help Desk's pages.
  *
  * @since 3.3.2
  * @return void
  */
-function wpas_remove_sensei_select2_assets() {
+function mumei_ayuda_remove_sensei_select2_assets() {
 
 	// Only make changes on our pages. Don't want to mess up even more with other stuff
-	if ( ! wpas_is_plugin_page() ) {
+	if ( ! mumei_ayuda_is_plugin_page() ) {
 		return;
 	}
 
@@ -43,7 +43,7 @@ function wpas_remove_sensei_select2_assets() {
 }
 
 
-add_action( 'init', 'wpas_remove_sensei_actions', 999 );
+add_action( 'init', 'mumei_ayuda_remove_sensei_actions', 999 );
 /**
  * Fix compatibility issue with Sensei's action hooks
  *
@@ -51,15 +51,15 @@ add_action( 'init', 'wpas_remove_sensei_actions', 999 );
  * list page.
  *
  * This function will de-register Sensei's manage_posts_custom_column hook
- * from WordPress on Awesome Support's pages.
+ * from WordPress on Ayuda – Help Desk's pages.
  *
  * @since 3.3.2
  * @return void
  */
-function wpas_remove_sensei_actions() {
+function mumei_ayuda_remove_sensei_actions() {
 
 	// Only make changes on our pages. Don't want to mess up even more with other stuff
-	if ( ! wpas_is_plugin_page() ) {
+	if ( ! mumei_ayuda_is_plugin_page() ) {
 		return;
 	}
 

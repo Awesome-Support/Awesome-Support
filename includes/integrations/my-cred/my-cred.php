@@ -2,14 +2,14 @@
 /**
  * Adds integration with the MYCRED plugin
  *
- * @author    Awesome Support <contact@awesomesupport.com>
+ * @author    Ayuda – Help Desk <contact@awesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  * @copyright 2014-2018 AwesomeSupport
  *
  */
 
- class WPAS_MY_CRED {
+ class MUMEI_AYUDA_MY_CRED {
 
 	/**
 	 * Plugin actions.
@@ -17,16 +17,16 @@
 	public function __construct() {	
 	
 		// Add some action hooks here!
-		add_action('wpas_after_close_ticket',	array($this, 'after_close_ticket'), 20, 3 );
-		add_action('wpas_add_reply_after',		array($this, 'after_reply_ticket'), 20, 2 );
-		add_action('wpas_open_ticket_after',	array($this, 'after_open_ticket'), 20, 2 );
-		add_action('wpas_post_new_ticket_admin',array($this, 'after_open_ticket_admin'), 20, 1 );
+		add_action('mumei_ayuda_after_close_ticket',	array($this, 'after_close_ticket'), 20, 3 );
+		add_action('mumei_ayuda_add_reply_after',		array($this, 'after_reply_ticket'), 20, 2 );
+		add_action('mumei_ayuda_open_ticket_after',	array($this, 'after_open_ticket'), 20, 2 );
+		add_action('mumei_ayuda_post_new_ticket_admin',array($this, 'after_open_ticket_admin'), 20, 1 );
 	}
 	
 	/**
 	 * Add points when a ticket is closed
 	 *
-	 * Action hook: wpas_after_close_ticket
+	 * Action hook: mumei_ayuda_after_close_ticket
 	 *
 	 * @param $ticket_id integer
 	 * @param $update array
@@ -39,26 +39,26 @@
 		if ( function_exists('mycred_add') ) {
 			
 			// Add points for agent closing ticket.
-			if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
+			if ( true == mumei_ayuda_is_agent( $user_id ) && !empty( mumei_ayuda_get_option('myCRED_agent_point_type' ) ) ) {
 				/* translators: %s is the ticket id */
-				mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_close'), sprintf( __( 'Points for agent closing ticket # %s', 'awesome-support' ), (string) $ticket_id ), $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+				mycred_add( $ticket_id, $user_id, mumei_ayuda_get_option('myCRED_agent_points_ticket_close'), sprintf( __( 'Points for agent closing ticket # %s', 'ayuda-help-desk' ), (string) $ticket_id ), $ticket_id, '', mumei_ayuda_get_option('myCRED_agent_point_type') );
 			}
 			
 			// Add points for user closing a ticket
-			if ( false == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_user_point_type' ) ) ) {
+			if ( false == mumei_ayuda_is_agent( $user_id ) && !empty( mumei_ayuda_get_option('myCRED_user_point_type' ) ) ) {
 				/* translators: %s is the ticket id */
-				mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_user_points_ticket_close'), sprintf( __( 'Points for user closing ticket # %s', 'awesome-support' ), (string) $ticket_id ), $ticket_id, '', wpas_get_option('myCRED_user_point_type') );
+				mycred_add( $ticket_id, $user_id, mumei_ayuda_get_option('myCRED_user_points_ticket_close'), sprintf( __( 'Points for user closing ticket # %s', 'ayuda-help-desk' ), (string) $ticket_id ), $ticket_id, '', mumei_ayuda_get_option('myCRED_user_point_type') );
 			}
 			
 			// Add points for agent even if user closes a ticket...
-			if ( false == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) && true == wpas_get_option('myCRED_agent_gets_points_user_close' )  ) {
+			if ( false == mumei_ayuda_is_agent( $user_id ) && !empty( mumei_ayuda_get_option('myCRED_agent_point_type' ) ) && true == mumei_ayuda_get_option('myCRED_agent_gets_points_user_close' )  ) {
 				
 				// Who is the primary agent on the ticket?
-				$agent_id = wpas_get_primary_agent_by_ticket_id( $ticket_id );
+				$agent_id = mumei_ayuda_get_primary_agent_by_ticket_id( $ticket_id );
 				
 				if ( $agent_id ) {
 					/* translators: %s is the ticket id */
-					mycred_add( $ticket_id, $agent_id, wpas_get_option('myCRED_agent_points_ticket_close'), sprintf( __( 'Agent gets points when user closed ticket # %s', 'awesome-support' ), (string) $ticket_id ), $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );				
+					mycred_add( $ticket_id, $agent_id, mumei_ayuda_get_option('myCRED_agent_points_ticket_close'), sprintf( __( 'Agent gets points when user closed ticket # %s', 'ayuda-help-desk' ), (string) $ticket_id ), $ticket_id, '', mumei_ayuda_get_option('myCRED_agent_point_type') );				
 				}
 				
 			}
@@ -69,7 +69,7 @@
 	/**
 	 * Add points when a reply is added to a ticket
 	 *
-	 * Action hook: wpas_add_reply_after
+	 * Action hook: mumei_ayuda_add_reply_after
 	 *
 	 * @param $reply_id integer
 	 * @param $data array
@@ -80,20 +80,20 @@
 
 		if ( function_exists('mycred_add') ) {
 			
-			$ticket_id = wpas_get_ticket_id( $reply_id ) ;
+			$ticket_id = mumei_ayuda_get_ticket_id( $reply_id ) ;
 			$user_id = get_post($reply_id)->post_author;
 			
 			if ( $user_id && ! is_wp_error( $user_id ) ) {
 				// Add points for agent sending a reply ticket.
-				if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
+				if ( true == mumei_ayuda_is_agent( $user_id ) && !empty( mumei_ayuda_get_option('myCRED_agent_point_type' ) ) ) {
 					/* translators: %s is the ticket id */
-					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_reply'), sprintf( __( 'Points for agent replying to ticket # %s', 'awesome-support' ), (string) $ticket_id ), $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+					mycred_add( $ticket_id, $user_id, mumei_ayuda_get_option('myCRED_agent_points_ticket_reply'), sprintf( __( 'Points for agent replying to ticket # %s', 'ayuda-help-desk' ), (string) $ticket_id ), $ticket_id, '', mumei_ayuda_get_option('myCRED_agent_point_type') );
 				}
 				
 				// Add points for user replying to a ticket
-				if ( false == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_user_point_type' ) ) ) {
+				if ( false == mumei_ayuda_is_agent( $user_id ) && !empty( mumei_ayuda_get_option('myCRED_user_point_type' ) ) ) {
 					/* translators: %s is the ticket id */
-					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_user_points_ticket_reply'), sprintf( __( 'Points for user replying to ticket # %s', 'awesome-support' ), (string) $ticket_id ), $ticket_id, '', wpas_get_option('myCRED_user_point_type') );
+					mycred_add( $ticket_id, $user_id, mumei_ayuda_get_option('myCRED_user_points_ticket_reply'), sprintf( __( 'Points for user replying to ticket # %s', 'ayuda-help-desk' ), (string) $ticket_id ), $ticket_id, '', mumei_ayuda_get_option('myCRED_user_point_type') );
 				}
 			}
 		}
@@ -103,7 +103,7 @@
 	/**
 	 * Add points when a new ticket is opened by user
 	 *
-	 * Action hook: wpas_open_ticket_after
+	 * Action hook: mumei_ayuda_open_ticket_after
 	 *
 	 * @param $ticket_id integer
 	 * @param $data array
@@ -118,16 +118,16 @@
 
 			if ( $user_id && ! is_wp_error( $user_id ) ) {
 				// Add points for agent opening ticket. Normally they open it on the back-end but if using the agent-front-end, might open ticket from there.
-				if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
+				if ( true == mumei_ayuda_is_agent( $user_id ) && !empty( mumei_ayuda_get_option('myCRED_agent_point_type' ) ) ) {
 					/* translators: %s is the ticket id */
-					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_submit'), sprintf( __( 'Points for agent opening ticket # %s', 'awesome-support' ), (string) $ticket_id ), $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+					mycred_add( $ticket_id, $user_id, mumei_ayuda_get_option('myCRED_agent_points_ticket_submit'), sprintf( __( 'Points for agent opening ticket # %s', 'ayuda-help-desk' ), (string) $ticket_id ), $ticket_id, '', mumei_ayuda_get_option('myCRED_agent_point_type') );
 				
 				}
 				
 				// Add points for user opening a ticket
-				if ( false == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_user_point_type' ) ) ) {
+				if ( false == mumei_ayuda_is_agent( $user_id ) && !empty( mumei_ayuda_get_option('myCRED_user_point_type' ) ) ) {
 					/* translators: %s is the ticket id */
-					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_user_points_ticket_submit'), sprintf( __( 'Points for user opening a ticket # %s', 'awesome-support' ), (string) $ticket_id ), $ticket_id, '', wpas_get_option('myCRED_user_point_type') );
+					mycred_add( $ticket_id, $user_id, mumei_ayuda_get_option('myCRED_user_points_ticket_submit'), sprintf( __( 'Points for user opening a ticket # %s', 'ayuda-help-desk' ), (string) $ticket_id ), $ticket_id, '', mumei_ayuda_get_option('myCRED_user_point_type') );
 				}
 			}
 		}
@@ -137,7 +137,7 @@
 	/**
 	 * Add points when a new ticket is opened in the admin area
 	 *
-	 * Action hook: wpas_post_new_ticket_admin
+	 * Action hook: mumei_ayuda_post_new_ticket_admin
 	 *
 	 * @param $ticket_id integer
 	 *
@@ -148,13 +148,13 @@
 		if ( function_exists('mycred_add') ) {
 
 			//$user_id = get_post($ticket_id)->post_author;
-			$user_id = wpas_get_primary_agent_by_ticket_id( $ticket_id ) ;
+			$user_id = mumei_ayuda_get_primary_agent_by_ticket_id( $ticket_id ) ;
 			
 			if ( $user_id && ! is_wp_error( $user_id ) ) {
 				// Add points for agent opening a ticket
-				if ( true == wpas_is_agent( $user_id ) && !empty( wpas_get_option('myCRED_agent_point_type' ) ) ) {
+				if ( true == mumei_ayuda_is_agent( $user_id ) && !empty( mumei_ayuda_get_option('myCRED_agent_point_type' ) ) ) {
 					/* translators: %s is the ticket id */
-					mycred_add( $ticket_id, $user_id, wpas_get_option('myCRED_agent_points_ticket_submit'), sprintf( __( 'Points for agent opening ticket # %s', 'awesome-support' ), (string) $ticket_id ), $ticket_id, '', wpas_get_option('myCRED_agent_point_type') );
+					mycred_add( $ticket_id, $user_id, mumei_ayuda_get_option('myCRED_agent_points_ticket_submit'), sprintf( __( 'Points for agent opening ticket # %s', 'ayuda-help-desk' ), (string) $ticket_id ), $ticket_id, '', mumei_ayuda_get_option('myCRED_agent_point_type') );
 				}
 			}
 		}
@@ -164,6 +164,6 @@
  }
  
  // Instantiate the class here...
- if ( true === boolval( wpas_get_option( 'enable_my_cred', false ) ) ) {	 
-	$my_cred = new WPAS_MY_CRED();	 
+ if ( true === boolval( mumei_ayuda_get_option( 'enable_my_cred', false ) ) ) {	 
+	$my_cred = new MUMEI_AYUDA_MY_CRED();	 
  }

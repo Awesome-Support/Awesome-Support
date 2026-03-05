@@ -40,14 +40,14 @@ class GASFrameworkOptionSelectPosts extends GASFrameworkOptionSelect {
 		$posts = get_posts( $args );
 
 		$this->settings['options'] = array(
-			'' => '— ' . __( 'Select', 'awesome-support' ) . ' —'
+			'' => '— ' . __( 'Select', 'ayuda-help-desk' ) . ' —'
 		);
 
 		foreach ( $posts as $post ) {
 			$title = esc_html( $post->post_title );
 			if ( empty( $title ) ) {
 				// translators: %s is the title.
-				$x_content = __( 'Untitled %s', 'awesome-support' );
+				$x_content = __( 'Untitled %s', 'ayuda-help-desk' );
 				$title = sprintf( $x_content, '(ID #' . $post->ID . ')' );
 			}
 			$this->settings['options'][ $post->ID ] = $title;

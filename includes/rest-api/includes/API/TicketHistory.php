@@ -1,8 +1,8 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
-use WPAS_API\API\TicketBase;
+use MUMEI_AYUDA_API\API\TicketBase;
 use WP_REST_Server;
 use WP_REST_Posts_Controller;
 use WP_Error;
@@ -24,7 +24,7 @@ class TicketHistory extends TicketBase {
 		register_rest_route( $this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/' . $this->rest_base, array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
+					'description' => __( 'Unique identifier for the ticket.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 				),
 			),
@@ -43,7 +43,7 @@ class TicketHistory extends TicketBase {
 		);
 		if ( isset( $schema['properties']['password'] ) ) {
 			$get_item_args['password'] = array(
-				'description' => __( 'The password for the post if it is password protected.', 'awesome-support' ),
+				'description' => __( 'The password for the post if it is password protected.', 'ayuda-help-desk' ),
 				'type'        => 'string',
 			);
 		}
@@ -51,11 +51,11 @@ class TicketHistory extends TicketBase {
 		register_rest_route($this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/' . $this->rest_base . '/(?P<id>[\d]+)', array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
+					'description' => __( 'Unique identifier for the ticket.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 				),
 				'id' => array(
-					'description' => __( 'Unique identifier for the history.', 'awesome-support' ),
+					'description' => __( 'Unique identifier for the history.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 				),
 			),
@@ -87,7 +87,7 @@ class TicketHistory extends TicketBase {
 		}
 
 		$schema['properties']['content'] = array(
-			'description' => __( 'The content for the object.', 'awesome-support' ),
+			'description' => __( 'The content for the object.', 'ayuda-help-desk' ),
 			'type'        => 'object',
 			'context'     => array( 'view', 'edit', 'embed' ),
 			'arg_options' => array(
@@ -95,18 +95,18 @@ class TicketHistory extends TicketBase {
 			),
 			'properties'  => array(
 				'raw'       => array(
-					'description' => __( 'Content for the object, as it exists in the database.', 'awesome-support' ),
+					'description' => __( 'Content for the object, as it exists in the database.', 'ayuda-help-desk' ),
 					'type'        => 'string',
 					'context'     => array( 'edit' ),
 				),
 				'rendered'  => array(
-					'description' => __( 'HTML content for the object, transformed for display.', 'awesome-support' ),
+					'description' => __( 'HTML content for the object, transformed for display.', 'ayuda-help-desk' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
 				),
 				'protected' => array(
-					'description' => __( 'Whether the content is protected with a password.', 'awesome-support' ),
+					'description' => __( 'Whether the content is protected with a password.', 'ayuda-help-desk' ),
 					'type'        => 'boolean',
 					'context'     => array( 'view', 'edit', 'embed' ),
 					'readonly'    => true,
@@ -114,7 +114,7 @@ class TicketHistory extends TicketBase {
 			),
 		);
 
-		return apply_filters( "wpas_api_{$this->rest_base}_get_item_schema", $schema, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_get_item_schema", $schema, $this );
 	}
 
 	/**
@@ -179,7 +179,7 @@ class TicketHistory extends TicketBase {
 			}
 		}
 
-		return apply_filters( "wpas_api_{$this->rest_base}_prepare_links", $links, $post, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_prepare_links", $links, $post, $this );
 	}
 
 }

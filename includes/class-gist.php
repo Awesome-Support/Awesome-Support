@@ -8,7 +8,7 @@
  * This class was inspired by the codebase of oEmbed Gist
  * (https://github.com/miya0001/oembed-gist) by Takayuki Miyauchi.
  *
- * @package   Awesome Support
+ * @package   Ayuda – Help Desk
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -17,9 +17,9 @@
  */
 
 // Register Gist support
-add_action( 'plugins_loaded', array( 'WPAS_Gist', 'get_instance' ), 11, 0 );
+add_action( 'plugins_loaded', array( 'MUMEI_AYUDA_Gist', 'get_instance' ), 11, 0 );
 
-class WPAS_Gist {
+class MUMEI_AYUDA_Gist {
 
 	/**
 	 * Instance of this class.
@@ -107,7 +107,7 @@ class WPAS_Gist {
 		}
 
 		// translators: %s is the URL to view the code on Gist.
-		$x_content = __( 'View the code on <a href="%s">Gist</a>.', 'awesome-support' );
+		$x_content = __( 'View the code on <a href="%s">Gist</a>.', 'ayuda-help-desk' );
 		$noscript = sprintf( $x_content, esc_url( $url ) );
 		$embed = sprintf( '<div class="oembed-gist"><script src="%s"></script><noscript>%s</noscript></div>', $url, $noscript );
 

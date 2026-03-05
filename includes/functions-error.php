@@ -19,8 +19,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 3.2
  * @return void
  */
-function wpas_set_errors() {
-	wpas_set_notifications( 'errors' );
+function mumei_ayuda_set_errors() {
+	mumei_ayuda_set_notifications( 'errors' );
 }
 
 /**
@@ -33,8 +33,8 @@ function wpas_set_errors() {
  *
  * @return void
  */
-function wpas_add_error( $error_id, $error_message ) {
-	wpas_add_notification( $error_id, $error_message, 'errors' );
+function mumei_ayuda_add_error( $error_id, $error_message ) {
+	mumei_ayuda_add_notification( $error_id, $error_message, 'errors' );
 }
 
 /**
@@ -47,8 +47,8 @@ function wpas_add_error( $error_id, $error_message ) {
  *
  * @return mixed
  */
-function wpas_get_error( $error_id, $default = false ) {
-	return wpas_get_notification( $error_id, $default, 'errors' );
+function mumei_ayuda_get_error( $error_id, $default = false ) {
+	return mumei_ayuda_get_notification( $error_id, $default, 'errors' );
 }
 
 /**
@@ -57,8 +57,8 @@ function wpas_get_error( $error_id, $default = false ) {
  * @since 3.2
  * @return array
  */
-function wpas_get_errors() {
-	return wpas_get_notifications( 'errors' );
+function mumei_ayuda_get_errors() {
+	return mumei_ayuda_get_notifications( 'errors' );
 }
 
 /**
@@ -70,8 +70,8 @@ function wpas_get_errors() {
  *
  * @return void
  */
-function wpas_clean_error( $error_id ) {
-	wpas_clean_notification( $error_id, 'errors' );
+function mumei_ayuda_clean_error( $error_id ) {
+	mumei_ayuda_clean_notification( $error_id, 'errors' );
 }
 
 /**
@@ -80,8 +80,8 @@ function wpas_clean_error( $error_id ) {
  * @since 3.2
  * @return void
  */
-function wpas_clean_errors() {
-	wpas_clean_notifications( 'errors' );
+function mumei_ayuda_clean_errors() {
+	mumei_ayuda_clean_notifications( 'errors' );
 }
 
 /**
@@ -90,18 +90,18 @@ function wpas_clean_errors() {
  * @since 3.2
  * @return string
  */
-function wpas_get_display_errors() {
-	return wpas_get_display_notifications( 'errors', 'failure' );
+function mumei_ayuda_get_display_errors() {
+	return mumei_ayuda_get_display_notifications( 'errors', 'failure' );
 }
 
-add_action( 'wpas_before_template', 'wpas_display_errors', 10, 3 );
+add_action( 'mumei_ayuda_before_template', 'mumei_ayuda_display_errors', 10, 3 );
 /**
  * Display all error messages
  *
  * @since 3.2
  * @return string Readable errors
  */
-function wpas_display_errors() {
-	echo wp_kses_post( wpas_get_display_errors() );
-	wpas_clean_errors();
+function mumei_ayuda_display_errors() {
+	echo wp_kses_post( mumei_ayuda_get_display_errors() );
+	mumei_ayuda_clean_errors();
 }

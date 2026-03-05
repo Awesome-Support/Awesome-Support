@@ -2,9 +2,9 @@
 /**
  * Allows log files to be written to for debugging purposes.
  *
- * @package		Awesome Support/WPAS_Logger
+ * @package		Ayuda – Help Desk/MUMEI_AYUDA_Logger
  */
-class WPAS_Logger {
+class MUMEI_AYUDA_Logger {
 
 	/**
 	 * List of registered handles.
@@ -65,7 +65,7 @@ class WPAS_Logger {
 	
 
 	public function get_handles() {
-		return apply_filters( 'wpas_logs_handles', $this->handles );
+		return apply_filters( 'mumei_ayuda_logs_handles', $this->handles );
 	}
 	
 	/**
@@ -79,7 +79,7 @@ class WPAS_Logger {
 		/* Figure out which base path to use */
 		$base_path = $this->get_logs_base_path();
 
-		$path = apply_filters( 'wpas_logs_path', $base_path, $this->handle );
+		$path = apply_filters( 'mumei_ayuda_logs_path', $base_path, $this->handle );
 
 		if ( !is_dir( $path ) ) {
 			$dir = wp_mkdir_p( $path );
@@ -100,10 +100,10 @@ class WPAS_Logger {
 	public function get_logs_base_path() {
 
 		$base_path = '' ;
-		switch ( intval( wpas_get_option( 'log_file_location', 0 ) ) ) {
+		switch ( intval( mumei_ayuda_get_option( 'log_file_location', 0 ) ) ) {
 			case 0:
 				// use default path
-				$base_path = WPAS_PATH . 'logs' . $this->get_logs_base_path_postfix() ;
+				$base_path = MUMEI_AYUDA_PATH . 'logs' . $this->get_logs_base_path_postfix() ;
 				break ;
 				
 			case 1:
@@ -111,7 +111,7 @@ class WPAS_Logger {
 				$uploads = wp_upload_dir() ;
 
 				if ( isset( $uploads['basedir'] ) ) {
-					$base_path = $uploads['basedir'] . '/awesome-support/logs' ;
+					$base_path = $uploads['basedir'] . '/ayuda-help-desk/logs' ;
 				}
 				break ;
 				
@@ -120,7 +120,7 @@ class WPAS_Logger {
 				// Do not set if running in SAAS mode though - just in case the admin of a sub-site
 				// decides to do something stupid.  
 				if ( ! is_saas() ) {
-					$base_path = wpas_get_option ( 'log_file_location_absolute' , '' ) ;
+					$base_path = mumei_ayuda_get_option ( 'log_file_location_absolute' , '' ) ;
 				}
 				break ;
 
@@ -128,7 +128,7 @@ class WPAS_Logger {
 		
 		if ( empty( $base_path ) ) {
 			// for some reason WP didnt' return anything in the array above so go back to default...
-			$base_path = WPAS_PATH . 'logs' . $this->get_logs_base_path_postfix() ;
+			$base_path = MUMEI_AYUDA_PATH . 'logs' . $this->get_logs_base_path_postfix() ;
 		}
 
 		return $base_path;

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Admin/Functions/ticket-detail/toolbars
+ * @package   Ayuda – Help Desk/Admin/Functions/ticket-detail/toolbars
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -23,32 +23,32 @@ if ( ! defined( 'WPINC' ) ) {
 function get_ticket_details_action_link( $post ) {
 
 	/* Current status */
-	$ticket_status = get_post_meta( get_the_ID(), '_wpas_status', true );
+	$ticket_status = get_post_meta( get_the_ID(), '_mumei_ayuda_status', true );
 
 	$base_url = add_query_arg( array( 'action' => 'edit', 'post' => $post->ID ), admin_url( 'post.php' ) );
 	
-	$action = ( in_array( $ticket_status, array( 'closed', '' ) ) ) ? wpas_do_url( $base_url, 'admin_open_ticket' ) : wpas_do_url( $base_url, 'admin_close_ticket' );
+	$action = ( in_array( $ticket_status, array( 'closed', '' ) ) ) ? mumei_ayuda_do_url( $base_url, 'admin_open_ticket' ) : mumei_ayuda_do_url( $base_url, 'admin_close_ticket' );
 	
 	return $action ;
 }
 
-add_filter( 'wpas_toolbar_ticket', 'wpas_add_close_ticket_item_to_ticket_detail_toolbar', 10, 2 );
+add_filter( 'mumei_ayuda_toolbar_ticket', 'mumei_ayuda_add_close_ticket_item_to_ticket_detail_toolbar', 10, 2 );
 /**
  * Add a CLOSE TICKET button to the ticket detail toolbar
  * 
- * Filter Hook: wpas_toolbar_ticket
+ * Filter Hook: mumei_ayuda_toolbar_ticket
  *
  * @params array $items
  * @param int $ticket_id the current post/ticket being worked on
  * 
  * return array
  */
-function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $items, $ticket_id ) {
+function mumei_ayuda_add_close_ticket_item_to_ticket_detail_toolbar( $items, $ticket_id ) {
 	
 	$post = get_post( $ticket_id );
 	
 	/* Current status of ticket */
-	$ticket_status = get_post_meta( get_the_ID(), '_wpas_status', true );
+	$ticket_status = get_post_meta( get_the_ID(), '_mumei_ayuda_status', true );
 	
 	/* Status action link close/reopen etc. */
 	$action = get_ticket_details_action_link( $post );
@@ -59,7 +59,7 @@ function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $items, $ticket_id
 				'type' => 'link',
 				'link' => $action,
 				'icon' => 'icon-close-ticket',
-				'tool_tip_text' => __( 'Re-open Ticket', 'awesome-support' )
+				'tool_tip_text' => __( 'Re-open Ticket', 'ayuda-help-desk' )
 			);
 		
 	} elseif( '' === $ticket_status ) {
@@ -70,7 +70,7 @@ function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $items, $ticket_id
 				'type' => 'link',
 				'link' => $action,
 				'icon' => 'icon-close-ticket',
-				'tool_tip_text' => __( 'Close Ticket', 'awesome-support' )
+				'tool_tip_text' => __( 'Close Ticket', 'ayuda-help-desk' )
 			);
 		
 	}	
@@ -85,7 +85,7 @@ function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $items, $ticket_id
  * *** Deprecated as of 5.8.0 - ok to remove later ***
  * 
  * Note that if you choose to have the menu item echoed directly to the screen this
- * function should be called using a do_action hook tied into the menu (such as wpas_ticket_detail_toolbar01_before)
+ * function should be called using a do_action hook tied into the menu (such as mumei_ayuda_ticket_detail_toolbar01_before)
  *
  * @since 4.4.0
  *
@@ -101,7 +101,7 @@ function wpas_add_close_ticket_item_to_ticket_detail_toolbar( $items, $ticket_id
  *
  * @return 	void (basically nothing is returned)
  */
-function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, $tool_tip_text, $image_url, $target_url='', $attributes = '', $return_markup = true ) {
+function mumei_ayuda_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, $tool_tip_text, $image_url, $target_url='', $attributes = '', $return_markup = true ) {
 	
 	$name = str_replace( '-', '_', $item_css_id );  // convert the passed ids into text to be used for classnames.  For convention we're using classnames with underscores (_) and ids with dashes (-)
 
@@ -141,7 +141,7 @@ function wpas_add_ticket_detail_toolbar_item( $html_element_type, $item_css_id, 
 	$echoout = $echoout. ' ' . '</span>' ; // closing tag of encompassing span
 
 	if ( ! $return_markup ) {	
-		echo wp_kses($echoout, apply_filters('custom_allowed_html_add_ticket_detail_toolbar_item', wpas_get_allowed_html_tags() ));
+		echo wp_kses($echoout, apply_filters('custom_allowed_html_add_ticket_detail_toolbar_item', mumei_ayuda_get_allowed_html_tags() ));
 	} else {
 		return $echoout;
 	}

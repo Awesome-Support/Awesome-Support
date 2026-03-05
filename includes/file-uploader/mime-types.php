@@ -10,7 +10,7 @@
  *
  * @return string
  */
-function wpas_get_mime_type( $extension ) {
+function mumei_ayuda_get_mime_type( $extension ) {
 
 	$mime = $extension;
 

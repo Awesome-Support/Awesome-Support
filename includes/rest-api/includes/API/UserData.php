@@ -1,6 +1,6 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
 use WP_REST_Controller;
 use WP_REST_Users_Controller;
@@ -21,7 +21,7 @@ class UserData extends WP_REST_Users_Controller {
 	public function __construct() {
 
 		parent::__construct();
-		$this->namespace = wpas_api()->get_api_namespace();
+		$this->namespace = mumei_ayuda_api()->get_api_namespace();
 		$this->rest_base = 'users';
     }
 
@@ -41,7 +41,7 @@ class UserData extends WP_REST_Users_Controller {
 				'args' => array(
 					'username' => array(
 						'type'        => 'string',
-						'description' =>  __( 'User name', 'awesome-support' ),
+						'description' =>  __( 'User name', 'ayuda-help-desk' ),
 						'required'    => true
 					)
 				)
@@ -56,12 +56,12 @@ class UserData extends WP_REST_Users_Controller {
 				'args' => array(
 					'username' => array(
 						'type'        => 'string',
-						'description' => __( 'User name', 'awesome-support' ),
+						'description' => __( 'User name', 'ayuda-help-desk' ),
 						'required'    => true
 					),
 					'password' => array(
 						'type'        => 'string',
-						'description' => __( 'User password', 'awesome-support' ),
+						'description' => __( 'User password', 'ayuda-help-desk' ),
 						'required'    => true
 					)
 				)
@@ -95,19 +95,19 @@ class UserData extends WP_REST_Users_Controller {
 
 		// Check if username is set
 		if ( ! isset( $request[ 'username' ] ) ) {
-			return new WP_Error( 'invalid_username', __( 'Invalid username.', 'awesome-support' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_username', __( 'Invalid username.', 'ayuda-help-desk' ), array( 'status' => 400 ) );
 		}
 
 		$user = get_user_by( 'login',  $request[ 'username' ] );
 
 		// Check result
         if ( ! $user ) {
-            return new WP_Error( 'invalid_username', __( 'Invalid username.', 'awesome-support' ), array( 'status' => 400 ) );
+            return new WP_Error( 'invalid_username', __( 'Invalid username.', 'ayuda-help-desk' ), array( 'status' => 400 ) );
 		}
 
 		// Check user ID
 		if ( $user->ID != get_current_user_id() ) {
-            return new WP_Error( 'invalid_username_access', __( 'You are not allowed to get user data', 'awesome-support' ), array( 'status' => 400 ) );
+            return new WP_Error( 'invalid_username_access', __( 'You are not allowed to get user data', 'ayuda-help-desk' ), array( 'status' => 400 ) );
 		}
 
 		return array(
@@ -124,7 +124,7 @@ class UserData extends WP_REST_Users_Controller {
 
 		// Check if username and password are set
 		if ( ! isset( $request[ 'username' ] ) || ! isset( $request[ 'password' ] ) ) {
-			return new WP_Error( 'invalid_user_credentials', __( 'Invalid username or password.', 'awesome-support' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_user_credentials', __( 'Invalid username or password.', 'ayuda-help-desk' ), array( 'status' => 400 ) );
 		}
 
 		// Get user by username
@@ -132,7 +132,7 @@ class UserData extends WP_REST_Users_Controller {
 
 		// Check the password for current logged in user
 		if ( ! $user || ! wp_check_password( $request[ 'password' ], $user->data->user_pass, get_current_user_id() ) ) {
-			return new WP_Error( 'invalid_user_credentials', __( 'Invalid username or password.', 'awesome-support' ), array( 'status' => 400 ) );
+			return new WP_Error( 'invalid_user_credentials', __( 'Invalid username or password.', 'ayuda-help-desk' ), array( 'status' => 400 ) );
 		}
 
 		// Return user ID on success

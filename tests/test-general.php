@@ -1,5 +1,5 @@
 <?php
-class WPAS_Test_Functions_General extends WP_UnitTestCase {
+class MUMEI_AYUDA_Test_Functions_General extends WP_UnitTestCase {
 
 	private $plugin;
  
@@ -8,7 +8,7 @@ class WPAS_Test_Functions_General extends WP_UnitTestCase {
     }
 
 	function test_get_option() {
-		$option = wpas_get_option( 'support_products' );
+		$option = mumei_ayuda_get_option( 'support_products' );
 		$this->assertFalse( $option );
 	}
  

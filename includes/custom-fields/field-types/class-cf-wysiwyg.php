@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WPAS_CF_Wysiwyg extends WPAS_Custom_Field {
+class MUMEI_AYUDA_CF_Wysiwyg extends MUMEI_AYUDA_Custom_Field {
 
 	public $default_field_class = 'wpas-wysiwyg';
 
@@ -22,11 +22,11 @@ class WPAS_CF_Wysiwyg extends WPAS_Custom_Field {
 		 *
 		 * @var string
 		 */
-		$wysiwyg = boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) );
+		$wysiwyg = boolval( mumei_ayuda_get_option( 'frontend_wysiwyg_editor' ) );
 
 		if ( true === $wysiwyg || is_admin() ) {
 
-			$editor_defaults = apply_filters( 'wpas_ticket_editor_args', array(
+			$editor_defaults = apply_filters( 'mumei_ayuda_ticket_editor_args', array(
 				'media_buttons' => false,
 				'textarea_name' => $this->get_field_id(),
 				'textarea_rows' => 10,
@@ -57,13 +57,13 @@ class WPAS_CF_Wysiwyg extends WPAS_Custom_Field {
 
 		} else {
 
-			$path = WPAS_PATH . "includes/custom-fields/field-types/class-cf-textarea.php";
+			$path = MUMEI_AYUDA_PATH . "includes/custom-fields/field-types/class-cf-textarea.php";
 
 			if ( file_exists( $path ) ) {
 
 				include_once( $path );
 
-				$textarea = new WPAS_CF_Textarea( $this->field_id, $this->field );
+				$textarea = new MUMEI_AYUDA_CF_Textarea( $this->field_id, $this->field );
 				$editor   = $textarea->display();
 
 			}

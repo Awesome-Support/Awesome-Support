@@ -1,6 +1,6 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
 use WP_Error;
 use WP_REST_Controller;
@@ -24,7 +24,7 @@ class TicketTaxonomy extends WP_REST_Terms_Controller {
 	public function __construct( $taxonomy ) {
 		parent::__construct( $taxonomy );
 
-		$this->namespace = wpas_api()->get_api_namespace();
+		$this->namespace = mumei_ayuda_api()->get_api_namespace();
 	}
 
 	/**
@@ -38,7 +38,7 @@ class TicketTaxonomy extends WP_REST_Terms_Controller {
 	protected function add_additional_fields_schema( $schema ) {
 		if ( 'ticket_priority' === $this->taxonomy ) {
 			$schema['properties']['color'] = array(
-				'descriptions' => __( 'The color for this priority', 'awesome-support' ),
+				'descriptions' => __( 'The color for this priority', 'ayuda-help-desk' ),
 				'type'         => 'string',
 				'context'      => array( 'view', 'embed', 'edit' )
 			);
@@ -114,7 +114,7 @@ class TicketTaxonomy extends WP_REST_Terms_Controller {
 			$links['https://api.w.org/post_type'] = $post_type_links;
 		}
 
-		return apply_filters( "wpas_api_taxonomy_prepare_links", $links, $term, $this );
+		return apply_filters( "mumei_ayuda_api_taxonomy_prepare_links", $links, $term, $this );
 	}
 
 }

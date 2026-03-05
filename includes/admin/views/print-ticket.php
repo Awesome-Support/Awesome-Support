@@ -10,19 +10,19 @@
         </tr>
         <tr>
             <th>
-                <?php esc_html_e( 'ID', 'awesome-support' ); ?>
+                <?php esc_html_e( 'ID', 'ayuda-help-desk' ); ?>
             </th>
             <th>
-                <?php esc_html_e( 'Status', 'awesome-support' ); ?>
+                <?php esc_html_e( 'Status', 'ayuda-help-desk' ); ?>
             </th>
             <th>
-                <?php esc_html_e( 'Created by', 'awesome-support' ); ?>
+                <?php esc_html_e( 'Created by', 'ayuda-help-desk' ); ?>
             </th>
             <th>
-                <?php esc_html_e( 'Agent', 'awesome-support' ); ?>
+                <?php esc_html_e( 'Agent', 'ayuda-help-desk' ); ?>
             </th>
             <th>
-                <?php esc_html_e( 'Date', 'awesome-support' ); ?>
+                <?php esc_html_e( 'Date', 'ayuda-help-desk' ); ?>
             </th>
         </tr>
         <tr>
@@ -30,7 +30,7 @@
                 #<?php echo esc_html( $ticket->ID ); ?>
             </td>
             <td>
-                <?php wpas_cf_display_status( 'status', $ticket->ID ); ?>
+                <?php mumei_ayuda_cf_display_status( 'status', $ticket->ID ); ?>
             </td>
             <td>
                 <?php $user = get_user_by( 'id', $ticket->post_author )->display_name; ?>
@@ -39,7 +39,7 @@
             <td>
                 <?php
 
-                    $agent_id = wpas_get_cf_value( 'assignee', $ticket->ID );
+                    $agent_id = mumei_ayuda_get_cf_value( 'assignee', $ticket->ID );
                     echo esc_html( get_user_by( 'id', $agent_id )->display_name );
 
                 ?>
@@ -61,7 +61,7 @@
             <td>
                 <?php 
 					echo wp_kses_post( $ticket->post_content );
-                    do_action( 'wpas_backend_reply_content_after_with_image', $ticket->ID );
+                    do_action( 'mumei_ayuda_backend_reply_content_after_with_image', $ticket->ID );
                 ?>
             </td>
         </tr>
@@ -84,13 +84,13 @@
 				}
 				else
 				{
-					$user_name = __( 'Anonymous', 'awesome-support' );
+					$user_name = __( 'Anonymous', 'ayuda-help-desk' );
 					$user_id   = 0;
 				}			
             }
             // In case the post author is unknown, we set this as an anonymous post
             else {
-                $user_name = __( 'Anonymous', 'awesome-support' );
+                $user_name = __( 'Anonymous', 'ayuda-help-desk' );
                 $user_id   = 0;
             }
 
@@ -119,7 +119,7 @@
                         <td>
                             <strong><?php echo esc_html( $user_name ); ?></strong>,
                             <?php echo esc_html( gmdate( get_option( 'date_format' ), strtotime( $reply->post_date ) ) . ' ' . gmdate( get_option( 'time_format' ), strtotime( $reply->post_date ) ) ); ?>
-                            <?php if ( $reply->post_type == 'ticket_note' ) printf( ' - <strong>%s</strong>', esc_html__( 'Private note', 'awesome-support' ) ); ?>
+                            <?php if ( $reply->post_type == 'ticket_note' ) printf( ' - <strong>%s</strong>', esc_html__( 'Private note', 'ayuda-help-desk' ) ); ?>
                         </td>
                     </tr>
                     <tr>
@@ -128,11 +128,11 @@
 
                                 $content = apply_filters( 'the_content', $reply->post_content );
 
-                                do_action( 'wpas_backend_reply_content_before', $reply->ID );
+                                do_action( 'mumei_ayuda_backend_reply_content_before', $reply->ID );
 
                                 echo wp_kses( $content, wp_kses_allowed_html( 'post' ) );
 
-                                do_action( 'wpas_backend_reply_content_after_with_image', $reply->ID );
+                                do_action( 'mumei_ayuda_backend_reply_content_after_with_image', $reply->ID );
 
                             ?>
                         </td>

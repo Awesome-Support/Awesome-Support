@@ -1,8 +1,8 @@
 <?php
 /**
- * Awesome Support Add/Remove Consent
+ * Ayuda – Help Desk Add/Remove Consent
  *
- * @package   Awesome_Support
+ * @package   Mumei_Ayuda_Support
  * @author    DevriX
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -21,20 +21,20 @@ if ( ! defined( 'WPINC' ) ) {
 <table class="form-table">
 	<thead>
 		<tr class="headlines">
-			<th><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
-			<th><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
-			<th><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
-			<th><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
-			<th><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
+			<th><?php esc_html_e( 'Item', 'ayuda-help-desk' ); ?></th>
+			<th><?php esc_html_e( 'Status', 'ayuda-help-desk' ); ?></th>
+			<th><?php esc_html_e( 'Opt-in Date', 'ayuda-help-desk' ); ?></th>
+			<th><?php esc_html_e( 'Opt-out Date', 'ayuda-help-desk' ); ?></th>
+			<th><?php esc_html_e( 'Action', 'ayuda-help-desk' ); ?></th>
 		</tr>
 	</thead>
 	<?php
 	 /**
 	  * For the GDPR labels, this data are stored in
-	  * wpas_consent_tracking user meta in form of array.
+	  * mumei_ayuda_consent_tracking user meta in form of array.
 	  * Get the option and if not empty, loop them here
 	  */
-	  $user_consent = get_user_option( 'wpas_consent_tracking', get_current_user_id() );
+	  $user_consent = get_user_option( 'mumei_ayuda_consent_tracking', get_current_user_id() );
 	if ( ! empty( $user_consent ) && is_array( $user_consent ) ) {
 		foreach ( $user_consent as $consent ) {
 			/**
@@ -44,7 +44,7 @@ if ( ! defined( 'WPINC' ) ) {
 			 */
 			$item = isset( $consent['item'] ) ? $consent['item'] : '';
 			if ( isset( $consent['is_tor'] ) && $consent['is_tor'] === true ) {
-				$item = __( 'Terms and Conditions', 'awesome-support' );
+				$item = __( 'Terms and Conditions', 'ayuda-help-desk' );
 			}
 
 			/**
@@ -54,7 +54,7 @@ if ( ! defined( 'WPINC' ) ) {
 			$status = '';
 			if ( isset( $consent['status'] ) && ! empty( $consent['status'] ) ) {
 				if ( $consent['status'] == 1 ) {
-					$status = __( 'Opted-in', 'awesome-support' );
+					$status = __( 'Opted-in', 'ayuda-help-desk' );
 				} else {
 					$status = $consent['status'];
 				}
@@ -74,30 +74,30 @@ if ( ! defined( 'WPINC' ) ) {
 			$opt_button       = '';
 			$opt_button_label = '';
 			if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
-				$gdpr_id = wpas_get_gdpr_data( $item );
+				$gdpr_id = mumei_ayuda_get_gdpr_data( $item );
 				/**
 				 * Determine what type of buttons we should render
 				 * If opt_in is not empty, display Opt out button
 				 * otherwise, just vice versa
 				*/
-				if ( ! empty( $opt_in ) && wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
+				if ( ! empty( $opt_in ) && mumei_ayuda_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
 					$opt_button       = sprintf(
 						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '" data-optin-date="' . $opt_in . '">%s</a>',
-						__( 'Opt-out', 'awesome-support' )
+						__( 'Opt-out', 'ayuda-help-desk' )
 					);
-					$opt_button_label = __( 'Opt-out', 'awesome-support' );
+					$opt_button_label = __( 'Opt-out', 'ayuda-help-desk' );
 				} elseif ( ! empty( $opt_out ) ) {
 					$opt_button       = sprintf(
 						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '" data-optout-date="' . $opt_out . '">%s</a>',
-						__( 'Opt-in', 'awesome-support' )
+						__( 'Opt-in', 'ayuda-help-desk' )
 					);
-					$opt_button_label = __( 'Opt-in', 'awesome-support' );
+					$opt_button_label = __( 'Opt-in', 'ayuda-help-desk' );
 				} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
 					$opt_button       = sprintf(
 						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
-						__( 'Opt-in', 'awesome-support' )
+						__( 'Opt-in', 'ayuda-help-desk' )
 					);
-					$opt_button_label = __( 'Opt-in', 'awesome-support' );
+					$opt_button_label = __( 'Opt-in', 'ayuda-help-desk' );
 				}
 				get_allowed_html_wp_notifications();
 			}

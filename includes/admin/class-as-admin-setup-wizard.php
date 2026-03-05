@@ -4,7 +4,7 @@
  *
  * Takes new users through some basic steps to setup their support.
  *
- * @package   Awesome Support/Admin/AS_Admin_Setup_Wizard
+ * @package   Ayuda – Help Desk/Admin/AS_Admin_Setup_Wizard
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -59,47 +59,47 @@ class AS_Admin_Setup_Wizard {
 		}
 		$default_steps = array(
 			'product_setup' => array(
-				'name'    => __( 'Product Setup', 'awesome-support' ),
+				'name'    => __( 'Product Setup', 'ayuda-help-desk' ),
 				'view'    => array( $this, 'as_product_setup_setup' ),
 				'handler' => array( $this, 'as_product_setup_setup_save' ),
 			),
 			'submit_ticket_page'     => array(
-				'name'    => __( 'Submit ticket page', 'awesome-support' ),
+				'name'    => __( 'Submit ticket page', 'ayuda-help-desk' ),
 				'view'    => array( $this, 'as_setup_submit_ticket_page' ),
 				'handler' => array( $this, 'as_setup_submit_ticket_page_save' ),
 			),
 			'my_ticket_page'    => array(
-				'name'    => __( 'My ticket Page', 'awesome-support' ),
+				'name'    => __( 'My ticket Page', 'ayuda-help-desk' ),
 				'view'    => array( $this, 'as_setup_my_ticket_page' ),
 				'handler' => array( $this, 'as_setup_my_ticket_page_save' ),
 			),
 			'priorities'      => array(
-				'name'    => __( 'Priorities', 'awesome-support' ),
+				'name'    => __( 'Priorities', 'ayuda-help-desk' ),
 				'view'    => array( $this, 'as_setup_priorities' ),
 				'handler' => array( $this, 'as_setup_priorities_save' ),
 			),
 			'departments'    => array(
-				'name'    => __( 'Departments', 'awesome-support' ),
+				'name'    => __( 'Departments', 'ayuda-help-desk' ),
 				'view'    => array( $this, 'as_setup_departments' ),
 				'handler' => array( $this, 'as_setup_departments_save' ),
 			),
 			'ticket_submit_user_roles'    => array(
-				'name'    => __( 'Existing Users', 'awesome-support' ),
+				'name'    => __( 'Existing Users', 'ayuda-help-desk' ),
 				'view'    => array( $this, 'as_setup_ticket_submit_user_roles' ),
 				'handler' => array( $this, 'as_setup_ticket_submit_user_roles_save' ),
 			),
 			'lets_go'    => array(
-				'name'    => __( "Let's Go", 'awesome-support' ),
+				'name'    => __( "Let's Go", 'ayuda-help-desk' ),
 				'view'    => array( $this, 'as_setup_lets_go' ),
 				'handler' => array( $this, 'as_setup_lets_go_save' ),
 			),
 		);
 
 		// Admin styles
-		wp_enqueue_style( 'as-admin-style', WPAS_URL . 'assets/admin/css/admin.css', WPAS_VERSION );
-		wp_enqueue_style( 'admin-wizard-style', WPAS_URL . 'assets/admin/css/setup-wizard.css', WPAS_VERSION );
-		wp_register_script( 'as-admin-script', WPAS_URL . 'assets/admin/js/as-setup.js', array( 'jquery' ), '1.0.0' );
-		wp_register_script( 'as-setup', WPAS_URL . '/assets/admin/js/as-setup.js', array( 'jquery', 'wp-util' ), WPAS_VERSION );
+		wp_enqueue_style( 'as-admin-style', MUMEI_AYUDA_URL . 'assets/admin/css/admin.css', MUMEI_AYUDA_VERSION );
+		wp_enqueue_style( 'admin-wizard-style', MUMEI_AYUDA_URL . 'assets/admin/css/setup-wizard.css', MUMEI_AYUDA_VERSION );
+		wp_register_script( 'as-admin-script', MUMEI_AYUDA_URL . 'assets/admin/js/as-setup.js', array( 'jquery' ), '1.0.0' );
+		wp_register_script( 'as-setup', MUMEI_AYUDA_URL . '/assets/admin/js/as-setup.js', array( 'jquery', 'wp-util' ), MUMEI_AYUDA_VERSION );
 
 		$this->steps = apply_filters( 'as_setup_wizard_steps', $default_steps );
 		$this->step  = isset( $_GET['step'] ) ? sanitize_key( $_GET['step'] ) : current( array_keys( $this->steps ) ); // WPCS: CSRF ok, input var ok.
@@ -127,14 +127,14 @@ class AS_Admin_Setup_Wizard {
 		<head>
 			<meta name="viewport" content="width=device-width" />
 			<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-			<title><?php esc_html_e( 'Awesome Support &rsaquo; Setup Wizard', 'awesome-support' ); ?></title>
+			<title><?php esc_html_e( 'Ayuda – Help Desk &rsaquo; Setup Wizard', 'ayuda-help-desk' ); ?></title>
 			<?php wp_print_scripts( 'as-setup' ); ?>
 			<?php do_action( 'admin_print_styles' ); ?>
 			<?php do_action( 'admin_head' ); ?>
 		</head>
 		<body class="as-setup wp-core-ui">
 			<div class="as-setup-wizard">
-			<h1 id="as-logo"><a href="https://getawesomesupport.com/">Awesome Support</a></h1>
+			<h1 id="as-logo"><a href="https://getawesomesupport.com/">Ayuda – Help Desk</a></h1>
 		<?php
 	}
 
@@ -177,7 +177,7 @@ class AS_Admin_Setup_Wizard {
 /*
 		printf(
 			'<p class="sub-heading">%s</p>',
-			__( 'Welcome to Awesome Support! This setup wizard will help you to quickly configure your new support system so that you can start processing customer requests right away.  So lets get started with our first question!', 'awesome-support' )
+			__( 'Welcome to Ayuda – Help Desk! This setup wizard will help you to quickly configure your new support system so that you can start processing customer requests right away.  So lets get started with our first question!', 'ayuda-help-desk' )
 		);
 */
 		if ( ! empty( $this->steps[ $this->step ]['view'] ) ) {
@@ -195,7 +195,7 @@ class AS_Admin_Setup_Wizard {
 		$about_us_link = add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-about' ), admin_url( 'edit.php' ) )
 		?>
 		<?php if ( 'lets_go' !== $this->step ) : ?>
-			<a class="not-now" href="<?php echo esc_url( $about_us_link ); ?>"><?php esc_html_e( 'Not right now', 'awesome-support' ); ?></a>
+			<a class="not-now" href="<?php echo esc_url( $about_us_link ); ?>"><?php esc_html_e( 'Not right now', 'ayuda-help-desk' ); ?></a>
 		<?php endif; ?>
 				</div><!-- .setup-wizard -->
 			</body>
@@ -204,19 +204,19 @@ class AS_Admin_Setup_Wizard {
 	}
 
 	/**
-	 * Awesome Support Multiple or single Product setup
+	 * Ayuda – Help Desk Multiple or single Product setup
 	 */
 	public function as_product_setup_setup(){
-		$support_products = wpas_get_option( 'support_products' );
+		$support_products = mumei_ayuda_get_option( 'support_products' );
 		printf(
 			'<p class="sub-heading">%s</p>',
-			esc_html__( 'Welcome to Awesome Support! This setup wizard will help you to quickly configure your new support system so that you can start processing customer requests right away.  So lets get started with our first question!', 'awesome-support' )
+			esc_html__( 'Welcome to Ayuda – Help Desk! This setup wizard will help you to quickly configure your new support system so that you can start processing customer requests right away.  So lets get started with our first question!', 'ayuda-help-desk' )
 		);
 		?>
 		<form method="post">
-			<p><b><?php esc_html_e( 'Would you like to turn on support for multiple products?', 'awesome-support' );?> </b></p>
-			<p><?php esc_html_e( 'If you only offer support for one product you do not need to turn on multi-product support. But if you offer support for multiple products then you should respond YES to this question.', 'awesome-support' );?></p>
-			<p><?php esc_html_e( 'Note: You can change your mind later by going to the TICKETS->SETTINGS->PRODUCTS MANAGEMENT tab.', 'awesome-support' );?></p>
+			<p><b><?php esc_html_e( 'Would you like to turn on support for multiple products?', 'ayuda-help-desk' );?> </b></p>
+			<p><?php esc_html_e( 'If you only offer support for one product you do not need to turn on multi-product support. But if you offer support for multiple products then you should respond YES to this question.', 'ayuda-help-desk' );?></p>
+			<p><?php esc_html_e( 'Note: You can change your mind later by going to the TICKETS->SETTINGS->PRODUCTS MANAGEMENT tab.', 'ayuda-help-desk' );?></p>
 			<label for="product_type_yes">Yes</label>
 			<input type="radio" name="product_type" id='product_type_yes' value="yes" checked />
 			<label for="product_type_no">No</label>
@@ -228,40 +228,40 @@ class AS_Admin_Setup_Wizard {
 	}
 
 	/**
-	 * Awesome Support Multiple or single Product setup on save
+	 * Ayuda – Help Desk Multiple or single Product setup on save
 	 */
 	public function as_product_setup_setup_save(){
 		check_admin_referer( 'as-setup' );
 		$product_type = (isset( $_POST['product_type'] ) )? sanitize_text_field( wp_unslash( $_POST['product_type'] ) ): '';
 
 		// If the user needs multiple products we need to update the plugin options
-		$options = maybe_unserialize( get_option( 'wpas_options' ) );
+		$options = maybe_unserialize( get_option( 'mumei_ayuda_options' ) );
 		// If multiple product is selected, make product selection multiple.
 		if( !empty( $product_type ) && 'yes' === $product_type ){
 			$options['support_products'] = '1';
 		} else{
 			$options['support_products'] = '0';
 		}
-		update_option( 'wpas_options', serialize( $options ) );
+		update_option( 'mumei_ayuda_options', serialize( $options ) );
 		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
 	}
 
 	/**
-	 * Awesome Support submit ticket page setup view.
+	 * Ayuda – Help Desk submit ticket page setup view.
 	 */
 	public function as_setup_submit_ticket_page(){
 		?>
 		<form method="post">
-			<p><b><?php esc_html_e( 'Which menu would you like to add the SUBMIT TICKET page to?', 'awesome-support' );?> </b></p>
-			<p><?php esc_html_e( 'We have created a new page that users can access to submit tickets to your new support system.  However, the page first needs to be added to one of your menus so that the user can easily access it.', 'awesome-support' );?> </p>
+			<p><b><?php esc_html_e( 'Which menu would you like to add the SUBMIT TICKET page to?', 'ayuda-help-desk' );?> </b></p>
+			<p><?php esc_html_e( 'We have created a new page that users can access to submit tickets to your new support system.  However, the page first needs to be added to one of your menus so that the user can easily access it.', 'ayuda-help-desk' );?> </p>
 			
 			<?php
 			$menu_lists = wp_get_nav_menus();
 			if( !empty( $menu_lists )){
 				?>
-				<p><?php esc_html_e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'awesome-support' );?></p>
+				<p><?php esc_html_e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'ayuda-help-desk' );?></p>
 				<?php
-				echo '<select name="wpas_ticket_submit_manu">';
+				echo '<select name="mumei_ayuda_ticket_submit_manu">';
 				foreach ($menu_lists as $key => $menu ) {
 					echo '<option value="' . esc_attr( $menu->term_id ) . '">' . esc_html( $menu->name ) . '</option>';
 				}
@@ -271,10 +271,10 @@ class AS_Admin_Setup_Wizard {
 			} else{
 				if (!current_theme_supports('menus')) {
 					$get_next_step_link = esc_url_raw( $this->get_next_step_link() );
-					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a class="not-menu-ignore" href="'. esc_url( $get_next_step_link ).'">'.__( 'Here', 'awesome-support' ).'</a> to continue';
+					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a class="not-menu-ignore" href="'. esc_url( $get_next_step_link ).'">'.__( 'Here', 'ayuda-help-desk' ).'</a> to continue';
 				
 					// translators: %s is the text.
-					$x_content = __( '%s.' , 'awesome-support' );
+					$x_content = __( '%s.' , 'ayuda-help-desk' );
 					echo wp_kses_post( sprintf( $x_content, $x_text) );
 				}
 				else
@@ -282,7 +282,7 @@ class AS_Admin_Setup_Wizard {
 					$x_text = 'It looks like you have a brand new install of WordPress without any menus.  So please setup at least one menu first. Click <a href="'. admin_url( 'nav-menus.php').'" class="contrast-link">Here</a> to setup your first menu';
 				
 					// translators: %s is the text.
-					$x_content = __( '%s.' , 'awesome-support' );
+					$x_content = __( '%s.' , 'ayuda-help-desk' );
 					echo wp_kses_post( sprintf( $x_content, $x_text) );
 				}				
 			}
@@ -292,18 +292,18 @@ class AS_Admin_Setup_Wizard {
 	}
 
 	/**
-	 * Awesome Support submit ticket page setup on save.
+	 * Ayuda – Help Desk submit ticket page setup on save.
 	 */
 	public function as_setup_submit_ticket_page_save(){
 		check_admin_referer( 'as-setup' );
-		$ticket_submit = wpas_get_option( 'ticket_submit' );
-		$wpas_ticket_submit_manu = (isset( $_POST['wpas_ticket_submit_manu'] ) && !empty( $_POST['wpas_ticket_submit_manu'] ) )? intval( $_POST['wpas_ticket_submit_manu'] ): 0;
+		$ticket_submit = mumei_ayuda_get_option( 'ticket_submit' );
+		$mumei_ayuda_ticket_submit_manu = (isset( $_POST['mumei_ayuda_ticket_submit_manu'] ) && !empty( $_POST['mumei_ayuda_ticket_submit_manu'] ) )? intval( $_POST['mumei_ayuda_ticket_submit_manu'] ): 0;
 		if( !empty( $ticket_submit ) && !is_array( $ticket_submit ) ){
-		    wp_update_nav_menu_item( $wpas_ticket_submit_manu , 0, array(
+		    wp_update_nav_menu_item( $mumei_ayuda_ticket_submit_manu , 0, array(
 			    	'menu-item-db-id' => $ticket_submit,
 			    	'menu-item-object-id' => $ticket_submit,
 			    	'menu-item-object' => 'page',
-			        'menu-item-title' =>  wp_strip_all_tags( __( 'Submit Ticket', 'awesome-support' ) ),
+			        'menu-item-title' =>  wp_strip_all_tags( __( 'Submit Ticket', 'ayuda-help-desk' ) ),
 			        'menu-item-status' => 'publish',
 			        'menu-item-type' => 'post_type'
 		    	)
@@ -313,20 +313,20 @@ class AS_Admin_Setup_Wizard {
 	}
 
 	/**
-	 * Awesome Support my tickets page setup view.
+	 * Ayuda – Help Desk my tickets page setup view.
 	 */
 	public function as_setup_my_ticket_page(){			
 		?>
 		<form method="post">
-			<p><b><?php esc_html_e( 'Which menu would you like to add the MY TICKETS page to?', 'awesome-support' );?> </b></p>
-			<p><?php esc_html_e( 'We have created a new page that users can access to view their existing tickets.  This step allows you to add that page to one of your existing menus so users can easily access it.', 'awesome-support' );?></p>			
+			<p><b><?php esc_html_e( 'Which menu would you like to add the MY TICKETS page to?', 'ayuda-help-desk' );?> </b></p>
+			<p><?php esc_html_e( 'We have created a new page that users can access to view their existing tickets.  This step allows you to add that page to one of your existing menus so users can easily access it.', 'ayuda-help-desk' );?></p>			
 			<?php
 			$menu_lists = wp_get_nav_menus();
 			if( !empty( $menu_lists )){
 				?>
-				<p><?php esc_html_e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'awesome-support' );?></p>
+				<p><?php esc_html_e( 'Note: If you change your mind later you can remove the page from your menu or add it to a new menu via APPEARANCE->MENUS.', 'ayuda-help-desk' );?></p>
 				<?php
-				echo '<select name="wpas_ticket_list_menu">';
+				echo '<select name="mumei_ayuda_ticket_list_menu">';
 				foreach ($menu_lists as $key => $menu ) {
 					echo '<option value="' . esc_attr( $menu->term_id ) . '">' . esc_html( $menu->name ) . '</option>';
 				}
@@ -336,10 +336,10 @@ class AS_Admin_Setup_Wizard {
 			} else{
 				if (!current_theme_supports('menus')) {
 					$get_next_step_link = esc_url_raw( $this->get_next_step_link() );
-					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a class="not-menu-ignore" href="'. esc_url( $get_next_step_link ).'">'.__( 'Here', 'awesome-support' ).'</a> to continue';
+					$x_text = 'Oop! Your theme does not support navigation menus. No worry! Click <a class="not-menu-ignore" href="'. esc_url( $get_next_step_link ).'">'.__( 'Here', 'ayuda-help-desk' ).'</a> to continue';
 				
 					// translators: %s is the text.
-					$x_content = __( '%s.' , 'awesome-support' );
+					$x_content = __( '%s.' , 'ayuda-help-desk' );
 					echo wp_kses_post( sprintf( $x_content, $x_text) );
 				}			
 			}	
@@ -349,18 +349,18 @@ class AS_Admin_Setup_Wizard {
 	}
 
 	/**
-	 * Awesome Support my ticket page setup on save.
+	 * Ayuda – Help Desk my ticket page setup on save.
 	 */
 	public function as_setup_my_ticket_page_save(){
 		check_admin_referer( 'as-setup' );
-		$ticket_list = wpas_get_option( 'ticket_list' );
-		$wpas_ticket_list_menu = (isset( $_POST['wpas_ticket_list_menu'] ) && !empty( $_POST['wpas_ticket_list_menu'] ) )? intval( $_POST['wpas_ticket_list_menu'] ): 0;
+		$ticket_list = mumei_ayuda_get_option( 'ticket_list' );
+		$mumei_ayuda_ticket_list_menu = (isset( $_POST['mumei_ayuda_ticket_list_menu'] ) && !empty( $_POST['mumei_ayuda_ticket_list_menu'] ) )? intval( $_POST['mumei_ayuda_ticket_list_menu'] ): 0;
 		if( !empty( $ticket_list ) && !is_array( $ticket_list ) ){
-		    wp_update_nav_menu_item( $wpas_ticket_list_menu, 0, array(
+		    wp_update_nav_menu_item( $mumei_ayuda_ticket_list_menu, 0, array(
 			    	'menu-item-db-id' => $ticket_list,
 			    	'menu-item-object-id' => $ticket_list,
 			    	'menu-item-object' => 'page',
-			        'menu-item-title' =>  wp_strip_all_tags( __( 'My Tickets', 'awesome-support' ) ),
+			        'menu-item-title' =>  wp_strip_all_tags( __( 'My Tickets', 'ayuda-help-desk' ) ),
 			        'menu-item-status' => 'publish',
 			        'menu-item-type' => 'post_type'
 		    	)
@@ -370,16 +370,16 @@ class AS_Admin_Setup_Wizard {
 	}
 
 		/**
-	 * Awesome Support priorities setup view.
+	 * Ayuda – Help Desk priorities setup view.
 	 */
 	public function as_setup_priorities(){
-		$support_priority = wpas_get_option( 'support_priority' );
+		$support_priority = mumei_ayuda_get_option( 'support_priority' );
 		?>
 		<form method="post">
-			<p><b><?php esc_html_e( 'Would you like to use the priority field in your tickets?', 'awesome-support' ); ?> </b></p>
-			<p><?php esc_html_e( 'Turn this option on if you would like to assign priorities to your tickets.', 'awesome-support' ); ?> </p>
-			<p><?php esc_html_e( 'After you have finished with the wizard you can configure your priority levels under TICKETS->PRIORITIES.', 'awesome-support' ); ?> </p>
-			<p><?php esc_html_e( 'You can also tweak how priorities work by changing settings under the TICKETS->SETTINGS->FIELDS tab.', 'awesome-support' ); ?> </p>
+			<p><b><?php esc_html_e( 'Would you like to use the priority field in your tickets?', 'ayuda-help-desk' ); ?> </b></p>
+			<p><?php esc_html_e( 'Turn this option on if you would like to assign priorities to your tickets.', 'ayuda-help-desk' ); ?> </p>
+			<p><?php esc_html_e( 'After you have finished with the wizard you can configure your priority levels under TICKETS->PRIORITIES.', 'ayuda-help-desk' ); ?> </p>
+			<p><?php esc_html_e( 'You can also tweak how priorities work by changing settings under the TICKETS->SETTINGS->FIELDS tab.', 'ayuda-help-desk' ); ?> </p>
 			<label for='property_field_yes'>Yes</label>
 			<input type="radio" name="property_field" id='property_field_yes' value="yes" checked />
 			<label for='property_field_no'>No</label>
@@ -391,13 +391,13 @@ class AS_Admin_Setup_Wizard {
 	}
 
 	/**
-	 * Awesome Support priorities setup on save.
+	 * Ayuda – Help Desk priorities setup on save.
 	 */
 	public function as_setup_priorities_save(){
 		check_admin_referer( 'as-setup' );
 		$property_field = (isset( $_POST['property_field'] ) )? sanitize_text_field( wp_unslash( $_POST['property_field'] ) ): '';
 
-		$raw_options = get_option( 'wpas_options', array() );
+		$raw_options = get_option( 'mumei_ayuda_options', array() );
 		if ( is_serialized( $raw_options ) ) {
 			$options = @unserialize( $raw_options, ['allowed_classes' => false] );
 			if ( ! is_array( $options ) ) {
@@ -416,24 +416,24 @@ class AS_Admin_Setup_Wizard {
 			} else{
 				$options['support_priority'] = 0;
 			}
-			update_option( 'wpas_options', serialize( $options ) );
+			update_option( 'mumei_ayuda_options', serialize( $options ) );
 		}
 		
 		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
 	}
 
 	/**
-	 * Awesome Support ticket submit allowed roles setup view.
+	 * Ayuda – Help Desk ticket submit allowed roles setup view.
 	 */
 	public function as_setup_ticket_submit_user_roles(){
 
 		?>
 		<form method="post">
 
-			<h2><?php esc_html_e( 'Important! How do you want to handle your existing users?', 'awesome-support' ); ?></h2>
-			<p><em><?php esc_html_e( 'By default, none of your existing users will be allowed to submit ticket. However, you can adjust this based on your existing user roles.', 'awesome-support' ); ?></em></p>
-			<p><b><?php esc_html_e( 'Any of the user roles you check below will automatically be allowed to submit tickets.', 'awesome-support' ); ?></b>
-			<span><em><?php esc_html_e( ' If you do not choose any roles then only new users will be allowed to submit tickets!  If this is a new installation of WordPress with no existing users then you can just skip to the next step by clicking the CONTINUE button. ', 'awesome-support' ); ?></em></span>
+			<h2><?php esc_html_e( 'Important! How do you want to handle your existing users?', 'ayuda-help-desk' ); ?></h2>
+			<p><em><?php esc_html_e( 'By default, none of your existing users will be allowed to submit ticket. However, you can adjust this based on your existing user roles.', 'ayuda-help-desk' ); ?></em></p>
+			<p><b><?php esc_html_e( 'Any of the user roles you check below will automatically be allowed to submit tickets.', 'ayuda-help-desk' ); ?></b>
+			<span><em><?php esc_html_e( ' If you do not choose any roles then only new users will be allowed to submit tickets!  If this is a new installation of WordPress with no existing users then you can just skip to the next step by clicking the CONTINUE button. ', 'ayuda-help-desk' ); ?></em></span>
 			</p>
 
 			<?php
@@ -441,10 +441,10 @@ class AS_Admin_Setup_Wizard {
 			$all_roles = get_editable_roles();
 
 			$skip_roles = array(
-				'wpas_manager',
-				'wpas_support_manager',
-				'wpas_agent',
-				'wpas_user'
+				'mumei_ayuda_manager',
+				'mumei_ayuda_support_manager',
+				'mumei_ayuda_agent',
+				'mumei_ayuda_user'
 			);
 
 			foreach( $all_roles as $r_name => $r ) {
@@ -462,7 +462,7 @@ class AS_Admin_Setup_Wizard {
 	}
 
 	/**
-	 * Awesome Support ticket submit allowed roles setup on save.
+	 * Ayuda – Help Desk ticket submit allowed roles setup on save.
 	 */
 	public function as_setup_ticket_submit_user_roles_save(){
 
@@ -490,7 +490,7 @@ class AS_Admin_Setup_Wizard {
 		}
 
 		// Don't show setup wizard link on plug-in activation.
-		update_option('wpas_plugin_setup', 'done');
+		update_option('mumei_ayuda_plugin_setup', 'done');
 
 		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
 	}
@@ -498,16 +498,16 @@ class AS_Admin_Setup_Wizard {
 
 
 		/**
-	 * Awesome Support departments setup view.
+	 * Ayuda – Help Desk departments setup view.
 	 */
 	public function as_setup_departments(){
-		$departments = wpas_get_option( 'departments' );
+		$departments = mumei_ayuda_get_option( 'departments' );
 		?>
 		<form method="post">
-			<p><b><?php esc_html_e( 'Do you want to enable Departments?', 'awesome-support' );?> </b></p>
-			<p><?php esc_html_e( 'Turn this option on if you would like to assign departments to your tickets.', 'awesome-support' );?> </p>
-			<p><?php esc_html_e( 'Once enabled, you can configure your list of departments by going to TICKETS->DEPARTMENTS.', 'awesome-support' );?> </p>
-			<p><?php esc_html_e( 'You can turn this off later if you change your mind by going to the TICKETS->SETTINGS->FIELDS tab.', 'awesome-support' );?> </p>
+			<p><b><?php esc_html_e( 'Do you want to enable Departments?', 'ayuda-help-desk' );?> </b></p>
+			<p><?php esc_html_e( 'Turn this option on if you would like to assign departments to your tickets.', 'ayuda-help-desk' );?> </p>
+			<p><?php esc_html_e( 'Once enabled, you can configure your list of departments by going to TICKETS->DEPARTMENTS.', 'ayuda-help-desk' );?> </p>
+			<p><?php esc_html_e( 'You can turn this off later if you change your mind by going to the TICKETS->SETTINGS->FIELDS tab.', 'ayuda-help-desk' );?> </p>
 			<label for='departments_field_yes'>Yes</label>
 			<input type="radio" name="departments_field" id='departments_field_yes' value="yes" checked />
 			<label for='departments_field_no'>No</label>
@@ -519,14 +519,14 @@ class AS_Admin_Setup_Wizard {
 	}
 
 	/**
-	 * Awesome Support departments setup on save.
+	 * Ayuda – Help Desk departments setup on save.
 	 */
 	public function as_setup_departments_save(){
 		check_admin_referer( 'as-setup' );
 		$departments_field = (isset( $_POST['departments_field'] ) )? sanitize_text_field( wp_unslash( $_POST['departments_field'] ) ): '';
 		
 		//Safely retrieve and unserialize options
-		$raw_options = get_option( 'wpas_options', array() );
+		$raw_options = get_option( 'mumei_ayuda_options', array() );
 		if ( is_serialized( $raw_options ) ) {
 			$options = @unserialize( $raw_options, ['allowed_classes' => false] );
 		} elseif ( is_array( $raw_options ) ) {
@@ -540,10 +540,10 @@ class AS_Admin_Setup_Wizard {
 			} else{
 				$options['departments'] = '0';
 			}
-			update_option( 'wpas_options', serialize( $options ) );			
+			update_option( 'mumei_ayuda_options', serialize( $options ) );			
 		}
 		// Don't show setup wizard link on plug-in activation.
-		update_option('wpas_plugin_setup', 'done');
+		update_option('mumei_ayuda_plugin_setup', 'done');
 		wp_safe_redirect( esc_url_raw( $this->get_next_step_link() ) );
 	}
 
@@ -553,18 +553,18 @@ class AS_Admin_Setup_Wizard {
 	public function as_setup_lets_go(){
 
 		// translators: %1$s are additional attributes for the link to the article.
-		$x_content = __( 'If so, you will want to read <b><u><a %1$s>this article</a></b></u> on our website.', 'awesome-support' );
+		$x_content = __( 'If so, you will want to read <b><u><a %1$s>this article</a></b></u> on our website.', 'ayuda-help-desk' );
 
 		?>
 		<form method="post">
-			<p><b><?php esc_html_e( "Your new support system is all set up and ready to go!", "awesome-support" ); ?></b></p>
-			<p><?php esc_html_e( "If your menus are active in your theme your users will now able to register for an account and submit tickets.", "awesome-support" ); ?></p>
-			<p><b><?php esc_html_e( "Do you have existing users in your WordPress System?", "awesome-support" ); ?></b></p>
+			<p><b><?php esc_html_e( "Your new support system is all set up and ready to go!", "ayuda-help-desk" ); ?></b></p>
+			<p><?php esc_html_e( "If your menus are active in your theme your users will now able to register for an account and submit tickets.", "ayuda-help-desk" ); ?></p>
+			<p><b><?php esc_html_e( "Do you have existing users in your WordPress System?", "ayuda-help-desk" ); ?></b></p>
 			<p><?php
-			echo sprintf( wp_kses_post( $x_content ), 'href="https://getawesomesupport.com/documentation/awesome-support/admin-handling-existing-users-after-installation/" target="_blank" ' );
+			echo sprintf( wp_kses_post( $x_content ), 'href="https://getawesomesupport.com/documentation/ayuda-help-desk/admin-handling-existing-users-after-installation/" target="_blank" ' );
 			?></p>
-			<p><b><?php esc_html_e( "Where are my support tickets?", "awesome-support" ); ?></b></p>
-			<p><?php esc_html_e( "You can now access your support tickets and other support options under the new TICKETS menu option.", "awesome-support" ); ?></p>
+			<p><b><?php esc_html_e( "Where are my support tickets?", "ayuda-help-desk" ); ?></b></p>
+			<p><?php esc_html_e( "You can now access your support tickets and other support options under the new TICKETS menu option.", "ayuda-help-desk" ); ?></p>
 			<input type="submit" name="save_step" value="Let's Go">
 			<?php wp_nonce_field( 'as-setup' ); ?>
 		</form>

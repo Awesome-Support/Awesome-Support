@@ -6,9 +6,9 @@
  * @since  3.0.0
  * @param  null 
  */
-function wpas_clean_ticketcount_cache() {
+function mumei_ayuda_clean_ticketcount_cache() {
 	
-	set_site_transient( 'wpas_tickets_counts', null, 24 * HOUR_IN_SECONDS );
+	set_site_transient( 'mumei_ayuda_tickets_counts', null, 24 * HOUR_IN_SECONDS );
 }
 /**
  * Open a new ticket.
@@ -17,7 +17,7 @@ function wpas_clean_ticketcount_cache() {
  * @param  array $data Ticket data
  * @return boolean
  */
-function wpas_open_ticket( $data ) {
+function mumei_ayuda_open_ticket( $data ) {
 		
 	$title   			= isset( $data['title'] ) ? wp_strip_all_tags( $data['title'] ) : false;
 	$content 			= isset( $data['message'] ) ? wp_kses( $data['message'], wp_kses_allowed_html( 'post' ) ) : false;
@@ -26,10 +26,10 @@ function wpas_open_ticket( $data ) {
 	/**
 	 * Prepare vars
 	 */
-	$submit = isset( $_POST['_wp_http_referer'] ) ? wpas_get_submission_page_url( url_to_postid( sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) ) ) : wpas_get_submission_page_url();
+	$submit = isset( $_POST['_wp_http_referer'] ) ? mumei_ayuda_get_submission_page_url( url_to_postid( sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) ) ) : mumei_ayuda_get_submission_page_url();
 	// Fallback in case the referrer failed
 	if ( empty( $submit ) ) {
-		$submission_pages = wpas_get_option( 'ticket_submit' );
+		$submission_pages = mumei_ayuda_get_option( 'ticket_submit' );
 		
 		if ( ! is_array( $submission_pages ) ) {
 			$submission_pages = (array) $submission_pages;
@@ -45,10 +45,10 @@ function wpas_open_ticket( $data ) {
 	if ( ! current_user_can( 'create_ticket' ) ) {
 
 		// Save the input
-		wpas_save_values();
+		mumei_ayuda_save_values();
 
 		// Redirect to submit page
-		wpas_add_error( 'cannot_open_ticket', __( 'You do not have the capacity to open a new ticket.', 'awesome-support' ) );
+		mumei_ayuda_add_error( 'cannot_open_ticket', __( 'You do not have the capacity to open a new ticket.', 'ayuda-help-desk' ) );
 		wp_redirect( $submit );
 
 		// Break
@@ -59,23 +59,23 @@ function wpas_open_ticket( $data ) {
 	if ( false === $title || empty( $title ) ) {
 
 		// Save the input
-		wpas_save_values();
+		mumei_ayuda_save_values();
 
 		// Redirect to submit page
-		wpas_add_error( 'missing_title', __( 'It is mandatory to provide a title for your issue.', 'awesome-support' ) );
+		mumei_ayuda_add_error( 'missing_title', __( 'It is mandatory to provide a title for your issue.', 'ayuda-help-desk' ) );
 		wp_redirect( $submit );
 
 		// Break
 		exit;
 	}
 
-	if ( true === ( $description_mandatory = apply_filters( 'wpas_ticket_submission_description_mandatory', true ) ) && ( false === $content || empty( $content ) ) ) {
+	if ( true === ( $description_mandatory = apply_filters( 'mumei_ayuda_ticket_submission_description_mandatory', true ) ) && ( false === $content || empty( $content ) ) ) {
 
 		// Save the input
-		wpas_save_values();
+		mumei_ayuda_save_values();
 
 		// Redirect to submit page
-		wpas_add_error( 'missing_description', __( 'It is mandatory to provide a description for your issue.', 'awesome-support' ) );
+		mumei_ayuda_add_error( 'missing_description', __( 'It is mandatory to provide a description for your issue.', 'ayuda-help-desk' ) );
 		wp_redirect( $submit );
 
 		// Break
@@ -95,7 +95,7 @@ function wpas_open_ticket( $data ) {
 	 */
 	$go = true ;
 	if ( ! $bypass_pre_checks ) {
-		$go = apply_filters( 'wpas_before_submit_new_ticket_checks', true );
+		$go = apply_filters( 'mumei_ayuda_before_submit_new_ticket_checks', true );
 	}
 
 	/* Check for the green light */
@@ -105,10 +105,10 @@ function wpas_open_ticket( $data ) {
 		$message = $go->get_error_message();
 
 		/* Save the input */
-		wpas_save_values();
+		mumei_ayuda_save_values();
 
 		/* Redirect to submit page */
-		wpas_add_error( 'validation_issue', $message );
+		mumei_ayuda_add_error( 'validation_issue', $message );
 		wp_redirect( $submit );
 
 		exit;
@@ -127,10 +127,10 @@ function wpas_open_ticket( $data ) {
 	} else {
 
 		// Save the input
-		wpas_save_values();
+		mumei_ayuda_save_values();
 
 		// Redirect to submit page
-		wpas_add_error( 'unknown_user', __( 'Only registered accounts can submit a ticket. Please register first.', 'awesome-support' ) );
+		mumei_ayuda_add_error( 'unknown_user', __( 'Only registered accounts can submit a ticket. Please register first.', 'ayuda-help-desk' ) );
 		wp_redirect( $submit );
 
 		exit;
@@ -144,7 +144,7 @@ function wpas_open_ticket( $data ) {
 	 * we can proceed to the actual ticket submission.
 	 */
 	$post = apply_filters(
-		'wpas_open_ticket_data', array(
+		'mumei_ayuda_open_ticket_data', array(
 			'post_content'   => $content,
 			'post_name'      => $title,
 			'post_title'     => $title,
@@ -156,11 +156,11 @@ function wpas_open_ticket( $data ) {
 		)
 	);
 
-	return wpas_insert_ticket( $post, false, false, 'standard-ticket-form' );
+	return mumei_ayuda_insert_ticket( $post, false, false, 'standard-ticket-form' );
 
 }
 
-add_action( 'wpas_do_submit_new_ticket', 'wpas_new_ticket_submission' );
+add_action( 'mumei_ayuda_do_submit_new_ticket', 'mumei_ayuda_new_ticket_submission' );
 /**
  * Instantiate a new ticket submission
  *
@@ -173,26 +173,26 @@ add_action( 'wpas_do_submit_new_ticket', 'wpas_new_ticket_submission' );
  *
  * @return void
  */
-function wpas_new_ticket_submission( $data ) {
+function mumei_ayuda_new_ticket_submission( $data ) {
 
-	if ( ! is_admin() && isset( $data['wpas_title'] ) ) {
+	if ( ! is_admin() && isset( $data['mumei_ayuda_title'] ) ) {
 
 		// Verify the nonce first
-		if ( ! isset( $data['wpas_nonce'] ) || ! wp_verify_nonce( $data['wpas_nonce'], 'new_ticket' ) ) {
+		if ( ! isset( $data['mumei_ayuda_nonce'] ) || ! wp_verify_nonce( $data['mumei_ayuda_nonce'], 'new_ticket' ) ) {
 
 			/* Save the input */
-			wpas_save_values();
+			mumei_ayuda_save_values();
 
 			// Redirect to submit page
-			wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'awesome-support' ) );
+			mumei_ayuda_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'ayuda-help-desk' ) );
 			wp_redirect( wp_sanitize_redirect( home_url( isset( $_POST['_wp_http_referer']) ? sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) : "" ) ) );
 			exit;
 		}
 
-		$ticket_id = wpas_open_ticket(
+		$ticket_id = mumei_ayuda_open_ticket(
 			array(
-				'title'   => $data['wpas_title'],
-				'message' => $data['wpas_message'],
+				'title'   => $data['mumei_ayuda_title'],
+				'message' => $data['mumei_ayuda_message'],
 			)
 		);
 
@@ -200,12 +200,12 @@ function wpas_new_ticket_submission( $data ) {
 		if ( false === $ticket_id ) {
 
 			/* Save the input */
-			wpas_save_values();
+			mumei_ayuda_save_values();
 
 			/**
 			 * Redirect to the referrer since ticket creation failed....
 			 */
-			wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'awesome-support' ) );
+			mumei_ayuda_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'ayuda-help-desk' ) );
 			wp_redirect( wp_sanitize_redirect( home_url( $data['_wp_http_referer'] ) ) );
 			exit;
 
@@ -220,10 +220,10 @@ function wpas_new_ticket_submission( $data ) {
 			/**
 			 * Redirect to the newly created ticket
 			 */
-			if ( ! empty( wpas_get_option( 'new_ticket_redirect_fe', '' ) ) ) {
-				wpas_redirect( 'ticket_added', wpas_get_option( 'new_ticket_redirect_fe', '' ), $ticket_id );
+			if ( ! empty( mumei_ayuda_get_option( 'new_ticket_redirect_fe', '' ) ) ) {
+				mumei_ayuda_redirect( 'ticket_added', mumei_ayuda_get_option( 'new_ticket_redirect_fe', '' ), $ticket_id );
 			} else {
-				wpas_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
+				mumei_ayuda_redirect( 'ticket_added', get_permalink( $ticket_id ), $ticket_id );
 			}
 
 			exit;
@@ -246,7 +246,7 @@ function wpas_new_ticket_submission( $data ) {
  *
  * @return bool|int|WP_Error
  */
-function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false, $channel_term = 'other' ) {
+function mumei_ayuda_insert_ticket( $data = array(), $post_id = false, $agent_id = false, $channel_term = 'other' ) {
 	
 	// Save the original data array
 	$incoming_data = $data;
@@ -314,13 +314,13 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 *
 	 * @var array
 	 */
-	$data = apply_filters( 'wpas_open_ticket_data', $data, $incoming_data );
+	$data = apply_filters( 'mumei_ayuda_open_ticket_data', $data, $incoming_data );
 
 	/**
-	 * Fire wpas_before_open_ticket just before the post is actually
+	 * Fire mumei_ayuda_before_open_ticket just before the post is actually
 	 * inserted in the database.
 	 */
-	do_action( 'wpas_open_ticket_before', $data, $post_id, $incoming_data );
+	do_action( 'mumei_ayuda_open_ticket_before', $data, $post_id, $incoming_data );
 
 	/**
 	 * Insert the post in database using the regular WordPress wp_insert_post
@@ -333,9 +333,9 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	if ( false === $ticket_id ) {
 
 		/**
-		 * Fire wpas_open_ticket_failed if the ticket couldn't be inserted.
+		 * Fire mumei_ayuda_open_ticket_failed if the ticket couldn't be inserted.
 		 */
-		do_action( 'wpas_open_ticket_failed', $data, $post_id, $incoming_data );
+		do_action( 'mumei_ayuda_open_ticket_failed', $data, $post_id, $incoming_data );
 
 		return false;
 
@@ -346,60 +346,60 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	* Note that we only do this if $update is false signifying a new ticket!
 	*/
 	if ( ! $update ) {
-		wpas_set_ticket_slug( $ticket_id );
+		mumei_ayuda_set_ticket_slug( $ticket_id );
 	}
 
 	/* Update the channel on the ticket so that hooks can access it - but only if the $update is false which means we've got a new ticket */
 	/* It will need to be re-added to the ticket at the bottom of this routine because some hooks overwrite it with a blank. */
 	if ( ! empty( $channel_term ) && ( ! $update ) ) {
-		wpas_set_ticket_channel( $ticket_id, $channel_term, false );
+		mumei_ayuda_set_ticket_channel( $ticket_id, $channel_term, false );
 	}
 
 	/* Set the ticket as open. */
-	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
+	add_post_meta( $ticket_id, '_mumei_ayuda_status', 'open', true );
 
 	/* Next - update other some meta values. If you add or delete from this list you also */
 	/* need to do the same thing in the /includes/admin/functions-post.php file */
-	add_post_meta( $ticket_id, '_wpas_last_reply_date', null, true );
-	add_post_meta( $ticket_id, '_wpas_last_reply_date_gmt', null, true );
-	add_post_meta( $ticket_id, '_wpas_is_waiting_client_reply', ! user_can( $data['post_author'], 'edit_ticket' ), true );
+	add_post_meta( $ticket_id, '_mumei_ayuda_last_reply_date', null, true );
+	add_post_meta( $ticket_id, '_mumei_ayuda_last_reply_date_gmt', null, true );
+	add_post_meta( $ticket_id, '_mumei_ayuda_is_waiting_client_reply', ! user_can( $data['post_author'], 'edit_ticket' ), true );
 
 	if ( false === $agent_id ) {
-		$agent_id = wpas_find_agent( $ticket_id );
+		$agent_id = mumei_ayuda_find_agent( $ticket_id );
 	}
 
 	/**
-	 * Fire wpas_open_ticket_before_assigned after the post is successfully submitted but before it has been assigned to an agent.
+	 * Fire mumei_ayuda_open_ticket_before_assigned after the post is successfully submitted but before it has been assigned to an agent.
 	 *
 	 * @since 3.2.6
 	 */
-	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data, $incoming_data );
+	do_action( 'mumei_ayuda_open_ticket_before_assigned', $ticket_id, $data, $incoming_data );
 
 	/**
 	 * We might want to assign agent manually
 	 */
-	if( apply_filters( 'wpas_open_ticket_should_agent_assign', true, $ticket_id ) ) {
+	if( apply_filters( 'mumei_ayuda_open_ticket_should_agent_assign', true, $ticket_id ) ) {
 
 		/* Assign an agent to the ticket */
-		wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
+		mumei_ayuda_assign_ticket( $ticket_id, apply_filters( 'mumei_ayuda_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
 	}
 
 	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
 	/* Need to update it here again because some of the action hooks fired above will overwrite the term.			  */
 	if ( ! empty( $channel_term ) && ( ! $update ) ) {
-		wpas_set_ticket_channel( $ticket_id, $channel_term, false );
+		mumei_ayuda_set_ticket_channel( $ticket_id, $channel_term, false );
 	}
 
 	/**
-	 * Fire wpas_after_open_ticket just after the post is successfully submitted and assigned.
+	 * Fire mumei_ayuda_after_open_ticket just after the post is successfully submitted and assigned.
 	 */
-	do_action( 'wpas_open_ticket_after', $ticket_id, $data );
+	do_action( 'mumei_ayuda_open_ticket_after', $ticket_id, $data );
 
-	do_action( 'wpas_ticket_after_saved', $ticket_id );
+	do_action( 'mumei_ayuda_ticket_after_saved', $ticket_id );
 	
 	//Delete ticket count cache on ticket update
-	wpas_clean_ticketcount_cache();
+	mumei_ayuda_clean_ticketcount_cache();
 
 	return $ticket_id;
 
@@ -416,7 +416,7 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
  *
  * @return void
  */
-function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other', $overwrite = false ) {
+function mumei_ayuda_set_ticket_channel( $ticket_id = -1, $channel_term = 'other', $overwrite = false ) {
 
 	/* Does a term already exist on the ticket?  If so, do not overwrite it if $overwrite is false */
 	if ( false === $overwrite ) {
@@ -452,8 +452,8 @@ function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other', $ove
  *
  * @return void
  */
-function wpas_set_ticket_slug( $ticket_id = -1 ) {
-	$use_ticket_id_for_slug = wpas_get_option( 'ticket_topic_slug' );
+function mumei_ayuda_set_ticket_slug( $ticket_id = -1 ) {
+	$use_ticket_id_for_slug = mumei_ayuda_get_option( 'ticket_topic_slug' );
 
 	/* Set ticket slug to the post id / ticket id */
 	if ( isset( $use_ticket_id_for_slug ) && ( 'ticketid' == $use_ticket_id_for_slug ) ) {
@@ -488,7 +488,7 @@ function wpas_set_ticket_slug( $ticket_id = -1 ) {
 	if ( isset( $use_ticket_id_for_slug ) && ( 'guid' == $use_ticket_id_for_slug ) ) {
 
 		/*Calculate a guid */
-		$randomguid = wpas_create_pseudo_guid();
+		$randomguid = mumei_ayuda_create_pseudo_guid();
 
 		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
 		$newdata = array(
@@ -519,9 +519,9 @@ function wpas_set_ticket_slug( $ticket_id = -1 ) {
  *
  * @return array               Array of tickets, empty array if no tickets found
  */
-function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_status = 'any', $cache = false, $return_count = false ) {
+function mumei_ayuda_get_tickets( $ticket_status = 'open', $args = array(), $post_status = 'any', $cache = false, $return_count = false ) {
 
-	$custom_post_status = wpas_get_post_status();
+	$custom_post_status = mumei_ayuda_get_post_status();
 	$post_status_clean  = array();
 
 	if ( empty( $post_status ) ) {
@@ -558,7 +558,7 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 		'cache_results'          => (bool) $cache,
 		'update_post_term_cache' => (bool) $cache,
 		'update_post_meta_cache' => (bool) $cache,
-		'wpas_query'             => true, // We use this parameter to identify our own queries so that we can remove the author parameter
+		'mumei_ayuda_query'             => true, // We use this parameter to identify our own queries so that we can remove the author parameter
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -566,7 +566,7 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
 	if ( 'any' !== $ticket_status ) {
 		if ( in_array( $ticket_status, array( 'open', 'closed' ) ) ) {
 			$args['meta_query'][] = array(
-				'key'     => '_wpas_status',
+				'key'     => '_mumei_ayuda_status',
 				'value'   => $ticket_status,
 				'compare' => '=',
 				'type'    => 'CHAR',
@@ -601,7 +601,7 @@ function wpas_get_tickets( $ticket_status = 'open', $args = array(), $post_statu
  *
  * @return array
  */
-function wpas_get_ticket_by_id( $id, $args = array(), $cache = false ) {
+function mumei_ayuda_get_ticket_by_id( $id, $args = array(), $cache = false ) {
 
 	$defaults = [
 		'p'                      => intval( $id ),
@@ -610,7 +610,7 @@ function wpas_get_ticket_by_id( $id, $args = array(), $cache = false ) {
 		'cache_results'          => (bool) $cache,
 		'update_post_term_cache' => (bool) $cache,
 		'update_post_meta_cache' => (bool) $cache,
-		'wpas_query'             => true, // We use this parameter to identify our own queries so that we can remove the author parameter
+		'mumei_ayuda_query'             => true, // We use this parameter to identify our own queries so that we can remove the author parameter
 
 	];
 
@@ -635,7 +635,7 @@ function wpas_get_ticket_by_id( $id, $args = array(), $cache = false ) {
  *
  * @return boolean|integer False on failure or reply ID on success
  */
-function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
+function mumei_ayuda_add_reply( $data, $parent_id = false, $author_id = false ) {
 
 	if ( false === $parent_id ) {
 
@@ -655,7 +655,7 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 	}
 
 	// translators: %s is the ticket reply.
-	$x_content = __( 'Reply to ticket %s', 'awesome-support' );
+	$x_content = __( 'Reply to ticket %s', 'ayuda-help-desk' );
 
 	/**
 	 * Submit the reply.
@@ -683,13 +683,13 @@ function wpas_add_reply( $data, $parent_id = false, $author_id = false ) {
 		$data['post_author'] = $current_user->ID;
 	}
 
-	$insert = wpas_insert_reply( $data, $parent_id );
+	$insert = mumei_ayuda_insert_reply( $data, $parent_id );
 
 	return $insert;
 
 }
 
-add_action( 'wpas_do_submit_new_reply', 'wpas_new_reply_submission' );
+add_action( 'mumei_ayuda_do_submit_new_reply', 'mumei_ayuda_new_reply_submission' );
 /**
  * Instantiate a new reply submission
  *
@@ -702,43 +702,43 @@ add_action( 'wpas_do_submit_new_reply', 'wpas_new_reply_submission' );
  *
  * @return void
  */
-function wpas_new_reply_submission( $data ) {
+function mumei_ayuda_new_reply_submission( $data ) {
 
 	// Get parent ticket ID
 	$parent_id = (int) $data['ticket_id'];
 
-	if( !wpas_can_reply_ticket( false, $parent_id ) ) return false; // Cheating? Hehe..
+	if( !mumei_ayuda_can_reply_ticket( false, $parent_id ) ) return false; // Cheating? Hehe..
 
 	if ( 'ticket' !== get_post_type( $parent_id ) ) {
-		wpas_add_error( 'reply_added_failed', __( 'Something went wrong. We couldn&#039;t identify your ticket. Please try again.', 'awesome-support' ) );
-		wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
+		mumei_ayuda_add_error( 'reply_added_failed', __( 'Something went wrong. We couldn&#039;t identify your ticket. Please try again.', 'ayuda-help-desk' ) );
+		mumei_ayuda_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
 		exit;
 	}
 
 	// Define if the ticket must be closed
-	$close = isset( $data['wpas_close_ticket'] ) ? true : false;
+	$close = isset( $data['mumei_ayuda_close_ticket'] ) ? true : false;
 
-	if ( ! empty( $data['wpas_user_reply'] ) && apply_filters( 'wpas_user_can_reply_ticket', true, $parent_id ) ) {
+	if ( ! empty( $data['mumei_ayuda_user_reply'] ) && apply_filters( 'mumei_ayuda_user_can_reply_ticket', true, $parent_id ) ) {
 
 		/* Sanitize the data */
-		$data = array( 'post_content' => wp_kses( $data['wpas_user_reply'], wp_kses_allowed_html( 'post' ) ) );
+		$data = array( 'post_content' => wp_kses( $data['mumei_ayuda_user_reply'], wp_kses_allowed_html( 'post' ) ) );
 
 		/* Add the reply */
-		$reply_id = wpas_add_reply( $data, $parent_id );
+		$reply_id = mumei_ayuda_add_reply( $data, $parent_id );
 
 	}
 
 	$closed = false;
 
 	/* Possibly close the ticket */
-	if ( $close && apply_filters( 'wpas_user_can_close_ticket', true, $parent_id ) ) {
+	if ( $close && apply_filters( 'mumei_ayuda_user_can_close_ticket', true, $parent_id ) ) {
 
-		$closed = wpas_close_ticket( $parent_id );
+		$closed = mumei_ayuda_close_ticket( $parent_id );
 
 		// Redirect now if no reply was posted
 		if ( ! isset( $reply_id ) && $closed ) {
-			wpas_add_notification( 'ticket_closed', __( 'The ticket was successfully closed', 'awesome-support' ) );
-			wpas_redirect( 'ticket_closed', get_permalink( $parent_id ) );
+			mumei_ayuda_add_notification( 'ticket_closed', __( 'The ticket was successfully closed', 'ayuda-help-desk' ) );
+			mumei_ayuda_redirect( 'ticket_closed', get_permalink( $parent_id ) );
 			exit;
 		}
 	}
@@ -746,19 +746,19 @@ function wpas_new_reply_submission( $data ) {
 	if ( isset( $reply_id ) ) {
 
 		if ( false === $reply_id ) {
-			wpas_add_error( 'reply_added_failed', __( 'Your reply could not be submitted for an unknown reason.', 'awesome-support' ) );
-			wpas_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
+			mumei_ayuda_add_error( 'reply_added_failed', __( 'Your reply could not be submitted for an unknown reason.', 'ayuda-help-desk' ) );
+			mumei_ayuda_redirect( 'reply_added_failed', get_permalink( $parent_id ) );
 			exit;
 		} else {
 
 			if ( $closed ) {
-				wpas_add_notification( 'reply_added_closed', __( 'Thanks for your reply. The ticket is now closed.', 'awesome-support' ) );
+				mumei_ayuda_add_notification( 'reply_added_closed', __( 'Thanks for your reply. The ticket is now closed.', 'ayuda-help-desk' ) );
 			} else {
-				wpas_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'awesome-support' ) );
+				mumei_ayuda_add_notification( 'reply_added', __( 'Your reply has been submitted. Your agent will reply ASAP.', 'ayuda-help-desk' ) );
 			}
 
-			if ( false !== $link = wpas_get_reply_link( $reply_id ) ) {
-				wpas_redirect( 'reply_added', $link );
+			if ( false !== $link = mumei_ayuda_get_reply_link( $reply_id ) ) {
+				mumei_ayuda_redirect( 'reply_added', $link );
 				exit;
 			}
 		}
@@ -776,7 +776,7 @@ function wpas_new_reply_submission( $data ) {
  *
  * @return void
  */
-function wpas_edit_reply( $reply_id = null, $content = '' ) {
+function mumei_ayuda_edit_reply( $reply_id = null, $content = '' ) {
 
 	if ( is_null( $reply_id ) ) {
 		if ( isset( $_POST['reply_id'] ) ) {
@@ -810,7 +810,7 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 		return false;
 	}
 	$data = apply_filters(
-		'wpas_edit_reply_data', array(
+		'mumei_ayuda_edit_reply_data', array(
 			'ID'             => $reply_id,
 			'post_content'   => $content,
 			'post_status'    => 'read',
@@ -828,25 +828,25 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 	$edited = wp_insert_post( $data, true );
 
 	if ( is_wp_error( $edited ) ) {
-		do_action( 'wpas_edit_reply_failed', $reply_id, $content, $edited );
+		do_action( 'mumei_ayuda_edit_reply_failed', $reply_id, $content, $edited );
 		return $edited;
 	}
 
 	/* Add a flag to the reply that shows it was edited */
-	update_post_meta( $edited, 'wpas_reply_was_edited', '1' );
+	update_post_meta( $edited, 'mumei_ayuda_reply_was_edited', '1' );
 
 	/* Fire the after-edit action hook */
-	do_action( 'wpas_reply_edited', $reply_id, $original_reply );
+	do_action( 'mumei_ayuda_reply_edited', $reply_id, $original_reply );
 
 	return $reply_id;
 
 }
 
-add_action( 'wpas_reply_edited', 'wpas_log_reply_edits', 10, 2 );
+add_action( 'mumei_ayuda_reply_edited', 'mumei_ayuda_log_reply_edits', 10, 2 );
 /**
  * Log the original contents of a reply after it is edited.
  *
- * Action hook: wpas_reply_edited
+ * Action hook: mumei_ayuda_reply_edited
  *
  * @since 5.2.0
  *
@@ -857,19 +857,19 @@ add_action( 'wpas_reply_edited', 'wpas_log_reply_edits', 10, 2 );
  *
  * @return void
  */
-function wpas_log_reply_edits( $reply_id, $original_reply ) {
+function mumei_ayuda_log_reply_edits( $reply_id, $original_reply ) {
 
 	/* Do we log a summary or detail that includes the original content? */
-	if ( 'low' === wpas_get_option( 'log_content_edit_level', 'low' ) ) {
-		$reply_contents_to_log = __( 'Original data not available because detailed logging is not turned on or allowed', 'awesome-support' );
+	if ( 'low' === mumei_ayuda_get_option( 'log_content_edit_level', 'low' ) ) {
+		$reply_contents_to_log = __( 'Original data not available because detailed logging is not turned on or allowed', 'ayuda-help-desk' );
 	} else {
 		$reply_contents_to_log = $original_reply->post_content;
 	}
 
 	// translators: %1$s is the reply number, %2$s is the ticket number.
-	$x_content = __( 'Reply #%1$s located on ticket #%2$s was edited.', 'awesome-support' );
+	$x_content = __( 'Reply #%1$s located on ticket #%2$s was edited.', 'ayuda-help-desk' );
 
-	wpas_log_edits( $reply_id, sprintf( $x_content, (string) $reply_id, (string) $original_reply->post_parent ), $reply_contents_to_log );
+	mumei_ayuda_log_edits( $reply_id, sprintf( $x_content, (string) $reply_id, (string) $original_reply->post_parent ), $reply_contents_to_log );
 
 }
 
@@ -882,7 +882,7 @@ function wpas_log_reply_edits( $reply_id, $original_reply ) {
  *
  * @return void
  */
-function wpas_mark_reply_read( $reply_id = null ) {
+function mumei_ayuda_mark_reply_read( $reply_id = null ) {
 
 	if ( is_null( $reply_id ) ) {
 		if ( isset( $_POST['reply_id'] ) ) {
@@ -903,7 +903,7 @@ function wpas_mark_reply_read( $reply_id = null ) {
 	}
 
 	$data = apply_filters(
-		'wpas_mark_reply_read_data', array(
+		'mumei_ayuda_mark_reply_read_data', array(
 			'ID'             => $reply_id,
 			'post_status'    => 'read',
 			'comment_status' => 'closed',
@@ -921,29 +921,29 @@ function wpas_mark_reply_read( $reply_id = null ) {
 	$edited = wp_insert_post( $data, true );
 
 	if ( is_wp_error( $edited ) ) {
-		do_action( 'wpas_mark_reply_read_failed', $reply_id, $edited );
+		do_action( 'mumei_ayuda_mark_reply_read_failed', $reply_id, $edited );
 		return $edited;
 	}
 
-	do_action( 'wpas_marked_reply_read', $reply_id );
+	do_action( 'mumei_ayuda_marked_reply_read', $reply_id );
 
 	return $edited;
 
 }
 
-add_action( 'wp_ajax_wpas_mark_reply_read', 'wpas_mark_reply_read_ajax' );
+add_action( 'wp_ajax_mumei_ayuda_mark_reply_read', 'mumei_ayuda_mark_reply_read_ajax' );
 /**
  * Mark a ticket reply as read with Ajax
  *
  * @return void
  */
-function wpas_mark_reply_read_ajax() {
+function mumei_ayuda_mark_reply_read_ajax() {
 
-	$ID = wpas_mark_reply_read();
+	$ID = mumei_ayuda_mark_reply_read();
 
 	//Check permission for capability of current user
 	if ( ! current_user_can( 'edit_ticket') ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to mark a ticket reply as read with Ajax.', 'awesome-support') ), 403);		
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to mark a ticket reply as read with Ajax.', 'ayuda-help-desk') ), 403);		
 	}	
 
 	if ( false === $ID || is_wp_error( $ID ) ) {
@@ -954,23 +954,23 @@ function wpas_mark_reply_read_ajax() {
 	die();
 }
 
-add_action( 'wp_ajax_wpas_edit_reply', 'wpas_edit_reply_ajax' );
+add_action( 'wp_ajax_mumei_ayuda_edit_reply', 'mumei_ayuda_edit_reply_ajax' );
 /**
  * Edit a reply with Ajax
  *
  * @return void
  */
-function wpas_edit_reply_ajax() {
+function mumei_ayuda_edit_reply_ajax() {
 	
-	if( !check_ajax_referer( 'wpas_edit_reply', 'nonce', false ) ) {
+	if( !check_ajax_referer( 'mumei_ayuda_edit_reply', 'nonce', false ) ) {
 		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
 		die();
 	}
-	$ID = wpas_edit_reply();
+	$ID = mumei_ayuda_edit_reply();
 
 	//Check permission for capability of current user
 	if ( ! current_user_can( 'edit_ticket') ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to edit a reply with Ajax.', 'awesome-support') ), 403);		
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to edit a reply with Ajax.', 'ayuda-help-desk') ), 403);		
 	}
 	
 	if ( false === $ID ) {
@@ -1000,7 +1000,7 @@ function wpas_edit_reply_ajax() {
  * @param  boolean          $post_id  ID of the parent post
  * @return integer|WP_Error           The reply ID on success or WP_Error on failure
  */
-function wpas_insert_reply( $data, $post_id = false ) {
+function mumei_ayuda_insert_reply( $data, $post_id = false ) {
 
 	if ( false === $post_id ) {
 		return false;
@@ -1011,7 +1011,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	}
 
 	// translators: %s is the ticket reply.
-	$x_content = __( 'Reply to ticket %s', 'awesome-support' );
+	$x_content = __( 'Reply to ticket %s', 'ayuda-help-desk' );
 	$defaults = array(
 		'post_name'      => sprintf( $x_content, "#$post_id" ),
 		'post_title'     => sprintf( $x_content, "#$post_id" ),
@@ -1032,7 +1032,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		$data['post_author'] = $current_user->ID;
 	}
 
-	$data = apply_filters( 'wpas_add_reply_data', $data, $post_id );
+	$data = apply_filters( 'mumei_ayuda_add_reply_data', $data, $post_id );
 
 	/* Sanitize the data */
 	if ( isset( $data['post_title'] ) && ! empty( $data['post_title'] ) ) {
@@ -1048,13 +1048,13 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	}
 
 	/**
-	 * Fire wpas_add_reply_before before the reply is added to the database.
+	 * Fire mumei_ayuda_add_reply_before before the reply is added to the database.
 	 * This hook is fired both on the back-end and the front-end.
 	 *
 	 * @param  array   $data    The data to be inserted to the database
 	 * @param  integer $post_id ID of the parent post
 	 */
-	do_action( 'wpas_add_reply_before', $data, $post_id );
+	do_action( 'mumei_ayuda_add_reply_before', $data, $post_id );
 
 	if ( is_admin() ) {
 
@@ -1065,17 +1065,17 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		 * @param  array   $data    The data to be inserted to the database
 		 * @param  integer $post_id ID of the parent post
 		 */
-		do_action( 'wpas_add_reply_admin_before', $data, $post_id );
+		do_action( 'mumei_ayuda_add_reply_admin_before', $data, $post_id );
 
 		/**
-		 * wpas_save_reply_before
+		 * mumei_ayuda_save_reply_before
 		 *
 		 * This hook is now deprecated but stays in the code for backward compatibility.
-		 * Instead of wpas_save_reply_before you should now use wpas_add_reply_admin_before
+		 * Instead of mumei_ayuda_save_reply_before you should now use mumei_ayuda_add_reply_admin_before
 		 *
 		 * @deprecated 3.1.2
 		 */
-		do_action( 'wpas_save_reply_before' );
+		do_action( 'mumei_ayuda_save_reply_before' );
 
 	} else {
 
@@ -1086,7 +1086,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		 * @param  array   $data    The data to be inserted to the database
 		 * @param  integer $post_id ID of the parent post
 		 */
-		do_action( 'wpas_add_reply_public_before', $data, $post_id );
+		do_action( 'mumei_ayuda_add_reply_public_before', $data, $post_id );
 
 	}
 
@@ -1096,14 +1096,14 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	if ( is_wp_error( $reply_id ) ) {
 
 		/**
-		 * Fire wpas_add_reply_failed if the reply couldn't be inserted.
+		 * Fire mumei_ayuda_add_reply_failed if the reply couldn't be inserted.
 		 * This hook will be fired both in the admin and in the front-end.
 		 *
 		 * @param  array   $data     The data we tried to add to the database
 		 * @param  integer $post_id  ID of the parent post
 		 * @param  object  $reply_id WP_Error object
 		 */
-		do_action( 'wpas_add_reply_failed', $data, $post_id, $reply_id );
+		do_action( 'mumei_ayuda_add_reply_failed', $data, $post_id, $reply_id );
 
 		if ( is_admin() ) {
 
@@ -1116,18 +1116,18 @@ function wpas_insert_reply( $data, $post_id = false ) {
 			 * @param  integer $post_id  ID of the parent post
 			 * @param  object  $reply_id WP_Error object
 			 */
-			do_action( 'wpas_add_reply_admin_failed', $data, $post_id, $reply_id );
+			do_action( 'mumei_ayuda_add_reply_admin_failed', $data, $post_id, $reply_id );
 
 			/**
-			 * wpas_save_reply_after_error hook
+			 * mumei_ayuda_save_reply_after_error hook
 			 *
 			 * This hook is deprecated but stays in the code for backward compatibility.
-			 * You should now use wpas_add_reply_admin_failed instead.
+			 * You should now use mumei_ayuda_add_reply_admin_failed instead.
 			 *
 			 * @deprecated  3.1.2
 			 * @param      $reply WP_Error object
 			 */
-			do_action( 'wpas_save_reply_after_error', $reply_id );
+			do_action( 'mumei_ayuda_save_reply_after_error', $reply_id );
 
 		} else {
 
@@ -1140,7 +1140,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
 			 * @param  integer $post_id  ID of the parent post
 			 * @param  object  $reply_id WP_Error object
 			 */
-			do_action( 'wpas_add_reply_public_failed', $data, $post_id, $reply_id );
+			do_action( 'mumei_ayuda_add_reply_public_failed', $data, $post_id, $reply_id );
 
 		}
 
@@ -1151,12 +1151,12 @@ function wpas_insert_reply( $data, $post_id = false ) {
 	/**
 	 * Delete the activity transient.
 	 */
-	delete_transient( "wpas_activity_meta_post_$post_id" );
+	delete_transient( "mumei_ayuda_activity_meta_post_$post_id" );
 
 	/**
-	 * Fire wpas_add_reply_after after the reply was successfully added.
+	 * Fire mumei_ayuda_add_reply_after after the reply was successfully added.
 	 */
-	do_action( 'wpas_add_reply_after', $reply_id, $data );
+	do_action( 'mumei_ayuda_add_reply_after', $reply_id, $data );
 
 	if ( is_admin() ) {
 
@@ -1167,19 +1167,19 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		 * @param  integer $reply_id ID of the reply added to the database
 		 * @param  array   $data     Data inserted to the database
 		 */
-		do_action( 'wpas_add_reply_admin_after', $reply_id, $data );
+		do_action( 'mumei_ayuda_add_reply_admin_after', $reply_id, $data );
 
 		/**
-		 * wpas_save_reply_after hook
+		 * mumei_ayuda_save_reply_after hook
 		 *
 		 * This hook is deprecated but stays in the code for backward compatibility.
-		 * You should now use wpas_add_reply_admin_after instead.
+		 * You should now use mumei_ayuda_add_reply_admin_after instead.
 		 *
 		 * @deprecated  3.1.2
 		 * @param  integer $reply Reply ID
 		 * @param  array   $data  Data used to add the reply
 		 */
-		do_action( 'wpas_save_reply_after', $reply_id, $data );
+		do_action( 'mumei_ayuda_save_reply_after', $reply_id, $data );
 
 	} else {
 
@@ -1190,20 +1190,20 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		 * @param  integer $reply_id ID of the reply added to the database
 		 * @param  array   $data     Data inserted to the database
 		 */
-		do_action( 'wpas_add_reply_public_after', $reply_id, $data );
+		do_action( 'mumei_ayuda_add_reply_public_after', $reply_id, $data );
 
 	}
 
 	/**
-	 * Fire wpas_add_reply_complete after the reply and attachments was successfully added.
+	 * Fire mumei_ayuda_add_reply_complete after the reply and attachments was successfully added.
 	 */
-	do_action( 'wpas_add_reply_complete', $reply_id, $data );
+	do_action( 'mumei_ayuda_add_reply_complete', $reply_id, $data );
 
 	/* . */
-	update_post_meta( $data['post_parent'], '_wpas_last_reply_date', current_time( 'mysql' ) );
-	update_post_meta( $data['post_parent'], '_wpas_last_reply_date_gmt', current_time( 'mysql', 1 ) );
+	update_post_meta( $data['post_parent'], '_mumei_ayuda_last_reply_date', current_time( 'mysql' ) );
+	update_post_meta( $data['post_parent'], '_mumei_ayuda_last_reply_date_gmt', current_time( 'mysql', 1 ) );
 
-	update_post_meta( $data['post_parent'], '_wpas_is_waiting_client_reply', ! current_user_can( 'edit_ticket' ) );
+	update_post_meta( $data['post_parent'], '_mumei_ayuda_is_waiting_client_reply', ! current_user_can( 'edit_ticket' ) );
 
 	return $reply_id;
 
@@ -1219,7 +1219,7 @@ function wpas_insert_reply( $data, $post_id = false ) {
  *
  * @return array|WP_Query
  */
-function wpas_get_replies( $post_id, $status = 'any', $args = array(), $output = 'replies' ) {
+function mumei_ayuda_get_replies( $post_id, $status = 'any', $args = array(), $output = 'replies' ) {
 
 	$allowed_status = array(
 		'any',
@@ -1245,7 +1245,7 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array(), $output =
 		'post_parent'            => $post_id,
 		'post_type'              => 'ticket_reply',
 		'post_status'            => $status,
-		'order'                  => wpas_get_option( 'replies_order', 'ASC' ),
+		'order'                  => mumei_ayuda_get_option( 'replies_order', 'ASC' ),
 		'orderby'                => 'date',
 		'posts_per_page'         => - 1,
 		'no_found_rows'          => true,
@@ -1278,27 +1278,27 @@ function wpas_get_replies( $post_id, $status = 'any', $args = array(), $output =
  *
  * @return integer         ID of the best agent for the job
  */
-function wpas_find_agent( $ticket_id = false ) {
+function mumei_ayuda_find_agent( $ticket_id = false ) {
 
-	if ( defined( 'WPAS_DISABLE_AUTO_ASSIGN' ) && true === WPAS_DISABLE_AUTO_ASSIGN ) {
-		return apply_filters( 'wpas_find_available_agent', wpas_get_option( 'assignee_default' ), $ticket_id );
+	if ( defined( 'MUMEI_AYUDA_DISABLE_AUTO_ASSIGN' ) && true === MUMEI_AYUDA_DISABLE_AUTO_ASSIGN ) {
+		return apply_filters( 'mumei_ayuda_find_available_agent', mumei_ayuda_get_option( 'assignee_default' ), $ticket_id );
 	}
 
-	$users = shuffle_assoc( wpas_get_users( apply_filters( 'wpas_find_agent_get_users_args', array( 'cap' => 'edit_ticket' ) ) ) );
+	$users = shuffle_assoc( mumei_ayuda_get_users( apply_filters( 'mumei_ayuda_find_agent_get_users_args', array( 'cap' => 'edit_ticket' ) ) ) );
 	$agent = array();
 
 	foreach ( $users->members as $user ) {
 
-		$wpas_agent = new WPAS_Member_Agent( $user );
+		$mumei_ayuda_agent = new MUMEI_AYUDA_Member_Agent( $user );
 
 		/**
 		 * Make sure the user really is an agent and that he can currently be assigned
 		 */
-		if ( true !== $wpas_agent->is_agent() || false === $wpas_agent->can_be_assigned() ) {
+		if ( true !== $mumei_ayuda_agent->is_agent() || false === $mumei_ayuda_agent->can_be_assigned() ) {
 			continue;
 		}
 
-		$count = $wpas_agent->open_tickets(); // Total number of open tickets for this agent
+		$count = $mumei_ayuda_agent->open_tickets(); // Total number of open tickets for this agent
 
 		if ( empty( $agent ) ) {
 			$agent = array(
@@ -1320,7 +1320,7 @@ function wpas_find_agent( $ticket_id = false ) {
 		$agent_id = $agent['user_id'];
 	} else {
 
-		$default_id = wpas_get_option( 'assignee_default', 1 );
+		$default_id = mumei_ayuda_get_option( 'assignee_default', 1 );
 
 		if ( empty( $default_id ) ) {
 			$default_id = 1;
@@ -1330,7 +1330,7 @@ function wpas_find_agent( $ticket_id = false ) {
 
 	}
 
-	return apply_filters( 'wpas_find_available_agent', (int) $agent_id, $ticket_id );
+	return apply_filters( 'mumei_ayuda_find_available_agent', (int) $agent_id, $ticket_id );
 
 }
 
@@ -1349,31 +1349,31 @@ function wpas_find_agent( $ticket_id = false ) {
  * @return object|boolean|integer WP_Error in case of problem, true if no change is required or the post meta ID if the
  *                                agent was changed
  */
-function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
+function mumei_ayuda_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 
 	if ( 'ticket' !== get_post_type( $ticket_id ) ) {
-		return new WP_Error( 'incorrect_post_type', __( 'The given post ID is not a ticket', 'awesome-support' ) );
+		return new WP_Error( 'incorrect_post_type', __( 'The given post ID is not a ticket', 'ayuda-help-desk' ) );
 	}
 
 	if ( is_null( $agent_id ) ) {
-		$agent_id = wpas_find_agent( $ticket_id );
+		$agent_id = mumei_ayuda_find_agent( $ticket_id );
 	}
 
 	if ( ! user_can( $agent_id, 'edit_ticket' ) ) {
-		return new WP_Error( 'incorrect_agent', __( 'The chosen agent does not have the sufficient capabilities to be assigned a ticket', 'awesome-support' ) );
+		return new WP_Error( 'incorrect_agent', __( 'The chosen agent does not have the sufficient capabilities to be assigned a ticket', 'ayuda-help-desk' ) );
 	}
 
 	/* Get the current agent if any */
-	$current = get_post_meta( $ticket_id, '_wpas_assignee', true );
+	$current = get_post_meta( $ticket_id, '_mumei_ayuda_assignee', true );
 
 	if ( $current === $agent_id ) {
 		return true;
 	}
 
-	$update = update_post_meta( $ticket_id, '_wpas_assignee', $agent_id, $current );
+	$update = update_post_meta( $ticket_id, '_mumei_ayuda_assignee', $agent_id, $current );
 
 	/* Increment the number of tickets open for this agent */
-	$agent = new WPAS_Member_Agent( $agent_id );
+	$agent = new MUMEI_AYUDA_Member_Agent( $agent_id );
 	$agent->ticket_plus();
 
 	/* Log the action */
@@ -1381,20 +1381,20 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 		$log   = array();
 		$log[] = array(
 			'action'   => 'updated',
-			'label'    => __( 'Support Staff', 'awesome-support' ),
+			'label'    => __( 'Support Staff', 'ayuda-help-desk' ),
 			'value'    => $agent_id,
 			'field_id' => 'assignee',
 		);
 	}
 
-	wpas_log_history( $ticket_id, $log );
+	mumei_ayuda_log_history( $ticket_id, $log );
 
 	/**
-	 * wpas_ticket_assigned hook
+	 * mumei_ayuda_ticket_assigned hook
 	 *
 	 * since 3.0.2
 	 */
-	do_action( 'wpas_ticket_assigned', $ticket_id, $agent_id );
+	do_action( 'mumei_ayuda_ticket_assigned', $ticket_id, $agent_id );
 
 	// In case this is a ticket transfer from one agent to another, we fire a dedicated action
 	if ( ! empty( $current ) && user_can( (int) $current, 'edit_ticket' ) ) {
@@ -1407,7 +1407,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
 		 * @param int $agent_id ID of the new assignee
 		 * @param int $current  ID of the previous assignee
 		 */
-		do_action( 'wpas_ticket_assignee_changed', $agent_id, (int) $current );
+		do_action( 'mumei_ayuda_ticket_assignee_changed', $agent_id, (int) $current );
 
 	}
 
@@ -1425,7 +1425,7 @@ function wpas_assign_ticket( $ticket_id, $agent_id = null, $log = true ) {
  * @since  3.0.0
  * @return void
  */
-function wpas_save_values() {
+function mumei_ayuda_save_values() {
 
 	$fields = array();
 
@@ -1440,7 +1440,7 @@ function wpas_save_values() {
 
 }
 
-add_action( 'pre_user_query', 'wpas_randomize_uers_query', 10, 1 );
+add_action( 'pre_user_query', 'mumei_ayuda_randomize_uers_query', 10, 1 );
 /**
  * Randomize user query.
  *
@@ -1456,10 +1456,10 @@ add_action( 'pre_user_query', 'wpas_randomize_uers_query', 10, 1 );
  *
  * @return void
  */
-function wpas_randomize_uers_query( $query ) {
+function mumei_ayuda_randomize_uers_query( $query ) {
 
 	/* Make sure we only alter our own user query */
-	if ( 'wpas_random' == $query->query_vars['orderby'] ) {
+	if ( 'mumei_ayuda_random' == $query->query_vars['orderby'] ) {
 		$query->query_orderby = 'ORDER BY RAND()';
 	}
 
@@ -1477,9 +1477,9 @@ function wpas_randomize_uers_query( $query ) {
  * @param  string  $status  New status to attribute
  * @return boolean          True if the query was successfully executed
  */
-function wpas_update_ticket_status( $post_id, $status ) {
+function mumei_ayuda_update_ticket_status( $post_id, $status ) {
 
-	$custom_status = wpas_get_post_status();
+	$custom_status = mumei_ayuda_get_post_status();
 
 	if ( ! array_key_exists( $status, $custom_status ) ) {
 		return false;
@@ -1501,16 +1501,16 @@ function wpas_update_ticket_status( $post_id, $status ) {
 	if ( 0 !== intval( $updated ) ) {
 
 		// translators: %s is the ticket state.
-		$x_content = __( 'Ticket state changed to %s', 'awesome-support' );
-		wpas_log_history( $post_id, sprintf( $x_content, $custom_status[ $status ] ) );
+		$x_content = __( 'Ticket state changed to %s', 'ayuda-help-desk' );
+		mumei_ayuda_log_history( $post_id, sprintf( $x_content, $custom_status[ $status ] ) );
 	}
 
 	/**
-	 * wpas_ticket_status_updated hook
+	 * mumei_ayuda_ticket_status_updated hook
 	 *
 	 * @since  3.0.2
 	 */
-	do_action( 'wpas_ticket_status_updated', $post_id, $status, $updated );
+	do_action( 'mumei_ayuda_ticket_status_updated', $post_id, $status, $updated );
 
 	return $updated;
 
@@ -1526,7 +1526,7 @@ function wpas_update_ticket_status( $post_id, $status ) {
  *
  * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
  */
-function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = false ) {
+function mumei_ayuda_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = false ) {
 
 	global $current_user;
 
@@ -1537,7 +1537,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 
 	if ( ! $skip_user_validation ) {
 		if ( ! current_user_can( 'close_ticket' ) ) {
-			wp_die( esc_html__( 'You do not have the capacity to close this ticket', 'awesome-support' ), esc_html__( 'Can’t close ticket', 'awesome-support' ), array( 'back_link' => true ) );
+			wp_die( esc_html__( 'You do not have the capacity to close this ticket', 'ayuda-help-desk' ), esc_html__( 'Can’t close ticket', 'ayuda-help-desk' ), array( 'back_link' => true ) );
 		}
 	}
 
@@ -1548,9 +1548,9 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 		$close_ticket = true;
 
 		if ( is_admin() ) {
-			$close_ticket = apply_filters( 'wpas_before_close_ticket_admin', $close_ticket, $ticket_id );
+			$close_ticket = apply_filters( 'mumei_ayuda_before_close_ticket_admin', $close_ticket, $ticket_id );
 		} else {
-			$close_ticket = apply_filters( 'wpas_before_close_ticket_public', $close_ticket, $ticket_id );
+			$close_ticket = apply_filters( 'mumei_ayuda_before_close_ticket_public', $close_ticket, $ticket_id );
 		}
 
 		if( !$close_ticket ) {
@@ -1558,26 +1558,26 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 		}
 
 
-		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'closed' );
+		$update = update_post_meta( intval( $ticket_id ), '_mumei_ayuda_status', 'closed' );
 
 		// Save the date at which the ticket was last closed. The date is updated if the ticket is re-opened and then re-closed.
 		update_post_meta( $ticket_id, '_ticket_closed_on', current_time( 'mysql' ) );
 		update_post_meta( $ticket_id, '_ticket_closed_on_gmt', current_time( 'mysql', 1 ) );
 
 		/* Decrement the number of tickets open for this agent */
-		$agent_id = get_post_meta( $ticket_id, '_wpas_assignee', true );
-		$agent    = new WPAS_Member_Agent( $agent_id );
+		$agent_id = get_post_meta( $ticket_id, '_mumei_ayuda_assignee', true );
+		$agent    = new MUMEI_AYUDA_Member_Agent( $agent_id );
 		$agent->ticket_minus();
 
 		/* Log the action */
-		wpas_log_history( $ticket_id, __( 'The ticket was closed.', 'awesome-support' ) );
+		mumei_ayuda_log_history( $ticket_id, __( 'The ticket was closed.', 'ayuda-help-desk' ) );
 
 		/**
-		 * wpas_after_close_ticket hook
+		 * mumei_ayuda_after_close_ticket hook
 		 *
 		 * @since  3.0.0
 		 */
-		do_action( 'wpas_after_close_ticket', $ticket_id, $update, $user_id );
+		do_action( 'mumei_ayuda_after_close_ticket', $ticket_id, $update, $user_id );
 		
 		if ( is_admin() ) {
 
@@ -1590,7 +1590,7 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 			 * @param integer $user_id   ID of the user who did the action
 			 * @param boolean $update    True on success, false on fialure
 			 */
-			do_action( 'wpas_after_close_ticket_admin', $ticket_id, $user_id, $update );
+			do_action( 'mumei_ayuda_after_close_ticket_admin', $ticket_id, $user_id, $update );
 
 		} else {
 
@@ -1603,12 +1603,12 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
 			 * @param integer $user_id   ID of the user who did the action
 			 * @param boolean $update    True on success, false on failure
 			 */
-			do_action( 'wpas_after_close_ticket_public', $ticket_id, $user_id, $update );
+			do_action( 'mumei_ayuda_after_close_ticket_public', $ticket_id, $user_id, $update );
 
 		}
 
 		//Delete ticket count cache on ticket update
-		wpas_clean_ticketcount_cache();
+		mumei_ayuda_clean_ticketcount_cache();
 
 		return $update;
 
@@ -1627,40 +1627,40 @@ function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = fa
  *
  * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
  */
-function wpas_reopen_ticket( $ticket_id ) {
+function mumei_ayuda_reopen_ticket( $ticket_id ) {
 
 	if ( 'ticket' !== get_post_type( $ticket_id ) ) {
 		return false;
 	}
 
-	if ( ! current_user_can( 'edit_ticket' ) && ! wpas_can_submit_ticket( $ticket_id ) ) {
+	if ( ! current_user_can( 'edit_ticket' ) && ! mumei_ayuda_can_submit_ticket( $ticket_id ) ) {
 		return false;
 	}
 
-	$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'open' );
+	$update = update_post_meta( intval( $ticket_id ), '_mumei_ayuda_status', 'open' );
 
 	/* Log the action */
-	wpas_log_history( $ticket_id, __( 'The ticket was re-opened.', 'awesome-support' ) );
+	mumei_ayuda_log_history( $ticket_id, __( 'The ticket was re-opened.', 'ayuda-help-desk' ) );
 
 	/**
-	 * wpas_after_reopen_ticket hook
+	 * mumei_ayuda_after_reopen_ticket hook
 	 *
 	 * @since  3.0.2
 	 */
-	do_action( 'wpas_after_reopen_ticket', intval( $ticket_id ), $update );
+	do_action( 'mumei_ayuda_after_reopen_ticket', intval( $ticket_id ), $update );
 
 	//Delete ticket count cache on ticket update
-	wpas_clean_ticketcount_cache();
+	mumei_ayuda_clean_ticketcount_cache();
 
 	return $update;
 
 }
 
-add_action( 'wpas_do_reopen_ticket', 'wpas_reopen_ticket_trigger' );
+add_action( 'mumei_ayuda_do_reopen_ticket', 'mumei_ayuda_reopen_ticket_trigger' );
 /**
  * Trigger the re-open ticket function
  *
- * This is triggered by the wpas_do custom actions.
+ * This is triggered by the mumei_ayuda_do custom actions.
  *
  * @since 3.3
  *
@@ -1668,38 +1668,38 @@ add_action( 'wpas_do_reopen_ticket', 'wpas_reopen_ticket_trigger' );
  *
  * @return void
  */
-function wpas_reopen_ticket_trigger( $data ) {
+function mumei_ayuda_reopen_ticket_trigger( $data ) {
 
 	if ( isset( $data['ticket_id'] ) ) {
 
 		$ticket_id = (int) $data['ticket_id'];
 
-		if ( ! wpas_can_submit_ticket( $ticket_id ) && ! current_user_can( 'edit_ticket' ) ) {
-			wpas_add_error( 'cannot_reopen_ticket', __( 'You are not allowed to re-open this ticket', 'awesome-support' ) );
-			wpas_redirect( 'ticket_reopen', wpas_get_tickets_list_page_url() );
+		if ( ! mumei_ayuda_can_submit_ticket( $ticket_id ) && ! current_user_can( 'edit_ticket' ) ) {
+			mumei_ayuda_add_error( 'cannot_reopen_ticket', __( 'You are not allowed to re-open this ticket', 'ayuda-help-desk' ) );
+			mumei_ayuda_redirect( 'ticket_reopen', mumei_ayuda_get_tickets_list_page_url() );
 			exit;
 		}
 
-		do_action( 'wpas_before_customer_reopen_ticket', $ticket_id );
+		do_action( 'mumei_ayuda_before_customer_reopen_ticket', $ticket_id );
 
-		wpas_reopen_ticket( $ticket_id );
+		mumei_ayuda_reopen_ticket( $ticket_id );
 
-		wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'awesome-support' ) );
-		wpas_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );
+		mumei_ayuda_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'ayuda-help-desk' ) );
+		mumei_ayuda_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );
 		exit;
 
 	}
 
 }
 
-add_action( 'wp_ajax_wpas_edit_reply_editor', 'wpas_edit_reply_editor_ajax' );
+add_action( 'wp_ajax_mumei_ayuda_edit_reply_editor', 'mumei_ayuda_edit_reply_editor_ajax' );
 /**
  * Load TinyMCE via Ajax request to edit a reply.
  *
  * @since  3.1.5
  * @return string Editor markup
  */
-function wpas_edit_reply_editor_ajax() {
+function mumei_ayuda_edit_reply_editor_ajax() {
 
 	$reply_id = filter_input( INPUT_POST, 'reply_id', FILTER_SANITIZE_NUMBER_INT );
 
@@ -1710,7 +1710,7 @@ function wpas_edit_reply_editor_ajax() {
 
 	//Check permission for capability of current user
 	if ( ! current_user_can( 'edit_ticket' ) ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'ayuda-help-desk') ), 403);		
     }
 
 	$post = get_post( $reply_id );
@@ -1728,7 +1728,7 @@ function wpas_edit_reply_editor_ajax() {
 		'teeny'         => true,
 		'quicktags'     => false,
 		'editor_class'  => 'wpas-edittextarea',
-		'textarea_name' => 'wpas_edit_reply[' . $reply_id . ']',
+		'textarea_name' => 'mumei_ayuda_edit_reply[' . $reply_id . ']',
 		'textarea_rows' => 20,
 	);
 
@@ -1748,10 +1748,10 @@ function wpas_edit_reply_editor_ajax() {
  *
  * @return int Tickets count
  */
-function wpas_get_ticket_count_by_status( $state = '', $status = 'open', $query = array() ) {
+function mumei_ayuda_get_ticket_count_by_status( $state = '', $status = 'open', $query = array() ) {
 
 	$args        = array();
-	$post_status = wpas_get_post_status();
+	$post_status = mumei_ayuda_get_post_status();
 
 	// Make the state an array
 	if ( ! is_array( $state ) ) {
@@ -1782,14 +1782,14 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open', $query 
 
 	// Maybe restrict the count to the current user only
 	if (
-		( wpas_is_asadmin() && false === (bool) wpas_get_option( 'admin_see_all' ) )
-		|| ( ! wpas_is_asadmin() && wpas_is_agent() && false === (bool) wpas_get_option( 'agent_see_all' ) )
+		( mumei_ayuda_is_asadmin() && false === (bool) mumei_ayuda_get_option( 'admin_see_all' ) )
+		|| ( ! mumei_ayuda_is_asadmin() && mumei_ayuda_is_agent() && false === (bool) mumei_ayuda_get_option( 'agent_see_all' ) )
 	) {
 
 		global $current_user;
 
 		$args['meta_query'][] = array(
-			'key'     => '_wpas_assignee',
+			'key'     => '_mumei_ayuda_assignee',
 			'value'   => $current_user->ID,
 			'compare' => '=',
 		);
@@ -1799,24 +1799,24 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open', $query 
 	if( is_array( $query ) &&  count( $query ) > 0 ) {
 		$args = array_merge( $args, $query );
 	}
-	//return count( wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ) ) );
-	return wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ),'any', true, true ) ;
+	//return count( mumei_ayuda_get_tickets( $status, apply_filters( 'mumei_ayuda_get_ticket_count_by_status_args',$args ) ) );
+	return mumei_ayuda_get_tickets( $status, apply_filters( 'mumei_ayuda_get_ticket_count_by_status_args',$args ),'any', true, true ) ;
 
 }
 
-add_action( 'wp_ajax_wpas_load_replies', 'wpas_get_ticket_replies_ajax' );
-add_action( 'wp_ajax_nopriv_wpas_load_replies', 'wpas_get_ticket_replies_ajax' );
+add_action( 'wp_ajax_mumei_ayuda_load_replies', 'mumei_ayuda_get_ticket_replies_ajax' );
+add_action( 'wp_ajax_nopriv_mumei_ayuda_load_replies', 'mumei_ayuda_get_ticket_replies_ajax' );
 /**
  * Ajax function that returns a number of ticket replies
  *
  * @since 3.3
  * @return void
  */
-function wpas_get_ticket_replies_ajax() {
+function mumei_ayuda_get_ticket_replies_ajax() {
 
 	// Make sure we have a ticket ID to work with
 	if ( ! isset( $_POST['ticket_id'] ) || ( isset( $_POST['ticket_id'] ) && empty( $_POST[ 'ticket_id' ] ) )) {
-		echo json_encode( array( 'error' => esc_html__( 'No ticket ID given', 'awesome-support' ) ) );
+		echo json_encode( array( 'error' => esc_html__( 'No ticket ID given', 'ayuda-help-desk' ) ) );
 		die();
 	}
 	
@@ -1824,10 +1824,10 @@ function wpas_get_ticket_replies_ajax() {
 
 	//Check permission for capability of current user
 	if ( ! current_user_can( 'reply_ticket' ) ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'ayuda-help-desk') ), 403);		
     }	
 		
-	if( !check_ajax_referer( 'wpas_loads_replies', 'ticket_replies_nonce', false ) ) {		
+	if( !check_ajax_referer( 'mumei_ayuda_loads_replies', 'ticket_replies_nonce', false ) ) {		
 		wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
 		die();
 	}
@@ -1837,18 +1837,18 @@ function wpas_get_ticket_replies_ajax() {
 
 	// Make sure the ID exists
 	if ( ! is_object( $ticket ) || ! is_a( $ticket, 'WP_Post' ) ) {
-		echo json_encode( array( 'error' => esc_html__( 'Invalid ticket ID', 'awesome-support' ) ) );
+		echo json_encode( array( 'error' => esc_html__( 'Invalid ticket ID', 'ayuda-help-desk' ) ) );
 		die();
 	}
 
 	// Make sure the post is actually a ticket
 	if ( 'ticket' !== $ticket->post_type ) {
-		echo json_encode( array( 'error' => esc_html__( 'Given ID is not a ticket', 'awesome-support' ) ) );
+		echo json_encode( array( 'error' => esc_html__( 'Given ID is not a ticket', 'ayuda-help-desk' ) ) );
 		die();
 	}
 
-	$number_replies = apply_filters( 'wpas_get_ticket_replies_ajax_replies', wpas_get_option( 'replies_per_page', 10 ) );
-	$replies        = wpas_get_replies(
+	$number_replies = apply_filters( 'mumei_ayuda_get_ticket_replies_ajax_replies', mumei_ayuda_get_option( 'replies_per_page', 10 ) );
+	$replies        = mumei_ayuda_get_replies(
 		$ticket_id, 'any', array(
 			'posts_per_page' => $number_replies,
 			'no_found_rows'  => false,
@@ -1879,7 +1879,7 @@ function wpas_get_ticket_replies_ajax() {
 
 			ob_start();
 
-			wpas_get_template(
+			mumei_ayuda_get_template(
 				'partials/ticket-reply', array(
 					'time_ago' => $time_ago,
 					'user'     => $user,
@@ -1903,11 +1903,11 @@ function wpas_get_ticket_replies_ajax() {
 }
 
 
-add_action( 'wpas_backend_reply_content_after', 'wpas_show_reply_edited_msg', 10, 1 );
+add_action( 'mumei_ayuda_backend_reply_content_after', 'mumei_ayuda_show_reply_edited_msg', 10, 1 );
 /**
  * Show whether a ticket reply has been edited or not.
  *
- * Action hook: wpas_backend_reply_content_after
+ * Action hook: mumei_ayuda_backend_reply_content_after
  *              Hook located in metaboxes/replies-published.php.
  *
  * @since 5.2.0
@@ -1916,23 +1916,23 @@ add_action( 'wpas_backend_reply_content_after', 'wpas_show_reply_edited_msg', 10
  *
  * @return void
  */
-function wpas_show_reply_edited_msg( $reply_id ) {
+function mumei_ayuda_show_reply_edited_msg( $reply_id ) {
 
-	$edited = get_post_meta( $reply_id, 'wpas_reply_was_edited' );
+	$edited = get_post_meta( $reply_id, 'mumei_ayuda_reply_was_edited' );
 
 	if ( (int) $edited > 0 ) {
-		echo '<br />' . '<div class="wpas_footer_note">' . esc_html__( '* This reply has been edited.  See the logs for a full history of edits.', 'awesome-support' ) . '</div>';
+		echo '<br />' . '<div class="mumei_ayuda_footer_note">' . esc_html__( '* This reply has been edited.  See the logs for a full history of edits.', 'ayuda-help-desk' ) . '</div>';
 	}
 
 }
 
-add_action( 'wpas_backend_ticket_content_after', 'wpas_show_reply_deleted_msg', 10, 2 );
+add_action( 'mumei_ayuda_backend_ticket_content_after', 'mumei_ayuda_show_reply_deleted_msg', 10, 2 );
 /**
  * Show whether a ticket reply has been deleted.
  *
  * Because the reply is deleted, we have to show the message on the opening ticket post.
  *
- * Action hook: wpas_backend_ticket_content_after
+ * Action hook: mumei_ayuda_backend_ticket_content_after
  *              Hook located in metaboxes/message.php.
  *
  * @since 5.2.0
@@ -1942,30 +1942,30 @@ add_action( 'wpas_backend_ticket_content_after', 'wpas_show_reply_deleted_msg', 
  *
  * @return void
  */
-function wpas_show_reply_deleted_msg( $ticket_id, $ticket ) {
+function mumei_ayuda_show_reply_deleted_msg( $ticket_id, $ticket ) {
 
-	$post = get_post_meta( $ticket_id, 'wpas_reply_was_deleted' );
+	$post = get_post_meta( $ticket_id, 'mumei_ayuda_reply_was_deleted' );
 
 	if ( (int) $post > 0 ) {
-		echo '<br />' . '<div class="wpas_footer_note">' . esc_html__( '* This ticket has had replies deleted from it.  Depending on your settings at the time of deletion, the logs might have a full history of these edits.', 'awesome-support' ) . '</div>';
+		echo '<br />' . '<div class="mumei_ayuda_footer_note">' . esc_html__( '* This ticket has had replies deleted from it.  Depending on your settings at the time of deletion, the logs might have a full history of these edits.', 'ayuda-help-desk' ) . '</div>';
 	}
 
 }
 
-add_action( 'wp_ajax_wpas_edit_ticket_content', 'wpas_edit_ticket_content' );
-add_action( 'wp_ajax_nopriv_wpas_edit_ticket_content', 'wpas_edit_ticket_content' );
+add_action( 'wp_ajax_mumei_ayuda_edit_ticket_content', 'mumei_ayuda_edit_ticket_content' );
+add_action( 'wp_ajax_nopriv_mumei_ayuda_edit_ticket_content', 'mumei_ayuda_edit_ticket_content' );
 /**
  * Save the ticket content from editing
  *
  * @return void
  */
-function wpas_edit_ticket_content() {
+function mumei_ayuda_edit_ticket_content() {
 
 	/**
 	 * Security checking. Verify ajax via nonce.
 	 */
 	if( !check_ajax_referer( 'wpas-editor-content-nonce', 'nonce', false ) ) {
-		$response['message'] = __( "You don't have access to perform this action." , 'awesome-support' );
+		$response['message'] = __( "You don't have access to perform this action." , 'ayuda-help-desk' );
 		wp_send_json( $response );
 		die();
 	}
@@ -1975,7 +1975,7 @@ function wpas_edit_ticket_content() {
 	 */
 	$response = array(
 		'code'    => 404,
-		'message' => __( 'Nothing found!', 'awesome-support' ),
+		'message' => __( 'Nothing found!', 'ayuda-help-desk' ),
 	);
 
 	/**
@@ -1988,7 +1988,7 @@ function wpas_edit_ticket_content() {
 	 * Make sure we have ticket ID
 	 */
 	if ( ! $ticket_id ) {
-		$response['message'] = __( 'Ticket ID missing. Invalid request!', 'awesome-support' );
+		$response['message'] = __( 'Ticket ID missing. Invalid request!', 'ayuda-help-desk' );
 		wp_send_json( $response );
 		wp_die();
 	}
@@ -1997,14 +1997,14 @@ function wpas_edit_ticket_content() {
 	 * The updated ticket content is missing, exit
 	 */
 	if ( ! $content ) {
-		$response['message'] = __( 'No ticket message found. Invalid request!', 'awesome-support' );
+		$response['message'] = __( 'No ticket message found. Invalid request!', 'ayuda-help-desk' );
 		wp_send_json( $response );
 		wp_die();
 	}
 	
 	//Check permission for capability of current user	
-	if ( ! current_user_can( 'edit_ticket', $ticket_id ) || !wpas_can_view_ticket( $ticket_id ) ) {		
-		$response['message'] = __( "You don't have access to perform this action." , 'awesome-support' );
+	if ( ! current_user_can( 'edit_ticket', $ticket_id ) || !mumei_ayuda_can_view_ticket( $ticket_id ) ) {		
+		$response['message'] = __( "You don't have access to perform this action." , 'ayuda-help-desk' );
 		wp_send_json( $response );
 		die();
 	}
@@ -2014,7 +2014,7 @@ function wpas_edit_ticket_content() {
 	 */
 	$is_ticket = get_post_type( $ticket_id );
 	if ( $is_ticket !== 'ticket' ) {
-		$response['message'] = __( 'Id provided is not a valid ticket. Invalid request!', 'awesome-support' );
+		$response['message'] = __( 'Id provided is not a valid ticket. Invalid request!', 'ayuda-help-desk' );
 		wp_send_json( $response );
 		wp_die();
 	}
@@ -2024,7 +2024,7 @@ function wpas_edit_ticket_content() {
 	 */
 	$original_content = get_post( $ticket_id );
 	if ( is_null( $original_content ) ) {
-		$response['message'] = __( 'No ticket found. Invalid request!', 'awesome-support' );
+		$response['message'] = __( 'No ticket found. Invalid request!', 'ayuda-help-desk' );
 		wp_send_json( $response );
 		wp_die();
 	}
@@ -2051,16 +2051,16 @@ function wpas_edit_ticket_content() {
 			$response['content'] = $original_content->post_content;
 		} else {
 			$response['code']    = 200;
-			$response['message'] = __( 'You have successfully edited content!', 'awesome-support' );
+			$response['message'] = __( 'You have successfully edited content!', 'ayuda-help-desk' );
 			$response['content'] = $content;
 			/**
 			 * Log the edits to ticket
 			 */
-			wpas_log_ticket_edits( $ticket_id, $original_content );
+			mumei_ayuda_log_ticket_edits( $ticket_id, $original_content );
 		}
 	} else {
 		$response['code']    = 404;
-		$response['message'] = __( 'Nothing has been updated. You have same content as before..', 'awesome-support' );
+		$response['message'] = __( 'Nothing has been updated. You have same content as before..', 'ayuda-help-desk' );
 		$response['content'] = $original_content->post_content;
 	}
 
@@ -2079,35 +2079,35 @@ function wpas_edit_ticket_content() {
  *
  * @return void
  */
-function wpas_log_ticket_edits( $ticket_id, $original_ticket ) {
+function mumei_ayuda_log_ticket_edits( $ticket_id, $original_ticket ) {
 
-	if ( 'low' === wpas_get_option( 'log_content_edit_level', 'low' ) ) {
-		$contents_to_log = __( 'Original data not available because detailed logging is not turned on or allowed', 'awesome-support' );
+	if ( 'low' === mumei_ayuda_get_option( 'log_content_edit_level', 'low' ) ) {
+		$contents_to_log = __( 'Original data not available because detailed logging is not turned on or allowed', 'ayuda-help-desk' );
 	} else {
 		$contents_to_log = $original_ticket->post_content;
 	}
 
 	// translators: %1$s is the ticket number.
-	$x_content = __( 'Ticket content located on ticket #%1$s was edited.', 'awesome-support' );
-	wpas_log_edits( $ticket_id, sprintf( $x_content, (string) $ticket_id ), $contents_to_log );
+	$x_content = __( 'Ticket content located on ticket #%1$s was edited.', 'ayuda-help-desk' );
+	mumei_ayuda_log_edits( $ticket_id, sprintf( $x_content, (string) $ticket_id ), $contents_to_log );
 
 }
 
-add_action( 'wp_ajax_wpas_load_reply_history', 'wpas_load_reply_history' );
-add_action( 'wp_ajax_nopriv_wpas_load_reply_history', 'wpas_load_reply_history' );
+add_action( 'wp_ajax_mumei_ayuda_load_reply_history', 'mumei_ayuda_load_reply_history' );
+add_action( 'wp_ajax_nopriv_mumei_ayuda_load_reply_history', 'mumei_ayuda_load_reply_history' );
 /**
  * Ajax function that returns a the history of replies
  *
  * @since 3.3
  * @return void
  */
-function wpas_load_reply_history() {
+function mumei_ayuda_load_reply_history() {
 	/**
 	 * Default response messages
 	 */
 	$response = array(
 		'code'    => 404,
-		'message' => __( 'Invalid request!', 'awesome-support' ),
+		'message' => __( 'Invalid request!', 'ayuda-help-desk' ),
 		'data'    => array(),
 	);
 
@@ -2126,7 +2126,7 @@ function wpas_load_reply_history() {
 		die();
 	}
 	
-	if( !check_ajax_referer( 'wpas_history_reply_nonce', 'history_nonce', false ) ) {
+	if( !check_ajax_referer( 'mumei_ayuda_history_reply_nonce', 'history_nonce', false ) ) {
 		
 		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
 		die();
@@ -2151,13 +2151,13 @@ function wpas_load_reply_history() {
 		 */
 		$response = array(
 			'code'    => 200,
-			'message' => __( 'Edit history', 'awesome-support' ),
+			'message' => __( 'Edit history', 'ayuda-help-desk' ),
 			'data'    => $reply_history,
 		);
 		wp_send_json( $response );
 	} else {
 		$response['code']    = 404;
-		$response['message'] = __( 'No edit history found!', 'awesome-support' );
+		$response['message'] = __( 'No edit history found!', 'ayuda-help-desk' );
 		$response['data']    = '';
 		wp_send_json( $response );
 	}
@@ -2173,13 +2173,13 @@ function wpas_load_reply_history() {
  * NOTE: If the short description is identical, this
  * function will return the first ID
  */
-function wpas_get_gdpr_data( $short_description ) {
+function mumei_ayuda_get_gdpr_data( $short_description ) {
 	$return_id = false;
-	if( $short_description === wpas_get_option( 'gdpr_notice_short_desc_01', false ) ) {
+	if( $short_description === mumei_ayuda_get_option( 'gdpr_notice_short_desc_01', false ) ) {
 		$return_id = 1;
-	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_02', false ) ) {
+	}elseif( $short_description === mumei_ayuda_get_option( 'gdpr_notice_short_desc_02', false ) ) {
 		$return_id = 2;
-	}elseif( $short_description === wpas_get_option( 'gdpr_notice_short_desc_03', false ) ) {
+	}elseif( $short_description === mumei_ayuda_get_option( 'gdpr_notice_short_desc_03', false ) ) {
 		$return_id = 3;
 	}
 
@@ -2193,7 +2193,7 @@ function wpas_get_gdpr_data( $short_description ) {
  *
  * @param int $post_id
  */
-function wpas_delete_post_attachments( $post_id ) {
+function mumei_ayuda_delete_post_attachments( $post_id ) {
 
 	$attachments = get_attached_media( '', $post_id );
 
@@ -2209,7 +2209,7 @@ function wpas_delete_post_attachments( $post_id ) {
  * @param array $data
  * @param array $incoming_data
  */
-function wpas_clone_ticket_before_assigned( $new_ticket_id, $data, $incoming_data ) {
+function mumei_ayuda_clone_ticket_before_assigned( $new_ticket_id, $data, $incoming_data ) {
 
 	// Clone custom fields
 	$clone_custom_fields_list = is_array( $incoming_data['custom_fields'] ) ? $incoming_data['custom_fields'] : array();
@@ -2230,7 +2230,7 @@ function wpas_clone_ticket_before_assigned( $new_ticket_id, $data, $incoming_dat
 			continue;
 		}
 
-		$cf_field = new WPAS_Custom_Field( $cf_name, $custom_fields[ $cf_name ] );
+		$cf_field = new MUMEI_AYUDA_Custom_Field( $cf_name, $custom_fields[ $cf_name ] );
 		$cf_value = $cf_field->get_field_value( false, $ticket_id );
 
 
@@ -2260,7 +2260,7 @@ function wpas_clone_ticket_before_assigned( $new_ticket_id, $data, $incoming_dat
  * @param array $args				  Setting to clone ticket
  * @return integer|WP_Error           New ticket ID on success or WP_Error on failure
  */
-function wpas_clone_ticket( $ticket_id, $args = array() ) {
+function mumei_ayuda_clone_ticket( $ticket_id, $args = array() ) {
 	
 	$defaults = array(
 		'clone_replies'				=> true,
@@ -2274,7 +2274,7 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 
 	$args = wp_parse_args( $args, $defaults );
 
-	$args = apply_filters( 'wpas_clone_ticket_args', $args, $ticket_id );
+	$args = apply_filters( 'mumei_ayuda_clone_ticket_args', $args, $ticket_id );
 
 
 
@@ -2282,21 +2282,21 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 
 	// Check if source ticket id is valid
 	if( !$ticket || 'ticket' !== get_post_type( $ticket ) ) {
-		return new WP_Error( 'invalid_source_ticket_id', __( 'Source ticket id is not valid.', 'awesome-support' ) );
+		return new WP_Error( 'invalid_source_ticket_id', __( 'Source ticket id is not valid.', 'ayuda-help-desk' ) );
 	}
 
 
 	$title = $ticket->post_title;
 
 	// Process tags in ticket content
-	$emails = new WPAS_Email_Notification( $ticket_id );
+	$emails = new MUMEI_AYUDA_Email_Notification( $ticket_id );
 	$content = wpautop( str_replace( '\'', '&apos;', $emails->fetch( $ticket->post_content ) ) );
 
 	$customer = $ticket->post_author;
 
 	$ticket_status = $args['cloned_ticket_status'];
 
-	$ticket_data = apply_filters( 'wpas_clone_ticket_data', array(
+	$ticket_data = apply_filters( 'mumei_ayuda_clone_ticket_data', array(
 		'post_content'   => $content,
 		'post_name'      => $title,
 		'post_title'     => $title,
@@ -2309,10 +2309,10 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 
 
 	$clone_agent   = $args['clone_agent'];
-	$agent_id = $clone_agent ?  get_post_meta( $ticket_id, '_wpas_assignee', true ) : false;
+	$agent_id = $clone_agent ?  get_post_meta( $ticket_id, '_mumei_ayuda_assignee', true ) : false;
 
 
-	$agent_id = apply_filters( 'wpas_clone_ticket_agent_id', $agent_id, $ticket, $args );
+	$agent_id = apply_filters( 'mumei_ayuda_clone_ticket_agent_id', $agent_id, $ticket, $args );
 
 
 	$ticket_data['custom_fields'] = is_array( $args['clone_custom_fields_list'] ) ? $args['clone_custom_fields_list'] : array();
@@ -2320,42 +2320,42 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 
 	// Prevent notification while cloning ticket
 	if( $args['suppress_notifications'] ) {
-		remove_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 11 );
-		remove_action( 'wpas_open_ticket_after', 'wpas_notify_assignment', 12 );
+		remove_action( 'mumei_ayuda_open_ticket_after', 'mumei_ayuda_notify_confirmation', 11 );
+		remove_action( 'mumei_ayuda_open_ticket_after', 'mumei_ayuda_notify_assignment', 12 );
 	}
 
 
-	add_action( 'wpas_open_ticket_before_assigned', 'wpas_clone_ticket_before_assigned', 11, 3 );
+	add_action( 'mumei_ayuda_open_ticket_before_assigned', 'mumei_ayuda_clone_ticket_before_assigned', 11, 3 );
 
-	$new_ticket_id = wpas_insert_ticket( $ticket_data, false, $agent_id );
+	$new_ticket_id = mumei_ayuda_insert_ticket( $ticket_data, false, $agent_id );
 
-	remove_action( 'wpas_open_ticket_before_assigned', 'wpas_clone_ticket_before_assigned', 11 );
+	remove_action( 'mumei_ayuda_open_ticket_before_assigned', 'mumei_ayuda_clone_ticket_before_assigned', 11 );
 
 	// Add removed notification hooks back
 	if( $args['suppress_notifications'] ) {
-		add_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 11, 2 );
-		add_action( 'wpas_open_ticket_after', 'wpas_notify_assignment', 12, 2 );
+		add_action( 'mumei_ayuda_open_ticket_after', 'mumei_ayuda_notify_confirmation', 11, 2 );
+		add_action( 'mumei_ayuda_open_ticket_after', 'mumei_ayuda_notify_assignment', 12, 2 );
 	}
 
 	if( !$new_ticket_id ) {
-		return new WP_Error( 'ticket_clone_failed', __( 'Ticket cloning failed', 'awesome-support' ) );
+		return new WP_Error( 'ticket_clone_failed', __( 'Ticket cloning failed', 'ayuda-help-desk' ) );
 	}
 
-	do_action( 'wpas_clone_ticket_added_after', $new_ticket_id, $ticket, $args );
+	do_action( 'mumei_ayuda_clone_ticket_added_after', $new_ticket_id, $ticket, $args );
 
 
 	// Clone replies
 	$clone_replies = $args['clone_replies'];
 	if( $clone_replies ) {
 
-		$replies = wpas_get_replies( $ticket_id );
+		$replies = mumei_ayuda_get_replies( $ticket_id );
 
 		if( $args['suppress_notifications'] ) {
-			remove_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10 );
+			remove_action( 'mumei_ayuda_add_reply_complete', 'mumei_ayuda_notify_reply', 10 );
 		}
 
 		// translators: %s is the ticket number.
-		$x_content = __( 'Reply to ticket %s', 'awesome-support' );
+		$x_content = __( 'Reply to ticket %s', 'ayuda-help-desk' );
 
 		foreach( $replies as $reply ) {
 
@@ -2371,17 +2371,17 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 				'post_author'	 => $reply->post_author
 			);
 
-			$reply_id = wpas_insert_reply( $reply_data, $new_ticket_id );
+			$reply_id = mumei_ayuda_insert_reply( $reply_data, $new_ticket_id );
 
-			do_action( 'wpas_clone_ticket_reply_added_after', $reply_id, $new_ticket_id, $ticket, $args );
+			do_action( 'mumei_ayuda_clone_ticket_reply_added_after', $reply_id, $new_ticket_id, $ticket, $args );
 		}
 
 		if( $args['suppress_notifications'] ) {
-			add_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10, 2 );
+			add_action( 'mumei_ayuda_add_reply_complete', 'mumei_ayuda_notify_reply', 10, 2 );
 		}
 	}
 
-	do_action( 'wpas_clone_ticket_completed_after', $new_ticket_id, $ticket, $args );
+	do_action( 'mumei_ayuda_clone_ticket_completed_after', $new_ticket_id, $ticket, $args );
 
 	return $new_ticket_id;
 

@@ -9,15 +9,15 @@
  * @copyright 2014-2017 AwesomeSupport
  */
 
-add_action( 'init', 'wpas_register_post_type', 10, 0 );
+add_action( 'init', 'mumei_ayuda_register_post_type', 10, 0 );
 /**
  * Register the ticket post type.
  *
  * @since 1.0.2
  */
-function wpas_register_post_type() {
+function mumei_ayuda_register_post_type() {
 
-	$slug = defined( 'WPAS_SLUG' ) ? sanitize_title( WPAS_SLUG ) : 'ticket';
+	$slug = defined( 'MUMEI_AYUDA_SLUG' ) ? sanitize_title( MUMEI_AYUDA_SLUG ) : 'ticket';
 
 	/* Supported components */
 	$supports = array( 'title' );
@@ -25,7 +25,7 @@ function wpas_register_post_type() {
 	/* Template components for Gutenberg */
 	$gutenburg_new_template = array(
 					array( 'core/paragraph', array(
-							'placeholder' => _x('Enter the contents for your new ticket here', 'placeholder for main paragraph when adding a new ticket', 'awesome-support' )
+							'placeholder' => _x('Enter the contents for your new ticket here', 'placeholder for main paragraph when adding a new ticket', 'ayuda-help-desk' )
 						) ),
 				);
 
@@ -35,28 +35,28 @@ function wpas_register_post_type() {
 	}
 
 	/* Post type menu icon */
-	$icon = version_compare( get_bloginfo( 'version' ), '3.8', '>=') ? 'dashicons-forms' : WPAS_ADMIN_ASSETS_URL . 'images/icon-tickets.png';
+	$icon = version_compare( get_bloginfo( 'version' ), '3.8', '>=') ? 'dashicons-forms' : MUMEI_AYUDA_ADMIN_ASSETS_URL . 'images/icon-tickets.png';
 
 	/* Post type labels */
-	$labels = apply_filters( 'wpas_ticket_type_labels', array(
-			'name'               => _x( 'Tickets', 'post type general name', 'awesome-support' ),
-			'singular_name'      => _x( 'Ticket', 'post type singular name', 'awesome-support' ),
-			'menu_name'          => _x( 'Tickets', 'admin menu', 'awesome-support' ),
-			'name_admin_bar'     => _x( 'Ticket', 'add new on admin bar', 'awesome-support' ),
-			'add_new'            => _x( 'Add New', 'ticket', 'awesome-support' ),
-			'add_new_item'       => __( 'Add New Ticket', 'awesome-support' ),
-			'new_item'           => __( 'New Ticket', 'awesome-support' ),
-			'edit_item'          => __( 'Edit Ticket', 'awesome-support' ),
-			'view_item'          => __( 'View Ticket', 'awesome-support' ),
-			'all_items'          => __( 'All Tickets', 'awesome-support' ),
-			'search_items'       => __( 'Search Tickets', 'awesome-support' ),
-			'parent_item_colon'  => __( 'Parent Ticket:', 'awesome-support' ),
-			'not_found'          => __( 'No tickets found.', 'awesome-support' ),
-			'not_found_in_trash' => __( 'No tickets found in Trash.', 'awesome-support' ),
+	$labels = apply_filters( 'mumei_ayuda_ticket_type_labels', array(
+			'name'               => _x( 'Tickets', 'post type general name', 'ayuda-help-desk' ),
+			'singular_name'      => _x( 'Ticket', 'post type singular name', 'ayuda-help-desk' ),
+			'menu_name'          => _x( 'Tickets', 'admin menu', 'ayuda-help-desk' ),
+			'name_admin_bar'     => _x( 'Ticket', 'add new on admin bar', 'ayuda-help-desk' ),
+			'add_new'            => _x( 'Add New', 'ticket', 'ayuda-help-desk' ),
+			'add_new_item'       => __( 'Add New Ticket', 'ayuda-help-desk' ),
+			'new_item'           => __( 'New Ticket', 'ayuda-help-desk' ),
+			'edit_item'          => __( 'Edit Ticket', 'ayuda-help-desk' ),
+			'view_item'          => __( 'View Ticket', 'ayuda-help-desk' ),
+			'all_items'          => __( 'All Tickets', 'ayuda-help-desk' ),
+			'search_items'       => __( 'Search Tickets', 'ayuda-help-desk' ),
+			'parent_item_colon'  => __( 'Parent Ticket:', 'ayuda-help-desk' ),
+			'not_found'          => __( 'No tickets found.', 'ayuda-help-desk' ),
+			'not_found_in_trash' => __( 'No tickets found in Trash.', 'ayuda-help-desk' ),
 	) );
 
 	/* Post type capabilities */
-	$cap = apply_filters( 'wpas_ticket_type_cap', array(
+	$cap = apply_filters( 'mumei_ayuda_ticket_type_cap', array(
 			'read'					 => 'view_ticket',
 			'read_post'				 => 'view_ticket',
 			'read_private_posts' 	 => 'view_private_ticket',
@@ -74,7 +74,7 @@ function wpas_register_post_type() {
 	) );
 
 	/* Post type arguments */
-	$args = apply_filters( 'wpas_ticket_type_args', array(
+	$args = apply_filters( 'mumei_ayuda_ticket_type_args', array(
 			'labels'              => $labels,
 			'public'              => true,
 			'exclude_from_search' => true,
@@ -82,7 +82,7 @@ function wpas_register_post_type() {
 			'show_ui'             => true,
 			'show_in_menu'        => true,
 			'query_var'           => true,
-			'rewrite'             => array( 'slug' => apply_filters( 'wpas_rewrite_slug', $slug ), 'with_front' => false ),
+			'rewrite'             => array( 'slug' => apply_filters( 'mumei_ayuda_rewrite_slug', $slug ), 'with_front' => false ),
 			'capability_type'     => 'view_ticket',
 			'capabilities'        => $cap,
 			'has_archive'         => true,
@@ -97,7 +97,7 @@ function wpas_register_post_type() {
 
 }
 
-add_action( 'post_updated_messages', 'wpas_post_type_updated_messages', 10, 1 );
+add_action( 'post_updated_messages', 'mumei_ayuda_post_type_updated_messages', 10, 1 );
 /**
  * Ticket update messages.
  *
@@ -107,7 +107,7 @@ add_action( 'post_updated_messages', 'wpas_post_type_updated_messages', 10, 1 );
  *
  * @return array           Amended post update messages with new CPT update messages.
  */
-function wpas_post_type_updated_messages( $messages ) {
+function mumei_ayuda_post_type_updated_messages( $messages ) {
 
 	$post             = get_post();
 	$post_type        = get_post_type( $post );
@@ -118,37 +118,37 @@ function wpas_post_type_updated_messages( $messages ) {
 	}
 
 	// translators: %1$s is the scheduled ticket date.
-	$x_content = __( 'Ticket scheduled for: <strong>%1$s</strong>.', 'awesome-support' );
+	$x_content = __( 'Ticket scheduled for: <strong>%1$s</strong>.', 'ayuda-help-desk' );
 
 	$messages[$post_type] = array(
 			0  => '', // Unused. Messages start at index 1.
-			1  => __( 'Ticket updated.', 'awesome-support' ),
-			2  => __( 'Custom field updated.', 'awesome-support' ),
-			3  => __( 'Custom field deleted.', 'awesome-support' ),
-			4  => __( 'Ticket updated.', 'awesome-support' ),
+			1  => __( 'Ticket updated.', 'ayuda-help-desk' ),
+			2  => __( 'Custom field updated.', 'ayuda-help-desk' ),
+			3  => __( 'Custom field deleted.', 'ayuda-help-desk' ),
+			4  => __( 'Ticket updated.', 'ayuda-help-desk' ),
 			/* translators: %s: date and time of the revision */
-			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Ticket restored to revision from %s', 'awesome-support' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-			6  => __( 'Ticket published.', 'awesome-support' ),
-			7  => __( 'Ticket saved.', 'awesome-support' ),
-			8  => __( 'Ticket submitted.', 'awesome-support' ),
+			5  => isset( $_GET['revision'] ) ? sprintf( __( 'Ticket restored to revision from %s', 'ayuda-help-desk' ), wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6  => __( 'Ticket published.', 'ayuda-help-desk' ),
+			7  => __( 'Ticket saved.', 'ayuda-help-desk' ),
+			8  => __( 'Ticket submitted.', 'ayuda-help-desk' ),
 			9  => sprintf(
 					$x_content,
 					// translators: Publish box date format, see http://php.net/date
-					date_i18n( __( 'M j, Y @ G:i', 'awesome-support' ), strtotime( $post->post_date ) )
+					date_i18n( __( 'M j, Y @ G:i', 'ayuda-help-desk' ), strtotime( $post->post_date ) )
 			),
-			10 => __( 'Ticket draft updated.', 'awesome-support' )
+			10 => __( 'Ticket draft updated.', 'ayuda-help-desk' )
 	);
 
 	if ( $post_type_object->publicly_queryable ) {
 		$permalink = get_permalink( $post->ID );
 
-		$view_link = sprintf( ' <a href="%s">%s</a>', esc_url( $permalink ), __( 'View ticket', 'awesome-support' ) );
+		$view_link = sprintf( ' <a href="%s">%s</a>', esc_url( $permalink ), __( 'View ticket', 'ayuda-help-desk' ) );
 		$messages[ $post_type ][1] .= $view_link;
 		$messages[ $post_type ][6] .= $view_link;
 		$messages[ $post_type ][9] .= $view_link;
 
 		$preview_permalink = add_query_arg( 'preview', 'true', $permalink );
-		$preview_link = sprintf( ' <a target="_blank" href="%s">%s</a>', esc_url( $preview_permalink ), __( 'Preview ticket', 'awesome-support' ) );
+		$preview_link = sprintf( ' <a target="_blank" href="%s">%s</a>', esc_url( $preview_permalink ), __( 'Preview ticket', 'ayuda-help-desk' ) );
 		$messages[ $post_type ][8]  .= $preview_link;
 		$messages[ $post_type ][10] .= $preview_link;
 	}
@@ -156,7 +156,7 @@ function wpas_post_type_updated_messages( $messages ) {
 	return $messages;
 }
 
-add_action( 'init', 'wpas_register_secondary_post_type', 10, 0 );
+add_action( 'init', 'mumei_ayuda_register_secondary_post_type', 10, 0 );
 /**
  * Register secondary post types.
  *
@@ -165,57 +165,57 @@ add_action( 'init', 'wpas_register_secondary_post_type', 10, 0 );
  *
  * @since  3.0.0
  */
-function wpas_register_secondary_post_type() {
+function mumei_ayuda_register_secondary_post_type() {
 
-	$ticket_reply_labels = apply_filters( 'wpas_ticket_replies_type_labels', array(
-			'name'               => _x( 'Ticket Replies', 'post type general name', 'awesome-support' ),
-			'singular_name'      => _x( 'Ticket Reply', 'post type singular name', 'awesome-support' ),
-			'menu_name'          => _x( 'Ticket Reply', 'admin menu', 'awesome-support' ),
-			'name_admin_bar'     => _x( 'Ticket Reply', 'add new on admin bar', 'awesome-support' ),
-			'add_new'            => _x( 'Add New', 'Ticket Reply', 'awesome-support' ),
-			'add_new_item'       => __( 'Add New Ticket Reply', 'awesome-support' ),
-			'new_item'           => __( 'New Ticket Reply', 'awesome-support' ),
-			'edit_item'          => __( 'Edit Ticket Reply', 'awesome-support' ),
-			'view_item'          => __( 'View Ticket Reply', 'awesome-support' ),
-			'all_items'          => __( 'All Ticket Replies', 'awesome-support' ),
-			'search_items'       => __( 'Search Ticket Reply', 'awesome-support' ),
-			'parent_item_colon'  => __( 'Parent Ticket Replies:', 'awesome-support' ),
-			'not_found'          => __( 'No Ticket Replies found.', 'awesome-support' ),
-			'not_found_in_trash' => __( 'No Ticket Replies found in Trash.', 'awesome-support' )
+	$ticket_reply_labels = apply_filters( 'mumei_ayuda_ticket_replies_type_labels', array(
+			'name'               => _x( 'Ticket Replies', 'post type general name', 'ayuda-help-desk' ),
+			'singular_name'      => _x( 'Ticket Reply', 'post type singular name', 'ayuda-help-desk' ),
+			'menu_name'          => _x( 'Ticket Reply', 'admin menu', 'ayuda-help-desk' ),
+			'name_admin_bar'     => _x( 'Ticket Reply', 'add new on admin bar', 'ayuda-help-desk' ),
+			'add_new'            => _x( 'Add New', 'Ticket Reply', 'ayuda-help-desk' ),
+			'add_new_item'       => __( 'Add New Ticket Reply', 'ayuda-help-desk' ),
+			'new_item'           => __( 'New Ticket Reply', 'ayuda-help-desk' ),
+			'edit_item'          => __( 'Edit Ticket Reply', 'ayuda-help-desk' ),
+			'view_item'          => __( 'View Ticket Reply', 'ayuda-help-desk' ),
+			'all_items'          => __( 'All Ticket Replies', 'ayuda-help-desk' ),
+			'search_items'       => __( 'Search Ticket Reply', 'ayuda-help-desk' ),
+			'parent_item_colon'  => __( 'Parent Ticket Replies:', 'ayuda-help-desk' ),
+			'not_found'          => __( 'No Ticket Replies found.', 'ayuda-help-desk' ),
+			'not_found_in_trash' => __( 'No Ticket Replies found in Trash.', 'ayuda-help-desk' )
 	)	);
 	
-	$ticket_history_labels = apply_filters( 'wpas_ticket_history_type_labels', array(
-			'name'               => _x( 'Ticket History', 'post type general name', 'awesome-support' ),
-			'singular_name'      => _x( 'Ticket History', 'post type singular name', 'awesome-support' ),
-			'menu_name'          => _x( 'Ticket History', 'admin menu', 'awesome-support' ),
-			'name_admin_bar'     => _x( 'Ticket History', 'add new on admin bar', 'awesome-support' ),
-			'add_new'            => _x( 'Add History', 'Ticket History', 'awesome-support' ),
-			'add_new_item'       => __( 'Add New Ticket History', 'awesome-support' ),
-			'new_item'           => __( 'New Ticket History', 'awesome-support' ),
-			'edit_item'          => __( 'Edit Ticket History', 'awesome-support' ),
-			'view_item'          => __( 'View Ticket History', 'awesome-support' ),
-			'all_items'          => __( 'All Ticket History', 'awesome-support' ),
-			'search_items'       => __( 'Search Ticket History', 'awesome-support' ),
-			'parent_item_colon'  => __( 'Parent Ticket History:', 'awesome-support' ),
-			'not_found'          => __( 'No Ticket History found.', 'awesome-support' ),
-			'not_found_in_trash' => __( 'No Ticket History found in Trash.', 'awesome-support' )
+	$ticket_history_labels = apply_filters( 'mumei_ayuda_ticket_history_type_labels', array(
+			'name'               => _x( 'Ticket History', 'post type general name', 'ayuda-help-desk' ),
+			'singular_name'      => _x( 'Ticket History', 'post type singular name', 'ayuda-help-desk' ),
+			'menu_name'          => _x( 'Ticket History', 'admin menu', 'ayuda-help-desk' ),
+			'name_admin_bar'     => _x( 'Ticket History', 'add new on admin bar', 'ayuda-help-desk' ),
+			'add_new'            => _x( 'Add History', 'Ticket History', 'ayuda-help-desk' ),
+			'add_new_item'       => __( 'Add New Ticket History', 'ayuda-help-desk' ),
+			'new_item'           => __( 'New Ticket History', 'ayuda-help-desk' ),
+			'edit_item'          => __( 'Edit Ticket History', 'ayuda-help-desk' ),
+			'view_item'          => __( 'View Ticket History', 'ayuda-help-desk' ),
+			'all_items'          => __( 'All Ticket History', 'ayuda-help-desk' ),
+			'search_items'       => __( 'Search Ticket History', 'ayuda-help-desk' ),
+			'parent_item_colon'  => __( 'Parent Ticket History:', 'ayuda-help-desk' ),
+			'not_found'          => __( 'No Ticket History found.', 'ayuda-help-desk' ),
+			'not_found_in_trash' => __( 'No Ticket History found in Trash.', 'ayuda-help-desk' )
 	)	);	
 	
-	$ticket_log_labels = apply_filters( 'wpas_ticket_log_type_labels', array(
-			'name'               => _x( 'Ticket Log', 'post type general name', 'awesome-support' ),
-			'singular_name'      => _x( 'Ticket Log', 'post type singular name', 'awesome-support' ),
-			'menu_name'          => _x( 'Ticket Log', 'admin menu', 'awesome-support' ),
-			'name_admin_bar'     => _x( 'Ticket Log', 'add new on admin bar', 'awesome-support' ),
-			'add_new'            => _x( 'Add Ticket Log', 'Ticket Log', 'awesome-support' ),
-			'add_new_item'       => __( 'Add New Ticket Log', 'awesome-support' ),
-			'new_item'           => __( 'New Ticket Log', 'awesome-support' ),
-			'edit_item'          => __( 'Edit Ticket Log', 'awesome-support' ),
-			'view_item'          => __( 'View Ticket Log', 'awesome-support' ),
-			'all_items'          => __( 'All Ticket Logs', 'awesome-support' ),
-			'search_items'       => __( 'Search Ticket Logs', 'awesome-support' ),
-			'parent_item_colon'  => __( 'Parent Ticket Log:', 'awesome-support' ),
-			'not_found'          => __( 'No Ticket Logs found.', 'awesome-support' ),
-			'not_found_in_trash' => __( 'No Ticket Logs found in Trash.', 'awesome-support' )
+	$ticket_log_labels = apply_filters( 'mumei_ayuda_ticket_log_type_labels', array(
+			'name'               => _x( 'Ticket Log', 'post type general name', 'ayuda-help-desk' ),
+			'singular_name'      => _x( 'Ticket Log', 'post type singular name', 'ayuda-help-desk' ),
+			'menu_name'          => _x( 'Ticket Log', 'admin menu', 'ayuda-help-desk' ),
+			'name_admin_bar'     => _x( 'Ticket Log', 'add new on admin bar', 'ayuda-help-desk' ),
+			'add_new'            => _x( 'Add Ticket Log', 'Ticket Log', 'ayuda-help-desk' ),
+			'add_new_item'       => __( 'Add New Ticket Log', 'ayuda-help-desk' ),
+			'new_item'           => __( 'New Ticket Log', 'ayuda-help-desk' ),
+			'edit_item'          => __( 'Edit Ticket Log', 'ayuda-help-desk' ),
+			'view_item'          => __( 'View Ticket Log', 'ayuda-help-desk' ),
+			'all_items'          => __( 'All Ticket Logs', 'ayuda-help-desk' ),
+			'search_items'       => __( 'Search Ticket Logs', 'ayuda-help-desk' ),
+			'parent_item_colon'  => __( 'Parent Ticket Log:', 'ayuda-help-desk' ),
+			'not_found'          => __( 'No Ticket Logs found.', 'ayuda-help-desk' ),
+			'not_found_in_trash' => __( 'No Ticket Logs found in Trash.', 'ayuda-help-desk' )
 	)	);		
 	
 	register_post_type( 'ticket_reply', array( 'labels' => $ticket_reply_labels, 'public' => false, 'exclude_from_search' => true, 'supports' => array( 'editor' ) ) );
@@ -223,16 +223,16 @@ function wpas_register_secondary_post_type() {
 	register_post_type( 'ticket_log', array( 'labels' => $ticket_log_labels, 'public' => false, 'exclude_from_search' => true ) );
 }
 
-add_action( 'init', 'wpas_register_post_status', 10, 0 );
+add_action( 'init', 'mumei_ayuda_register_post_status', 10, 0 );
 /**
  * Register custom ticket status.
  *
  * @since  3.0.0
  * @return void
  */
-function wpas_register_post_status() {
+function mumei_ayuda_register_post_status() {
 
-	$status = wpas_get_post_status();
+	$status = mumei_ayuda_get_post_status();
 
 	foreach ( $status as $id => $custom_status ) {
 		// translators: %s is the custom_status.
@@ -252,7 +252,7 @@ function wpas_register_post_status() {
 					'singular' => $singular,
 					'plural'   => $plural,
 					'context'  => null,
-					'domain'   => 'awesome-support',
+					'domain'   => 'ayuda-help-desk',
 				),
 		);
 
@@ -262,8 +262,8 @@ function wpas_register_post_status() {
 	/**
 	 * Hardcode the read and unread status used for replies.
 	 */
-	register_post_status( 'read',   array( 'label' => _x( 'Read', 'Reply status', 'awesome-support' ), 'public' => false ) );
-	register_post_status( 'unread', array( 'label' => _x( 'Unread', 'Reply status', 'awesome-support' ), 'public' => false ) );
+	register_post_status( 'read',   array( 'label' => _x( 'Read', 'Reply status', 'ayuda-help-desk' ), 'public' => false ) );
+	register_post_status( 'unread', array( 'label' => _x( 'Unread', 'Reply status', 'ayuda-help-desk' ), 'public' => false ) );
 }
 
 /**
@@ -272,19 +272,19 @@ function wpas_register_post_status() {
  * @since  3.0.0
  * @return array List of filtered statuses
  */
-function wpas_get_post_status() {
+function mumei_ayuda_get_post_status() {
 
 	$status = array(
-			'queued'     => _x( 'New', 'Ticket status', 'awesome-support' ),
-			'processing' => _x( 'In Progress', 'Ticket status', 'awesome-support' ),
-			'hold'       => _x( 'On Hold', 'Ticket status', 'awesome-support' ),
+			'queued'     => _x( 'New', 'Ticket status', 'ayuda-help-desk' ),
+			'processing' => _x( 'In Progress', 'Ticket status', 'ayuda-help-desk' ),
+			'hold'       => _x( 'On Hold', 'Ticket status', 'ayuda-help-desk' ),
 	);
 
-	return apply_filters( 'wpas_ticket_statuses', $status );
+	return apply_filters( 'mumei_ayuda_ticket_statuses', $status );
 
 }
 
-add_action( 'template_redirect', 'wpas_redirect_ticket_archive', 10, 0 );
+add_action( 'template_redirect', 'mumei_ayuda_redirect_ticket_archive', 10, 0 );
 /**
  * Redirect ticket archive page.
  *
@@ -294,16 +294,16 @@ add_action( 'template_redirect', 'wpas_redirect_ticket_archive', 10, 0 );
  * @since  1.0.0
  * @return void
  */
-function wpas_redirect_ticket_archive() {
+function mumei_ayuda_redirect_ticket_archive() {
 
 	if ( is_post_type_archive( 'ticket' ) ) {
 
 		// Redirect to the tickets list page
-		$redirect_to = wpas_get_tickets_list_page_url();
+		$redirect_to = mumei_ayuda_get_tickets_list_page_url();
 
 		// Fallback to the ticket submission page
 		if ( empty( $redirect_to ) ) {
-			$redirect_to = wpas_get_submission_page_url();
+			$redirect_to = mumei_ayuda_get_submission_page_url();
 		}
 
 		// Fallback to the site homepage
@@ -311,7 +311,7 @@ function wpas_redirect_ticket_archive() {
 			$redirect_to = home_url();
 		}
 
-		wpas_redirect( 'archive_redirect', $redirect_to );
+		mumei_ayuda_redirect( 'archive_redirect', $redirect_to );
 
 	}
 

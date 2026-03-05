@@ -134,11 +134,11 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 				switch ( $status ) {
 
 					case 'valid':
-						?><p class="description"><?php esc_html_e( 'Your license is valid and active.', 'awesome-support' ); ?></p><?php
+						?><p class="description"><?php esc_html_e( 'Your license is valid and active.', 'ayuda-help-desk' ); ?></p><?php
 					break;
 
 					case 'invalid':
-						?><p class="description"><?php esc_html_e( 'Your license is invalid.', 'awesome-support' ); ?></p><?php
+						?><p class="description"><?php esc_html_e( 'Your license is invalid.', 'ayuda-help-desk' ); ?></p><?php
 					break;
 
 					case 'inactive':
@@ -153,26 +153,26 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 						$get['eddactivate'] = true;
 						$url                =  add_query_arg( $get, admin_url( $pagenow ) );
 						?>
-						<a href="<?php echo esc_url($url); ?>" class="button-secondary"><?php esc_html_e( 'Activate', 'awesome-support' ); ?></a>
-						<p class="description"><?php esc_html_e( 'Your license is valid but inactive. Click the button above to activate it. If you see this message after attempting activation then please make sure that your license is not already active on another site.', 'awesome-support' ); ?></p><?php
+						<a href="<?php echo esc_url($url); ?>" class="button-secondary"><?php esc_html_e( 'Activate', 'ayuda-help-desk' ); ?></a>
+						<p class="description"><?php esc_html_e( 'Your license is valid but inactive. Click the button above to activate it. If you see this message after attempting activation then please make sure that your license is not already active on another site.', 'ayuda-help-desk' ); ?></p><?php
 
 					break;
 
 					case 'no_response':
-						?><p class="description"><?php esc_html_e( 'The remote server did not return a valid response. You can retry by hitting the &laquo;Save&raquo; button again.', 'awesome-support' ); ?></p><?php
+						?><p class="description"><?php esc_html_e( 'The remote server did not return a valid response. You can retry by hitting the &laquo;Save&raquo; button again.', 'ayuda-help-desk' ); ?></p><?php
 						break;
 
 					case 'expired':
-						?><p class="description"><?php esc_html_e( 'Your license is expired.', 'awesome-support' ) ; ?></p><?php
+						?><p class="description"><?php esc_html_e( 'Your license is expired.', 'ayuda-help-desk' ) ; ?></p><?php
 						break ;
 
 					default:
-						?><p class="description"><?php esc_html_e( 'Unexpected response from server: ', 'awesome-support' ) . $status ; ?></p><?php
+						?><p class="description"><?php esc_html_e( 'Unexpected response from server: ', 'ayuda-help-desk' ) . $status ; ?></p><?php
 						break;
 
 				}
 			} else {
-				?><p class="description"><?php esc_html_e( 'Entering your license key is mandatory to get the product updates.', 'awesome-support' ); ?></p><?php
+				?><p class="description"><?php esc_html_e( 'Entering your license key is mandatory to get the product updates.', 'ayuda-help-desk' ); ?></p><?php
 			}
 
 			$this->echoOptionFooter();
@@ -380,39 +380,39 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 				$args['remote_api_url'] = esc_url( $this->settings['server'] );
 
 				// translators: is the expires date.
-				$x_expire = __( 'Expires %s.', 'awesome-support' );
+				$x_expire = __( 'Expires %s.', 'ayuda-help-desk' );
 
 				// translators: %1$s is the number of activated sites, %2$s is the total number of allowed sites.
-				$x_site = __( 'You have %1$s / %2$s sites activated.', 'awesome-support' );
+				$x_site = __( 'You have %1$s / %2$s sites activated.', 'ayuda-help-desk' );
 
 				// translators: is the expires date.
-				$x_expire_key = __( 'License key expired %s.', 'awesome-support' );
+				$x_expire_key = __( 'License key expired %s.', 'ayuda-help-desk' );
 
 				// translators: %1$s is the name of the update, %2$s is the version number, %3$s is the URL to view the update details, %4$s is the title attribute for the details link, %5$s is the URL to initiate the update, %6$s are additional attributes for the update link.
-				$x_update = __( '<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4$s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>.', 'awesome-support' );
+				$x_update = __( '<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4$s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>.', 'ayuda-help-desk' );
 
 				/* Set the update messages. */
 				$strings = array(
-					'theme-license'             => __( 'Theme License', 'awesome-support' ),
-					'enter-key'                 => __( 'Enter your theme license key.', 'awesome-support' ),
-					'license-key'               => __( 'License Key', 'awesome-support' ),
-					'license-action'            => __( 'License Action', 'awesome-support' ),
-					'deactivate-license'        => __( 'Deactivate License', 'awesome-support' ),
-					'activate-license'          => __( 'Activate License', 'awesome-support' ),
-					'status-unknown'            => __( 'License status is unknown.', 'awesome-support' ),
-					'renew'                     => __( 'Renew?', 'awesome-support' ),
-					'unlimited'                 => __( 'unlimited', 'awesome-support' ),
-					'license-key-is-active'     => __( 'License key is active.', 'awesome-support' ),
+					'theme-license'             => __( 'Theme License', 'ayuda-help-desk' ),
+					'enter-key'                 => __( 'Enter your theme license key.', 'ayuda-help-desk' ),
+					'license-key'               => __( 'License Key', 'ayuda-help-desk' ),
+					'license-action'            => __( 'License Action', 'ayuda-help-desk' ),
+					'deactivate-license'        => __( 'Deactivate License', 'ayuda-help-desk' ),
+					'activate-license'          => __( 'Activate License', 'ayuda-help-desk' ),
+					'status-unknown'            => __( 'License status is unknown.', 'ayuda-help-desk' ),
+					'renew'                     => __( 'Renew?', 'ayuda-help-desk' ),
+					'unlimited'                 => __( 'unlimited', 'ayuda-help-desk' ),
+					'license-key-is-active'     => __( 'License key is active.', 'ayuda-help-desk' ),
 					'expires%s'                 => $x_expire,
 					'%1$s/%2$-sites'            => $x_site,
 					'license-key-expired-%s'    => $x_expire_key,
-					'license-key-expired'       => __( 'License key has expired.', 'awesome-support' ),
-					'license-keys-do-not-match' => __( 'License keys do not match.', 'awesome-support' ),
-					'license-is-inactive'       => __( 'License is inactive.', 'awesome-support' ),
-					'license-key-is-disabled'   => __( 'License key is disabled.', 'awesome-support' ),
-					'site-is-inactive'          => __( 'Site is inactive.', 'awesome-support' ),
-					'license-status-unknown'    => __( 'License status is unknown.', 'awesome-support' ),
-					'update-notice'             => __( "Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update.", 'awesome-support' ),
+					'license-key-expired'       => __( 'License key has expired.', 'ayuda-help-desk' ),
+					'license-keys-do-not-match' => __( 'License keys do not match.', 'ayuda-help-desk' ),
+					'license-is-inactive'       => __( 'License is inactive.', 'ayuda-help-desk' ),
+					'license-key-is-disabled'   => __( 'License key is disabled.', 'ayuda-help-desk' ),
+					'site-is-inactive'          => __( 'Site is inactive.', 'ayuda-help-desk' ),
+					'license-status-unknown'    => __( 'License status is unknown.', 'ayuda-help-desk' ),
+					'update-notice'             => __( "Updating this theme will lose any customizations you have made. 'Cancel' to stop, 'OK' to update.", 'ayuda-help-desk' ),
 					'update-available'          => $x_update,
 				);
 

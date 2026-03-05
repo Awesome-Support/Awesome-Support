@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/E-Mail Notifications
+ * @package   Ayuda – Help Desk/E-Mail Notifications
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 11, 2 );
+add_action( 'mumei_ayuda_open_ticket_after', 'mumei_ayuda_notify_confirmation', 11, 2 );
 /**
  * Send e-mail confirmation.
  *
@@ -25,11 +25,11 @@ add_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 11, 2 );
  *
  * @return void
  */
-function wpas_notify_confirmation( $ticket_id, $data ) {
-	wpas_email_notify( $ticket_id, 'submission_confirmation' );
+function mumei_ayuda_notify_confirmation( $ticket_id, $data ) {
+	mumei_ayuda_email_notify( $ticket_id, 'submission_confirmation' );
 }
 
-add_action( 'wpas_open_ticket_after', 'wpas_notify_assignment', 12, 2 );
+add_action( 'mumei_ayuda_open_ticket_after', 'mumei_ayuda_notify_assignment', 12, 2 );
 /**
  * Send e-mail assignment notification.
  *
@@ -42,11 +42,11 @@ add_action( 'wpas_open_ticket_after', 'wpas_notify_assignment', 12, 2 );
  *
  * @return void
  */
-function wpas_notify_assignment( $ticket_id, $agent_id ) {
-	wpas_email_notify( $ticket_id, 'new_ticket_assigned' );
+function mumei_ayuda_notify_assignment( $ticket_id, $agent_id ) {
+	mumei_ayuda_email_notify( $ticket_id, 'new_ticket_assigned' );
 }
 
-add_action( 'wpas_ticket_after_update_admin_success', 'wpas_notify_admin_assignment', 12, 3 );
+add_action( 'mumei_ayuda_ticket_after_update_admin_success', 'mumei_ayuda_notify_admin_assignment', 12, 3 );
 /**
  * Send e-mail assignment notification when ticket is updated from back-end or admin pannel.
  *
@@ -60,14 +60,14 @@ add_action( 'wpas_ticket_after_update_admin_success', 'wpas_notify_admin_assignm
  *
  * @return void
  */
-function wpas_notify_admin_assignment( $ticket_id, $old_assignee, $current_ticket ) {
+function mumei_ayuda_notify_admin_assignment( $ticket_id, $old_assignee, $current_ticket ) {
 	
-	if ( (int) $current_ticket['wpas_assignee'] <> (int) $old_assignee ) {
-		wpas_email_notify( $ticket_id, 'new_ticket_assigned' );
+	if ( (int) $current_ticket['mumei_ayuda_assignee'] <> (int) $old_assignee ) {
+		mumei_ayuda_email_notify( $ticket_id, 'new_ticket_assigned' );
 	}
 }
 
-add_action( 'wpas_post_new_ticket_admin', 'wpas_notify_admin_new_ticket', 12, 1 );
+add_action( 'mumei_ayuda_post_new_ticket_admin', 'mumei_ayuda_notify_admin_new_ticket', 12, 1 );
 /**
  * Send a couple of e-mail notifications to agent and client
  *
@@ -80,12 +80,12 @@ add_action( 'wpas_post_new_ticket_admin', 'wpas_notify_admin_new_ticket', 12, 1 
  *
  * @return void
  */
-function wpas_notify_admin_new_ticket( $ticket_id) {
-	wpas_email_notify( $ticket_id, 'submission_confirmation' );
-	wpas_email_notify( $ticket_id, 'new_ticket_assigned' );
+function mumei_ayuda_notify_admin_new_ticket( $ticket_id) {
+	mumei_ayuda_email_notify( $ticket_id, 'submission_confirmation' );
+	mumei_ayuda_email_notify( $ticket_id, 'new_ticket_assigned' );
 }
 
-add_action( 'wpas_insert_reply_admin_success', 'wpas_notify_admin_reply', 10, 3 );
+add_action( 'mumei_ayuda_insert_reply_admin_success', 'mumei_ayuda_notify_admin_reply', 10, 3 );
 /**
  * Send a notification to client after a reply is posted on the backend/wp-admin
  *
@@ -98,12 +98,12 @@ add_action( 'wpas_insert_reply_admin_success', 'wpas_notify_admin_reply', 10, 3 
  *
  * @return void
  */
-function wpas_notify_admin_reply( $reply_id, $data, $reply ) {
+function mumei_ayuda_notify_admin_reply( $reply_id, $data, $reply ) {
 
-	wpas_email_notify( $reply_id, 'reply_agent' );
+	mumei_ayuda_email_notify( $reply_id, 'reply_agent' );
 }
 
-add_action( 'wpas_ticket_closed_by_agent', 'wpas_notify_ticket_closed_by_agent', 12, 1 );
+add_action( 'mumei_ayuda_ticket_closed_by_agent', 'mumei_ayuda_notify_ticket_closed_by_agent', 12, 1 );
 /**
  * Send an email to client after ticket is closed
  *
@@ -114,17 +114,17 @@ add_action( 'wpas_ticket_closed_by_agent', 'wpas_notify_ticket_closed_by_agent',
  *
  * @return void
  */
-function wpas_notify_ticket_closed_by_agent( $ticket_id) {
+function mumei_ayuda_notify_ticket_closed_by_agent( $ticket_id) {
 	
-	$prevent = get_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', true );
+	$prevent = get_post_meta( $ticket_id, 'mumei_ayuda_close_ticket_prevent_client_notification', true );
 	
 	if( !$prevent ) {
-		wpas_email_notify( $ticket_id, 'closed' );
+		mumei_ayuda_email_notify( $ticket_id, 'closed' );
 	}
 }
 
-add_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10, 2 );
-function wpas_notify_reply( $reply_id, $data ) {
+add_action( 'mumei_ayuda_add_reply_complete', 'mumei_ayuda_notify_reply', 10, 2 );
+function mumei_ayuda_notify_reply( $reply_id, $data ) {
 
 	/* If the ID is set it means we're updating a post and NOT creating. In this case no notification. */
 	if ( isset( $data['ID'] ) ) {
@@ -140,12 +140,12 @@ function wpas_notify_reply( $reply_id, $data ) {
 
 	$case = ( user_can( $data['post_author'], 'edit_ticket' ) && $ticket_author != $data['post_author'] ) ? 'agent_reply' : 'client_reply';
 	
-	wpas_email_notify( $reply_id, $case );
+	mumei_ayuda_email_notify( $reply_id, $case );
 }
 
 
-add_action( 'wpas_after_close_ticket', 'wpas_notify_close', 10, 3 );
-function wpas_notify_close( $ticket_id, $update, $user_id ) {
+add_action( 'mumei_ayuda_after_close_ticket', 'mumei_ayuda_notify_close', 10, 3 );
+function mumei_ayuda_notify_close( $ticket_id, $update, $user_id ) {
 
 	if ( user_can( $user_id, 'edit_ticket' ) ) {
 		$case = 'ticket_closed_agent';
@@ -155,30 +155,30 @@ function wpas_notify_close( $ticket_id, $update, $user_id ) {
 		$case = 'ticket_closed';
 	}
 	
-	$prevent = get_post_meta( $ticket_id, 'wpas_close_ticket_prevent_client_notification', true );
+	$prevent = get_post_meta( $ticket_id, 'mumei_ayuda_close_ticket_prevent_client_notification', true );
 	if( $prevent && 'ticket_closed_agent' === $case ) {
 		return;
 	}
 	
-	wpas_email_notify( $ticket_id, $case );
+	mumei_ayuda_email_notify( $ticket_id, $case );
 
 }
 
 
-add_action('wpas_custom_field_updated', 'wpas_additional_agents_new_assignment_notify', 10, 3);
+add_action('mumei_ayuda_custom_field_updated', 'mumei_ayuda_additional_agents_new_assignment_notify', 10, 3);
 /**
  * Notify additional agent about new ticket assignment
  * @param string $field_id
  * @param int $post_id
  * @param string $value
  */
-function wpas_additional_agents_new_assignment_notify($field_id ,$post_id, $value) {
+function mumei_ayuda_additional_agents_new_assignment_notify($field_id ,$post_id, $value) {
 	
 	if( $field_id == 'secondary_assignee' ) {
-		wpas_email_notify($post_id, 'new_ticket_assigned_secondary');
+		mumei_ayuda_email_notify($post_id, 'new_ticket_assigned_secondary');
 	}
 	
 	elseif( $field_id == 'tertiary_assignee' ) {
-		wpas_email_notify($post_id, 'new_ticket_assigned_tertiary');
+		mumei_ayuda_email_notify($post_id, 'new_ticket_assigned_tertiary');
 	}	
 }

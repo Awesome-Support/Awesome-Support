@@ -1,16 +1,16 @@
 <div id="wpas-ticket-message" class="wpas-ticket-content">
 	<?php
 	/**
-	 * wpas_frontend_ticket_content_before hook
+	 * mumei_ayuda_frontend_ticket_content_before hook
 	 *
 	 * @since  3.0.0
 	 */
 
 
 	// Include ticket toolbar
-	include_once( WPAS_PATH . "includes/admin/metaboxes/toolbar-middle.php" );
+	include_once( MUMEI_AYUDA_PATH . "includes/admin/metaboxes/toolbar-middle.php" );
 
-	do_action( 'wpas_backend_ticket_content_before', $post->ID, $post );
+	do_action( 'mumei_ayuda_backend_ticket_content_before', $post->ID, $post );
 
 	printf(
 		'<div class="wpas-main-ticket-message" id="wpas-main-ticket-message">%s</div>',
@@ -18,19 +18,19 @@
 	);
 
 	/**
-	 * wpas_backend_ticket_content_after hook
+	 * mumei_ayuda_backend_ticket_content_after hook
 	 *
 	 * @since  3.0.0
 	 */
-	do_action( 'wpas_backend_ticket_content_after', $post->ID, $post );
+	do_action( 'mumei_ayuda_backend_ticket_content_after', $post->ID, $post );
 
 	/**
 	 * Allows certain user roles from Settings -> General -> History
 	 *
 	 * Administrator should be always on. Both site admin and Super Admin
 	 */
-	$excluded_roles = wpas_get_option( 'roles_edit_ticket_content', false );
-	$current_user_role = wpas_get_current_user_role();
+	$excluded_roles = mumei_ayuda_get_option( 'roles_edit_ticket_content', false );
+	$current_user_role = mumei_ayuda_get_current_user_role();
 	$role_passed = true;
 
 	/**
@@ -46,18 +46,18 @@
 		if( in_array( $current_user_role, $roles ) ) {
 			$role_passed = false;
 		}
-	}elseif( wpas_get_current_user_role() === $excluded_roles ){
+	}elseif( mumei_ayuda_get_current_user_role() === $excluded_roles ){
 		$role_passed = false;
 	}
 
 	/**
 	 * Determine if we should allow current user to edit ticket opening content
 	 */
-	if( wpas_is_asadmin() || $role_passed ) {
+	if( mumei_ayuda_is_asadmin() || $role_passed ) {
 	?>
 		<div class="wpas-edit-ticket-actions">
-			<a href="#" class="button button-primary wpas-save-edit-main-ticket-message" id="wpas-save-edit-main-ticket-message" data-ticketid="<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Save', 'awesome-support' ); ?></a>
-			<a href="#" class="button button-secondary wpas-cancel-edit-main-ticket-message" id="wpas-cancel-edit-main-ticket-message" data-ticketid="<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Cancel', 'awesome-support' ); ?></a>
+			<a href="#" class="button button-primary wpas-save-edit-main-ticket-message" id="wpas-save-edit-main-ticket-message" data-ticketid="<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Save', 'ayuda-help-desk' ); ?></a>
+			<a href="#" class="button button-secondary wpas-cancel-edit-main-ticket-message" id="wpas-cancel-edit-main-ticket-message" data-ticketid="<?php echo esc_attr( $post->ID ); ?>"><?php esc_html_e( 'Cancel', 'ayuda-help-desk' ); ?></a>
 		</div>
 	<?php
 	}

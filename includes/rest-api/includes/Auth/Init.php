@@ -1,12 +1,12 @@
 <?php
 
-namespace WPAS_API\Auth;
+namespace MUMEI_AYUDA_API\Auth;
 
-use WPAS_API\API\Passwords;
+use MUMEI_AYUDA_API\API\Passwords;
 
 use WP_REST_Server;
 use WP_User;
-use WPAS_API\Auth\User;
+use MUMEI_AYUDA_API\Auth\User;
 use WP_Error;
 
 /**
@@ -125,7 +125,7 @@ class Init {
 		$user = new User( $data['user_id'] );
 
 		if ( empty( $data['name'] ) ) {
-			return new WP_Error( 'no-name', __( 'Please provide a name to use for the new password.', 'awesome-support' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-name', __( 'Please provide a name to use for the new password.', 'ayuda-help-desk' ), array( 'status' => 404 ) );
 		}
 
 		list( $new_password, $new_item ) = $user->create_new_api_password( $data['name'] );
@@ -201,8 +201,8 @@ class Init {
 		global $wp;
 		$route = isset( $wp->query_vars['rest_route'] ) ? $wp->query_vars['rest_route'] : '';
 
-		$api_request = ( defined( 'REST_REQUEST' ) && REST_REQUEST ) && ( false !== strpos( $route, wpas_api()->get_api_namespace() ) );
-		if ( ! apply_filters( 'wpas_api_authenticate_request', $api_request ) ) {
+		$api_request = ( defined( 'REST_REQUEST' ) && REST_REQUEST ) && ( false !== strpos( $route, mumei_ayuda_api()->get_api_namespace() ) );
+		if ( ! apply_filters( 'mumei_ayuda_api_authenticate_request', $api_request ) ) {
 			return $input_user;
 		}
 
@@ -234,7 +234,7 @@ class Init {
 		}
 
 		if ( empty( $response ) ) {
-			return new WP_Error( 'no-credentials', __( 'No HTTP Basic Authorization credentials were found submitted with this request.', 'awesome-support' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-credentials', __( 'No HTTP Basic Authorization credentials were found submitted with this request.', 'ayuda-help-desk' ), array( 'status' => 404 ) );
 		}
 
 		return $response;
@@ -288,27 +288,27 @@ class Init {
 		// convert \WP_User into Auth\User
 		$user = new User( $user );
 
-		wp_enqueue_style( 'wpas-api-css', WPAS_URL . 'includes/rest-api/assets/admin/css/admin.css', array() );
-		wp_enqueue_script( 'wpas-api-js', WPAS_URL . 'includes/rest-api/assets/admin/js/admin.js', array() );
+		wp_enqueue_style( 'wpas-api-css', MUMEI_AYUDA_URL . 'includes/rest-api/assets/admin/css/admin.css', array() );
+		wp_enqueue_script( 'wpas-api-js', MUMEI_AYUDA_URL . 'includes/rest-api/assets/admin/js/admin.js', array() );
 
 		wp_localize_script( 'wpas-api-js', 'wpasAPI', array(
 			'root'       => esc_url_raw( rest_url() ),
-			'namespace'  => wpas_api()->get_api_namespace(),
+			'namespace'  => mumei_ayuda_api()->get_api_namespace(),
 			'nonce'      => wp_create_nonce( 'wp_rest' ),
 			'user_id'    => $user->ID,
 			'text'       => array(
-				'no_credentials' => __( 'Due to a potential server misconfiguration, it seems that HTTP Basic Authorization may not work for the REST API on this site: `Authorization` headers are not being sent to WordPress by the web server. <a href="https://github.com/georgestephanis/application-passwords/wiki/Basic-Authorization-Header----Missing">You can learn more about this problem, and a possible solution, on our GitHub Wiki.</a>', 'awesome-support' ),
+				'no_credentials' => __( 'Due to a potential server misconfiguration, it seems that HTTP Basic Authorization may not work for the REST API on this site: `Authorization` headers are not being sent to WordPress by the web server. <a href="https://github.com/georgestephanis/application-passwords/wiki/Basic-Authorization-Header----Missing">You can learn more about this problem, and a possible solution, on our GitHub Wiki.</a>', 'ayuda-help-desk' ),
 			),
 		) );
 
 		?>
-		<div id="wpas_user_profile_segment">
+		<div id="mumei_ayuda_user_profile_segment">
 			<div class="wpas-api hide-if-no-js" id="wpas-api-section">
-				<h2 id="wpas-api"><?php esc_html_e( 'API Passwords', 'awesome-support' ); ?></h2>
-				<p><?php esc_html_e( 'API passwords allow authentication via the REST API without providing your actual password. API passwords can be easily revoked. They cannot be used for traditional logins to your website.', 'awesome-support' ); ?></p>
+				<h2 id="wpas-api"><?php esc_html_e( 'API Passwords', 'ayuda-help-desk' ); ?></h2>
+				<p><?php esc_html_e( 'API passwords allow authentication via the REST API without providing your actual password. API passwords can be easily revoked. They cannot be used for traditional logins to your website.', 'ayuda-help-desk' ); ?></p>
 				<div class="create-wpas-api-password">
-					<input type="text" size="30" name="new_wp_api_password_name" placeholder="<?php esc_attr_e( 'New API Password Name', 'awesome-support' ); ?>" class="input" />
-					<?php submit_button( __( 'Add New', 'awesome-support' ), 'secondary', 'do_new_wp_api_password', false ); ?>
+					<input type="text" size="30" name="new_wp_api_password_name" placeholder="<?php esc_attr_e( 'New API Password Name', 'ayuda-help-desk' ); ?>" class="input" />
+					<?php submit_button( __( 'Add New', 'ayuda-help-desk' ), 'secondary', 'do_new_wp_api_password', false ); ?>
 				</div>
 
 				<div class="wpas-api-list-table-wrapper">
@@ -328,7 +328,7 @@ class Init {
 						<div class="new-wpas-api-password-content">
 							<?php
 							// translators: %1$s is the application name, %2$s is the new password.
-							$x_content = _x( 'Your new password for %1$s is: %2$s', 'application, password', 'awesome-support' );
+							$x_content = _x( 'Your new password for %1$s is: %2$s', 'application, password', 'ayuda-help-desk' );
 
 							printf(
 								esc_html($x_content),
@@ -337,8 +337,8 @@ class Init {
 							);
 							?>
 						</div>
-						<p><?php esc_attr_e( 'Be sure to save this in a safe location.  You will not be able to retrieve it.', 'awesome-support' ); ?></p>
-						<button class="button button-primary wpas-api-password-modal-dismiss"><?php esc_attr_e( 'Dismiss', 'awesome-support' ); ?></button>
+						<p><?php esc_attr_e( 'Be sure to save this in a safe location.  You will not be able to retrieve it.', 'ayuda-help-desk' ); ?></p>
+						<button class="button button-primary wpas-api-password-modal-dismiss"><?php esc_attr_e( 'Dismiss', 'ayuda-help-desk' ); ?></button>
 					</div>
 				</div>
 			</div>
@@ -346,20 +346,20 @@ class Init {
 
 		<script type="text/html" id="tmpl-wpas-api-password-row">
 			<tr data-slug="{{ data.slug }}">
-				<td class="name column-name has-row-actions column-primary" data-colname="<?php esc_attr_e( 'Name', 'awesome-support' ); ?>">
+				<td class="name column-name has-row-actions column-primary" data-colname="<?php esc_attr_e( 'Name', 'ayuda-help-desk' ); ?>">
 					{{ data.name }}
 				</td>
-				<td class="created column-created" data-colname="<?php esc_attr_e( 'Created', 'awesome-support' ); ?>">
+				<td class="created column-created" data-colname="<?php esc_attr_e( 'Created', 'ayuda-help-desk' ); ?>">
 					{{ data.created }}
 				</td>
-				<td class="last_used column-last_used" data-colname="<?php esc_attr_e( 'Last Used', 'awesome-support' ); ?>">
+				<td class="last_used column-last_used" data-colname="<?php esc_attr_e( 'Last Used', 'ayuda-help-desk' ); ?>">
 					{{ data.last_used }}
 				</td>
-				<td class="last_ip column-last_ip" data-colname="<?php esc_attr_e( 'Last IP', 'awesome-support' ); ?>">
+				<td class="last_ip column-last_ip" data-colname="<?php esc_attr_e( 'Last IP', 'ayuda-help-desk' ); ?>">
 					{{ data.last_ip }}
 				</td>
-				<td class="revoke column-revoke" data-colname="<?php esc_attr_e( 'Revoke', 'awesome-support' ); ?>">
-					<input type="submit" name="revoke-wpas-api-password" class="button delete" value="<?php esc_attr_e( 'Revoke', 'awesome-support' ); ?>">
+				<td class="revoke column-revoke" data-colname="<?php esc_attr_e( 'Revoke', 'ayuda-help-desk' ); ?>">
+					<input type="submit" name="revoke-wpas-api-password" class="button delete" value="<?php esc_attr_e( 'Revoke', 'ayuda-help-desk' ); ?>">
 				</td>
 			</tr>
 		</script>
@@ -373,41 +373,41 @@ class Init {
 	public static function get_password_schema() {
 		$schema = array(
 			'name'      => array(
-				'description' => __( "The name of the new password", 'awesome-support' ),
+				'description' => __( "The name of the new password", 'ayuda-help-desk' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit', 'embed' ),
 			),
 			'password'  => array(
-				'description' => __( "The hashed password that was created", 'awesome-support' ),
+				'description' => __( "The hashed password that was created", 'ayuda-help-desk' ),
 				'type'        => 'string',
 				'format'      => 'date-time',
 				'context'     => array( 'edit' ),
 			),
 			'created'   => array(
-				'description' => __( 'The date the password was created', 'awesome-support' ),
+				'description' => __( 'The date the password was created', 'ayuda-help-desk' ),
 				'type'        => 'string',
 				'format'      => 'date-time',
 				'context'     => array( 'view', 'edit' ),
 			),
 			'last_used' => array(
-				'description' => __( 'The date the password was last used', 'awesome-support' ),
+				'description' => __( 'The date the password was last used', 'ayuda-help-desk' ),
 				'type'        => 'string',
 				'format'      => 'date-time',
 				'context'     => array( 'view', 'edit' ),
 			),
 			'last_ip'   => array(
-				'description' => __( 'The IP address that the password was last used from', 'awesome-support' ),
+				'description' => __( 'The IP address that the password was last used from', 'ayuda-help-desk' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 			),
 			'slug'      => array(
-				'description' => __( 'The password\'s unique sluge', 'awesome-support' ),
+				'description' => __( 'The password\'s unique sluge', 'ayuda-help-desk' ),
 				'type'        => 'string',
 				'context'     => array( 'view', 'edit' ),
 			),
 		);
 
-		return apply_filters( 'wpas_api_get_password_schema', $schema );
+		return apply_filters( 'mumei_ayuda_api_get_password_schema', $schema );
 	}
 
 }

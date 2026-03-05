@@ -11,7 +11,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 
-add_filter( 'wpas_admin_tabs_ticket_main', 'wpas_ticket_main_tabs' ); // Register tabs in main tabs area
+add_filter( 'mumei_ayuda_admin_tabs_ticket_main', 'mumei_ayuda_ticket_main_tabs' ); // Register tabs in main tabs area
 
 /**
  * Register tabs
@@ -20,29 +20,29 @@ add_filter( 'wpas_admin_tabs_ticket_main', 'wpas_ticket_main_tabs' ); // Registe
  *
  * @return array
  */
-function wpas_ticket_main_tabs( $tabs ) {
+function mumei_ayuda_ticket_main_tabs( $tabs ) {
 
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	$options = maybe_unserialize( get_option( 'mumei_ayuda_options', array() ) );
 
-	$tabs['ticket']	= __( 'Ticket' , 'awesome-support' );
+	$tabs['ticket']	= __( 'Ticket' , 'ayuda-help-desk' );
 
-	if ( wpas_can_view_custom_field_tab() && WPAS()->custom_fields->have_custom_fields() ) {
-		$tabs['custom_fields'] = __( 'Custom Fields' , 'awesome-support' );
+	if ( mumei_ayuda_can_view_custom_field_tab() && WPAS()->custom_fields->have_custom_fields() ) {
+		$tabs['custom_fields'] = __( 'Custom Fields' , 'ayuda-help-desk' );
 	}
 
-	if (  wpas_can_view_ai_tab() ) {
-		$tabs['ai_parties'] = __( 'Additional Interested Parties', 'awesome-support' );
+	if (  mumei_ayuda_can_view_ai_tab() ) {
+		$tabs['ai_parties'] = __( 'Additional Interested Parties', 'ayuda-help-desk' );
 	}
 
 	if ( isset( $options['show_basic_time_tracking_fields'] ) && true === boolval( $options['show_basic_time_tracking_fields'] ) ) {
-		$tabs['time_tracking'] = __( 'Time Tracking', 'awesome-support' );
+		$tabs['time_tracking'] = __( 'Time Tracking', 'ayuda-help-desk' );
 	}
 
 	return $tabs;
 }
 
 
-add_filter( 'wpas_admin_tabs_ticket_main', 'wpas_ticket_main_tabs2', 16 ); //Register more tabs in main tabs area
+add_filter( 'mumei_ayuda_admin_tabs_ticket_main', 'mumei_ayuda_ticket_main_tabs2', 16 ); //Register more tabs in main tabs area
 
 /**
  * Register tabs
@@ -51,14 +51,14 @@ add_filter( 'wpas_admin_tabs_ticket_main', 'wpas_ticket_main_tabs2', 16 ); //Reg
  *
  * @return array
  */
-function wpas_ticket_main_tabs2( $tabs ) {
+function mumei_ayuda_ticket_main_tabs2( $tabs ) {
 
-	$tabs['statistics']	= __( 'Statistics' , 'awesome-support' );
+	$tabs['statistics']	= __( 'Statistics' , 'ayuda-help-desk' );
 
 	return $tabs;
 }
 
-add_filter( 'wpas_admin_tabs_ticket_main_ticket_content', 'wpas_ticket_main_tab_content' );
+add_filter( 'mumei_ayuda_admin_tabs_ticket_main_ticket_content', 'mumei_ayuda_ticket_main_tab_content' );
 
 /**
  * Return content for ticket tab
@@ -69,7 +69,7 @@ add_filter( 'wpas_admin_tabs_ticket_main_ticket_content', 'wpas_ticket_main_tab_
  *
  * @return string
  */
-function wpas_ticket_main_tab_content( $content ) {
+function mumei_ayuda_ticket_main_tab_content( $content ) {
 	global $post;
 
 	ob_start();
@@ -79,7 +79,7 @@ function wpas_ticket_main_tab_content( $content ) {
 
 	if( isset( $_GET['post'] ) ) {
 
-		include WPAS_PATH . "includes/admin/metaboxes/message.php";
+		include MUMEI_AYUDA_PATH . "includes/admin/metaboxes/message.php";
 	}
 
 	$content = ob_get_clean();
@@ -87,7 +87,7 @@ function wpas_ticket_main_tab_content( $content ) {
 }
 
 
-add_filter( 'wpas_admin_tabs_ticket_main_custom_fields_content', 'wpas_custom_fields_main_tab_content' );
+add_filter( 'mumei_ayuda_admin_tabs_ticket_main_custom_fields_content', 'mumei_ayuda_custom_fields_main_tab_content' );
 
 /**
  * Return content for custom fields tab
@@ -96,18 +96,18 @@ add_filter( 'wpas_admin_tabs_ticket_main_custom_fields_content', 'wpas_custom_fi
  *
  * @return string
  */
-function wpas_custom_fields_main_tab_content( $content ) {
+function mumei_ayuda_custom_fields_main_tab_content( $content ) {
 	ob_start();
 
-	include WPAS_PATH . "includes/admin/metaboxes/custom-fields.php";
+	include MUMEI_AYUDA_PATH . "includes/admin/metaboxes/custom-fields.php";
 
-	include WPAS_PATH . "includes/admin/metaboxes/custom-fields-backend.php";
+	include MUMEI_AYUDA_PATH . "includes/admin/metaboxes/custom-fields-backend.php";
 
 	$content = ob_get_clean();
 	return $content;
 }
 
-add_filter( 'wpas_admin_tabs_ticket_main_ai_parties_content', 'wpas_ai_parties_main_tab_content' );
+add_filter( 'mumei_ayuda_admin_tabs_ticket_main_ai_parties_content', 'mumei_ayuda_ai_parties_main_tab_content' );
 
 /**
  * Return content for additional interested parties
@@ -116,16 +116,16 @@ add_filter( 'wpas_admin_tabs_ticket_main_ai_parties_content', 'wpas_ai_parties_m
  *
  * @return string
  */
-function wpas_ai_parties_main_tab_content( $content ) {
+function mumei_ayuda_ai_parties_main_tab_content( $content ) {
 	ob_start();
 
-	include WPAS_PATH . "includes/admin/metaboxes/ticket-additional-parties.php";
+	include MUMEI_AYUDA_PATH . "includes/admin/metaboxes/ticket-additional-parties.php";
 
 	$content = ob_get_clean();
 	return $content;
 }
 
-add_filter( 'wpas_admin_tabs_ticket_main_statistics_content', 'wpas_statistics_main_tab_content' );
+add_filter( 'mumei_ayuda_admin_tabs_ticket_main_statistics_content', 'mumei_ayuda_statistics_main_tab_content' );
 
 /**
  * Return content for statistics tab
@@ -134,16 +134,16 @@ add_filter( 'wpas_admin_tabs_ticket_main_statistics_content', 'wpas_statistics_m
  *
  * @return string
  */
-function wpas_statistics_main_tab_content( $content ) {
+function mumei_ayuda_statistics_main_tab_content( $content ) {
 	ob_start();
-	include WPAS_PATH . "includes/admin/metaboxes/ticket-statistics.php";
+	include MUMEI_AYUDA_PATH . "includes/admin/metaboxes/ticket-statistics.php";
 
 	$content = ob_get_clean();
 	return $content;
 }
 
 
-add_filter( 'wpas_admin_tabs_ticket_main_time_tracking_content', 'wpas_time_tracking_main_tab_content' );
+add_filter( 'mumei_ayuda_admin_tabs_ticket_main_time_tracking_content', 'mumei_ayuda_time_tracking_main_tab_content' );
 
 /**
  * Return content for time tracking tab
@@ -152,9 +152,9 @@ add_filter( 'wpas_admin_tabs_ticket_main_time_tracking_content', 'wpas_time_trac
  *
  * @return string
  */
-function wpas_time_tracking_main_tab_content( $content ) {
+function mumei_ayuda_time_tracking_main_tab_content( $content ) {
 	ob_start();
-	include WPAS_PATH . "includes/admin/metaboxes/time-tracking-statistics.php";
+	include MUMEI_AYUDA_PATH . "includes/admin/metaboxes/time-tracking-statistics.php";
 
 	$content = ob_get_clean();
 	return $content;
@@ -170,9 +170,9 @@ function wpas_time_tracking_main_tab_content( $content ) {
  *
  * @return void
  */
-function wpas_color_ticket_header_by_priority() {
+function mumei_ayuda_color_ticket_header_by_priority() {
 
-	if ( true === boolval( wpas_get_option( 'support_priority_color_code_ticket_header', false ) ) && true === boolval( wpas_get_option( 'support_priority', false ) )  ) {
+	if ( true === boolval( mumei_ayuda_get_option( 'support_priority_color_code_ticket_header', false ) ) && true === boolval( mumei_ayuda_get_option( 'support_priority', false ) )  ) {
 
 		global $post_id;
 
@@ -197,9 +197,9 @@ function wpas_color_ticket_header_by_priority() {
  *
  * @return void
  */
-function wpas_color_ticket_header_by_ticket_type() {
+function mumei_ayuda_color_ticket_header_by_ticket_type() {
 
-	if ( true === boolval( wpas_get_option( 'support_ticket_type_color_code_ticket', false ) ) && true === boolval( wpas_get_option( 'support_ticket_type', false ) )  ) {
+	if ( true === boolval( mumei_ayuda_get_option( 'support_ticket_type_color_code_ticket', false ) ) && true === boolval( mumei_ayuda_get_option( 'support_ticket_type', false ) )  ) {
 
 		global $post_id;
 
@@ -218,15 +218,15 @@ function wpas_color_ticket_header_by_ticket_type() {
 /**
  * Inject the color coding for priority (top of ticket is color-coded.)
  */
-wpas_color_ticket_header_by_priority();
+mumei_ayuda_color_ticket_header_by_priority();
 
 
 /**
  * Print main tabs in ticket edit page
  */
-echo wp_kses(wpas_admin_tabs( 'ticket_main' ), get_allowed_html_wp_notifications());
+echo wp_kses(mumei_ayuda_admin_tabs( 'ticket_main' ), get_allowed_html_wp_notifications());
 
 /**
  * Inject the color coding for ticket_type (bottom of ticket is color coded).
  */
-wpas_color_ticket_header_by_ticket_type();
+mumei_ayuda_color_ticket_header_by_ticket_type();

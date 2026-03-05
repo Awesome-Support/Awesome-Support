@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WPAS_CF_Checkbox extends WPAS_Custom_Field {
+class MUMEI_AYUDA_CF_Checkbox extends MUMEI_AYUDA_Custom_Field {
 
 	public $options = array();
 

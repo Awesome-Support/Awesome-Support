@@ -11,13 +11,13 @@
  * the pluggable function wp_mail(). It is recommended to use a proper SMTP
  * server for e-mail routing in order to ensure a safe delivery.
  *
- * @package   Awesome Support
+ * @package   Ayuda – Help Desk
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
-class WPAS_User_Email_Notification {
+class MUMEI_AYUDA_User_Email_Notification {
 
 	/**
 	 * ID of the user to notify about.
@@ -64,7 +64,7 @@ class WPAS_User_Email_Notification {
 		
 		/* Make sure the given user exists. */
 		if ( !$user ) {
-			return new WP_Error( 'user_does_not_exist', __( 'The user ID provided does not exists', 'awesome-support' ) );
+			return new WP_Error( 'user_does_not_exist', __( 'The user ID provided does not exists', 'ayuda-help-desk' ) );
 		}
 		
 		/* Set the e-mail content type to HTML */
@@ -122,7 +122,7 @@ class WPAS_User_Email_Notification {
 		$option = $options[$case];
 		
 		/* Replace the valueless tags array by the new one */
-		return (bool) apply_filters( 'wpas__user_email_notifications_case_is_active', wpas_get_option( $option, false ), $case ); 
+		return (bool) apply_filters( 'mumei_ayuda__user_email_notifications_case_is_active', mumei_ayuda_get_option( $option, false ), $case ); 
 		
 	}
 
@@ -159,7 +159,7 @@ class WPAS_User_Email_Notification {
 			'moderated_registration_denied_user'
 		);
 
-		return apply_filters( 'wpas__user_email_notifications_cases', $cases );
+		return apply_filters( 'mumei_ayuda__user_email_notifications_cases', $cases );
 
 	}
 
@@ -178,7 +178,7 @@ class WPAS_User_Email_Notification {
 		$cases['moderated_registration_denied_user']   = 'enable_moderated_registration_denied_user_email';
 		
 		
-		return apply_filters( 'wpas__user_email_notifications_cases_active_option', $cases );
+		return apply_filters( 'mumei_ayuda__user_email_notifications_cases_active_option', $cases );
 	}
 
 	/**
@@ -194,14 +194,14 @@ class WPAS_User_Email_Notification {
 		}
 
 		$data = array(
-			'from_name'   => stripslashes( wpas_get_option( 'sender_name', get_bloginfo( 'name' ) ) ),
-			'from_email'  => wpas_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ),
-			'reply_email' => wpas_get_option( 'reply_email', get_bloginfo( 'admin_email' ) ),
+			'from_name'   => stripslashes( mumei_ayuda_get_option( 'sender_name', get_bloginfo( 'name' ) ) ),
+			'from_email'  => mumei_ayuda_get_option( 'sender_email', get_bloginfo( 'admin_email' ) ),
+			'reply_email' => mumei_ayuda_get_option( 'reply_email', get_bloginfo( 'admin_email' ) ),
 		);
 
 		$data['reply_name']  = $data['from_name'];
 
-		$this->data = apply_filters( 'wpas__user_email_notifications_sender_data', $data, $this );
+		$this->data = apply_filters( 'mumei_ayuda__user_email_notifications_sender_data', $data, $this );
 
 		return $this->data;
 
@@ -246,40 +246,40 @@ class WPAS_User_Email_Notification {
 	public static function get_tags() {
 
 		// translators: %s is the current WordPress admin email.
-		$desc = __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'awesome-support' );
+		$desc = __( 'Converts into WordPress admin e-mail (<em>currently: %s</em>)', 'ayuda-help-desk' );
 		
 		$tags = array(
 			array(
 				'tag' 	=> '{user_id}',
-				'desc' 	=> __( 'Converts into user ID', 'awesome-support' )
+				'desc' 	=> __( 'Converts into user ID', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{first_name}',
-				'desc' 	=> __( 'Converts into user\'s first name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into user\'s first name', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{last_name}',
-				'desc' 	=> __( 'Converts into user\'s last name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into user\'s last name', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{display_name}',
-				'desc' 	=> __( 'Converts into user name (WordPress Display Name)', 'awesome-support' )
+				'desc' 	=> __( 'Converts into user name (WordPress Display Name)', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{user_profile_link}',
-				'desc' 	=> __( 'Displays a link to user profile page', 'awesome-support' )
+				'desc' 	=> __( 'Displays a link to user profile page', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{email}',
-				'desc' 	=> __( 'Converts into the user\'s email address', 'awesome-support' )
+				'desc' 	=> __( 'Converts into the user\'s email address', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{site_name}',
-				'desc' 	=> __( 'Converts into website name', 'awesome-support' )
+				'desc' 	=> __( 'Converts into website name', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{date}',
-				'desc' 	=> __( 'Converts into current date', 'awesome-support' )
+				'desc' 	=> __( 'Converts into current date', 'ayuda-help-desk' )
 			),
 			array(
 				'tag' 	=> '{admin_email}',
@@ -288,7 +288,7 @@ class WPAS_User_Email_Notification {
 
 		);
 
-		return apply_filters( 'wpas__user_email_notifications_template_tags', $tags );
+		return apply_filters( 'mumei_ayuda__user_email_notifications_template_tags', $tags );
 
 	}
 
@@ -363,7 +363,7 @@ class WPAS_User_Email_Notification {
 		}
 
 		/* Replace the valueless tags array by the new one */
-		$tags = apply_filters( 'wpas__user_email_notifications_tags_values', $new, $this->user_id );
+		$tags = apply_filters( 'mumei_ayuda__user_email_notifications_tags_values', $new, $this->user_id );
 
 		return $tags;
 
@@ -379,7 +379,7 @@ class WPAS_User_Email_Notification {
 	 */
 	private function get_subject( $case ) {
 		
-		return apply_filters( 'wpas__user_email_notifications_subject', $this->get_content( 'subject', $case ), $this->user_id, $case );
+		return apply_filters( 'mumei_ayuda__user_email_notifications_subject', $this->get_content( 'subject', $case ), $this->user_id, $case );
 	}
 
 	/**
@@ -391,7 +391,7 @@ class WPAS_User_Email_Notification {
 	 * @return string E-mail body
 	 */
 	private function get_body( $case ) {
-		return apply_filters( 'wpas__user_email_notifications_body', stripcslashes ( $this->get_content( 'content', $case ) ), $this->user_id, $case );
+		return apply_filters( 'mumei_ayuda__user_email_notifications_body', stripcslashes ( $this->get_content( 'content', $case ) ), $this->user_id, $case );
 	}
 
 	/**
@@ -417,7 +417,7 @@ class WPAS_User_Email_Notification {
 		$value = '';
 		
 		
-		$pre_fetch_content = apply_filters( 'wpas__user_email_notifications_pre_fetch_' . $part, $value, $this->user_id, $case );
+		$pre_fetch_content = apply_filters( 'mumei_ayuda__user_email_notifications_pre_fetch_' . $part, $value, $this->user_id, $case );
 		
 		
 		return $this->fetch( $pre_fetch_content );
@@ -435,7 +435,7 @@ class WPAS_User_Email_Notification {
 	 */
 	public function get_formatted_email( $content = '' ) {
 
-		if ( false === (bool) wpas_get_option( 'use_email_template', true ) ) {
+		if ( false === (bool) mumei_ayuda_get_option( 'use_email_template', true ) ) {
 			return $content;
 		}
 
@@ -443,7 +443,7 @@ class WPAS_User_Email_Notification {
 
 		// Get the e-mail notification template. This template can be customized by the user.
 		// See https://getawesomesupport.com/documentation-new/documentation-awesome-support-core-customization/
-		wpas_get_template( 'email-notification' );
+		mumei_ayuda_get_template( 'email-notification' );
 
 		$template = ob_get_contents();
 
@@ -451,10 +451,10 @@ class WPAS_User_Email_Notification {
 		ob_end_clean();
 
 		$template = str_replace( '{content}', wpautop( $content ), $template ); // Inject content
-		$template = str_replace( '{footer}', stripslashes( wpas_get_option( 'email_template_footer', '' ) ), $template ); // Inject footer
-		$template = str_replace( '{header}', stripslashes( wpas_get_option( 'email_template_header', '' ) ), $template ); // Inject header
+		$template = str_replace( '{footer}', stripslashes( mumei_ayuda_get_option( 'email_template_footer', '' ) ), $template ); // Inject footer
+		$template = str_replace( '{header}', stripslashes( mumei_ayuda_get_option( 'email_template_header', '' ) ), $template ); // Inject header
 
-		if ( '' !== $logo = wpas_get_option( 'email_template_logo', '' ) ) {
+		if ( '' !== $logo = mumei_ayuda_get_option( 'email_template_logo', '' ) ) {
 			$logo = wp_get_attachment_image_src( $logo, 'full' );
 			$logo = '<img src="' . $logo[0] . '">';
 		}
@@ -497,11 +497,11 @@ class WPAS_User_Email_Notification {
 	public function notify( $case ) {
 
 		if ( !$this->notification_exists( $case ) ) {
-			return new WP_Error( 'unknown_notification', __( 'The requested notification does not exist', 'awesome-support' ) );
+			return new WP_Error( 'unknown_notification', __( 'The requested notification does not exist', 'ayuda-help-desk' ) );
 		}
 
 		if ( !$this->is_active( $case ) ) {
-			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'awesome-support' ) );
+			return new WP_Error( 'disabled_notification', __( 'The requested notification is disabled', 'ayuda-help-desk' ) );
 		}
 		
 		
@@ -536,7 +536,7 @@ class WPAS_User_Email_Notification {
 		 *
 		 * @var  string
 		 */
-		$body = apply_filters( 'wpas__user_email_notification_body_before_template', $this->get_body( $case ), $case, $this->user_id );
+		$body = apply_filters( 'mumei_ayuda__user_email_notification_body_before_template', $this->get_body( $case ), $case, $this->user_id );
 
 		/**
 		 * Filter the e-mail body after the template has been applied
@@ -544,7 +544,7 @@ class WPAS_User_Email_Notification {
 		 * @since 5.1.1
 		 * @var string
 		 */
-		$body = apply_filters( 'wpas__user_email_notification_body_after_template', $this->get_formatted_email( $body ), $case, $this->user_id );
+		$body = apply_filters( 'mumei_ayuda__user_email_notification_body_after_template', $this->get_formatted_email( $body ), $case, $this->user_id );
 
 		/**
 		 * Prepare e-mail headers
@@ -557,13 +557,13 @@ class WPAS_User_Email_Notification {
 			"From: $from_name <$from_email>",
 			"Reply-To: $reply_name <$reply_email>",
 			// "Subject: $subject",
-			"X-Mailer: Awesome Support/" . WPAS_VERSION,
+			"X-Mailer: Ayuda – Help Desk/" . MUMEI_AYUDA_VERSION,
 		);
 
 		/**
-		 * Merge all the e-mail variables and apply the wpas__user_email_notifications_email filter.
+		 * Merge all the e-mail variables and apply the mumei_ayuda__user_email_notifications_email filter.
 		 */
-		$email = apply_filters( 'wpas__user_email_notifications_email', array(
+		$email = apply_filters( 'mumei_ayuda__user_email_notifications_email', array(
 			'recipient_email' => $recipient_email,
 			'subject'         => $subject,
 			'body'            => $body,

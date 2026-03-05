@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Admin/Reply
+ * @package   Ayuda – Help Desk/Admin/Reply
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 		 * @param int $row->ID The current reply ID
 		 * @param int $user_id The reply author user ID
 		 */
-		do_action( 'wpas_mb_replies_under_avatar', $row->ID, $user_id );
+		do_action( 'mumei_ayuda_mb_replies_under_avatar', $row->ID, $user_id );
 
 	}
 	?>
@@ -37,21 +37,21 @@ if ( ! defined( 'WPINC' ) ) {
 </td>
 <td class="col2">
 
-	<?php if ( 'unread' === $row->post_status ): ?><div id="wpas-unread-<?php echo esc_attr( $row->ID ); ?>" class="wpas-unread-badge"><?php esc_html_e( 'Unread', 'awesome-support' ); ?></div><?php endif; ?>
-	<?php $show_extended_date_in_replies = boolval( wpas_get_option( 'show_extended_date_in_replies', false ) ); ?>
+	<?php if ( 'unread' === $row->post_status ): ?><div id="wpas-unread-<?php echo esc_attr( $row->ID ); ?>" class="wpas-unread-badge"><?php esc_html_e( 'Unread', 'ayuda-help-desk' ); ?></div><?php endif; ?>
+	<?php $show_extended_date_in_replies = boolval( mumei_ayuda_get_option( 'show_extended_date_in_replies', false ) ); ?>
 	<div class="wpas-reply-meta">
 		<div class="wpas-reply-user">
-			<strong class="wpas-profilename"><?php echo esc_html( $user_name ); ?></strong><?php if ( $user_data ): ?> <span class="wpas-profilerole">(<?php echo esc_html( wpas_get_user_nice_role( $user_data->roles ) ); ?>)</span><?php endif; ?>
+			<strong class="wpas-profilename"><?php echo esc_html( $user_name ); ?></strong><?php if ( $user_data ): ?> <span class="wpas-profilerole">(<?php echo esc_html( mumei_ayuda_get_user_nice_role( $user_data->roles ) ); ?>)</span><?php endif; ?>
 		</div>
 		<div class="wpas-reply-time">
 			<?php 
 				// translators: %1$s is the duration since the ticket was opened, %2$s is the additional duration or details.
-				$x_content = __( '(%1$s - %2$s since ticket was opened.)', 'awesome-support' );
+				$x_content = __( '(%1$s - %2$s since ticket was opened.)', 'ayuda-help-desk' );
 
 				// translators: %s is the date ago.
-				$x_content1 = __( '%s ago', 'awesome-support' );
+				$x_content1 = __( '%s ago', 'ayuda-help-desk' );
 			?>
-			<time class="wpas-timestamp" datetime="<?php echo esc_attr( get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5() ); ?>"><span class="wpas-human-date"><?php echo esc_html( gmdate( get_option( 'date_format' ), strtotime( $row->post_date ) ) ); ?> <?php if ( true === $show_extended_date_in_replies ) { printf( esc_html($x_content), esc_html( $date_full ), esc_html( $days_since_open ) ); } ?>  | </span><?php printf( esc_html($x_content1), esc_html( $date ) ); ?></time>
+			<time class="wpas-timestamp" datetime="<?php echo esc_attr( get_the_date( 'Y-m-d\TH:i:s' ) . mumei_ayuda_get_offset_html5() ); ?>"><span class="wpas-human-date"><?php echo esc_html( gmdate( get_option( 'date_format' ), strtotime( $row->post_date ) ) ); ?> <?php if ( true === $show_extended_date_in_replies ) { printf( esc_html($x_content), esc_html( $date_full ), esc_html( $days_since_open ) ); } ?>  | </span><?php printf( esc_html($x_content1), esc_html( $date ) ); ?></time>
 		</div>
 	</div>
 
@@ -68,7 +68,7 @@ if ( ! defined( 'WPINC' ) ) {
 		 * @param int     $ticket_id ID of the current ticket
 		 * @param WP_Post $row       Current reply post object
 		 */
-		do_action( 'wpas_ticket_reply_controls_before', $ticket_id, $row );
+		do_action( 'mumei_ayuda_ticket_reply_controls_before', $ticket_id, $row );
 
 		/**
 		 * Ticket reply controls
@@ -76,7 +76,7 @@ if ( ! defined( 'WPINC' ) ) {
 		 * @since 3.2.6
 		 */
 
-		wpas_ticket_reply_toolbar( $ticket_id, $row );
+		mumei_ayuda_ticket_reply_toolbar( $ticket_id, $row );
 
 
 		/**
@@ -87,7 +87,7 @@ if ( ! defined( 'WPINC' ) ) {
 		 * @param int     $ticket_id ID of the current ticket
 		 * @param WP_Post $row       Current reply post object
 		 */
-		do_action( 'wpas_ticket_reply_controls_after', $ticket_id, $row );
+		do_action( 'mumei_ayuda_ticket_reply_controls_after', $ticket_id, $row );
 		?>
 	</div>
 
@@ -102,20 +102,20 @@ if ( ! defined( 'WPINC' ) ) {
 	echo '<div class="wpas-reply-content wpas-break-words" id="wpas-reply-' . esc_attr( $row->ID ) . '">';
 
 	/**
-	 * wpas_backend_reply_content_before hook
+	 * mumei_ayuda_backend_reply_content_before hook
 	 *
 	 * @since  3.0.0
 	 */
-	do_action( 'wpas_backend_reply_content_before', $row->ID );
+	do_action( 'mumei_ayuda_backend_reply_content_before', $row->ID );
 
 	echo wp_kses( $content, wp_kses_allowed_html( 'post' ) );
 
 	/**
-	 * wpas_backend_reply_content_after hook
+	 * mumei_ayuda_backend_reply_content_after hook
 	 *
 	 * @since  3.0.0
 	 */
-	do_action( 'wpas_backend_reply_content_after', $row->ID );
+	do_action( 'mumei_ayuda_backend_reply_content_after', $row->ID );
 
 	echo '</div>';
 	?>

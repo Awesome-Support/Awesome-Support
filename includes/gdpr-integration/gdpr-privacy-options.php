@@ -1,14 +1,14 @@
 <?php
 
 /**
- * Awesome Support Privacy Option.
+ * Ayuda – Help Desk Privacy Option.
  *
- * @package   Awesome_Support
+ * @package   Mumei_Ayuda_Support
  * @author    Naveen Giri <1naveengiri>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  */
-class WPAS_Privacy_Option {
+class MUMEI_AYUDA_Privacy_Option {
 	/**
 	 * Instance of this class.
 	 *
@@ -22,26 +22,26 @@ class WPAS_Privacy_Option {
 	protected $error_message;
 
 	public function __construct() {
-		add_filter( 'wpas_frontend_add_nav_buttons', array( $this, 'frontend_privacy_add_nav_buttons' ) );
+		add_filter( 'mumei_ayuda_frontend_add_nav_buttons', array( $this, 'frontend_privacy_add_nav_buttons' ) );
 		add_filter( 'wp_footer', array( $this, 'print_privacy_popup_temp' ), 101 );
-		add_action( 'wp_ajax_wpas_gdpr_open_ticket', array( $this, 'wpas_gdpr_open_ticket' ) );
-		add_action( 'wp_ajax_nopriv_wpas_gdpr_open_ticket', array( $this, 'wpas_gdpr_open_ticket' ) );
+		add_action( 'wp_ajax_mumei_ayuda_gdpr_open_ticket', array( $this, 'mumei_ayuda_gdpr_open_ticket' ) );
+		add_action( 'wp_ajax_nopriv_mumei_ayuda_gdpr_open_ticket', array( $this, 'mumei_ayuda_gdpr_open_ticket' ) );
 
 		/**
 		 * Opt in processing
 		 */
-		add_action( 'wp_ajax_wpas_gdpr_user_opt_in', array( $this, 'wpas_gdpr_user_opt_in' ) );
-		add_action( 'wp_ajax_nopriv_wpas_gdpr_user_opt_in', array( $this, 'wpas_gdpr_user_opt_in' ) );
+		add_action( 'wp_ajax_mumei_ayuda_gdpr_user_opt_in', array( $this, 'mumei_ayuda_gdpr_user_opt_in' ) );
+		add_action( 'wp_ajax_nopriv_mumei_ayuda_gdpr_user_opt_in', array( $this, 'mumei_ayuda_gdpr_user_opt_in' ) );
 
 		/**
 		 * Opt out processing
 		 */
-		add_action( 'wp_ajax_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
-		add_action( 'wp_ajax_nopriv_wpas_gdpr_user_opt_out', array( $this, 'wpas_gdpr_user_opt_out' ) );
+		add_action( 'wp_ajax_mumei_ayuda_gdpr_user_opt_out', array( $this, 'mumei_ayuda_gdpr_user_opt_out' ) );
+		add_action( 'wp_ajax_nopriv_mumei_ayuda_gdpr_user_opt_out', array( $this, 'mumei_ayuda_gdpr_user_opt_out' ) );
 
-		add_action( 'wpas_system_tools_after', array( $this, 'wpas_system_tools_after_gdpr_callback' ) );
+		add_action( 'mumei_ayuda_system_tools_after', array( $this, 'mumei_ayuda_system_tools_after_gdpr_callback' ) );
 
-		add_filter( 'wpas_show_done_tool_message', array( $this, 'wpas_show_done_tool_message_gdpr_callback' ), 10, 2 );
+		add_filter( 'mumei_ayuda_show_done_tool_message', array( $this, 'mumei_ayuda_show_done_tool_message_gdpr_callback' ), 10, 2 );
 
 		add_filter( 'execute_additional_tools', array( $this, 'execute_additional_tools_gdpr_callback' ), 10, 1 );
 
@@ -53,7 +53,7 @@ class WPAS_Privacy_Option {
 		add_action( 'wp', array( $this, 'tickets_cleanup_schedule' ) );
 
 		// Cleanup action
-		add_action( 'wpas_tickets_cleanup_action', array( $this, 'as_tickets_cleanup_action_callback' ) );
+		add_action( 'mumei_ayuda_tickets_cleanup_action', array( $this, 'as_tickets_cleanup_action_callback' ) );
 
 		add_filter( 'cron_schedules', array( $this, 'gdpr_cron_job_schedule' ) );
 	}
@@ -95,7 +95,7 @@ class WPAS_Privacy_Option {
 
 				        // get all the user's data
 				        if( isset( $author->ID ) && !empty( $author->ID )){
-				        	delete_user_option( $author->ID, 'wpas_consent_tracking' );
+				        	delete_user_option( $author->ID, 'mumei_ayuda_consent_tracking' );
 				        }
 				    }
 				}
@@ -124,7 +124,7 @@ class WPAS_Privacy_Option {
 							$opt_out 	= empty ( $opt_in ) ? strtotime( 'NOW' ) : "";
 							$opt_type = ( isset( $opt_in ) && !empty( $opt_in ))? 'in' : 'out';
 							$args = array(
-								'item' 		=> wpas_get_option( $consent, false ),
+								'item' 		=> mumei_ayuda_get_option( $consent, false ),
 								'status' 	=> $status,
 								'opt_in' 	=> $opt_in,
 								'opt_out' 	=> $opt_out,
@@ -135,18 +135,18 @@ class WPAS_Privacy_Option {
 								$args['is_tor'] = true;
 							}
 
-							$user_consent = get_user_option( 'wpas_consent_tracking',
+							$user_consent = get_user_option( 'mumei_ayuda_consent_tracking',
 								$author->ID );
 							if( !empty( $user_consent )){
 								$found_key = array_search( $args['item'], array_column( $user_consent, 'item' ) );
 								// If GDPR option not already enabled, then add it.
 								if( false === $found_key ){
-									wpas_track_consent( $args , $author->ID, $opt_type );
+									mumei_ayuda_track_consent( $args , $author->ID, $opt_type );
 								}
 
 							} else{
 
-								wpas_track_consent( $args , $author->ID, $opt_type );
+								mumei_ayuda_track_consent( $args , $author->ID, $opt_type );
 
 							}
 				        }
@@ -166,12 +166,12 @@ class WPAS_Privacy_Option {
 	 * @return array $schedules Cron schedules with GDPR cron job schedule included.
 	 */
 	function gdpr_cron_job_schedule( $schedules ) {
-		$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
+		$trigger_time = mumei_ayuda_get_option( 'anonymize_cronjob_trigger_time', '' );
 		if( !empty( $trigger_time )){
 			$trigger_time = intval($trigger_time);
 			$schedules['min_'. $trigger_time ] = array(
 				'interval' => ($trigger_time * 60),
-				'display' => __('GDPR Ticket cleanup cron', 'awesome-support' )
+				'display' => __('GDPR Ticket cleanup cron', 'ayuda-help-desk' )
 			);
 		}
 		return $schedules;
@@ -185,17 +185,17 @@ class WPAS_Privacy_Option {
 	 * @return void
 	 */
 	function tickets_cleanup_schedule(){
-		$anonymize_cron_job = wpas_get_option( 'anonymize_cron_job', '' );
+		$anonymize_cron_job = mumei_ayuda_get_option( 'anonymize_cron_job', '' );
 		if( ! empty( $anonymize_cron_job ) ){
-			if ( ! wp_next_scheduled( 'wpas_tickets_cleanup_action' ) ) {
-				$trigger_time = wpas_get_option( 'anonymize_cronjob_trigger_time', '' );
+			if ( ! wp_next_scheduled( 'mumei_ayuda_tickets_cleanup_action' ) ) {
+				$trigger_time = mumei_ayuda_get_option( 'anonymize_cronjob_trigger_time', '' );
 				if( !empty( $trigger_time )){
 					$trigger_time = intval($trigger_time);
-					wp_schedule_event( time(), 'min_' . $trigger_time, 'wpas_tickets_cleanup_action');
+					wp_schedule_event( time(), 'min_' . $trigger_time, 'mumei_ayuda_tickets_cleanup_action');
 				}
 			}
 		} else{
-			wp_clear_scheduled_hook('wpas_tickets_cleanup_action');
+			wp_clear_scheduled_hook('mumei_ayuda_tickets_cleanup_action');
 		}
 	}
 	/**
@@ -203,13 +203,13 @@ class WPAS_Privacy_Option {
 	 * @return [type] [description]
 	 */
 	function as_tickets_cleanup_action_callback(){
-		$ticket_age = wpas_get_option( 'anonymize_cronjob_max_age', '' );
+		$ticket_age = mumei_ayuda_get_option( 'anonymize_cronjob_max_age', '' );
 		$ticket_data = array();
 		if( !empty( $ticket_age )){
 			$cronjob_max_age = intval($ticket_age);
 			$args = array(
 				'post_type'      => array( 'ticket' ),
-				'post_status'    => array_keys( wpas_get_post_status() ),
+				'post_status'    => array_keys( mumei_ayuda_get_post_status() ),
 				'posts_per_page' => 50,
 				'meta_query' => array(
 			        array(
@@ -222,13 +222,13 @@ class WPAS_Privacy_Option {
 				)
 			);
 
-			$closed_tickets = boolval( wpas_get_option( 'closed_tickets_anonmyize', true ) );
-			$open_tickets = boolval( wpas_get_option( 'open_tickets_anonmyize', false ) );
+			$closed_tickets = boolval( mumei_ayuda_get_option( 'closed_tickets_anonmyize', true ) );
+			$open_tickets = boolval( mumei_ayuda_get_option( 'open_tickets_anonmyize', false ) );
 
 			// Closed tickets only?
 			if( $closed_tickets && ! $open_tickets )  {
 				$args['meta_query'][] = array(
-					'key'   => '_wpas_status',
+					'key'   => '_mumei_ayuda_status',
 					'value' => 'closed',
 					'compare' => '=',
 				);
@@ -237,7 +237,7 @@ class WPAS_Privacy_Option {
 			// Open tickets only?
 			if( ! $closed_tickets && $open_tickets )  {
 				$args['meta_query'][] = array(
-					'key'   => '_wpas_status',
+					'key'   => '_mumei_ayuda_status',
 					'value' => 'open',
 					'compare' => '=',
 				);
@@ -268,7 +268,7 @@ class WPAS_Privacy_Option {
 					 */
 					$related_author_id = $this->as_create_anonymous_user( $author_id );
 
-					$delete_existing_data = wpas_get_option( 'anonymize_cronjob_delete_tickets', false );
+					$delete_existing_data = mumei_ayuda_get_option( 'anonymize_cronjob_delete_tickets', false );
 					// Assign Author tickets to anonymous user.
 					// also set is_anonymize key in ticket meta.
 					if( !empty( $author_tickets )){
@@ -284,15 +284,15 @@ class WPAS_Privacy_Option {
 								update_post_meta( $ticket_id, 'is_anonymize', true );
 
 								// translators: %s is the ticket id.
-								$x_content = __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' );
+								$x_content = __( 'Anonymize Ayuda – Help Desk Ticket #: %s', 'ayuda-help-desk' );
 								$messages = sprintf( $x_content, (string) $ticket_id ) ;
-								wpas_write_log( 'anonymize_ticket', $messages );
+								mumei_ayuda_write_log( 'anonymize_ticket', $messages );
 
 								//2b. Now handle the replies
 								$args = array(
 									'post_parent'           => $ticket_id,
 									'author' 			 	=> $author_id,
-									'post_type'             => apply_filters( 'wpas_replies_post_type', array(
+									'post_type'             => apply_filters( 'mumei_ayuda_replies_post_type', array(
 										'ticket_history',
 										'ticket_reply',
 										'ticket_log'
@@ -308,29 +308,29 @@ class WPAS_Privacy_Option {
 								$posts = new WP_Query( $args );
 								foreach ( $posts->posts as $id => $post ) {
 
-									do_action( 'wpas_before_anonymize_dependency', $post->ID, $post );
+									do_action( 'mumei_ayuda_before_anonymize_dependency', $post->ID, $post );
 									$arg = array(
 									    'ID' => $post->ID,
 									    'post_author' => $related_author_id,
 									);
 									wp_update_post( $arg );
-									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
+									do_action( 'mumei_ayuda_after_anonymize_dependency', $post->ID, $post );
 
 									// translators: %1$s is the ticket number, %2$s is the reply ID.
-									$x_content = __( 'Anonymize Reply on Awesome Support Ticket #: %1$s. The reply ID is: %2$s', 'awesome-support' );
+									$x_content = __( 'Anonymize Reply on Ayuda – Help Desk Ticket #: %1$s. The reply ID is: %2$s', 'ayuda-help-desk' );
 
 									$messages = sprintf( $x_content, (string) $ticket_id, (string) $post->ID ) ;
-									wpas_write_log( 'anonymize_ticket', $messages );
+									mumei_ayuda_write_log( 'anonymize_ticket', $messages );
 								}
 							} else{
 								if ( wp_delete_post( $ticket_id, true ) ) {
 									$items_removed = true;
 
 									// translators: %s is the ticket id.
-									$x_content = __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' );
+									$x_content = __( 'Removed Ayuda – Help Desk Ticket #: %s', 'ayuda-help-desk' );
 
 									$messages = sprintf( $x_content, (string) $ticket_id ) ;
-									wpas_write_log( 'anonymize_ticket_delete', $messages );
+									mumei_ayuda_write_log( 'anonymize_ticket_delete', $messages );
 								}
 							}
 						}
@@ -344,15 +344,15 @@ class WPAS_Privacy_Option {
 	/**
 	 * Update data on clean up tool click.
 	 */
-	function wpas_show_done_tool_message_gdpr_callback( $message, $status ){
+	function mumei_ayuda_show_done_tool_message_gdpr_callback( $message, $status ){
 		switch( $status ) {
 
 			case 'remove_all_user_consent':
-				$message = __( 'User Consents cleared', 'awesome-support' );
+				$message = __( 'User Consents cleared', 'ayuda-help-desk' );
 				break;
 
 			case 'add_user_consent':
-				$message = __( 'Added User Consents', 'awesome-support' );
+				$message = __( 'Added User Consents', 'ayuda-help-desk' );
 				break;
 		}
 		return $message;
@@ -361,29 +361,29 @@ class WPAS_Privacy_Option {
 	/**
 	 * GDPR add consent html in cleanup section.
 	 */
-	function wpas_system_tools_after_gdpr_callback(){
+	function mumei_ayuda_system_tools_after_gdpr_callback(){
 		?>
-		<p><h3><?php esc_html_e( 'GDPR/Privacy', 'awesome-support' ); ?></h3></p>
+		<p><h3><?php esc_html_e( 'GDPR/Privacy', 'ayuda-help-desk' ); ?></h3></p>
 		<table class="widefat wpas-system-tools-table" id="wpas-system-tools-gdpr">
 			<thead>
 				<tr>
-					<th data-override="key" class="row-title"><?php esc_html_e( 'GDPR Consent Bulk Action', 'awesome-support' ); ?></th>
+					<th data-override="key" class="row-title"><?php esc_html_e( 'GDPR Consent Bulk Action', 'ayuda-help-desk' ); ?></th>
 					<th data-override="value"></th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td class="row-title"><label for="tablecell"><?php esc_html_e( 'GDPR Consent', 'awesome-support' ); ?></label></td>
+					<td class="row-title"><label for="tablecell"><?php esc_html_e( 'GDPR Consent', 'ayuda-help-desk' ); ?></label></td>
 					<td>
-						<a href="<?php echo esc_url( wpas_tool_link( 'remove_all_user_consent' ) ); ?>" class="button-secondary"><?php esc_html_e( 'Remove', 'awesome-support' ); ?></a>
-						<span class="wpas-system-tools-desc"><?php esc_html_e( 'Clear User Consent data for all Awesome support Users', 'awesome-support' ); ?></span>
+						<a href="<?php echo esc_url( mumei_ayuda_tool_link( 'remove_all_user_consent' ) ); ?>" class="button-secondary"><?php esc_html_e( 'Remove', 'ayuda-help-desk' ); ?></a>
+						<span class="wpas-system-tools-desc"><?php esc_html_e( 'Clear User Consent data for all Awesome support Users', 'ayuda-help-desk' ); ?></span>
 					</td>
 				</tr>
 				<?php
-					$terms = wpas_get_option( 'terms_conditions', '' );
-					$gdpr_short_desc_01 = wpas_get_option( 'gdpr_notice_short_desc_01', '' );
-					$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
-					$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
+					$terms = mumei_ayuda_get_option( 'terms_conditions', '' );
+					$gdpr_short_desc_01 = mumei_ayuda_get_option( 'gdpr_notice_short_desc_01', '' );
+					$gdpr_short_desc_02 = mumei_ayuda_get_option( 'gdpr_notice_short_desc_02', '' );
+					$gdpr_short_desc_03 = mumei_ayuda_get_option( 'gdpr_notice_short_desc_03', '' );
 
 					$consent_array = array(
 						'terms_conditions',
@@ -391,10 +391,10 @@ class WPAS_Privacy_Option {
 						'gdpr_notice_short_desc_02',
 						'gdpr_notice_short_desc_03'
 					);
-					$consent_array = apply_filters( 'wpas_gdpr_consent_list_array',$consent_array );
+					$consent_array = apply_filters( 'mumei_ayuda_gdpr_consent_list_array',$consent_array );
 					if( !empty( $consent_array ) ){
 						foreach ( $consent_array as $key => $consent ) {
-							$consent_name = wpas_get_option( $consent, '' );
+							$consent_name = mumei_ayuda_get_option( $consent, '' );
 							if( 'terms_conditions' === $consent ){
 								$consent_name = 'Terms';
 							}
@@ -409,18 +409,18 @@ class WPAS_Privacy_Option {
 												'_status' => 'opt-in'
 											);
 										?>
-										<a href="<?php echo esc_url( wpas_tool_link( 'add_user_consent', $opt_in ) ); ?>" class="button-secondary"><?php esc_html_e( 'OPT-IN', 'awesome-support' ); ?></a>
+										<a href="<?php echo esc_url( mumei_ayuda_tool_link( 'add_user_consent', $opt_in ) ); ?>" class="button-secondary"><?php esc_html_e( 'OPT-IN', 'ayuda-help-desk' ); ?></a>
 										<?php
 										$opt_out = array(
 											'_consent' => $consent,
 											'_status' => 'opt-out'
 										);
 										?>
-										<a href="<?php echo esc_url( wpas_tool_link( 'add_user_consent', $opt_out ) ); ?>" class="button-secondary"><?php esc_html_e( 'OPT-OUT', 'awesome-support' ); ?></a>
+										<a href="<?php echo esc_url( mumei_ayuda_tool_link( 'add_user_consent', $opt_out ) ); ?>" class="button-secondary"><?php esc_html_e( 'OPT-OUT', 'ayuda-help-desk' ); ?></a>
 										<span class="wpas-system-tools-desc">
 											<?php 
 												// translators: %s is the consent_name.
-												echo sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ),  $consent_name); 
+												echo sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'ayuda-help-desk' ),  $consent_name); 
 											?></span>
 									</td>
 								</tr>
@@ -436,7 +436,7 @@ class WPAS_Privacy_Option {
 
 
 	/**
-	 * Registers the personal data eraser for Awesome Support data.
+	 * Registers the personal data eraser for Ayuda – Help Desk data.
 	 *
 	 * @since  5.2.0
 	 *
@@ -445,15 +445,15 @@ class WPAS_Privacy_Option {
 	 */
 	public function wp_register_asdata_personal_data_eraser( $erasers ){
 		$erasers['awesome-support-data'] = array(
-			'eraser_friendly_name' => __( 'Awesome Support Data', 'awesome-support' ),
-			'callback'             => array( $this, 'wpas_users_personal_data_eraser' ),
+			'eraser_friendly_name' => __( 'Ayuda – Help Desk Data', 'ayuda-help-desk' ),
+			'callback'             => array( $this, 'mumei_ayuda_users_personal_data_eraser' ),
 		);
 
 		return $erasers;
 	}
 
 	/**
-	 * Erases Awesome Support related personal data associated with an email address.
+	 * Erases Ayuda – Help Desk related personal data associated with an email address.
 	 *
 	 * @since 5.2.0
 	 *
@@ -461,7 +461,7 @@ class WPAS_Privacy_Option {
 	 * @param  int    $page          Ticket page.
 	 * @return array
 	 */
-	public function wpas_users_personal_data_eraser( $email_address, $page = 1 ){
+	public function mumei_ayuda_users_personal_data_eraser( $email_address, $page = 1 ){
 		global $wpdb;
 
 		// Evaluate whether conditions exist to allow deletion to proceed
@@ -483,7 +483,7 @@ class WPAS_Privacy_Option {
 		* hooks into this filter it can return FALSE to prevent further data deletion.
 		*
 		*/
-		if ( ! apply_filters( 'wpas_allow_personal_data_eraser', true ) ) {
+		if ( ! apply_filters( 'mumei_ayuda_allow_personal_data_eraser', true ) ) {
 			return $empty_return;
 		}
 
@@ -496,19 +496,19 @@ class WPAS_Privacy_Option {
 		}
 
 		/* All pre-conditions good, so ok to proceed */
-		$number = apply_filters( 'wpas_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
+		$number = apply_filters( 'mumei_ayuda_personal_data_eraser_max_ticket_count', 500 ); // Limit us to 500 tickets at a time to avoid timing out.
 		$page           = (int) $page;
 		$items_removed  = false;
 		$items_retained = false;
 		$args = array(
 			'post_type'      => array( 'ticket' ),
 			'author'         => $author->ID,
-			'post_status'    => array_keys( wpas_get_post_status() ),
+			'post_status'    => array_keys( mumei_ayuda_get_post_status() ),
 			'posts_per_page' => $number,
 			'paged'          => $page
 		);
 
-		$anonymize_existing_data = wpas_get_option( 'anonymize_existing_data' );
+		$anonymize_existing_data = mumei_ayuda_get_option( 'anonymize_existing_data' );
 		if( $anonymize_existing_data ){
 			$user_id = $this->as_create_anonymous_user( $author->ID );
 		}
@@ -524,12 +524,12 @@ class WPAS_Privacy_Option {
 					if ( $ticket_id ) {
 
 						/* Apply a filter check, passing an array object so we can get messages back from the filter */
-						$wpas_pe_msgs['ok_to_erase'] = true ;
-						$wpas_pe_msgs['messages'] = array() ;
-						$wpas_pe_msgs = apply_filters( 'wpas_before_delete_ticket_via_personal_eraser', $wpas_pe_msgs, $ticket_id );
+						$mumei_ayuda_pe_msgs['ok_to_erase'] = true ;
+						$mumei_ayuda_pe_msgs['messages'] = array() ;
+						$mumei_ayuda_pe_msgs = apply_filters( 'mumei_ayuda_before_delete_ticket_via_personal_eraser', $mumei_ayuda_pe_msgs, $ticket_id );
 
 						/* Proceed with attempting to delete the ticket if filter returned ok */
-						if ( true === $wpas_pe_msgs['ok_to_erase'] ) {
+						if ( true === $mumei_ayuda_pe_msgs['ok_to_erase'] ) {
 							/**
 							 * if anonymize data instead of delete is checked
 							 * 		dont delete
@@ -547,7 +547,7 @@ class WPAS_Privacy_Option {
 								$args = array(
 									'post_parent'            => $ticket_id,
 									'author'				 => $author->ID,
-									'post_type'              => apply_filters( 'wpas_replies_post_type', array(
+									'post_type'              => apply_filters( 'mumei_ayuda_replies_post_type', array(
 										'ticket_history',
 										'ticket_reply',
 										'ticket_log'
@@ -563,39 +563,39 @@ class WPAS_Privacy_Option {
 								$posts = new WP_Query( $args );
 								foreach ( $posts->posts as $id => $post ) {
 
-									do_action( 'wpas_before_anonymize_dependency', $post->ID, $post );
+									do_action( 'mumei_ayuda_before_anonymize_dependency', $post->ID, $post );
 									$arg = array(
 									    'ID' => $post->ID,
 									    'post_author' => $user_id,
 									);
 									wp_update_post( $arg );
 
-									do_action( 'wpas_after_anonymize_dependency', $post->ID, $post );
+									do_action( 'mumei_ayuda_after_anonymize_dependency', $post->ID, $post );
 								}
 
 								// translators: %s is the ticket id.
-								$x_content = __( 'Anonymize Awesome Support Ticket #: %s', 'awesome-support' );
+								$x_content = __( 'Anonymize Ayuda – Help Desk Ticket #: %s', 'ayuda-help-desk' );
 								$messages[] = sprintf( $x_content, (string) $ticket_id ) ;
 							} else{
 								if ( wp_delete_post( $ticket_id, true ) ) {
 									$items_removed = true;
 									// translators: %s is the ticket id.
-									$x_content =  __( 'Removed Awesome Support Ticket #: %s', 'awesome-support' );
+									$x_content =  __( 'Removed Ayuda – Help Desk Ticket #: %s', 'ayuda-help-desk' );
 									$messages[] = sprintf( $x_content, (string) $ticket_id ) ;
 								}
 							}
 						} else {
 							// translators: %s is the ticket id.
-							$x_content = __( 'Awesome Support Ticket #: %s was NOT removed because the <i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Awesome Support add-on prevented this ticket from being deleted in order to preserve data integrity.', 'awesome-support' );
+							$x_content = __( 'Ayuda – Help Desk Ticket #: %s was NOT removed because the <i>mumei_ayuda_before_delete_ticket_via_personal_eraser</i> filter check returned false. This means an Ayuda – Help Desk add-on prevented this ticket from being deleted in order to preserve data integrity.', 'ayuda-help-desk' );
 							$messages[] = sprintf( $x_content, (string) $ticket_id ) ;
-							$messages = array_merge( $messages, $wpas_pe_msgs['messages'] ) ;
+							$messages = array_merge( $messages, $mumei_ayuda_pe_msgs['messages'] ) ;
 						}
 
 					}
 				}
 			}
 		} else{
-			$messages[] = __( 'No Awesome Support data was found.', 'awesome-support' );
+			$messages[] = __( 'No Ayuda – Help Desk data was found.', 'ayuda-help-desk' );
 		}
 
 		$done = count( $ticket_data ) < $number;
@@ -620,7 +620,7 @@ class WPAS_Privacy_Option {
 	 */
 	public function as_create_anonymous_user( $author_id ){
 
-		$uid_method = wpas_get_option( 'anonmyize_user_creation_method', '1');
+		$uid_method = mumei_ayuda_get_option( 'anonmyize_user_creation_method', '1');
 
 		switch( $uid_method ) {
 
@@ -635,8 +635,8 @@ class WPAS_Privacy_Option {
 				break ;
 
 			case '3':
-				if ( ! empty( wpas_get_option( 'anonmyize_user_id' ) ) ) {
-					$user_obj = get_user_by( 'ID', wpas_get_option( 'anonmyize_user_id' ) );
+				if ( ! empty( mumei_ayuda_get_option( 'anonmyize_user_id' ) ) ) {
+					$user_obj = get_user_by( 'ID', mumei_ayuda_get_option( 'anonmyize_user_id' ) );
 					if ( $user_obj ) {
 						$user_name = $user_obj->user_login;
 						break ;
@@ -685,7 +685,7 @@ class WPAS_Privacy_Option {
 			$userdata = array(
 			    'user_login'  => $user_name,
 			    'user_email'  => $user_email,
-			    'role'        => wpas_get_option( 'new_user_role', 'wpas_user' ),
+			    'role'        => mumei_ayuda_get_option( 'new_user_role', 'mumei_ayuda_user' ),
 			    'user_pass'   => $random_password,
 			);
 			$user_id = wp_insert_user( $userdata ) ;
@@ -699,7 +699,7 @@ class WPAS_Privacy_Option {
 	}
 
 	/**
-	 * Registers a personal data exporter for Awesome Support
+	 * Registers a personal data exporter for Ayuda – Help Desk
 	 *
 	 * @since  5.2.0
 	 *
@@ -708,8 +708,8 @@ class WPAS_Privacy_Option {
 	 */
 	public function wp_privacy_personal_asdata_exporters( $exporters ){
 		$exporters['awesome-support-data-test'] = array(
-			'exporter_friendly_name' => __( 'Awesome Support Data', 'awesome-support' ),
-			'callback'               => array( $this, 'wpas_users_personal_data_exporter' ),
+			'exporter_friendly_name' => __( 'Ayuda – Help Desk Data', 'ayuda-help-desk' ),
+			'callback'               => array( $this, 'mumei_ayuda_users_personal_data_exporter' ),
 		);
 
 		return $exporters;
@@ -717,7 +717,7 @@ class WPAS_Privacy_Option {
 
 
 	/**
-	 * Finds and exports personal Awesome Support data associated with an email address from the post table.
+	 * Finds and exports personal Ayuda – Help Desk data associated with an email address from the post table.
 	 *
 	 * @since 5.2.0
 	 *
@@ -725,7 +725,7 @@ class WPAS_Privacy_Option {
 	 * @param int    $page          Comment page.
 	 * @return array $return An array of personal data.
 	 */
-	public function wpas_users_personal_data_exporter( $email_address, $page = 1 ){
+	public function mumei_ayuda_users_personal_data_exporter( $email_address, $page = 1 ){
 
 		$number = 500;
 		$page   = (int) $page;
@@ -739,18 +739,18 @@ class WPAS_Privacy_Option {
 				'done' => true,
 			);
 		}
-		$instance = WPAS_GDPR_User_Profile::get_instance();
+		$instance = MUMEI_AYUDA_GDPR_User_Profile::get_instance();
 		if( isset( $author->ID ) && !empty( $author->ID )){
-			$user_tickets_data = $instance->wpas_gdpr_ticket_data( $author->ID, $number, $page );
-			$user_consent_data = $instance->wpas_gdpr_consent_data( $author->ID );
+			$user_tickets_data = $instance->mumei_ayuda_gdpr_ticket_data( $author->ID, $number, $page );
+			$user_consent_data = $instance->mumei_ayuda_gdpr_consent_data( $author->ID );
 
 			if( !empty( $user_tickets_data )){
 				$name = '';
 				$value = '';
 				$item_id = "as-{$user->ID}";
 				$data_to_export[] = array(
-					'group_id'    => 'awesome-support',
-					'group_label' => __( 'Awesome Support', 'awesome-support' ),
+					'group_id'    => 'ayuda-help-desk',
+					'group_label' => __( 'Ayuda – Help Desk', 'ayuda-help-desk' ),
 					'item_id'     => $item_id,
 					'data'        => array(),
 				);
@@ -760,13 +760,13 @@ class WPAS_Privacy_Option {
 						switch ( $key ) {
 							case 'ticket_id':
 								$item_id = 'as-ticket-{' . $value . '}';
-								$name = __( 'Ticket ID', 'awesome-support' );
+								$name = __( 'Ticket ID', 'ayuda-help-desk' );
 							break;
 							case 'subject':
-								$name = __( 'Ticket Subject', 'awesome-support' );
+								$name = __( 'Ticket Subject', 'ayuda-help-desk' );
 							break;
 							case 'description':
-								$name = __( 'Ticket Description', 'awesome-support' );
+								$name = __( 'Ticket Description', 'ayuda-help-desk' );
 							break;
 							case 'replies':
 
@@ -776,7 +776,7 @@ class WPAS_Privacy_Option {
 										$reply_count ++;
 										if( isset( $reply_data['content'] ) && !empty( $reply_data['content'] )){
 											// translators: %s is the number of reply.
-											$name = sprintf(__( 'Reply %s Content', 'awesome-support' ), $reply_count);
+											$name = sprintf(__( 'Reply %s Content', 'ayuda-help-desk' ), $reply_count);
 											if ( ! empty( $value ) ) {
 												$user_data_to_export[] = array(
 													'name'  => $name,
@@ -789,7 +789,7 @@ class WPAS_Privacy_Option {
 								$value = '';
 							break;
 							case 'ticket_status':
-								$name = __( 'Ticket Status', 'awesome-support' );
+								$name = __( 'Ticket Status', 'ayuda-help-desk' );
 							break;
 							default:
 								$value = '';
@@ -819,24 +819,24 @@ class WPAS_Privacy_Option {
 					$consent_count ++;
 					if( isset( $consent_value['item'] ) && !empty( $consent_value['item'] ) ){
 						$user_data_to_export[] = array(
-							'name'  => __( 'Item', 'awesome-support' ),
+							'name'  => __( 'Item', 'ayuda-help-desk' ),
 							'value' => $consent_value['item'],
 						);
 						if( isset( $consent_value['status'] ) && !empty( $consent_value['status'] ) ){
 							$user_data_to_export[] = array(
-								'name'  => __( 'Status', 'awesome-support' ),
+								'name'  => __( 'Status', 'ayuda-help-desk' ),
 								'value' => $consent_value['status'],
 							);
 						}
 						if( isset( $consent_value['opt_in'] ) && !empty( $consent_value['opt_in'] ) ){
 							$user_data_to_export[] = array(
-								'name'  => __( 'Opt In', 'awesome-support' ),
+								'name'  => __( 'Opt In', 'ayuda-help-desk' ),
 								'value' => $consent_value['opt_in'],
 							);
 						}
 						if( isset( $consent_value['opt_out'] ) && !empty( $consent_value['opt_out'] ) ){
 							$user_data_to_export[] = array(
-								'name'  => __( 'Opt Out', 'awesome-support' ),
+								'name'  => __( 'Opt Out', 'ayuda-help-desk' ),
 								'value' => $consent_value['opt_out'],
 							);
 						}
@@ -844,7 +844,7 @@ class WPAS_Privacy_Option {
 				}
 				$data_to_export[] = array(
 					'group_id'    => 'ticket_consent_' . $consent_count,
-					'group_label' => __( 'Consent Data', 'awesome-support' ),
+					'group_label' => __( 'Consent Data', 'ayuda-help-desk' ),
 					'item_id'     => $item_id,
 					'data'        => $user_data_to_export,
 				);
@@ -853,7 +853,7 @@ class WPAS_Privacy_Option {
 		}
 
 
-		$data = apply_filters( 'wpas_users_personal_data_export', $data_to_export, $author->ID );
+		$data = apply_filters( 'mumei_ayuda_users_personal_data_export', $data_to_export, $author->ID );
 
 		return array(
 			'data' => $data,
@@ -884,13 +884,13 @@ class WPAS_Privacy_Option {
 	 * @return void
 	 */
 	public static function print_privacy_popup_temp() {
-		if ( wpas_is_front_end_plugin_page() ) { ?>
+		if ( mumei_ayuda_is_front_end_plugin_page() ) { ?>
 			<div class="privacy-container-template">
 				<div class="entry entry-normal" id="privacy-option-content">
 					<div class="wpas-gdpr-loader-background"></div><!-- .wpas-gdpr-loader-background -->
 					<a href="#" class="hide-the-content"></a>
 					<?php
-					$entry_header = wpas_get_option( 'privacy_popup_header', 'Privacy' );
+					$entry_header = mumei_ayuda_get_option( 'privacy_popup_header', 'Privacy' );
 					if ( ! empty( $entry_header ) ) {
 						echo '<div class="entry-header">' . wp_kses(wpautop( stripslashes( $entry_header ) ),get_allowed_html_wp_notifications()) . '</div>';
 					}
@@ -901,7 +901,7 @@ class WPAS_Privacy_Option {
 								/**
 								 * Include file to generate the tabs
 								 */
-								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-tabs.php' );
+								include_once( MUMEI_AYUDA_PATH . '/includes/gdpr-integration/tab-content/gdpr-tabs.php' );
 							?>
 						</div>
 
@@ -910,8 +910,8 @@ class WPAS_Privacy_Option {
 								/**
 								 * Include tab content for Add/Remove Content data
 								 */
-								 if ( true === boolval( wpas_get_option( 'privacy_show_consent_tab', true) ) ) {
-									include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php' );
+								 if ( true === boolval( mumei_ayuda_get_option( 'privacy_show_consent_tab', true) ) ) {
+									include_once( MUMEI_AYUDA_PATH . '/includes/gdpr-integration/tab-content/gdpr-add-remove-consent.php' );
 								 }
 							?>
 						</div>
@@ -920,8 +920,8 @@ class WPAS_Privacy_Option {
 								/**
 								 * Include tab content for Delete my existing data
 								 */
-								if ( true === boolval( wpas_get_option( 'privacy_show_delete_data_tab', true) ) ) {
-									include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php' );
+								if ( true === boolval( mumei_ayuda_get_option( 'privacy_show_delete_data_tab', true) ) ) {
+									include_once( MUMEI_AYUDA_PATH . '/includes/gdpr-integration/tab-content/gdpr-delete-existing-data.php' );
 								}
 							?>
 						</div>
@@ -930,8 +930,8 @@ class WPAS_Privacy_Option {
 								/**
 								 * Include tab content for Export tickets and user data
 								 */
-								if ( true === boolval( wpas_get_option( 'privacy_show_export_tab', true) ) ) {
-									include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-export-user-data.php' );
+								if ( true === boolval( mumei_ayuda_get_option( 'privacy_show_export_tab', true) ) ) {
+									include_once( MUMEI_AYUDA_PATH . '/includes/gdpr-integration/tab-content/gdpr-export-user-data.php' );
 								}
 							?>
 						</div>
@@ -940,12 +940,12 @@ class WPAS_Privacy_Option {
 								/**
 								 * Include tab content for Export tickets and user data
 								 */
-								include_once( WPAS_PATH . '/includes/gdpr-integration/tab-content/gdpr-wpexport-user-data.php' );
+								include_once( MUMEI_AYUDA_PATH . '/includes/gdpr-integration/tab-content/gdpr-wpexport-user-data.php' );
 							?>
 						</div>
 					</div>
 					<?php
-					$entry_footer = wpas_get_option( 'privacy_popup_footer', 'Privacy' ); 
+					$entry_footer = mumei_ayuda_get_option( 'privacy_popup_footer', 'Privacy' ); 
 					if ( ! empty( $entry_footer ) ) {
 						echo '<div class="entry-footer">' . wp_kses(wpautop( stripslashes( $entry_footer ) ), get_allowed_html_wp_notifications())  . '</div>';
 					}
@@ -967,13 +967,13 @@ class WPAS_Privacy_Option {
 	public function frontend_privacy_add_nav_buttons() {
 
 		/* Do not render button if option is turned off */
-		if ( ! boolval( wpas_get_option( 'privacy_show_button', true) ) ) {
+		if ( ! boolval( mumei_ayuda_get_option( 'privacy_show_button', true) ) ) {
 			return ;
 		}
 
 		/* Option is on so render the button */
-		$button_title = wpas_get_option( 'privacy_button_label', 'Privacy' );
-		wpas_make_button(
+		$button_title = mumei_ayuda_get_option( 'privacy_button_label', 'Privacy' );
+		mumei_ayuda_make_button(
 			stripslashes_deep( $button_title ), array(
 				'type'  => 'link',
 				'link'  => '#',
@@ -987,13 +987,13 @@ class WPAS_Privacy_Option {
 	 * This is only good for 'Official Request: Please Delete My Existing Data ("Right To Be Forgotten")'
 	 * ticket from the GDPR popup in 'Delete My Existing Data' tab
 	 */
-	public function wpas_gdpr_open_ticket() {
+	public function mumei_ayuda_gdpr_open_ticket() {
 		/**
 		 * Initialize custom reponse message
 		 */
 		$response = array(
 			'code'    => 403,
-			'message' => __( 'Sorry! Something failed', 'awesome-support' ),
+			'message' => __( 'Sorry! Something failed', 'ayuda-help-desk' ),
 		);
 
 		/**
@@ -1019,10 +1019,10 @@ class WPAS_Privacy_Option {
 			/**
 			 * New ticket submission
 			 * *
-			 * * NOTE: data sanitization is happening on wpas_open_ticket()
+			 * * NOTE: data sanitization is happening on mumei_ayuda_open_ticket()
 			 * * We can skip doing it here
 			 */
-			$ticket_id = wpas_open_ticket(
+			$ticket_id = mumei_ayuda_open_ticket(
 				array(
 					'title'   => $subject,
 					'message' => $content,
@@ -1030,17 +1030,17 @@ class WPAS_Privacy_Option {
 				)
 			);
 
-			wpas_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'awesome-support' ), __( 'requested', 'awesome-support' ) );
+			mumei_ayuda_log_consent( $form_data['wpas-user'], __( 'Right to be forgotten mail', 'ayuda-help-desk' ), __( 'requested', 'ayuda-help-desk' ) );
 
 			if ( ! empty( $ticket_id ) ) {
 
 				//Check permission for capability of current user
 				if ( ! current_user_can( 'read') ) {
-					wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'awesome-support') ), 403);
+					wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'ayuda-help-desk') ), 403);
 				}
 				
 				$response['code']    = 200;
-				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
+				$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'ayuda-help-desk' );
 
 				// send erase data request.
 				if ( function_exists( 'wp_create_user_request' )  && function_exists( 'wp_send_user_request' ) ) {
@@ -1049,11 +1049,11 @@ class WPAS_Privacy_Option {
 
 						if( 'delete' === $request_type ){
 							$request_id = wp_create_user_request( $current_user->user_email, 'remove_personal_data' );
-							$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'awesome-support' );
+							$response['message'] = __( 'We have received your "Right To Be Forgotten" request!', 'ayuda-help-desk' );
 						}
 						if( 'export' === $request_type ){
 							$request_id = wp_create_user_request( $current_user->user_email, 'export_personal_data' );
-							$response['message'] = __( 'We have received your Export data request!', 'awesome-support' );
+							$response['message'] = __( 'We have received your Export data request!', 'ayuda-help-desk' );
 						}
 
 						if( isset( $request_id) && $request_id ) {
@@ -1071,10 +1071,10 @@ class WPAS_Privacy_Option {
 				$response['code']    = 200;
 
 			} else {
-				$response['message'] = __( 'Something went wrong. Please try again!', 'awesome-support' );
+				$response['message'] = __( 'Something went wrong. Please try again!', 'ayuda-help-desk' );
 			}
 		} else {
-			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
+			$response['message'] = __( 'Cheating huh?', 'ayuda-help-desk' );
 		}
 		wp_send_json( $response );
 		wp_die();
@@ -1084,7 +1084,7 @@ class WPAS_Privacy_Option {
 	 * Ajax based processing user opted in button
 	 * The button can be found on GDPR popup in front-end
 	 */
-	public function wpas_gdpr_user_opt_in() {
+	public function mumei_ayuda_gdpr_user_opt_in() {
 		/**
 		 * Initialize custom reponse message
 		 */
@@ -1100,7 +1100,7 @@ class WPAS_Privacy_Option {
 
 		//Check permission for capability of current user
 		if ( ! current_user_can( 'read') ) {
-			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'awesome-support') ), 403);
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'ayuda-help-desk') ), 403);
 		}
 
 		/**
@@ -1110,18 +1110,18 @@ class WPAS_Privacy_Option {
 
 			$item   	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] )) : '';
 			$user   	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
-			$status 	= __( 'Opted-in', 'awesome-support' );
+			$status 	= __( 'Opted-in', 'ayuda-help-desk' );
 			$opt_in 	= strtotime( 'NOW' );
 			$opt_out   	= isset( $_POST['data']['gdpr-optout'] ) ? strtotime( sanitize_text_field( wp_unslash( $_POST['data']['gdpr-optout'] )) ) : '';
-			$gdpr_id 	= wpas_get_gdpr_data( $item );
+			$gdpr_id 	= mumei_ayuda_get_gdpr_data( $item );
 
 			/**
 			 * Who is the current user right now?
 			 */
 			$logged_user = wp_get_current_user();
-			$current_user = isset( $logged_user->data->display_name ) ? $logged_user->data->display_name : __( 'user', 'awesome-support');
+			$current_user = isset( $logged_user->data->display_name ) ? $logged_user->data->display_name : __( 'user', 'ayuda-help-desk');
 
-			wpas_track_consent(
+			mumei_ayuda_track_consent(
 				array(
 					'item'    => $item,
 					'status'  => $status,
@@ -1131,25 +1131,25 @@ class WPAS_Privacy_Option {
 				), $user, 'in'
 			);
 
-			wpas_log_consent( $user, $item, __( 'opted-in', 'awesome-support' ), '', $current_user );
+			mumei_ayuda_log_consent( $user, $item, __( 'opted-in', 'ayuda-help-desk' ), '', $current_user );
 			$response['code']               = 200;
-			$response['message']['success'] = __( 'You have successfully opted-in', 'awesome-support' );
+			$response['message']['success'] = __( 'You have successfully opted-in', 'ayuda-help-desk' );
 			$response['message']['date']    = gmdate( 'm/d/Y', $opt_in );
 			$response['message']['status']    = $status;
 			/**
 			 * return buttons markup based on settings
 			 * If can opt-out, then display the button
 			 */
-			if( wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
+			if( mumei_ayuda_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
 				$response['message']['button']  = sprintf(
 					'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
-					__( 'Opt-out', 'awesome-support' )
+					__( 'Opt-out', 'ayuda-help-desk' )
 				);
 			} else {
 				$response['message']['button']  = '';
 			}
 		} else {
-			$response['message']['error'] = __( 'Cheating huh?', 'awesome-support' );
+			$response['message']['error'] = __( 'Cheating huh?', 'ayuda-help-desk' );
 		}
 		wp_send_json( $response );
 		wp_die();
@@ -1159,7 +1159,7 @@ class WPAS_Privacy_Option {
 	 * Ajax based processing user opted out button
 	 * The button can be found on GDPR popup in front-end
 	 */
-	public function wpas_gdpr_user_opt_out() {
+	public function mumei_ayuda_gdpr_user_opt_out() {
 		/**
 		 * Initialize custom reponse message
 		 */
@@ -1175,7 +1175,7 @@ class WPAS_Privacy_Option {
 
 		//Check permission for capability of current user
 		if ( ! current_user_can( 'read') ) {
-			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'awesome-support') ), 403);
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to processing user opted out button.', 'ayuda-help-desk') ), 403);
 		}
 
 		/**
@@ -1185,7 +1185,7 @@ class WPAS_Privacy_Option {
 
 			$item    	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] )) : '';
 			$user    	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
-			$status  	= __( 'Opted-Out', 'awesome-support' );
+			$status  	= __( 'Opted-Out', 'ayuda-help-desk' );
 			$opt_out 	= strtotime( 'NOW' );
 			$opt_in   	= isset( $_POST['data']['gdpr-optin'] ) ? strtotime( sanitize_text_field( wp_unslash( $_POST['data']['gdpr-optin'] )) ) : '';
 
@@ -1193,9 +1193,9 @@ class WPAS_Privacy_Option {
 			 * Who is the current user right now?
 			 */
 			$logged_user = wp_get_current_user();
-			$current_user = isset( $logged_user->data->display_name ) ? $logged_user->data->display_name : __( 'user', 'awesome-support');
+			$current_user = isset( $logged_user->data->display_name ) ? $logged_user->data->display_name : __( 'user', 'ayuda-help-desk');
 
-			wpas_track_consent(
+			mumei_ayuda_track_consent(
 				array(
 					'item'    => $item,
 					'status'  => $status,
@@ -1204,18 +1204,18 @@ class WPAS_Privacy_Option {
 					'is_tor'  => false,
 				), $user, 'out'
 			);
-			wpas_log_consent( $user, $item, __( 'opted-out', 'awesome-support' ), '', $current_user );
+			mumei_ayuda_log_consent( $user, $item, __( 'opted-out', 'ayuda-help-desk' ), '', $current_user );
 
 			$response['code']               = 200;
-			$response['message']['success'] = __( 'You have successfully opted-out', 'awesome-support' );
+			$response['message']['success'] = __( 'You have successfully opted-out', 'ayuda-help-desk' );
 			$response['message']['date']    = gmdate( 'm/d/Y', $opt_out );
 			$response['message']['status']    = $status;
 			$response['message']['button']  = sprintf(
 				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
-				__( 'Opt-in', 'awesome-support' )
+				__( 'Opt-in', 'ayuda-help-desk' )
 			);
 		} else {
-			$response['message']['error'] = __( 'Cheating huh?', 'awesome-support' );
+			$response['message']['error'] = __( 'Cheating huh?', 'ayuda-help-desk' );
 		}
 		wp_send_json( $response );
 		wp_die();

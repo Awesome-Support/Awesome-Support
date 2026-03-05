@@ -1,6 +1,6 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
 use WP_REST_Server;
 use WP_REST_Posts_Controller;
@@ -15,7 +15,7 @@ class TicketBase extends WP_REST_Posts_Controller {
 		parent::__construct( $post_type );
 
 		$this->meta = new WP_REST_Post_Meta_Fields( $this->post_type );
-		$this->namespace = wpas_api()->get_api_namespace();
+		$this->namespace = mumei_ayuda_api()->get_api_namespace();
 	}
 
 	/**
@@ -33,7 +33,7 @@ class TicketBase extends WP_REST_Posts_Controller {
 			$query_args['post_parent'] = absint( $request['ticket_id'] );
 		}
 
-		return apply_filters( "wpas_api_{$this->rest_base}_prepare_items_query", $query_args, $prepared_args, $request, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_prepare_items_query", $query_args, $prepared_args, $request, $this );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class TicketBase extends WP_REST_Posts_Controller {
 
 		$query_params['status'] = array(
 			'default'           => 'any',
-			'description'       => __( 'Limit result set to items assigned one or more statuses.', 'awesome-support' ),
+			'description'       => __( 'Limit result set to items assigned one or more statuses.', 'ayuda-help-desk' ),
 			'type'              => 'array',
 			'items'             => array(
 				'enum'          =>  array( 'read', 'unread' ),
@@ -61,7 +61,7 @@ class TicketBase extends WP_REST_Posts_Controller {
 		 * @param array   $query_params JSON Schema-formatted collection parameters.
 		 * @param object  Tickets
 		 */
-		return apply_filters( "wpas_api_{$this->rest_base}_collection_params", $query_params, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_collection_params", $query_params, $this );
 	}
 
 	/**
@@ -90,7 +90,7 @@ class TicketBase extends WP_REST_Posts_Controller {
 			}
 		}
 
-		return apply_filters( "wpas_api_{$this->rest_base}_sanitize_ticket_param", $value, $request, $parameter, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_sanitize_ticket_param", $value, $request, $parameter, $this );
 	}
 
 	/**
@@ -108,13 +108,13 @@ class TicketBase extends WP_REST_Posts_Controller {
 			$post = get_post( $post->post_parent );
 		}
 
-		$return = wpas_can_view_ticket( $post->ID );
+		$return = mumei_ayuda_can_view_ticket( $post->ID );
 
-		if ( 'public' === get_post_meta( $post->ID , '_wpas_pbtk_flag', true ) ) {
+		if ( 'public' === get_post_meta( $post->ID , '_mumei_ayuda_pbtk_flag', true ) ) {
 			$return = true;
 		}
 
-		return apply_filters( 'wpas_api_check_ticket_read_permission', $return, $post, $this );
+		return apply_filters( 'mumei_ayuda_api_check_ticket_read_permission', $return, $post, $this );
 	}
 
 	/**
@@ -128,21 +128,21 @@ class TicketBase extends WP_REST_Posts_Controller {
 	 */
 	public function create_item_permissions_check( $request ) {
 		if ( ! empty( $request['id'] ) ) {
-			return new WP_Error( 'rest_post_exists', __( 'Cannot create existing post.', 'awesome-support' ), array( 'status' => 400 ) );
+			return new WP_Error( 'rest_post_exists', __( 'Cannot create existing post.', 'ayuda-help-desk' ), array( 'status' => 400 ) );
 		}
 
 		$post_type = get_post_type_object( $this->post_type );
 
 		if ( ! empty( $request['author'] ) && get_current_user_id() !== $request['author'] && ! current_user_can( $post_type->cap->edit_others_posts ) ) {
-			return new WP_Error( 'rest_cannot_edit_others', __( 'Sorry, you are not allowed to create tickets as this user.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_edit_others', __( 'Sorry, you are not allowed to create tickets as this user.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		if ( ! current_user_can( 'create_ticket' ) ) {
-			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to create tickets as this user.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to create tickets as this user.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		if ( ! $this->check_assign_terms_permission( $request ) ) {
-			return new WP_Error( 'rest_cannot_assign_term', __( 'Sorry, you are not allowed to assign the provided terms.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_assign_term', __( 'Sorry, you are not allowed to assign the provided terms.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		return true;
@@ -200,7 +200,7 @@ class TicketBase extends WP_REST_Posts_Controller {
 			return null;
 		}
 
-		return apply_filters( 'wpas_api_tickets_prepare_value', $value, $args );
+		return apply_filters( 'mumei_ayuda_api_tickets_prepare_value', $value, $args );
 	}
 
 }

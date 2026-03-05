@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WPAS_CF_Select extends WPAS_Custom_Field {
+class MUMEI_AYUDA_CF_Select extends MUMEI_AYUDA_Custom_Field {
 
 	public $options = array();
 
@@ -19,11 +19,11 @@ class WPAS_CF_Select extends WPAS_Custom_Field {
 
 		/* Change the field name if multiple upload is enabled */
 		if ( true === $this->field_args['multiple'] ) {
-			add_filter( 'wpas_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 3 );
+			add_filter( 'mumei_ayuda_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 3 );
 		}
 
 		if ( true === $this->field_args['select2'] ) {
-			add_filter( 'wpas_cf_field_class', array( $this, 'add_select2_class' ), 10, 2 );
+			add_filter( 'mumei_ayuda_cf_field_class', array( $this, 'add_select2_class' ), 10, 2 );
 		}
 
 	}

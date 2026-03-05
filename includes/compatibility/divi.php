@@ -1,10 +1,10 @@
 <?php
 /**
- * @package   Awesome Support/Compatibility/Divi
- * @author    Awesome Support <contact@awesomesupport.com>
+ * @package   Ayuda – Help Desk/Compatibility/Divi
+ * @author    Ayuda – Help Desk <contact@awesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://awesomesupport.com
- * @copyright 2017 Awesome Support
+ * @copyright 2017 Ayuda – Help Desk
  */
 
 // If this file is called directly, abort.

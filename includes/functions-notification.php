@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @return void
  */
-function wpas_set_notifications( $group = 'notifications' ) {
+function mumei_ayuda_set_notifications( $group = 'notifications' ) {
 	WPAS()->session->add( $group, array() );
 }
 
@@ -35,7 +35,7 @@ function wpas_set_notifications( $group = 'notifications' ) {
  * @param string $group   Notification group to add the message into
  * @return void
  */
-function wpas_add_notification( $id, $message, $group = 'notifications' ) {
+function mumei_ayuda_add_notification( $id, $message, $group = 'notifications' ) {
 
 	$notifications = WPAS()->session->get( $group );
 	$id            = sanitize_text_field( $id );
@@ -44,7 +44,7 @@ function wpas_add_notification( $id, $message, $group = 'notifications' ) {
 		$message = wp_kses_post( $message );
 	}
 	if ( false === $notifications ) {
-		wpas_set_notifications();
+		mumei_ayuda_set_notifications();
 		$notifications = array();
 	}
 	
@@ -65,7 +65,7 @@ function wpas_add_notification( $id, $message, $group = 'notifications' ) {
  *
  * @return mixed
  */
-function wpas_get_notification( $id, $default = false, $group = 'notifications' ) {
+function mumei_ayuda_get_notification( $id, $default = false, $group = 'notifications' ) {
 
 	$value         = $default;
 	$notifications = WPAS()->session->get( $group );
@@ -88,7 +88,7 @@ function wpas_get_notification( $id, $default = false, $group = 'notifications' 
  *
  * @return array
  */
-function wpas_get_notifications( $group = 'notifications' ) {
+function mumei_ayuda_get_notifications( $group = 'notifications' ) {
 	return WPAS()->session->get( $group );
 }
 
@@ -102,13 +102,13 @@ function wpas_get_notifications( $group = 'notifications' ) {
  *
  * @return void
  */
-function wpas_clean_notification( $id, $group ) {
+function mumei_ayuda_clean_notification( $id, $group ) {
 
-	if ( false === wpas_get_notification( $id ) ) {
+	if ( false === mumei_ayuda_get_notification( $id ) ) {
 		return;
 	}
 
-	$notifications = wpas_get_notifications();
+	$notifications = mumei_ayuda_get_notifications();
 
 	unset( $notifications[ $id ] );
 
@@ -125,7 +125,7 @@ function wpas_clean_notification( $id, $group ) {
  *
  * @return void
  */
-function wpas_clean_notifications( $group = 'notifications' ) {
+function mumei_ayuda_clean_notifications( $group = 'notifications' ) {
 	WPAS()->session->clean( $group );
 }
 
@@ -139,9 +139,9 @@ function wpas_clean_notifications( $group = 'notifications' ) {
  *
  * @return string
  */
-function wpas_get_display_notifications( $group = 'notifications', $type = 'success' ) {
+function mumei_ayuda_get_display_notifications( $group = 'notifications', $type = 'success' ) {
 
-	$notifications = wpas_get_notifications( $group );
+	$notifications = mumei_ayuda_get_notifications( $group );
 	$text          = '';
 
 	if ( ! is_array( $notifications ) ) {
@@ -152,19 +152,19 @@ function wpas_get_display_notifications( $group = 'notifications', $type = 'succ
 			$messages = array();
 
 			foreach ( $notifications as $id => $message ) {
-				array_push( $messages, wpas_readable_notification_message( $message ) );
+				array_push( $messages, mumei_ayuda_readable_notification_message( $message ) );
 			}
 
 			$text = implode( '<br>', $messages );
 
 		} else {
 			foreach ( $notifications as $id => $message ) {
-				$text = wpas_readable_notification_message( $message );
+				$text = mumei_ayuda_readable_notification_message( $message );
 			}
 		}
 	}
 
-	return wpas_get_notification_markup( $type, $text );
+	return mumei_ayuda_get_notification_markup( $type, $text );
 
 }
 
@@ -177,7 +177,7 @@ function wpas_get_display_notifications( $group = 'notifications', $type = 'succ
  *
  * @return string Readable message
  */
-function wpas_readable_notification_message( $message ) {
+function mumei_ayuda_readable_notification_message( $message ) {
 
 	if ( ! is_array( $message ) ) {
 		return $message;
@@ -186,27 +186,27 @@ function wpas_readable_notification_message( $message ) {
 	$messages = array();
 
 	foreach ( $message as $key => $value ) {
-		array_push( $messages, wpas_readable_notification_message( $value ) );
+		array_push( $messages, mumei_ayuda_readable_notification_message( $value ) );
 	}
 
 	return implode( '<br>', $messages );
 
 }
 
-add_action( 'wpas_before_template', 'wpas_display_notifications', 10, 3 );
+add_action( 'mumei_ayuda_before_template', 'mumei_ayuda_display_notifications', 10, 3 );
 /**
  * Display all notification messages
  *
  * @since 3.2
  * @return string Readable notifications
  */
-function wpas_display_notifications() {
-	echo  wp_kses(wpas_get_display_notifications(), get_allowed_html_wp_notifications());
-	wpas_clean_notifications();
+function mumei_ayuda_display_notifications() {
+	echo  wp_kses(mumei_ayuda_get_display_notifications(), get_allowed_html_wp_notifications());
+	mumei_ayuda_clean_notifications();
 }
 
 
-add_action( 'wpas_frontend_add_nav_buttons', 'wpas_frontend_add_notifications_nav_button', 8 );
+add_action( 'mumei_ayuda_frontend_add_nav_buttons', 'mumei_ayuda_frontend_add_notifications_nav_button', 8 );
 
 /**
  * Add new notifications nav option on front-end ticket page
@@ -215,9 +215,9 @@ add_action( 'wpas_frontend_add_nav_buttons', 'wpas_frontend_add_notifications_na
  * 
  * @return void
  */
-function wpas_frontend_add_notifications_nav_button() {
+function mumei_ayuda_frontend_add_notifications_nav_button() {
 	
-	if ( true === boolval( wpas_get_option( 'enable_notification_button', true ) ) ) {
+	if ( true === boolval( mumei_ayuda_get_option( 'enable_notification_button', true ) ) ) {
 		global $post;
 
 		if( 'ticket' !== get_post_type( $post ) ) {
@@ -225,17 +225,17 @@ function wpas_frontend_add_notifications_nav_button() {
 		}
 		
 		/* Set button label - if set to blank in settings, it will go through the normal translation functions */
-		$button_label = wpas_get_option('notifications_button_label','');
+		$button_label = mumei_ayuda_get_option('notifications_button_label','');
 		if ( true == empty( $button_label ) ) {
-			$button_label = __('Notifications', 'awesome-support');
+			$button_label = __('Notifications', 'ayuda-help-desk');
 		}
 		
-		echo wp_kses(wpas_full_screen_window_link( array(
+		echo wp_kses(mumei_ayuda_full_screen_window_link( array(
 			'type'  => 'ajax',
-			'title' => __( 'Notifications', 'awesome-support' ),
+			'title' => __( 'Notifications', 'ayuda-help-desk' ),
 			'class'	=> 'wpas-btn wpas-btn-default wpas-link-notifications',
 			'ajax_params' => array(
-				'action' => 'wpas_ticket_notifications_window',
+				'action' => 'mumei_ayuda_ticket_notifications_window',
 				'id'	 => $post->ID,
 			),
 			'label' => $button_label,
@@ -247,14 +247,14 @@ function wpas_frontend_add_notifications_nav_button() {
 }
 
 
-add_action( 'wp_ajax_wpas_ticket_notifications_window', 'wpas_ticket_notifications_window', 11 );
+add_action( 'wp_ajax_mumei_ayuda_ticket_notifications_window', 'mumei_ayuda_ticket_notifications_window', 11 );
 
 /**
  * Generate content for notification popup window
  * 
  * @return void
  */
-function wpas_ticket_notifications_window() {
+function mumei_ayuda_ticket_notifications_window() {
 		
 	$ticket_id = filter_input( INPUT_POST, 'id', FILTER_SANITIZE_NUMBER_INT );
 	
@@ -263,18 +263,18 @@ function wpas_ticket_notifications_window() {
 	}
 
 	if ( ! current_user_can( 'read' ) ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to generate content for notification popup window.', 'awesome-support') ), 403);		
+		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to generate content for notification popup window.', 'ayuda-help-desk') ), 403);		
 	}
 
-	$text = wpas_get_option( 'notifications_button_msg', __( 'Standard notifications are enabled.', 'awesome-support' ) ) ;
+	$text = mumei_ayuda_get_option( 'notifications_button_msg', __( 'Standard notifications are enabled.', 'ayuda-help-desk' ) ) ;
 
 	$content = '<div>' . $text . '</div>';
 
 
-	$content = apply_filters( 'wpas_ticket_notifications_window_content', $content, $ticket_id );
+	$content = apply_filters( 'mumei_ayuda_ticket_notifications_window_content', $content, $ticket_id );
 
-	wpas_get_full_screen_popup_window( 'wpas_ticket_notifications_window', $content, array(
-		'title' => __( 'Notifications', 'awesome-support' )
+	mumei_ayuda_get_full_screen_popup_window( 'mumei_ayuda_ticket_notifications_window', $content, array(
+		'title' => __( 'Notifications', 'ayuda-help-desk' )
 	) );
 	
 	die();
@@ -287,5 +287,5 @@ function wpas_ticket_notifications_window() {
  */
 function get_allowed_html_wp_notifications()
 {
-	return apply_filters( 'custom_allowed_html_wpas_admin_tabs', wpas_get_allowed_html_tags() );
+	return apply_filters( 'custom_allowed_html_mumei_ayuda_admin_tabs', mumei_ayuda_get_allowed_html_tags() );
 }

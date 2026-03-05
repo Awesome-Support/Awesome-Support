@@ -9,7 +9,7 @@
  * @copyright 2014-2017 AwesomeSupport
  */
 
-class WPAS_Gas {
+class MUMEI_AYUDA_Gas {
 
 	/**
 	 * Instance of this class.
@@ -77,7 +77,7 @@ class WPAS_Gas {
 
 		// Use the embedded Gas Framework
 		if ( $useEmbeddedFramework && ! class_exists( 'GASFramework' ) ) {
-		    require_once( WPAS_PATH . 'includes/gas-framework/gas-framework.php' );
+		    require_once( MUMEI_AYUDA_PATH . 'includes/gas-framework/gas-framework.php' );
 		}
 
 		/*
@@ -87,8 +87,8 @@ class WPAS_Gas {
 
 		$settings = $gas->createContainer( array(
 						'type'       => 'admin-page',
-						'name'       => __( 'Settings', 'awesome-support' ),
-						'title'      => __( 'Settings', 'awesome-support' ),
+						'name'       => __( 'Settings', 'ayuda-help-desk' ),
+						'title'      => __( 'Settings', 'ayuda-help-desk' ),
 						'id'         => 'wpas-settings',
 						'parent'     => 'edit.php?post_type=ticket',
 						'capability' => 'settings_tickets'
@@ -101,7 +101,7 @@ class WPAS_Gas {
 		 * @var (array)
 		 * @see  admin/includes/settings.php
 		 */
-		$options = wpas_get_settings();
+		$options = mumei_ayuda_get_settings();
 
 		/* Parse options */
 		foreach ( $options as $tab => $content ) {

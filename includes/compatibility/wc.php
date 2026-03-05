@@ -5,18 +5,18 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'admin_enqueue_scripts', 'wpas_override_wc_select2_style', 12 );
+add_action( 'admin_enqueue_scripts', 'mumei_ayuda_override_wc_select2_style', 12 );
 /**
  * Fix compatibility issue with WooCommerce's select2
  *
- * This function will override WC select2 style on Awesome Support's pages.
+ * This function will override WC select2 style on Ayuda – Help Desk's pages.
  *
  * @return void
  */
-function wpas_override_wc_select2_style() {
+function mumei_ayuda_override_wc_select2_style() {
 
 	// Only make changes on our pages. Don't want to mess up even more with other stuff
-	if ( ! wpas_is_plugin_page() ) {
+	if ( ! mumei_ayuda_is_plugin_page() ) {
 		return;
 	}
 
@@ -25,7 +25,7 @@ function wpas_override_wc_select2_style() {
 		
 	if( is_plugin_active( 'woocommerce/woocommerce.php') ) {
 		
-		wp_enqueue_style( 'wpas-override-wc-select2-style', WPAS_URL . 'assets/admin/css/wc-select2.css', array(), WPAS_VERSION );
+		wp_enqueue_style( 'wpas-override-wc-select2-style', MUMEI_AYUDA_URL . 'assets/admin/css/wc-select2.css', array(), MUMEI_AYUDA_VERSION );
 		
 	}
 	

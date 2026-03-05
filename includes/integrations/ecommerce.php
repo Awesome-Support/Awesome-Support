@@ -3,10 +3,10 @@
  * WP eCommerce Integration.
  *
  * This class will, if WP eCommerce is enabled, synchronize the WP eCommerce products
- * with the product taxonomy of Awesome Support and make the management
+ * with the product taxonomy of Ayuda – Help Desk and make the management
  * of products completely transparent.
  *
- * @package   Awesome Support/Integrations/eCommerce
+ * @package   Ayuda – Help Desk/Integrations/eCommerce
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -14,7 +14,7 @@
  *
  */
 
-final class WPAS_eCommerce_Integration {
+final class MUMEI_AYUDA_eCommerce_Integration {
 
 	/**
 	 * Instance of this class.
@@ -152,13 +152,13 @@ final class WPAS_eCommerce_Integration {
 	 */
 	protected function init() {
 
-		$sync = apply_filters( 'wpas_ecommerce_integrations', true );
+		$sync = apply_filters( 'mumei_ayuda_ecommerce_integrations', true );
 
 		// Check if e-commerce products sync is enabled
 		if ( true === $sync ) {
 			add_action( 'plugins_loaded', array( $this, 'find_plugin' ) );
 			add_action( 'init', array( $this, 'init_sync' ), 11 );
-			add_filter( 'wpas_taxonomy_locked_msg', array( $this, 'locked_message' ) );
+			add_filter( 'mumei_ayuda_taxonomy_locked_msg', array( $this, 'locked_message' ) );
 		}
 
 	}
@@ -227,7 +227,7 @@ final class WPAS_eCommerce_Integration {
 	protected function register( $slug, $plugin ) {
 
 		$this->plugin = $slug;
-		$current      = (bool) wpas_get_option( 'support_products_' . $slug, true );
+		$current      = (bool) mumei_ayuda_get_option( 'support_products_' . $slug, true );
 		$plugin       = wp_parse_args( $plugin, $this->integration_defaults() );
 
 		// Check if the plugin has sync enabled
@@ -254,7 +254,7 @@ final class WPAS_eCommerce_Integration {
 		$plugin = wp_parse_args( $this->plugins[ $this->plugin ], $this->integration_defaults() );
 
 		// Instantiate the product sync class
-		WPAS()->products_sync = new WPAS_Product_Sync( $plugin['post_type'], $plugin['taxonomy'], $plugin['append'] );
+		WPAS()->products_sync = new MUMEI_AYUDA_Product_Sync( $plugin['post_type'], $plugin['taxonomy'], $plugin['append'] );
 
 		return true;
 
@@ -323,37 +323,37 @@ final class WPAS_eCommerce_Integration {
 
 		    case 'edd':
 		        // translators: %s is the link
-		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.', 'awesome-support');
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to an EDD product. <a href="%s">Please edit the product directly</a>.', 'ayuda-help-desk');
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'download', admin_url( 'edit.php' ) ) );
 		        break;
 
 		    case 'woocommerce':
 		       	// translators: %s is the link
-		       	$this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		       	$this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'ayuda-help-desk' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
 		        break;
 
 		    case 'exchange':
 		        // translators: %s is the link
-		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to an Exchange product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to an Exchange product. <a href="%s">Please edit the product directly</a>.', 'ayuda-help-desk' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'it_exchange_prod', admin_url( 'edit.php' ) ) );
 		        break;
 
 		    case 'jigoshop':
 		        // translators: %s is the link
-		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a Jigoshop product. <a href="%s">Please edit the product directly</a>.', 'ayuda-help-desk' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
 		        break;
 
 		    case 'wpecommerce':
 		        // translators: %s is the link
-		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WP eCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WP eCommerce product. <a href="%s">Please edit the product directly</a>.', 'ayuda-help-desk' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'wpsc-product', admin_url( 'edit.php' ) ) );
 		        break;     
 
 		    default:
 		        // translators: %s is the link
-		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'awesome-support' );
+		        $this->locked_msg = __( 'You cannot edit this term from here because it is linked to a WooCommerce product. <a href="%s">Please edit the product directly</a>.', 'ayuda-help-desk' );
 		        $this->locked_msg = sprintf( $this->locked_msg , add_query_arg( 'post_type', 'product', admin_url( 'edit.php' ) ) );
 		}		
 		return $this->locked_msg;
@@ -366,4 +366,4 @@ final class WPAS_eCommerce_Integration {
  *
  * @since 3.3
  */
-WPAS_eCommerce_Integration::get_instance();
+MUMEI_AYUDA_eCommerce_Integration::get_instance();

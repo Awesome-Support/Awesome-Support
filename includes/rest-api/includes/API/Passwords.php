@@ -1,8 +1,8 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
-use WPAS_API\Auth\User;
+use MUMEI_AYUDA_API\Auth\User;
 use WP_REST_Controller;
 use WP_REST_Server;
 use WP_REST_Request;
@@ -25,7 +25,7 @@ class Passwords extends WP_REST_Controller {
 	 * @access public
 	 */
 	public function __construct() {
-		$this->namespace = wpas_api()->get_api_namespace();
+		$this->namespace = mumei_ayuda_api()->get_api_namespace();
 		$this->rest_base = 'passwords';
 	}
 
@@ -42,7 +42,7 @@ class Passwords extends WP_REST_Controller {
 		register_rest_route( $this->namespace, '/users/(?P<user_id>[\d]+)/' . $this->rest_base, array(
 			'args' => array(
 				'user_id' => array(
-					'description' => __( 'The ID of the requested user.', 'awesome-support' ),
+					'description' => __( 'The ID of the requested user.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -69,12 +69,12 @@ class Passwords extends WP_REST_Controller {
 		register_rest_route( $this->namespace, '/users/(?P<user_id>[\d]+)/' . $this->rest_base . '/(?P<slug>[\da-fA-F]{12})', array(
 			'args' => array(
 				'user_id' => array(
-					'description' => __( 'The ID of the requested user.', 'awesome-support' ),
+					'description' => __( 'The ID of the requested user.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
 				'slug' => array(
-					'description' => __( 'The slug of the password to delete.', 'awesome-support' ),
+					'description' => __( 'The slug of the password to delete.', 'ayuda-help-desk' ),
 					'type'        => 'string',
 					'required'    => true,
 				),
@@ -108,7 +108,7 @@ class Passwords extends WP_REST_Controller {
 	 */
 	public function get_passwords_permissions_check( $request ) {
 		$check = empty( $request['user_id'] ) ? current_user_can( 'edit_users' ) : current_user_can( 'edit_user', $request['user_id'] );
-		return apply_filters( 'wpas_api_get_password_permissions_check', $check, $request );
+		return apply_filters( 'mumei_ayuda_api_get_password_permissions_check', $check, $request );
 	}
 
 	/**
@@ -168,7 +168,7 @@ class Passwords extends WP_REST_Controller {
 		$user = new User( $request['user_id'] );
 
 		if ( empty( $request['name'] ) ) {
-			return new WP_Error( 'no-name', __( 'Please provide a name to use for the new password.', 'awesome-support' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-name', __( 'Please provide a name to use for the new password.', 'ayuda-help-desk' ), array( 'status' => 404 ) );
 		}
 
 		$new_item = $user->create_new_api_password( $request['name'] );
@@ -192,13 +192,13 @@ class Passwords extends WP_REST_Controller {
 		$slug = $request['slug'];
 
 		if ( ! $item = $user->get_api_password( $slug ) ) {
-			return new WP_Error( 'no-item-found', __( 'No password was found with that slug.', 'awesome-support' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-item-found', __( 'No password was found with that slug.', 'ayuda-help-desk' ), array( 'status' => 404 ) );
 		}
 
 		if ( $user->delete_api_password( $slug ) ) {
 			return array( 'deleted' => true, 'previous' => $item );
 		} else {
-			return new WP_Error( 'no-item-found', __( 'No password was found with that slug.', 'awesome-support' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-item-found', __( 'No password was found with that slug.', 'ayuda-help-desk' ), array( 'status' => 404 ) );
 		}
 
 	}
@@ -233,40 +233,40 @@ class Passwords extends WP_REST_Controller {
 			'type'       => 'object',
 			'properties' => array(
 				'name'      => array(
-					'description' => __( "The name of the new password", 'awesome-support' ),
+					'description' => __( "The name of the new password", 'ayuda-help-desk' ),
 					'required'    => true,
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit', 'embed' ),
 				),
 				'password'  => array(
-					'description' => __( "The hashed password that was created", 'awesome-support' ),
+					'description' => __( "The hashed password that was created", 'ayuda-help-desk' ),
 					'type'        => 'string',
 					'format'      => 'date-time',
 					'context'     => array( 'edit' ),
 					'readonly'    => true,
 				),
 				'created'   => array(
-					'description' => __( 'The date the password was created', 'awesome-support' ),
+					'description' => __( 'The date the password was created', 'ayuda-help-desk' ),
 					'type'        => 'string',
 					'format'      => 'date-time',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'last_used' => array(
-					'description' => __( 'The date the password was last used', 'awesome-support' ),
+					'description' => __( 'The date the password was last used', 'ayuda-help-desk' ),
 					'type'        => 'string',
 					'format'      => 'date-time',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'last_ip'   => array(
-					'description' => __( 'The IP address that the password was last used from', 'awesome-support' ),
+					'description' => __( 'The IP address that the password was last used from', 'ayuda-help-desk' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
 				'slug'      => array(
-					'description' => __( 'The password\'s unique slug', 'awesome-support' ),
+					'description' => __( 'The password\'s unique slug', 'ayuda-help-desk' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
@@ -289,11 +289,11 @@ class Passwords extends WP_REST_Controller {
 			'type'       => 'object',
 			'properties' => array(
 				'PHP_AUTH_USER' => array(
-					'description' => __( 'The user to be authenticated', 'awesome-support' ),
+					'description' => __( 'The user to be authenticated', 'ayuda-help-desk' ),
 					'type'        => 'string'
 				),
 				'PHP_AUTH_PW'   => array(
-					'description' => __( 'The authentication password', 'awesome-support' ),
+					'description' => __( 'The authentication password', 'ayuda-help-desk' ),
 					'type'        => 'string'
 				),
 			),
@@ -319,7 +319,7 @@ class Passwords extends WP_REST_Controller {
 		}
 
 		if ( empty( $response ) ) {
-			return new WP_Error( 'no-credentials', __( 'No HTTP Basic Authorization credentials were found submitted with this request.', 'awesome-support' ), array( 'status' => 404 ) );
+			return new WP_Error( 'no-credentials', __( 'No HTTP Basic Authorization credentials were found submitted with this request.', 'ayuda-help-desk' ), array( 'status' => 404 ) );
 		}
 
 		return $response;

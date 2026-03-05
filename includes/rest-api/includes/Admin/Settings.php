@@ -1,6 +1,6 @@
 <?php
 
-namespace WPAS_API\Admin;
+namespace MUMEI_AYUDA_API\Admin;
 
 class Settings {
 

@@ -38,13 +38,13 @@
  * name and slug are the post type ID. It is mandatory to run the terms returned by get_the_terms()
  * through get_term() in order to correctly apply the filters to the synced terms.
  *
- * @package   Awesome Support
+ * @package   Ayuda – Help Desk
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
-class WPAS_Product_Sync {
+class MUMEI_AYUDA_Product_Sync {
 
 	/**
 	 * Name of the post type to use
@@ -95,7 +95,7 @@ class WPAS_Product_Sync {
 			 * only queries 10 terms per page, which means that only the first 10 items
 			 * will be synced
 			 */
-			$sync_init = get_option( "wpas_sync_$this->post_type" );
+			$sync_init = get_option( "mumei_ayuda_sync_$this->post_type" );
 
 			if ( false === $sync_init ) {
 				$this->run_initial_sync();
@@ -111,9 +111,9 @@ class WPAS_Product_Sync {
 			add_action( 'trashed_post',                     array( $this, 'unsync_term' ),                    10, 1 );
 			add_action( 'delete_post',                      array( $this, 'unsync_term' ),                    10, 1 );
 
-			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_resync_tool' ),                11, 0 );
-			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_delete_tool' ),                12, 0 );
-			add_action( 'wpas_system_tools_table_after',    array( $this, 'add_delete_unused_terms_tool' ),   13, 0 );
+			add_action( 'mumei_ayuda_system_tools_table_after',    array( $this, 'add_resync_tool' ),                11, 0 );
+			add_action( 'mumei_ayuda_system_tools_table_after',    array( $this, 'add_delete_tool' ),                12, 0 );
+			add_action( 'mumei_ayuda_system_tools_table_after',    array( $this, 'add_delete_unused_terms_tool' ),   13, 0 );
 
 		}
 
@@ -140,8 +140,8 @@ class WPAS_Product_Sync {
 	 */
 	protected function is_multiple_products() {
 
-		/* Get Awesome Support options */
-		$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+		/* Get Ayuda – Help Desk options */
+		$options = maybe_unserialize( get_option( 'mumei_ayuda_options', array() ) );
 
 		if ( isset( $options['support_products'] ) && true === boolval( $options['support_products'] ) ) {
 			return true;
@@ -217,7 +217,7 @@ class WPAS_Product_Sync {
 					/* If the user only wants the terms count it is a special case. Set a trigger var and continue */
 					if ( 'count' === $value ) {
 						$clean_args['fields']              = 'ids';
-						$clean_args['wpas_get_post_count'] = true; // We set wpas_get_post_count in order to know that we just need the post count
+						$clean_args['mumei_ayuda_get_post_count'] = true; // We set mumei_ayuda_get_post_count in order to know that we just need the post count
 						// Comment out `continue` and replaced with `break` because of a fix in PHP version 7.3
 						// continue;
 						break;
@@ -308,7 +308,7 @@ class WPAS_Product_Sync {
 
 		}
 
-		return apply_filters( 'wpas_product_sync_mapped_args', $clean_args );
+		return apply_filters( 'mumei_ayuda_product_sync_mapped_args', $clean_args );
 
 	}
 
@@ -339,7 +339,7 @@ class WPAS_Product_Sync {
 
 
 		/* Try to get the term data from the post meta */
-		$term_data = get_post_meta( $post->ID, '_wpas_product_term', true );
+		$term_data = get_post_meta( $post->ID, '_mumei_ayuda_product_term', true );
 
 		/* If this post doesn't have a corresponding term we create it now */
 		if ( ! $term_data ) {
@@ -419,7 +419,7 @@ class WPAS_Product_Sync {
 		}
 
 		/* Save the term data as a post meta in order to be able to play with it from the post */
-		update_post_meta( $post->ID, '_wpas_product_term', $term );
+		update_post_meta( $post->ID, '_mumei_ayuda_product_term', $term );
 
 		return $term;
 
@@ -441,7 +441,7 @@ class WPAS_Product_Sync {
 	 * @return void
 	 */
 	public function protect_insert( $post_id ) {
-		set_transient( 'wpas_product_term_' . $post_id, 1, 5*60 );
+		set_transient( 'mumei_ayuda_product_term_' . $post_id, 1, 5*60 );
 	}
 
 	/**
@@ -452,7 +452,7 @@ class WPAS_Product_Sync {
 	 * @return void
 	 */
 	public function unprotect_insert( $post_id ) {
-		delete_transient( 'wpas_product_term_' . $post_id );
+		delete_transient( 'mumei_ayuda_product_term_' . $post_id );
 	}
 
 	/**
@@ -467,7 +467,7 @@ class WPAS_Product_Sync {
 	 */
 	public function is_insert_protected( $post_id ) {
 
-		if ( false === get_transient( 'wpas_product_term_' . $post_id ) ) {
+		if ( false === get_transient( 'mumei_ayuda_product_term_' . $post_id ) ) {
 			return false;
 		}
 
@@ -500,11 +500,11 @@ class WPAS_Product_Sync {
 			return $terms;
 		}
 
-		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
+		$slug    = MUMEI_AYUDA_eCommerce_Integration::get_instance()->plugin;
 
 		// Get the list of products to include/exclude
-		$raw_include =  (array) wpas_get_option( 'support_products_' . $slug . '_include', array() ) ;
-		$raw_exclude =  (array) wpas_get_option( 'support_products_' . $slug . '_exclude', array() ) ;
+		$raw_include =  (array) mumei_ayuda_get_option( 'support_products_' . $slug . '_include', array() ) ;
+		$raw_exclude =  (array) mumei_ayuda_get_option( 'support_products_' . $slug . '_exclude', array() ) ;
 
 		// Initialize empty arrays just in case the if statements below turn out to be true.
 		// $raw_exclude/include in the if statements below can be empty if the user did not click SAVE on the PRODUCTS configuration tab.
@@ -548,11 +548,11 @@ class WPAS_Product_Sync {
 
 		$query = new WP_Query( $query_args );
 
-		if ( false === get_option( "wpas_sync_$this->post_type", false ) ) {
+		if ( false === get_option( "mumei_ayuda_sync_$this->post_type", false ) ) {
 			$this->run_initial_sync();
 		}
 
-		if ( isset( $query_args['wpas_get_post_count'] ) && $query_args['wpas_get_post_count'] ) {
+		if ( isset( $query_args['mumei_ayuda_get_post_count'] ) && $query_args['mumei_ayuda_get_post_count'] ) {
 			return $this->append ? $query->post_count + count( $terms ) : $query->post_count;
 		}
 
@@ -612,7 +612,7 @@ class WPAS_Product_Sync {
 
 				if( is_a( $term, 'WP_Term' ) )
 				{
-					$new_terms[] = apply_filters( 'wpas_get_terms_term', $term, $this->taxonomy );
+					$new_terms[] = apply_filters( 'mumei_ayuda_get_terms_term', $term, $this->taxonomy );
 
 					if ( 'id' === $args['orderby'] ) {
 
@@ -631,7 +631,7 @@ class WPAS_Product_Sync {
 		// Ensure terms are sorted according to the supplied args.
 		array_multisort( $sort, $sort_order, $sort_flag, $new_terms );
 
-		return apply_filters( 'wpas_get_terms', $new_terms );
+		return apply_filters( 'mumei_ayuda_get_terms', $new_terms );
 
 	}
 
@@ -747,14 +747,14 @@ class WPAS_Product_Sync {
 		    return;
         }
 
-		$slug    = WPAS_eCommerce_Integration::get_instance()->plugin;
+		$slug    = MUMEI_AYUDA_eCommerce_Integration::get_instance()->plugin;
 
 		// If syncing enabled
 		
-		if( (bool) wpas_get_option( 'support_products_' . $slug, array() ) ) {
+		if( (bool) mumei_ayuda_get_option( 'support_products_' . $slug, array() ) ) {
 
 			// Get currently synced products		
-			$include = array_filter( (array) wpas_get_option( 'support_products_' . $slug . '_include', array() ) ); 
+			$include = array_filter( (array) mumei_ayuda_get_option( 'support_products_' . $slug . '_include', array() ) ); 
 
 			// Because of the "None" option, the option returns an array with an empty value if none is selected. We need to filter that
 
@@ -763,7 +763,7 @@ class WPAS_Product_Sync {
                 // If include list configured add this term if it doesn't exist
 	            if( !in_array( (string) $post_id, $include ) ) {
 		            $include[] = (string) $post_id;
-		            wpas_update_option( 'support_products_' . $slug . '_include', $include );
+		            mumei_ayuda_update_option( 'support_products_' . $slug . '_include', $include );
 	            }
 
             }
@@ -790,14 +790,14 @@ class WPAS_Product_Sync {
 		if ( get_post_type( $post_id ) === $this->post_type ) {
 
 			/* Get the term data from the post meta */
-			$term = get_post_meta( $post_id, '_wpas_product_term', true );
+			$term = get_post_meta( $post_id, '_mumei_ayuda_product_term', true );
 
 			/* Delete the term */
 			if( ! empty( $term ) ) {
 				$delete = wp_delete_term( (int) $term['term_id'], $this->taxonomy );
 
 				if ( true === $delete ) {
-					delete_post_meta( $post_id, '_wpas_product_term' );
+					delete_post_meta( $post_id, '_mumei_ayuda_product_term' );
 				}
 
 				return $delete;
@@ -943,9 +943,9 @@ class WPAS_Product_Sync {
 	public function notice_locked_tax() {
 
 		// translators: %s is the taxonomy.
-		$x_content = __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' );
+		$x_content = __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'ayuda-help-desk' );
 
-		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( $x_content, "<code>$this->post_type</code>" ) );
+		$message = apply_filters( 'mumei_ayuda_taxonomy_locked_msg', sprintf( $x_content, "<code>$this->post_type</code>" ) );
 
 		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) { ?>
 			<div class="error">
@@ -968,11 +968,11 @@ class WPAS_Product_Sync {
 	public function lock_taxonomy() {
 
 		// translators: %s is the taxonomy.
-		$x_content = __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'awesome-support' );
-		$message = apply_filters( 'wpas_taxonomy_locked_msg', sprintf( $x_content, "<code>$this->post_type</code>" ) );
+		$x_content = __( 'You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead.', 'ayuda-help-desk' );
+		$message = apply_filters( 'mumei_ayuda_taxonomy_locked_msg', sprintf( $x_content, "<code>$this->post_type</code>" ) );
 
 		if ( $this->is_tax_screen() && true == $this->is_synced_term() ) {
-			wp_die( wp_kses_post( $message ), esc_html__( 'Term Locked', 'awesome-support' ), array( 'back_link' => true ) );
+			wp_die( wp_kses_post( $message ), esc_html__( 'Term Locked', 'ayuda-help-desk' ), array( 'back_link' => true ) );
 		}
 
 	}
@@ -985,11 +985,11 @@ class WPAS_Product_Sync {
 	 */
 	public function run_initial_sync() {
 
-		$slug = WPAS_eCommerce_Integration::get_instance()->plugin;
+		$slug = MUMEI_AYUDA_eCommerce_Integration::get_instance()->plugin;
 
 		// Get the list of products to include/exclude
-		$raw_include = (array) wpas_get_option( 'support_products_' . $slug . '_include', array() );
-		$raw_exclude = (array) wpas_get_option( 'support_products_' . $slug . '_exclude', array() );
+		$raw_include = (array) mumei_ayuda_get_option( 'support_products_' . $slug . '_include', array() );
+		$raw_exclude = (array) mumei_ayuda_get_option( 'support_products_' . $slug . '_exclude', array() );
 
 		// Initialize empty arrays just in case the if statements below turn out to be true.
 		// $raw_exclude/include in the if statements below can be empty if the user did not click SAVE on the PRODUCTS configuration tab.
@@ -1041,14 +1041,14 @@ class WPAS_Product_Sync {
 
 			/* If the term was successfully created we increment our counter */
 			if ( false !== $term ) {
-				$count = get_option( "wpas_sync_$this->post_type", 0 );
+				$count = get_option( "mumei_ayuda_sync_$this->post_type", 0 );
 				//++$count;
-				update_option( "wpas_sync_$this->post_type", ++$count );
+				update_option( "mumei_ayuda_sync_$this->post_type", ++$count );
 			}
 
 		}
 
-		// add_option( "wpas_sync_$this->post_type", $count );
+		// add_option( "mumei_ayuda_sync_$this->post_type", $count );
 
 		return $count;
 
@@ -1061,12 +1061,12 @@ class WPAS_Product_Sync {
 	 */
 	public function add_resync_tool() { ?>
 		<tr>
-			<td class="row-title"><label for="tablecell"><?php esc_html_e( 'Re-Synchronize Products', 'awesome-support' ); ?></label></td>
+			<td class="row-title"><label for="tablecell"><?php esc_html_e( 'Re-Synchronize Products', 'ayuda-help-desk' ); ?></label></td>
 			<td>
-				<a href="<?php echo wp_kses_post(wpas_tool_link( 'resync_products', array( 'pt' => $this->post_type ) )); ?>"
-				   class="button-secondary"><?php esc_html_e( 'Resync', 'awesome-support' ); ?></a>
+				<a href="<?php echo wp_kses_post(mumei_ayuda_tool_link( 'resync_products', array( 'pt' => $this->post_type ) )); ?>"
+				   class="button-secondary"><?php esc_html_e( 'Resync', 'ayuda-help-desk' ); ?></a>
 				<span
-					class="wpas-system-tools-desc"><?php esc_html_e( 'Re-synchronize all products from your e-commerce plugin. Any product not attached to an existing ticket and not matched to a product in your e-commerce system will be deleted.', 'awesome-support' ); ?></span>
+					class="wpas-system-tools-desc"><?php esc_html_e( 'Re-synchronize all products from your e-commerce plugin. Any product not attached to an existing ticket and not matched to a product in your e-commerce system will be deleted.', 'ayuda-help-desk' ); ?></span>
 			</td>
 		</tr>
 	<?php }
@@ -1078,12 +1078,12 @@ class WPAS_Product_Sync {
 	 */
 	public function add_delete_tool() { ?>
 		<tr>
-			<td class="row-title"><label for="tablecell"><?php esc_html_e( 'Delete Products', 'awesome-support' ); ?></label></td>
+			<td class="row-title"><label for="tablecell"><?php esc_html_e( 'Delete Products', 'ayuda-help-desk' ); ?></label></td>
 			<td>
-				<a href="<?php echo wp_kses_post(wpas_tool_link( 'delete_products', array( 'pt' => $this->post_type ) )); ?>"
-				   class="button-secondary"><?php esc_html_e( 'Delete', 'awesome-support' ); ?></a>
+				<a href="<?php echo wp_kses_post(mumei_ayuda_tool_link( 'delete_products', array( 'pt' => $this->post_type ) )); ?>"
+				   class="button-secondary"><?php esc_html_e( 'Delete', 'ayuda-help-desk' ); ?></a>
 				<span
-					class="wpas-system-tools-desc"><?php esc_html_e( 'Delete all products synchronized from your e-commerce plugin.', 'awesome-support' ); ?></span>
+					class="wpas-system-tools-desc"><?php esc_html_e( 'Delete all products synchronized from your e-commerce plugin.', 'ayuda-help-desk' ); ?></span>
 			</td>
 		</tr>
 	<?php }
@@ -1095,12 +1095,12 @@ class WPAS_Product_Sync {
 	 */
 	public function add_delete_unused_terms_tool() { ?>
 		<tr>
-			<td class="row-title"><label for="tablecell"><?php esc_html_e( 'Delete unused Product Terms', 'awesome-support' ); ?></label></td>
+			<td class="row-title"><label for="tablecell"><?php esc_html_e( 'Delete unused Product Terms', 'ayuda-help-desk' ); ?></label></td>
 			<td>
-				<a href="<?php echo wp_kses_post(wpas_tool_link( 'delete_unused_terms', array( 'pt' => $this->post_type ) )); ?>"
-				   class="button-secondary"><?php esc_html_e( 'Delete', 'awesome-support' ); ?></a>
+				<a href="<?php echo wp_kses_post(mumei_ayuda_tool_link( 'delete_unused_terms', array( 'pt' => $this->post_type ) )); ?>"
+				   class="button-secondary"><?php esc_html_e( 'Delete', 'ayuda-help-desk' ); ?></a>
 				<span
-					class="wpas-system-tools-desc"><?php esc_html_e( 'Delete all Product Terms not used in any AS ticket.', 'awesome-support' ); ?></span>
+					class="wpas-system-tools-desc"><?php esc_html_e( 'Delete all Product Terms not used in any AS ticket.', 'ayuda-help-desk' ); ?></span>
 			</td>
 		</tr>
 	<?php }
@@ -1114,7 +1114,7 @@ class WPAS_Product_Sync {
 	 * @return array
 	 */
 	public function get_valid_post_statuses() {
-		return explode( ',' , wpas_get_option( 'support_products_statuses', 'publish' ) );
+		return explode( ',' , mumei_ayuda_get_option( 'support_products_statuses', 'publish' ) );
 	}
 
 }

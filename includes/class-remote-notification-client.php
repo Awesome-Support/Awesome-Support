@@ -71,7 +71,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public static function instance() {
 
-			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Awesome_Support ) ) {
+			if ( ! isset( self::$instance ) && ! ( self::$instance instanceof Mumei_Ayuda_Support ) ) {
 				self::$instance = new Remote_Dashboard_Notifications_Client;
 				self::$instance->init();
 			}
@@ -125,7 +125,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public function __clone() {
 			// Cloning instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'ayuda-help-desk' ), '3.2.5' );
 		}
 
 		/**
@@ -136,7 +136,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		public function __wakeup() {
 			// Unserializing instances of the class is forbidden
-			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+			_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'ayuda-help-desk' ), '3.2.5' );
 		}
 
 		/**
@@ -285,7 +285,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		public function show_notices() {
 
 			// Don't put notices on page unless its an admin!
-			if ( ! wpas_is_asadmin() ) {
+			if ( ! mumei_ayuda_is_asadmin() ) {
 				return ;
 			}
 
@@ -504,7 +504,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		protected function create_admin_notice( $contents, $class, $dismiss ) { ?>
 			<div class="<?php echo esc_attr( $class ); ?>">
-				<a href="<?php echo wp_kses_post($dismiss); ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php esc_html_e( 'Dismiss notification', 'awesome-support' ); ?>">&times;</a>
+				<a href="<?php echo wp_kses_post($dismiss); ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php esc_html_e( 'Dismiss notification', 'ayuda-help-desk' ); ?>">&times;</a>
 				<p><?php echo wp_kses_post(html_entity_decode( $contents )); ?></p>
 			</div>
 		<?php }
@@ -572,7 +572,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		public function script() {
 
 		// Don't put script on page unless its an admin!
-			if ( ! wpas_is_asadmin() ) {
+			if ( ! mumei_ayuda_is_asadmin() ) {
 				return ;
 			}
 
@@ -668,7 +668,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			if ( ! current_user_can( 'manage_options' ) ) {
-				wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to fetches notices.', 'awesome-support') ), 403);		
+				wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to fetches notices.', 'ayuda-help-desk') ), 403);		
 			}
 
 			if ( ! is_array( $notices ) ) {
@@ -721,7 +721,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		protected function remote_get_notification( $notification ) {
 
 			if ( !is_array( $notification ) ) {
-				return new WP_Error( 'invalid_notification', __( 'The notification data is invalid', 'awesome-support' ) );
+				return new WP_Error( 'invalid_notification', __( 'The notification data is invalid', 'ayuda-help-desk' ) );
 			}
 
 			/* Query the server */
@@ -734,20 +734,20 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 
 			if ( 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
 				// translators: %s is the code server response.
-				$x_content = __( 'The server response was invalid (code %s)', 'awesome-support' );
+				$x_content = __( 'The server response was invalid (code %s)', 'ayuda-help-desk' );
 				return new WP_Error( 'invalid_response', sprintf( $x_content, wp_remote_retrieve_response_code( $response ) ) );
 			}
 
 			$body = wp_remote_retrieve_body( $response );
 
 			if ( empty( $body ) ) {
-				return new WP_Error( 'empty_response', __( 'The server response is empty', 'awesome-support' ) );
+				return new WP_Error( 'empty_response', __( 'The server response is empty', 'ayuda-help-desk' ) );
 			}
 
 			$body = json_decode( $body );
 
 			if ( is_null( $body ) ) {
-				return new WP_Error( 'json_decode_error', __( 'Cannot decode the response content', 'awesome-support' ) );
+				return new WP_Error( 'json_decode_error', __( 'Cannot decode the response content', 'ayuda-help-desk' ) );
 			}
 
 			set_transient( 'rn_last_notification_' . $notification['notice_id'], $body, $notification['cache_lifetime'] * 60 * 60 );
@@ -853,7 +853,7 @@ function RDNC() {
 	return Remote_Dashboard_Notifications_Client::instance();
 }
 
-// Get Awesome Support Running
+// Get Ayuda – Help Desk Running
 RDNC();
 
 /**

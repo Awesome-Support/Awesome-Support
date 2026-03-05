@@ -1,8 +1,8 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
-use WPAS_API\Auth\User;
+use MUMEI_AYUDA_API\Auth\User;
 use WP_REST_Controller;
 use WP_REST_Users_Controller;
 use WP_REST_Server;
@@ -27,7 +27,7 @@ class Users extends WP_REST_Users_Controller {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->namespace = wpas_api()->get_api_namespace();
+		$this->namespace = mumei_ayuda_api()->get_api_namespace();
 		$this->rest_base = 'users';
 	}
 
@@ -53,16 +53,16 @@ class Users extends WP_REST_Users_Controller {
 			),
 		);
 
-		$args['schema']['description']  = __( 'Can the system assign new tickets to this user?', 'awesome-support' );
-		$fields['wpas_can_be_assigned'] = $args;
+		$args['schema']['description']  = __( 'Can the system assign new tickets to this user?', 'ayuda-help-desk' );
+		$fields['mumei_ayuda_can_be_assigned'] = $args;
 
-		$args['schema']['description']      = __( 'If Smart Tickets Order is enabled, Awesome Support will display tickets that need immediate attention at the top.', 'awesome-support' );
-		$fields['wpas_smart_tickets_order'] = $args;
+		$args['schema']['description']      = __( 'If Smart Tickets Order is enabled, Ayuda – Help Desk will display tickets that need immediate attention at the top.', 'ayuda-help-desk' );
+		$fields['mumei_ayuda_smart_tickets_order'] = $args;
 
-		$args['schema']['description'] = __( 'If Smart Tickets Order is enabled, Awesome Support will display tickets that need immediate attention at the top.', 'awesome-support' );
+		$args['schema']['description'] = __( 'If Smart Tickets Order is enabled, Ayuda – Help Desk will display tickets that need immediate attention at the top.', 'ayuda-help-desk' );
 		$args['schema']['enum']        = array( 'stay', 'back', 'ask' );
 		$args['schema']['type']        = 'string';
-		$fields['wpas_after_reply']    = $args;
+		$fields['mumei_ayuda_after_reply']    = $args;
 
 		return $fields;
 	}
@@ -77,8 +77,8 @@ class Users extends WP_REST_Users_Controller {
 	 */
 	public function get_field_callback( $object, $field_name, $request, $object_type ) {
 
-		if ( 'wpas_has_smart_tickets_order' == $field_name ) {
-			$value = wpas_has_smart_tickets_order( $object['id'] );
+		if ( 'mumei_ayuda_has_smart_tickets_order' == $field_name ) {
+			$value = mumei_ayuda_has_smart_tickets_order( $object['id'] );
 		} else {
 			$value = get_user_meta( $object['id'], $field_name, true );
 		}

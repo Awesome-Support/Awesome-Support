@@ -1,6 +1,6 @@
 <?php
 
-namespace WPAS_API\Admin;
+namespace MUMEI_AYUDA_API\Admin;
 
 class Init {
 
@@ -10,7 +10,7 @@ class Init {
 	protected static $_instance;
 
 	/**
-	 * Only make one instance of \WPAS_API\Admin
+	 * Only make one instance of \MUMEI_AYUDA_API\Admin
 	 *
 	 * @return Init
 	 */

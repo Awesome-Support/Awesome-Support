@@ -35,9 +35,9 @@ require_once ABSPATH . '/wp-settings.php';
 
 require dirname( __FILE__ ) . '/lib/testcase.php';
 require dirname( __FILE__ ) . '/lib/exceptions.php';
-require dirname( __FILE__ ) . '/../awesome-support.php';
+require dirname( __FILE__ ) . '/../mumei-ayuda-help-desk.php';
 
-if ( ! function_exists( 'wpas_install' ) ) {
+if ( ! function_exists( 'mumei_ayuda_install' ) ) {
 	require dirname( __FILE__ ) . '/../includes/install.php';
 }
 
@@ -46,7 +46,7 @@ if ( ! function_exists( 'get_settings_defaults' ) ) {
 }
 
 // Install the plugin
-wpas_install( false );
+mumei_ayuda_install( false );
 
 $current_user = new WP_User(1);
 $current_user->set_role('administrator');

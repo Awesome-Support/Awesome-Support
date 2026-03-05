@@ -140,10 +140,10 @@ class GASFrameworkOptionGallery extends GASFrameworkOption {
 
 				// Uploader frame properties.
 				var frame = wp.media({
-					title: '<?php esc_html_e( 'Select Image', 'awesome-support' ) ?>',
+					title: '<?php esc_html_e( 'Select Image', 'ayuda-help-desk' ) ?>',
 					multiple: true,
 					library: { type: 'image' },
-					button : { text : '<?php esc_html_e( 'Use image', 'awesome-support' ) ?>' }
+					button : { text : '<?php esc_html_e( 'Use image', 'ayuda-help-desk' ) ?>' }
 				});
 				frame.on('open',function() {
 

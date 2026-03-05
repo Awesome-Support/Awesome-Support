@@ -1,12 +1,12 @@
 <?php
-add_action( 'plugins_loaded', 'wpas_load_addons', 20, 0 );
+add_action( 'plugins_loaded', 'mumei_ayuda_load_addons', 20, 0 );
 /**
  * Load all registered addon.
  *
  * @since  3.1.5
  * @return void
  */
-function wpas_load_addons() {
+function mumei_ayuda_load_addons() {
 
 	/**
 	 * Stored the ordered addons.
@@ -35,7 +35,7 @@ function wpas_load_addons() {
 		/**
 		 * Define the addon's instance.
 		 */
-		$wpas_addon_[$id] = false;
+		$mumei_ayuda_addon_[$id] = false;
 
 		/* We assume it's a class */
 		if ( is_array( WPAS()->addons[$id]['callback'] ) ) {
@@ -43,35 +43,35 @@ function wpas_load_addons() {
 			if ( isset( WPAS()->addons[$id]['callback'][0] ) && isset( WPAS()->addons[$id]['callback'][1] ) ) {
 
 				if ( is_object( WPAS()->addons[$id]['callback'][0] ) && method_exists( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] ) ) {
-					$wpas_addon_[$id] = call_user_func( array( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] ) );
+					$mumei_ayuda_addon_[$id] = call_user_func( array( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] ) );
 				}
 				
 				elseif ( class_exists( WPAS()->addons[$id]['callback'][0] ) ) {
-					$wpas_addon_[$id] = call_user_func( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] );
+					$mumei_ayuda_addon_[$id] = call_user_func( WPAS()->addons[$id]['callback'][0], WPAS()->addons[$id]['callback'][1] );
 				}
 
 			}
 
 		} else {
 			if ( function_exists( WPAS()->addons[$id]['callback'] ) ) {
-				$wpas_addon_[$id] = call_user_func( WPAS()->addons[$id]['callback'] );
+				$mumei_ayuda_addon_[$id] = call_user_func( WPAS()->addons[$id]['callback'] );
 			}
 		}
 
-		WPAS()->addons[$id]['status'] = false === $wpas_addon_[$id] ? 'error' : 'loaded';
+		WPAS()->addons[$id]['status'] = false === $mumei_ayuda_addon_[$id] ? 'error' : 'loaded';
 
 	}
 
 }
 
-function wpas_register_addon( $id, $callback, $priority = 10 ) {
+function mumei_ayuda_register_addon( $id, $callback, $priority = 10 ) {
 
 	if ( array_key_exists( $id, WPAS()->addons ) ) {
 		
 		// translators: %s is the addon id.
-		$x_content = __( 'An addon with the ID %s is already registered', 'awesome-support' );
+		$x_content = __( 'An addon with the ID %s is already registered', 'ayuda-help-desk' );
 
-		wpas_debug_display( sprintf( $x_content, $id ) );
+		mumei_ayuda_debug_display( sprintf( $x_content, $id ) );
 		return false;
 	}
 
@@ -79,7 +79,7 @@ function wpas_register_addon( $id, $callback, $priority = 10 ) {
 
 }
 
-function wpas_deregister_addon( $addon_id ) {
+function mumei_ayuda_deregister_addon( $addon_id ) {
 
 	if ( array_key_exists( $addon_id, WPAS()->addons ) ) {
 		unset( WPAS()->addons[$addon_id] );
@@ -87,6 +87,6 @@ function wpas_deregister_addon( $addon_id ) {
 
 }
 
-function wpas_get_registered_addons() {
+function mumei_ayuda_get_registered_addons() {
 	return WPAS()->addons;
 }

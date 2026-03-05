@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Admin/Functions/User Profile
+ * @package   Ayuda – Help Desk/Admin/Functions/User Profile
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -21,7 +21,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @return array
  */
-function wpas_user_profile_get_contact_info( $ticket_id ) {
+function mumei_ayuda_user_profile_get_contact_info( $ticket_id ) {
 
 	$data = array(
 		'name',
@@ -29,14 +29,14 @@ function wpas_user_profile_get_contact_info( $ticket_id ) {
 		'email',
 	);
 
-	return apply_filters( 'wpas_user_profile_contact_info', $data, $ticket_id );
+	return apply_filters( 'mumei_ayuda_user_profile_contact_info', $data, $ticket_id );
 
 }
 
 /**
  * Get the content of a user profile data field
  *
- * User profile data fields are declared in wpas_user_profile_get_contact_info()
+ * User profile data fields are declared in mumei_ayuda_user_profile_get_contact_info()
  *
  * @since 3.3
  *
@@ -46,7 +46,7 @@ function wpas_user_profile_get_contact_info( $ticket_id ) {
  *
  * @return void
  */
-function wpas_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
+function mumei_ayuda_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
 
 	if ( !$user ) {
 		return;
@@ -55,12 +55,12 @@ function wpas_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
 	switch ( $info ) {
 
 		case 'name':
-			echo wp_kses_post(apply_filters( 'wpas_user_profile_contact_name', $user->data->display_name, $user, $ticket_id ));
+			echo wp_kses_post(apply_filters( 'mumei_ayuda_user_profile_contact_name', $user->data->display_name, $user, $ticket_id ));
 			break;
 
 		case 'role':
 			// translators: %s is the date.
-			$x_content = __( 'Support User since %s', 'awesome-support' );
+			$x_content = __( 'Support User since %s', 'ayuda-help-desk' );
 			echo wp_kses_post( sprintf( $x_content, '<strong>' . gmdate( get_option( 'date_format' ), strtotime( $user->data->user_registered ) ) . '</strong>' ) );
 			break;
 
@@ -69,7 +69,7 @@ function wpas_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
 			break;
 
 		default:
-			do_action( 'wpas_user_profile_info_' . $info, $user, $ticket_id );
+			do_action( 'mumei_ayuda_user_profile_info_' . $info, $user, $ticket_id );
 			break;
 
 	}

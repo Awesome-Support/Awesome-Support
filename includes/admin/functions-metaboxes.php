@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Admin/Functions/Metaboxes
+ * @package   Ayuda – Help Desk/Admin/Functions/Metaboxes
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'add_meta_boxes', 'wpas_metaboxes' );
+add_action( 'add_meta_boxes', 'mumei_ayuda_metaboxes' );
 /**
  * Register the metaboxes.
  *
@@ -21,7 +21,7 @@ add_action( 'add_meta_boxes', 'wpas_metaboxes' );
  *
  * @since 3.0.0
  */
-function wpas_metaboxes() {
+function mumei_ayuda_metaboxes() {
 
 	global $pagenow;
 
@@ -29,36 +29,36 @@ function wpas_metaboxes() {
 	remove_meta_box( 'submitdiv', 'ticket', 'side' );
 
 	/* Possibly remove the TAGS metabox */
-	if (  wpas_current_role_in_list( wpas_get_option( 'hide_tags_mb_roles' ) ) )  {
+	if (  mumei_ayuda_current_role_in_list( mumei_ayuda_get_option( 'hide_tags_mb_roles' ) ) )  {
 		remove_meta_box( 'tagsdiv-ticket-tag', 'ticket', 'side' );
 	}
 
-	$status = isset( $_GET['post'] ) ? get_post_meta( intval( $_GET['post'] ), '_wpas_status', true ) : '';
+	$status = isset( $_GET['post'] ) ? get_post_meta( intval( $_GET['post'] ), '_mumei_ayuda_status', true ) : '';
 
 	/**
 	 * Register the metaboxes.
 	 */
 
 	/* Metabox to add main tabs */
-	add_meta_box( 'wpas-mb-ticket-main-tabs', __( 'Main Tabs', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'ticket-main-tabs' ) );
+	add_meta_box( 'wpas-mb-ticket-main-tabs', __( 'Main Tabs', 'ayuda-help-desk' ), 'mumei_ayuda_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'ticket-main-tabs' ) );
 
 	if ( '' !== $status ) {
 		/* Ticket Replies */
-		add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'replies' ) );
+		add_meta_box( 'wpas-mb-replies', __( 'Ticket Replies', 'ayuda-help-desk' ), 'mumei_ayuda_metabox_callback', 'ticket', 'normal', 'high', array( 'template' => 'replies' ) );
 	}
 
 	/* Ticket details */
-	add_meta_box( 'wpas-mb-details', __( 'Ticket Details', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
+	add_meta_box( 'wpas-mb-details', __( 'Ticket Details', 'ayuda-help-desk' ), 'mumei_ayuda_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'details' ) );
 
 
 	/* Client profile */
 	if ( 'post-new.php' !== $pagenow ) {
-		add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
+		add_meta_box( 'wpas-mb-user-profile', __( 'User Profile', 'ayuda-help-desk' ), 'mumei_ayuda_metabox_callback', 'ticket', 'side', 'high', array( 'template' => 'user-profile' ) );
 	}
 
 	/* Add a dummy metabox to force gutenberg to render in old-style mode... */
-	// add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version', '__block_editor_compatible_meta_box' => wpas_gutenberg_meta_box_compatible() ) );
-	add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'awesome-support' ), 'wpas_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version' ) );
+	// add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'ayuda-help-desk' ), 'mumei_ayuda_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version', '__block_editor_compatible_meta_box' => mumei_ayuda_gutenberg_meta_box_compatible() ) );
+	add_meta_box( 'wpas-mb-version', __( 'Misc and Debug', 'ayuda-help-desk' ), 'mumei_ayuda_metabox_callback', 'ticket', 'side', 'low', array( 'template' => 'version' ) );
 }
 
 /**
@@ -75,26 +75,26 @@ function wpas_metaboxes() {
  *
  * @return void
  */
-function wpas_metabox_callback( $post, $args ) {
+function mumei_ayuda_metabox_callback( $post, $args ) {
 
 	if ( ! is_array( $args ) || ! isset( $args['args']['template'] ) ) {
-		esc_html_e( 'An error occurred while registering this metabox. Please contact support.', 'awesome-support' );
+		esc_html_e( 'An error occurred while registering this metabox. Please contact support.', 'ayuda-help-desk' );
 	}
 
 	$template = $args['args']['template'];
 
-	if ( ! file_exists( WPAS_PATH . "includes/admin/metaboxes/$template.php" ) ) {
-		esc_html_e( 'An error occured while loading this metabox. Please contact support.', 'awesome-support' );
+	if ( ! file_exists( MUMEI_AYUDA_PATH . "includes/admin/metaboxes/$template.php" ) ) {
+		esc_html_e( 'An error occured while loading this metabox. Please contact support.', 'ayuda-help-desk' );
 	}
 
 	/* Include the metabox content */
-	include_once( WPAS_PATH . "includes/admin/metaboxes/$template.php" );
+	include_once( MUMEI_AYUDA_PATH . "includes/admin/metaboxes/$template.php" );
 
 }
 
 // Add a filter to the_content to remove http and https
-add_filter( 'the_content', 'wpas_the_content_remove_https', 7, 1 );
-if ( ! function_exists( 'wpas_the_content_remove_https' ) ) {
+add_filter( 'the_content', 'mumei_ayuda_the_content_remove_https', 7, 1 );
+if ( ! function_exists( 'mumei_ayuda_the_content_remove_https' ) ) {
 	/**
 	 * Remove http and https from the_content if content starts with it.
 	 *
@@ -102,7 +102,7 @@ if ( ! function_exists( 'wpas_the_content_remove_https' ) ) {
 	 *
 	 * @return string      Updated content
 	 */
-	function wpas_the_content_remove_https( $content )
+	function mumei_ayuda_the_content_remove_https( $content )
 	{
 		// filter $content and replace http or https
 		if ( strpos($content, 'http://') === 0 || strpos($content, 'https://') === 0 ) {

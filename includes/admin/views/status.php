@@ -1,13 +1,13 @@
 <?php
 
-$tools_tabs['status'] = array( 'name' => __('System Status', 'awesome-support') );
+$tools_tabs['status'] = array( 'name' => __('System Status', 'ayuda-help-desk') );
 if( current_user_can( 'administrator' ) ) {
-    $tools_tabs['logs'] = array( 'name' => __('Log Viewer', 'awesome-support') );
+    $tools_tabs['logs'] = array( 'name' => __('Log Viewer', 'ayuda-help-desk') );
 }
-$tools_tabs['tools'] = array( 'name' => __('Cleanup', 'awesome-support') );
-$tools_tabs = apply_filters( 'wpas_system_tabls', $tools_tabs );
+$tools_tabs['tools'] = array( 'name' => __('Cleanup', 'ayuda-help-desk') );
+$tools_tabs = apply_filters( 'mumei_ayuda_system_tabls', $tools_tabs );
 
-/*$tools_tabs = apply_filters( 'wpas_system_tabls', array(
+/*$tools_tabs = apply_filters( 'mumei_ayuda_system_tabls', array(
     'status' => array(
 	'name' => 'System Status'
     ),
@@ -21,7 +21,7 @@ $tools_tabs = apply_filters( 'wpas_system_tabls', $tools_tabs );
 */
 
 /* Remove some items if running in SAAS mode AND in a multi-site environment - do not allow the user to see  the LOG viewer and the SYSTEM STATUS screen! */
-if ( defined( 'WPAS_SAAS' ) && true === WPAS_SAAS ) {
+if ( defined( 'MUMEI_AYUDA_SAAS' ) && true === MUMEI_AYUDA_SAAS ) {
 	if ( true === is_multisite() && 1 <> get_current_blog_id() && 0 <> get_current_blog_id() ) {
 		unset($tools_tabs['logs']);
 		unset($tools_tabs['status']);
@@ -55,7 +55,7 @@ if(!empty( $tools_tabs )) {
 
 
 
-	$tab_view = isset( $tools_tabs[ $active_tab ]['view_path'] ) ? $tools_tabs[ $active_tab ]['view_path'] : WPAS_PATH . 'includes/admin/views/system-'.$active_tab.'.php';
+	$tab_view = isset( $tools_tabs[ $active_tab ]['view_path'] ) ? $tools_tabs[ $active_tab ]['view_path'] : MUMEI_AYUDA_PATH . 'includes/admin/views/system-'.$active_tab.'.php';
 	require_once( $tab_view );
 
 	?>

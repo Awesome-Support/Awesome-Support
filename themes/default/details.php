@@ -23,14 +23,14 @@ $author = get_user_by( 'id', $post->post_author );
 ?>
 <div class="wpas wpas-ticket-details">
 
-	<?php wpas_get_template( 'partials/ticket-navigation' ); ?>
+	<?php mumei_ayuda_get_template( 'partials/ticket-navigation' ); ?>
 
 	<?php
 	/**
 	 * Display the table header containing the tickets details.
 	 * By default, the header will contain ticket status, ID, priority, type and tags (if any).
 	 */
-	wpas_ticket_header(array(
+	mumei_ayuda_ticket_header(array(
 		'container' => 'div',
 		'container_class' => 'wpas-table-responsive'
 	));
@@ -43,21 +43,21 @@ $author = get_user_by( 'id', $post->post_author );
 			<tr class="wpas-reply-single" valign="top">
 				<td style="width: 64px;">
 					<div class="wpas-user-profile">
-						<?php echo wp_kses(apply_filters('wpas_fe_template_detail_author_avatar', get_avatar( $post->post_author, '64', get_option( 'avatar_default' ) ), $post ), get_allowed_html_wp_notifications()); ?>
+						<?php echo wp_kses(apply_filters('mumei_ayuda_fe_template_detail_author_avatar', get_avatar( $post->post_author, '64', get_option( 'avatar_default' ) ), $post ), get_allowed_html_wp_notifications()); ?>
 					</div>
 				</td>
 
 				<td>
 					<div class="wpas-reply-meta">
 						<div class="wpas-reply-user">
-							<strong class="wpas-profilename"><?php echo wp_kses(apply_filters('wpas_fe_template_detail_author_display_name', $author->data->display_name, $post ), get_allowed_html_wp_notifications()); ?></strong>
+							<strong class="wpas-profilename"><?php echo wp_kses(apply_filters('mumei_ayuda_fe_template_detail_author_display_name', $author->data->display_name, $post ), get_allowed_html_wp_notifications()); ?></strong>
 						</div>
 						<div class="wpas-reply-time">
 							<?php
 								// translators: %s is days ago.
-								$x_content = __( '%s ago', 'awesome-support' );
+								$x_content = __( '%s ago', 'ayuda-help-desk' );
 							?>
-							<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wp_kses(wpas_get_offset_html5(), get_allowed_html_wp_notifications()); ?>">
+							<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wp_kses(mumei_ayuda_get_offset_html5(), get_allowed_html_wp_notifications()); ?>">
 								<span class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
 								<span class="wpas-date-ago"><?php printf( esc_html($x_content), wp_kses(human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) ), get_allowed_html_wp_notifications())); ?></span>
 							</time>
@@ -66,11 +66,11 @@ $author = get_user_by( 'id', $post->post_author );
 
 					<?php
 					/**
-					 * wpas_frontend_ticket_content_before hook
+					 * mumei_ayuda_frontend_ticket_content_before hook
 					 *
 					 * @since  3.0.0
 					 */
-					do_action( 'wpas_frontend_ticket_content_before', $post->ID, $post );
+					do_action( 'mumei_ayuda_frontend_ticket_content_before', $post->ID, $post );
 					
 					/* Process missing html tag when pull content from email for ticket and ticket reply 11-5447420 */
 					$post->post_content = force_balance_tags( $post->post_content );
@@ -81,11 +81,11 @@ $author = get_user_by( 'id', $post->post_author );
 					echo '<div class="wpas-reply-content wpas-break-words">' .  wp_kses(make_clickable( apply_filters( 'the_content', $post->post_content ) ),'post') . '</div>';
 
 					/**
-					 * wpas_frontend_ticket_content_after hook
+					 * mumei_ayuda_frontend_ticket_content_after hook
 					 *
 					 * @since  3.0.0
 					 */
-					do_action( 'wpas_frontend_ticket_content_after', $post->ID, $post );
+					do_action( 'mumei_ayuda_frontend_ticket_content_after', $post->ID, $post );
 					?>
 
 				</td>
@@ -94,7 +94,7 @@ $author = get_user_by( 'id', $post->post_author );
 
 			<?php
 			// Set the number of replies
-			$replies_per_page  = wpas_get_option( 'replies_per_page', 10 );
+			$replies_per_page  = mumei_ayuda_get_option( 'replies_per_page', 10 );
 			$force_all_replies = WPAS()->session->get( 'force_all_replies' );
 
 			// Check if we need to force displaying all the replies (direct link to a specific reply for instance)
@@ -108,7 +108,7 @@ $author = get_user_by( 'id', $post->post_author );
 				'no_found_rows'  => false,
 			);
 
-			$replies = wpas_get_replies( $post->ID, array( 'read', 'unread' ), $args, 'wp_query' );
+			$replies = mumei_ayuda_get_replies( $post->ID, array( 'read', 'unread' ), $args, 'wp_query' );
 
 			if ( $replies->have_posts() ):
 
@@ -119,7 +119,7 @@ $author = get_user_by( 'id', $post->post_author );
 					if( $user && !empty( $user ) )
 					{						
 						$time_ago  = human_time_diff( get_the_time( 'U', $post->ID ), current_time( 'timestamp' ) );
-						wpas_get_template( 'partials/ticket-reply', array( 'time_ago' => $time_ago, 'user' => $user, 'post' => $post ) );
+						mumei_ayuda_get_template( 'partials/ticket-reply', array( 'time_ago' => $time_ago, 'user' => $user, 'post' => $post ) );
 					}	
 				endwhile;
 
@@ -135,18 +135,18 @@ $author = get_user_by( 'id', $post->post_author );
 		$current = $replies->post_count;
 		$total   = (int) $replies->found_posts;
 		// translators: %1$s is the number of replies shown, %2$s is the total number of replies.
-		$x_content = _x( 'Showing %1$s replies of %2$s.', 'Showing X replies out of a total of X replies', 'awesome-support' );
+		$x_content = _x( 'Showing %1$s replies of %2$s.', 'Showing X replies out of a total of X replies', 'ayuda-help-desk' );
 
 		?>
 
 		<div class="wpas-alert wpas-alert-info wpas-pagi">
-			<div class="wpas-pagi-loader"><?php esc_html_e( 'Loading...', 'awesome-support' ); ?></div>
+			<div class="wpas-pagi-loader"><?php esc_html_e( 'Loading...', 'ayuda-help-desk' ); ?></div>
 			<p class="wpas-pagi-text"><?php echo wp_kses_post( sprintf( $x_content, "<span class='wpas-replies-current'>$current</span>", "<span class='wpas-replies-total'>$total</span>" ) ); ?>
 				<?php
-				if ( 'ASC' == wpas_get_option( 'replies_order', 'ASC' ) ) {
-					$load_more_msg = __( 'Load newer replies', 'awesome-support' );
+				if ( 'ASC' == mumei_ayuda_get_option( 'replies_order', 'ASC' ) ) {
+					$load_more_msg = __( 'Load newer replies', 'ayuda-help-desk' );
 				} else {
-					$load_more_msg = __( 'Load older replies', 'awesome-support' );
+					$load_more_msg = __( 'Load older replies', 'ayuda-help-desk' );
 				} ?>
 				<?php if ( -1 !== $replies_per_page ): ?><a href="#" class="wpas-pagi-loadmore"><?php echo esc_html( $load_more_msg ); ?></a><?php endif; ?>
 			</p>
@@ -156,15 +156,15 @@ $author = get_user_by( 'id', $post->post_author );
 
 	<?php
 
-	do_action( 'wpas_ticket_details_replies_after', $post );
+	do_action( 'mumei_ayuda_ticket_details_replies_after', $post );
 
 	/**
 	* Prepare to show the reply form.
 	*/
-	if ( apply_filters('wpas_show_reply_form_front_end',true, $post ) ) {
+	if ( apply_filters('mumei_ayuda_show_reply_form_front_end',true, $post ) ) {
 	?>
 
-		<h3><?php esc_html_e( 'Write a reply', 'awesome-support' ); ?></h3>
+		<h3><?php esc_html_e( 'Write a reply', 'ayuda-help-desk' ); ?></h3>
 
 		<?php
 		/**
@@ -173,7 +173,7 @@ $author = get_user_by( 'id', $post->post_author );
 		 * @since 3.0.0
 		 */
 
-			wpas_get_reply_form();
+			mumei_ayuda_get_reply_form();
 	 } ?>
 
 </div>

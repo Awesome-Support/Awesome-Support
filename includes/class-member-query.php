@@ -1,8 +1,8 @@
 <?php
 /**
- * Awesome Support Members Query.
+ * Ayuda – Help Desk Members Query.
  *
- * @package   Awesome Support
+ * @package   Ayuda – Help Desk
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -15,16 +15,16 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Class WPAS_Members_Query
+ * Class MUMEI_AYUDA_Members_Query
  *
- * This class is intended to handle all users query for Awesome Support. Its main benefit compared to WP_User_Query is
+ * This class is intended to handle all users query for Ayuda – Help Desk. Its main benefit compared to WP_User_Query is
  * its simplicity and its caching management. Especially for sites with lots of users, using WP_User_Query slows down
  * the site quite a lot mostly because of all the caching the WordPress does with user metas. This class has some level
  * of caching but does not go as far as WP_User_Query making its queries lightweight.
  *
  * @since 3.3
  */
-class WPAS_Member_Query {
+class MUMEI_AYUDA_Member_Query {
 
 	/**
 	 * Capabilities to query users by
@@ -73,7 +73,7 @@ class WPAS_Member_Query {
 	protected $order = 'ASC';
 	
 	/**
-	 * Whether or not to convert the results into WPAS_Member (sub)objects
+	 * Whether or not to convert the results into MUMEI_AYUDA_Member (sub)objects
 	 *
 	 * @since 3.3
 	 * @var string
@@ -81,7 +81,7 @@ class WPAS_Member_Query {
 	protected $output = 'stdClass';
 
 	/**
-	 * Array of WPAS_Member (or its sub-classes) objects, result of the SQL query
+	 * Array of MUMEI_AYUDA_Member (or its sub-classes) objects, result of the SQL query
 	 *
 	 * @since 3.3
 	 * @var array
@@ -123,7 +123,7 @@ class WPAS_Member_Query {
 	public $search = array();
 
 	/**
-	 * WPAS_Members_Query constructor.
+	 * MUMEI_AYUDA_Members_Query constructor.
 	 *
 	 * @since 3.3
 	 *
@@ -158,7 +158,7 @@ class WPAS_Member_Query {
 	 */
 	protected function sanitize_output_format( $format ) {
 
-		if ( in_array( $format, array( 'wpas_member' ) ) ) {
+		if ( in_array( $format, array( 'mumei_ayuda_member' ) ) ) {
 			return $format;
 		} else {
 			return 'stdClass';
@@ -241,7 +241,7 @@ class WPAS_Member_Query {
 	 *
 	 * @param stdClass $user
 	 *
-	 * @return WPAS_Member|WPAS_Member_Agent|WPAS_Member_User|array
+	 * @return MUMEI_AYUDA_Member|MUMEI_AYUDA_Member_Agent|MUMEI_AYUDA_Member_User|array
 	 */
 	protected function create_member_object( $user ) {
 
@@ -272,10 +272,10 @@ class WPAS_Member_Query {
 			}
 
 			if ( array_key_exists( 'edit_ticket', $wp_roles->roles[ $role ]['capabilities'] ) ) {
-				$class = 'WPAS_Member_Agent';
+				$class = 'MUMEI_AYUDA_Member_Agent';
 				break;
 			} elseif ( array_key_exists( 'create_ticket', $wp_roles->roles[ $role ]['capabilities'] ) ) {
-				$class = 'WPAS_Member_User';
+				$class = 'MUMEI_AYUDA_Member_User';
 				break;
 			} else {
 				continue;
@@ -294,7 +294,7 @@ class WPAS_Member_Query {
 	}
 
 	/**
-	 * Get the SQL query result and convert each user into a WPAS_Member (sub)object
+	 * Get the SQL query result and convert each user into a MUMEI_AYUDA_Member (sub)object
 	 *
 	 * @since 3.3
 	 *
@@ -332,7 +332,7 @@ class WPAS_Member_Query {
 			$this->query();
 		}
 
-		if ( 'wpas_member' === $this->output ) {
+		if ( 'mumei_ayuda_member' === $this->output ) {
 			$this->convert_sql_result();
 		}
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * Awesome Support Log History
+ * Ayuda – Help Desk Log History
  *
- * @package   Awesome Support
+ * @package   Ayuda – Help Desk
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Class WPAS_Log_History
+ * Class MUMEI_AYUDA_Log_History
  *
  * This class is used to log changes to custom fields to the ticket_history CPT 
  * and/or the ticket_log CPT.
@@ -30,7 +30,7 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @since 3.3
  */
-class WPAS_Log_History {
+class MUMEI_AYUDA_Log_History {
 
 	/**
 	 * ID of the post to log history for.
@@ -55,7 +55,7 @@ class WPAS_Log_History {
 	private $orignal_contents = '';
 	
 	/**
-	 * WPAS_Log_History Constructor 
+	 * MUMEI_AYUDA_Log_History Constructor 
 	 *
 	 * @since 3.3
 	 *
@@ -129,13 +129,13 @@ class WPAS_Log_History {
 		          	$value = $final_hours . " hour(s) " . $final_minutes . " minute(s)";
 				}
 				// translators: %1$s is the old value, %2$s is the new value.
-				$x_updated = _x( 'updated %1$s to %2$s', 'Custom field value was updated', 'awesome-support' );
+				$x_updated = _x( 'updated %1$s to %2$s', 'Custom field value was updated', 'ayuda-help-desk' );
 				
 				// translators: %s is the deleted value.
-				$x_deleted = _x( 'deleted %s', 'Custom field value was deleted', 'awesome-support' );
+				$x_deleted = _x( 'deleted %s', 'Custom field value was deleted', 'ayuda-help-desk' );
 
 				// translators: %1$s is the value being added, %2$s is the field or context where the value is added.
-				$x_added = _x( 'added %1$s to %2$s', 'Custom field value was added', 'awesome-support' );
+				$x_added = _x( 'added %1$s to %2$s', 'Custom field value was added', 'ayuda-help-desk' );
 
 				$content .= '<li>';
 
@@ -246,7 +246,7 @@ class WPAS_Log_History {
 		 * a new one by inserting the reply (and logging the history later).
 		 */
 		if( is_admin() ) {
-			remove_action( 'save_post', 'wpas_save_ticket' );
+			remove_action( 'save_post', 'mumei_ayuda_save_ticket' );
 		}
 
 		$log = wp_insert_post( $post, true );
@@ -320,7 +320,7 @@ class WPAS_Log_History {
  * Helper function to create a log history entry.
  *
  * This function can be called from anywhere inside
- * Awesome Support.
+ * Ayuda – Help Desk.
  *
  * @since 3.3
  *
@@ -330,13 +330,13 @@ class WPAS_Log_History {
  * @return boolean|int  ID of log entry in ticket_history CPT or false if unsucessful
  */	
 
-function wpas_log( $post_id = null, $content = '' ) {
+function mumei_ayuda_log( $post_id = null, $content = '' ) {
 
 	if ( is_null( $post_id ) || empty( $content ) ) {
 		return false;
 	}
 	
-	$logger = new WPAS_Log_History();
+	$logger = new MUMEI_AYUDA_Log_History();
 	
 	$log = $logger->log_history( $post_id, $content );
 
@@ -344,22 +344,22 @@ function wpas_log( $post_id = null, $content = '' ) {
 }
 
 /**
- * Alias function for wpas_log().  Once all the occurences of wpas_log 
- * has been changed in core and all addons to wpas_log_history() 
- * we will delete this function and renam wpas_log() to wpas_log_history().
+ * Alias function for mumei_ayuda_log().  Once all the occurences of mumei_ayuda_log 
+ * has been changed in core and all addons to mumei_ayuda_log_history() 
+ * we will delete this function and renam mumei_ayuda_log() to mumei_ayuda_log_history().
  *
- * wpas_log() as a function name is just too generic given the different
- * types of logs that exist inside of Awesome Support.
+ * mumei_ayuda_log() as a function name is just too generic given the different
+ * types of logs that exist inside of Ayuda – Help Desk.
  */
-function wpas_log_history( $post_id = null, $content = '' ) {
-	return wpas_log( $post_id , $content );
+function mumei_ayuda_log_history( $post_id = null, $content = '' ) {
+	return mumei_ayuda_log( $post_id , $content );
 }
 
 /**
  * Helper function to create a history of edits to a reply or ticket
  *
  * This function can be called from anywhere inside
- * Awesome Support.
+ * Ayuda – Help Desk.
  *
  * @since 5.2.0
  *
@@ -370,13 +370,13 @@ function wpas_log_history( $post_id = null, $content = '' ) {
  * @return boolean|int  ID of log entry in ticket_history CPT or false if unsucessful
  */	
 
-function wpas_log_edits( $post_id, $content, $original ) {
+function mumei_ayuda_log_edits( $post_id, $content, $original ) {
 
 	if ( is_null( $post_id ) || empty( $content ) ) {
 		return false;
 	}
 	
-	$logger = new WPAS_Log_History();
+	$logger = new MUMEI_AYUDA_Log_History();
 	
 	$log = $logger->log_edits( $post_id, $content, $original );
 

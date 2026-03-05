@@ -18,15 +18,15 @@ log viewer - just a couple of minor changes:
 /*
  * Actions
  * --------------------------------
- * wpas_tools_log_viewer_view
- * wpas_tools_log_viewer_download
- * wpas_tools_log_viewer_delete
+ * mumei_ayuda_tools_log_viewer_view
+ * mumei_ayuda_tools_log_viewer_download
+ * mumei_ayuda_tools_log_viewer_delete
  *
  */
 
 function get_logs_path() {
 
-	$log = new WPAS_Logger( '' );
+	$log = new MUMEI_AYUDA_Logger( '' );
 	$base_path = $log->get_logs_base_path() . '/';
 
 	return $base_path;
@@ -34,22 +34,22 @@ function get_logs_path() {
 }
 
 function get_logs_url() {
-	return WPAS_URL  . 'logs/';
+	return MUMEI_AYUDA_URL  . 'logs/';
 }
 
 /*
  * AJAX handler function
  */
-function wpas_tools_log_viewer_view() {
+function mumei_ayuda_tools_log_viewer_view() {
 
 	if ( ! current_user_can( 'administrator' ) ) {
-		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
+		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'ayuda-help-desk' ) ) );
 	}
 
-	check_ajax_referer( 'wpas_tools_log_viewer_view', 'nonce' );
+	check_ajax_referer( 'mumei_ayuda_tools_log_viewer_view', 'nonce' );
 
 	if( ! isset( $_POST[ 'file' ] ) ) {
-		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
+		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'ayuda-help-desk' ) ) );
 	}
 
 	// Default number of lines to return
@@ -61,25 +61,25 @@ function wpas_tools_log_viewer_view() {
 		$lines = sanitize_text_field( wp_unslash( $_POST[ 'lines' ] ));
 	}
 
-	wp_send_json_success( wpas_log_viewer_read_last_lines( $file, $lines ) );
+	wp_send_json_success( mumei_ayuda_log_viewer_read_last_lines( $file, $lines ) );
 
 }
-add_action( 'wp_ajax_wpas_tools_log_viewer_view', 'wpas_tools_log_viewer_view', 10, 0 );
+add_action( 'wp_ajax_mumei_ayuda_tools_log_viewer_view', 'mumei_ayuda_tools_log_viewer_view', 10, 0 );
 
 
 /*
  * AJAX handler function
  */
-function wpas_tools_log_viewer_download() {
+function mumei_ayuda_tools_log_viewer_download() {
 
 	if ( ! current_user_can( 'administrator' ) ) {
-		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
+		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'ayuda-help-desk' ) ) );
 	}
 
-	check_ajax_referer( 'wpas_tools_log_viewer_download', 'nonce' );
+	check_ajax_referer( 'mumei_ayuda_tools_log_viewer_download', 'nonce' );
 
 	if( ! isset( $_POST[ 'file' ] ) ) {
-		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
+		wp_send_json_error( array( 'error' => esc_html__( 'No file given', 'ayuda-help-desk' ) ) );
 	}
 
 	$file = basename( sanitize_text_field( wp_unslash( $_POST[ 'file' ] )) );
@@ -94,37 +94,37 @@ function wpas_tools_log_viewer_download() {
 
 	wp_send_json_success( $content );
 }
-add_action( 'wp_ajax_wpas_tools_log_viewer_download', 'wpas_tools_log_viewer_download', 10, 0 );
+add_action( 'wp_ajax_mumei_ayuda_tools_log_viewer_download', 'mumei_ayuda_tools_log_viewer_download', 10, 0 );
 
 
 /*
  * AJAX handler function
  */
-function wpas_tools_log_viewer_delete() {
+function mumei_ayuda_tools_log_viewer_delete() {
 
 	if ( ! current_user_can( 'administrator' ) ) {
-		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'awesome-support' ) ) );
+		wp_send_json_error( array( 'error' => esc_html__( 'Not found', 'ayuda-help-desk' ) ) );
 	}
 
-	check_ajax_referer( 'wpas_tools_log_viewer_delete', 'nonce' );
+	check_ajax_referer( 'mumei_ayuda_tools_log_viewer_delete', 'nonce' );
 
 	if( ! isset( $_POST[ 'file' ] ) ) {
-		echo json_encode( array( 'error' => esc_html__( 'No file given', 'awesome-support' ) ) );
+		echo json_encode( array( 'error' => esc_html__( 'No file given', 'ayuda-help-desk' ) ) );
 		wp_die();
 	}
 
 	$file = basename( sanitize_text_field( wp_unslash( $_POST[ 'file' ] )) );
 
-	wp_send_json_success(	wpas_log_viewer_delete_file( $file ) );
+	wp_send_json_success(	mumei_ayuda_log_viewer_delete_file( $file ) );
 
 }
-add_action( 'wp_ajax_wpas_tools_log_viewer_delete', 'wpas_tools_log_viewer_delete', 10, 0 );
+add_action( 'wp_ajax_mumei_ayuda_tools_log_viewer_delete', 'mumei_ayuda_tools_log_viewer_delete', 10, 0 );
 
 
 /**
  * @param $file
  */
-function wpas_log_viewer_delete_file( $file ) {
+function mumei_ayuda_log_viewer_delete_file( $file ) {
 
 	if( unlink( get_logs_path() . $file ) ) {
 		$code = '200';
@@ -149,10 +149,10 @@ function wpas_log_viewer_delete_file( $file ) {
 
 
 /* Function read X last lines from file*/
-function wpas_log_viewer_read_last_lines( $file, $lines ) {
+function mumei_ayuda_log_viewer_read_last_lines( $file, $lines ) {
 
 	if( 'All' === $lines ) {
-		return wpas_log_viewer_read_full_file( $file );
+		return mumei_ayuda_log_viewer_read_full_file( $file );
 	}
 
 	$result = [];
@@ -187,7 +187,7 @@ function wpas_log_viewer_read_last_lines( $file, $lines ) {
 		}
 
 		// translators: %d is the number of lines, %s is the source.
-		$x_content = __( 'Read %1$d lines from %2$s', 'awesome-support' );
+		$x_content = __( 'Read %1$d lines from %2$s', 'ayuda-help-desk' );
 
 		return array(
 			'status' => array(
@@ -197,7 +197,7 @@ function wpas_log_viewer_read_last_lines( $file, $lines ) {
 			'fileinfo' => array(
 				'created' => gmdate ("F d Y H:i:s", filectime($file_path)),
 				'lastmodified' => gmdate ("F d Y H:i:s", filemtime($file_path)),
-				'filesize' => wpas_formatbytes(filesize($file_path)),
+				'filesize' => mumei_ayuda_formatbytes(filesize($file_path)),
 			),
 			'data'   => $result,
 		);
@@ -206,7 +206,7 @@ function wpas_log_viewer_read_last_lines( $file, $lines ) {
 		//return printf( __( "Couldn't open the file %s. Make sure file is exists or is readable.", 'error-log-viewer' ), esc_html( $file ) );
 
 		// translators: %s is the file name that couldn't be opened.
-		$x_content = __( "Couldn't open the file %s. Make sure the file exists and is readable.", 'awesome-support' );
+		$x_content = __( "Couldn't open the file %s. Make sure the file exists and is readable.", 'ayuda-help-desk' );
 
 
 		return array(
@@ -222,7 +222,7 @@ function wpas_log_viewer_read_last_lines( $file, $lines ) {
 
 
 /* Function read full file */
-function wpas_log_viewer_read_full_file( $file ) {
+function mumei_ayuda_log_viewer_read_full_file( $file ) {
 
 	$file_path = get_logs_path() . $file;
 
@@ -240,7 +240,7 @@ function wpas_log_viewer_read_full_file( $file ) {
 			$result[] = $line;
 		}
 		// translators: %1$d is the number of lines, %2$s is the source.
-		$x_content = __( 'Read %1$d lines from %2$s', 'awesome-support' );
+		$x_content = __( 'Read %1$d lines from %2$s', 'ayuda-help-desk' );
 
 		return array(
 			'status' => array(
@@ -251,7 +251,7 @@ function wpas_log_viewer_read_full_file( $file ) {
 			'fileinfo' => array(
 				'created' => gmdate ("F d Y H:i:s", filectime($file_path)),
 				'lastmodified' => gmdate ("F d Y H:i:s", filemtime($file_path)),
-			    'filesize' => wpas_formatbytes(filesize($file_path)),
+			    'filesize' => mumei_ayuda_formatbytes(filesize($file_path)),
 			),
 			'data'   => $result,
 		);
@@ -259,7 +259,7 @@ function wpas_log_viewer_read_full_file( $file ) {
 	else {
 		//return printf( __( "Couldn't open the file %s. Make sure file is exists or is readable.", 'error-log-viewer' ), esc_html( $file ) );
 		// translators: %s is the file name that couldn't be opened.
-		$x_content = __( "Couldn't open the file %s. Make sure the file exists and is readable.", 'awesome-support' );
+		$x_content = __( "Couldn't open the file %s. Make sure the file exists and is readable.", 'ayuda-help-desk' );
 		return array(
 			'status' => array(
 				'code'    => '404',
@@ -270,7 +270,7 @@ function wpas_log_viewer_read_full_file( $file ) {
 	}
 }
 
-function wpas_formatbytes($val, $digits = 3, $mode = "SI", $bB = "B")
+function mumei_ayuda_formatbytes($val, $digits = 3, $mode = "SI", $bB = "B")
 {
   $si = array("", "k", "M", "G", "T", "P", "E", "Z", "Y");
   $iec = array("", "Ki", "Mi", "Gi", "Ti", "Pi", "Ei", "Zi", "Yi");

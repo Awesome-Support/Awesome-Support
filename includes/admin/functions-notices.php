@@ -5,11 +5,11 @@
  * @since  3.1.5
  * @return array Array of dismissed notices
  */
-function wpas_dismissed_notices() {
+function mumei_ayuda_dismissed_notices() {
 
 	global $current_user;
 
-	$user_notices = (array) get_user_option( 'wpas_dismissed_notices', $current_user->ID );
+	$user_notices = (array) get_user_option( 'mumei_ayuda_dismissed_notices', $current_user->ID );
 
 	return $user_notices;
 
@@ -22,9 +22,9 @@ function wpas_dismissed_notices() {
  * @param  string $notice Notice to check
  * @return boolean        Whether or not the notice has been dismissed
  */
-function wpas_is_notice_dismissed( $notice ) {
+function mumei_ayuda_is_notice_dismissed( $notice ) {
 
-	$dismissed = wpas_dismissed_notices();
+	$dismissed = mumei_ayuda_dismissed_notices();
 
 	if ( array_key_exists( $notice, $dismissed ) ) {
 		return true;
@@ -41,17 +41,17 @@ function wpas_is_notice_dismissed( $notice ) {
  * @param  string          $notice Notice to dismiss
  * @return boolean|integer         True on success, false on failure, meta ID if it didn't exist yet
  */
-function wpas_dismiss_notice( $notice ) {
+function mumei_ayuda_dismiss_notice( $notice ) {
 
 	global $current_user;
 
-	$dismissed_notices = $new = (array) wpas_dismissed_notices();
+	$dismissed_notices = $new = (array) mumei_ayuda_dismissed_notices();
 
 	if ( ! array_key_exists( $notice, $dismissed_notices ) ) {
 		$new[$notice] = 'true';
 	}
 
-	$update = update_user_option( $current_user->ID, 'wpas_dismissed_notices', $new );
+	$update = update_user_option( $current_user->ID, 'mumei_ayuda_dismissed_notices', $new );
 
 	return $update;
 
@@ -64,23 +64,23 @@ function wpas_dismiss_notice( $notice ) {
  * @param  string          $notice Notice to restore
  * @return boolean|integer         True on success, false on failure, meta ID if it didn't exist yet
  */
-function wpas_restore_notice( $notice ) {
+function mumei_ayuda_restore_notice( $notice ) {
 
 	global $current_user;
 
-	$dismissed_notices = (array) wpas_dismissed_notices();
+	$dismissed_notices = (array) mumei_ayuda_dismissed_notices();
 
 	if ( array_key_exists( $notice, $dismissed_notices ) ) {
 		unset( $dismissed_notices[$notice] );
 	}
 
-	$update = update_user_option( $current_user->ID, 'wpas_dismissed_notices', $dismissed_notices );
+	$update = update_user_option( $current_user->ID, 'mumei_ayuda_dismissed_notices', $dismissed_notices );
 
 	return $update;
 
 }
 
-add_action( 'wpas_do_dismiss_notice', 'wpas_grab_notice_dismiss' );
+add_action( 'mumei_ayuda_do_dismiss_notice', 'mumei_ayuda_grab_notice_dismiss' );
 /**
  * Check if there is a notice to dismiss.
  *
@@ -90,7 +90,7 @@ add_action( 'wpas_do_dismiss_notice', 'wpas_grab_notice_dismiss' );
  *
  * @return void
  */
-function wpas_grab_notice_dismiss( $data ) {
+function mumei_ayuda_grab_notice_dismiss( $data ) {
 
 	$notice_id = isset( $data['notice_id'] ) ? $data['notice_id'] : false;
 
@@ -98,7 +98,7 @@ function wpas_grab_notice_dismiss( $data ) {
 		return;
 	}
 
-	wpas_dismiss_notice( $notice_id );
+	mumei_ayuda_dismiss_notice( $notice_id );
 
 }
 
@@ -128,7 +128,7 @@ class AS_Admin_Notices {
 	 */
 	public function __clone() {
 		// Cloning instances of the class is forbidden
-		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'awesome-support' ), '3.2.5' );
+		_doing_it_wrong( __FUNCTION__, esc_html__( 'Cheatin&#8217; huh?', 'ayuda-help-desk' ), '3.2.5' );
 	}
 
 	/**
@@ -212,7 +212,7 @@ class AS_Admin_Notices {
 	 * @return null|array
 	 */
 	protected function get_notices() {
-		return apply_filters( 'wpas_admin_notices', $this->notices );
+		return apply_filters( 'mumei_ayuda_admin_notices', $this->notices );
 	}
 
 	/**
@@ -231,13 +231,13 @@ class AS_Admin_Notices {
 
 		foreach ( $notices as $notice_id => $notice ) {
 
-			if ( wpas_is_notice_dismissed( $notice_id ) ) {
+			if ( mumei_ayuda_is_notice_dismissed( $notice_id ) ) {
 				continue;
 			}
 
-			$url = wpas_do_url( add_query_arg( $_GET, '' ), 'dismiss_notice', array( 'notice_id' => $notice_id ) );
+			$url = mumei_ayuda_do_url( add_query_arg( $_GET, '' ), 'dismiss_notice', array( 'notice_id' => $notice_id ) );
 
-			printf( '<div class="%s"><p>%s <a href="%s"><small>(%s)</small></a></p></div>', wp_kses_post($notice[0]), wp_kses_post($notice[1]), esc_url( $url ), esc_html_x( 'Dismiss', 'Dismiss link for admin notices', 'awesome-support' ) );
+			printf( '<div class="%s"><p>%s <a href="%s"><small>(%s)</small></a></p></div>', wp_kses_post($notice[0]), wp_kses_post($notice[1]), esc_url( $url ), esc_html_x( 'Dismiss', 'Dismiss link for admin notices', 'ayuda-help-desk' ) );
 
 		}
 

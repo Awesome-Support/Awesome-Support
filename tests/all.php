@@ -4,7 +4,7 @@ $old_cwd   = getcwd();
 
 chdir( $tests_dir );
 
-function wpas_tests_load_recursively( $path ) {
+function mumei_ayuda_tests_load_recursively( $path ) {
 
 	foreach ( scandir( $path ) as $file ) {
 
@@ -21,7 +21,7 @@ function wpas_tests_load_recursively( $path ) {
 		}
 
 		elseif ( is_dir( $filepath ) ) {
-			wpas_tests_load_recursively( $filepath );
+			mumei_ayuda_tests_load_recursively( $filepath );
 		}
 
 	}
@@ -31,7 +31,7 @@ function wpas_tests_load_recursively( $path ) {
 /**
  * Load all test files.
  */
-wpas_tests_load_recursively( $tests_dir );
+mumei_ayuda_tests_load_recursively( $tests_dir );
 
 class all {
     public static function suite() {

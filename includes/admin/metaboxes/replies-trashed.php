@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Admin/Reply
+ * @package   Ayuda – Help Desk/Admin/Reply
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // translators: %1$s is the person who deleted the reply, %2$s is the time ago.
-$x_content = __( 'This reply has been deleted by %1$s <em class="wpas-time">%2$s ago.</em>', 'awesome-support' );
+$x_content = __( 'This reply has been deleted by %1$s <em class="wpas-time">%2$s ago.</em>', 'ayuda-help-desk' );
 
 ?>
 <td colspan="3">

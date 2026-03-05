@@ -1,13 +1,13 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
 use WP_REST_Controller;
 use WP_REST_Server;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_Error;
-use WPAS_Custom_Field;
+use MUMEI_AYUDA_Custom_Field;
 
 
 /**
@@ -18,7 +18,7 @@ class CustomFields extends WP_REST_Controller {
 
 	public function __construct() {
 
-		$this->namespace = wpas_api()->get_api_namespace();
+		$this->namespace = mumei_ayuda_api()->get_api_namespace();
 		$this->rest_base = 'tickets';
     }
 
@@ -46,7 +46,7 @@ class CustomFields extends WP_REST_Controller {
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<ticket_id>[\d]+)/custom-fields', array(
             'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique ticket identifier.', 'awesome-support' ),
+					'description' => __( 'Unique ticket identifier.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -64,7 +64,7 @@ class CustomFields extends WP_REST_Controller {
 		register_rest_route( $this->namespace, '/' . $this->rest_base . '/(?P<ticket_id>[\d]+)/custom-fields', array(
             'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique ticket identifier.', 'awesome-support' ),
+					'description' => __( 'Unique ticket identifier.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -122,7 +122,7 @@ class CustomFields extends WP_REST_Controller {
             'second_addl_interested_party_email'
         );
 
-        $skip_fields   = apply_filters( 'wpas_api_custom_fields_filter', $skip );
+        $skip_fields   = apply_filters( 'mumei_ayuda_api_custom_fields_filter', $skip );
         $custom_fields = WPAS()->custom_fields->get_custom_fields(); 
 
         foreach ( $custom_fields as $field => $data ) {
@@ -179,8 +179,8 @@ class CustomFields extends WP_REST_Controller {
         // Check for ticket id
         if ( isset( $request['ticket_id'] ) ) {
 
-            if ( ! $this->is_user_ticket(  $request[ 'ticket_id' ] ) && !wpas_is_asadmin()  ) {
-                return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to get custom fields of this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+            if ( ! $this->is_user_ticket(  $request[ 'ticket_id' ] ) && !mumei_ayuda_is_asadmin()  ) {
+                return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to get custom fields of this ticket.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
             }    
 
         } else {
@@ -191,7 +191,7 @@ class CustomFields extends WP_REST_Controller {
 
         foreach ( $this->get_fields() as $field => $data ) {
 
-            $custom_field = new WPAS_Custom_Field( $field, $data );
+            $custom_field = new MUMEI_AYUDA_Custom_Field( $field, $data );
 
             $fields[ $field ] = array(
                 'name'   => $custom_field->get_field_title(),
@@ -216,31 +216,31 @@ class CustomFields extends WP_REST_Controller {
 
   
         if ( ! isset( $request[ 'custom_fields' ] ) || empty( $request[ 'custom_fields' ] ) ) {
-            return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter cannot be empty.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+            return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter cannot be empty.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
         }
 
         if ( ! $this->is_user_ticket( $request[ 'ticket_id' ] ) ) {
-            return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update custom fields for this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+            return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update custom fields for this ticket.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
         }
 
         $request[ 'custom_fields' ] = (array) $request[ 'custom_fields' ];   
         foreach ( $this->get_fields() as $field => $data ) {
 
-            if ( array_key_exists( 'wpas_' . $field, $request[ 'custom_fields' ] ) ) {
+            if ( array_key_exists( 'mumei_ayuda_' . $field, $request[ 'custom_fields' ] ) ) {
 
-                $custom_field = new WPAS_Custom_Field( $field, $data );                
-                $custom_field->update_value( $request[ 'custom_fields' ][ 'wpas_' . $field ], $request[ 'ticket_id' ] );                
+                $custom_field = new MUMEI_AYUDA_Custom_Field( $field, $data );                
+                $custom_field->update_value( $request[ 'custom_fields' ][ 'mumei_ayuda_' . $field ], $request[ 'ticket_id' ] );                
             }
             else
             {
-                //Per documentation, We did not mention to add prefix "wpas_" whe push request to API, so this solution to reolve it
+                //Per documentation, We did not mention to add prefix "mumei_ayuda_" whe push request to API, so this solution to reolve it
                 if ( array_key_exists( $field, $request[ 'custom_fields' ] ) ) {
-                    $custom_field = new WPAS_Custom_Field( $field, $data );                
+                    $custom_field = new MUMEI_AYUDA_Custom_Field( $field, $data );                
                     $custom_field->update_value( $request[ 'custom_fields' ][ $field ], $request[ 'ticket_id' ] );                
                 }
                 else
                 {                    
-                    return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter is not existed .', 'awesome-support' ), array( 'status' => 404, 'data_received' => $request->get_params() ) );
+                    return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter is not existed .', 'ayuda-help-desk' ), array( 'status' => 404, 'data_received' => $request->get_params() ) );
                 }
             }
         }

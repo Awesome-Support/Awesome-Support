@@ -1,11 +1,11 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
 use WP_REST_Request;
 use WP_Error;
 use WP_REST_Attachments_Controller;
-use WPAS_File_Upload;
+use MUMEI_AYUDA_File_Upload;
 
 /**
  * Core class used to manage a site's settings via the REST API.
@@ -25,7 +25,7 @@ class Attachments extends WP_REST_Attachments_Controller {
 	public function __construct() {
 		parent::__construct( 'attachment' );
 
-		$this->namespace = wpas_api()->get_api_namespace();
+		$this->namespace = mumei_ayuda_api()->get_api_namespace();
 		$this->rest_base = 'attachments';
 	}
 
@@ -41,13 +41,13 @@ class Attachments extends WP_REST_Attachments_Controller {
 	public function create_item_permissions_check( $request ) {
 
 		if ( ! current_user_can( 'create_ticket' ) ) {
-			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to upload media on this site.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to upload media on this site.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 
 		/*
 		// Attaching media to a post requires ability to edit said post.
 		if ( empty( $request['post'] ) ) {
-			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are only allowed to upload media to a ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are only allowed to upload media to a ticket.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 		*/
 
@@ -56,7 +56,7 @@ class Attachments extends WP_REST_Attachments_Controller {
 			$parent = get_post( (int) $request['post'] );
 
 			if ( $parent->post_author != get_current_user_id() ) {
-				return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to upload media to this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
+				return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to upload media to this ticket.', 'ayuda-help-desk' ), array( 'status' => rest_authorization_required_code() ) );
 			}
 
 		} 
@@ -66,7 +66,7 @@ class Attachments extends WP_REST_Attachments_Controller {
 	}
 
 	public function create_item( $request ) {
-		$upload = new WPAS_File_Upload();
+		$upload = new MUMEI_AYUDA_File_Upload();
 		$upload->post_id = $request['post'];
 
 		return parent::create_item( $request );

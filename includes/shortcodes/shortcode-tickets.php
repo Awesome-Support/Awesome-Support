@@ -1,55 +1,55 @@
 <?php
-add_shortcode( 'tickets', 'wpas_sc_client_account' );
+add_shortcode( 'tickets', 'mumei_ayuda_sc_client_account' );
 /**
  * Registration page shortcode.
  */
-function wpas_sc_client_account() {
+function mumei_ayuda_sc_client_account() {
 
-	global $wpas_tickets, $post;
+	global $mumei_ayuda_tickets, $post;
 
-	$wpas_tickets = wpas_get_tickets_for_shortcode() ;
+	$mumei_ayuda_tickets = mumei_ayuda_get_tickets_for_shortcode() ;
 
 	/* Get the ticket content */
 	ob_start();
 
 	/**
-	 * wpas_frontend_plugin_page_top is executed at the top
+	 * mumei_ayuda_frontend_plugin_page_top is executed at the top
 	 * of every plugin page on the front end.
 	 */
-	do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
+	do_action( 'mumei_ayuda_frontend_plugin_page_top', $post->ID, $post );
 
 	/**
-	 * wpas_before_tickets_list hook
+	 * mumei_ayuda_before_tickets_list hook
 	 */
-	do_action( 'wpas_before_tickets_list' );
+	do_action( 'mumei_ayuda_before_tickets_list' );
 
 	/* If user is not logged in we display the register form */
 	if ( !is_user_logged_in() ):
 
-		$registration = wpas_get_option( 'login_page', false );
+		$registration = mumei_ayuda_get_option( 'login_page', false );
 
 		if ( false !== $registration && !empty( $registration ) && !is_null( get_post( intval( $registration ) ) ) ) {
 			/* As the headers are already sent we can't use wp_redirect. */
 			echo '<meta http-equiv="refresh" content="0; url=' . esc_url( get_permalink( $registration ) ) . '" />';
-			wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'awesome-support' ) );
+			mumei_ayuda_get_notification_markup( 'info', __( 'You are being redirected...', 'ayuda-help-desk' ) );
 			exit;
 		}
 
-		wpas_get_template( 'registration' );
+		mumei_ayuda_get_template( 'registration' );
 
 	else:
 
 		/**
 		 * Get the custom template.
 		 */
-		wpas_get_template( 'list' );
+		mumei_ayuda_get_template( 'list' );
 
 	endif;
 
 	/**
-	 * wpas_after_tickets_list hook
+	 * mumei_ayuda_after_tickets_list hook
 	 */
-	do_action( 'wpas_after_tickets_list' );
+	do_action( 'mumei_ayuda_after_tickets_list' );
 
 	/**
 	 * Finally get the buffer content and return.
@@ -70,7 +70,7 @@ function wpas_sc_client_account() {
  *
  * @return array post array of tickets found
  */
-function wpas_get_tickets_for_shortcode() {
+function mumei_ayuda_get_tickets_for_shortcode() {
 
 	global $current_user, $post;
 
@@ -98,11 +98,11 @@ function wpas_get_tickets_for_shortcode() {
 	) ;
 
 	/* Maybe only show open tickets */
-	if ( true === boolval( wpas_get_option( 'hide_closed_fe', false) ) ) {
+	if ( true === boolval( mumei_ayuda_get_option( 'hide_closed_fe', false) ) ) {
 		$args_meta = array(
 			'meta_query' => array(
 				array(
-					'key'     => '_wpas_status',
+					'key'     => '_mumei_ayuda_status',
 					'value'   => 'closed',
 					'compare' => '!=',
 				),
@@ -112,10 +112,10 @@ function wpas_get_tickets_for_shortcode() {
 		$args = array_merge($args, $args_meta);
 	}
 
-	$args = apply_filters( 'wpas_tickets_shortcode_query_args', $args );
+	$args = apply_filters( 'mumei_ayuda_tickets_shortcode_query_args', $args );
 
-	$wpas_tickets_found = new WP_Query( $args );
+	$mumei_ayuda_tickets_found = new WP_Query( $args );
 
-	return $wpas_tickets_found ;
+	return $mumei_ayuda_tickets_found ;
 
 }

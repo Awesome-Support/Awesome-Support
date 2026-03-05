@@ -24,7 +24,7 @@ class GASFrameworkOptionSelectPages extends GASFrameworkOptionSelect {
 		}
 
 		$this->settings['options'] = array(
-			'' => '— ' . __( 'Select',  'awesome-support' ) . ' —'
+			'' => '— ' . __( 'Select',  'ayuda-help-desk' ) . ' —'
 		);
 
 		// Print all the other pages
@@ -32,7 +32,7 @@ class GASFrameworkOptionSelectPages extends GASFrameworkOptionSelect {
 			$title = $page->post_title;
 			if ( empty( $title ) ) {
 				// translators: %s is the title.
-				$x_content = __( 'Untitled %s',  'awesome-support' );
+				$x_content = __( 'Untitled %s',  'ayuda-help-desk' );
 				$title = sprintf( $x_content, '(ID #' . $page->ID . ')' );
 			}
 			$this->settings['options'][ $page->ID ] = $title;

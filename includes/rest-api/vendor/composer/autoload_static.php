@@ -9,12 +9,12 @@ class ComposerStaticInit885b18122da05366f734ab988138ea61
     public static $prefixLengthsPsr4 = array (
         'W' => 
         array (
-            'WPAS_API\\' => 9,
+            'MUMEI_AYUDA_API\\' => 9,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'WPAS_API\\' => 
+        'MUMEI_AYUDA_API\\' => 
         array (
             0 => __DIR__ . '/../..' . '/includes',
         ),

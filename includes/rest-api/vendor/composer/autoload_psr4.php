@@ -6,5 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'WPAS_API\\' => array($baseDir . '/includes'),
+    'MUMEI_AYUDA_API\\' => array($baseDir . '/includes'),
 );

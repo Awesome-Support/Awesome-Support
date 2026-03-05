@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WPAS_CF_Password extends WPAS_Custom_Field {
+class MUMEI_AYUDA_CF_Password extends MUMEI_AYUDA_Custom_Field {
 
 	/**
 	 * Return the field markup for the front-end.

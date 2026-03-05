@@ -32,7 +32,7 @@ class GASFrameworkOptionSelectCategories extends GASFrameworkOptionSelect {
 			$categories = get_terms( $args );
 
 			$this->settings['options'] = array(
-				'' => '— ' . __( 'Select',  'awesome-support' ) . ' —'
+				'' => '— ' . __( 'Select',  'ayuda-help-desk' ) . ' —'
 			);
 
 			foreach ( $categories as $category ) {

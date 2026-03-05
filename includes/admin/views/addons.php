@@ -4,7 +4,7 @@
  *
  * @var object
  */
-$items = get_transient( 'wpas_addonsx' );
+$items = get_transient( 'mumei_ayuda_addonsx' );
 setlocale( LC_MONETARY, get_locale() );
 
 if ( false === $items ) {
@@ -22,7 +22,7 @@ if ( false === $items ) {
 		$content = json_decode( $body );
 
 		if ( is_object( $content ) && isset( $content->products ) ) {
-			set_transient( 'wpas_addonsx', $content->products, 60 * 60 * 24 ); // Cache for 24 hours
+			set_transient( 'mumei_ayuda_addonsx', $content->products, 60 * 60 * 24 ); // Cache for 24 hours
 			$items = $content->products;
 		}
 
@@ -62,7 +62,7 @@ if ( false === $items ) {
 
 <div class="wrap about-wrap">
 	<h1>Addons</h1>
-	<div class="about-text">Even though Awesome Support has a lot of built-in features, it is impossible to make everyone happy. This is why we have lots of addons to help you tailor your support system.</div>
+	<div class="about-text">Even though Ayuda – Help Desk has a lot of built-in features, it is impossible to make everyone happy. This is why we have lots of addons to help you tailor your support system.</div>
 
 	<div class="changelog wpas-addon-all">
 		<?php

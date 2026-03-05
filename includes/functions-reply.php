@@ -7,7 +7,7 @@
  * 
  * @return int
  */
-function wpas_count_user_replies( $ticket_id, $user_id ) {
+function mumei_ayuda_count_user_replies( $ticket_id, $user_id ) {
 	
 	global $wpdb;
 	$count = 0;
@@ -27,7 +27,7 @@ function wpas_count_user_replies( $ticket_id, $user_id ) {
  * 
  * @return int
  */
-function wpas_count_total_replies( $ticket_id ) {
+function mumei_ayuda_count_total_replies( $ticket_id ) {
 	
 	global $wpdb;
 	$count = 0;
@@ -46,9 +46,9 @@ function wpas_count_total_replies( $ticket_id ) {
  * 
  * @return int
  */
-function wpas_num_agent_replies( $ticket_id ) {
+function mumei_ayuda_num_agent_replies( $ticket_id ) {
 	
-	$count = wpas_get_cf_value( 'ttl_replies_by_agent', $ticket_id );
+	$count = mumei_ayuda_get_cf_value( 'ttl_replies_by_agent', $ticket_id );
 	return ( $count ? $count : 0 );
 	
 }
@@ -60,9 +60,9 @@ function wpas_num_agent_replies( $ticket_id ) {
  * 
  * @return int
  */
-function wpas_num_customer_replies( $ticket_id ) {
+function mumei_ayuda_num_customer_replies( $ticket_id ) {
 	
-	$count = wpas_get_cf_value( 'ttl_replies_by_customer', $ticket_id );
+	$count = mumei_ayuda_get_cf_value( 'ttl_replies_by_customer', $ticket_id );
 	return ( $count ? $count : 0 );
 	
 }
@@ -73,9 +73,9 @@ function wpas_num_customer_replies( $ticket_id ) {
  * 
  * @return int
  */
-function wpas_num_total_replies( $ticket_id ) {
+function mumei_ayuda_num_total_replies( $ticket_id ) {
 	
-	$count = wpas_get_cf_value( 'ttl_replies', $ticket_id );
+	$count = mumei_ayuda_get_cf_value( 'ttl_replies', $ticket_id );
 	return ( $count ? $count : 0 );
 	
 }
@@ -84,30 +84,30 @@ function wpas_num_total_replies( $ticket_id ) {
  * Calculate and store ticket replies count
  * @param int $ticket_id
  */
-function wpas_count_replies( $ticket_id ) {
+function mumei_ayuda_count_replies( $ticket_id ) {
 	
 	$ticket = get_post( $ticket_id );
 	
 	if ( 'ticket' == get_post_type( $ticket ) ) {
 	
-		$agent_id = (int) get_post_meta( $ticket_id, '_wpas_assignee', true );
+		$agent_id = (int) get_post_meta( $ticket_id, '_mumei_ayuda_assignee', true );
 		$customer_id = (int) $ticket->post_author;
 		
-		$total_replies_count = wpas_count_total_replies($ticket_id);
-		$customer_replies_count = wpas_count_user_replies($ticket_id, $customer_id);
+		$total_replies_count = mumei_ayuda_count_total_replies($ticket_id);
+		$customer_replies_count = mumei_ayuda_count_user_replies($ticket_id, $customer_id);
 		$agent_replies_count = $total_replies_count - $customer_replies_count;
 		
-		update_post_meta( $ticket_id, '_wpas_ttl_replies_by_customer', $customer_replies_count );
-		update_post_meta( $ticket_id, '_wpas_ttl_replies_by_agent', $agent_replies_count );
-		update_post_meta( $ticket_id, '_wpas_ttl_replies', $total_replies_count );
+		update_post_meta( $ticket_id, '_mumei_ayuda_ttl_replies_by_customer', $customer_replies_count );
+		update_post_meta( $ticket_id, '_mumei_ayuda_ttl_replies_by_agent', $agent_replies_count );
+		update_post_meta( $ticket_id, '_mumei_ayuda_ttl_replies', $total_replies_count );
 		
 	}
 		
 }
 
 
-add_action( 'wpas_add_reply_after', 'wpas_ticket_reset_replies_count', 10, 2 );
-add_action( 'wpas_admin_reply_trashed', 'wpas_ticket_reset_replies_count', 10, 3 );
+add_action( 'mumei_ayuda_add_reply_after', 'mumei_ayuda_ticket_reset_replies_count', 10, 2 );
+add_action( 'mumei_ayuda_admin_reply_trashed', 'mumei_ayuda_ticket_reset_replies_count', 10, 3 );
 
 /**
  * Reset replies count
@@ -115,11 +115,11 @@ add_action( 'wpas_admin_reply_trashed', 'wpas_ticket_reset_replies_count', 10, 3
  * @param array $data
  * @param int $ticket_id
  */
-function wpas_ticket_reset_replies_count( $reply_id, $data = array(), $ticket_id = '' ) {
+function mumei_ayuda_ticket_reset_replies_count( $reply_id, $data = array(), $ticket_id = '' ) {
 	
 	if ( empty( $ticket_id ) ) {
 		$ticket_id = wp_get_post_parent_id($reply_id);
 	}
 	
-	wpas_count_replies( $ticket_id );
+	mumei_ayuda_count_replies( $ticket_id );
 }

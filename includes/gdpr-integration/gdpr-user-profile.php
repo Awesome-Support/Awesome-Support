@@ -1,8 +1,8 @@
 <?php
 /**
- * Awesome Support Privacy Option.
+ * Ayuda – Help Desk Privacy Option.
  *
- * @package   Awesome_Support
+ * @package   Mumei_Ayuda_Support
  * @author    DevriX
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -12,7 +12,7 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-class WPAS_GDPR_User_Profile {
+class MUMEI_AYUDA_GDPR_User_Profile {
 
 	/**
 	 *  Store the export directory path
@@ -45,14 +45,14 @@ class WPAS_GDPR_User_Profile {
 
 	public function __construct() {
 		$this->wp_upload_dir = wp_upload_dir();
-		add_action( 'show_user_profile', array( $this, 'wpas_user_profile_fields' ), 10, 1 );
-		add_action( 'edit_user_profile', array( $this, 'wpas_user_profile_fields' ), 10, 1 );
+		add_action( 'show_user_profile', array( $this, 'mumei_ayuda_user_profile_fields' ), 10, 1 );
+		add_action( 'edit_user_profile', array( $this, 'mumei_ayuda_user_profile_fields' ), 10, 1 );
 
 		/**
 		 * Ticket and User data export
 		 */
-		add_action( 'wp_ajax_wpas_gdpr_export_data', array( $this, 'wpas_gdpr_export_data' ) );
-		add_action( 'wp_ajax_nopriv_wpas_gdpr_export_data', array( $this, 'wpas_gdpr_export_data' ) );
+		add_action( 'wp_ajax_mumei_ayuda_gdpr_export_data', array( $this, 'mumei_ayuda_gdpr_export_data' ) );
+		add_action( 'wp_ajax_nopriv_mumei_ayuda_gdpr_export_data', array( $this, 'mumei_ayuda_gdpr_export_data' ) );
 
 		add_action( 'init', array( $this, 'download_file' ) );
 
@@ -83,18 +83,18 @@ class WPAS_GDPR_User_Profile {
 					$this->custom_readfile( $this->user_export_dir . '/exported-data.zip' );
 					if (!unlink($this->user_export_dir . '/exported-data.zip') ){
 						// translators: %s is the nuser export directory.
-						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/exported-data.zip', 'awesome-support' ), $this->user_export_dir) );
+						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/exported-data.zip', 'ayuda-help-desk' ), $this->user_export_dir) );
 					}
 					if (!unlink($this->user_export_dir . '/export-data.xml') ){
 						// translators: %s is the nuser export directory.
-						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/export-data.xml', 'awesome-support' ), $this->user_export_dir) );
+						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/export-data.xml', 'ayuda-help-desk' ), $this->user_export_dir) );
 					}
 				}
 				else {
-					return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );
+					return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'ayuda-help-desk' ) );
 				}
 			} else {
-				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'awesome-support' ) );
+				return new WP_Error( 'security_error', __( 'Request not identified, Invalid request', 'ayuda-help-desk' ) );
 			}
 		}
 	}
@@ -159,42 +159,42 @@ class WPAS_GDPR_User_Profile {
 	 * Display OPT In information in User profile
 	 * Only visible if the current role is WPAS User
 	 */
-	public function wpas_user_profile_fields( $profileuser ) {
+	public function mumei_ayuda_user_profile_fields( $profileuser ) {
 		/**
 		 * Visible to all WPAS user roles
 		 */
 		if ( current_user_can( 'create_ticket' ) ) {
 			?>
-			<div id="wpas_user_profile_segment">
+			<div id="mumei_ayuda_user_profile_segment">
 				<div class="wpas-gdpr-export-wrapper">
 					<div class="wpas-gdpr-notice export-data"></div>
 					<?php
 						global $user_id;
 						$data_user = (int) $user_id;
 					?>
-					<h2><?php esc_html_e( 'Awesome Support: Data Export', 'awesome-support' ); ?></h2>
-					<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo esc_attr( $data_user ); ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'awesome-support' ); ?>">
+					<h2><?php esc_html_e( 'Ayuda – Help Desk: Data Export', 'ayuda-help-desk' ); ?></h2>
+					<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo esc_attr( $data_user ); ?>" class="button button-primary" value="<?php esc_attr_e( 'Export data', 'ayuda-help-desk' ); ?>">
 				</div>
 			</div>
 			<?php
 			/**
 			  * For the GDPR labels, this data are stored in
-			  * wpas_consent_tracking user meta in form of array.
+			  * mumei_ayuda_consent_tracking user meta in form of array.
 			  * Get the option and if not empty, loop them here
 			  */
-			$user_consent = get_user_option( 'wpas_consent_tracking', $profileuser->ID );
+			$user_consent = get_user_option( 'mumei_ayuda_consent_tracking', $profileuser->ID );
 			if ( ! empty( $user_consent ) && is_array( $user_consent ) ) {
 	?>
-		<div id="wpas_user_profile_segment">
-			<h2><?php esc_html_e( 'Awesome Support: Consents Granted', 'awesome-support' ); ?></h2>
+		<div id="mumei_ayuda_user_profile_segment">
+			<h2><?php esc_html_e( 'Ayuda – Help Desk: Consents Granted', 'ayuda-help-desk' ); ?></h2>
 			<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
 				<thead>
 					<tr>
-						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Item', 'awesome-support' ); ?></th>
-						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Status', 'awesome-support' ); ?></th>
-						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-in Date', 'awesome-support' ); ?></th>
-						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-out Date', 'awesome-support' ); ?></th>
-						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Action', 'awesome-support' ); ?></th>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Item', 'ayuda-help-desk' ); ?></th>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Status', 'ayuda-help-desk' ); ?></th>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-in Date', 'ayuda-help-desk' ); ?></th>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Opt-out Date', 'ayuda-help-desk' ); ?></th>
+						<th class="manage-column wpas-content-heading"><?php esc_html_e( 'Action', 'ayuda-help-desk' ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -210,7 +210,7 @@ class WPAS_GDPR_User_Profile {
 						 */
 					$item = isset( $consent['item'] ) ? $consent['item'] : '';
 					if ( isset( $consent['is_tor'] ) && $consent['is_tor'] === true ) {
-						$item = __( 'Terms and Conditions', 'awesome-support' );
+						$item = __( 'Terms and Conditions', 'ayuda-help-desk' );
 					}
 
 					/**
@@ -220,7 +220,7 @@ class WPAS_GDPR_User_Profile {
 					$status = '';
 					if ( isset( $consent['status'] ) && ! empty( $consent['status'] ) ) {
 						if ( $consent['status'] == 1 ) {
-							$status = __( 'Opted-in', 'awesome-support' );
+							$status = __( 'Opted-in', 'ayuda-help-desk' );
 						} else {
 							$status = $consent['status'];
 						}
@@ -239,26 +239,26 @@ class WPAS_GDPR_User_Profile {
 						 */
 					$opt_button = '';
 					if ( isset( $consent['is_tor'] ) && $consent['is_tor'] == false ) {
-						$gdpr_id = wpas_get_gdpr_data( $item );
+						$gdpr_id = mumei_ayuda_get_gdpr_data( $item );
 						/**
 						 * Determine what type of buttons we should render
 						 * If opt_in is not empty, display Opt out button
 						 * otherwise, just vice versa
 						*/
-						if ( ! empty( $opt_in ) && wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
+						if ( ! empty( $opt_in ) && mumei_ayuda_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
 							$opt_button = sprintf(
 								'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optin-date="' . $opt_in . '">%s</a>',
-								__( 'Opt-out', 'awesome-support' )
+								__( 'Opt-out', 'ayuda-help-desk' )
 							);
 						} elseif ( ! empty( $opt_out ) ) {
 							$opt_button = sprintf(
 								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optout-date="' . $opt_out . '">%s</a>',
-								__( 'Opt-in', 'awesome-support' )
+								__( 'Opt-in', 'ayuda-help-desk' )
 							);
 						} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
 							$opt_button = sprintf(
 								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
-								__( 'Opt-in', 'awesome-support' )
+								__( 'Opt-in', 'ayuda-help-desk' )
 							);
 						}
 					}
@@ -284,13 +284,13 @@ class WPAS_GDPR_User_Profile {
 			/**
 			 * Get consent logs
 			 */
-			$consent_log = get_user_option( 'wpas_consent_log', $profileuser->ID );
+			$consent_log = get_user_option( 'mumei_ayuda_consent_log', $profileuser->ID );
 			if ( ! empty( $consent_log ) && is_array( $consent_log ) ) {
 		?>
 
 		<!-- GDPR Consent logging -->
-		<div id="wpas_user_profile_segment">
-			<h3><?php esc_html_e( 'Awesome Support: Consent Logs', 'awesome-support' ); ?></h3>
+		<div id="mumei_ayuda_user_profile_segment">
+			<h3><?php esc_html_e( 'Ayuda – Help Desk: Consent Logs', 'ayuda-help-desk' ); ?></h3>
 			<table class="form-table wp-list-table widefat fixed striped wpas-consent-history">
 				<?php
 					/**
@@ -311,7 +311,7 @@ class WPAS_GDPR_User_Profile {
 	 * Ajax based ticket and user data export
 	 * processing. This will primarily using WP_Query
 	 */
-	public function wpas_gdpr_export_data() {
+	public function mumei_ayuda_gdpr_export_data() {
 		/**
 		 * Initialize custom reponse message
 		 */
@@ -326,7 +326,7 @@ class WPAS_GDPR_User_Profile {
 		$nonce = isset( $_POST['nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['nonce'] )) : '';
 		$user  = isset( $_POST['nonce'] )  && isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
 		if ( ! current_user_can( 'read' ) ) {
-			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to export user data.', 'awesome-support') ), 403);
+			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to export user data.', 'ayuda-help-desk') ), 403);
 		}
 		/**
 		 * Security checking
@@ -339,11 +339,11 @@ class WPAS_GDPR_User_Profile {
 					require_once(ABSPATH . '/wp-admin/includes/file.php');
 					WP_Filesystem();
 				} 
-				$user_tickets = $this->wpas_gdpr_ticket_data( $user );
-				$user_consent = $this->wpas_gdpr_consent_data( $user );
+				$user_tickets = $this->mumei_ayuda_gdpr_ticket_data( $user );
+				$user_consent = $this->mumei_ayuda_gdpr_consent_data( $user );
 				if ( ! empty( $user_consent ) || ! empty( $user_tickets ) ) {
 					/**
-					 * Put them in awesome-support/user_log_$user_id
+					 * Put them in ayuda-help-desk/user_log_$user_id
 					 * folders in uploads dir. This has .htaccess protect to avoid
 					 * direct access
 					 */
@@ -354,7 +354,7 @@ class WPAS_GDPR_User_Profile {
 						array( 'consent_log' => $user_consent )
 					);
 
-					$data = apply_filters( 'wpas_gdpr_export_data_profile', $content, $user );
+					$data = apply_filters( 'mumei_ayuda_gdpr_export_data_profile', $content, $user );
 
 					$wp_filesystem->put_contents(
 						$this->user_export_dir . '/export-data.xml',
@@ -367,24 +367,24 @@ class WPAS_GDPR_User_Profile {
 					$response['code'] 				= 200;
 					$response['message']['success'] = sprintf(
 						'<p>%s. <a href="%s" target="_blank" class="download-file-link">%s</a></p>',
-						__( 'Exporting data was successful!', 'awesome-support' ),
+						__( 'Exporting data was successful!', 'ayuda-help-desk' ),
 						add_query_arg(
 							array(
 								'file'  => $user,
 								'check' => wp_create_nonce( 'as-validate-download-url' ),
 							), home_url()
 						),
-						__( 'Download it now..', 'awesome-support' )
+						__( 'Download it now..', 'ayuda-help-desk' )
 					);
 
 				} else {
-					$response['message']['error'] = sprintf( '<p>%s.</p>', __( 'No data exist', 'awesome-support' ) );
+					$response['message']['error'] = sprintf( '<p>%s.</p>', __( 'No data exist', 'ayuda-help-desk' ) );
 				}
 			} else {
-				$response['message'] = __( 'Cheating huh?', 'awesome-support' );
+				$response['message'] = __( 'Cheating huh?', 'ayuda-help-desk' );
 			}
 		} else {
-			$response['message'] = __( 'Cheating huh?', 'awesome-support' );
+			$response['message'] = __( 'Cheating huh?', 'ayuda-help-desk' );
 		}
 		wp_send_json( $response );
 		wp_die();
@@ -395,8 +395,8 @@ class WPAS_GDPR_User_Profile {
 	 *
 	 * @param $user User ID.
 	 */
-	public function wpas_gdpr_consent_data( $user ){
-		$user_option_data = get_user_option( 'wpas_consent_tracking', $user );
+	public function mumei_ayuda_gdpr_consent_data( $user ){
+		$user_option_data = get_user_option( 'mumei_ayuda_consent_tracking', $user );
 		$user_consent     = array();
 		if ( ! empty( $user_option_data ) ) {
 			foreach ( $user_option_data as $key => $option_data ) {
@@ -411,12 +411,12 @@ class WPAS_GDPR_User_Profile {
 	 *
 	 * @param $user User ID.
 	 */
-	public function  wpas_gdpr_ticket_data( $user, $number = -1, $paged ='' ){
+	public function  mumei_ayuda_gdpr_ticket_data( $user, $number = -1, $paged ='' ){
 
 		$args = array(
 				'post_type'      => array( 'ticket' ),
 				'author'         => $user,
-				'post_status'    => array_keys( wpas_get_post_status() ),
+				'post_status'    => array_keys( mumei_ayuda_get_post_status() ),
 				'posts_per_page' => $number,
 			);
 		if( !empty( $paged ) ){
@@ -452,7 +452,7 @@ class WPAS_GDPR_User_Profile {
 		/**
 		 * Get WPAS statuses
 		 */
-		$status = ucfirst( wpas_get_ticket_status( $ticket_id ) );
+		$status = ucfirst( mumei_ayuda_get_ticket_status( $ticket_id ) );
 		return $status;
 	}
 
@@ -499,7 +499,7 @@ class WPAS_GDPR_User_Profile {
 	 * Get ticket replies
 	 */
 	public function get_ticket_replies( $ticket_id ) {
-		$get_replies = wpas_get_replies( $ticket_id );
+		$get_replies = mumei_ayuda_get_replies( $ticket_id );
 		$replies     = array();
 		if ( ! empty( $get_replies ) ) {
 			foreach ( $get_replies as $key => $reply ) {
@@ -531,7 +531,7 @@ class WPAS_GDPR_User_Profile {
 	 */
 	public function set_log_dir( $user ) {
 		/* We sort the uploads in sub-folders per ticket. */
-		$subdir = "/awesome-support/user_$user";
+		$subdir = "/ayuda-help-desk/user_$user";
 
 		$upload = wp_upload_dir();
 		/* Create final URL and dir */
@@ -544,9 +544,9 @@ class WPAS_GDPR_User_Profile {
 		$upload['subdir'] = $subdir;
 
 		/* Create the directory if it doesn't exist yet, make sure it's protected otherwise */
-		$wpas_file_upload_instance = WPAS_File_Upload::get_instance();
+		$mumei_ayuda_file_upload_instance = MUMEI_AYUDA_File_Upload::get_instance();
 		if ( ! is_dir( $dir ) ) {
-			$wpas_file_upload_instance->create_upload_dir( $dir );
+			$mumei_ayuda_file_upload_instance->create_upload_dir( $dir );
 		} else {
 			$this->protect_upload_dir( $dir );
 		}
@@ -573,14 +573,14 @@ class WPAS_GDPR_User_Profile {
 
 		// SECURITY FIX: Check if user is authenticated before protecting directories
 		if ( ! is_user_logged_in() ) {
-			wpas_write_log('file-uploader', 'Security: Unauthorized access attempt to protect upload directory: ' . $dir );
+			mumei_ayuda_write_log('file-uploader', 'Security: Unauthorized access attempt to protect upload directory: ' . $dir );
 			return;
 		}
 
 		// SECURITY FIX: Validate directory path to prevent directory traversal
 		$allowed_base = $this->wp_upload_dir['basedir'];
 		if ( strpos( $dir, $allowed_base ) !== 0 ) {
-			wpas_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
+			mumei_ayuda_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
 			return;
 		}
 		
@@ -591,13 +591,13 @@ class WPAS_GDPR_User_Profile {
 			if ( ! file_exists( $filename ) ) {
 				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
 				if ( $result === false ) {
-					wpas_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
+					mumei_ayuda_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
 				}
 			}
 		} else {
 			// folder isn't writable so no point in attempting to do it...
 			// log the error in our log files instead...
-			wpas_write_log( 'file-uploader', 'The folder ' . $dir . ' is not writable.  So we are unable to write a .htaccess file to this folder' );
+			mumei_ayuda_write_log( 'file-uploader', 'The folder ' . $dir . ' is not writable.  So we are unable to write a .htaccess file to this folder' );
 		}
 
 	}
@@ -635,7 +635,7 @@ class WPAS_GDPR_User_Profile {
 	*/
 	public function data_zip( $user_tickets, $file, $destination, $filename = 'exported-data.zip' ) {
 		if ( ! file_exists( $destination ) ) {
-			return new WP_Error( 'file_destination_not_exists', __( 'The destination file does not exists!', 'awesome-support' ) );
+			return new WP_Error( 'file_destination_not_exists', __( 'The destination file does not exists!', 'ayuda-help-desk' ) );
 		}
 		if ( file_exists( $destination . '/' . $file ) ) {
 			$zip    = new ZipArchive();
@@ -655,16 +655,16 @@ class WPAS_GDPR_User_Profile {
 								$this->add_attachments( $zip, $tickets_id );
 							}
 						} else {
-							return new WP_Error( 'invalid_ticket_id', __( 'Ticket ID is empty', 'awesome-support' ) );
+							return new WP_Error( 'invalid_ticket_id', __( 'Ticket ID is empty', 'ayuda-help-desk' ) );
 						}
 					}
 				}
 				$zip->close();
 			} else {
-				return new WP_Error( 'cannot_create_zip', __( 'Cannot create zip file', 'awesome-support' ) );
+				return new WP_Error( 'cannot_create_zip', __( 'Cannot create zip file', 'ayuda-help-desk' ) );
 			}
 		} else {
-			return new WP_Error( 'file_not_exists', __( 'Zip data file not exists!', 'awesome-support' ) );
+			return new WP_Error( 'file_not_exists', __( 'Zip data file not exists!', 'ayuda-help-desk' ) );
 		}
 	}
 
@@ -678,7 +678,7 @@ class WPAS_GDPR_User_Profile {
 	public function add_attachments( $zip, $ticket_id ){
 		
 		$ticket_id_encode = md5($ticket_id . NONCE_SALT);	
-		$subdir = '/awesome-support/ticket_' . $ticket_id_encode;
+		$subdir = '/ayuda-help-desk/ticket_' . $ticket_id_encode;
 		$upload = wp_upload_dir();
 		/* Create final URL and dir */
 		$dir = $upload['basedir'] . $subdir;
@@ -687,9 +687,9 @@ class WPAS_GDPR_User_Profile {
 				while ( ( $file2 = readdir( $dh ) ) !== false ) {
 					if ( file_exists( $dir . '/' . $file2 ) ) {						
 						if(!function_exists("mime_content_type")) {					
-							require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
+							require_once( MUMEI_AYUDA_PATH . 'includes/file-uploader/mime-types.php' );
 							$file_pathinfo = pathinfo($dir . '/' . $file2, PATHINFO_EXTENSION);
-							$mimetype = wpas_get_mime_type( $file_pathinfo );
+							$mimetype = mumei_ayuda_get_mime_type( $file_pathinfo );
 						}
 						else {
 							$mimetype = mime_content_type( $dir . '/' . $file2 );
@@ -706,11 +706,11 @@ class WPAS_GDPR_User_Profile {
 							}
 						}
 					} else {
-						return new WP_Error( 'file_not_exist', __( 'Attachment not exist', 'awesome-support' ) );
+						return new WP_Error( 'file_not_exist', __( 'Attachment not exist', 'ayuda-help-desk' ) );
 					}
 				}
 			} else {
-				return new WP_Error( 'dir_not_found', __( 'Attachment Folder Directory Not Found', 'awesome-support' ) );
+				return new WP_Error( 'dir_not_found', __( 'Attachment Folder Directory Not Found', 'ayuda-help-desk' ) );
 			}
 			closedir( $dh );
 		}

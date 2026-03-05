@@ -8,9 +8,9 @@
  *
  * @since  3.0.0
  */
-function wpas_list_pages( $post_type = 'page' ) {
+function mumei_ayuda_list_pages( $post_type = 'page' ) {
 
-	$list = array( '' => __( 'None', 'awesome-support' ) );
+	$list = array( '' => __( 'None', 'ayuda-help-desk' ) );
 
 	$args = array(
 		'post_type'              => $post_type,
@@ -35,7 +35,7 @@ function wpas_list_pages( $post_type = 'page' ) {
 
 	}
 
-	return apply_filters( 'wpas_pages_list', $list );
+	return apply_filters( 'mumei_ayuda_pages_list', $list );
 
 }
 
@@ -45,9 +45,9 @@ function wpas_list_pages( $post_type = 'page' ) {
  * @return array
  * @since  3.0.0
  */
-function wpas_list_themes() {
+function mumei_ayuda_list_themes() {
 
-	$dir    = WPAS_PATH . 'themes/';
+	$dir    = MUMEI_AYUDA_PATH . 'themes/';
 	$themes = array();
 
 	if ( is_dir( $dir ) ) {
@@ -87,7 +87,7 @@ function wpas_list_themes() {
  * @return array
  * @since  5.8.0
  */
-function wpas_list_overlays() {
+function mumei_ayuda_list_overlays() {
 	
 	$overlay['style.css'] = 'Default';
 	$overlay['overlay-subtle.css'] = 'Subtle';
@@ -102,7 +102,7 @@ function wpas_list_overlays() {
 	$overlay['overlay-basic-green.css'] = 'Basic Green';
 	$overlay['overlay-basic-red.css'] = 'Basic Red';
 	
-	return apply_filters('wpas_list_overlays',$overlay);
+	return apply_filters('mumei_ayuda_list_overlays',$overlay);
 	
 
 }
@@ -115,14 +115,14 @@ function wpas_list_overlays() {
  * @since 3.3
  * @return array
  */
-function wpas_get_settings() {
+function mumei_ayuda_get_settings() {
 
 	// Load the file uploader settings if not already done (those settings are loaded on plugins_loaded only)
-	if ( ! function_exists( 'wpas_addon_settings_file_upload' ) ) {
-		require_once( WPAS_PATH . 'includes/file-uploader/settings-file-upload.php' );
+	if ( ! function_exists( 'mumei_ayuda_addon_settings_file_upload' ) ) {
+		require_once( MUMEI_AYUDA_PATH . 'includes/file-uploader/settings-file-upload.php' );
 	}
 
-	return apply_filters( 'wpas_plugin_settings', array() );
+	return apply_filters( 'mumei_ayuda_plugin_settings', array() );
 
 }
 
@@ -135,9 +135,9 @@ function wpas_get_settings() {
  * @since 3.3
  * @return array
  */
-function wpas_get_raw_settings() {
+function mumei_ayuda_get_raw_settings() {
 
-	$settings = wpas_get_settings();
+	$settings = mumei_ayuda_get_settings();
 
 	if ( empty( $settings ) ) {
 		return array();
@@ -174,7 +174,7 @@ function wpas_get_raw_settings() {
  */
 function get_settings_defaults( $option = '' ) {
 
-	$options = wpas_get_raw_settings();
+	$options = mumei_ayuda_get_raw_settings();
 
 	if ( ! empty( $option ) && array_key_exists( $option, $options ) ) {
 		return $options[ $option ]['default'];

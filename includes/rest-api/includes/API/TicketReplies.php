@@ -1,8 +1,8 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
-use WPAS_API\API\TicketBase;
+use MUMEI_AYUDA_API\API\TicketBase;
 use WP_REST_Server;
 use WP_REST_Posts_Controller;
 use WP_Error;
@@ -24,7 +24,7 @@ class TicketReplies extends TicketBase {
 		register_rest_route( $this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/' . $this->rest_base, array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
+					'description' => __( 'Unique identifier for the ticket.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -51,12 +51,12 @@ class TicketReplies extends TicketBase {
 		register_rest_route($this->namespace, '/' . $ticket->rest_base . '/(?P<ticket_id>[\d]+)/' . $this->rest_base . '/(?P<id>[\d]+)', array(
 			'args' => array(
 				'ticket_id' => array(
-					'description' => __( 'Unique identifier for the ticket.', 'awesome-support' ),
+					'description' => __( 'Unique identifier for the ticket.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
 				'id' => array(
-					'description' => __( 'Unique identifier for the reply.', 'awesome-support' ),
+					'description' => __( 'Unique identifier for the reply.', 'ayuda-help-desk' ),
 					'type'        => 'integer',
 					'required'    => true,
 				),
@@ -81,7 +81,7 @@ class TicketReplies extends TicketBase {
 					'force' => array(
 						'type'        => 'boolean',
 						'default'     => false,
-						'description' => __( 'Whether to bypass trash and force deletion.', 'awesome-support' ),
+						'description' => __( 'Whether to bypass trash and force deletion.', 'ayuda-help-desk' ),
 					),
 				),
 			),
@@ -140,7 +140,7 @@ class TicketReplies extends TicketBase {
 //		);
 
 		$schema['properties']['author'] = array(
-			'description' => __( 'The ID for the author of the object.', 'awesome-support' ),
+			'description' => __( 'The ID for the author of the object.', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit', 'embed' ),
 			'arg_options' => array(
@@ -149,7 +149,7 @@ class TicketReplies extends TicketBase {
 		);
 
 		$schema['properties']['parent'] = array(
-			'description' => __( 'The ID for the ticket of the reply.', 'awesome-support' ),
+			'description' => __( 'The ID for the ticket of the reply.', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'readonly'    => true,
 			'context'     => array( 'view', 'edit' ),
@@ -184,7 +184,7 @@ class TicketReplies extends TicketBase {
 		 * @param array   $query_params JSON Schema-formatted collection parameters.
 		 * @param object  Tickets
 		 */
-		return apply_filters( "wpas_api_{$this->rest_base}_collection_params", $query_params, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_collection_params", $query_params, $this );
 	}
 
 	/**
@@ -202,17 +202,17 @@ class TicketReplies extends TicketBase {
 		/**
 		 * Delete the activity transient.
 		 */
-		delete_transient( "wpas_activity_meta_post_" . $object->ID );
+		delete_transient( "mumei_ayuda_activity_meta_post_" . $object->ID );
 
 		/**
-		 * Fire wpas_add_reply_after after the reply was successfully added.
+		 * Fire mumei_ayuda_add_reply_after after the reply was successfully added.
 		 */
-		do_action( 'wpas_add_reply_after', $object->ID, $data );
+		do_action( 'mumei_ayuda_add_reply_after', $object->ID, $data );
 
 		/**
-		 * Fire wpas_add_reply_complete after the reply and attachments was successfully added.
+		 * Fire mumei_ayuda_add_reply_complete after the reply and attachments was successfully added.
 		 */
-		do_action( 'wpas_add_reply_complete', $object->ID, $data );
+		do_action( 'mumei_ayuda_add_reply_complete', $object->ID, $data );
 
 		return parent::update_additional_fields_for_object( $object, $request );
 	}
@@ -227,7 +227,7 @@ class TicketReplies extends TicketBase {
 		$defaults = $request->get_default_params();
 
 		// translators: %s is the ticket id.
-		$x_content = __( 'Reply to ticket %s', 'awesome-support' );
+		$x_content = __( 'Reply to ticket %s', 'ayuda-help-desk' );
 		$defaults['parent'] = $request['ticket_id'];
 		$defaults['title']  = sprintf( $x_content, "#" . $request['ticket_id'] );
 		$defaults['slug']  = sprintf( $x_content, "#" . $request['ticket_id'] );
@@ -274,7 +274,7 @@ class TicketReplies extends TicketBase {
 			),
 		);
 
-		return apply_filters( "wpas_api_{$this->rest_base}_prepare_links", $links, $post, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_prepare_links", $links, $post, $this );
 	}
 
 

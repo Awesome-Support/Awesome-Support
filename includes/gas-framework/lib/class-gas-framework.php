@@ -188,7 +188,7 @@ class GASFramework {
 			if ( is_admin() && isset( $this->optionsUsed[ $option->settings['id'] ] ) ) {
 				
 				// translators: %s is the ticket id.
-				$x_content = __( 'All option IDs per namespace must be unique. The id %s has been used multiple times.',  'awesome-support'  );
+				$x_content = __( 'All option IDs per namespace must be unique. The id %s has been used multiple times.',  'ayuda-help-desk'  );
 				self::displayFrameworkError(
 					sprintf( $x_content,
 						'<code>' . $option->settings['id'] . '</code>'
@@ -459,7 +459,7 @@ class GASFramework {
 	public function createContainer( $settings ) {
 		if ( empty( $settings['type'] ) ) {
 			// translators: %1$s is the name of the component or function, %2$s is the missing parameter.
-			$x_content = __( '%1$s needs a %2$s parameter.',  'awesome-support'  );
+			$x_content = __( '%1$s needs a %2$s parameter.',  'ayuda-help-desk'  );
 
 			self::displayFrameworkError( sprintf( $x_content, '<code>' . __FUNCTION__ . '</code>', '<code>type</code>' ) );
 			return;
@@ -473,7 +473,7 @@ class GASFramework {
 		if ( ! class_exists( $class ) ) {
 
 			// translators: %s is a type of container.
-			$x_content = __( 'Container of type %s, does not exist.',  'awesome-support'  );
+			$x_content = __( 'Container of type %s, does not exist.',  'ayuda-help-desk'  );
 
 			self::displayFrameworkError( sprintf( $x_content, '<code>' . $settings['type'] . '</code>' ) );
 			return;

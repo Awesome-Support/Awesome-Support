@@ -1,8 +1,8 @@
 <?php
 
-namespace WPAS_API\Auth;
+namespace MUMEI_AYUDA_API\Auth;
 
-use WPAS_API\Auth\User;
+use MUMEI_AYUDA_API\Auth\User;
 
 // Load the parent class if it doesn't exist.
 if ( ! class_exists( 'WP_List_Table' ) ) {
@@ -26,11 +26,11 @@ class PasswordList extends \WP_List_Table {
 	 */
 	public function get_columns() {
 		return array(
-			'name'      => wp_strip_all_tags( __( 'Name', 'awesome-support' ) ),
-			'created'   => wp_strip_all_tags( __( 'Created', 'awesome-support' ) ),
-			'last_used' => wp_strip_all_tags( __( 'Last Used', 'awesome-support' ) ),
-			'last_ip'   => wp_strip_all_tags( __( 'Last IP', 'awesome-support' ) ),
-			'revoke'    => wp_strip_all_tags( __( 'Revoke', 'awesome-support' ) ),
+			'name'      => wp_strip_all_tags( __( 'Name', 'ayuda-help-desk' ) ),
+			'created'   => wp_strip_all_tags( __( 'Created', 'ayuda-help-desk' ) ),
+			'last_used' => wp_strip_all_tags( __( 'Last Used', 'ayuda-help-desk' ) ),
+			'last_ip'   => wp_strip_all_tags( __( 'Last IP', 'ayuda-help-desk' ) ),
+			'revoke'    => wp_strip_all_tags( __( 'Revoke', 'ayuda-help-desk' ) ),
 		);
 	}
 
@@ -75,7 +75,7 @@ class PasswordList extends \WP_List_Table {
 				}
 				return $item['last_ip'];
 			case 'revoke':
-				return get_submit_button( __( 'Revoke', 'awesome-support' ), 'delete', 'revoke-wpas-api-passwords', false );
+				return get_submit_button( __( 'Revoke', 'ayuda-help-desk' ), 'delete', 'revoke-wpas-api-passwords', false );
 			default:
 				return '';
 		}
@@ -94,7 +94,7 @@ class PasswordList extends \WP_List_Table {
 
 			<?php if ( 'bottom' === $which ) : ?>
 			<div class="alignright">
-				<?php submit_button( __( 'Revoke all api passwords', 'awesome-support' ), 'delete', 'revoke-all-wpas-api-passwords', false ); ?>
+				<?php submit_button( __( 'Revoke all api passwords', 'ayuda-help-desk' ), 'delete', 'revoke-all-wpas-api-passwords', false ); ?>
 			</div>
 			<?php endif; ?>
 

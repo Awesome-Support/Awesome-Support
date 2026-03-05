@@ -1,10 +1,10 @@
 <?php
 /**
- * @package   Awesome Support/Compatibility/WPML
+ * @package   Ayuda – Help Desk/Compatibility/WPML
  * @author    David Garcia Watkins <david.g@onthegosystems.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
- * @copyright 2017 Awesome Support
+ * @copyright 2017 Ayuda – Help Desk
  */
 
 // If this file is called directly, abort.
@@ -12,7 +12,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-add_action( 'wpml_loaded', 'wpas_load_wpml_compatibility' );
+add_action( 'wpml_loaded', 'mumei_ayuda_load_wpml_compatibility' );
 /**
  * Attach filters for WPML compatibility only when WPML is active.
  *
@@ -22,11 +22,11 @@ add_action( 'wpml_loaded', 'wpas_load_wpml_compatibility' );
  * @since 4.0.7
  * @return void
  */
-function wpas_load_wpml_compatibility() {
+function mumei_ayuda_load_wpml_compatibility() {
 
 	// We only need this in the frontend.
 	if ( ! is_admin() ) {
-		add_filter( 'wpas_plugin_frontend_pages', 'wpas_translate_frontend_pages_ids' );
+		add_filter( 'mumei_ayuda_plugin_frontend_pages', 'mumei_ayuda_translate_frontend_pages_ids' );
 	}
 
 }
@@ -34,7 +34,7 @@ function wpas_load_wpml_compatibility() {
 /**
  * Add translated page ids to the current language.
  *
- * Using the 'wpas_plugin_frontend_pages' filter we add translated page ids
+ * Using the 'mumei_ayuda_plugin_frontend_pages' filter we add translated page ids
  * for our pages to be detected correctly in all languages.
  *
  * Without this, translated pages are missing assets in the frontend.
@@ -42,7 +42,7 @@ function wpas_load_wpml_compatibility() {
  * @param array $ids
  * @return array
  */
-function wpas_translate_frontend_pages_ids( $ids ) {
+function mumei_ayuda_translate_frontend_pages_ids( $ids ) {
 
 	// Add each translated page id to the resulting array.
 	foreach ( (array) $ids as $id ) {

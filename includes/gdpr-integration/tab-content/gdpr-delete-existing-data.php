@@ -1,8 +1,8 @@
 <?php
 /**
- * Awesome Support Delete Existing Data
+ * Ayuda – Help Desk Delete Existing Data
  *
- * @package   Awesome_Support
+ * @package   Mumei_Ayuda_Support
  * @author    DevriX
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -14,9 +14,9 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Get subject based on settings option!
-$subject = __( 'Official Request: Please Delete My Existing Data ("Right To Be Forgotten").', 'awesome-support' );
-if( wpas_get_option( 'delete_existing_data_subject', false ) ) {
-	$subject = wpas_get_option( 'delete_existing_data_subject', false );
+$subject = __( 'Official Request: Please Delete My Existing Data ("Right To Be Forgotten").', 'ayuda-help-desk' );
+if( mumei_ayuda_get_option( 'delete_existing_data_subject', false ) ) {
+	$subject = mumei_ayuda_get_option( 'delete_existing_data_subject', false );
 }
 
 ?>
@@ -32,7 +32,7 @@ if( wpas_get_option( 'delete_existing_data_subject', false ) ) {
 	<table class="form-table wpas-gdpr-form-table">
 		<thead>
 			<tr class="headlines">
-				<th><?php esc_html_e( 'Subject', 'awesome-support' ); ?></th>
+				<th><?php esc_html_e( 'Subject', 'ayuda-help-desk' ); ?></th>
 			</tr>
 		</thead>
 		<tr>
@@ -43,11 +43,11 @@ if( wpas_get_option( 'delete_existing_data_subject', false ) ) {
 		 * Check if this is enabled in the settings option
 		 * before we can render the markup
 		 */
-		if( wpas_get_option( 'delete_existing_data_add_information', false ) ) {
+		if( mumei_ayuda_get_option( 'delete_existing_data_add_information', false ) ) {
 		?>
 		<thead>
 			<tr class="headlines">
-				<th><?php esc_html_e( 'Additional Information', 'awesome-support' ); ?></th>
+				<th><?php esc_html_e( 'Additional Information', 'ayuda-help-desk' ); ?></th>
 			</tr>
 		</thead>
 		<tr>

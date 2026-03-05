@@ -657,7 +657,7 @@ class gasscssc {
 			$value = $this->compileValue($this->reduce($value, true));
 			$result = $wp_filesystem->put_contents(STDERR, "Line $line DEBUG: $value\n", FS_CHMOD_FILE);
 			if ( $result === false ) {
-				wpas_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
+				mumei_ayuda_write_log('file-uploader','unable to write .htaccess file to folder ' . $dir ) ;
 			}
 			break;
 		default:

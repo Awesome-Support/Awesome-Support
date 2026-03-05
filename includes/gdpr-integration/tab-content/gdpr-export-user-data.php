@@ -1,8 +1,8 @@
 <?php
 /**
- * Awesome Support Export Tickets Template
+ * Ayuda – Help Desk Export Tickets Template
  *
- * @package   Awesome_Support
+ * @package   Mumei_Ayuda_Support
  * @author    DevriX
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -18,4 +18,4 @@ if ( ! defined( 'WPINC' ) ) {
 </div>
 <div class="wpas-gdpr-notice export-data"></div>
 
-<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo esc_attr( get_current_user_id() ); ?>" class="button button-primary" value="<?php esc_html_e( 'Export my tickets', 'awesome-support' ); ?>">
+<input type="submit" name="wpas-gdpr-export-data-submit" id="wpas-gdpr-export-data-submit" data-user="<?php echo esc_attr( get_current_user_id() ); ?>" class="button button-primary" value="<?php esc_html_e( 'Export my tickets', 'ayuda-help-desk' ); ?>">

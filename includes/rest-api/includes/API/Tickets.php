@@ -1,13 +1,13 @@
 <?php
 
-namespace WPAS_API\API;
+namespace MUMEI_AYUDA_API\API;
 
-use WPAS_API\API\TicketBase;
+use MUMEI_AYUDA_API\API\TicketBase;
 use WP_REST_Posts_Controller;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
-use WPAS_Custom_Field;
+use MUMEI_AYUDA_Custom_Field;
 
 class Tickets extends TicketBase {
 
@@ -89,7 +89,7 @@ class Tickets extends TicketBase {
 				continue;
 			}
 
-			$field         = new WPAS_Custom_Field( $base, $custom_fields[ $base ] );
+			$field         = new MUMEI_AYUDA_Custom_Field( $base, $custom_fields[ $base ] );
 			$data[ $base ] = $field->get_field_value( '', $data['id'] );
 		}
 
@@ -98,7 +98,7 @@ class Tickets extends TicketBase {
 				continue;
 			}
 
-			$value = wpas_get_cf_value( $field_data['field_key'], $data['id'] );
+			$value = mumei_ayuda_get_cf_value( $field_data['field_key'], $data['id'] );
 
 			$data[ $key ] = self::prepare_value( $value, $field_data );
 		}
@@ -133,7 +133,7 @@ class Tickets extends TicketBase {
 			$meta_query['relation'] = 'AND';
 		}
 
-		return apply_filters( "wpas_api_{$this->rest_base}_prepare_items_query", $query_args, $prepared_args, $request, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_prepare_items_query", $query_args, $prepared_args, $request, $this );
 	}
 
 	/**
@@ -160,17 +160,17 @@ class Tickets extends TicketBase {
 		} elseif ( $user->ID ) {
 			$query_params['author']['default'] = $user->ID;
 		}
-		if( ( wpas_is_asadmin() && true === (bool) wpas_get_option( 'admin_see_all' ) ) )
+		if( ( mumei_ayuda_is_asadmin() && true === (bool) mumei_ayuda_get_option( 'admin_see_all' ) ) )
 		{
 			unset( $query_params['assignee']['default'] );
 			unset( $query_params['author']['default'] );
 		}
 		if ( isset( $_GET['context'] ) && 'help' == $_GET['context'] ) {
-			$query_params['assignee']['default'] = __( 'The ID of the current logged in agent if applicable.', 'awesome-support' );
-			$query_params['author']['default'] = __( 'The ID of the current logged in client if applicable.', 'awesome-support' );
+			$query_params['assignee']['default'] = __( 'The ID of the current logged in agent if applicable.', 'ayuda-help-desk' );
+			$query_params['author']['default'] = __( 'The ID of the current logged in client if applicable.', 'ayuda-help-desk' );
 		}
 
-		$query_params['status']['items']['enum'] = array_merge( array_keys( wpas_get_post_status() ), array( 'read', 'unread', 'any' ) );
+		$query_params['status']['items']['enum'] = array_merge( array_keys( mumei_ayuda_get_post_status() ), array( 'read', 'unread', 'any' ) );
 
 		/**
 		 * Filter collection parameters for the posts controller.
@@ -178,7 +178,7 @@ class Tickets extends TicketBase {
 		 * @param array   $query_params JSON Schema-formatted collection parameters.
 		 * @param object  Tickets
 		 */
-		return apply_filters( "wpas_api_{$this->rest_base}_get_collection_params", $query_params, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_get_collection_params", $query_params, $this );
 	}
 
 	/**
@@ -210,17 +210,17 @@ class Tickets extends TicketBase {
 				$get_field = is_numeric( $term ) ? 'id' : 'slug';
 
 				// translators: %s is a tag value.
-				$x_content = __( 'That %s term does not exist.', 'awesome-support' );
+				$x_content = __( 'That %s term does not exist.', 'ayuda-help-desk' );
 
 				if ( ! $term = get_term_by( $get_field, $request[ $base ], $base ) ) {
 					return new WP_Error( 'invalid_term', sprintf($x_content, $base ) );
 				}
 
-				$field  = new WPAS_Custom_Field( $base, $custom_fields[ $base ] );
+				$field  = new MUMEI_AYUDA_Custom_Field( $base, $custom_fields[ $base ] );
 				$result = $field->update_value( $term->term_id, $post_id );
 
 				if ( 4 == $result ) {
-					return new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit this post.', 'awesome-support' ), array( 'status' => 401 ) );
+					return new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit this post.', 'ayuda-help-desk' ), array( 'status' => 401 ) );
 				}
 
 				$this->maybe_update_log( $field, $result, $post_id );
@@ -272,7 +272,7 @@ class Tickets extends TicketBase {
 
 		// if we just created a new ticket, set the slug
 		if ( $this->is_item_new( $request ) ) {
-			wpas_set_ticket_slug( $object->ID );
+			mumei_ayuda_set_ticket_slug( $object->ID );
 		}
 
 		foreach ( $additional_fields as $field_name => $field_options ) {
@@ -303,10 +303,10 @@ class Tickets extends TicketBase {
 			}
 		}
 
-		do_action( 'wpas_api_tickets_update_additional_fields_after', $object, $request );
+		do_action( 'mumei_ayuda_api_tickets_update_additional_fields_after', $object, $request );
 
 		if ( $this->is_item_new( $request ) ) {
-			do_action( 'wpas_open_ticket_after', $object->ID, get_post( $object->ID, 'ARRAY_A' ) );			
+			do_action( 'mumei_ayuda_open_ticket_after', $object->ID, get_post( $object->ID, 'ARRAY_A' ) );			
 		}
 
 		return parent::update_additional_fields_for_object( $object, $request );
@@ -346,7 +346,7 @@ class Tickets extends TicketBase {
 				'embeddable' => true,
 			),
 			'assignee'                     => array(
-				'href'       => rest_url( $this->namespace . '/users/' . get_post_meta( $post->ID, '_wpas_assignee', true ) ),
+				'href'       => rest_url( $this->namespace . '/users/' . get_post_meta( $post->ID, '_mumei_ayuda_assignee', true ) ),
 				'embeddable' => true,
 			),
 			'https://api.w.org/attachment' => array(
@@ -387,7 +387,7 @@ class Tickets extends TicketBase {
 			}
 		}
 
-		return apply_filters( "wpas_api_{$this->rest_base}_prepare_links", $links, $post, $this );
+		return apply_filters( "mumei_ayuda_api_{$this->rest_base}_prepare_links", $links, $post, $this );
 	}
 
 	/** Callback Functions **************************/
@@ -406,7 +406,7 @@ class Tickets extends TicketBase {
 
 		if ( in_array( $state, array( 'any', 'open' ) ) ) {
 			$meta_query[] = array(
-				'key'     => '_wpas_status',
+				'key'     => '_mumei_ayuda_status',
 				'value'   => 'open',
 				'compare' => '=',
 				'type'    => 'CHAR',
@@ -415,7 +415,7 @@ class Tickets extends TicketBase {
 
 		if ( in_array( $state, array( 'any', 'closed' ) ) ) {
 			$meta_query[] = array(
-				'key'     => '_wpas_status',
+				'key'     => '_mumei_ayuda_status',
 				'value'   => 'closed',
 				'compare' => '=',
 				'type'    => 'CHAR',
@@ -448,7 +448,7 @@ class Tickets extends TicketBase {
 
 		// set assignee
 		$query_args['meta_query'][] = array(
-			'key'     => '_wpas_assignee',
+			'key'     => '_mumei_ayuda_assignee',
 			'value'   => absint( $request['assignee'] ),
 			'compare' => '=',
 			'type'    => 'NUMERIC',
@@ -467,7 +467,7 @@ class Tickets extends TicketBase {
 	public function format_time( $value ) {
 		$value = sprintf( '%s:%s', intval( $value / 60 ), $value % 60 );
 
-		add_action( 'wpas_api_tickets_update_additional_fields_after', array( $this, 'update_time_spent_on_ticket' ) );
+		add_action( 'mumei_ayuda_api_tickets_update_additional_fields_after', array( $this, 'update_time_spent_on_ticket' ) );
 
 		return $value;
 	}
@@ -480,7 +480,7 @@ class Tickets extends TicketBase {
 	 * @return mixed
 	 */
 	public function setup_time_calculate( $value ) {
-		add_action( 'wpas_api_tickets_update_additional_fields_after', array( $this, 'update_time_spent_on_ticket' ) );
+		add_action( 'mumei_ayuda_api_tickets_update_additional_fields_after', array( $this, 'update_time_spent_on_ticket' ) );
 		return $value;
 	}
 
@@ -493,7 +493,7 @@ class Tickets extends TicketBase {
 	 * @return string Post status
 	 */
 	protected function handle_status_param( $post_status, $post_type ) {
-		add_action( 'transition_post_status', '\WPAS_API\API\Tickets::record_post_status_transition', 10, 3 );
+		add_action( 'transition_post_status', '\MUMEI_AYUDA_API\API\Tickets::record_post_status_transition', 10, 3 );
 
 		return $post_status;
 	}
@@ -511,10 +511,10 @@ class Tickets extends TicketBase {
 
 		// if this is a new ticket, just save the field
 		if ( $this->is_item_new( $request ) ) {
-			return update_post_meta( $object->ID, '_wpas_status', $value );
+			return update_post_meta( $object->ID, '_mumei_ayuda_status', $value );
 		}
 
-		$state = wpas_get_ticket_status( $object->ID );
+		$state = mumei_ayuda_get_ticket_status( $object->ID );
 
 		// break early if there is nothing to change
 		if ( $state == $value ) {
@@ -522,17 +522,17 @@ class Tickets extends TicketBase {
 		}
 
 		if ( 'open' == $value ) {
-			if ( ! current_user_can( 'edit_ticket' ) && ! wpas_can_submit_ticket( $object->ID ) ) {
-				return new WP_Error( 'cannot_open_ticket', __( 'You do not have the capacity to open this ticket', 'awesome-support' ) );
+			if ( ! current_user_can( 'edit_ticket' ) && ! mumei_ayuda_can_submit_ticket( $object->ID ) ) {
+				return new WP_Error( 'cannot_open_ticket', __( 'You do not have the capacity to open this ticket', 'ayuda-help-desk' ) );
 			}
 
-			$return = wpas_reopen_ticket( $object->ID );
+			$return = mumei_ayuda_reopen_ticket( $object->ID );
 		} elseif( 'closed' == $value ) {
 			if ( ! current_user_can( 'close_ticket' ) ) {
-				return new WP_Error( 'cannot_close_ticket', __( 'You do not have the capacity to close this ticket', 'awesome-support' ) );
+				return new WP_Error( 'cannot_close_ticket', __( 'You do not have the capacity to close this ticket', 'ayuda-help-desk' ) );
 			}
 
-			$return = wpas_close_ticket( $object->ID );
+			$return = mumei_ayuda_close_ticket( $object->ID );
 		}
 
 		return $return;
@@ -552,14 +552,14 @@ class Tickets extends TicketBase {
 		if ( $this->is_item_new( $request ) ) {
 
 			if ( ! $value ) {
-				$value = wpas_find_agent();
+				$value = mumei_ayuda_find_agent();
 			}
 
-			$value = apply_filters( 'wpas_new_ticket_agent_id', $value, $object->ID, $value );
+			$value = apply_filters( 'mumei_ayuda_new_ticket_agent_id', $value, $object->ID, $value );
 			$log = false;
 		}
 
-		return wpas_assign_ticket( $object->ID, (string) $value, $log );
+		return mumei_ayuda_assign_ticket( $object->ID, (string) $value, $log );
 	}
 
 	/** Helper Functions **************************/
@@ -580,13 +580,13 @@ class Tickets extends TicketBase {
 			return false;
 		}
 
-		$field  = new WPAS_Custom_Field( $field_key, $custom_fields[ $field_key ] );
+		$field  = new MUMEI_AYUDA_Custom_Field( $field_key, $custom_fields[ $field_key ] );
 		$result = $field->update_value( $value, $ticket_id );
 
 		$this->maybe_update_log( $field, $result, $ticket_id );
 
 		if ( 4 == $result ) {
-			$result = new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit this ticket.', 'awesome-support' ), array( 'status' => 401 ) );
+			$result = new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit this ticket.', 'ayuda-help-desk' ), array( 'status' => 401 ) );
 		}
 
 		return $result;
@@ -601,10 +601,10 @@ class Tickets extends TicketBase {
 	 */
 	public function update_time_spent_on_ticket( $ticket ) {
 		$custom_fields = WPAS()->custom_fields->get_custom_fields();
-		$calculated    = wpas_get_cf_value( 'ttl_calculated_time_spent_on_ticket', $ticket->ID );
-		$adjustment    = wpas_get_cf_value( 'ttl_adjustments_to_time_spent_on_ticket', $ticket->ID );
-		$adj_type      = wpas_get_cf_value( 'time_adjustments_pos_or_neg', $ticket->ID );
-		$final         = new WPAS_Custom_Field( 'final_time_spent_on_ticket', $custom_fields['final_time_spent_on_ticket'] );
+		$calculated    = mumei_ayuda_get_cf_value( 'ttl_calculated_time_spent_on_ticket', $ticket->ID );
+		$adjustment    = mumei_ayuda_get_cf_value( 'ttl_adjustments_to_time_spent_on_ticket', $ticket->ID );
+		$adj_type      = mumei_ayuda_get_cf_value( 'time_adjustments_pos_or_neg', $ticket->ID );
+		$final         = new MUMEI_AYUDA_Custom_Field( 'final_time_spent_on_ticket', $custom_fields['final_time_spent_on_ticket'] );
 
 		// Calculate time adjustment
 		if ( ! empty( $adjustment ) ) {
@@ -616,7 +616,7 @@ class Tickets extends TicketBase {
 		}
 
 		if ( $final->get_field_value( '', $ticket->ID ) != $calculated ) {
-			update_post_meta( $ticket->ID, '_wpas_final_time_spent_on_ticket', $calculated );
+			update_post_meta( $ticket->ID, '_mumei_ayuda_final_time_spent_on_ticket', $calculated );
 			$this->maybe_update_log( $final, 2, $ticket->ID );
 		}
 
@@ -634,25 +634,25 @@ class Tickets extends TicketBase {
 			return;
 		}
 
-		$custom_status = wpas_get_post_status();
+		$custom_status = mumei_ayuda_get_post_status();
 
 		// translators: %s is the ticket status.
-		$x_content = __( 'Ticket state changed to %s', 'awesome-support' );
+		$x_content = __( 'Ticket state changed to %s', 'ayuda-help-desk' );
 		
-		wpas_log( $post->ID, sprintf( $x_content, $custom_status[ $new_status ] ) );
+		mumei_ayuda_log( $post->ID, sprintf( $x_content, $custom_status[ $new_status ] ) );
 
-		remove_action( 'transition_post_status', '\WPAS_API\API\Tickets::record_post_status_transition', 10 );
+		remove_action( 'transition_post_status', '\MUMEI_AYUDA_API\API\Tickets::record_post_status_transition', 10 );
 
-		do_action( 'wpas_ticket_status_updated', $post->ID, $new_status, $post->ID );
+		do_action( 'mumei_ayuda_ticket_status_updated', $post->ID, $new_status, $post->ID );
 	}
 
 	/**
 	 * Add the provided field to the ticket history log
 	 *
 	 * @todo if you update this functionality, be sure to do the same in the core plugin plugin in /includes/custom-fields/class-custom-fields.php on line 422
-	 * @see \WPAS_Custom_Fields::save_custom_fields()
+	 * @see \MUMEI_AYUDA_Custom_Fields::save_custom_fields()
 	 *
-	 * @param WPAS_Custom_Field $field
+	 * @param MUMEI_AYUDA_Custom_Field $field
 	 * @param integer           $result
 	 * @param integer           $post_id
 	 */
@@ -716,7 +716,7 @@ class Tickets extends TicketBase {
 
 		$tmp = array(
 			'action'   => '',
-			'label'    => wpas_get_field_title( $field->field ),
+			'label'    => mumei_ayuda_get_field_title( $field->field ),
 			'value'    => $value,
 			'field_id' => $field->field_id,
 		);
@@ -740,7 +740,7 @@ class Tickets extends TicketBase {
 		/* Only add this to the log if something was done to the field value */
 		if ( ! empty( $tmp['action'] ) ) {
 			$this->log[] = $tmp;
-			add_action( 'wpas_api_tickets_update_additional_fields_after', array( $this, 'log_history' ), 100, 2 );
+			add_action( 'mumei_ayuda_api_tickets_update_additional_fields_after', array( $this, 'log_history' ), 100, 2 );
 		}
 
 	}
@@ -756,7 +756,7 @@ class Tickets extends TicketBase {
 			return;
 		}
 
-		wpas_log( $request['id'], $this->log );
+		mumei_ayuda_log( $request['id'], $this->log );
 	}
 
 	/**
@@ -769,7 +769,7 @@ class Tickets extends TicketBase {
 
 		$fields['state'] = array(
 			'default'     => 'open',
-			'description' => __( 'Limit result set to tickets in the specified state.', 'awesome-support' ),
+			'description' => __( 'Limit result set to tickets in the specified state.', 'ayuda-help-desk' ),
 			'type'        => 'string',
 			'query_cb'    => array( $this, 'query_state' ),
 			'update_cb'   => array( $this, 'update_state' ),
@@ -783,61 +783,61 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['author'] = array(
-			'description' => __( 'The ID for the author of the object.', 'awesome-support' ),
+			'description' => __( 'The ID for the author of the object.', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit', 'embed' ),
 			'query_cb'    => true,
 		);
 
 		$fields['assignee'] = array(
-			'description' => __( 'The agent assigned to this ticket', 'awesome-support' ),
+			'description' => __( 'The agent assigned to this ticket', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit', 'embed' ),
 			'field_key'   => 'assignee',
 			'update_cb'   => array( $this, 'update_assignee' ),
 			'query_cb'    => array( $this, 'query_assignee' ),
 			'arg_options' => array(
-				'default' => wpas_find_agent(),
+				'default' => mumei_ayuda_find_agent(),
 			),
 		);
 
 		$fields['secondary-assignee'] = array(
-			'description' => __( 'The secondary assignee for this ticket', 'awesome-support' ),
+			'description' => __( 'The secondary assignee for this ticket', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'secondary_assignee',
 		);
 
 		$fields['tertiary-assignee'] = array(
-			'description' => __( 'The tertiary assignee for this ticket', 'awesome-support' ),
+			'description' => __( 'The tertiary assignee for this ticket', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'tertiary_assignee',
 		);
 
 		$fields['customer-reply-count'] = array(
-			'description' => __( 'The number of customer replies to this ticket', 'awesome-support' ),
+			'description' => __( 'The number of customer replies to this ticket', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'ttl_replies_by_customer',
 		);
 
 		$fields['agent-reply-count'] = array(
-			'description' => __( 'The number of agent replies to this ticket', 'awesome-support' ),
+			'description' => __( 'The number of agent replies to this ticket', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'ttl_replies_by_agent',
 		);
 
 		$fields['total-reply-count'] = array(
-			'description' => __( 'The number of total replies to this ticket', 'awesome-support' ),
+			'description' => __( 'The number of total replies to this ticket', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'ttl_replies',
 		);
 
 		$fields['time-calculated'] = array(
-			'description'       => __( 'The gross time calculated for ticket in minutes', 'awesome-support' ),
+			'description'       => __( 'The gross time calculated for ticket in minutes', 'ayuda-help-desk' ),
 			'type'              => 'integer',
 			'context'           => array( 'view', 'edit' ),
 			'field_key'         => 'ttl_calculated_time_spent_on_ticket',
@@ -845,7 +845,7 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['time-adjustments'] = array(
-			'description' => __( 'The time adjustments for ticket in minutes', 'awesome-support' ),
+			'description' => __( 'The time adjustments for ticket in minutes', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'ttl_adjustments_to_time_spent_on_ticket',
@@ -853,7 +853,7 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['time-final'] = array(
-			'description' => __( 'The final adjusted time for ticket in minutes', 'awesome-support' ),
+			'description' => __( 'The final adjusted time for ticket in minutes', 'ayuda-help-desk' ),
 			'type'        => 'integer',
 			'context'     => array( 'view', 'edit' ),
 			'readonly'    => true,
@@ -861,7 +861,7 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['time-adjustments-type'] = array(
-			'description' => __( 'The type of time adjustment, positive or negative.', 'awesome-support' ),
+			'description' => __( 'The type of time adjustment, positive or negative.', 'ayuda-help-desk' ),
 			'type'        => 'string',
 			'items'       => array(
 				'enum' => array( '+', '-' ),
@@ -872,13 +872,13 @@ class Tickets extends TicketBase {
 		);
 
 		$fields['time-notes'] = array(
-			'description' => __( 'The notes for the time', 'awesome-support' ),
+			'description' => __( 'The notes for the time', 'ayuda-help-desk' ),
 			'type'        => 'string',
 			'context'     => array( 'view', 'edit' ),
 			'field_key'   => 'time_notes',
 		);
 
-		return apply_filters( 'wpas_api_additional_ticket_fields', $fields );
+		return apply_filters( 'mumei_ayuda_api_additional_ticket_fields', $fields );
 	}
 
 }

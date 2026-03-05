@@ -1,8 +1,8 @@
 <?php
 
-$log_viewer_action       =  isset( $_GET['wpas_tools_log_viewer_action'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_tools_log_viewer_action'] ) ) : '';
+$log_viewer_action       =  isset( $_GET['mumei_ayuda_tools_log_viewer_action'] ) ? sanitize_text_field( wp_unslash( $_GET['mumei_ayuda_tools_log_viewer_action'] ) ) : '';
 
-$log_viewer_current_file =  isset( $_GET['wpas_tools_log_viewer_current_file'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_tools_log_viewer_current_file'] ) ) : '';
+$log_viewer_current_file =  isset( $_GET['mumei_ayuda_tools_log_viewer_current_file'] ) ? sanitize_text_field( wp_unslash( $_GET['mumei_ayuda_tools_log_viewer_current_file'] ) ) : '';
 
 /**
  * Scan AS logs folder for files.
@@ -43,7 +43,7 @@ add_action( 'admin_enqueue_scripts', 'enqueue_scripts' );
 /*
  * The JavaScript for our AJAX call
  */
-function wpas_tools_log_viewer_ajax_script() {
+function mumei_ayuda_tools_log_viewer_ajax_script() {
 	?>
     <style>
         #overlay {
@@ -120,7 +120,7 @@ function wpas_tools_log_viewer_ajax_script() {
             }
         }
 
-        wpas_log_viewer_current_file = '';
+        mumei_ayuda_log_viewer_current_file = '';
         safeClassName = '';
 
         jQuery(document).ready(function ($) {
@@ -130,26 +130,26 @@ function wpas_tools_log_viewer_ajax_script() {
                 $lines = $('#lines').val();
                 $nonce = $(this).data("nonce");
 
-                if ($action === 'wpas_tools_log_viewer_view') {
-                    wpas_log_viewer_current_file = $(this).data("filename");
-                    $('button#delete').data('filename', wpas_log_viewer_current_file);
-                    $('button#download').data('filename', wpas_log_viewer_current_file);
+                if ($action === 'mumei_ayuda_tools_log_viewer_view') {
+                    mumei_ayuda_log_viewer_current_file = $(this).data("filename");
+                    $('button#delete').data('filename', mumei_ayuda_log_viewer_current_file);
+                    $('button#download').data('filename', mumei_ayuda_log_viewer_current_file);
                 }
 
-                disableInputs(false, wpas_log_viewer_current_file, 'Working ...');
+                disableInputs(false, mumei_ayuda_log_viewer_current_file, 'Working ...');
 
                 // Confirm Delete
-                if ($action === 'wpas_tools_log_viewer_delete'
-                    && !confirm("Deleting server log file '" + wpas_log_viewer_current_file + "' is permanent.\r\nAre you sure?")
+                if ($action === 'mumei_ayuda_tools_log_viewer_delete'
+                    && !confirm("Deleting server log file '" + mumei_ayuda_log_viewer_current_file + "' is permanent.\r\nAre you sure?")
                 ) {
                     return false;
                 }
                 // View
-                else if ($action === 'wpas_tools_log_viewer_view'
+                else if ($action === 'mumei_ayuda_tools_log_viewer_view'
                 ) {
                 }
                 // Download
-                else if ($action === 'wpas_tools_log_viewer_download'
+                else if ($action === 'mumei_ayuda_tools_log_viewer_download'
                 ) {
                 }
 
@@ -159,14 +159,14 @@ function wpas_tools_log_viewer_ajax_script() {
                     url: ajaxurl,
                     data: {
                         action: $action,
-                        file: wpas_log_viewer_current_file,
+                        file: mumei_ayuda_log_viewer_current_file,
                         lines: $lines,
                         nonce: $nonce
                     },
                     success: function (data) {
 
                         // Download
-                        if ($action === 'wpas_tools_log_viewer_download') {
+                        if ($action === 'mumei_ayuda_tools_log_viewer_download') {
 
                             var url = data.data.url;
                             var a = document.createElement('a'), ev = document.createEvent("MouseEvents");
@@ -178,10 +178,10 @@ function wpas_tools_log_viewer_ajax_script() {
                             a.dispatchEvent(ev);
                         }
 
-                        if ($action === 'wpas_tools_log_viewer_delete') {
+                        if ($action === 'mumei_ayuda_tools_log_viewer_delete') {
 
                             // Alert user of successful deletion.
-                            disableInputs(true, '', wpas_log_viewer_current_file + ' successfully deleted.');
+                            disableInputs(true, '', mumei_ayuda_log_viewer_current_file + ' successfully deleted.');
 
                             /*
                              Delete the log viewer controls associated with this file.
@@ -194,13 +194,13 @@ function wpas_tools_log_viewer_ajax_script() {
 
                         }
 
-                        else if ($action === 'wpas_tools_log_viewer_download') {
+                        else if ($action === 'mumei_ayuda_tools_log_viewer_download') {
                         }
 
                         // View
-                        else if ($action === 'wpas_tools_log_viewer_view') {
+                        else if ($action === 'mumei_ayuda_tools_log_viewer_view') {
 
-                            disableInputs(false, wpas_log_viewer_current_file, data.data.status['message']);
+                            disableInputs(false, mumei_ayuda_log_viewer_current_file, data.data.status['message']);
 
                             $('.' + safeClassName + ' .lastmodified').html(data.data.fileinfo.lastmodified);
                             $('.' + safeClassName + ' .created').html(data.data.fileinfo.created);
@@ -296,7 +296,7 @@ function wpas_tools_log_viewer_ajax_script() {
                 }
 
                 if (filename !== '') {
-                    safeClassName = wpas_log_viewer_current_file.replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
+                    safeClassName = mumei_ayuda_log_viewer_current_file.replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '-');
                     safeClassName = safeClassName.replace(/ /g, '');
                     safeClassName = safeClassName.replace(/-{2,}/g, '-');
                     safeClassName = safeClassName.toLowerCase();
@@ -333,7 +333,7 @@ function wpas_tools_log_viewer_ajax_script() {
     </script>
 	<?php
 }
-add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
+add_action( 'admin_footer', 'mumei_ayuda_tools_log_viewer_ajax_script' );
 ?>
 
 <table class="widefat wpas-tools-log-viewer" style="background-color:#f1f1f1;">
@@ -341,7 +341,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
     <thead>
     <tr>
         <th data-override="key" class="row-title" width="289">
-            <strong><?php esc_html_e( 'Server Logs', 'awesome-support' ); ?></strong></th>
+            <strong><?php esc_html_e( 'Server Logs', 'ayuda-help-desk' ); ?></strong></th>
         <th data-override="value">
 
             <div style="float: left;">
@@ -352,25 +352,25 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                         class="button-secondary wpas-tools-log-clear"
                         disabled="disabled"><i
                             class="fa fa-eraser fa-fw"
-                            style="color:lightgray;"></i><?php esc_html_e( 'Clear', 'awesome-support' ); ?></button>
+                            style="color:lightgray;"></i><?php esc_html_e( 'Clear', 'ayuda-help-desk' ); ?></button>
 
                 <button id="download"
                         class="button-secondary wpas-tools-log-download"
-                        data-action="wpas_tools_log_viewer_download"
-                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'wpas_tools_log_viewer_download' ) ); ?>"
+                        data-action="mumei_ayuda_tools_log_viewer_download"
+                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'mumei_ayuda_tools_log_viewer_download' ) ); ?>"
                         data-filename=""
                         disabled="disabled"><i
                             class="fa fa-arrow-circle-down fa-fw"
-                            style="color:lightgray;"></i><?php esc_html_e( 'Download', 'awesome-support' ); ?></button>
+                            style="color:lightgray;"></i><?php esc_html_e( 'Download', 'ayuda-help-desk' ); ?></button>
 
                 <button id="delete"
                         class="button-secondary wpas-tools-log-delete"
-                        data-action="wpas_tools_log_viewer_delete"
-                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'wpas_tools_log_viewer_delete' ) ); ?>"
+                        data-action="mumei_ayuda_tools_log_viewer_delete"
+                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'mumei_ayuda_tools_log_viewer_delete' ) ); ?>"
                         data-filename=""
                         disabled="disabled"><i
                             class="fa fa-minus-circle fa-fw"
-                            style="color: lightgray;"></i><?php esc_html_e( 'Delete', 'awesome-support' ); ?></button>
+                            style="color: lightgray;"></i><?php esc_html_e( 'Delete', 'ayuda-help-desk' ); ?></button>
 
             </div>
 
@@ -381,7 +381,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
 
             <div style="float: right;">
 
-                <label for="lines"><?php esc_html_e( 'Max Lines', 'awesome-support' ); ?></label>
+                <label for="lines"><?php esc_html_e( 'Max Lines', 'ayuda-help-desk' ); ?></label>
                 <select id="lines">
                     <option value="50">50</option>
                     <option value="500">500</option>
@@ -429,8 +429,8 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                         <h3 class="log-viewer-filename <?php echo esc_attr( $classfromfilename ); ?>"
                             style="font-size: 14px;"><a href="#"
                                                         data-filename="<?php echo esc_attr( $file ); ?>"
-                                                        data-action="wpas_tools_log_viewer_view"
-                                                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'wpas_tools_log_viewer_view' ) ); ?>"
+                                                        data-action="mumei_ayuda_tools_log_viewer_view"
+                                                        data-nonce="<?php echo esc_attr( wp_create_nonce( 'mumei_ayuda_tools_log_viewer_view' ) ); ?>"
                                                         class="wpas-tools-log-view <?php echo esc_attr( $classfromfilename ); ?>"><i
                                         class="fa fa-chevron-right fa-fw"
                                         style="color: dimgray; font-size: 12px;"></i><?php echo esc_attr( $file ); ?></a>

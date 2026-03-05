@@ -1,15 +1,15 @@
 <?php
 /**
- * Awesome Support.
+ * Ayuda – Help Desk.
  *
- * @package   Awesome Support/Custom Fields
+ * @package   Ayuda – Help Desk/Custom Fields
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
 
-class WPAS_Custom_Fields {
+class MUMEI_AYUDA_Custom_Fields {
 
 	/**
 	 * List of metaboxes to remove.
@@ -34,10 +34,10 @@ class WPAS_Custom_Fields {
 			if( ! is_admin() ) {
 
 				/* Check for required fields and possibly block the submission. */
-				add_filter( 'wpas_before_submit_new_ticket_checks', array( $this, 'check_required_fields' ) );
+				add_filter( 'mumei_ayuda_before_submit_new_ticket_checks', array( $this, 'check_required_fields' ) );
 
 				/* Save the custom fields. */
-				add_action( 'wpas_open_ticket_before_assigned', array( $this, 'frontend_submission' ), 10, 2 );
+				add_action( 'mumei_ayuda_open_ticket_before_assigned', array( $this, 'frontend_submission' ), 10, 2 );
 
 			}
 		}
@@ -58,9 +58,9 @@ class WPAS_Custom_Fields {
 		global $post;
 
 		// This will usually be packaged with all other components which is why it's not registered with the rest
-		wp_register_script( 'wpas-select2-component', WPAS_URL . 'assets/public/js/component_select2.js', array( 'wpas-select2' ), '4.0.0', true );
+		wp_register_script( 'wpas-select2-component', MUMEI_AYUDA_URL . 'assets/public/js/component_select2.js', array( 'wpas-select2' ), '4.0.0', true );
 
-		$ticket_submit = wpas_get_option( 'ticket_submit' );
+		$ticket_submit = mumei_ayuda_get_option( 'ticket_submit' );
 
 		if ( ! is_array( $ticket_submit ) ) {
 			$ticket_submit = (array) $ticket_submit;
@@ -98,9 +98,9 @@ class WPAS_Custom_Fields {
 		global $post;
 
 		// This will usually be packaged with all other components which is why it's not registered with the rest
-		wp_register_script( 'wpas-datepicker-component', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'wpas-date' ), '4.0.0', true );
+		wp_register_script( 'wpas-datepicker-component', MUMEI_AYUDA_URL . 'assets/public/js/component_datepicker.js', array( 'wpas-date' ), '4.0.0', true );
 
-		$ticket_submit = wpas_get_option( 'ticket_submit' );
+		$ticket_submit = mumei_ayuda_get_option( 'ticket_submit' );
 
 		if ( ! is_array( $ticket_submit ) ) {
 			$ticket_submit = (array) $ticket_submit;
@@ -141,7 +141,7 @@ class WPAS_Custom_Fields {
 		$name = sanitize_text_field( $name );
 
 		/* Default arguments */
-		$defaults = WPAS_Custom_Field::get_field_defaults();
+		$defaults = MUMEI_AYUDA_Custom_Field::get_field_defaults();
 
 		/* Merge args */
 		$arguments = wp_parse_args( $args, $defaults );
@@ -150,8 +150,8 @@ class WPAS_Custom_Fields {
 		if ( ! empty( $arguments['callback'] ) ) {
 
 			// translators: %s is the field type.
-			$x_content = __( 'Please use %s to register your custom field type', 'awesome-support' );
-			_deprecated_argument( 'WPAS_Custom_Fields::add_field()', '3.2', sprintf( wp_kses_post( $x_content ), '<code>field_type</code>' ) );
+			$x_content = __( 'Please use %s to register your custom field type', 'ayuda-help-desk' );
+			_deprecated_argument( 'MUMEI_AYUDA_Custom_Fields::add_field()', '3.2', sprintf( wp_kses_post( $x_content ), '<code>field_type</code>' ) );
 
 			switch ( $arguments['callback'] ) {
 
@@ -171,7 +171,7 @@ class WPAS_Custom_Fields {
 		/* Field with args */
 		$option = array( 'name' => $name, 'args' => $arguments );
 
-		$this->options[ $name ] = apply_filters( 'wpas_add_field', $option );
+		$this->options[ $name ] = apply_filters( 'mumei_ayuda_add_field', $option );
 
 		// If date field we load the required assets
 		if ( isset( $arguments['field_type'] ) && 'date-field' === $arguments['field_type'] ) {
@@ -236,23 +236,23 @@ class WPAS_Custom_Fields {
 				$taxo_assign_terms 	= $option['args']['taxo_assign_terms'];
 
 				// translators: %s is the search value.
-				$search_items =  __( 'Search %s', 'awesome-support' );
+				$search_items =  __( 'Search %s', 'ayuda-help-desk' );
 				// translators: %s is the All value.
-				$all_items    =  __( 'All %s', 'awesome-support' );
+				$all_items    =  __( 'All %s', 'ayuda-help-desk' );
 				// translators: %s is the Parent value.
-				$parent_item  =  __( 'Parent %s', 'awesome-support' );
+				$parent_item  =  __( 'Parent %s', 'ayuda-help-desk' );
 				// translators: %s is the Parent value.
-				$parent_item_colon = _x( 'Parent %s:', 'Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' );
+				$parent_item_colon = _x( 'Parent %s:', 'Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. "book")', 'ayuda-help-desk' );
 				// translators: %s is the Edit value.
-				$edit_item    =  __( 'Edit %s', 'awesome-support' );
+				$edit_item    =  __( 'Edit %s', 'ayuda-help-desk' );
 				// translators: %s is the Update value.
-				$update_item  =  __( 'Update %s', 'awesome-support' );
+				$update_item  =  __( 'Update %s', 'ayuda-help-desk' );
 				// translators: %s is the new value.
-				$add_new_item =  __( 'Add New %s', 'awesome-support' );
+				$add_new_item =  __( 'Add New %s', 'ayuda-help-desk' );
 				// translators: %s is the Name value.
-				$new_item_name =  _x( 'New %s Name', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' );
+				$new_item_name =  _x( 'New %s Name', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'ayuda-help-desk' );
 				// translators: %s is the taxonomy value.
-				$back_to_items =  _x( 'Back to %s', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'awesome-support' );
+				$back_to_items =  _x( 'Back to %s', 'A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. "book")', 'ayuda-help-desk' );
 			
 				$labels = array(
 					'name'              => $plural,
@@ -329,7 +329,7 @@ class WPAS_Custom_Fields {
 	 * @since 3.0.0
 	 */
 	public function get_custom_fields() {
-		return apply_filters( 'wpas_get_custom_fields', $this->options );
+		return apply_filters( 'mumei_ayuda_get_custom_fields', $this->options );
 	}
 
 	/**
@@ -404,7 +404,7 @@ class WPAS_Custom_Fields {
 					continue;
 				}
 
-				$this_field = new WPAS_Custom_Field( $name, $field );
+				$this_field = new MUMEI_AYUDA_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
 				/* Add the pre-render action hook */
@@ -413,7 +413,7 @@ class WPAS_Custom_Fields {
 				}
 
 				/* Render the field */
-				echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());			
+				echo wp_kses($output, $this->get_allowed_html_mumei_ayuda_custom_fields());			
 
 				/* add the post-render action hook */
 				if ( ! empty( $field['args']['post_render_action_hook_fe'] ) ) {
@@ -432,13 +432,13 @@ class WPAS_Custom_Fields {
 	}
 
 	/**
-	 * get_allowed_html_wpas_custom_fields
+	 * get_allowed_html_mumei_ayuda_custom_fields
 	 *
 	 * @return void
 	 */
-	function get_allowed_html_wpas_custom_fields()
+	function get_allowed_html_mumei_ayuda_custom_fields()
 	{
-		return apply_filters( 'custom_allowed_html_wpas_custom_fields', wpas_get_allowed_html_tags() );
+		return apply_filters( 'custom_allowed_html_mumei_ayuda_custom_fields', mumei_ayuda_get_allowed_html_tags() );
 	}
 
 	/**
@@ -474,10 +474,10 @@ class WPAS_Custom_Fields {
 
 				If  ( ( true === $field['args']['backend_only'] ) && ( 'custom' <> $field['args']['backend_display_type'] ) ) {
 
-					$this_field = new WPAS_Custom_Field( $name, $field );
+					$this_field = new MUMEI_AYUDA_Custom_Field( $name, $field );
 					$output     = $this_field->get_output();
 
-					echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
+					echo wp_kses($output, $this->get_allowed_html_mumei_ayuda_custom_fields());
 
 				}
 
@@ -503,10 +503,10 @@ class WPAS_Custom_Fields {
 		foreach ( $fields as $name => $field ) {
 
 			If ( $cffieldname === $name ) {
-				$this_field = new WPAS_Custom_Field( $name, $field );
+				$this_field = new MUMEI_AYUDA_Custom_Field( $name, $field );
 				$output     = $this_field->get_output();
 
-				echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
+				echo wp_kses($output, $this->get_allowed_html_mumei_ayuda_custom_fields());
 
 			}
 		}
@@ -552,19 +552,19 @@ class WPAS_Custom_Fields {
 		$fields = $this->get_custom_fields();
 
 		/**
-		 * wpas_save_custom_fields_before hook
+		 * mumei_ayuda_save_custom_fields_before hook
 		 *
 		 * @since  3.0.0
 		 */
-		do_action( 'wpas_save_custom_fields_before', $post_id );
+		do_action( 'mumei_ayuda_save_custom_fields_before', $post_id );
 
 		foreach ( $fields as $field_id => $field ) {
 
 			/**
-			 * All name attributes are prefixed with wpas_
+			 * All name attributes are prefixed with mumei_ayuda_
 			 * so we need to add it to get the real field ID.
 			 */
-			$field_form_id = "wpas_$field_id";
+			$field_form_id = "mumei_ayuda_$field_id";
 
 			/* Process core fields differently. */
 			if ( true === $field['args']['core'] ) {
@@ -600,7 +600,7 @@ class WPAS_Custom_Fields {
 			 * that are normally shown in that tab.
 			 */
 			if( is_admin() ) {
-				if ( !wpas_can_view_custom_field_tab() && ( !$field['args']['hide_front_end'] || $field['args']['backend_only'] ) ) {
+				if ( !mumei_ayuda_can_view_custom_field_tab() && ( !$field['args']['hide_front_end'] || $field['args']['backend_only'] ) ) {
 					continue;
 				}
 			}
@@ -614,7 +614,7 @@ class WPAS_Custom_Fields {
 			 * unless it is skipped here.
 			 */
 			if (is_admin() ) {
-				if ( ! wpas_can_view_ai_tab() && wpas_is_field_in_ai_tab( $field['name'] ) ) {
+				if ( ! mumei_ayuda_can_view_ai_tab() && mumei_ayuda_is_field_in_ai_tab( $field['name'] ) ) {
 					continue ;
 				}
 			}
@@ -622,7 +622,7 @@ class WPAS_Custom_Fields {
 			/**
 			 * Get the custom field object.
 			 */
-			$custom_field = new WPAS_Custom_Field( $field_id, $field );
+			$custom_field = new MUMEI_AYUDA_Custom_Field( $field_id, $field );
 
 			if ( isset( $data[ $field_form_id ] ) ) {
 
@@ -658,7 +658,7 @@ class WPAS_Custom_Fields {
 
 			if ( 1 === $result || 2 === $result ) {
 				$saved[ $field['name'] ] = $value;
-				do_action('wpas_custom_field_updated', $field_id ,$post_id, $value);
+				do_action('mumei_ayuda_custom_field_updated', $field_id ,$post_id, $value);
 			}
 
 			if ( true === $field['args']['log'] && true === $allow_log ) {
@@ -714,7 +714,7 @@ class WPAS_Custom_Fields {
 
 				$tmp = array(
 					'action'   => '',
-					'label'    => wpas_get_field_title( $field ),
+					'label'    => mumei_ayuda_get_field_title( $field ),
 					'value'    => $value,
 					'field_id' => $field['name']
 				);
@@ -748,15 +748,15 @@ class WPAS_Custom_Fields {
 		 * Log the changes if any.
 		 */
 		if ( ! empty( $log ) ) {
-			wpas_log_history( $post_id, $log );
+			mumei_ayuda_log_history( $post_id, $log );
 		}
 
 		/**
-		 * wpas_save_custom_fields_before hook
+		 * mumei_ayuda_save_custom_fields_before hook
 		 *
 		 * @since  3.0.0
 		 */
-		do_action( 'wpas_save_custom_fields_after', $post_id );
+		do_action( 'mumei_ayuda_save_custom_fields_after', $post_id );
 
 		return $saved;
 
@@ -782,10 +782,10 @@ class WPAS_Custom_Fields {
 
 			case 'assignee':
 
-				if ( $value !== get_post_meta( $post_id, '_wpas_assignee', true ) ) {
+				if ( $value !== get_post_meta( $post_id, '_mumei_ayuda_assignee', true ) ) {
 
-					if( apply_filters( 'wpas_allow_agent_assign', true, $post_id ) ) {
-						wpas_assign_ticket( $post_id, $value, $field['args']['log'] );
+					if( apply_filters( 'mumei_ayuda_allow_agent_assign', true, $post_id ) ) {
+						mumei_ayuda_assign_ticket( $post_id, $value, $field['args']['log'] );
 					}
 				}
 
@@ -798,7 +798,7 @@ class WPAS_Custom_Fields {
 	/**
 	 * Checks required custom fields.
 	 *
-	 * This function is hooked on the filter wpas_before_submit_new_ticket_checks
+	 * This function is hooked on the filter mumei_ayuda_before_submit_new_ticket_checks
 	 * through the parent class. It checks all required custom fields
 	 * and if they were correctly filled. If one or more required field(s) is/are
 	 * missing then the submission process is stopped and an error message is returned.
@@ -846,7 +846,7 @@ class WPAS_Custom_Fields {
 			/**
 			 * Get the custom field object.
 			 */
-			$custom_field = new WPAS_Custom_Field( $field_id, $field );
+			$custom_field = new MUMEI_AYUDA_Custom_Field( $field_id, $field );
 
 			/* Prepare the field name as used in the form */
 			$field_name = $custom_field->get_field_id();
@@ -878,10 +878,10 @@ class WPAS_Custom_Fields {
 				if ( ! isset( $data[ $field_name ] ) || empty( $data[ $field_name ] ) ) {
 
 					/* Get field title */
-					$title = ! empty( $field['args']['title'] ) ? $field['args']['title'] : wpas_get_title_from_id( $field['name'] );
+					$title = ! empty( $field['args']['title'] ) ? $field['args']['title'] : mumei_ayuda_get_title_from_id( $field['name'] );
 
 					// translators: %s is the search value.
-					$x_content = __( 'The field %s is required.', 'awesome-support' );
+					$x_content = __( 'The field %s is required.', 'ayuda-help-desk' );
 
 					/* Add the error message for this field. */
 					if ( ! is_object( $result ) ) {

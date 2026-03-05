@@ -17,13 +17,13 @@ if ( ! defined( 'WPINC' ) ) {
 <div class="wpas-custom-fields">
 	<?php
 
-	printf('<h2>%s</h2>', esc_html__( 'Admin Only Custom Fields', 'awesome-support' ) );
+	printf('<h2>%s</h2>', esc_html__( 'Admin Only Custom Fields', 'ayuda-help-desk' ) );
 
-	do_action( 'wpas_mb_details_before_custom_fields_admin_only' );
+	do_action( 'mumei_ayuda_mb_details_before_custom_fields_admin_only' );
 
 	WPAS()->custom_fields->show_backend_custom_form_fields();
 
-	do_action( 'wpas_mb_details_after_custom_fields_admin_only' );
+	do_action( 'mumei_ayuda_mb_details_after_custom_fields_admin_only' );
 
 	echo '<div class="clear clearfix"></div>';
 

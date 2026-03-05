@@ -1,9 +1,9 @@
 <?php
-add_shortcode( 'ticket-submit', 'wpas_sc_submit_form' );
+add_shortcode( 'ticket-submit', 'mumei_ayuda_sc_submit_form' );
 /**
  * Submission for shortcode.
  */
-function wpas_sc_submit_form() {
+function mumei_ayuda_sc_submit_form() {
 
 	global $post;
 
@@ -14,29 +14,29 @@ function wpas_sc_submit_form() {
 	?><div class="wpas"><?php
 
 		/**
-		 * wpas_before_ticket_submit hook
+		 * mumei_ayuda_before_ticket_submit hook
 		 */
-		do_action( 'wpas_before_ticket_submit' );
+		do_action( 'mumei_ayuda_before_ticket_submit' );
 
 		/**
-		 * wpas_frontend_plugin_page_top is executed at the top
+		 * mumei_ayuda_frontend_plugin_page_top is executed at the top
 		 * of every plugin page on the front end.
 		 */
-		do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
+		do_action( 'mumei_ayuda_frontend_plugin_page_top', $post->ID, $post );
 
 		/* If user is not logged in we display the register form */
 		if( !is_user_logged_in() ):
 
-			$registration = wpas_get_option( 'login_page', false );
+			$registration = mumei_ayuda_get_option( 'login_page', false );
 
 			if ( false !== $registration && !empty( $registration ) && !is_null( get_post( intval( $registration ) ) ) ) {
 				/* As the headers are already sent we can't use wp_redirect. */
 				echo '<meta http-equiv="refresh" content="0; url=' . esc_url( get_permalink( $registration ) ) . '" />';
-				echo wp_kses(wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'awesome-support' ) ), get_allowed_html_wp_notifications());
+				echo wp_kses(mumei_ayuda_get_notification_markup( 'info', __( 'You are being redirected...', 'ayuda-help-desk' ) ), get_allowed_html_wp_notifications());
 				exit;
 			}
 
-			wpas_get_template( 'registration' );
+			mumei_ayuda_get_template( 'registration' );
 
 		/**
 		 * If user is logged in we display the ticket submission form
@@ -50,34 +50,34 @@ function wpas_sc_submit_form() {
 			 * We will be looking for a force_standard_form=1 in the url query string to
 			 * see if we should force the standard form to show up.
 			 */
-			if ( ! empty( wpas_get_option( 'new_ticket_form_redirect_fe', '' ) ) ) {
+			if ( ! empty( mumei_ayuda_get_option( 'new_ticket_form_redirect_fe', '' ) ) ) {
 				if ( 1 <> filter_input( INPUT_GET, 'force_standard_form', FILTER_SANITIZE_NUMBER_INT ) ) {
-					wpas_redirect( 'new_ticket_custom_form', wpas_get_option( 'new_ticket_form_redirect_fe', '' ) );
+					mumei_ayuda_redirect( 'new_ticket_custom_form', mumei_ayuda_get_option( 'new_ticket_form_redirect_fe', '' ) );
 					exit ;
 				}
 			}
 
 			/**
-			 * wpas_before_ticket_submission_form hook
+			 * mumei_ayuda_before_ticket_submission_form hook
 			 */
-			do_action( 'wpas_before_ticket_submission_form_before_wrapper' );
+			do_action( 'mumei_ayuda_before_ticket_submission_form_before_wrapper' );
 
 			/* Namespace our content */
 			echo '<div class="wpas">';
 
 			/**
-			 * wpas_before_all_templates hook.
+			 * mumei_ayuda_before_all_templates hook.
 			 *
 			 * This hook is called at the top of every template
 			 * used for the plugin front-end. This allows for adding actions
 			 * (like notifications for instance) on all plugin related pages.
 			 */
-			do_action( 'wpas_before_all_templates' );
+			do_action( 'mumei_ayuda_before_all_templates' );
 
 			/**
-			 * wpas_before_ticket_submission_form hook
+			 * mumei_ayuda_before_ticket_submission_form hook
 			 */
-			do_action( 'wpas_before_ticket_submission_form' );
+			do_action( 'mumei_ayuda_before_ticket_submission_form' );
 
 			/**
 			 * Check if the current user is logged in
@@ -85,15 +85,15 @@ function wpas_sc_submit_form() {
 			if ( false === is_user_logged_in() ) {
 
 				// translators: %s is the log-in link.
-				$x_content = __( 'You need to <a href="%s">log-in</a> to submit a ticket.', 'awesome-support' );
-				echo wp_kses(wpas_get_notification_markup( 'failure', sprintf( $x_content, esc_url( '' ) ) ), get_allowed_html_wp_notifications());
+				$x_content = __( 'You need to <a href="%s">log-in</a> to submit a ticket.', 'ayuda-help-desk' );
+				echo wp_kses(mumei_ayuda_get_notification_markup( 'failure', sprintf( $x_content, esc_url( '' ) ) ), get_allowed_html_wp_notifications());
 			} else {
 
 				/**
 				 * Make sure the current user can submit a ticket.
 				 */
-				if ( false === wpas_can_submit_ticket() ) {
-					echo wp_kses(wpas_get_notification_markup( 'failure', __( 'You are not allowed to submit a ticket.', 'awesome-support' ) ), get_allowed_html_wp_notifications());
+				if ( false === mumei_ayuda_can_submit_ticket() ) {
+					echo wp_kses(mumei_ayuda_get_notification_markup( 'failure', __( 'You are not allowed to submit a ticket.', 'ayuda-help-desk' ) ), get_allowed_html_wp_notifications());
 				}
 
 				/**
@@ -110,9 +110,9 @@ function wpas_sc_submit_form() {
 					 * need to do it in the back-end.
 					 *
 					 * If you want to allow admins and agents to submit tickets through the
-					 * front-end, please use the filter wpas_agent_submit_front_end and set the value to (bool) true.
+					 * front-end, please use the filter mumei_ayuda_agent_submit_front_end and set the value to (bool) true.
 					 */
-					if ( is_user_logged_in() && current_user_can( 'edit_ticket' ) && ( false === apply_filters( 'wpas_agent_submit_front_end', false ) ) ):
+					if ( is_user_logged_in() && current_user_can( 'edit_ticket' ) && ( false === apply_filters( 'mumei_ayuda_agent_submit_front_end', false ) ) ):
 
 						/**
 						 * Keep in mind that if you allow agents to open ticket through the front-end, actions
@@ -120,8 +120,8 @@ function wpas_sc_submit_form() {
 						 */
 
 						// translators: %s is the link to the admin panel.
-						$x_content = __( 'Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href="%s">click here to open a new ticket</a>.', 'awesome-support' );
-						echo wp_kses(wpas_get_notification_markup( 'info', sprintf( $x_content, add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'post-new.php' ) ) ) ), get_allowed_html_wp_notifications());
+						$x_content = __( 'Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href="%s">click here to open a new ticket</a>.', 'ayuda-help-desk' );
+						echo wp_kses(mumei_ayuda_get_notification_markup( 'info', sprintf( $x_content, add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'post-new.php' ) ) ) ), get_allowed_html_wp_notifications());
 
 					/**
 					 * If the user is authorized to post a ticket, we display the submit form
@@ -131,38 +131,38 @@ function wpas_sc_submit_form() {
 						global $post;
 
 						/**
-						 * wpas_submission_form_before hook
+						 * mumei_ayuda_submission_form_before hook
 						 *
 						 * @since  3.0.0
 						 */
-						do_action( 'wpas_submission_form_before' );
+						do_action( 'mumei_ayuda_submission_form_before' );
 
-						wpas_get_template( 'submission' );
+						mumei_ayuda_get_template( 'submission' );
 
 						/**
-						 * wpas_submission_form_after hook
+						 * mumei_ayuda_submission_form_after hook
 						 *
 						 * @since  3.0.0
 						 */
-						do_action( 'wpas_submission_form_after' );
+						do_action( 'mumei_ayuda_submission_form_after' );
 
 					endif;
 				}
 			}
 
 			/**
-			 * wpas_after_ticket_submission_form hook
+			 * mumei_ayuda_after_ticket_submission_form hook
 			 */
-			do_action( 'wpas_after_ticket_submission_form' );
+			do_action( 'mumei_ayuda_after_ticket_submission_form' );
 
 			echo '</div>';
 
 		endif;
 
 		/**
-		 * wpas_after_ticket_submit hook
+		 * mumei_ayuda_after_ticket_submit hook
 		 */
-		do_action( 'wpas_after_ticket_submit' ); ?>
+		do_action( 'mumei_ayuda_after_ticket_submit' ); ?>
 
 	</div>
 

@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
+class MUMEI_AYUDA_CF_Taxonomy extends MUMEI_AYUDA_Custom_Field {
 
 	/**
 	 * The taxonomy terms.
@@ -29,7 +29,7 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 		$args = func_get_args();
 
-		call_user_func_array( array( 'WPAS_Custom_Field', '__construct' ), $args );
+		call_user_func_array( array( 'MUMEI_AYUDA_Custom_Field', '__construct' ), $args );
 		
 		$term_args = array( 'hide_empty' => 0 );		
 		
@@ -57,14 +57,14 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 			/**
 			 * Re-order the terms hierarchically.
 			 */
-			wpas_sort_terms_hierarchicaly( $this->terms, $this->ordered_terms );
+			mumei_ayuda_sort_terms_hierarchicaly( $this->terms, $this->ordered_terms );
 
 			// Filter the terms to allow manipulation
-			$this->ordered_terms = apply_filters( 'wpas_cf_taxonomy_ordered_terms', $this->ordered_terms );
+			$this->ordered_terms = apply_filters( 'mumei_ayuda_cf_taxonomy_ordered_terms', $this->ordered_terms );
 		}
 
 		if ( true === $this->field_args['select2'] ) {
-			add_filter( 'wpas_cf_field_class', array( $this, 'add_select2_class' ), 10, 2 );
+			add_filter( 'mumei_ayuda_cf_field_class', array( $this, 'add_select2_class' ), 10, 2 );
 		}
 
 	}
@@ -104,14 +104,14 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 		ob_start();
 
 		foreach ( $this->ordered_terms as $term ) {
-			wpas_hierarchical_taxonomy_dropdown_options( $term, $this->populate() );
+			mumei_ayuda_hierarchical_taxonomy_dropdown_options( $term, $this->populate() );
 		}
 
 		$options = ob_get_contents();
 
 		ob_end_clean();
 
-		return sprintf( '<label {{label_atts}}>{{label}}</label><select {{atts}}><option value="">%s</option>%s</select>', __( 'Please select', 'awesome-support' ), $options );
+		return sprintf( '<label {{label_atts}}>{{label}}</label><select {{atts}}><option value="">%s</option>%s</select>', __( 'Please select', 'ayuda-help-desk' ), $options );
 
 	}
 

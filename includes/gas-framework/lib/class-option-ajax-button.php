@@ -27,14 +27,14 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 	 */
 	public function ajaxSecurityChecker() {
 		if ( empty( $_POST['nonce'] ) ) {
-			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'awesome-support' ) );
+			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'ayuda-help-desk' ) );
 		}
 		//Check permission for capability of current user
 		if ( ! current_user_can( 'read') ) {
-			wp_send_json_error(  array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ), 403 );
+			wp_send_json_error(  array( 'message' => __( "You don't have access to perform this action." , 'ayuda-help-desk') ), 403 );
 		}
 		if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'tf-ajax-button' ) ) {
-			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'awesome-support' ) );
+			wp_send_json_error( __( 'Security check failed, please refresh the page and try again.', 'ayuda-help-desk' ) );
 		}
 	}
 
@@ -48,7 +48,7 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 	public function ajaxLastSuccess() {
 		//Check permission for capability of current user
 		if ( ! current_user_can( 'read') ) {
-			wp_send_json_error(  array( 'message' => __( "You don't have access to perform this action." , 'awesome-support') ), 403 );
+			wp_send_json_error(  array( 'message' => __( "You don't have access to perform this action." , 'ayuda-help-desk') ), 403 );
 		}
 		wp_send_json_success();
 	}
@@ -92,7 +92,7 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 			$this->settings['success_callback'][] = '';
 		}
 		while ( count( $this->settings['error_callback'] ) < count( $this->settings['action'] ) ) {
-			$this->settings['error_callback'][] = __( 'Something went wrong', 'awesome-support' );
+			$this->settings['error_callback'][] = __( 'Something went wrong', 'ayuda-help-desk' );
 		}
 		while ( count( $this->settings['data_filter_callback'] ) < count( $this->settings['action'] ) ) {
 			$this->settings['data_filter_callback'][] = '';
@@ -100,12 +100,12 @@ class GASFrameworkOptionAjaxButton extends GASFrameworkOption {
 
 		foreach ( $this->settings['label'] as $i => $label ) {
 			if ( empty( $label ) ) {
-				$this->settings['label'][ $i ] = __( 'Click me', 'awesome-support' );
+				$this->settings['label'][ $i ] = __( 'Click me', 'ayuda-help-desk' );
 			}
 		}
 		foreach ( $this->settings['wait_label'] as $i => $label ) {
 			if ( empty( $label ) ) {
-				$this->settings['wait_label'][ $i ] = __( 'Please wait...', 'awesome-support' );
+				$this->settings['wait_label'][ $i ] = __( 'Please wait...', 'ayuda-help-desk' );
 			}
 		}
 		foreach ( $this->settings['error_label'] as $i => $label ) {

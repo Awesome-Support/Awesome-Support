@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   Awesome Support/Install
+ * @package   Ayuda – Help Desk/Install
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -12,8 +12,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
-register_deactivation_hook( WPAS_PLUGIN_FILE, 'wpas_deactivation' );
+register_activation_hook( MUMEI_AYUDA_PLUGIN_FILE, 'mumei_ayuda_install' );
+register_deactivation_hook( MUMEI_AYUDA_PLUGIN_FILE, 'mumei_ayuda_deactivation' );
 /**
  * Fired when the plugin is activated.
  *
@@ -24,19 +24,19 @@ register_deactivation_hook( WPAS_PLUGIN_FILE, 'wpas_deactivation' );
  *                                       WPMU is disabled or plugin is
  *                                       activated on an individual blog.
  */
-function wpas_install( $network_wide ) {
+function mumei_ayuda_install( $network_wide ) {
 
 	if ( false === $network_wide || ! function_exists( 'is_multisite' ) || ( function_exists( 'is_multisite' ) && ! is_multisite() ) ) {
-		wpas_single_activate();
+		mumei_ayuda_single_activate();
 	}
 }
-function wpas_deactivation( $network_wide ) {
+function mumei_ayuda_deactivation( $network_wide ) {
 	
-    remove_action('deactivate_awesome-support/awesome-support.php','wpas_deactivation');
+    remove_action('deactivate_mumei-ayuda-help-desk/mumei-ayuda-help-desk.php','mumei_ayuda_deactivation');
     if ( false === $network_wide || ! function_exists( 'is_multisite' ) || ( function_exists( 'is_multisite' ) && ! is_multisite() ) ) {
         $plugins = get_plugins();
         foreach($plugins as $name => $data) {
-            if (strpos($data['Name'], 'Awesome Support') !== false) {
+            if (strpos($data['Name'], 'Ayuda – Help Desk') !== false) {
                 deactivate_plugins($name);
             }   
         }
@@ -44,7 +44,7 @@ function wpas_deactivation( $network_wide ) {
         exit;
     }       
 }
-add_action( 'wpmu_new_blog', 'wpas_activate_new_site', 10, 6 );
+add_action( 'wpmu_new_blog', 'mumei_ayuda_activate_new_site', 10, 6 );
 /**
  * Fired when a new site is activated with a WPMU environment.
  *
@@ -52,14 +52,14 @@ add_action( 'wpmu_new_blog', 'wpas_activate_new_site', 10, 6 );
  *
  * @param    int $blog_id ID of the new blog.
  */
-function wpas_activate_new_site( $blog_id ) {
+function mumei_ayuda_activate_new_site( $blog_id ) {
 
 	if ( 1 !== did_action( 'wpmu_new_blog' ) ) {
 		return;
 	}
 
 	switch_to_blog( $blog_id );
-	wpas_single_activate();
+	mumei_ayuda_single_activate();
 	restore_current_blog();
 
 }
@@ -69,7 +69,7 @@ function wpas_activate_new_site( $blog_id ) {
  *
  * @since    1.0.0
  */
-function wpas_single_activate() {
+function mumei_ayuda_single_activate() {
 
 	/**
 	 * Full list of capabilities.
@@ -79,7 +79,7 @@ function wpas_single_activate() {
 	 *
 	 * @var array
 	 */
-	$full_cap = apply_filters( 'wpas_user_capabilities_full', array(
+	$full_cap = apply_filters( 'mumei_ayuda_user_capabilities_full', array(
 		'view_ticket',
 		'view_private_ticket',
 		'edit_ticket',
@@ -132,7 +132,7 @@ function wpas_single_activate() {
 	 *
 	 * @var array
 	 */
-	$agent_cap = apply_filters( 'wpas_user_capabilities_agent', array(
+	$agent_cap = apply_filters( 'mumei_ayuda_user_capabilities_agent', array(
 		'view_ticket',
 		'view_private_ticket',
 		'edit_ticket',
@@ -157,7 +157,7 @@ function wpas_single_activate() {
 	/**
 	 * Very limited list of capabilities for the clients.
 	 */
-	$client_cap = apply_filters( 'wpas_user_capabilities_client', array(
+	$client_cap = apply_filters( 'mumei_ayuda_user_capabilities_client', array(
 		'view_ticket',
 		'create_ticket',
 		'close_ticket',
@@ -173,10 +173,10 @@ function wpas_single_activate() {
 	$admin      = get_role( 'administrator' );
 
 	/* Add the new roles */
-	$manager = add_role( 'wpas_manager',         __( 'Support Supervisor', 'awesome-support' ), $editor->capabilities );     // Has full capabilities for the plugin in addition to editor capabilities
-	$tech    = add_role( 'wpas_support_manager', __( 'Support Manager', 'awesome-support' ),    $subscriber->capabilities ); // Has full capabilities for the plugin only
-	$agent   = add_role( 'wpas_agent',           __( 'Support Agent', 'awesome-support' ),      $author->capabilities );     // Has limited capabilities for the plugin in addition to author's capabilities
-	$client  = add_role( 'wpas_user',            __( 'Support User', 'awesome-support' ),       $subscriber->capabilities ); // Has posting & replying capapbilities for the plugin in addition to subscriber's capabilities
+	$manager = add_role( 'mumei_ayuda_manager',         __( 'Support Supervisor', 'ayuda-help-desk' ), $editor->capabilities );     // Has full capabilities for the plugin in addition to editor capabilities
+	$tech    = add_role( 'mumei_ayuda_support_manager', __( 'Support Manager', 'ayuda-help-desk' ),    $subscriber->capabilities ); // Has full capabilities for the plugin only
+	$agent   = add_role( 'mumei_ayuda_agent',           __( 'Support Agent', 'ayuda-help-desk' ),      $author->capabilities );     // Has limited capabilities for the plugin in addition to author's capabilities
+	$client  = add_role( 'mumei_ayuda_user',            __( 'Support User', 'ayuda-help-desk' ),       $subscriber->capabilities ); // Has posting & replying capapbilities for the plugin in addition to subscriber's capabilities
 
 	/**
 	 * Add full capacities to admin roles
@@ -220,10 +220,10 @@ function wpas_single_activate() {
 	// We don't want to do that!
 	$admin->remove_cap('view_all_tickets');
 
-	add_option( 'wpas_options', serialize( get_settings_defaults() ) );
-	add_option( 'wpas_setup', 'pending' );
-	add_option( 'wpas_db_version', WPAS_DB_VERSION );
-	add_option( 'wpas_version', WPAS_VERSION );
+	add_option( 'mumei_ayuda_options', serialize( get_settings_defaults() ) );
+	add_option( 'mumei_ayuda_setup', 'pending' );
+	add_option( 'mumei_ayuda_db_version', MUMEI_AYUDA_DB_VERSION );
+	add_option( 'mumei_ayuda_version', MUMEI_AYUDA_VERSION );
 
 }
 
@@ -236,7 +236,7 @@ function wpas_single_activate() {
  * @since    1.0.0
  * @return   array|false    The blog ids, false if no matches.
  */
-function wpas_get_blog_ids() {
+function mumei_ayuda_get_blog_ids() {
 
 	global $wpdb;
 
@@ -255,9 +255,9 @@ function wpas_get_blog_ids() {
  * @since  2.0.0
  * @return void
  */
-function wpas_create_pages() {
+function mumei_ayuda_create_pages() {
 
-	$raw_options = get_option( 'wpas_options', array() );
+	$raw_options = get_option( 'mumei_ayuda_options', array() );
 
 	if ( is_serialized( $raw_options ) ) {
 		$options = @unserialize( $raw_options, ['allowed_classes' => false] );
@@ -274,8 +274,8 @@ function wpas_create_pages() {
 
 			$list_args = array(
 					'post_content'   => '[tickets]',
-					'post_title'     => wp_strip_all_tags( __( 'My Tickets', 'awesome-support' ) ),
-					'post_name'      => sanitize_title( __( 'My Tickets', 'awesome-support' ) ),
+					'post_title'     => wp_strip_all_tags( __( 'My Tickets', 'ayuda-help-desk' ) ),
+					'post_name'      => sanitize_title( __( 'My Tickets', 'ayuda-help-desk' ) ),
 					'post_type'      => 'page',
 					'post_status'    => 'publish',
 					'ping_status'    => 'closed',
@@ -294,8 +294,8 @@ function wpas_create_pages() {
 
 			$submit_args = array(
 					'post_content'   => '[ticket-submit]',
-					'post_title'     => wp_strip_all_tags( __( 'Submit Ticket', 'awesome-support' ) ),
-					'post_name'      => sanitize_title( __( 'Submit Ticket', 'awesome-support' ) ),
+					'post_title'     => wp_strip_all_tags( __( 'Submit Ticket', 'ayuda-help-desk' ) ),
+					'post_name'      => sanitize_title( __( 'Submit Ticket', 'ayuda-help-desk' ) ),
 					'post_type'      => 'page',
 					'post_status'    => 'publish',
 					'ping_status'    => 'closed',
@@ -312,13 +312,13 @@ function wpas_create_pages() {
 		}
 
 		if ( $update ) {
-			update_option( 'wpas_options', serialize( $options ) );
+			update_option( 'mumei_ayuda_options', serialize( $options ) );
 		}
 
 	}	
 
 	if ( ! empty( $options['ticket_submit'] ) && ! empty( $options['ticket_list'] ) ) {
-		delete_option( 'wpas_setup' );
+		delete_option( 'mumei_ayuda_setup' );
 	}
 }
 
@@ -332,7 +332,7 @@ function wpas_create_pages() {
  * @since  3.0.0
  * @return void
  */
-function wpas_flush_rewrite_rules() {
+function mumei_ayuda_flush_rewrite_rules() {
 	flush_rewrite_rules();
 }
 
@@ -340,19 +340,19 @@ function wpas_flush_rewrite_rules() {
  * As Setup Wizard.
  * Ask the user to setup plugin using Setup Wizard.
  */
-function wpas_ask_setup_wizard() {
-	if ( wpas_is_asadmin() ) {
+function mumei_ayuda_ask_setup_wizard() {
+	if ( mumei_ayuda_is_asadmin() ) {
 	?>
 	<div class="updated wpas-wizard-notice">
-		<h1 class="wizard-main-heading"><?php esc_html_e( 'Awesome Support: First Time Install' , 'awesome-support' ); ?></h1>
-		<p class="wizard-first-line"><?php esc_html_e( 'Thank you for installing Awesome Support. Please choose an option below to get started.' , 'awesome-support' ); ?></p>
-		<p class="wizard-normal wizard-second-line"><?php esc_html_e( 'If this is not the first time you are using Awesome Support or you would like to manually configure your initial settings, then you should choose to skip this process. Otherwise proceed by clicking the orange button.' , 'awesome-support' ); ?></p>
+		<h1 class="wizard-main-heading"><?php esc_html_e( 'Ayuda – Help Desk: First Time Install' , 'ayuda-help-desk' ); ?></h1>
+		<p class="wizard-first-line"><?php esc_html_e( 'Thank you for installing Ayuda – Help Desk. Please choose an option below to get started.' , 'ayuda-help-desk' ); ?></p>
+		<p class="wizard-normal wizard-second-line"><?php esc_html_e( 'If this is not the first time you are using Ayuda – Help Desk or you would like to manually configure your initial settings, then you should choose to skip this process. Otherwise proceed by clicking the orange button.' , 'ayuda-help-desk' ); ?></p>
 		<p><span class="wpas-button-wizard-primary">	
 			<a href="<?php echo esc_url( admin_url( 'index.php?page=as-setup' ) ); ?>">
-				<?php esc_html_e( 'Click here To Get Started Now' , 'awesome-support' ); ?>
+				<?php esc_html_e( 'Click here To Get Started Now' , 'ayuda-help-desk' ); ?>
 			</a>
 			</span>
-			<span class="wpas-button-wizard-skip"><a href="#" id="wpas-skip-wizard"><?php esc_html_e( 'Or skip this process' , 'awesome-support' ); ?></a></span>
+			<span class="wpas-button-wizard-skip"><a href="#" id="wpas-skip-wizard"><?php esc_html_e( 'Or skip this process' , 'ayuda-help-desk' ); ?></a></span>
 		</p>
 	</div>
 	<?php
@@ -367,11 +367,11 @@ function wpas_ask_setup_wizard() {
  * Hooked in awesomesupport.php
  *
  */
-function wpas_install_default_email_templates() {
+function mumei_ayuda_install_default_email_templates() {
 
-	if (function_exists('wpas_install_email_template')) {
-		wpas_install_email_template( 'elegant', false );
-		add_option( 'wpas_setup_email_templates', 'complete' );
+	if (function_exists('mumei_ayuda_install_email_template')) {
+		mumei_ayuda_install_email_template( 'elegant', false );
+		add_option( 'mumei_ayuda_setup_email_templates', 'complete' );
 	}
 
 }

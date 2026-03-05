@@ -18,19 +18,19 @@ global $post;
 $author = get_user_by( 'id', $post->post_author );
 
 /**
- * wpas_before_original_post hook
+ * mumei_ayuda_before_original_post hook
  */
-do_action( 'wpas_before_original_post' ); ?>
+do_action( 'mumei_ayuda_before_original_post' ); ?>
 
 <table id="original_ticket" class="table wpas-ticket-responses">
 	<thead class="sr-only">
 		<tr>
-			<td><?php esc_html_e( 'User', 'awesome-support' ); ?></td>
-			<td><?php esc_html_e( 'Message', 'awesome-support' ); ?></td>
+			<td><?php esc_html_e( 'User', 'ayuda-help-desk' ); ?></td>
+			<td><?php esc_html_e( 'Message', 'ayuda-help-desk' ); ?></td>
 		</tr>
 	</thead>
 	<tbody>
-		<tr class="wpas_role wpas_client">
+		<tr class="mumei_ayuda_role mumei_ayuda_client">
 			<td class="tbl_col1">
 				<div class="ticket_profile">
 
@@ -38,7 +38,7 @@ do_action( 'wpas_before_original_post' ); ?>
 					/**
 					 * If the plugin is set to show Gravatars, we use a 96px Gravatar with the mystery man as a fallback
 					 */
-					if ( wpas_get_option( 'gravatar_on_front', 'yes' ) == 'yes' ) {
+					if ( mumei_ayuda_get_option( 'gravatar_on_front', 'yes' ) == 'yes' ) {
 						echo get_avatar( $post->post_author, '96', get_option( 'avatar_default' ) );
 					}
 					?>
@@ -51,9 +51,9 @@ do_action( 'wpas_before_original_post' ); ?>
 						 */
 
 						// translators: %s is the account creation date, %s is the account expiration date.
-						$x_content = __( '%s ago', 'awesome-support' );
+						$x_content = __( '%s ago', 'ayuda-help-desk' );
 						?><span class="wpas-profilename"><?php echo esc_html( $author->data->user_nicename ); ?></span>
-						<span class="wpas-profiletype"><?php echo wp_kses(wpas_get_user_nice_role( $author->roles ),get_allowed_html_wp_notifications()); ?></span>
+						<span class="wpas-profiletype"><?php echo wp_kses(mumei_ayuda_get_user_nice_role( $author->roles ),get_allowed_html_wp_notifications()); ?></span>
 						<time class="visible-xs wpas-timestamp" datetime="<?php echo wp_kses_post(str_replace( ' ', 'T', $post->post_date )); ?>Z">
 							<?php printf( wp_kses_post($x_content), wp_kses_post(human_time_diff( get_the_time( 'U', $post->ID )), current_time( 'timestamp' ) ) ); ?>
 						</time>
@@ -62,14 +62,14 @@ do_action( 'wpas_before_original_post' ); ?>
 				</div>
 			</td>
 
-			<td class="tbl_col2" <?php if ( wpas_get_option( 'date_position', 'right_side' ) == 'under_avatar' ): ?>colspan="2"<?php endif; ?>>
+			<td class="tbl_col2" <?php if ( mumei_ayuda_get_option( 'date_position', 'right_side' ) == 'under_avatar' ): ?>colspan="2"<?php endif; ?>>
 				<?php
 				/**
-				 * wpas_original_post_content_before hook
+				 * mumei_ayuda_original_post_content_before hook
 				 *
 				 * @since  3.0.0
 				 */
-				do_action( 'wpas_original_post_content_before' );
+				do_action( 'mumei_ayuda_original_post_content_before' );
 
 				/**
 				 * Display the original ticket's content
@@ -77,21 +77,21 @@ do_action( 'wpas_before_original_post' ); ?>
 				echo wp_kses(apply_filters( 'the_content', $post->post_content ),'post');
 
 				/**
-				 * wpas_original_post_content_after hook
+				 * mumei_ayuda_original_post_content_after hook
 				 *
 				 * @since  3.0.0
 				 */
-				do_action( 'wpas_original_post_content_after' );
+				do_action( 'mumei_ayuda_original_post_content_after' );
 
 				/**
 				 * If any files attached we display them in an unordered list
 				 * @var [type]
 				 */
-				// if( ( $attachments = get_post_meta( $post->ID, WPAS_PREFIX . 'attachments', true ) ) != '' && is_array( $attachments ) ) {
+				// if( ( $attachments = get_post_meta( $post->ID, MUMEI_AYUDA_PREFIX . 'attachments', true ) ) != '' && is_array( $attachments ) ) {
 
 				// 	echo '<div class="attachments"><strong><span aria-hidden="true" class="glyphicon glyphicon-paperclip"></span> '.__('Attached files', 'wpas').':</strong><ul>';
 
-				// 	wpas_get_uploaded_files( $post->ID );
+				// 	mumei_ayuda_get_uploaded_files( $post->ID );
 
 				// 	echo '</ul></div>';
 				// }
@@ -106,4 +106,4 @@ do_action( 'wpas_before_original_post' ); ?>
 /**
  * Hook after the original post table
  */
-do_action( 'wpas_after_original_post' );
+do_action( 'mumei_ayuda_after_original_post' );

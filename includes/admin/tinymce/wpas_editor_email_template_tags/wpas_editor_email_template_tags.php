@@ -52,10 +52,10 @@
 
             // Get passed js vars from main.php
             var editor_params = top.tinymce.activeEditor.windowManager.getParams();
-            var get_template_tags = editor_params.wpas_editor_js_vars.template_tags;
+            var get_template_tags = editor_params.mumei_ayuda_editor_js_vars.template_tags;
 
             // Insert localized instructions
-            document.getElementById("instructions").innerHTML = ed_langs.getLang('wpas_editor_langs.instructions');
+            document.getElementById("instructions").innerHTML = ed_langs.getLang('mumei_ayuda_editor_langs.instructions');
 
             // Define template tags wrapper
             var wrapper = document.getElementById("template_tags");
@@ -64,7 +64,7 @@
             var table = '';
             table += '<table id="tag_table">';
 
-            table += '<thead><tr><th>' + ed_langs.getLang('wpas_editor_langs.table_header_tag') + '</th><th>' + ed_langs.getLang('wpas_editor_langs.table_header_desc') + '</th></tr></thead>';
+            table += '<thead><tr><th>' + ed_langs.getLang('mumei_ayuda_editor_langs.table_header_tag') + '</th><th>' + ed_langs.getLang('mumei_ayuda_editor_langs.table_header_desc') + '</th></tr></thead>';
             table += '<tbody>';
 
             // Loop each tag and add to table

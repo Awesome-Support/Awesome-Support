@@ -7,7 +7,7 @@
  * and then modify the code. If you modify this file directly, your changes
  * will be overwritten during next update of the plugin.
  *
- * @package   Awesome Support/Templates/Reply
+ * @package   Ayuda – Help Desk/Templates/Reply
  * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
@@ -23,7 +23,7 @@ if ( ! defined( 'WPINC' ) ) {
 $user_role = ( is_object( $user ) && ! empty( $user->roles ) && is_array( $user->roles ) ) ? reset( $user->roles ) : null;
 ?>
 
-<tr id="reply-<?php echo esc_attr( the_ID() ); ?>" class="wpas-reply-single wpas-status-<?php echo esc_attr( get_post_status() ); ?> wpas_user_<?php echo esc_attr( $user_role ); ?>" valign="top">
+<tr id="reply-<?php echo esc_attr( the_ID() ); ?>" class="wpas-reply-single wpas-status-<?php echo esc_attr( get_post_status() ); ?> mumei_ayuda_user_<?php echo esc_attr( $user_role ); ?>" valign="top">
 
 	<?php
 	/**
@@ -32,28 +32,28 @@ $user_role = ( is_object( $user ) && ! empty( $user->roles ) && is_array( $user-
 	if ( 'trash' === get_post_status() ): ?>
 		<?php 
 			// translators: %s is the user's name, %d is the number of new messages.
-			$x_lation = __( 'This reply has been deleted %s ago.', 'awesome-support' );
+			$x_lation = __( 'This reply has been deleted %s ago.', 'ayuda-help-desk' );
 		?>
 		<td colspan="2"><?php printf( esc_html($x_lation), esc_html( $time_ago ) ); ?></td>
 
 	<?php else: ?>
 		<?php 
 			// translators: %s is the user's name, %d is the number of new messages.
-			$x_lation = _x( '%s ago', 'Time ago (eg. 5 minutes ago)', 'awesome-support' );
+			$x_lation = _x( '%s ago', 'Time ago (eg. 5 minutes ago)', 'ayuda-help-desk' );
 		?>
 		<td style="width: 64px;">
 			<div class="wpas-user-profile">
-				<?php echo wp_kses(apply_filters('wpas_fe_template_detail_reply_author_avatar', get_avatar( get_userdata( $user->ID )->user_email, 64, get_option( 'avatar_default' ) ), $post ), get_allowed_html_wp_notifications()); ?>
+				<?php echo wp_kses(apply_filters('mumei_ayuda_fe_template_detail_reply_author_avatar', get_avatar( get_userdata( $user->ID )->user_email, 64, get_option( 'avatar_default' ) ), $post ), get_allowed_html_wp_notifications()); ?>
 			</div>
 		</td>
 
 		<td>
 			<div class="wpas-reply-meta">
 				<div class="wpas-reply-user">
-					<strong class="wpas-profilename"><?php echo wp_kses(apply_filters('wpas_fe_template_detail_reply_display_name', $user->data->display_name, $post ), get_allowed_html_wp_notifications()); ?></strong>
+					<strong class="wpas-profilename"><?php echo wp_kses(apply_filters('mumei_ayuda_fe_template_detail_reply_display_name', $user->data->display_name, $post ), get_allowed_html_wp_notifications()); ?></strong>
 				</div>
 				<div class="wpas-reply-time">
-					<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wp_kses(wpas_get_offset_html5(), get_allowed_html_wp_notifications()); ?>">
+					<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wp_kses(mumei_ayuda_get_offset_html5(), get_allowed_html_wp_notifications()); ?>">
 						<span class="wpas-human-date"><?php echo get_the_date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $post->ID ); ?></span>
 						<span class="wpas-date-ago"><?php printf( esc_html($x_lation), esc_html( $time_ago ) ); ?></span>
 					</time>
@@ -62,11 +62,11 @@ $user_role = ( is_object( $user ) && ! empty( $user->roles ) && is_array( $user-
 
 			<?php
 			/**
-			 * wpas_frontend_reply_content_before hook
+			 * mumei_ayuda_frontend_reply_content_before hook
 			 *
 			 * @since  3.0.0
 			 */
-			do_action( 'wpas_frontend_reply_content_before', get_the_ID() );
+			do_action( 'mumei_ayuda_frontend_reply_content_before', get_the_ID() );
 			
 			/* Process missing html tag when pull content from email for ticket and ticket reply 11-5447420 */			
 			$content_reply = get_the_content();
@@ -88,11 +88,11 @@ $user_role = ( is_object( $user ) && ! empty( $user->roles ) && is_array( $user-
 
 			<?php
 			/**
-			 * wpas_frontend_reply_content_after hook
+			 * mumei_ayuda_frontend_reply_content_after hook
 			 *
 			 * @since  3.0.0
 			 */
-			do_action( 'wpas_frontend_reply_content_after', get_the_ID() ); ?>
+			do_action( 'mumei_ayuda_frontend_reply_content_after', get_the_ID() ); ?>
 		</td>
 
 	<?php endif; ?>

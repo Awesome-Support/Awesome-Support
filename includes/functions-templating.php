@@ -5,14 +5,14 @@
 	 * This file contains all the templating functions. It aims at making it easy
 	 * for developers to gather ticket details and insert them in a custom template.
 	 *
-	 * @package   Awesome_Support
+	 * @package   Mumei_Ayuda_Support
 	 * @author    AwesomeSupport <contact@getawesomesupport.com>
 	 * @license   GPL-2.0+
 	 * @link      https://getawesomesupport.com
 	 * @copyright 2014-2017 AwesomeSupport
 	 */
 
-	add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
+	add_filter( 'the_content', 'mumei_ayuda_single_ticket', 10, 1 );
 	/**
 	 * Alter page content for single ticket.
 	 *
@@ -29,7 +29,7 @@
 	 *
 	 * @return string          Ticket single
 	 */
-	function wpas_single_ticket( $content = '' ) {
+	function mumei_ayuda_single_ticket( $content = '' ) {
 
 		global $post;
 
@@ -61,29 +61,29 @@
 		}
 
 		/* Remove the filter to avoid infinite loops. */
-		remove_filter( 'the_content', 'wpas_single_ticket' );
+		remove_filter( 'the_content', 'mumei_ayuda_single_ticket' );
 
 		/* Check if the current user can view the ticket */
-		if ( ! wpas_can_view_ticket( $post->ID ) ) {
+		if ( ! mumei_ayuda_can_view_ticket( $post->ID ) ) {
 
 			if ( is_user_logged_in() ) {
-				return wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'awesome-support' ) );
+				return mumei_ayuda_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'ayuda-help-desk' ) );
 			} else {
 
-				$login_page = wpas_get_option( 'login_page', false );
+				$login_page = mumei_ayuda_get_option( 'login_page', false );
 
 				if ( false !== $login_page && !empty( $login_page ) && !is_null( get_post( intval( $login_page ) ) ) ) {
 					/* As the headers are already sent we can't use wp_redirect. */
 					echo '<meta http-equiv="refresh" content="0; url=' . esc_url( get_permalink( $login_page ) ) . '" />';
-					wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'awesome-support' ) );
+					mumei_ayuda_get_notification_markup( 'info', __( 'You are being redirected...', 'ayuda-help-desk' ) );
 					exit;
 				}
 
 				$output = '';
-				$output .= wpas_get_notification_markup( 'info', __( 'You are currently logged out.  To view tickets you must first login.', 'awesome-support' ) );
+				$output .= mumei_ayuda_get_notification_markup( 'info', __( 'You are currently logged out.  To view tickets you must first login.', 'ayuda-help-desk' ) );
 
 				ob_start();
-				wpas_get_template( 'registration' );
+				mumei_ayuda_get_template( 'registration' );
 				$output .= ob_get_clean();
 
 				return $output;
@@ -106,15 +106,15 @@
 		ob_start();
 
 		/**
-		 * wpas_frontend_plugin_page_top is executed at the top
+		 * mumei_ayuda_frontend_plugin_page_top is executed at the top
 		 * of every plugin page on the front end.
 		 */
-		do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
+		do_action( 'mumei_ayuda_frontend_plugin_page_top', $post->ID, $post );
 
 		/**
 		 * Get the custom template.
 		 */
-		wpas_get_template( 'details' );
+		mumei_ayuda_get_template( 'details' );
 
 		/**
 		 * Finally get the buffer content and return.
@@ -133,8 +133,8 @@
 	 * @since  3.0.0
 	 * @return string The theme name
 	 */
-	function wpas_get_theme() {
-		return ( '' != ( $t = wpas_get_option( 'theme', 'default' ) ) ) ? $t : 'default';
+	function mumei_ayuda_get_theme() {
+		return ( '' != ( $t = mumei_ayuda_get_option( 'theme', 'default' ) ) ) ? $t : 'default';
 	}
 
 	/**
@@ -143,8 +143,8 @@
 	 * @since  5.8.0
 	 * @return string The overlay stylesheet filename without the directory
 	 */
-	function wpas_get_overlay() {
-		return ( '' != ( $t = wpas_get_option( 'theme_overlay', 'style.css' ) ) ) ? $t : 'style.css';
+	function mumei_ayuda_get_overlay() {
+		return ( '' != ( $t = mumei_ayuda_get_option( 'theme_overlay', 'style.css' ) ) ) ? $t : 'style.css';
 	}
 
 	/**
@@ -163,25 +163,25 @@
 	 *
 	 * @return boolean True if a template is loaded, false otherwise
 	 */
-	function wpas_get_template( $name, $args = array() ) {
+	function mumei_ayuda_get_template( $name, $args = array() ) {
 
 		if ( $args && is_array( $args ) ) {
 			extract( $args );
 		}
 
-		$template = wpas_locate_template( $name );
+		$template = mumei_ayuda_locate_template( $name );
 
 		if ( ! file_exists( $template ) ) {
 			return false;
 		}
 
-		$template = apply_filters( 'wpas_get_template', $template, $name, $args );
+		$template = apply_filters( 'mumei_ayuda_get_template', $template, $name, $args );
 
-		do_action( 'wpas_before_template', $name, $template, $args );
+		do_action( 'mumei_ayuda_before_template', $name, $template, $args );
 
 		include( $template );
 
-		do_action( 'wpas_after_template', $name, $template, $args );
+		do_action( 'mumei_ayuda_after_template', $name, $template, $args );
 
 		return true;
 
@@ -201,22 +201,22 @@
 	 *
 	 * @return string Template path
 	 */
-	function wpas_locate_template( $name ) {
+	function mumei_ayuda_locate_template( $name ) {
 
-		$theme    = wpas_get_theme();
+		$theme    = mumei_ayuda_get_theme();
 		$filename = "$name.php";
 
 		$template = locate_template(
 			array(
-				WPAS_TEMPLATE_PATH . $filename,
+				MUMEI_AYUDA_TEMPLATE_PATH . $filename,
 			)
 		);
 
 		if ( ! $template ) {
-			$template = WPAS_PATH . "themes/$theme/" . $filename;
+			$template = MUMEI_AYUDA_PATH . "themes/$theme/" . $filename;
 		}
 
-		return apply_filters( 'wpas_locate_template', $template, $name );
+		return apply_filters( 'mumei_ayuda_locate_template', $template, $name );
 
 	}
 
@@ -229,21 +229,21 @@
 	 * @since  3.1.6
 	 * @return string Stylesheet path
 	 */
-	function wpas_get_theme_stylesheet() {
+	function mumei_ayuda_get_theme_stylesheet() {
 
-		$theme = wpas_get_theme();
-		$overlay = wpas_get_overlay();
+		$theme = mumei_ayuda_get_theme();
+		$overlay = mumei_ayuda_get_overlay();
 
 		/* Try to find a style.css file of higher priority */
 		$template = locate_template(
 			array(
-				WPAS_TEMPLATE_PATH . 'css/style.css'
+				MUMEI_AYUDA_TEMPLATE_PATH . 'css/style.css'
 			)
 		);
 
-		if ( $template && $template <> WPAS_PATH . 'themes/' . $theme . '/css/style.css' ) {
+		if ( $template && $template <> MUMEI_AYUDA_PATH . 'themes/' . $theme . '/css/style.css' ) {
 			/* We found something that isn't in the standard AS path so use that */
-			return apply_filters( 'wpas_get_theme_stylesheet', $template );
+			return apply_filters( 'mumei_ayuda_get_theme_stylesheet', $template );
 		}
 		/* End try to find a style.css file of higher priority */
 
@@ -252,13 +252,13 @@
 			$overlay = 'style.css' ;
 		}
 
-		$template = WPAS_PATH . 'themes/' . $theme . '/css/' . $overlay;
+		$template = MUMEI_AYUDA_PATH . 'themes/' . $theme . '/css/' . $overlay;
 
 		if ( ! $template ) {
-			$template = WPAS_PATH . "themes/$theme/css/style.css";
+			$template = MUMEI_AYUDA_PATH . "themes/$theme/css/style.css";
 		}
 
-		return apply_filters( 'wpas_get_theme_stylesheet', $template );
+		return apply_filters( 'mumei_ayuda_get_theme_stylesheet', $template );
 
 	}
 
@@ -270,29 +270,29 @@
 	 * Returns the style.css from the theme folder if it exists
 	 * otherwise returns from our standard aweesome-support folder.
 	 *
-	 * This function is similar to wpas_get_theme_stylesheet()
+	 * This function is similar to mumei_ayuda_get_theme_stylesheet()
 	 * except that it returns the URL and not the absolute path.
 	 *
 	 * @since  3.1.6
 	 * @return string Stylesheet URI
 	 */
-	function wpas_get_theme_stylesheet_uri() {
+	function mumei_ayuda_get_theme_stylesheet_uri() {
 
-		$theme = wpas_get_theme();
-		$overlay = wpas_get_overlay();
+		$theme = mumei_ayuda_get_theme();
+		$overlay = mumei_ayuda_get_overlay();
 
 		/* Try to find a style.css file of higher priority */
 		$template = locate_template(
 			array(
-				WPAS_TEMPLATE_PATH . 'css/style.css'
+				MUMEI_AYUDA_TEMPLATE_PATH . 'css/style.css'
 			)
 		);
 
-		if ( $template && $template <> WPAS_PATH . 'themes/' . $theme . '/css/style.css' ) {
+		if ( $template && $template <> MUMEI_AYUDA_PATH . 'themes/' . $theme . '/css/style.css' ) {
 			/* We found something that isn't in the standard AS path so use that */
 			/* But first we need to convert to the URI, NOT the absolute file path */
-			$template = get_stylesheet_directory_uri() . '/' . WPAS_TEMPLATE_PATH . 'css/style.css';
-			return apply_filters( 'wpas_get_theme_stylesheet_uri', $template );
+			$template = get_stylesheet_directory_uri() . '/' . MUMEI_AYUDA_TEMPLATE_PATH . 'css/style.css';
+			return apply_filters( 'mumei_ayuda_get_theme_stylesheet_uri', $template );
 		}
 		/* End try to find a style.css file of higher priority */
 
@@ -302,13 +302,13 @@
 			$overlay = 'style.css' ;
 		}
 
-		$uri = WPAS_URL . 'themes/' . $theme . '/css/' . $overlay;
+		$uri = MUMEI_AYUDA_URL . 'themes/' . $theme . '/css/' . $overlay;
 
 		if ( ! $uri ) {
-			$uri = WPAS_PATH . "themes/$theme/css/style.css";
+			$uri = MUMEI_AYUDA_PATH . "themes/$theme/css/style.css";
 		}
 
-		return apply_filters( 'wpas_get_theme_stylesheet_uri', $uri );
+		return apply_filters( 'mumei_ayuda_get_theme_stylesheet_uri', $uri );
 
 	}
 
@@ -321,7 +321,7 @@
 	 *
 	 * @return void
 	 */
-	function wpas_ticket_header( $args = array() ) {
+	function mumei_ayuda_ticket_header( $args = array() ) {
 
 		global $post;
 
@@ -338,14 +338,14 @@
 		$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
 		$columns = array(
-			'id'     => __( 'ID', 'awesome-support' ),
-			'status' => __( 'Status', 'awesome-support' ),
-			'date'   => __( 'Date', 'awesome-support' ),
+			'id'     => __( 'ID', 'ayuda-help-desk' ),
+			'status' => __( 'Status', 'ayuda-help-desk' ),
+			'date'   => __( 'Date', 'ayuda-help-desk' ),
 		);
 
 		$columns_callbacks = array(
 			'id'     => 'id',
-			'status' => 'wpas_cf_display_status',
+			'status' => 'mumei_ayuda_cf_display_status',
 			'date'   => 'date',
 		);
 
@@ -358,14 +358,14 @@
 
 			/* Don't display fields that aren't specifically designed to be displayed on the front end*/
 			if ( ( false === $field[ 'args' ][ 'hide_front_end' ] ) && ( false === $field[ 'args' ][ 'backend_only' ] ) && ( true === $field[ 'args' ][ 'show_frontend_detail' ] )  ) {
-				$columns[ $field[ 'name' ] ]           = ! empty( $field[ 'args' ][ 'title' ] ) ? sanitize_text_field( $field[ 'args' ][ 'title' ] ) : wpas_get_title_from_id( $field[ 'name' ] );
+				$columns[ $field[ 'name' ] ]           = ! empty( $field[ 'args' ][ 'title' ] ) ? sanitize_text_field( $field[ 'args' ][ 'title' ] ) : mumei_ayuda_get_title_from_id( $field[ 'name' ] );
 				$columns_callbacks[ $field[ 'name' ] ] = ( 'taxonomy' === $field[ 'args' ][ 'field_type' ] && true === $field[ 'args' ][ 'taxo_std' ] ) ? 'taxonomy' : $field[ 'args' ][ 'column_callback' ];
 			}
 
 		}
 
-		$columns           = apply_filters( 'wpas_tickets_details_columns', $columns );
-		$columns_callbacks = apply_filters( 'wpas_tickets_details_columns_callbacks', $columns_callbacks );
+		$columns           = apply_filters( 'mumei_ayuda_tickets_details_columns', $columns );
+		$columns_callbacks = apply_filters( 'mumei_ayuda_tickets_details_columns_callbacks', $columns_callbacks );
 		?>
 
 		<?php if ( ! empty( $args[ 'container' ] ) ): ?><<?php echo wp_kses($args[ 'container' ], get_allowed_html_wp_notifications()); ?> class="<?php echo !empty( $args[ 'container' ] ) ? esc_attr( $args[ 'container_class' ] ) : ''; ?>"><?php endif; ?>
@@ -382,7 +382,7 @@
             <tr>
 				<?php foreach ( $columns_callbacks as $column => $callback ): ?>
                     <td>
-						<?php wpas_get_tickets_list_column_content( $column, array( 'callback' => $callback ) ); ?>
+						<?php mumei_ayuda_get_tickets_list_column_content( $column, array( 'callback' => $callback ) ); ?>
                     </td>
 				<?php endforeach; ?>
             </tr>
@@ -402,12 +402,12 @@
 	 *
 	 * @return void
 	 */
-	function wpas_get_reply_form( $args = array() ) {
+	function mumei_ayuda_get_reply_form( $args = array() ) {
 
 		global $wp_query;
 
 		$post_id = $wp_query->post->ID;
-		$status  = wpas_get_ticket_status( $post_id );
+		$status  = mumei_ayuda_get_ticket_status( $post_id );
 
 		$defaults = array(
 			'form_id'         => 'wpas-new-reply',
@@ -431,36 +431,36 @@
 		 * @since  3.0.0
 		 * @var    string
 		 */
-		$form_class = apply_filters( 'wpas_frontend_reply_form_class', $args[ 'form_class' ] );
+		$form_class = apply_filters( 'mumei_ayuda_frontend_reply_form_class', $args[ 'form_class' ] );
 
 		/**
-		 * wpas_ticket_details_reply_form_before hook
+		 * mumei_ayuda_ticket_details_reply_form_before hook
 		 *
 		 * @since  3.0.0
 		 */
-		do_action( 'wpas_ticket_details_reply_form_before' );
+		do_action( 'mumei_ayuda_ticket_details_reply_form_before' );
 
 		if ( 'closed' === $status ):
 			// translators: %s is the URL to re-open the ticket.
-			$x_content = __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'awesome-support' );
-			echo wp_kses(wpas_get_notification_markup( 'info', sprintf( $x_content, wpas_get_reopen_url() ) ), get_allowed_html_wp_notifications());
+			$x_content = __( 'The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href="%s">you can re-open it by clicking this link</a>.', 'ayuda-help-desk' );
+			echo wp_kses(mumei_ayuda_get_notification_markup( 'info', sprintf( $x_content, mumei_ayuda_get_reopen_url() ) ), get_allowed_html_wp_notifications());
 
 		/**
 		 * Check if the ticket is currently open and if the current user
 		 * is allowed to post a reply.
 		 */
-		elseif ( 'open' === $status && true === wpas_can_reply_ticket() ): ?>
+		elseif ( 'open' === $status && true === mumei_ayuda_can_reply_ticket() ): ?>
 
         <form id="<?php echo esc_attr( $args[ 'form_id' ] ); ?>" class="<?php echo esc_attr( $form_class ); ?>" method="post"
               action="<?php echo esc_url( get_permalink( $post_id ) ); ?>" enctype="multipart/form-data">
 
 			<?php
 			/**
-			 * wpas_ticket_details_reply_textarea_before hook
+			 * mumei_ayuda_ticket_details_reply_textarea_before hook
 			 *
 			 * @since  3.0.0
 			 */
-			do_action( 'wpas_ticket_details_reply_textarea_before' ); ?>
+			do_action( 'mumei_ayuda_ticket_details_reply_textarea_before' ); ?>
 
             <<?php echo wp_kses($args[ 'container' ], get_allowed_html_wp_notifications()); ?> id="<?php echo esc_attr( $args[ 'container_id' ] ); ?>"
             class="<?php echo esc_attr( $args[ 'container_class' ] ); ?>">
@@ -469,11 +469,11 @@
 			/**
 			 * Load the visual editor if enabled
 			 */
-			if ( true === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ) {
+			if ( true === boolval( mumei_ayuda_get_option( 'frontend_wysiwyg_editor' ) ) ) {
 
-				$editor_defaults = apply_filters( 'wpas_ticket_editor_args', array(
+				$editor_defaults = apply_filters( 'mumei_ayuda_ticket_editor_args', array(
 					'media_buttons' => false,
-					'textarea_name' => 'wpas_user_reply',
+					'textarea_name' => 'mumei_ayuda_user_reply',
 					'textarea_rows' => 10,
 					'tabindex'      => 2,
 					'editor_class'  => $args[ 'textarea_class' ],
@@ -484,7 +484,7 @@
 					),
 				) );
 
-				wp_editor( '', 'wpas-reply-wysiwyg', apply_filters( 'wpas_reply_wysiwyg_args', $editor_defaults ) );
+				wp_editor( '', 'wpas-reply-wysiwyg', apply_filters( 'mumei_ayuda_reply_wysiwyg_args', $editor_defaults ) );
 
 			} /**
 			 * Otherwise just load a textarea
@@ -497,10 +497,10 @@
 				 * @since  3.0.0
 				 * @var boolean
 				 */
-				$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', false );
+				$can_submit_empty = apply_filters( 'mumei_ayuda_can_reply_be_empty', false );
 				?>
-                <textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea"
-                          placeholder="<?php esc_html_e( 'Type your reply here.', 'awesome-support' ); ?>"
+                <textarea class="form-control" rows="10" name="mumei_ayuda_user_reply" rows="6" id="wpas-reply-textarea"
+                          placeholder="<?php esc_html_e( 'Type your reply here.', 'ayuda-help-desk' ); ?>"
 				          <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
 			<?php }
 
@@ -509,47 +509,47 @@
 
 			<?php
 			/**
-			 * wpas_ticket_details_reply_textarea_after hook
+			 * mumei_ayuda_ticket_details_reply_textarea_after hook
 			 *
 			 * @since  3.0.0
 			 */
-			do_action( 'wpas_ticket_details_reply_textarea_after' );
+			do_action( 'mumei_ayuda_ticket_details_reply_textarea_after' );
 
-			if ( current_user_can( 'close_ticket' ) && boolval( wpas_get_option( 'allow_user_to_close_tickets', true ) ) && apply_filters( 'wpas_user_can_close_ticket', true, $post_id ) ): ?>
+			if ( current_user_can( 'close_ticket' ) && boolval( mumei_ayuda_get_option( 'allow_user_to_close_tickets', true ) ) && apply_filters( 'mumei_ayuda_user_can_close_ticket', true, $post_id ) ): ?>
 
                 <div class="checkbox">
                     <label for="close_ticket" data-toggle="tooltip" data-placement="right" title=""
-                           data-original-title="<?php esc_html_e( 'No reply is required to close', 'awesome-support' ); ?>">
-                        <input type="checkbox" name="wpas_close_ticket" id="close_ticket"
-                               value="true"> <?php esc_html_e( 'Close this ticket', 'awesome-support' ); ?>
+                           data-original-title="<?php esc_html_e( 'No reply is required to close', 'ayuda-help-desk' ); ?>">
+                        <input type="checkbox" name="mumei_ayuda_close_ticket" id="close_ticket"
+                               value="true"> <?php esc_html_e( 'Close this ticket', 'ayuda-help-desk' ); ?>
                     </label>
                 </div>
 
 			<?php endif;
 
 			/**
-			 * wpas_ticket_details_reply_close_checkbox_after hook
+			 * mumei_ayuda_ticket_details_reply_close_checkbox_after hook
 			 *
 			 * @since  3.0.0
 			 */
-			do_action( 'wpas_ticket_details_reply_close_checkbox_after' ); ?>
+			do_action( 'mumei_ayuda_ticket_details_reply_close_checkbox_after' ); ?>
 
             <input type="hidden" name="ticket_id" value="<?php echo esc_attr( $post_id ); ?>"/>
 
 			<?php
 			wp_nonce_field( 'send_reply', 'client_reply', false, true );
-			wpas_do_field( 'submit_new_reply' );
-			wpas_make_button( __( 'Reply', 'awesome-support' ), array(
+			mumei_ayuda_do_field( 'submit_new_reply' );
+			mumei_ayuda_make_button( __( 'Reply', 'ayuda-help-desk' ), array(
 				'name'     => 'wpas-submit',
-				'onsubmit' => __( 'Please Wait...', 'awesome-support' ),
+				'onsubmit' => __( 'Please Wait...', 'ayuda-help-desk' ),
 			) );
 
 			/**
-			 * wpas_ticket_details_reply_close_checkbox_after hook
+			 * mumei_ayuda_ticket_details_reply_close_checkbox_after hook
 			 *
 			 * @since  3.0.0
 			 */
-			do_action( 'wpas_ticket_details_reply_form_before_close' );
+			do_action( 'mumei_ayuda_ticket_details_reply_form_before_close' );
 			?>
 
             </form>
@@ -558,23 +558,23 @@
 		/**
 		 * This case is an agent viewing the ticket from the front-end. All actions are tracked in the back-end only, that's why we prevent agents from replying through the front-end.
 		 */
-		elseif ( 'open' === $status && false === wpas_can_reply_ticket() ):
+		elseif ( 'open' === $status && false === mumei_ayuda_can_reply_ticket() ):
 			// translators: %s is the URL to the admin panel.
-			$x_content = __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' );
-			echo wp_kses(wpas_get_notification_markup( 'info', sprintf( $x_content, add_query_arg( array(
+			$x_content = __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'ayuda-help-desk' );
+			echo wp_kses(mumei_ayuda_get_notification_markup( 'info', sprintf( $x_content, add_query_arg( array(
 				'post'   => $post_id,
 				'action' => 'edit',
 			), admin_url( 'post.php' ) ) ) ), get_allowed_html_wp_notifications());
 		else:
-			echo wp_kses(wpas_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'awesome-support' ) ), get_allowed_html_wp_notifications());
+			echo wp_kses(mumei_ayuda_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'ayuda-help-desk' ) ), get_allowed_html_wp_notifications());
 		endif;
 
 		/**
-		 * wpas_ticket_details_reply_form_after hook
+		 * mumei_ayuda_ticket_details_reply_form_after hook
 		 *
 		 * @since  3.0.0
 		 */
-		do_action( 'wpas_ticket_details_reply_form_after' );
+		do_action( 'mumei_ayuda_ticket_details_reply_form_after' );
 
 	}
 
@@ -587,7 +587,7 @@
 	 *
 	 * @return string             The URL to trigger re-opening the ticket
 	 */
-	function wpas_get_reopen_url( $ticket_id = null ) {
+	function mumei_ayuda_get_reopen_url( $ticket_id = null ) {
 
 		global $wp_query;
 
@@ -595,9 +595,9 @@
 			$ticket_id = intval( $wp_query->post->ID );
 		}
 
-		$url = wpas_do_url( get_permalink( $ticket_id ), 'reopen_ticket', array( 'ticket_id' => $ticket_id ) );
+		$url = mumei_ayuda_do_url( get_permalink( $ticket_id ), 'reopen_ticket', array( 'ticket_id' => $ticket_id ) );
 
-		return apply_filters( 'wpas_reopen_url', esc_url( $url ), $ticket_id );
+		return apply_filters( 'mumei_ayuda_reopen_url', esc_url( $url ), $ticket_id );
 
 	}
 
@@ -611,7 +611,7 @@
 	 * @since  3.0.0
 	 * @return string URL of the login page
 	 */
-	function wpas_get_login_url() {
+	function mumei_ayuda_get_login_url() {
 
 		global $post;
 
@@ -630,23 +630,23 @@
 	 * @since  3.0.0
 	 * @return array The list of columns with their title and callback
 	 */
-	function wpas_get_tickets_list_columns() {
+	function mumei_ayuda_get_tickets_list_columns() {
 
 		$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
 		$columns = array(
 			'status' => array(
-				'title'             => __( 'Status', 'awesome-support' ),
-				'callback'          => 'wpas_cf_display_status',
+				'title'             => __( 'Status', 'ayuda-help-desk' ),
+				'callback'          => 'mumei_ayuda_cf_display_status',
 				'column_attributes' => array( 'head' => array( 'sort-ignore' => true ) ),
 			),
-			'title'  => array( 'title' => __( 'Title', 'awesome-support' ), 'callback' => 'title' ),
+			'title'  => array( 'title' => __( 'Title', 'ayuda-help-desk' ), 'callback' => 'title' ),
 			'date'   => array(
-				'title'             => __( 'Date', 'awesome-support' ),
+				'title'             => __( 'Date', 'ayuda-help-desk' ),
 				'callback'          => 'date',
 				'column_attributes' => array(
 					'head' => array( 'type' => 'numeric', 'sort-initial' => 'descending' ),
-					'body' => array( 'value' => 'wpas_get_the_time_timestamp' ),
+					'body' => array( 'value' => 'mumei_ayuda_get_the_time_timestamp' ),
 				),
 			),
 		);
@@ -664,7 +664,7 @@
 				 && ( true === $field[ 'args' ][ 'show_frontend_list' ] )
 			) {
 
-				$column_title                = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
+				$column_title                = apply_filters( 'mumei_ayuda_custom_column_title', mumei_ayuda_get_field_title( $field ), $field );
 				$column_callback             = ( 'taxonomy' === $field[ 'args' ][ 'field_type' ] && true === $field[ 'args' ][ 'taxo_std' ] ) ? 'taxonomy' : $field[ 'args' ][ 'column_callback' ];
 				$columns[ $field[ 'name' ] ] = array( 'title' => $column_title, 'callback' => $column_callback );
 
@@ -676,7 +676,7 @@
 
 		}
 
-		return apply_filters( 'wpas_tickets_list_columns', $columns );
+		return apply_filters( 'mumei_ayuda_tickets_list_columns', $columns );
 
 	}
 
@@ -695,7 +695,7 @@
 	 *
 	 * @return void
 	 */
-	function wpas_get_tickets_list_column_content( $column_id, $column ) {
+	function mumei_ayuda_get_tickets_list_column_content( $column_id, $column ) {
 
 		$callback = $column[ 'callback' ];
 
@@ -706,18 +706,18 @@
 				break;
 
 			case 'status':
-				echo wp_kses(wpas_get_ticket_status( get_the_ID() ), get_allowed_html_wp_notifications());
+				echo wp_kses(mumei_ayuda_get_ticket_status( get_the_ID() ), get_allowed_html_wp_notifications());
 				break;
 
 			case 'title':
 
 				// If the replies are displayed from the oldest to the newest we want to link directly to the latest reply in case there are multiple reply pages
-				if ( 'ASC' === wpas_get_option( 'replies_order', 'ASC' ) ) {
-					$last_reply = wpas_get_replies( get_the_ID(), array(
+				if ( 'ASC' === mumei_ayuda_get_option( 'replies_order', 'ASC' ) ) {
+					$last_reply = mumei_ayuda_get_replies( get_the_ID(), array(
 						'read',
 						'unread',
 					), array( 'posts_per_page' => 1, 'order' => 'DESC' ) );
-					$link       = ! empty( $last_reply ) ? wpas_get_reply_link( $last_reply[ 0 ]->ID ) : get_permalink( get_the_ID() );
+					$link       = ! empty( $last_reply ) ? mumei_ayuda_get_reply_link( $last_reply[ 0 ]->ID ) : get_permalink( get_the_ID() );
 				} else {
 					$link = get_permalink( get_the_ID() );
 				}
@@ -726,7 +726,7 @@
 				$title = get_the_title();
 
 				/* Maybe add the ticket id to the title string */
-				if ( ! boolval( wpas_get_option( 'hide_ticket_id_title_fe', false ) ) ) {
+				if ( ! boolval( mumei_ayuda_get_option( 'hide_ticket_id_title_fe', false ) ) ) {
 					$title .= " (#$id)";
 				}
 
@@ -734,7 +734,7 @@
 				break;
 
 			case 'date':
-				$offset = wpas_get_offset_html5();
+				$offset = mumei_ayuda_get_offset_html5();
 				?>
                 <time
                 datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wp_kses($offset, get_allowed_html_wp_notifications()) ?>"><?php echo get_the_date( get_option( 'date_format' ) ) . ' ' . get_the_date( get_option( 'time_format' ) ); ?></time><?php
@@ -780,7 +780,7 @@
 	 * @since  3.0.0
 	 * @return string HTML5 formatted time offset
 	 */
-	function wpas_get_offset_html5() {
+	function mumei_ayuda_get_offset_html5() {
 
 		$offset = get_option( 'gmt_offset' );
 
@@ -823,7 +823,7 @@
 	 *
 	 * @return void
 	 */
-	function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
+	function mumei_ayuda_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 
 		$terms = get_the_terms( $post_id, $field );
 		$list  = array();
@@ -834,7 +834,7 @@
 
 			foreach ( $terms as $term ) {
 
-				$term_title = apply_filters( 'wpas_taxonomy_name', $term->name, $post_id, $field );
+				$term_title = apply_filters( 'mumei_ayuda_taxonomy_name', $term->name, $post_id, $field );
 
 				if ( is_admin() ) {
 					$get = (array) $_GET;
@@ -878,9 +878,9 @@
 	 *
 	 * @return void
 	 */
-	function wpas_show_assignee_column( $field, $post_id ) {
+	function mumei_ayuda_show_assignee_column( $field, $post_id ) {
 
-		$assignee = (int) get_post_meta( $post_id, '_wpas_assignee', true );
+		$assignee = (int) get_post_meta( $post_id, '_mumei_ayuda_assignee', true );
 		$agent    = get_user_by( 'id', $assignee );
 		$link     = add_query_arg( array( 'post_type' => 'ticket', 'assignee' => $assignee ), admin_url( 'edit.php' ) );
 
@@ -902,9 +902,9 @@
 	 *
 	 * @return void
 	 */
-	function wpas_show_secondary_assignee_column( $field, $post_id ) {
+	function mumei_ayuda_show_secondary_assignee_column( $field, $post_id ) {
 
-		$assignee = (int) get_post_meta( $post_id, '_wpas_secondary_assignee', true );
+		$assignee = (int) get_post_meta( $post_id, '_mumei_ayuda_secondary_assignee', true );
 		$agent    = get_user_by( 'id', $assignee );
 		$link     = add_query_arg( array( 'post_type' => 'ticket', 'secondary_assignee' => $assignee ), admin_url( 'edit.php' ) );
 
@@ -926,9 +926,9 @@
 	 *
 	 * @return void
 	 */
-	function wpas_show_tertiary_assignee_column( $field, $post_id ) {
+	function mumei_ayuda_show_tertiary_assignee_column( $field, $post_id ) {
 
-		$assignee = (int) get_post_meta( $post_id, '_wpas_tertiary_assignee', true );
+		$assignee = (int) get_post_meta( $post_id, '_mumei_ayuda_tertiary_assignee', true );
 		$agent    = get_user_by( 'id', $assignee );
 		$link     = add_query_arg( array( 'post_type' => 'ticket', 'tertiary_assignee' => $assignee ), admin_url( 'edit.php' ) );
 
@@ -951,9 +951,9 @@
 	 *
 	 * @return void
 	 */
-	function wpas_show_3rd_party01_column( $field, $post_id ) {
-		$third_party_name01  = get_post_meta( $post_id, '_wpas_first_addl_interested_party_name', true );
-		$third_party_email01 = get_post_meta( $post_id, '_wpas_first_addl_interested_party_email', true );
+	function mumei_ayuda_show_3rd_party01_column( $field, $post_id ) {
+		$third_party_name01  = get_post_meta( $post_id, '_mumei_ayuda_first_addl_interested_party_name', true );
+		$third_party_email01 = get_post_meta( $post_id, '_mumei_ayuda_first_addl_interested_party_email', true );
 
 		$fullouput = '';
 		If ( ! empty($third_party_name01) ) {
@@ -987,9 +987,9 @@
 	 *
 	 * @return void
 	 */
-	function wpas_show_3rd_party02_column( $field, $post_id ) {
-		$third_party_name02  = get_post_meta( $post_id, '_wpas_second_addl_interested_party_name', true );
-		$third_party_email02 = get_post_meta( $post_id, '_wpas_second_addl_interested_party_email', true );
+	function mumei_ayuda_show_3rd_party02_column( $field, $post_id ) {
+		$third_party_name02  = get_post_meta( $post_id, '_mumei_ayuda_second_addl_interested_party_name', true );
+		$third_party_email02 = get_post_meta( $post_id, '_mumei_ayuda_second_addl_interested_party_email', true );
 
 		$fullouput = '';
 		If ( ! empty($third_party_name02) ) {
@@ -1019,9 +1019,9 @@
 	 *
 	 * @param $post_id
 	 */
-	function wpas_cf_display_time_hhmm( $field, $post_id ) {
+	function mumei_ayuda_cf_display_time_hhmm( $field, $post_id ) {
 
-		$minutes = (int) get_post_meta( $post_id, '_wpas_' . $field, true );
+		$minutes = (int) get_post_meta( $post_id, '_mumei_ayuda_' . $field, true );
 		$adjustment_operator = ($minutes < 0 ) ? '-' : ''; 
 		$minutes = ($minutes < 0 ) ? $minutes * (-1) : (int)$minutes;
 		if ( isset( $minutes ) && is_numeric( $minutes ) ) {
@@ -1039,9 +1039,9 @@
 	 *
 	 * @param $post_id
 	 */
-	function wpas_cf_email_display_time_hhmm( $field, $post_id ) {
+	function mumei_ayuda_cf_email_display_time_hhmm( $field, $post_id ) {
 
-		$minutes = (int) get_post_meta( $post_id, '_wpas_' . $field, true );
+		$minutes = (int) get_post_meta( $post_id, '_mumei_ayuda_' . $field, true );
 		$adjustment_operator = ($minutes < 0 ) ? '-' : ''; 
 		$minutes = ($minutes < 0 ) ? $minutes * (-1) : (int)$minutes;
 		if ( isset( $minutes ) && is_numeric( $minutes ) ) {
@@ -1061,10 +1061,10 @@
 	 *
 	 * @param $post_id
 	 */
-	function wpas_cf_display_time_adjustment_column( $field, $post_id ) {
+	function mumei_ayuda_cf_display_time_adjustment_column( $field, $post_id ) {
 
-		$minutes = (int) get_post_meta( $post_id, '_wpas_ttl_adjustments_to_time_spent_on_ticket', true );
-		//$adjustment_operator = get_post_meta( $post_id, '_wpas_time_adjustments_pos_or_neg', true );
+		$minutes = (int) get_post_meta( $post_id, '_mumei_ayuda_ttl_adjustments_to_time_spent_on_ticket', true );
+		//$adjustment_operator = get_post_meta( $post_id, '_mumei_ayuda_time_adjustments_pos_or_neg', true );
 		if ( ! empty( $minutes ) ) {
 			$adjustment_operator = ($minutes < 0 ) ? '-' : '+'; 
 			$minutes = ($minutes < 0 ) ? $minutes * (-1) : (int)$minutes;
@@ -1092,19 +1092,19 @@
 	 *
 	 * @return string           Formatted ticket status
 	 */
-	function wpas_cf_display_status( $name, $post_id ) {
+	function mumei_ayuda_cf_display_status( $name, $post_id ) {
 
 		global $pagenow;
 
-		$status = wpas_get_ticket_status( $post_id );
+		$status = mumei_ayuda_get_ticket_status( $post_id );
 
 		$post          = get_post( $post_id );
 		$post_status   = $post->post_status;
-		$custom_status = wpas_get_post_status();
+		$custom_status = mumei_ayuda_get_post_status();
 
 		if ( 'closed' === $status && ( 'post-new.php' == $pagenow || 'post.php' == $pagenow || 'edit.php' == $pagenow || ( ! is_admin() && 'index.php' === $pagenow ) ) ) {
-			$label = __( 'Closed', 'awesome-support' );
-			$color = wpas_get_option( "color_$status", '#dd3333' );
+			$label = __( 'Closed', 'ayuda-help-desk' );
+			$color = mumei_ayuda_get_option( "color_$status", '#dd3333' );
 			$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
 			if ( 'edit.php' == $pagenow && array_key_exists( $post_status, $custom_status ) ) {
@@ -1115,11 +1115,11 @@
 
 			$post          = get_post( $post_id );
 			$post_status   = $post->post_status;
-			$custom_status = wpas_get_post_status();
+			$custom_status = mumei_ayuda_get_post_status();
 
 			if ( ! array_key_exists( $post_status, $custom_status ) ) {
-				$label = __( 'Open', 'awesome-support' );
-				$color = wpas_get_option( "color_$status", '#169baa' );
+				$label = __( 'Open', 'ayuda-help-desk' );
+				$color = mumei_ayuda_get_option( "color_$status", '#169baa' );
 				$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 			} else {
 				$defaults = array(
@@ -1128,7 +1128,7 @@
 					'hold'       => '#b56629',
 				);
 				$label    = $custom_status[ $post_status ];
-				$color    = wpas_get_option( "color_$post_status", false );
+				$color    = mumei_ayuda_get_option( "color_$post_status", false );
 
 				if ( false === $color ) {
 					if ( isset( $defaults[ $post_status ] ) ) {
@@ -1159,7 +1159,7 @@
 	 *
 	 * @return string           Formatted ticket priority
 	 */
-	function wpas_cf_display_priority( $name, $post_id ) {
+	function mumei_ayuda_cf_display_priority( $name, $post_id ) {
 
 		global $pagenow;
 
@@ -1172,7 +1172,7 @@
 		$term = array_shift( $terms ); // Will get first term, and remove it from $terms array
 
 		// translators: %s is the taxomany.
-		$label = __( '%s.', 'awesome-support' );
+		$label = __( '%s.', 'ayuda-help-desk' );
 		$label = sprintf($label, $term->name);
 		$color = get_term_meta( $term->term_id, 'color', true );
 		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
@@ -1194,7 +1194,7 @@
 	 *
 	 * @return string           Formatted ticket priority
 	 */
-	function wpas_cf_display_ticket_type( $name, $post_id ) {
+	function mumei_ayuda_cf_display_ticket_type( $name, $post_id ) {
 
 		global $pagenow;
 
@@ -1207,7 +1207,7 @@
 		$term = array_shift( $terms ); // Will get first term, and remove it from $terms array
 
 		// translators: %s is the taxomany.
-		$label = __( '%s.', 'awesome-support' );
+		$label = __( '%s.', 'ayuda-help-desk' );
 		$label = sprintf($label, $term->name);
 		$color = get_term_meta( $term->term_id, 'color', true );
 		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
@@ -1226,13 +1226,13 @@
 	 *
 	 * @return string
 	 */
-	function wpas_get_notification_markup( $type = 'info', $message = '' ) {
+	function mumei_ayuda_get_notification_markup( $type = 'info', $message = '' ) {
 
 		if ( empty( $message ) ) {
 			return '';
 		}
 
-		$classes = apply_filters( 'wpas_notification_classes', array(
+		$classes = apply_filters( 'mumei_ayuda_notification_classes', array(
 			'success' => 'wpas-alert wpas-alert-success',
 			'failure' => 'wpas-alert wpas-alert-danger',
 			'info'    => 'wpas-alert wpas-alert-info',
@@ -1242,8 +1242,8 @@
 			$type = 'info';
 		}
 
-		$markup = apply_filters( 'wpas_notification_wrapper', '<div class="%s">%s</div>' ); // Keep this filter for backwards compatibility
-		$markup = apply_filters( 'wpas_notification_markup', sprintf( $markup, $classes[ $type ], $message ), $type );
+		$markup = apply_filters( 'mumei_ayuda_notification_wrapper', '<div class="%s">%s</div>' ); // Keep this filter for backwards compatibility
+		$markup = apply_filters( 'mumei_ayuda_notification_markup', sprintf( $markup, $classes[ $type ], $message ), $type );
 
 		return $markup;
 
@@ -1252,7 +1252,7 @@
 	/**
 	 * Get pagination link
 	 *
-	 * This is used for pagination throughout Awesome Support.
+	 * This is used for pagination throughout Ayuda – Help Desk.
 	 * It is used for paginating ticket replies as well as tickets lists.
 	 *
 	 * @since 3.2
@@ -1262,7 +1262,7 @@
 	 *
 	 * @return string Link to the prev/next page
 	 */
-	function wpas_pagination_link( $direction = 'next', $posts = 0 ) {
+	function mumei_ayuda_pagination_link( $direction = 'next', $posts = 0 ) {
 
 		global $post;
 
@@ -1271,7 +1271,7 @@
 		}
 
 		$current_page   = isset( $_GET[ 'as-page' ] ) ? filter_input( INPUT_GET, 'as-page', FILTER_SANITIZE_NUMBER_INT ) : 1;
-		$posts_per_page = (int) wpas_get_option( 'replies_per_page', 10 );
+		$posts_per_page = (int) mumei_ayuda_get_option( 'replies_per_page', 10 );
 		$link           = '';
 
 		switch ( $direction ) {
@@ -1310,13 +1310,13 @@
 	 *
 	 * @return string
 	 */
-	function wpas_prev_page_link( $label = '', $echo = true ) {
+	function mumei_ayuda_prev_page_link( $label = '', $echo = true ) {
 
 		if ( empty( $label ) ) {
-			$label = '< ' . __( 'Previous Page', 'awesome-support' );
+			$label = '< ' . __( 'Previous Page', 'ayuda-help-desk' );
 		}
 
-		$link = wpas_pagination_link( 'prev' );
+		$link = mumei_ayuda_pagination_link( 'prev' );
 
 		if ( ! empty( $link ) ) {
 			$link = "<a href='$link'>$label</a>";
@@ -1343,13 +1343,13 @@
 	 *
 	 * @return string
 	 */
-	function wpas_next_page_link( $label = '', $posts = 0, $echo = true ) {
+	function mumei_ayuda_next_page_link( $label = '', $posts = 0, $echo = true ) {
 
 		if ( empty( $label ) ) {
-			$label = __( 'Next Page', 'awesome-support' ) . ' >';
+			$label = __( 'Next Page', 'ayuda-help-desk' ) . ' >';
 		}
 
-		$link = wpas_pagination_link( 'next', $posts );
+		$link = mumei_ayuda_pagination_link( 'next', $posts );
 
 		if ( ! empty( $link ) ) {
 			$link = "<a href='$link'>$label</a>";
@@ -1365,7 +1365,7 @@
 
 	}
 
-	add_filter( 'template_include', 'wpas_template_include', 10, 1 );
+	add_filter( 'template_include', 'mumei_ayuda_template_include', 10, 1 );
 	/**
 	 * Change ticket template.
 	 *
@@ -1381,7 +1381,7 @@
 	 *
 	 * @return string           Path to (possibly) new template
 	 */
-	function wpas_template_include( $template ) {
+	function mumei_ayuda_template_include( $template ) {
 
 		if ( ! is_singular( 'ticket' ) ) {
 			return $template;
@@ -1407,7 +1407,7 @@
 
 	}
 
-	add_action( 'wpas_after_registration_fields', 'wpas_terms_and_conditions_checkbox', 10, 3 );
+	add_action( 'mumei_ayuda_after_registration_fields', 'mumei_ayuda_terms_and_conditions_checkbox', 10, 3 );
 	/**
 	 * Add the terms and conditions checkbox.
 	 *
@@ -1417,19 +1417,19 @@
 	 * @since  3.0.0
 	 * @return void
 	 */
-	function wpas_terms_and_conditions_checkbox() {
+	function mumei_ayuda_terms_and_conditions_checkbox() {
 
-		$terms = wpas_get_option( 'terms_conditions', '' );
+		$terms = mumei_ayuda_get_option( 'terms_conditions', '' );
 
 		if ( empty( $terms ) ) {
 			return;
 		}	
 
 		// translators: %1$s and %2$s are the opening and closing HTML tags around "terms and conditions".
-		$x_options = __( 'I accept the %1$sterms and conditions%2$s', 'awesome-support' );
+		$x_options = __( 'I accept the %1$sterms and conditions%2$s', 'ayuda-help-desk' );
 
 
-		$terms = new WPAS_Custom_Field( 'terms', array(
+		$terms = new MUMEI_AYUDA_Custom_Field( 'terms', array(
 			'name' => 'terms',
 			'args' => array(
 				'required'   => true,
@@ -1442,7 +1442,7 @@
 		echo wp_kses($terms->get_output(), get_allowed_html_wp_notifications());
 	}
 
-	add_action( 'wpas_after_template', 'wpas_terms_and_conditions_modal', 10, 3 );
+	add_action( 'mumei_ayuda_after_template', 'mumei_ayuda_terms_and_conditions_modal', 10, 3 );
 	/**
 	 * Load terms and conditions.
 	 *
@@ -1455,13 +1455,13 @@
 	 *
 	 * @return boolean           True if the modal is loaded, false otherwise
 	 */
-	function wpas_terms_and_conditions_modal( $name ) {
+	function mumei_ayuda_terms_and_conditions_modal( $name ) {
 
 		if ( 'registration' !== $name ) {
 			return false;
 		}
 
-		$terms = wpas_get_option( 'terms_conditions', '' );
+		$terms = mumei_ayuda_get_option( 'terms_conditions', '' );
 
 		if ( empty( $terms ) ) {
 			return false;
@@ -1473,7 +1473,7 @@
 
 	}
 
-	add_action( 'wpas_after_registration_fields', 'wpas_gdpr_checkboxes', 10, 3 );
+	add_action( 'mumei_ayuda_after_registration_fields', 'mumei_ayuda_gdpr_checkboxes', 10, 3 );
 	/**
 	 * Add the checkboxes for GDPR notices
 	 *
@@ -1483,16 +1483,16 @@
 	 * @since  4.4.0
 	 * @return void
 	 */
-	function wpas_gdpr_checkboxes() {
+	function mumei_ayuda_gdpr_checkboxes() {
 
-		$gdpr_short_desc_01 = wpas_get_option( 'gdpr_notice_short_desc_01', '' );
-		$gdpr_long_desc_01 = wpas_get_option( 'gdpr_notice_long_desc_01', '' );
-		$gdpr_opt_out_ok_01 = wpas_get_option('gdpr_notice_opt_out_ok_01', '' );
-		$gdpr_required_01 = boolval( wpas_get_option( 'gdpr_notice_mandatory_01', true ) );
+		$gdpr_short_desc_01 = mumei_ayuda_get_option( 'gdpr_notice_short_desc_01', '' );
+		$gdpr_long_desc_01 = mumei_ayuda_get_option( 'gdpr_notice_long_desc_01', '' );
+		$gdpr_opt_out_ok_01 = mumei_ayuda_get_option('gdpr_notice_opt_out_ok_01', '' );
+		$gdpr_required_01 = boolval( mumei_ayuda_get_option( 'gdpr_notice_mandatory_01', true ) );
 
 		if ( ! empty( $gdpr_short_desc_01 ) || ! empty( $gdpr_short_desc_01 ) ) {
 
-			$gdpr01 = new WPAS_Custom_Field( 'gdpr01', array(
+			$gdpr01 = new MUMEI_AYUDA_Custom_Field( 'gdpr01', array(
 				'name' => 'gdpr01',
 				'args' => array(
 					'required'   => $gdpr_required_01,
@@ -1507,14 +1507,14 @@
 
 		}
 
-		$gdpr_short_desc_02 = wpas_get_option( 'gdpr_notice_short_desc_02', '' );
-		$gdpr_long_desc_02 = wpas_get_option( 'gdpr_notice_long_desc_02', '' );
-		$gdpr_opt_out_ok_02 = wpas_get_option('gdpr_notice_opt_out_ok_02', '' );
-		$gdpr_required_02 = boolval( wpas_get_option( 'gdpr_notice_mandatory_02', true ) );
+		$gdpr_short_desc_02 = mumei_ayuda_get_option( 'gdpr_notice_short_desc_02', '' );
+		$gdpr_long_desc_02 = mumei_ayuda_get_option( 'gdpr_notice_long_desc_02', '' );
+		$gdpr_opt_out_ok_02 = mumei_ayuda_get_option('gdpr_notice_opt_out_ok_02', '' );
+		$gdpr_required_02 = boolval( mumei_ayuda_get_option( 'gdpr_notice_mandatory_02', true ) );
 
 		if ( ! empty( $gdpr_short_desc_02 ) || ! empty( $gdpr_short_desc_02 ) ) {
 
-			$gdpr02 = new WPAS_Custom_Field( 'gdpr02', array(
+			$gdpr02 = new MUMEI_AYUDA_Custom_Field( 'gdpr02', array(
 				'name' => 'gdpr02',
 				'args' => array(
 					'required'   => $gdpr_required_02,
@@ -1529,14 +1529,14 @@
 
 		}
 
-		$gdpr_short_desc_03 = wpas_get_option( 'gdpr_notice_short_desc_03', '' );
-		$gdpr_long_desc_03 = wpas_get_option( 'gdpr_notice_long_desc_03', '' );
-		$gdpr_required_03 = boolval( wpas_get_option( 'gdpr_notice_mandatory_03', true ) );
-		$gdpr_opt_out_ok_03 = wpas_get_option('gdpr_notice_opt_out_ok_03', '' );
+		$gdpr_short_desc_03 = mumei_ayuda_get_option( 'gdpr_notice_short_desc_03', '' );
+		$gdpr_long_desc_03 = mumei_ayuda_get_option( 'gdpr_notice_long_desc_03', '' );
+		$gdpr_required_03 = boolval( mumei_ayuda_get_option( 'gdpr_notice_mandatory_03', true ) );
+		$gdpr_opt_out_ok_03 = mumei_ayuda_get_option('gdpr_notice_opt_out_ok_03', '' );
 
 		if ( ! empty( $gdpr_short_desc_03 ) || ! empty( $gdpr_short_desc_03 ) ) {
 
-			$gdpr03 = new WPAS_Custom_Field( 'gdpr03', array(
+			$gdpr03 = new MUMEI_AYUDA_Custom_Field( 'gdpr03', array(
 				'name' => 'gdpr03',
 				'args' => array(
 					'required'   => $gdpr_required_03,
@@ -1553,7 +1553,7 @@
 
 	}
 
-	add_filter( 'wpas_cf_field_markup_readonly', 'wpas_cf_field_markup_time_tracking_readonly', 10, 2 );
+	add_filter( 'mumei_ayuda_cf_field_markup_readonly', 'mumei_ayuda_cf_field_markup_time_tracking_readonly', 10, 2 );
 	/**
 	 * Check AS Settings to see if agents are allowed to manually edit
 	 * time tracking fields. If not set cf readonly setting.
@@ -1565,7 +1565,7 @@
 	 *
 	 * @return bool
 	 */
-	function wpas_cf_field_markup_time_tracking_readonly( $readonly, $field ) {
+	function mumei_ayuda_cf_field_markup_time_tracking_readonly( $readonly, $field ) {
 
 		if ( $field[ 'name' ] === 'ttl_calculated_time_spent_on_ticket'
 		     || $field[ 'name' ] === 'ttl_adjustments_to_time_spent_on_ticket'
@@ -1573,7 +1573,7 @@
 		     || $field[ 'name' ] === 'time_notes'
 		) {
 
-			if ( false === boolval( wpas_get_option( 'allow_agents_to_enter_time', $readonly ) ) ) {
+			if ( false === boolval( mumei_ayuda_get_option( 'allow_agents_to_enter_time', $readonly ) ) ) {
 				$readonly = true;
 
 				// Disable tiny mce editor for notes field
@@ -1595,10 +1595,10 @@
 	 *
 	 * @return string
 	 */
-	function wpas_get_logout_redirect() {
+	function mumei_ayuda_get_logout_redirect() {
 
-		if ( ! empty( wpas_get_option( 'logout_redirect_fe', '') ) ) {
-			return wp_logout_url( wpas_get_option( 'logout_redirect_fe', '') );
+		if ( ! empty( mumei_ayuda_get_option( 'logout_redirect_fe', '') ) ) {
+			return wp_logout_url( mumei_ayuda_get_option( 'logout_redirect_fe', '') );
 		} else {
 			return wp_logout_url();
 		}
@@ -1621,7 +1621,7 @@
 	 *
 	 * @return string          Ticket single
 	 */
-	function wpas_single_ticket_title( $title = '' )
+	function mumei_ayuda_single_ticket_title( $title = '' )
 	{
 
 		global $post;
@@ -1649,17 +1649,17 @@
 		}
 
 		/* Remove the filter to avoid infinite loops. */
-		remove_filter( 'the_title', 'wpas_single_ticket_title' );
+		remove_filter( 'the_title', 'mumei_ayuda_single_ticket_title' );
 
 		/* Check if the current user can view the ticket */
-		if ( ! wpas_can_view_ticket( $post->ID ) ) {
+		if ( ! mumei_ayuda_can_view_ticket( $post->ID ) ) {
 
 			if ( is_user_logged_in() ) {
-				return wpas_get_notification_markup( 'failure', __( 'No tickets found.', 'awesome-support' ) );
+				return mumei_ayuda_get_notification_markup( 'failure', __( 'No tickets found.', 'ayuda-help-desk' ) );
 			} else {
 
 				$output = '';
-				$output .= wpas_get_notification_markup( 'info', __( 'No tickets found.', 'awesome-support' ) );
+				$output .= mumei_ayuda_get_notification_markup( 'info', __( 'No tickets found.', 'ayuda-help-desk' ) );
 
 				return $output;
 
@@ -1681,7 +1681,7 @@
 
 	}
 	// Add filter to `the_title` hook.
-	add_filter( 'the_title', 'wpas_single_ticket_title', 10, 1 );
+	add_filter( 'the_title', 'mumei_ayuda_single_ticket_title', 10, 1 );
 
 	/**
 	 * Alter document title for single ticket to prevent information disclosure.
@@ -1695,7 +1695,7 @@
 	 *
 	 * @return array  Modified title parts
 	 */
-	function wpas_single_ticket_document_title( $title_parts = array() ) {
+	function mumei_ayuda_single_ticket_document_title( $title_parts = array() ) {
 
 		global $post;
 
@@ -1717,17 +1717,17 @@
 		}
 
 		/* Check if the current user can view the ticket */
-		$can_view = wpas_can_view_ticket( $post->ID );
+		$can_view = mumei_ayuda_can_view_ticket( $post->ID );
 		
-		/* Check if the ticket is public (wpas_pbtk_flag) - only allow public access if the Public Tickets add-on is active */
-		if ( class_exists( 'AS_Publictickets_Loader' ) && 'public' === get_post_meta( $post->ID, '_wpas_pbtk_flag', true ) ) {
+		/* Check if the ticket is public (mumei_ayuda_pbtk_flag) - only allow public access if the Public Tickets add-on is active */
+		if ( class_exists( 'AS_Publictickets_Loader' ) && 'public' === get_post_meta( $post->ID, '_mumei_ayuda_pbtk_flag', true ) ) {
 			$can_view = true;
 		}
 		
 		if ( ! $can_view ) {
 			/* Replace the ticket title with a generic title to prevent information disclosure */
 			if ( isset( $title_parts['title'] ) ) {
-				$title_parts['title'] = __( 'No tickets found.', 'awesome-support' );
+				$title_parts['title'] = __( 'No tickets found.', 'ayuda-help-desk' );
 			}
 		}
 
@@ -1735,4 +1735,4 @@
 
 	}
 	// Add filter to `document_title_parts` hook (WordPress 4.4+).
-	add_filter( 'document_title_parts', 'wpas_single_ticket_document_title', 10, 1 );
+	add_filter( 'document_title_parts', 'mumei_ayuda_single_ticket_document_title', 10, 1 );

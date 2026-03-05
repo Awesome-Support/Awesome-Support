@@ -6,7 +6,7 @@
  * and change it in one click.
  *
  * For more details on how the ticket status is changed,
- * @see Awesome_Support_Admin::custom_actions()
+ * @see Mumei_Ayuda_Support_Admin::custom_actions()
  *
  * @since 3.0.0
  */
@@ -19,7 +19,7 @@ if ( ! defined( 'WPINC' ) ) {
 global $pagenow, $post;
 
 /* Current status */
-$ticket_status = get_post_meta( get_the_ID(), '_wpas_status', true );
+$ticket_status = get_post_meta( get_the_ID(), '_mumei_ayuda_status', true );
 
 /* Status action link - @see admin/class-awesome-support-admin.php */
 $action = get_ticket_details_action_link( $post );
@@ -27,7 +27,7 @@ $action = get_ticket_details_action_link( $post );
 /**
  * Get available statuses.
  */
-$statuses = wpas_get_post_status();
+$statuses = mumei_ayuda_get_post_status();
 
 /* Get post status */
 $post_status = isset( $post ) ? $post->post_status : '';
@@ -43,16 +43,16 @@ if ( isset( $post ) ) {
 ?>
 <div class="wpas-ticket-status submitbox">
 
-	<?php do_action( 'wpas_backend_ticket_status_content_before', $post->ID ); ?>
+	<?php do_action( 'mumei_ayuda_backend_ticket_status_content_before', $post->ID ); ?>
 
 	<div class="wpas-row" id="wpas-statusdate">
 		<div class="wpas-col">
-			<strong><?php esc_html_e( 'Status', 'awesome-support' ); ?></strong>
+			<strong><?php esc_html_e( 'Status', 'ayuda-help-desk' ); ?></strong>
 			<?php if ( 'post-new.php' != $pagenow ):
-				wpas_cf_display_status( '', $post->ID );
+				mumei_ayuda_cf_display_status( '', $post->ID );
 			?>
 			<?php else: ?>				
-				<span><?php echo _x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
+				<span><?php echo _x( 'Creating...', 'Ticket creation', 'ayuda-help-desk' ); ?></span>
 			<?php endif; ?>
 		</div>
 		<div class="wpas-col">
@@ -60,17 +60,17 @@ if ( isset( $post ) ) {
 				<strong><?php echo esc_html( $date ); ?></strong>
 				<?php  
 					// translators: %sis the date ago.
-					$x_content = __( '%s ago', 'awesome-support' ); 
+					$x_content = __( '%s ago', 'ayuda-help-desk' ); 
 				?>
 				<em><?php printf( esc_html($x_content), esc_html( $dateago ) ); ?></em>
 			<?php endif; ?>
 		</div>
 
 	</div>
-	<?php do_action( 'wpas_backend_ticket_stakeholders_before', $post->ID ); ?>
-	<?php require( WPAS_PATH . 'includes/admin/metaboxes/stakeholders.php' ); ?>
-	<?php if ( 'open' === get_post_meta( $post->ID, '_wpas_status', true ) ): ?>
-		<label for="wpas-post-status"><strong><?php esc_html_e( 'Current Status', 'awesome-support' ); ?></strong></label>
+	<?php do_action( 'mumei_ayuda_backend_ticket_stakeholders_before', $post->ID ); ?>
+	<?php require( MUMEI_AYUDA_PATH . 'includes/admin/metaboxes/stakeholders.php' ); ?>
+	<?php if ( 'open' === get_post_meta( $post->ID, '_mumei_ayuda_status', true ) ): ?>
+		<label for="wpas-post-status"><strong><?php esc_html_e( 'Current Status', 'ayuda-help-desk' ); ?></strong></label>
 		<p>
 			<select id="wpas-post-status" name="post_status_override" style="width: 100%">
 				<?php foreach ( $statuses as $status => $label ):
@@ -80,23 +80,23 @@ if ( isset( $post ) ) {
 				<?php endforeach; ?>
 			</select>
 			<?php if ( isset( $_GET['post'] ) ): ?>
-				<input type="hidden" name="wpas_post_parent" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_GET['post'] ) ) ); ?>">
+				<input type="hidden" name="mumei_ayuda_post_parent" value="<?php echo esc_attr( sanitize_text_field( wp_unslash( $_GET['post'] ) ) ); ?>">
 			<?php endif; ?>
 		</p>
 	<?php endif; ?>
 
-	<?php do_action( 'wpas_backend_ticket_status_before_actions', $post->ID ); ?>
+	<?php do_action( 'mumei_ayuda_backend_ticket_status_before_actions', $post->ID ); ?>
 	<div id="major-publishing-actions">
 		<?php if ( current_user_can( "close_ticket", $post->ID ) ): ?>
 			<div id="delete-action">
 				<a class="submitdelete deletion" href="<?php echo esc_attr( $action ); ?>">
 					<?php
 					if ( 'closed' === $ticket_status ) {
-						esc_html_e( 'Re-open', 'awesome-support' );
+						esc_html_e( 'Re-open', 'ayuda-help-desk' );
 					} elseif( '' === $ticket_status ) {
-						esc_html_e( 'Open', 'awesome-support' );
+						esc_html_e( 'Open', 'ayuda-help-desk' );
 					} else {
-						esc_html_e( 'Close', 'awesome-support' );
+						esc_html_e( 'Close', 'ayuda-help-desk' );
 					}
 					?>
 				</a>
@@ -107,12 +107,12 @@ if ( isset( $post ) ) {
 			<div id="publishing-action">
 				<span class="spinner"></span>
 				<?php if ( isset( $_GET['action'] ) && 'edit' === $_GET['action'] ) : ?>
-					<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Updating', 'awesome-support' ) ?>" />
-					<?php submit_button( __( 'Update Ticket', 'awesome-support' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'u' ) ); ?>
+					<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Updating', 'ayuda-help-desk' ) ?>" />
+					<?php submit_button( __( 'Update Ticket', 'ayuda-help-desk' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'u' ) ); ?>
 				<?php else:
 					if ( current_user_can( 'create_ticket' ) ): ?>
-						<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Creating', 'awesome-support' ) ?>" />
-						<?php submit_button( __( 'Open Ticket', 'awesome-support' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'o' ) ); ?>
+						<input name="original_publish" type="hidden" id="original_publish" value="<?php esc_attr_e( 'Creating', 'ayuda-help-desk' ) ?>" />
+						<?php submit_button( __( 'Open Ticket', 'ayuda-help-desk' ), 'primary button-large', 'publish', false, array( 'accesskey' => 'o' ) ); ?>
 						<?php endif;
 				endif; ?>
 			</div>
@@ -120,7 +120,7 @@ if ( isset( $post ) ) {
 		<div class="clear"></div>
 	</div>
 
-	<?php do_action( 'wpas_backend_ticket_status_after_actions', $post->ID ); ?>
+	<?php do_action( 'mumei_ayuda_backend_ticket_status_after_actions', $post->ID ); ?>
 
 </div>
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Show the Awesome Support Version Number
+ * Show the Ayuda – Help Desk Version Number
  *
  * This metabox is used to display the awesome support
  * version number.  It will be used later to show
@@ -14,5 +14,5 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-echo( esc_html__('Awesome Support Version: ', 'awesome-support') . esc_attr( WPAS_VERSION ) ) ;
+echo( esc_html__('Ayuda – Help Desk Version: ', 'ayuda-help-desk') . esc_attr( MUMEI_AYUDA_VERSION ) ) ;
 

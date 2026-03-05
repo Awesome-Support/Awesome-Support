@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class WPAS_CF_Upload extends WPAS_Custom_Field {
+class MUMEI_AYUDA_CF_Upload extends MUMEI_AYUDA_Custom_Field {
 
 	public function __construct( $field_id, $field ) {
 
@@ -24,7 +24,7 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 		}
 		
 		/* Force ajax upload if option to enable in settings is turned on... */
-		if ( boolval( wpas_get_option( 'ajax_upload_all', false ) ) ) {
+		if ( boolval( mumei_ayuda_get_option( 'ajax_upload_all', false ) ) ) {
 			$this->field_args['use_ajax_uploader'] = true;
 		}
 		
@@ -34,13 +34,13 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 		}
 		
 		/* Force paste if option to enable in settings is turned on */
-		if ( boolval( wpas_get_option( 'ajax_upload_paste_image_all', false ) ) ) {
+		if ( boolval( mumei_ayuda_get_option( 'ajax_upload_paste_image_all', false ) ) ) {
 			$this->field_args['enable_paste'] = true;
 		}
 		
 
 		/* Change the field name if multiple upload is enabled */
-		add_filter( 'wpas_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 3 );
+		add_filter( 'mumei_ayuda_cf_field_atts', array( $this, 'edit_field_atts' ), 10, 3 );
 
 	}
 
@@ -88,12 +88,12 @@ class WPAS_CF_Upload extends WPAS_Custom_Field {
 		$ajax = ( $this->field_args['use_ajax_uploader'] === true ) ? true : false;
 
 		if ( $ajax ) {
-			return '<label {{label_atts}}>{{label}}</label><div class="wpas-uploader-dropzone dropzone" id="dropzone-' . $this->field_id . '" data-ticket-id="' . get_the_ID() . '" data-enable-paste="' . boolval( $this->field_args['enable_paste'] ). '"><div class="dz-message" data-dz-message><span>' . __( 'Drop files here to upload', 'awesome-support' ). '</span></div></div>';
+			return '<label {{label_atts}}>{{label}}</label><div class="wpas-uploader-dropzone dropzone" id="dropzone-' . $this->field_id . '" data-ticket-id="' . get_the_ID() . '" data-enable-paste="' . boolval( $this->field_args['enable_paste'] ). '"><div class="dz-message" data-dz-message><span>' . __( 'Drop files here to upload', 'ayuda-help-desk' ). '</span></div></div>';
 		}
 
 		// Non ajax uploader
 		$multiple  = true === $this->field_args['multiple'] ? 'multiple' : '';
-		$filetypes = explode( ',', apply_filters( 'wpas_attachments_filetypes', wpas_get_option( 'attachments_filetypes' ) ) );
+		$filetypes = explode( ',', apply_filters( 'mumei_ayuda_attachments_filetypes', mumei_ayuda_get_option( 'attachments_filetypes' ) ) );
 		$accept    = array();
 
 		foreach ( $filetypes as $key => $type ) {

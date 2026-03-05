@@ -2,11 +2,12 @@
 /**
  * Fired when the plugin is uninstalled.
  *
- * @package   Awesome Support/Uninstallation
- * @author    Julien Liabeuf <julien@liabeuf.Fr>
+ * @package   Ayuda – Help Desk/Uninstallation
+ * @author    Mumei
  * @license   GPL-2.0+
- * @link      https://getawesomesupport.com
+ * @link      https://mumei.io
  * @copyright 2014-2017 AwesomeSupport
+ * Modified by Mumei (2026)
  */
 
 // If uninstall not called from WordPress, then exit
@@ -17,17 +18,17 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 if ( is_multisite() ) {
 	global $wpdb;
 	$blogs = $wpdb->get_results( "SELECT blog_id FROM {$wpdb->blogs}", ARRAY_A );
-		wpas_uninstall();
+		mumei_ayuda_uninstall();
 	if ( $blogs ) {
 		foreach ( $blogs as $blog ) {
 			switch_to_blog( $blog['blog_id'] );
-			wpas_uninstall();
+			mumei_ayuda_uninstall();
 			restore_current_blog();
 		}
 	}
 }
 else {
-	wpas_uninstall();
+	mumei_ayuda_uninstall();
 }
 
 /**
@@ -39,9 +40,9 @@ else {
  * @since  3.0.0
  * @return void
  */
-function wpas_uninstall() {
+function mumei_ayuda_uninstall() {
 
-	$options = maybe_unserialize( get_option( 'wpas_options' ) );
+	$options = maybe_unserialize( get_option( 'mumei_ayuda_options' ) );
 	global $wp_filesystem;
 
 	// Initialize the filesystem 
@@ -54,12 +55,12 @@ function wpas_uninstall() {
 	if ( isset( $options['delete_data'] ) && '1' === $options['delete_data'] ) {
 
 		/* Remove all plugin options. */
-		delete_option( 'wpas_options' );
-		delete_option( 'wpas_db_version' );
-		delete_option( 'wpas_version' );
-		delete_option( 'wpas_dismiss_free_addon_page' );
-		delete_option( 'wpas_plugin_setup' );
-		delete_option( 'wpas_skip_wizard_setup' );
+		delete_option( 'mumei_ayuda_options' );
+		delete_option( 'mumei_ayuda_db_version' );
+		delete_option( 'mumei_ayuda_version' );
+		delete_option( 'mumei_ayuda_dismiss_free_addon_page' );
+		delete_option( 'mumei_ayuda_plugin_setup' );
+		delete_option( 'mumei_ayuda_skip_wizard_setup' );
 
 		/* Delete the plugin pages.	 */
 		wp_delete_post( intval( $options['ticket_submit'] ), true );
@@ -85,12 +86,12 @@ function wpas_uninstall() {
 		/* Delete all post types and attachments */
 		foreach ( $posts->posts as $post ) {
 
-			wpas_delete_attachments( $post->ID );
+			mumei_ayuda_delete_attachments( $post->ID );
 			wp_delete_post( $post->ID, true );
 
 			$upload_dir = wp_upload_dir();
 			$ticket_id_encode = md5($post->ID . NONCE_SALT);	
-			$dirpath    = trailingslashit( $upload_dir['basedir'] ) . "awesome-support/ticket_$ticket_id_encode";
+			$dirpath    = trailingslashit( $upload_dir['basedir'] ) . "ayuda-help-desk/ticket_$ticket_id_encode";
 
 			if ( $post->post_parent == 0 && is_dir( $dirpath ) ) {
 
@@ -109,38 +110,38 @@ function wpas_uninstall() {
 				/* Delete the uploads folder */
 				$wp_filesystem->delete($dirpath, true);
 				/* Remove transients */
-				delete_transient( "wpas_activity_meta_post_$post->ID" );
+				delete_transient( "mumei_ayuda_activity_meta_post_$post->ID" );
 			}
 		}
 
 		/* Delete all tag terms. */
-		wpas_delete_taxonomy( 'ticket-tag' );
+		mumei_ayuda_delete_taxonomy( 'ticket-tag' );
 
 		/**
 		 * Delete all products if the taxonomy
 		 * was in use on this install.
 		 */
-		wpas_delete_taxonomy( 'product' );
+		mumei_ayuda_delete_taxonomy( 'product' );
 
 		/**
 		* Delete all deparments
 		*/
-		wpas_delete_taxonomy( 'department' );
+		mumei_ayuda_delete_taxonomy( 'department' );
 		
 		/**
 		* Delete Priority taxonomy
 		*/
-		wpas_delete_taxonomy( 'ticket_priority' );
+		mumei_ayuda_delete_taxonomy( 'ticket_priority' );
 		
 		/**
 		* Delete ticket type taxonomy
 		*/
-		wpas_delete_taxonomy( 'ticket_type' );				
+		mumei_ayuda_delete_taxonomy( 'ticket_type' );				
 		
 		/**
 		* Delete Channel taxonomy
 		*/
-		wpas_delete_taxonomy( 'ticket_channel' );				
+		mumei_ayuda_delete_taxonomy( 'ticket_channel' );				
 		
 	}
 
@@ -159,7 +160,7 @@ function wpas_uninstall() {
  * @link   http://wordpress.stackexchange.com/a/119353
  * @return void
  */
-function wpas_delete_taxonomy( $taxonomy ) {
+function mumei_ayuda_delete_taxonomy( $taxonomy ) {
 
 	global $wpdb;
 	$sql = 'SELECT t.name, t.term_id
@@ -185,7 +186,7 @@ function wpas_delete_taxonomy( $taxonomy ) {
  * @param  integer $post_id ID of the post to delete attachments from
  * @return void
  */
-function wpas_delete_attachments( $post_id ) {
+function mumei_ayuda_delete_attachments( $post_id ) {
 
 	$args = array(
 		'post_type'              => 'attachment',

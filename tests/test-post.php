@@ -1,5 +1,5 @@
 <?php
-class WPAS_Test_Functions_Post extends WP_UnitTestCase {
+class MUMEI_AYUDA_Test_Functions_Post extends WP_UnitTestCase {
 
 	private $plugin;
  
@@ -18,80 +18,80 @@ class WPAS_Test_Functions_Post extends WP_UnitTestCase {
             'post_content' => 'Vivamus aliquet elit ac nisl. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. Nullam dictum felis eu pede mollis pretium. Nullam vel sem. Praesent nonummy mi in odio.'
         );
 
-        update_user_option( 1, 'wpas_can_be_assigned', 'yes' );
+        update_user_option( 1, 'mumei_ayuda_can_be_assigned', 'yes' );
      
     }
 
-    function test_wpas_open_ticket() {
+    function test_mumei_ayuda_open_ticket() {
         $data = array(
             'title'   => 'Test Ticket',
             'message' => 'In hac habitasse platea dictumst. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit. Nullam cursus lacinia erat. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Donec vitae orci sed dolor rutrum auctor.'
         );
-        $ticket_id = wpas_open_ticket( $data );
+        $ticket_id = mumei_ayuda_open_ticket( $data );
         $this->assertInternalType( 'int', $ticket_id );
     }
 
-    function test_wpas_insert_ticket() {
-		$ticket_id = wpas_insert_ticket( $this->ticket_data, false );
+    function test_mumei_ayuda_insert_ticket() {
+		$ticket_id = mumei_ayuda_insert_ticket( $this->ticket_data, false );
     	$this->assertInternalType( 'int', $ticket_id );
 	}
 
-    function test_wpas_add_reply() {
-        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
-        $reply_id  = wpas_add_reply( $this->reply_data, $ticket_id );
+    function test_mumei_ayuda_add_reply() {
+        $ticket_id = mumei_ayuda_insert_ticket( $this->ticket_data, false );
+        $reply_id  = mumei_ayuda_add_reply( $this->reply_data, $ticket_id );
         $this->assertInternalType( 'int', $reply_id );
     }
 
-    function test_wpas_insert_reply() {
-        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
-        $reply_id  = wpas_insert_reply( $this->reply_data, $ticket_id );
+    function test_mumei_ayuda_insert_reply() {
+        $ticket_id = mumei_ayuda_insert_ticket( $this->ticket_data, false );
+        $reply_id  = mumei_ayuda_insert_reply( $this->reply_data, $ticket_id );
         $this->assertInternalType( 'int', $reply_id );
     }
 
-    function test_wpas_insert_reply_fail() {
-        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
-        $reply_id  = wpas_insert_reply( $this->reply_data );
+    function test_mumei_ayuda_insert_reply_fail() {
+        $ticket_id = mumei_ayuda_insert_ticket( $this->ticket_data, false );
+        $reply_id  = mumei_ayuda_insert_reply( $this->reply_data );
         $this->assertFalse( $reply_id );
     }
 
-    function test_wpas_update_ticket_status() {
-        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
-        $updated   = wpas_update_ticket_status( $ticket_id, 'processing' );
+    function test_mumei_ayuda_update_ticket_status() {
+        $ticket_id = mumei_ayuda_insert_ticket( $this->ticket_data, false );
+        $updated   = mumei_ayuda_update_ticket_status( $ticket_id, 'processing' );
         $this->assertInternalType( 'int', $updated );
         $this->assertNotEquals( 0, $updated );
     }
 
-    function test_wpas_update_ticket_status_fail() {
-        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
-        $updated   = wpas_update_ticket_status( $ticket_id, 'unknown' );
+    function test_mumei_ayuda_update_ticket_status_fail() {
+        $ticket_id = mumei_ayuda_insert_ticket( $this->ticket_data, false );
+        $updated   = mumei_ayuda_update_ticket_status( $ticket_id, 'unknown' );
         $this->assertEquals( 0, $updated );
     }
 
-    function test_wpas_edit_reply() {
-        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
-        $reply_id  = wpas_insert_reply( $this->reply_data, $ticket_id );
-        $edited    = wpas_edit_reply( $reply_id, 'Vivamus aliquet elit ac nisl.' );
+    function test_mumei_ayuda_edit_reply() {
+        $ticket_id = mumei_ayuda_insert_ticket( $this->ticket_data, false );
+        $reply_id  = mumei_ayuda_insert_reply( $this->reply_data, $ticket_id );
+        $edited    = mumei_ayuda_edit_reply( $reply_id, 'Vivamus aliquet elit ac nisl.' );
         $this->assertInternalType( 'int', $edited );
     }
 
-    function test_wpas_mark_reply_read() {
-        $ticket_id = wpas_insert_ticket( $this->ticket_data, false );
-        $reply_id  = wpas_insert_reply( $this->reply_data, $ticket_id );
-        $edited    = wpas_mark_reply_read( $reply_id );
+    function test_mumei_ayuda_mark_reply_read() {
+        $ticket_id = mumei_ayuda_insert_ticket( $this->ticket_data, false );
+        $reply_id  = mumei_ayuda_insert_reply( $this->reply_data, $ticket_id );
+        $edited    = mumei_ayuda_mark_reply_read( $reply_id );
         $this->assertInternalType( 'int', $edited );
     }
 
-    function test_wpas_get_replies() {
-        $ticket_id  = wpas_insert_ticket( $this->ticket_data, false );
-        $reply_id   = wpas_insert_reply( $this->reply_data, $ticket_id );
-        $reply_id_2 = wpas_insert_reply( $this->reply_data, $ticket_id );
-        $replies    = wpas_get_replies( $ticket_id );
+    function test_mumei_ayuda_get_replies() {
+        $ticket_id  = mumei_ayuda_insert_ticket( $this->ticket_data, false );
+        $reply_id   = mumei_ayuda_insert_reply( $this->reply_data, $ticket_id );
+        $reply_id_2 = mumei_ayuda_insert_reply( $this->reply_data, $ticket_id );
+        $replies    = mumei_ayuda_get_replies( $ticket_id );
         $this->assertNotEmpty( $replies );
         $this->assertCount( 2, $replies );
     }
 
-    function test_wpas_find_agent() {
-        $agent = wpas_find_agent();
+    function test_mumei_ayuda_find_agent() {
+        $agent = mumei_ayuda_find_agent();
         $this->assertInternalType( 'int', $agent );
     }
  
