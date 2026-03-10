@@ -1492,6 +1492,7 @@ function wpas_is_support_ticket_type_active() {
  * @return boolean
  */
 function wpas_get_current_user_role() {
+  
 	if ( ! is_user_logged_in() ) {
 		return false;
 	}
