@@ -587,6 +587,7 @@ class WPAS_GDPR_User_Profile {
 		if ( $wp_filesystem->is_writable($dir) ) {
 
 			$filecontents = 'Options -Indexes';
+			$filename     = trailingslashit( $dir ) . '.htaccess';
 
 			if ( ! file_exists( $filename ) ) {
 				$result = $wp_filesystem->put_contents($filename, $filecontents, FS_CHMOD_FILE);
