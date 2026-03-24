@@ -1829,13 +1829,18 @@ function wpas_get_ticket_replies_ajax() {
 	}
 	else
 	{
-		//Check permission for capability of current user
+		//Check permission for VIEW capability of current user
+		if ( ! wpas_can_view_ticket( $ticket_id ) ) {
+			wp_send_json_error( array('message' => esc_html__('You are not allowed to view this ticket.', 'awesome-support') ), 403);
+			die();
+		}
+		//Check permission for REPLY capability of current user
 		if ( ! current_user_can( 'reply_ticket' ) ) {
-			wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
+			wp_send_json_error( array('message' => esc_html__('Unauthorized action. You do not have permission to load TinyMCE via Ajax request to edit a reply.', 'awesome-support') ), 403);		
 	    }	
-			
+		//Check permission for Valid nonce of current user
 		if( !check_ajax_referer( 'wpas_loads_replies', 'ticket_replies_nonce', false ) ) {		
-			wp_send_json_error( array( 'message' => "You don't have access to perform this action" ) );
+			wp_send_json_error( array( 'message' =>  esc_html__("You don't have access to perform this action", 'awesome-support') ), 403 );
 			die();
 		}
 	}
@@ -1865,7 +1870,7 @@ function wpas_get_ticket_replies_ajax() {
 	);
 
 	if ( empty( $replies->posts ) ) {
-		echo json_encode( array() );
+		echo json_encode( array( __( 'No Ticket Replies found.', 'awesome-support' ) ) );
 		die();
 	}
 
