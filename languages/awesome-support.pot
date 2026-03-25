@@ -3290,6 +3290,14 @@ msgstr ""
 msgid "Include replies"
 msgstr ""
 
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
+msgstr ""
+
 #: includes/admin/settings/settings-advanced.php:99
 msgid "Inline"
 msgstr ""

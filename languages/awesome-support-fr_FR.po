@@ -8,20 +8,19 @@ msgstr ""
 "Project-Id-Version: Awesome Support\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
 "POT-Creation-Date: 2015-10-23 03:18:35+00:00\n"
-"PO-Revision-Date: 2021-05-16 07:45-0500\n"
+"PO-Revision-Date: 2026-01-14 12:47+0100\n"
 "Last-Translator: Julien Liabeuf\n"
 "Language-Team: French (France) (http://www.transifex.com/themeavenue/awesome-"
 "support/language/fr_FR/)\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 2.4.3\n"
+"X-Generator: Poedit 3.8\n"
 "X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;"
-"_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;"
-"esc_html_x:1,2c\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -246,8 +245,7 @@ msgstr "Ancien"
 msgid "Settings"
 msgstr "Réglages"
 
-#: includes/admin/class-admin-gas.php:89
-#: includes/admin/class-admin-gas.php:91
+#: includes/admin/class-admin-gas.php:89 includes/admin/class-admin-gas.php:91
 msgid "Awesome Support Settings"
 msgstr "Réglages d'Awesome Support"
 
@@ -720,8 +718,8 @@ msgstr "Page de Connexion / Enregistrement personnalisées"
 msgid ""
 "Only use this option if you know how to create your own registration page, "
 "otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" target=\"_blank"
-"\">start by reading this guide</a>."
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
 msgstr ""
 "Utilisez cette option uniquement si vous savez comment créer votre propre "
 "page d'inscription, sinon vous risquez de créer une redirection infinie. Si "
@@ -927,8 +925,8 @@ msgstr "Anciens tickets"
 #: includes/admin/settings/settings-general.php:72
 msgid "After how many days should a ticket be considered &laquo;old&raquo;?"
 msgstr ""
-"Après combien de jours un tickets doit être considéré comme &laquo;"
-"ancien&raquo; ?"
+"Après combien de jours un tickets doit être considéré comme "
+"&laquo;ancien&raquo; ?"
 
 #: includes/admin/settings/settings-general.php:83
 #: includes/admin/settings/settings-general.php:172
@@ -1651,9 +1649,10 @@ msgid ""
 msgstr ""
 "Vous pouvez activer la vérification d'e-mail sur la page d'enregistrement. "
 "Si activé, le plugin va vérifier que l'adresse e-mail est valide et peut "
-"recevoir des e-mails. La vérification est faite en utilisant l'<a href=\"%s"
-"\">API de validation des e-mails</a> et requiert un compte (gratuit) "
-"MailGun. Cela aide à réduire les erreurs de frappe lors de l'enregistrement."
+"recevoir des e-mails. La vérification est faite en utilisant l'<a "
+"href=\"%s\">API de validation des e-mails</a> et requiert un compte "
+"(gratuit) MailGun. Cela aide à réduire les erreurs de frappe lors de "
+"l'enregistrement."
 
 #: includes/class-mailgun-email-check.php:52
 #: includes/class-mailgun-email-check.php:57
@@ -1673,8 +1672,8 @@ msgstr "Clé d'API publique MailGun"
 #: includes/class-mailgun-email-check.php:65
 #: includes/class-mailgun-email-check.php:70
 msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" target="
-"\"_blank\">create one for free here</a>."
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
 msgstr ""
 "Vous pouvez <a href=\"%s\" target=\"_blank\">créer un compte MailGun "
 "gratuitement</a>."
@@ -2188,8 +2187,8 @@ msgid ""
 msgstr ""
 "Les dépendances d'Awesome Support sont manquantes. De fait, le plugin ne "
 "peut pas s’exécuter correctement. Veuillez lancer %s avant toute chose. Si "
-"vous ne savez pas ce que vous faites, <a href=\"%s\" class=\"thickbox"
-"\">installer la version stable</a> de ce plugin."
+"vous ne savez pas ce que vous faites, <a href=\"%s\" "
+"class=\"thickbox\">installer la version stable</a> de ce plugin."
 
 #: includes/functions-post.php:33 includes/functions-post.php:34
 msgid "You do not have the capacity to open a new ticket."
@@ -7937,6 +7936,14 @@ msgstr ""
 
 #: includes/scripts.php:205
 msgid "Include history"
+msgstr ""
+
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
 msgstr ""
 
 #: includes/scripts.php:206

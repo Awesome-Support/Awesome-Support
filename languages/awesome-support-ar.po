@@ -7667,6 +7667,14 @@ msgstr ""
 msgid "Include history"
 msgstr ""
 
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
+msgstr ""
+
 #: includes/scripts.php:206
 msgid "Include private notes"
 msgstr ""

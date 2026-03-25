@@ -61,8 +61,10 @@
             <td>
                 <?php 
 					echo wp_kses_post( $ticket->post_content );
-                    do_action( 'wpas_backend_reply_content_after_with_image', $ticket->ID );
                 ?>
+                <div class="wpas-print-ticket-attachments">
+                    <?php do_action( 'wpas_backend_reply_content_after_with_image', $ticket->ID ); ?>
+                </div>
             </td>
         </tr>
     </table>
@@ -132,9 +134,10 @@
 
                                 echo wp_kses( $content, wp_kses_allowed_html( 'post' ) );
 
-                                do_action( 'wpas_backend_reply_content_after_with_image', $reply->ID );
-
                             ?>
+                            <div class="wpas-print-ticket-attachments">
+                                <?php do_action( 'wpas_backend_reply_content_after_with_image', $reply->ID ); ?>
+                            </div>
                         </td>
                     </tr>
                 </table>
@@ -144,6 +147,68 @@
 
         <?php endforeach; ?>
 
+    <?php endif; ?>
+
+    <?php
+    // Custom Fields Section
+    $custom_fields = WPAS()->custom_fields->get_custom_fields();
+    $has_custom_fields = false;
+    
+    // Check if there are any non-core custom fields with values
+    foreach ( $custom_fields as $field_name => $field ) {
+        // Skip core fields (status, assignee, etc.)
+        if ( true === $field['args']['core'] ) {
+            continue;
+        }
+        
+        $value = wpas_get_cf_value( $field_name, $ticket->ID );
+        if ( ! empty( $value ) ) {
+            $has_custom_fields = true;
+            break;
+        }
+    }
+    ?>
+
+    <?php if ( $has_custom_fields ): ?>
+        <table class="wpas-print-ticket-custom-fields" style="display:none;">
+            <tr>
+                <td colspan="2">
+                    <h4><?php esc_html_e( 'Custom Fields', 'awesome-support' ); ?></h4>
+                </td>
+            </tr>
+            <?php foreach ( $custom_fields as $field_name => $field ): ?>
+                <?php
+                // Skip core fields
+                if ( true === $field['args']['core'] ) {
+                    continue;
+                }
+                
+                $value = wpas_get_cf_value( $field_name, $ticket->ID );
+                
+                // Skip empty fields
+                if ( empty( $value ) ) {
+                    continue;
+                }
+                
+                $field_title = ! empty( $field['args']['title'] ) ? $field['args']['title'] : wpas_get_title_from_id( $field_name );
+                ?>
+                <tr>
+                    <th style="text-align: left; padding-right: 20px;">
+                        <?php echo esc_html( $field_title ); ?>:
+                    </th>
+                    <td>
+                        <?php
+                        // Handle different field types
+                        if ( is_array( $value ) ) {
+                            echo esc_html( implode( ', ', $value ) );
+                        } else {
+                            echo wp_kses_post( $value );
+                        }
+                        ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
     <?php endif; ?>
 
 </div>
