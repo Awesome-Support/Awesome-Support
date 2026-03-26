@@ -5,8 +5,20 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.3.7</h1>
-				<h3>6.3.7 Revised plugin deactivation process with feedback.</h3>
+				<h1>What's New In 6.3.8</h1>				
+				<ul>
+					<li>Fix export tickets feature.</li>
+					<li>Fix vulnerable issue of Insecure Direct Object Reference.</li>
+					<li>We improved the layout : Additional Support Staff.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.3.7</h1>				
 				<ul>
 					<li>Update default fallback rules for the .htaccess file in the ticket folder.</li>
 					<li>Fix Missing Authorization to Unauthenticated Role Demotion.</li>
@@ -19,8 +31,7 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.3.6</h1>
-				<h3>6.3.6 Revised plugin deactivation process with feedback.</h3>
+				<h1>What's New In 6.3.6</h1>				
 				<ul>
 					<li>Fix vulnerable issue of PHP Object Injection.</li>
 					<li>Create a Get Help button to reach out to Support (Free and Premium).</li>						
@@ -32,8 +43,7 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.3.5</h1>
-				<h3>6.3.5 Revised plugin deactivation process with feedback.</h3>
+				<h1>What's New In 6.3.5</h1>				
 				<ul>
 					<li>We improved the cache admin menu ticket count.</li>
 					<li>New feature to support custom file type such as "*.k" and "*.dyn".</li>	
@@ -49,8 +59,7 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.3.4</h1>
-				<h3>6.3.4 Revised plugin deactivation process with feedback.</h3>
+				<h1>What's New In 6.3.4</h1>				
 				<ul>
 					<li>We improved the Wordpress Editor 'Zoom In, Zoom out' feature.</li>
 					<li>New feature to export the Reports and statiscs data in csv, graphs and pdf.</li>	
@@ -63,8 +72,7 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.3.3</h1>
-				<h3>6.3.3 Revised plugin deactivation process with feedback.</h3>
+				<h1>What's New In 6.3.3</h1>				
 				<ul>
 					<li>We fixed Bug ticket reply from cron job (IMAP ADDON).</li>
 					<li>We fixed the compatibility with Wordpress version 6.8.</li>					
@@ -76,8 +84,7 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.3.2</h1>
-				<h3>6.3.2 Revised plugin deactivation process with feedback.</h3>
+				<h1>What's New In 6.3.2</h1>				
 				<ul>
 					<li>We fixed vulnerability Issue with ticket folder.</li>
 				</ul>
