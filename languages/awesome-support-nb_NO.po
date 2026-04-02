@@ -1,16 +1,16 @@
 msgid ""
 msgstr ""
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.4.3\n"
 "Project-Id-Version: Awesome Support Core\n"
-"Language: nb\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: nb\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.8\n"
 
 #: awesome-support.php:239 awesome-support.php:250
 #: includes/admin/functions-notices.php:131
@@ -43,9 +43,9 @@ msgid ""
 msgstr ""
 "<h2>Multiple Products</h2><p> Tillegget kan håndtere både enkeltprodukter og "
 "flere produkter. Hvis du trenger å yte støtte for flere produkter, er det "
-"svært viktig at du IKKE bruker et egendefinert felt og bruker &laquo;"
-"Multiple Products&raquo; alternativet i stedet. Grunnen til at det er så "
-"viktig er at mange tillegg for Awesome Support bruker det innebygde "
+"svært viktig at du IKKE bruker et egendefinert felt og bruker "
+"&laquo;Multiple Products&raquo; alternativet i stedet. Grunnen til at det er "
+"så viktig er at mange tillegg for Awesome Support bruker det innebygde "
 "produktstyringssystemet til å fungere skikkelig</ p>"
 
 #: includes/admin/class-admin-help.php:67
@@ -690,8 +690,8 @@ msgstr "Tilpasset Login / Registrerings side"
 msgid ""
 "Only use this option if you know how to create your own registration page, "
 "otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" target=\"_blank"
-"\">start by reading this guide</a>."
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
 msgstr ""
 "Bruk bare dette alternativet hvis du vet hvordan du oppretter din egen "
 "registreringsside, ellers kan du opprette en uendelig omdirigering. Hvis du "
@@ -1551,8 +1551,8 @@ msgstr "API nøkkel fra MailGun"
 #: includes/class-mailgun-email-check.php:70
 #, fuzzy
 msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" target="
-"\"_blank\">create one for free here</a>."
+"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
+"target=\"_blank\">create one for free here</a>."
 msgstr ""
 "Hvis du ikke har en MailGun-konto, kan du <a href=\"%s\" target=\"_blank\"> "
 "opprette en gratis her </a>"
@@ -2023,8 +2023,9 @@ msgid ""
 "a> of this plugin instead."
 msgstr ""
 "Awesome Support tillegg mangler. Tillegget kan ikke kjøres skikkelig. "
-"Vennligst kjør %s først. Dersom du ikke vet hva dette er kan du <a href=\"%s"
-"\" class=\"thickbox\"> installere versjon </a> av dette tillegget i stedet"
+"Vennligst kjør %s først. Dersom du ikke vet hva dette er kan du <a "
+"href=\"%s\" class=\"thickbox\"> installere versjon </a> av dette tillegget i "
+"stedet"
 
 #: includes/functions-post.php:33 includes/functions-post.php:34
 #, fuzzy
@@ -2851,8 +2852,8 @@ msgid ""
 "here to read more</a>."
 msgstr ""
 "Hei! Visste du at du kan få et <strong> gratis tillegg for ubegrensede "
-"nettsteder </ strong> (en $ 61,00 USD-verdi) for Awesome Support? <a href="
-"\"%1$s\"> Klikk her for å lese mer </a>."
+"nettsteder </ strong> (en $ 61,00 USD-verdi) for Awesome Support? <a "
+"href=\"%1$s\"> Klikk her for å lese mer </a>."
 
 #: includes/admin/functions-user-profile.php:62
 #, fuzzy
@@ -4491,8 +4492,8 @@ msgid ""
 "modifications to this setting!"
 msgstr ""
 "Innholdet i opplastingsmappen din kan beskyttes av en htaccess-fil på apache-"
-"servere. <br /> Hvis dette er tomt, blir verdien av <b> alternativer -"
-"Indexes </ b> automatisk lagt til filen for å forhindre at andre leser "
+"servere. <br /> Hvis dette er tomt, blir verdien av <b> alternativer "
+"-Indexes </ b> automatisk lagt til filen for å forhindre at andre leser "
 "katalogen. <br /> Legg bare til dette hvis du er en apache server ekspert! "
 "<br /> Ingen teknisk støtte er tilgjengelig for endringer i denne "
 "innstillingen!"
@@ -7875,6 +7876,14 @@ msgstr ""
 
 #: includes/scripts.php:205
 msgid "Include history"
+msgstr ""
+
+#: includes/scripts.php:224
+msgid "Include custom fields"
+msgstr ""
+
+#: includes/scripts.php:225
+msgid "Include attachments"
 msgstr ""
 
 #: includes/scripts.php:206

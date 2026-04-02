@@ -7,76 +7,53 @@ msgstr ""
 "Project-Id-Version: Awesome Support\n"
 "Report-Msgid-Bugs-To: https://github.com/ThemeAvenue/Awesome-Support/issues\n"
 "POT-Creation-Date: 2015-10-23 03:18:35+00:00\n"
-"PO-Revision-Date: 2015-10-23 03:18+0000\n"
+"PO-Revision-Date: 2026-01-14 12:47+0100\n"
 "Last-Translator: Julien Liabeuf\n"
 "Language-Team: Persian (http://www.transifex.com/themeavenue/awesome-support/language/fa/)\n"
+"Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fa\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: grunt-wp-i18n 0.5.3\n"
-"X-Poedit-Basepath: ../\n"
+"X-Generator: Poedit 3.8\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-Bookmarks: \n"
-"X-Poedit-Country: United States\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
-"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: awesome-support.php:264 awesome-support.php:274
-#: includes/admin/functions-notices.php:129
+#: awesome-support.php:264 awesome-support.php:274 includes/admin/functions-notices.php:129
 msgid "Cheatin&#8217; huh?"
 msgstr ""
 
-#: includes/admin/class-admin-help.php:60 includes/admin/class-admin.php:598
-#: includes/admin/settings/settings-general.php:20
+#: includes/admin/class-admin-help.php:60 includes/admin/class-admin.php:598 includes/admin/settings/settings-general.php:20
 msgid "Multiple Products"
 msgstr "محصولات چندگانه"
 
-#: includes/admin/class-admin-help.php:61
-#: includes/admin/class-admin-help.php:107
-msgid ""
-"<h2>Multiple Products</h2><p>The plugin can handle single product and "
-"multiple products support. If you do need to provide support for multiple "
-"products it is very important that you do NOT use a custom field or taxonomy"
-" and use the &laquo;Multiple Products&raquo; option instead.</p><p>The "
-"reason why it is so important is that many addons for Awesome Support are "
-"using the built-in products management system to work properly.</p>"
-msgstr "<h2>محصولات چندگانه</h2>\n<p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly."
+#: includes/admin/class-admin-help.php:61 includes/admin/class-admin-help.php:107
+msgid "<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>"
+msgstr ""
+"<h2>محصولات چندگانه</h2>\n"
+"<p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly."
 
-#: includes/admin/class-admin-help.php:66
-#: includes/admin/settings/settings-general.php:27
+#: includes/admin/class-admin-help.php:66 includes/admin/settings/settings-general.php:27
 msgid "Default Assignee"
 msgstr "به طور پیش فرض واگذار"
 
 #: includes/admin/class-admin-help.php:67
-msgid ""
-"<h2>Default Assignee</h2><p>Even though the plugin will try to assign new "
-"tickets to the less busy agent, we need to know who to assign to in case we "
-"can't find a perfect fit for the new tickets.</p>"
+msgid "<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agent, we need to know who to assign to in case we can't find a perfect fit for the new tickets.</p>"
 msgstr "<h2>پشتیبان عادی</h2><p> با این که این افزونه سعی خواهد کرد تا تیکت ها را به پشتیبانی اختصاص دهد که مشغله کمتری دارد ، اما با نیاز داریم تا بدانیم در صورتی که توانایی پیدا کردن یک پشتیبان مناسب برای یک تیکت را نداشتیم ، آن را به چه کسی اختصاص دهیم. </p>"
 
-#: includes/admin/class-admin-help.php:72
-#: includes/admin/settings/settings-general.php:35
+#: includes/admin/class-admin-help.php:72 includes/admin/settings/settings-general.php:35
 msgid "Allow Registrations"
 msgstr "ثبت نام ها را مجاز کن"
 
 #: includes/admin/class-admin-help.php:73
-msgid ""
-"<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new "
-"registrations or not. By default, it doesn't. However, with closed "
-"registrations, this plugin becomes useless. This is why we added a separate "
-"setting to allow registrations. Users registering through Awesome Support "
-"will be given a specific role (<code>Support User</code>) with very limited "
-"privileges.</p><p>If you allow registrations through the plugin but not "
-"through WordPress, users will only be able to register through our "
-"registration form.</p>"
+msgid "<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn't. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>"
 msgstr "<h2>ثبت نام ها را مجاز کن</h2><p>سایت وردپرسی شما میتواند تنظیم شود که آیا کاربر جدید قبول کند یا خیر که در حالت عادی نمیکند. به هر حال با غیر مجاز کردن ثبت نام ها این افزونه به درد نخور میشود. به همین علت است که ما تنظیمات جداگانه ای را برای ثبت نام ها اضافه کرده ایم. به کاربرانی که با این افزونه ثبت نام کنند یک نقش مخصوص با(<code>Support User</code>) محدودیت های خیلی کم داده خواهد شد.</p><p>اگر شما اجازه ثبت نام را تنها از راه این افزونه و نه از طریق این افزونه بدهید ، کاربران تنها قادر خواهند بود تا تنها از طریق فرم ثبت نام این افزونه استفاده کنند.</p>"
 
-#: includes/admin/class-admin-help.php:94
-#: includes/custom-fields/functions-custom-fields.php:184
-#: includes/custom-fields/functions-custom-fields.php:185
+#: includes/admin/class-admin-help.php:94 includes/custom-fields/functions-custom-fields.php:184 includes/custom-fields/functions-custom-fields.php:185
 msgid "Tag"
 msgstr "موضوع"
 
@@ -93,10 +70,7 @@ msgid "Email Template Tags"
 msgstr "تگ های قالب ایمیل"
 
 #: includes/admin/class-admin-help.php:113
-msgid ""
-"<p>When setting up your e-mails templates, you can use a certain number of "
-"template tags allowing you to dynamically add ticket-related information at "
-"the moment the e-mail is sent. Here is the list of available tags:</p>%s"
+msgid "<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s"
 msgstr "<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s"
 
 #: includes/admin/class-admin-help.php:133
@@ -104,21 +78,10 @@ msgid "Custom Login Page"
 msgstr "صفحه ورود سفارشی"
 
 #: includes/admin/class-admin-help.php:134
-msgid ""
-"<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to "
-"allow advanced users to create their own login / registration page. If you "
-"don't like our login form, you can replace it by your own.</p><p>To do so, "
-"create a new page containing the form (either with the use of a shortcode or"
-" a page template), then set this newly created page as the \"Custom Login / "
-"Registration Page\" in the setting below.</p><p><strong>Beware</strong>, "
-"setting a wrong page as the custom login page can either show a blank page "
-"or create an infinite loop.</p>"
+msgid "<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don't like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the \"Custom Login / Registration Page\" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>"
 msgstr "<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don't like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the \"Custom Login / Registration Page\" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>"
 
-#: includes/admin/class-admin-tickets-list.php:99
-#: includes/admin/metaboxes/stakeholders.php:81
-#: includes/custom-fields/functions-custom-fields.php:173
-#: includes/functions-post.php:898
+#: includes/admin/class-admin-tickets-list.php:99 includes/admin/metaboxes/stakeholders.php:81 includes/custom-fields/functions-custom-fields.php:173 includes/functions-post.php:898
 msgid "Support Staff"
 msgstr "گروه پشتیبانی"
 
@@ -134,8 +97,7 @@ msgstr "منتظر برای پاسخ پشتیبانی"
 msgid "Old"
 msgstr "قدیمی"
 
-#: includes/admin/class-admin-gas.php:88 includes/admin/class-admin.php:200
-#: includes/admin/class-admin.php:497
+#: includes/admin/class-admin-gas.php:88 includes/admin/class-admin.php:200 includes/admin/class-admin.php:497
 msgid "Settings"
 msgstr "تنظیمات"
 
@@ -155,8 +117,7 @@ msgstr "پیش فرض"
 msgid "Stay on screen"
 msgstr "ماندن در صفحه"
 
-#: includes/admin/class-admin-user.php:101
-#: includes/admin/metaboxes/replies-form.php:86
+#: includes/admin/class-admin-user.php:101 includes/admin/metaboxes/replies-form.php:86
 msgid "Back to list"
 msgstr "بازگشت به لیست"
 
@@ -189,9 +150,7 @@ msgid "Are you sure you want to delete this reply?"
 msgstr "شما مطمئن به حذف این پاسخ هستید؟"
 
 #: includes/admin/class-admin.php:389
-msgid ""
-"No instance of TinyMCE found. Please use wp_editor on this page at least "
-"once: http://codex.wordpress.org/Function_Reference/wp_editor"
+msgid "No instance of TinyMCE found. Please use wp_editor on this page at least once: http://codex.wordpress.org/Function_Reference/wp_editor"
 msgstr "هیچ اثری از TinyMCE یافت نشد. لطفا حداقل یک بار از wp_editor در این صفحه استفاده کنید : http://codex.wordpress.org/Function_Reference/wp_editor"
 
 #: includes/admin/class-admin.php:389
@@ -210,9 +169,7 @@ msgstr "ثبت تیکت"
 msgid "Close"
 msgstr "بستن"
 
-#: includes/admin/class-admin.php:524 includes/admin/metaboxes/details.php:80
-#: includes/custom-fields/class-custom-fields.php:522
-#: includes/functions-general.php:358 includes/functions-templating.php:772
+#: includes/admin/class-admin.php:524 includes/admin/metaboxes/details.php:80 includes/custom-fields/class-custom-fields.php:522 includes/functions-general.php:358 includes/functions-templating.php:772
 msgid "Open"
 msgstr "باز کردن"
 
@@ -225,10 +182,7 @@ msgid "The ticket #%s has been closed."
 msgstr "تیکت #%s بسته شد."
 
 #: includes/admin/class-admin.php:595
-msgid ""
-"Will you be supporting multiple products on this support site? You can "
-"activate multi-products support now. <small>(This setting can be modified "
-"later)</small>"
+msgid "Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>"
 msgstr "Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>"
 
 #: includes/admin/class-admin.php:597
@@ -284,14 +238,11 @@ msgid "Custom Fields"
 msgstr "فیلد سفارشی"
 
 #: includes/admin/class-admin.php:938
-msgid ""
-"An error occurred while registering this metabox. Please contact the "
-"support."
+msgid "An error occurred while registering this metabox. Please contact the support."
 msgstr "خطایی هنگام ثبت این متاباکس یا همان زمینه دلخواه رخ داد. لطفا با پشتیبانی تماس بگیرید."
 
 #: includes/admin/class-admin.php:944
-msgid ""
-"An error occured while loading this metabox. Please contact the support."
+msgid "An error occured while loading this metabox. Please contact the support."
 msgstr "خطایی در لود جعبه رخ داده است لطفا با پشتیبانی تماس بگیرید"
 
 #: includes/admin/metaboxes/details.php:47
@@ -302,11 +253,7 @@ msgstr "وضعیت تیکت:"
 msgid "Opened:"
 msgstr "باز کردن:"
 
-#: includes/admin/metaboxes/details.php:55
-#: includes/admin/metaboxes/replies-history.php:33
-#: includes/admin/metaboxes/replies-published.php:46
-#: themes/default/details.php:51 themes/default/details.php:139
-#: themes/default/partials/ticket-origin.php:55
+#: includes/admin/metaboxes/details.php:55 includes/admin/metaboxes/replies-history.php:33 includes/admin/metaboxes/replies-published.php:46 themes/default/details.php:51 themes/default/details.php:139 themes/default/partials/ticket-origin.php:55
 msgid "%s ago"
 msgstr "%s قبل"
 
@@ -334,10 +281,7 @@ msgstr "ساخته شدن"
 msgid "Open Ticket"
 msgstr "بازکردن تیکت"
 
-#: includes/admin/metaboxes/replies-form.php:73
-#: includes/admin/metaboxes/replies-form.php:80
-#: includes/admin/metaboxes/replies-form.php:89
-#: includes/functions-templating.php:474
+#: includes/admin/metaboxes/replies-form.php:73 includes/admin/metaboxes/replies-form.php:80 includes/admin/metaboxes/replies-form.php:89 includes/functions-templating.php:474
 msgid "Reply"
 msgstr "پاسخ"
 
@@ -390,9 +334,7 @@ msgid "Ticket is closed"
 msgstr "تیکت بسته شده"
 
 #: includes/admin/metaboxes/replies.php:155
-msgid ""
-"This ticket has been closed. If you want to write a new reply to this "
-"ticket, you need to <a href=\"%s\">re-open it first</a>."
+msgid "This ticket has been closed. If you want to write a new reply to this ticket, you need to <a href=\"%s\">re-open it first</a>."
 msgstr "تیکت بسته شده.اگر شما میخواهید یک پاسخ جدید ارائه دهید نیاز دارید <a href=\"%s\"> را باز کنید</a>."
 
 #: includes/admin/metaboxes/stakeholders.php:31
@@ -416,9 +358,7 @@ msgid "CCs"
 msgstr "CCs"
 
 #: includes/admin/metaboxes/stakeholders.php:105
-msgid ""
-"If you want to send a copy of the e-mails to another person, add the "
-"address(es) separated by a comma."
+msgid "If you want to send a copy of the e-mails to another person, add the address(es) separated by a comma."
 msgstr "آدرس های ایمیل را با (کاما) از هم جدا کنید"
 
 #: includes/admin/settings/functions-settings.php:10
@@ -434,11 +374,7 @@ msgid "Custom Login / Registration Page"
 msgstr "ورود سفارشی/صفحه ثبت نام"
 
 #: includes/admin/settings/settings-advanced.php:19
-msgid ""
-"Only use this option if you know how to create your own registration page, "
-"otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" "
-"target=\"_blank\">start by reading this guide</a>."
+msgid "Only use this option if you know how to create your own registration page, otherwise you might create an infinite redirect. If you need help on creating a registration page you should <a href=\"%s\" target=\"_blank\">start by reading this guide</a>."
 msgstr "Only use this option if you know how to create your own registration page, otherwise you might create an infinite redirect. If you need help on creating a registration page you should <a href=\"%s\" target=\"_blank\">start by reading this guide</a>."
 
 #: includes/admin/settings/settings-advanced.php:24
@@ -446,9 +382,7 @@ msgid "Admins See All"
 msgstr "مدیریت همه را دید"
 
 #: includes/admin/settings/settings-advanced.php:27
-msgid ""
-"Administrators can see all tickets in the tickets list. If unchecked admins "
-"will only see tickets assigned to them."
+msgid "Administrators can see all tickets in the tickets list. If unchecked admins will only see tickets assigned to them."
 msgstr "مدیریت میتواند همه تیکت ها را بیند"
 
 #: includes/admin/settings/settings-advanced.php:31
@@ -456,9 +390,7 @@ msgid "Agent See All"
 msgstr "عامل همه را ببیند"
 
 #: includes/admin/settings/settings-advanced.php:34
-msgid ""
-"Agents can see all tickets in the tickets list. If unchecked agents will "
-"only see tickets assigned to them."
+msgid "Agents can see all tickets in the tickets list. If unchecked agents will only see tickets assigned to them."
 msgstr "عامل میتواند همه تیکت ها را ببیند"
 
 #: includes/admin/settings/settings-advanced.php:38
@@ -478,24 +410,15 @@ msgid "General"
 msgstr "کلی"
 
 #: includes/admin/settings/settings-general.php:23
-msgid ""
-"If you need to provide support for multiple products, please enable this "
-"option. You will then be able to add your products."
+msgid "If you need to provide support for multiple products, please enable this option. You will then be able to add your products."
 msgstr "اگر شما نیاز به محصولات چندگاته دارید این آپشن را فعال کنید"
 
 #: includes/admin/settings/settings-general.php:30
-msgid ""
-"Who to assign tickets to in the case that auto-assignment wouldn&#039;t "
-"work. This does NOT mean that all tickets will be assigned to this user. "
-"This is a fallback option. To enable/disable auto assignment for an agent, "
-"please do so in the user profile settings."
+msgid "Who to assign tickets to in the case that auto-assignment wouldn&#039;t work. This does NOT mean that all tickets will be assigned to this user. This is a fallback option. To enable/disable auto assignment for an agent, please do so in the user profile settings."
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:38
-msgid ""
-"Allow users to register on the support page. This setting can be enabled "
-"even though the WordPress setting is disabled. Currently, registrations are "
-"%s by WordPress."
+msgid "Allow users to register on the support page. This setting can be enabled even though the WordPress setting is disabled. Currently, registrations are %s by WordPress."
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:41
@@ -515,9 +438,7 @@ msgid "Replies Order"
 msgstr "پاسخ های قدیمی تر"
 
 #: includes/admin/settings/settings-general.php:50
-msgid ""
-"In which order should the replies be displayed (for both client and admin "
-"side)?"
+msgid "In which order should the replies be displayed (for both client and admin side)?"
 msgstr "با کدام سازماندهی پاسخ ها نمایش داده شود؟ (هم برای مشتری و هم برای مدیر)"
 
 #: includes/admin/settings/settings-general.php:51
@@ -533,8 +454,7 @@ msgid "Replies Per Page"
 msgstr "تعداد پاسخ در هر صفحه"
 
 #: includes/admin/settings/settings-general.php:59
-msgid ""
-"How many replies should be displayed per page on a ticket details screen?"
+msgid "How many replies should be displayed per page on a ticket details screen?"
 msgstr "چه تعداد پاسخ باید به ازای هر صفحه ی یک تیکت نمایش داده شود؟"
 
 #: includes/admin/settings/settings-general.php:62
@@ -570,9 +490,7 @@ msgid "Ticket Submission"
 msgstr "مقاله تیکت"
 
 #: includes/admin/settings/settings-general.php:91
-msgid ""
-"The page used for ticket submission. This page should contain the shortcode "
-"%s"
+msgid "The page used for ticket submission. This page should contain the shortcode %s"
 msgstr "The page used for ticket submission. This page should contain the shortcode %s"
 
 #: includes/admin/settings/settings-general.php:96
@@ -580,29 +498,19 @@ msgid "Tickets List"
 msgstr "لیست تیکت ها"
 
 #: includes/admin/settings/settings-general.php:100
-msgid ""
-"The page that will list all tickets for a client. This page should contain "
-"the shortcode %s"
+msgid "The page that will list all tickets for a client. This page should contain the shortcode %s"
 msgstr "The page that will list all tickets for a client. This page should contain the shortcode %s"
 
 #: includes/admin/settings/settings-general.php:105
 msgid "Terms & Conditions"
 msgstr "قوانین"
 
-#: includes/admin/settings/settings-general.php:109
-#: includes/admin/settings/settings-notifications.php:56
-#: includes/admin/settings/settings-notifications.php:81
-#: includes/admin/settings/settings-notifications.php:106
-#: includes/admin/settings/settings-notifications.php:131
-#: includes/admin/settings/settings-notifications.php:181
+#: includes/admin/settings/settings-general.php:109 includes/admin/settings/settings-notifications.php:56 includes/admin/settings/settings-notifications.php:81 includes/admin/settings/settings-notifications.php:106 includes/admin/settings/settings-notifications.php:131 includes/admin/settings/settings-notifications.php:181
 msgid "Content"
 msgstr "مقدار"
 
 #: includes/admin/settings/settings-general.php:113
-msgid ""
-"Terms & conditions are not mandatory. If you add terms, a mandatory checkbox"
-" will be added in the registration form. Users won't be able to register if "
-"they don't accept your terms"
+msgid "Terms & conditions are not mandatory. If you add terms, a mandatory checkbox will be added in the registration form. Users won't be able to register if they don't accept your terms"
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:117
@@ -614,9 +522,7 @@ msgid "Show Credit"
 msgstr "نمایش سازندگان"
 
 #: includes/admin/settings/settings-general.php:124
-msgid ""
-"Do you like this plugin? Please help us spread the word by displaying a "
-"credit link at the bottom of your ticket submission page."
+msgid "Do you like this plugin? Please help us spread the word by displaying a credit link at the bottom of your ticket submission page."
 msgstr ""
 
 #: includes/admin/settings/settings-licenses.php:19
@@ -628,10 +534,7 @@ msgid "E-Mails"
 msgstr "آدرس ایمیل"
 
 #: includes/admin/settings/settings-notifications.php:17
-msgid ""
-"For more information about the template tags that can be used in e-mail "
-"templates please click the &laquo;Help&raquo; button in the top right hand "
-"corner of this screen."
+msgid "For more information about the template tags that can be used in e-mail templates please click the &laquo;Help&raquo; button in the top right hand corner of this screen."
 msgstr "برای اطلاعات بیشتر در مورد «تگ های قالب» قابل استفاده در قالب ایمیل روی  &laquo;Help&raquo; سمت بالا در گوشه راست کلیک کنید."
 
 #: includes/admin/settings/settings-notifications.php:20
@@ -650,28 +553,15 @@ msgstr "پاسخ به ایمیل"
 msgid "Submission Confirmation"
 msgstr "ادامه مقاله"
 
-#: includes/admin/settings/settings-notifications.php:43
-#: includes/admin/settings/settings-notifications.php:68
-#: includes/admin/settings/settings-notifications.php:93
-#: includes/admin/settings/settings-notifications.php:118
-#: includes/admin/settings/settings-notifications.php:168
+#: includes/admin/settings/settings-notifications.php:43 includes/admin/settings/settings-notifications.php:68 includes/admin/settings/settings-notifications.php:93 includes/admin/settings/settings-notifications.php:118 includes/admin/settings/settings-notifications.php:168
 msgid "Enable"
 msgstr "فعال کردن"
 
-#: includes/admin/settings/settings-notifications.php:47
-#: includes/admin/settings/settings-notifications.php:72
-#: includes/admin/settings/settings-notifications.php:97
-#: includes/admin/settings/settings-notifications.php:122
-#: includes/admin/settings/settings-notifications.php:172
+#: includes/admin/settings/settings-notifications.php:47 includes/admin/settings/settings-notifications.php:72 includes/admin/settings/settings-notifications.php:97 includes/admin/settings/settings-notifications.php:122 includes/admin/settings/settings-notifications.php:172
 msgid "Do you want to activate this e-mail template?"
 msgstr "آیا شما این قالب ایمیل را فعال میکنید؟"
 
-#: includes/admin/settings/settings-notifications.php:50
-#: includes/admin/settings/settings-notifications.php:75
-#: includes/admin/settings/settings-notifications.php:100
-#: includes/admin/settings/settings-notifications.php:125
-#: includes/admin/settings/settings-notifications.php:175
-#: themes/default/submission.php:35
+#: includes/admin/settings/settings-notifications.php:50 includes/admin/settings/settings-notifications.php:75 includes/admin/settings/settings-notifications.php:100 includes/admin/settings/settings-notifications.php:125 includes/admin/settings/settings-notifications.php:175 themes/default/submission.php:35
 msgid "Subject"
 msgstr "موضوع"
 
@@ -732,8 +622,7 @@ msgid "Theme Stylesheet"
 msgstr "استایل تم"
 
 #: includes/admin/settings/settings-style.php:27
-msgid ""
-"Load the theme stylesheet. Don't uncheck if you don't know what this means"
+msgid "Load the theme stylesheet. Don't uncheck if you don't know what this means"
 msgstr "لود استایل تم ها"
 
 #: includes/admin/settings/settings-style.php:31
@@ -741,8 +630,7 @@ msgid "Use editor in front-end"
 msgstr "استفاده از ادیتور "
 
 #: includes/admin/settings/settings-style.php:34
-msgid ""
-"Show a editor editor for the ticket description when user submits a ticket."
+msgid "Show a editor editor for the ticket description when user submits a ticket."
 msgstr "نشان دادن ادیتور"
 
 #: includes/admin/settings/settings-style.php:38
@@ -794,18 +682,14 @@ msgid "All products have been deleted"
 msgstr "همه محصولات پاک شدند"
 
 #: includes/admin/views/system-tools.php:60
-msgid ""
-"These tool are intended for advanced users or for use on the support staff "
-"request. Be aware that some of these tools can definitively erase data."
+msgid "These tool are intended for advanced users or for use on the support staff request. Be aware that some of these tools can definitively erase data."
 msgstr "این ابزار برای کاربران اصلی تهیه شده است"
 
 #: includes/admin/views/system-tools.php:70
 msgid "Tickets Metas"
 msgstr "بخش تیکت ها"
 
-#: includes/admin/views/system-tools.php:72
-#: includes/admin/views/system-tools.php:79
-#: includes/admin/views/system-tools.php:86
+#: includes/admin/views/system-tools.php:72 includes/admin/views/system-tools.php:79 includes/admin/views/system-tools.php:86
 msgid "Clear"
 msgstr "پاک کردن"
 
@@ -838,9 +722,7 @@ msgid "The user exists but is not a support agent"
 msgstr "این کاربر وجود دارد اما نه به عنوان یک پشتیبان"
 
 #: includes/class-awesome-support.php:184
-msgid ""
-"The authenticity of your submission could not be validated. If this ticket "
-"is legitimate please try submitting again."
+msgid "The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again."
 msgstr "صحت مطالب نمیتواند تایید شود"
 
 #: includes/class-awesome-support.php:200
@@ -848,9 +730,7 @@ msgid "The ticket couldn't be submitted for an unknown reason."
 msgstr "تیکت ثبت نمیشود به دلیل نامعلوم"
 
 #: includes/class-awesome-support.php:238
-msgid ""
-"Something went wrong. We couldn&#039;t identify your ticket. Please try "
-"again."
+msgid "Something went wrong. We couldn&#039;t identify your ticket. Please try again."
 msgstr ""
 
 #: includes/class-awesome-support.php:263
@@ -950,8 +830,7 @@ msgid "Displays a link to public ticket"
 msgstr "نشان دادن لینک به تیکت همه گانی"
 
 #: includes/class-email-notifications.php:314
-msgid ""
-"Displays the URL <strong>only</strong> (not a link link) to public ticket"
+msgid "Displays the URL <strong>only</strong> (not a link link) to public ticket"
 msgstr "Displays the URL <strong>only</strong> (not a link link) to public ticket"
 
 #: includes/class-email-notifications.php:318
@@ -959,9 +838,7 @@ msgid "Displays a link to ticket details in admin (for agents)"
 msgstr "نشان دادن لینک به تیکت مشخصات در پنل ادمین(برای معاونت)"
 
 #: includes/class-email-notifications.php:322
-msgid ""
-"Displays the URL <strong>only</strong> (not a link link) to ticket details "
-"in admin (for agents)"
+msgid "Displays the URL <strong>only</strong> (not a link link) to ticket details in admin (for agents)"
 msgstr "نشان دادن آدرس <strong>فقط</strong> (not a link link)برای اطلاعات تیکت (برای معاونت)"
 
 #: includes/class-email-notifications.php:326
@@ -993,12 +870,7 @@ msgid "E-Mail Checking"
 msgstr "چک کردن صندوق پست"
 
 #: includes/class-mailgun-email-check.php:46
-msgid ""
-"You can enable e-mail checking on the registration page. When enabled, the "
-"plugin will make sure the e-mail address used is valid and can receive "
-"e-mails. The verification is done using <a href=\"%s\">Email validation "
-"API</a> and requires a (free) MailGun account. This helps reducing typos in "
-"email addresses during sign ups."
+msgid "You can enable e-mail checking on the registration page. When enabled, the plugin will make sure the e-mail address used is valid and can receive e-mails. The verification is done using <a href=\"%s\">Email validation API</a> and requires a (free) MailGun account. This helps reducing typos in email addresses during sign ups."
 msgstr "شما میتوانید فعال کنید چک کردن ایمیل را در صفحه ثبت نام.در صورت فعال شدن کابر مجبور به تایید ایمیل خود می شود.The verification is done using <a href=\"%s\">Email validation API</a> این عمل(رایگان) است"
 
 #: includes/class-mailgun-email-check.php:52
@@ -1014,9 +886,7 @@ msgid "MailGun Public API Key"
 msgstr "شماره شناسه حساب MAILGUN"
 
 #: includes/class-mailgun-email-check.php:65
-msgid ""
-"If you don&#39;t have a MailGun account you can <a href=\"%s\" "
-"target=\"_blank\">create one for free here</a>."
+msgid "If you don&#39;t have a MailGun account you can <a href=\"%s\" target=\"_blank\">create one for free here</a>."
 msgstr "اگر شما حساب میل گان ندارید از اینجا بسازید &#39; <a href=\"%s\" target=\"_blank\">create one for free here</a>."
 
 #: includes/class-mailgun-email-check.php:76
@@ -1118,9 +988,7 @@ msgid "Preview ticket"
 msgstr "مشاهده تیکت"
 
 #: includes/class-product-sync.php:766 includes/class-product-sync.php:788
-msgid ""
-"You cannot edit this term from here because it is linked to a post (of the "
-"%s post type). Please edit the post directly instead."
+msgid "You cannot edit this term from here because it is linked to a post (of the %s post type). Please edit the post directly instead."
 msgstr "شما مجاز به ویرایش نیستید (of the %s post type)"
 
 #: includes/class-product-sync.php:791
@@ -1215,18 +1083,15 @@ msgstr "اضافه کردن %s"
 msgid "Any Status"
 msgstr "هر وضعیتی"
 
-#: includes/custom-fields/class-custom-fields.php:523
-#: includes/functions-general.php:350 includes/functions-templating.php:762
+#: includes/custom-fields/class-custom-fields.php:523 includes/functions-general.php:350 includes/functions-templating.php:762
 msgid "Closed"
 msgstr "بسته شده"
 
-#: includes/custom-fields/class-custom-fields.php:936
-#: includes/custom-fields/class-custom-fields.php:938
+#: includes/custom-fields/class-custom-fields.php:936 includes/custom-fields/class-custom-fields.php:938
 msgid "The field %s is required."
 msgstr "پر کردن این فیلد %s واجب است"
 
-#: includes/custom-fields/field-types/class-cf-taxonomy.php:63
-#: includes/functions-general.php:521
+#: includes/custom-fields/field-types/class-cf-taxonomy.php:63 includes/functions-general.php:521
 msgid "Please select"
 msgstr "لطفا انتخاب کنید"
 
@@ -1234,8 +1099,7 @@ msgstr "لطفا انتخاب کنید"
 msgid "Tags"
 msgstr "موضوعات"
 
-#: includes/custom-fields/functions-custom-fields.php:200
-#: includes/custom-fields/functions-custom-fields.php:201
+#: includes/custom-fields/functions-custom-fields.php:200 includes/custom-fields/functions-custom-fields.php:201
 msgid "Product"
 msgstr "محصول"
 
@@ -1260,9 +1124,7 @@ msgid "Attachments"
 msgstr "ضمیمه ها"
 
 #: includes/file-uploader/class-file-uploader.php:342
-msgid ""
-" You can upload up to %d files (maximum %d MB each) of the following types: "
-"%s"
+msgid " You can upload up to %d files (maximum %d MB each) of the following types: %s"
 msgstr "شما میتوانید (حداکثر) تا %d مگابایت به ازای هریک از موارد مشخص شده آپلود کنید : %s"
 
 #: includes/file-uploader/class-file-uploader.php:441
@@ -1270,9 +1132,7 @@ msgid "Attachments:"
 msgstr "ضمیمه ها :"
 
 #: includes/file-uploader/class-file-uploader.php:607
-msgid ""
-"Your reply has been correctly submitted but the attachment was not uploaded."
-" %s"
+msgid "Your reply has been correctly submitted but the attachment was not uploaded. %s"
 msgstr "پاسخ شما به درستی دریافت شد اما فایل ضمیمه به درستی آپلود نشد.%s"
 
 #: includes/file-uploader/class-file-uploader.php:674
@@ -1296,9 +1156,7 @@ msgid "Enable File Upload"
 msgstr "فعال کردن آپلود فایل"
 
 #: includes/file-uploader/settings-file-upload.php:20
-msgid ""
-"Do you want to allow your users (and agents) to upload attachments to "
-"tickets and replies?"
+msgid "Do you want to allow your users (and agents) to upload attachments to tickets and replies?"
 msgstr "شما میخواهید به تمام کاربران(حتی مدیران) اجازه آپلود فایل بدهید؟"
 
 #: includes/file-uploader/settings-file-upload.php:23
@@ -1314,9 +1172,7 @@ msgid "Maximum File Size"
 msgstr "حداکثر سایز فایل "
 
 #: includes/file-uploader/settings-file-upload.php:34
-msgid ""
-"What is the maximum size allowed for one file (in <code>MB</code>)? Your "
-"server allows up to %s"
+msgid "What is the maximum size allowed for one file (in <code>MB</code>)? Your server allows up to %s"
 msgstr "بیشینه مقدار مجاز برای آپلود هر فایل (به ازای <code>مگابایت</code>) چقدر است ؟ سرورِ شما به شما تا مرز %s مگابایت اجازه میدهد"
 
 #: includes/file-uploader/settings-file-upload.php:37
@@ -1324,9 +1180,7 @@ msgid "Allowed Files Types"
 msgstr "اجازه دادن به چه نوع فایل هایی"
 
 #: includes/file-uploader/settings-file-upload.php:41
-msgid ""
-"Which file types do you allow your users to attach? Please separate each "
-"extension by a comma (%s)"
+msgid "Which file types do you allow your users to attach? Please separate each extension by a comma (%s)"
 msgstr "چه فرمت هایی را برای آپلود برای کاربران مجاز کرده اید؟لطفا با کاما از هم جدا کنید.(%s)"
 
 #: includes/functions-addons.php:74
@@ -1342,11 +1196,7 @@ msgid "Submit"
 msgstr "ثبت"
 
 #: includes/functions-general.php:451
-msgid ""
-"Awesome Support dependencies are missing. The plugin can’t be loaded "
-"properly. Please run %s before anything else. If you don’t know what this is"
-" you should <a href=\"%s\" class=\"thickbox\">install the production "
-"version</a> of this plugin instead."
+msgid "Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href=\"%s\" class=\"thickbox\">install the production version</a> of this plugin instead."
 msgstr "ملزومات Awesome Support  نیستند ! این افزونه نمیتواند به درستی بارگذاری شود. لطفا قبل از هر کاری %s را اجرا کنید. اگر نمیدانید این چیست باید <a href=\"%s\" class=\"thickbox\">نسخه تولیدی افزونه را به جای این نصب کنید</a>"
 
 #: includes/functions-post.php:33
@@ -1365,8 +1215,7 @@ msgstr "این الزامی است برای حل مشکل شما"
 msgid "Only registered accounts can submit a ticket. Please register first."
 msgstr "فقط کسانی که ثبت نام کرده اند قادر به ثبت تیکت هستند"
 
-#: includes/functions-post.php:384 includes/functions-post.php:385
-#: includes/functions-post.php:557 includes/functions-post.php:558
+#: includes/functions-post.php:384 includes/functions-post.php:385 includes/functions-post.php:557 includes/functions-post.php:558
 msgid "Reply to ticket %s"
 msgstr "پاسخ به تیکت%s"
 
@@ -1375,9 +1224,7 @@ msgid "The given post ID is not a ticket"
 msgstr "آیدی یک تیکت نیست"
 
 #: includes/functions-post.php:877
-msgid ""
-"The chosen agent does not have the sufficient capabilities to be assigned a "
-"ticket"
+msgid "The chosen agent does not have the sufficient capabilities to be assigned a ticket"
 msgstr "پشتیبان انتخاب شده توانایی ها یا اختیارات لازم برای اختصاص داده شدن به یک تیکت را ندارد"
 
 #: includes/functions-post.php:1033
@@ -1413,10 +1260,7 @@ msgid "Date"
 msgstr "تاریخ"
 
 #: includes/functions-templating.php:383
-msgid ""
-"The ticket has been closed. If you feel that your issue has not been solved "
-"yet or something new came up in relation to this ticket, <a href=\"%s\">you "
-"can re-open it by clicking this link</a>."
+msgid "The ticket has been closed. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href=\"%s\">you can re-open it by clicking this link</a>."
 msgstr "تیکت بسته شد.. If you feel that your issue has not been solved yet or something new came up in relation to this ticket, <a href=\"%s\">you can re-open it by clicking this link</a>."
 
 #: includes/functions-templating.php:439
@@ -1476,37 +1320,26 @@ msgid "We were unable to log you in for an unknown reason."
 msgstr "ما به دلیل امنیتی شما را وارد نمی کنیم"
 
 #: includes/integrations/class-product-edd.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to an EDD product. "
-"<a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to an EDD product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "You cannot edit this term from here because it is linked to an EDD product. <a href=\"%s\">Please edit the product directly</a>."
 
 #: includes/integrations/class-product-exchange.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to an Exchange "
-"product. <a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to an Exchange product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "You cannot edit this term from here because it is linked to an Exchange product. <a href=\"%s\">Please edit the product directly</a>."
 
 #: includes/integrations/class-product-jigoshop.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to a Jigoshop "
-"product. <a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to a Jigoshop product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "You cannot edit this term from here because it is linked to a Jigoshop product. <a href=\"%s\">Please edit the product directly</a>."
 
 #: includes/integrations/class-product-woocommerce.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to a WooCommerce "
-"product. <a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to a WooCommerce product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "You cannot edit this term from here because it is linked to a WooCommerce product. <a href=\"%s\">Please edit the product directly</a>."
 
 #: includes/integrations/class-product-wp-ecommerce.php:76
-msgid ""
-"You cannot edit this term from here because it is linked to a WP eCommerce "
-"product. <a href=\"%s\">Please edit the product directly</a>."
+msgid "You cannot edit this term from here because it is linked to a WP eCommerce product. <a href=\"%s\">Please edit the product directly</a>."
 msgstr "You cannot edit this term from here because it is linked to a WP eCommerce product. <a href=\"%s\">Please edit the product directly</a>."
 
-#: includes/shortcodes/shortcode-submit.php:35
-#: includes/shortcodes/shortcode-tickets.php:58
+#: includes/shortcodes/shortcode-submit.php:35 includes/shortcodes/shortcode-tickets.php:58
 msgid "You are being redirected..."
 msgstr "شما منتقل می شوید..."
 
@@ -1519,10 +1352,7 @@ msgid "You are not allowed to submit a ticket."
 msgstr "شما اجازه به ثبت تیکت ندارید"
 
 #: includes/shortcodes/shortcode-submit.php:104
-msgid ""
-"Sorry, support team members cannot submit tickets from here. If you need to "
-"open a ticket, please go to your admin panel or <a href=\"%s\">click here to"
-" open a new ticket</a>."
+msgid "Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href=\"%s\">click here to open a new ticket</a>."
 msgstr "Sorry, support team members cannot submit tickets from here. If you need to open a ticket, please go to your admin panel or <a href=\"%s\">click here to open a new ticket</a>."
 
 #: themes/default/details.php:116
@@ -1546,9 +1376,7 @@ msgid "Open a ticket"
 msgstr "بازکردن یک پاسخ"
 
 #: themes/default/list.php:55
-msgid ""
-"You haven't submitted a ticket yet. <a href=\"%s\">Click here to submit your"
-" first ticket</a>."
+msgid "You haven't submitted a ticket yet. <a href=\"%s\">Click here to submit your first ticket</a>."
 msgstr "شما تا بحال تیکتی ثبت نکرده اید.<a href=\"%s\">برای ثبت تیکت کلیک کنید</a>."
 
 #: themes/default/partials/ticket-origin.php:28
@@ -1567,8 +1395,7 @@ msgstr "ورود"
 msgid "E-mail or username"
 msgstr "ایمیل یا نام کاربری"
 
-#: themes/default/registration.php:50 themes/default/registration.php:51
-#: themes/default/registration.php:132
+#: themes/default/registration.php:50 themes/default/registration.php:51 themes/default/registration.php:132
 msgid "Password"
 msgstr "رمز"
 
@@ -1613,9 +1440,7 @@ msgid "Submit ticket"
 msgstr "ثبت تیکت"
 
 #. Description of the plugin/theme
-msgid ""
-"Awesome Support is a great ticketing system that will help you improve your "
-"customer satisfaction by providing a unique customer support experience."
+msgid "Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience."
 msgstr "Awesome Support یک افزونه فوق العاده تیکتینگ است که به شما کمک میکند رضایت مشتریان خودتان را با فراهم کردن یک پشتیبانی منحصر به فرد افزایش دهید."
 
 #: includes/admin/class-admin-tickets-list.php:184
@@ -1769,16 +1594,12 @@ msgid "On Hold"
 msgstr "روی خط"
 
 #: includes/custom-fields/class-custom-fields.php:166
-msgctxt ""
-"Parent term in a taxonomy where %s is dynamically replaced by the taxonomy "
-"(eg. \"book\")"
+msgctxt "Parent term in a taxonomy where %s is dynamically replaced by the taxonomy (eg. \"book\")"
 msgid "Parent %s:"
 msgstr "والدین %s :"
 
 #: includes/custom-fields/class-custom-fields.php:170
-msgctxt ""
-"A new taxonomy term name where %s is dynamically replaced by the taxonomy "
-"(eg. \"book\")"
+msgctxt "A new taxonomy term name where %s is dynamically replaced by the taxonomy (eg. \"book\")"
 msgid "New %s Name"
 msgstr "نام %s جدید"
 

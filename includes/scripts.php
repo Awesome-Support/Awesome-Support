@@ -221,6 +221,8 @@ function wpas_register_assets_back_end() {
 		'include_replies'       => __( 'Include replies', 'awesome-support' ),
 		'include_history'       => __( 'Include history', 'awesome-support' ),
 		'include_private_notes' => __( 'Include private notes', 'awesome-support' ),
+		'include_custom_fields' => __( 'Include custom fields', 'awesome-support' ),
+		'include_attachments'  => __( 'Include attachments', 'awesome-support' ),
 	) );
 
 

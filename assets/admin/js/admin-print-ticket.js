@@ -13,8 +13,10 @@
         html += '<a href="#" id="wpas-print-btn" class="button button-primary button-large">' + WPAS_Print.print + '</a>';
         html += '<a href="#" id="wpas-print-btn-cancel" class="button button-large">' + WPAS_Print.cancel + '</a>';
         html += '<label><input type="checkbox" id="wpas-print-toggle-replies" checked>' + WPAS_Print.include_replies + '</label>';
+        html += '<label><input type="checkbox" id="wpas-print-toggle-attachments" checked>' + WPAS_Print.include_attachments + '</label>';
         html += '<label><input type="checkbox" id="wpas-print-toggle-history">' + WPAS_Print.include_history + '</label>';
         html += '<label><input type="checkbox" id="wpas-print-toggle-private-notes">' + WPAS_Print.include_private_notes + '</label>';
+        html += '<label><input type="checkbox" id="wpas-print-toggle-custom-fields">' + WPAS_Print.include_custom_fields + '</label>';
         html += '</div></div></div>';
         return html;
     }
@@ -40,7 +42,6 @@
         }).done(function (data) {
 
             $('#wpas-print-ticket-box-ticket-content').html(data);
-
         });
 
     });
@@ -107,6 +108,32 @@
             $('.wpas-print-ticket-notes').show();
         } else {
             $('.wpas-print-ticket-notes').hide();
+        }
+
+    });
+
+    /**
+     * Toggle custom fields
+     */
+    $(document).on('click', '#wpas-print-toggle-custom-fields', function (e) {
+
+        if ($(this).is(':checked')) {
+            $('.wpas-print-ticket-custom-fields').show();
+        } else {
+            $('.wpas-print-ticket-custom-fields').hide();
+        }
+
+    });
+
+    /**
+     * Toggle attachments
+     */
+    $(document).on('click', '#wpas-print-toggle-attachments', function (e) {
+
+        if ($(this).is(':checked')) {
+            $('.wpas-print-ticket-attachments').show();
+        } else {
+            $('.wpas-print-ticket-attachments').hide();
         }
 
     });

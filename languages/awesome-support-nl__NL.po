@@ -1,17 +1,17 @@
 #, fuzzy
 msgid ""
 msgstr ""
+"Project-Id-Version: Awesome Support Core\n"
+"POT-Creation-Date: 2025-06-20 09:57+0000\n"
+"PO-Revision-Date: 2026-01-14 12:42+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/\n"
-"Project-Id-Version: Awesome Support Core\n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"POT-Creation-Date: 2025-06-20 09:57+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.8\n"
 
 #: includes/admin/class-admin-tickets-list.php:597
 msgid " ago by"
@@ -326,8 +326,8 @@ msgstr ""
 msgid ""
 "<h2>Use HTML Template</h2><p>Wrap all outgoing emails in a set of pretty "
 "HTML forms and tags.  With this option turned on you can set a LOGO and "
-"create fancy header and footers around your outgoing email alerts.</p><p>"
-"However, if you have another plugin installed that already wraps all "
+"create fancy header and footers around your outgoing email alerts.</"
+"p><p>However, if you have another plugin installed that already wraps all "
 "WordPress outgoing emails in a fancy HTML template then you should turn this "
 "option OFF.</p>"
 msgstr ""
@@ -364,8 +364,8 @@ msgstr ""
 #, php-format
 msgid ""
 "<strong>%1$s %2$s</strong> is available. <a href=\"%3$s\" class=\"thickbox\" "
-"title=\"%4$s\">Check out what's new</a> or <a href=\"%5$s\"%6$s>update "
-"now</a>."
+"title=\"%4$s\">Check out what's new</a> or <a href=\"%5$s\"%6$s>update now</"
+"a>."
 msgstr ""
 
 #: includes/admin/settings/settings-notifications.php:47
@@ -1109,8 +1109,8 @@ msgstr ""
 #: includes/gdpr-integration/gdpr-privacy-options.php:589
 #, php-format
 msgid ""
-"Awesome Support Ticket #: %s was NOT removed because the <i>"
-"wpas_before_delete_ticket_via_personal_eraser</i> filter check returned "
+"Awesome Support Ticket #: %s was NOT removed because the "
+"<i>wpas_before_delete_ticket_via_personal_eraser</i> filter check returned "
 "false. This means an Awesome Support add-on prevented this ticket from being "
 "deleted in order to preserve data integrity."
 msgstr ""
@@ -1164,8 +1164,8 @@ msgid ""
 "\tYou can use these when you set up new users and they are automatically "
 "assigned to users that register on our login page.  <br />\n"
 "\tBUT, if you have existing users with existing roles that need to open "
-"tickets please read <b><u><a %s>this article</a></b></u> on our website. <br "
-"/>\n"
+"tickets please read <b><u><a %s>this article</a></b></u> on our website. "
+"<br />\n"
 "\tThe rest of this page helps you to control the appearance of some items on "
 "your ticket screens."
 msgstr ""
@@ -2126,8 +2126,8 @@ msgstr ""
 msgid ""
 "Due to a potential server misconfiguration, it seems that HTTP Basic "
 "Authorization may not work for the REST API on this site: `Authorization` "
-"headers are not being sent to WordPress by the web server. <a href=\"https:"
-"//github.com/georgestephanis/application-passwords/wiki/Basic-Authorization-"
+"headers are not being sent to WordPress by the web server. <a href=\"https://"
+"github.com/georgestephanis/application-passwords/wiki/Basic-Authorization-"
 "Header----Missing\">You can learn more about this problem, and a possible "
 "solution, on our GitHub Wiki.</a>"
 msgstr ""
@@ -2777,9 +2777,9 @@ msgstr ""
 #: includes/admin/functions-misc.php:506
 #, php-format
 msgid ""
-"Hey! Did you know you can get a <strong>free add-on for unlimited "
-"sites</strong> (a $61.00 USD value) for Awesome Support? <a href=\"%1$s\">"
-"Click here to read more</a>."
+"Hey! Did you know you can get a <strong>free add-on for unlimited sites</"
+"strong> (a $61.00 USD value) for Awesome Support? <a href=\"%1$s\">Click "
+"here to read more</a>."
 msgstr ""
 
 #: includes/admin/settings/settings-general.php:60
@@ -3944,8 +3944,8 @@ msgstr ""
 
 #: includes/admin/class-as-admin-setup-wizard.php:219
 msgid ""
-"Note: You can change your mind later by going to the TICKETS->SETTINGS->"
-"PRODUCTS MANAGEMENT tab."
+"Note: You can change your mind later by going to the TICKETS->SETTINGS-"
+">PRODUCTS MANAGEMENT tab."
 msgstr ""
 
 #: includes/admin/settings/settings-integration.php:37
@@ -4080,8 +4080,8 @@ msgstr ""
 msgid ""
 "Only use this option if you know how to create your own registration page, "
 "otherwise you might create an infinite redirect. If you need help on "
-"creating a registration page you should <a href=\"%s\" target=\"_blank\">"
-"start by reading this guide</a>."
+"creating a registration page you should <a href=\"%s\" "
+"target=\"_blank\">start by reading this guide</a>."
 msgstr ""
 
 #: includes/functions-general.php:390 includes/functions-templating.php:1121
@@ -4974,10 +4974,10 @@ msgstr ""
 msgid ""
 "Select one of the following tags to insert into the email template, at the "
 "current cursor location. <br /> <br /> <i>Note that these tags are only "
-"applicable on certain settings tabs and screens.  These include the <b>"
-"EMAIL</b>, <b>NOTIFICATIONS</b> and <b>SATISFACTION SURVEY</b> settings tabs "
-"as well as the <b>RULESET</b> screens. Some tags are applicable on the <b>"
-"FAQ</b> and <b>DOCUMENTATION</b> settings screens as well. Using them "
+"applicable on certain settings tabs and screens.  These include the "
+"<b>EMAIL</b>, <b>NOTIFICATIONS</b> and <b>SATISFACTION SURVEY</b> settings "
+"tabs as well as the <b>RULESET</b> screens. Some tags are applicable on the "
+"<b>FAQ</b> and <b>DOCUMENTATION</b> settings screens as well. Using them "
 "anywhere else will have no effect!</i>"
 msgstr ""
 
@@ -5068,9 +5068,9 @@ msgid ""
 "Settings in this section might help with compatibility with certain themes "
 "and plugins - please experiment to see if one of these settings work for you "
 "before contacting our support center. NOTE: Changing ANYTHING in this "
-"section will require ALL CACHES to be flushed including CDNs, BROWSER CACHES."
-"  Also, its possible that you would need a restart of the PHP service or "
-"your WEB SERVER in order to become fully activated!"
+"section will require ALL CACHES to be flushed including CDNs, BROWSER "
+"CACHES.  Also, its possible that you would need a restart of the PHP service "
+"or your WEB SERVER in order to become fully activated!"
 msgstr ""
 
 #: includes/gas-framework/lib/class-admin-page.php:466
@@ -5749,8 +5749,8 @@ msgstr ""
 #: includes/admin/settings/settings-advanced.php:108
 msgid ""
 "The contents of your ticket uploads folder can be protected by an htaccess "
-"file on apache servers. <br />If this is left empty then the value of <b>"
-"options -Indexes</b> is automatically added to the file to prevent others "
+"file on apache servers. <br />If this is left empty then the value of "
+"<b>options -Indexes</b> is automatically added to the file to prevent others "
 "from browsing the directory. <br />Add to this only if you are a super-duper "
 "apache server expert! <br /> No technical support is available for "
 "modifications to this setting!"
@@ -5966,8 +5966,8 @@ msgstr ""
 msgid ""
 "The role should be the internal WordPress role id such as wpas_user and is "
 "case sensitive.  Do not leave this blank!  This role should have the 5 core "
-"Awesome Support capabilities in order for users to be able to submit tickets."
-" Check our documentation for more information."
+"Awesome Support capabilities in order for users to be able to submit "
+"tickets. Check our documentation for more information."
 msgstr ""
 
 #: includes/rest-api/includes/API/Tickets.php:805
@@ -6004,8 +6004,8 @@ msgstr ""
 #: includes/admin/views/system-status.php:1
 msgid ""
 "The system status is a built-in debugging tool. If you contacted support and "
-"you're asked to provide the system status, <strong>click the button "
-"below</strong> to copy your system report:"
+"you're asked to provide the system status, <strong>click the button below</"
+"strong> to copy your system report:"
 msgstr ""
 
 #: includes/rest-api/includes/API/Tickets.php:812
@@ -6252,8 +6252,8 @@ msgstr ""
 #: includes/admin/metaboxes/replies.php:178
 #, php-format
 msgid ""
-"This ticket has been closed. If you want to write a new reply to this ticket,"
-" you need to <a href=\"%s\">re-open it first</a>."
+"This ticket has been closed. If you want to write a new reply to this "
+"ticket, you need to <a href=\"%s\">re-open it first</a>."
 msgstr ""
 
 #: includes/admin/class-admin-tickets-list.php:648
@@ -6875,8 +6875,9 @@ msgstr ""
 
 #: includes/admin/settings/settings-fields.php:39
 msgid ""
-"Use these options to control how the Ticket Type options are used and shown. "
-" To change the labels used for this field please see our POWER-PACK add-on."
+"Use these options to control how the Ticket Type options are used and "
+"shown.  To change the labels used for this field please see our POWER-PACK "
+"add-on."
 msgstr ""
 
 #: includes/admin/settings/settings-fields.php:46
@@ -7061,8 +7062,8 @@ msgstr ""
 
 #: includes/admin/views/system-tools.php:202
 msgid ""
-"Warning: Using these options will overwrite your email templates in TICKETS->"
-"SETTINGS->EMAILS!"
+"Warning: Using these options will overwrite your email templates in TICKETS-"
+">SETTINGS->EMAILS!"
 msgstr ""
 
 #: tracking/class-plugin-usage-tracker.php:313
@@ -7107,8 +7108,8 @@ msgstr ""
 #: includes/admin/settings/settings-fields.php:13
 #, php-format
 msgid ""
-"We have two options that allow you to create custom fields. Please read <b>"
-"<u><a %s>this article</a></b></u> on our website to learn about them."
+"We have two options that allow you to create custom fields. Please read "
+"<b><u><a %s>this article</a></b></u> on our website to learn about them."
 msgstr ""
 
 #. %s is the URL to the documentation.
@@ -7143,9 +7144,9 @@ msgstr ""
 
 #: includes/admin/settings/settings-integration.php:69
 msgid ""
-"What is the myCRED Meta Key that should be used to record points for agents? "
-" The default is <em>mycred_default</em>.  See the myCRED settings screen and "
-"documentation for more information."
+"What is the myCRED Meta Key that should be used to record points for "
+"agents?  The default is <em>mycred_default</em>.  See the myCRED settings "
+"screen and documentation for more information."
 msgstr ""
 
 #: includes/admin/settings/settings-integration.php:97
@@ -7278,10 +7279,10 @@ msgstr ""
 
 #: includes/admin/settings/settings-general.php:33
 msgid ""
-"Who to assign tickets to in the case that auto-assignment wouldn&#039;t work."
-" This does NOT mean that all tickets will be assigned to this user. This is "
-"a fallback option. To enable/disable auto assignment for an agent, please do "
-"so in the user profile settings."
+"Who to assign tickets to in the case that auto-assignment wouldn&#039;t "
+"work. This does NOT mean that all tickets will be assigned to this user. "
+"This is a fallback option. To enable/disable auto assignment for an agent, "
+"please do so in the user profile settings."
 msgstr ""
 
 #: includes/admin/settings/settings-integration.php:22
@@ -7460,8 +7461,8 @@ msgstr ""
 msgid ""
 "You can enable e-mail checking on the registration page. When enabled, the "
 "plugin will make sure the e-mail address used is valid and can receive e-"
-"mails. The verification is done using <a href=\"%s\">Email validation API</a>"
-" and requires a (free) MailGun account. This helps reducing typos in email "
+"mails. The verification is done using <a href=\"%s\">Email validation API</"
+"a> and requires a (free) MailGun account. This helps reducing typos in email "
 "addresses during sign ups."
 msgstr ""
 
@@ -7469,8 +7470,8 @@ msgstr ""
 #: includes/rest-api/includes/settings-api.php:15
 #, php-format
 msgid ""
-"You can find documentation for this api in our developer portal located here:"
-" %s"
+"You can find documentation for this api in our developer portal located "
+"here: %s"
 msgstr ""
 
 #: includes/admin/class-as-admin-setup-wizard.php:540
@@ -7486,8 +7487,8 @@ msgstr ""
 
 #: includes/admin/class-as-admin-setup-wizard.php:494
 msgid ""
-"You can turn this off later if you change your mind by going to the TICKETS->"
-"SETTINGS->FIELDS tab."
+"You can turn this off later if you change your mind by going to the TICKETS-"
+">SETTINGS->FIELDS tab."
 msgstr ""
 
 #. %1$d is the maximum number of files, %2$d is the maximum file size in MB, %3$s is the list of allowed file types.
