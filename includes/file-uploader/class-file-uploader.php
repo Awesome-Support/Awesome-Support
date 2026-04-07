@@ -439,11 +439,14 @@ class WPAS_File_Upload {
 							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'awesome-support') ) );
 							die();
 						}
-						
-						if ( ! current_user_can( 'delete_attachment', $attachment_id ) ) {							
-							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'awesome-support') ) );
-							die();
-						}
+						// Allow administrator, Support Supervisor, Support Manager to delete attachment
+						if ( ! current_user_can( 'delete_attachment', $attachment_id ) && ! current_user_can( 'delete_ticket' ) ) {
+
+						    wp_send_json_error( array(
+						        'message' => __( "Sorry, you are not allowed to delete this item.", 'awesome-support' )
+						    ) );
+						    wp_die();
+						}						
 						
 						$filename   = explode( '/', $attachment->guid );
 						$name = $filename[ count( $filename ) - 1 ];
