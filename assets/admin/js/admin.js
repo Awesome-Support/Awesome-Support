@@ -496,8 +496,7 @@
         
         
         /* Set or remove close ticket client notification flag */
-        $('input[name=close_ticket_prevent_client_notification]').on("click", function(e) {
-                e.preventDefault();
+        $('input[name=close_ticket_prevent_client_notification]').on("click", function(e) {               
                 
                 var checkbox  = $(this);
                 if( checkbox.prop('disabled') ) {
