@@ -1222,7 +1222,8 @@ class WPAS_File_Upload {
 							?>
 							<li>
 									<?php
-									if( $can_delete ) {
+									$user_can_delete = wpas_can_delete_attachment_by_ID( $attachment['id'] );
+									if( $can_delete && $user_can_delete ) {
 										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
 									}
 
@@ -1326,7 +1327,8 @@ class WPAS_File_Upload {
 							?>
 							<li>
 									<?php
-									if( $can_delete ) {
+									$user_can_delete = wpas_can_delete_attachment_by_ID( $attachment['id'] );
+									if( $can_delete && $user_can_delete ) {
 										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
 									}
 									

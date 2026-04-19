@@ -1683,6 +1683,25 @@ function wpas_is_field_in_ai_tab( $field_name ) {
 }
 
 /**
+ * Check if user or agent can delete attachment by ID
+ *
+ * @param int $attachment_id
+ * @return bool
+ */
+function wpas_can_delete_attachment_by_id( $attachment_id ) {
+
+    if ( ! $attachment_id ) {
+	    return false;
+	}
+    $user_id   = get_current_user_id();
+    $author_id = (int) get_post_field( 'post_author', $attachment_id );
+
+    $can = wpas_is_agent() || ( $user_id === $author_id );
+
+    return apply_filters( 'wpas_can_delete_attachments_byid', $can, $attachment_id, $user_id );
+}
+
+/**
  * Check if user or agent can delete attachments
  *
  * @return boolean
