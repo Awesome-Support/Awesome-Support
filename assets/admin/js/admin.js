@@ -15,7 +15,33 @@
 
     $(function () {
 
-		/* Hide the ticket slug on the ticket details page  */
+		//Ted fix editor full screen feature
+        if (typeof tinymce !== 'undefined')
+        {
+             tinymce.on('AddEditor', function (e) {
+
+                var wpas_editor = e.editor;
+
+                if (!wpas_editor || wpas_editor._hasFsHandler) return;
+
+                wpas_editor.on('FullscreenStateChanged', function (ev) {   
+
+                    var $wrap_wpas_editor = $('#wp-' + wpas_editor.id + '-wrap');
+
+                    if (!$wrap_wpas_editor.length) return;
+
+                    if( ev.state == true)
+                    {
+                       $wrap_wpas_editor.css('z-index', 9999);                    
+                    }
+                    else
+                    {
+                        $wrap_wpas_editor.css('z-index', '');                
+                    }
+                });
+            });
+        }
+        /* Hide the ticket slug on the ticket details page  */
 		function hideTicketSlug() {
 			var slug = $('.post-type-ticket #edit-slug-box');  // Get all the slug rows - should only be one though.
 			slug.toggle(); // hide it.
@@ -415,8 +441,7 @@
          */
         if( 0 < $('#wpas_admin_tabs_ticket_main_custom_fields').length ) {
             $('#postdivrich').prependTo('.wpas-post-body-content');
-            $('#wpas-mb-ticket-main-tabs').parent().css('opacity', '1');
-            $("#postbox-container-2").appendTo("#post-body-content");
+            $('#wpas-mb-ticket-main-tabs').parent().css('opacity', '1');           
         }
         
         
