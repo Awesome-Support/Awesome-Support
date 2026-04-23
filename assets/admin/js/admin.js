@@ -14,8 +14,53 @@
         };
 
     $(function () {
+	
+        //Process delete ticket or reply attachments        
+        var system_delete_option = document.getElementById('wpas_auto_delete_attachments');
+        var user_delete_option   = document.getElementById('wpas_user_can_set_auto_delete_attachments');
+        var agent_delete_option  = document.getElementById('wpas_agent_can_set_auto_delete_attachments');
 
-		//Ted fix editor full screen feature
+        function updateState() {
+
+            if (!system_delete_option || !user_delete_option || !agent_delete_option) return;
+
+
+            if (system_delete_option.checked) {
+                // System ON → disable user + agent
+                user_delete_option.checked = false;
+                agent_delete_option.checked = false;
+
+                user_delete_option.disabled = true;
+                agent_delete_option.disabled = true;
+
+                system_delete_option.disabled = false;
+
+            } else if (user.checked || agent.checked) {
+                // User OR Agent ON → disable system
+                system_delete_option.checked = false;
+                system_delete_option.disabled = true;
+
+                user_delete_option.disabled = false;
+                agent_delete_option.disabled = false;
+
+            } else {
+                // Nothing selected → enable all
+                system_delete_option.disabled = false;
+                user_delete_option.disabled = false;
+                agent_delete_option.disabled = false;
+            }
+        }
+
+        // Bind events
+        if (system_delete_option) system_delete_option.addEventListener('change', updateState);
+        if (user_delete_option) user_delete_option.addEventListener('change', updateState);
+        if (agent_delete_option) agent_delete_option.addEventListener('change', updateState);
+
+        // Init on load
+        updateState();
+        //Process delete ticket or reply attachments end       
+
+        //Ted fix editor full screen feature
         if (typeof tinymce !== 'undefined')
         {
              tinymce.on('AddEditor', function (e) {
