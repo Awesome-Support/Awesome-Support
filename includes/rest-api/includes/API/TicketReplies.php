@@ -203,7 +203,11 @@ class TicketReplies extends TicketBase {
 		 * Delete the activity transient.
 		 */
 		delete_transient( "wpas_activity_meta_post_" . $object->ID );
-
+		
+		/*
+		Ted add new flag to detect API request
+		*/
+		$data['is_api'] = true;
 		/**
 		 * Fire wpas_add_reply_after after the reply was successfully added.
 		 */

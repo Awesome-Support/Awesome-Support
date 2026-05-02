@@ -126,9 +126,9 @@ function wpas_notify_ticket_closed_by_agent( $ticket_id) {
 add_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10, 2 );
 function wpas_notify_reply( $reply_id, $data ) {
 
-	/* If the ID is set it means we're updating a post and NOT creating. In this case no notification. */
-	if ( isset( $data['ID'] ) ) {
-		return;
+	// If the ID is set, we're updating (not creating), so skip notification unless it's via API
+	if (isset($data['ID']) && empty($data['is_api'])) {
+	    return;
 	}
 
 	$ticket_author = $data['post_author'] ;
