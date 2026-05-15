@@ -669,10 +669,9 @@
 				$columns[ $field[ 'name' ] ] = array( 'title' => $column_title, 'callback' => $column_callback );
 
 				if ( ! empty( $field[ 'args' ][ 'column_attributes' ] ) && is_array( $field[ 'args' ][ 'column_attributes' ] ) ) {
-					$columns[ $field[ 'name' ] ] = $field[ 'args' ][ 'column_attributes' ];
+					$columns[ $field[ 'name' ] ]['column_attributes'] = $field[ 'args' ][ 'column_attributes' ];
 				}
-
-			}
+			}		
 
 		}
 

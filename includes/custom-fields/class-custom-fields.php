@@ -863,7 +863,7 @@ class WPAS_Custom_Fields {
 					{
 						foreach( $_FILES[ $field_name ] as $key => $valuee)
 						{
-							$_FILES[ $field_name ][ $key ] = array_map( 'sanitize_file_name', wp_unslash( $_FILES[ $field_name ][ $key ] ) ); 
+							$_FILES[ $field_name ][ $key ] = array_map( 'sanitize_file_name', (array) wp_unslash( $_FILES[ $field_name ][ $key ] ) ); 
 						}
 						$data[ $field_name ] = wp_unslash( $_FILES[ $field_name ] ); 
 					}
