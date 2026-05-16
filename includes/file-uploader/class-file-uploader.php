@@ -1413,10 +1413,10 @@ class WPAS_File_Upload {
 	public function process_upload() {
 
 		$index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
-
+		
 		/* We have a submission with a $_FILES var set */
 		if ( $_POST && $_FILES && isset( $_FILES[ $index ] ) ) {
-
+		
 			if ( empty( $_FILES[ $index ]['name'][0] ) ) {
 				return false;
 			}
@@ -1778,7 +1778,7 @@ class WPAS_File_Upload {
 	 */
 	public function new_ticket_attachment( $ticket_id ) {
 
-		if ( isset( $_POST['wpas_title'] ) ) {
+		if ( isset( $_POST['wpas_title'] ) || ( isset( $_POST['post_type'] ) && $_POST['post_type']  == 'ticket' ) ) {
 			$this->post_id = intval( $ticket_id );
 			$this->process_upload();
 		}
