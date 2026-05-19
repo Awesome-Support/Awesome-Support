@@ -216,6 +216,8 @@ class WPAS_Member {
 		// We assume that a user with the capability view_ticket is a member because this is one cap that all AS users have
 		$cap = 'view_ticket';
 
+		$this->caps = is_array( $this->caps ) ? $this->caps : array();
+		
 		if ( is_null( $this->is_member ) ) {
 			$this->is_member = apply_filters( 'wpas_member_is_member', array_key_exists( $cap, $this->caps ), $this->user_id, $cap, $this->roles, $this->caps );
 		}
