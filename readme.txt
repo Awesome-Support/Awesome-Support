@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,rwkiii,elindydotcom,SiamKreative,alaca
 Tags: helpdesk,ticket system,support,tickets,support ticket
 Requires at least: 4.0
-Tested up to: 6.9.4
-Stable tag: 6.3.8
+Tested up to: 7.0
+Stable tag: 6.3.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -290,6 +290,17 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 6.3.9 =
+* Fix
+  * We fixed a PHP notice when a translation was triggered too early.
+  * Admins were not able to delete attachment files.  
+  * Now users can receive email notification when someone replies through the REST API.
+  * For new install, agent could not create a ticket reply.
+* Tweak
+  * We updated changelog format.
+  * Solved the Editor zoom out.
+
 = 6.3.8 =
 * Fix
   * Fixed export tickets feature.

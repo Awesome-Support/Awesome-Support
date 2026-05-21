@@ -856,9 +856,19 @@ class WPAS_File_Upload {
 		}
 		
 		// SECURITY FIX: Validate directory path to prevent directory traversal
+		if ( empty( $this->wp_upload_dir ) || ! is_array( $this->wp_upload_dir ) || empty( $this->wp_upload_dir['basedir'] ) ) {
+			wpas_write_log( 'file-uploader', 'Security: wp_upload_dir is not initialized properly.');
+			return;
+		}
 		$allowed_base = $this->wp_upload_dir['basedir'];
+
+		if ( empty( $allowed_base ) ) {
+			wpas_write_log( 'file-uploader', 'Security: Missing upload base directory.' );
+			return;
+		}
+
 		if ( strpos( $dir, $allowed_base ) !== 0 ) {
-			wpas_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
+			wpas_write_log( 'file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
 			return;
 		}
 
@@ -1413,7 +1423,7 @@ class WPAS_File_Upload {
 	public function process_upload() {
 
 		$index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
-		
+
 		/* We have a submission with a $_FILES var set */
 		if ( $_POST && $_FILES && isset( $_FILES[ $index ] ) ) {
 		
