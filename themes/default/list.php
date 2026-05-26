@@ -43,7 +43,7 @@ if ( $wpas_tickets->have_posts() ):
 			<thead>
 				<tr>
 					<?php foreach ( $columns as $column_id => $column ) {
-
+						
 						$data_attributes = '';
 
 						// Add the data attributes if any

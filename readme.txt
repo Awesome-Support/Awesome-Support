@@ -3,8 +3,8 @@
 Contributors: awesomesupport,julien731,rwkiii,elindydotcom,SiamKreative,alaca
 Tags: helpdesk,ticket system,support,tickets,support ticket
 Requires at least: 4.0
-Tested up to: 6.9.4
-Stable tag: 6.3.8
+Tested up to: 7.0
+Stable tag: 6.3.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -290,87 +290,130 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
-= 6.3.8
-  * Fix export tickets feature.
-  * Fix vulnerable issue of Insecure Direct Object Reference.
+
+= 6.3.9 =
+* Fix
+  * We fixed a PHP notice when a translation was triggered too early.
+  * Admins were not able to delete attachment files.  
+  * Now users can receive email notification when someone replies through the REST API.
+  * For new install, agent could not create a ticket reply.
+* Tweak
+  * We updated changelog format.
+  * Solved the Editor zoom out.
+
+= 6.3.8 =
+* Fix
+  * Fixed export tickets feature.
+  * Fixed vulnerable issue of Insecure Direct Object Reference.
+* Tweak
   * We improved the layout : Additional Support Staff.
-= 6.3.7
-  * Fix vulnerable issue of Unauthenticated Sensitive Information Disclosure.
-  * Fix Missing Authorization to Unauthenticated Role Demotion.
+
+= 6.3.7 =
+* Fix
+  * Fixed vulnerable issue of Unauthenticated Sensitive Information Disclosure.
+  * Fixed Missing Authorization to Unauthenticated Role Demotion.
+* Tweak
   * Update default fallback rules for the .htaccess file in the ticket folder.
-= 6.3.6
-	* Fix vulnerability to sensitive data exposure.
-	* Fix vulnerable issue of PHP Object Injection.
+
+= 6.3.6 =
+* Fix
+	* Fixed vulnerability to sensitive data exposure.
+	* Fixed vulnerable issue of PHP Object Injection.
+* New
 	* Create a Get Help button to reach out to Support (Free and Premium).
-= 6.3.5
-	* We improved the cache admin menu ticket count.
+
+= 6.3.5 =
+* Fix
+	* Fixed Bug in load more ticket replies interface.
+	* Fixed vulnerable issue.
+* New
 	* New feature to support custom file type such as "*.k" and "*.dyn".
-	* New feature to set the Maximum Lenght in the subject of ticket on Submit Ticket Form of front-end.
-	* We fixed Bug in load more ticket replies interface.
-	* New feature to allow embed images on Email notifications when replying.
-	* Fix vulnerable issue.
-= 6.3.4	
-	* We improved the Editor 'Zoom In, Zoom out' feature.
-	* New feature to export the Reports and statiscs data in csv, graphs and pdf.
+	* New feature to set the Maximum Lenght in the subject of ticket on Submit Ticket Form of front-end.	
+	* New feature to allow embed images on Email notifications when replying.	
+* Tweak
+		* We improved the cache admin menu ticket count.
+
+= 6.3.4 =
+* Tweak	
+	* We improved the Editor 'Zoom In, Zoom out' feature.	
 	* We improved the tutorial process when user setups the plugin first time.
-= 6.3.3	
+* New
+	* New feature to export the Reports and statiscs data in csv, graphs and pdf.
+
+= 6.3.3 =
+* Fix	
 	* We fixed Bug ticket reply from cron job (IMAP ADDON).
 	* We fixed the compatibility with Wordpress version 6.8.
-= 6.3.2	
+
+= 6.3.2 =
+* Fix	
 	* We fixed vulnerability Issue with ticket folder. 
 
-= 6.3.1
-	* Revised plugin deactivation process with feedback.
+= 6.3.1 =
+* Fix		
 	* We fixed issue of HTML Formatting Lost in Email Settings After Saving.
-	* We fixed issue of Crashing site with an infinite loop.
-	* We changed the column name from "creation date" to "last modified".
+	* We fixed issue of Crashing site with an infinite loop.	
 	* We fixed the JavaScript error that appears when the user moves the browser window.
 	* We fixed the conflict issue of Company Profile and Canned Responses add-ons.
-	* Fix Bug for Nested Departments.
-	
-= 6.3.0
+	* We fixed the Bug for Nested Departments.
+* Tweak	
+	* Revised plugin deactivation process with feedback.
+	* We changed the column name from "creation date" to "last modified".
+
+= 6.3.0 =
+* Tweak
 	* Update General Rules and Improve Security, Performance, and Accessibility for Plugin Repository
 
-= 6.2.3
+= 6.2.3 =
+* Tweak
 	* Updating security rules for multiple files upload.
 
-= 6.2.2
+= 6.2.2 =
+* Tweak
 	* Updating security rules for form upload via AJAX.
 
-= 6.2.1
+= 6.2.1 =
+* Fix
 	* We fixed the issue with the user search.
 
-= 6.2.0
+= 6.2.0 =
+* Fix
 	* We fixed security vulnerabilities in all the plugin.
 
-= 6.1.11
+= 6.1.11 =
+* Tweak
 	* We implement a CSRF protection (via a nonce) in the endpoints wpas_dismiss_free_addon_page and wpas_skip_wizard_setup.
 
-= 6.1.10
+= 6.1.10 =
+* Fix
 	* We fixed the vulnerability where a subscriber role could have the ability to skip the "Awesome Support: First Time Install" banner process in the admin dashboard.
 
-= 6.1.9
+= 6.1.9 =
+* Fix
 	* We fixed when the agent was not able to choose a user when changing the ticket creator field.
 		
-= 6.1.8	
+= 6.1.8 =
+* Fix	
 	* We fixed the 3 vulnerabilities: 
 		- Authenticated (Subscriber+) SQL Injection.
 		- Missing Authorization via wpas_get_users() function.
 		- Missing Authorization via editor_html() function.
 
-= 6.1.7	
+= 6.1.7 =
+* Fix
 	* We fixed high priority vulnerabilities to keep the plugin safe and up to date.
 	
-= 6.1.6
+= 6.1.6 =
+* Tweak
 	* We applied several security patches to improve the plugin security.
 	
-= 6.1.5
+= 6.1.5 =
 * Fix	
 	* Patched security issues to keep the plugin secure.
 	* We solved the error messages when saving ticket settings.
 	* It was not possible to upload multiple files with the drag and drop uploader.
 
-= 6.1.4
+= 6.1.4 =
 * Fix	
 	* We fixed an issue with the Email Support add-on and the Piping Subject Link.
 	* The Admin could not pull custom fields data, now it's possible.
@@ -380,7 +423,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
   	* An E_ERROR message was fixed.
 	* If I upload a file to a ticket with the character “#” on the filename, the file won’t load.
 	
-= 6.1.3
+= 6.1.3 =
 * New Feature	
 	* Add attachments when you print tickets. You can enable or disable this option on the print screen.
 * Tweak 
@@ -396,11 +439,11 @@ There are several factors that can influence e-mail notifications delivery. Plea
 	* Solved an Undefined array key warning message that shows to some users.
 	* When deactivating the plugin with add-ons activated, it crashed websites. From now, this won't happen, you can deactivate the plugin with the add-ons activated and the site won't crash.
 	
-= 6.1.2
+= 6.1.2 =
 * Fix
 	* Fixed security vulnerability
 
-= 6.1.1
+= 6.1.1 =
 * Fix
 	* When activating Client tickets add-on with Version 6.1.0 SHOW EMPTY notice
 	* Fixed security vulnerability
@@ -414,7 +457,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 * New Feature
 	* You can show the image attached on the ticket, in the print file.
 
-= 6.1.0
+= 6.1.0 =
 
 * Fix
   * 3984879 - GAS conflict with Download Monitor (Plugin)

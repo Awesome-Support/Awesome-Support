@@ -190,14 +190,9 @@ class WPAS_File_Upload {
 		if( !is_admin() ) {
 			return;
 		}
-
-		//$old_auto_save = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
+		
 		$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
-
-		//if( $auto_delete !== $old_auto_save ) {
-		//	$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
-		//}
-
+		
 		if ( wpas_agent_can_set_auto_delete_attachments() || wpas_is_asadmin() ) {
 			$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
 		}
@@ -238,22 +233,15 @@ class WPAS_File_Upload {
 	function add_auto_delete_button_fe_submission() {
 		global $post;
 
-		$flag_on = '';
-
-
-		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+		$flag_on = '';		
 
 		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
 
-		if( !$auto_delete || !$user_can_set_flag ) {
+		$system_auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
+
+		if( !$user_can_set_flag || $system_auto_delete ) {
 			return;
 		}
-
-
-		if( $auto_delete ) {
-			$flag_on = '1';
-		}
-
 
 		$this->auto_delete_field( $flag_on );
 
@@ -266,9 +254,13 @@ class WPAS_File_Upload {
 	function add_auto_delete_button_fe_ticket() {
 		global $post;
 
-		$auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
+		$system_auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
 
-		if( wpas_user_can_set_auto_delete_attachments()  && true == $auto_delete ) {
+		if( $system_auto_delete == true ) {
+			return;
+		}
+
+		if( wpas_user_can_set_auto_delete_attachments() ) {
 			$flag_on = get_post_meta( $post->ID, 'auto_delete_attachments', true );
 			$this->auto_delete_field( $flag_on );
 		}
@@ -289,23 +281,29 @@ class WPAS_File_Upload {
 		/* Got here so ok to paint the field */
 		global $post_id;
 
-		$flag_on = get_post_meta( $post_id, 'auto_delete_attachments', true );
+		$system_auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
 
-		echo '<p>';
-
-		$this->auto_delete_field( $flag_on );
-		echo '</p>';
+		$flag_on = get_post_meta( $post_id, 'auto_delete_attachments', true );	
+		
+		$this->auto_delete_field( $flag_on , $system_auto_delete );
+		
 
 	}
 
-	function auto_delete_field( $flag_on = false ) {
+	function auto_delete_field( $flag_on = false , $disable = false) {
 		?>
 
 		<div class="wpas-auto-delete-attachments-container">
 			<label for="wpas-auto-delete-attachments">
-				<input type="checkbox" id="wpas-auto-delete-attachments" name="wpas-auto-delete-attachments" value="1" <?php checked(1, $flag_on); ?>>
-				<?php esc_html_e( 'Automatically delete attachments when a ticket is closed', 'awesome-support' ); ?>
-			</label>
+			<input type="checkbox"
+			       id="wpas-auto-delete-attachments"
+			       name="wpas-auto-delete-attachments"
+			       value="1"
+			       <?php checked(1, $disable ? 1 : $flag_on); ?>
+			       <?php echo $disable ? 'disabled' : ''; ?>>			
+			<?php esc_html_e('Automatically delete attachments when a ticket is closed', 'awesome-support'); ?>
+			
+		</label>
 		</div>
 		<?php
 	}
@@ -322,7 +320,9 @@ class WPAS_File_Upload {
 
 		$delete_attachments = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
 
-		if( $delete_attachments ) {
+		$system_auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
+
+		if( $delete_attachments || $system_auto_delete ) {
 
 			// Get attachments on ticket
 			$attachments = get_attached_media( '', $ticket_id );
@@ -366,24 +366,25 @@ class WPAS_File_Upload {
 	 * @param array $data
 	 */
 	function wpas_open_ticket_after( $ticket_id, $data ) {
-
-
-		$auto_delete = wpas_get_option( 'auto_delete_attachments' );
+		
+		
+		if ( wpas_get_option( 'auto_delete_attachments' ) ) {
+		    return;
+		}
 
 		$user_can_set_flag = wpas_user_can_set_auto_delete_attachments();
 
-		if( !$auto_delete && !$user_can_set_flag ) {
+		if( !$user_can_set_flag ) {
 			return;
 		}
 
+		$auto_delete = '';
 		$auto_delete_type = '';
 
 		if( $user_can_set_flag ) {
 			$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
 			$auto_delete_type = 'user';
-		} elseif( $auto_delete ) {
-			$auto_delete_type = 'auto';
-		}
+		} 
 
 		$auto_delete = $auto_delete ? '1' : '';
 
@@ -439,11 +440,14 @@ class WPAS_File_Upload {
 							wp_send_json_error( array( 'message' => __( "Attachment not found.",  'awesome-support') ) );
 							die();
 						}
-						
-						if ( ! current_user_can( 'delete_attachment', $attachment_id ) ) {							
-							wp_send_json_error( array( 'message' => __( "Sorry, you are not allowed to delete this item.",  'awesome-support') ) );
-							die();
-						}
+						// Allow administrator, Support Supervisor, Support Manager to delete attachment
+						if ( ! current_user_can( 'delete_attachment', $attachment_id ) && ! current_user_can( 'delete_ticket' ) ) {
+
+						    wp_send_json_error( array(
+						        'message' => __( "Sorry, you are not allowed to delete this item.", 'awesome-support' )
+						    ) );
+						    wp_die();
+						}						
 						
 						$filename   = explode( '/', $attachment->guid );
 						$name = $filename[ count( $filename ) - 1 ];
@@ -852,9 +856,19 @@ class WPAS_File_Upload {
 		}
 		
 		// SECURITY FIX: Validate directory path to prevent directory traversal
+		if ( empty( $this->wp_upload_dir ) || ! is_array( $this->wp_upload_dir ) || empty( $this->wp_upload_dir['basedir'] ) ) {
+			wpas_write_log( 'file-uploader', 'Security: wp_upload_dir is not initialized properly.');
+			return;
+		}
 		$allowed_base = $this->wp_upload_dir['basedir'];
+
+		if ( empty( $allowed_base ) ) {
+			wpas_write_log( 'file-uploader', 'Security: Missing upload base directory.' );
+			return;
+		}
+
 		if ( strpos( $dir, $allowed_base ) !== 0 ) {
-			wpas_write_log('file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
+			wpas_write_log( 'file-uploader', 'Security: Attempt to protect directory outside allowed upload path: ' . $dir );
 			return;
 		}
 
@@ -1219,7 +1233,8 @@ class WPAS_File_Upload {
 							?>
 							<li>
 									<?php
-									if( $can_delete ) {
+									$user_can_delete = wpas_can_delete_attachment_by_ID( $attachment['id'] );
+									if( $can_delete && $user_can_delete ) {
 										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
 									}
 
@@ -1323,7 +1338,8 @@ class WPAS_File_Upload {
 							?>
 							<li>
 									<?php
-									if( $can_delete ) {
+									$user_can_delete = wpas_can_delete_attachment_by_ID( $attachment['id'] );
+									if( $can_delete && $user_can_delete ) {
 										printf( '<a href="#" class="btn_delete_attachment" data-parent_id="%s" data-att_id="%s">%s</a>', esc_attr( $post_id ),  esc_attr( $attachment['id'] ), esc_html__( 'X', 'awesome-support' ) );
 									}
 									
@@ -1410,7 +1426,7 @@ class WPAS_File_Upload {
 
 		/* We have a submission with a $_FILES var set */
 		if ( $_POST && $_FILES && isset( $_FILES[ $index ] ) ) {
-
+		
 			if ( empty( $_FILES[ $index ]['name'][0] ) ) {
 				return false;
 			}
@@ -1772,7 +1788,7 @@ class WPAS_File_Upload {
 	 */
 	public function new_ticket_attachment( $ticket_id ) {
 
-		if ( isset( $_POST['wpas_title'] ) ) {
+		if ( isset( $_POST['wpas_title'] ) || ( isset( $_POST['post_type'] ) && $_POST['post_type']  == 'ticket' ) ) {
 			$this->post_id = intval( $ticket_id );
 			$this->process_upload();
 		}

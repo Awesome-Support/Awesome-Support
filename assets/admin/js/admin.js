@@ -14,8 +14,79 @@
         };
 
     $(function () {
+	
+        //Process delete ticket or reply attachments        
+        var system_delete_option = document.getElementById('wpas_auto_delete_attachments');
+        var user_delete_option   = document.getElementById('wpas_user_can_set_auto_delete_attachments');
+        var agent_delete_option  = document.getElementById('wpas_agent_can_set_auto_delete_attachments');
 
-		/* Hide the ticket slug on the ticket details page  */
+        function updateState() {
+
+            if (!system_delete_option || !user_delete_option || !agent_delete_option) return;
+
+
+            if (system_delete_option.checked) {
+                // System ON → disable user + agent
+                user_delete_option.checked = false;
+                agent_delete_option.checked = false;
+
+                user_delete_option.disabled = true;
+                agent_delete_option.disabled = true;
+
+                system_delete_option.disabled = false;
+
+            } else if (user.checked || agent.checked) {
+                // User OR Agent ON → disable system
+                system_delete_option.checked = false;
+                system_delete_option.disabled = true;
+
+                user_delete_option.disabled = false;
+                agent_delete_option.disabled = false;
+
+            } else {
+                // Nothing selected → enable all
+                system_delete_option.disabled = false;
+                user_delete_option.disabled = false;
+                agent_delete_option.disabled = false;
+            }
+        }
+
+        // Bind events
+        if (system_delete_option) system_delete_option.addEventListener('change', updateState);
+        if (user_delete_option) user_delete_option.addEventListener('change', updateState);
+        if (agent_delete_option) agent_delete_option.addEventListener('change', updateState);
+
+        // Init on load
+        updateState();
+        //Process delete ticket or reply attachments end       
+
+        //Ted fix editor full screen feature
+        if (typeof tinymce !== 'undefined')
+        {
+             tinymce.on('AddEditor', function (e) {
+
+                var wpas_editor = e.editor;
+
+                if (!wpas_editor || wpas_editor._hasFsHandler) return;
+
+                wpas_editor.on('FullscreenStateChanged', function (ev) {   
+
+                    var $wrap_wpas_editor = $('#wp-' + wpas_editor.id + '-wrap');
+
+                    if (!$wrap_wpas_editor.length) return;
+
+                    if( ev.state == true)
+                    {
+                       $wrap_wpas_editor.css('z-index', 9999);                    
+                    }
+                    else
+                    {
+                        $wrap_wpas_editor.css('z-index', '');                
+                    }
+                });
+            });
+        }
+        /* Hide the ticket slug on the ticket details page  */
 		function hideTicketSlug() {
 			var slug = $('.post-type-ticket #edit-slug-box');  // Get all the slug rows - should only be one though.
 			slug.toggle(); // hide it.
@@ -415,8 +486,7 @@
          */
         if( 0 < $('#wpas_admin_tabs_ticket_main_custom_fields').length ) {
             $('#postdivrich').prependTo('.wpas-post-body-content');
-            $('#wpas-mb-ticket-main-tabs').parent().css('opacity', '1');
-            $("#postbox-container-2").appendTo("#post-body-content");
+            $('#wpas-mb-ticket-main-tabs').parent().css('opacity', '1');           
         }
         
         
@@ -496,8 +566,7 @@
         
         
         /* Set or remove close ticket client notification flag */
-        $('input[name=close_ticket_prevent_client_notification]').on("click", function(e) {
-                e.preventDefault();
+        $('input[name=close_ticket_prevent_client_notification]').on("click", function(e) {               
                 
                 var checkbox  = $(this);
                 if( checkbox.prop('disabled') ) {

@@ -173,8 +173,8 @@ function wpas_toolbar_ticket_items( $items, $ticket_id ) {
  */
 function wpas_ticket_toolbar() {
 	
-	$tabs_content = wpas_toolbar( 'ticket', func_get_args() );
-	echo wp_kses($tabs_content, get_allowed_html_wp_notifications());
+	$tabs_content = wpas_toolbar( 'ticket', func_get_args() );	
+	echo wp_kses( is_string($tabs_content) ? $tabs_content : '', get_allowed_html_wp_notifications() );
 	
 }
 
@@ -183,7 +183,7 @@ function wpas_ticket_toolbar() {
  */
 function wpas_ticket_reply_toolbar() {
 	
-	$tabs_content = wpas_toolbar( 'ticket_reply', func_get_args() );
-	echo wp_kses($tabs_content, get_allowed_html_wp_notifications());
+	$tabs_content = wpas_toolbar( 'ticket_reply', func_get_args() );	
+	echo wp_kses( is_string($tabs_content) ? $tabs_content : '', get_allowed_html_wp_notifications() );
 	
 }

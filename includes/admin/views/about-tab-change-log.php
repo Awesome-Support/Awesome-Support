@@ -5,11 +5,29 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.3.8</h1>				
-				<ul>
-					<li>Fix export tickets feature.</li>
-					<li>Fix vulnerable issue of Insecure Direct Object Reference.</li>
-					<li>We improved the layout : Additional Support Staff.</li>
+				<h1>What's New In 6.3.9</h1>
+				<h3>6.3.9 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: We fixed a PHP notice when a translation was triggered too early.</li>
+					<li>Fix: Admins were not able to delete attachment files.</li>
+					<li>Fix: Now users can receive email notification when someone replies through the REST API.</li>
+					<li>Fix: For new install, agent could not create a ticket reply.</li>
+					<li>Tweak: Solved the Editor zoom out.</li>
+					<li>Tweak: We updated changelog format.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.3.8</h1>
+				<h3>6.3.8 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Export tickets feature.</li>
+					<li>Fix: Vulnerable issue of Insecure Direct Object Reference.</li>
+					<li>Tweak: We improved the layout "Additional Support Staff".</li>
 				</ul>
 			</div>
 		</div>
@@ -19,10 +37,11 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.3.7</h1>				
-				<ul>
-					<li>Update default fallback rules for the .htaccess file in the ticket folder.</li>
-					<li>Fix Missing Authorization to Unauthenticated Role Demotion.</li>
-					<li>Fix vulnerable issue of Unauthenticated Sensitive Information Disclosure.</li>
+				<h3>6.3.7 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Tweak: Update default fallback rules for the .htaccess file in the ticket folder.</li>
+					<li>Fix: Missing Authorization to Unauthenticated Role Demotion.</li>
+					<li>Fix: Vulnerable issue of Unauthenticated Sensitive Information Disclosure.</li>
 				</ul>
 			</div>
 		</div>
@@ -32,9 +51,10 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.3.6</h1>				
-				<ul>
-					<li>Fix vulnerable issue of PHP Object Injection.</li>
-					<li>Create a Get Help button to reach out to Support (Free and Premium).</li>						
+				<h3>6.3.6 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Vulnerable issue of PHP Object Injection.</li>
+					<li>New: Create a Get Help button to reach out to Support (Free and Premium).</li>						
 				</ul>
 			</div>
 		</div>
@@ -44,13 +64,14 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.3.5</h1>				
-				<ul>
-					<li>We improved the cache admin menu ticket count.</li>
-					<li>New feature to support custom file type such as "*.k" and "*.dyn".</li>	
-					<li>New feature to set the Maximum Lenght in the subject of ticket on Submit Ticket Form of front-end.</li>
-					<li>We fixed Bug in load more ticket replies interface.</li>
-					<li>New feature to allow embed images on Email notifications when replying.</li>
-					<li>Fix vulnerable issue</li> 
+				<h3>6.3.5 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Tweak: We improved the cache admin menu ticket count.</li>
+					<li>New: New feature to support custom file type such as "*.k" and "*.dyn".</li>	
+					<li>New: New feature to set the Maximum Lenght in the subject of ticket on Submit Ticket Form of front-end.</li>
+					<li>New: New feature to allow embed images on Email notifications when replying.</li>
+					<li>Fix: Vulnerable issue.</li> 
+					<li>Fix: We fixed Bug in load more ticket replies interface.</li>
 				</ul>
 			</div>
 		</div>
@@ -60,10 +81,11 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.3.4</h1>				
-				<ul>
-					<li>We improved the Wordpress Editor 'Zoom In, Zoom out' feature.</li>
-					<li>New feature to export the Reports and statiscs data in csv, graphs and pdf.</li>	
-					<li>We improved the tutorial process when user setups the plugin first time.</li>	
+				<h3>6.3.4 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Tweak: We improved the Wordpress Editor 'Zoom In, Zoom out' feature.</li>					
+					<li>Tweak: We improved the tutorial process when user setups the plugin first time.</li>
+					<li>New: New feature to export the Reports and statiscs data in csv, graphs and pdf.</li>	
 				</ul>
 			</div>
 		</div>
@@ -73,9 +95,10 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.3.3</h1>				
-				<ul>
-					<li>We fixed Bug ticket reply from cron job (IMAP ADDON).</li>
-					<li>We fixed the compatibility with Wordpress version 6.8.</li>					
+				<h3>6.3.3 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: We fixed Bug ticket reply from cron job (IMAP ADDON).</li>
+					<li>Fix: We fixed the compatibility with Wordpress version 6.8.</li>					
 				</ul>
 			</div>
 		</div>
@@ -85,8 +108,9 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.3.2</h1>				
-				<ul>
-					<li>We fixed vulnerability Issue with ticket folder.</li>
+				<h3>6.3.2 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: We fixed vulnerability Issue with ticket folder.</li>
 				</ul>
 			</div>
 		</div>
@@ -96,17 +120,17 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.3.1</h1>
-				<h3>6.3.1 Revised plugin deactivation process with feedback.</h3>
-				<ul>
-					<li>We updated the plugin deactivation process when you deactivate the plugin and submit a feedback.</li>
-					<li>We fixed issue of HTML Formatting Lost in Email Settings After Saving.</li>
-					<li>We fixed issue of Crashing site with an infinite loop</li>
-					<li>We fixed the JavaScript error that appears when the user moves the browser window.</li>
-					<li>We changed the column name from "creation date" to "last modified".</li>
-					<li>We fixed the conflict issue of Company Profile and Canned Responses add-ons.</li>
-					<li>Fix Bug for Nested Departments.</li>					
+				<h3>6.3.1 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">				
+					<li>Tweak: We updated the plugin deactivation process when you deactivate the plugin and submit a feedback.</li>
+					<li>Tweak: We changed the column name from "creation date" to "last modified".</li>
+					<li>Fix: We fixed the conflict issue of Company Profile and Canned Responses add-ons.</li>
+					<li>Fix: Bug for Nested Departments.</li>	
+					<li>Fix: We fixed issue of HTML Formatting Lost in Email Settings After Saving.</li>
+					<li>Fix: We fixed issue of Crashing site with an infinite loop</li>
+					<li>Fix: We fixed the JavaScript error that appears when the user moves the browser window.</li>				
 				</ul>
-			</div>
+			</div> 
 		</div>
 	</div>
 	
@@ -114,9 +138,9 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.3.0</h1>
-				<h3>6.3.0 Update General Rules and Improve Security, Performance, and Accessibility</h3>
-				<ul>
-					<li>We updated general rules and improve security, performance, and accessibility in the plugin.</li>
+				<h3>6.3.0 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">		
+					<li>Tweak: We updated general rules and improve security, performance, and accessibility in the plugin.</li>
 				</ul>
 			</div>
 		</div>
@@ -126,9 +150,9 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.2.3</h1>
-				<h3>6.2.3 Updating security rules for multiple files upload</h3>
-				<ul>
-					<li>We updates security rules tmultiple files upload.</li>
+				<h3>6.2.3 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">	
+					<li>Tweak: We updates security rules tmultiple files upload.</li>
 				</ul>
 			</div>
 		</div>
@@ -138,9 +162,9 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.2.2</h1>
-				<h3>6.2.2 Updating security rules for form upload via AJAX</h3>
-				<ul>
-					<li>We updates security rules to allow form upload via AJAX.</li>
+				<h3>6.2.2 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">	
+					<li>Tweak: We updates security rules to allow form upload via AJAX.</li>
 				</ul>
 			</div>
 		</div>
@@ -150,9 +174,9 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.2.1</h1>
-				<h3>6.2.1 We fixed the issue with the user search</h3>
-				<ul>
-					<li>We updates security rules to allow the user search.</li>
+				<h3>6.2.1 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">	
+					<li>Tweak: We updates security rules to allow the user search.</li>
 				</ul>
 			</div>
 		</div>
@@ -162,9 +186,9 @@
 		<div>
 			<div class="about-body">
 				<h1>What's New In 6.2.0</h1>
-				<h3>6.2.0 We fixed security vulnerabilities in all the plugin</h3>
-				<ul>
-					<li>We fixed various security vulnerabilities across all our plugins, enhancing overall protection through improved validation and sanitization.</li>
+				<h3>6.2.0 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">	
+					<li>Fix: We fixed various security vulnerabilities across all our plugins, enhancing overall protection through improved validation and sanitization.</li>
 				</ul>
 			</div>
 		</div>
@@ -178,7 +202,7 @@
 				<h1>What's New In 6.1.11</h1>
 				<h3>6.1.11 includes the vulnerabilities fix and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">					
-					<li>We implement a CSRF protection (via a nonce) in the endpoints wpas_dismiss_free_addon_page and wpas_skip_wizard_setup.</li>										
+					<li>Tweak: We implement a CSRF protection (via a nonce) in the endpoints wpas_dismiss_free_addon_page and wpas_skip_wizard_setup.</li>										
 				</ul>
 			</div>
 		</div>
@@ -192,7 +216,7 @@
 				<h1>What's New In 6.1.10</h1>
 				<h3>6.1.10 includes the vulnerabilities fix and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">					
-					<li>We fixed the vulnerability where a subscriber role could have the ability to skip the "Awesome Support: First Time Install" banner process in the admin+ dashboard.</li>										
+					<li>Fix: We fixed the vulnerability where a subscriber role could have the ability to skip the "Awesome Support: First Time Install" banner process in the admin+ dashboard.</li>										
 				</ul>
 			</div>
 		</div>
@@ -205,7 +229,7 @@
 				<h1>What's New In 6.1.9</h1>
 				<h3>6.1.9 includes the vulnerabilities fix and security patches. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">					
-					<li>We fixed when the agent was not able to choose a user when changing the ticket creator field.</li>										
+					<li>Fix: We fixed when the agent was not able to choose a user when changing the ticket creator field.</li>										
 				</ul>
 			</div>
 		</div>
