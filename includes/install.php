@@ -333,6 +333,8 @@ function wpas_create_pages() {
  * @return void
  */
 function wpas_flush_rewrite_rules() {
+
+	plugin_log( __FILE__.' CALL function '.__FUNCTION__. json_encode( (array)$_GET ) );
 	flush_rewrite_rules();
 }
 
