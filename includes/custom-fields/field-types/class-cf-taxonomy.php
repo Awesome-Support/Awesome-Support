@@ -111,7 +111,7 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 		ob_end_clean();
 
-		return sprintf( '<label {{label_atts}}>{{label}}</label><select {{atts}}><option class="taxo_display" value="">%s</option>%s</select>', __( 'Please select', 'awesome-support' ), $options );
+		return sprintf( '<label {{label_atts}}>{{label}}</label><select {{atts}}><option value="">%s</option>%s</select>', __( 'Please select', 'awesome-support' ), $options );
 
 	}
 

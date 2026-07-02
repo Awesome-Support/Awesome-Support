@@ -533,11 +533,8 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * ticket submission.
 		 */
 		private function maybe_setup() {
-		
-			//add_option( 'wpas_setup', 'pending' );
-			//echo "maybe_setup<pre>";var_dump( get_option( 'wpas_setup', false ) );echo "</pre>"; exit;
-			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
 
+			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
 				add_action( 'admin_init', 'wpas_create_pages', 11, 0 );
 				add_action( 'admin_init', 'wpas_flush_rewrite_rules', 11, 0 );
 				add_action( 'admin_init', 'wpas_install_default_email_templates', 11, 0 );
