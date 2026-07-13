@@ -245,6 +245,9 @@ function wpas_manage_ticket_bulk_actions( $bulk_actions ) {
 	if( isset( $bulk_actions['edit'] ) ) {
 		unset( $bulk_actions['edit'] );
 	}
+
+	$bulk_actions['wpas_bulk_close']  = __( 'Close', 'awesome-support' );
+	$bulk_actions['wpas_bulk_reopen'] = __( 'Reopen', 'awesome-support' );
 	
 	return $bulk_actions;
 }
@@ -289,4 +292,62 @@ function wpas_add_print_bulk_action( $actions ) {
 	}
 
 	return $actions;
+}
+
+add_filter( 'handle_bulk_actions-edit-ticket', 'wpas_handle_ticket_bulk_actions', 10, 3 );
+/**
+ * Handle custom bulk actions for tickets list table.
+ */
+function wpas_handle_ticket_bulk_actions( $redirect_to, $action, $post_ids ) {
+	if ( ! in_array( $action, array( 'wpas_bulk_close', 'wpas_bulk_reopen' ), true ) ) {
+		return $redirect_to;
+	}
+
+	$count = 0;
+
+	foreach ( $post_ids as $post_id ) {
+		if ( 'wpas_bulk_close' === $action ) {
+			if ( 'closed' !== wpas_get_ticket_status( $post_id ) ) {
+				wpas_close_ticket( $post_id, 0, true );
+				$count++;
+			}
+		} elseif ( 'wpas_bulk_reopen' === $action ) {
+			if ( 'closed' === wpas_get_ticket_status( $post_id ) ) {
+				wpas_reopen_ticket( $post_id );
+				$count++;
+			}
+		}
+	}
+
+	$redirect_to = add_query_arg( array(
+		'wpas_bulk_action' => $action,
+		'wpas_bulk_count'  => $count,
+	), $redirect_to );
+
+	return $redirect_to;
+}
+
+add_action( 'admin_notices', 'wpas_ticket_bulk_actions_admin_notice' );
+/**
+ * Display notices for custom bulk actions.
+ */
+function wpas_ticket_bulk_actions_admin_notice() {
+	if ( ! empty( $_GET['wpas_bulk_action'] ) && isset( $_GET['wpas_bulk_count'] ) ) {
+		$action = sanitize_key( $_GET['wpas_bulk_action'] );
+		$count  = intval( $_GET['wpas_bulk_count'] );
+
+		if ( 'wpas_bulk_close' === $action ) {
+			$message = sprintf( _n( '%s ticket has been closed.', '%s tickets have been closed.', $count, 'awesome-support' ), $count );
+		} elseif ( 'wpas_bulk_reopen' === $action ) {
+			$message = sprintf( _n( '%s ticket has been reopened.', '%s tickets have been reopened.', $count, 'awesome-support' ), $count );
+		}
+
+		if ( isset( $message ) ) {
+			?>
+			<div class="notice notice-success is-dismissible">
+				<p><?php echo esc_html( $message ); ?></p>
+			</div>
+			<?php
+		}
+	}
 }
