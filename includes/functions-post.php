@@ -9,6 +9,15 @@
 function wpas_clean_ticketcount_cache() {
 	
 	set_site_transient( 'wpas_tickets_counts', null, 24 * HOUR_IN_SECONDS );
+
+	// Delete all cached ticket counts
+	$cache_keys = get_option( 'wpas_tickets_count_cache_keys', array() );
+	if ( ! empty( $cache_keys ) ) {
+		foreach ( $cache_keys as $key ) {
+			delete_transient( $key );
+		}
+		delete_option( 'wpas_tickets_count_cache_keys' );
+	}
 }
 /**
  * Open a new ticket.
@@ -1799,8 +1808,27 @@ function wpas_get_ticket_count_by_status( $state = '', $status = 'open', $query 
 	if( is_array( $query ) &&  count( $query ) > 0 ) {
 		$args = array_merge( $args, $query );
 	}
-	//return count( wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ) ) );
-	return wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ),'any', true, true ) ;
+
+	// Generate a unique cache key based on the parameters
+	$cache_key = 'wpas_cnt_' . md5( serialize( array( $state, $status, $args ) ) );
+	$cached_count = get_transient( $cache_key );
+	if ( false !== $cached_count ) {
+		return (int) $cached_count;
+	}
+
+	$count = wpas_get_tickets( $status, apply_filters( 'wpas_get_ticket_count_by_status_args',$args ),'any', true, true ) ;
+
+	// Cache the result for 1 hour
+	set_transient( $cache_key, $count, HOUR_IN_SECONDS );
+
+	// Store the cache key to allow clearing later
+	$cache_keys = get_option( 'wpas_tickets_count_cache_keys', array() );
+	if ( ! in_array( $cache_key, $cache_keys ) ) {
+		$cache_keys[] = $cache_key;
+		update_option( 'wpas_tickets_count_cache_keys', $cache_keys );
+	}
+
+	return $count;
 
 }
 
