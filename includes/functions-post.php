@@ -18,6 +18,10 @@ function wpas_clean_ticketcount_cache() {
 		}
 		delete_option( 'wpas_tickets_count_cache_keys' );
 	}
+
+	// Fallback backup: delete all transients matching wpas_cnt_ directly from options table
+	global $wpdb;
+	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_wpas_cnt_%' OR option_name LIKE '_transient_timeout_wpas_cnt_%'" );
 }
 /**
  * Open a new ticket.
