@@ -188,11 +188,21 @@ function wpas_fix_tickets_count( $views ) {
 		}
 	}
 
+	// Add Closed view to the list
+	if ( ! isset( $views['closed'] ) ) {
+		$views['closed'] = __( 'Closed', 'awesome-support' );
+	}
+
 	foreach ( $views as $view => $label ) {
 
-		if ( array_key_exists( $view, $ticket_status ) || 'all' === $view ) {
+		if ( array_key_exists( $view, $ticket_status ) || 'all' === $view || 'closed' === $view ) {
 
-			$count   = 'all' === $view ? wpas_get_ticket_count_by_status( '', $status ) : wpas_get_ticket_count_by_status( $view, $status );
+			if ( 'closed' === $view ) {
+				$count = wpas_get_ticket_count_by_status( '', 'closed' );
+			} else {
+				$count = 'all' === $view ? wpas_get_ticket_count_by_status( '', $status ) : wpas_get_ticket_count_by_status( $view, $status );
+			}
+
 			$regex   = '.*?(\\(.*\\))';
 			$replace = '';
 
@@ -201,8 +211,16 @@ function wpas_fix_tickets_count( $views ) {
 			}
 
 			$label           = trim( wp_strip_all_tags( str_replace( $replace, '', $label ) ) );
-			$class           = isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view || isset( $wp_query->query_vars['post_status'] ) && 'all' === $view && null === $wp_query->query_vars['post_status'] ? ' class="current"' : '';
-			$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
+			
+			if ( 'closed' === $view ) {
+				$class = isset( $_GET['status'] ) && 'closed' === $_GET['status'] ? ' class="current"' : '';
+				$link_query_args = array( 'post_type' => 'ticket', 'status' => 'closed' );
+			} else {
+				$is_current = ( isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view ) || ( 'all' === $view && null === $wp_query->query_vars['post_status'] && ! isset( $_GET['status'] ) );
+				$class = $is_current ? ' class="current"' : '';
+				$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
+			}
+
 			$link            = esc_url( add_query_arg( $link_query_args, admin_url( 'edit.php' ) ) );
 			$views[ $view ]  = sprintf( '<a href="%1$s"%2$s>%3$s <span class="count">(%4$d)</span></a>', $link, $class, $label, $count );
 

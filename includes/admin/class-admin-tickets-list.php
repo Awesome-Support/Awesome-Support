@@ -1087,12 +1087,19 @@ ORDER BY
 
 		<div id="search_tab_content_placeholder"></div>
 
-		<div class="ticket_listing_search_types">
-		<?php wp_nonce_field( 'my_custom_action', 'my_custom_nonce' ); ?>
-			<label><input type="checkbox" name="search_by[]" value="subject" <?php checked( true, $subject_checked ); ?> /> <?php esc_html_e( 'Subject', 'awesome-support' ); ?></label>
-			<label><input type="checkbox" name="search_by[]" value="opening_post" <?php checked( true, $opening_post_checked ); ?> /> <?php esc_html_e( 'Opening Post', 'awesome-support' ); ?></label>
-			<label><input type="checkbox" name="search_by[]" value="replies" <?php checked( true, $replies_checked ); ?> /> <?php esc_html_e( 'Replies', 'awesome-support' ); ?></label>
-			<?php do_action( 'ticket_listing_after_search_controls' ); ?>
+		<div class="ticket_listing_search_types" style="display: flex; flex-direction: column; gap: 10px;">
+			<div class="search-options">
+				<label><input type="checkbox" name="search_by[]" value="subject" <?php checked( true, $subject_checked ); ?> /> <?php esc_html_e( 'Subject', 'awesome-support' ); ?></label>
+				<label><input type="checkbox" name="search_by[]" value="opening_post" <?php checked( true, $opening_post_checked ); ?> /> <?php esc_html_e( 'Opening Post', 'awesome-support' ); ?></label>
+				<label><input type="checkbox" name="search_by[]" value="replies" <?php checked( true, $replies_checked ); ?> /> <?php esc_html_e( 'Replies', 'awesome-support' ); ?></label>
+				<?php do_action( 'ticket_listing_after_search_controls' ); ?>
+			</div>
+			
+			<div class="title-search-field" style="border-top: 1px solid #ccd0d4; padding-top: 10px; margin-top: 5px;">
+				<label for="wpas_ticket_title_search"><strong><?php esc_html_e( 'Search Specifically by Ticket Title:', 'awesome-support' ); ?></strong></label>
+				<input type="text" id="wpas_ticket_title_search" name="ticket_title" value="<?php echo isset( $_GET['ticket_title'] ) ? esc_attr( wp_unslash( $_GET['ticket_title'] ) ) : ''; ?>" placeholder="<?php esc_attr_e( 'Enter ticket title...', 'awesome-support' ); ?>" style="width: 250px; margin-left: 10px; height: 28px; line-height: 28px;" />
+				<button type="submit" class="button button-secondary" style="margin-left: 5px; height: 28px; line-height: 26px;"><?php esc_html_e( 'Filter Title', 'awesome-support' ); ?></button>
+			</div>
 		</div>
 
 		<?php
@@ -1668,7 +1675,7 @@ ORDER BY
 	public function posts_where( $where, $wp_query ) {
 
 		if ( is_admin() && $wp_query->is_main_query()
-		     && ! is_null( filter_input( INPUT_GET, 'id' ) )
+		     && isset( $wp_query->query[ 'post_type' ] )
 		     && 'ticket' === $wp_query->query[ 'post_type' ]
 		) {
 
@@ -1679,6 +1686,13 @@ ORDER BY
 			/* Filter by Ticket ID */
 			if ( ! empty( $ticket_id ) && intval( $ticket_id ) != 0 && 'ticket' === get_post_type( $ticket_id ) && wpas_can_view_ticket( intval( $ticket_id ) ) ) {
 				$where = " AND {$wpdb->posts}.ID = " . intval( $ticket_id );
+			}
+
+			/* Filter by Ticket Title */
+			$ticket_title = isset( $_GET['ticket_title'] ) ? sanitize_text_field( wp_unslash( $_GET['ticket_title'] ) ) : '';
+			if ( ! empty( $ticket_title ) ) {
+				$like = '%' . $wpdb->esc_like( $ticket_title ) . '%';
+				$where .= $wpdb->prepare( " AND {$wpdb->posts}.post_title LIKE %s", $like );
 			}
 		}
 
