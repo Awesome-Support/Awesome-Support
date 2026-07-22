@@ -47,9 +47,9 @@ function wpas_hide_others_tickets( $query ) {
 
 	global $current_user;
 
-	/* Don't filter auto-draft or trashed tickets - they don't need assignee meta filtering */
+	/* Don't filter auto-draft, draft or trashed tickets - they don't need assignee meta filtering */
 	$post_status = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
-	if ( in_array( $post_status, array( 'auto-draft', 'trash' ), true ) ) {
+	if ( in_array( $post_status, array( 'auto-draft', 'draft', 'trash' ), true ) ) {
 		return false;
 	}	
 	
@@ -105,8 +105,8 @@ function wpas_limit_open( $query ) {
 		return false;
 	}
 
-	/* Don't filter auto-draft or trashed tickets - they don't need _wpas_status meta filtering */
-	if ( in_array( $post_status, array( 'auto-draft', 'trash' ), true ) ) {
+	/* Don't filter auto-draft, draft or trashed tickets - they don't need _wpas_status meta filtering */
+	if ( in_array( $post_status, array( 'auto-draft', 'draft', 'trash' ), true ) ) {
 		return false;
 	}
 
@@ -154,8 +154,8 @@ function wpas_ticket_action_row( $actions, $post ) {
 
 	if ( 'ticket' === $post->post_type ) {
 
-		/* For auto-draft tickets, only allow Edit and Trash */
-		if ( 'auto-draft' === get_post_status( $post->ID ) ) {
+		/* For auto-draft and draft tickets, only allow Edit and Trash */
+		if ( in_array( get_post_status( $post->ID ), array( 'auto-draft', 'draft' ), true ) ) {
 			return array_intersect_key( $actions, array_flip( array( 'edit', 'trash' ) ) );
 		}
 
@@ -297,7 +297,7 @@ add_filter( 'post_row_actions', 'wpas_add_print_quick_action', 10, 2 );
  */
 function wpas_add_print_quick_action( $actions, $post ) {
 
-	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' && ! in_array( get_post_status( $post->ID ), array( 'auto-draft', 'trash' ), true ) ) {
+	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' && ! in_array( get_post_status( $post->ID ), array( 'auto-draft', 'draft', 'trash' ), true ) ) {
 		$actions['wpas_print'] = sprintf( '<a href="#" class="wpas-admin-quick-action-print" data-id="%s">%s</a>', $post->ID, __( 'Print', 'awesome-support' ) );
 	}
 	
