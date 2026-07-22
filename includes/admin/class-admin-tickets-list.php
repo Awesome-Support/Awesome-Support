@@ -1513,6 +1513,12 @@ ORDER BY
 			return;
 		}
 
+		/* Skip all meta query filters for auto-draft and trashed tickets */
+		$post_status = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
+		if ( in_array( $post_status, array( 'auto-draft', 'trash' ), true ) ) {
+			return;
+		}
+
 		$meta_query = $wp_query->get( 'meta_query' );
 
 		if ( ! is_array( $meta_query ) ) {

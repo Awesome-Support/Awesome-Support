@@ -45,7 +45,13 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
-	global $current_user;	
+	global $current_user;
+
+	/* Don't filter auto-draft or trashed tickets - they don't need assignee meta filtering */
+	$post_status = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
+	if ( in_array( $post_status, array( 'auto-draft', 'trash' ), true ) ) {
+		return false;
+	}	
 	
 	
 	// We need to update the original meta_query and not replace it to avoid filtering issues.
@@ -99,6 +105,11 @@ function wpas_limit_open( $query ) {
 		return false;
 	}
 
+	/* Don't filter auto-draft or trashed tickets - they don't need _wpas_status meta filtering */
+	if ( in_array( $post_status, array( 'auto-draft', 'trash' ), true ) ) {
+		return false;
+	}
+
 	if ( array_key_exists( $post_status, wpas_get_post_status() ) || empty( $post_status ) && true === (bool) wpas_get_option( 'hide_closed', false ) ) {
 
 		// We need to update the original meta_query and not replace it to avoid filtering issues.
@@ -142,6 +153,11 @@ add_filter( 'post_row_actions', 'wpas_ticket_action_row', 10, 2 );
 function wpas_ticket_action_row( $actions, $post ) {
 
 	if ( 'ticket' === $post->post_type ) {
+
+		/* For auto-draft tickets, only allow Edit and Trash */
+		if ( 'auto-draft' === get_post_status( $post->ID ) ) {
+			return array_intersect_key( $actions, array_flip( array( 'edit', 'trash' ) ) );
+		}
 
 		$status = wpas_get_ticket_status( $post->ID );
 
@@ -227,6 +243,15 @@ function wpas_fix_tickets_count( $views ) {
 		}
 	}
 
+	/* Add Auto-draft view */
+	global $wpdb;
+	$auto_draft_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'ticket' AND post_status = 'auto-draft'" );
+	if ( $auto_draft_count > 0 ) {
+		$ad_class = ( isset( $_GET['post_status'] ) && 'auto-draft' === $_GET['post_status'] ) ? ' class="current"' : '';
+		$ad_link  = esc_url( add_query_arg( array( 'post_type' => 'ticket', 'post_status' => 'auto-draft' ), admin_url( 'edit.php' ) ) );
+		$views['auto-draft'] = sprintf( '<a href="%1$s"%2$s>%3$s <span class="count">(%4$d)</span></a>', $ad_link, $ad_class, __( 'Auto-draft', 'awesome-support' ), $auto_draft_count );
+	}
+
 	return $views;
 
 }
@@ -248,7 +273,13 @@ function wpas_manage_ticket_bulk_actions( $bulk_actions ) {
 
 	$bulk_actions['wpas_bulk_close']  = __( 'Close', 'awesome-support' );
 	$bulk_actions['wpas_bulk_reopen'] = __( 'Reopen', 'awesome-support' );
-	
+
+	/* Add Delete Permanently option when viewing auto-drafts */
+	$current_status = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
+	if ( 'auto-draft' === $current_status && current_user_can( 'delete_tickets' ) ) {
+		$bulk_actions['wpas_bulk_delete'] = __( 'Delete Permanently', 'awesome-support' );
+	}
+
 	return $bulk_actions;
 }
 
@@ -266,7 +297,7 @@ add_filter( 'post_row_actions', 'wpas_add_print_quick_action', 10, 2 );
  */
 function wpas_add_print_quick_action( $actions, $post ) {
 
-	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' ) {
+	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' && ! in_array( get_post_status( $post->ID ), array( 'auto-draft', 'trash' ), true ) ) {
 		$actions['wpas_print'] = sprintf( '<a href="#" class="wpas-admin-quick-action-print" data-id="%s">%s</a>', $post->ID, __( 'Print', 'awesome-support' ) );
 	}
 	
@@ -299,7 +330,7 @@ add_filter( 'handle_bulk_actions-edit-ticket', 'wpas_handle_ticket_bulk_actions'
  * Handle custom bulk actions for tickets list table.
  */
 function wpas_handle_ticket_bulk_actions( $redirect_to, $action, $post_ids ) {
-	if ( ! in_array( $action, array( 'wpas_bulk_close', 'wpas_bulk_reopen' ), true ) ) {
+	if ( ! in_array( $action, array( 'wpas_bulk_close', 'wpas_bulk_reopen', 'wpas_bulk_delete' ), true ) ) {
 		return $redirect_to;
 	}
 
@@ -314,6 +345,11 @@ function wpas_handle_ticket_bulk_actions( $redirect_to, $action, $post_ids ) {
 		} elseif ( 'wpas_bulk_reopen' === $action ) {
 			if ( 'closed' === wpas_get_ticket_status( $post_id ) ) {
 				wpas_reopen_ticket( $post_id );
+				$count++;
+			}
+		} elseif ( 'wpas_bulk_delete' === $action ) {
+			if ( current_user_can( 'delete_tickets' ) && 'auto-draft' === get_post_status( $post_id ) ) {
+				wp_delete_post( $post_id, true ); // true = force delete, skip trash
 				$count++;
 			}
 		}
@@ -340,6 +376,8 @@ function wpas_ticket_bulk_actions_admin_notice() {
 			$message = sprintf( _n( '%s ticket has been closed.', '%s tickets have been closed.', $count, 'awesome-support' ), $count );
 		} elseif ( 'wpas_bulk_reopen' === $action ) {
 			$message = sprintf( _n( '%s ticket has been reopened.', '%s tickets have been reopened.', $count, 'awesome-support' ), $count );
+		} elseif ( 'wpas_bulk_delete' === $action ) {
+			$message = sprintf( _n( '%s auto-draft ticket has been permanently deleted.', '%s auto-draft tickets have been permanently deleted.', $count, 'awesome-support' ), $count );
 		}
 
 		if ( isset( $message ) ) {

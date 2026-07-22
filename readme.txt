@@ -291,6 +291,10 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.3.9.3 =
+* New
+  * Add "Auto-draft" view link with count to the ticket list status filter bar.
+
 = 6.3.9.2 =
 * New
   * Add Reopen and Close bulk actions to the WordPress admin ticket list.
