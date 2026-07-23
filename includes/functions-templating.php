@@ -1598,9 +1598,19 @@
 
 		if ( ! empty( wpas_get_option( 'logout_redirect_fe', '') ) ) {
 			return wp_logout_url( wpas_get_option( 'logout_redirect_fe', '') );
-		} else {
-			return wp_logout_url();
 		}
+
+		// Fallback: redirect to Ticket Submission page if set, otherwise home page
+		$submission_page = wpas_get_option( 'ticket_submit' );
+		if ( ! empty( $submission_page ) ) {
+			$redirect_url = get_permalink( $submission_page );
+		}
+
+		if ( empty( $redirect_url ) ) {
+			$redirect_url = home_url( '/' );
+		}
+
+		return wp_logout_url( $redirect_url );
 
 	}
 
