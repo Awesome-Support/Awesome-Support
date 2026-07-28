@@ -8185,3 +8185,11 @@ msgstr ""
 #: includes/gdpr-integration/gdpr-user-profile.php:640
 msgid "Zip data file not exists!"
 msgstr ""
+
+#: includes/admin/metaboxes/version.php:29
+msgid "Ticket Source: "
+msgstr ""
+
+#: includes/admin/metaboxes/version.php:34
+msgid "default mailbox"
+msgstr ""
