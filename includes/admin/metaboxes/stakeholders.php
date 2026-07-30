@@ -52,6 +52,7 @@ if ( isset( $post ) && is_a( $post, 'WP_Post' ) && 'auto-draft' !== $post->post_
 }
 
 // Set post-independent vars
+$staff_name    = '';
 $staff         = get_user_by( 'ID', $staff_id );
 if (! empty( $staff ) ) {
 	$staff_name    = $staff->data->display_name;

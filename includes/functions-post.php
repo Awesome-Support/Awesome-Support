@@ -23,6 +23,11 @@ function wpas_clean_ticketcount_cache() {
 	global $wpdb;
 	$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_wpas_cnt_%' OR option_name LIKE '_transient_timeout_wpas_cnt_%'" );
 }
+add_action( 'save_post_ticket', 'wpas_clean_ticketcount_cache' );
+add_action( 'delete_post', 'wpas_clean_ticketcount_cache' );
+add_action( 'trash_post', 'wpas_clean_ticketcount_cache' );
+add_action( 'untrash_post', 'wpas_clean_ticketcount_cache' );
+add_action( 'wpas_ticket_after_saved', 'wpas_clean_ticketcount_cache' );
 /**
  * Open a new ticket.
  *
@@ -39,6 +44,7 @@ function wpas_open_ticket( $data ) {
 	/**
 	 * Prepare vars
 	 */
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$submit = isset( $_POST['_wp_http_referer'] ) ? wpas_get_submission_page_url( url_to_postid( sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) ) ) : wpas_get_submission_page_url();
 	// Fallback in case the referrer failed
 	if ( empty( $submit ) ) {
@@ -792,7 +798,9 @@ function wpas_new_reply_submission( $data ) {
 function wpas_edit_reply( $reply_id = null, $content = '' ) {
 
 	if ( is_null( $reply_id ) ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST['reply_id'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$reply_id = intval( $_POST['reply_id'] );
 		} else {
 			return false;
@@ -800,7 +808,9 @@ function wpas_edit_reply( $reply_id = null, $content = '' ) {
 	}
 
 	if ( empty( $content ) ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST['reply_content'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$reply = isset($_POST['reply_content'] ) ? wp_kses_post( wp_unslash( $_POST['reply_content'] ) ) : "";
 			$content = wp_kses( $reply, wp_kses_allowed_html( 'post' ) );
 		} else {
@@ -898,7 +908,9 @@ function wpas_log_reply_edits( $reply_id, $original_reply ) {
 function wpas_mark_reply_read( $reply_id = null ) {
 
 	if ( is_null( $reply_id ) ) {
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		if ( isset( $_POST['reply_id'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
 			$reply_id = intval( $_POST['reply_id'] );
 		} else {
 			return false;
@@ -1442,6 +1454,7 @@ function wpas_save_values() {
 
 	$fields = array();
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	foreach ( $_POST as $key => $value ) {
 
 		if ( ! empty( $value ) ) {

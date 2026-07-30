@@ -98,7 +98,7 @@ class WPAS_Custom_Fields {
 		global $post;
 
 		// This will usually be packaged with all other components which is why it's not registered with the rest
-		wp_register_script( 'wpas-datepicker-component', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'wpas-date' ), '4.0.0', true );
+		wp_register_script( 'wpas-datepicker-component', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'jquery', 'jquery-ui-datepicker' ), '4.0.0', true );
 
 		$ticket_submit = wpas_get_option( 'ticket_submit' );
 

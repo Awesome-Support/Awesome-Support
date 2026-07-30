@@ -20,6 +20,13 @@
 class WPAS_User_Email_Notification {
 
 	/**
+	 * Sender data array cache
+	 *
+	 * @var array
+	 */
+	protected $data;
+
+	/**
 	 * ID of the user to notify about.
 	 * 
 	 * @var integer
