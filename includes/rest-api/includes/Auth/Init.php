@@ -187,6 +187,13 @@ class Init {
 	 */
 	public static function rest_api_auth_handler( $input_user ){
 
+		// Prevent infinite recursion: authenticate() calls get_user_option()
+		// which can trigger get_current_user_id() → determine_current_user → this handler again.
+		static $is_authenticating = false;
+		if ( $is_authenticating ) {
+			return $input_user;
+		}
+
 		// Don't authenticate twice
 		if ( ! empty( $input_user ) ) {
 			return $input_user;
@@ -206,12 +213,17 @@ class Init {
 			return $input_user;
 		}
 
+		$is_authenticating = true;
+
 		// get the user by the username
 		$user = new User( 0, sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_USER'] ) ));
 
 		if ( $user->authenticate(  isset($_SERVER['PHP_AUTH_PW'] ) ? sanitize_text_field( wp_unslash( $_SERVER['PHP_AUTH_PW'] ) ) : null ) ) {
+			$is_authenticating = false;
 			return $user->ID;
 		}
+
+		$is_authenticating = false;
 
 		// If it wasn't a user what got returned, just pass on what we had received originally.
 		return $input_user;

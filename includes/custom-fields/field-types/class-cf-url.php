@@ -12,7 +12,7 @@ class WPAS_CF_URL extends WPAS_Custom_Field {
 	 * @return string Field markup
 	 */
 	public function display() {
-		return sprintf( '<label {{label_atts}}>{{label}}</label><input type="url" value="%s" {{atts}}>', $this->populate() );
+		return sprintf( '<label {{label_atts}}>{{label}}</label><input type="url" value="%s" {{atts}}>', esc_attr( esc_url( $this->populate() ) ) );
 	}
 
 	/**

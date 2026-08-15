@@ -89,12 +89,24 @@ class Tickets extends TicketBase {
 				continue;
 			}
 
-			$field         = new WPAS_Custom_Field( $base, $custom_fields[ $base ] );
-			$data[ $base ] = $field->get_field_value( '', $data['id'] );
+			$terms = wp_get_object_terms( $data['id'], $taxonomy->name );
+			if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+				$selected_term = end( $terms );
+				$data[ $base ]          = $selected_term->name;
+				$data[ $base . 'ID' ]   = $selected_term->term_id;
+			} else {
+				$data[ $base ]          = '';
+				$data[ $base . 'ID' ]   = 0;
+			}
 		}
 
 		foreach( $this->get_additional_ticket_fields() as $key => $field_data ) {
 			if ( empty( $field_data['field_key'] ) ) {
+				continue;
+			}
+
+			// Don't overwrite values already set by the taxonomy loop above
+			if ( isset( $data[ $key ] ) && $data[ $key ] !== '' && $data[ $key ] !== null && $data[ $key ] !== false ) {
 				continue;
 			}
 
@@ -104,6 +116,33 @@ class Tickets extends TicketBase {
 		}
 
 		$data = parent::add_additional_fields_to_object( $data, $request );
+
+		// Reply summary: count, last reply date, last reply author name
+		global $wpdb;
+
+		// Single COUNT query instead of fetching all reply IDs
+		$data['reply_count'] = (int) $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_parent = %d AND post_type = 'ticket_reply'",
+			$data['id']
+		) );
+
+		$data['last_reply_date']   = '';
+		$data['last_reply_author'] = '';
+
+		if ( $data['reply_count'] > 0 ) {
+			// Fetch only the last reply (1 row) instead of all replies
+			$last_reply = $wpdb->get_row( $wpdb->prepare(
+				"SELECT post_date, post_author FROM {$wpdb->posts} 
+				 WHERE post_parent = %d AND post_type = 'ticket_reply' 
+				 ORDER BY post_date DESC LIMIT 1",
+				$data['id']
+			) );
+			if ( $last_reply ) {
+				$data['last_reply_date'] = $last_reply->post_date;
+				$author = get_userdata( (int) $last_reply->post_author );
+				$data['last_reply_author'] = $author ? $author->display_name : '';
+			}
+		}
 
 		return $data;
 	}

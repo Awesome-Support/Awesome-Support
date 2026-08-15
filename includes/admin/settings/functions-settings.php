@@ -8,7 +8,38 @@
  *
  * @since  3.0.0
  */
+$GLOBALS['wpas_pages_static_cache'] = array();
+
+/**
+ * Clear pages list cache on page update, create, or delete.
+ *
+ * @param int      $post_id
+ * @param WP_Post  $post
+ */
+function wpas_clear_pages_list_cache( $post_id = 0, $post = null ) {
+	if ( $post && isset( $post->post_type ) && 'page' !== $post->post_type ) {
+		return;
+	}
+	delete_transient( 'wpas_pages_list_page' );
+	$GLOBALS['wpas_pages_static_cache'] = array();
+}
+add_action( 'save_post_page', 'wpas_clear_pages_list_cache', 10, 2 );
+add_action( 'deleted_post', 'wpas_clear_pages_list_cache', 10, 2 );
+add_action( 'trashed_post', 'wpas_clear_pages_list_cache', 10, 2 );
+
 function wpas_list_pages( $post_type = 'page' ) {
+
+	if ( isset( $GLOBALS['wpas_pages_static_cache'][ $post_type ] ) ) {
+		return $GLOBALS['wpas_pages_static_cache'][ $post_type ];
+	}
+
+	$cache_key   = 'wpas_pages_list_' . $post_type;
+	$cached_list = get_transient( $cache_key );
+
+	if ( false !== $cached_list && is_array( $cached_list ) ) {
+		$GLOBALS['wpas_pages_static_cache'][ $post_type ] = $cached_list;
+		return $cached_list;
+	}
 
 	$list = array( '' => __( 'None', 'awesome-support' ) );
 
@@ -35,7 +66,12 @@ function wpas_list_pages( $post_type = 'page' ) {
 
 	}
 
-	return apply_filters( 'wpas_pages_list', $list );
+	$result = apply_filters( 'wpas_pages_list', $list );
+
+	set_transient( $cache_key, $result, DAY_IN_SECONDS );
+	$GLOBALS['wpas_pages_static_cache'][ $post_type ] = $result;
+
+	return $result;
 
 }
 

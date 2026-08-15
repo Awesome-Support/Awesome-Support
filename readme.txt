@@ -4,7 +4,7 @@ Contributors: awesomesupport,julien731,rwkiii,elindydotcom,SiamKreative,alaca
 Tags: helpdesk,ticket system,support,tickets,support ticket
 Requires at least: 4.0
 Tested up to: 7.0
-Stable tag: 6.3.9.2
+Stable tag: 6.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -291,14 +291,20 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
-= 6.3.9.3 =
-* New
-  * Add "Auto-draft" view link with count to the ticket list status filter bar.
+= 6.4.0 =
 
-= 6.3.9.2 =
-* New
-  * Add Reopen and Close bulk actions to the WordPress admin ticket list.
-  * Add Closed tickets view counter to the top of the ticket listing screen.
+* Security
+	* Patched Reflected XSS vulnerabilities and enforced user capability checks on ticket closure.
+
+* Compatibility
+	* Upgraded official compatibility for WordPress 6.4 - 6.6+ and PHP 8.1 / 8.2 environments.
+
+* Enhancement
+	* Added support for uploading .msg attachment files (Microsoft Outlook email format).
+	* Optimized ticket filters for portrait mobile view and fixed attachment download corruption.
+
+* Fix
+	* Resolved various PHP warnings, deprecated notices, and database query optimizations for improved stability.
 
 = 6.3.9 =
 * Fix

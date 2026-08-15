@@ -2437,10 +2437,10 @@ function wpas_clone_ticket( $ticket_id, $args = array() ) {
 		if( $args['suppress_notifications'] ) {
 			add_action( 'wpas_add_reply_complete', 'wpas_notify_reply', 10, 2 );
 		}
+
 	}
 
 	do_action( 'wpas_clone_ticket_completed_after', $new_ticket_id, $ticket, $args );
 
 	return $new_ticket_id;
-
 }

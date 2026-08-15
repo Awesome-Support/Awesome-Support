@@ -19,9 +19,10 @@
 		method:     'POST',
 		beforeSend: function( xhr ) {
 			xhr.setRequestHeader( 'Authorization', 'Basic ' + btoa( testBasicAuthUser + ':' + testBasicAuthPassword ) );
+			xhr.setRequestHeader( 'X-WP-Nonce', wpasAPI.nonce );
 		},
 		error:      function( jqXHR ) {
-			if ( 404 === jqXHR.status ) {
+			if ( 404 === jqXHR.status || 401 === jqXHR.status || 403 === jqXHR.status ) {
 				$newAppPassForm.before( tmplNotice( {
 					type:    'error',
 					message: wpasAPI.text.no_credentials

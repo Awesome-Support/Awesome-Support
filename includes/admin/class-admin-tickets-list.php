@@ -47,6 +47,7 @@ class WPAS_Tickets_List {
 			add_action( 'parse_request', array( $this, 'parse_request' ), 10, 1 );
 			add_action( 'pre_get_posts', array( $this, 'set_filtering_query_var' ), 1, 1 );
 			add_action( 'pre_get_posts', array( $this, 'set_ordering_query_var' ), 100, 1 );
+			add_filter( 'posts_results', array( $this, 'prefetch_ticket_replies' ), 5, 2 );
 			add_filter( 'posts_results', array( $this, 'apply_ordering_criteria' ), 10, 2 );
 			add_filter( 'posts_results', array( $this, 'filter_the_posts' ), 10, 2 );
 
@@ -696,7 +697,9 @@ class WPAS_Tickets_List {
 							$color = ( false !== ( $c = wpas_get_option( 'color_awaiting_reply', false ) ) ) ? $c : '#0074a2';
 							array_push( $tags, "<span class='wpas-label' style='background-color:$color;'>" . __( 'Awaiting Support Reply', 'awesome-support' ) . "</span>" );
 							//HOTFIX: When using the "Awaiting for Reply" status, not all of those tickets are shown with that filter
-							update_post_meta( $post_id, '_wpas_is_waiting_client_reply', true );
+							if ( '1' !== get_post_meta( $post_id, '_wpas_is_waiting_client_reply', true ) ) {
+								update_post_meta( $post_id, '_wpas_is_waiting_client_reply', true );
+							}
 						}
 
 						// Maybe add the "Old" tag
@@ -1846,6 +1849,78 @@ ORDER BY
 	}
 
 	/**
+	 * Pre-fetch all replies for tickets currently displayed in admin list in 1 SINGLE BATCH QUERY.
+	 *
+	 * @param array    $posts
+	 * @param WP_Query $query
+	 *
+	 * @return array
+	 */
+	public function prefetch_ticket_replies( $posts, $query ) {
+		if ( ! is_admin() || empty( $posts ) || ! is_array( $posts ) || ! $query->is_main_query() ) {
+			return $posts;
+		}
+
+		$post_type = $query->get( 'post_type' );
+		if ( 'ticket' !== $post_type && ! ( is_array( $post_type ) && in_array( 'ticket', $post_type, true ) ) ) {
+			return $posts;
+		}
+
+		$ticket_ids = array();
+		foreach ( $posts as $post ) {
+			if ( is_object( $post ) && isset( $post->ID ) ) {
+				$ticket_ids[] = (int) $post->ID;
+			}
+		}
+
+		if ( empty( $ticket_ids ) ) {
+			return $posts;
+		}
+
+		$args = array(
+			'post_parent__in'        => $ticket_ids,
+			'post_type'              => 'ticket_reply',
+			'post_status'            => array( 'unread', 'read' ),
+			'posts_per_page'         => -1,
+			'orderby'                => 'date',
+			'order'                  => 'ASC',
+			'no_found_rows'          => true,
+			'cache_results'          => false,
+			'update_post_term_cache' => false,
+			'update_post_meta_cache' => false,
+		);
+
+		$all_replies = new WP_Query( $args );
+
+		$grouped = array();
+		foreach ( $ticket_ids as $id ) {
+			$grouped[ $id ] = array();
+		}
+
+		if ( ! empty( $all_replies->posts ) ) {
+			foreach ( $all_replies->posts as $reply ) {
+				if ( isset( $reply->post_parent ) && isset( $grouped[ $reply->post_parent ] ) ) {
+					$grouped[ $reply->post_parent ][] = $reply;
+				}
+			}
+		}
+
+		if ( ! isset( $GLOBALS['wpas_replies_query_static_cache'] ) ) {
+			$GLOBALS['wpas_replies_query_static_cache'] = array();
+		}
+
+		foreach ( $grouped as $ticket_id => $replies_list ) {
+			$dummy_q             = new WP_Query();
+			$dummy_q->posts      = $replies_list;
+			$dummy_q->post_count = count( $replies_list );
+			wp_cache_set( 'replies_query_' . $ticket_id, $dummy_q, 'wpas', 600 );
+			$GLOBALS['wpas_replies_query_static_cache'][ $ticket_id ] = $dummy_q;
+		}
+
+		return $posts;
+	}
+
+	/**
 	 * Get all ticket replies
 	 *
 	 * Try to get the replies from cache and if not possible, run the query and cache the result.
@@ -1857,6 +1932,10 @@ ORDER BY
 	 * @return WP_Query
 	 */
 	public function get_replies_query( $ticket_id ) {
+
+		if ( isset( $GLOBALS['wpas_replies_query_static_cache'][ $ticket_id ] ) ) {
+			return $GLOBALS['wpas_replies_query_static_cache'][ $ticket_id ];
+		}
 
 		$q = wp_cache_get( 'replies_query_' . $ticket_id, 'wpas' );
 
@@ -1881,6 +1960,11 @@ ORDER BY
 			wp_cache_add( 'replies_query_' . $ticket_id, $q, 'wpas', 600 );
 
 		}
+
+		if ( ! isset( $GLOBALS['wpas_replies_query_static_cache'] ) ) {
+			$GLOBALS['wpas_replies_query_static_cache'] = array();
+		}
+		$GLOBALS['wpas_replies_query_static_cache'][ $ticket_id ] = $q;
 
 		return $q;
 

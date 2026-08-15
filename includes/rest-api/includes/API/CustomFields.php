@@ -240,7 +240,8 @@ class CustomFields extends WP_REST_Controller {
                 }
                 else
                 {                    
-                    return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter is not existed .', 'awesome-support' ), array( 'status' => 404, 'data_received' => $request->get_params() ) );
+                    // Field not in request — skip it (allow partial updates)
+                    continue;
                 }
             }
         }

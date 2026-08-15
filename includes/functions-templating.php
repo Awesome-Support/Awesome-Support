@@ -1209,6 +1209,12 @@
 		$label = __( '%s.', 'awesome-support' );
 		$label = sprintf($label, $term->name);
 		$color = get_term_meta( $term->term_id, 'color', true );
+
+		// Fallback to a neutral color when no color is assigned to ensure label visibility
+		if ( empty( $color ) ) {
+			$color = '#6c757d'; // Bootstrap-style secondary gray
+		}
+
 		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
 		echo wp_kses($tag, get_allowed_html_wp_notifications());

@@ -74,7 +74,7 @@
 		 *
 		 * @since 3.2.0
 		 */
-		public function __construct( $field_id = '', $field = array() ) {
+		public function __construct( $field_id = '', $field = array(), $post_id = 0 ) {
 
 			/**
 			 * Set the field arguments just in case the class is used with
@@ -93,10 +93,18 @@
 			/* Set the legacy mode */
 			$this->legacy = ! empty( $field[ 'args' ][ 'callback' ] ) ? true : false;
 
-			/**
-			 * Get the ID of the post the custom field relates to.
-			 */
-			$this->post_id = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+			if ( ! empty( $post_id ) ) {
+				$this->post_id = absint( $post_id );
+			} elseif ( isset( $_GET['post'] ) ) {
+				$this->post_id = absint( wp_unslash( $_GET['post'] ) );
+			} elseif ( isset( $_POST['post_ID'] ) ) {
+				$this->post_id = absint( wp_unslash( $_POST['post_ID'] ) );
+			} elseif ( get_the_ID() ) {
+				$this->post_id = absint( get_the_ID() );
+			} else {
+				global $post;
+				$this->post_id = ( $post && isset( $post->ID ) ) ? absint( $post->ID ) : 0;
+			}
 
 		}
 
@@ -403,12 +411,11 @@
 
 			if ( 'taxonomy' === $this->field_type ) {
 
-				$current = get_the_terms( $post_id, $this->field_id );
+				$current = wp_get_object_terms( $post_id, $this->field_id );
 
-				if ( is_array( $current ) ) {
-					foreach ( $current as $term ) {
-						$value = $term->slug;
-					}
+				if ( is_array( $current ) && ! is_wp_error( $current ) && ! empty( $current ) ) {
+					$selected_term = end( $current );
+					$value         = $selected_term->slug;
 				}
 
 			} else {
@@ -527,8 +534,8 @@
 
 				if ( method_exists( $class_name, 'display' ) ) {
 
-					/* Instantiate the field type class */
-					$instance = new $class_name( $this->field_id, $this->field );
+					/* Instantiate the field type class with current post_id */
+					$instance = new $class_name( $this->field_id, $this->field, $this->post_id );
 
 					if ( is_admin() ) {
 						if ( ! current_user_can( $this->field[ 'args' ][ 'capability' ] ) && method_exists( $instance, 'display_no_edit' ) ) {

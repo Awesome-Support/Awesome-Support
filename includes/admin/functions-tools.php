@@ -336,7 +336,7 @@ function wpas_delete_synced_products( $resync = false ) {
 	}
 
 	$sync  = new WPAS_Product_Sync( '', 'product' );
-	$posts = new WP_Query( array( 'post_type' => $post_type, 'posts_per_page' => -1, 'post_status' => 'any' ) );
+	$posts = new WP_Query( array( 'post_type' => $post_type, 'posts_per_page' => -1, 'post_status' => 'any', 'no_found_rows' => true ) );
 	$sync->set_post_type( $post_type );
 
 	$product_terms = get_terms([
@@ -449,9 +449,10 @@ function wpas_delete_unused_terms() {
 	foreach( $terms as $term ) {
 
 		$items = new WP_Query( array(
-                            'post_type'   => 'ticket',
-                            'numberposts' => -1,
-                            'tax_query'   => array(
+                            'post_type'     => 'ticket',
+                            'numberposts'   => -1,
+                            'no_found_rows' => true,
+                            'tax_query'     => array(
                             	array(
                             		'taxonomy'  => 'product',
                                     'terms'     => array($term->term_id),

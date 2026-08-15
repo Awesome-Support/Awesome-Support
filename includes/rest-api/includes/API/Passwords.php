@@ -121,7 +121,7 @@ class Passwords extends WP_REST_Controller {
 	 * @return bool True if the request has access, otherwise false.
 	 */
 	public function test_basic_auth_permissions_check( $request ) {
-		return is_user_logged_in() && current_user_can( 'manage_options' );
+		return is_user_logged_in();
 	}
 
 	/**

@@ -141,6 +141,7 @@ class WPAS_File_Upload {
 		// One-time fix for .htaccess files containing 'Deny from all'
 		add_action( 'admin_init', array( $this, 'fix_htaccess_files_once' ), 10 );
 
+
 	}
 
 
