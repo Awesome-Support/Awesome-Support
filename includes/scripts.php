@@ -389,8 +389,10 @@ function wpas_enqueue_assets_back_end() {
 			'editor_content_nonce' => wp_create_nonce( 'wpas-editor-content-nonce' )
 		));
 
-		wp_enqueue_style( 'wpas-admin-print-ticket' );
-		wp_enqueue_script( 'wpas-admin-print-ticket' );
+		if ( wpas_is_admin_all_tickets_page() ) {
+			wp_enqueue_style( 'wpas-admin-print-ticket' );
+			wp_enqueue_script( 'wpas-admin-print-ticket' );
+		}
 
 	}
 

@@ -95,10 +95,10 @@
 
 			if ( ! empty( $post_id ) ) {
 				$this->post_id = absint( $post_id );
-			} elseif ( isset( $_GET['post'] ) ) {
-				$this->post_id = absint( wp_unslash( $_GET['post'] ) );
 			} elseif ( isset( $_POST['post_ID'] ) ) {
 				$this->post_id = absint( wp_unslash( $_POST['post_ID'] ) );
+			} elseif ( isset( $_GET['post'] ) ) {
+				$this->post_id = absint( wp_unslash( $_GET['post'] ) );
 			} elseif ( get_the_ID() ) {
 				$this->post_id = absint( get_the_ID() );
 			} else {
@@ -939,7 +939,7 @@
 			/**
 			 * Check for a custom save callback function.
 			 */
-			if ( false !== $this->field[ 'args' ][ 'save_callback' ] && function_exists( $this->field[ 'args' ][ 'save_callback' ] ) ) {
+			if ( ! empty( $this->field[ 'args' ][ 'save_callback' ] ) && function_exists( $this->field[ 'args' ][ 'save_callback' ] ) ) {
 				$result = call_user_func( $this->field[ 'args' ][ 'save_callback' ], $value, $post_id, $field_id, $this->field );
 			} /**
 			 * Use our built-in save function otherwise.

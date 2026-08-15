@@ -23,7 +23,7 @@ function wpas_get_custom_taxonomy_names() {
 
 	$taxonomies = array();
 
-	if ( ! class_exists( 'WPAS' ) || ! method_exists( WPAS(), 'custom_fields' ) ) {
+	if ( ! function_exists( 'WPAS' ) || ! isset( WPAS()->custom_fields ) ) {
 		return $taxonomies;
 	}
 
