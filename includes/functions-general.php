@@ -2653,7 +2653,7 @@ function wpas_terms_pre_query( $terms, $query ) {
 		return $terms;
 	}
 
-	if ( isset( $GLOBALS['wpas_terms_master_cache'][ $tax_key ] ) ) {
+	if ( isset( $GLOBALS['wpas_terms_master_cache'][ $tax_key ] ) && ! empty( $GLOBALS['wpas_terms_master_cache'][ $tax_key ] ) ) {
 		$master_terms = $GLOBALS['wpas_terms_master_cache'][ $tax_key ];
 		$formatted    = wpas_format_terms_by_fields( $master_terms, $fields );
 		if ( 'count' === $fields ) {
@@ -2697,7 +2697,8 @@ function wpas_static_cache_get_terms( $terms, $taxonomies, $args, $term_query = 
 
 	if ( ! isset( $GLOBALS['wpas_terms_master_cache'][ $tax_key ] ) ) {
 		if ( empty( $terms ) || ! is_array( $terms ) ) {
-			$GLOBALS['wpas_terms_master_cache'][ $tax_key ] = array();
+			// Don't cache empty results — taxonomy may not be registered yet.
+			return $terms;
 		} else {
 			if ( 'all' === $fields || 'all_with_object_id' === $fields ) {
 				$GLOBALS['wpas_terms_master_cache'][ $tax_key ] = $terms;

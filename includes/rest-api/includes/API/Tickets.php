@@ -144,6 +144,36 @@ class Tickets extends TicketBase {
 			}
 		}
 
+		/**
+		 * Attach visibility metadata for each custom field.
+		 * Remote clients (e.g. Client Tickets) use this to replicate the same
+		 * column display logic as the native "My Tickets" front-end page.
+		 */
+		$field_visibility = array();
+		$custom_fields    = WPAS()->custom_fields->get_custom_fields();
+		foreach ( $custom_fields as $name => $field ) {
+			$args = $field['args'];
+			$field_visibility[ $name ] = array(
+				'title'                => wpas_get_field_title( $field ),
+				'field_type'           => isset( $args['field_type'] ) ? $args['field_type'] : '',
+				'core'                 => ! empty( $args['core'] ),
+				'backend_only'         => ! empty( $args['backend_only'] ),
+				'hide_front_end'       => ! empty( $args['hide_front_end'] ),
+				'show_frontend_list'   => ! empty( $args['show_frontend_list'] ),
+				'backend_display_type' => isset( $args['backend_display_type'] ) ? $args['backend_display_type'] : '',
+			);
+		}
+		// Map additional ticket fields (REST key → WPAS field_key) so that
+		// visibility metadata can be looked up by the key in the response.
+		foreach ( $this->get_additional_ticket_fields() as $rest_key => $field_data ) {
+			if ( empty( $field_data['field_key'] ) ) continue;
+			$wpas_key = $field_data['field_key'];
+			if ( isset( $field_visibility[ $wpas_key ] ) && ! isset( $field_visibility[ $rest_key ] ) ) {
+				$field_visibility[ $rest_key ] = $field_visibility[ $wpas_key ];
+			}
+		}
+		$data['_field_visibility'] = $field_visibility;
+
 		return $data;
 	}
 

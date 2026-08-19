@@ -88,7 +88,7 @@ class TicketStatus extends TicketBase {
 
 		$post = get_post( intval( $request['ticket_id'] ) );
 
-		if ( $post->post_author != get_current_user_id() ) {
+		if ( $post->post_author != get_current_user_id() && ! wpas_is_asadmin() ) {
 			return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update status of this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
 		}
 

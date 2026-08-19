@@ -566,6 +566,33 @@ function wpas_try_login( $data ) {
 }
 
 /**
+ * Block login for moderated (not yet activated) users.
+ *
+ * The existing check in wpas_try_login() only blocks login via the AS frontend
+ * form. This filter blocks login via ALL flows including /wp-login.php.
+ *
+ * @since 6.4.0
+ *
+ * @param WP_User|WP_Error $user
+ * @param string           $username
+ * @param string           $password
+ *
+ * @return WP_User|WP_Error
+ */
+add_filter( 'authenticate', 'wpas_block_moderated_user_login', 99, 3 );
+function wpas_block_moderated_user_login( $user, $username, $password ) {
+	if ( $user instanceof WP_User ) {
+		if ( 'yes' === get_user_option( 'mr_user_not_activated', $user->ID ) ) {
+			return new WP_Error(
+				'mr_not_activated',
+				__( 'Your account is not activated yet. Try again later', 'awesome-support' )
+			);
+		}
+	}
+	return $user;
+}
+
+/**
  * Checks if a user can view a ticket.
  *
  * @since  2.0.0
@@ -1649,6 +1676,11 @@ add_action( 'show_user_profile', 'wpas_add_activate_user_button' , 9, 1 ); // Di
  */
 function wpas_add_activate_user_button( $user ) {
 
+	// Only admins with edit_users capability should see these buttons
+	if ( ! current_user_can( 'edit_users' ) ) {
+		return;
+	}
+
 	$not_activated = get_user_option( 'mr_user_not_activated', $user->ID );
 	$user_denied   = get_user_option( 'mr_user_denied', $user->ID );
 
@@ -1733,6 +1765,14 @@ function wpas_do_mr_deny_user( $data ) {
 	$user_id = $data['user_id'];
 
 	if( $user_id ) {
+
+		if ( ! current_user_can( 'edit_users' ) ) {
+			wp_die( __( 'You do not have permission to deny users.', 'awesome-support' ), 403 );
+		}
+
+		if ( ! current_user_can( 'edit_user', $user_id ) ) {
+			wp_die( __( 'You do not have permission to edit this user.', 'awesome-support' ), 403 );
+		}
 
 		update_user_option( $user_id, 'mr_user_denied', 'yes' );
 
