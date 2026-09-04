@@ -40,7 +40,9 @@ class WPAS_File_Upload {
 		/**
 		 * Load the addon settings
 		 */
-		require_once( WPAS_PATH . 'includes/file-uploader/settings-file-upload.php' );
+		if ( file_exists( WPAS_PATH . 'includes/file-uploader/settings-file-upload.php' ) ) {
+			require_once WPAS_PATH . 'includes/file-uploader/settings-file-upload.php';
+		}
 
 		if ( ! $this->can_attach_files() ) {
 			return;
@@ -138,6 +140,7 @@ class WPAS_File_Upload {
 
 		// One-time fix for .htaccess files containing 'Deny from all'
 		add_action( 'admin_init', array( $this, 'fix_htaccess_files_once' ), 10 );
+
 
 	}
 
@@ -1482,7 +1485,7 @@ class WPAS_File_Upload {
 
 		$max           = wpas_get_option( 'attachments_max', 2 );   // Core AS Max Files (File Upload settings)
 		$cnt           = 0;                                         // Initialize count of current attachments
-		$errors        = false;                                     // No errors/rejections yet
+		$errors        = array();                                   // No errors/rejections yet
 		$this->post_id = $post_id;                                  // Set post id for /ticket_nnnn folder creation
 
 		$post = get_post($post_id);
@@ -2381,6 +2384,7 @@ class WPAS_File_Upload {
 			$post     = get_post( $post_id );
 		}
 		
+		$submission = (int) wpas_get_option( 'ticket_submit' );
 		$post_type  =  isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET[ 'post_type' ] )) : '' ; 
 		
 		/**
@@ -2388,7 +2392,7 @@ class WPAS_File_Upload {
 		 * on the submission page or on a ticket details page.
 		 */
 		if ( ! is_admin() ) {
-			if ( ! empty( $post) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
+			if ( ! empty( $post ) && 'ticket' !== $post->post_type && $submission !== $post->ID ) {
 				return $file;
 			}
 		}

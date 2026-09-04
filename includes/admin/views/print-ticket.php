@@ -33,15 +33,17 @@
                 <?php wpas_cf_display_status( 'status', $ticket->ID ); ?>
             </td>
             <td>
-                <?php $user = get_user_by( 'id', $ticket->post_author )->display_name; ?>
+                <?php
+                    $author = get_user_by( 'id', $ticket->post_author );
+                    $user = $author ? $author->display_name : __( 'Unknown', 'awesome-support' );
+                ?>
                 <?php echo esc_html( $user ); ?>
             </td>
             <td>
                 <?php
-
                     $agent_id = wpas_get_cf_value( 'assignee', $ticket->ID );
-                    echo esc_html( get_user_by( 'id', $agent_id )->display_name );
-
+                    $agent = get_user_by( 'id', $agent_id );
+                    echo esc_html( $agent ? $agent->display_name : __( 'Unknown', 'awesome-support' ) );
                 ?>
             </td>
             <td>

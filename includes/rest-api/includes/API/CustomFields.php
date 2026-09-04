@@ -219,7 +219,7 @@ class CustomFields extends WP_REST_Controller {
             return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter cannot be empty.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
         }
 
-        if ( ! $this->is_user_ticket( $request[ 'ticket_id' ] ) ) {
+        if ( ! $this->is_user_ticket( $request[ 'ticket_id' ] ) && ! wpas_is_asadmin() ) {
             return new WP_Error( 'rest_cannot_create', __( 'Sorry, you are not allowed to update custom fields for this ticket.', 'awesome-support' ), array( 'status' => rest_authorization_required_code() ) );
         }
 
@@ -240,7 +240,8 @@ class CustomFields extends WP_REST_Controller {
                 }
                 else
                 {                    
-                    return new WP_Error( 'invalid_post_parameter', __( 'Custom fields parameter is not existed .', 'awesome-support' ), array( 'status' => 404, 'data_received' => $request->get_params() ) );
+                    // Field not in request — skip it (allow partial updates)
+                    continue;
                 }
             }
         }

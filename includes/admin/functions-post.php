@@ -88,8 +88,8 @@ function wpas_filter_ticket_data( $data, $postarr ) {
 		$old_author = (int) get_post_field('post_author', $postarr['ID'], 'raw');
 		$new_author = isset($_POST['post_author']) ? (int) sanitize_text_field($_POST['post_author']) : 0;
 
-		// Get old/new assignees
-		$old_assignee = (int) get_post_meta($postarr['ticket_id'], '_wpas_assignee', true);
+		$ticket_id    = isset( $postarr['ID'] ) ? (int) $postarr['ID'] : 0;
+		$old_assignee = $ticket_id ? (int) get_post_meta( $ticket_id, '_wpas_assignee', true ) : 0;
 		$new_assignee = isset($_POST['wpas_assignee']) ? (int) sanitize_text_field($_POST['wpas_assignee']) : 0;
 
 		// Detect changes

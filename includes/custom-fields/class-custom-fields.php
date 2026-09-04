@@ -98,7 +98,7 @@ class WPAS_Custom_Fields {
 		global $post;
 
 		// This will usually be packaged with all other components which is why it's not registered with the rest
-		wp_register_script( 'wpas-datepicker-component', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'wpas-date' ), '4.0.0', true );
+		wp_register_script( 'wpas-datepicker-component', WPAS_URL . 'assets/public/js/component_datepicker.js', array( 'jquery', 'jquery-ui-datepicker' ), '4.0.0', true );
 
 		$ticket_submit = wpas_get_option( 'ticket_submit' );
 
@@ -404,7 +404,7 @@ class WPAS_Custom_Fields {
 					continue;
 				}
 
-				$this_field = new WPAS_Custom_Field( $name, $field );
+				$this_field = new WPAS_Custom_Field( $name, $field, get_the_ID() );
 				$output     = $this_field->get_output();
 
 				/* Add the pre-render action hook */
@@ -474,7 +474,7 @@ class WPAS_Custom_Fields {
 
 				If  ( ( true === $field['args']['backend_only'] ) && ( 'custom' <> $field['args']['backend_display_type'] ) ) {
 
-					$this_field = new WPAS_Custom_Field( $name, $field );
+					$this_field = new WPAS_Custom_Field( $name, $field, get_the_ID() );
 					$output     = $this_field->get_output();
 
 					echo wp_kses($output, $this->get_allowed_html_wpas_custom_fields());
@@ -670,8 +670,10 @@ class WPAS_Custom_Fields {
 				 * If the term didn't exist the save function would have seen it and returned 0.
 				 */
 				if ( 'taxonomy' === $field['args']['field_type'] && 0 !== $result ) {
-					$term  = get_term( (int) $value, $field['name'] );
-					$value = $term->name;
+					$term = get_term( (int) $value, $field['name'] );
+					if ( $term && ! is_wp_error( $term ) && isset( $term->name ) ) {
+						$value = $term->name;
+					}
 				}
 
 				/**

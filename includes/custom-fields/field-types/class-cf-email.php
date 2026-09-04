@@ -12,7 +12,7 @@ class WPAS_CF_Email extends WPAS_Custom_Field {
 	 * @return string Field markup
 	 */
 	public function display() {
-		return sprintf( '<label {{label_atts}}>{{label}}</label><input type="email" value="%s" {{atts}}>', $this->populate() );
+		return sprintf( '<label {{label_atts}}>{{label}}</label><input type="email" value="%s" {{atts}}>', esc_attr( $this->populate() ) );
 	}
 
 	/**

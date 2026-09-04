@@ -226,15 +226,17 @@ function wpas_register_assets_back_end() {
 	) );
 
 
-	// Custom admin notice style and script
-	wp_enqueue_style( 'wpas-admin-wizard-notice', WPAS_URL . 'assets/admin/css/wizard-notice.css', array(), WPAS_VERSION );
-	wp_enqueue_style( 'wpas-admin-gdpr', WPAS_URL . 'assets/admin/css/admin-gdpr.css', array(), WPAS_VERSION );
-	wp_enqueue_script( 'wpas-admin-wizard-script', WPAS_URL . 'assets/admin/js/admin-wizard.js', array( 'jquery' ), WPAS_VERSION );
-	wp_localize_script( 'wpas-admin-wizard-script', 'WPAS_Wizard', array(
-		'ajax_url' => admin_url( 'admin-ajax.php' ),
-		'about_page' => admin_url( 'edit.php?post_type=ticket&page=wpas-about' ),
-		'nonce' => wp_create_nonce('wpas_admin_wizard'), // Create nonce and transmit it to the script
-	));
+	// Custom admin notice style and script (only when wizard notice is active)
+	if ( ! get_option( 'wpas_plugin_setup', false ) && ! get_option( 'wpas_skip_wizard_setup', false ) && wpas_is_asadmin() ) {
+		wp_enqueue_style( 'wpas-admin-wizard-notice', WPAS_URL . 'assets/admin/css/wizard-notice.css', array(), WPAS_VERSION );
+		wp_enqueue_script( 'wpas-admin-wizard-script', WPAS_URL . 'assets/admin/js/admin-wizard.js', array( 'jquery' ), WPAS_VERSION );
+		wp_localize_script( 'wpas-admin-wizard-script', 'WPAS_Wizard', array(
+			'ajax_url' => admin_url( 'admin-ajax.php' ),
+			'about_page' => admin_url( 'edit.php?post_type=ticket&page=wpas-about' ),
+			'nonce' => wp_create_nonce('wpas_admin_wizard'), // Create nonce and transmit it to the script
+		));
+	}
+	wp_register_style( 'wpas-admin-gdpr', WPAS_URL . 'assets/admin/css/admin-gdpr.css', array(), WPAS_VERSION );
 
 	// Include magnific popup
 	if ( true == wpas_is_plugin_page() ) {
@@ -387,17 +389,24 @@ function wpas_enqueue_assets_back_end() {
 			'editor_content_nonce' => wp_create_nonce( 'wpas-editor-content-nonce' )
 		));
 
-	}
+		if ( wpas_is_admin_all_tickets_page() ) {
+			wp_enqueue_style( 'wpas-admin-print-ticket' );
+			wp_enqueue_script( 'wpas-admin-print-ticket' );
+		}
 
-	wp_enqueue_style( 'wpas-admin-print-ticket' );
-	wp_enqueue_script( 'wpas-admin-print-ticket' );
+	}
 
 	wp_register_script( 'wpas-gdpr-admin-script', WPAS_URL . 'assets/admin/js/admin-gdpr.js', array( 'jquery' ), WPAS_VERSION );
 	wp_localize_script( 'wpas-gdpr-admin-script', 'WPAS_GDPR', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
-		'nonce' => wp_create_nonce( 'wpas-gdpr-nonce' )
+		'nonce'    => wp_create_nonce( 'wpas-gdpr-nonce' ),
 	) );
-	wp_enqueue_script( 'wpas-gdpr-admin-script' );
+
+	$screen = get_current_screen();
+	if ( $screen && in_array( $screen->id, array( 'profile', 'user-edit' ), true ) ) {
+		wp_enqueue_style( 'wpas-admin-gdpr' );
+		wp_enqueue_script( 'wpas-gdpr-admin-script' );
+	}
 }
 
 /**

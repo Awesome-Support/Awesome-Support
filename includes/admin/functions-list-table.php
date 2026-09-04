@@ -45,7 +45,13 @@ function wpas_hide_others_tickets( $query ) {
 		return false;
 	}
 
-	global $current_user;	
+	global $current_user;
+
+	/* Don't filter auto-draft, draft or trashed tickets - they don't need assignee meta filtering */
+	$post_status = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
+	if ( in_array( $post_status, array( 'auto-draft', 'draft', 'trash' ), true ) ) {
+		return false;
+	}	
 	
 	
 	// We need to update the original meta_query and not replace it to avoid filtering issues.
@@ -99,6 +105,11 @@ function wpas_limit_open( $query ) {
 		return false;
 	}
 
+	/* Don't filter auto-draft, draft or trashed tickets - they don't need _wpas_status meta filtering */
+	if ( in_array( $post_status, array( 'auto-draft', 'draft', 'trash' ), true ) ) {
+		return false;
+	}
+
 	if ( array_key_exists( $post_status, wpas_get_post_status() ) || empty( $post_status ) && true === (bool) wpas_get_option( 'hide_closed', false ) ) {
 
 		// We need to update the original meta_query and not replace it to avoid filtering issues.
@@ -142,6 +153,11 @@ add_filter( 'post_row_actions', 'wpas_ticket_action_row', 10, 2 );
 function wpas_ticket_action_row( $actions, $post ) {
 
 	if ( 'ticket' === $post->post_type ) {
+
+		/* For auto-draft and draft tickets, only allow Edit and Trash */
+		if ( in_array( get_post_status( $post->ID ), array( 'auto-draft', 'draft' ), true ) ) {
+			return array_intersect_key( $actions, array_flip( array( 'edit', 'trash' ) ) );
+		}
 
 		$status = wpas_get_ticket_status( $post->ID );
 
@@ -188,11 +204,21 @@ function wpas_fix_tickets_count( $views ) {
 		}
 	}
 
+	// Add Closed view to the list
+	if ( ! isset( $views['closed'] ) ) {
+		$views['closed'] = __( 'Closed', 'awesome-support' );
+	}
+
 	foreach ( $views as $view => $label ) {
 
-		if ( array_key_exists( $view, $ticket_status ) || 'all' === $view ) {
+		if ( array_key_exists( $view, $ticket_status ) || 'all' === $view || 'closed' === $view ) {
 
-			$count   = 'all' === $view ? wpas_get_ticket_count_by_status( '', $status ) : wpas_get_ticket_count_by_status( $view, $status );
+			if ( 'closed' === $view ) {
+				$count = wpas_get_ticket_count_by_status( '', 'closed' );
+			} else {
+				$count = 'all' === $view ? wpas_get_ticket_count_by_status( '', $status ) : wpas_get_ticket_count_by_status( $view, $status );
+			}
+
 			$regex   = '.*?(\\(.*\\))';
 			$replace = '';
 
@@ -201,12 +227,29 @@ function wpas_fix_tickets_count( $views ) {
 			}
 
 			$label           = trim( wp_strip_all_tags( str_replace( $replace, '', $label ) ) );
-			$class           = isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view || isset( $wp_query->query_vars['post_status'] ) && 'all' === $view && null === $wp_query->query_vars['post_status'] ? ' class="current"' : '';
-			$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
+			
+			if ( 'closed' === $view ) {
+				$class = isset( $_GET['status'] ) && 'closed' === $_GET['status'] ? ' class="current"' : '';
+				$link_query_args = array( 'post_type' => 'ticket', 'status' => 'closed' );
+			} else {
+				$is_current = ( isset( $wp_query->query_vars['post_status'] ) && $wp_query->query_vars['post_status'] === $view ) || ( 'all' === $view && null === $wp_query->query_vars['post_status'] && ! isset( $_GET['status'] ) );
+				$class = $is_current ? ' class="current"' : '';
+				$link_query_args = 'all' === $view ? array( 'post_type' => 'ticket' ) : array( 'post_type' => 'ticket', 'post_status' => $view );
+			}
+
 			$link            = esc_url( add_query_arg( $link_query_args, admin_url( 'edit.php' ) ) );
 			$views[ $view ]  = sprintf( '<a href="%1$s"%2$s>%3$s <span class="count">(%4$d)</span></a>', $link, $class, $label, $count );
 
 		}
+	}
+
+	/* Add Auto-draft view */
+	global $wpdb;
+	$auto_draft_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'ticket' AND post_status = 'auto-draft'" );
+	if ( $auto_draft_count > 0 ) {
+		$ad_class = ( isset( $_GET['post_status'] ) && 'auto-draft' === $_GET['post_status'] ) ? ' class="current"' : '';
+		$ad_link  = esc_url( add_query_arg( array( 'post_type' => 'ticket', 'post_status' => 'auto-draft' ), admin_url( 'edit.php' ) ) );
+		$views['auto-draft'] = sprintf( '<a href="%1$s"%2$s>%3$s <span class="count">(%4$d)</span></a>', $ad_link, $ad_class, __( 'Auto-draft', 'awesome-support' ), $auto_draft_count );
 	}
 
 	return $views;
@@ -227,7 +270,16 @@ function wpas_manage_ticket_bulk_actions( $bulk_actions ) {
 	if( isset( $bulk_actions['edit'] ) ) {
 		unset( $bulk_actions['edit'] );
 	}
-	
+
+	$bulk_actions['wpas_bulk_close']  = __( 'Close', 'awesome-support' );
+	$bulk_actions['wpas_bulk_reopen'] = __( 'Reopen', 'awesome-support' );
+
+	/* Add Delete Permanently option when viewing auto-drafts */
+	$current_status = isset( $_GET['post_status'] ) ? sanitize_text_field( wp_unslash( $_GET['post_status'] ) ) : '';
+	if ( 'auto-draft' === $current_status && current_user_can( 'delete_tickets' ) ) {
+		$bulk_actions['wpas_bulk_delete'] = __( 'Delete Permanently', 'awesome-support' );
+	}
+
 	return $bulk_actions;
 }
 
@@ -245,7 +297,7 @@ add_filter( 'post_row_actions', 'wpas_add_print_quick_action', 10, 2 );
  */
 function wpas_add_print_quick_action( $actions, $post ) {
 
-	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' ) {
+	if ( isset( $_GET['post_type'] ) && $_GET['post_type'] == 'ticket' && ! in_array( get_post_status( $post->ID ), array( 'auto-draft', 'draft', 'trash' ), true ) ) {
 		$actions['wpas_print'] = sprintf( '<a href="#" class="wpas-admin-quick-action-print" data-id="%s">%s</a>', $post->ID, __( 'Print', 'awesome-support' ) );
 	}
 	
@@ -271,4 +323,69 @@ function wpas_add_print_bulk_action( $actions ) {
 	}
 
 	return $actions;
+}
+
+add_filter( 'handle_bulk_actions-edit-ticket', 'wpas_handle_ticket_bulk_actions', 10, 3 );
+/**
+ * Handle custom bulk actions for tickets list table.
+ */
+function wpas_handle_ticket_bulk_actions( $redirect_to, $action, $post_ids ) {
+	if ( ! in_array( $action, array( 'wpas_bulk_close', 'wpas_bulk_reopen', 'wpas_bulk_delete' ), true ) ) {
+		return $redirect_to;
+	}
+
+	$count = 0;
+
+	foreach ( $post_ids as $post_id ) {
+		if ( 'wpas_bulk_close' === $action ) {
+			if ( 'closed' !== wpas_get_ticket_status( $post_id ) ) {
+				wpas_close_ticket( $post_id, 0, true );
+				$count++;
+			}
+		} elseif ( 'wpas_bulk_reopen' === $action ) {
+			if ( 'closed' === wpas_get_ticket_status( $post_id ) ) {
+				wpas_reopen_ticket( $post_id );
+				$count++;
+			}
+		} elseif ( 'wpas_bulk_delete' === $action ) {
+			if ( current_user_can( 'delete_tickets' ) && 'auto-draft' === get_post_status( $post_id ) ) {
+				wp_delete_post( $post_id, true ); // true = force delete, skip trash
+				$count++;
+			}
+		}
+	}
+
+	$redirect_to = add_query_arg( array(
+		'wpas_bulk_action' => $action,
+		'wpas_bulk_count'  => $count,
+	), $redirect_to );
+
+	return $redirect_to;
+}
+
+add_action( 'admin_notices', 'wpas_ticket_bulk_actions_admin_notice' );
+/**
+ * Display notices for custom bulk actions.
+ */
+function wpas_ticket_bulk_actions_admin_notice() {
+	if ( ! empty( $_GET['wpas_bulk_action'] ) && isset( $_GET['wpas_bulk_count'] ) ) {
+		$action = sanitize_key( $_GET['wpas_bulk_action'] );
+		$count  = intval( $_GET['wpas_bulk_count'] );
+
+		if ( 'wpas_bulk_close' === $action ) {
+			$message = sprintf( _n( '%s ticket has been closed.', '%s tickets have been closed.', $count, 'awesome-support' ), $count );
+		} elseif ( 'wpas_bulk_reopen' === $action ) {
+			$message = sprintf( _n( '%s ticket has been reopened.', '%s tickets have been reopened.', $count, 'awesome-support' ), $count );
+		} elseif ( 'wpas_bulk_delete' === $action ) {
+			$message = sprintf( _n( '%s auto-draft ticket has been permanently deleted.', '%s auto-draft tickets have been permanently deleted.', $count, 'awesome-support' ), $count );
+		}
+
+		if ( isset( $message ) ) {
+			?>
+			<div class="notice notice-success is-dismissible">
+				<p><?php echo esc_html( $message ); ?></p>
+			</div>
+			<?php
+		}
+	}
 }

@@ -234,7 +234,7 @@ class WPAS_Logger {
 	
 			// Format the new message with the current time
 			$time = date_i18n( 'm-d-Y @ H:i:s -' ); // Grab Time
-			$new_message = $time . " " . sanitize_text_field( $message ) . "\n";
+			$new_message = $time . " " . sanitize_textarea_field( $message ) . "\n";
 	
 			// Append the new message to the existing content
 			$updated_content = $existing_content . $new_message;

@@ -5,6 +5,22 @@
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.4.0</h1>
+				<h3>6.4.0 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Security: Patched Reflected XSS vulnerabilities and enforced user capability checks on ticket closure.</li>
+					<li>Compatibility: Upgraded official compatibility for WordPress 6.4 - 6.6+ and PHP 8.1 / 8.2 environments.</li>
+					<li>Enhancement: Added support for uploading .msg attachment files (Microsoft Outlook email format).</li>
+					<li>Enhancement: Optimized ticket filters for portrait mobile view and fixed attachment download corruption.</li>
+					<li>Fix: Resolved various PHP warnings, deprecated notices, and database query optimizations for improved stability.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.3.9</h1>
 				<h3>6.3.9 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
 				<ul style="padding-left: 3em; list-style-type: disc;">

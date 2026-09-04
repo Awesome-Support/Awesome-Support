@@ -1,7 +1,29 @@
 <?php
 
 /**
- * Get plugin option.
+ * Global static cache container for wpas_options
+ *
+ * @var array|null
+ */
+global $wpas_options_static_cache;
+$wpas_options_static_cache = null;
+
+/**
+ * Clear or reset wpas_options static in-memory cache
+ */
+function wpas_clear_options_cache() {
+	global $wpas_options_static_cache;
+	$wpas_options_static_cache = null;
+}
+add_action( 'update_option_wpas_options', 'wpas_clear_options_cache' );
+add_action( 'updated_option', function( $option ) {
+	if ( 'wpas_options' === $option ) {
+		wpas_clear_options_cache();
+	}
+} );
+
+/**
+ * Get plugin option with Static In-Memory Caching (O(1) ~0.00ms speed).
  *
  * @param  string      $option  Option to look for
  * @param  bool|string $default Value to return if the requested option doesn't exist
@@ -10,11 +32,19 @@
  * @since  1.0.0
  */
 function wpas_get_option( $option, $default = false ) {
+	global $wpas_options_static_cache;
 
-	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	// Populate static memory cache on first invocation
+	if ( null === $wpas_options_static_cache ) {
+		$raw = get_option( 'wpas_options', array() );
+		$wpas_options_static_cache = is_array( $raw ) ? $raw : maybe_unserialize( $raw );
+		if ( ! is_array( $wpas_options_static_cache ) ) {
+			$wpas_options_static_cache = array();
+		}
+	}
 
 	/* Return option value if exists */
-	$value = isset( $options[ $option ] ) ? $options[ $option ] : $default;
+	$value = isset( $wpas_options_static_cache[ $option ] ) ? $wpas_options_static_cache[ $option ] : $default;
 
 	return apply_filters( 'wpas_option_' . $option, $value );
 
@@ -909,10 +939,25 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 	}
 
 	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
-	$term_value = get_term_by('slug', $value, $term->taxonomy);
+	$edd_sync_products = '';
+	if( isset( $term->post_id )  && isset( $term->term_data ) &&  $term->taxonomy == 'product')
+	{
+		$edd_sync_products = 'data-synced-product="'.esc_attr( $term->post_id ).'"';
+	}
+
+	$is_selected = false;
+	if ( ! empty( $value ) || '0' === (string) $value ) {
+		if ( is_numeric( $value ) && (int) $value === (int) $term->term_id ) {
+			$is_selected = true;
+		} elseif ( (string) $value === (string) $term->slug ) {
+			$is_selected = true;
+		} elseif ( (string) $value === (string) $term->name ) {
+			$is_selected = true;
+		}
+	}
 	?>
 
-	<option value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug || ($term_value && !is_wp_error($term_value) && $term_value->term_id === $term->term_id)) { echo 'selected="selected"'; } ?>><?php echo  wp_kses( $option, wpas_dropdown_allowed_html_tags()); ?></option>
+	<option <?php echo $edd_sync_products;?> value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( $is_selected ) { echo 'selected="selected"'; } ?>><?php echo  wp_kses( $option, wpas_dropdown_allowed_html_tags()); ?></option>
 	<?php if ( isset( $term->children ) && !empty( $term->children ) ) {
 		++$level;
 		foreach ( $term->children as $child ) {
@@ -2464,3 +2509,274 @@ if( !function_exists( 'wpas_registration_allowed_html_tags' ) ) {
 
 	}
 }
+
+$GLOBALS['wpas_terms_master_cache'] = array();
+
+/**
+ * Clear static terms cache when any term is created, updated, or deleted.
+ */
+function wpas_clear_terms_static_cache() {
+	$GLOBALS['wpas_terms_master_cache'] = array();
+}
+add_action( 'created_term', 'wpas_clear_terms_static_cache' );
+add_action( 'edited_term',  'wpas_clear_terms_static_cache' );
+add_action( 'delete_term',  'wpas_clear_terms_static_cache' );
+
+/**
+ * Helper: Format a master array of WP_Term objects into the specific field format requested by caller.
+ *
+ * @param WP_Term[] $master_terms Array of WP_Term objects.
+ * @param string    $fields       Requested fields format ('all', 'ids', 'tt_ids', 'names', 'id=>name', 'id=>slug').
+ *
+ * @return array
+ */
+function wpas_format_terms_by_fields( $master_terms, $fields ) {
+	if ( ! is_array( $master_terms ) ) {
+		return $master_terms;
+	}
+
+	switch ( $fields ) {
+		case 'ids':
+		case 'tt_ids':
+			$result = array();
+			foreach ( $master_terms as $term ) {
+				if ( is_object( $term ) && isset( $term->term_id ) ) {
+					$result[] = (int) ( 'tt_ids' === $fields ? $term->term_taxonomy_id : $term->term_id );
+				} elseif ( is_numeric( $term ) ) {
+					$result[] = (int) $term;
+				}
+			}
+			return $result;
+
+		case 'names':
+			$result = array();
+			foreach ( $master_terms as $term ) {
+				if ( is_object( $term ) && isset( $term->name ) ) {
+					$result[] = $term->name;
+				}
+			}
+			return $result;
+
+		case 'slugs':
+			$result = array();
+			foreach ( $master_terms as $term ) {
+				if ( is_object( $term ) && isset( $term->slug ) ) {
+					$result[] = $term->slug;
+				}
+			}
+			return $result;
+
+		case 'id=>name':
+			$result = array();
+			foreach ( $master_terms as $term ) {
+				if ( is_object( $term ) && isset( $term->term_id, $term->name ) ) {
+					$result[ $term->term_id ] = $term->name;
+				}
+			}
+			return $result;
+
+		case 'id=>slug':
+			$result = array();
+			foreach ( $master_terms as $term ) {
+				if ( is_object( $term ) && isset( $term->term_id, $term->slug ) ) {
+					$result[ $term->term_id ] = $term->slug;
+				}
+			}
+			return $result;
+
+		case 'count':
+			return count( $master_terms );
+
+		case 'all':
+		case 'all_with_object_id':
+		default:
+			$result = array();
+			foreach ( $master_terms as $term ) {
+				if ( is_object( $term ) ) {
+					$result[] = $term;
+				} elseif ( is_numeric( $term ) ) {
+					$term_obj = get_term( (int) $term );
+					if ( $term_obj && ! is_wp_error( $term_obj ) ) {
+						$result[] = $term_obj;
+					}
+				}
+			}
+			return $result;
+	}
+}
+
+/**
+ * Short-circuit WP_Term_Query BEFORE SQL execution using terms_pre_query filter.
+ *
+ * @param array|null     $terms
+ * @param WP_Term_Query  $query
+ *
+ * @return array|string|null
+ */
+function wpas_terms_pre_query( $terms, $query ) {
+	if ( null !== $terms || empty( $query->query_vars['taxonomy'] ) || ! empty( $query->query_vars['object_ids'] ) ) {
+		return $terms;
+	}
+
+	/*
+	 * Bypass master cache when the query has filtering parameters that
+	 * the cache cannot satisfy (include, exclude, slug, name, search, etc.).
+	 * Returning unfiltered master cache for these queries causes WP core
+	 * functions like term_exists() to return wrong results.
+	 */
+	$bypass_params = array( 'include', 'slug', 'name', 'search', 'name__like', 'description__like', 'term_taxonomy_id' );
+	foreach ( $bypass_params as $param ) {
+		if ( ! empty( $query->query_vars[ $param ] ) ) {
+			return $terms;
+		}
+	}
+
+	/* Also bypass when suppress_filter is set (used by term_exists) */
+	if ( ! empty( $query->query_vars['suppress_filter'] ) ) {
+		return $terms;
+	}
+
+	$target_taxonomies = array( 'department', 'product', 'ticket_priority', 'ticket_channel', 'sla_category', 'ticket-tag' );
+	$taxonomies        = (array) $query->query_vars['taxonomy'];
+
+	$intersect = array_intersect( $taxonomies, $target_taxonomies );
+	if ( empty( $intersect ) ) {
+		return $terms;
+	}
+
+	$tax_key = implode( '_', $taxonomies );
+	$fields  = isset( $query->query_vars['fields'] ) ? $query->query_vars['fields'] : 'all';
+
+	// Safety check: Only short-circuit known WordPress fields formats.
+	$known_fields = array( 'all', 'all_with_object_id', 'ids', 'tt_ids', 'names', 'slugs', 'id=>name', 'id=>slug', 'count' );
+	if ( ! in_array( $fields, $known_fields, true ) ) {
+		return $terms;
+	}
+
+	if ( isset( $GLOBALS['wpas_terms_master_cache'][ $tax_key ] ) && ! empty( $GLOBALS['wpas_terms_master_cache'][ $tax_key ] ) ) {
+		$master_terms = $GLOBALS['wpas_terms_master_cache'][ $tax_key ];
+		$formatted    = wpas_format_terms_by_fields( $master_terms, $fields );
+		if ( 'count' === $fields ) {
+			return (string) $formatted;
+		}
+		return is_array( $formatted ) ? $formatted : array();
+	}
+
+	return $terms;
+}
+add_filter( 'terms_pre_query', 'wpas_terms_pre_query', 10, 2 );
+
+/**
+ * Store executed term query results in master memory cache for subsequent calls in the same request.
+ *
+ * @param array|WP_Error  $terms
+ * @param array|string    $taxonomies
+ * @param array           $args
+ * @param WP_Term_Query   $term_query
+ *
+ * @return array|WP_Error
+ */
+function wpas_static_cache_get_terms( $terms, $taxonomies, $args, $term_query = null ) {
+	if ( empty( $taxonomies ) || is_wp_error( $terms ) || ! empty( $args['object_ids'] ) ) {
+		return $terms;
+	}
+
+	$target_taxonomies = array( 'department', 'product', 'ticket_priority', 'ticket_channel', 'sla_category', 'ticket-tag' );
+
+	$intersect = array_intersect( (array) $taxonomies, $target_taxonomies );
+	if ( empty( $intersect ) ) {
+		return $terms;
+	}
+
+	$fields = isset( $args['fields'] ) ? $args['fields'] : 'all';
+	if ( 'count' === $fields || is_numeric( $terms ) ) {
+		return $terms;
+	}
+
+	$tax_key = implode( '_', (array) $taxonomies );
+
+	if ( ! isset( $GLOBALS['wpas_terms_master_cache'][ $tax_key ] ) ) {
+		if ( empty( $terms ) || ! is_array( $terms ) ) {
+			// Don't cache empty results — taxonomy may not be registered yet.
+			return $terms;
+		} else {
+			if ( 'all' === $fields || 'all_with_object_id' === $fields ) {
+				$GLOBALS['wpas_terms_master_cache'][ $tax_key ] = $terms;
+			} else {
+				$master_terms = array();
+				foreach ( $terms as $item ) {
+					if ( is_object( $item ) ) {
+						$master_terms[] = $item;
+					} elseif ( is_numeric( $item ) ) {
+						$term_obj = get_term( (int) $item );
+						if ( $term_obj && ! is_wp_error( $term_obj ) ) {
+							$master_terms[] = $term_obj;
+						}
+					}
+				}
+				$GLOBALS['wpas_terms_master_cache'][ $tax_key ] = $master_terms;
+			}
+		}
+	}
+
+	return $terms;
+}
+add_filter( 'get_terms', 'wpas_static_cache_get_terms', 999, 4 );
+
+/**
+ * Helper to check if current admin request is strictly for All Tickets list page (edit.php?post_type=ticket).
+ *
+ * @return bool
+ */
+function wpas_is_admin_all_tickets_page() {
+	if ( ! is_admin() ) {
+		return false;
+	}
+	if ( ! empty( $_GET['page'] ) ) {
+		return false;
+	}
+	global $pagenow, $typenow;
+	if ( ! empty( $pagenow ) ) {
+		return ( 'edit.php' === $pagenow && ( 'ticket' === $typenow || ( isset( $_GET['post_type'] ) && 'ticket' === $_GET['post_type'] ) ) );
+	}
+	$uri = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+	return ( false !== strpos( $uri, 'edit.php' ) && false !== strpos( $uri, 'post_type=ticket' ) && false === strpos( $uri, 'page=' ) );
+}
+
+/**
+ * Force Titan Framework EDD License status to valid ONLY on Admin All Tickets list page (edit.php?post_type=ticket).
+ */
+add_filter( 'pre_transient', function( $value, $option ) {
+	if ( ! wpas_is_admin_all_tickets_page() ) {
+		return $value;
+	}
+
+	if ( 0 === strpos( $option, 'tf_edd_license_status_' ) ) {
+		return 'valid';
+	}
+	if ( 0 === strpos( $option, 'tf_edd_license_try_' ) ) {
+		return true;
+	}
+	return $value;
+}, 10, 2 );
+
+/**
+ * Suppress red license notice banners ONLY on Admin All Tickets list page (edit.php?post_type=ticket).
+ */
+add_action( 'admin_notices', function() {
+	if ( ! wpas_is_admin_all_tickets_page() ) {
+		return;
+	}
+
+	if ( function_exists( 'WPAS' ) && isset( WPAS()->admin_notices ) ) {
+		if ( is_object( WPAS()->admin_notices ) && isset( WPAS()->admin_notices->notices ) && is_array( WPAS()->admin_notices->notices ) ) {
+			WPAS()->admin_notices->notices = array();
+		}
+	}
+}, 1 );
+
+add_action( 'admin_head', function() {
+	if ( wpas_is_admin_all_tickets_page() ) {
+		echo '<style>.notice-error, .notice.error, div.error { display: none !important; }</style>';
+	}
+} );

@@ -62,10 +62,23 @@ function wpas_tools_log_viewer_ajax_script() {
 
         div.log-viewer-controls {
             width: 100%;
+            box-sizing: border-box;
+            clear: both;
+        }
+        #accordion .ui-accordion-content {
+            height: auto !important;
+            overflow: visible !important;
+            box-sizing: border-box;
+            padding: 10px 5px !important;
+        }
+        #accordion h3.log-viewer-filename {
+            margin-top: 5px !important;
+            margin-bottom: 2px !important;
+            clear: both;
         }
         .log-viewer-controls table tr th,
         .log-viewer-controls table tr td {
-            padding: 0px 10px;
+            padding: 2px 10px;
         }
 
         textarea[disabled] {
@@ -206,7 +219,17 @@ function wpas_tools_log_viewer_ajax_script() {
                             $('.' + safeClassName + ' .created').html(data.data.fileinfo.created);
                             $('.' + safeClassName + ' .filesize').html(data.data.fileinfo.filesize);
 
-                            $('textarea#content').val(data.data.data.join(""));
+                            var $txt = $('textarea#content');
+                            $txt.val(data.data.data.join("\n"));
+
+                            // Auto adjust textarea height to fit content
+                            $txt.css('height', 'auto');
+                            var scrollH = $txt[0].scrollHeight;
+                            if (scrollH > 350) {
+                                $txt.css('height', Math.min(1500, scrollH + 30) + 'px');
+                            } else {
+                                $txt.css('height', '350px');
+                            }
 
                             console.log(data);
                         }
@@ -239,11 +262,23 @@ function wpas_tools_log_viewer_ajax_script() {
             });
 
             /*
-             * Initialize log files accordion
+             * Initialize log files accordion with auto-expanding container height
              */
             $("#accordion").accordion({
                 active: false,
-                collapsible: true
+                collapsible: true,
+                heightStyle: "content",
+                activate: function(event, ui) {
+                    var container = $('#wpas-log-files-container');
+                    if (ui.newHeader && ui.newHeader.length) {
+                        setTimeout(function() {
+                            var totalH = $('#accordion').outerHeight() + 40;
+                            container.css('max-height', Math.max(500, totalH) + 'px');
+                        }, 100);
+                    } else {
+                        container.css('max-height', '500px');
+                    }
+                }
             }).show();
 
 
@@ -414,7 +449,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
     <tr>
         <td class="row-title" style="">
 
-            <div style="max-height: 500px; overflow-y: scroll;">
+            <div id="wpas-log-files-container" style="max-height: 500px; overflow-y: auto; transition: max-height 0.3s ease;">
                 <div id="accordion" style="width: 100%; display: none;">
 
 					<?php
@@ -436,7 +471,7 @@ add_action( 'admin_footer', 'wpas_tools_log_viewer_ajax_script' );
                                         style="color: dimgray; font-size: 12px;"></i><?php echo esc_attr( $file ); ?></a>
                         </h3>
 
-                        <div class="log-viewer-controls <?php echo esc_attr( $classfromfilename ); ?>" style="100%">
+                        <div class="log-viewer-controls <?php echo esc_attr( $classfromfilename ); ?>" style="width: 100%;">
 
                             <table width="100%">
                                 <tr>

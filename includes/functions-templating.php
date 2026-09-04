@@ -1209,6 +1209,12 @@
 		$label = __( '%s.', 'awesome-support' );
 		$label = sprintf($label, $term->name);
 		$color = get_term_meta( $term->term_id, 'color', true );
+
+		// Fallback to a neutral color when no color is assigned to ensure label visibility
+		if ( empty( $color ) ) {
+			$color = '#6c757d'; // Bootstrap-style secondary gray
+		}
+
 		$tag   = "<span class='wpas-label wpas-label-$name' style='background-color:$color;'>$label</span>";
 
 		echo wp_kses($tag, get_allowed_html_wp_notifications());
@@ -1598,9 +1604,19 @@
 
 		if ( ! empty( wpas_get_option( 'logout_redirect_fe', '') ) ) {
 			return wp_logout_url( wpas_get_option( 'logout_redirect_fe', '') );
-		} else {
-			return wp_logout_url();
 		}
+
+		// Fallback: redirect to Ticket Submission page if set, otherwise home page
+		$submission_page = wpas_get_option( 'ticket_submit' );
+		if ( ! empty( $submission_page ) ) {
+			$redirect_url = get_permalink( $submission_page );
+		}
+
+		if ( empty( $redirect_url ) ) {
+			$redirect_url = home_url( '/' );
+		}
+
+		return wp_logout_url( $redirect_url );
 
 	}
 

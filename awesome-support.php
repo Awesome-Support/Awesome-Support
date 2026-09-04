@@ -10,7 +10,7 @@
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           6.3.9
+ * Version:           6.4.0
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -252,7 +252,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '6.3.9' );
+			define( 'WPAS_VERSION',           '6.4.0' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -426,6 +426,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/functions-channels.php' );
 			require( WPAS_PATH . 'includes/functions-ticket-type.php' );
 			require( WPAS_PATH . 'includes/functions-priority.php' );
+			require( WPAS_PATH . 'includes/functions-term-order.php' );
 			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
 			require( WPAS_PATH . 'includes/install.php' );
 
@@ -532,9 +533,10 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * We will automatically create the "special" pages: tickets list and
 		 * ticket submission.
 		 */
-		private function maybe_setup() {
-
+		private function maybe_setup() {		
+					
 			if ( 'pending' === get_option( 'wpas_setup', false ) ) {
+
 				add_action( 'admin_init', 'wpas_create_pages', 11, 0 );
 				add_action( 'admin_init', 'wpas_flush_rewrite_rules', 11, 0 );
 				add_action( 'admin_init', 'wpas_install_default_email_templates', 11, 0 );

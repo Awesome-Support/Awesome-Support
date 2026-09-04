@@ -115,7 +115,7 @@ if ( ! defined( 'WPINC' ) ) {
 	// Show free-form interested parties (name / email )
 	?><strong><?php
 	if ( isset( $options['show_third_party_fields'] ) && true === boolval( $options['show_third_party_fields'] ) ) {
-		echo esc_html_e( 'Note: These fields are notational only. They do not participate in notifications!', 'awesome-support' );
+		esc_html_e( 'Note: These fields are notational only. They do not participate in notifications!', 'awesome-support' );
 		?></strong><hr /><?php
 		WPAS()->custom_fields->display_single_field('first_addl_interested_party_name');
 		WPAS()->custom_fields->display_single_field('first_addl_interested_party_email');

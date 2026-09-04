@@ -26,10 +26,6 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 		/* Call the parent constructor */
 		parent::__construct( $field_id, $field );
-
-		$args = func_get_args();
-
-		call_user_func_array( array( 'WPAS_Custom_Field', '__construct' ), $args );
 		
 		$term_args = array( 'hide_empty' => 0 );		
 		
@@ -39,14 +35,35 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 			$term_args['order'] = $sort_order;
 		}
 
-		$this->terms                 = get_terms( $this->field_id, $term_args );
+		$term_args['taxonomy']       = $this->field_id;
+		$this->terms                 = get_terms( $term_args );
 		$this->ordered_terms         = array();
 		$this->field_args['select2'] = isset( $this->field_args['select2'] ) ? (bool) $this->field_args['select2'] : false;
 
 		if ( ! is_wp_error( $this->terms ) ) {
-			
-			if( $sort_order && in_array( $sort_order, $order_types ) ) {
-				
+
+			/**
+			 * Custom term_order sorting: if any term has a term_order meta set,
+			 * sort by that value. Terms without term_order go to the end,
+			 * preserving their relative name-based order among themselves.
+			 * If NO term has term_order, fallback to existing alphabetical logic.
+			 *
+			 * @since 6.2.0
+			 */
+			$has_custom_order = false;
+			foreach ( $this->terms as $term ) {
+				$order = get_term_meta( $term->term_id, 'term_order', true );
+				if ( $order !== '' && $order !== false ) {
+					$has_custom_order = true;
+					break;
+				}
+			}
+
+			if ( $has_custom_order ) {
+				// Sort by term_order meta; terms without order go to end
+				usort( $this->terms, array( $this, 'sortByTermOrder' ) );
+			} elseif( $sort_order && in_array( $sort_order, $order_types ) ) {
+				// Fallback: existing alphabetical sort
 				if( 'asc' === strtolower( $sort_order ) ) {
 					usort( $this->terms, array( $this, 'sortByNameASC' ) );
 				} else {
@@ -78,7 +95,7 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 	 * @return boolean
 	 */
 	function sortByNameASC( $termA, $termB ) {
-		return strtolower( strlen($termA->name) ) <=> strtolower( strlen($termB->name) );
+		return strcasecmp( $termA->name, $termB->name );
 	}
 	
 	/**
@@ -90,8 +107,46 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 	 * @return boolean
 	 */
 	function sortByNameDESC( $termA, $termB ) {
+		return strcasecmp( $termB->name, $termA->name );
+	}
 
-        return strtolower( strlen($termA->name) ) <=> strtolower( strlen($termB->name) );
+	/**
+	 * Sort terms by custom term_order meta value.
+	 *
+	 * Terms with a term_order meta are sorted numerically (ascending).
+	 * Terms without term_order are placed at the end, sorted alphabetically.
+	 *
+	 * @since 6.2.0
+	 *
+	 * @param WP_Term $termA
+	 * @param WP_Term $termB
+	 *
+	 * @return int
+	 */
+	function sortByTermOrder( $termA, $termB ) {
+		$orderA = get_term_meta( $termA->term_id, 'term_order', true );
+		$orderB = get_term_meta( $termB->term_id, 'term_order', true );
+
+		$hasA = ( $orderA !== '' && $orderA !== false );
+		$hasB = ( $orderB !== '' && $orderB !== false );
+
+		// Both have order: sort numerically
+		if ( $hasA && $hasB ) {
+			return intval( $orderA ) - intval( $orderB );
+		}
+
+		// Only A has order: A comes first
+		if ( $hasA && ! $hasB ) {
+			return -1;
+		}
+
+		// Only B has order: B comes first
+		if ( ! $hasA && $hasB ) {
+			return 1;
+		}
+
+		// Neither has order: sort alphabetically
+		return strcasecmp( $termA->name, $termB->name );
 	}
 
 	/**
@@ -162,7 +217,7 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 			if ( ! empty( $terms ) ) {
 
-				wp_delete_object_term_relationships( $post_id, $this->field_id );
+				wp_set_object_terms( $post_id, array(), $this->field_id );
 
 				return 3;
 
@@ -170,33 +225,46 @@ class WPAS_CF_Taxonomy extends WPAS_Custom_Field {
 
 		}
 
-		/* Get all the terms for this ticket / taxo (we should have only one term) */
-		$terms = get_the_terms( $post_id, $this->field_id );
+		/* Clean object term cache first to avoid stale data from Master Cache */
+		clean_object_term_cache( $post_id, $this->field_id );
 
-		/**
-		 * As the taxonomy is handled like a select, we should have only one value. At least
-		 * that's what we want. Hence, we loop through the possible multiple terms (which
-		 * shouldn't happen) and only keep the last one.
-		 */
-		$the_term = '';
+		/* Get current terms directly from DB (bypasses object cache) */
+		$terms = wp_get_object_terms( $post_id, $this->field_id, array( 'fields' => 'ids' ) );
 
-		if ( is_array( $terms ) ) {
-			foreach ( $terms as $term ) {
-				$the_term = $term->term_id;
-			}
+		$the_term = 0;
+		if ( is_array( $terms ) && ! empty( $terms ) ) {
+			$the_term = (int) end( $terms );
 		}
 
-		/* Finally we save the new terms if changed */
-		if ( $the_term !== (int) $value ) {
+		/* Find the target term by ID, slug, or name */
+		$target_term = false;
+		if ( is_numeric( $value ) ) {
+			$target_term = get_term_by( 'id', (int) $value, $this->field_id );
+		}
+		if ( ! $target_term && ! empty( $value ) ) {
+			$target_term = get_term_by( 'slug', (string) $value, $this->field_id );
+		}
+		if ( ! $target_term && ! empty( $value ) ) {
+			$target_term = get_term_by( 'name', (string) $value, $this->field_id );
+		}
 
-			$term = get_term_by( 'id', (int) $value, $this->field_id );
+		/* If the target term does not exist we cannot update */
+		if ( false === $target_term || is_wp_error( $target_term ) ) {
+			return 0;
+		}
 
-			/* If the term does not exist we can't do anything. */
-			if ( false === $term ) {
-				return 0;
-			}
+		/* Save the new term if changed or if there are multiple terms assigned */
+		if ( count( $terms ) !== 1 || $the_term !== (int) $target_term->term_id ) {
 
-			wp_set_object_terms( $post_id, (int) $value, $this->field_id, false );
+			/*
+			 * Use wp_set_object_terms with append=false to atomically REPLACE
+			 * all existing terms with the single new term. This ensures no stale
+			 * terms remain and all WP caches are properly updated.
+			 */
+			wp_set_object_terms( $post_id, array( (int) $target_term->term_id ), $this->field_id, false );
+
+			clean_object_term_cache( $post_id, $this->field_id );
+			clean_post_cache( $post_id );
 
 			return empty( $the_term ) ? 1 : 2;
 
