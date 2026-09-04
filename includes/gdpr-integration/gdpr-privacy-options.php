@@ -678,7 +678,7 @@ class WPAS_Privacy_Option {
 
 		$user_id = username_exists( $user_name );
 		$url = get_site_url();
-		$urlobj = parse_url($url);
+		$urlobj = wp_parse_url($url);
 		$site_name = 'domain.com';
 		$domain = ($urlobj['host'])? $urlobj['host']: '';
 		if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {

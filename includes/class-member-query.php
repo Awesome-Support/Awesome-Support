@@ -418,12 +418,16 @@ class WPAS_Member_Query {
 
 		// Order users by provided args or default by login ID
 		
-		$order_field = $this->orderby ? $this->orderby : 'ID';
-		$order_type = $this->order ? $this->order : 'ASC';
+		$allowed_order_fields = array( 'ID', 'user_login', 'user_nicename', 'user_email', 'user_registered', 'display_name' );
+		$allowed_order_types  = array( 'ASC', 'DESC' );
+
+		$order_field = $this->orderby && in_array( $this->orderby, $allowed_order_fields, true ) ? $this->orderby : 'ID';
+		$order_type  = $this->order && in_array( strtoupper( $this->order ), $allowed_order_types, true ) ? strtoupper( $this->order ) : 'ASC';
 		
-		$sql .= " ORDER BY {$wpdb->users}.{$order_field} {$order_type}";	
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is built with wpdb->prepare() calls above, $order_field and $order_type are whitelisted
+		$sql .= " ORDER BY {$wpdb->users}.{$order_field} {$order_type}";
 				
-		$this->members = $wpdb->get_results( "$sql" );	
+		$this->members = $wpdb->get_results( $sql );	
 		
 		// Cache the results
 		wp_cache_add( 'users_' . $this->hash, $this->members, 'wpas' );

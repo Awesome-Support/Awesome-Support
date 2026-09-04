@@ -81,11 +81,15 @@ class WPAS_GDPR_User_Profile {
 					header( 'Pragma: no-cache' );
 					header( 'Expires: 0' );
 					$this->custom_readfile( $this->user_export_dir . '/exported-data.zip' );
-					if (!unlink($this->user_export_dir . '/exported-data.zip') ){
+					$zip_path = $this->user_export_dir . '/exported-data.zip';
+					wp_delete_file( $zip_path );
+					if ( file_exists( $zip_path ) ){
 						// translators: %s is the nuser export directory.
 						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/exported-data.zip', 'awesome-support' ), $this->user_export_dir) );
 					}
-					if (!unlink($this->user_export_dir . '/export-data.xml') ){
+					$xml_path = $this->user_export_dir . '/export-data.xml';
+					wp_delete_file( $xml_path );
+					if ( file_exists( $xml_path ) ){
 						// translators: %s is the nuser export directory.
 						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/export-data.xml', 'awesome-support' ), $this->user_export_dir) );
 					}
@@ -463,7 +467,7 @@ class WPAS_GDPR_User_Profile {
 	 */
 	public function get_ticket_meta( $ticket_id ) {
 		global $wpdb;
-		$meta_data        = $wpdb->get_results( "select * from $wpdb->postmeta where post_id = $ticket_id and meta_key like '%_wpas%'" );
+		$meta_data        = $wpdb->get_results( $wpdb->prepare( "select * from $wpdb->postmeta where post_id = %d and meta_key like '%%_wpas%%'", $ticket_id ) );
 		$meta_field_value = array();
 		if ( ! empty( $meta_data ) ) {
 			foreach ( $meta_data as $key => $meta_field ) {
@@ -483,7 +487,7 @@ class WPAS_GDPR_User_Profile {
 	public function get_ticket_attachment( $ticket_id ) {
 		global $wpdb;
 		$attachments     = array();
-		$get_attachments = $wpdb->get_results( "select * from $wpdb->posts where post_type='attachment' and post_parent = $ticket_id" );
+		$get_attachments = $wpdb->get_results( $wpdb->prepare( "select * from $wpdb->posts where post_type='attachment' and post_parent = %d", $ticket_id ) );
 		if ( ! empty( $get_attachments ) ) {
 			foreach ( $get_attachments as $key => $attachment ) {
 				$attachments[ 'a' . $key ] = array(

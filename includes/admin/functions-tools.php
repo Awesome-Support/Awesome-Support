@@ -270,7 +270,7 @@ function wpas_clear_tickets_metas() {
  */
 function wpas_clear_taxonomy( $taxonomy ) {
 
-	$terms  = get_terms( $taxonomy, array( 'hide_empty' => false ) );
+	$terms  = get_terms( array( 'taxonomy' => $taxonomy, 'hide_empty' => false ) );
 	$delete = false;
 
 	if ( is_wp_error( $terms ) || empty( $terms ) ) {
@@ -446,7 +446,7 @@ function wpas_delete_unused_terms() {
 	);
 
 	$taxonomy   = get_taxonomy('product');
-	$terms      = get_terms( 'product', array( 'hide_empty' => false ) );
+	$terms      = get_terms( array( 'taxonomy' => 'product', 'hide_empty' => false ) );
 
 	$statistics['count'] = count($terms);
 
@@ -475,7 +475,7 @@ function wpas_delete_unused_terms() {
 
 	}
 
-	$statistics['used'] = count(get_terms( 'product', array( 'hide_empty' => false ) ));
+	$statistics['used'] = count(get_terms( array( 'taxonomy' => 'product', 'hide_empty' => false ) ));
 
 	return $statistics;
 }
@@ -569,13 +569,13 @@ function wpas_update_last_reply() {
     . "FROM "
     . "{$wpdb->posts} "
     . "WHERE "
-    . "post_type = 'ticket_reply' "
+    . "post_type = %s "
     . "GROUP BY "
     . "post_parent "
     . ") wpas_replies ON wpas_replies.ticket_id = wpas_reply.post_parent AND wpas_replies.latest_reply = wpas_reply.post_date "
     . "WHERE "
     . "wpas_replies.latest_reply IS NOT NULL "
-    . "AND wpas_reply.post_type = 'ticket_reply' "
+    . "AND wpas_reply.post_type = %s "
     . "ORDER BY "
     . "wpas_replies.latest_reply ASC";
 
@@ -588,7 +588,7 @@ function wpas_update_last_reply() {
 		update_post_meta( $ticket->ID, '_wpas_is_waiting_client_reply', 0 );
 	}
 
-	$replies = $wpdb->get_results( "$sql" );
+	$replies = $wpdb->get_results( $wpdb->prepare( $sql, 'ticket_reply', 'ticket_reply' ) );
 
 	foreach ( $replies as $reply_post ) {
 
@@ -633,7 +633,7 @@ function wpas_delete_unclaimed_attachments() {
 					if ( $file->isDir() ) {
 						wp_rmdir( $file->getRealPath() );
 					} else {
-						unlink( $file->getRealPath() );
+						wp_delete_file( $file->getRealPath() );
 					}
 				}
 				wp_rmdir( $attachments_root . $basename );

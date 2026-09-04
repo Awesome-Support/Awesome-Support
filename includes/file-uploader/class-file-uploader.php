@@ -670,7 +670,7 @@ class WPAS_File_Upload {
 					break ;
 
 				case 'attachment':
-					$this->custom_readfile( ( isset( $_SERVER['DOCUMENT_ROOT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) : '' ) . parse_url($attachment->guid, PHP_URL_PATH) );
+					$this->custom_readfile( ( isset( $_SERVER['DOCUMENT_ROOT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) : '' ) . wp_parse_url($attachment->guid, PHP_URL_PATH) );
 					break ;
 
 				default:
@@ -1916,7 +1916,7 @@ class WPAS_File_Upload {
 				if ( $file->isDir() ) {
 					$wp_filesystem->delete($file->getRealPath(), true);
 				} else {
-					unlink( $file->getRealPath() );
+					wp_delete_file( $file->getRealPath() );
 				}
 			}
 			$wp_filesystem->delete($upload['path'], true);
@@ -2096,7 +2096,7 @@ class WPAS_File_Upload {
 			do_action( 'wpas_before_delete_temp_attachment', $ticket_id, $user_id, $attachment );
 
 			if ( file_exists( $file ) ) {
-				unlink( $file );
+				wp_delete_file( $file );
 			}			
 		}
 		wp_die();
@@ -2344,7 +2344,7 @@ class WPAS_File_Upload {
 				$wp_filesystem->delete($file->getRealPath(), true);
 
 			} else {
-				unlink( $file->getRealPath() );
+				wp_delete_file( $file->getRealPath() );
 			}
 		}
 		$wp_filesystem->delete($directory, true);

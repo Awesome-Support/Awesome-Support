@@ -108,7 +108,7 @@ function wpas_uninstall() {
 					if ( $file->isDir() ) {
 						$wp_filesystem->delete($file->getRealPath(), true);
 					} else {
-						unlink( $file->getRealPath() );
+						wp_delete_file( $file->getRealPath() );
 					}
 				}
 
@@ -168,13 +168,16 @@ function wpas_uninstall() {
 function wpas_delete_taxonomy( $taxonomy ) {
 
 	global $wpdb;
-	$sql = 'SELECT t.name, t.term_id
-			FROM ' . $wpdb->terms . ' AS t
-			INNER JOIN ' . $wpdb->term_taxonomy . ' AS tt
+	$terms = $wpdb->get_results(
+		$wpdb->prepare(
+			"SELECT t.name, t.term_id
+			FROM $wpdb->terms AS t
+			INNER JOIN $wpdb->term_taxonomy AS tt
 			ON t.term_id = tt.term_id
-			WHERE tt.taxonomy = "' . $taxonomy . '"';
-			
-	$terms = $wpdb->get_results("$sql");
+			WHERE tt.taxonomy = %s",
+			$taxonomy
+		)
+	);
 
 	foreach ( $terms as $term ) {
 		wp_delete_term( $term->term_id, $taxonomy );
