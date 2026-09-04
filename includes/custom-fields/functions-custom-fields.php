@@ -62,7 +62,10 @@ function wpas_update_ticket_tag_terms_count( $terms, $taxonomy ) {
 		}
 
 		if ( $object_types ) {
-			$count += (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id AND post_status IN ('" . implode( "', '", $allowed_status ) . "') AND post_type IN ('" . implode( "', '", $object_types ) . "') AND term_taxonomy_id = %d", $term ) );
+			$status_placeholders = implode( ', ', array_fill( 0, count( $allowed_status ), '%s' ) );
+			$types_placeholders  = implode( ', ', array_fill( 0, count( $object_types ), '%s' ) );
+			$prepare_values      = array_merge( $allowed_status, $object_types, array( $term ) );
+			$count += (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM $wpdb->term_relationships, $wpdb->posts WHERE $wpdb->posts.ID = $wpdb->term_relationships.object_id AND post_status IN ($status_placeholders) AND post_type IN ($types_placeholders) AND term_taxonomy_id = %d", $prepare_values ) );
 		}
 
 		/** This action is documented in wp-includes/taxonomy.php */

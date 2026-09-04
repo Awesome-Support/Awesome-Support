@@ -588,6 +588,7 @@ function wpas_update_last_reply() {
 		update_post_meta( $ticket->ID, '_wpas_is_waiting_client_reply', 0 );
 	}
 
+	// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql only contains $wpdb->posts table refs and %s placeholders, safely prepared below
 	$replies = $wpdb->get_results( $wpdb->prepare( $sql, 'ticket_reply', 'ticket_reply' ) );
 
 	foreach ( $replies as $reply_post ) {

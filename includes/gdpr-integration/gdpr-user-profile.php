@@ -467,7 +467,8 @@ class WPAS_GDPR_User_Profile {
 	 */
 	public function get_ticket_meta( $ticket_id ) {
 		global $wpdb;
-		$meta_data        = $wpdb->get_results( $wpdb->prepare( "select * from $wpdb->postmeta where post_id = %d and meta_key like '%%_wpas%%'", $ticket_id ) );
+		$like_pattern     = '%' . $wpdb->esc_like( '_wpas' ) . '%';
+		$meta_data        = $wpdb->get_results( $wpdb->prepare( "select * from $wpdb->postmeta where post_id = %d and meta_key like %s", $ticket_id, $like_pattern ) );
 		$meta_field_value = array();
 		if ( ! empty( $meta_data ) ) {
 			foreach ( $meta_data as $key => $meta_field ) {

@@ -427,7 +427,7 @@ class WPAS_Member_Query {
 		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is built with wpdb->prepare() calls above, $order_field and $order_type are whitelisted
 		$sql .= " ORDER BY {$wpdb->users}.{$order_field} {$order_type}";
 				
-		$this->members = $wpdb->get_results( $sql );	
+		$this->members = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared	
 		
 		// Cache the results
 		wp_cache_add( 'users_' . $this->hash, $this->members, 'wpas' );
