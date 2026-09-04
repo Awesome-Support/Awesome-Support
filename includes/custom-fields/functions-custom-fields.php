@@ -6,6 +6,12 @@
  *
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Custom callback for updating terms count.
  *
@@ -320,7 +326,7 @@ function wpas_register_core_fields() {
 		'filterable'      => $show_assignee,
 		'column_callback' => 'wpas_show_assignee_column',
 		'log'             => true,
-		'title'           => __( $as_label_for_agent_singular, 'awesome-support' )
+		'title'           => $as_label_for_agent_singular
 	) );
 
 	/*******************************************************************/
@@ -339,7 +345,7 @@ function wpas_register_core_fields() {
 		'sortable_column' => true,
 		'column_callback' => 'wpas_cf_display_status',
 		'save_callback'   => null,
-		'title'           => __( $as_label_for_status_singular, 'awesome-support' )
+		'title'           => $as_label_for_status_singular
 	) );
 
 
@@ -361,16 +367,16 @@ function wpas_register_core_fields() {
 		'taxo_std'              => false,
 		'column_callback'       => 'wpas_show_taxonomy_column',
 		'save_callback'         => null,
-		'label'                 => __( $as_label_for_ticket_tag_singular, 'awesome-support' ),
-		'name'                  => __( $as_label_for_ticket_tag_singular, 'awesome-support' ),
-		'label_plural'          => __( $as_label_for_ticket_tag_plural, 'awesome-support' ),
+		'label'                 => $as_label_for_ticket_tag_singular,
+		'name'                  => $as_label_for_ticket_tag_singular,
+		'label_plural'          => $as_label_for_ticket_tag_plural,
 		'taxo_hierarchical'     => false,
 		'update_count_callback' => 'wpas_update_ticket_tag_terms_count',
 		'select2'               => false,
 		'taxo_manage_terms' 	=> 'ticket_manage_tags',
 		'taxo_edit_terms'   	=> 'ticket_edit_tags',
 		'taxo_delete_terms' 	=> 'ticket_delete_tags',
-		'title'           		=> __( $as_label_for_ticket_tag_singular, 'awesome-support' )
+		'title'           		=> $as_label_for_ticket_tag_singular
 	) );
 
 
@@ -406,9 +412,9 @@ function wpas_register_core_fields() {
 
 		/* Filter the priority taxonomy labels */
 		$labels = apply_filters( 'wpas_priority_taxonomy_labels', array(
-				'label'        => __( $as_label_for_ticket_type_singular, 'awesome-support' ),
-				'name'         => __( $as_label_for_ticket_type_singular, 'awesome-support' ),
-				'label_plural' => __( $as_label_for_ticket_type_plural, 'awesome-support' )
+				'label'        => $as_label_for_ticket_type_singular,
+				'name'         => $as_label_for_ticket_type_singular,
+				'label_plural' => $as_label_for_ticket_type_plural
 		) );
 
 
@@ -435,7 +441,7 @@ function wpas_register_core_fields() {
 			'taxo_delete_terms' 	=> 'ticket_delete_ticket_type',			
 			'filterable'            => true,
 			'required'              => $show_ticket_type_required,
-			'title'           		=> __( $as_label_for_ticket_type_singular, 'awesome-support' ),
+			'title'           		=> $as_label_for_ticket_type_singular,
 			'order'           		=> -10  // Yes, -10 for this one so that it appears by default above the subject and description fields on the front-end form.
 		) );
 
@@ -455,9 +461,9 @@ function wpas_register_core_fields() {
 
 		/* Filter the product taxonomy labels */
 		$labels = apply_filters( 'wpas_product_taxonomy_labels', array(
-				'label'        => __( $as_label_for_product_singular, 'awesome-support' ),
-				'name'         => __( $as_label_for_product_singular, 'awesome-support' ),
-				'label_plural' => __( $as_label_for_product_plural, 'awesome-support' )
+				'label'        => $as_label_for_product_singular,
+				'name'         => $as_label_for_product_singular,
+				'label_plural' => $as_label_for_product_plural
 			)
 		);
 
@@ -481,7 +487,7 @@ function wpas_register_core_fields() {
 			'taxo_manage_terms' 	=> 'ticket_manage_products',
 			'taxo_edit_terms'   	=> 'ticket_edit_products',
 			'taxo_delete_terms' 	=> 'ticket_delete_products',
-			'title'           		=> __( $as_label_for_product_singular, 'awesome-support' ),
+			'title'           		=> $as_label_for_product_singular,
 			'order'           		=> 30,
 			'taxo_sortorder'		=> 'asc'
 		) );
@@ -501,9 +507,9 @@ function wpas_register_core_fields() {
 
 		/* Filter the department taxonomy labels */
 		$labels = apply_filters( 'wpas_department_taxonomy_labels', array(
-			'label'        => __( $as_label_for_department_singular, 'awesome-support' ),
-			'name'         => __( $as_label_for_department_singular, 'awesome-support' ),
-			'label_plural' => __( $as_label_for_department_plural, 'awesome-support' )
+			'label'        => $as_label_for_department_singular,
+			'name'         => $as_label_for_department_singular,
+			'label_plural' => $as_label_for_department_plural
 		) );
 
 		/** Create the custom field for department */
@@ -526,7 +532,7 @@ function wpas_register_core_fields() {
 			'taxo_manage_terms' 	=> 'ticket_manage_departments',
 			'taxo_edit_terms'   	=> 'ticket_edit_departments',
 			'taxo_delete_terms' 	=> 'ticket_delete_departments',			
-			'title'           		=> __( $as_label_for_department_singular, 'awesome-support' ),
+			'title'           		=> $as_label_for_department_singular,
 			'order'           		=> 20			
 		) );
 
@@ -564,9 +570,9 @@ function wpas_register_core_fields() {
 
 		/* Filter the priority taxonomy labels */
 		$labels = apply_filters( 'wpas_priority_taxonomy_labels', array(
-				'label'        => __( $as_label_for_priority_singular, 'awesome-support' ),
-				'name'         => __( $as_label_for_priority_singular, 'awesome-support' ),
-				'label_plural' => __( $as_label_for_priority_plural, 'awesome-support' )
+				'label'        => $as_label_for_priority_singular,
+				'name'         => $as_label_for_priority_singular,
+				'label_plural' => $as_label_for_priority_plural
 		) );
 
 
@@ -593,7 +599,7 @@ function wpas_register_core_fields() {
 			'taxo_delete_terms' 	=> 'ticket_delete_priorities',			
 			'filterable'            => true,
 			'required'              => $show_priority_required,
-			'title'           		=> __( $as_label_for_priority_singular, 'awesome-support' ),
+			'title'           		=> $as_label_for_priority_singular,
 			'order'           		=> 40			
 		) );
 
@@ -611,9 +617,9 @@ function wpas_register_core_fields() {
 
 	/* Filter the channel taxonomy labels */
 	$labels = apply_filters( 'wpas_channel_taxonomy_labels', array(
-			'label'        => __( $as_label_for_channel_singular, 'awesome-support' ),
-			'name'         => __( $as_label_for_channel_singular, 'awesome-support' ),
-			'label_plural' => __( $as_label_for_channel_plural, 'awesome-support' )
+			'label'        => $as_label_for_channel_singular,
+			'name'         => $as_label_for_channel_singular,
+			'label_plural' => $as_label_for_channel_plural
 		)
 	);
 
@@ -643,7 +649,7 @@ function wpas_register_core_fields() {
 		'taxo_delete_terms' 	=> 'ticket_delete_channels',		
 		'filterable'            => $show_channel_column_in_list,
 		'default'               => 'standard ticket form',
-		'title'           		=> __( $as_label_for_channel_singular, 'awesome-support' )
+		'title'           		=> $as_label_for_channel_singular
 	) );
 	
 	/*******************************************************************/
@@ -671,7 +677,7 @@ function wpas_register_core_fields() {
 			'hide_front_end' 	=> true,
 			'log'            	=> true,
 			'column_callback' 	=> 'wpas_show_secondary_assignee_column',
-			'title'          	=> __( $as_label_for_secondary_agent_singular, 'awesome-support' )
+			'title'          	=> $as_label_for_secondary_agent_singular
 		) );
 
 		/** Get the label for the tertiary agent field if one is provided */
@@ -686,7 +692,7 @@ function wpas_register_core_fields() {
 			'filterable'        => $show_tertiary_agent_in_list,
 			'log'            	=> true,
 			'column_callback' 	=> 'wpas_show_tertiary_assignee_column',
-			'title'          	=> __( $as_label_for_tertiary_agent_singular, 'awesome-support' )
+			'title'          	=> $as_label_for_tertiary_agent_singular
 		) );
 	}
 
@@ -707,7 +713,7 @@ function wpas_register_core_fields() {
 		'show_column' => false,
 		'log'         => false,
 		'readonly'    => true,
-		'title'       => __( $as_label_for_ttl_replies_by_agent_singular, 'awesome-support' ),
+		'title'       => $as_label_for_ttl_replies_by_agent_singular,
 	) );
 
 	wpas_add_custom_field( 'ttl_replies_by_customer', array(
@@ -715,7 +721,7 @@ function wpas_register_core_fields() {
 		'show_column' => false,
 		'log'         => false,
 		'readonly'    => true,
-		'title'       => __( $as_label_for_ttl_replies_by_customer_singular, 'awesome-support' )
+		'title'       => $as_label_for_ttl_replies_by_customer_singular
 	) );
 
 	wpas_add_custom_field( 'ttl_replies', array(
@@ -723,7 +729,7 @@ function wpas_register_core_fields() {
 		'show_column' => false,
 		'log'         => false,
 		'readonly'    => true,
-		'title'       => __( $as_label_for_ttl_replies_singular, 'awesome-support' )
+		'title'       => $as_label_for_ttl_replies_singular
 	) );
 
 	/*******************************************************************/
@@ -775,7 +781,7 @@ function wpas_register_core_fields() {
 		'column_callback'   => 'wpas_cf_display_time_hhmm',
 		'save_callback'     => 'wpas_cf_save_time_hhmm',
 		'sortable_column'	=> true,
-		'title'       		=> __( $as_label_for_gross_time_singular, 'awesome-support' ),
+		'title'       		=> $as_label_for_gross_time_singular,
 		'desc'       		=> __( 'Enter the cummulative time spent on ticket by the agent', 'awesome-support' ),
 		'readonly'			=> $allow_agents_to_enter_time,
 		'display_email_template' => 'wpas_cf_email_display_time_hhmm'
@@ -793,7 +799,7 @@ function wpas_register_core_fields() {
 		'column_callback'   => 'wpas_cf_display_time_adjustment_column',
 		'save_callback'     => 'wpas_cf_save_time_hhmm',
 		'sortable_column'	=> true,
-		'title'       		=> __( $as_label_for_time_adjustments_singular, 'awesome-support' ),
+		'title'       		=> $as_label_for_time_adjustments_singular,
 		'desc'       		=> __( 'Enter any adjustments or credits granted to the customer - generally filled in by a supervisor or admin.', 'awesome-support' ),
 		'readonly'			=> $allow_agents_to_enter_time,
 		'display_email_template' => 'wpas_cf_email_display_time_hhmm'
@@ -808,7 +814,7 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'title'       		=> __( $as_label_for_time_adjustments_dir_singular, 'awesome-support' ),
+		'title'       		=> $as_label_for_time_adjustments_dir_singular,
 		'readonly'			=> $allow_agents_to_enter_time
 	) );		
 
@@ -825,7 +831,7 @@ function wpas_register_core_fields() {
 		'show_frontend_detail'	=> $show_final_time_in_fe_ticket,
 		'column_callback'   => 'wpas_cf_display_time_hhmm',
 		'sortable_column'	=> true,
-		'title'       		=> __( $as_label_for_final_time_singular, 'awesome-support' ),
+		'title'       		=> $as_label_for_final_time_singular,
 		'desc'       		=> __( 'This is the time calculated by the system - a sum of gross time and adjustments/credits granted.', 'awesome-support' ),						
 		'save_callback'     => 'wpas_update_time_spent_on_ticket',
 		'readonly'          => true,
@@ -840,7 +846,7 @@ function wpas_register_core_fields() {
 		'hide_front_end'	=> true,		
 		'backend_only'		=> true,
 		'backend_display_type'	=> 'custom',
-		'title'       		=> __( $as_label_for_time_notes_singular, 'awesome-support' ),
+		'title'       		=> $as_label_for_time_notes_singular,
 		'readonly'			=> $allow_agents_to_enter_time		
 	) );
 	
@@ -868,7 +874,7 @@ function wpas_register_core_fields() {
 		'column_callback'	=> 'wpas_show_3rd_party01_column',
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
-		'title'          	=> __( $as_label_for_first_addl_interested_party_name_singular, 'awesome-support' )
+		'title'          	=> $as_label_for_first_addl_interested_party_name_singular
 	) );
 	wpas_add_custom_field( 'first_addl_interested_party_email', array(
 		'core'           	=> false,
@@ -877,7 +883,7 @@ function wpas_register_core_fields() {
 		'filterable'        => false,
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
-		'title'          	=> __( $as_label_for_first_addl_interested_party_email_singular, 'awesome-support' )
+		'title'          	=> $as_label_for_first_addl_interested_party_email_singular
 	) );
 	wpas_add_custom_field( 'second_addl_interested_party_name', array(
 		'core'           	=> false,
@@ -887,7 +893,7 @@ function wpas_register_core_fields() {
 		'column_callback'	=> 'wpas_show_3rd_party02_column',
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
-		'title'          	=> __( $as_label_for_second_addl_interested_party_name_singular, 'awesome-support' )
+		'title'          	=> $as_label_for_second_addl_interested_party_name_singular
 	) );
 	wpas_add_custom_field( 'second_addl_interested_party_email', array(
 		'core'           	=> false,
@@ -896,7 +902,7 @@ function wpas_register_core_fields() {
 		'filterable'        => false,
 		'hide_front_end' 	=> true,
 		'log'            	=> false,
-		'title'          	=> __( $as_label_for_second_addl_interested_party_email_singular, 'awesome-support' )
+		'title'          	=> $as_label_for_second_addl_interested_party_email_singular
 	) );
 	
 	
@@ -921,7 +927,7 @@ function wpas_register_core_fields() {
 			'filterable'        => true,
 			'backend_only' 		=> true,
 			'log'            	=> true,
-			'title'          	=> __( $saas_id_label, 'awesome-support' ),
+			'title'          	=> $saas_id_label,
 		) );	
 	}
 	

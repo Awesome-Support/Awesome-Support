@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_shortcode( 'ticket-submit', 'wpas_sc_submit_form' );
 /**
  * Submission for shortcode.

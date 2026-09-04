@@ -1,4 +1,8 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // @see	http://bavotasan.com/2011/convert-hex-color-to-rgb-using-php/
 if ( ! function_exists( 'tf_hex2rgb' ) ) {

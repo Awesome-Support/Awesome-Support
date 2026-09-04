@@ -8,8 +8,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 add_action( 'wp_print_scripts', 'wpas_remove_acf_pro_select2_assets' );

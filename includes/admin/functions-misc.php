@@ -9,8 +9,8 @@
  */
 
 // If this file is called directly, abort.
-if (!defined('WPINC')) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 add_filter('plugin_action_links_' . WPAS_PLUGIN_BASENAME, 'wpas_settings_page_link');

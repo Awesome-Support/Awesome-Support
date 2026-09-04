@@ -9,7 +9,13 @@
  *
  */
 
- class WPAS_MY_CRED {
+ 
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class WPAS_MY_CRED {
 
 	/**
 	 * Plugin actions.

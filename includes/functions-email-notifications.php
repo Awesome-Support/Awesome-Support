@@ -8,8 +8,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 add_action( 'wpas_open_ticket_after', 'wpas_notify_confirmation', 11, 2 );

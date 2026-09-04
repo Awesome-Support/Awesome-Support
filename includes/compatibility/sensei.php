@@ -8,8 +8,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 add_action( 'admin_enqueue_scripts', 'wpas_remove_sensei_select2_assets', 999 );

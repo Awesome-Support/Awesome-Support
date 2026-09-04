@@ -8,6 +8,12 @@
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class WPAS_Privacy_Option {
 	/**
 	 * Instance of this class.
@@ -420,7 +426,7 @@ class WPAS_Privacy_Option {
 										<span class="wpas-system-tools-desc">
 											<?php 
 												// translators: %s is the consent_name.
-												echo sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ),  $consent_name); 
+												echo sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ), esc_html( $consent_name ) ); 
 											?></span>
 									</td>
 								</tr>

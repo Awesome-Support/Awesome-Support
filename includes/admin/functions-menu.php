@@ -8,8 +8,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 add_action( 'admin_menu', 'wpas_register_submenu_items' );
@@ -173,14 +173,14 @@ function wpas_display_status_page() {
 function wpas_display_get_help_page() {
 	$link = 'https://getawesomesupport.com/submit-ticket/';
     if ( ! headers_sent() ) {
-        wp_redirect( $link );
+        wp_safe_redirect( $link );
         exit;
     } else {
 		include_once( WPAS_PATH . 'includes/admin/views/wpas-help-and-support.php' );
         echo '<script type="text/javascript">';
-        echo 'window.location.href="'.$link.'";';
+        echo 'window.location.href="' . esc_url( $link ) . '";';
         echo '</script>';
-        echo '<noscript><meta http-equiv="refresh" content="0;url='.$link.'" /></noscript>';
+        echo '<noscript><meta http-equiv="refresh" content="0;url=' . esc_url( $link ) . '" /></noscript>';
         exit;
     }
 }

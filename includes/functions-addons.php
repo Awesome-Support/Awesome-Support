@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_action( 'plugins_loaded', 'wpas_load_addons', 20, 0 );
 /**
  * Load all registered addon.

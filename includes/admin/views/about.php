@@ -1,4 +1,8 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 add_filter( 'wpas_admin_tabs_wpas_about',							'wpas_about_register_tabs' ); // Register new tab area
 

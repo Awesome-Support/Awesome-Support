@@ -1,4 +1,8 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 add_action( 'admin_init', 'wpas_system_tools', 10, 0 );
 function wpas_system_tools() {
@@ -135,7 +139,7 @@ function wpas_system_tools() {
 	), admin_url( 'edit.php' )
 	);
 
-	wp_redirect( wp_sanitize_redirect( $url ) );
+	wp_safe_redirect( wp_sanitize_redirect( $url ) );
 	exit;
 
 }

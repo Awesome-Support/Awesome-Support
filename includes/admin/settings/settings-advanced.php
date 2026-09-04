@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_filter( 'wpas_plugin_settings', 'wpas_core_settings_advanced', 95, 1 );
 /**
  * Add plugin advanced settings.

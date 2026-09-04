@@ -5,6 +5,12 @@
  *
  * @var array|null
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $wpas_options_static_cache;
 $wpas_options_static_cache = null;
 
@@ -507,7 +513,7 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
 	$location = wp_sanitize_redirect( $location );
 
 	if ( ! headers_sent() ) {
-		wp_redirect( $location, 302 );
+		wp_safe_redirect( $location, 302 );
 	} else {
 		echo "<meta http-equiv='refresh' content='0; url=" . esc_url($location) . "'>";
 	}
@@ -939,11 +945,7 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 	}
 
 	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
-	$edd_sync_products = '';
-	if( isset( $term->post_id )  && isset( $term->term_data ) &&  $term->taxonomy == 'product')
-	{
-		$edd_sync_products = 'data-synced-product="'.esc_attr( $term->post_id ).'"';
-	}
+	$synced_product_id = ( isset( $term->post_id ) && isset( $term->term_data ) && 'product' === $term->taxonomy ) ? $term->post_id : '';
 
 	$is_selected = false;
 	if ( ! empty( $value ) || '0' === (string) $value ) {
@@ -957,7 +959,7 @@ function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 
 	}
 	?>
 
-	<option <?php echo $edd_sync_products;?> value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( $is_selected ) { echo 'selected="selected"'; } ?>><?php echo  wp_kses( $option, wpas_dropdown_allowed_html_tags()); ?></option>
+	<option <?php if ( ! empty( $synced_product_id ) ) { echo 'data-synced-product="' . esc_attr( $synced_product_id ) . '"'; } ?> value="<?php echo esc_attr( $term->term_id ); ?>" <?php if( $is_selected ) { echo 'selected="selected"'; } ?>><?php echo wp_kses( $option, wpas_dropdown_allowed_html_tags() ); ?></option>
 	<?php if ( isset( $term->children ) && !empty( $term->children ) ) {
 		++$level;
 		foreach ( $term->children as $child ) {

@@ -574,8 +574,9 @@ class AS_Admin_Setup_Wizard {
 	/**
 	 * Lets Go button click
 	 */
-	public function as_setup_lets_go_save(){
-		wp_redirect( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
+	public function as_setup_lets_go_save() {
+		check_admin_referer( 'as-setup' );
+		wp_safe_redirect( add_query_arg( array( 'post_type' => 'ticket', 'page' => 'wpas-about' ), admin_url( 'edit.php' ) ) );
 		exit;
 	}
 

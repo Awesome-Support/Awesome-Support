@@ -8,8 +8,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 register_activation_hook( WPAS_PLUGIN_FILE, 'wpas_install' );
@@ -40,7 +40,7 @@ function wpas_deactivation( $network_wide ) {
                 deactivate_plugins($name);
             }   
         }
-        wp_redirect( admin_url() . 'plugins.php?deactivate=true' );
+        wp_safe_redirect( admin_url( 'plugins.php?deactivate=true' ) );
         exit;
     }       
 }

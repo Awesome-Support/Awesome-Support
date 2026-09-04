@@ -9,6 +9,12 @@
  * @copyright 2014-2017 AwesomeSupport
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_action( 'init', 'wpas_register_post_type', 10, 0 );
 /**
  * Register the ticket post type.

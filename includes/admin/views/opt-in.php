@@ -1,3 +1,9 @@
+<?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div class="wrap about-wrap">
 
 	<h1><?php esc_html_e( 'Get Your Free Addon!', 'awesome-support' ); ?></h1>

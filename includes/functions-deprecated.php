@@ -10,6 +10,12 @@
  * @deprecated 3.2.0
  * @return string             The class tag with appropriate classes
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function wpas_get_field_container_class( $field_name = '', $extra = '' ) {
 
 	$class = 'wpas-form-group';

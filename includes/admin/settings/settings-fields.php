@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_filter( 'wpas_plugin_settings', 'wpas_core_settings_fields', 5, 1 );
 /**
  * Add plugin core settings for fields and custom fields.

@@ -4,6 +4,12 @@
  *
  * @package		Awesome Support/WPAS_Logger
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class WPAS_Logger {
 
 	/**

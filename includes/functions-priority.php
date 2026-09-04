@@ -1,4 +1,8 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 // add color meta only if support priority active is active
 if( wpas_is_support_priority_active() ) {

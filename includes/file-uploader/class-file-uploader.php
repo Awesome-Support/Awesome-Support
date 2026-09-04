@@ -9,6 +9,12 @@
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class WPAS_File_Upload {
 
 	/**

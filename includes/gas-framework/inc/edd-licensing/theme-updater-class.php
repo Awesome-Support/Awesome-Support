@@ -5,6 +5,12 @@
  * @package EDD Sample Theme
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class GAST_EDD_Theme_Updater {
 
 	private $remote_api_url;

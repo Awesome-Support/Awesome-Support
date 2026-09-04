@@ -9,6 +9,12 @@
  * @copyright 2014-2017 AwesomeSupport
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class WPAS_Tickets_List {
 
 	/**
@@ -1359,7 +1365,7 @@ ORDER BY
 			$selected_value = sanitize_text_field( wp_unslash( $_GET['id'] ) );
 		}
 
-		echo '<input type="text" placeholder="'.__( 'Ticket ID', 'awesome-support' ).'" name="id" id="id" value="' . esc_attr( $selected_value ) . '" />';
+		echo '<input type="text" placeholder="' . esc_attr__( 'Ticket ID', 'awesome-support' ) . '" name="id" id="id" value="' . esc_attr( $selected_value ) . '" />';
 
 		/* SAAS TICKET ID */
 		$show_saas_id = boolval( wpas_get_option( 'importer_id_enable', false) );
@@ -1416,6 +1422,7 @@ ORDER BY
 				$tax_obj = get_taxonomy( $tax_slug );
 
 				$args = array(
+					// translators: %s is the taxonomy label.
 					'show_option_all' => esc_html( sprintf( __( 'All %s', 'awesome-support' ), $tax_obj->label ) ),
 					'taxonomy'        => $tax_slug,
 					'name'            => $tax_obj->name,

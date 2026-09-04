@@ -1,4 +1,10 @@
-<?php 
+<?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+ 
 // translators: %1$s is the URL for opening a ticket.
 $x_content1 = __( '<a href="%1$s">Open a ticket directly with us</a>', 'awesome-support' );
 

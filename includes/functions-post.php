@@ -6,6 +6,12 @@
  * @since  3.0.0
  * @param  null 
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function wpas_clean_ticketcount_cache() {
 	
 	set_site_transient( 'wpas_tickets_counts', null, 24 * HOUR_IN_SECONDS );
@@ -68,7 +74,7 @@ function wpas_open_ticket( $data ) {
 
 		// Redirect to submit page
 		wpas_add_error( 'cannot_open_ticket', __( 'You do not have the capacity to open a new ticket.', 'awesome-support' ) );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		// Break
 		exit;
@@ -82,7 +88,7 @@ function wpas_open_ticket( $data ) {
 
 		// Redirect to submit page
 		wpas_add_error( 'missing_title', __( 'It is mandatory to provide a title for your issue.', 'awesome-support' ) );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		// Break
 		exit;
@@ -95,7 +101,7 @@ function wpas_open_ticket( $data ) {
 
 		// Redirect to submit page
 		wpas_add_error( 'missing_description', __( 'It is mandatory to provide a description for your issue.', 'awesome-support' ) );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		// Break
 		exit;
@@ -128,7 +134,7 @@ function wpas_open_ticket( $data ) {
 
 		/* Redirect to submit page */
 		wpas_add_error( 'validation_issue', $message );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		exit;
 
@@ -150,7 +156,7 @@ function wpas_open_ticket( $data ) {
 
 		// Redirect to submit page
 		wpas_add_error( 'unknown_user', __( 'Only registered accounts can submit a ticket. Please register first.', 'awesome-support' ) );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		exit;
 
@@ -204,7 +210,7 @@ function wpas_new_ticket_submission( $data ) {
 
 			// Redirect to submit page
 			wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'awesome-support' ) );
-			wp_redirect( wp_sanitize_redirect( home_url( isset( $_POST['_wp_http_referer']) ? sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) : "" ) ) );
+			wp_safe_redirect( wp_sanitize_redirect( home_url( isset( $_POST['_wp_http_referer']) ? sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) : "" ) ) );
 			exit;
 		}
 
@@ -225,7 +231,7 @@ function wpas_new_ticket_submission( $data ) {
 			 * Redirect to the referrer since ticket creation failed....
 			 */
 			wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'awesome-support' ) );
-			wp_redirect( wp_sanitize_redirect( home_url( $data['_wp_http_referer'] ) ) );
+			wp_safe_redirect( wp_sanitize_redirect( home_url( $data['_wp_http_referer'] ) ) );
 			exit;
 
 		} /* Submission succeeded */

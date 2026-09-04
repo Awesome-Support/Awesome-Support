@@ -8,8 +8,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 add_action( 'wp_enqueue_scripts', 'wpas_register_assets_front_end', 5 );
@@ -245,7 +245,9 @@ function wpas_register_assets_back_end() {
 
 	// Edit ticket content!
 	if ( true == wpas_is_plugin_page() ) {
-		wp_enqueue_editor();
+		if ( function_exists( 'wp_enqueue_editor' ) ) {
+			wp_enqueue_editor();
+		}
 		wp_enqueue_media();
 	}
 	
@@ -291,7 +293,9 @@ function wpas_assets_front_end() {
 		}
 
 		// GDPR Privacy options script and style.
-		wp_enqueue_editor();
+		if ( function_exists( 'wp_enqueue_editor' ) ) {
+			wp_enqueue_editor();
+		}
 		wp_register_script( 'wpas-gdpr-script', WPAS_URL . 'assets/public/js/component-privacy-popup.js', array( 'jquery' ), WPAS_VERSION );
 		wp_localize_script( 'wpas-gdpr-script', 'WPAS_GDPR', array(
 			'ajax_url' => admin_url( 'admin-ajax.php' ),

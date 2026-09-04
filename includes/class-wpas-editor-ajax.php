@@ -20,6 +20,12 @@
  * @link https://core.trac.wordpress.org/ticket/26183
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Load the WP Editor Ajax class.
  */

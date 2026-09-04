@@ -15,9 +15,9 @@
  * @link      https://getawesomesupport.com
  */
 
-// If this file is called directly, abort!
-if ( ! defined( 'WPINC' ) ) {
-	die;
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 		
 if ( true === boolval( wpas_get_option( 'privacy_show_consent_tab', true) ) ) {

@@ -1,4 +1,8 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 $log_viewer_action       =  isset( $_GET['wpas_tools_log_viewer_action'] ) ? sanitize_text_field( wp_unslash( $_GET['wpas_tools_log_viewer_action'] ) ) : '';
 
@@ -104,9 +108,6 @@ function wpas_tools_log_viewer_ajax_script() {
         }
 
     </style>
-
-    <!-- Load jQuery UI -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> 
     <script type="text/javascript">
 
         function makeSafeForCSS(name) {
