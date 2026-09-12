@@ -744,9 +744,17 @@ class WPAS_File_Upload {
 
 		if ( defined( 'DOING_CRON' ) && 0 === $current_user->ID ) {
 
+		    $original_user_id = get_current_user_id();
 		    $default_id = (int) wpas_get_option( 'assignee_default', 1 );
 
 		    wp_set_current_user( $default_id );
+
+		    $can_attach = current_user_can( 'attach_files' );
+
+		    // Restore original user context to avoid polluting other cron jobs
+		    wp_set_current_user( $original_user_id );
+
+		    return $can_attach;
 
 		}
 
