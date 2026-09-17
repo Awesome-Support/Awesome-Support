@@ -11,6 +11,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.4.1</h1>
+				<h3>6.4.1 includes bug fixes and improvements. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Fix: Fixed file uploader using get_attached_file() instead of unreliable attachment guid URL.</li>
+					<li>Fix: Fixed WP-Cron incorrectly changing current user context — now properly restores original user after capability check.</li>
+					<li>Fix: Fixed PHP 8.2+ deprecation warnings and coding standards issues flagged by WordPress Plugin Check (PCP).</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.4.0</h1>
 				<h3>6.4.0 includes maintenance fixes and security patches. Here is a more comprehensive list:</h3>				
 				<ul style="padding-left: 3em; list-style-type: disc;">
