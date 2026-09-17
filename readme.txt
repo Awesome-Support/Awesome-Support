@@ -5,7 +5,7 @@ Tags: helpdesk,ticket system,support,tickets,support ticket
 Requires at least: 5.6
 Requires PHP: 7.4
 Tested up to: 7.1
-Stable tag: 6.4.0
+Stable tag: 6.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -291,6 +291,13 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 6.4.1 =
+
+* Fix
+	* Fixed file uploader using get_attached_file() instead of unreliable attachment guid URL.
+	* Fixed WP-Cron incorrectly changing current user context — now properly restores original user after capability check.
+	* Fixed PHP 8.2+ deprecation warnings and coding standards issues flagged by WordPress Plugin Check (PCP).
 
 = 6.4.0 =
 
