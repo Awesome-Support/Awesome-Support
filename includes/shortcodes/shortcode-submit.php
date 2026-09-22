@@ -56,8 +56,12 @@ function wpas_sc_submit_form() {
 			 * see if we should force the standard form to show up.
 			 */
 			if ( ! empty( wpas_get_option( 'new_ticket_form_redirect_fe', '' ) ) ) {
-				if ( 1 <> filter_input( INPUT_GET, 'force_standard_form', FILTER_SANITIZE_NUMBER_INT ) ) {
-					wpas_redirect( 'new_ticket_custom_form', wpas_get_option( 'new_ticket_form_redirect_fe', '' ) );
+				$custom_form_url = wpas_get_option( 'new_ticket_form_redirect_fe', '' );
+				$current_url     = home_url( add_query_arg( array(), wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) ) );
+				$is_same_page    = untrailingslashit( strtok( $current_url, '?' ) ) === untrailingslashit( strtok( $custom_form_url, '?' ) );
+
+				if ( ! $is_same_page && 1 <> filter_input( INPUT_GET, 'force_standard_form', FILTER_SANITIZE_NUMBER_INT ) ) {
+					wpas_redirect( 'new_ticket_custom_form', $custom_form_url );
 					exit ;
 				}
 			}

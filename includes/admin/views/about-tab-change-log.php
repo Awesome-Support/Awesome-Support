@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<li>Fix: Fixed file uploader using get_attached_file() instead of unreliable attachment guid URL.</li>
 					<li>Fix: Fixed WP-Cron incorrectly changing current user context — now properly restores original user after capability check.</li>
 					<li>Fix: Fixed PHP 8.2+ deprecation warnings and coding standards issues flagged by WordPress Plugin Check (PCP).</li>
+					<li>Fix: Fixed infinite redirect loop (ERR_TOO_MANY_REDIRECTS) when "New Ticket Form Redirect" points to the submit ticket page.</li>
 				</ul>
 			</div>
 		</div>
