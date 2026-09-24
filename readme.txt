@@ -294,6 +294,9 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 = 6.4.1 =
 
+* Security
+	* Patched stored XSS in GDPR consent by restricting cross-user writes and escaping consent output.
+
 * Fix
 	* Fixed file uploader using get_attached_file() instead of unreliable attachment guid URL.
 	* Fixed WP-Cron incorrectly changing current user context — now properly restores original user after capability check.

@@ -251,18 +251,26 @@ class WPAS_GDPR_User_Profile {
 						*/
 						if ( ! empty( $opt_in ) && wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
 							$opt_button = sprintf(
-								'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optin-date="' . $opt_in . '">%s</a>',
-								__( 'Opt-out', 'awesome-support' )
+								'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="%1$s" data-user="%2$d" data-optin-date="%3$s">%4$s</a>',
+								esc_attr( $item ),
+								(int) $profileuser->ID,
+								esc_attr( $opt_in ),
+								esc_html__( 'Opt-out', 'awesome-support' )
 							);
 						} elseif ( ! empty( $opt_out ) ) {
 							$opt_button = sprintf(
-								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optout-date="' . $opt_out . '">%s</a>',
-								__( 'Opt-in', 'awesome-support' )
+								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="%1$s" data-user="%2$d" data-optout-date="%3$s">%4$s</a>',
+								esc_attr( $item ),
+								(int) $profileuser->ID,
+								esc_attr( $opt_out ),
+								esc_html__( 'Opt-in', 'awesome-support' )
 							);
 						} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
 							$opt_button = sprintf(
-								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
-								__( 'Opt-in', 'awesome-support' )
+								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="%1$s" data-user="%2$d">%3$s</a>',
+								esc_attr( $item ),
+								(int) $profileuser->ID,
+								esc_html__( 'Opt-in', 'awesome-support' )
 							);
 						}
 					}
@@ -272,12 +280,25 @@ class WPAS_GDPR_User_Profile {
 						 */
 					printf(
 						'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-						wp_kses($item, get_allowed_html_wp_notifications()),
-						wp_kses($status, get_allowed_html_wp_notifications()),
-						wp_kses($opt_in, get_allowed_html_wp_notifications()),
-						wp_kses($opt_out, get_allowed_html_wp_notifications()),
-						wp_kses($opt_button, get_allowed_html_wp_notifications()),
+						esc_html( $item ),
+						esc_html( $status ),
+						esc_html( $opt_in ),
+						esc_html( $opt_out ),
+						wp_kses(
+							$opt_button,
+							array(
+								'a' => array(
+									'class'            => true,
+									'href'             => true,
+									'data-gdpr'        => true,
+									'data-user'        => true,
+									'data-optin-date'  => true,
+									'data-optout-date' => true,
+								),
+							)
+						)
 					);
+
 				}
 				?>
 				</tbody>
