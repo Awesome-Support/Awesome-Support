@@ -302,6 +302,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 	* Fixed WP-Cron incorrectly changing current user context — now properly restores original user after capability check.
 	* Fixed PHP 8.2+ deprecation warnings and coding standards issues flagged by WordPress Plugin Check (PCP).
 	* Fixed infinite redirect loop (ERR_TOO_MANY_REDIRECTS) when "New Ticket Form Redirect" points to the submit ticket page.
+	* Fixed Default Assignee empty when MySQL ANSI_QUOTES mode is enabled — replaced double-quoted LIKE values with properly prepared single-quoted placeholders.
 
 = 6.4.0 =
 
