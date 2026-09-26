@@ -710,7 +710,8 @@ class WPAS_File_Upload {
 			return;
 		}
 
-		// Output the file contents (echo, not print_r, to avoid corrupting binary files)
+		// Output the file contents (echo, not print_r, to avoid corrupting binary files).
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Binary attachment bytes; escaping would corrupt the file.
 		echo $file_contents;
 
 	}
