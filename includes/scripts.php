@@ -462,7 +462,8 @@ function wpas_get_javascript_object() {
 			'onSubmit'    => _x( 'Submitting...', 'ticket submission button text while submitting', 'awesome-support' ),
 		),
 		'front_replies_nonce' => wp_create_nonce( 'wpas_loads_replies' ),
-		'front_delete_att_nonce' => wp_create_nonce( 'wpas-delete-attachs')
+		'front_delete_att_nonce' => wp_create_nonce( 'wpas-delete-attachs'),
+		'mark_reply_read_nonce' => wp_create_nonce( 'wpas-mark-reply-read' )
 	);
 
 	if ( 'ticket' === $post->post_type ) {

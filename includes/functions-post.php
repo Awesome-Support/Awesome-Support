@@ -970,15 +970,32 @@ add_action( 'wp_ajax_wpas_mark_reply_read', 'wpas_mark_reply_read_ajax' );
  */
 function wpas_mark_reply_read_ajax() {
 
-	$ID = wpas_mark_reply_read();
+	/* Security: verify nonce */
+	if ( ! check_ajax_referer( 'wpas-mark-reply-read', 'security', false ) ) {
+		wp_send_json_error( array( 'message' => __( 'Session expired. Please refresh the page and try again.', 'awesome-support' ) ), 403 );
+	}
 
-	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_ticket') ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to mark a ticket reply as read with Ajax.', 'awesome-support') ), 403);		
-	}	
+	/* Security: check capability BEFORE any state change */
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Unauthorized action. You do not have permission to mark a ticket reply as read with Ajax.', 'awesome-support' ) ), 403 );
+	}
+
+	/* Validate reply_id and post_type */
+	$reply_id = isset( $_POST['reply_id'] ) ? intval( $_POST['reply_id'] ) : 0;
+	if ( ! $reply_id ) {
+		wp_send_json_error( array( 'message' => __( 'Invalid reply ID.', 'awesome-support' ) ), 400 );
+	}
+
+	$reply = get_post( $reply_id );
+	if ( ! $reply || 'ticket_reply' !== $reply->post_type ) {
+		wp_send_json_error( array( 'message' => __( 'Invalid reply.', 'awesome-support' ) ), 400 );
+	}
+
+	/* All checks passed — now perform the state change */
+	$ID = wpas_mark_reply_read( $reply_id );
 
 	if ( false === $ID || is_wp_error( $ID ) ) {
-		$ID = $ID->get_error_message();
+		$ID = is_wp_error( $ID ) ? $ID->get_error_message() : '';
 	}
 
 	echo esc_attr( $ID );
@@ -997,12 +1014,13 @@ function wpas_edit_reply_ajax() {
 		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
 		die();
 	}
-	$ID = wpas_edit_reply();
 
-	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_ticket') ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to edit a reply with Ajax.', 'awesome-support') ), 403);		
+	/* Security: check capability BEFORE any state change */
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Unauthorized action. You do not have permission to edit a reply with Ajax.', 'awesome-support' ) ), 403 );
 	}
+
+	$ID = wpas_edit_reply();
 	
 	if ( false === $ID ) {
 		echo "Invalid data!";
