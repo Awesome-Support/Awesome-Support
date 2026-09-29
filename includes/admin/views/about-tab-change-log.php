@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<h3>6.4.1 includes security patches, bug fixes and improvements. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
 					<li>Security: Patched stored XSS in GDPR consent by restricting cross-user writes and escaping consent output.</li>
+					<li>Security: Fixed incorrect authorization in mark-reply-read and edit-reply AJAX handlers (CWE-863).</li>
 					<li>Fix: Fixed file uploader using get_attached_file() instead of unreliable attachment guid URL.</li>
 					<li>Fix: Fixed WP-Cron incorrectly changing current user context — now properly restores original user after capability check.</li>
 					<li>Fix: Fixed PHP 8.2+ deprecation warnings and coding standards issues flagged by WordPress Plugin Check (PCP).</li>

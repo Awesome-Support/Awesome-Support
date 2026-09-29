@@ -296,6 +296,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 * Security
 	* Patched stored XSS in GDPR consent by restricting cross-user writes and escaping consent output.
+	* Fixed incorrect authorization in mark-reply-read and edit-reply AJAX handlers — capability check now enforced before state changes.
 
 * Fix
 	* Fixed file uploader using get_attached_file() instead of unreliable attachment guid URL.
