@@ -11,7 +11,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="row">
 		<div>
 			<div class="about-body">
-				<h1>What's New In 6.4.1</h1>
+				<h1>What's New In 6.4.2</h1>
+				<h3>6.4.2 includes a security patch. Here is the detail:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Security: Fixed stored XSS via ticket attachment MIME confusion in drag-n-drop uploader (CVE).</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+			<h1>What's New In 6.4.1</h1>
 				<h3>6.4.1 includes security patches, bug fixes and improvements. Here is a more comprehensive list:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
 					<li>Security: Patched stored XSS in GDPR consent by restricting cross-user writes and escaping consent output.</li>

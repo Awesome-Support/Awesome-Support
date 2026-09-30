@@ -292,6 +292,11 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 == Changelog ==
 
+= 6.4.2 =
+
+* Security
+	* Fixed stored XSS via ticket attachment MIME confusion in drag-n-drop uploader — Content-Type header now validated against safe allowlist.
+
 = 6.4.1 =
 
 * Security

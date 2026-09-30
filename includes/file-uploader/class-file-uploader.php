@@ -666,7 +666,9 @@ class WPAS_File_Upload {
 			ob_clean();
 			ob_end_flush();
 
-			header( "Content-Type: $attachment->post_mime_type" );
+			$safe_mime = $this->get_safe_mime_type( $attachment->post_mime_type );
+			header( "Content-Type: $safe_mime" );
+			header( 'X-Content-Type-Options: nosniff' );
 			header( "Content-Disposition: $render_method; filename=\"$filename\"" );
 
 			$this->custom_readfile( $file_path );
@@ -2190,15 +2192,9 @@ class WPAS_File_Upload {
 
 				$new_file_url = trailingslashit( $upload['baseurl'] ) . $new_file_relative;
 				
-				// https://trello.com/c/ksKkxT9e fix fileinfo.dll not enable on server
-				if (file_exists($file) && is_readable($file) && function_exists("mime_content_type")) {
-				    $post_mime_type = mime_content_type($file);
-				} else {
-				    require_once( WPAS_PATH . 'includes/file-uploader/mime-types.php' );
-				    $post_mime_type = wpas_get_mime_type(
-				        pathinfo($file, PATHINFO_EXTENSION)
-				    );
-				}			
+				// Determine MIME type from file extension (not content) to prevent MIME confusion XSS
+				$filetype_check = wp_check_filetype( basename( $file ) );
+				$post_mime_type = ! empty( $filetype_check['type'] ) ? $filetype_check['type'] : 'application/octet-stream';			
 				
 				// Prepare an array of post data for the attachment.
 				$attachment = array(
@@ -2356,6 +2352,29 @@ class WPAS_File_Upload {
 	 * @param  string $filename
 	 * @return string
 	 */
+
+	/**
+	 * Validate a MIME type against a safe allowlist.
+	 *
+	 * Returns the original MIME type if it is considered safe for inline
+	 * rendering (images, audio, video, PDF, plain text). Otherwise returns
+	 * 'application/octet-stream' to force a download and prevent XSS via
+	 * MIME confusion (e.g. a .png file containing HTML/JS content).
+	 *
+	 * @since 6.4.2
+	 *
+	 * @param  string $mime_type The MIME type to validate.
+	 * @return string Safe MIME type.
+	 */
+	private function get_safe_mime_type( $mime_type ) {
+		$safe_prefixes = array( 'image/', 'audio/', 'video/', 'application/pdf', 'text/plain' );
+		foreach ( $safe_prefixes as $prefix ) {
+			if ( strpos( $mime_type, $prefix ) === 0 ) {
+				return $mime_type;
+			}
+		}
+		return 'application/octet-stream';
+	}
 
 	public function wpas_sanitize_file_name( $filename ) {
 
