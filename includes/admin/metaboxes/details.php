@@ -12,8 +12,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 global $pagenow, $post;
@@ -52,7 +52,7 @@ if ( isset( $post ) ) {
 				wpas_cf_display_status( '', $post->ID );
 			?>
 			<?php else: ?>				
-				<span><?php echo _x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
+				<span><?php echo esc_html_x( 'Creating...', 'Ticket creation', 'awesome-support' ); ?></span>
 			<?php endif; ?>
 		</div>
 		<div class="wpas-col">

@@ -8,9 +8,9 @@
  * @link      https://getawesomesupport.com
  */
 
-// If this file is called directly, abort!
-if ( ! defined( 'WPINC' ) ) {
-	die;
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 class WPAS_GDPR_User_Profile {
 
@@ -81,11 +81,15 @@ class WPAS_GDPR_User_Profile {
 					header( 'Pragma: no-cache' );
 					header( 'Expires: 0' );
 					$this->custom_readfile( $this->user_export_dir . '/exported-data.zip' );
-					if (!unlink($this->user_export_dir . '/exported-data.zip') ){
+					$zip_path = $this->user_export_dir . '/exported-data.zip';
+					wp_delete_file( $zip_path );
+					if ( file_exists( $zip_path ) ){
 						// translators: %s is the nuser export directory.
 						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/exported-data.zip', 'awesome-support' ), $this->user_export_dir) );
 					}
-					if (!unlink($this->user_export_dir . '/export-data.xml') ){
+					$xml_path = $this->user_export_dir . '/export-data.xml';
+					wp_delete_file( $xml_path );
+					if ( file_exists( $xml_path ) ){
 						// translators: %s is the nuser export directory.
 						return new WP_Error( 'file_deleting_error', sprintf(__( 'Error deleting %s/export-data.xml', 'awesome-support' ), $this->user_export_dir) );
 					}
@@ -247,18 +251,26 @@ class WPAS_GDPR_User_Profile {
 						*/
 						if ( ! empty( $opt_in ) && wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
 							$opt_button = sprintf(
-								'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optin-date="' . $opt_in . '">%s</a>',
-								__( 'Opt-out', 'awesome-support' )
+								'<a class="button button-secondary wpas-gdpr-opt-out" data-gdpr="%1$s" data-user="%2$d" data-optin-date="%3$s">%4$s</a>',
+								esc_attr( $item ),
+								(int) $profileuser->ID,
+								esc_attr( $opt_in ),
+								esc_html__( 'Opt-out', 'awesome-support' )
 							);
 						} elseif ( ! empty( $opt_out ) ) {
 							$opt_button = sprintf(
-								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '" data-optout-date="' . $opt_out . '">%s</a>',
-								__( 'Opt-in', 'awesome-support' )
+								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="%1$s" data-user="%2$d" data-optout-date="%3$s">%4$s</a>',
+								esc_attr( $item ),
+								(int) $profileuser->ID,
+								esc_attr( $opt_out ),
+								esc_html__( 'Opt-in', 'awesome-support' )
 							);
 						} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
 							$opt_button = sprintf(
-								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . $profileuser->ID . '">%s</a>',
-								__( 'Opt-in', 'awesome-support' )
+								'<a class="button button-secondary wpas-gdpr-opt-in" data-gdpr="%1$s" data-user="%2$d">%3$s</a>',
+								esc_attr( $item ),
+								(int) $profileuser->ID,
+								esc_html__( 'Opt-in', 'awesome-support' )
 							);
 						}
 					}
@@ -268,12 +280,25 @@ class WPAS_GDPR_User_Profile {
 						 */
 					printf(
 						'<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>',
-						wp_kses($item, get_allowed_html_wp_notifications()),
-						wp_kses($status, get_allowed_html_wp_notifications()),
-						wp_kses($opt_in, get_allowed_html_wp_notifications()),
-						wp_kses($opt_out, get_allowed_html_wp_notifications()),
-						wp_kses($opt_button, get_allowed_html_wp_notifications()),
+						esc_html( $item ),
+						esc_html( $status ),
+						esc_html( $opt_in ),
+						esc_html( $opt_out ),
+						wp_kses(
+							$opt_button,
+							array(
+								'a' => array(
+									'class'            => true,
+									'href'             => true,
+									'data-gdpr'        => true,
+									'data-user'        => true,
+									'data-optin-date'  => true,
+									'data-optout-date' => true,
+								),
+							)
+						)
 					);
+
 				}
 				?>
 				</tbody>
@@ -463,7 +488,8 @@ class WPAS_GDPR_User_Profile {
 	 */
 	public function get_ticket_meta( $ticket_id ) {
 		global $wpdb;
-		$meta_data        = $wpdb->get_results( "select * from $wpdb->postmeta where post_id = $ticket_id and meta_key like '%_wpas%'" );
+		$like_pattern     = '%' . $wpdb->esc_like( '_wpas' ) . '%';
+		$meta_data        = $wpdb->get_results( $wpdb->prepare( "select * from $wpdb->postmeta where post_id = %d and meta_key like %s", $ticket_id, $like_pattern ) );
 		$meta_field_value = array();
 		if ( ! empty( $meta_data ) ) {
 			foreach ( $meta_data as $key => $meta_field ) {
@@ -483,7 +509,7 @@ class WPAS_GDPR_User_Profile {
 	public function get_ticket_attachment( $ticket_id ) {
 		global $wpdb;
 		$attachments     = array();
-		$get_attachments = $wpdb->get_results( "select * from $wpdb->posts where post_type='attachment' and post_parent = $ticket_id" );
+		$get_attachments = $wpdb->get_results( $wpdb->prepare( "select * from $wpdb->posts where post_type='attachment' and post_parent = %d", $ticket_id ) );
 		if ( ! empty( $get_attachments ) ) {
 			foreach ( $get_attachments as $key => $attachment ) {
 				$attachments[ 'a' . $key ] = array(

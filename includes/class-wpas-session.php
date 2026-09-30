@@ -31,6 +31,31 @@ class WPAS_Session {
 
 	public function __construct() {
 
+		/**
+		 * Gate the entire session subsystem.
+		 *
+		 * The wpas_initiate_session_flag filter now runs BEFORE the session
+		 * manager is loaded.  Return false to prevent require_once of
+		 * wp-session-manager.php, which in turn prevents its init-hook
+		 * from registering session_start().
+		 *
+		 * Example — disable sessions for monitoring bots:
+		 *   add_filter( 'wpas_initiate_session_flag', function( $open ) {
+		 *       $ua = isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '';
+		 *       if ( stripos( $ua, 'pingdom' ) !== false || stripos( $ua, 'uptimerobot' ) !== false ) {
+		 *           return false;
+		 *       }
+		 *       return $open;
+		 *   });
+		 *
+		 * @since 3.2   Original filter (only gated WP_Session instance).
+		 * @since 6.4.1 Moved before require_once to gate session_start() hook.
+		 */
+		$open_session = apply_filters( 'wpas_initiate_session_flag', true );
+
+		if ( true !== $open_session ) {
+			return;
+		}
 
 		if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
 			define( 'WP_SESSION_COOKIE', '_wpas_session' );
@@ -50,18 +75,15 @@ class WPAS_Session {
 	/**
 	 * Instantiate the session
 	 *
-	 * You can use the wpas_initiate_session_flag filter to disable creating the session.
-	 * This would be useful when the traffic is coming from bot sources such as pingdom or uptimerobot
+	 * Note: the wpas_initiate_session_flag filter is now applied in __construct()
+	 * BEFORE the session manager is loaded.  If we reach this method, the filter
+	 * already returned true, so we can instantiate the session directly.
 	 *
 	 * @since 3.2
 	 * @return void
 	 */
 	public function init() {
-		$open_session = apply_filters( 'wpas_initiate_session_flag', true ) ;
-		
-		if ( true === $open_session ) {
-			$this->session = WP_Session::get_instance();
-		}
+		$this->session = WP_Session::get_instance();
 	}
 
 	/**

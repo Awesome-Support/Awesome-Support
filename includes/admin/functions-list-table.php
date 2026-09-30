@@ -8,8 +8,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 add_action( 'pre_get_posts', 'wpas_hide_others_tickets', 10, 1 );
@@ -373,10 +373,13 @@ function wpas_ticket_bulk_actions_admin_notice() {
 		$count  = intval( $_GET['wpas_bulk_count'] );
 
 		if ( 'wpas_bulk_close' === $action ) {
+			// translators: %s is the number of tickets.
 			$message = sprintf( _n( '%s ticket has been closed.', '%s tickets have been closed.', $count, 'awesome-support' ), $count );
 		} elseif ( 'wpas_bulk_reopen' === $action ) {
+			// translators: %s is the number of tickets.
 			$message = sprintf( _n( '%s ticket has been reopened.', '%s tickets have been reopened.', $count, 'awesome-support' ), $count );
 		} elseif ( 'wpas_bulk_delete' === $action ) {
+			// translators: %s is the number of tickets.
 			$message = sprintf( _n( '%s auto-draft ticket has been permanently deleted.', '%s auto-draft tickets have been permanently deleted.', $count, 'awesome-support' ), $count );
 		}
 

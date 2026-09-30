@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_filter( 'wpas_plugin_settings', 'wpas_addon_settings_file_upload', 10, 1 );
 /**
  * Add plugin file upload settings.

@@ -1,6 +1,12 @@
 <?php
 
+
 namespace WPAS_API\API;
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 use WPAS_API\Auth\User;
 use WP_REST_Controller;

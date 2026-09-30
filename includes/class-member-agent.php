@@ -9,6 +9,12 @@
  * @copyright 2014-2017 AwesomeSupport
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_action( 'wpas_ticket_assignee_changed', 'wpas_update_ticket_count_on_transfer', 10, 2 );
 /**
  * Update the open agent tickets count when a ticket is transferred from one agent to another

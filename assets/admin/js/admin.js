@@ -123,7 +123,8 @@
                 replyID = $(this).data('replyid'),
                 data = {
                     'action': 'wpas_mark_reply_read',
-                    'reply_id': replyID
+                    'reply_id': replyID,
+                    'security': wpas.mark_reply_read_nonce
                 };
 
             $.post(ajaxurl, data, function (response) {

@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /*
  * Create a preview of a font
  */
@@ -100,7 +105,8 @@ if ( $textShadowLocation != 'none' ) {
 				}
 			}
 
-			printf( "<link rel='stylesheet' href='//fonts.googleapis.com/css?subset=latin,cyrillic-ext,greek-ext,greek,latin-ext,vietnamese,cyrillic' type='text/css' media='all' />");
+			// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet -- Standalone iframe preview document.
+			printf( "<link rel='stylesheet' href='https://fonts.googleapis.com/css?subset=latin,cyrillic-ext,greek-ext,greek,latin-ext,vietnamese,cyrillic' type='text/css' media='all' />" );
 			$fontFamily = str_replace( ' ', '+', str_replace( '%20', '+', $fontFamily ) );
 			$fontFamily = '"' . $fontFamily . '"';
 			$weight = implode( ',', $weight );

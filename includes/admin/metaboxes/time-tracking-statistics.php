@@ -8,9 +8,10 @@
 	 */
 
 	// If this file is called directly, abort.
-	if ( !defined( 'WPINC' ) ) {
-		die;
-	} ?>
+	// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+} ?>
 
 <div class="wpas-custom-fields wpas-time-tracking-statistics-mb">
 	<?php

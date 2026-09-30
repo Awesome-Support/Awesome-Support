@@ -12,7 +12,13 @@
 	 * @copyright 2014-2017 AwesomeSupport
 	 */
 
-	add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
+	
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 	/**
 	 * Alter page content for single ticket.
 	 *

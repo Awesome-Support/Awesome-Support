@@ -5,6 +5,12 @@
  * @since 3.2.0
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Upgrade function for version 3.2.0
  *

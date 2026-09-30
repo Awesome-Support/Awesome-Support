@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_action( 'wpas_do_register', 'wpas_register_account' );
 /**
  * Register user account.
@@ -1717,12 +1722,12 @@ function wpas_do_mr_activate_user( $data ) {
 
 		// FIX: Add capability check
         if ( ! current_user_can( 'edit_users' ) ) {
-            wp_die( __( 'You do not have permission to activate users.', 'awesome-support' ), 403 );
+            wp_die( esc_html__( 'You do not have permission to activate users.', 'awesome-support' ), 403 );
         }
         
         // FIX: Verify current user can edit the target user
         if ( ! current_user_can( 'edit_user', $user_id ) ) {
-            wp_die( __( 'You do not have permission to edit this user.', 'awesome-support' ), 403 );
+            wp_die( esc_html__( 'You do not have permission to edit this user.', 'awesome-support' ), 403 );
         }
 
 		$role = wpas_get_option( 'moderated_activated_user_role' );
@@ -1767,11 +1772,11 @@ function wpas_do_mr_deny_user( $data ) {
 	if( $user_id ) {
 
 		if ( ! current_user_can( 'edit_users' ) ) {
-			wp_die( __( 'You do not have permission to deny users.', 'awesome-support' ), 403 );
+			wp_die( esc_html__( 'You do not have permission to deny users.', 'awesome-support' ), 403 );
 		}
 
 		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			wp_die( __( 'You do not have permission to edit this user.', 'awesome-support' ), 403 );
+			wp_die( esc_html__( 'You do not have permission to edit this user.', 'awesome-support' ), 403 );
 		}
 
 		update_user_option( $user_id, 'mr_user_denied', 'yes' );

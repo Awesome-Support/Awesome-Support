@@ -1,3 +1,9 @@
+<?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div class="row row-wpas-more">	
 	<div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
 		<div class="about-body">
@@ -10,9 +16,9 @@
 		<div class="about-body">
 			<h2><?php echo esc_html__( 'Contributing', 'awesome-support' );?></h2>
 			<h4><?php echo esc_html__( 'Open Source', 'awesome-support' );?></h4>
-			<p><?php echo __( 'The code is open source and <a href="https://github.com/ThemeAvenue/Awesome-Support" target="_blank">available on GitHub</a> for anyone to contribute. Even you.', 'awesome-support' );?></p>
+			<p><?php echo wp_kses_post( __( 'The code is open source and <a href="https://github.com/ThemeAvenue/Awesome-Support" target="_blank">available on GitHub</a> for anyone to contribute. Even you.', 'awesome-support' ) ); ?></p>
 			<h4><?php echo esc_html__( 'Translation Ready', 'awesome-support' );?></h4>
-			<p><?php echo __( 'The plugin is fully localized. You can <a href="https://poeditor.com/join/project/P6HgfPnBt4" target="_blank">translate the plugin</a> in any language!', 'awesome-support' );?></p>
+			<p><?php echo wp_kses_post( __( 'The plugin is fully localized. You can <a href="https://poeditor.com/join/project/P6HgfPnBt4" target="_blank">translate the plugin</a> in any language!', 'awesome-support' ) ); ?></p>
 			<h4><?php echo esc_html__( 'Rate the plugin', 'awesome-support' );?></h4>
 			<p><?php echo esc_html__( 'If you like the plugin, make sure to rate it on the WordPress Repository website. This is perhaps one of the best way to share the love for our plugin!', 'awesome-support' );?></p>
 			<a href="https://wordpress.org/support/view/plugin-reviews/awesome-support?rate=5#postform" target="_blank"><?php echo esc_html__( 'Rate the plugin now!', 'awesome-support' );?> →</a>

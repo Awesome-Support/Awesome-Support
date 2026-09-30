@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 if( ! function_exists( 'boolval' ) ) {
     /**
      * Get the boolean value of a variable

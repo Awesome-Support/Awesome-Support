@@ -7,6 +7,12 @@
  * 
  * @return int
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function wpas_count_user_replies( $ticket_id, $user_id ) {
 	
 	global $wpdb;

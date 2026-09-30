@@ -22,8 +22,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {

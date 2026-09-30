@@ -8,6 +8,12 @@
  * @license   GPL-2.0+
  * @link      https://getawesomesupport.com
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class WPAS_Privacy_Option {
 	/**
 	 * Instance of this class.
@@ -420,7 +426,7 @@ class WPAS_Privacy_Option {
 										<span class="wpas-system-tools-desc">
 											<?php 
 												// translators: %s is the consent_name.
-												echo sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ),  $consent_name); 
+												echo sprintf( esc_html__( 'Set %s Consent status for all Awesome support Users', 'awesome-support' ), esc_html( $consent_name ) ); 
 											?></span>
 									</td>
 								</tr>
@@ -672,7 +678,7 @@ class WPAS_Privacy_Option {
 
 		$user_id = username_exists( $user_name );
 		$url = get_site_url();
-		$urlobj = parse_url($url);
+		$urlobj = wp_parse_url($url);
 		$site_name = 'domain.com';
 		$domain = ($urlobj['host'])? $urlobj['host']: '';
 		if (preg_match('/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i', $domain, $regs)) {
@@ -1108,8 +1114,15 @@ class WPAS_Privacy_Option {
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item   	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] )) : '';
-			$user   	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
+			$item = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] ) ) : '';
+			$user = isset( $_POST['data']['gdpr-user'] ) ? absint( wp_unslash( $_POST['data']['gdpr-user'] ) ) : 0;
+
+			if ( ! $this->wpas_gdpr_can_edit_user_consent( $user ) || ! $this->wpas_gdpr_is_allowed_consent_item( $item, $user ) ) {
+				$response['message']['error'] = __( 'Cheating huh?', 'awesome-support' );
+				wp_send_json( $response );
+				wp_die();
+			}
+
 			$status 	= __( 'Opted-in', 'awesome-support' );
 			$opt_in 	= strtotime( 'NOW' );
 			$opt_out   	= isset( $_POST['data']['gdpr-optout'] ) ? strtotime( sanitize_text_field( wp_unslash( $_POST['data']['gdpr-optout'] )) ) : '';
@@ -1142,8 +1155,10 @@ class WPAS_Privacy_Option {
 			 */
 			if( wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
 				$response['message']['button']  = sprintf(
-					'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
-					__( 'Opt-out', 'awesome-support' )
+					'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="%1$s" data-user="%2$d">%3$s</a>',
+					esc_attr( $item ),
+					(int) get_current_user_id(),
+					esc_html__( 'Opt-out', 'awesome-support' )
 				);
 			} else {
 				$response['message']['button']  = '';
@@ -1183,8 +1198,15 @@ class WPAS_Privacy_Option {
 		 */
 		if ( ! empty( $nonce ) && check_ajax_referer( 'wpas-gdpr-nonce', 'security' ) ) {
 
-			$item    	= isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] )) : '';
-			$user    	= isset( $_POST['data']['gdpr-user'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-user'] )) : '';
+			$item    = isset( $_POST['data']['gdpr-data'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['gdpr-data'] ) ) : '';
+			$user    = isset( $_POST['data']['gdpr-user'] ) ? absint( wp_unslash( $_POST['data']['gdpr-user'] ) ) : 0;
+
+			if ( ! $this->wpas_gdpr_can_edit_user_consent( $user ) || ! $this->wpas_gdpr_is_allowed_consent_item( $item, $user ) ) {
+				$response['message']['error'] = __( 'Cheating huh?', 'awesome-support' );
+				wp_send_json( $response );
+				wp_die();
+			}
+
 			$status  	= __( 'Opted-Out', 'awesome-support' );
 			$opt_out 	= strtotime( 'NOW' );
 			$opt_in   	= isset( $_POST['data']['gdpr-optin'] ) ? strtotime( sanitize_text_field( wp_unslash( $_POST['data']['gdpr-optin'] )) ) : '';
@@ -1211,14 +1233,69 @@ class WPAS_Privacy_Option {
 			$response['message']['date']    = gmdate( 'm/d/Y', $opt_out );
 			$response['message']['status']    = $status;
 			$response['message']['button']  = sprintf(
-				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
-				__( 'Opt-in', 'awesome-support' )
+				'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="%1$s" data-user="%2$d">%3$s</a>',
+				esc_attr( $item ),
+				(int) get_current_user_id(),
+				esc_html__( 'Opt-in', 'awesome-support' )
 			);
 		} else {
 			$response['message']['error'] = __( 'Cheating huh?', 'awesome-support' );
 		}
 		wp_send_json( $response );
 		wp_die();
+	}
+
+	/**
+	 * Only the logged-in account may change its own consent.
+	 * 
+	 * @param int $user_id Target user ID.
+	 * @return bool
+	 */
+	private function wpas_gdpr_can_edit_user_consent( $user_id ) {
+		$user_id = absint( $user_id );
+
+		return $user_id > 0 && get_current_user_id() === $user_id;
+	}
+
+	/**
+	 * Allow a configured GDPR notice, or a consent row already stored for this user.
+	 * A new arbitrary label is rejected.
+	 *
+	 * @param string $item    Submitted consent label.
+	 * @param int    $user_id Target user ID.
+	 * @return bool
+	 */
+	private function wpas_gdpr_is_allowed_consent_item( $item, $user_id ) {
+		if ( ! is_string( $item ) || '' === $item ) {
+			return false;
+		}
+
+		if ( false !== wpas_get_gdpr_data( $item ) ) {
+			return true;
+		}
+
+		foreach ( array( 'gdpr_notice_short_desc_01', 'gdpr_notice_short_desc_02', 'gdpr_notice_short_desc_03' ) as $option_key ) {
+			$label = wpas_get_option( $option_key, '' );
+			if ( is_string( $label ) && '' !== $label && sanitize_text_field( $label ) === $item ) {
+				return true;
+			}
+		}
+
+		$tracked = get_user_option( 'wpas_consent_tracking', absint( $user_id ) );
+		if ( ! is_array( $tracked ) ) {
+			return false;
+		}
+
+		foreach ( $tracked as $consent ) {
+			if ( empty( $consent['item'] ) || ! empty( $consent['is_tor'] ) || ! is_string( $consent['item'] ) ) {
+				continue;
+			}
+			if ( $consent['item'] === $item || sanitize_text_field( $consent['item'] ) === $item ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

@@ -1,6 +1,30 @@
-<p><?php echo __( 'View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a>', 'awesome-support' );?></p>
+<?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
+<p><?php echo wp_kses_post( __( 'View a full changelog on <a href="https://wordpress.org/plugins/awesome-support/#developers">WordPress.org</a>', 'awesome-support' ) ); ?></p>
 
 <div class="changelog">
+
+	<div class="row">
+		<div>
+			<div class="about-body">
+				<h1>What's New In 6.4.1</h1>
+				<h3>6.4.1 includes security patches, bug fixes and improvements. Here is a more comprehensive list:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Security: Patched stored XSS in GDPR consent by restricting cross-user writes and escaping consent output.</li>
+					<li>Security: Fixed incorrect authorization in mark-reply-read and edit-reply AJAX handlers (CWE-863).</li>
+					<li>Fix: Fixed file uploader using get_attached_file() instead of unreliable attachment guid URL.</li>
+					<li>Fix: Fixed WP-Cron incorrectly changing current user context — now properly restores original user after capability check.</li>
+					<li>Fix: Fixed PHP 8.2+ deprecation warnings and coding standards issues flagged by WordPress Plugin Check (PCP).</li>
+					<li>Fix: Fixed infinite redirect loop (ERR_TOO_MANY_REDIRECTS) when "New Ticket Form Redirect" points to the submit ticket page.</li>
+					<li>Fix: Fixed Default Assignee empty when MySQL ANSI_QUOTES mode is enabled.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 
 	<div class="row">
 		<div>

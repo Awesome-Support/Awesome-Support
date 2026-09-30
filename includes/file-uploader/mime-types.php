@@ -10,6 +10,12 @@
  *
  * @return string
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function wpas_get_mime_type( $extension ) {
 
 	$mime = $extension;

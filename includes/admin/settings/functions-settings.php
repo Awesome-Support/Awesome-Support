@@ -8,6 +8,12 @@
  *
  * @since  3.0.0
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $GLOBALS['wpas_pages_static_cache'] = array();
 
 /**

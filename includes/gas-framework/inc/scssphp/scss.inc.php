@@ -9,6 +9,12 @@
  *
  * @link http://leafo.net/scssphp
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * The scss compiler and parser.
  *

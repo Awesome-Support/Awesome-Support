@@ -139,11 +139,34 @@ function wp_session_manager_deactivated_notice()
 
 /**
  * If a session hasn't already been started by some external system, start one!
+ *
+ * Modified by Awesome Support:
+ * - Option 3: session_cache_limiter('') prevents PHP from sending
+ *   Cache-Control: no-store headers that poison CDN/Cloudflare caches.
+ * - Option 1: Gate session start so anonymous visitors on pages unrelated
+ *   to the helpdesk never get a PHPSESSID cookie or cache-busting headers.
+ *   Session is started only when:
+ *     (a) the visitor already has a session cookie (resume existing session),
+ *     (b) the user is logged in,
+ *     (c) it's an admin request, or
+ *     (d) it's a POST request (form submission / registration).
  */
 if ( ! function_exists( 'wp_session_manager_start_session' )) {
     function wp_session_manager_start_session()
     {
+        /**
+         * Option 1 – Gate: skip session_start() entirely for anonymous
+         * GET requests that have no existing session cookie.
+         */
+        $has_session_cookie = isset( $_COOKIE[ session_name() ] ) || isset( $_COOKIE['_wpas_session'] );
+
+        if ( ! $has_session_cookie && ! is_user_logged_in() && ! is_admin() && empty( $_POST ) ) {
+            return;
+        }
+
         if (session_status() !== PHP_SESSION_ACTIVE  && !headers_sent()) {
+            // Option 3 – Prevent PHP from adding Cache-Control: no-store headers.
+            session_cache_limiter('');
             session_start();
         }
     }

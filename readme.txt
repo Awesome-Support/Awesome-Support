@@ -2,9 +2,10 @@
 
 Contributors: awesomesupport,julien731,rwkiii,elindydotcom,SiamKreative,alaca
 Tags: helpdesk,ticket system,support,tickets,support ticket
-Requires at least: 4.0
-Tested up to: 7.0
-Stable tag: 6.4.0
+Requires at least: 5.6
+Requires PHP: 7.4
+Tested up to: 7.1
+Stable tag: 6.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -290,6 +291,19 @@ There are several factors that can influence e-mail notifications delivery. Plea
 77. Free Woocommerce Integration: Adds the SUBMIT TICKET and MY TICKET page links to the WooCommerce user dashboard
 
 == Changelog ==
+
+= 6.4.1 =
+
+* Security
+	* Patched stored XSS in GDPR consent by restricting cross-user writes and escaping consent output.
+	* Fixed incorrect authorization in mark-reply-read and edit-reply AJAX handlers — capability check now enforced before state changes.
+
+* Fix
+	* Fixed file uploader using get_attached_file() instead of unreliable attachment guid URL.
+	* Fixed WP-Cron incorrectly changing current user context — now properly restores original user after capability check.
+	* Fixed PHP 8.2+ deprecation warnings and coding standards issues flagged by WordPress Plugin Check (PCP).
+	* Fixed infinite redirect loop (ERR_TOO_MANY_REDIRECTS) when "New Ticket Form Redirect" points to the submit ticket page.
+	* Fixed Default Assignee empty when MySQL ANSI_QUOTES mode is enabled — replaced double-quoted LIKE values with properly prepared single-quoted placeholders.
 
 = 6.4.0 =
 

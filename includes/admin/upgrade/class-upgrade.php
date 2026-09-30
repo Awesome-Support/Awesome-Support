@@ -9,6 +9,12 @@
  * @copyright 2014-2017 AwesomeSupport
  * @since     3.2.0
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class WPAS_Upgrade {
 
 	/**

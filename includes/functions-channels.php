@@ -4,6 +4,12 @@
  * List of default channels
  * @return array
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function wpas_default_channels() {
 	$channels = array(
 		'Standard Ticket Form',

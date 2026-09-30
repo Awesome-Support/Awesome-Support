@@ -10,6 +10,12 @@
  * redirect to "read only" pages after the function was executed.
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Build the link that triggers a specific tool.
  *

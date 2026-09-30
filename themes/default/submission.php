@@ -6,6 +6,12 @@
  * will be overwritten during next update of the plugin.
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $post;
 ?>
 

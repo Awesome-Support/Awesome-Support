@@ -89,7 +89,8 @@ if ( class_exists( 'GASFrameworkOption' ) ) {
 					$this->check( $license, 'activate_license' );
 
 					/* Redirect to the settings page without the eddactivate parameter (otherwise it's used in all tabs links) */
-					wp_redirect( wp_sanitize_redirect( add_query_arg( $get, admin_url( $pagenow ) ) ) );
+					wp_safe_redirect( wp_sanitize_redirect( add_query_arg( $get, admin_url( $pagenow ) ) ) );
+					exit;
 				}
 
 				/* First activation of the license. */

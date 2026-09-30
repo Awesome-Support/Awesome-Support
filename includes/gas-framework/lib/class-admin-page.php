@@ -367,7 +367,8 @@ class GASFrameworkAdminPage {
 		}
 
 		do_action( 'tf_admin_options_saved_' . $this->getOptionNamespace() );
-		wp_redirect( esc_url_raw( $url ) );		
+		wp_safe_redirect( esc_url_raw( $url ) );
+		exit;
 	}
 
 	private function verifySecurity() {

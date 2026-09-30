@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 add_shortcode( 'tickets', 'wpas_sc_client_account' );
 /**
  * Registration page shortcode.

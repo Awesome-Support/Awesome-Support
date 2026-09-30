@@ -1,4 +1,8 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 $tools_tabs['status'] = array( 'name' => __('System Status', 'awesome-support') );
 if( current_user_can( 'administrator' ) ) {

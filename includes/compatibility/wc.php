@@ -1,8 +1,8 @@
 <?php
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 add_action( 'admin_enqueue_scripts', 'wpas_override_wc_select2_style', 12 );

@@ -9,6 +9,12 @@
  * @link      https://getawesomesupport.com
  * @copyright 2014-2017 AwesomeSupport
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class WPAS_File_Upload {
 
 	/**
@@ -647,30 +653,23 @@ class WPAS_File_Upload {
 				wp_die( esc_html__( 'You are not allowed to view this attachment', 'awesome-support' ) );
 			}
 
-			$render_method = wpas_get_option( 'attachment_render_method', 'inline');  // returns 'inline' or 'attachment'.
+			$render_method = wpas_get_option( 'attachment_render_method', 'inline' ); // returns 'inline' or 'attachment'.
 
-			$filename = basename( $attachment->guid );
+			$file_path = get_attached_file( $attachment->ID );
+
+			if ( ! $file_path || ! file_exists( $file_path ) ) {
+				wp_die( esc_html__( 'The requested file could not be found', 'awesome-support' ) );
+			}
+
+			$filename = basename( $file_path );
 
 			ob_clean();
 			ob_end_flush();
 
-			ini_set( 'user_agent', 'Awesome Support/' . WPAS_VERSION . '; ' . get_bloginfo( 'url' ) );
 			header( "Content-Type: $attachment->post_mime_type" );
 			header( "Content-Disposition: $render_method; filename=\"$filename\"" );
 
-			switch ($render_method) {
-				case 'inline':
-					$this->custom_readfile( $attachment->guid );
-					break ;
-
-				case 'attachment':
-					$this->custom_readfile( ( isset( $_SERVER['DOCUMENT_ROOT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) : '' ) . parse_url($attachment->guid, PHP_URL_PATH) );
-					break ;
-
-				default:
-					$this->custom_readfile( $attachment->guid );
-					break ;
-			};
+			$this->custom_readfile( $file_path );
 
 			die();
 
@@ -684,41 +683,35 @@ class WPAS_File_Upload {
 	 * @param  mixed $file_path
 	 * @return void
 	 */
-	private function custom_readfile($file_path) {
+	private function custom_readfile( $file_path ) {
 
-		$uploads = wp_upload_dir();
-
-		// public url
-		$baseurl = $uploads['baseurl']; 
-
-		// filesystem path
-		$basedir = $uploads['basedir']; 
-
-		// replace public url with filesystem path
-		$file_path = str_replace($baseurl, $basedir, $file_path);
+		// Add Content-Length for proper download progress
+		$filesize = filesize( $file_path );
+		if ( $filesize !== false ) {
+			header( 'Content-Length: ' . $filesize );
+		}
 
 		// Ensure the WP_Filesystem class is available
-		if ( !function_exists('get_filesystem_method') ) {
+		if ( ! function_exists( 'get_filesystem_method' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/file.php';
 		}
 
 		// Initialize WP_Filesystem
 		global $wp_filesystem;
-		if ( empty($wp_filesystem) ) {
+		if ( empty( $wp_filesystem ) ) {
 			WP_Filesystem();
 		}
 
 		// Get the file contents
-		$file_contents = $wp_filesystem->get_contents($file_path);
+		$file_contents = $wp_filesystem->get_contents( $file_path );
 
 		// Check if we successfully got the contents
 		if ( $file_contents === false ) {
-			// Handle the error if reading the file failed
-			return; // or handle the error appropriately
+			return;
 		}
 
-		// Output the file contents
-		print_r($file_contents);
+		// Output the file contents (echo, not print_r, to avoid corrupting binary files)
+		echo $file_contents;
 
 	}
 
@@ -738,9 +731,17 @@ class WPAS_File_Upload {
 
 		if ( defined( 'DOING_CRON' ) && 0 === $current_user->ID ) {
 
+		    $original_user_id = get_current_user_id();
 		    $default_id = (int) wpas_get_option( 'assignee_default', 1 );
 
 		    wp_set_current_user( $default_id );
+
+		    $can_attach = current_user_can( 'attach_files' );
+
+		    // Restore original user context to avoid polluting other cron jobs
+		    wp_set_current_user( $original_user_id );
+
+		    return $can_attach;
 
 		}
 
@@ -1910,7 +1911,7 @@ class WPAS_File_Upload {
 				if ( $file->isDir() ) {
 					$wp_filesystem->delete($file->getRealPath(), true);
 				} else {
-					unlink( $file->getRealPath() );
+					wp_delete_file( $file->getRealPath() );
 				}
 			}
 			$wp_filesystem->delete($upload['path'], true);
@@ -2090,7 +2091,7 @@ class WPAS_File_Upload {
 			do_action( 'wpas_before_delete_temp_attachment', $ticket_id, $user_id, $attachment );
 
 			if ( file_exists( $file ) ) {
-				unlink( $file );
+				wp_delete_file( $file );
 			}			
 		}
 		wp_die();
@@ -2338,7 +2339,7 @@ class WPAS_File_Upload {
 				$wp_filesystem->delete($file->getRealPath(), true);
 
 			} else {
-				unlink( $file->getRealPath() );
+				wp_delete_file( $file->getRealPath() );
 			}
 		}
 		$wp_filesystem->delete($directory, true);

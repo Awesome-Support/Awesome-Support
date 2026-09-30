@@ -4,6 +4,12 @@
  *
  * @var object
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 $items = get_transient( 'wpas_addonsx' );
 setlocale( LC_MONETARY, get_locale() );
 

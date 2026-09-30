@@ -5,6 +5,12 @@
  * @since  3.1.5
  * @return array Array of dismissed notices
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function wpas_dismissed_notices() {
 
 	global $current_user;

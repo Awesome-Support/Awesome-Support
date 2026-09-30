@@ -1,3 +1,9 @@
+<?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+?>
 <div id="wpas-ticket-message" class="wpas-ticket-content">
 	<?php
 	/**

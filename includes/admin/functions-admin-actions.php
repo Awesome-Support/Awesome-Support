@@ -8,8 +8,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 
@@ -34,7 +34,7 @@ function admin_head_post_editing() {
 		else {
 			//Not allowed to view ticket - write to log file and bail out.
 			wpas_write_log('security', 'A logged in user attempted to access a ticket without the necessary permissions. ' . 'Ticket id: ' . (string) $post_ID . ', Logged In user ID: ' . (string) $current_user->ID ) ;
-			wp_redirect( add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) ) );
+			wp_safe_redirect( add_query_arg( array( 'post_type' => 'ticket' ), admin_url( 'edit.php' ) ) );
 			exit;
 		}
 	}
@@ -87,7 +87,7 @@ function wpas_admin_action_close_ticket( $data ) {
 		$redirect_to = WPAS()->session->get( 'redirect' );
 	}
 
-	wp_redirect( wp_sanitize_redirect( $redirect_to ) );
+	wp_safe_redirect( wp_sanitize_redirect( $redirect_to ) );
 	exit;
 
 }
@@ -123,7 +123,7 @@ function wpas_admin_action_open_ticket( $data ) {
 		'wpas-message' => 'opened'
 	), admin_url( 'post.php' ) );
 
-	wp_redirect( wp_sanitize_redirect( $redirect_to ) );
+	wp_safe_redirect( wp_sanitize_redirect( $redirect_to ) );
 	exit;
 
 }
@@ -197,7 +197,7 @@ function wpas_admin_action_trash_reply( $data ) {
 		'post'         => $data['post'],
 	), admin_url( 'post.php' ) );
 
-	wp_redirect( wp_sanitize_redirect( "$redirect_to#wpas-post-$reply_id" ) );
+	wp_safe_redirect( wp_sanitize_redirect( "$redirect_to#wpas-post-$reply_id" ) );
 	exit;
 
 }

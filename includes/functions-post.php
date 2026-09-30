@@ -6,6 +6,12 @@
  * @since  3.0.0
  * @param  null 
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 function wpas_clean_ticketcount_cache() {
 	
 	set_site_transient( 'wpas_tickets_counts', null, 24 * HOUR_IN_SECONDS );
@@ -68,7 +74,7 @@ function wpas_open_ticket( $data ) {
 
 		// Redirect to submit page
 		wpas_add_error( 'cannot_open_ticket', __( 'You do not have the capacity to open a new ticket.', 'awesome-support' ) );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		// Break
 		exit;
@@ -82,7 +88,7 @@ function wpas_open_ticket( $data ) {
 
 		// Redirect to submit page
 		wpas_add_error( 'missing_title', __( 'It is mandatory to provide a title for your issue.', 'awesome-support' ) );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		// Break
 		exit;
@@ -95,7 +101,7 @@ function wpas_open_ticket( $data ) {
 
 		// Redirect to submit page
 		wpas_add_error( 'missing_description', __( 'It is mandatory to provide a description for your issue.', 'awesome-support' ) );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		// Break
 		exit;
@@ -128,7 +134,7 @@ function wpas_open_ticket( $data ) {
 
 		/* Redirect to submit page */
 		wpas_add_error( 'validation_issue', $message );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		exit;
 
@@ -150,7 +156,7 @@ function wpas_open_ticket( $data ) {
 
 		// Redirect to submit page
 		wpas_add_error( 'unknown_user', __( 'Only registered accounts can submit a ticket. Please register first.', 'awesome-support' ) );
-		wp_redirect( $submit );
+		wp_safe_redirect( $submit );
 
 		exit;
 
@@ -204,7 +210,7 @@ function wpas_new_ticket_submission( $data ) {
 
 			// Redirect to submit page
 			wpas_add_error( 'nonce_verification_failed', __( 'The authenticity of your submission could not be validated. If this ticket is legitimate please try submitting again.', 'awesome-support' ) );
-			wp_redirect( wp_sanitize_redirect( home_url( isset( $_POST['_wp_http_referer']) ? sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) : "" ) ) );
+			wp_safe_redirect( wp_sanitize_redirect( home_url( isset( $_POST['_wp_http_referer']) ? sanitize_text_field( wp_unslash( $_POST['_wp_http_referer'] ) ) : "" ) ) );
 			exit;
 		}
 
@@ -225,7 +231,7 @@ function wpas_new_ticket_submission( $data ) {
 			 * Redirect to the referrer since ticket creation failed....
 			 */
 			wpas_add_error( 'submission_error', __( 'The ticket couldn\'t be submitted for an unknown reason.', 'awesome-support' ) );
-			wp_redirect( wp_sanitize_redirect( home_url( $data['_wp_http_referer'] ) ) );
+			wp_safe_redirect( wp_sanitize_redirect( home_url( $data['_wp_http_referer'] ) ) );
 			exit;
 
 		} /* Submission succeeded */
@@ -964,15 +970,32 @@ add_action( 'wp_ajax_wpas_mark_reply_read', 'wpas_mark_reply_read_ajax' );
  */
 function wpas_mark_reply_read_ajax() {
 
-	$ID = wpas_mark_reply_read();
+	/* Security: verify nonce */
+	if ( ! check_ajax_referer( 'wpas-mark-reply-read', 'security', false ) ) {
+		wp_send_json_error( array( 'message' => __( 'Session expired. Please refresh the page and try again.', 'awesome-support' ) ), 403 );
+	}
 
-	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_ticket') ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to mark a ticket reply as read with Ajax.', 'awesome-support') ), 403);		
-	}	
+	/* Security: check capability BEFORE any state change */
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Unauthorized action. You do not have permission to mark a ticket reply as read with Ajax.', 'awesome-support' ) ), 403 );
+	}
+
+	/* Validate reply_id and post_type */
+	$reply_id = isset( $_POST['reply_id'] ) ? intval( $_POST['reply_id'] ) : 0;
+	if ( ! $reply_id ) {
+		wp_send_json_error( array( 'message' => __( 'Invalid reply ID.', 'awesome-support' ) ), 400 );
+	}
+
+	$reply = get_post( $reply_id );
+	if ( ! $reply || 'ticket_reply' !== $reply->post_type ) {
+		wp_send_json_error( array( 'message' => __( 'Invalid reply.', 'awesome-support' ) ), 400 );
+	}
+
+	/* All checks passed — now perform the state change */
+	$ID = wpas_mark_reply_read( $reply_id );
 
 	if ( false === $ID || is_wp_error( $ID ) ) {
-		$ID = $ID->get_error_message();
+		$ID = is_wp_error( $ID ) ? $ID->get_error_message() : '';
 	}
 
 	echo esc_attr( $ID );
@@ -991,12 +1014,13 @@ function wpas_edit_reply_ajax() {
 		wp_send_json_error( array( 'message' => "You don't have access to perform this action." ) );
 		die();
 	}
-	$ID = wpas_edit_reply();
 
-	//Check permission for capability of current user
-	if ( ! current_user_can( 'edit_ticket') ) {
-		wp_send_json_error( array('message' => __('Unauthorized action. You do not have permission to edit a reply with Ajax.', 'awesome-support') ), 403);		
+	/* Security: check capability BEFORE any state change */
+	if ( ! current_user_can( 'edit_ticket' ) ) {
+		wp_send_json_error( array( 'message' => __( 'Unauthorized action. You do not have permission to edit a reply with Ajax.', 'awesome-support' ) ), 403 );
 	}
+
+	$ID = wpas_edit_reply();
 	
 	if ( false === $ID ) {
 		echo "Invalid data!";

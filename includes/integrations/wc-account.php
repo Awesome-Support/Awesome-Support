@@ -9,7 +9,13 @@
  *
  */
 
- class WPAS_WC_MyAccount {
+ 
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class WPAS_WC_MyAccount {
 
 	/**
 	 * Custom endpoint name for the ticket list

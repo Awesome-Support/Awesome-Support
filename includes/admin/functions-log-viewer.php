@@ -6,6 +6,12 @@
  * Time: 8:34 PM
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /*
 log viewer - just a couple of minor changes:
 1. Don't show the logs folder or show it at the bottom of the screen.
@@ -126,7 +132,9 @@ add_action( 'wp_ajax_wpas_tools_log_viewer_delete', 'wpas_tools_log_viewer_delet
  */
 function wpas_log_viewer_delete_file( $file ) {
 
-	if( unlink( get_logs_path() . $file ) ) {
+	$file_path = get_logs_path() . $file;
+	wp_delete_file( $file_path );
+	if( ! file_exists( $file_path ) ) {
 		$code = '200';
 		$content = "Deleted " . $file . " successfully.";
 	}

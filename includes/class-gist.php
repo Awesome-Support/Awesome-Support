@@ -16,6 +16,12 @@
  * @since     3.1.3
  */
 
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 // Register Gist support
 add_action( 'plugins_loaded', array( 'WPAS_Gist', 'get_instance' ), 11, 0 );
 
@@ -109,7 +115,8 @@ class WPAS_Gist {
 		// translators: %s is the URL to view the code on Gist.
 		$x_content = __( 'View the code on <a href="%s">Gist</a>.', 'awesome-support' );
 		$noscript = sprintf( $x_content, esc_url( $url ) );
-		$embed = sprintf( '<div class="oembed-gist"><script src="%s"></script><noscript>%s</noscript></div>', $url, $noscript );
+		// phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedScript -- GitHub Gist oEmbed requires inline script tag.
+		$embed = sprintf( '<div class="oembed-gist"><script src="%s"></script><noscript>%s</noscript></div>', esc_url( $url ), $noscript );
 
 		return apply_filters( 'embed_gist', $embed, $matches, $attr, $url, $rawattr );
 

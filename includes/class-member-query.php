@@ -10,8 +10,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -359,7 +359,7 @@ class WPAS_Member_Query {
 			$like = array();
 
 			foreach ( $roles as $role ) {
-				$like[] = $wpdb->prepare( 'CAST(%1$s AS CHAR) LIKE "'. '%2$s' .'"', "$wpdb->usermeta.meta_value", "%$role%" );
+				$like[] = $wpdb->prepare( "CAST({$wpdb->usermeta}.meta_value AS CHAR) LIKE %s", '%' . $wpdb->esc_like( $role ) . '%' );
 			}
 
 			$like = implode( ' OR ', $like );
@@ -375,7 +375,7 @@ class WPAS_Member_Query {
 		if ( ! empty( $this->exclude ) ) {
 
 			// Prepare the IDs query var
-			$ids = implode( ',', $this->exclude );
+			$ids = implode( ',', array_map( 'absint', $this->exclude ) );
 
 			// Exclude users by ID
 			$sql .= " AND ID NOT IN ($ids)";
@@ -386,7 +386,7 @@ class WPAS_Member_Query {
 		if ( ! empty( $this->ids ) ) {
 
 			// Prepare the IDs query var
-			$ids = implode( ',', $this->ids );
+			$ids = implode( ',', array_map( 'absint', $this->ids ) );
 
 			// Exclude users by ID
 			$sql .= " AND ID IN ($ids)";
@@ -404,9 +404,9 @@ class WPAS_Member_Query {
 			$operator     = empty( $search_query ) ? 'OR' : $this->search['relation'];
 			foreach ( $this->search['fields'] as $field ) {
 				if( 'ID' === $field ) {
-					$search_query[] = $wpdb->prepare( 'CAST(%1$s.%2$s AS CHAR) LIKE "'. '%3$s' .'"', $wpdb->users, $field , '%'.$this->search['query'].'%') ;
+					$search_query[] = $wpdb->prepare( "CAST({$wpdb->users}.{$field} AS CHAR) LIKE %s", '%' . $wpdb->esc_like( $this->search['query'] ) . '%' );
 				} else {
-					$search_query[] = $wpdb->prepare( '%1$s.%2$s LIKE "'. '%3$s' .'"' ,$wpdb->users, $field, '%'.$this->search['query'].'%' );
+					$search_query[] = $wpdb->prepare( "{$wpdb->users}.{$field} LIKE %s", '%' . $wpdb->esc_like( $this->search['query'] ) . '%' );
 				}
 			}
 
@@ -418,12 +418,16 @@ class WPAS_Member_Query {
 
 		// Order users by provided args or default by login ID
 		
-		$order_field = $this->orderby ? $this->orderby : 'ID';
-		$order_type = $this->order ? $this->order : 'ASC';
+		$allowed_order_fields = array( 'ID', 'user_login', 'user_nicename', 'user_email', 'user_registered', 'display_name' );
+		$allowed_order_types  = array( 'ASC', 'DESC' );
+
+		$order_field = $this->orderby && in_array( $this->orderby, $allowed_order_fields, true ) ? $this->orderby : 'ID';
+		$order_type  = $this->order && in_array( strtoupper( $this->order ), $allowed_order_types, true ) ? strtoupper( $this->order ) : 'ASC';
 		
-		$sql .= " ORDER BY {$wpdb->users}.{$order_field} {$order_type}";	
+		// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- $sql is built with wpdb->prepare() calls above, $order_field and $order_type are whitelisted
+		$sql .= " ORDER BY {$wpdb->users}.{$order_field} {$order_type}";
 				
-		$this->members = $wpdb->get_results( "$sql" );	
+		$this->members = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared	
 		
 		// Cache the results
 		wp_cache_add( 'users_' . $this->hash, $this->members, 'wpas' );

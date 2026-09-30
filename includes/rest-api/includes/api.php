@@ -5,6 +5,12 @@
  *
  * @since 1.0.0
  */
+
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 class WPAS_API {
 
 	/**

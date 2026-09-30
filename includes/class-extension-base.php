@@ -4,8 +4,8 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 
@@ -270,8 +270,8 @@ abstract class WPAS_Extension_Base {
 			$this->add_error( sprintf( $x_content, $plugin_name ) );
 		}
 
-		// Load the plugin translation.
-		add_action( 'plugins_loaded', array( $this, 'load_plugin_textdomain' ), 15 );
+		// Load the plugin translation on 'init' action (WP 6.7+ requirement).
+		add_action( 'init', array( $this, 'load_plugin_textdomain' ), 10 );
 
 		if ( is_a( $this->error, 'WP_Error' ) ) {
 			add_action( 'admin_notices', array( $this, 'display_error' ), 10, 0 );

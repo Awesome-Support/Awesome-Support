@@ -1,4 +1,10 @@
-<?php defined('WPINC') or exit; ?>
+<?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+ defined('WPINC') or exit; ?>
 
 <div class="wpas-print-ticket-container">
 

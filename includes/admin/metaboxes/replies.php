@@ -1,4 +1,9 @@
 <?php
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 global $post;
 
 $status = get_post_meta( $post->ID, '_wpas_status', true );

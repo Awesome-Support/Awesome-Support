@@ -8,9 +8,9 @@
  * @link      https://getawesomesupport.com
  */
 
-// If this file is called directly, abort!
-if ( ! defined( 'WPINC' ) ) {
-	die;
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 ?>
 <div class="wpas-gdpr-pre-loader">
@@ -82,20 +82,28 @@ if ( ! defined( 'WPINC' ) ) {
 				*/
 				if ( ! empty( $opt_in ) && wpas_get_option( 'gdpr_notice_opt_out_ok_0' . $gdpr_id, false ) ) {
 					$opt_button       = sprintf(
-						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '" data-optin-date="' . $opt_in . '">%s</a>',
-						__( 'Opt-out', 'awesome-support' )
+						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-out" data-gdpr="%1$s" data-user="%2$d" data-optin-date="%3$s">%4$s</a>',
+						esc_attr( $item ),
+						(int) get_current_user_id(),
+						esc_attr( $opt_in ),
+						esc_html__( 'Opt-out', 'awesome-support' )
 					);
 					$opt_button_label = __( 'Opt-out', 'awesome-support' );
 				} elseif ( ! empty( $opt_out ) ) {
 					$opt_button       = sprintf(
-						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '" data-optout-date="' . $opt_out . '">%s</a>',
-						__( 'Opt-in', 'awesome-support' )
+						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="%1$s" data-user="%2$d" data-optout-date="%3$s">%4$s</a>',
+						esc_attr( $item ),
+						(int) get_current_user_id(),
+						esc_attr( $opt_out ),
+						esc_html__( 'Opt-in', 'awesome-support' )
 					);
 					$opt_button_label = __( 'Opt-in', 'awesome-support' );
 				} elseif ( empty( $opt_in ) && empty( $opt_out ) ) {
 					$opt_button       = sprintf(
-						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="' . $item . '" data-user="' . get_current_user_id() . '">%s</a>',
-						__( 'Opt-in', 'awesome-support' )
+						'<a href="#" class="button button-secondary wpas-button wpas-gdpr-opt-in" data-gdpr="%1$s" data-user="%2$d">%3$s</a>',
+						esc_attr( $item ),
+						(int) get_current_user_id(),
+						esc_html__( 'Opt-in', 'awesome-support' )
 					);
 					$opt_button_label = __( 'Opt-in', 'awesome-support' );
 				}

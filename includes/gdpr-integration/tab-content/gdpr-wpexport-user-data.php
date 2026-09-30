@@ -8,9 +8,9 @@
  * @link      https://getawesomesupport.com
  */
 
-// If this file is called directly, abort!
-if ( ! defined( 'WPINC' ) ) {
-	die;
+// If this file is called directly, abort.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 // Get subject based on settings option!
