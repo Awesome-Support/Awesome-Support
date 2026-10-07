@@ -14,7 +14,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<h1>What's New In 6.4.2</h1>
 				<h3>6.4.2 includes a security patch. Here is the detail:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
-					<li>Security: Fixed stored XSS via ticket attachment MIME confusion in drag-n-drop uploader (CVE).</li>
+					<li>Security: Patched Authenticated Stored Cross-Site Scripting via Ticket Attachment MIME Confusion.</li>
 				</ul>
 			</div>
 		</div>
