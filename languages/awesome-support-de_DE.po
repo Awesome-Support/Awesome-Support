@@ -356,7 +356,7 @@ msgstr "Das Ticket #%s wurde (neu)eröffnet."
 
 #: includes/admin/class-admin.php:557 includes/admin/functions-misc.php:74
 msgid "The ticket #%s has been closed."
-msgstr "Das Ticket #%s wurde geschloßen."
+msgstr "Das Ticket #%s wurde geschlossen."
 
 #: includes/admin/class-admin.php:595 includes/install.php:333
 msgid ""
@@ -603,7 +603,7 @@ msgstr ""
 #: includes/admin/metaboxes/replies.php:169
 #: includes/admin/metaboxes/replies.php:171
 msgid "Ticket is closed"
-msgstr "Das Ticket ist geschloßen."
+msgstr "Das Ticket ist geschlossen."
 
 #: includes/admin/metaboxes/replies.php:155
 #: includes/admin/metaboxes/replies.php:157
@@ -613,7 +613,7 @@ msgid ""
 "This ticket has been closed. If you want to write a new reply to this "
 "ticket, you need to <a href=\"%s\">re-open it first</a>."
 msgstr ""
-"Das Ticket wurde geschloßen. Wenn du eine Antwort schreiben möchtest, musst "
+"Das Ticket wurde geschlossen. Wenn du eine Antwort schreiben möchtest, musst "
 "du das Ticket zuerst <a href=\"%s\">erneut öffnen</a>."
 
 #: includes/admin/metaboxes/stakeholders.php:31
@@ -1221,11 +1221,11 @@ msgstr "Ticket #{ticket_id}"
 #: includes/admin/settings/settings-notifications.php:139
 #: includes/admin/settings/settings-notifications.php:180
 msgid "Ticket Will Be Closed"
-msgstr "Das Ticket wird geschloßen"
+msgstr "Das Ticket wird geschlossen"
 
 #: includes/admin/settings/settings-notifications.php:164
 msgid "Ticket Closed"
-msgstr "Ticket geschloßen"
+msgstr "Ticket geschlossen"
 
 #: includes/admin/settings/settings-notifications.php:178
 #: includes/admin/settings/settings-notifications.php:200
@@ -1233,7 +1233,7 @@ msgstr "Ticket geschloßen"
 #: includes/admin/settings/settings-notifications.php:201
 #: includes/admin/settings/settings-notifications.php:226
 msgid "Request closed: {ticket_title}"
-msgstr "Anfrage geschloßen: {ticket_title}"
+msgstr "Anfrage geschlossen: {ticket_title}"
 
 #: includes/admin/settings/settings-style.php:13
 msgid "Style"
@@ -1279,7 +1279,7 @@ msgstr "Offen Status"
 
 #: includes/admin/settings/settings-style.php:48
 msgid "Closed Status"
-msgstr "Geschloßen Status"
+msgstr "Geschlossen Status"
 
 #: includes/admin/settings/settings-style.php:54
 msgid "Old Status"
@@ -1971,7 +1971,7 @@ msgstr "Jeder Status"
 #: includes/admin/class-admin-tickets-list.php:1117
 #: includes/functions-general.php:379
 msgid "Closed"
-msgstr "geschloßen"
+msgstr "geschlossen"
 
 #: includes/custom-fields/class-custom-fields.php:936
 #: includes/custom-fields/class-custom-fields.php:938
@@ -2307,7 +2307,7 @@ msgid ""
 "yet or something new came up in relation to this ticket, <a href=\"%s\">you "
 "can re-open it by clicking this link</a>."
 msgstr ""
-"Das Ticket wurde geschloßen. Wenn du das Gefühl hast dass dein Problem nicht "
+"Das Ticket wurde geschlossen. Wenn du das Gefühl hast dass dein Problem nicht "
 "gelöst wurde, oder dir etwas neues im Bezug zu diesem Ticket eingefallen "
 "ist, kannst du  <a href=\"%s\">das Ticket neu-eröffnen indem du diesen Link "
 "klickst.</a>"
