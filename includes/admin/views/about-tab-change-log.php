@@ -11,6 +11,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 	<div class="row">
 		<div>
 			<div class="about-body">
+				<h1>What's New In 6.4.3</h1>
+				<h3>6.4.3 includes a security patch. Here is the detail:</h3>
+				<ul style="padding-left: 3em; list-style-type: disc;">
+					<li>Security: Fixed unauthenticated disclosure of ticket titles, opening messages and client names through RSS/Atom feeds and oEmbed.</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div>
+			<div class="about-body">
 				<h1>What's New In 6.4.2</h1>
 				<h3>6.4.2 includes a security patch. Here is the detail:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">

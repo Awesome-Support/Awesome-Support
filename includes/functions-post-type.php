@@ -322,3 +322,192 @@ function wpas_redirect_ticket_archive() {
 	}
 
 }
+
+add_action( 'pre_get_posts', 'wpas_remove_tickets_from_feeds' );
+/**
+ * Drop tickets from a feed that also requests other post types.
+ *
+ * A feed of tickets alone is rejected later. Mixed feeds keep the other
+ * post types and lose the ticket posts.
+ *
+ * @since 6.4.3
+ *
+ * @param WP_Query $query Query being prepared.
+ * @return void
+ */
+function wpas_remove_tickets_from_feeds( $query ) {
+
+	if ( is_admin() || ! $query instanceof WP_Query || ! $query->is_feed() ) {
+		return;
+	}
+
+	$post_type = $query->get( 'post_type' );
+
+	if ( ! is_array( $post_type ) || ! in_array( 'ticket', $post_type, true ) ) {
+		return;
+	}
+
+	$post_type = array_values( array_diff( $post_type, array( 'ticket' ) ) );
+
+	if ( empty( $post_type ) ) {
+		return;
+	}
+
+	$query->set( 'post_type', $post_type );
+
+}
+
+add_action( 'template_redirect', 'wpas_block_ticket_discovery', 0 );
+add_action( 'do_feed_rdf', 'wpas_block_ticket_feed_template', 1 );
+add_action( 'do_feed_rss', 'wpas_block_ticket_feed_template', 1 );
+add_action( 'do_feed_rss2', 'wpas_block_ticket_feed_template', 1 );
+add_action( 'do_feed_atom', 'wpas_block_ticket_feed_template', 1 );
+add_filter( 'oembed_request_post_id', 'wpas_block_ticket_oembed_request', 10, 2 );
+add_filter( 'oembed_response_data', 'wpas_block_ticket_oembed_data', 10, 2 );
+add_filter( 'is_post_embeddable', 'wpas_ticket_is_embeddable', 10, 2 );
+
+/**
+ * Stop ticket feeds and private ticket embeds before any template runs.
+ *
+ * @since 6.4.3
+ * @return void
+ */
+function wpas_block_ticket_discovery() {
+
+	if ( is_admin() ) {
+		return;
+	}
+
+	if ( is_embed() && is_singular( 'ticket' ) ) {
+		$post_id = (int) get_queried_object_id();
+
+		if ( ! $post_id || ! wpas_is_ticket_visible( $post_id ) ) {
+			wpas_deny_ticket_discovery();
+		}
+
+		return;
+	}
+
+	if ( is_feed() && wpas_is_ticket_feed_request() ) {
+		wpas_deny_ticket_discovery();
+	}
+
+}
+
+/**
+ * Reject a ticket feed at the moment WordPress loads the feed template.
+ *
+ * @since 6.4.3
+ * @return void
+ */
+function wpas_block_ticket_feed_template() {
+
+	if ( wpas_is_ticket_feed_request() ) {
+		wpas_deny_ticket_discovery();
+	}
+
+}
+
+/**
+ * Whether the current request is a feed of tickets.
+ *
+ * @since 6.4.3
+ * @return bool
+ */
+function wpas_is_ticket_feed_request() {
+
+	if ( ! is_feed() ) {
+		return false;
+	}
+
+	if ( is_singular( 'ticket' ) || is_post_type_archive( 'ticket' ) ) {
+		return true;
+	}
+
+	$post_type = get_query_var( 'post_type' );
+
+	if ( 'ticket' === $post_type ) {
+		return true;
+	}
+
+	if ( is_array( $post_type ) && in_array( 'ticket', $post_type, true ) ) {
+		return true;
+	}
+
+	return false;
+
+}
+
+/**
+ * Answer a ticket discovery request with an empty 404.
+ *
+ * @since 6.4.3
+ * @return void
+ */
+function wpas_deny_ticket_discovery() {
+
+	wp_die(
+		esc_html__( 'This content is unavailable.', 'awesome-support' ),
+		esc_html__( 'Content unavailable', 'awesome-support' ),
+		array( 'response' => 404 )
+	);
+
+}
+
+/**
+ * Refuse an oEmbed lookup for a ticket the current visitor cannot view.
+ *
+ * @since 6.4.3
+ *
+ * @param int $post_id Resolved post ID.
+ * @return int
+ */
+function wpas_block_ticket_oembed_request( $post_id ) {
+
+	$post_id = (int) $post_id;
+
+	if ( $post_id && 'ticket' === get_post_type( $post_id ) && ! wpas_is_ticket_visible( $post_id ) ) {
+		return 0;
+	}
+
+	return $post_id;
+
+}
+
+/**
+ * Drop oEmbed payload for a hidden ticket.
+ *
+ * @since 6.4.3
+ *
+ * @param array   $data oEmbed response data.
+ * @param WP_Post $post Post being embedded.
+ * @return array|false
+ */
+function wpas_block_ticket_oembed_data( $data, $post ) {
+
+	if ( $post instanceof WP_Post && 'ticket' === $post->post_type && ! wpas_is_ticket_visible( $post->ID ) ) {
+		return false;
+	}
+
+	return $data;
+
+}
+
+/**
+ * Keep hidden tickets out of the embeddable post types.
+ *
+ * @since 6.4.3
+ *
+ * @param bool    $embeddable Whether WordPress considers the post embeddable.
+ * @param WP_Post $post       Post being tested.
+ * @return bool
+ */
+function wpas_ticket_is_embeddable( $embeddable, $post ) {
+
+	if ( $post instanceof WP_Post && 'ticket' === $post->post_type && ! wpas_is_ticket_visible( $post->ID ) ) {
+		return false;
+	}
+
+	return $embeddable;
+
+}

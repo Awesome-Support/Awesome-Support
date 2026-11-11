@@ -641,6 +641,33 @@ function wpas_can_view_ticket( $post_id ) {
 }
 
 /**
+ * Whether this request may reveal a ticket title, author or message.
+ *
+ * Same rule as wpas_can_view_ticket(), plus tickets explicitly marked public
+ * by the Public Tickets add-on.
+ *
+ * @since  6.4.3
+ *
+ * @param  int $post_id Ticket ID.
+ * @return bool
+ */
+function wpas_is_ticket_visible( $post_id ) {
+
+	$post_id = (int) $post_id;
+
+	if ( wpas_can_view_ticket( $post_id ) ) {
+		return true;
+	}
+
+	if ( class_exists( 'AS_Publictickets_Loader' ) && 'public' === get_post_meta( $post_id, '_wpas_pbtk_flag', true ) ) {
+		return true;
+	}
+
+	return false;
+
+}
+
+/**
  * Check if user can see all tickets
  *
  * @global object $current_user
