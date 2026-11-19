@@ -296,6 +296,7 @@ There are several factors that can influence e-mail notifications delivery. Plea
 
 * Security
 	* Fixed unauthenticated disclosure of ticket titles, opening messages and client names through RSS/Atom feeds and oEmbed.
+  * Fixed missing authorization that allowed a Subscriber or higher to delete arbitrary content.
   * Patched unauthenticated stored cross-site scripting in ticket and reply content through the Select2 data-placeholder attribute.
 
 = 6.4.2 =
