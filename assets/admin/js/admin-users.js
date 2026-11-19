@@ -6,7 +6,40 @@ jQuery(document).ready(function ($) {
 	 * 2) jQuery Select2 is loaded
 	 * 3) WordPress AJAX is enabled
 	 */
-	var selector = $('.wpas-select2');
+	/**
+	 * Select2 inserts placeholder values with escapeMarkup(). Its default
+	 * returns non-strings unchanged, so a placeholder whose text is an array
+	 * is later written as HTML. Always coerce to a string and escape it.
+	 */
+	function wpasEscapeSelect2Markup(markup) {
+		var replaceMap = {
+			'\\': '&#92;',
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			'"': '&quot;',
+			"'": '&#39;',
+			'/': '&#47;'
+		};
+
+		if (markup === null || typeof markup === 'undefined') {
+			return '';
+		}
+
+		if (typeof markup !== 'string') {
+			markup = String(markup);
+		}
+
+		return markup.replace(/[&<>"'\/\\]/g, function (match) {
+			return replaceMap[match];
+		});
+	}
+
+	/*
+	 * Only <select> elements rendered by the plugin. Ticket and reply HTML is
+	 * inside these containers and must not be able to start this initializer.
+	 */
+	var selector = $('select.wpas-select2').not('.wpas-ticket-content select, .wpas-reply-content select, .wpas-main-ticket-message select');
 	var condition = selector.length && $.fn.select2 && typeof ajaxurl !== 'undefined';
 	if (condition) getUserList( selector );
 
@@ -47,7 +80,8 @@ jQuery(document).ready(function ($) {
 							};
 						}
 					},
-					minimumInputLength: 3
+					minimumInputLength: 3,
+					escapeMarkup: wpasEscapeSelect2Markup
 				});
 			}
 		});
