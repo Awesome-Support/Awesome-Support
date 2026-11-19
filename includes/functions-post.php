@@ -34,6 +34,177 @@ add_action( 'delete_post', 'wpas_clean_ticketcount_cache' );
 add_action( 'trash_post', 'wpas_clean_ticketcount_cache' );
 add_action( 'untrash_post', 'wpas_clean_ticketcount_cache' );
 add_action( 'wpas_ticket_after_saved', 'wpas_clean_ticketcount_cache' );
+
+/**
+ * Attributes that turn rendered ticket HTML into an internal Select2 control.
+ *
+ * @return string[]
+ */
+function wpas_select2_control_attributes() {
+	return array(
+		'data-capability',
+		'data-placeholder',
+		'data-allowclear',
+		'data-allow-clear',
+	);
+}
+
+/**
+ * Remove the internal Select2 class token from a class attribute.
+ *
+ * @param string $class_attribute Raw class attribute.
+ * @return string
+ */
+function wpas_remove_select2_class_token( $class_attribute ) {
+	$classes = preg_split( '/\s+/', (string) $class_attribute, -1, PREG_SPLIT_NO_EMPTY );
+	$classes = array_values(
+		array_filter(
+			$classes,
+			static function ( $class ) {
+				return 0 !== strcasecmp( $class, 'wpas-select2' );
+			}
+		)
+	);
+
+	return implode( ' ', $classes );
+}
+
+/**
+ * Strip Select2 control markup without a DOM extension.
+ *
+ * @param string $content Ticket or reply HTML.
+ * @return string
+ */
+function wpas_strip_select2_control_markup_regex( $content ) {
+	$content = preg_replace(
+		'/\s+data-(?:capability|placeholder|allow-?clear)\s*=\s*(?:"[^"]*"|\'[^\']*\'|[^\s>]+)/i',
+		'',
+		$content
+	);
+
+	$content = preg_replace_callback(
+		'/(\sclass\s*=\s*)([\'"])(.*?)\2/i',
+		static function ( $matches ) {
+			$classes = wpas_remove_select2_class_token( $matches[3] );
+
+			if ( '' === $classes ) {
+				return '';
+			}
+
+			return $matches[1] . $matches[2] . $classes . $matches[2];
+		},
+		$content
+	);
+
+	return is_string( $content ) ? $content : '';
+}
+
+/**
+ * Keep ticket and reply HTML from being treated as a plugin Select2 control.
+ *
+ * wp_kses( 'post' ) keeps div, class and data-* attributes. Admin scripts then
+ * initialize every .wpas-select2 and Select2 reads data-placeholder as markup.
+ * User content must not be able to opt into that behavior. Formatting such as
+ * paragraphs, links and lists is left untouched.
+ *
+ * @param string $content Ticket or reply HTML.
+ * @return string
+ */
+function wpas_strip_select2_control_markup( $content ) {
+	if ( ! is_string( $content ) || '' === $content ) {
+		return $content;
+	}
+
+	if ( ! preg_match( '/wpas-select2|data-capability|data-placeholder|data-allow-?clear/i', $content ) ) {
+		return $content;
+	}
+
+	if ( ! class_exists( 'DOMDocument' ) ) {
+		return wpas_strip_select2_control_markup_regex( $content );
+	}
+
+	$dom      = new DOMDocument();
+	$previous = libxml_use_internal_errors( true );
+	$root_id  = 'wpas-sanitizer-root';
+	$loaded   = $dom->loadHTML(
+		'<?xml encoding="UTF-8"><div id="' . $root_id . '">' . $content . '</div>',
+		LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+	);
+
+	libxml_clear_errors();
+	libxml_use_internal_errors( $previous );
+
+	if ( ! $loaded ) {
+		return wpas_strip_select2_control_markup_regex( $content );
+	}
+
+	$xpath = new DOMXPath( $dom );
+	$nodes = $xpath->query( '//*' );
+
+	if ( false === $nodes ) {
+		return wpas_strip_select2_control_markup_regex( $content );
+	}
+
+	foreach ( $nodes as $node ) {
+		if ( XML_ELEMENT_NODE !== $node->nodeType || ! $node->hasAttributes() ) {
+			continue;
+		}
+
+		foreach ( wpas_select2_control_attributes() as $attribute ) {
+			if ( $node->hasAttribute( $attribute ) ) {
+				$node->removeAttribute( $attribute );
+			}
+		}
+
+		if ( $node->hasAttribute( 'class' ) ) {
+			$classes = wpas_remove_select2_class_token( $node->getAttribute( 'class' ) );
+
+			if ( '' === $classes ) {
+				$node->removeAttribute( 'class' );
+			} else {
+				$node->setAttribute( 'class', $classes );
+			}
+		}
+	}
+
+	$roots = $xpath->query( '//*[@id="' . $root_id . '"]' );
+
+	if ( ! $roots || 0 === $roots->length ) {
+		return wpas_strip_select2_control_markup_regex( $content );
+	}
+
+	$clean = '';
+
+	foreach ( $roots->item( 0 )->childNodes as $child ) {
+		$clean .= $dom->saveHTML( $child );
+	}
+
+	return $clean;
+}
+
+add_filter( 'wp_insert_post_data', 'wpas_sanitize_ticket_content_controls', 100, 1 );
+/**
+ * Strip Select2 control markup before a ticket or reply is stored.
+ *
+ * @param array $data Post data about to be inserted.
+ * @return array
+ */
+function wpas_sanitize_ticket_content_controls( $data ) {
+	$post_types = array( 'ticket', 'ticket_reply', 'ticket_history' );
+
+	if ( empty( $data['post_type'] ) || ! in_array( $data['post_type'], $post_types, true ) ) {
+		return $data;
+	}
+
+	if ( isset( $data['post_content'] ) && is_string( $data['post_content'] ) ) {
+		$data['post_content'] = wpas_strip_select2_control_markup( $data['post_content'] );
+	}
+
+	return $data;
+}
+
+add_filter( 'the_content', 'wpas_strip_select2_control_markup', 9 );
+
 /**
  * Open a new ticket.
  *
@@ -2065,6 +2236,7 @@ function wpas_edit_ticket_content() {
 	 */
 	$ticket_id = isset( $_POST['post_id'] ) ? sanitize_text_field( wp_unslash( $_POST['post_id'] ) ) : '';
 	$content = isset($_POST['content'] ) ? wp_kses_post(  wp_unslash( $_POST['content'] ) ) : '';
+	$content = wpas_strip_select2_control_markup( $content );
 
 	/**
 	 * Make sure we have ticket ID

@@ -14,7 +14,35 @@
         };
 
     $(function () {
-	
+
+        /**
+         * Force Select2 to escape placeholder and result text, including values
+         * that arrive as arrays or objects through a data-placeholder attribute.
+         */
+        function wpasEscapeSelect2Markup(markup) {
+            var replaceMap = {
+                '\\': '&#92;',
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
+                '/': '&#47;'
+            };
+
+            if (markup === null || typeof markup === 'undefined') {
+                return '';
+            }
+
+            if (typeof markup !== 'string') {
+                markup = String(markup);
+            }
+
+            return markup.replace(/[&<>"'\/\\]/g, function (match) {
+                return replaceMap[match];
+            });
+        }
+
         //Process delete ticket or reply attachments        
         var system_delete_option = document.getElementById('wpas_auto_delete_attachments');
         var user_delete_option   = document.getElementById('wpas_user_can_set_auto_delete_attachments');
@@ -229,7 +257,9 @@
          * http://select2.github.io/select2/
          */
         if (jQuery().select2 && $('select.wpas-select2').length) {
-            $('select.wpas-select2:visible').select2();
+            $('select.wpas-select2:visible').not('.wpas-ticket-content select, .wpas-reply-content select, .wpas-main-ticket-message select').select2({
+                escapeMarkup: wpasEscapeSelect2Markup
+            });
         }
 
         /**
@@ -280,9 +310,11 @@
             var id = $(this).attr('rel');
             $('#' + id).show();
 
-            $('#' + id + ' .wpas-select2').each(function () {
+            $('#' + id + ' select.wpas-select2').not('.wpas-ticket-content select, .wpas-reply-content select, .wpas-main-ticket-message select').each(function () {
                 if (typeof $(this).data('select2') != 'object') {
-                    $(this).select2();
+                    $(this).select2({
+                        escapeMarkup: wpasEscapeSelect2Markup
+                    });
                 }
             });
             

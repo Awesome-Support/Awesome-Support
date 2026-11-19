@@ -68,7 +68,7 @@ if ( ! defined( 'ABSPATH' ) ) {
         <tr>
             <td>
                 <?php 
-					echo wp_kses_post( $ticket->post_content );
+					echo wp_kses_post( wpas_strip_select2_control_markup( $ticket->post_content ) );
                 ?>
                 <div class="wpas-print-ticket-attachments">
                     <?php do_action( 'wpas_backend_reply_content_after_with_image', $ticket->ID ); ?>
@@ -117,7 +117,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     </tr>
                     <tr>
                         <td>
-                            <?php echo wp_kses_post( $reply->post_content ); ?>
+                            <?php echo wp_kses_post( wpas_strip_select2_control_markup( $reply->post_content ) ); ?>
                         </td>
                     </tr>
                 </table>
