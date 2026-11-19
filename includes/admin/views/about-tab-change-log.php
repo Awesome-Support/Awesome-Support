@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				<h3>6.4.3 includes a security patch. Here is the detail:</h3>
 				<ul style="padding-left: 3em; list-style-type: disc;">
 					<li>Security: Fixed unauthenticated disclosure of ticket titles, opening messages and client names through RSS/Atom feeds and oEmbed.</li>
+					<li>Security: Patched unauthenticated stored cross-site scripting in ticket and reply content through the Select2 data-placeholder attribute.</li>
 				</ul>
 			</div>
 		</div>
