@@ -66,19 +66,25 @@ add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 			return $content;
 		}
 
-		/* Remove the filter to avoid infinite loops. */
+		/*
+		 * Drop the filter while this callback renders the ticket template.
+		 * The template calls the_content again, and leaving the filter in
+		 * place would recurse. It is restored before every return so the
+		 * next post in a loop stays protected.
+		 */
 		remove_filter( 'the_content', 'wpas_single_ticket' );
 
 		/* Check if the current user can view the ticket */
-		if ( ! wpas_can_view_ticket( $post->ID ) ) {
+		if ( ! wpas_is_ticket_visible( $post->ID ) ) {
 
 			if ( is_user_logged_in() ) {
-				return wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'awesome-support' ) );
+				$content = wpas_get_notification_markup( 'failure', __( 'You are not allowed to view this ticket.', 'awesome-support' ) );
 			} else {
 
 				$login_page = wpas_get_option( 'login_page', false );
 
 				if ( false !== $login_page && !empty( $login_page ) && !is_null( get_post( intval( $login_page ) ) ) ) {
+					add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 					/* As the headers are already sent we can't use wp_redirect. */
 					echo '<meta http-equiv="refresh" content="0; url=' . esc_url( get_permalink( $login_page ) ) . '" />';
 					wpas_get_notification_markup( 'info', __( 'You are being redirected...', 'awesome-support' ) );
@@ -92,42 +98,45 @@ add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 				wpas_get_template( 'registration' );
 				$output .= ob_get_clean();
 
-				return $output;
+				$content = $output;
+
+			}
+		} else {
+
+			/* Get template name */
+			$template_path = get_page_template();
+			$template      = explode( '/', $template_path );
+			$count         = count( $template );
+			$template      = $template[ $count - 1 ];
+
+			/* Don't apply the modifications on a custom template */
+			if ( "single-$slug.php" !== $template ) {
+
+				/* Get the ticket content */
+				ob_start();
+
+				/**
+				 * wpas_frontend_plugin_page_top is executed at the top
+				 * of every plugin page on the front end.
+				 */
+				do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
+
+				/**
+				 * Get the custom template.
+				 */
+				wpas_get_template( 'details' );
+
+				/**
+				 * Finally get the buffer content and return.
+				 *
+				 * @var string
+				 */
+				$content = ob_get_clean();
 
 			}
 		}
 
-		/* Get template name */
-		$template_path = get_page_template();
-		$template      = explode( '/', $template_path );
-		$count         = count( $template );
-		$template      = $template[ $count - 1 ];
-
-		/* Don't apply the modifications on a custom template */
-		if ( "single-$slug.php" === $template ) {
-			return $content;
-		}
-
-		/* Get the ticket content */
-		ob_start();
-
-		/**
-		 * wpas_frontend_plugin_page_top is executed at the top
-		 * of every plugin page on the front end.
-		 */
-		do_action( 'wpas_frontend_plugin_page_top', $post->ID, $post );
-
-		/**
-		 * Get the custom template.
-		 */
-		wpas_get_template( 'details' );
-
-		/**
-		 * Finally get the buffer content and return.
-		 *
-		 * @var string
-		 */
-		$content = ob_get_clean();
+		add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 
 		return $content;
 
@@ -1642,67 +1651,60 @@ add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 	 *
 	 * @return string          Ticket single
 	 */
-	function wpas_single_ticket_title( $title = '' )
+	function wpas_single_ticket_title( $title = '', $post_id = 0 )
 	{
 
 		global $post;
-
-		$slug = 'ticket';
 
 		/* Don't touch the admin */
 		if ( is_admin() ) {
 			return $title;
 		}
 
-		/* Only apply this on the ticket single. */
-		if ( $post && $slug !== $post->post_type ) {
+		$ticket_id = (int) $post_id;
+
+		/**
+		 * Core provides the post ID. Fall back to the loop post only when
+		 * rendering it, without modifying widget titles.
+		 */
+		if ( ! $ticket_id && in_the_loop() && $post instanceof WP_Post ) {
+			$ticket_id = (int) $post->ID;
+		}
+
+		if ( ! $ticket_id || 'ticket' !== get_post_type( $ticket_id ) ) {
 			return $title;
 		}
 
-		/* Only apply this on the main query. */
-		if ( ! is_main_query() ) {
+		if ( wpas_is_ticket_visible( $ticket_id ) ) {
 			return $title;
 		}
 
-		/* Only apply this if it's inside of a loop. */
-		if ( ! in_the_loop() ) {
-			return $title;
+		/**
+		 * Feeds, oEmbed and calls outside the main loop never get the real title.
+		 * The single template retains its notice.
+		 */
+		if ( ! is_main_query() || ! in_the_loop() ) {
+			return __( 'No tickets found.', 'awesome-support' );
 		}
 
-		/* Remove the filter to avoid infinite loops. */
-		remove_filter( 'the_title', 'wpas_single_ticket_title' );
+		/*
+		 * Temporarily removed, then restored for subsequent posts.
+		 */
+		remove_filter( 'the_title', 'wpas_single_ticket_title', 10 );
 
-		/* Check if the current user can view the ticket */
-		if ( ! wpas_can_view_ticket( $post->ID ) ) {
-
-			if ( is_user_logged_in() ) {
-				return wpas_get_notification_markup( 'failure', __( 'No tickets found.', 'awesome-support' ) );
-			} else {
-
-				$output = '';
-				$output .= wpas_get_notification_markup( 'info', __( 'No tickets found.', 'awesome-support' ) );
-
-				return $output;
-
-			}
+		if ( is_user_logged_in() ) {
+			$title = wpas_get_notification_markup( 'failure', __( 'No tickets found.', 'awesome-support' ) );
+		} else {
+			$title = wpas_get_notification_markup( 'info', __( 'No tickets found.', 'awesome-support' ) );
 		}
 
-		/* Get template name */
-		$template_path = get_page_template();
-		$template      = explode( '/', $template_path );
-		$count         = count( $template );
-		$template      = $template[ $count - 1 ];
-
-		/* Don't apply the modifications on a custom template */
-		if ( "single-$slug.php" === $template ) {
-			return $title;
-		}
+		add_filter( 'the_title', 'wpas_single_ticket_title', 10, 2 );
 
 		return $title;
 
 	}
 	// Add filter to `the_title` hook.
-	add_filter( 'the_title', 'wpas_single_ticket_title', 10, 1 );
+	add_filter( 'the_title', 'wpas_single_ticket_title', 10, 2 );
 
 	/**
 	 * Alter document title for single ticket to prevent information disclosure.
@@ -1737,15 +1739,7 @@ add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 			return $title_parts;
 		}
 
-		/* Check if the current user can view the ticket */
-		$can_view = wpas_can_view_ticket( $post->ID );
-		
-		/* Check if the ticket is public (wpas_pbtk_flag) - only allow public access if the Public Tickets add-on is active */
-		if ( class_exists( 'AS_Publictickets_Loader' ) && 'public' === get_post_meta( $post->ID, '_wpas_pbtk_flag', true ) ) {
-			$can_view = true;
-		}
-		
-		if ( ! $can_view ) {
+		if ( ! wpas_is_ticket_visible( $post->ID ) ) {
 			/* Replace the ticket title with a generic title to prevent information disclosure */
 			if ( isset( $title_parts['title'] ) ) {
 				$title_parts['title'] = __( 'No tickets found.', 'awesome-support' );
@@ -1757,3 +1751,89 @@ add_filter( 'the_content', 'wpas_single_ticket', 10, 1 );
 	}
 	// Add filter to `document_title_parts` hook (WordPress 4.4+).
 	add_filter( 'document_title_parts', 'wpas_single_ticket_document_title', 10, 1 );
+
+	/**
+	 * Whether the current post is a ticket this request must not disclose.
+	 *
+	 * @since 6.4.3
+	 *
+	 * @return bool
+	 */
+	function wpas_current_ticket_is_hidden() {
+
+		if ( is_admin() ) {
+			return false;
+		}
+
+		$post = get_post();
+
+		if ( ! $post || 'ticket' !== $post->post_type ) {
+			return false;
+		}
+
+		return ! wpas_is_ticket_visible( $post->ID );
+
+	}
+
+	/**
+	 * Strip ticket messages from feed and embed excerpts.
+	 *
+	 * WordPress prints the opening message through the_content_feed and
+	 * the_excerpt_rss, which are not covered by the_content alone.
+	 *
+	 * @since 6.4.3
+	 *
+	 * @param string $content Feed or excerpt content.
+	 * @return string
+	 */
+	function wpas_hide_ticket_feed_content( $content ) {
+
+		if ( wpas_current_ticket_is_hidden() ) {
+			return '';
+		}
+
+		return $content;
+
+	}
+
+	/**
+	 * Strip ticket titles from feeds.
+	 *
+	 * @since 6.4.3
+	 *
+	 * @param string $title Title prepared for a feed.
+	 * @return string
+	 */
+	function wpas_hide_ticket_feed_title( $title ) {
+
+		if ( wpas_current_ticket_is_hidden() ) {
+			return __( 'No tickets found.', 'awesome-support' );
+		}
+
+		return $title;
+
+	}
+
+	/**
+	 * Strip the client name from ticket feeds and embeds.
+	 *
+	 * @since 6.4.3
+	 *
+	 * @param string $author Display name.
+	 * @return string
+	 */
+	function wpas_hide_ticket_feed_author( $author ) {
+
+		if ( ( is_feed() || is_embed() ) && wpas_current_ticket_is_hidden() ) {
+			return '';
+		}
+
+		return $author;
+
+	}
+
+	add_filter( 'the_content_feed', 'wpas_hide_ticket_feed_content', 99 );
+	add_filter( 'the_excerpt_rss', 'wpas_hide_ticket_feed_content', 99 );
+	add_filter( 'the_excerpt_embed', 'wpas_hide_ticket_feed_content', 99 );
+	add_filter( 'the_title_rss', 'wpas_hide_ticket_feed_title', 99 );
+	add_filter( 'the_author', 'wpas_hide_ticket_feed_author', 99 );

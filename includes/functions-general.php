@@ -495,7 +495,7 @@ function wpas_get_current_admin_url() {
  * @param  string $location URL to redirect to
  * @param  mixed  $post_id  The ID of the post to redirect to (or null if none specified)
  *
- * @return integer           Returns false if location is not provided, true otherwise
+ * @return bool False when there is nowhere to redirect. Otherwise this function exits.
  */
 function wpas_redirect( $case, $location = null, $post_id = null ) {
 
@@ -512,13 +512,22 @@ function wpas_redirect( $case, $location = null, $post_id = null ) {
 	$location = apply_filters( "wpas_redirect_$case", $location, $post_id );
 	$location = wp_sanitize_redirect( $location );
 
+	if ( empty( $location ) ) {
+		return false;
+	}
+
 	if ( ! headers_sent() ) {
 		wp_safe_redirect( $location, 302 );
 	} else {
-		echo "<meta http-equiv='refresh' content='0; url=" . esc_url($location) . "'>";
+		echo "<meta http-equiv='refresh' content='0; url=" . esc_url( $location ) . "'>";
 	}
 
-	return true;
+	/*
+	 * wp_safe_redirect() only sends the Location header. Stop the request so
+	 * the original template (a ticket feed, for example) is not printed after
+	 * the redirect.
+	 */
+	exit;
 
 }
 
