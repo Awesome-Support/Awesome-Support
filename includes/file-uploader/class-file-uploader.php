@@ -203,22 +203,58 @@ class WPAS_File_Upload {
 		$auto_delete = filter_input( INPUT_POST, 'wpas-auto-delete-attachments', FILTER_SANITIZE_NUMBER_INT );
 		
 		if ( wpas_agent_can_set_auto_delete_attachments() || wpas_is_asadmin() ) {
-			$this->update_auto_delete_flag( $ticket_id, $auto_delete, 'agent' );
+			$type = wpas_is_asadmin() ? 'admin' : 'agent';
+			$this->update_auto_delete_flag( $ticket_id, $auto_delete, $type );
 		}
 
 	}
 
 	/**
-	 * Save auto delete attachments flag from front-end
+	 * Save auto delete attachments flag from front-end.
+	 *
+	 * Requires a ticket-scoped nonce, a real ticket post, and permission to
+	 * change the flag. Customers are refused unless the user auto-delete
+	 * setting is enabled and they own the ticket.
 	 */
 	function auto_delete_attachment_flag() {
 
-		$ticket_id = filter_input( INPUT_POST, 'ticket_id', FILTER_SANITIZE_NUMBER_INT );
-		$auto_delete = filter_input( INPUT_POST, 'auto_delete', FILTER_SANITIZE_NUMBER_INT );
+		$ticket_id   = isset( $_POST['ticket_id'] ) ? absint( $_POST['ticket_id'] ) : 0;
+		$auto_delete = isset( $_POST['auto_delete'] ) ? sanitize_text_field( wp_unslash( $_POST['auto_delete'] ) ) : '';
 
-		if( $ticket_id && ( 0 == $auto_delete || 1 == $auto_delete ) ) {
-			$this->update_auto_delete_flag( $ticket_id, $auto_delete );
+		if ( ! $ticket_id || ( '0' !== $auto_delete && '1' !== $auto_delete ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid request.', 'awesome-support' ) ), 400 );
 		}
+
+		if ( ! check_ajax_referer( 'wpas_auto_delete_attachment_flag_' . $ticket_id, 'nonce', false ) ) {
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action.", 'awesome-support' ) ), 403 );
+		}
+
+		$ticket = get_post( $ticket_id );
+
+		if ( ! $ticket || 'ticket' !== $ticket->post_type ) {
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action.", 'awesome-support' ) ), 403 );
+		}
+
+		if ( ! is_user_logged_in() || ! wpas_can_view_ticket( $ticket_id ) ) {
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action.", 'awesome-support' ) ), 403 );
+		}
+
+		$is_author = (int) $ticket->post_author === (int) get_current_user_id();
+		$type      = '';
+
+		if ( wpas_is_asadmin() ) {
+			$type = 'admin';
+		} elseif ( wpas_is_agent() && ( wpas_is_user_agent_on_ticket( $ticket_id ) || wpas_can_user_see_all_tickets() ) && wpas_agent_can_set_auto_delete_attachments() ) {
+			$type = 'agent';
+		} elseif ( $is_author && wpas_user_can_set_auto_delete_attachments() ) {
+			$type = 'user';
+		}
+
+		if ( '' === $type || ! $this->update_auto_delete_flag( $ticket_id, $auto_delete, $type ) ) {
+			wp_send_json_error( array( 'message' => __( "You don't have access to perform this action.", 'awesome-support' ) ), 403 );
+		}
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -226,14 +262,29 @@ class WPAS_File_Upload {
 	 *
 	 * @param int $ticket_id
 	 * @param boolean $auto_delete
-	 * @param string $type
+	 * @param string $type user, agent or admin
+	 *
+	 * @return bool
 	 */
 	function update_auto_delete_flag( $ticket_id, $auto_delete, $type = 'user' ) {
+
+		$ticket_id = absint( $ticket_id );
+		$ticket    = get_post( $ticket_id );
+
+		if ( ! $ticket || 'ticket' !== $ticket->post_type ) {
+			return false;
+		}
+
+		if ( ! in_array( $type, array( 'user', 'agent', 'admin' ), true ) ) {
+			return false;
+		}
 
 		$auto_delete = $auto_delete ? '1' : '';
 
 		update_post_meta( $ticket_id, 'auto_delete_attachments', $auto_delete );
 		update_post_meta( $ticket_id, 'auto_delete_attachments_type', $type );
+
+		return true;
 	}
 
 	/**
@@ -318,6 +369,61 @@ class WPAS_File_Upload {
 	}
 
 	/**
+	 * Whether a stored auto-delete flag is allowed to remove attachments.
+	 *
+	 * Customer flags are ignored unless that setting is enabled. Flags with
+	 * no type come from the admin bulk tool and stay valid.
+	 *
+	 * @param string $delete_attachments Stored flag value.
+	 * @param string $flag_type          user, agent, admin, or empty.
+	 * @param bool   $system_auto_delete Site-wide auto-delete option.
+	 *
+	 * @return bool
+	 */
+	private function auto_delete_flag_authorizes_deletion( $delete_attachments, $flag_type, $system_auto_delete ) {
+
+		if ( $system_auto_delete ) {
+			return true;
+		}
+
+		if ( ! $delete_attachments ) {
+			return false;
+		}
+
+		if ( 'user' === $flag_type ) {
+			return (bool) wpas_user_can_set_auto_delete_attachments();
+		}
+
+		if ( 'agent' === $flag_type || 'admin' === $flag_type || '' === $flag_type || false === $flag_type ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Whether the attachment was uploaded by an agent or an administrator.
+	 *
+	 * @param WP_Post $attachment Attachment post.
+	 *
+	 * @return bool
+	 */
+	private function attachment_authored_by_staff( $attachment ) {
+
+		if ( ! $attachment instanceof WP_Post ) {
+			return true;
+		}
+
+		$author_id = (int) $attachment->post_author;
+
+		if ( ! $author_id ) {
+			return true;
+		}
+
+		return user_can( $author_id, 'edit_ticket' ) || user_can( $author_id, 'manage_options' ) || user_can( $author_id, 'administer_awesome_support' );
+	}
+
+	/**
 	 * Check and auto delete attachment after ticket is closed
 	 *
 	 * @param int $ticket_id
@@ -326,10 +432,26 @@ class WPAS_File_Upload {
 	 */
 	public function wpas_maybe_delete_attachments_after_close_ticket( $ticket_id, $update, $user_id ) {
 
+		$ticket_id = absint( $ticket_id );
+		$ticket    = get_post( $ticket_id );
+
+		if ( ! $ticket || 'ticket' !== $ticket->post_type ) {
+			return;
+		}
 
 		$delete_attachments = get_post_meta( $ticket_id, 'auto_delete_attachments', true );
+		$flag_type          = get_post_meta( $ticket_id, 'auto_delete_attachments_type', true );
 
 		$system_auto_delete = boolval( wpas_get_option( 'auto_delete_attachments' ) );
+
+		if ( ! $this->auto_delete_flag_authorizes_deletion( $delete_attachments, $flag_type, $system_auto_delete ) ) {
+			// Drop a customer flag that the current settings do not allow, so it cannot be reused later.
+			if ( 'user' === $flag_type && $delete_attachments && ! $system_auto_delete ) {
+				delete_post_meta( $ticket_id, 'auto_delete_attachments' );
+				delete_post_meta( $ticket_id, 'auto_delete_attachments_type' );
+			}
+			return;
+		}
 
 		if( $delete_attachments || $system_auto_delete ) {
 
@@ -350,6 +472,11 @@ class WPAS_File_Upload {
 			// translators: %s is the attachment.
 			$x_content = __( '%s attachment auto deleted', 'awesome-support' );
 			foreach ( $attachments as $attachment ) {
+
+				// A customer-set flag must not delete files uploaded by staff.
+				if ( 'user' === $flag_type && ! $system_auto_delete && $this->attachment_authored_by_staff( $attachment ) ) {
+					continue;
+				}
 
 				$filename   = explode( '/', $attachment->guid );
 				$name = $filename[ count( $filename ) - 1 ];

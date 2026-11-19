@@ -468,6 +468,7 @@ function wpas_get_javascript_object() {
 
 	if ( 'ticket' === $post->post_type ) {
 		$object['ticket_id'] = $post->ID;
+		$object['auto_delete_nonce'] = wp_create_nonce( 'wpas_auto_delete_attachment_flag_' . $post->ID );
 	}
 
 	return $object;

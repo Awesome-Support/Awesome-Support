@@ -79,7 +79,8 @@
                     var data = {
                         action   : 'wpas_auto_delete_attachment_flag',
                         ticket_id : wpas.ticket_id,
-                        auto_delete : btn.is(':checked') ? '1' : '0'
+                        auto_delete : btn.is(':checked') ? '1' : '0',
+                        nonce : wpas.auto_delete_nonce
                     };
 
                     $.post( ajaxurl, data, function (response) {
