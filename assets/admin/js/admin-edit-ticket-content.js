@@ -86,12 +86,8 @@
                      */
                     tinyMCE.get('wpas-main-ticket-message-editor').remove();
 
-                    if( response.code === 200 ) {
-                        $('.wpas-main-ticket-message').html(content);
-                    }else{
-                        if(response.content){
-                            $('.wpas-main-ticket-message').html(response.content);
-                        }
+                    if (response.content) {
+                        $('.wpas-main-ticket-message').html(response.content);
                     } 
                 });
 
